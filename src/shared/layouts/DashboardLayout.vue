@@ -1,4 +1,4 @@
-<script setup lang="ts">
+ <script setup lang="ts">
 import Header from "@/shared/LayoutComponents/Header.vue";
 import Sidebar from "@/shared/LayoutComponents/Sidebar.vue";
 import { ref } from "vue";
