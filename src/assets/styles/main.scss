@@ -21,15 +21,12 @@
 @use "./layout/menu";
 /*</editor-fold>*/
 
-/*<editor-fold desc="destinations">*/
-@use "destinations/imports_destinations";
-/*</editor-fold>*/
-
 /*<editor-fold desc="components">*/
 @use "./components/drop_menu";
 @use "./components/filter";
 @use "./components/search_input";
 @use "./components/date_picker";
+
 @use "./components/dialog";
 @use "./components/popover";
 @use "./components/rate";
@@ -46,31 +43,6 @@
 @use "auth/imports_auth";
 /*</editor-fold>*/
 
-/*<editor-fold desc="newsletter">*/
-@use "./newsletter/new_sletter";
-/*</editor-fold>*/
-
-/*<editor-fold desc="home">*/
-@use "home/imports_home";
-/*</editor-fold>*/
-
-/*<editor-fold desc="hotel">*/
-@use "hotels/imports_hotels";
-/*</editor-fold>*/
-
-/*<editor-fold desc="cards">*/
-@use "cards/imports_cards";
-/*</editor-fold>*/
-
-/*<editor-fold desc="aboutus">*/
-@use "aboutus/main_section";
-@use "aboutus/overview_section";
-@use "aboutus/our_advantages";
-@use "aboutus/our_testimonial";
-@use "aboutus/join_us";
-@use "aboutus/cards/reservation_card";
-@use "aboutus/cards/traveling_card";
-/*</editor-fold>*/
 
 /*<editor-fold desc="error">*/
 @use "error/error";
@@ -83,11 +55,6 @@
 /*<editor-fold desc="error">*/
 @use "Dialogs/imports";
 /*</editor-fold>*/
-
-/*<editor-fold desc="profile">*/
-@use "profile/profile_import";
-/*</editor-fold>*/
-
 
 html {
   scroll-behavior: smooth;
@@ -106,3 +73,5 @@ body {
   font-family: var(--font-family), sans-serif;
   // overflow-x: hidden;
 }
+
+
