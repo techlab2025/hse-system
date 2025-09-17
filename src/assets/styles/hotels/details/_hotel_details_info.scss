@@ -1,0 +1,199 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/grid" as *;
+
+.hotel-info {
+  margin-block: $XlSize;
+
+  .map {
+    @include grid(12, 2px);
+    gap: $SmSize;
+
+    .left-section {
+      @include grid-item-span(8, 2);
+      @media screen and (max-width: 768px) {
+        @include grid-item-span(12, 2);
+      }
+    }
+
+    .right-section {
+      @include grid-item-span(4, 2);
+      @media screen and (max-width: 768px) {
+        @include grid-item-span(12, 2);
+      }
+    }
+
+    .card-map {
+      border: $BaseBorderWidth solid $TextGray6;
+      border-radius: $MdSize;
+      height: 100%;
+      padding: $SmSize;
+      @include flex-column(nowrap, center, center);
+      gap: $SmSize;
+
+      img {
+        width: 100%;
+      }
+
+      .reserve {
+        width: 100%;
+        background: $PrimaryColor;
+        color: $BgWhite;
+        padding: $XsSize $SmSize;
+        border-radius: $MdSize;
+        text-align: center;
+        cursor: pointer;
+        font-weight: $BaseFontWeightBold;
+      }
+
+      .save {
+        @include flex(row, wrap, center, center);
+        width: 100%;
+        background: #28476a1a;
+        color: $PrimaryColor;
+        padding: $XsSize $SmSize;
+        border-radius: $MdSize;
+        text-align: center;
+        cursor: pointer;
+        font-weight: $BaseFontWeightBold;
+        gap: $XsSize;
+      }
+    }
+  }
+
+  .hotel-images {
+    @include grid(12, 2px);
+    margin-block: $XlSize;
+    width: 100%;
+    gap: $SmSize;
+
+    .hotel-image {
+      @include grid-item-span(3, 2);
+
+      border-radius: $MdSize;
+      overflow: hidden;
+
+      &:first-of-type {
+        @include grid-item-span(3, 4);
+      }
+
+      img {
+        height: 100%;
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+      }
+    }
+
+    //.first-hotel-image {
+    //  @include grid-item-span(3, 2);
+    //  @media screen and (max-width: 768px) {
+    //    @include grid-item-span(12, 2);
+    //
+    //  }
+    //  height: 100%;
+    //  width: 100%;
+    //  position: relative;
+    //
+    //  img {
+    //    width: 100%;
+    //    height: 100%;
+    //  }
+    //}
+    //
+    //.images {
+    //  width: 100%;
+    //  @include grid-item-span(9, 2);
+    //  @include flex(row, wrap, flex-start, center);
+    //  gap: $XsSize;
+    //  @media screen and (max-width: 768px) {
+    //    @include grid-item-span(12, 2);
+    //
+    //  }
+    //
+    //  .hotel-image {
+    //    //width: 11rem;
+    //    height: 11rem;
+    //    @include grid-item-span(3, 2);
+    //
+    //
+    //    img {
+    //      width: 100%;
+    //      height: 100%;
+    //
+    //    }
+    //  }
+    //}
+  }
+
+  .info-header {
+    @include flex-justify(row, nowrap, center);
+    gap: $MdSize;
+    @media screen and (max-width: 768px) {
+      @include flex-justify(row, wrap, center);
+    }
+
+    .card-hotel-body {
+      width: 100%;
+      @include flex-column();
+      gap: $SmSize;
+
+      p {
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: $SecondaryColor;
+      }
+    }
+
+    .card-hotel-price {
+      width: 50%;
+      @include flex(row, wrap, flex-end, center);
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        @include flex(row, wrap, space-between, center);
+      }
+      gap: $MdSize2;
+
+      .price {
+        .price-text {
+          font-size: $XlSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: $SecondaryColor;
+        }
+
+        .price-value {
+          font-size: $MdSize;
+          //font-weight: $BaseFontSemiBoldWeight;
+          color: #7e94b0;
+        }
+      }
+    }
+  }
+}
+
+.images-dialog-hotel {
+  @include grid(2, $MdSize);
+  padding: $XlSize3;
+  // @include grid-item-span(9, 2);
+  // gap: $XsSize;
+
+  overflow-y: auto;
+
+  .image {
+    @include grid-item-span(1, 2);
+    border-radius: $MdSize;
+    overflow: hidden;
+    height: clamp(
+      calc(250 * 0.8px),
+      calc(250 * 100vw / var(--base-width)),
+      calc(250 * 1.2px)
+    );
+    img {
+      width: 100%;
+      height: 100%;
+
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+  }
+}

@@ -1,0 +1,104 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.auth-form{
+    background-color: $SecondaryColor;
+    width: 50%;
+    border-radius: $BorderRadiusLg;
+
+    &.w-full {
+        width: 100%;
+    }
+    @media (max-width: 768px){
+        width: 70%;
+    }
+    @media (max-width: 1024px){
+        width: 70%;
+    }
+    @media (max-width: 500px){
+        width: 98%;
+    }
+    
+    .auth-card{
+        @include flex-justify-center(column, nowrap , center); 
+        width: 100%;
+        padding: 80px;
+        gap: $XlSize4;
+
+        @media(max-width: 768px){
+            padding: $XlSize3;
+
+        }
+        .auth-card-container{
+            @include flex-justify-center(column, nowrap , center);
+            gap: $XlSize3;
+            width: 100%;
+
+            .auth-card-header{
+                @include flex-justify-center(column, nowrap , center);
+                gap: $XsSize4;
+                .auth-card-title{
+                    color:white;
+                    text-align: center;
+                    font-size: $XlSize2;
+                }
+                
+                .auth-card-subtitle{
+                    color:  $TextGray7;
+                    text-align: center;
+                    font-size: $SmSize;
+                    width: 100%;
+                }
+            }
+
+            form{
+                width: 100%;
+                 @include flex-justify-center(column, nowrap , center);
+                 gap: $XlSize;
+
+                 &.auth-inputs{
+                    gap: $XlSize4
+                 }
+                 &.auth-reset-pass{
+                    gap: $XlSize3
+                 }
+                
+                .btns{
+                    @include flex-justify-center(column, nowrap , center);
+                   gap:$XsSize3 ;
+                   width: 100%;
+
+                   
+                }
+
+                .otp-input-wrapper{
+                    div{
+                        @include flex-row(row ,nowrap , center);
+                        gap: $XsSize2;
+                        input{
+                            width: $XlSize4;
+                            border-radius: 50%;
+                            border: none;
+                            height: $XlSize4;
+                            text-align: center;
+                        }
+                    }
+                }
+
+
+                .auth-double-inputs{
+                    @include flex-row(row ,nowrap , center);
+                    width: 100%;
+                    gap: $XsSize2;
+
+                    @media (max-width:500px){
+                        flex-direction: column;
+                        
+                    }
+                }
+                 
+            }
+        }
+    }
+
+}

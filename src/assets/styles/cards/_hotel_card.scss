@@ -1,0 +1,170 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.hotel-card {
+  @include flex-row();
+  gap: $XsSize2;
+  padding: $MdSize $XsSize2;
+  @include border($BaseBorderWidth, $TextGray6, solid, $XsSize);
+  position: relative;
+
+  background-color: $BgWhite;
+
+  .active {
+    background-color: #e5e5e5;
+  }
+
+  .hotel-swiper {
+    flex: 0 0 auto; // Changed from auto to fixed
+    width: 30%;
+    max-width: 300px; // Add max-width constraint
+    min-width: 150px; // Add min-width constraint
+
+    &::part(bullet) {
+      background-color: #fff;
+      //width: 8px;
+      //height: 45px;
+    }
+
+    .hotel-swiper-slide {
+      //width: 30px !important;
+      //height: 30px !important;
+    }
+
+    .img-swiper-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: $XsSize2;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 16/9;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    @include flex-column();
+    gap: $XsSize2;
+
+    .hotel-swiper {
+      width: 100%;
+      max-width: 100%; // Full width on mobile
+      min-width: unset;
+      aspect-ratio: 16/9; // Maintain aspect ratio
+
+      .img-swiper-container {
+        height: auto; // Allow height to adjust
+      }
+    }
+  }
+
+  .card-hotel-body {
+    flex: 1 0 auto;
+    @include flex-column(nowrap, start, start);
+    gap: $XsSize2;
+    width: 70%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%; // Full width on mobile
+    }
+
+    .card-hotel-title {
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $XlSize;
+      color: $SecondaryColor;
+      // white-space: nowrap;
+    }
+
+    .card-hotel-footer {
+      @include flex-justify(row, nowrap, flex-start);
+      //   flex: 1 1 100%;
+      width: 98%;
+    }
+
+    .price {
+      @include flex-column(nowrap, flex-end, flex-end);
+      //   gap: $XsSize2;
+
+      .price-text {
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        color: $SecondaryColor;
+        @include flex-align();
+      }
+
+      .price-value {
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        color: $TextGray3;
+      }
+    }
+  }
+}
+
+// hotel-reviews
+.hotel-reviews {
+  @include flex-align();
+  gap: $XsSize2;
+  @media screen and (max-width: 768px) {
+    @include flex(row, wrap, start, center);
+  }
+
+  .hotel-reviews-rate {
+    background-color: $PrimaryColor;
+    padding: clamp(2 * 0.8px, calc(2 * 100vw / var(--base-width)), 2 * 1.2px) clamp(4 * 0.8px, calc(4 * 100vw / var(--base-width)), 4 * 1.2px);
+    border-radius: $XsSize2 0 $XsSize2 $XsSize2;
+    -webkit-border-radius: $XsSize2 0 $XsSize2 $XsSize2;
+    -moz-border-radius: $XsSize2 0 $XsSize2 $XsSize2;
+    -ms-border-radius: $XsSize2 0 $XsSize2 $XsSize2;
+    -o-border-radius: $XsSize2 0 $XsSize2 $XsSize2;
+    color: $BgWhite;
+    font-size: $SmSize;
+    font-weight: $BaseFontSemiBoldWeight;
+
+    > span {
+      color: $TextGray5;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+
+  .hotel-reviews-title {
+    color: $PrimaryColor;
+    font-size: $SmSize;
+    font-weight: $BaseFontSemiBoldWeight;
+  }
+
+  .hotel-reviews-reviews {
+    color: $TextGray2;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+  }
+
+  swiper-container {
+    contain: strict; // Prevent layout shifts
+    overflow: hidden;
+    width: 100%;
+  }
+}
+
+.address {
+  @include flex-row();
+  gap: $XsSize2;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: $TextGray;
+  font-size: $SmSize;
+  font-weight: $BaseFontMediumWeight;
+  text-transform: capitalize;
+
+  @media screen and (max-width: 768px) {
+    white-space: normal; // Allow text wrapping on mobile
+  }
+}

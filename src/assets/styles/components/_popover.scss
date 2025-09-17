@@ -1,0 +1,92 @@
+@use "../variables" as *;
+@use "../mixins/grid" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.custom-popover {
+  background-color: $PopOverBg;
+  padding: $XlSize3 $MdSize;
+  min-width: clamp(
+    calc(366 * 0.8px),
+    calc(366 * 100vw / var(--base-width)),
+    calc(366 * 1.2px)
+  );
+  .room-count {
+    @include flex-column(nowrap);
+    gap: $XlSize2;
+
+    .item-room {
+      @include flex-justify(nowrap, center, start);
+      gap: $XlSize2;
+
+      .item-room-actions,
+      .item-room-info {
+        @include flex-align(row, nowrap, start);
+        gap: $XsSize2;
+        color: $SecondaryColor;
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        text-transform: capitalize;
+      }
+
+      .item-room-actions {
+        @include flex-align(row, nowrap, center);
+
+        font-size: $SmSize;
+        .action {
+          @include flex-center(row, nowrap);
+          background-color: $TextGray6;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          -ms-border-radius: 50%;
+          -o-border-radius: 50%;
+        }
+      }
+    }
+  }
+  .ages {
+    @include flex-align(row, wrap, space-between);
+    gap: $XsSize4;
+    color: $SecondaryColor;
+    font-size: $SmSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    text-transform: capitalize;
+  }
+  select {
+    appearance: base-select;
+
+    // &::picker(select) {
+    //   appearance: base-select;
+    // }
+    width: 45%;
+    color: $SecondaryColor;
+    font-size: $SmSize;
+    text-transform: capitalize;
+    font-weight: $BaseFontSemiBoldWeight;
+    background-color: $BgWhite;
+    padding: $MdSize;
+    // padding-inline-end: calc(#{$MdSize} * 2)  ;
+
+    &:open::picker-icon {
+      rotate: 180deg;
+    }
+    @include border($BaseBorderWidth, $TextGray6, solid, $XlSize2);
+
+    option {
+      color: $SecondaryColor;
+      font-size: $SmSize;
+      text-transform: capitalize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+
+  // .custom-select {
+  //   &,
+  //   &::picker(select) {
+  //     appearance: base-select;
+  //   }
+  // }
+}

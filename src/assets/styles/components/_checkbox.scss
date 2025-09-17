@@ -1,0 +1,84 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.check-boxes {
+  @include flex-column();
+  gap: $XsSize2;
+
+}
+
+.check-box {
+  @include flex-align();
+  gap: $XsSize2;
+
+
+  label {
+    font-weight: $BaseFontMediumWeight;
+    font-size: $SmSize;
+    color: $PrimaryColor;
+    white-space: nowrap;
+  }
+
+  // Custom checkbox
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none; // For Safari
+    cursor: pointer;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      transition: all 0.2s ease;
+      @include border($BaseBorderWidth, $TextGray6, solid);
+      border-radius: 3px; // Optional rounded corners
+    }
+
+    // Checkmark (hidden by default)
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 5px;
+      top: 3px;
+      width: 4px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    // Checked state
+    &:checked {
+      &::before {
+        background-color: $GoldColor;
+        border-color: $GoldColor;
+      }
+
+      &::after {
+        display: block;
+      }
+    }
+
+    // Hover state
+    &:hover::before {
+      border-color: darken($TextGray6, 15%);
+    }
+
+    // Focus state
+    &:focus-visible {
+      outline: 2px solid $PrimaryColor;
+      outline-offset: 2px;
+    }
+  }
+}

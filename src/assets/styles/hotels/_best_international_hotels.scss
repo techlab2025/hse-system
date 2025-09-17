@@ -1,0 +1,61 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.best-international-section {
+    padding-block: $XlSize4;
+
+    background: $BgWhite;
+    position: relative;
+
+    .section-title-wrapper {
+        @include flex(row, nowrap, center, center);
+        text-align: center;
+    }
+
+    .container {
+        @include flex-column();
+        gap: clamp(calc(30 * 0.8px), calc(40 * 100vw / var(--base-width)), calc(40 * 1.2px));
+    }
+    position: relative;
+    .swiper-button {
+        @media screen and (max-width: 768px) {
+            @include flex();
+            gap: $XlSize2;
+            padding: 0 $XlSize2;
+        }
+        .prev,
+        .next {
+            cursor: pointer;
+            transition: $Transition;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: $PrimaryColor;
+
+                path {
+                    stroke: $BgWhite;
+                }
+            }
+        }
+        .prev {
+            position: absolute;
+            left: clamp(calc(40 * 0.8px), calc(40 * 100vw / var(--base-width)), calc(40 * 1.2px));
+            top: 50%;
+            transform: translateY(-50%, 50%);
+            @media screen and (max-width: 768px) {
+                position: static;
+            }
+            z-index: 55;
+        }
+        .next {
+            position: absolute;
+            right: clamp(calc(40 * 0.8px), calc(40 * 100vw / var(--base-width)), calc(40 * 1.2px));
+            top: 50%;
+            transform: translateY(-50%, 50%);
+            @media screen and (max-width: 768px) {
+                position: static;
+            }
+            z-index: 55;
+        }
+    }
+}

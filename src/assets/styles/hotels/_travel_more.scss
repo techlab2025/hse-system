@@ -1,0 +1,25 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.travel-more-section {
+    padding-block: $XlSize4;
+
+    background: $BgWhite;
+
+    position: relative;
+
+    .container {
+        @include flex-column();
+        gap: clamp(calc(30 * 0.8px), calc(30 * 100vw / var(--base-width)), calc(30 * 1.2px));
+    }
+
+    .section-title-wrapper {
+        .section-title {
+            .main-title {
+                font-size: $XlSize3;
+                font-weight: $BaseFontWeightBold;
+                text-transform: capitalize;
+            }
+        }
+    }
+}

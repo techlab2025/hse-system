@@ -1,0 +1,12 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+
+.hotel-confirmation {
+  @include flex(column, nowrap, center, center);
+  background: $BgGray;
+  padding: $XlSize3 $XlSize2;
+  gap: $XlSize2;
+  @media screen and (max-width: 768px) {
+    padding: $MdSize;
+  }
+}

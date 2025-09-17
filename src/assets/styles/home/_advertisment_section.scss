@@ -1,0 +1,45 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.advertisements-section{
+    padding: calc($XlSize4 + 10px ) $XlSize3;
+    @include flex-column(nowrap, flex-start, stretch);
+    gap: $XlSize3;
+    
+    .advertisements-cards-container{
+        @include flex-row(nowrap, center, center);
+        gap: $XlSize2;
+        
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+
+
+    .advertisements-secondary-card{
+        @include flex-row(nowrap, space-between, center);
+        padding: calc($XlSize3 + 5px) $XlSize3;
+        // background-image: url('../../../public/images/hotel.jpg');
+        background-color: black;
+        border-radius: $MdSize;
+
+        
+        .card-text{
+             @include flex-column(nowrap, flex-start, stretch);
+            gap:calc($MdSize + 1px );
+
+            .card-title{
+                color: white;
+                font-size: $XlSize;
+                font-weight: $BaseFontWeight;
+            }
+
+            .card-subtitle{
+                color: white;
+                font-size: $XlSize2;
+                font-weight: $BaseFontSemiBoldWeight;
+            }
+        }
+    }
+}

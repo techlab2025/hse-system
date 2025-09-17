@@ -1,0 +1,33 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.quick-and-easy-card {
+    .quick-and-easy-container {
+        @include flex-column(nowrap, center, center);
+        cursor: pointer;
+        gap: $XsSize2;
+        text-align: center;
+        img {
+            width: 10rem;
+            height: 10rem;
+            border-radius: $XlSize2;
+            //border-radius: var(--xl-size-1);
+            aspect-ratio: 16/9;
+            object-fit: cover
+        }
+
+        .card-quick-and-easy-title {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            color: $SecondaryColor;
+            white-space: nowrap;
+        }
+        .card-quick-and-easy-hotels-count {
+            font-weight: $BaseFontMediumWeight;
+            font-size: $SmSize;
+            color: $TextGray2;
+            white-space: nowrap;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+
+@use "../variables" as *;
+
+
+
+.hotel-swiper {
+  &::part(bullet) {
+    background-color: $BgWhite;
+  }
+
+  &::part(bullet-active) {
+    background-color: $BgWhite;
+    width: 16px;
+    //height: 45px;
+    border-radius: $XlSize3;
+  }
+}

@@ -1,0 +1,55 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.travel-more-card {
+  @include border($BaseBorderWidth, $TextGray6, solid, $XlSize2);
+  padding: $MdSize $XlSize2;
+  &.sideover {
+    .travel-more-container {
+      @include flex(row, nowrap, space-between, flex-start);
+    }
+  }
+  .travel-more-container {
+    @include flex(row, wrap, space-between, center);
+    @media screen and (max-width: 768px) {
+      @include flex-column(nowrap, center, center);
+    }
+    width: 100%;
+    gap: $XlSize2;
+
+    .card-travel-more-info {
+      @include flex-column(nowrap, start, start);
+
+      .card-travel-more-title {
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $MdSize;
+        color: $SecondaryColor;
+      }
+      .card-travel-more-subtitle {
+        font-weight: $BaseFontMediumWeight;
+        font-size: $SmSize;
+        color: $TextGray2;
+      }
+
+      .card-travel-more-button {
+        margin-block: $XsSize2;
+        background-color: $SecondaryColor;
+        color: $BgWhite;
+        border-radius: $XlSize2;
+        padding: $MdSize $XlSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $SmSize;
+        transition: $TransitionFast;
+        &:hover {
+          background-color: $BgBlack;
+        }
+      }
+    }
+    .card-travel-more-img {
+      width: 6rem;
+      height: 6rem;
+      object-fit: cover;
+    }
+  }
+}

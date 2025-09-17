@@ -1,0 +1,135 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/grid" as *;
+
+.traveling-card-container{
+   @include flex-column(nowrap , flex-start ,flex-start);
+    padding: calc($XlSize + 3px ) $MdSize;
+    gap: $XsSize;
+    border-radius: $XsSize3;
+    box-shadow: $Shadow3;
+    background-color: white;
+    width:  clamp(calc(343px * 0.8) , 343px , calc(343px * 1.2));;
+      @media (max-width:768px){
+           width: 100%;
+        }
+
+    .traveling-card-header{
+        @include flex-row(nowrap , space-between ,stretch);
+        text-align: center;
+        width: 100%;
+
+        .card-title{
+            color: #0A909B;
+            background-color: #0a8f9b78;
+            padding: calc($XsSize4 + 1px ) $MdSize;
+            font-size: calc($XsSize2 + 1px);
+            font-weight: $BaseFontWeight;
+            border-radius: $MdSize;
+        }
+    }
+
+    .card-info{
+        @include flex-row(nowrap , space-between ,center);
+        width: 100%;
+        padding-bottom: $XsSize;
+        border-bottom: 1px solid #D0D2D7;
+     
+        .start-info{
+             @include flex-column(nowrap , flex-start ,center);
+            gap: calc($XsSize4 - 1px);
+            margin-bottom:auto ;
+
+            .start-time-info{
+                color: #0B1427;
+                font-size: $SmSize;
+                font-weight: $BaseFontWeightBold;
+            }
+
+            .start-way-info{
+                color: #656B78;
+                font-size: $SmSize;
+                font-weight: $BaseFontWeight;
+            }
+
+            .start-date-info{
+                color: white;
+                font-size: $XsSize2;
+                font-weight: $BaseFontWeight;
+                background-color: #0B1427;
+                padding: calc($XsSize4 - 1px) calc($XsSize4 - 2px);
+                border-radius: $BorderWidth3;
+            }
+        }
+
+        .travel-info{
+            @include flex-column(nowrap , flex-start ,center);
+            gap: calc($SmSize + 1px );
+            position: relative;
+
+            .travel-stops-info{
+                color: #E23535;
+                font-size: $XsSize;
+                font-weight: $BaseFontWeight;
+            }
+
+            .travel-icon{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                border-radius: 50%;
+                // padding: 5px;
+            }
+
+            .travel-hr{
+                border: $BaseBorderWidth dashed #9CA2AC;
+                width: 180%;
+            }
+            .travel-duration-info{
+                color: #0B1427;
+                font-size: $XsSize;
+                font-weight: $BaseFontWeight;
+            }
+        }
+
+       
+
+    }
+
+    .card-footer-container{
+        @include flex-row(nowrap , space-between ,center);
+        gap: $XlSize;
+        width: 100%;
+      
+        .card-footer-icon{
+             @include flex-row(nowrap , flex-start ,center);
+            gap:$XsSize3;
+            
+            .footer-item-title{
+                font-size: $XsSize;
+                font-weight: $BaseFontWeight;
+                color: #656B78;
+            }
+            
+        }
+
+
+        .card-footer-text{
+            @include flex-row(nowrap , flex-start ,center);
+            gap: $BorderWidth4;
+            .footer-item-title{
+                color: #0B1427;
+                font-size: $SmSize;
+                font-weight: $BaseFontWeightBold;
+                &.discount{
+                    color: #656B78;
+                    font-size: calc($XsSize2 + 1px);
+                    font-weight: $BaseFontWeight;
+                }
+            }
+        }
+}
+
+}

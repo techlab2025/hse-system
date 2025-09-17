@@ -1,0 +1,73 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.advertisements-card{
+    position: relative;
+    width: 100%;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+
+    .advertisements-card-img{
+        // width: clamp( 20% , 443px, 100%);
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+        img{ 
+            border-radius: $XlSize2;
+            width: 100%;
+        }
+    }
+
+    .advertisements-card-text{
+        @include flex-column(nowrap ,center ,center);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+        gap: $XsSize;
+        padding: calc($XlSize3 + 5px) $XlSize2 calc($XlSize3 + 10px) 0;
+
+            @media (max-width: 768px) {
+                right: 60px;
+            }
+
+        .advertisements-card-title{
+            color: $TextGray2;
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+            text-align: center;
+        }
+
+        .advertisements-card-subtitle{
+            color: $SecondaryColor;
+            font-weight: $BaseFontWeightBold;
+            font-size: $XlSize2;
+            max-width: 169px;
+            text-align: center;
+        }
+        
+        .btn-explore{
+            text-align: center;
+            display: flex;
+            padding: $SmSize calc($XlSize3 + 2px);
+            &:hover{
+                .explore-icon{
+                    path{
+                    transition: all 0.4s linear;
+                    stroke: white;
+                }
+            }
+            }
+
+            .explore-icon{
+                path{
+                    stroke: $SecondaryColor;
+                }
+            }
+        }
+
+    }
+
+}

@@ -1,0 +1,187 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+.footer {
+  @include flex-column(nowrap, center, center);
+  background-color: $SecondaryColor;
+  // padding: calc($XlSize4 + 30px);
+  padding: 80px 80px 69px 80px;
+  gap: calc($XlSize4 - 10px);
+  position: relative;
+  .logo-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0.02;
+    object-fit: cover;
+  }
+
+  .footer-container {
+    width: 100%;
+    z-index: 10;
+    @include grid(
+      4,
+      109px,
+      (
+        768px: 2,
+        1024px: 3,
+        1440px: 4,
+      )
+    );
+
+    .container {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XlSize3;
+      padding: 0;
+
+      .container-title {
+        color: $BgWhite;
+        font-size: calc($XlSize2 + 2px);
+        font-weight: $BaseFontWeightBold;
+        position: relative;
+        padding-bottom: $XsSize2;
+        width: clamp(
+          calc(174 * 0.8px),
+          calc(174 * 100vw / var(--base-width)),
+          calc(174 * 1.2px)
+  );;
+        &:after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 30%;
+          height: 1px;
+          background-color: $MainBtnbg;
+        }
+      }
+
+      .container-content {
+        @include flex-column(nowrap, center, flex-start);
+        color: white;
+        font-size: $MdSize2;
+        font-weight: $BaseFontSemiBoldWeight;
+        gap: $XlSize;
+      }
+
+      .logo-contaienr-header {
+        @include flex-column(nowrap, center, flex-start);
+        gap: $XlSize;
+        img{
+          width: 100%;
+          max-width:  clamp( calc(288px * 0.8) , 288px , calc(288px * 1.2) );
+        }
+        .logo-container-description {
+          color: white;
+          font-size: $XlSize2;
+          font-weight: $BaseFontSemiBoldWeight;
+          width: 454px;
+
+          @media (max-width: 786px) {
+            width: 100%;
+          }
+        }
+      }
+
+      .logo-container-icons {
+        @include flex-row(wrap, flex-start, center);
+        gap: $XlSize;
+
+        .social-icon{
+          background-color: #F7F4FB;
+          width: 46px;
+          height: 46px;
+          padding: 12px;
+          border-radius: 23px
+        }
+      }
+    }
+  }
+
+  .footer-bottom-wrapper{
+    @include flex-column(nowrap, center, center);
+    gap: $XlSize;
+    width: 100%;
+    
+    .footer-wrapper {
+      @include flex-row(nowrap, space-between, center);
+      border-radius: $BorderRadiusLg;
+      border: 1px solid $TextGray;
+      width: 100%;
+      padding: $XlSize3;
+      z-index: 10;
+
+      @media (max-width: 786px) {
+        padding: $XsSize2;
+      }
+
+      .details-image {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+        color: white;
+        max-width: 110px;
+      }
+
+      .container-details {
+        @include flex-row(nowrap, center, center);
+        gap: calc($XlSize4 + 10px);
+
+        @media (max-width: 786px) {
+          flex-direction: column;
+          gap: $XsSize2;
+        }
+
+        .container {
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: $XsSize4;
+          color: white;
+
+          &.details-image {
+            max-width: 110px;
+          }
+
+          .details-title {
+            font-weight: $BaseFontMediumWeight;
+            font-size: $MdSize;
+            color: $TextGray6;
+          }
+
+          .details-subtitle {
+            font-weight: $BaseFontWeightBold;
+            font-size: $MdSize2;
+          }
+        }
+      }
+    }
+
+    .footer-bottom {
+      width: 100%;
+      margin-bottom: $XlSize;
+      z-index: 10;
+      @include flex-row(nowrap, space-between, center);
+      color: white;
+      @media (max-width: 786px) {
+        padding: 10px;
+      }
+
+      .footer-terms-container {
+        @include flex-row(nowrap, center, center);
+        gap: $XsSize3;
+        padding: 0 $XsSize4;
+
+        .terms-item {
+          font-weight: $BaseFontMediumWeight;
+          font-size: $MdSize;
+          span {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

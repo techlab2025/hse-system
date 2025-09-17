@@ -1,0 +1,48 @@
+@use "../../../variables" as *;
+@use "../../../mixins/flex" as *;
+
+.card-dates {
+  padding: $XsSize4 $XlSize;
+  border-radius: $XlSize;
+  .card-dates-container {
+    background-color: $BgWhite;
+    border-radius: $XlSize;
+    .dates {
+      @include flex(row, wrap, space-between, center);
+      background-color: $BgWhite;
+      padding: $XlSize;
+      border-radius: $XlSize $XlSize 0 0;
+      gap: $XsSize2;
+      border-bottom: 1px solid $TextGray6;
+      .start-date,
+      .end-date {
+        width: 40%;
+        @include flex-column();
+        p {
+          font-weight: $BaseFontSemiBoldWeight;
+          font-size: $MdSize;
+          color: $SecondaryColor;
+        }
+        span {
+          font-weight: $BaseFontMediumWeight;
+          font-size: $SmSize;
+          color: $TextGray2;
+        }
+      }
+    }
+    .selects {
+      @include flex(row, nowrap, space-between, center);
+      background-color: $BgWhite;
+      padding: $XlSize;
+      border-radius: 0 0 $XlSize $XlSize;
+      gap: $XsSize2;
+      .select {
+        width: 100%;
+        color: $TextGray2;
+        font-weight: $BaseFontWeightBold;
+        font-size: $MdSize;
+        @include flex(row, nowrap, space-between, center);
+      }
+    }
+  }
+}

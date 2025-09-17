@@ -1,0 +1,95 @@
+@use "../../variables" as *;
+@use "../../mixins/border" as *;
+@use "../../mixins/flex" as *;
+
+
+.reservation-card-container{
+    @include flex-row(nowrap , center , stretch);
+    background-color: white;
+    border-radius: $XsSize3;
+    gap: $XsSize;
+    box-shadow: $Shadow3;
+    
+    padding-right: 10px;
+
+    .reservation-card-image{
+        width: fit-content;
+        width: 50%;
+        overflow: hidden;
+        img{
+            border-radius: $XsSize3 0 0 $XsSize3;  
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .reservation-card-info{
+       @include flex-column(nowrap , flex-start ,flex-start);
+        padding: 5px 3px 3px 0;
+        gap: $XsSize3;
+        overflow:hidden ;
+        max-width: 50%;
+        
+        .card-title-container{
+            overflow:hidden ;
+            width: 98%;
+            .card-title{
+                font-size: calc($XsSize + 1px);
+                font-weight: $BaseFontWeightBold;
+                color: #0B1427;
+                margin: 0;
+                width: clamp(calc(215px * 0.8) , 215px , calc(215px * 1.2));
+                
+    
+            }
+        }
+
+
+        .card-subtitle-container{
+            @include flex-row(nowrap , center , center);
+            gap: calc($XsSize4 - 2px);
+            overflow:hidden ;
+
+            .card-subtitle{
+                color: #656B78;
+                font-size: calc($XsSize2 + 1px);
+                font-weight: $BaseFontWeightBold;
+                width:  clamp(calc(230px * 0.8) , 230px , calc(230px * 1.2));;
+            }
+        }
+
+        .card-rating-container{
+            @include flex-row(nowrap , center , center);
+            gap: $XsSize3;
+            span{
+                color:white;
+                background-color: #C57016;
+                padding: calc($XsSize4 - 1px) calc($XsSize4 - 2px);
+                border-radius: $XsSize2 0px 10px 0px;
+                font-size: $XsSize3;
+            }
+
+            .card-rating{
+                color: #656B78;
+                font-size: calc($XsSize2 + 1px);
+                font-weight: $BaseFontWeight;
+            }
+        }
+
+        .card-salary-container{
+            .card-salary{
+                color: #656B78;
+                font-size:  calc($XsSize2 + 1px);
+                font-weight: $BaseFontWeight;
+
+                span{
+                    font-weight: $BaseFontWeightBold;
+                    font-size: $SmSize;
+                    color: #0B1427;
+                }
+            }
+        }
+
+    }
+
+}
