@@ -1,55 +1,55 @@
-@use "./variables" as *;
+@use './variables' as *;
 //@use "./normalize";
 
 /*<editor-fold desc="utils">*/
-@use "./utils/container";
-@use "./utils/_button";
-@use "./utils/_primary_btn";
-@use "./utils/_third_btn";
-@use "./utils/_secondary_btn";
+@use './utils/container';
+@use './utils/_button';
+@use './utils/_primary_btn';
+@use './utils/_third_btn';
+@use './utils/_secondary_btn';
 //@use "./utils/_explore_btn";
-@use "./normalize";
+@use './normalize';
 
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";
-@use "./utils/danger_btn";
+@use './utils/danger_btn';
 /*</editor-fold>*/
 
 /*<editor-fold desc="layout">*/
-@use "./layout/layout_imports";
+@use './layout/layout_imports';
 /*</editor-fold>*/
 
 /*<editor-fold desc="components">*/
-@use "./components/drop_menu";
-@use "./components/search_input";
-@use "./components/date_picker";
+@use './components/drop_menu';
+@use './components/search_input';
+@use './components/date_picker';
 
-@use "./components/dialog";
+@use './components/dialog';
 
-@use "./components/checkbox";
+@use './components/checkbox';
 
-@use "./components/swiper";
+@use './components/swiper';
 /*</editor-fold>*/
 
-
 /*<editor-fold desc="error">*/
-@use "Dialogs/imports";
+@use 'Dialogs/imports';
 /*</editor-fold>*/
 
 /*<editor-fold desc="fonts">*/
-@use "./fonts";
+@use './fonts';
 /*</editor-fold>*/
 /*<editor-fold desc="file_upload">*/
-@use "./FileUpload/file_upload";
+@use './FileUpload/file_upload';
 /*</editor-fold>*/
 /*<editor-fold desc="form">*/
-@use "form/form_imports";
+@use 'form/form_imports';
 /*</editor-fold>*/
-
-
+/*<editor-fold desc="custom_select">*/
+@use './utils/custom_select';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;
@@ -66,6 +66,7 @@ html {
 
 body {
   font-family: var(--font-family), sans-serif;
+  color: black;
   // overflow-x: hidden;
 }
 .p-accordionheader {
@@ -76,8 +77,6 @@ body {
   color: $Gray-3 !important;
 }
 
-
-
 .p-accordionpanel:not(.p-disabled).p-accordionpanel-active > .p-accordionheader,
 .p-accordionpanel:not(.p-accordionpanel-active):not(.p-disabled) > .p-accordionheader:hover {
   color: $PrimaryColor !important;
@@ -87,11 +86,4 @@ body {
       fill: $PrimaryColor !important;
     }
   }
-
 }
-
-.p-accordionpanel {
-  border-color: $Gray-2 !important;
-  //@include border($BaseBorderWidth, $Gray-3 , solid);
-}
-
