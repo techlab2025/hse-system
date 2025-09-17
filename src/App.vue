@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import Dashboard from './views/Dashboard.vue';
-
+import Dashboard from './views/Dashboard.vue'
 </script>
 
 <template>
-
-
-  <RouterView/>
-
+  <RouterView />
 </template>

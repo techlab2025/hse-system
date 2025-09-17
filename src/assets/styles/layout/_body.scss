@@ -8,4 +8,12 @@ body {
 .content {
   @include flex(row, wrap, flex-start, stretch);
   gap: $MdSize;
+  padding: $MdSize;
+
+  .content-wrapper {
+    flex: 1;
+  }
+
+
+
 }
