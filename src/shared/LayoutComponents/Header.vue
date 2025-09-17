@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import { defineEmits, defineProps, onBeforeUnmount, onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import IconFullScreen from "@/shared/icons/IconFullScreen.vue";
-import IconMenu from "@/shared/icons/IconMenu.vue";
-import IconLogout from "@/shared/icons/IconLogout.vue";
-import IconArrowDownNav from "@/shared/icons/IconArrowDownNav.vue";
-import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
+import { defineEmits, defineProps, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
+import IconMenu from '@/shared/icons/IconMenu.vue'
+import IconLogout from '@/shared/icons/IconLogout.vue'
+import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue'
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 // import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
 // import { useUserStore } from "@/stores/user";
 // import defaultImage from "@/assets/images/user.png";
-import ChangeLanguage from "./ChangeLanguage.vue";
+import ChangeLanguage from './ChangeLanguage.vue'
+import Notification from '../icons/Notification.vue'
+import SearchIcon from '../icons/SearchIcon.vue'
 
-const route = useRoute();
+const route = useRoute()
 // console.log(route.name)
 // defineEmits(["open"]);
 
@@ -20,48 +22,48 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const emit = defineEmits(["open"]);
+const emit = defineEmits(['open'])
 
 const toggleSidebar = () => {
-  emit("open", !props.open);
-};
+  emit('open', !props.open)
+}
 
-const isFullScreen = ref(false);
+const isFullScreen = ref(false)
 
 const toggleFullScreen = () => {
   if (!isFullScreen.value) {
-    enterFullScreen();
+    enterFullScreen()
   } else {
-    exitFullScreen();
+    exitFullScreen()
   }
-};
+}
 
 const enterFullScreen = () => {
-  const elem = document.documentElement; // Make the entire page full screen
+  const elem = document.documentElement // Make the entire page full screen
   if (elem.requestFullscreen) {
-    elem.requestFullscreen();
+    elem.requestFullscreen()
   } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen(); // Firefox
+    elem.mozRequestFullScreen() // Firefox
   } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen(); // Chrome, Safari, and Opera
+    elem.webkitRequestFullscreen() // Chrome, Safari, and Opera
   } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen(); // IE/Edge
+    elem.msRequestFullscreen() // IE/Edge
   }
-};
+}
 
 const exitFullScreen = () => {
   if (document.exitFullscreen) {
-    document.exitFullscreen();
+    document.exitFullscreen()
   } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen(); // Firefox
+    document.mozCancelFullScreen() // Firefox
   } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen(); // Chrome, Safari, and Opera
+    document.webkitExitFullscreen() // Chrome, Safari, and Opera
   } else if (document.msExitFullscreen) {
-    document.msExitFullscreen(); // IE/Edge
+    document.msExitFullscreen() // IE/Edge
   }
-};
+}
 
 const updateFullScreenState = () => {
   isFullScreen.value = !!(
@@ -69,39 +71,39 @@ const updateFullScreenState = () => {
     document.webkitFullscreenElement ||
     document.mozFullScreenElement ||
     document.msFullscreenElement
-  );
-};
+  )
+}
 
 onMounted(() => {
-  document.addEventListener("fullscreenchange", updateFullScreenState);
-  document.addEventListener("webkitfullscreenchange", updateFullScreenState);
-  document.addEventListener("mozfullscreenchange", updateFullScreenState);
-  document.addEventListener("MSFullscreenChange", updateFullScreenState);
-});
+  document.addEventListener('fullscreenchange', updateFullScreenState)
+  document.addEventListener('webkitfullscreenchange', updateFullScreenState)
+  document.addEventListener('mozfullscreenchange', updateFullScreenState)
+  document.addEventListener('MSFullscreenChange', updateFullScreenState)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener("fullscreenchange", updateFullScreenState);
-  document.removeEventListener("webkitfullscreenchange", updateFullScreenState);
-  document.removeEventListener("mozfullscreenchange", updateFullScreenState);
-  document.removeEventListener("MSFullscreenChange", updateFullScreenState);
-});
+  document.removeEventListener('fullscreenchange', updateFullScreenState)
+  document.removeEventListener('webkitfullscreenchange', updateFullScreenState)
+  document.removeEventListener('mozfullscreenchange', updateFullScreenState)
+  document.removeEventListener('MSFullscreenChange', updateFullScreenState)
+})
 
-const language = ref<string>("");
+const language = ref<string>('')
 
-const router = useRouter();
+const router = useRouter()
 // const userStore = useUserStore();
 
 const logout = async () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem('user')
   // await userStore.logout();
-  await router.push("/login");
-};
+  await router.push('/login')
+}
 
-const isDropMenuOpen = ref(false);
+const isDropMenuOpen = ref(false)
 
 const toggleDropMenu = () => {
-  isDropMenuOpen.value = !isDropMenuOpen.value;
-};
+  isDropMenuOpen.value = !isDropMenuOpen.value
+}
 
 // fetch user store data
 // const user = useUserStore()?.user;
@@ -109,40 +111,43 @@ const toggleDropMenu = () => {
 
 <template>
   <header class="header">
-
     <nav class="nav">
       <div class="menu">
         <!-- Add the new icon to open the sidebar -->
-        <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
+        <!-- <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
           <IconMenu />
-        </span>
-        <span v-else class="cursor-pointer" @click="toggleSidebar">
+        </span> -->
+        <!-- <span  class="cursor-pointer" @click="toggleSidebar">
           <IconMenu />
-        </span>
+        </span> -->
         <div class="header-link flex gap-sm items-center">
           <h1>
-            <router-link to="/">{{ $t("home") }} / </router-link>
+            <router-link to="/">{{ $t('home') }} </router-link>
           </h1>
-          <p>
-            {{ $t(typeof route?.name === "string" ? route.name : "") }}
-          </p>
+          <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
         </div>
       </div>
+
+      <div class="search">
+        <SearchIcon />
+        <input type="serach" placeholder="Search What You Want" />
+      </div>
+
       <div class="setting">
-        <ChangeLanguage />
-        <div class="full_screen cursor-pointer" @click="toggleFullScreen">
-          <IconFullScreen />
+        <ChangeLanguage class="countery-icon" />
+
+        <div class="notification cursor-pointer" @click="toggleFullScreen">
+          <Notification />
         </div>
-        <div
-          class="user cursor-pointer dropdown-trigger"
-          @click="toggleDropMenu"
-        >
-          <IconArrowDownNav />
-          <span>mohab</span>
-          <img
-            alt="user"
-            src="../../assets/images/travel.png"
-          />
+
+        <div class="user cursor-pointer dropdown-trigger" @click="toggleDropMenu">
+          <IconArrowDownNav class="drop-icon" />
+          <div class="profile-data">
+            <span>Mohab Mohamed</span>
+            <span>Manger</span>
+          </div>
+          <img alt="user" src="../../assets/images/travel.png" />
+
           <div class="dropdown-menu" v-if="isDropMenuOpen">
             <ul>
               <li @click="logout">
@@ -152,7 +157,6 @@ const toggleDropMenu = () => {
             </ul>
           </div>
         </div>
-
       </div>
     </nav>
   </header>

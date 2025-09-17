@@ -3,9 +3,9 @@ import MultiSelect from "primevue/multiselect";
 import Select from "primevue/select";
 import { computed, ref, watch, toRefs } from "vue";
 import TitleInterface from "@/base/Data/Models/title_interface";
-import type { SelectControllerInterface } from "@/base/Presentation/Controller/select_controller_interface";
-import type Params from "@/base/core/params/params";
-import ValidationService from "@/base/Presentation/utils/validationService";
+import type { SelectControllerInterface } from "@/base/persention/Controller/select_controller_interface";
+import type Params from "@/base/core/Params/params";
+import ValidationService from "@/base/presentation/utils/validationService";
 import IconBackStage from "@/shared/icons/IconBackStage.vue";
 
 export type ComponentType = "select" | "multiselect";

@@ -1,193 +1,137 @@
 <script setup lang="ts">
-import {ref, defineProps, defineEmits, watch} from "vue";
-import PdfIcon from "@/assets/images/pdf.png";
-import WordIcon from "@/assets/images/word.png";
-import ExcelIcon from "@/assets/images/excel.png";
-import VideoIcon from "@/assets/images/video.png"; // Adjust the path as needed
+import { ref, watch } from 'vue'
+import ExcelIcon from '@/assets/images/excel.png'
+import IconUploadFile from '@/shared/icons/IconFileUpload.vue'
+import PdfIcon from '@/assets/images/pdf.png'
+import WordIcon from '@/assets/images/word.png'
+import IconVideo from '@/shared/icons/IconVideo.vue'
+import IconAudio from '@/shared/icons/IconAudio.vue'
+import IconDeleteAttachment from '@/shared/icons/IconDeleteAttachment.vue'
+import DwgIcon from '@/assets/images/dwg-file.png'
+import RarIcon from '@/assets/images/rar-file.png'
+import CloudIcon from '../icons/CloudIcon.vue'
+import TrashIcon from '../icons/TrashIcon.vue'
 
-// const props = defineProps<{ initialImages?: string[]; index?: number; label?: string }>()
 const props = defineProps({
-  accept: {
-    type: String,
-    default: "image/jp2, image/jpeg, image/jpg, image/png, image/webp",
-  },
-  initialImages: {
-    type: Array,
-    default: () => [],
-  },
-  initialFiles: {
-    type: Array,
-    default: () => [],
-  },
-  index: {
-    type: Number,
-    default: 0,
-  },
-  label: {
-    type: String,
-    default: "",
-  },
-  text: {
-    type: String,
-    default: "",
-  },
-  multiple: {
+  initialFileData: String,
+  index: Number,
+  canDelete: {
     type: Boolean,
     default: true,
   },
-  icon: {
-    type: [Object, Boolean],
-    default: false,
-  }
-});
+  accept: {
+    type: String,
+    default: '/*',
+  },
+})
+
 const emit = defineEmits<{
-  (e: "update:images", files: File[], index?: number): void;
-}>();
+  (e: 'update:fileData', file: File | null, index?: number): void
+}>()
 
-// Reactive variables to store image previews and file objects
-const imagePreviews = ref([...props.initialImages]);
+const pdfUrl = ref<string>(props.initialFileData || '')
+const fileData = ref<File | null>(null)
 
-watch(
-    () => props.initialImages,
-    (newImages) => {
-      imagePreviews.value = newImages;
-    },
-);
-const imageFiles = ref<File[]>([]);
-
-// Define file type icons
 const placeholderIcons = {
   pdf: PdfIcon,
   word: WordIcon,
   excel: ExcelIcon,
-  video: VideoIcon,
   generic: PdfIcon,
-};
+  video: IconVideo,
+  audio: IconAudio,
+  dwg: DwgIcon,
+  rar: RarIcon,
+}
 
-// Determine file type placeholder
-function getPlaceholder(fileName: string, fileType?: string): string {
-  const extension = fileName.split(".").pop()?.toLowerCase();
-  if (fileType && fileType.startsWith("video/")) {
-    return placeholderIcons.video;
-  }
+function getPlaceholder(file: File): string {
+  const extension = file.type
   switch (extension) {
-    case "pdf":
-      return placeholderIcons.pdf;
-    case "doc":
-    case "docx":
-      return placeholderIcons.word;
-    case "xls":
-    case "xlsx":
-      return placeholderIcons.excel;
-    case "mp4":
-    case "avi":
-    case "mov":
-    case "wmv":
-    case "webm":
-      return placeholderIcons.video;
+    case 'pdf':
+      return placeholderIcons.pdf
+    case 'doc':
+    case 'docx':
+      return placeholderIcons.word
+    case 'xls':
+    case 'xlsx':
+      return placeholderIcons.excel
+    case 'mp4':
+      return placeholderIcons.video
+    case 'mp3':
+      return placeholderIcons.audio
     default:
-      return placeholderIcons.generic;
+      return URL.createObjectURL(file)
   }
 }
 
-// Handle file changes
-  function onFileChange(event: Event) {
-    const files = (event.target as HTMLInputElement).files;
+function onFileChange(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0] || null
 
-    if (files) {
-      Array.from(files).forEach((file) => {
-        const preview = file.type.startsWith("image/")
-            ? URL.createObjectURL(file)
-            : getPlaceholder(file.name);
-
-        imagePreviews.value.push(preview);
-        imageFiles.value.push(file);
-      });
-      // console.log("imageFiles.value", imageFiles.value);
-      emit("update:images", imageFiles.value, props.index);
-    }
+  if (file) {
+    fileData.value = getPlaceholder(file)
+    emit('update:fileData', file, props.index)
+  } else {
+    fileData.value = null
+    emit('update:fileData', null, props.index)
   }
+}
 
-// Fallback for broken images
-  function handleImageError(index: number) {
-    imagePreviews.value[index] = placeholderIcons.generic;
-  }
+watch(
+  () => props.initialFileData,
+  (newValue) => {
+    pdfUrl.value = newValue || ''
+  },
+)
+const deleteImage = () => {
+  pdfUrl.value = ''
+  fileData.value = null
+  emit('update:fileData', null)
+}
 
-// Remove an image
-  function removeImage(index: number) {
-    imagePreviews.value.splice(index, 1);
-    imageFiles.value.splice(index, 1);
-    emit("update:images", imageFiles.value); // Emit updated file list
+const handleImageError = (url: string) => {
+  if (url) {
+    pdfUrl.value = url
+  } else {
+    pdfUrl.value = ''
   }
+}
+
+const removeImage = () => {
+  pdfUrl.value = ''
+  fileData.value = null
+  emit('update:fileData', null)
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4 multi-image-uploader">
     <!-- Upload Button -->
-
     <div class="input-image">
-      <span>{{ props.label }}</span>
       <label :for="`images${index}`" class="input-label-images">
+        <CloudIcon />
 
-        <component :is="props.icon"/>
-        <span>
-          {{ props.text || $t("max_file_upload") }}
-        </span>
-        <span>{{ $t("default_image_text") }}</span>
+        <span> Attach an image no larger than 3.5MB. </span>
       </label>
+
       <input
-          type="file"
-          :accept="accept"
-          :id="`images${index}`"
-          class="input"
-          :multiple="props.multiple"
-          @change="onFileChange"
+        type="file"
+        :accept="accept"
+        :id="`images${index}`"
+        class="input"
+        @change="onFileChange"
       />
     </div>
 
     <!-- Preview Images -->
-    <div class="image-gallery" v-if="imagePreviews.length">
-      <div
-          class="image-item"
-          v-for="(img, index) in imagePreviews"
-          :key="index"
-      >
-        <img
-            :src="img"
-            @error="handleImageError(index)"
-            alt="Previewed Image"
-        />
-        <button class="remove-btn" type="button" @click="removeImage(index)">
-          <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-                d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                stroke="#B91F13"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M9.16998 14.8299L14.83 9.16992"
-                stroke="#B91F13"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M14.83 14.8299L9.16998 9.16992"
-                stroke="#B91F13"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-          </svg>
-        </button>
+    <div class="image-gallery" v-if="fileData">
+      <div class="image-item">
+        <img class="preview-img" :src="fileData" @error="handleImageError(index)" alt="Previewed Image" />
+        <div class="overlay" @click="removeImage">
+          <TrashIcon />
+          <span>Delete</span>
+        </div>
+        <!-- <button class="remove-btn" type="button" @click="removeImage">
+          <IconDeleteAttachment />
+        </button> -->
       </div>
     </div>
   </div>
