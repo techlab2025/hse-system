@@ -1,5 +1,14 @@
 @use "./variables" as *;
 
+
+
+
+
+
+
+
+
+
 /*<editor-fold desc="utils">*/
 @use "./utils/container";
 @use "./utils/_button";
@@ -15,10 +24,7 @@
 /*</editor-fold>*/
 
 /*<editor-fold desc="layout">*/
-@use "./layout/_header";
-@use "./layout/Hotels/header_hotel";
-@use "./layout/_footer";
-@use "./layout/menu";
+@use "./layout/layout_imports"
 /*</editor-fold>*/
 
 /*<editor-fold desc="components">*/
