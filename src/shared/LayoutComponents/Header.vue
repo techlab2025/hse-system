@@ -5,9 +5,9 @@ import IconFullScreen from "@/shared/icons/IconFullScreen.vue";
 import IconMenu from "@/shared/icons/IconMenu.vue";
 import IconLogout from "@/shared/icons/IconLogout.vue";
 import IconArrowDownNav from "@/shared/icons/IconArrowDownNav.vue";
-import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
-import { useUserStore } from "@/stores/user";
-import defaultImage from "@/assets/images/user.png";
+// import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
+// import { useUserStore } from "@/stores/user";
+// import defaultImage from "@/assets/images/user.png";
 import ChangeLanguage from "./ChangeLanguage.vue";
 
 const route = useRoute();
@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 const language = ref<string>("");
 
 const router = useRouter();
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 const logout = async () => {
   localStorage.removeItem("user");
@@ -103,54 +103,14 @@ const toggleDropMenu = () => {
 };
 
 // fetch user store data
-const user = useUserStore()?.user;
+// const user = useUserStore()?.user;
 </script>
 
 <template>
   <header class="header">
     <nav class="nav">
       <div class="menu">
-        <!-- Add the new icon to open the sidebar -->
-        <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
-          <IconMenu />
-        </span>
-        <span v-else class="cursor-pointer" @click="toggleSidebar">
-          <IconMenu />
-        </span>
-        <div class="header-link flex gap-sm items-center">
-          <h1>
-            <router-link to="/">{{ $t("home") }} / </router-link>
-          </h1>
-          <p>
-            {{ $t(typeof route?.name === "string" ? route.name : "") }}
-          </p>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="full_screen cursor-pointer" @click="toggleFullScreen">
-          <IconFullScreen />
-        </div>
-        <ChangeLanguage />
-        <div
-          class="user cursor-pointer dropdown-trigger"
-          @click="toggleDropMenu"
-        >
-          <IconArrowDownNav />
-          <span>{{ user?.name }}</span>
-          <img
-            alt="user"
-            :src="user?.image"
-            @error="setDefaultImage($event, defaultImage)"
-          />
-          <div class="dropdown-menu" v-if="isDropMenuOpen">
-            <ul>
-              <li @click="logout">
-                <IconLogout />
-                <span> Logout </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+
       </div>
     </nav>
   </header>
