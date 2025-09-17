@@ -1,0 +1,64 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/grid" as *;
+@use "../../mixins/border" as *;
+
+.hotel-booking {
+    background-color: $BgGray;
+    // padding: $XlSize3 $XlSize2;
+    border-radius: 10px 10px 0 0;
+    @include grid(12, 2px);
+    @media screen and (max-width: 768px) {
+       display: block;
+    }
+
+    .booking-form {
+        @include grid-item-span(8, 2);
+    }
+    .hotel-details {
+        @include grid-item-span(4, 2);
+    }
+
+    .sumbit {
+        padding: 0 0 $XlSize2 $XlSize2;
+        @media screen  and (max-width: 768px) {
+            padding: $XlSize2 ;
+        }
+        border-radius: $XlSize;
+
+        @include flex-column();
+
+        .terms-sumbit {
+            @include flex(row, wrap, start, start);
+            background-color: $BgWhite;
+            padding: $XlSize2;
+            border-radius: $XlSize;
+            gap: $XsSize4;
+            margin-block: $XsSize2;
+            color: $TextGray2;
+            font-weight: $BaseFontMediumWeight;
+            font-size: $SmSize;
+            .highlight {
+                color: $PrimaryColor;
+                font-weight: $BaseFontSemiBoldWeight;
+                @include border-bottom(1px, $SecondaryColor, solid, 0px);
+            }
+        }
+        .next-btn {
+            @include flex(row, nowrap, center, center);
+            background-color: $PrimaryColor;
+            padding: $MdSize;
+            border-radius: $XlSize;
+            gap: $XsSize4;
+            margin-block: $XsSize2;
+            color: $BgWhite;
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            text-align: center;
+            
+            &:hover {
+                background-color: $SecondaryColor;
+            }
+        }
+    }
+}

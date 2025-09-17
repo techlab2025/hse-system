@@ -1,0 +1,24 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.custom-dialog-header {
+  //display: none;
+  min-height: auto;
+}
+
+.custom-dialog-body {
+  width: 100%;
+  background: $BgWhite;
+  overflow: inherit;
+}
+
+.custom-dialog-content {
+  max-width: 90%;
+  //height: 10rem;
+  border-radius: 5% 2% 2% 5%;
+}
+
+.truncate {
+  color: $GoldColor;
+}
+

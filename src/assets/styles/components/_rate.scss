@@ -1,0 +1,12 @@
+@use "../variables" as *;
+//@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+.rate {
+  @include flex-row();
+  gap: $XsSize;
+
+  &.card-rate{
+    gap: 2px;
+  }
+}

@@ -1,0 +1,27 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.top-rated-package-section {
+  padding-block: $XlSize4;
+
+  background: #E9DFC6 url('~/assets/images/Group.png') repeat-x center;
+  position: relative;
+
+  .container {
+    @include flex-column();
+    gap: clamp(
+            calc(40 * 0.8px),
+            calc(40 * 100vw / var(--base-width)),
+            calc(40 * 1.2px)
+    );
+
+    .section-title-wrapper {
+
+      .section-title {
+        .main-title {
+          color: $TextColor8;
+        }
+      }
+    }
+  }
+}

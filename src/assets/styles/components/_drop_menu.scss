@@ -1,0 +1,130 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.menu {
+  @include flex-align(row, nowrap);
+  gap: $XsSize4;
+  font-weight: $BaseFontMediumWeight;
+  color: $PrimaryColor;
+  position: relative;
+
+  &:hover,
+  &:hover .menu-content {
+    // Keep dropdown visible when hovering both menu and content
+    .menu-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  &:hover {
+    transition-delay: 100ms; // Delay close animation
+  }
+
+  &:focus-within {
+    .menu-content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+
+  .menu-content {
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
+    top: 100%;
+    z-index: 100;
+    transform: translateY(-10px);
+    transition: $TransitionSlow;
+    font-family: var(--font-family), sans-serif;
+
+    .wrapper-content {
+      margin-top: $XsSize;
+      width: 100%; // Ensure minimum width
+      background: white;
+      box-shadow: $Shadow1; // Add shadow for better visibility
+      z-index: 1000; // Ensure dropdown appears above other conten
+      display: block;
+      padding: clamp(
+              calc(50 * 0.8px),
+              calc(50 * 100vw / var(--base-width)),
+              calc(50 * 1.2px)
+      ) clamp(
+              calc(100 * 0.8px),
+              calc(100 * 100vw / var(--base-width)),
+              calc(100 * 1.2px)
+      );
+      border-radius: $BorderRadiusMd;
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XlSize2;
+    }
+
+    html[dir="rtl"] & {
+      right: auto;
+      left: 0;
+    }
+
+    * {
+      max-width: 100%;
+      //text-wrap: nowrap;
+      //overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .menu-title {
+      font-size: $XlSize2;
+      font-weight: $BaseFontWeightBold;
+      color: $SecondaryColor;
+    }
+
+    .current-lang-wrapper {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize3;
+    }
+
+    .subtitle-content {
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      color: $SecondaryColor;
+    }
+
+    hr {
+      height: 1px;
+      width: 100%;
+      background-color: $TextGray3;
+    }
+
+    .current-lang {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: $GoldColor;
+    }
+
+    .lang-items {
+      @include grid(3, $MdSize);
+      list-style: none;
+
+      .lang-item {
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        color: $PrimaryColor;
+        width: 100%;
+        padding: $XsSize4 $XsSize2;
+        text-align: start;
+        transition: $Transition;
+        //width: calc(100% / 3);
+        &:hover {
+          background-color: $TextGray6;
+          color: $GoldColor;
+        }
+      }
+    }
+  }
+}

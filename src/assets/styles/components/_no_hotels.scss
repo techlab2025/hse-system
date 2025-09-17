@@ -1,0 +1,31 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.no-hotels {
+  @include flex-center();
+
+  padding: $XlSize4;
+  text-align: center;
+
+  .container {
+    @include flex-column();
+    gap: $SmSize;
+
+    .img-container {
+      @include flex-center();
+      width: 100%;
+    }
+
+    .title {
+      font-size: $XlSize;
+      color: $SecondaryColor;
+      font-weight: $BaseFontWeightBold;
+    }
+
+    .subtitle {
+      font-size: $MdSize;
+      color: $TextGray3;
+      font-weight: $BaseFontWeight;
+    }
+  }
+}

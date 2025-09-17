@@ -1,0 +1,117 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+    .newsltter-container{
+        @include flex-row(nowrap , flex-end , center);
+        position: relative;
+        .newsltter-image{
+            width: 50%;
+            img{
+            height: 668px;
+            position: absolute;
+            top: 66%;
+            /* transform: translateY(-50%); */
+            left: 25%;
+            /* transform: translateX(-50%); */
+            transform: translate(-50%, -71%);
+            }
+        }
+
+        .newsltter-content{
+            @include flex-column(nowrap , center , flex-start);
+            padding: 117px 56px 138px 70px;
+            gap: calc($XlSize3 + 8px) ;
+            margin: auto;
+
+            .newsletter-text{
+                 @include flex-column(nowrap , center , flex-start);
+                 gap: calc($XsSize  + 1px);
+                 
+                 .newseltter-text-header{
+                     @include flex-column(nowrap , center , flex-start);
+                    gap:$BorderWidth2 ;
+                    .title{
+                        color: #546881;
+                        font-size: $MdSize;
+                        font-weight: $BaseFontWeight;
+                    }
+                    .subtitle{
+                        color: $SecondaryColor;
+                        font-size:calc($XlSize3 + 2px) ;
+                        font-weight: 800;
+                    }
+                 }
+
+                 .description{
+                    color: #47586E;
+                    font-size: $MdSize;
+                    font-weight: $BaseFontMediumWeight;
+                    max-width: 407px
+                 }
+            }
+
+            .newsltter-form{
+                 @include flex-column(nowrap , center , flex-start);
+                 gap:$XsSize2 ;
+
+                 .form-container{
+                    @include flex-row(nowrap , center , center);
+                    @include border($BaseBorderWidth , $SecondaryColor , solid , 200px);
+                    padding: $XsSize4;
+                    gap: calc($XlSize4 + 18px) ;
+
+                    .form-input{
+                        @include flex-row(nowrap , center , center);
+                        gap:$XsSize ;
+
+                        .form-icon{
+                            width: clamp(        
+                                calc(40 * 0.8px),
+                                calc(40 * 100vw / var(--base-width)),
+                                calc(40 * 1.2px));
+                            height:clamp(        
+                                calc(40 * 0.8px),
+                                calc(40 * 100vw / var(--base-width)),
+                                calc(40 * 1.2px));
+                            padding: calc($XsSize + 1px);
+                            background-color: $TextGray6;
+                            border-radius: $XlSize2;
+                        }
+
+                        input{
+                            &:focus{
+                                border: none;
+                                outline: none;
+                            }
+                            &::placeholder{
+                                color: #546881;
+                                font-size: calc($MdSize + 1px);
+                                font-weight: $BaseFontWeight;
+                            }
+                        }
+                    }
+
+                    button{
+                        padding: calc($SmSize + 1px) calc($XlSize2 + 4px);
+                        border-radius: $XlSize4;
+                        color: white;
+                        font-weight: $BaseFontWeightBold;
+                        font-weight: $MdSize;
+                        background-color: $SecondaryColor;
+
+                    }
+                 }
+
+                 .form-description{
+                    color: #47586E;
+                    font-size:$SmSize ;
+                    font-weight: $BaseFontMediumWeight;
+                 }
+
+
+            }
+        }
+        
+    }
+

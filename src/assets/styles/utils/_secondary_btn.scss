@@ -1,0 +1,9 @@
+@use "../variables" as *;
+
+.btn-secondary {
+  background-color: $SecondaryColor;
+  color: $BgWhite;
+  &:hover {
+    background-color: $BgBlack;
+  }
+}

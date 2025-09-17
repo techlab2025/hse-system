@@ -1,0 +1,119 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.search {
+  position: relative;
+}
+
+.destinations-popover {
+  // background-color: $PopOverBg;
+  // padding: $XlSize3;
+  // border-radius: $XlSize3;
+  // position: absolute;
+  // z-index: 1000;
+  // left: 0;
+  // top: 100%;
+  @include flex-column();
+  gap: $MdSize;
+  // width: fit-content;
+  // max-width: 300px;
+  // margin-inline: auto;
+  // backdrop-filter: blur(2px);
+  @media (max-width: 768px) {
+    padding: $XsSize;
+    gap: $XsSize2;
+    flex-wrap: wrap;
+    width: 90%;
+  }
+
+  .title-popover {
+    font-size: $MdSize2;
+    font-weight: $BaseFontWeightBold;
+    color: $TextGray3;
+    // text-align: center;
+  }
+  .list-destinations,
+  .list-hotels {
+    width: 100%;
+    gap: $XsSize2;
+    max-height: 300px;
+    overflow-y: auto;
+    // @include grid(3, $XsSize2);
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      max-height: 200px;
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: repeat(1, 1fr);
+      max-height: 150px;
+    }
+  }
+
+  .item-list {
+    @include grid-item-span(1, 1);
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize;
+    cursor: pointer;
+    padding: $XsSize2;
+    transition: $TransitionSlow;
+    max-width: clamp(180 * 0.8px, 180 * 100vw / var(--base-width), 180 * 1.2px);
+
+    // &:hover {
+    //   background-color: $BgGray;
+    //   @include border($BaseBorderWidth, $TextGray6, solid, $XsSize2);
+    // }
+    .img-container {
+      width: clamp(
+        calc(46 * 0.8px),
+        calc(46 * 100vw / var(--base-width)),
+        calc(46 * 1.2px)
+      );
+      height: clamp(
+        calc(40 * 0.8px),
+        calc(40 * 100vw / var(--base-width)),
+        calc(40 * 1.2px)
+      );
+      border-radius: $XsSize3;
+      overflow: hidden;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: $XsSize3;
+      }
+    }
+
+    .item-list-info {
+      @include flex-column();
+      gap: $XsSize4;
+
+      .title {
+        font-size: $SmSize;
+        font-weight: $BaseFontWeightBold;
+        color: $SecondaryColor;
+        white-space: nowrap;
+      }
+
+      .subtitle {
+        font-size: $XsSize;
+        font-weight: $BaseFontWeight;
+        color: $TextGray2;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .list-destinations,
+  .list-hotels {
+    @include grid(3, $XsSize2);
+  }
+  // .list-hotels {
+  //   @include grid(1, $XsSize2);
+  // }
+}

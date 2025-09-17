@@ -1,0 +1,81 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+.filter-aside {
+  @include flex-column();
+  gap: $XlSize;
+
+  .card-filter-search-hotels {
+    @include flex-column();
+    gap: $XsSize2;
+    padding: $XsSize2;
+    @include border($BaseBorderWidth, $TextGray6, solid, $XsSize2);
+    // border-radius: $XlSize3;
+
+    .btn {
+      width: 100%;
+      text-align: center;
+      color: $SecondaryColor;
+    }
+
+    .card-filter-title {
+      font-weight: $BaseFontWeightBold;
+      font-size: $XlSize;
+      color: $SecondaryColor;
+      white-space: nowrap;
+      padding: $XlSize;
+
+      @include border-bottom($BaseBorderWidth, $TextGray6, solid);
+    }
+
+    .filter-item {
+      padding: $XlSize;
+
+      @include border-bottom($BaseBorderWidth, $TextGray6, solid);
+      @include flex-column();
+      gap: $MdSize;
+
+      > label {
+        font-weight: $BaseFontWeightBold;
+        font-size: $SmSize;
+        color: $SecondaryColor;
+        white-space: nowrap;
+        text-transform: capitalize;
+      }
+
+      .inputs-budget {
+        @include flex-justify();
+        gap: $MdSize;
+
+        input {
+          @include flex-center();
+          @include border(
+            $BaseBorderWidth,
+            $TextGray6,
+            solid,
+            calc(#{$XsSize4} - 2px)
+          );
+          max-width: 100px;
+          padding: $XsSize4 $XsSize2;
+
+
+
+        }
+
+        > span {
+          width: 100%;
+          text-align: center;
+          height: 1px;
+          margin-block: auto;
+          background-color: $TextGray4;
+        }
+      }
+
+    }
+  }
+}
+
+.hotels {
+  background-color: $BgWhite;
+}

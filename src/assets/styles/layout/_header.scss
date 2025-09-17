@@ -1,0 +1,172 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+.header {
+  background-color: $BgWhite;
+  z-index: 20;
+
+
+  .header-nav {
+    @include border-bottom($BaseBorderWidth, $TextGray5, solid, 0px);
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    .container {
+      @include flex-justify(row, nowrap);
+      height: 60px;
+      padding-block: $XlSize;
+      z-index: 20;
+
+      .contact-items {
+        @include flex-align(row, nowrap);
+        gap: $XsSize;
+
+        .contact-item {
+          @include flex-align(row, nowrap);
+          gap: $XsSize4;
+          color: $PrimaryColor;
+
+          a {
+            font-size: $SmSize;
+            white-space: nowrap;
+            font-weight: $BaseFontMediumWeight;
+          }
+
+          .contact-icon {
+            width: 20px;
+            height: 20px;
+            color: $TextGray5;
+          }
+        }
+      }
+
+      .flight-offers {
+        @include flex-align(row, nowrap);
+        gap: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+
+        //font-size: $MdSize;
+
+        span {
+          color: $PrimaryColor;
+          font-size: $SmSize;
+        }
+
+        a {
+          font-family: var(--font-family), sans-serif;
+          color: $GoldColor;
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+          @include flex-align(row, nowrap);
+          gap: $XsSize;
+        }
+      }
+
+      .setting {
+        @include flex-align(row, nowrap);
+        gap: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+
+  .header-secondary-nav {
+
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    .container {
+      padding-block: $XlSize;
+      @include flex-justify(row, nowrap, center);
+
+      .logo {
+        width: 180px;
+        height: 50px;
+        object-fit: contain;
+        aspect-ratio: 16/9;
+        margin-right: auto;
+      }
+
+      .header-secondary-nav-items {
+        @include flex-align(row, nowrap);
+        gap: $XsSize;
+
+        .header-secondary-nav-item {
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: $PrimaryColor;
+          text-wrap: nowrap;
+          position: relative;
+          transition: $Transition;
+          overflow: hidden;
+          padding: $XsSize4;
+
+          a {
+            color: $PrimaryColor;
+            text-decoration: none;
+          }
+
+          &:hover {
+            color: $GoldColor;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: $GoldColor;
+            width: 0;
+            transition: $TransitionSlow;
+            transform: translateY(2px);
+            transform-origin: left;
+          }
+
+          &:hover::after {
+            width: 100%;
+            transform: translateY(0);
+          }
+
+
+        }
+
+      }
+
+      .actions-header-container {
+        z-index: 20;
+        @include flex-row(nowrap, center, center);
+        gap: $MdSize;
+      }
+
+      .user {
+        @include flex-align();
+        gap: $XsSize4;
+
+        img {
+          width: clamp(48 * 0.8px, 48 * 100vw / var(--base-width), 48 * 1.2px);
+          aspect-ratio: 1/1;
+          border-radius: 50%;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+    }
+  }
+
+  .header-mobile-nav {
+    @media (min-width: 768px) {
+      display: none;
+    }
+
+    .container {
+      @include flex-justify(row, nowrap);
+      padding-block: $XlSize;
+    }
+  }
+}

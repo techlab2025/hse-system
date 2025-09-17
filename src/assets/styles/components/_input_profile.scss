@@ -1,0 +1,66 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+.input-wrapper-profile {
+  position: relative;
+  width: 100%;
+  @include flex-column();
+  gap: $XsSize4;
+
+  &:has(.input-icon) {
+    .input {
+      padding-inline-start: calc(#{$MdSize} + calc(#{$XlSize3} - 4px));
+    }
+  }
+
+  label {
+    color: $SecondaryColor;
+    font-size: $XsSize;
+    font-weight: $BaseFontWeightBold;
+  }
+
+  .input {
+    @include border($BaseBorderWidth, $TextGray6, solid, $MdSize);
+    padding: $MdSize;
+    overflow: hidden;
+    //border-radius: 50px;
+
+
+    &::placeholder {
+      color: $TextGray2;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: $SecondaryColor;
+    }
+
+    &:-webkit-autofill {
+      -webkit-text-fill-color: $SecondaryColor;
+    }
+
+
+    &:focus {
+      border-color: $SecondaryColor;
+      outline: none;
+    }
+
+
+  }
+
+
+  .input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: $MdSize;
+
+    //aspect-ratio: 1/1;
+  }
+
+
+}

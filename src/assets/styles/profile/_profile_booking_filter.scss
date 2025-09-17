@@ -1,0 +1,15 @@
+@use "../mixins/flex" as *;
+@use "../variables" as *;
+
+
+.booking-filter {
+
+  @include flex-row();
+  gap: $XsSize3;
+
+  margin-block: calc(#{$XlSize3} + 10px) calc(#{$XlSize3} + 2px);
+
+
+}
+
+

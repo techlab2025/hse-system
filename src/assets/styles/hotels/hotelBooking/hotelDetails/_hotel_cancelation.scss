@@ -1,0 +1,30 @@
+@use "../../../variables" as *;
+@use "../../../mixins/flex" as *;
+
+.card-cancelation {
+    padding: 0 $XlSize $XlSize;
+    border-radius: $XlSize;
+    .card-cancelation-container {
+        background-color: $BgWhite;
+        border-radius: $XlSize;
+        padding: $XlSize;
+        @include flex-column();
+        p {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            color: $SecondaryColor;
+            margin-bottom: $SmSize;
+        }
+        span {
+            color: $PrimaryColor;
+            font-size: $MdSize;
+            font-weight: $BaseFontSemiBoldWeight;
+        }
+        .description {
+            color: $TextGray2;
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+            margin-top: $XsSize2;
+        }
+    }
+}

@@ -1,0 +1,75 @@
+@use "../variables" as *;
+
+.custom {
+  color: $SecondaryColor;
+
+  //padding: $SmSize;
+  //border-radius: $BorderRadiusLg
+
+  &.flex.items-center.justify-between {
+    padding: $SmSize;
+  }
+
+  &[data-selected] {
+    background-color: $PrimaryColor;
+    color: white;
+  }
+
+  &[data-reka-calendar-cell-trigger] {
+    &:hover {
+      background-color: $PrimaryColor;
+      color: white;
+    }
+  }
+
+  &[aria-selected="true"] {
+    background-color: $TextGray6;
+    color: $PrimaryColor;
+    // border: 1px solid $PrimaryColor;
+    border-radius: $BorderRadiusLg;
+  }
+
+  &[data-selection-end="true"],
+  &[data-selection-start="true"] {
+    background-color: $PrimaryColor;
+    color: $BgWhite;
+    // border: 1px solid $PrimaryColor;
+    border-radius: $BorderRadiusLg;
+  }
+
+  &[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:has(table) {
+    gap: $MdSize;
+    margin-top: $SmSize;
+  }
+}
+
+.custom-trigger {
+  background-color: $PrimaryColor;
+  color: $BgWhite;
+}
+
+.custom-popover {
+  background-color: $BgWhite;
+  padding: $XlSize2;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.12);
+  //color: $TextGray6;
+  border-radius: $BorderRadiusLg;
+  //box-shadow: $ShadowLg;
+  //padding: $SmSize;
+  //width: 100%;
+  //max-width: 300px;
+  //&:;
+  //   content: "";
+  //   position: absolute;
+  //   top: -$SmSize;
+  //   left: calc(50% - ($SmSize / 2));
+  //   border-left: $SmSize solid transparent;
+  //   border-right: $SmSize solid transparent;
+  //   border-bottom: $SmSize solid $BgWhite;
+  // }
+}

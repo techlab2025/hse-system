@@ -1,0 +1,22 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.top-rated-section {
+  padding-block: $XlSize4;
+
+  background: #E3F0FF url('~/assets/images/Group.png') repeat-x center;
+  position: relative;
+
+  .container {
+    @include flex-column();
+    gap: clamp(
+            calc(40 * 0.8px),
+            calc(40 * 100vw / var(--base-width)),
+            calc(40 * 1.2px)
+    );
+  }
+
+  //background-size: cover;
+  //@include flex-column();
+
+}

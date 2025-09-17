@@ -1,0 +1,36 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+
+.breadcrumb-container{
+    width: 100%;
+    .breadcrumb-list{
+        @include flex-row(nowrap ,flex-start ,center);
+        gap:$BorderRadiusXs ;
+
+        .home-icon{
+            padding-bottom:$BorderWidth3 ;
+            path{
+                fill: $TextColor8;
+            }
+        }
+        
+        .breadcrumb-item{
+            @include flex-row(nowrap ,flex-start ,center);
+
+            .router-name{
+                color: $TextColor8;
+                font-size: $XsSize;
+                font-weight: $BaseFontSemiBoldWeight;
+            }
+            &.active-item{
+                .router-name{
+                    color: $TextGray3;
+                }
+            }
+        }
+
+    }
+
+}

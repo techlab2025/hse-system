@@ -1,0 +1,268 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/border" as *;
+
+.rooms-card-swiper {
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+  margin-top: 10px;
+  @include border($BaseBorderWidth, #2F5E9380, solid, calc($SmSize + 1px));
+  @include flex-column(nowrap, center, stretch);
+  gap: $XsSize;
+  padding: 10px;
+
+  .card {
+    @include flex-column(nowrap, start, start);
+    gap: $XsSize2;
+    padding-inline: 0;
+    padding-top: 0;
+
+    .card-title {
+      font-weight: $BaseFontSemiBoldWeight;
+      color: $GoldColor;
+      font-size: $XlSize;
+    }
+
+    .guest-title {
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: $SecondaryColor;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+
+
+    .card-image {
+      width: 100%;
+      //   height: 10rem;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 5rem;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .gallery {
+        position: absolute;
+        bottom: 0.5rem;
+        right: .8rem;
+        background-color: #1c1b03d9;
+        color: $BgWhite;
+        padding: $XsSize2 $MdSize;
+        border-radius: 30rem;
+        @include flex(row, wrap, center, center);
+        gap: $XsSize;
+
+        .gallery-icon {
+          width: $MdSize;
+          height: $MdSize;
+        }
+
+        .gallery-count {
+          font-size: $XsSize;
+          font-weight: $BaseFontWeightBold;
+
+        }
+      }
+    }
+
+    .bed {
+      @include flex(row, wrap, flex-start, center);
+      gap: $XsSize4;
+      //font-weight: $BaseFontSemiBoldWeight;
+      font-size: $SmSize;
+      color: $TextGray2;
+    }
+
+    .guests {
+      @include flex-center();
+      gap: $XsSize4;
+      width: 100%;
+      justify-content: start;
+      //font-weight: $BaseFontSemiBoldWeight;
+      //font-size: $SmSize;
+      //color: $TextGray2;
+    }
+
+    .facilities-list {
+      margin-block: initial;
+    }
+
+    .choices {
+      @include flex-column();
+      gap: $MdSize;
+
+
+      .choice {
+        @include flex-align();
+        gap: $XsSize4;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $SmSize;
+        color: $BgGreen;
+
+        p {
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .price {
+      .price-text {
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        color: $SecondaryColor;
+        text-transform: capitalize;
+
+      }
+
+      .price-value {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        text-transform: capitalize;
+        color: $TextGray2;
+      }
+    }
+
+    .details-reserve {
+      @include flex-column();
+      gap: $XsSize2;
+      width: 100%;
+
+      &.not-visable {
+        display: none;
+      }
+
+      .room-count {
+        text-transform: capitalize;
+        font-size: $SmSize;
+        font-weight: $BaseFontWeight;
+        color: $SecondaryColor;
+      }
+
+      .cost {
+        @include flex-align();
+        gap: $XsSize4;
+        white-space: nowrap;
+
+        .discount {
+          color: $BgRed;
+          text-decoration-line: line-through;
+          font-size: $MdSize;
+        }
+
+        .total {
+          color: $PrimaryColor;
+          font-size: $XlSize;
+          font-weight: $BaseFontWeightBold;
+        }
+
+      }
+
+      .tax, .reserve-description {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        text-transform: capitalize;
+      }
+
+      .tax {
+        color: $TextGray3;
+        white-space: nowrap;
+
+
+      }
+
+      .reserve-description {
+
+        color: $TextGray2;
+      }
+
+
+      .rooms-counter-container {
+        @include flex-row(nowrap, space-between, center);
+        width: 100%;
+
+        .trash {
+          background-color: #ED1C241A;
+          width: calc($XlSize4 - 4px);
+          height: calc($XlSize4 - 4px);
+          border-radius: $XlSize4;
+          padding: $XsSize4;
+
+        }
+
+        .rooms-counter {
+          @include flex-row(nowrap, space-between, center);
+          background-color: white;
+          width: 80%;
+          @include border($BaseBorderWidth, $TextColor8, solid, $XlSize3);
+
+          .count-number {
+            font-weight: $BaseFontWeightBold;
+            color: $PrimaryColor;
+            font-size: $SmSize;
+            text-transform: capitalize;
+
+          }
+
+          .counter-icon {
+            background-color: $TextColor8;
+            padding: calc($XsSize + 1px) $SmSize;
+            color: white;
+
+
+            &:first-child {
+              border-radius: $XlSize 0 0 $XlSize;
+            }
+
+            &:last-child {
+              border-radius: 0 $XlSize $XlSize 0;
+            }
+
+          }
+
+          .trash {
+            background-color: rgba(237, 28, 36, 0.1);
+            width: calc($XlSize4 - 4px);
+            height: calc($XlSize4 - 4px);
+            @include flex-center();
+            border-radius: 50%;
+          }
+        }
+      }
+
+
+    }
+
+    position: relative;
+
+    //&:after {
+    //  content: "";
+    //  display: block;
+    //  width: 2px;
+    //  height: 100%;
+    //  position: absolute;
+    //  bottom: 0;
+    //  right: -4px;
+    //  background-color: #E6E6E6;
+    //}
+  }
+
+  .card-line {
+    height: 1px;
+    background-color: $TextGray6;
+    opacity: 0.2;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

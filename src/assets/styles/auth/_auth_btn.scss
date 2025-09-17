@@ -1,0 +1,37 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+.auth-layout {
+  .btn {
+    width: 100%;
+    // gap: $XlSize2;
+
+    &.text-btn {
+      color: $TextGray7;
+      align-self: flex-end;
+      font-size: $XsSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      text-decoration: underline;
+      text-align: end;
+    }
+
+    &.main-btn {
+      width: 100%;
+      background-color: $MainBtnbg;
+      padding: $SmSize;
+      border-radius: 50px;
+      font-size: $MdSize;
+      font-style: normal;
+      font-weight: $BaseFontWeightBold;
+      text-align: center;
+    }
+
+    &.second-btn {
+      color: $TextGray7;
+      font-size: $SmSize;
+      span {
+        color: white;
+        text-decoration: underline;
+      }
+    }
+  }
+}

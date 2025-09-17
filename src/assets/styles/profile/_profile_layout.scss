@@ -1,0 +1,19 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.profile-wrapper {
+
+  @include grid(3, $XlSize3, ((768px: 4, 1024px: 3, 1440px: 3)));
+  //grid-template-areas: "profile" "content" ;
+  padding-top: $XlSize4;
+  padding-bottom: $XlSize4;
+  @media (max-width: 768px) {
+    padding-top: $XlSize3;
+    padding-bottom: $XlSize3;
+  }
+  //@media (max-width: 768px) {
+  //  @include grid(1, $XsSize, ((768px: 1, 1024px: 1, 1440px: 1)));
+  //}
+
+}

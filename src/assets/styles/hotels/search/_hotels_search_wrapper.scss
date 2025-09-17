@@ -1,0 +1,57 @@
+@use "../../variables" as *;
+@use "../../mixins/grid" as *;
+@use "../../mixins/border" as *;
+
+.hotels-search-wrapper {
+  @include grid(4, $XlSize4, ((768px: 1, 1024px: 3, 1440px: 4)));
+
+  padding-block: $XlSize4;
+
+  &.map {
+    gap: $SmSize;
+  }
+  .filter-aside {
+    grid-column: 1 / span 1;
+    //max-width: 280px;
+    //gap: $XsSize2;
+  }
+  .hotels-list {
+    grid-column: 2 / span 3;
+    display: flex;
+    flex-direction: column;
+    gap: $MdSize;
+
+    @media (max-width: 768px) {
+      grid-column: 1 / span 1;
+    }
+
+    &.map {
+      grid-column: 2 / span 2;
+
+      @media (max-width: 768px) {
+        grid-column: 1 / span 1;
+      }
+      .hotel-card {
+        .card-hotel-footer {
+          .btn-primary {
+            display: none;
+          }
+          .price {
+            align-items: flex-start;
+          }
+        }
+      }
+    }
+  }
+  .hotel-maps {
+    grid-column: 4 / span 1;
+
+    @media (max-width: 768px) {
+      grid-column: 1 / span 1;
+    }
+    // grid-row: 1;
+    //gap: $XsSize2;
+    padding: $XsSize2;
+    // @include border($BaseBorderWidth, $TextGray6, solid, $XsSize2);
+  }
+}
