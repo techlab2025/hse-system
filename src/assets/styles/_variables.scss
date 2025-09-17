@@ -1,15 +1,19 @@
 :root {
   /* Light mode defaults */
-  --PrimaryColor: #28476a;
-  --GoldColor: #f4a623;
-  --YellowColor: #fefa17;
-  --SecondaryColor: #1c1b03;
-  --BgWhite: #ffffff;
-  --BgBlack: #000000;
-  --BgGray: #f7f7f7;
-  --TextColor: #000000;
-  --TextGray: #7d7d7d;
-  --popover-bg: #f5f5f5;
+  --PrimaryColor: rgba(29, 78, 216, 1);
+  --BgWhite: rgba(255, 255, 255, 1);
+  --Gray-1: rgba(248, 249, 250, 1);
+  --Gray-2: rgba(241, 243, 245, 1);
+  --Gray-3: rgba(156, 163, 175, 1);
+  --GrayText-1: rgba(107, 114, 128, 1);
+  --GrayText: rgba(75, 85, 99, 1);
+  --DarkGray: rgba(147, 154, 168, 1);
+  --LightGray: rgba(248, 249, 250, 1);
+  --Black: rgba(0, 0, 0, 1);
+  --Red: rgba(237, 28, 36, 1);
+
+
+
   --base-width: 1440;
   --base-height: 900;
   --font-family: "URW DIN Arabic";
@@ -88,30 +92,21 @@
 
 /*<editor-fold desc="colors">*/
 $PrimaryColor: var(--PrimaryColor);
-$GoldColor: var(--GoldColor);
-$YellowColor: var(--YellowColor);
-$SecondaryColor: var(--SecondaryColor);
-$BgWhite: var(--BgWhite);
-$BgBlack: var(--BgBlack);
-$BgGray: var(--BgGray);
-$TextColor: var(--TextColor);
-$TextGray: var(--TextGray);
-$BgRed: #ed1c24;
-$BgGreen: #50c878;
-$TextColor: #000000;
-$TextGray: #7d7d7d;
-$TextGray2: #666666;
-$TextGray3: #7e94b0;
-$TextGray4: #b7c9d9;
-$TextGray5: #d9dbe9;
-$TextGray6: #e6e6e6;
-$TextGray7: #b2bbc6;
-$AuthInputBg: #1d242d;
-$MainBtnbg: #fefa17;
-$IconBg: var(--icon-bg);
-$PopOverBg: var(--popover-bg);
-$Placeholder: #a3adbb;
-$TextColor8: #2F5E93;
+$White: var(--BgWhite);
+$Gray-1: var(--Gray-1);
+$Gray-2: var(--Gray-2);
+$Gray-3: var(--Gray-3);
+$GrayText-1: var(--GrayText-1);
+$GrayText: var(--GrayText);
+$DarkGray: var(--DarkGray);
+$LightGray: var(--LightGray);
+$Red: var(--Red);
+
+
+$Black: var(--Black);
+/*</editor-fold>*/
+
+
 
 /*<editor-fold desc="sizes">*/
 $XsSize: var(--xs-size); // 12px

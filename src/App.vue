@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div>
-    asdasdasd
-  </div>
+
+  <RouterView/>
+
 </template>

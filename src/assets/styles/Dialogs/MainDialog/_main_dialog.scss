@@ -5,7 +5,7 @@
   border-radius: 16px;
   text-align: center;
   margin: auto;
-  background-color: $SecondaryColor;
+  background-color: $White;
 
   img {
     max-width: 120px;
@@ -17,11 +17,11 @@
 
   h4 {
     font-weight: bold;
-    color: $BgWhite;
+    color: rgba(76, 150, 95, 1);
     margin-block: 1rem;
   }
   p {
-    color: $TextGray5;
+    color: $Gray-3;
   }
   .dialog-container {
     display: flex;

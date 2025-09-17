@@ -15,11 +15,11 @@
 @use "./utils/_primary_btn";
 @use "./utils/_third_btn";
 @use "./utils/_secondary_btn";
-@use "./utils/_explore_btn";
+//@use "./utils/_explore_btn";
 @use "./normalize";
 @use "./utils/_fonts";
-@use "./utils/input_filter";
-@use "./utils/_section_title";
+//@use "./utils/input_filter";
+//@use "./utils/_section_title";
 @use "./utils/danger_btn";
 /*</editor-fold>*/
 
@@ -29,33 +29,33 @@
 
 /*<editor-fold desc="components">*/
 @use "./components/drop_menu";
-@use "./components/filter";
+//@use "./components/filter";
 @use "./components/search_input";
 @use "./components/date_picker";
 
 @use "./components/dialog";
-@use "./components/popover";
-@use "./components/rate";
-@use "./components/package_card";
-@use "./components/filter_search_hotel_sidebar";
+//@use "./components/popover";
+//@use "./components/rate";
+//@use "./components/package_card";
+//@use "./components/filter_search_hotel_sidebar";
 @use "./components/checkbox";
-@use "./components/facilities";
-@use "./components/no_hotels";
+//@use "./components/facilities";
+//@use "./components/no_hotels";
 @use "./components/swiper";
-@use "./components/input_profile";
+//@use "./components/input_profile";
 /*</editor-fold>*/
 
 /*<editor-fold desc="auth">*/
-@use "auth/imports_auth";
+//@use "auth/imports_auth";
 /*</editor-fold>*/
 
 
 /*<editor-fold desc="error">*/
-@use "error/error";
+//@use "error/error";
 /*</editor-fold>*/
 
 /*<editor-fold desc="error">*/
-@use "breadcrumb/breadcrumb";
+//@use "breadcrumb/breadcrumb";
 /*</editor-fold>*/
 
 /*<editor-fold desc="error">*/

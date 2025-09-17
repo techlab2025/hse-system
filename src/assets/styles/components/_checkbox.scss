@@ -40,7 +40,7 @@
       height: 100%;
       background-color: white;
       transition: all 0.2s ease;
-      @include border($BaseBorderWidth, $TextGray6, solid);
+      @include border($BaseBorderWidth, $GrayText, solid);
       border-radius: 3px; // Optional rounded corners
     }
 
@@ -61,8 +61,8 @@
     // Checked state
     &:checked {
       &::before {
-        background-color: $GoldColor;
-        border-color: $GoldColor;
+        background-color: $PrimaryColor;
+        border-color: $PrimaryColor;
       }
 
       &::after {
@@ -71,9 +71,9 @@
     }
 
     // Hover state
-    &:hover::before {
-      border-color: darken($TextGray6, 15%);
-    }
+    //&:hover::before {
+    //  border-color: darken($GrayText, 15%);
+    //}
 
     // Focus state
     &:focus-visible {
