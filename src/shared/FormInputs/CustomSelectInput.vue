@@ -156,19 +156,18 @@ async function reloadData(): Promise<void> {
 </script>
 
 <template>
-  <div class="flex justify-between">
-    <label :class="{ required: required }" class="input-label">
-      {{ label }}
-    </label>
-
+  <div class="input-label flex justify-between w-full">
     <span
       v-if="enableReload"
-      class="reload-icon cursor-pointer flex items-center gap-sm me-2"
+      class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
       @click="reloadData"
     >
       <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
       <IconBackStage />
     </span>
+    <label :class="{ required: required }" class="input-label">
+      {{ label }}
+    </label>
   </div>
 
   <component
@@ -176,7 +175,7 @@ async function reloadData(): Promise<void> {
     v-model="normalizedValue"
     :options="mergedOptions"
     :placeholder="placeholder"
-    class="input-select"
+    class="input-select w-full"
     option-label="title"
     v-bind="multiselectProps"
     filter
@@ -184,5 +183,30 @@ async function reloadData(): Promise<void> {
     :empty-message="message"
   />
 
-  <input type="text" class="hidden" :value="normalizedValue" :id="id" />
+  <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 </template>
+
+<style scoped lang="scss">
+.input-select {
+  width: 100%;
+  background-color: transparent;
+  border-radius: 24px;
+  &:focus {
+    border: 1px solid #d9dbe9 !important;
+  }
+}
+
+.input-label {
+  width: 100%;
+  margin-left: auto;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  label {
+    width: fit-content;
+  }
+  span {
+    width: fit-content;
+  }
+}
+</style>

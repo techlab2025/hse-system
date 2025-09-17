@@ -18,7 +18,7 @@
 
   input {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
-    padding: $XsSize2 $XsSize4;
+    padding: $XsSize2 $MdSize;
     font-size: $SmSize;
     color: $Black;
     font-weight: $BaseFontMediumWeight;
@@ -40,11 +40,13 @@
     }
 
     &:placeholder {
-      color: $GrayText;
+      color: $Gray-3;
     }
     &:disabled {
       background-color: rgba(217, 219, 233, 1);
     }
+
+    caret-color: $PrimaryColor;
 
 
   }

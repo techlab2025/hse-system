@@ -9,16 +9,19 @@ const title = ref('')
 
 <template>
 
-  <div class="bg-red">
-    <p class="text-red">sadasd</p>
-  </div>
+
   <!-- <FileUpload />-->
 
-  <CustomSelectInput />
+  <CustomSelectInput
+  :label="'Title'"
+  :static-options="[{ id: 1, title: 'test' }, { id: 2, title: 'test2' }, { id: 3, title: 'test3' }]"
+  :type="2"
+  />
   <!-- <div class="input-wrapper">
     <label for="">Title</label>
     <input type="text" id="" v-model="title" placeholder="Enter Title" />
   </div> -->
+
 </template>
 
 <style scoped></style>

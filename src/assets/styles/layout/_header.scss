@@ -56,11 +56,15 @@
         border-radius: 50%;
       }
       .profile-data {
-        @include flex-column(nowrap, flex-start, flex-start);
+        @include flex-column(nowrap, flex-end, flex-start);
+
         span {
           text-align: start;
           &:first-child {
             color: black;
+            text-align: right;
+            width: 100%;
+            min-width: 130px;
           }
           &:last-child {
             margin-left: auto;
@@ -132,6 +136,10 @@
   .menu {
     @include flex-row(nowrap, center, center);
 
+    .header-link{
+      @include flex-row(wrap, flex-start, center);
+
+    }
     h1 {
       font-size: $MdSize;
       color: black;
