@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/styles/main.min.css'
 
 import "./assets/styles/main.min.css"
 
