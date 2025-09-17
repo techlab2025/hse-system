@@ -1,5 +1,5 @@
 @use "./variables" as *;
-
+//@use "./normalize";
 
 /*<editor-fold desc="utils">*/
 @use "./utils/container";
@@ -9,10 +9,10 @@
 @use "./utils/_secondary_btn";
 //@use "./utils/_explore_btn";
 @use "./normalize";
-// @use "./utils/_fonts";
-@use "./utils/input_filter";
-@use "./utils/_section_title";
-@use "./utils/_fonts";
+ //@use "./utils/_fonts";
+//@use "./utils/input_filter";
+//@use "./utils/_section_title";
+//@use "./utils/_fonts";
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";
 @use "./utils/danger_btn";
@@ -77,5 +77,28 @@ body {
   font-family: var(--font-family), sans-serif;
   // overflow-x: hidden;
 }
+.p-accordionheader {
+  background: transparent !important;
+}
+.p-accordioncontent-content {
+  background: transparent !important;
+  color: $Gray-3 !important;
+}
 
 
+.p-accordionpanel:not(.p-disabled).p-accordionpanel-active > .p-accordionheader,
+.p-accordionpanel:not(.p-accordionpanel-active):not(.p-disabled) > .p-accordionheader:hover {
+  color: $PrimaryColor !important;
+
+  svg {
+    path {
+      fill: $PrimaryColor !important;
+    }
+  }
+
+}
+
+.p-accordionpanel {
+  border-color: $Gray-2 !important;
+  //@include border($BaseBorderWidth, $Gray-3 , solid);
+}
