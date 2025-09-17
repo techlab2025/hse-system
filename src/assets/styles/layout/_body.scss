@@ -7,13 +7,20 @@ body {
 
 .content {
   @include flex(row, wrap, flex-start, stretch);
-  gap: $MdSize;
-  padding: $MdSize;
+  gap: $XlSize3;
+  //padding: $MdSize;
 
   .content-wrapper {
     flex: 1;
+    @include flex-column();
+    gap: $MdSize;
   }
 
+  .main-content {
+    background-color: $White;
+    padding: $MdSize;
+    border-radius: $XlSize;
+  }
 
 
 }

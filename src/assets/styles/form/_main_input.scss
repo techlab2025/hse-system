@@ -1,0 +1,51 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+
+.input-wrapper {
+  @include flex-column();
+  gap: $XsSize3;
+
+  label {
+    font-size: $MdSize;
+    color: $Black;
+    font-weight: $BaseFontMediumWeight;
+    text-transform: capitalize;
+    white-space: nowrap;
+    text-align: start;
+  }
+
+  input {
+    @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
+    padding: $XsSize2 $XsSize4;
+    font-size: $SmSize;
+    color: $Black;
+    font-weight: $BaseFontMediumWeight;
+    text-transform: capitalize;
+    white-space: nowrap;
+    text-align: start;
+    width: 100%;
+    outline: none;
+    border-radius: $XlSize;
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+
+    &:focus {
+      border-color: $PrimaryColor;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:placeholder {
+      color: $GrayText;
+    }
+    &:disabled {
+      background-color: rgba(217, 219, 233, 1);
+    }
+
+
+  }
+}
