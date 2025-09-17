@@ -5,9 +5,9 @@ import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 
 <template>
   <div></div>
-  <!-- <FileUpload />
+  <!-- <FileUpload />-->
 
-  <CustomSelectInput /> -->
+  <CustomSelectInput />
 </template>
 
 <style scoped></style>

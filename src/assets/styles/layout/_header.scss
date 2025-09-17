@@ -10,7 +10,7 @@
   background-color: white;
   border-bottom-left-radius: $XlSize;
   border-bottom-right-radius: $XlSize;
-  @media(max-width:768px){
+  @media (max-width: 768px) {
     display: none;
   }
   .nav {
@@ -59,7 +59,9 @@
         @include flex-column(nowrap, flex-start, flex-start);
         span {
           text-align: start;
-
+          &:first-child {
+            color: black;
+          }
           &:last-child {
             margin-left: auto;
             color: #9ca3af;
@@ -127,13 +129,12 @@
     }
   }
 
-
-
   .menu {
     @include flex-row(nowrap, center, center);
 
     h1 {
       font-size: $MdSize;
+      color: black;
     }
 
     .route-name {
