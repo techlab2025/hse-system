@@ -1,14 +1,6 @@
 @use "./variables" as *;
 
 
-
-
-
-
-
-
-
-
 /*<editor-fold desc="utils">*/
 @use "./utils/container";
 @use "./utils/_button";
@@ -17,6 +9,9 @@
 @use "./utils/_secondary_btn";
 //@use "./utils/_explore_btn";
 @use "./normalize";
+// @use "./utils/_fonts";
+@use "./utils/input_filter";
+@use "./utils/_section_title";
 @use "./utils/_fonts";
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";

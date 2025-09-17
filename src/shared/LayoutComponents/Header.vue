@@ -5,6 +5,7 @@ import IconFullScreen from "@/shared/icons/IconFullScreen.vue";
 import IconMenu from "@/shared/icons/IconMenu.vue";
 import IconLogout from "@/shared/icons/IconLogout.vue";
 import IconArrowDownNav from "@/shared/icons/IconArrowDownNav.vue";
+import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
 // import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
 // import { useUserStore } from "@/stores/user";
 // import defaultImage from "@/assets/images/user.png";
@@ -92,7 +93,7 @@ const router = useRouter();
 
 const logout = async () => {
   localStorage.removeItem("user");
-  await userStore.logout();
+  // await userStore.logout();
   await router.push("/login");
 };
 
@@ -108,8 +109,49 @@ const toggleDropMenu = () => {
 
 <template>
   <header class="header">
+
     <nav class="nav">
       <div class="menu">
+        <!-- Add the new icon to open the sidebar -->
+        <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
+          <IconMenu />
+        </span>
+        <span v-else class="cursor-pointer" @click="toggleSidebar">
+          <IconMenu />
+        </span>
+        <div class="header-link flex gap-sm items-center">
+          <h1>
+            <router-link to="/">{{ $t("home") }} / </router-link>
+          </h1>
+          <p>
+            {{ $t(typeof route?.name === "string" ? route.name : "") }}
+          </p>
+        </div>
+      </div>
+      <div class="setting">
+        <ChangeLanguage />
+        <div class="full_screen cursor-pointer" @click="toggleFullScreen">
+          <IconFullScreen />
+        </div>
+        <div
+          class="user cursor-pointer dropdown-trigger"
+          @click="toggleDropMenu"
+        >
+          <IconArrowDownNav />
+          <span>mohab</span>
+          <img
+            alt="user"
+            src="../../assets/images/travel.png"
+          />
+          <div class="dropdown-menu" v-if="isDropMenuOpen">
+            <ul>
+              <li @click="logout">
+                <IconLogout />
+                <span> Logout </span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
       </div>
     </nav>
