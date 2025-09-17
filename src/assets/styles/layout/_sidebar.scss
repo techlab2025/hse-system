@@ -1,0 +1,104 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+.sidebar {
+  background-color: $White;
+  width: 250px;
+  height: 100vh;
+  scroll-behavior: smooth;
+  //overflow-y: scroll;
+
+  //box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  border-radius: 0 $XlSize $XlSize 0;
+  position: relative;
+
+  @include flex-column();
+  gap: $MdSize;
+
+
+
+  &.close {
+    width: 50px;
+  }
+
+
+
+  .logo {
+    @include flex-align();
+    gap: $MdSize;
+    padding: $MdSize;
+    //img {
+    //  width: 24px;
+    //  height: 24px;
+    //}
+
+    h2 {
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      color: $Black;
+    }
+  }
+
+  .close-sidebar {
+    position: absolute;
+    top: $MdSize;
+    right: calc($XlSize * -1);
+    z-index: 100;
+    cursor: pointer;
+    //border: none;
+    background-color: $White;
+    @include flex-center();
+    width: calc($XlSize4 - $SmSize);
+    height: calc($XlSize4 - $SmSize);
+
+
+
+    @include border($BorderWidth3, #F8F9FB, solid,50%);
+
+
+  }
+
+
+  .links {
+    @include flex-column();
+    gap: $MdSize;
+
+    ul {
+      @include flex-column();
+      gap: $MdSize;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 100%;
+        background-color: $Gray-2;
+      }
+
+
+      li {
+        @include flex-align();
+        gap: $MdSize;
+        font-size: $MdSize;
+        //font-weight: $BaseFontWeight;
+        color: $GrayText;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        font-weight: $BaseFontMediumWeight;
+        &:hover {
+          color: $PrimaryColor;
+        }
+        a {
+          @include flex-align();
+          gap: $MdSize;
+        }
+      }
+    }
+  }
+
+
+}
