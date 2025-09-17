@@ -1,0 +1,146 @@
+@use '../variables' as *;
+@use '../mixins/border' as *;
+
+.p-accordionpanel {
+  border-color: $Gray-2 !important;
+  //@include border($BaseBorderWidth, $Gray-3 , solid);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.p-select {
+  border-color: #d9dbe9 !important;
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  &:focus {
+    border-color: #d9dbe9 !important;
+  }
+}
+
+.p-select-overlay {
+  background-color: white !important;
+  border: none !important;
+  font-size: 14px;
+  font-weight: 600;
+  .p-inputtext {
+    background-color: white !important;
+    border: none !important;
+  }
+}
+
+.p-select-option {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white !important;
+  color: black !important;
+}
+.p-select-empty-message {
+  color: black !important;
+}
+
+.p-multiselect-overlay {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white !important;
+  border: none !important;
+  color: black !important;
+  margin-top: 20px !important;
+  .p-inputtext {
+    color: black !important;
+    background-color: white !important;
+    border: 1px solid #d9dbe9 !important;
+  }
+}
+
+.p-multiselect-option {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white !important;
+  color: #0f1927 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    background-color: #1d4ed80f !important;
+  }
+}
+
+.p-checkbox-input {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white !important;
+  &:focus {
+    border: 1px solid #d9dbe9 !important;
+  }
+}
+
+.p-multiselect {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+  border-color: #d9dbe9 !important;
+  &:focus {
+    border-color: #d9dbe9 !important;
+  }
+}
+
+.p-checkbox-box {
+  background-color: white !important;
+  border: 1px solid #8d8d8d !important;
+  transition: all 0.2s ease;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+
+  &:first-child {
+    display: none !important;
+  }
+}
+
+.p-checkbox-checked {
+  .p-checkbox-box {
+    background-color: #1d4ed8 !important;
+    border: none !important;
+    svg {
+      display: none !important;
+    }
+  }
+}
+.p-checkbox-box.p-highlight {
+  background-color: $PrimaryColor !important;
+  border-color: $PrimaryColor !important;
+  color: white !important;
+
+  .p-checkbox-icon {
+    color: white !important;
+  }
+}
+
+.p-multiselect-header {
+  .p-checkbox-box {
+    display: none !important;
+  }
+}
+
+.optionlabel {
+  font-family: 'Regular';
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.p-multiselect-chip-item {
+  background-color: #1d4fd860 !important;
+  border-radius: 20px !important;
+  .p-chip {
+    border-radius: 20px !important;
+    background-color: #1d4fd860 !important;
+    color: white !important;
+  }
+}
+
+
