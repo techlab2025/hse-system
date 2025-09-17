@@ -6,6 +6,7 @@
 .input-wrapper {
   @include flex-column();
   gap: $XsSize3;
+  position: relative;
 
   label {
     font-size: $MdSize;
@@ -14,6 +15,30 @@
     text-transform: capitalize;
     white-space: nowrap;
     text-align: start;
+  }
+
+  .label-wrapper {
+    @include flex-justify();
+  }
+  .languages {
+    @include flex-align();
+    gap: $XsSize2;
+
+    .input-lang {
+      cursor: pointer; // ✅ fix typo
+      .icon-lng {
+        opacity: 0.7;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
+    input[type="radio"] {
+      display: none;
+      &:checked + .icon-lng {
+        opacity: 1;
+      }
+
+    }
   }
 
   input {
@@ -42,11 +67,28 @@
     &:placeholder {
       color: $Gray-3;
     }
+
     &:disabled {
       background-color: rgba(217, 219, 233, 1);
     }
 
     caret-color: $PrimaryColor;
+
+
+  }
+
+
+
+  .select-lang {
+    position: absolute;
+    right: $MdSize;
+    top: calc(50% + $SmSize);
+    transform: translateY(-50%);
+    color: $PrimaryColor;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    cursor: pointer;
+    text-transform: capitalize;
 
 
   }
