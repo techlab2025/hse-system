@@ -49,7 +49,6 @@
 @use "auth/imports_auth";
 /*</editor-fold>*/
 
-
 /*<editor-fold desc="error">*/
 @use "error/error";
 /*</editor-fold>*/
@@ -60,6 +59,10 @@
 
 /*<editor-fold desc="error">*/
 @use "Dialogs/imports";
+/*</editor-fold>*/
+
+/*<editor-fold desc="fonts">*/
+@use "./fonts";
 /*</editor-fold>*/
 
 html {
