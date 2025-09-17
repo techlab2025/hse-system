@@ -6,8 +6,8 @@ import IconMenu from "@/shared/icons/IconMenu.vue";
 import IconLogout from "@/shared/icons/IconLogout.vue";
 import IconArrowDownNav from "@/shared/icons/IconArrowDownNav.vue";
 import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
-import { useUserStore } from "@/stores/user";
-import defaultImage from "@/assets/images/user.png";
+// import { useUserStore } from "@/stores/user";
+// import defaultImage from "@/assets/images/user.png";
 import ChangeLanguage from "./ChangeLanguage.vue";
 
 const route = useRoute();
@@ -88,11 +88,11 @@ onBeforeUnmount(() => {
 const language = ref<string>("");
 
 const router = useRouter();
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 const logout = async () => {
   localStorage.removeItem("user");
-  await userStore.logout();
+  // await userStore.logout();
   await router.push("/login");
 };
 
@@ -103,11 +103,12 @@ const toggleDropMenu = () => {
 };
 
 // fetch user store data
-const user = useUserStore()?.user;
+// const user = useUserStore()?.user;
 </script>
 
 <template>
   <header class="header">
+
     <nav class="nav">
       <div class="menu">
         <!-- Add the new icon to open the sidebar -->
@@ -127,20 +128,19 @@ const user = useUserStore()?.user;
         </div>
       </div>
       <div class="setting">
+        <ChangeLanguage />
         <div class="full_screen cursor-pointer" @click="toggleFullScreen">
           <IconFullScreen />
         </div>
-        <ChangeLanguage />
         <div
           class="user cursor-pointer dropdown-trigger"
           @click="toggleDropMenu"
         >
           <IconArrowDownNav />
-          <span>{{ user?.name }}</span>
+          <span>mohab</span>
           <img
             alt="user"
-            :src="user?.image"
-            @error="setDefaultImage($event, defaultImage)"
+            src="../../assets/images/travel.png"
           />
           <div class="dropdown-menu" v-if="isDropMenuOpen">
             <ul>
