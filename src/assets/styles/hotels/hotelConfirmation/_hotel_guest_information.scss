@@ -1,0 +1,51 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/grid" as *;
+
+.guest-information {
+  @include flex-column();
+  //gap: $XlSize;
+  @media screen and (max-width: 768px) {
+    @include flex(column, wrap, center, center);
+  }
+
+  width: 55%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+
+  .hotel-information-guest-card {
+    padding: $MdSize $SmSize;
+    width: 100%;
+
+    .all-information {
+      @include grid(2, 2px);
+      gap: $MdSize2;
+      @media screen and (max-width: 768px) {
+        @include grid(1, 2px);
+        gap: $XlSize;
+      }
+      .item {
+        @include flex(row, wrap, start, center);
+        gap: $MdSize2;
+
+        .info {
+          @include flex-column(start, center);
+
+          p {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $SmSize;
+            color: #666666;
+          }
+
+          span {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            color: #1C1B03;
+          }
+        }
+
+      }
+    }
+  }
+}

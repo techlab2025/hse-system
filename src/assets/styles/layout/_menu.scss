@@ -1,0 +1,176 @@
+
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+@use "../mixins/border" as *;
+
+.sideover-menu-btn{
+    background-color: $YellowColor;
+    border-radius: $MdSize2;
+    padding: calc($XsSize2 + 1px);
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+  
+}
+
+.sidebar-menu-content{
+    padding: $XlSize4;
+    @include flex-column(nowrap , flex-start , flex-start);
+    gap: $XlSize2;
+    width: 100%;
+
+    .menu-header{
+        @include flex-row(nowrap , space-between , center);
+        width: 100%;
+
+        .menu-logo{
+            width: 40%;
+        }
+
+        .close-icon{
+            width: $XlSize4;
+            height: $XlSize4;
+            padding: calc($MdSize2 + 1px);
+            background-color: $TextGray5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+
+    .menu-title{
+        width: 100%;
+        p{
+            text-align: start;
+            color: #3D4C5E;
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize2;
+        }
+    }
+
+    .menu-box{
+        @include flex-row(nowrap ,center , flex-start);
+        gap: $MdSize2;
+
+        @include border($BaseBorderWidth ,$TextGray6 , solid ,$XlSize );
+        padding: $MdSize $XlSize2;
+        .menu-box-items{
+            @include flex-column(nowrap , flex-start , center);
+            gap: $MdSize2;
+            .menu-box-text{
+                @include flex-column(nowrap , flex-start , flex-start);
+                gap: $XsSize4;
+                width: 100%;
+                .menu-box-title{
+                    font-size: $MdSize2;
+                    font-weight: $BaseFontWeightBold;
+                    color: $SecondaryColor;
+                }
+                .menu-box-subtitle{
+                    font-size: $SmSize;
+                    font-weight: $BaseFontMediumWeight;
+                    color: $TextGray2;
+                }
+            }
+
+            .menu-box-btn{
+                color: white;
+                padding: calc($XsSize + 1px) $XlSize2 ;
+                background-color: $SecondaryColor;
+                border-radius:$XlSize4 ;
+                font-size:$SmSize ;
+                font-weight: $BaseFontWeightBold;
+                width: 100%;
+            }
+
+
+            .menu-box-image{
+                width: $XlSize3;
+            }
+           
+       
+        }
+
+    }
+
+    .menu-contact{
+         @include flex-column(nowrap , flex-start , flex-start);
+         gap: $XlSize3;
+         width: 100%;
+        .contact-title{
+            color: #141414;
+            font-weight:$BaseFontWeightBold ;
+            font-size: $XlSize;
+            text-align: start
+        }
+
+        .contatct-items{
+            @include flex-column(nowrap , flex-start , flex-start);
+            gap: $XlSize;
+
+            .contact-item{
+                @include flex-row(nowrap , flex-start , center);
+                gap: $SmSize;
+                width: 100%;
+
+                .contact-title{
+                    font-size:$MdSize ;
+                    font-weight:$BaseFontMediumWeight ;
+                    color: $TextColor8;
+                }
+
+                .contact-icon{
+                    border-radius: $XlSize4;
+                    padding: calc($XsSize4 + 1px);
+                    border:$BaseBorderWidth solid black ;
+                    width: clamp(calc(34px * 0.8), 34px, calc(34px * 1.2));
+                    height: clamp(calc(34px * 0.8), 34px, calc(34px * 1.2));;
+            
+                }
+         
+            }
+        }
+    }
+
+    .menu-hr{
+        border-color: $TextGray6;
+        width: 100%;
+    }
+
+    .menu-social{
+        @include flex-column(nowrap , flex-start , flex-start);
+        gap:$XlSize3 ;
+        width: 100%;
+
+        .social-title{
+            font-size: $XlSize;
+            font-weight: $BaseFontWeightBold;
+        }
+
+        .social-icons{
+            @include flex-row(nowrap , flex-start , center);
+            gap:$XlSize;
+
+            .social-icon{
+                border-radius:$XlSize4 ;
+                padding:$XsSize ;
+                border:$BaseBorderWidth solid black ;
+                background-color: #F7F4FB;
+                width: clamp(calc(46px * 0.8), 46px, calc(46px * 1.2));
+                height: clamp(calc(46px * 0.8), 46px, calc(46px * 1.2));;
+            }
+            
+        }
+    }
+}
+
+
+div[data-dismissable-layer].max-w-md {
+  max-width: clamp( calc(600px * 0.8) , 600px , (600px * 1.2)) !important;
+  width: 100%;
+}
+
+
+    
+
+

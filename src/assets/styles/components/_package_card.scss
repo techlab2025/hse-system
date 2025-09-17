@@ -1,0 +1,136 @@
+@use "../variables" as *;
+@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.packages-card {
+  @include flex-row();
+  //gap: $XsSize2;
+  //padding: $XsSize $MdSize;
+  //@includeborder($BaseBorderWidth,$TextGray6,solid,$XlSize2):;
+  //flex: 1 0 auto;
+  //min-height: 200px;
+  position: relative;
+  border-radius: $XlSize3;
+  overflow: hidden;
+
+  .packages-card-img {
+    min-width: clamp(
+      calc(263 * 0.8px),
+      calc(263 * 100vw / var(--base-width)),
+      calc(263 * 1.2px)
+    );
+    overflow: hidden;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 16/9;
+      will-change: transform;
+      transition: $TransitionSlow;
+    }
+  }
+
+  .package-card-body {
+    @include flex-column();
+    padding: $XsSize;
+    gap: $SmSize;
+    width: 58%;
+    @include border($BaseBorderWidth, $TextGray6, solid, $XlSize3);
+    flex: 1 0 auto;
+    background-color: $BgWhite;
+    transform: translateX(calc(#{$XlSize3} * -1));
+    will-change: transform;
+    transition: $TransitionSlow;
+    position: relative;
+
+    .package-type {
+      color: $SecondaryColor;
+      background-color: $TextGray6;
+      border-radius: $MdSize;
+      -webkit-border-radius: $MdSize;
+      -moz-border-radius: $MdSize;
+      -ms-border-radius: $MdSize;
+      -o-border-radius: $MdSize;
+      font-size: $XsSize;
+      padding: $XsSize3 $SmSize;
+      font-weight: $BaseFontWeightBold;
+      text-transform: capitalize;
+      width: fit-content;
+    }
+
+    .package-card-title {
+      color: $PrimaryColor;
+      font-size: calc(#{$XlSize} + 2px);
+      font-weight: $BaseFontWeightBold;
+      text-transform: capitalize;
+    }
+
+    .facilities {
+      @include grid(2, 1fr);
+      gap: $MdSize;
+      //   gap: calc(#{$XlSize} * 2);
+      @media screen and (max-width: 600px) {
+        @include grid(1, 1fr);
+      }
+
+      .facilities-item {
+        @include flex-align();
+        gap: $XsSize;
+        font-size: $SmSize;
+        color: $PrimaryColor;
+        flex: 1 0 auto;
+        //width: 40%;
+      }
+    }
+
+    .package-card-footer {
+      @include flex(row, wrap, space-between, center);
+
+      .price {
+        .price-text {
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+          color: $TextGray2;
+        }
+
+        .price-value {
+          font-size: $XlSize2;
+          font-weight: $BaseFontWeightBold;
+          color: $BgBlack;
+        }
+      }
+    }
+  }
+}
+
+// heart icon
+.heart-icon {
+  position: absolute;
+  top: $XsSize;
+  left: $XsSize;
+  z-index: 2;
+  cursor: pointer;
+  padding: $XsSize3;
+  background: $BgGray;
+  border-radius: 50%;
+}
+
+.active-heart-icon {
+  position: absolute;
+  top: $XsSize;
+  left: $XsSize;
+  z-index: 2;
+  cursor: pointer;
+  padding: $XsSize3;
+  background: $BgGray;
+  border-radius: 50%;
+
+  svg,
+  path {
+    stroke: red;
+    fill: red;
+  }
+}

@@ -1,0 +1,51 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/border" as *;
+@use "../../mixins/grid" as *;
+
+.card-hotel-details {
+  // background-color: $BgWhite;
+  // padding: $MdSize;
+  // color: $TextColor;
+  // @include border($BaseBorderWidth, $TextGray6, solid, $MdSize);
+  .title {
+    font-size: $XlSize2;
+    font-weight: $BaseFontWeightBold;
+    margin-bottom: $MdSize2;
+    color: $SecondaryColor;
+  }
+
+  .facilities-grid {
+    @include grid(4, $MdSize2, ((768px: 2, 1024px: 4, 1440px: 4)));
+  }
+  .section-divider {
+    height: 1px;
+    background-color: $TextGray6;
+    opacity: 0.2;
+    width: 100%;
+    margin-block: $MdSize2;
+  }
+
+  .facility-column {
+    h3 {
+      font-size: $MdSize2;
+      font-weight: $BaseFontSemiBoldWeight;
+      margin-bottom: $SmSize;
+      color: $SecondaryColor;
+      padding-bottom: 4px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        font-size: $SmSize;
+        color: #3d4c5e;
+        margin-bottom: 6px;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.quick-and-easy-section {
+    padding-block: $XlSize4;
+
+    background: linear-gradient(180deg, #ffffff 0%, #f6f3fc 100%);
+    position: relative;
+
+    .container {
+        @include flex-column();
+        gap: clamp(calc(40 * 0.8px), calc(40 * 100vw / var(--base-width)), calc(40 * 1.2px));
+    }
+
+    .section-title-wrapper {
+        .section-title {
+            .tabs {
+                @include flex(row, nowrap, start, start);
+                gap: $XsSize2;
+                margin-top: $MdSize;
+                @media screen and (max-width: 768px) {
+                    @include flex(row, wrap, start, start);
+                }
+                .tab {
+                    @include flex(row, nowrap, center, center);
+                    gap: $XsSize;
+                    cursor: pointer;
+                    transition: $Transition;
+                    border-bottom: 2px solid transparent;
+                    @include border($BaseBorderWidth, $SecondaryColor, solid, $XlSize2);
+                    padding: $XsSize $XlSize2;
+                    font-size: $MdSize;
+                    font-weight: $BaseFontWeightBold;
+                    text-transform: capitalize;
+                    color: $SecondaryColor;
+                    svg {
+                        path {
+                            fill: $SecondaryColor;
+                            transition: $Transition;
+                        }
+                    }
+
+                    &.active {
+                        border-color: #f4a6231a;
+                        background-color: #f4a6231a;
+                        color: $GoldColor;
+                        path {
+                            // stroke: $GoldColor;
+                            fill: $GoldColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .swiper-button {
+        @include flex();
+        gap: $XlSize2;
+        .prev,
+        .next {
+            cursor: pointer;
+            transition: $Transition;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: $PrimaryColor;
+
+                path {
+                    stroke: $BgWhite;
+                }
+            }
+        }
+    }
+}

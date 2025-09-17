@@ -1,0 +1,20 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/grid" as *;
+
+.price-details {
+  @include flex-column();
+  //gap: $XlSize;
+  @media screen and (max-width: 768px) {
+    @include flex(column, wrap, center, center);
+  }
+
+  width: 50%;
+
+
+  .hotel-information-price-card {
+    .card-price-details {
+      padding: 0;
+    }
+  }
+}

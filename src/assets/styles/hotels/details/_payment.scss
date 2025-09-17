@@ -1,0 +1,27 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/border" as *;
+@use "../../mixins/grid" as *;
+
+.card-hotel-details {
+  // background-color: $BgWhite;
+  // padding: $MdSize;
+  // color: $TextColor;
+  // @include border($BaseBorderWidth, $TextGray6, solid, $MdSize);
+  .title {
+    font-size: $XlSize2;
+    font-weight: $BaseFontWeightBold;
+    margin-bottom: $MdSize2;
+    color: $SecondaryColor;
+  }
+
+.payment-icon{
+  @include flex();
+  gap: $XlSize;
+.icon{
+  width: 40px;
+  height: 32px;
+}
+
+}
+}

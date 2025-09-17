@@ -1,0 +1,27 @@
+@use "../variables" as *;
+//@use "../mixins/border" as *;
+@use "../mixins/flex" as *;
+
+.facilities {
+  .header {
+    @include flex(row, wrap, flex-start, center);
+    gap: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    font-size: $XlSize;
+    color: $SecondaryColor;
+  }
+}
+.facilities-list {
+  @include flex(row, wrap, flex-start, center);
+  gap: $MdSize;
+  margin-block: $MdSize;
+
+  .facilities-item {
+    @include flex(row, wrap, flex-start, center);
+    width: fit-content;
+    gap: $SmSize;
+    font-weight: $BaseFontWeight;
+    font-size: $MdSize;
+    color: $TextGray2;
+  }
+}

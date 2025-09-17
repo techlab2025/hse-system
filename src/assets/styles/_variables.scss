@@ -1,0 +1,163 @@
+:root {
+  /* Light mode defaults */
+  --PrimaryColor: #28476a;
+  --GoldColor: #f4a623;
+  --YellowColor: #fefa17;
+  --SecondaryColor: #1c1b03;
+  --BgWhite: #ffffff;
+  --BgBlack: #000000;
+  --BgGray: #f7f7f7;
+  --TextColor: #000000;
+  --TextGray: #7d7d7d;
+  --popover-bg: #f5f5f5;
+  --base-width: 1440;
+  --base-height: 900;
+  --font-family: "URW DIN Arabic";
+
+  --icon-bg: #F2F4F6;
+  --xl-size-3: clamp(
+          calc(50 * 0.8px),
+          calc(50 * 100vw / var(--base-width)),
+          calc(50 * 1.2px)
+  );
+  --xl-size-2: clamp(
+          calc(30 * 0.8px),
+          calc(30 * 100vw / var(--base-width)),
+          calc(30 * 1.2px)
+  );
+  --xl-size-1: clamp(
+          calc(24 * 0.8px),
+          calc(24 * 100vw / var(--base-width)),
+          calc(24 * 1.2px)
+  );
+  --xl-size-base: clamp(
+          calc(20 * 0.8px),
+          calc(20 * 100vw / var(--base-width)),
+          calc(20 * 1.2px)
+  );
+  --md-size: clamp(
+          calc(16 * 0.8px),
+          calc(16 * 100vw / var(--base-width)),
+          calc(16 * 1.2px)
+  );
+  --md-size-2: clamp(
+          calc(18 * 0.8px),
+          calc(18 * 100vw / var(--base-width)),
+          calc(18 * 1.2px)
+  );
+
+  --sm-size: clamp(
+          calc(14 * 0.8px),
+          calc(14 * 100vw / var(--base-width)),
+          calc(14 * 1.2px)
+  );
+  --xs-size: clamp(
+          calc(12 * 0.8px),
+          calc(12 * 100vw / var(--base-width)),
+          calc(12 * 1.2px)
+  );
+  --xs-size-2: clamp(
+          calc(10 * 0.8px),
+          calc(10 * 100vw / var(--base-width)),
+          calc(10 * 1.2px)
+  );
+  --xs-size-3: clamp(
+          calc(8 * 0.8px),
+          calc(8 * 100vw / var(--base-width)),
+          calc(8 * 1.2px)
+  );
+  --xs-size-4: clamp(
+          calc(6 * 0.8px),
+          calc(6 * 100vw / var(--base-width)),
+          calc(6 * 1.2px)
+  );
+  --section-padding: clamp(
+          calc(120 * 0.8px),
+          calc(120 * 100vw / var(--base-width)),
+          calc(120 * 1.2px)
+  );
+  /* Dark mode overrides */
+  //@media (prefers-color-scheme: dark) {
+  //  --PrimaryColor: #A4B8D4;
+  //  --GoldColor: #F4A623;
+  //  --SecondaryColor: #E6E6E6;
+  //  --BgWhite: #121212;
+  //  --BgBlack: #FFFFFF;
+  //} //  --TextGray: #B7C9D9; //  --TextColor: #FFFFFF; //  --BgGray: #1E1E1E;
+}
+
+/*<editor-fold desc="colors">*/
+$PrimaryColor: var(--PrimaryColor);
+$GoldColor: var(--GoldColor);
+$YellowColor: var(--YellowColor);
+$SecondaryColor: var(--SecondaryColor);
+$BgWhite: var(--BgWhite);
+$BgBlack: var(--BgBlack);
+$BgGray: var(--BgGray);
+$TextColor: var(--TextColor);
+$TextGray: var(--TextGray);
+$BgRed: #ed1c24;
+$BgGreen: #50c878;
+$TextColor: #000000;
+$TextGray: #7d7d7d;
+$TextGray2: #666666;
+$TextGray3: #7e94b0;
+$TextGray4: #b7c9d9;
+$TextGray5: #d9dbe9;
+$TextGray6: #e6e6e6;
+$TextGray7: #b2bbc6;
+$AuthInputBg: #1d242d;
+$MainBtnbg: #fefa17;
+$IconBg: var(--icon-bg);
+$PopOverBg: var(--popover-bg);
+$Placeholder: #a3adbb;
+$TextColor8: #2F5E93;
+
+/*<editor-fold desc="sizes">*/
+$XsSize: var(--xs-size); // 12px
+$XsSize2: var(--xs-size-2); // 10px
+$XsSize3: var(--xs-size-3); // 8px
+$XsSize4: var(--xs-size-4); // 6px
+$SmSize: var(--sm-size); // 14px
+$MdSize: var(--md-size); // 16px
+$MdSize2: var(--md-size-2); // 18px
+$XlSize: var(--xl-size-base); // 20px
+$XlSize2: var(--xl-size-1); // 24px
+$XlSize3: var(--xl-size-2); // 30px
+$XlSize4: var(--xl-size-3); // 50px
+$SectionPadding: var(--section-padding);
+/*</editor-fold>*/
+
+/*<editor-fold desc="font">*/
+$BaseFontWeight: 400;
+$BaseFontMediumWeight: 500;
+$BaseFontSemiBoldWeight: 600;
+$BaseFontWeightBold: 700;
+$BaseLineHeight: 1.5;
+$BaseLetterSpacing: 0.02em;
+/*</editor-fold>*/
+
+/*<editor-fold desc="border">*/
+$BorderRadiusLg: 16px;
+$BorderRadiusMd: 12px;
+$BorderRadiusSm: 8px;
+$BorderRadiusXs: 4px;
+$BaseBorderWidth: 1px;
+$BorderWidth2: 2px;
+$BorderWidth3: 3px;
+$BorderWidth4: 4px;
+
+/*</editor-fold>*/
+
+/*<editor-fold desc="shadow">*/
+$Shadow1: 0px 4px 8px rgba(0, 0, 0, 0.1);
+$Shadow2: 0px 8px 16px rgba(0, 0, 0, 0.1);
+$Shadow3: 0px 12px 24px rgba(0, 0, 0, 0.1);
+$Shadow4: 0px 16px 32px rgba(0, 0, 0, 0.1);
+/*</editor-fold>*/
+
+/*<editor-fold desc="transition">*/
+$Transition: all 0.4s ease-in-out;
+$TransitionFast: all 0.2s ease-in-out;
+$TransitionSlow: all 0.7s ease-in-out;
+/*</editor-fold>*/

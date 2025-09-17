@@ -1,0 +1,90 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.auth-input-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  margin: auto;
+
+
+
+
+
+  .auth-input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: $XlSize2;
+    width: $XlSize2;
+    height: $XlSize2;
+    aspect-ratio: 1/1;
+  }
+
+  .auth-input {
+    background-color: $AuthInputBg;
+    width: 100%;
+    border: none;
+    padding: calc(#{$MdSize} + 2px) #{$XlSize2};
+    padding-inline-start: calc(#{$MdSize} + calc(#{$XlSize4} - 4px));
+    border-radius: 50px;
+    color: white;
+
+    &::placeholder {
+      color: $Placeholder;
+      font-size: $SmSize;
+      font-style: normal;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+}
+
+
+
+.checkbox-input-wrapper{
+    display: flex;
+    gap: 5px;
+    align-self: self-start;
+    align-items: center;
+
+      
+
+    label{
+        color: $TextGray7;
+
+        span{
+            color: $GoldColor;
+            text-decoration: underline;
+        }
+    }
+
+    input[type="checkbox"]{
+        background-color: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #B2BBC6;
+        border-radius: 4px;
+        outline: none;
+        transition: all 0.2s ease;
+        position: relative;
+        cursor: pointer;
+
+            &:checked {
+              background-color: #4CAF50; 
+              color: black;
+
+                    &::after {
+                   content: "";
+                    position: absolute;
+                    left: 3px;
+                    top: 1px;
+                    width: 4px;
+                    height: 7px;
+                    border: solid #000;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+      }
+            }
+    }
+}   

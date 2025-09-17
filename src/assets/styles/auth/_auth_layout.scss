@@ -1,0 +1,10 @@
+@use "../mixins/flex" as *;
+@use "../variables" as *;
+
+.auth-layout{
+    min-height: 100vh;
+    background-image: url('~/public/images/auth_background.png');
+    background-size: cover;
+    @include flex-row(nowrap , center , center);
+    padding: calc(#{$XlSize4} + 18px);
+}

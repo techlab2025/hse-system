@@ -1,0 +1,30 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+.property-description-dialog {
+  @include flex-column();
+  padding: $MdSize $XlSize2;
+
+  .title {
+    font-size: $XlSize2;
+    font-weight: $BaseFontWeightBold;
+    color: $BgBlack;
+    margin-bottom: $MdSize;
+  }
+
+  .opened {
+    @include flex(row, wrap, flex-start, center);
+    gap: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    font-size: $MdSize;
+    color: $SecondaryColor;
+
+  }
+
+  .description {
+    margin-top: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    font-size: $MdSize;
+    color: $TextGray2;
+  }
+}

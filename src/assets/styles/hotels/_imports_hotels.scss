@@ -1,0 +1,42 @@
+@use "./special_offer";
+@use "./best_international_hotels";
+@use "./own_hotels_partner";
+@use "./quick_and_easy";
+@use "./travel_more";
+
+@use "hotelBooking/hotel_booking";
+@use "hotelBooking/guest_info";
+@use "hotelBooking/secial_request";
+@use "hotelBooking/available_booking";
+
+@use "hotelBooking/hotelDetails/hotel_info";
+@use "hotelBooking/hotelDetails/hotel_card_date";
+@use "hotelBooking/hotelDetails/hotel_price_details";
+@use "hotelBooking/hotelDetails/hotel_cancelation";
+
+//search
+@use "./search/hero_section_search";
+@use "./search/hotels_search_wrapper";
+
+@use "./details/availability_rooms";
+@use "./details/rooms";
+@use "./details/rooms_swiper";
+
+// Booking
+@use "./hotelConfirmation/hotel_confirmation";
+@use "./hotelConfirmation/hotel_confirmation_header";
+@use "./hotelConfirmation/hotel_information";
+@use "./hotelConfirmation/hotel_guest_information";
+@use "./hotelConfirmation/hotel_confirmation_price_details";
+
+@use "./details/facilities";
+@use "./details/property";
+@use "./details/hotel_details_filter";
+@use "./details/hotel_details_info";
+@use "./details/payment";
+@use "./details/refund";
+
+@use "./search/hotel_filter_icons";
+
+@use "./room_meals";
+

@@ -1,0 +1,74 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/grid" as *;
+
+.join-us-container{
+    padding-block: calc($XlSize4 + 50px) ;
+    .container{
+        @include flex-row(nowrap , space-between , center);
+         gap: $XlSize2;
+         @media (max-width:768px) {
+             flex-direction: column;
+         }
+        .join-us-card{
+            border-radius: $XlSize2;
+            padding:$XlSize2;
+            @include flex-row(nowrap , flex-start , flex-start);
+            gap: $XlSize2;
+            background-color: #E2EFE4;
+
+            @media (max-width:768px) {
+                flex-direction: column;
+            }
+
+            &.second-card{
+                background-color: #FFF3F4;
+            }
+
+
+            .card-image{
+                width: 100px;
+                height: 100px;
+                border-radius: $XlSize4;
+                box-shadow: $Shadow4;
+                border: 1px solid white;
+            }
+            
+            .card-info{
+                @include flex-column(nowrap , flex-start , flex-start);
+                gap: $MdSize2;
+
+                .card-text{
+                    @include flex-column(nowrap , flex-start , flex-start);
+                    gap: calc($XsSize2 + 1px);
+
+                    .card-title{
+                        color: $TextColor8;
+                        font-size: $MdSize2;
+                        font-weight: $BaseFontWeightBold;
+                    }
+                    
+                    .card-subtitle{
+                        color: $TextGray2;
+                        font-size: $SmSize;
+                        font-weight: $BaseFontMediumWeight;
+                        max-width: 483px;
+                    }
+                    
+                }
+
+                .card-button{
+                    background-color: $TextColor8;
+                    padding: $XsSize $XlSize2;
+                    color: white;
+                    font-size: $MdSize;
+                    font-weight: $BaseFontWeightBold;
+                    border-radius: $XlSize4;
+                    text-align: center;
+                    width: 100%;
+                }
+                
+            }
+        }
+     }
+}

@@ -1,0 +1,66 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.why-us-section {
+  padding-block: $SectionPadding;
+  background: linear-gradient(180deg, #fff 0%, #f6f3fc 100%);
+
+  &.about-us-section {
+    padding-block: 0;
+    background: none;
+  }
+
+  .container {
+    @include flex-align();
+    @media (max-width: 768px) {
+      @include flex-column(nowrap, center, center);
+    }
+    gap: $SectionPadding;
+
+    * > div {
+      flex: 1;
+    }
+
+    .content {
+      @include flex-column();
+      gap: $XsSize;
+
+      min-width: 50%;
+      @media (max-width: 768px) {
+        min-width: unset;
+      }
+
+      .main-title {
+        font-size: $XlSize4;
+        font-weight: $BaseFontWeightBold;
+        color: $SecondaryColor;
+      }
+
+      .subtitle {
+        font-size: $XlSize;
+        font-weight: $BaseFontMediumWeight;
+        color: $TextGray3;
+      }
+    }
+  }
+
+  .services-wrapper {
+    @include flex-justify(row, wrap, center);
+    gap: $XsSize;
+    @media (max-width: 768px) {
+      @include flex-column(nowrap, center, center);
+    }
+  }
+  .services {
+    @include flex-justify(row, wrap, start);
+    gap: $XsSize;
+    @media (max-width: 768px) {
+      @include flex-column(nowrap, center, center);
+    }
+  }
+
+  .services-wrapper {
+    margin-top: $SectionPadding;
+  }
+}

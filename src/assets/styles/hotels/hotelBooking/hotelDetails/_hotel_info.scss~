@@ -1,0 +1,81 @@
+@use "../../../variables" as *;
+@use "../../../mixins/flex" as *;
+@use "../../../mixins/grid" as *;
+@use "../../../mixins/border" as *;
+
+.card-hotel-info {
+    padding:  $XlSize $XlSize $XlSize ;
+    border-radius: $XlSize;
+    .card-hotel-info-container {
+        @include flex();
+        background-color: $BgWhite;
+        padding: $XlSize;
+        border-radius: $XlSize $XlSize 0 0;
+        gap: $XsSize2;
+        // @include border-bottom();
+        border-bottom: 1px solid $TextGray6;
+        img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: $XsSize;
+        }
+        .info {
+            @include flex-column();
+            .card-hotel-info-title {
+                font-weight: $BaseFontSemiBoldWeight;
+                font-size: $MdSize;
+                color: $SecondaryColor;
+            }
+            gap: $XsSize3;
+            .card-hotel-info-footer {
+                @include flex(row, wrap, start, center);
+                gap: $XsSize2;
+                color: #2f5e93;
+                width: 100%;
+                font-size: $SmSize;
+
+                .card-hotel-info-reviews {
+                    color: $TextGray2;
+                }
+            }
+            .card-hotel-info-rate {
+                font-weight: $BaseFontSemiBoldWeight;
+                font-size: $SmSize;
+                color: $BgWhite;
+                background-color: #2f5e93;
+                width: fit-content;
+                // padding: $XsSize3;
+                padding: 0.3rem;
+                border-radius: $XsSize 0 $XsSize $XsSize;
+            }
+        }
+    }
+
+    .quadruple-Room {
+        border-radius: 0 0 $XlSize $XlSize;
+
+        @include flex-column();
+        background-color: $BgWhite;
+        padding: $XlSize;
+        gap: $XsSize2;
+        p {
+            font-weight: $BaseFontSemiBoldWeight;
+            font-size: $MdSize;
+            color: $PrimaryColor;
+        }
+        .beds,
+        .aminites {
+            @include flex(row, wrap, start, center);
+            gap: $XsSize2;
+
+            .item {
+                @include flex(row, wrap, start, center);
+                gap: $XsSize2;
+                color: $TextGray2;
+                font-size: $SmSize;
+                font-weight: $BaseFontSemiBoldWeight;
+            }
+        }
+    }
+}

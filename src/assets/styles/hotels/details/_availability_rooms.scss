@@ -1,0 +1,48 @@
+@use "../../variables" as *;
+@use "../../mixins/flex" as *;
+@use "../../mixins/border" as *;
+
+.rooms {
+  .availability-rooms-card {
+    .title {
+      font-size: $XlSize2;
+      font-weight: $BaseFontWeightBold;
+      margin-bottom: $MdSize2;
+      color: $SecondaryColor;
+    }
+
+    width: 100%;
+    border: $BaseBorderWidth solid $TextGray6;
+    padding: $XlSize $XlSize2;
+    border-radius: $XlSize;
+
+    .items {
+      @include flex(row, nowrap, start, center);
+      @media screen and (max-width: 768px) {
+        @include flex(row, wrap, start, center);
+
+      }
+      gap: $XlSize2;
+
+      .item {
+        @include flex(row, wrap, start, center);
+        gap: $XsSize;
+
+        input[type="checkbox"] {
+          width: 1.1rem;
+          height: 1.1rem;
+          accent-color: #F4A623;
+          color: white;
+
+        }
+
+        lable {
+          font-weight: $BaseFontSemiBoldWeight;
+          font-size: $MdSize;
+          color: $PrimaryColor;
+
+        }
+      }
+    }
+  }
+}
