@@ -4,6 +4,8 @@ import "./assets/styles/main.min.css"
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 
 import App from './App.vue'
 import router from './router'
@@ -33,4 +35,9 @@ Sentry.init({
 app.use(createPinia())
 app.use(router)
 app.use(i18n)
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  }
+});
 app.mount('#app')

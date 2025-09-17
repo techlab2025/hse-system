@@ -1,0 +1,11 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+
+body {
+  background-color: #F8F9FB;
+}
+
+.content {
+  @include flex(row, wrap, flex-start, stretch);
+  gap: $MdSize;
+}
