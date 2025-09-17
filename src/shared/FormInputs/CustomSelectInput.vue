@@ -1,41 +1,41 @@
 <script lang="ts" setup>
-import MultiSelect from "primevue/multiselect";
-import Select from "primevue/select";
-import { computed, ref, watch, toRefs } from "vue";
-import TitleInterface from "@/base/Data/Models/title_interface";
-import type { SelectControllerInterface } from "@/base/persention/Controller/select_controller_interface";
-import type Params from "@/base/core/Params/params";
-import ValidationService from "@/base/presentation/utils/validationService";
-import IconBackStage from "@/shared/icons/IconBackStage.vue";
+import MultiSelect from 'primevue/multiselect'
+import Select from 'primevue/select'
+import { computed, ref, watch, toRefs } from 'vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import type { SelectControllerInterface } from '@/base/persention/Controller/select_controller_interface'
+import type Params from '@/base/core/Params/params'
+import ValidationService from '@/base/presentation/utils/validationService'
+import IconBackStage from '@/shared/icons/IconBackStage.vue'
 
-export type ComponentType = "select" | "multiselect";
+export type ComponentType = 'select' | 'multiselect'
 
 interface Props {
-  label: string;
-  options?: TitleInterface[];
-  staticOptions?: TitleInterface[] | null;
-  modelValue: TitleInterface | TitleInterface[] | null;
-  placeholder: string;
-  controller?: SelectControllerInterface<any>;
-  params?: Params;
-  type?: ComponentType | number;
-  required?: boolean;
-  id?: string;
-  autoFill?: boolean;
-  reload?: boolean;
-  optional?: boolean;
+  label: string
+  options?: TitleInterface[]
+  staticOptions?: TitleInterface[] | null
+  modelValue: TitleInterface | TitleInterface[] | null
+  placeholder: string
+  controller?: SelectControllerInterface<any>
+  params?: Params
+  type?: ComponentType | number
+  required?: boolean
+  id?: string
+  autoFill?: boolean
+  reload?: boolean
+  optional?: boolean
 }
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue'])
 const props = withDefaults(defineProps<Props>(), {
   type: 1,
   required: false,
   autoFill: false,
-  id: "custom-select-input",
+  id: 'custom-select-input',
   reload: true,
   staticOptions: null,
-  optional: false
-});
+  optional: false,
+})
 
 const {
   modelValue,
@@ -47,117 +47,111 @@ const {
   id,
   required,
   reload: enableReload,
-} = toRefs(props);
+} = toRefs(props)
 
 // Reactive state
-const loading = ref(false);
-const message = ref("No Data Found");
-const localValue = ref(props.modelValue);
-const dynamicOptions = ref<TitleInterface[]>([]);
+const loading = ref(false)
+const message = ref('No Data Found')
+const localValue = ref(props.modelValue)
+const dynamicOptions = ref<TitleInterface[]>([])
 
 // Computed properties
-const isMultiselect = computed(() => Number(type.value) === 2);
-const componentType = computed(() =>
-  isMultiselect.value ? MultiSelect : Select
-);
-const mergedOptions = computed(
-  () => staticOptions?.value ?? dynamicOptions.value
-);
+const isMultiselect = computed(() => Number(type.value) === 2)
+const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
+const mergedOptions = computed(() => staticOptions?.value ?? dynamicOptions.value)
 const multiselectProps = computed(() =>
-  isMultiselect.value ? { display: "chip", maxSelectedLabels: 3 } : {}
-);
+  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 3 } : {},
+)
 
 // Value handling
 const normalizedValue = computed({
   get: () => localValue.value,
   set: (newValue) => {
     // console.log(newValue);
-    localValue.value = isMultiselect.value
-      ? ensureArray(newValue)
-      : ensureSingle(newValue);
-    emitUpdate();
+    localValue.value = isMultiselect.value ? ensureArray(newValue) : ensureSingle(newValue)
+    emitUpdate()
   },
-});
+})
 
 // Watchers
-watch(modelValue, syncLocalValue);
-watch([params, controller], handleOptionUpdates, { immediate: true });
+watch(modelValue, syncLocalValue)
+watch([params, controller], handleOptionUpdates, { immediate: true })
 
 // Initialization
-syncLocalValue(props.modelValue);
+syncLocalValue(props.modelValue)
 
 // Methods
 function ensureArray(value: unknown): TitleInterface[] {
-  return Array.isArray(value) ? value : [];
+  return Array.isArray(value) ? value : []
 }
 
 function ensureSingle(value: unknown): TitleInterface | null {
   // console.log(value);
-  return value instanceof TitleInterface ? value : null;
+  return value instanceof TitleInterface ? value : null
 }
 
 function syncLocalValue(newValue: typeof props.modelValue): void {
   if (newValue !== localValue.value) {
     // console.log(newValue);
-    localValue.value = newValue;
+    localValue.value = newValue
   }
 }
 
 function emitUpdate(): void {
   // console.log(localValue.value);
-  emit("update:modelValue", localValue.value);
-  ValidationService.clearError(id.value);
+  emit('update:modelValue', localValue.value)
+  ValidationService.clearError(id.value)
 }
 
 async function handleOptionUpdates(): Promise<void> {
   if (params?.value && controller?.value) {
-    await fetchOptions();
+    await fetchOptions()
   } else {
-    dynamicOptions.value = staticOptions?.value ?? [];
+    dynamicOptions.value = staticOptions?.value ?? []
   }
 }
 
 async function fetchOptions(): Promise<void> {
-  if (!controller?.value || !params?.value) return;
+  if (!controller?.value || !params?.value) return
   try {
-    loading.value = true;
-    message.value = "Loading Data";
-    const response = await controller.value.fetch(params.value);
-    dynamicOptions.value = response;
-    updateControllerState();
-    handleAutoFill(response);
+    loading.value = true
+    message.value = 'Loading Data'
+    const response = await controller.value.fetch(params.value)
+    dynamicOptions.value = response
+    updateControllerState()
+    handleAutoFill(response)
   } catch (error) {
-    handleFetchError(error);
+    handleFetchError(error)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
 function updateControllerState(): void {
-  if (!controller?.value) return;
+  if (!controller?.value) return
   if (controller.value.isDataFailed()) {
-    message.value = "An Error Occurred";
+    message.value = 'An Error Occurred'
   } else if (controller.value.isDataSuccess()) {
-    message.value = "No Data Found";
+    message.value = 'No Data Found'
   }
 }
 
 function handleAutoFill(options: TitleInterface[]): void {
   if (autoFill?.value && options.length === 1) {
-    normalizedValue.value = isMultiselect.value ? [options[0]] : options[0];
+    normalizedValue.value = isMultiselect.value ? [options[0]] : options[0]
   }
 }
 
 function handleFetchError(error: unknown): void {
-  console.error("Fetch error:", error);
-  message.value = "Failed to load data";
-  dynamicOptions.value = [];
+  console.error('Fetch error:', error)
+  message.value = 'Failed to load data'
+  dynamicOptions.value = []
 }
 
 async function reloadData(): Promise<void> {
-  if (loading.value) return;
-  await fetchOptions();
-  normalizedValue.value = isMultiselect.value ? [] : null;
+  if (loading.value) return
+  await fetchOptions()
+  normalizedValue.value = isMultiselect.value ? [] : null
 }
 </script>
 
@@ -172,7 +166,7 @@ async function reloadData(): Promise<void> {
       class="reload-icon cursor-pointer flex items-center gap-sm me-2"
       @click="reloadData"
     >
-      <span class="optional-text" v-if="optional">({{$t("optional")}})</span>
+      <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
       <IconBackStage />
     </span>
   </div>
