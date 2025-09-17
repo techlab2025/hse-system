@@ -6,7 +6,7 @@ import Sidebar from "@/shared/LayoutComponents/Sidebar.vue";
 <template>
   <main class="content">
     <Sidebar  />
-    <section class="flex flex-col wrapper overflow-hidden	max-w-full">
+    <section class="content-wrapper">
       <Header  />
       <div class="main-content">
         <slot></slot>
