@@ -1,46 +1,44 @@
-import {useUserStore} from "@/stores/user";
+import { useUserStore } from '@/stores/user'
 
 class HeaderHandler {
-  private static _instance: HeaderHandler;
+  private static _instance: HeaderHandler
 
-  private userStore = useUserStore();
-
-
+  private userStore = useUserStore()
 
   private constructor() {}
 
-  static get  Instance(): HeaderHandler {
-      if (!this._instance) {
-        this._instance = new HeaderHandler();
-      }
-      return this._instance;
+  static get Instance(): HeaderHandler {
+    if (!this._instance) {
+      this._instance = new HeaderHandler()
+    }
+    return this._instance
   }
 
-  getHeader(isAuth = false, includeLanguage= true): { [key: string]: string } {
-    const headers: { [key: string]: string } = {};
-    const userStore = this.userStore; // Initialize the store here
+  getHeader(isAuth = false, includeLanguage = true): { [key: string]: string } {
+    const headers: { [key: string]: string } = {}
+    const userStore = this.userStore // Initialize the store here
 
     if (userStore?.user !== null) {
-      const token: string | undefined = userStore?.user?.apiToken;
-      if (isAuth) {
-        headers['Authorization'] = 'Bearer ' + token;
-      }
+      const token: string | undefined = userStore?.user?.apiToken
+      // if (isAuth) {
+      //   headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
+      // }
     }
 
     if (includeLanguage) {
-      const savedLocale = localStorage.getItem('lang');
+      const savedLocale = localStorage.getItem('lang')
       if (savedLocale) {
-        headers['Accept-Language'] = savedLocale;
+        headers['Accept-Language'] = savedLocale
       }
     } else {
-      headers['Accept-Language'] = "*";
+      headers['Accept-Language'] = '*'
     }
-    headers['Content-Type'] = 'application/json';
-    headers['Accept'] = 'application/json';
+    headers['Content-Type'] = 'application/json'
+    headers['Accept'] = 'application/json'
+    headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
 
-
-    return headers;
+    return headers
   }
 }
 
-export default HeaderHandler;
+export default HeaderHandler
