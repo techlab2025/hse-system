@@ -1,0 +1,45 @@
+@use "../variables" as *;
+@use "../mixins/flex" as *;
+@use "../mixins/border" as *;
+
+.input-append {
+  @include flex-align();
+  gap: $XsSize2;
+
+  .input-wrapper {
+    flex: 1;
+  }
+
+  .btn-add {
+    background-color: $Gray-1;
+    width: clamp(calc(34 * 0.8px), calc(34 * 100vw / var(--base-width)), calc(34px * 1.2));
+    height: clamp(calc(34 * 0.8px), calc(34 * 100vw / var(--base-width)), calc(34px * 1.2));
+
+    border-radius: 50%;
+    @include flex-center();
+
+    &.added {
+      background-color: $PrimaryColor;
+      svg {
+        path {
+          fill: $White;
+        }
+      }
+    }
+
+
+    //cursor: pointer;
+
+  }
+
+  .btn-minus {
+    background-color: $Red;
+    width: clamp(calc(34 * 0.8px), calc(34 * 100vw / var(--base-width)), calc(34px * 1.2));
+    height: clamp(calc(34 * 0.8px), calc(34 * 100vw / var(--base-width)), calc(34px * 1.2));
+    border-radius: 50%;
+    @include flex-center();
+    //cursor: pointer;
+  }
+
+
+}
