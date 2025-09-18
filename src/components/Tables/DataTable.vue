@@ -4,7 +4,7 @@ import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 import EditIcon from '@/shared/icons/EditIcon.vue'
 import SortIcon from '@/shared/icons/SortIcon.vue'
 import TrashIcon from '@/shared/icons/TrashIcon.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const actionList = (id: number, deleteStudents: (id: number) => void) => [
   {
@@ -33,6 +33,8 @@ const ReverseTable = () => {
   isReversed.value = !isReversed.value
   items.value.reverse()
 }
+
+
 </script>
 
 <template>

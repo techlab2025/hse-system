@@ -3,7 +3,7 @@
 import DataTable from '@/components/Tables/DataTable.vue';
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
-import { ref } from 'vue'
+import {  ref } from 'vue'
 import Egy from '@/shared/icons/Egy.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -30,6 +30,9 @@ const addInput = () => {
 const removeInput = (index: number) => {
   inputs.value.splice(index, 1)
 }
+
+
+
 </script>
 
 <template>
