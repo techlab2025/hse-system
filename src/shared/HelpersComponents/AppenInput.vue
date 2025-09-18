@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import UploadAppend from '@/shared/icons/UploadAppend.vue'
 
 // Props
 const props = defineProps<{
@@ -8,7 +9,7 @@ const props = defineProps<{
 
 // Emit
 const emit = defineEmits<{
-  (e: "update:modelValue", value: { title: string }[]): void;
+  (e: "update:modelValue", value: { title: string, img: string }[]): void;
 }>();
 
 // Local copy of inputs
@@ -80,7 +81,14 @@ const removeInput = (index: number) => {
           placeholder="Enter Title"
         />
       </div>
-      <div class="file">
+      <div class="file-append">
+          <input type="file" hidden :name="`file${index}`" />
+        <label :for="`file${index}`">
+          <UploadAppend />
+        </label>
+        <div class="img-preview">
+          <img :src="input.img" alt="">
+        </div>
 
 
       </div>
