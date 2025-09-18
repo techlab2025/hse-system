@@ -1,8 +1,6 @@
 <script setup lang="ts">
-
-import DataTable from '@/components/Tables/DataTable.vue';
+import DataTable from '@/components/Tables/DataTable.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-
 
 import { ref } from 'vue'
 
@@ -17,6 +15,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import FR from '@/shared/icons/FR.vue'
 import IR from '@/shared/icons/IR.vue'
 import De from '@/shared/icons/DE.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 const title = ref('')
 const lang = ref('eg')
@@ -24,14 +23,14 @@ const lang = ref('eg')
 const inputs = ref([
   {
     title: '',
-    lang: 'eg'
-  }
+    lang: 'eg',
+  },
 ])
 
 const addInput = () => {
   inputs.value.push({
     title: '',
-    lang: 'eg'
+    lang: 'eg',
   })
 }
 
@@ -41,26 +40,24 @@ const removeInput = (index: number) => {
 
 const langs = [
   // { code: "eg", icon: Egy },
-  { code: "us", icon: USA },
-  { code: "sa", icon: SA },
-  { code: "du", icon: De },
-  { code: "ir", icon: IR },
-  { code: "fr", icon: FR },
-];
+  { code: 'us', icon: USA },
+  { code: 'sa', icon: SA },
+  { code: 'du', icon: De },
+  { code: 'ir', icon: IR },
+  { code: 'fr', icon: FR },
+]
 
 const titles = ref([])
 
-const field = ref({ title: "", lang: "" });
-</script>
-
-<template>
-=======
-
-
+const field = ref({ title: '', lang: '' })
 </script>
 
 <template>
 
+  <CustomSelectInput
+    :label="'Title'"
+    :static-options="[new TitleInterface({ id: 1, title: 'test' }), new TitleInterface({ id: 2, title: 'test 2' })]"
+  />
   <div class="input-wrapper">
     <div class="label-wrapper">
       <label for=""
@@ -84,24 +81,28 @@ const field = ref({ title: "", lang: "" });
       </div>
     </div>
 
-  <LangTitleInput v-model="titles" :langs="langs" />
-  <pre>{{ titles }}</pre>
+    <LangTitleInput v-model="titles" :langs="langs" />
+    <pre>{{ titles }}</pre>
 
-
-  <div class="input-append" v-for="(input, index) in inputs" :key="index">
-    <button type="button" class="btn-add" :class="{
-      'added' : inputs.length > 1
-    }" v-if="index === 0" @click="addInput">
-      <IconAdd />
-    </button>
-    <button type="button" class="btn-minus" v-if="index !== 0" @click="removeInput(index)">
-      <IconMinus />
-    </button>
-    <div class="input-wrapper">
-
-      <label for="">Title</label>
-      <input type="text" id="" v-model="input.title" placeholder="Enter Title" />
-
+    <div class="input-append" v-for="(input, index) in inputs" :key="index">
+      <button
+        type="button"
+        class="btn-add"
+        :class="{
+          added: inputs.length > 1,
+        }"
+        v-if="index === 0"
+        @click="addInput"
+      >
+        <IconAdd />
+      </button>
+      <button type="button" class="btn-minus" v-if="index !== 0" @click="removeInput(index)">
+        <IconMinus />
+      </button>
+      <div class="input-wrapper">
+        <label for="">Title</label>
+        <input type="text" id="" v-model="input.title" placeholder="Enter Title" />
+      </div>
     </div>
   </div>
 
@@ -114,15 +115,15 @@ const field = ref({ title: "", lang: "" });
 
   <!-- <FileUpload />-->
 
-<!--  <CustomSelectInput-->
-<!--  :label="'Title'"-->
-<!--  :static-options="[new TitleInterface({ id: 1, title: 'test' }), new TitleInterface({ id: 2, title: 'test 2' })]"-->
-<!--  :type="2"-->
-<!--  placeholder="Enter Title"-->
-<!--  @update:modelValue="title = $event"-->
-<!--  modelValue=""-->
-<!--  -->
-<!--  />-->
+  <!--  <CustomSelectInput-->
+  <!--  :label="'Title'"-->
+  <!--  :static-options="[new TitleInterface({ id: 1, title: 'test' }), new TitleInterface({ id: 2, title: 'test 2' })]"-->
+  <!--  :type="2"-->
+  <!--  placeholder="Enter Title"-->
+  <!--  @update:modelValue="title = $event"-->
+  <!--  modelValue=""-->
+  <!--  -->
+  <!--  />-->
   <!-- <div class="input-wrapper">
     <label for="">Title</label>
     <input type="text" id="" v-model="title" placeholder="Enter Title" />
