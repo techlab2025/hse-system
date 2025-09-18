@@ -1,45 +1,54 @@
 <script setup lang="ts">
-import Popover from "primevue/popover";
-import DeleteDialog from "../../base/presentation/Dialogs/MainDialogs/DeleteDialog.vue";
-import { ref, defineProps } from "vue";
-import IconDropList from "@/shared/icons/IconDropList.vue";
+import Popover from 'primevue/popover'
+import DeleteDialog from '../../base/presentation/Dialogs/MainDialogs/DeleteDialog.vue'
+import { ref, defineProps, computed, nextTick, watch } from 'vue'
+// import IconDropList from "@/shared/icons/IconDropList.vue";
+import ActionsIcon from '../icons/ActionsIcon.vue'
+import CloseIcon from '../icons/CloseIcon.vue'
 
 interface ActionItem {
-  text: string;
-  icon: any;
-  link?: string;
-  action?: () => void;
+  text: string
+  icon: any
+  link?: string
+  action?: () => void
 }
 
-const emit = defineEmits(["delete"]);
-defineOptions({ inheritAttrs: false });
+const emit = defineEmits(['delete'])
+defineOptions({ inheritAttrs: false })
 
-const op = ref();
-const toggle = (event: Event) => {
-  op.value.toggle(event);
-};
+const op = ref()
+const ActionIconsToggle = ref(false)
+const toggle = async (event: Event) => {
+  op.value.toggle(event)
 
-const props = defineProps<{
-  actionList: ActionItem[];
-}>();
+  // await nextTick()
+  // console.log(op.value.visible)
+  // ActionIconsToggle.value = op.value.visible
+}
 
-const actions = props.actionList;
+const { actionList = [], showActions = true } = defineProps<{
+  actionList: ActionItem[]
+  showActions?: boolean
+}>()
+
+const actions = showActions ? actionList : []
+
+watch(ActionIconsToggle, (newVal) => {
+  ActionIconsToggle.value = newVal
+})
 </script>
 
 <template>
   <div class="list-trigger" @click="toggle">
-    <IconDropList />
+    <ActionsIcon />
+    <!-- <CloseIcon v-else /> -->
   </div>
 
   <Popover ref="op">
     <div class="list-body">
-      <ul>
-        <li class="list-item" v-for="action in actions" :key="action.text">
-          <router-link
-            v-if="action.link"
-            :to="action.link"
-            class="flex items-center gap-sm"
-          >
+      <ul class="border-none">
+        <li class="list-item cursor-pointer" v-for="action in actions" :key="action.text">
+          <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </router-link>
@@ -51,11 +60,9 @@ const actions = props.actionList;
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </button>
-          <DeleteDialog
-            v-if="action.text == $t('delete')"
-            @delete="action.action"
-          />
+          <DeleteDialog v-if="action.text == $t('delete')" @delete="action.action" />
         </li>
+        <slot name="custom"></slot>
       </ul>
     </div>
   </Popover>
