@@ -7,6 +7,7 @@ import CloseSidebar from '@/shared/icons/CloseSidebar.vue'
 
 import { ref } from 'vue'
 import IconArrowDown from '@/shared/icons/IconArrowDown.vue'
+import SidebarVector from '@/shared/icons/SidebarVector.vue'
 
 const isOpen = ref(true)
 
@@ -36,24 +37,31 @@ const active = ref('0')
             ><ul>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
                   <IconHome />
                   <span>Home</span>
                 </router-link>
               </li>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
+
                   <IconHome />
                   <span>Home</span>
                 </router-link>
               </li>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
+
                   <IconHome />
                   <span>Home</span>
                 </router-link>
               </li>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
+
                   <IconHome />
                   <span>Home</span>
                 </router-link>
@@ -67,6 +75,8 @@ const active = ref('0')
             <ul>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
+
                   <IconHome />
                   <span>Home</span>
                 </router-link>
@@ -80,6 +90,8 @@ const active = ref('0')
             <ul>
               <li>
                 <router-link to="/">
+                  <SidebarVector />
+
                   <IconHome />
                   <span>Home</span>
                 </router-link>

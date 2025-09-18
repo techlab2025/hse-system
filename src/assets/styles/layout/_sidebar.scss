@@ -66,7 +66,7 @@
 
     ul {
       @include flex-column();
-      gap: $MdSize;
+      gap: $SmSize;
       position: relative;
 
       &::before {
@@ -82,9 +82,12 @@
 
       li {
         @include flex-align();
-        gap: $MdSize;
+        gap: $SmSize;
         font-size: $MdSize;
+
+
         //font-weight: $BaseFontWeight;
+        font-family: "Regular", sans-serif;
         color: $GrayText;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
@@ -94,7 +97,7 @@
         }
         a {
           @include flex-align();
-          gap: $MdSize;
+          gap: $XsSize4;
         }
       }
     }

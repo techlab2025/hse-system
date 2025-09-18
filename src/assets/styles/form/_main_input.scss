@@ -15,6 +15,8 @@
     text-transform: capitalize;
     white-space: nowrap;
     text-align: start;
+    font-family: "Regular", sans-serif;
+
   }
 
   .label-wrapper {
@@ -43,7 +45,7 @@
 
   input {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
-    padding: $XsSize2 $MdSize;
+    padding: $MdSize2 $MdSize;
     font-size: $SmSize;
     color: $Black;
     font-weight: $BaseFontMediumWeight;
@@ -52,7 +54,7 @@
     text-align: start;
     width: 100%;
     outline: none;
-    border-radius: $XlSize;
+    border-radius: $XlSize3;
     transition: all 0.3s ease-in-out;
     background-color: transparent;
 

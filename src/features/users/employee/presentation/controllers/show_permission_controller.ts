@@ -2,7 +2,7 @@ import { ControllerInterface } from "@/base/persention/Controller/controller_int
 // import PermissionModel from '@/features/dashboard/users/employee/Data/models/show_employee_model'
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import ShowEmployeePermissionUseCase from "@/features/dashboard/users/employee/Domain/use_case/show_permission_use_case";
+import ShowEmployeePermissionUseCase from "@/features/dashboard/users/employee/Domain/useCase/show_permission_use_case";
 import PermissionModel from "@/features/dashboard/users/employee/Data/models/permission_model";
 
 export default class ShowEmployeePermissionController extends ControllerInterface<PermissionModel> {

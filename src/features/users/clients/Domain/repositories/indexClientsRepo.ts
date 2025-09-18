@@ -1,5 +1,5 @@
-import { IndexClientApiService } from "@/features/dashboard/users/clients/Data/apiServices/index_clients_api_service";
-import ClientModel from "@/features/dashboard/users/clients/Data/models/index_client_model";
+import { IndexClientApiService } from "@/features/dashboard/users/languages/Data/apiServices/index_clients_api_service";
+import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
 import RepoInterface from "@/base/Domain/Repositories/repo_interface";
 import type ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 

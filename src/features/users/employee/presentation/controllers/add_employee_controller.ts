@@ -2,7 +2,7 @@ import { ControllerInterface } from "@/base/persention/Controller/controller_int
 import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import AddEmployeeUseCase from "@/features/dashboard/users/employee/Domain/use_case/add_employee_use_case";
+import AddEmployeeUseCase from "@/features/dashboard/users/employee/Domain/useCase/add_employee_use_case";
 import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
 import successImage from "@/assets/images/success-dialog.png";
 import errorImage from "@/assets/images/error.png";

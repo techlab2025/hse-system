@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ShowClintFristsec from "@/features/dashboard/users/clients/Presentation/supcomponents/ShowClientFristsec.vue";
-import ShowClientSecondsec from "@/features/dashboard/users/clients/Presentation/supcomponents/ShowClientSecondsec.vue";
-// import ShowClientThirdsec from "@/features/dashboard/users/clients/Presentation/supcomponents/ShowClientThridsec.vue";
+import ShowClintFristsec from "@/features/dashboard/users/languages/Presentation/supcomponents/ShowClientFristsec.vue";
+import ShowClientSecondsec from "@/features/dashboard/users/languages/Presentation/supcomponents/ShowClientSecondsec.vue";
+// import ShowClientThirdsec from "@/features/dashboard/users/languages/Presentation/supcomponents/ShowClientThridsec.vue";
 
 import Tabs from "primevue/tabs";
 import TabList from "primevue/tablist";
@@ -11,8 +11,8 @@ import TabPanel from "primevue/tabpanel";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import ShowClientParams from "@/features/dashboard/users/clients/Core/params/show_client_params";
-import ShowClientController from "@/features/dashboard/users/clients/Presentation/controllers/show_client_controller";
+import ShowClientParams from "@/features/dashboard/users/languages/Core/params/show_client_params";
+import ShowClientController from "@/features/dashboard/users/languages/Presentation/controllers/show_client_controller";
 import type ShowClientModel from "../../../Data/models/clientDetailsModel.ts";
 
 const route = useRoute();

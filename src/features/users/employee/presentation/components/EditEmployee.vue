@@ -7,7 +7,7 @@ import DataStatus from "@/components/DataStatues/DataStatus.vue";
 import FormLoader from "@/components/DataStatues/FormLoader.vue";
 import EmployeeForm from "@/features/dashboard/users/employee/Presentation/components/EmployeeForm.vue";
 import type Params from "@/base/core/params/params";
-import ShowClientModel from "@/features/dashboard/users/clients/Data/models/show_client_model";
+import ShowClientModel from "@/features/dashboard/users/languages/Data/models/show_client_model";
 import ShowEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/show_employee_controller";
 import ShowEmployeeParams from "@/features/dashboard/users/employee/Core/params/show_employee_params";
 import EditEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/edit_employee_controller";
