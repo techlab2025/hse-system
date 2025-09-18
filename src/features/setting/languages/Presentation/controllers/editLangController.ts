@@ -1,34 +1,34 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import LangModel from "@/features/setting/languages/Data/models/langModel";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import EditClientUseCase from "@/features/dashboard/users/languages/Domain/useCase/edit_client_use_case";
-import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
+import EditLangUseCase from "@/features/setting/languages/Domain/useCase/editLangUseCase";
+import DialogSelector from "@/base/Presentation/Dialogs/dialog_selector";
 import successImage from "@/assets/images/success-dialog.png";
 import errorImage from "@/assets/images/error.png";
 
-export default class EditClientController extends ControllerInterface<ClientModel> {
-  private static instance: EditClientController;
+export default class EditLangController extends ControllerInterface<LangModel> {
+  private static instance: EditLangController;
 
   private constructor() {
     super();
   }
 
-  private EditClientUseCase = new EditClientUseCase();
+  private EditLangUseCase = new EditLangUseCase();
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditClientController();
+      this.instance = new EditLangController();
     }
     return this.instance;
   }
 
-  async editClient(params: Params, router: any, draft: boolean = false) {
+  async editLang(params: Params, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<ClientModel> =
-        await this.EditClientUseCase.call(params);
+      const dataState: DataState<LangModel> =
+        await this.EditLangUseCase.call(params);
 
       this.setState(dataState);
       if (this.isDataSuccess()) {

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/ClientForm.vue";
+import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/LangForm.vue";
 import AddClientController from "@/features/dashboard/users/languages/Presentation/controllers/add_client_controller";
 import AddClientParams from "@/features/dashboard/users/languages/Core/params/add_client_params";
 import type Params from "@/base/core/params/params";
