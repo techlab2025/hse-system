@@ -29,6 +29,12 @@ class ApiNames {
   public DeleteLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_language";
 
 
+  // Industry
+  public CreateIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "create_industry";
+  public IndexIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_industry";
+  public ShowIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_industry_details";
+  public EditIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_industry";
+  public DeleteIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_industry";
 
 
 
