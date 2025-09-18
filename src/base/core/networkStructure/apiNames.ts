@@ -22,11 +22,11 @@ class ApiNames {
 
     //languages
 
-  public AddLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "create_language";
-  public IndexLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_languages";
-  public ShowLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_language_details";
-  public EditLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_language";
-  public DeleteLang = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_language";
+  public AddLang = this.baseUrl +  this.dashboardPrefix + "create_language";
+  public IndexLang = this.baseUrl +  this.dashboardPrefix + "fetch_languages";
+  public ShowLang = this.baseUrl +  this.dashboardPrefix + "fetch_language_details";
+  public EditLang = this.baseUrl + this.dashboardPrefix + "update_language";
+  public DeleteLang = this.baseUrl + this.dashboardPrefix + "delete_language";
 
 
 

@@ -14,9 +14,9 @@ export default class AddLangParams implements Params {
 
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
-    data['translation'] = this.translation.toMap()
+    data['translations'] = this.translation.toMap()
     data['code'] = this.code
-    data['status'] = this.status
+    if (this.status) data['status'] = this.status
     return data
   }
 

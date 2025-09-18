@@ -51,6 +51,13 @@
 @use './utils/custom_select';
 /*</editor-fold>*/
 
+/*<editor-fold desc="main_table">*/
+@use './tables/main_table';
+/*</editor-fold>*/
+/*<editor-fold desc="list">*/
+@use './Lists/lists';
+/*</editor-fold>*/
+
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;

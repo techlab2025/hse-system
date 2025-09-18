@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
+import DataTable from '@/components/Tables/DataTable.vue';
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
-// import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 
 import { ref } from 'vue'
+
 import Egy from '@/shared/icons/Egy.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -52,6 +54,35 @@ const field = ref({ title: "", lang: "" });
 </script>
 
 <template>
+=======
+
+
+</script>
+
+<template>
+
+  <div class="input-wrapper">
+    <div class="label-wrapper">
+      <label for=""
+        >Title
+        <span class="text-red-500">*</span>
+      </label>
+
+      <div class="languages">
+        <div class="input-lang">
+          <input type="radio" id="eg" name="lang" value="eg" v-model="lang" />
+          <label class="icon-lng" for="eg"><Egy /></label>
+        </div>
+        <div class="input-lang">
+          <input type="radio" id="us" name="lang" value="us" v-model="lang" />
+          <label class="icon-lng" for="us"><USA /></label>
+        </div>
+        <div class="input-lang">
+          <input type="radio" id="sa" name="lang" value="sa" v-model="lang" />
+          <label class="icon-lng" for="sa"><SA /></label>
+        </div>
+      </div>
+    </div>
 
   <LangTitleInput v-model="titles" :langs="langs" />
   <pre>{{ titles }}</pre>
@@ -81,8 +112,6 @@ const field = ref({ title: "", lang: "" });
   <!--    <div>asdfas</div>-->
   <!--  </div>-->
 
-
-
   <!-- <FileUpload />-->
 
 <!--  <CustomSelectInput-->
@@ -98,7 +127,6 @@ const field = ref({ title: "", lang: "" });
     <label for="">Title</label>
     <input type="text" id="" v-model="title" placeholder="Enter Title" />
   </div> -->
-
 </template>
 
 <style scoped></style>

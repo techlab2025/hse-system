@@ -18,7 +18,7 @@ import IR from '@/shared/icons/IR.vue'
 
 import { LangEnum } from '@/features/setting/languages/Core/enums/langEnum'
 
-export const LangsMap: Record<LangEnum, { name: string; icon: string; cdoe: string }> = {
+export const LangsMap: Record<LangEnum, { name: string; icon: string; code: string }> = {
   [LangEnum.ARABIC]: { name: 'Arabic', icon: SA, code: LangEnum.ARABIC },
   [LangEnum.ENGLISH]: { name: 'English', icon: USA, code: LangEnum.ENGLISH },
   [LangEnum.FRENCH]: { name: 'French', icon: FR, code: LangEnum.FRENCH },

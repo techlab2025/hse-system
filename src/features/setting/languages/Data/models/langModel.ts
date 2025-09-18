@@ -5,7 +5,7 @@ export default class LangModel extends TitleInterface {
   public description: string
   public code: string
 
-  constructor(id: number, title: string, description: string, code: string) {
+  constructor(id: number, title: string, subtitle: string, description: string, code: string) {
     super({ id, title, subtitle })
 
     this.description = description
@@ -13,6 +13,6 @@ export default class LangModel extends TitleInterface {
   }
 
   static fromMap(data: any): LangModel {
-    return new LangModel(data.id, data.title, data.description, data.code)
+    return new LangModel(data.id, data.title, data.subtitle, data.description, data.code)
   }
 }
