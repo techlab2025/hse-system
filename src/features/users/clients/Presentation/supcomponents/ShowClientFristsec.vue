@@ -12,7 +12,7 @@ const getClientStatusLabel = (id: number): string => {
   return ClientStatusEnum[id] || "Unknown";
 };
 
-// ClientStatusEnum
+// LangEnum
 </script>
 
 <template>

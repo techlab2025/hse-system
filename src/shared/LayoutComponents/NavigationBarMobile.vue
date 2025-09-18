@@ -8,7 +8,7 @@ const quickSearchActive = ref(false);
 
 const menuItems = ref([
   { text: "Offers", icon: "ticket-outline", route: "/projects/All" },
-  { text: "Clients", icon: "person-circle-outline", route: "/users/clients" },
+  { text: "Clients", icon: "person-circle-outline", route: "/users/languages" },
   { text: "Home", icon: "home-outline", route: "/" },
   // { text: "Departments", icon: "grid-outline", route: "/departments" },
   { text: "Add Offer", icon: "add-circle-outline", route: "/add-project" },

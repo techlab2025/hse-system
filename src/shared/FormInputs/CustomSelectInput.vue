@@ -5,7 +5,7 @@ import { computed, ref, watch, toRefs } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/persention/Controller/select_controller_interface'
 import type Params from '@/base/core/Params/params'
-import ValidationService from '@/base/presentation/utils/validationService'
+import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 
 export type ComponentType = 'select' | 'multiselect'

@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
-// import AttentionParams from "@/features/dashboard/users/clients/Core/params/attention_params";
-import { formatJoinDate } from "@/base/presentation/utils/date_format";
+// import AttentionParams from "@/features/dashboard/users/languages/Core/params/attention_params";
+import { formatJoinDate } from "@/base/Presentation/utils/date_format";
 
 export default class EditClientParams implements Params {
   public id: string;
