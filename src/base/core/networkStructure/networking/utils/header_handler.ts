@@ -1,9 +1,9 @@
-import {useUserStore} from "@/stores/user";
+// import {useUserStore} from "@/stores/user";
 
 class HeaderHandler {
   private static _instance: HeaderHandler;
 
-  private userStore = useUserStore();
+  // private userStore = useUserStore();
 
 
 
@@ -18,7 +18,7 @@ class HeaderHandler {
 
   getHeader(isAuth = false, includeLanguage= true): { [key: string]: string } {
     const headers: { [key: string]: string } = {};
-    const userStore = this.userStore; // Initialize the store here
+    // const userStore = this.userStore; // Initialize the store here
 
     if (userStore?.user !== null) {
       const token: string | undefined = userStore?.user?.apiToken;
