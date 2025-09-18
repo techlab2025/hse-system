@@ -1,9 +1,9 @@
-import { useUserStore } from '@/stores/user'
+// import { useUserStore } from '@/stores/user'
 
 class HeaderHandler {
   private static _instance: HeaderHandler
 
-  private userStore = useUserStore()
+  // private userStore = useUserStore()
 
   private constructor() {}
 
@@ -16,14 +16,14 @@ class HeaderHandler {
 
   getHeader(isAuth = false, includeLanguage = true): { [key: string]: string } {
     const headers: { [key: string]: string } = {}
-    const userStore = this.userStore // Initialize the store here
+    // const userStore = this.userStore // Initialize the store here
 
-    if (userStore?.user !== null) {
-      const token: string | undefined = userStore?.user?.apiToken
-      // if (isAuth) {
-      //   headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
-      // }
-    }
+    // if (userStore?.user !== null) {
+    //   const token: string | undefined = userStore?.user?.apiToken
+    //   // if (isAuth) {
+    //   //   headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
+    //   // }
+    // }
 
     if (includeLanguage) {
       const savedLocale = localStorage.getItem('lang')

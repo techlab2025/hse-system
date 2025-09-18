@@ -1,30 +1,31 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import LangModel from '@/features/setting/languages/Data/models/langModel'
+import ShowLangModel from '@/features/setting/languages/Data/models/langDetailsModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import IndexLangUseCase from '@/features/setting/languages/Domain/useCase/indexLangUseCase'
-import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import TitleInterface from '@/base/Data/Models/title_interface'
+import ShowLangUseCase from '@/features/setting/languages/Domain/useCase/showLangUseCase'
 
-export default class IndexLangController extends SelectControllerInterface<LangModel[]> {
-  private static instance: IndexLangController
+export default class ShowLangController extends ControllerInterface<ShowLangModel> {
+  private static instance: ShowLangController
+
   private constructor() {
     super()
   }
-  private IndexLangUseCase = new IndexLangUseCase()
+
+  private ShowLangUseCase = new ShowLangUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexLangController()
+      this.instance = new ShowLangController()
     }
     return this.instance
   }
 
-  async getData(params: Params) {
+  async showLang(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<LangModel[]> = await this.IndexLangUseCase.call(params)
+
+    const dataState: DataState<ShowLangModel> = await this.ShowLangUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

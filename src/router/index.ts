@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/admin',
       name: 'dashboard',
       component: Dashboard,
       children: [
@@ -14,6 +14,11 @@ const router = createRouter({
           path: '',
           name: 'Home',
           component: () => import('../views/AppHome.vue'),
+        },
+        {
+          path: 'lang/add',
+          name: 'AddLang',
+          component: () => import('../views/Lang/AddLang.vue'),
         },
       ]
     },

@@ -4,12 +4,12 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class EditLangParams implements Params {
-  public id: string
+  public id: number
   public translation: TranslationsParams
   public code: string
-  public status: number
+  public status?: number
 
-  constructor(id: string, translation: TranslationsParams, code: string, status: number) {
+  constructor(id: number, translation: TranslationsParams, code: string, status?: number) {
     this.id = id
     this.translation = translation
     this.code = code
@@ -18,10 +18,10 @@ export default class EditLangParams implements Params {
 
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
-    data['language_id'] = this.id
+    data['translations'] = this.id
     data['translation'] = this.translation.toMap()
     data['code'] = this.code
-    data['status'] = this.status
+    if (this.status) data['status'] = this.status
     return data
   }
 }

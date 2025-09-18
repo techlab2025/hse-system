@@ -1,63 +1,63 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
-import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
-import type Params from "@/base/core/params/params";
-import AddClientUseCase from "@/features/dashboard/users/languages/Domain/useCase/add_client_use_case";
-import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
-import successImage from "@/assets/images/success-dialog.png";
-import errorImage from "@/assets/images/error.png";
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
+import LangModel from '@/features/setting/languages/Data/models/langModel'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type Params from '@/base/core/params/params'
+import AddLangUseCase from '@/features/setting/languages/Domain/useCase/addLangUseCase'
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
+import successImage from '@/assets/images/success-dialog.png'
+import errorImage from '@/assets/images/error.png'
+import type { Router } from 'vue-router'
 
-export default class AddClientController extends ControllerInterface<ClientModel> {
-  private static instance: AddClientController;
+export default class AddLangController extends ControllerInterface<LangModel> {
+  private static instance: AddLangController
   private constructor() {
-    super();
+    super()
   }
-  private AddClientUseCase = new AddClientUseCase();
+  private AddLangUseCase = new AddLangUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddClientController();
+      this.instance = new AddLangController()
     }
-    return this.instance;
+    return this.instance
   }
 
-  async addClient(params: Params, router: any, draft: boolean = false) {
+  async addLang(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ClientModel> =
-        await this.AddClientUseCase.call(params);
-      this.setState(dataState);
+      const dataState: DataState<LangModel> = await this.AddLangUseCase.call(params)
+      this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: "dialog",
-          titleContent: "Added was successful",
+          dialogName: 'dialog',
+          titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
-        });
+        })
 
         // console.log(this.state.value.data)
         // console.log(draft)
-        if (!draft) await router.push("/users/languages/All");
+        // if (!draft) await router.push('/users/languages/All')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: "dialog",
-          titleContent: this.state.value.error?.title ?? "Ann Error Occurred",
+          dialogName: 'dialog',
+          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,
-        });
+        })
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: "dialog",
-        titleContent: this.state.value.error?.title,
+        dialogName: 'dialog',
+        titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,
-      });
+      })
     }
 
-    super.handleResponseDialogs();
-    return this.state;
+    super.handleResponseDialogs()
+    return this.state
   }
 }
