@@ -9,6 +9,8 @@ import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
+import AppenInput from '@/shared/HelpersComponents/AppenInput.vue'
+import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 const title = ref('')
 const lang = ref('eg')
@@ -79,6 +81,7 @@ const removeInput = (index: number) => {
 
     </div>
   </div>
+  <AppenInput :modelValue="inputs" />
 
   <!--  <div class="flex text-red-400">-->
   <!--    <div>asdfas</div>-->
@@ -89,11 +92,15 @@ const removeInput = (index: number) => {
 
   <!-- <FileUpload />-->
 
-  <CustomSelectInput
-  :label="'Title'"
-  :static-options="[{ id: 1, title: 'test' }, { id: 2, title: 'test2' }, { id: 3, title: 'test3' }]"
-  :type="2"
-  />
+<!--  <CustomSelectInput-->
+<!--  :label="'Title'"-->
+<!--  :static-options="[new TitleInterface({ id: 1, title: 'test' }), new TitleInterface({ id: 2, title: 'test 2' })]"-->
+<!--  :type="2"-->
+<!--  placeholder="Enter Title"-->
+<!--  @update:modelValue="title = $event"-->
+<!--  modelValue=""-->
+<!--  -->
+<!--  />-->
   <!-- <div class="input-wrapper">
     <label for="">Title</label>
     <input type="text" id="" v-model="title" placeholder="Enter Title" />

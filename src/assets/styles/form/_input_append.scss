@@ -44,6 +44,21 @@
 
   .file-append {
 
+
+    label, .img-preview {
+      background-color: $Gray-2;
+      @include flex-center();
+      width: clamp(calc(56 * 0.8px), calc(56 * 100vw / var(--base-width)), calc(56px * 1.2));
+      height: clamp(calc(56 * 0.8px), calc(56 * 100vw / var(--base-width)), calc(56px * 1.2));
+      @include border(
+        $BaseBorderWidth,
+          rgba(217, 219, 233, 1),
+      solid,
+      50%
+
+      )
+    }
+
   }
 
 

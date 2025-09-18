@@ -1,23 +1,27 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import UploadAppend from '@/shared/icons/UploadAppend.vue'
+import IconAdd from '@/shared/icons/IconAdd.vue'
+import IconMinus from '@/shared/icons/IconMinus.vue'
+
 
 // Props
-const props = defineProps<{
-  modelValue: { title: string }[];
+const { modelValue, withImage = false } = defineProps<{
+  modelValue: { title: string; img?: string }[];
+  withImage?: boolean;
 }>();
 
 // Emit
 const emit = defineEmits<{
-  (e: "update:modelValue", value: { title: string, img: string }[]): void;
+  (e: "update:modelValue", value: { title: string; img?: string }[]): void;
 }>();
 
 // Local copy of inputs
-const inputs = ref([...props.modelValue]);
+const inputs = ref([...modelValue]);
 
 // Sync when parent updates
 watch(
-  () => props.modelValue,
+  () => modelValue,
   (newVal) => {
     inputs.value = [...newVal];
   },
@@ -35,14 +39,28 @@ watch(
 
 // Add new input
 const addInput = () => {
-  inputs.value.push({ title: "" });
+  inputs.value.push({ title: "", img: "" });
 };
 
 // Remove input by index
 const removeInput = (index: number) => {
   inputs.value.splice(index, 1);
 };
+
+// Handle file change
+const onFileChange = (event: Event, index: number) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      inputs.value[index].img = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+};
 </script>
+
 
 <template>
   <div>
@@ -72,7 +90,7 @@ const removeInput = (index: number) => {
         <IconMinus />
       </button>
 
-      <!-- Input -->
+      <!-- Title Input -->
       <div class="input-wrapper">
         <label for="">Title</label>
         <input
@@ -81,16 +99,23 @@ const removeInput = (index: number) => {
           placeholder="Enter Title"
         />
       </div>
-      <div class="file-append">
-          <input type="file" hidden :name="`file${index}`" />
-        <label :for="`file${index}`">
+
+      <!-- File Input -->
+      <div class="file-append" v-if="withImage">
+        <input
+          type="file"
+          hidden
+          :id="`file${index}`"
+          :name="`file${index}`"
+          accept="image/*"
+          @change="onFileChange($event, index)"
+        />
+        <label :for="`file${index}`" v-if="!input.img">
           <UploadAppend />
         </label>
-        <div class="img-preview">
-          <img :src="input.img" alt="">
+        <div class="img-preview" v-if="input.img">
+          <img :src="input.img" alt="Preview" />
         </div>
-
-
       </div>
     </div>
   </div>
