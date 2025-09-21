@@ -1,135 +1,122 @@
 <script lang="ts" setup>
-import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
-import IndexClientParams from "@/features/dashboard/users/languages/Core/params/index_clients_params";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
-import IndexClientController from "@/features/dashboard/users/languages/Presentation/controllers/index_clients_controller";
+// import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
+// import LangModel from '@/features/setting/languages/Data/models/langModel'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 
-import { onMounted, ref, watch } from "vue";
-import { debounce } from "@/base/persention/utils/debouced";
-import DropList from "@/components/HelpersComponents/DropList.vue";
-import Pagination from "@/components/HelpersComponents/Pagination.vue";
-import type PaginationModel from "@/base/core/Models/pagination_model";
-import DataStatus from "@/components/DataStatues/DataStatus.vue";
-import TableLoader from "@/components/DataStatues/TableLoader.vue";
-import DataEmpty from "@/components/DataStatues/DataEmpty.vue";
-import IconRemoveInput from "@/components/icons/IconRemoveInput.vue";
-import ExportPdf from "@/components/HelpersComponents/ExportPdf.vue";
-import DeleteClientController from "@/features/dashboard/users/languages/Presentation/controllers/delete_client_controller";
-import DeleteClientParams from "@/features/dashboard/users/languages/Core/params/delete_client_params";
-import { ClientStatusEnum } from "@/features/dashboard/users/languages/Core/enums/client_status_enum";
-import DataFailed from "@/components/DataStatues/DataFailed.vue";
-import { useRoute } from "vue-router";
-import DialogChangeStatusClient from "@/features/dashboard/users/languages/Presentation/components/client/DialogChangeStatusClient.vue";
-const route = useRoute();
+import { onMounted, ref, watch } from 'vue'
+import { debounce } from '@/base/Presentation/utils/debouced'
+import DropList from '@/shared/HelpersComponents/DropList.vue'
+import Pagination from '@/shared/HelpersComponents/Pagination.vue'
+// import type PaginationModel from '@/base/core/Models/pagination_model'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import DeleteLangController from '@/features/setting/languages/Presentation/controllers/deleteLangController'
+import DeleteLangParams from '@/features/setting/languages/Core/params/deleteLangParams'
+// import { LangStatusEnum } from '@/features/setting/languages/Core/enums/langEnum'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import IconEdit from '@/shared/icons/IconEdit.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-const clients = ref<ClientModel[] | null>([]);
-const pagination = ref<PaginationModel | null>(null);
-const word = ref("");
-const currentPage = ref(1);
-const countPerPage = ref(10);
-const indexClientController = IndexClientController.getInstance();
-const state = ref(indexClientController.state.value);
-const type = ref<ClientStatusEnum>(
-  ClientStatusEnum[route.params.type as keyof typeof ClientStatusEnum],
-);
+const { t } = useI18n()
 
-const fetchClient = async (
-  query: string = "",
+// import DialogChangeStatusLang from "@/features/setting/languages/Presentation/components/Lang/DialogChangeStatusLang.vue";
+const route = useRoute()
+
+const word = ref('')
+const currentPage = ref(1)
+const countPerPage = ref(10)
+const indexLangController = IndexLangController.getInstance()
+const state = ref(indexLangController.state.value)
+// const type = ref<LangStatusEnum>(LangStatusEnum[route.params.type as keyof typeof LangStatusEnum])
+
+const fetchLang = async (
+  query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  order: number = 2,
-  clientStatus: number[] = [type.value],
 ) => {
-  const deleteClientParams = new IndexClientParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    order,
-    clientStatus,
-  );
+  const deleteLangParams = new IndexLangParams(query, pageNumber, perPage, withPage)
 
-  // console.log(deleteClientParams)
+  // console.log(deleteLangParams)
 
-  const response = await indexClientController.getData(deleteClientParams);
-  clients.value = response.value.data;
-  pagination.value = response.value.pagination;
-};
+  await indexLangController.getData(deleteLangParams)
+}
 
 onMounted(() => {
-  fetchClient();
-});
+  fetchLang()
+})
 
-watch(
-  () => route.params.type,
-  (newType) => {
-    type.value = ClientStatusEnum[newType as keyof typeof ClientStatusEnum];
-    fetchClient();
-  },
-);
+const searchLang = debounce(() => {
+  fetchLang(word.value)
+})
 
-const searchClient = debounce(() => {
-  fetchClient(word.value);
-});
-
-const deleteClient = async (id: any) => {
-  const deleteClientParams = new DeleteClientParams(id);
-  await DeleteClientController.getInstance().deleteClient(deleteClientParams);
-  await fetchClient();
-};
+const deleteLang = async (id: number) => {
+  const deleteLangParams = new DeleteLangParams(id)
+  await DeleteLangController.getInstance().deleteLang(deleteLangParams)
+  await fetchLang()
+}
 
 const handleChangePage = (page: number) => {
-  currentPage.value = page;
-  fetchClient("", currentPage.value, countPerPage.value);
-};
+  currentPage.value = page
+  fetchLang('', currentPage.value, countPerPage.value)
+}
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
-  countPerPage.value = count;
-  fetchClient("", currentPage.value, countPerPage.value);
-};
+  countPerPage.value = count
+  fetchLang('', currentPage.value, countPerPage.value)
+}
 
 watch(
-  () => indexClientController.state.value,
+  () => indexLangController.state.value,
   (newState) => {
     if (newState) {
       // console.log(newState)
-      state.value = newState;
+      state.value = newState
     }
   },
   {
     deep: true,
   },
-);
+)
+
+const actionList = (id: number, deleteLang: (id: number) => void) => [
+  {
+    text: t('edit'),
+    icon: IconEdit,
+    link: `/admin/lang/edit/${id}`,
+  },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteLang(id),
+  },
+]
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <img
-        alt="search"
-        src="../../../../../../../assets/images/search-normal.png"
-      />
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchClient"
-      />
+      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
       <span
         class="icon-remove"
         @click="
-          word = '';
-          searchClient();
+          word = ''
+          searchLang()
         "
       >
         <IconRemoveInput />
       </span>
     </div>
     <div class="col-span-2 flex justify-end">
-      <AddItemButton addLink="/users/clients/add" addText="Add Client" />
+      <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>
       <ExportPdf />
     </div>
   </div>
@@ -140,44 +127,31 @@ watch(
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">name</th>
+              <th scope="col">title</th>
               <th scope="col">Code</th>
-              <th scope="col">email</th>
-              <th scope="col">commercial register number</th>
-              <th scope="col">tax register number</th>
-              <th scope="col">Actions</th>
+              <!--              <th scope="col">email</th>-->
+              <!--              <th scope="col">commercial register number</th>-->
+              <!--              <th scope="col">tax register number</th>-->
+              <!--              <th scope="col">Actions</th>-->
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in clients" :key="item.id">
+            <tr v-for="item in state.data" :key="item.id">
               <td data-label="#">
-                <router-link :to="`/users/clients/edit/${item.id}`"
-                  >{{ item.id }}
-                </router-link>
+                <router-link :to="`/users/Lang/edit/${item.id}`">{{ item.id }} </router-link>
               </td>
-              <td data-label="Name">{{ item.name }}</td>
-              <td data-label="Code">{{ item.code ?? "--" }}</td>
-              <td data-label="email">{{ item.email }}</td>
-              <td data-label="Commercial Number">
-                {{ item.commercialRegisterNumber }}
-              </td>
-              <td data-label="Tax Number">{{ item.taxRegisterNumber }}</td>
+              <td data-label="Name">{{ item.title }}</td>
+              <td data-label="Code">{{ item.code ?? '--' }}</td>
+
               <td data-label="Actions">
-                <DialogChangeStatusClient
-                  v-if="item.clientStatus === ClientStatusEnum.Draft"
-                  :clientId="item.id"
-                  @clientChangeStatus="fetchClient"
-                />
+                <!--                <DialogChangeStatusLang-->
+                <!--                  v-if="item.LangStatus === LangStatusEnum.Draft"-->
+                <!--                  :LangId="item.id"-->
+                <!--                  @LangChangeStatus="fetchLang"-->
+                <!--                />-->
                 <DropList
-                  :branchLink="
-                    item.type === 2 ? `/users/attentions/${item.id}` : ''
-                  "
-                  :editLink="`/users/clients/edit/${item.id}`"
-                  :showLink="`/users/clients/show/${item.id}`"
-                  :textBranch="item.type === 2 ? 'Attentions' : ''"
-                  editText="Edit"
-                  showText="show"
-                  @delete="deleteClient(item.id)"
+                  :actionList="actionList(item.id, deleteLang)"
+                  @delete="deleteLang(item.id)"
                 />
               </td>
             </tr>
@@ -185,7 +159,7 @@ watch(
         </table>
       </div>
       <Pagination
-        :pagination="pagination"
+        :pagination="state.pagination"
         @changePage="handleChangePage"
         @countPerPage="handleCountPerPage"
       />
@@ -198,18 +172,18 @@ watch(
     </template>
     <template #empty>
       <DataEmpty
-        :link="`/add/Client`"
-        addText="Add Client"
-        description="Sorry .. You have no Client .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Client"
+        :link="`/add/Lang`"
+        addText="Add Lang"
+        description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No languages"
       />
     </template>
     <template #failed>
       <DataFailed
-        :link="`/add/Client`"
-        addText="Add Client"
-        description="Sorry .. You have no Client .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Client"
+        :link="`/add/Lang`"
+        addText="Add Lang"
+        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No languages"
       />
     </template>
   </DataStatus>

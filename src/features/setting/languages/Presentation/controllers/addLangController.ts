@@ -34,10 +34,7 @@ export default class AddLangController extends ControllerInterface<LangModel> {
           imageElement: successImage,
           messageContent: null,
         })
-
-        // console.log(this.state.value.data)
-        // console.log(draft)
-        // if (!draft) await router.push('/users/languages/All')
+        if (!draft) await router.push('/admin/languages')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

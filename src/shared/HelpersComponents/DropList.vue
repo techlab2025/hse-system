@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import Popover from "primevue/popover";
-import DeleteDialog from "@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue";
-import { ref, defineProps } from "vue";
-import IconDropList from "@/shared/icons/IconDropList.vue";
+
 import Popover from 'primevue/popover'
 import DeleteDialog from '../../base/presentation/Dialogs/MainDialogs/DeleteDialog.vue'
 import { ref, defineProps, computed, nextTick, watch } from 'vue'
 // import IconDropList from "@/shared/icons/IconDropList.vue";
 import ActionsIcon from '../icons/ActionsIcon.vue'
-import CloseIcon from '../icons/CloseIcon.vue'
 
 interface ActionItem {
   text: string
