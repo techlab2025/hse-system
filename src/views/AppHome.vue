@@ -16,6 +16,7 @@ import FR from '@/shared/icons/FR.vue'
 import IR from '@/shared/icons/IR.vue'
 import De from '@/shared/icons/DE.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 
 const title = ref('')
 const lang = ref('eg')
@@ -53,10 +54,12 @@ const field = ref({ title: '', lang: '' })
 </script>
 
 <template>
-
   <CustomSelectInput
     :label="'Title'"
-    :static-options="[new TitleInterface({ id: 1, title: 'test' }), new TitleInterface({ id: 2, title: 'test 2' })]"
+    :static-options="[
+      new TitleInterface({ id: 1, title: 'test' }),
+      new TitleInterface({ id: 2, title: 'test 2' }),
+    ]"
   />
   <div class="input-wrapper">
     <div class="label-wrapper">
