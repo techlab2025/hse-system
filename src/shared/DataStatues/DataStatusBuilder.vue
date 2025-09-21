@@ -8,8 +8,9 @@ import {
   type DataState,
   DataSuccess,
   DataValid,
-} from "@/base/core/networkStructure/Resources/dataState/data_state";
-import { computed } from "vue";
+} from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { computed } from 'vue'
+import DataFailed from './DataFailed.vue'
 
 const props = defineProps({
   status: {
@@ -20,19 +21,13 @@ const props = defineProps({
     type: Object as () => DataState<any>,
     default: DataInitial<any>,
   },
-});
+})
 
-
-const currentState = computed(() => props.controller);
+const currentState = computed(() => props.controller)
 </script>
 
 <template>
-  <div
-    v-if="
-      currentState instanceof DataSuccess || currentState instanceof DataDump
-    "
-    class="w-100"
-  >
+  <div v-if="currentState instanceof DataSuccess || currentState instanceof DataDump" class="w-100">
     <div v-if="$slots.success">
       <slot name="success" />
     </div>
@@ -62,7 +57,8 @@ const currentState = computed(() => props.controller);
     </div>
     <div v-else>
       <div class="text-center">
-        <p class="text-danger">{{ $t("error") }}</p>
+        <!-- <p class="text-danger">{{ $t('error') }}</p> -->
+         <DataFailed />
       </div>
     </div>
   </div>

@@ -2,22 +2,19 @@
 const {
   title,
   description,
-  link = "/",
-  addText = "Home",
+  link = '/',
+  addText = 'Home',
 } = defineProps<{
-  title?: string;
-  description?: string;
-  link?: string;
-  addText?: string;
-}>();
+  title?: string
+  description?: string
+  link?: string
+  addText?: string
+}>()
 </script>
 
 <template>
   <div class="data-empty">
-    <img
-      alt="imageFailed"
-      src="@/assets/images/warning-shield-KIr6ibxVrb.png"
-    />
+    <img alt="imageFailed" src="@/assets/images/DataFailed.gif" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
     <router-link :to="link" class="btn btn-primary">
