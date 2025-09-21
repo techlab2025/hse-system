@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-
-// import DatePicker from 'primevue/datepicker'
+import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import { LangsMap } from '@/constant/langs'
-// import { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 import type ShowLangModel from '@/features/setting/languages/Data/models/langDetailsModel.ts'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -21,8 +18,17 @@ const props = defineProps<{
   data?: ShowLangModel
 }>()
 
-const langs = ref<{ title: string; lang: string }[]>([])
+// actual translations (values)
+const langs = ref<{ locale: string; title: string }[]>([])
+
+// selected base language
 const lang = ref<TitleInterface | null>(null)
+
+// default available langs
+const langsDefault = [
+  { locale: 'en', icon: USA, title: '' },
+  { locale: 'ar', icon: SA, title: '' },
+]
 
 const getLangTitleList = (): TitleInterface[] => {
   return Object.values(LangsMap).map((lang, index) => {
@@ -35,20 +41,23 @@ const getLangTitleList = (): TitleInterface[] => {
 }
 const langsList = getLangTitleList()
 
-// console.log(langsList)
-
 const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.lang, lang.title)
+    translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
   const params = props.data?.id
-    ? new EditLangParams(props.data?.id! ?? 0, translationsParams, lang.value?.subtitle! ?? 'en')
+    ? new EditLangParams(
+      props.data?.id! ?? 0,
+      translationsParams,
+      lang.value?.subtitle! ?? 'en',
+    )
     : new AddLangParams(translationsParams, lang.value?.subtitle! ?? 'en')
 
-  // console.log(params)
+
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -57,21 +66,38 @@ const setLang = (data: TitleInterface) => {
   updateData()
 }
 
-const langsDefault = [
-  // { code: "eg", icon: Egy },
-  { code: 'en', icon: USA },
-  { code: 'ar', icon: SA },
-]
-
-const setLangs = (data: { title: string; lang: string }[]) => {
+// when child emits modelValue (updated translations)
+const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
+
+  console.log(langs.value, 'langs')
   updateData()
 }
+
+// init langs either from backend (edit mode) or from defaults (create mode)
+watch(
+  () => props.data,
+  (newData) => {
+    if (newData?.titles?.length) {
+      langs.value = newData.titles // edit mode
+    } else {
+      langs.value = langsDefault.map((l) => ({
+        locale: l.locale,
+        title: '',
+      })) // create mode
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput @update:modelValue="setLangs" :langs="langsDefault" />
+    <LangTitleInput
+      :langs="langsDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4">
@@ -85,5 +111,3 @@ const setLangs = (data: { title: string; lang: string }[]) => {
     />
   </div>
 </template>
-
-<style scoped></style>

@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { ref, defineProps, watch, computed } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
-import { ref, defineProps, watch } from 'vue'
-// import IconDropList from "@/shared/icons/IconDropList.vue";
 import ActionsIcon from '../icons/ActionsIcon.vue'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import type { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
 
 interface ActionItem {
   text: string
   icon: any
   link?: string
   action?: () => void
+  permission?: PermissionsEnum[]
 }
 
 const emit = defineEmits(['delete'])
@@ -17,12 +19,9 @@ defineOptions({ inheritAttrs: false })
 
 const op = ref()
 const ActionIconsToggle = ref(false)
-const toggle = async (event: Event) => {
-  op.value.toggle(event)
 
-  // await nextTick()
-  // console.log(op.value.visible)
-  // ActionIconsToggle.value = op.value.visible
+const toggle = (event: Event) => {
+  op.value.toggle(event)
 }
 
 const { actionList = [], showActions = true } = defineProps<{
@@ -30,36 +29,56 @@ const { actionList = [], showActions = true } = defineProps<{
   showActions?: boolean
 }>()
 
-const actions = showActions ? actionList : []
+// ✅ Filter actions by permission
+const permittedActions = computed(() =>
+  showActions
+    ? actionList.filter((a) =>
+      a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
+    )
+    : [],
+)
 
 watch(ActionIconsToggle, (newVal) => {
   ActionIconsToggle.value = newVal
 })
+
 </script>
 
 <template>
   <div class="list-trigger" @click="toggle">
     <ActionsIcon />
-    <!-- <CloseIcon v-else /> -->
   </div>
 
   <Popover ref="op">
     <div class="list-body">
       <ul class="border-none">
-        <li class="list-item cursor-pointer" v-for="action in actions" :key="action.text">
-          <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
+        <li
+          class="list-item cursor-pointer"
+          v-for="action in permittedActions"
+          :key="action.text"
+        >
+          <router-link
+            v-if="action.link"
+            :to="action.link"
+            class="flex items-center gap-[5px]"
+          >
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </router-link>
+
           <button
-            v-if="action.action && action.text != $t('delete')"
+            v-else-if="action.action && action.text != $t('delete')"
             @click="action.action"
             class="flex items-center gap-sm"
           >
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </button>
-          <DeleteDialog v-if="action.text == $t('delete')" @delete="action.action" />
+
+          <DeleteDialog
+            v-else-if="action.text == $t('delete')"
+            @delete="action.action"
+          />
         </li>
         <slot name="custom"></slot>
       </ul>

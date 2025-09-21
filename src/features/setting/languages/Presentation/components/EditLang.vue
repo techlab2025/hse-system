@@ -28,9 +28,9 @@ onMounted(() => {
 
 const EditLang = async (draft: boolean) => {
   if (draft) {
-    await EditLangController.getInstance().editLang(params.value!, router, true)
+    await EditLangController.getInstance().editLang(params.value!, router)
   } else {
-    await EditLangController.getInstance().editLang(params.value!, router, false)
+    await EditLangController.getInstance().editLang(params.value!, router)
   }
 }
 
@@ -50,10 +50,12 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <DataStatus :status="state">
+  <DataStatus :controller="state">
     <template #success>
+
+<!--      {{ state.data}}-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditLang">
-        <LangForm @update:LangData="setParams" :LangData="state.data" />
+        <LangForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

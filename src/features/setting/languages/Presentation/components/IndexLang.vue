@@ -88,12 +88,22 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/lang/edit/${id}`,
+    link: `/admin/lang/${id}`,
+    permission: [
+      PermissionsEnum.LANGUAGE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LANGUAGE_ALL,
+    ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteLang(id),
+    permission: [
+      PermissionsEnum.LANGUAGE_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LANGUAGE_ALL,
+    ],
   },
 ]
 </script>
@@ -115,9 +125,9 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
 
   <permission-builder
     :code="[
+      PermissionsEnum.ADMIN,
       PermissionsEnum.LANGUAGE_ALL,
       PermissionsEnum.LANGUAGE_FETCH,
-      PermissionsEnum.LANGUAGE_CREATE,
       PermissionsEnum.LANGUAGE_UPDATE,
       PermissionsEnum.LANGUAGE_DELETE,
     ]"
@@ -149,6 +159,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                   <!--                  :LangId="item.id"-->
                   <!--                  @LangChangeStatus="fetchLang"-->
                   <!--                />-->
+
                   <DropList
                     :actionList="actionList(item.id, deleteLang)"
                     @delete="deleteLang(item.id)"

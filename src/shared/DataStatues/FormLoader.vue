@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Skeleton from 'primevue/skeleton';
-import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
+// import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 
 const props = defineProps<{
   inputsCount: number
@@ -14,7 +14,8 @@ const props = defineProps<{
       <Skeleton height="3rem" width="100%"></Skeleton>
     </div>
     <div class="col-span-3 button-wrapper">
-      <PrimaryButton :title="'Add'" :type="'submit'" />
+      <button class="btn btn-primary" type="submit">Submit</button>
+<!--      <PrimaryButton :title="'Add'" :type="'submit'" />-->
     </div>
   </form>
 

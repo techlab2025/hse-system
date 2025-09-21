@@ -24,7 +24,7 @@ class HeaderHandler {
     //   //   headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
     //   // }
     // }
-
+    console.log(includeLanguage)
     if (includeLanguage) {
       const savedLocale = localStorage.getItem('lang')
       if (savedLocale) {
