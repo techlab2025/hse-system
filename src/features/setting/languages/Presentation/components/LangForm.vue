@@ -45,8 +45,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditLangParams(props.data?.id!, translationsParams, lang.value?.subtitle!)
-    : new AddLangParams(translationsParams, lang.value?.subtitle!)
+    ? new EditLangParams(props.data?.id! ?? 0, translationsParams, lang.value?.subtitle! ?? 'en')
+    : new AddLangParams(translationsParams, lang.value?.subtitle! ?? 'en')
 
   // console.log(params)
   emit('update:data', params)
@@ -54,6 +54,7 @@ const updateData = () => {
 
 const setLang = (data: TitleInterface) => {
   lang.value = data
+  updateData()
 }
 
 const langsDefault = [

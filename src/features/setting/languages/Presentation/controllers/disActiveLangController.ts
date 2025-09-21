@@ -1,13 +1,13 @@
-import { ControllerInterface } from '@/base/persention/Controller/controller_interface'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import disActiveLangUseCase from '@/features/setting/languages/Domain/useCase/disActiveLangUseCase'
-import DialogSelector from '@/base/persention/Dialogs/dialog_selector'
-import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/Error.png";
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/Error.png'
 
-export default class disActiveLangController extends ControllerInterface<ClientModel> {
+export default class disActiveLangController extends ControllerInterface<LangModel> {
   private static instance: disActiveLangController
   private constructor() {
     super()
@@ -25,7 +25,7 @@ export default class disActiveLangController extends ControllerInterface<ClientM
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<ClientModel> = await this.disActiveLangUseCase.call(params)
+    const dataState: DataState<LangModel> = await this.disActiveLangUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

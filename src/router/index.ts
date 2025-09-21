@@ -17,9 +17,19 @@ const router = createRouter({
         },
         {
           path: 'lang/add',
-          name: 'AddLang',
+          name: 'Add language',
           component: () => import('../views/Lang/AddLang.vue'),
         },
+        {
+          path: 'lang/:id',
+          name: 'Edit language',
+          component: () => import('../views/Lang/EditLang.vue'),
+        },
+        {
+          path: 'languages',
+          name: 'languages',
+          component: () => import('../views/Lang/IndexLang.vue'),
+        }
       ]
     },
 
