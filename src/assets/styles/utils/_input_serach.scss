@@ -1,0 +1,20 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.input-search {
+  border: 1px solid $MainBorder;
+  @include flex-row(nowrap, flex-start, center);
+  padding: $XsSize $MdSize;
+  border-radius: calc($XlSize3 + 10px);
+  font-family: "Regular";
+
+  input {
+    border: none;
+    outline: none;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+}

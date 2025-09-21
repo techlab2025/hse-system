@@ -20,6 +20,10 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
+import ExportIcon from '@/shared/icons/ExportIcon.vue'
+import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
+import SaveIcon from '@/shared/icons/SaveIcon.vue'
+import Search from '@/shared/icons/Search.vue'
 
 const { t } = useI18n()
 
@@ -99,17 +103,24 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4"  >
+    <div class="input-search col-span-1 ">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
       <span class="icon-remove" @click="((word = ''), searchLang())">
-        <IconRemoveInput />
+        <Search />
       </span>
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
-    <div class="col-span-2 flex justify-end">
+    <div class="col-span-2 flex justify-end gap-2">
+      <div class="btn btn-secondary flex align-center justify-center">
+        <ExportExcel  />
+        <SaveIcon />
+      </div>
+      <div class="btn btn-secondary flex align-center justify-center">
+        <ExportPdf  />
+        <ExportIcon />
+      </div>
       <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>
-      <ExportPdf />
     </div>
   </div>
 
