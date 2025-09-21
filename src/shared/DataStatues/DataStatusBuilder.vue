@@ -27,7 +27,7 @@ const currentState = computed(() => props.controller)
 </script>
 
 <template>
-  <div v-if="currentState instanceof DataSuccess || currentState instanceof DataDump" class="w-100">
+  <div v-if="currentState instanceof DataSuccess || currentState instanceof DataDump" >
     <div v-if="$slots.success">
       <slot name="success" />
     </div>
