@@ -9,7 +9,7 @@ const { title, description, link, addText } = defineProps<{
 
 <template>
   <div class="data-empty">
-    <img src="@/assets/images/Cloud_storage_1_.png" alt="data empty" />
+    <img src="@/assets/images/DataFailed.gif" alt="data empty" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
     <router-link :to="link" class="btn btn-primary">

@@ -35,7 +35,7 @@ const getLangTitleList = (): TitleInterface[] => {
 }
 const langsList = getLangTitleList()
 
-console.log(langsList)
+// console.log(langsList)
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()

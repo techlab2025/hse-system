@@ -5,7 +5,7 @@ import type Params from '@/base/core/params/params'
 import AddLangUseCase from '@/features/setting/languages/Domain/useCase/addLangUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/Error.png";
+import errorImage from "@/assets/images/error.png";
 import type { Router } from 'vue-router'
 
 export default class AddLangController extends ControllerInterface<LangModel> {
