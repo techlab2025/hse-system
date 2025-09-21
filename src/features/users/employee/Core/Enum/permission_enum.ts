@@ -1,197 +1,202 @@
 export enum PermissionsEnum {
-  // Admin
-  AdminAll = 'A00',
-  AdminLogin = 'A01',
-  AdminFetch = 'A02',
-  AdminDetails = 'A03',
-  AdminCreate = 'A04',
-  AdminUpdate = 'A05',
-  AdminDelete = 'A06',
 
-  // Organization Employee Auth
-  OrgEmployeeLogin = 'O01',
-  OrgEmployeeChangePassword = 'O02',
+  ADMIN = 'A',
+  ORGANIZATION_EMPLOYEE = 'O',
+  WEBSITE = 'W',
+  // ADMIN
+  ADMIN_ALL = 'A00',
+  ADMIN_LOGIN = 'A01',
+  ADMIN_FETCH = 'A02',
+  ADMIN_DETAILS = 'A03',
+  ADMIN_CREATE = 'A04',
+  ADMIN_UPDATE = 'A05',
+  ADMIN_DELETE = 'A06',
 
-  // Hashtag
-  HashtagAll = 'H00',
-  HashtagFetch = 'H01',
-  HashtagDetails = 'H02',
-  HashtagCreate = 'H03',
-  HashtagUpdate = 'H04',
-  HashtagDelete = 'H05',
-  HashtagOrder = 'H06',
-  HashtagChangeStatus = 'H07',
+// ORGANIZATION EMPLOYEE AUTH
+  ORG_EMPLOYEE_LOGIN = 'O01',
+  ORG_EMPLOYEE_CHANGE_PASSWORD = 'O02',
 
-  // Category
-  CategoryAll = 'C00',
-  CategoryFetch = 'C01',
-  CategoryDetails = 'C02',
-  CategoryCreate = 'C03',
-  CategoryUpdate = 'C04',
-  CategoryDelete = 'C05',
-  CategoryOrder = 'C06',
-  CategoryChangeStatus = 'C07',
+// HASHTAG
+  HASHTAG_ALL = 'H00',
+  HASHTAG_FETCH = 'H01',
+  HASHTAG_DETAILS = 'H02',
+  HASHTAG_CREATE = 'H03',
+  HASHTAG_UPDATE = 'H04',
+  HASHTAG_DELETE = 'H05',
+  HASHTAG_ORDER = 'H06',
+  HASHTAG_CHANGE_STATUS = 'H07',
 
-  // Blog
-  BlogAll = 'B00',
-  BlogFetch = 'B01',
-  BlogDetails = 'B02',
-  BlogCreate = 'B03',
-  BlogUpdate = 'B04',
-  BlogDelete = 'B05',
-  BlogOrder = 'B06',
-  BlogChangeStatus = 'B07',
+// CATEGORY
+  CATEGORY_ALL = 'C00',
+  CATEGORY_FETCH = 'C01',
+  CATEGORY_DETAILS = 'C02',
+  CATEGORY_CREATE = 'C03',
+  CATEGORY_UPDATE = 'C04',
+  CATEGORY_DELETE = 'C05',
+  CATEGORY_ORDER = 'C06',
+  CATEGORY_CHANGE_STATUS = 'C07',
 
-  // Location
-  LocationAll = 'L00',
-  LocationFetch = 'L01',
-  LocationDetails = 'L02',
-  LocationCreate = 'L03',
-  LocationUpdate = 'L04',
-  LocationDelete = 'L05',
+// BLOG
+  BLOG_ALL = 'B00',
+  BLOG_FETCH = 'B01',
+  BLOG_DETAILS = 'B02',
+  BLOG_CREATE = 'B03',
+  BLOG_UPDATE = 'B04',
+  BLOG_DELETE = 'B05',
+  BLOG_ORDER = 'B06',
+  BLOG_CHANGE_STATUS = 'B07',
 
-  // Industry
-  IndustryAll = 'I00',
-  IndustryFetch = 'I01',
-  IndustryDetails = 'I02',
-  IndustryCreate = 'I03',
-  IndustryUpdate = 'I04',
-  IndustryDelete = 'I05',
+// LOCATION
+  LOCATION_ALL = 'L00',
+  LOCATION_FETCH = 'L01',
+  LOCATION_DETAILS = 'L02',
+  LOCATION_CREATE = 'L03',
+  LOCATION_UPDATE = 'L04',
+  LOCATION_DELETE = 'L05',
 
-  // EquipmentType
-  EquipmentTypeAll = 'ET00',
-  EquipmentTypeFetch = 'ET01',
-  EquipmentTypeDetails = 'ET02',
-  EquipmentTypeCreate = 'ET03',
-  EquipmentTypeUpdate = 'ET04',
-  EquipmentTypeDelete = 'ET05',
+// INDUSTRY
+  INDUSTRY_ALL = 'I00',
+  INDUSTRY_FETCH = 'I01',
+  INDUSTRY_DETAILS = 'I02',
+  INDUSTRY_CREATE = 'I03',
+  INDUSTRY_UPDATE = 'I04',
+  INDUSTRY_DELETE = 'I05',
 
-  // Factory
-  FactoryAll = 'F00',
-  FactoryFetch = 'F01',
-  FactoryDetails = 'F02',
-  FactoryCreate = 'F03',
-  FactoryUpdate = 'F04',
-  FactoryDelete = 'F05',
+// EQUIPMENT TYPE
+  EQUIPMENT_TYPE_ALL = 'ET00',
+  EQUIPMENT_TYPE_FETCH = 'ET01',
+  EQUIPMENT_TYPE_DETAILS = 'ET02',
+  EQUIPMENT_TYPE_CREATE = 'ET03',
+  EQUIPMENT_TYPE_UPDATE = 'ET04',
+  EQUIPMENT_TYPE_DELETE = 'ET05',
 
-  // FactoryItem
-  FactoryItemAll = 'FI00',
-  FactoryItemFetch = 'FI01',
-  FactoryItemDetails = 'FI02',
-  FactoryItemCreate = 'FI03',
-  FactoryItemUpdate = 'FI04',
-  FactoryItemDelete = 'FI05',
+// FACTORY
+  FACTORY_ALL = 'F00',
+  FACTORY_FETCH = 'F01',
+  FACTORY_DETAILS = 'F02',
+  FACTORY_CREATE = 'F03',
+  FACTORY_UPDATE = 'F04',
+  FACTORY_DELETE = 'F05',
 
-  // Template
-  TemplateAll = 'T00',
-  TemplateFetch = 'T01',
-  TemplateDetails = 'T02',
-  TemplateCreate = 'T03',
-  TemplateUpdate = 'T04',
-  TemplateDelete = 'T05',
+// FACTORY ITEM
+  FACTORY_ITEM_ALL = 'FI00',
+  FACTORY_ITEM_FETCH = 'FI01',
+  FACTORY_ITEM_DETAILS = 'FI02',
+  FACTORY_ITEM_CREATE = 'FI03',
+  FACTORY_ITEM_UPDATE = 'FI04',
+  FACTORY_ITEM_DELETE = 'FI05',
 
-  // HazardType
-  HazardTypeAll = 'HT00',
-  HazardTypeFetch = 'HT01',
-  HazardTypeDetails = 'HT02',
-  HazardTypeCreate = 'HT03',
-  HazardTypeUpdate = 'HT04',
-  HazardTypeDelete = 'HT05',
+// TEMPLATE
+  TEMPLATE_ALL = 'T00',
+  TEMPLATE_FETCH = 'T01',
+  TEMPLATE_DETAILS = 'T02',
+  TEMPLATE_CREATE = 'T03',
+  TEMPLATE_UPDATE = 'T04',
+  TEMPLATE_DELETE = 'T05',
 
-  // AccidentsType
-  AccidentsTypeAll = 'AT00',
-  AccidentsTypeFetch = 'AT01',
-  AccidentsTypeDetails = 'AT02',
-  AccidentsTypeCreate = 'AT03',
-  AccidentsTypeUpdate = 'AT04',
-  AccidentsTypeDelete = 'AT05',
+// HAZARD TYPE
+  HAZARD_TYPE_ALL = 'HT00',
+  HAZARD_TYPE_FETCH = 'HT01',
+  HAZARD_TYPE_DETAILS = 'HT02',
+  HAZARD_TYPE_CREATE = 'HT03',
+  HAZARD_TYPE_UPDATE = 'HT04',
+  HAZARD_TYPE_DELETE = 'HT05',
 
-  // Equipment
-  EquipmentAll = 'EQ00',
-  EquipmentFetch = 'EQ01',
-  EquipmentDetails = 'EQ02',
-  EquipmentCreate = 'EQ03',
-  EquipmentUpdate = 'EQ04',
-  EquipmentDelete = 'EQ05',
+// ACCIDENTS TYPE
+  ACCIDENTS_TYPE_ALL = 'AT00',
+  ACCIDENTS_TYPE_FETCH = 'AT01',
+  ACCIDENTS_TYPE_DETAILS = 'AT02',
+  ACCIDENTS_TYPE_CREATE = 'AT03',
+  ACCIDENTS_TYPE_UPDATE = 'AT04',
+  ACCIDENTS_TYPE_DELETE = 'AT05',
 
-  // Certificate
-  CertificateAll = 'CF00',
-  CertificateFetch = 'CF01',
-  CertificateDetails = 'CF02',
-  CertificateCreate = 'CF03',
-  CertificateUpdate = 'CF04',
-  CertificateDelete = 'CF05',
+// EQUIPMENT
+  EQUIPMENT_ALL = 'EQ00',
+  EQUIPMENT_FETCH = 'EQ01',
+  EQUIPMENT_DETAILS = 'EQ02',
+  EQUIPMENT_CREATE = 'EQ03',
+  EQUIPMENT_UPDATE = 'EQ04',
+  EQUIPMENT_DELETE = 'EQ05',
 
-  // Organization
-  OrganizationAll = 'ORG00',
-  OrganizationFetch = 'ORG01',
-  OrganizationDetails = 'ORG02',
-  OrganizationCreate = 'ORG03',
-  OrganizationUpdate = 'ORG04',
-  OrganizationDelete = 'ORG05',
+// CERTIFICATE
+  CERTIFICATE_ALL = 'CF00',
+  CERTIFICATE_FETCH = 'CF01',
+  CERTIFICATE_DETAILS = 'CF02',
+  CERTIFICATE_CREATE = 'CF03',
+  CERTIFICATE_UPDATE = 'CF04',
+  CERTIFICATE_DELETE = 'CF05',
 
-  // Language
-  LanguageAll = 'LANG00',
-  LanguageFetch = 'LANG01',
-  LanguageDetails = 'LANG02',
-  LanguageCreate = 'LANG03',
-  LanguageUpdate = 'LANG04',
-  LanguageDelete = 'LANG05',
+// ORGANIZATION
+  ORGANIZATION_ALL = 'ORG00',
+  ORGANIZATION_FETCH = 'ORG01',
+  ORGANIZATION_DETAILS = 'ORG02',
+  ORGANIZATION_CREATE = 'ORG03',
+  ORGANIZATION_UPDATE = 'ORG04',
+  ORGANIZATION_DELETE = 'ORG05',
 
-  // ProjectType
-  ProjectTypeAll = 'PT00',
-  ProjectTypeFetch = 'PT01',
-  ProjectTypeDetails = 'PT02',
-  ProjectTypeCreate = 'PT03',
-  ProjectTypeUpdate = 'PT04',
-  ProjectTypeDelete = 'PT05',
+// LANGUAGE
+  LANGUAGE_ALL = 'LANG00',
+  LANGUAGE_FETCH = 'LANG01',
+  LANGUAGE_DETAILS = 'LANG02',
+  LANGUAGE_CREATE = 'LANG03',
+  LANGUAGE_UPDATE = 'LANG04',
+  LANGUAGE_DELETE = 'LANG05',
 
-  // Partner
-  PartnerAll = 'P00',
-  PartnerFetch = 'P01',
-  PartnerDetails = 'P02',
-  PartnerCreate = 'P03',
-  PartnerUpdate = 'P04',
-  PartnerDelete = 'P05',
+// PROJECT TYPE
+  PROJECT_TYPE_ALL = 'PT00',
+  PROJECT_TYPE_FETCH = 'PT01',
+  PROJECT_TYPE_DETAILS = 'PT02',
+  PROJECT_TYPE_CREATE = 'PT03',
+  PROJECT_TYPE_UPDATE = 'PT04',
+  PROJECT_TYPE_DELETE = 'PT05',
 
-  // Herikaly
-  HerikalyAll = 'Hrk00',
-  HerikalyFetch = 'Hrk01',
-  HerikalyDetails = 'Hrk02',
-  HerikalyCreate = 'Hrk03',
-  HerikalyUpdate = 'Hrk04',
-  HerikalyDelete = 'Hrk05',
+// PARTNER
+  PARTNER_ALL = 'P00',
+  PARTNER_FETCH = 'P01',
+  PARTNER_DETAILS = 'P02',
+  PARTNER_CREATE = 'P03',
+  PARTNER_UPDATE = 'P04',
+  PARTNER_DELETE = 'P05',
 
-  // OrganizationLocation
-  OrgLocationAll = 'OL00',
-  OrgLocationFetch = 'OL01',
-  OrgLocationDetails = 'OL02',
-  OrgLocationCreate = 'OL03',
-  OrgLocationUpdate = 'OL04',
-  OrgLocationDelete = 'OL05',
+// HERIKALY
+  HERIKALY_ALL = 'HRK00',
+  HERIKALY_FETCH = 'HRK01',
+  HERIKALY_DETAILS = 'HRK02',
+  HERIKALY_CREATE = 'HRK03',
+  HERIKALY_UPDATE = 'HRK04',
+  HERIKALY_DELETE = 'HRK05',
 
-  // Project
-  ProjectAll = 'PJ00',
-  ProjectFetch = 'PJ01',
-  ProjectDetails = 'PJ02',
-  ProjectCreate = 'PJ03',
-  ProjectUpdate = 'PJ04',
-  ProjectDelete = 'PJ05',
+// ORGANIZATION LOCATION
+  ORG_LOCATION_ALL = 'OL00',
+  ORG_LOCATION_FETCH = 'OL01',
+  ORG_LOCATION_DETAILS = 'OL02',
+  ORG_LOCATION_CREATE = 'OL03',
+  ORG_LOCATION_UPDATE = 'OL04',
+  ORG_LOCATION_DELETE = 'OL05',
 
-  // ProjectZone
-  ProjectZoneAll = 'PZ00',
-  ProjectZoneFetch = 'PZ01',
-  ProjectZoneDetails = 'PZ02',
-  ProjectZoneCreate = 'PZ03',
-  ProjectZoneUpdate = 'PZ04',
-  ProjectZoneDelete = 'PZ05',
-  ProjectZoneFetchLocations = 'PZ06',
+// PROJECT
+  PROJECT_ALL = 'PJ00',
+  PROJECT_FETCH = 'PJ01',
+  PROJECT_DETAILS = 'PJ02',
+  PROJECT_CREATE = 'PJ03',
+  PROJECT_UPDATE = 'PJ04',
+  PROJECT_DELETE = 'PJ05',
 
-  // OrganizationEmployee
-  OrgEmployeeAll = 'OE00',
-  OrgEmployeeFetch = 'OE01',
-  OrgEmployeeDetails = 'OE02',
-  OrgEmployeeCreate = 'OE03',
-  OrgEmployeeUpdate = 'OE04',
-  OrgEmployeeDelete = 'OE05',
+// PROJECT ZONE
+  PROJECT_ZONE_ALL = 'PZ00',
+  PROJECT_ZONE_FETCH = 'PZ01',
+  PROJECT_ZONE_DETAILS = 'PZ02',
+  PROJECT_ZONE_CREATE = 'PZ03',
+  PROJECT_ZONE_UPDATE = 'PZ04',
+  PROJECT_ZONE_DELETE = 'PZ05',
+  PROJECT_ZONE_FETCH_LOCATIONS = 'PZ06',
+
+// ORGANIZATION EMPLOYEE
+  ORG_EMPLOYEE_ALL = 'OE00',
+  ORG_EMPLOYEE_FETCH = 'OE01',
+  ORG_EMPLOYEE_DETAILS = 'OE02',
+  ORG_EMPLOYEE_CREATE = 'OE03',
+  ORG_EMPLOYEE_UPDATE = 'OE04',
+  ORG_EMPLOYEE_DELETE = 'OE05',
+
 }
