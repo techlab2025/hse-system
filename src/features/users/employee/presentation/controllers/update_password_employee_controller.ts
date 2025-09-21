@@ -4,8 +4,8 @@ import type { DataState } from "@/base/core/networkStructure/Resources/dataState
 import type Params from "@/base/core/params/params";
 import UpdatePasswordEmployeeUseCase from "@/features/dashboard/users/employee/Domain/useCase/update_password_employee_use_case";
 import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
-import successImage from "@/assets/images/success-dialog.png";
-import errorImage from "@/assets/images/error.png";
+import successImage from "@/assets/images/Success.png";
+import errorImage from "@/assets/images/Error.png";
 
 export default class UpdatePasswordEmployeeController extends ControllerInterface<EmployeeModel> {
   private static instance: UpdatePasswordEmployeeController;

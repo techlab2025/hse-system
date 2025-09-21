@@ -2,8 +2,8 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from '@/assets/images/success-dialog.png'
-import errorImage from '@/assets/images/error.png'
+import successImage from "@/assets/images/Success.png";
+import errorImage from "@/assets/images/Error.png";
 import type IndustryModel from '../../Data/Models/IndustryModel'
 import ShowIndustryUseCase from '../../Domain/useCase/show_industry_use_case'
 

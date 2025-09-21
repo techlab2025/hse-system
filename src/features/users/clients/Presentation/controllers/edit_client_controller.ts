@@ -4,8 +4,8 @@ import type { DataState } from "@/base/core/networkStructure/Resources/dataState
 import type Params from "@/base/core/params/params";
 import EditClientUseCase from "@/features/dashboard/users/languages/Domain/useCase/edit_client_use_case";
 import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
-import successImage from "@/assets/images/success-dialog.png";
-import errorImage from "@/assets/images/error.png";
+import successImage from "@/assets/images/Success.png";
+import errorImage from "@/assets/images/Error.png";
 
 export default class EditClientController extends ControllerInterface<ClientModel> {
   private static instance: EditClientController;

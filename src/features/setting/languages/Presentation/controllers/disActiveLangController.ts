@@ -4,8 +4,8 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import disActiveLangUseCase from '@/features/setting/languages/Domain/useCase/disActiveLangUseCase'
 import DialogSelector from '@/base/persention/Dialogs/dialog_selector'
-import successImage from '@/assets/images/success-dialog.png'
-import errorImage from '@/assets/images/error.png'
+import successImage from "@/assets/images/Success.png";
+import errorImage from "@/assets/images/Error.png";
 
 export default class disActiveLangController extends ControllerInterface<ClientModel> {
   private static instance: disActiveLangController

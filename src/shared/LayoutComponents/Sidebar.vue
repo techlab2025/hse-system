@@ -8,6 +8,8 @@ import CloseSidebar from '@/shared/icons/CloseSidebar.vue'
 import { ref } from 'vue'
 import IconArrowDown from '@/shared/icons/IconArrowDown.vue'
 import SidebarVector from '@/shared/icons/SidebarVector.vue'
+import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
 
 const isOpen = ref(true)
 
@@ -30,75 +32,95 @@ const active = ref('0')
 
     <div class="links">
       <Accordion value="0">
-        <AccordionPanel value="0">
-          <AccordionHeader> Header I </AccordionHeader>
+        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+          <AccordionPanel value="0">
+            <AccordionHeader> Header I </AccordionHeader>
 
-          <AccordionContent
-            ><ul>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
+            <AccordionContent
+              ><ul>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
 
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
 
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
 
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel value="1">
-          <AccordionHeader>Header II</AccordionHeader>
-          <AccordionContent>
-            <ul>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
 
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel value="2">
-          <AccordionHeader>Header III</AccordionHeader>
-          <AccordionContent>
-            <ul>
-              <li>
-                <router-link to="/">
-                  <SidebarVector />
+        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+          <AccordionPanel value="1">
+            <AccordionHeader>Header II</AccordionHeader>
+            <AccordionContent>
+              <ul>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
 
-                  <IconHome />
-                  <span>Home</span>
-                </router-link>
-              </li>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
+
+        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+          <AccordionPanel value="2">
+            <AccordionHeader>Header III</AccordionHeader>
+            <AccordionContent>
+              <ul>
+                <li>
+                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+                    <router-link to="/">
+                      <SidebarVector />
+
+                      <IconHome />
+                      <span>Home</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
       </Accordion>
     </div>
   </aside>
