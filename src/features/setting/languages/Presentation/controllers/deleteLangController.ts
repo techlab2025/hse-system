@@ -1,9 +1,9 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
 import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
 import DeleteLangUseCase from "@/features/setting/languages/Domain/useCase/deleteLangUseCase.ts";
-import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
+import DialogSelector from "@/base/Presentation/Dialogs/dialog_selector";
 import errorImage from "@/assets/images/error.png";
 
 export default class DeleteLangController extends ControllerInterface<LangModel> {

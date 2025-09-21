@@ -10,7 +10,7 @@ import {
   DataValid,
 } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { computed } from 'vue'
-import DataFailed from './DataFailed.vue'
+import DataFailedState from './DataFailed.vue'
 
 const props = defineProps({
   status: {
@@ -58,7 +58,7 @@ const currentState = computed(() => props.controller)
     <div v-else>
       <div class="text-center">
         <!-- <p class="text-danger">{{ $t('error') }}</p> -->
-         <DataFailed />
+        <DataFailedState />
       </div>
     </div>
   </div>
