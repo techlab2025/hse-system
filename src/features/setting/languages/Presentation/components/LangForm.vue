@@ -54,6 +54,7 @@ const updateData = () => {
 
 const setLang = (data: TitleInterface) => {
   lang.value = data
+  updateData()
 }
 
 const langsDefault = [

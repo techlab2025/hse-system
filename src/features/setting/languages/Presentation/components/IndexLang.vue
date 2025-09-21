@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-// import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-// import type PaginationModel from '@/base/core/Models/pagination_model'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -16,17 +13,16 @@ import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteLangController from '@/features/setting/languages/Presentation/controllers/deleteLangController'
 import DeleteLangParams from '@/features/setting/languages/Core/params/deleteLangParams'
-// import { LangStatusEnum } from '@/features/setting/languages/Core/enums/langEnum'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 // import DialogChangeStatusLang from "@/features/setting/languages/Presentation/components/Lang/DialogChangeStatusLang.vue";
-const route = useRoute()
+// const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
@@ -105,13 +101,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     <div class="input-search col-span-1">
       <img alt="search" src="../../../../../../../assets/images/search-normal.png" />
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
-      <span
-        class="icon-remove"
-        @click="
-          word = ''
-          searchLang()
-        "
-      >
+      <span class="icon-remove" @click="((word = ''), searchLang())">
         <IconRemoveInput />
       </span>
     </div>
