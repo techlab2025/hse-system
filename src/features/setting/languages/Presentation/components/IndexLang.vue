@@ -110,7 +110,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <ExportPdf />
     </div>
   </div>
-  <DataStatus :status="state">
+  <DataStatus :controller="state">
     <template #success>
       <div class="table-responsive">
         <table class="main-table">
@@ -122,7 +122,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
               <!--              <th scope="col">email</th>-->
               <!--              <th scope="col">commercial register number</th>-->
               <!--              <th scope="col">tax register number</th>-->
-              <!--              <th scope="col">Actions</th>-->
+                            <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
