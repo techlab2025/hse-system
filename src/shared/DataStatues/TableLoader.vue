@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import Skeleton from "primevue/skeleton";
+import Skeleton from 'primevue/skeleton'
 
 const { rows, cols } = defineProps<{
-  rows: number;
-  cols: number;
-}>();
-
+  rows: number
+  cols: number
+}>()
 </script>
 
 <template>
@@ -19,12 +18,10 @@ const { rows, cols } = defineProps<{
       <tbody>
         <tr v-for="i in rows" :key="i">
           <td v-for="j in cols" :key="j">
-            <Skeleton />
+            <Skeleton></Skeleton>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-<style scoped></style>

@@ -27,12 +27,12 @@ export default class IndexIndustryController extends ControllerInterface<Industr
       const dataState: DataState<IndustryModel[]> = await this.indexIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: 'Added was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
 
         // console.log(this.state.value.data)
         // console.log(draft)
@@ -40,20 +40,20 @@ export default class IndexIndustryController extends ControllerInterface<Industr
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
       }
     } catch (error: any) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
-        titleContent: this.state.value.error?.title,
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog',
+      //   titleContent: this.state.value.error?.title,
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
 
     super.handleResponseDialogs()

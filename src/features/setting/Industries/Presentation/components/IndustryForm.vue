@@ -122,6 +122,7 @@ watch(
         const existing = newData.titles.find((t) => t.locale === l.locale)
         return existing ? existing : { locale: l.locale, title: '' }
       })
+      console.log(Industrys, 'Industrys')
     } else {
       Industrys.value = LangsDefault.value.map((l) => ({
         locale: l.locale,
