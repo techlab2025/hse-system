@@ -82,9 +82,9 @@ watch(
         <span class="text-red-500">*</span>
       </label>
 
-<!--      <pre>-->
-<!--        {{ langs }}-->
-<!--      </pre>-->
+      <!--      <pre>-->
+      <!--        {{ langs }}-->
+      <!--      </pre>-->
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">

@@ -4,15 +4,17 @@
 .p-accordionpanel {
   border-color: $Gray-2 !important;
   //@include border($BaseBorderWidth, $Gray-3 , solid);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
 }
 
 .p-select {
   border-color: #d9dbe9 !important;
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
+  padding: $XsSize3;
+  margin-top: $XsSize3;
   &:focus {
     border-color: #d9dbe9 !important;
   }
@@ -21,8 +23,8 @@
 .p-select-overlay {
   background-color: white !important;
   border: none !important;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   .p-inputtext {
     background-color: white !important;
     border: none !important;
@@ -31,8 +33,8 @@
 
 .p-select-option {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   background-color: white !important;
   color: black !important;
 }
@@ -42,12 +44,12 @@
 
 .p-multiselect-overlay {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   background-color: white !important;
   border: none !important;
   color: black !important;
-  margin-top: 20px !important;
+  margin-top: $XlSize !important;
   .p-inputtext {
     color: black !important;
     background-color: white !important;
@@ -57,12 +59,12 @@
 
 .p-multiselect-option {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   background-color: white !important;
   color: #0f1927 !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
+  font-size: $SmSize !important;
+  font-weight: $BaseFontSemiBoldWeight !important;
 
   &:hover {
     background-color: #1d4ed80f !important;
@@ -71,8 +73,8 @@
 
 .p-checkbox-input {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   background-color: white !important;
   &:focus {
     border: 1px solid #d9dbe9 !important;
@@ -81,8 +83,8 @@
 
 .p-multiselect {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
   border-color: #d9dbe9 !important;
   &:focus {
     border-color: #d9dbe9 !important;
@@ -94,8 +96,8 @@
   border: 1px solid #8d8d8d !important;
   transition: all 0.2s ease;
   border-radius: 50% !important;
-  width: 20px !important;
-  height: 20px !important;
+  width: $XlSize !important;
+  height: $XlSize !important;
 
   &:first-child {
     display: none !important;
@@ -129,18 +131,40 @@
 
 .optionlabel {
   font-family: 'Regular';
-  font-size: 14px;
-  font-weight: 600;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
 }
 
 .p-multiselect-chip-item {
   background-color: #1d4fd860 !important;
-  border-radius: 20px !important;
+  border-radius: $XlSize !important;
   .p-chip {
-    border-radius: 20px !important;
+    border-radius: $XlSize !important;
     background-color: #1d4fd860 !important;
     color: white !important;
   }
 }
 
+.p-select-label {
+  color: #242424 !important;
+  font-size: $SmSize !important;
+  font-weight: $BaseFontMediumWeight !important;
+}
 
+.input-label {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row-reverse;
+  label {
+    width: fit-content;
+    text-align: start;
+    font-weight: $BaseFontSemiBoldWeight;
+    font-size: $MdSize;
+    color: #202020;
+    font-family: 'Regular';
+  }
+  span {
+    width: fit-content;
+  }
+}
