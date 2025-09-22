@@ -11,7 +11,23 @@ import App from './App.vue'
 import router from './router'
 import { createI18n } from 'vue-i18n'
 import * as Sentry from '@sentry/vue'
-const i18n = createI18n({})
+import ar from './locales/ar.json'
+import en from './locales/en.json'
+
+const savedLanguage = localStorage.getItem('lang') || 'en'
+
+const i18n = createI18n({
+  legacy: false,
+  locale: savedLanguage,
+  fallbackLocale: 'ar',
+  messages: {
+    en: en,
+    ar: ar,
+  },
+})
+
+
+
 const app = createApp(App)
 
 Sentry.init({

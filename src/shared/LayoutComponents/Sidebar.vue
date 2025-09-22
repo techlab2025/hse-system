@@ -9,6 +9,7 @@ import { ref } from 'vue'
 import SidebarVector from '@/shared/icons/SidebarVector.vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
+import IconSetting from '@/shared/icons/IconSetting.vue'
 
 const isOpen = ref(true)
 
@@ -33,7 +34,13 @@ const active = ref('0')
       <Accordion value="0">
         <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
           <AccordionPanel value="0">
-            <AccordionHeader> Settings </AccordionHeader>
+            <AccordionHeader>
+              <div class="links-header">
+                <IconSetting />
+                Settings
+              </div>
+
+            </AccordionHeader>
 
             <AccordionContent
               ><ul>
@@ -51,7 +58,6 @@ const active = ref('0')
                   >
                     <router-link to="/admin/languages">
                       <SidebarVector />
-                      <IconHome />
                       <span>languages</span>
                     </router-link>
                   </PermissionBuilder>
