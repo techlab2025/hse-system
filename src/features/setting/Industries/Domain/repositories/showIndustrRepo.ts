@@ -1,7 +1,7 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import IndustryModel from '../../Data/Models/IndustryModel'
-import { ShowIndustryApiService } from '../../Data/apiServices/show_industry_api_service'
+import { ShowIndustryApiService } from '../../Data/apiServices/showIndustryApiService'
 
 class ShowIndustryRepo extends RepoInterface<IndustryModel> {
   private static instance: ShowIndustryRepo

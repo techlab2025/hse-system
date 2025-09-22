@@ -5,26 +5,26 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from "@/assets/images/Success.png";
 import errorImage from "@/assets/images/Error.png";
 import type IndustryModel from '../../Data/Models/IndustryModel'
-import UpdateIndustryUseCase from '../../Domain/useCase/update_industry_use_case'
+import IndexIndustryUseCase from '../../Domain/useCase/indexIndustryUseCase'
 
-export default class UpdateIndustryController extends ControllerInterface<IndustryModel> {
-  private static instance: UpdateIndustryController
+export default class IndexIndustryController extends ControllerInterface<IndustryModel[]> {
+  private static instance: IndexIndustryController
   private constructor() {
     super()
   }
-  private updateIndustryUseCase = new UpdateIndustryUseCase()
+  private indexIndustryUseCase = new IndexIndustryUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new UpdateIndustryController()
+      this.instance = new IndexIndustryController()
     }
     return this.instance
   }
 
-  async UpdateIndustry(params: Params, router: any, draft: boolean = false) {
+  async IndexIndustry(params: Params, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<IndustryModel> = await this.updateIndustryUseCase.call(params)
+      const dataState: DataState<IndustryModel[]> = await this.indexIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({

@@ -5,26 +5,26 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from "@/assets/images/Success.png";
 import errorImage from "@/assets/images/Error.png";
 import type IndustryModel from '../../Data/Models/IndustryModel'
-import DeleteIndustryUseCase from '../../Domain/useCase/delete_industry_use_case'
+import UpdateIndustryUseCase from '../../Domain/useCase/updateIndustryUseCase'
 
-export default class DeleteIndustryController extends ControllerInterface<IndustryModel> {
-  private static instance: DeleteIndustryController
+export default class UpdateIndustryController extends ControllerInterface<IndustryModel> {
+  private static instance: UpdateIndustryController
   private constructor() {
     super()
   }
-  private deleteIndustryUseCase = new DeleteIndustryUseCase()
+  private updateIndustryUseCase = new UpdateIndustryUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteIndustryController()
+      this.instance = new UpdateIndustryController()
     }
     return this.instance
   }
 
-  async DeleteIndustry(params: Params, router: any, draft: boolean = false) {
+  async UpdateIndustry(params: Params, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<IndustryModel> = await this.deleteIndustryUseCase.call(params)
+      const dataState: DataState<IndustryModel> = await this.updateIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
