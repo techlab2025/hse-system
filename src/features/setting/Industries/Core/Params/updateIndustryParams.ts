@@ -13,7 +13,7 @@ export default class UpdateIndustryParams implements Params {
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
     data['industry_id'] = this.industryId
-    data['title'] = this.title.toMap()
+    data['translations'] = this.title.toMap()
 
     return data
   }

@@ -43,7 +43,7 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteLangParams = new IndexLangParams(query, pageNumber, perPage, withPage)
+  const deleteLangParams = new IndexLangParams(query, withPage, perPage, pageNumber)
   await indexLangController.getData(deleteLangParams)
 }
 
@@ -110,8 +110,8 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4"  >
-    <div class="input-search col-span-1 ">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+    <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchLang())">
         <Search />
@@ -120,11 +120,11 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel  />
+        <ExportExcel />
         <SaveIcon />
       </div>
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf  />
+        <ExportPdf />
         <ExportIcon />
       </div>
       <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>

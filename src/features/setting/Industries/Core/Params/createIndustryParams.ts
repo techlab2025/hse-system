@@ -10,8 +10,7 @@ export default class CreateIndustryParams implements Params {
 
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
-    data['title'] = this.title.toMap()
-
+    data['translations'] = this.title.toMap()
     return data
   }
 }

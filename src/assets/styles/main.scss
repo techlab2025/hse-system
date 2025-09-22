@@ -60,6 +60,10 @@
 @use './Lists/lists';
 /*</editor-fold>*/
 
+/*<editor-fold desc="pagination">*/
+@use './Pagination/pagination';
+/*</editor-fold>*/
+
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -96,6 +100,3 @@ body {
     }
   }
 }
-
-
-

@@ -1,40 +1,39 @@
-import {baseUrl} from "./baseUrl";
+import { baseUrl } from './baseUrl'
 
 class ApiNames {
-    private static _instance: ApiNames;
+  private static _instance: ApiNames
 
-    private constructor() {
+  private constructor() {}
+
+  public static get instance(): ApiNames {
+    if (!this._instance) {
+      this._instance = new ApiNames()
     }
+    return this._instance
+  }
 
-    public static get instance(): ApiNames {
-        if (!this._instance) {
-            this._instance = new ApiNames();
-        }
-        return this._instance;
-    }
+  public baseUrl = baseUrl
 
-    public baseUrl = baseUrl;
+  //Website
+  public apiPrefix = 'api/'
+  public dashboardPrefix = 'dashboard/'
+  public employeePrefix = 'employee/'
 
-    //Website
-    public apiPrefix = "api/";
-    public dashboardPrefix = "dashboard/";
-    public employeePrefix = "employee/";
+  //languages
 
-    //languages
-
-  public AddLang = this.baseUrl +  this.dashboardPrefix + "create_language";
-  public IndexLang = this.baseUrl +  this.dashboardPrefix + "fetch_languages";
-  public ShowLang = this.baseUrl +  this.dashboardPrefix + "fetch_language_details";
-  public EditLang = this.baseUrl + this.dashboardPrefix + "update_language";
-  public DeleteLang = this.baseUrl + this.dashboardPrefix + "delete_language";
-
+  public AddLang = this.baseUrl + this.dashboardPrefix + 'create_language'
+  public IndexLang = this.baseUrl + this.dashboardPrefix + 'fetch_languages'
+  public ShowLang = this.baseUrl + this.dashboardPrefix + 'fetch_language_details'
+  public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
+  public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
   // Industry
-  public CreateIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "create_industry";
-  public IndexIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_industry";
-  public ShowIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_industry_details";
-  public EditIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_industry";
-  public DeleteIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_industry";
+
+  public CreateIndustry = this.baseUrl + this.dashboardPrefix + 'create_industry'
+  public IndexIndustry = this.baseUrl + this.dashboardPrefix + 'fetch_industries'
+  public ShowIndustry = this.baseUrl + this.dashboardPrefix + 'fetch_industry_details'
+  public EditIndustry = this.baseUrl + this.dashboardPrefix + 'update_industry'
+  public DeleteIndustry = this.baseUrl + this.dashboardPrefix + 'delete_industry'
 
 
   //EquipmentType
@@ -44,6 +43,7 @@ class ApiNames {
   public EditEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_equipment_type";
   public DeleteEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_equipment_type";
   public DisEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "disable_equipment_type";
+
 }
 
-export {ApiNames};
+export { ApiNames }

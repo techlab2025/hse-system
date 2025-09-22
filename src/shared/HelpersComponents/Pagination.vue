@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import type PaginationModel from "@/base/core/Models/pagination_model";
-import IconArrowDown from "@/shared/icons/IconArrowDown.vue";
+import type PaginationModel from '@/base/core/Models/pagination_model'
+import IconArrowDown from '@/shared/icons/IconArrowDown.vue'
 
-import Popover from "primevue/popover";
-import { computed, ref } from "vue";
+import Popover from 'primevue/popover'
+import { computed, ref } from 'vue'
 
-const emit = defineEmits(["changePage", "countPerPage"]);
+const emit = defineEmits(['changePage', 'countPerPage'])
 
-const op = ref();
+const op = ref()
 const toggle = (event) => {
-  op.value.toggle(event);
-};
+  op.value.toggle(event)
+}
 const props = defineProps<{
-  pagination: PaginationModel | null;
-}>();
+  pagination: PaginationModel | null
+}>()
 
 const numberOfPages = computed(() => {
-  return Array.from({ length: props.pagination?.last! }, (_, i) => i + 1);
-});
+  return Array.from({ length: props.pagination?.last! }, (_, i) => i + 1)
+})
 </script>
 
 <template>
@@ -30,12 +30,7 @@ const numberOfPages = computed(() => {
     <div class="pagination">
       <button
         class="pagination-btn"
-        @click="
-          emit(
-            'changePage',
-            pagination?.current! > 1 ? pagination?.current! - 1 : 1,
-          )
-        "
+        @click="emit('changePage', pagination?.current! > 1 ? pagination?.current! - 1 : 1)"
       >
         Prev
       </button>
@@ -55,9 +50,7 @@ const numberOfPages = computed(() => {
         @click="
           emit(
             'changePage',
-            pagination?.current! < pagination?.last!
-              ? pagination?.current! + 1
-              : pagination?.last!,
+            pagination?.current! < pagination?.last! ? pagination?.current! + 1 : pagination?.last!,
           )
         "
       >

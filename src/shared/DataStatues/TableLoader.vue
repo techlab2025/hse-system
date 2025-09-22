@@ -5,6 +5,7 @@ const { rows, cols } = defineProps<{
   rows: number;
   cols: number;
 }>();
+
 </script>
 
 <template>

@@ -92,7 +92,7 @@ watch(
           <label class="icon-lng" :for="l.locale">
             <component :is="l.icon" />
           </label>
-        </div>
+        </div> 
       </div>
     </div>
 

@@ -20,6 +20,15 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
+import IndexIndustryParams from '../../Core/Params/indexIndustryParams'
+import IndexIndustryController from '../controllers/indexIndustryController'
+import { useRouter } from 'vue-router'
+import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
+import SaveIcon from '@/shared/icons/SaveIcon.vue'
+import ExportIcon from '@/shared/icons/ExportIcon.vue'
+import Search from '@/shared/icons/Search.vue'
+import DeleteIndustryParams from '../../Core/Params/deleteIndustryParams'
+import DeleteIndustryController from '../controllers/deleteIndustryController'
 
 const { t } = useI18n()
 
@@ -29,50 +38,50 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexLangController = IndexLangController.getInstance()
-const state = ref(indexLangController.state.value)
+const indexIndustryController = IndexIndustryController.getInstance()
+const state = ref(indexIndustryController.state.value)
 // const type = ref<LangStatusEnum>(LangStatusEnum[route.params.type as keyof typeof LangStatusEnum])
 
-const fetchLang = async (
+const fetchIndustry = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteLangParams = new IndexLangParams(query, pageNumber, perPage, withPage)
-  await indexLangController.getData(deleteLangParams)
+  const indexIndustryParams = new IndexIndustryParams(query, withPage, perPage, pageNumber)
+  await indexIndustryController.IndexIndustry(indexIndustryParams, useRouter())
 }
 
 onMounted(() => {
-  fetchLang()
+  fetchIndustry()
 })
 
 const searchLang = debounce(() => {
-  fetchLang(word.value)
+  fetchIndustry(word.value)
 })
 
 const deleteLang = async (id: number) => {
-  const deleteLangParams = new DeleteLangParams(id)
-  await DeleteLangController.getInstance().deleteLang(deleteLangParams)
-  await fetchLang()
+  const deleteIndustryParams = new DeleteIndustryParams(id)
+  await DeleteIndustryController.getInstance().DeleteIndustry(deleteIndustryParams, useRouter())
+  await fetchIndustry()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchLang('', currentPage.value, countPerPage.value)
+  fetchIndustry('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchLang('', currentPage.value, countPerPage.value)
+  fetchIndustry('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexLangController.state.value,
+  () => indexIndustryController.state.value,
   (newState) => {
     if (newState) {
-      // console.log(newState)
+      console.log(newState, 'newstaet')
       state.value = newState
     }
   },
@@ -85,7 +94,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/lang/${id}`,
+    link: `/admin/industry/${id}`,
     permission: [
       PermissionsEnum.LANGUAGE_UPDATE,
       PermissionsEnum.ADMIN,
@@ -103,20 +112,30 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     ],
   },
 ]
+
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
       <span class="icon-remove" @click="((word = ''), searchLang())">
-        <IconRemoveInput />
+        <Search />
       </span>
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
-    <div class="col-span-2 flex justify-end">
-      <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>
-      <ExportPdf />
+    <div class="col-span-2 flex justify-end gap-2">
+      <div class="btn btn-secondary flex align-center justify-center">
+        <ExportExcel />
+        <SaveIcon />
+      </div>
+      <div class="btn btn-secondary flex align-center justify-center">
+        <ExportPdf />
+        <ExportIcon />
+      </div>
+      <router-link to="/admin/industry/add" class="btn btn-primary">
+        {{ $t('Add_Industry') }}
+      </router-link>
     </div>
   </div>
 
@@ -137,7 +156,6 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">title</th>
-                <th scope="col">Code</th>
 
                 <th scope="col">Actions</th>
               </tr>
@@ -148,7 +166,6 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                   <router-link :to="`/users/Lang/edit/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
-                <td data-label="Code">{{ item.code ?? '--' }}</td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusLang-->
@@ -180,7 +197,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/Lang`"
+          :link="`/industry/add`"
           addText="Add Lang"
           description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No languages"
@@ -188,7 +205,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/Lang`"
+          :link="`/industry/add`"
           addText="Add Lang"
           description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No languages"
@@ -204,5 +221,4 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </template>
   </permission-builder>
 </template>
-
 <style scoped></style>
