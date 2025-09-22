@@ -142,7 +142,8 @@
     }
     h1 {
       font-size: $MdSize;
-      color: black;
+      color: $Gray-3;
+      font-weight: 400;
     }
 
     .route-name {

@@ -16,6 +16,10 @@ class IndexIndustryRepo extends RepoInterface<IndustryModel[]> {
     return this.instance
   }
 
+  override get hasPagination(): boolean {
+    return true
+  }
+
   onParse(data: any): IndustryModel[] {
     return data.map((item: any) => IndustryModel.fromMap(item))
   }

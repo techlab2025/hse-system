@@ -106,7 +106,6 @@ const updateData = () => {
 }
 
 const setLang = (data: TitleInterface) => {
-
   // console.log(data, 'data')
   lang.value = data
   updateData()
@@ -139,7 +138,6 @@ watch(
   },
   { immediate: true },
 )
-
 </script>
 
 <template>

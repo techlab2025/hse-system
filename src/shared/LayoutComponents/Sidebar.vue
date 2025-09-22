@@ -56,6 +56,25 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum?.LANGUAGE_ALL,
+                      PermissionsEnum.INDUSTRY_ALL,
+                      PermissionsEnum.INDUSTRY_CREATE,
+                      PermissionsEnum.INDUSTRY_DELETE,
+                      PermissionsEnum.INDUSTRY_FETCH,
+                      PermissionsEnum.INDUSTRY_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/industry">
+                      <SidebarVector />
+                      <IconHome />
+                      <span>Industries</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>

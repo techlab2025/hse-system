@@ -36,7 +36,7 @@ export default class IndexIndustryController extends ControllerInterface<Industr
 
         // console.log(this.state.value.data)
         // console.log(draft)
-        if (!draft) await router.push('/')
+        // if (!draft) await router.push('/')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

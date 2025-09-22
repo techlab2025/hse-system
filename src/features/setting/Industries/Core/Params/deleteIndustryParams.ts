@@ -1,7 +1,8 @@
 import type Params from '@/base/core/params/params'
 
-export default class UpdateIndustryParams implements Params {
-  industryId: number
+export default class DeleteIndustryParams implements Params {
+  industryId: number;
+
 
   constructor(industryId: number) {
     this.industryId = industryId

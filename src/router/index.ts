@@ -29,10 +29,24 @@ const router = createRouter({
           path: 'languages',
           name: 'languages',
           component: () => import('../views/Lang/IndexLang.vue'),
-        }
-      ]
+        },
+        {
+          path: 'industry',
+          name: 'industry',
+          component: () => import('../views/Industry/IndexIndustry.vue'),
+        },
+        {
+          path: 'industry/add',
+          name: 'Add industry',
+          component: () => import('../views/Industry/AddIndustry.vue'),
+        },
+        {
+          path: 'industry/:id',
+          name: 'Edit industry',
+          component: () => import('../views/Industry/EditIndustry.vue'),
+        },
+      ],
     },
-
   ],
 })
 

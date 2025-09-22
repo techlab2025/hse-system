@@ -1,16 +1,15 @@
 // import type TitleModel from "@/base/core/Models/title_model";
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class IndustryModel {
   public id: number
-  public titles: TranslationsParams[]
+  public title: string
 
-  constructor(id: number, titles: TranslationsParams[]) {
+  constructor(id: number, title: string) {
     this.id = id
-    this.titles = titles
+    this.title = title
   }
 
   static fromMap(data: any): IndustryModel {
-    return new IndustryModel(data.id, data.titles)
+    return new IndustryModel(data.id, data.title)
   }
 }

@@ -36,7 +36,7 @@ export default class UpdateIndustryController extends ControllerInterface<Indust
 
         // console.log(this.state.value.data)
         // console.log(draft)
-        if (!draft) await router.push('/')
+        if (!draft) await router.push('/admin/industry')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

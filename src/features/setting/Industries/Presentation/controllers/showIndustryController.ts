@@ -36,7 +36,6 @@ export default class ShowIndustryController extends ControllerInterface<Industry
 
         // console.log(this.state.value.data)
         // console.log(draft)
-        if (!draft) await router.push('/')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

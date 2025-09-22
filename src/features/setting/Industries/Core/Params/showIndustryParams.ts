@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 
-export default class IndexIndustryParams implements Params {
+export default class ShowIndustryParams implements Params {
   industryId: number
 
   constructor(industryId: number) {
