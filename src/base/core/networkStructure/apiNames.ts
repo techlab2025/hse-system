@@ -37,12 +37,12 @@ class ApiNames {
 
 
   //EquipmentType
-  public CreateEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "create_equipment_type";
-  public IndexEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_equipment_type";
-  public ShowEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_equipment_type_details";
-  public EditEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_equipment_type";
-  public DeleteEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_equipment_type";
-  public DisEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "disable_equipment_type";
+  public CreateEquipmentType = this.baseUrl +  this.dashboardPrefix + "create_equipment_type";
+  public IndexEquipmentType = this.baseUrl +  this.dashboardPrefix + "fetch_equipment_types";
+  public ShowEquipmentType = this.baseUrl +  this.dashboardPrefix + "fetch_equipment_type_details";
+  public EditEquipmentType = this.baseUrl +  this.dashboardPrefix + "update_equipment_type";
+  public DeleteEquipmentType = this.baseUrl +  this.dashboardPrefix + "delete_equipment_type";
+  public DisEquipmentType = this.baseUrl +  this.dashboardPrefix + "disable_equipment_type";
 
 }
 

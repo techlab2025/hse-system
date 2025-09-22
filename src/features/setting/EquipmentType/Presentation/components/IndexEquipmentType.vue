@@ -1,4 +1,4 @@
-<script EquipmentType="ts" setup>
+<script lang="ts" setup>
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 
@@ -9,14 +9,14 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
+// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/deleteEquipmentTypeController'
 import DeleteEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/deleteEquipmentTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-// import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
@@ -35,6 +35,8 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const state = ref(indexEquipmentTypeController.state.value)
+const route = useRoute()
+const id = route.params.id
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
 const fetchEquipmentType = async (
@@ -43,7 +45,13 @@ const fetchEquipmentType = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage)
+  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
 
@@ -89,11 +97,21 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/EquipmentType/${id}`,
+    link: `/admin/equipment-type/${id}`,
     permission: [
-      PermissionsEnum.EquipmentTypeUAGE_UPDATE,
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EquipmentTypeUAGE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+    ],
+  },
+  {
+    text: t('add_sub_equipment_type'),
+    icon: IconEdit,
+    link: `/equipment-type/add/${id}`,
+    permission: [
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
   {
@@ -101,9 +119,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteEquipmentType(id),
     permission: [
-      PermissionsEnum.EquipmentTypeUAGE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EquipmentTypeUAGE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
 ]
@@ -133,19 +151,22 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <router-link to="/admin/EquipmentType/add" class="btn btn-primary">
-        {{ $t('Add_EquipmentType') }}
-      </router-link>
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+        <router-link to="/admin/equipment-type/add" class="btn btn-primary">
+          {{ $t('Add_EquipmentType') }}
+        </router-link>
+      </permission-builder>
     </div>
   </div>
 
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EquipmentTypeUAGE_ALL,
-      PermissionsEnum.EquipmentTypeUAGE_FETCH,
-      PermissionsEnum.EquipmentTypeUAGE_UPDATE,
-      PermissionsEnum.EquipmentTypeUAGE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">

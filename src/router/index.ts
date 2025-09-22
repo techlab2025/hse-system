@@ -45,6 +45,21 @@ const router = createRouter({
           name: 'Edit industry',
           component: () => import('../views/Industry/EditIndustry.vue'),
         },
+        {
+          path: 'equipment-types/:id?',
+          name: 'Equipment Type',
+          component: () => import('../views/EquipmentType/IndexEquipmentType.vue'),
+        },
+        {
+          path: 'equipment-type/add/:id?',
+          name: 'Add Equipment Type',
+          component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
+        },
+        {
+          path: 'equipment-type/:id',
+          name: 'Edit Equipment Type',
+          component: () => import('../views/EquipmentType/EditEquipmentType.vue'),
+        }
       ],
     },
   ],

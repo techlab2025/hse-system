@@ -76,8 +76,24 @@ const active = ref('0')
                   >
                     <router-link to="/admin/industry">
                       <SidebarVector />
-                      <IconHome />
                       <span>Industries</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+                      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+                      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+                      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+                      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/equipment-types">
+                      <SidebarVector />
+                      <span>Equipment Types</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>
