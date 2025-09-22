@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-const props = defineProps<{
-  langs: { title: string; locale: string; icon?: any }[]
-  modelValue?: { locale: string; title: string }[]
-  defaultLang?: { locale: string; title: string }
-}>()
+const props = withDefaults(
+  defineProps<{
+    langs: { title: string; locale: string; icon?: any }[]
+    modelValue?: { locale: string; title: string }[]
+    defaultLang?: { locale: string; title: string }
+    label?: string
+  }>(),
+  {
+    langs: () => [],
+    modelValue: () => [],
+    defaultLang: () => ({ locale: 'en', title: '' }),
+    label: 'Title',
+  },
+)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: { locale: string; title: string }[]): void
@@ -69,7 +78,7 @@ watch(
   <div class="input-wrapper">
     <div class="label-wrapper">
       <label>
-        Title
+        {{ label }}
         <span class="text-red-500">*</span>
       </label>
 
