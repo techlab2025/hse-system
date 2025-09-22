@@ -198,12 +198,13 @@ async function reloadData(): Promise<void> {
 
 .input-label {
   width: 100%;
-  margin-left: auto;
+
   justify-content: space-between;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   label {
     width: fit-content;
+    text-align: start;
   }
   span {
     width: fit-content;

@@ -2,10 +2,10 @@ import type Params from '@/base/core/params/params'
 import type UseCase from '@/base/Domain/UseCase/use_case'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type IndustryModel from '../../Data/Models/IndustryModel'
-import { ShowIndustryRepo } from '../repositories/show_industry_repo'
+import { CreateIndustryRepo } from '../repositories/createIndustryRepo'
 
-export default class ShowIndustryUseCase implements UseCase<IndustryModel, Params> {
+export default class CraeteIndustryUseCase implements UseCase<IndustryModel, Params> {
   async call(params: Params): Promise<DataState<IndustryModel>> {
-    return ShowIndustryRepo.getInstance().call(params)
+    return CreateIndustryRepo.getInstance().call(params)
   }
 }

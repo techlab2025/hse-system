@@ -33,8 +33,6 @@ const ReverseTable = () => {
   isReversed.value = !isReversed.value
   items.value.reverse()
 }
-
-
 </script>
 
 <template>

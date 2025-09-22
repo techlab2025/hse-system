@@ -4,7 +4,7 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from "@/assets/images/Success.png";
 import errorImage from "@/assets/images/Error.png";
-import CraeteIndustryUseCase from '../../Domain/useCase/create_industry_use_case'
+import CraeteIndustryUseCase from '../../Domain/useCase/createIndustryUseCase'
 import type IndustryModel from '../../Data/Models/IndustryModel'
 
 export default class CreateIndustryController extends ControllerInterface<IndustryModel> {

@@ -7,6 +7,8 @@
 @use './utils/_primary_btn';
 @use './utils/_third_btn';
 @use './utils/_secondary_btn';
+@use './utils/input_serach';
+@use './utils/data_empty';
 //@use "./utils/_explore_btn";
 @use './normalize';
 
@@ -99,3 +101,4 @@ body {
 .p-select-label{
   color: black !important;
 }
+

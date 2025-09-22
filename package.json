@@ -25,7 +25,9 @@
     "tailwindcss": "^4.1.13",
     "vue": "^3.5.18",
     "vue-i18n": "^11.1.12",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "xlsx": "^0.18.5",
+    "xlsx-import": "^2.4.7"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
