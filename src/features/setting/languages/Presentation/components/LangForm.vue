@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import { LangsMap } from '@/constant/langs'
@@ -38,7 +38,7 @@ const langs = ref<{ locale: string; title: string }[]>([
 const lang = ref<TitleInterface | null>(null)
 
 // default available langs
-const langsDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langsDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const fetchLang = async (
   query: string = '',
@@ -57,7 +57,7 @@ const fetchLang = async (
       locale: item.code,
       title: '', // empty initially
       // if you already have icons mapped, use LangsMap
-      icon: LangsMap[item.code as keyof typeof LangsMap]?.icon,
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
     langsDefault.value = [
@@ -106,7 +106,6 @@ const updateData = () => {
 }
 
 const setLang = (data: TitleInterface) => {
-
   // console.log(data, 'data')
   lang.value = data
   updateData()
@@ -139,7 +138,6 @@ watch(
   },
   { immediate: true },
 )
-
 </script>
 
 <template>
@@ -155,7 +153,6 @@ watch(
       id="lang"
       placeholder="Select Language"
       @update:modelValue="setLang"
-      :disabled="langsDefault.length === 0"
       :required="true"
     />
   </div>

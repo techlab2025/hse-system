@@ -78,7 +78,7 @@ export default class PermissionModel {
       }),
       new TitleInterface({
         id: 8,
-        title: "Setting",
+        title: "IconSetting",
         subtitle: PermissionsEnum.Setting,
       }),
       new TitleInterface({

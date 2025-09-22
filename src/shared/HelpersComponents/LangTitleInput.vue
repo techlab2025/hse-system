@@ -6,7 +6,7 @@ const props = withDefaults(
     langs: { title: string; locale: string; icon?: any }[]
     modelValue?: { locale: string; title: string }[]
     defaultLang?: { locale: string; title: string }
-    label: string
+    label?: string
   }>(),
   {
     langs: () => [],

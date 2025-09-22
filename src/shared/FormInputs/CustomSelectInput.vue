@@ -166,7 +166,10 @@ async function reloadData(): Promise<void> {
       <IconBackStage />
     </span>
     <label :class="{ required: required }" class="input-label">
+      <span class="text-red-500">*</span>
+
       {{ label }}
+
     </label>
   </div>
 
