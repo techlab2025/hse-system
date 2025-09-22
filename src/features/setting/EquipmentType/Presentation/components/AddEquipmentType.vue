@@ -22,6 +22,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEquipmentType">
+
     <EquipmentTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">

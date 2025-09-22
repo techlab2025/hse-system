@@ -25,7 +25,7 @@ const acceptClient = async () => {
       1, // 1 is the status Accept of the client
     ),
   );
-  //when request is success i want visible = false & call fetchClient(); from IndexIndustry.vue
+  //when request is success i want visible = false & call fetchClient(); from IndexEquipmentType.vue
   visible.value = false;
   await emit("clientChangeStatus");
 };

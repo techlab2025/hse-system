@@ -1,18 +1,24 @@
-<script EquipmentType="ts" setup>
+<script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-import { EquipmentTypesMap } from '@/constant/EquipmentTypes'
+// import { EquipmentTypesMap } from '@/constant/EquipmentTypes'
+import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import type ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/EquipmentTypeDetailsModel.ts'
-import EquipmentTypeTitleInput from '@/shared/HelpersComponents/EquipmentTypeTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import EditEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/editEquipmentTypeParams'
-import AddEquipmentTypeParams from '@/features/setting/EquipmentTypeuages/Core/params/addEquipmentTypeParams'
+import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams.ts'
-import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController.ts'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
+import { LangsMap } from '@/constant/langs.ts'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
+import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+import { useRoute } from 'vue-router'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
@@ -20,8 +26,11 @@ const props = defineProps<{
   data?: ShowEquipmentTypeModel
 }>()
 
+const route = useRoute()
+const id = route.params.id
+
 // actual translations (values)
-const EquipmentTypes = ref<{ locale: string; title: string }[]>([
+const langs = ref<{ locale: string; title: string }[]>([
   {
     locale: 'en',
     icon: USA,
@@ -34,33 +43,39 @@ const EquipmentTypes = ref<{ locale: string; title: string }[]>([
   },
 ])
 
-// selected base EquipmentTypeuage
-const EquipmentType = ref<TitleInterface | null>(null)
+const allIndustries = ref<number>(0)
+const hasCertificate = ref<number>(0)
+const image = ref<string>('')
+
+// industry
+const industry = ref<TitleInterface[]>([])
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
+const industryController = IndexIndustryController.getInstance()
 
 // default available EquipmentTypes
-const EquipmentTypesDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
-const fetchEquipmentType = async (
+const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const params = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage)
-  const indexEquipmentTypeController = await IndexEquipmentTypeController.getInstance().getData(params)
+  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
+  const indexEquipmentTypeController = await IndexLangController.getInstance().getData(params)
 
   const response = indexEquipmentTypeController.value
 
   if (response?.data?.length) {
     // map backend EquipmentTypes into default structure
-    EquipmentTypesDefault.value = response.data.map((item: any) => ({
+    langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
       title: '', // empty initially
       // if you already have icons mapped, use EquipmentTypesMap
-      icon: markRaw(EquipmentTypesMap[item.code as keyof typeof EquipmentTypesMap]?.icon),
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
-    EquipmentTypesDefault.value = [
+    langDefault.value = [
       {
         locale: 'en',
         icon: USA,
@@ -76,84 +91,106 @@ const fetchEquipmentType = async (
 }
 
 onMounted(async () => {
-  await fetchEquipmentType()
+  await fetchLang()
 })
-
-const getEquipmentTypeTitleList = (): TitleInterface[] => {
-  return Object.values(EquipmentTypesMap).map((EquipmentType, index) => {
-    return new TitleInterface({
-      id: index + 1,
-      title: EquipmentType.name,
-      subtitle: EquipmentType.code,
-    })
-  })
-}
-const EquipmentTypesList = getEquipmentTypeTitleList()
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
 
-  EquipmentTypes.value.forEach((EquipmentType) => {
-    translationsParams.setTranslation('title', EquipmentType.locale, EquipmentType.title)
+  langs.value.forEach((lang) => {
+    translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
   const params = props.data?.id
-    ? new EditEquipmentTypeParams(props.data?.id! ?? 0, translationsParams, EquipmentType.value?.subtitle! ?? 'en')
-    : new AddEquipmentTypeParams(translationsParams, EquipmentType.value?.subtitle! ?? 'en')
+    // ? new EditEquipmentTypeParams(
+    //     props.data?.id! ?? 0,
+    //     translationsParams,
+    //     EquipmentType.value?.subtitle! ?? 'en',
+    //   )
+    // : new AddEquipmentTypeParams(translationsParams, EquipmentType.value?.subtitle! ?? 'en')
 
   // console.log(params, 'params')
   emit('update:data', params)
 }
 
-const setEquipmentType = (data: TitleInterface) => {
+const setIndustry = (data: TitleInterface[]) => {
   // console.log(data, 'data')
-  EquipmentType.value = data
+  industry.value = data
   updateData()
 }
 
 // when child emits modelValue (updated translations)
-const setEquipmentTypes = (data: { locale: string; title: string }[]) => {
-  EquipmentTypes.value = data
+const setLangs = (data: { locale: string; title: string }[]) => {
+  langs.value = data
 
-  // console.log(EquipmentTypes.value, 'EquipmentTypes')
+  // console.log(langs.value, 'langs')
   updateData()
 }
 
 // init EquipmentTypes either from backend (edit mode) or from defaults (create mode)
 watch(
-  [() => props.data, () => EquipmentTypesDefault.value],
+  [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (newDefault.length) {
       if (newData?.titles?.length) {
-        EquipmentTypes.value = newDefault.map((l) => {
+        langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
         })
       } else {
-        EquipmentTypes.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      EquipmentType.value = newData?.code
+      langs.value = newData?.code
     }
   },
   { immediate: true },
 )
+
+const setImage = async (data: File) => {
+  image.value = await filesToBase64(data)
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <EquipmentTypeTitleInput :EquipmentTypes="EquipmentTypesDefault" :modelValue="EquipmentTypes" @update:modelValue="setEquipmentTypes" />
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+    <label>{{ $t('has_certificate') }}</label>
+    <input type="checkbox" :value="1" v-model="hasCertificate" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+    <label>{{ $t('all_industries') }}</label>
+    <input type="checkbox" :value="1" v-model="allIndustries" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput
-      :modelValue="EquipmentType"
-      :staticOptions="EquipmentTypesList"
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
       label="EquipmentTypeuage"
       id="EquipmentType"
-      placeholder="Select EquipmentTypeuage"
-      @update:modelValue="setEquipmentType"
-      :required="true"
+      placeholder="Select industry"
+      :type="multiselect"
+      @update:modelValue="setIndustry"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <FileUpload
+      :modelValue="image"
+      @update:fileData="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+      :type="file"
+      :multiple="false"
     />
   </div>
 </template>

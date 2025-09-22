@@ -1,10 +1,10 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/EquipmentTypeModel'
+// import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
+import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import IndexEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/useCase/indexEquipmentTypeUseCase'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import TitleInterface from '@/base/Data/Models/title_interface'
+// import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class IndexEquipmentTypeController extends SelectControllerInterface<
   EquipmentTypeModel[]
