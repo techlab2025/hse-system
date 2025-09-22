@@ -122,34 +122,32 @@ const setLangs = (data: { locale: string; title: string }[]) => {
 
 // init langs either from backend (edit mode) or from defaults (create mode)
 watch(
-  () => props.data,
-  (newData) => {
-    if (newData?.titles?.length) {
-      langs.value = langsDefault.value.map((l) => {
-        const existing = newData.titles.find((t) => t.locale === l.locale)
-        return existing ? existing : { locale: l.locale, title: '' }
-      })
+  [() => props.data, () => langsDefault.value],
+  ([newData, newDefault]) => {
+    if (newDefault.length) {
+      if (newData?.titles?.length) {
+        langs.value = newDefault.map((l) => {
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ? existing : { locale: l.locale, title: '' }
+        })
+      } else {
+        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+      }
 
-      // console.log(langs.value, 'langs')
-    } else {
-      langs.value = langsDefault.value.map((l) => ({
-        locale: l.locale,
-        title: '',
-      }))
-
-      // console.log(langs.value, 'langs')
+      lang.value = newData?.code
     }
   },
   { immediate: true },
 )
+
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langsDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="lang"
       :staticOptions="langsList"
