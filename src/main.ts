@@ -2,8 +2,6 @@ import './assets/styles/main.min.css'
 import './assets/styles/main.min.css'
 import './assets/styles/tailwind.css'
 
-
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
@@ -13,7 +11,6 @@ import router from './router'
 import { createI18n } from 'vue-i18n'
 import * as Sentry from '@sentry/vue'
 
-const i18n = createI18n({})
 import ar from './locales/ar.json'
 import en from './locales/en.json'
 
@@ -54,5 +51,4 @@ app.use(PrimeVue, {
     preset: Aura,
   },
 })
-app.component('Skeleton', Skeleton)
 app.mount('#app')
