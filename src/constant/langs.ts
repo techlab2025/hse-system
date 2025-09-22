@@ -17,8 +17,12 @@ import VIE from '@/shared/icons/VIE.vue'
 import IR from '@/shared/icons/IR.vue'
 
 import { LangEnum } from '@/features/setting/languages/Core/enums/langEnum'
+import type { DefineComponent } from 'vue'
 
-export const LangsMap: Record<LangEnum, { name: string; icon: string; code: string }> = {
+export const LangsMap: Record<
+  LangEnum,
+  { name: string; icon: DefineComponent | ''; code: string }
+> = {
   [LangEnum.ARABIC]: { name: 'Arabic', icon: SA, code: LangEnum.ARABIC },
   [LangEnum.ENGLISH]: { name: 'English', icon: USA, code: LangEnum.ENGLISH },
   [LangEnum.FRENCH]: { name: 'French', icon: FR, code: LangEnum.FRENCH },
