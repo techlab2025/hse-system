@@ -1,5 +1,4 @@
 import './assets/styles/main.min.css'
-
 import './assets/styles/main.min.css'
 import './assets/styles/tailwind.css'
 
@@ -11,6 +10,7 @@ import App from './App.vue'
 import router from './router'
 import { createI18n } from 'vue-i18n'
 import * as Sentry from '@sentry/vue'
+
 import ar from './locales/ar.json'
 import en from './locales/en.json'
 
@@ -25,8 +25,6 @@ const i18n = createI18n({
     ar: ar,
   },
 })
-
-
 
 const app = createApp(App)
 
@@ -47,6 +45,7 @@ Sentry.init({
 app.use(createPinia())
 app.use(router)
 app.use(i18n)
+
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

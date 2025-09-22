@@ -33,9 +33,21 @@ export default class IndexIndustryController extends SelectControllerInterface<I
         // if (!draft) await router.push('/')
         // useLoaderStore().endLoadingWithDialog();
       } else {
+
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
       }
     } catch (error: any) {
-      console.log(error)
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog',
+      //   titleContent: this.state.value.error?.title,
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
 
     }
 

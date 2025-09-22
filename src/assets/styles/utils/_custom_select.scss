@@ -86,6 +86,8 @@
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
   border-color: #d9dbe9 !important;
+  padding: $XsSize3;
+  margin-top: $XsSize3;
   &:focus {
     border-color: #d9dbe9 !important;
   }

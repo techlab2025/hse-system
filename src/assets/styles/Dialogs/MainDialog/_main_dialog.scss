@@ -1,15 +1,16 @@
-@use "../../variables" as *;
+@use '../../variables' as *;
 .dialog {
   border: none;
-  padding: 20px 60px;
+  padding: 20px ;
   border-radius: 16px;
   text-align: center;
   margin: auto;
   background-color: $White;
 
   img {
-    max-width: 120px;
-    max-height: 120px;
+    max-width: 450px;
+    max-height: 450px;
+    object-fit: scale-down;
     margin: 0 auto;
     display: block;
     aspect-ratio: 16/9;
@@ -17,7 +18,8 @@
 
   h4 {
     font-weight: bold;
-    color: rgba(76, 150, 95, 1);
+    color: black;
+    font-family: 'Regular';
     margin-block: 1rem;
   }
   p {

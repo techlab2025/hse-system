@@ -4,7 +4,7 @@ import ShowDeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/delete_dia
 
 export default class DialogSelector {
   private static _instance: DialogSelector
-  private constructor() { }
+  private constructor() {}
   static get instance() {
     if (!DialogSelector._instance) {
       DialogSelector._instance = new DialogSelector()
