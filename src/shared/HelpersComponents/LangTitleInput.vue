@@ -24,10 +24,10 @@ const titles = ref<{ locale: string; title: string }[]>(
 )
 
 // active language
-const lang = ref(props.defaultLang?.locale || props.langs[0]?.locale || '')
+const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 
 // current title binding
-const title = ref(props.langs.find((l) => l.locale === lang.value)?.title || '')
+const title = ref( '')
 
 // ✅ Sync active title when lang changes
 watch(

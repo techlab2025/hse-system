@@ -9,7 +9,7 @@ import ShowClientParams from "@/features/dashboard/users/languages/Core/params/s
 import ShowClientController from "@/features/dashboard/users/languages/Presentation/controllers/show_client_controller";
 import DataStatus from "@/components/DataStatues/DataStatus.vue";
 import FormLoader from "@/components/DataStatues/FormLoader.vue";
-import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/LangForm.vue";
+import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/LangIndustry.vue";
 import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
 import { validationEnum } from "@/base/persention/utils/validation_enum";
 import validationDialogService from "@/base/persention/utils/validationService";
