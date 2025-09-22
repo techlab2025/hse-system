@@ -30,7 +30,7 @@ const emit = defineEmits<{
 }>()
 
 const pdfUrl = ref<string>(props.initialFileData || '')
-const fileData = ref<File | null>(null)
+const fileData = ref<File | null>(props.initialFileData || '')
 
 const placeholderIcons = {
   pdf: PdfIcon,
@@ -79,6 +79,7 @@ watch(
   () => props.initialFileData,
   (newValue) => {
     pdfUrl.value = newValue || ''
+    fileData.value = newValue || ''
   },
 )
 const deleteImage = () => {

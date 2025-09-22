@@ -2,6 +2,7 @@
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
+import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class EquipmentTypeDetailsModel {
@@ -38,11 +39,20 @@ export default class EquipmentTypeDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       data.has_certificate,
       data.all_industries,
-      data.industries.length > 0
-        ? data.industries.map((industry) => TitleModel.fromMap(industry))
+      data.industries?.length > 0
+        ? data.industries?.map((industry) => this.getTitle(industry))
         : [],
       data.parent_id,
       data.image,
     )
+  }
+
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
+
+    return new TitleInterface({
+      id: data.id,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
   }
 }
