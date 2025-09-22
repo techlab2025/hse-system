@@ -6,7 +6,6 @@ import AccordionContent from 'primevue/accordioncontent'
 import CloseSidebar from '@/shared/icons/CloseSidebar.vue'
 
 import { ref } from 'vue'
-import IconArrowDown from '@/shared/icons/IconArrowDown.vue'
 import SidebarVector from '@/shared/icons/SidebarVector.vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
@@ -32,88 +31,28 @@ const active = ref('0')
 
     <div class="links">
       <Accordion value="0">
-        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
+        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
           <AccordionPanel value="0">
-            <AccordionHeader> Header I </AccordionHeader>
+            <AccordionHeader> Settings </AccordionHeader>
 
             <AccordionContent
               ><ul>
                 <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum?.LANGUAGE_ALL,
+                      PermissionsEnum.LANGUAGE_CREATE,
+                      PermissionsEnum.LANGUAGE_UPDATE,
+                      PermissionsEnum.LANGUAGE_DETAILS,
+                      PermissionsEnum.LANGUAGE_DELETE,
+                      PermissionsEnum.LANGUAGE_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/languages">
                       <SidebarVector />
                       <IconHome />
-                      <span>Home</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
-                      <SidebarVector />
-
-                      <IconHome />
-                      <span>Home</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
-                      <SidebarVector />
-
-                      <IconHome />
-                      <span>Home</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
-                      <SidebarVector />
-
-                      <IconHome />
-                      <span>Home</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-              </ul>
-            </AccordionContent>
-          </AccordionPanel>
-        </PermissionBuilder>
-
-        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-          <AccordionPanel value="1">
-            <AccordionHeader>Header II</AccordionHeader>
-            <AccordionContent>
-              <ul>
-                <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
-                      <SidebarVector />
-
-                      <IconHome />
-                      <span>Home</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-              </ul>
-            </AccordionContent>
-          </AccordionPanel>
-        </PermissionBuilder>
-
-        <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-          <AccordionPanel value="2">
-            <AccordionHeader>Header III</AccordionHeader>
-            <AccordionContent>
-              <ul>
-                <li>
-                  <PermissionBuilder :code="[PermissionsEnum?.AdminAll]">
-                    <router-link to="/">
-                      <SidebarVector />
-
-                      <IconHome />
-                      <span>Home</span>
+                      <span>languages</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

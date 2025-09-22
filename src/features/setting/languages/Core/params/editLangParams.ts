@@ -18,8 +18,8 @@ export default class EditLangParams implements Params {
 
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
-    data['translations'] = this.id
-    data['translation'] = this.translation.toMap()
+    data['language_id'] = this.id
+    data['translations'] = this.translation.toMap()
     data['code'] = this.code
     if (this.status) data['status'] = this.status
     return data

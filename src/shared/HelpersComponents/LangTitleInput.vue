@@ -1,59 +1,68 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
-  langs: { code: string; icon: any }[];
-  modelValue?: { lang: string; title: string }[];
-}>();
+  langs: { title: string; locale: string; icon?: any }[]
+  modelValue?: { locale: string; title: string }[]
+  defaultLang?: { locale: string; title: string }
+}>()
 
 const emit = defineEmits<{
-  (e: "update:modelValue", value: { lang: string; title: string }[]): void;
-}>();
+  (e: 'update:modelValue', value: { locale: string; title: string }[]): void
+}>()
 
-// build local state from props.modelValue or create empty titles
-const titles = ref<{ lang: string; title: string }[]>(
-  props.modelValue && props.modelValue.length
-    ? props.modelValue.map((f) => ({ ...f }))
-    : props.langs.map((l) => ({ lang: l.code, title: "" }))
-);
+// ✅ Build titles for all langs (from modelValue, defaultLang, or empty)
+const titles = ref<{ locale: string; title: string }[]>(
+  props.langs.map((l) => {
+    const fromModel = props.modelValue?.find((f) => f.locale === l.locale)
+    if (fromModel) return { ...fromModel }
+    if (props.defaultLang?.locale === l.locale) {
+      return { locale: l.locale, title: props.defaultLang.title } // ✅ FIXED
+    }
+    return { locale: l.locale, title: '' } // ✅ FIXED
+  }),
+)
 
-// active language (default first)
-const lang = ref(props.langs[0]?.code || "");
+// active language
+const lang = ref(props.defaultLang?.locale || props.langs[0]?.locale || '')
 
-// compute current title binding
-const title = ref("");
+// current title binding
+const title = ref(props.langs.find((l) => l.locale === lang.value)?.title || '')
 
-// sync active title when lang changes
+// ✅ Sync active title when lang changes
 watch(
   lang,
   (newLang) => {
-    const found = titles.value.find((t) => t.lang === newLang);
-    title.value = found ? found.title : "";
+    const found = titles.value.find((t) => t.locale === newLang)
+    title.value = found ? found.title : ''
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 
-// when input changes, update titles list
+// ✅ Update titles when input changes
 watch(title, (val) => {
-  const idx = titles.value.findIndex((t) => t.lang === lang.value);
+  const idx = titles.value.findIndex((t) => t.locale === lang.value)
   if (idx !== -1) {
-    titles.value[idx].title = val;
+    titles.value[idx].title = val
   }
-  emit("update:modelValue", titles.value);
-});
+  emit('update:modelValue', [...titles.value])
+})
 
-// sync if parent updates modelValue
+// ✅ Sync with parent changes
 watch(
   () => props.modelValue,
   (nv) => {
     if (nv) {
-      titles.value = nv.map((f) => ({ ...f }));
-      const current = titles.value.find((t) => t.lang === lang.value);
-      if (current) title.value = current.title;
+      titles.value = props.langs.map((l) => {
+        const fromModel = nv.find((f) => f.locale === l.locale)
+        return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
+      })
+      const current = titles.value.find((t) => t.locale === lang.value)
+      if (current) title.value = current.title
     }
   },
-  { deep: true }
-);
+  { deep: true },
+)
 </script>
 
 <template>
@@ -64,21 +73,14 @@ watch(
         <span class="text-red-500">*</span>
       </label>
 
+<!--      <pre>-->
+<!--        {{ langs }}-->
+<!--      </pre>-->
       <!-- Dynamic Languages -->
       <div class="languages">
-        <div
-          class="input-lang"
-          v-for="(l, index) in langs"
-          :key="index"
-        >
-          <input
-            type="radio"
-            :id="l.code"
-            name="lang"
-            :value="l.code"
-            v-model="lang"
-          />
-          <label class="icon-lng" :for="l.code">
+        <div class="input-lang" v-for="(l, index) in langs" :key="index">
+          <input type="radio" :id="l.locale" name="lang" :value="l.locale" v-model="lang" />
+          <label class="icon-lng" :for="l.locale">
             <component :is="l.icon" />
           </label>
         </div>
@@ -90,7 +92,7 @@ watch(
 
     <!-- Selected Language Info -->
     <span class="select-lang">
-      {{ lang ? lang.toUpperCase() : "select language from the top" }}
+      {{ lang ? lang.toUpperCase() : 'select language from the top' }}
     </span>
   </div>
 </template>

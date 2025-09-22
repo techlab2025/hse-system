@@ -22,15 +22,15 @@ export default class ShowLangModel {
   }
 
   static fromMap(data: any): ShowLangModel {
-    return new ShowLangModel(data.id, data.titles, data.descriptions, data.code)
+    return new ShowLangModel(data.id, data.titles, data.descriptions, this.getCode(data.code))
   }
 
   static getCode(code: string): TitleInterface | null {
     switch (code) {
       case LangEnum.ENGLISH:
-        return new TitleInterface({ id: 1, title: 'English', subtitle: code })
+        return new TitleInterface({ id: 2, title: 'English', subtitle: code })
       case LangEnum.ARABIC:
-        return new TitleInterface({ id: 2, title: 'Arabic', subtitle: code })
+        return new TitleInterface({ id: 1, title: 'Arabic', subtitle: code })
       case LangEnum.FRENCH:
         return new TitleInterface({ id: 3, title: 'French', subtitle: code })
       case LangEnum.GERMAN:
