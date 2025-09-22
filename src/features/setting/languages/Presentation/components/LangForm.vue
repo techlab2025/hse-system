@@ -155,6 +155,8 @@ watch(
       id="lang"
       placeholder="Select Language"
       @update:modelValue="setLang"
+      :disabled="langsDefault.length === 0"
+      :required="true"
     />
   </div>
 </template>

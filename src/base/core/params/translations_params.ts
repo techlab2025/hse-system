@@ -1,62 +1,76 @@
 export default class TranslationsParams {
-    // Store translations in a nested structure: { field: { locale: value } }
-    private translations: Record<string, Record<string, string>> = {
-        title: {},
-        description: {}
-    };
+  // Store translations in a nested structure: { field: { locale: value } }
+  private translations: Record<string, Record<string, string>> = {
+    title: {},
+    description: {},
+  }
 
-    constructor(locales: string[] = ['en', 'ar', 'fr']) {
-        // Initialize empty translations for all locales
-        for (const field of ['title', 'description']) {
-            for (const locale of locales) {
-                this.translations[field][locale] = "";
-            }
+  constructor(locales: string[] = ['en', 'ar', 'fr']) {
+    // Initialize empty translations for all locales
+    for (const field of ['title', 'description']) {
+      for (const locale of locales) {
+        this.translations[field][locale] = ''
+      }
+    }
+  }
+
+  // Set translation for a specific field and locale
+  setTranslation(field: string, locale: string, value: string): void {
+    if (!this.translations[field]) {
+      this.translations[field] = {}
+    }
+    this.translations[field][locale] = value
+  }
+
+  // Get translation for a specific field and locale
+  getTranslation(field: string, locale: string): string {
+    return this.translations[field]?.[locale] || ''
+  }
+
+  // Convert to API-ready format with dynamic keys
+  toMap(): Record<string, any> {
+    const result: Record<string, any> = {}
+
+    for (const [field, localeValues] of Object.entries(this.translations)) {
+      for (const [locale, value] of Object.entries(localeValues)) {
+        if (value) {
+          // Only include non-empty values
+          result[`${field}_${locale}`] = value
         }
+      }
     }
 
-    // Set translation for a specific field and locale
-    setTranslation(field: string, locale: string, value: string): void {
-        if (!this.translations[field]) {
-            this.translations[field] = {};
-        }
-        this.translations[field][locale] = value;
-    }
+    return result
+  }
 
-    // Get translation for a specific field and locale
-    getTranslation(field: string, locale: string): string {
-        return this.translations[field]?.[locale] || "";
-    }
+  // Static method to create from an array of translations
+  static fromMap(
+    titles: TitleLocale[],
+    descriptions: DescriptionLocale[] = [],
+  ): {
+    titles: TitleLocale[]
+    descriptions: DescriptionLocale[]
+  } {
+    const params = new TranslationsParams()
 
-    // Convert to API-ready format with dynamic keys
-    toMap(): Record<string, any> {
-        const result: Record<string, any> = {};
+    titles.forEach(({ locale, title }) => {
+      params.setTranslation('title', locale, title)
+    })
 
-        for (const [field, localeValues] of Object.entries(this.translations)) {
-            for (const [locale, value] of Object.entries(localeValues)) {
-                if (value) { // Only include non-empty values
-                    result[`${field}_${locale}`] = value;
-                }
-            }
-        }
+    descriptions.forEach(({ locale, description }) => {
+      params.setTranslation('description', locale, description)
+    })
 
-        return result;
-    }
+    return { titles, descriptions }
+  }
+}
 
-    // Static method to create from an array of translations
-    static fromArray(
-        titles: { locale: string, value: string }[],
-        descriptions: { locale: string, value: string }[] = []
-    ): TranslationsParams {
-        const params = new TranslationsParams();
+export interface TitleLocale {
+  locale: string
+  title: string
+}
 
-        titles.forEach(({ locale, value }) => {
-            params.setTranslation('title', locale, value);
-        });
-
-        descriptions.forEach(({ locale, value }) => {
-            params.setTranslation('description', locale, value);
-        });
-
-        return params;
-    }
+export interface DescriptionLocale {
+  locale: string
+  description: string
 }

@@ -1,18 +1,21 @@
 // import type TitleModel from "@/base/core/Models/title_model";
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+} from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class ShowLangModel {
   public id: number
-  public titles: TranslationsParams[]
-  public descriptions: TranslationsParams[]
+  public titles: TitleLocale[]
+  public descriptions: DescriptionLocale[]
   public code: TitleInterface | null
 
   constructor(
     id: number,
-    titles: TranslationsParams[],
-    descriptions: TranslationsParams[],
+    titles: TitleLocale[],
+    descriptions: DescriptionLocale[],
     code: TitleInterface | null,
   ) {
     this.id = id
@@ -22,7 +25,12 @@ export default class ShowLangModel {
   }
 
   static fromMap(data: any): ShowLangModel {
-    return new ShowLangModel(data.id, data.titles, data.descriptions, this.getCode(data.code))
+    return new ShowLangModel(
+      data.id,
+      TranslationsParams.fromMap(data.titles).titles,
+      data.descriptions,
+      this.getCode(data.code),
+    )
   }
 
   static getCode(code: string): TitleInterface | null {
