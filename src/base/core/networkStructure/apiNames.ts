@@ -37,7 +37,13 @@ class ApiNames {
   public DeleteIndustry = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_industry";
 
 
-
+  //EquipmentType
+  public CreateEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "create_equipment_type";
+  public IndexEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_equipment_type";
+  public ShowEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "fetch_equipment_type_details";
+  public EditEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "update_equipment_type";
+  public DeleteEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "delete_equipment_type";
+  public DisEquipmentType = this.baseUrl + this.apiPrefix + this.employeePrefix + "disable_equipment_type";
 }
 
 export {ApiNames};
