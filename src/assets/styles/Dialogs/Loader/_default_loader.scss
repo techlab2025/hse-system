@@ -1,4 +1,4 @@
-@use "../../variables" as *;
+@use '../../variables' as *;
 
 /*loader container*/
 .loader-dialog {
@@ -8,7 +8,7 @@
   padding: 20px 60px;
   margin: auto;
 
-  background-color: $PrimaryColor;
+  background-color: transparent !important;
   .loader-container {
     padding: 20px 60px;
   }
@@ -34,7 +34,7 @@
   position: relative;
 }
 .loader::before {
-  content: "";
+  content: '';
   position: absolute;
   margin: 2px;
   inset: 0 100% 0 0;

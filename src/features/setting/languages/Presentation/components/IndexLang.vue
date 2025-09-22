@@ -142,6 +142,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
   >
     <DataStatus :controller="state">
       <template #success>
+
         <div class="table-responsive">
           <table class="main-table">
             <thead>

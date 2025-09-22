@@ -63,6 +63,9 @@
 /*<editor-fold desc="pagination">*/
 @use './Pagination/pagination';
 /*</editor-fold>*/
+/*<editor-fold desc="pagination">*/
+@use './skeleton/skeleton';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

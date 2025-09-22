@@ -49,7 +49,7 @@ const fetchIndustry = async (
   withPage: number = 1,
 ) => {
   const indexIndustryParams = new IndexIndustryParams(query, withPage, perPage, pageNumber)
-  await indexIndustryController.IndexIndustry(indexIndustryParams, useRouter())
+  await indexIndustryController.getData(indexIndustryParams)
 }
 
 onMounted(() => {
@@ -112,7 +112,6 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     ],
   },
 ]
-
 </script>
 
 <template>
