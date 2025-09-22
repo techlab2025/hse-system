@@ -8,6 +8,11 @@
   gap: $XsSize3;
   position: relative;
 
+  &.check-box {
+    @include flex-justify();
+    gap: $XsSize2;
+  }
+
   label {
     font-size: $MdSize;
     color: #202020;
@@ -44,7 +49,7 @@
     }
   }
 
-  input {
+  input:not([type="checkbox"]) {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
     padding: $MdSize2 $MdSize;
     font-size: $SmSize;
@@ -79,6 +84,8 @@
 
 
   }
+
+
 
 
 

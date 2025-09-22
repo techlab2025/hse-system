@@ -92,7 +92,7 @@ const permissions = ref<TitleInterface[]>([
   }),
   new TitleInterface({
     id: 8,
-    title: "Setting",
+    title: "IconSetting",
     subtitle: PermissionsEnum.Setting,
   }),
   new TitleInterface({

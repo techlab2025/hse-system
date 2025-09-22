@@ -64,6 +64,10 @@
     @include flex-column();
     gap: $MdSize;
 
+    .links-header {
+      @include flex-align();
+      gap: $XsSize4;
+    }
     ul {
       @include flex-column();
       gap: $SmSize;
