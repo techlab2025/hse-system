@@ -1,10 +1,10 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
+// import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import IndexLangUseCase from '@/features/setting/languages/Domain/useCase/indexLangUseCase'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import TitleInterface from '@/base/Data/Models/title_interface'
+// import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class IndexLangController extends SelectControllerInterface<LangModel[]> {
   private static instance: IndexLangController

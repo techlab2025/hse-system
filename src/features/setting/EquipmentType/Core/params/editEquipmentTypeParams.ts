@@ -47,8 +47,8 @@ export default class EditEquipmentTypeParams implements Params {
 
     data['equipment_type_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['has_certificate'] = this.hasCertificate
-    data['all_industries'] = this.allIndustries
+    data['has_certificate'] = this.hasCertificate ? 1 : 0
+    data['all_industries'] = this.allIndustries ? 1 : 0
     data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image

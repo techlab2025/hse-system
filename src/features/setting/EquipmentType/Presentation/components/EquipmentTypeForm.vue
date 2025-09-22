@@ -27,7 +27,7 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
-const id = route.params.id
+const id = route.params.parent_id
 
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -102,12 +102,25 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    // ? new EditEquipmentTypeParams(
-    //     props.data?.id! ?? 0,
-    //     translationsParams,
-    //     EquipmentType.value?.subtitle! ?? 'en',
-    //   )
-    // : new AddEquipmentTypeParams(translationsParams, EquipmentType.value?.subtitle! ?? 'en')
+    ? new EditEquipmentTypeParams(
+        props.data?.id! ?? 0,
+        translationsParams,
+        hasCertificate.value ,
+        allIndustries.value,
+        industry.value.map((item) => item.id),
+        id,
+        image.value,
+        image.value?.id,
+      )
+    : new AddEquipmentTypeParams(
+        translationsParams,
+        hasCertificate.value,
+        allIndustries.value,
+        industry.value.map((item) => item.id),
+        id,
+        image.value.file,
+        image.value?.id,
+      )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -141,7 +154,11 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      langs.value = newData?.code
+      // langs.value = newData?.code
+      hasCertificate.value = newData?.hasCertificate
+      allIndustries.value = newData?.allIndustries
+      industry.value = newData?.industries
+      image.value = newData?.image
     }
   },
   { immediate: true },
@@ -155,20 +172,16 @@ const setImage = async (data: File) => {
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('has_certificate') }}</label>
-    <input type="checkbox" :value="1" v-model="hasCertificate" />
+    <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="1" v-model="allIndustries" />
+    <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput
@@ -178,18 +191,17 @@ const setImage = async (data: File) => {
       label="EquipmentTypeuage"
       id="EquipmentType"
       placeholder="Select industry"
-      :type="multiselect"
+      :type="2"
       @update:modelValue="setIndustry"
     />
   </div>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <FileUpload
-      :modelValue="image"
+      :initialFileData="image"
       @update:fileData="setImage"
       label="Image"
       id="image"
       placeholder="Select image"
-      :type="file"
       :multiple="false"
     />
   </div>
