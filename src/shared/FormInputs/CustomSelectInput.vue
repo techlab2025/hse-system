@@ -196,18 +196,5 @@ async function reloadData(): Promise<void> {
   }
 }
 
-.input-label {
-  width: 100%;
 
-  justify-content: space-between;
-  display: flex;
-  flex-direction: row-reverse;
-  label {
-    width: fit-content;
-    text-align: start;
-  }
-  span {
-    width: fit-content;
-  }
-}
 </style>

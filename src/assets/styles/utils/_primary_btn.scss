@@ -4,6 +4,8 @@
   background-color: $PrimaryColor;
   color: $White;
   &:hover {
-    background-color: $Black;
+    background-color: transparent;
+    color: $PrimaryColor;
+    border: 1px solid $MainBorder;
   }
 }
