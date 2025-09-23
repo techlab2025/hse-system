@@ -24,7 +24,10 @@ import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+import IndexEquipmentController from '../controllers/indexEquipmentController'
+import IndexEquipmentParams from '../../Core/params/indexEquipmentParams'
+import DeleteEquipmentParams from '../../Core/params/deleteEquipmentParams'
+import DeleteEquipmentController from '../controllers/deleteEquipmentController'
 
 const { t } = useI18n()
 
@@ -34,60 +37,58 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
-const state = ref(indexEquipmentTypeController.state.value)
+const indexEquipmentController = IndexEquipmentController.getInstance()
+const state = ref(indexEquipmentController.state.value)
 const route = useRoute()
-
-const id = route.params.parent_id
-
+let id = route.params.id
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
-const fetchEquipmentType = async (
+const fetchEquipment = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
+  const deleteEquipmentTypeParams = new IndexEquipmentParams(
     query,
     pageNumber,
     perPage,
     withPage,
     id,
   )
-  await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
+  await indexEquipmentController.getData(deleteEquipmentTypeParams)
 }
 
 onMounted(() => {
-  fetchEquipmentType()
+  fetchEquipment()
 })
 
 const searchEquipmentType = debounce(() => {
-  fetchEquipmentType(word.value)
+  fetchEquipment(word.value)
 })
 
-const deleteEquipmentType = async (id: number) => {
-  const deleteEquipmentTypeParams = new DeleteEquipmentTypeParams(id)
-  await DeleteEquipmentTypeController.getInstance().deleteEquipmentType(deleteEquipmentTypeParams)
-  await fetchEquipmentType()
+const deleteEquipment = async (id: number) => {
+  const deleteEquipmentParams = new DeleteEquipmentParams(id)
+  await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
+  await fetchEquipment()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchEquipmentType('', currentPage.value, countPerPage.value)
+  fetchEquipment('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchEquipmentType('', currentPage.value, countPerPage.value)
+  fetchEquipment('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexEquipmentTypeController.state.value,
+  () => indexEquipmentController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState)
       state.value = newState
     }
   },
@@ -96,11 +97,11 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
+const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/equipment-type/${id}`,
+    link: `/admin/equipment/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
@@ -108,33 +109,33 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_equipment_type'),
+    text: t('add_sub_equipment'),
     icon: IconEdit,
-    link: `/admin/equipment-type/add/${id}`,
+    link: `/admin/equipment/add/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_ALL,
     ],
   },
   {
-    text: t('sub_equipment_types'),
+    text: t('sub_equipment'),
     icon: IconEdit,
-    link: `/admin/equipment-types/${id}`,
+    link: `/admin/equipments/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_ALL,
     ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteEquipmentType(id),
+    action: () => deleteEquipment(id),
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.EQUIPMENT_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_ALL,
     ],
   },
 ]
@@ -143,7 +144,7 @@ watch(
   () => route?.params?.id,
   (Newvalue) => {
     id = Newvalue
-    fetchEquipmentType()
+    fetchEquipment()
   },
 )
 </script>
@@ -173,8 +174,8 @@ watch(
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
-        <router-link to="/admin/equipment-type/add" class="btn btn-primary">
-          {{ $t('Add_EquipmentType') }}
+        <router-link to="/admin/equipment/add" class="btn btn-primary">
+          {{ $t('Add_Equipment') }}
         </router-link>
       </permission-builder>
     </div>
@@ -183,11 +184,11 @@ watch(
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.EQUIPMENT_DELETE,
+      PermissionsEnum.EQUIPMENT_FETCH,
+      PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.EQUIPMENT_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -197,35 +198,19 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('has_certificate') }}</th>
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">title</th>
+                <th scope="col">Code</th>
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/EquipmentType/edit/${item.id}`"
-                    >{{ item.id }}
-                  </router-link>
+                  <router-link :to="`/users/Equipment/edit/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
-                <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+                <td data-label="Code">{{ item.code ?? '--' }}</td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusEquipmentType-->
@@ -235,8 +220,8 @@ watch(
                   <!--                />-->
 
                   <DropList
-                    :actionList="actionList(item.id, deleteEquipmentType)"
-                    @delete="deleteEquipmentType(item.id)"
+                    :actionList="actionList(item.id, deleteEquipment)"
+                    @delete="deleteEquipment(item.id)"
                   />
                 </td>
               </tr>
