@@ -113,6 +113,7 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -126,6 +127,23 @@ const active = ref('0')
                     <router-link to="/admin/hazard-types">
                       <SidebarVector />
                       <span>Hazard Types</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+                      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+                      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+                      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+                      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/accidents-types">
+                      <SidebarVector />
+                      <span>Accidents Types</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

@@ -90,6 +90,21 @@ const router = createRouter({
           name: 'Edit Hazard Type',
           component: () => import('../views/HazardType/EditHazardType.vue'),
         },
+        {
+          path: 'accidents-types',
+          name: 'Accidents Type',
+          component: () => import('../views/Accidents/IndexAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/add',
+          name: 'Add Accidents Type',
+          component: () => import('../views/Accidents/AddAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/:id',
+          name: 'Edit Accidents Type',
+          component: () => import('../views/Accidents/EditAccidentsType.vue'),
+        },
       ],
     },
   ],
