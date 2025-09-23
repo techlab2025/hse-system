@@ -92,11 +92,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/factory/${id}`,
+    link: `/admin/factory-item/${id}`,
     permission: [
-      PermissionsEnum.FACTORY_UPDATE,
+      PermissionsEnum.FACTORY_ITEM_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
   // {
@@ -104,9 +104,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   //   icon: IconEdit,
   //   link: `/admin/Hazard-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.FACTORY_UPDATE,
+  //     PermissionsEnum.FACTORY_ITEM_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.FACTORY_ALL,
+  //     PermissionsEnum.FACTORY_ITEM_ALL,
   //   ],
   // },
   // {
@@ -114,9 +114,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   //   icon: IconEdit,
   //   link: `/admin/Hazard-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.FACTORY_UPDATE,
+  //     PermissionsEnum.FACTORY_ITEM_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.FACTORY_ALL,
+  //     PermissionsEnum.FACTORY_ITEM_ALL,
   //   ],
   // },
   {
@@ -124,9 +124,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteFactory(id),
     permission: [
-      PermissionsEnum.FACTORY_DELETE,
+      PermissionsEnum.FACTORY_ITEM_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
 ]
@@ -156,8 +156,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_CREATE]">
-        <router-link to="/admin/add/factory" class="btn btn-primary">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_ITEM_CREATE]">
+        <router-link to="/admin/factory-item/add" class="btn btn-primary">
           {{ $t('Add_Factory') }}
         </router-link>
       </permission-builder>
@@ -167,11 +167,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
-      PermissionsEnum.FACTORY_DELETE,
-      PermissionsEnum.FACTORY_FETCH,
-      PermissionsEnum.FACTORY_UPDATE,
-      PermissionsEnum.FACTORY_CREATE,
+      PermissionsEnum.FACTORY_ITEM_ALL,
+      PermissionsEnum.FACTORY_ITEM_DELETE,
+      PermissionsEnum.FACTORY_ITEM_FETCH,
+      PermissionsEnum.FACTORY_ITEM_UPDATE,
+      PermissionsEnum.FACTORY_ITEM_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -206,7 +206,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                   }}
                 </td>
                 <td data-label="factory">
-                  <router-link :to="`/admin/factory/${item.id}`">{{
+                  <router-link :to="`/admin/factory-item/${item.id}`">{{
                     item.factory.title
                   }}</router-link>
                 </td>

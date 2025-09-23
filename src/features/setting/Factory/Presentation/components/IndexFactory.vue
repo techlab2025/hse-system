@@ -157,7 +157,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_CREATE]">
-        <router-link to="/admin/add/factory" class="btn btn-primary">
+        <router-link to="/admin/factory/add" class="btn btn-primary">
           {{ $t('Add_Factory') }}
         </router-link>
       </permission-builder>
@@ -193,7 +193,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/factory/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>

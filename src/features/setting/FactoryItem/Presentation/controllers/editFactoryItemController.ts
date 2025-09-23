@@ -37,7 +37,7 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/factories')
+        await router.push('/admin/factories-items')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

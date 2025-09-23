@@ -112,7 +112,7 @@ const router = createRouter({
           component: () => import('../views/Factory/IndexFactory.vue'),
         },
         {
-          path: 'add/factory',
+          path: 'factory/add',
           name: 'Add Factory',
           component: () => import('../views/Factory/AddFactory.vue'),
         },
@@ -120,6 +120,21 @@ const router = createRouter({
           path: 'factory/:id',
           name: 'Edit Factory',
           component: () => import('../views/Factory/EditFactory.vue'),
+        },
+        {
+          path: 'factories-items',
+          name: 'Factories Items',
+          component: () => import('../views/FactoryItem/IndexFactoryItem.vue'),
+        },
+        {
+          path: 'factory-item/:id',
+          name: 'Edit Factory',
+          component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
+        },
+        {
+          path: 'factory-item/add',
+          name: 'Edit Factory',
+          component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
       ],
     },

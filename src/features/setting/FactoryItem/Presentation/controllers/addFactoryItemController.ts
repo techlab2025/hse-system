@@ -36,7 +36,7 @@ export default class AddFactoryItemController extends ControllerInterface<Factor
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/factories')
+        if (!draft) await router.push('/admin/factories-items')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
