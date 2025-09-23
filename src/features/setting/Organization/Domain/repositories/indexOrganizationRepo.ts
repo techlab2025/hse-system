@@ -1,11 +1,11 @@
 // import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import { IndexAccidentsTypeApiService } from '../../Data/apiServices/indexOrganizationApiService'
+import OrganizationModel from '../../Data/models/OrganizationModel'
+import { IndexOrganizationApiService } from '../../Data/apiServices/indexOrganizationApiService'
 
-class IndexAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel[]> {
-  private static instance: IndexAccidentsTypeRepo
+class IndexOrganizationRepo extends RepoInterface<OrganizationModel[]> {
+  private static instance: IndexOrganizationRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -14,7 +14,7 @@ class IndexAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel[]> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexAccidentsTypeRepo()
+      this.instance = new IndexOrganizationRepo()
     }
     return this.instance
   }
@@ -23,13 +23,13 @@ class IndexAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel[]> {
     return true
   }
 
-  onParse(data: any): AccidentsTypeModel[] {
-    return data.map((item: any) => AccidentsTypeModel.fromMap(item))
+  onParse(data: any): OrganizationModel[] {
+    return data.map((item: any) => OrganizationModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
-    return IndexAccidentsTypeApiService.getInstance()
+    return IndexOrganizationApiService.getInstance()
   }
 }
 
-export { IndexAccidentsTypeRepo }
+export { IndexOrganizationRepo }

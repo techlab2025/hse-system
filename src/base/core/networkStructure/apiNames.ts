@@ -83,6 +83,15 @@ class ApiNames {
   public EditAccidentsType = this.baseUrl + this.dashboardPrefix + 'update_accidents_type'
   public DeleteAccidentsType = this.baseUrl + this.dashboardPrefix + 'delete_accidents_type'
   public DisAccidentsType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
+
+
+  //Organization
+  public CreateOrganization = this.baseUrl + this.dashboardPrefix + 'create_organization'
+  public IndexOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organizations'
+  public ShowOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organization_details'
+  public EditOrganization = this.baseUrl + this.dashboardPrefix + 'update_organization'
+  public DeleteOrganization = this.baseUrl + this.dashboardPrefix + 'delete_organization'
+  // public DisOrganizationType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
 }
 
 export { ApiNames }

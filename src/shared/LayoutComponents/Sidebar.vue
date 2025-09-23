@@ -177,7 +177,6 @@ const active = ref('0')
                     <router-link to="/admin/project-types">
                       <SidebarVector />
                       <span>Project Types</span>
-                      >
                     </router-link>
                   </PermissionBuilder>
                 </li>

@@ -1,32 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import ShowAccidentsTypeUseCase from '../../Domain/useCase/showOrganizationUseCase'
-import type AccidentsTypeDetailsModel from '../../Data/models/OrganizationDetailsModel'
+import type OrganizationDetailsModel from '../../Data/models/OrganizationDetailsModel'
+import ShowOrganizationUseCase from '../../Domain/useCase/showOrganizationUseCase'
 
-export default class ShowAccidentsTypeController extends ControllerInterface<AccidentsTypeDetailsModel> {
-  private static instance: ShowAccidentsTypeController
+export default class ShowOrganizationController extends ControllerInterface<OrganizationDetailsModel> {
+  private static instance: ShowOrganizationController
 
   private constructor() {
     super()
   }
 
-  private showAccidentsTypeUseCase = new ShowAccidentsTypeUseCase()
+  private showOrganizationUseCase = new ShowOrganizationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ShowAccidentsTypeController()
+      this.instance = new ShowOrganizationController()
     }
     return this.instance
   }
 
-  async showAccidentsType(params: Params) {
+  async showOrganization(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<AccidentsTypeDetailsModel> =
-      await this.showAccidentsTypeUseCase.call(params)
+    const dataState: DataState<OrganizationDetailsModel> =
+      await this.showOrganizationUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

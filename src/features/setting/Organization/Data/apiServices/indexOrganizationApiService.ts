@@ -3,8 +3,8 @@ import ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 import { CrudType } from "@/base/core/params/call_params_interface";
 import type Params from "@/base/core/params/params";
 
-class IndexAccidentsTypeApiService extends ServicesInterface {
-  private static instance: IndexAccidentsTypeApiService;
+class IndexOrganizationApiService extends ServicesInterface {
+  private static instance: IndexOrganizationApiService;
 
   private constructor() {
     super(); // Ensure this does not call any uninitialized methods or properties
@@ -12,7 +12,7 @@ class IndexAccidentsTypeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexAccidentsTypeApiService();
+      this.instance = new IndexOrganizationApiService();
     }
     return this.instance;
   }
@@ -21,7 +21,7 @@ class IndexAccidentsTypeApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.IndexAccidentsType,
+      url: ApiNames.instance.IndexOrganization,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -29,4 +29,4 @@ class IndexAccidentsTypeApiService extends ServicesInterface {
   }
 }
 
-export { IndexAccidentsTypeApiService };
+export { IndexOrganizationApiService };

@@ -1,12 +1,12 @@
 // import ClientModel from '@/features/setting/languages/Data/models/projectTypeModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import { DeleteAccidentsTypeApiService } from '../../Data/apiServices/deleteOrganizationApiService'
+import OrganizationModel from '../../Data/models/OrganizationModel'
+import { DeleteOrganizationApiService } from '../../Data/apiServices/deleteOrganizationApiService'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 
-class DeleteAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel> {
-  private static instance: DeleteAccidentsTypeRepo
+class DeleteOrganizationRepo extends RepoInterface<OrganizationModel> {
+  private static instance: DeleteOrganizationRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -19,18 +19,18 @@ class DeleteAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteAccidentsTypeRepo()
+      this.instance = new DeleteOrganizationRepo()
     }
     return this.instance
   }
 
-  onParse(data: any): AccidentsTypeModel {
-    return AccidentsTypeModel.fromMap(data)
+  onParse(data: any): OrganizationModel {
+    return OrganizationModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DeleteAccidentsTypeApiService.getInstance()
+    return DeleteOrganizationApiService.getInstance()
   }
 }
 
-export { DeleteAccidentsTypeRepo }
+export { DeleteOrganizationRepo }

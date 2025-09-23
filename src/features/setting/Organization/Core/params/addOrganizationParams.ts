@@ -44,7 +44,7 @@ export default class AddOrganizationParams implements Params {
     data['email'] = this.email
     data['image'] = this.image
     data['website_link'] = this.website_link
-    data['industry_ids'] = this.industry_id
+    data['industry_id'] = this.industry_id
     data['language_ids'] = this.language_ids
     return data
   }

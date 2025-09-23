@@ -20,10 +20,14 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexAccidentsTypeParams from '../../Core/params/indexOrganizationParams'
-import IndexAccidentsTypeController from '../controllers/indexOrganizationController'
-import DeleteAccidentsTypeParams from '../../Core/params/deleteOrganizationParams'
-import DeleteAccidentsTypeController from '../controllers/deleteOrganizationController'
+import IndexOrganizationController from '../controllers/indexOrganizationController'
+import IndexOrganizationParams from '../../Core/params/indexOrganizationParams'
+import DeleteOrganizationParams from '../../Core/params/deleteOrganizationParams'
+import DeleteOrganizationController from '../controllers/deleteOrganizationController'
+// import IndexOrganizationParams from '../../Core/params/indexOrganizationParams'
+// import IndexOrganizationController from '../controllers/indexOrganizationController'
+// import DeleteOrganizationParams from '../../Core/params/deleteOrganizationParams'
+// import DeleteOrganizationController from '../controllers/deleteOrganizationController'
 
 const { t } = useI18n()
 
@@ -33,55 +37,55 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
-const state = ref(indexAccidentsTypeController.state.value)
+const indexOrganizationController = IndexOrganizationController.getInstance()
+const state = ref(indexOrganizationController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
 
-const fetchAccidentsType = async (
+const fetchOrganization = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexAccidentsTypeParams = new IndexAccidentsTypeParams(
+  const indexOrganizationParams = new IndexOrganizationParams(
     query,
     pageNumber,
     perPage,
     withPage,
     id,
   )
-  await indexAccidentsTypeController.getData(indexAccidentsTypeParams)
+  await indexOrganizationController.getData(indexOrganizationParams)
 }
 
 onMounted(() => {
-  fetchAccidentsType()
+  fetchOrganization()
 })
 
 const searchHazardType = debounce(() => {
-  fetchAccidentsType(word.value)
+  fetchOrganization(word.value)
 })
 
-const deleteAccidentsType = async (id: number) => {
-  const deleteAccidentsTypeParams = new DeleteAccidentsTypeParams(id)
-  await DeleteAccidentsTypeController.getInstance().deleteAccidentsType(deleteAccidentsTypeParams)
-  await fetchAccidentsType()
+const deleteOrganization = async (id: number) => {
+  const deleteOrganizationParams = new DeleteOrganizationParams(id)
+  await DeleteOrganizationController.getInstance().deleteOrganization(deleteOrganizationParams)
+  await fetchOrganization()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchAccidentsType('', currentPage.value, countPerPage.value)
+  fetchOrganization('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchAccidentsType('', currentPage.value, countPerPage.value)
+  fetchOrganization('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexAccidentsTypeController.state.value,
+  () => indexOrganizationController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -127,7 +131,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHazardType(id),
+    action: () => deleteOrganization(id),
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_DELETE,
       PermissionsEnum.ADMIN,
@@ -162,8 +166,8 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ACCIDENTS_TYPE_CREATE]">
-        <router-link to="/admin/accidents-type/add" class="btn btn-primary">
-          {{ $t('Add_AccidentsType') }}
+        <router-link to="/admin/organization/add" class="btn btn-primary">
+          {{ $t('Add_Organization') }}
         </router-link>
       </permission-builder>
     </div>
@@ -186,10 +190,10 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('Name') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col">{{ $t('email') }}</th>
+                <!-- <th scope="col">{{ $t('industries') }}</th> -->
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -200,29 +204,13 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/accidents-type/${item.id}`">{{ item.id }} </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
-                <!-- <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td> -->
+                <td data-label="Name">{{ item.name }}</td>
+                <td data-label="email">{{ item.email }}</td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusHazardType-->
-                  <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
-                  <!--                  :HazardTypeId="item.id"-->
-                  <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
-                  <!--                />-->
-
                   <DropList
-                    :actionList="actionList(item.id, deleteAccidentsType)"
-                    @delete="deleteAccidentsType(item.id)"
+                    :actionList="actionList(item.id, deleteOrganization)"
+                    @delete="deleteOrganization(item.id)"
                   />
                 </td>
               </tr>

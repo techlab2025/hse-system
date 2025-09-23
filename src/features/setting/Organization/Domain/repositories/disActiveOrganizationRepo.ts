@@ -1,18 +1,18 @@
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import { DisAccidentsTypeApiService } from '../../Data/apiServices/disOrganizationApiService'
+import OrganizationModel from '../../Data/models/OrganizationModel'
+import { DisOrganizationApiService } from '../../Data/apiServices/disOrganizationApiService'
 
-class DisActiveAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel> {
-  private static instance: DisActiveAccidentsTypeRepo
+class DisActiveOrganizationRepo extends RepoInterface<OrganizationModel> {
+  private static instance: DisActiveOrganizationRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisActiveAccidentsTypeRepo()
+      this.instance = new DisActiveOrganizationRepo()
     }
     return this.instance
   }
@@ -21,13 +21,13 @@ class DisActiveAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel> {
     return ResponseType.withoutData
   }
 
-  onParse(data: any): AccidentsTypeModel {
-    return AccidentsTypeModel.fromMap(data)
+  onParse(data: any): OrganizationModel {
+    return OrganizationModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DisAccidentsTypeApiService.getInstance()
+    return DisOrganizationApiService.getInstance()
   }
 }
 
-export { DisActiveAccidentsTypeRepo }
+export { DisActiveOrganizationRepo }

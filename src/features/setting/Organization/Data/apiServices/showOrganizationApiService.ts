@@ -4,8 +4,8 @@ import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 import HeaderHandler from '@/base/core/networkStructure/networking/utils/header_handler.ts'
 
-class ShowAccidentsTypeApiService extends ServicesInterface {
-  private static instance: ShowAccidentsTypeApiService
+class ShowOrganizationApiService extends ServicesInterface {
+  private static instance: ShowOrganizationApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -13,14 +13,14 @@ class ShowAccidentsTypeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ShowAccidentsTypeApiService()
+      this.instance = new ShowOrganizationApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.ShowAccidentsType,
+      url: ApiNames.instance.ShowOrganization,
       type: CrudType.FormData,
       auth: true,
       params: params,
@@ -29,4 +29,4 @@ class ShowAccidentsTypeApiService extends ServicesInterface {
   }
 }
 
-export { ShowAccidentsTypeApiService }
+export { ShowOrganizationApiService }

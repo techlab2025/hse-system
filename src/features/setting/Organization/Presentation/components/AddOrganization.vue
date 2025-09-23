@@ -2,18 +2,18 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import HazardTypeForm from '@/features/setting/HazardType/Presentation/components/HazardTypeForm.vue'
-import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import type Params from '@/base/core/params/params'
-import AddAccidentsTypeController from '../controllers/addOrganizationController'
+import OrganizationForm from './OrganizationForm.vue'
+import AddOrganizationController from '../controllers/addOrganizationController'
+import type AddOrganizationParams from '../../Core/params/addOrganizationParams'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
-const addAccidentsTypeController = AddAccidentsTypeController.getInstance()
+const addOrganizationController = AddOrganizationController.getInstance()
 
-const addAccidentsType = async () => {
-  await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router)
+const addOrganization = async () => {
+  await addOrganizationController.addOrganization(params.value as AddOrganizationParams, router)
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -21,8 +21,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAccidentsType">
-    <HazardTypeForm @update:data="setParams" />
+  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganization">
+    <OrganizationForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">Add</button>

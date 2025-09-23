@@ -3,40 +3,39 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import HazardTypeForm from '@/features/setting/HazardType/Presentation/components/HazardTypeForm.vue'
 import type Params from '@/base/core/params/params'
-import ShowAccidentsTypeController from '../controllers/showOrganizationController'
-import ShowAccidentsTypeParams from '../../Core/params/showOrganizationParams'
-import EditAccidentsTypeController from '../controllers/ediOrganizationController'
-import AccidentsTypeForm from './OrganizationForm.vue'
+import OrganizationForm from './OrganizationForm.vue'
+import ShowOrganizationController from '../controllers/showOrganizationController'
+import ShowOrganizationParams from '../../Core/params/showOrganizationParams'
+import EditOrganizationController from '../controllers/ediOrganizationController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showAccidentsTypeController = ShowAccidentsTypeController.getInstance()
-const state = ref(showAccidentsTypeController.state.value)
-const fetchHazardTypeDetails = async () => {
-  const showAccidentsTypeParams = new ShowAccidentsTypeParams(Number(id))
+const showOrganizationController = ShowOrganizationController.getInstance()
+const state = ref(showOrganizationController.state.value)
+const fetchOrganizationDetails = async () => {
+  const showOrganizationParams = new ShowOrganizationParams(Number(id))
 
-  await showAccidentsTypeController.showAccidentsType(showAccidentsTypeParams)
+  await showOrganizationController.showOrganization(showOrganizationParams)
 }
 
 onMounted(() => {
-  fetchHazardTypeDetails()
+  fetchOrganizationDetails()
 })
 
-const EditAccidentsType = async (draft: boolean) => {
+const EditOrganization = async (draft: boolean) => {
   if (draft) {
-    await EditAccidentsTypeController.getInstance().editAccidentsType(params.value!, router)
+    await EditOrganizationController.getInstance().editOrganization(params.value!, router)
   } else {
-    await EditAccidentsTypeController.getInstance().editAccidentsType(params.value!, router)
+    await EditOrganizationController.getInstance().editOrganization(params.value!, router)
   }
 }
 
 watch(
-  () => showAccidentsTypeController.state.value,
+  () => showOrganizationController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -57,8 +56,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditAccidentsType">
-        <AccidentsTypeForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditOrganization">
+        <OrganizationForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

@@ -4,29 +4,29 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import DisAccidentsTypeUseCase from '../../Domain/useCase/disOrganizationUseCase'
+import type OrganizationModel from '../../Data/models/OrganizationModel'
+import DisOrganizationUseCase from '../../Domain/useCase/disOrganizationUseCase'
 
-export default class disActiveAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
-  private static instance: disActiveAccidentsTypeController
+export default class disActiveOrganizationController extends ControllerInterface<OrganizationModel> {
+  private static instance: disActiveOrganizationController
   private constructor() {
     super()
   }
-  private disAccidentsTypeUseCase = new DisAccidentsTypeUseCase()
+  private disOrganizationUseCase = new DisOrganizationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveAccidentsTypeController()
+      this.instance = new disActiveOrganizationController()
     }
     return this.instance
   }
 
-  async disActiveAccidentsType(params: Params) {
+  async disActiveOrganization(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<AccidentsTypeModel> =
-      await this.disAccidentsTypeUseCase.call(params)
+    const dataState: DataState<OrganizationModel> =
+      await this.disOrganizationUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

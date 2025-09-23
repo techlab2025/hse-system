@@ -3,29 +3,29 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
-import type AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import DeleteAccidentsTypeUseCase from '../../Domain/useCase/deleteOrganizationUseCase'
+import type OrganizationModel from '../../Data/models/OrganizationModel'
+import DeleteOrganizationUseCase from '../../Domain/useCase/deleteOrganizationUseCase'
 
-export default class DeleteAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
-  private static instance: DeleteAccidentsTypeController
+export default class DeleteOrganizationController extends ControllerInterface<OrganizationModel> {
+  private static instance: DeleteOrganizationController
   private constructor() {
     super()
   }
-  private deleteAccidentsTypeUseCase = new DeleteAccidentsTypeUseCase()
+  private deleteOrganizationUseCase = new DeleteOrganizationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteAccidentsTypeController()
+      this.instance = new DeleteOrganizationController()
     }
     return this.instance
   }
 
-  async deleteAccidentsType(params: Params) {
+  async deleteOrganization(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<AccidentsTypeModel> =
-        await this.deleteAccidentsTypeUseCase.call(params)
+      const dataState: DataState<OrganizationModel> =
+        await this.deleteOrganizationUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

@@ -3,8 +3,8 @@ import ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 import { CrudType } from "@/base/core/params/call_params_interface";
 import type Params from "@/base/core/params/params";
 
-class AddAccidentsTypeApiService extends ServicesInterface {
-  private static instance: AddAccidentsTypeApiService;
+class AddOrganizationApiService extends ServicesInterface {
+  private static instance: AddOrganizationApiService;
 
   private constructor() {
     super(); // Ensure this does not call any uninitialized methods or properties
@@ -12,7 +12,7 @@ class AddAccidentsTypeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddAccidentsTypeApiService();
+      this.instance = new AddOrganizationApiService();
     }
     return this.instance;
   }
@@ -21,7 +21,7 @@ class AddAccidentsTypeApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.CreateAccidentsType,
+      url: ApiNames.instance.CreateOrganization,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -30,4 +30,4 @@ class AddAccidentsTypeApiService extends ServicesInterface {
   }
 }
 
-export { AddAccidentsTypeApiService };
+export { AddOrganizationApiService };

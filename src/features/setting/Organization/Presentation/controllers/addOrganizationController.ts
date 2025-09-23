@@ -6,28 +6,28 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type AccidentsTypeModel from '../../Data/models/OrganizationModel'
-import AddAccidentsTypeUseCase from '../../Domain/useCase/addOrganizationUseCase'
+import type OrganizationModel from '../../Data/models/OrganizationModel'
+import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
 
-export default class AddAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
-  private static instance: AddAccidentsTypeController
+export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
+  private static instance: AddOrganizationController
   private constructor() {
     super()
   }
-  private addAccidentsTypeUseCase = new AddAccidentsTypeUseCase()
+  private addOrganizationUseCase = new AddOrganizationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddAccidentsTypeController()
+      this.instance = new AddOrganizationController()
     }
     return this.instance
   }
 
-  async addAccidentsType(params: Params, router: Router, draft: boolean = false) {
+  async addOrganization(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<AccidentsTypeModel> =
-        await this.addAccidentsTypeUseCase.call(params)
+      const dataState: DataState<OrganizationModel> =
+        await this.addOrganizationUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({

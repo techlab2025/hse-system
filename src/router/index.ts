@@ -136,6 +136,21 @@ const router = createRouter({
           name: 'Edit Factory',
           component: () => import('../views/Factory/EditFactory.vue'),
         },
+        {
+          path: 'organization',
+          name: 'Organization',
+          component: () => import('../views/Organization/IndexOrganization.vue'),
+        },
+        {
+          path: 'organization/add',
+          name: 'Add Organization',
+          component: () => import('../views/Organization/AddOrganization.vue'),
+        },
+        {
+          path: 'organization/:id',
+          name: 'Edit organization',
+          component: () => import('../views/Organization/EditOrganization.vue'),
+        },
       ],
     },
   ],
