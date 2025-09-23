@@ -117,6 +117,8 @@ const onFileChange = (event: Event, index: number) => {
           <img :src="input.img" alt="Preview" />
         </div>
       </div>
+
+
     </div>
   </div>
 </template>

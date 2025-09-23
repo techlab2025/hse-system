@@ -1,7 +1,6 @@
-@use "../variables" as *;
-@use "../mixins/flex" as *;
-@use "../mixins/border" as *;
-
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/border' as *;
 
 .input-wrapper {
   @include flex-column();
@@ -11,6 +10,8 @@
   &.check-box {
     @include flex-justify();
     gap: $XsSize2;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   label {
@@ -20,9 +21,7 @@
     text-transform: capitalize;
     white-space: nowrap;
     text-align: start;
-    font-family: "Regular", sans-serif;
-
-
+    font-family: 'Regular', sans-serif;
   }
 
   .label-wrapper {
@@ -40,16 +39,15 @@
       }
     }
 
-    input[type="radio"] {
+    input[type='radio'] {
       display: none;
       &:checked + .icon-lng {
         opacity: 1;
       }
-
     }
   }
 
-  input:not([type="checkbox"]) {
+  input:not([type='checkbox']) {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
     padding: $MdSize2 $MdSize;
     font-size: $SmSize;
@@ -81,13 +79,7 @@
     }
 
     caret-color: $PrimaryColor;
-
-
   }
-
-
-
-
 
   .select-lang {
     position: absolute;
@@ -99,7 +91,5 @@
     font-weight: $BaseFontMediumWeight;
     cursor: pointer;
     text-transform: capitalize;
-
-
   }
 }

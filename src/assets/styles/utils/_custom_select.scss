@@ -93,6 +93,16 @@
   }
 }
 
+.p-multiselect-label {
+  color: black !important;
+  // color: ;
+  // background-color: rgb(29, 79, 216) !important;
+  margin-inline:5px ;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+
 .p-checkbox-box {
   background-color: white !important;
   border: 1px solid #8d8d8d !important;
