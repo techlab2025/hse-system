@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import ShowEmployeeFristsec from "@/features/dashboard/users/employee/Presentation/supcomponents/ShowEmployeeFristsec.vue";
-import ShowEmployeeSecondsec from "@/features/dashboard/users/employee/Presentation/supcomponents/ShowEmployeeSecondsec.vue";
-import ShowEmployeeThirdsec from "@/features/dashboard/users/employee/Presentation/supcomponents/ShowEmployeeThridsec.vue";
+import ShowEmployeeFristsec from "@/features/users/employee/Presentation/supcomponents/ShowEmployeeFristsec.vue";
+import ShowEmployeeSecondsec from "@/features/users/employee/Presentation/supcomponents/ShowEmployeeSecondsec.vue";
+import ShowEmployeeThirdsec from "@/features/users/employee/Presentation/supcomponents/ShowEmployeeThridsec.vue";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import ShowEmployeeParams from "@/features/dashboard/users/employee/Core/params/show_employee_params";
-import ShowEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/show_employee_controller";
-import ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
+import ShowEmployeeParams from "@/features/users/employee/Core/params/show_employee_params";
+import ShowEmployeeController from "@/features/users/employee/Presentation/controllers/show_employee_controller";
+import ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
 
 const route = useRoute();
 const router = useRouter();

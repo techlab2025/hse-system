@@ -5,7 +5,7 @@ import type Params from '@/base/core/params/params'
 import disActiveHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/disHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
-import errorImage from '@/assets/images/Error.png'
+import errorImage from '@/assets/images/error.png'
 
 export default class disActiveHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: disActiveHazardTypeController

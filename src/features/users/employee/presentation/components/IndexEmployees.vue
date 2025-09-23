@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
-import IndexEmployeeParams from "@/features/dashboard/users/employee/Core/params/index_employees_params";
-import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
-import IndexEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/index_employees_controller";
+import IndexEmployeeParams from "@/features/users/employee/Core/params/index_employees_params";
+import EmployeeModel from "@/features/users/employee/Data/models/index_employee_model";
+import IndexEmployeeController from "@/features/users/employee/Presentation/controllers/index_employees_controller";
 
 import { onMounted, ref, watch } from "vue";
-import { debounce } from "@/base/persention/utils/debouced";
+import { debounce } from "@/base/Presentation/utils/debouced";
 import DropList from "@/components/HelpersComponents/DropList.vue";
 import Pagination from "@/components/HelpersComponents/Pagination.vue";
 import type PaginationModel from "@/base/core/Models/pagination_model";
@@ -14,9 +14,9 @@ import TableLoader from "@/components/DataStatues/TableLoader.vue";
 import DataEmpty from "@/components/DataStatues/DataEmpty.vue";
 import IconRemoveInput from "@/components/icons/IconRemoveInput.vue";
 import ExportPdf from "@/components/HelpersComponents/ExportPdf.vue";
-import DeleteEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/delete_employee_controller";
-import DeleteEmployeeParams from "@/features/dashboard/users/employee/Core/params/delete_employee_params";
-import { PermissionsEnum } from "@/features/dashboard/users/employee/Core/enums/permission_enum";
+import DeleteEmployeeController from "@/features/users/employee/Presentation/controllers/delete_employee_controller";
+import DeleteEmployeeParams from "@/features/users/employee/Core/params/delete_employee_params";
+import { PermissionsEnum } from "@/features/users/employee/Core/enums/permission_enum";
 import PermissionBuilder from "@/components/DataStatues/PermissionBuilder.vue";
 
 const Employees = ref<EmployeeModel[] | null>([]);

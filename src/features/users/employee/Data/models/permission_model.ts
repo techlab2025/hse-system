@@ -1,6 +1,6 @@
 import TitleModel from "@/base/core/Models/title_model";
 import TitleInterface from "@/base/Data/Models/title_interface";
-import { PermissionsEnum } from "@/features/dashboard/users/employee/Core/enums/permission_enum";
+import { PermissionsEnum } from "@/features/users/employee/Core/enums/permission_enum";
 
 export default class PermissionModel {
   id: number;

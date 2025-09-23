@@ -5,7 +5,7 @@ import type Params from '@/base/core/params/params'
 import disActiveEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/useCase/disEquipmentTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
-import errorImage from '@/assets/images/Error.png'
+import errorImage from '@/assets/images/error.png'
 
 export default class disActiveEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: disActiveEquipmentTypeController

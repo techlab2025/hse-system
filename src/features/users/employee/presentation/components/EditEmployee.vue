@@ -5,15 +5,15 @@ import { useRoute, useRouter } from "vue-router";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import DataStatus from "@/components/DataStatues/DataStatus.vue";
 import FormLoader from "@/components/DataStatues/FormLoader.vue";
-import EmployeeForm from "@/features/dashboard/users/employee/Presentation/components/EmployeeForm.vue";
+import EmployeeForm from "@/features/users/employee/Presentation/components/EmployeeForm.vue";
 import type Params from "@/base/core/params/params";
-import ShowClientModel from "@/features/dashboard/users/languages/Data/models/show_client_model";
-import ShowEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/show_employee_controller";
-import ShowEmployeeParams from "@/features/dashboard/users/employee/Core/params/show_employee_params";
-import EditEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/edit_employee_controller";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService"; // Import validation dialog
+import ShowClientModel from "@/features/users/clients/Data/models/show_client_model";
+import ShowEmployeeController from "@/features/users/employee/Presentation/controllers/show_employee_controller";
+import ShowEmployeeParams from "@/features/users/employee/Core/params/show_employee_params";
+import EditEmployeeController from "@/features/users/employee/Presentation/controllers/edit_employee_controller";
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService"; // Import validation dialog
 
 const route = useRoute();
 const router = useRouter();

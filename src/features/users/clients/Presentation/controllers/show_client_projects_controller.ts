@@ -1,8 +1,8 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import ClientProjectModel from "@/features/dashboard/users/languages/Data/models/client_projects_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import ClientProjectModel from "@/features/users/clients/Data/models/client_projects_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import ClientProjectUseCase from "@/features/dashboard/users/languages/Domain/useCase/show_client_projects_use_case";
+import ClientProjectUseCase from "@/features/users/clients/Domain/useCase/show_client_projects_use_case";
 
 export default class ClientProjectController extends ControllerInterface<ClientProjectModel> {
   private static instance: ClientProjectController;

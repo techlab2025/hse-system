@@ -1,8 +1,8 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import ShowEmployeeUseCase from "@/features/dashboard/users/employee/Domain/useCase/show_employee_use_case";
+import ShowEmployeeUseCase from "@/features/users/employee/Domain/useCase/show_employee_use_case";
 
 export default class ShowEmployeeController extends ControllerInterface<ShowEmployeeModel> {
   private static instance: ShowEmployeeController;

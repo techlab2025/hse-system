@@ -1,11 +1,11 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import EmployeeModel from "@/features/users/employee/Data/models/index_employee_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import UpdatePasswordEmployeeUseCase from "@/features/dashboard/users/employee/Domain/useCase/update_password_employee_use_case";
-import DialogSelector from "@/base/persention/Dialogs/dialog_selector";
+import UpdatePasswordEmployeeUseCase from "@/features/users/employee/Domain/useCase/update_password_employee_use_case";
+import DialogSelector from "@/base/Presentation/Dialogs/dialog_selector";
 import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/Error.png";
+import errorImage from "@/assets/images/error.png";
 
 export default class UpdatePasswordEmployeeController extends ControllerInterface<EmployeeModel> {
   private static instance: UpdatePasswordEmployeeController;

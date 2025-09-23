@@ -2,7 +2,7 @@ import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Da
 import ClientSatisfactionModel from "@/features/dashboard/settings/clientstatisfaction/Data/models/index_Client_Statisfaction_model";
 import CountryModel from "@/features/website/country/Data/models/index_country_model";
 import GovernorateModel from "@/features/dashboard/settings/governorate/Data/models/index_governorate_model";
-import AttentionModel from "@/features/dashboard/users/languages/Data/models/attention_model";
+import AttentionModel from "@/features/users/clients/Data/models/attention_model";
 import CityModel from "@/features/dashboard/settings/city/Data/models/index_city_model";
 import type TitleModel from "@/base/core/Models/title_model";
 

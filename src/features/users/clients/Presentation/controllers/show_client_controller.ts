@@ -1,8 +1,8 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import ShowClientModel from "@/features/dashboard/users/languages/Data/models/show_client_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import ShowClientModel from "@/features/users/clients/Data/models/show_client_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import ShowClientUseCase from "@/features/dashboard/users/languages/Domain/useCase/show_client_use_case";
+import ShowClientUseCase from "@/features/users/clients/Domain/useCase/show_client_use_case";
 
 export default class ShowClientController extends ControllerInterface<ShowClientModel> {
   private static instance: ShowClientController;

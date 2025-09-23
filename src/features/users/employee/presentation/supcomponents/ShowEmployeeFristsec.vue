@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
-import { setDefaultImage } from "@/base/persention/utils/set_default_image";
+import ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
+import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
 import defaultImage from "@/assets/images/user.png";
 
 const props = defineProps<{ data: ShowEmployeeModel | null }>();

@@ -3,8 +3,8 @@ import Dialog from "primevue/dialog";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import { ref } from "vue";
 import SecondaryButton from "@/components/HelpersComponents/SecondaryButton.vue";
-import AcceptClientParams from "@/features/dashboard/users/languages/Core/params/accept_client_params";
-import AcceptClientController from "@/features/dashboard/users/languages/Presentation/controllers/accept_client_controller";
+import AcceptClientParams from "@/features/users/clients/Core/params/accept_client_params";
+import AcceptClientController from "@/features/users/clients/Presentation/controllers/accept_client_controller";
 
 const visible = ref(false);
 const emit = defineEmits(["clientChangeStatus"]);
