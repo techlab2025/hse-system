@@ -5,7 +5,7 @@ import type Params from '@/base/core/params/params'
 import disActiveLangUseCase from '@/features/setting/languages/Domain/useCase/disActiveLangUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
-import errorImage from '@/assets/images/Error.png'
+import errorImage from '@/assets/images/error.png'
 
 export default class disActiveLangController extends ControllerInterface<LangModel> {
   private static instance: disActiveLangController

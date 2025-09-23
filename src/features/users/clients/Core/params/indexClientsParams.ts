@@ -1,5 +1,5 @@
 import type Params from "@/base/core/params/params";
-import { ClientStatusEnum } from "@/features/users/clients/Core/enums/clientStatusEnum.ts";
+import { ClientStatusEnum } from "@/features/users/clients/clients/Core/enums/clientStatusEnum.ts";
 
 export default class IndexClientsParams implements Params {
   public word: string;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import { ref } from "vue";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService";
-import UpdatePasswordEmployeeParams from "@/features/dashboard/users/employee/Core/params/update_password_employee_params";
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService";
+import UpdatePasswordEmployeeParams from "@/features/users/employee/Core/params/update_password_employee_params";
 import { useRoute, useRouter } from "vue-router";
-import UpdatePasswordEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/update_password_employee_controller";
+import UpdatePasswordEmployeeController from "@/features/users/employee/Presentation/controllers/update_password_employee_controller";
 
 const route = useRoute();
 const router = useRouter();

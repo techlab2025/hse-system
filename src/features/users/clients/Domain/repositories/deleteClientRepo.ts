@@ -1,5 +1,5 @@
-import { DeleteClientApiService } from "@/features/dashboard/users/languages/Data/apiServices/delete_client_api_service";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
+import { DeleteClientApiService } from "@/features/users/clients/Data/apiServices/delete_client_api_service";
+import ClientModel from "@/features/users/clients/Data/models/index_client_model";
 import RepoInterface, {
   ResponseType,
 } from "@/base/Domain/Repositories/repo_interface";

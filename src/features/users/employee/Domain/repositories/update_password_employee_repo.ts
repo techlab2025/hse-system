@@ -1,7 +1,7 @@
-import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
+import EmployeeModel from "@/features/users/employee/Data/models/index_employee_model";
 import RepoInterface from "@/base/Domain/Repositories/repo_interface";
 import type ServicesInterface from "@/base/Data/ApiService/api_service_interface";
-import { UpdatePasswordEmployeeApiService } from "@/features/dashboard/users/employee/Data/apiServices/update_password_employee_api_service";
+import { UpdatePasswordEmployeeApiService } from "@/features/users/employee/Data/apiServices/update_password_employee_api_service";
 
 class UpdatePasswordEmployeeRepo extends RepoInterface<EmployeeModel> {
   private static instance: UpdatePasswordEmployeeRepo;

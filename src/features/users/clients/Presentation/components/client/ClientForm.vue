@@ -8,11 +8,11 @@ import TitleInterface from "@/base/Data/Models/title_interface";
 import SelectInput from "@/components/HelpersComponents/SelectInput.vue";
 import Editor from "primevue/editor";
 import IndexClientStatisfactionController from "@/features/dashboard/settings/clientstatisfaction/Presentation/controllers/index_Client_Statisfaction_controller";
-import AddClientParams from "@/features/dashboard/users/languages/Core/params/add_client_params";
-import EditClientParams from "@/features/dashboard/users/languages/Core/params/edit_client_params";
-import type ShowClientModel from "@/features/dashboard/users/languages/Data/models/show_client_model";
-import AttentionParams from "@/features/dashboard/users/languages/Core/params/attention_params";
-import { convertToBase64 } from "@/base/persention/utils/convert_to_base_64";
+import AddClientParams from "@/features/users/clients/Core/params/add_client_params";
+import EditClientParams from "@/features/users/clients/Core/params/edit_client_params";
+import type ShowClientModel from "@/features/users/clients/Data/models/show_client_model";
+import AttentionParams from "@/features/users/clients/Core/params/attention_params";
+import { convertToBase64 } from "@/base/Presentation/utils/convert_to_base_64";
 import IndexCountryParams from "@/features/dashboard/settings/country/Core/params/index_country_params";
 import IndexGovernorateController from "@/features/dashboard/settings/governorate/Presentation/controllers/index_governorate_controller";
 import IndexGovernoratesParams from "@/features/dashboard/settings/governorate/Core/params/index_governorate_params";
@@ -20,11 +20,11 @@ import IndexCitiesParams from "@/features/dashboard/settings/city/Core/params/in
 import IndexCityController from "@/features/dashboard/settings/city/Presentation/controllers/index_city_controller";
 import CustomSelectInput from "@/components/HelpersComponents/CustomSelectInput.vue";
 import IndexCountryController from "@/features/dashboard/settings/country/Presentation/controllers/index_country_controller";
-import IndexEmployeeParams from "@/features/dashboard/users/employee/Core/params/index_employees_params";
+import IndexEmployeeParams from "@/features/users/employee/Core/params/index_employees_params";
 
-import IndexEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/index_employees_controller";
-import { PermissionsEnum } from "@/features/dashboard/users/employee/Core/enums/permission_enum";
-import PermissionHandler from "@/base/persention/utils/permission_handler";
+import IndexEmployeeController from "@/features/users/employee/Presentation/controllers/index_employees_controller";
+import { PermissionsEnum } from "@/features/users/employee/Core/enums/permission_enum";
+import PermissionHandler from "@/base/Presentation/utils/permission_handler";
 
 import { useUserStore } from "@/stores/user";
 

@@ -1,7 +1,7 @@
-import ContractModel from "@/features/dashboard/users/employee/Data/models/contract_model";
-import AttachmentModel from "@/features/dashboard/users/employee/Data/models/attachment_model";
+import ContractModel from "@/features/users/employee/Data/models/contract_model";
+import AttachmentModel from "@/features/users/employee/Data/models/attachment_model";
 import TitleModel from "@/base/core/Models/title_model";
-import { MemberTypeEnum } from "@/features/dashboard/users/employee/Core/enums/member_type_enum";
+import { MemberTypeEnum } from "@/features/users/employee/Core/enums/member_type_enum";
 
 export default class ShowEmployeeModel {
   public id: number;

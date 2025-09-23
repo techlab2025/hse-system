@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import EditClientParams from "@/features/dashboard/users/languages/Core/params/edit_client_params";
-import EditClientController from "@/features/dashboard/users/languages/Presentation/controllers/edit_client_controller";
+import EditClientParams from "@/features/users/clients/Core/params/edit_client_params";
+import EditClientController from "@/features/users/clients/Presentation/controllers/edit_client_controller";
 // import ImageUser from '@/components/HelpersComponents/ImageUser.vue'
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import ShowClientParams from "@/features/dashboard/users/languages/Core/params/show_client_params";
-import ShowClientController from "@/features/dashboard/users/languages/Presentation/controllers/show_client_controller";
+import ShowClientParams from "@/features/users/clients/Core/params/show_client_params";
+import ShowClientController from "@/features/users/clients/Presentation/controllers/show_client_controller";
 import DataStatus from "@/components/DataStatues/DataStatus.vue";
 import FormLoader from "@/components/DataStatues/FormLoader.vue";
-import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/LangIndustry.vue";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService";
+import ClientForm from "@/features/users/clients/Presentation/components/client/LangIndustry.vue";
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService";
 import type TitleInterface from "@/base/Data/Models/title_interface";
-import AttentionParams from "@/features/dashboard/users/languages/Core/params/attention_params";
+import AttentionParams from "@/features/users/clients/Core/params/attention_params";
 import type Params from "@/base/core/params/params";
-import ShowClientModel from "@/features/dashboard/users/languages/Data/models/show_client_model";
+import ShowClientModel from "@/features/users/clients/Data/models/show_client_model";
 
 const route = useRoute();
 const router = useRouter();

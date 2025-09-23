@@ -1,13 +1,13 @@
 import type Params from "@/base/core/params/params";
-import type ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
+import type ClientModel from "@/features/users/clients/Data/models/index_client_model";
 import type UseCase from "@/base/Domain/UseCase/use_case";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
-import { DeleteClientRepo } from "@/features/dashboard/users/languages/Domain/repositories/delete_client_repo";
+import { AcceptClientRepo } from "@/features/users/clients/Domain/repositories/accept_client_repo";
 
-export default class DeleteClientUseCase
+export default class AcceptClientUseCase
   implements UseCase<ClientModel, Params>
 {
   async call(params: Params): Promise<DataState<ClientModel>> {
-    return DeleteClientRepo.getInstance().call(params);
+    return AcceptClientRepo.getInstance().call(params);
   }
 }

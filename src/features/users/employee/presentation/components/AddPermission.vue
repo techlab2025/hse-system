@@ -2,17 +2,17 @@
 import CustomSelectInput from "@/components/HelpersComponents/CustomSelectInput.vue";
 import { onMounted, ref, watch } from "vue";
 import TitleInterface from "@/base/Data/Models/title_interface";
-import { PermissionsEnum } from "@/features/dashboard/users/employee/Core/enums/permission_enum";
-// import {validateRequiredFields} from "@/base/persention/utils/validate_required_fields";
-// import {validationEnum} from "@/base/persention/utils/validation_enum";
-// import validationDialogService from "@/base/persention/utils/validationService";
-import PermissionParams from "@/features/dashboard/users/employee/Core/params/add_permission_params";
-import AddPermissionController from "@/features/dashboard/users/employee/Presentation/controllers/add_permission_controller";
+import { PermissionsEnum } from "@/features/users/employee/Core/enums/permission_enum";
+// import {validateRequiredFields} from "@/base/Presentation/utils/validate_required_fields";
+// import {validationEnum} from "@/base/Presentation/utils/validation_enum";
+// import validationDialogService from "@/base/Presentation/utils/validationService";
+import PermissionParams from "@/features/users/employee/Core/params/add_permission_params";
+import AddPermissionController from "@/features/users/employee/Presentation/controllers/add_permission_controller";
 import { useRoute, useRouter } from "vue-router";
 import IconSave from "@/components/icons/IconSave.vue";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import ShowEmployeePermissionController from "@/features/dashboard/users/employee/Presentation/controllers/show_permission_controller";
-import ShowEmployeePermissionParams from "@/features/dashboard/users/employee/Core/params/show_permission_params";
+import ShowEmployeePermissionController from "@/features/users/employee/Presentation/controllers/show_permission_controller";
+import ShowEmployeePermissionParams from "@/features/users/employee/Core/params/show_permission_params";
 
 const permission = ref<TitleInterface[]>([]);
 const AllOffers = ref<boolean>(true);

@@ -3,7 +3,7 @@ import type ShowClientModel from "../../Data/models/equipmentTypeDetailsModel.ts
 import IconsSms from "@/components/icons/sms.vue";
 import IconsWhatsApp from "@/components/icons/SocialIcons.vue";
 import IconsNotification from "@/components/icons/notificationBing.vue";
-import { ClientStatusEnum } from "@/features/users/clients/Core/enums/clientStatusEnum.ts";
+import { ClientStatusEnum } from "@/features/users/clients/clients/Core/enums/clientStatusEnum.ts";
 
 const props = defineProps<{ data: ShowClientModel | null }>();
 

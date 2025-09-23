@@ -3,20 +3,20 @@ import Dialog from "primevue/dialog";
 import { ref, withDefaults, toRefs, watch } from "vue";
 import TitleInterface from "@/base/Data/Models/title_interface";
 import CustomSelectInput from "@/components/HelpersComponents/CustomSelectInput.vue";
-import AddClientParams from "@/features/dashboard/users/languages/Core/params/add_client_params";
-import AttentionParams from "@/features/dashboard/users/languages/Core/params/attention_params";
+import AddClientParams from "@/features/users/clients/Core/params/add_client_params";
+import AttentionParams from "@/features/users/clients/Core/params/attention_params";
 import IndexCountryParams from "@/features/dashboard/settings/country/Core/params/index_country_params";
 import IndexCountryController from "@/features/dashboard/settings/country/Presentation/controllers/index_country_controller";
-import IndexEmployeeParams from "@/features/dashboard/users/employee/Core/params/index_employees_params";
-import IndexEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/index_employees_controller";
-import AddClientController from "@/features/dashboard/users/languages/Presentation/controllers/add_client_controller";
+import IndexEmployeeParams from "@/features/users/employee/Core/params/index_employees_params";
+import IndexEmployeeController from "@/features/users/employee/Presentation/controllers/index_employees_controller";
+import AddClientController from "@/features/users/clients/Presentation/controllers/add_client_controller";
 import { useRouter } from "vue-router";
 
-import { PermissionsEnum } from "@/features/dashboard/users/employee/Core/enums/permission_enum";
+import { PermissionsEnum } from "@/features/users/employee/Core/enums/permission_enum";
 import { useUserStore } from "@/stores/user";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService";
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService";
 
 const router = useRouter();
 

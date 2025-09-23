@@ -1,8 +1,8 @@
-import { ShowEmployeePermissionApiService } from "@/features/dashboard/users/employee/Data/apiServices/show_permission_api_service";
-import PermissionModel from "@/features/dashboard/users/employee/Data/models/permission_model";
+import { ShowEmployeePermissionApiService } from "@/features/users/employee/Data/apiServices/show_permission_api_service";
+import PermissionModel from "@/features/users/employee/Data/models/permission_model";
 import RepoInterface from "@/base/Domain/Repositories/repo_interface";
 import type ServicesInterface from "@/base/Data/ApiService/api_service_interface";
-// import PermissionModel from "@/features/dashboard/users/employee/Data/models/permission_model";
+// import PermissionModel from "@/features/users/employee/Data/models/permission_model";
 
 class ShowEmployeePermissionRepo extends RepoInterface<PermissionModel> {
   private static instance: ShowEmployeePermissionRepo;

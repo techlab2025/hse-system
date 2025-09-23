@@ -7,7 +7,7 @@ import DeleteProjectParams from "@/features/dashboard/projects/project/Core/para
 import DeleteProjectDashboardController from "@/features/dashboard/projects/project/Presentation/controllers/delete_project_controller";
 import ProjectStatusEnum from "@/features/dashboard/projects/project/Data/enums/project_status_enum";
 import { onMounted, ref, watch } from "vue";
-import { debounce } from "@/base/persention/utils/debouced";
+import { debounce } from "@/base/Presentation/utils/debouced";
 import DropList from "@/components/HelpersComponents/DropList.vue";
 import { useRoute } from "vue-router";
 // import type PaginationModel from "@/base/core/Models/pagination_model";
