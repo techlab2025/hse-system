@@ -1,32 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/ProjectTypeModel'
+import ProjectTypeModel from '@/features/setting/ProjectType/Data/models/projectTypeModel.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import disActiveEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/useCase/disEquipmentTypeUseCase'
+import disActiveProjectTypeUseCase from '@/features/setting/ProjectType/Domain/useCase/disProjectTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 
-export default class disActiveEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
-  private static instance: disActiveEquipmentTypeController
+export default class disActiveProjectTypeController extends ControllerInterface<ProjectTypeModel> {
+  private static instance: disActiveProjectTypeController
   private constructor() {
     super()
   }
-  private disActiveEquipmentTypeUseCase = new disActiveEquipmentTypeUseCase()
+  private disActiveProjectTypeUseCase = new disActiveProjectTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveEquipmentTypeController()
+      this.instance = new disActiveProjectTypeController()
     }
     return this.instance
   }
 
-  async disActiveEquipmentType(params: Params) {
+  async disActiveProjectType(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<EquipmentTypeModel> =
-      await this.disActiveEquipmentTypeUseCase.call(params)
+    const dataState: DataState<ProjectTypeModel> =
+      await this.disActiveProjectTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

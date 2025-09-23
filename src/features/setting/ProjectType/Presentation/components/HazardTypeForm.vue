@@ -2,33 +2,31 @@
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-// import { EquipmentTypesMap } from '@/constant/EquipmentTypes'
+// import { HazardTypesMap } from '@/constant/HazardTypes'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import type ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/ProjectTypeDetailsModel.ts'
+import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import EditEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/editEquipmentTypeParams'
-import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
+import EditHazardTypeParams from '@/features/setting/HazardType/Core/params/editHazardTypeParams.ts'
+import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { useRoute } from 'vue-router'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ShowEquipmentTypeModel
+  data?: ShowHazardTypeModel
 }>()
 
-const route = useRoute()
-const id = route.params.parent_id
+// const route = useRoute()
 
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -44,16 +42,16 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
-const allIndustries = ref<number>(0)
-const hasCertificate = ref<number>(0)
-const image = ref<string>('')
+const allIndustries = ref<boolean>(false)
+// const hasCertificate = ref<number>(0)
+// const image = ref<string>('')
 
 // industry
 const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available EquipmentTypes
+// default available HazardTypes
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const fetchLang = async (
@@ -63,16 +61,16 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexEquipmentTypeController = await IndexLangController.getInstance().getData(params)
+  const indexHazardTypeController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexEquipmentTypeController.value
+  const response = indexHazardTypeController.value
 
   if (response?.data?.length) {
-    // map backend EquipmentTypes into default structure
+    // map backend HazardTypes into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
       title: '', // empty initially
-      // if you already have icons mapped, use EquipmentTypesMap
+      // if you already have icons mapped, use HazardTypesMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
@@ -102,28 +100,23 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  console.log(allIndustries.value, 'industry')
+
   const params = props.data?.id
-    ? new EditEquipmentTypeParams(
+    ? new EditHazardTypeParams(
         props.data?.id! ?? 0,
         translationsParams,
-        hasCertificate.value,
-        allIndustries.value,
-        industry.value?.map((item) => item.id),
-        id,
-        image.value?.file,
-        image.value?.id,
+        allIndustries.value ?? false,
+        industry.value?.map((item) => item.id) ?? [],
       )
-    : new AddEquipmentTypeParams(
+    : new AddHazardTypeParams(
         translationsParams,
-        hasCertificate.value,
-        allIndustries.value,
+        allIndustries.value?? false,
         industry.value?.map((item) => item.id),
-        id,
-        image.value?.file,
-        image.value?.id,
+        // id,
       )
 
-  // console.log(params, 'params')
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -141,7 +134,7 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-// init EquipmentTypes either from backend (edit mode) or from defaults (create mode)
+// init HazardTypes either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -156,21 +149,18 @@ watch(
       }
 
       // langs.value = newData?.code
-      hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries
-      industry.value = newData?.industries
-      image.value = newData?.image
+      // hasCertificate.value = newData?.hasCertificate
+      allIndustries.value = newData?.allIndustries!
+      industry.value = newData?.industries!
     }
   },
   { immediate: true },
 )
 
-const setImage = async (data: File) => {
-  // console.log(data, 'data image')
-  image.value = await filesToBase64(data)
-  console.log(image.value, 'image')
-  updateData()
-}
+// const setImage = async (data: File) => {
+//   image.value = await filesToBase64(data)
+//   updateData()
+// }
 </script>
 
 <template>
@@ -178,23 +168,23 @@ const setImage = async (data: File) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
-    <label>{{ $t('has_certificate') }}</label>
-    <input
-      type="checkbox"
-      :value="1"
-      v-model="hasCertificate"
-      :checked="hasCertificate == 1"
-      @change="updateData"
-    />
-  </div>
+  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
+  <!--    <label>{{ $t('has_certificate') }}</label>-->
+  <!--    <input-->
+  <!--      type="checkbox"-->
+  <!--      :value="1"-->
+  <!--      v-model="hasCertificate"-->
+  <!--      :checked="hasCertificate == 1"-->
+  <!--      @change="updateData"-->
+  <!--    />-->
+  <!--  </div>-->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
-      :value="1"
+      :value="true"
       v-model="allIndustries"
-      :checked="allIndustries == 1"
+      :checked="allIndustries"
       @change="updateData"
     />
   </div>
@@ -203,30 +193,21 @@ const setImage = async (data: File) => {
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="EquipmentTypeuage"
-      id="EquipmentType"
+      label="industry"
+      id="HazardType"
       placeholder="Select industry"
       :type="2"
       @update:modelValue="setIndustry"
     />
   </div>
-  <div class="col-span-4 md:col-span-4">
-    <!-- <FileUpload
-      :initialFileData="image"
-      @update:fileData="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-      :type="file"
-      :multiple="false"
-    /> -->
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
-    <!-- <SingleFileUpload v-model="image" label="Image" id="image" placeholder="Select image" /> -->
-  </div>
+  <!--  <div class="col-span-4 md:col-span-4">-->
+  <!--    <FileUpload-->
+  <!--      :initialFileData="image"-->
+  <!--      @update:fileData="setImage"-->
+  <!--      label="Image"-->
+  <!--      id="image"-->
+  <!--      placeholder="Select image"-->
+  <!--      :multiple="false"-->
+  <!--    />-->
+  <!--  </div>-->
 </template>

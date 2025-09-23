@@ -1,0 +1,12 @@
+import type Params from '@/base/core/params/params'
+// import type LangModel from "@/features/setting/languages/Data/models/langModel.ts";
+import type UseCase from '@/base/Domain/UseCase/use_case'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { EditProjectTypeRepo } from '@/features/setting/ProjectType/Domain/repositories/editProjectTypeRepo'
+import type ProjectTypeModel from '@/features/setting/ProjectType/Data/models/projectTypeModel.ts'
+
+export default class EditProjectTypeUseCase implements UseCase<ProjectTypeModel, Params> {
+  async call(params: Params): Promise<DataState<ProjectTypeModel>> {
+    return EditProjectTypeRepo.getInstance().call(params)
+  }
+}
