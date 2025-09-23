@@ -60,6 +60,14 @@ class ApiNames {
   public EditHazardType = this.baseUrl + this.dashboardPrefix + "update_hazard_type";
   public DeleteHazardType = this.baseUrl + this.dashboardPrefix + "delete_hazard_type";
   public DisHazardType = this.baseUrl + this.dashboardPrefix + "disable_hazard_type";
+
+  // Project Type
+  public CreateProjectType = this.baseUrl + this.dashboardPrefix + "create_project_type";
+  public IndexProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_types";
+  public ShowProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_type_details";
+  public EditProjectType = this.baseUrl + this.dashboardPrefix + "update_project_type";
+  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + "delete_project_type";
+  public DisProjectType = this.baseUrl + this.dashboardPrefix + "disable_project_type";
 }
 
 export { ApiNames }

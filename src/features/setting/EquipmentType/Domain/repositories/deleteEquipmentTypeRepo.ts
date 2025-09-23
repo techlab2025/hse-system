@@ -1,5 +1,5 @@
 import { DeleteEquipmentTypeApiService } from '@/features/setting/EquipmentType/Data/apiServices/deleteEquipmentTypeApiService'
-// import ClientModel from '@/features/setting/languages/Data/models/hazardTypeModel.ts'
+// import ClientModel from '@/features/setting/languages/Data/models/projectTypeModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
