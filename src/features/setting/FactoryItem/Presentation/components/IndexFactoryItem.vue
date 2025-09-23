@@ -21,10 +21,10 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexFactoryController from '../controllers/indexFactoryController'
-import IndexFactoryParams from '../../Core/params/indexFactoryParams'
-import DeleteFactoryParams from '../../Core/params/deleteFactoryParams'
-import DeleteFactoryController from '../controllers/deleteFactoryController'
+import IndexFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/indexFactoryItemController.ts'
+import IndexFactoryItemParams from '@/features/setting/FactoryItem/Core/params/indexFactoryItemParams.ts'
+import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/deleteFactoryItemParams.ts'
+import DeleteFactoryItemController from '@/features/setting/FactoryItem/controllers/deleteFactoryItemController.ts'
 
 const { t } = useI18n()
 
@@ -34,7 +34,7 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexFactoryController = IndexFactoryController.getInstance()
+const indexFactoryController = IndexFactoryItemController.getInstance()
 const state = ref(indexFactoryController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
@@ -46,7 +46,7 @@ const fetchFactory = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteFactoryParams = new IndexFactoryParams(query, pageNumber, perPage, withPage, id)
+  const deleteFactoryParams = new IndexFactoryItemParams(query, pageNumber, perPage, withPage, id)
   await indexFactoryController.getData(deleteFactoryParams)
 }
 
@@ -59,8 +59,8 @@ const searchFactory = debounce(() => {
 })
 
 const deleteFactory = async (id: number) => {
-  const deleteFactoryParams = new DeleteFactoryParams(id)
-  await DeleteFactoryController.getInstance().deleteFactory(deleteFactoryParams)
+  const deleteFactoryParams = new DeleteFactoryItemParams(id)
+  await DeleteFactoryItemController.getInstance().deleteFactory(deleteFactoryParams)
   await fetchFactory()
 }
 
@@ -92,11 +92,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/factory/${id}`,
+    link: `/admin/factory-item/${id}`,
     permission: [
-      PermissionsEnum.FACTORY_UPDATE,
+      PermissionsEnum.FACTORY_ITEM_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
   // {
@@ -104,9 +104,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   //   icon: IconEdit,
   //   link: `/admin/Hazard-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.FACTORY_UPDATE,
+  //     PermissionsEnum.FACTORY_ITEM_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.FACTORY_ALL,
+  //     PermissionsEnum.FACTORY_ITEM_ALL,
   //   ],
   // },
   // {
@@ -114,9 +114,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   //   icon: IconEdit,
   //   link: `/admin/Hazard-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.FACTORY_UPDATE,
+  //     PermissionsEnum.FACTORY_ITEM_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.FACTORY_ALL,
+  //     PermissionsEnum.FACTORY_ITEM_ALL,
   //   ],
   // },
   {
@@ -124,9 +124,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteFactory(id),
     permission: [
-      PermissionsEnum.FACTORY_DELETE,
+      PermissionsEnum.FACTORY_ITEM_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
 ]
@@ -156,8 +156,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_CREATE]">
-        <router-link to="/admin/factory/add" class="btn btn-primary">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_ITEM_CREATE]">
+        <router-link to="/admin/factory-item/add" class="btn btn-primary">
           {{ $t('Add_Factory') }}
         </router-link>
       </permission-builder>
@@ -167,11 +167,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.FACTORY_ALL,
-      PermissionsEnum.FACTORY_DELETE,
-      PermissionsEnum.FACTORY_FETCH,
-      PermissionsEnum.FACTORY_UPDATE,
-      PermissionsEnum.FACTORY_CREATE,
+      PermissionsEnum.FACTORY_ITEM_ALL,
+      PermissionsEnum.FACTORY_ITEM_DELETE,
+      PermissionsEnum.FACTORY_ITEM_FETCH,
+      PermissionsEnum.FACTORY_ITEM_UPDATE,
+      PermissionsEnum.FACTORY_ITEM_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -185,7 +185,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('factory') }}</th>
+                <!--                <th scope="col">{{ $t('image') }}</th>-->
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -193,7 +194,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/factory/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -203,6 +204,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                       ? item.industries.map((industry) => industry.title).join(', ')
                       : '---'
                   }}
+                </td>
+                <td data-label="factory">
+                  <router-link :to="`/admin/factory-item/${item.id}`">{{
+                    item.factory.title
+                  }}</router-link>
                 </td>
                 <td data-label="all_industries">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

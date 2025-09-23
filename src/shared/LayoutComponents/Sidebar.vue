@@ -151,6 +151,22 @@ const active = ref('0')
                 <li>
                   <PermissionBuilder
                     :code="[
+                      PermissionsEnum.FACTORY_ITEM_ALL,
+                      PermissionsEnum.FACTORY_ITEM_CREATE,
+                      PermissionsEnum.FACTORY_ITEM_DELETE,
+                      PermissionsEnum.FACTORY_ITEM_FETCH,
+                      PermissionsEnum.FACTORY_ITEM_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/factories-items">
+                      <SidebarVector />
+                      <span>Factories Items</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
                       PermissionsEnum.FACTORY_ALL,
                       PermissionsEnum.FACTORY_CREATE,
                       PermissionsEnum.FACTORY_DELETE,

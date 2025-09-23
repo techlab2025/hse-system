@@ -69,12 +69,22 @@ class ApiNames {
   public DisHazardType = this.baseUrl + this.dashboardPrefix + 'disable_hazard_type'
 
   // Project Type
-  public CreateProjectType = this.baseUrl + this.dashboardPrefix + 'create_project_type'
-  public IndexProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_types'
-  public ShowProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_type_details'
-  public EditProjectType = this.baseUrl + this.dashboardPrefix + 'update_project_type'
-  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + 'delete_project_type'
-  public DisProjectType = this.baseUrl + this.dashboardPrefix + 'disable_project_type'
+  public CreateProjectType = this.baseUrl + this.dashboardPrefix + "create_project_type";
+  public IndexProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_types";
+  public ShowProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_type_details";
+  public EditProjectType = this.baseUrl + this.dashboardPrefix + "update_project_type";
+  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + "delete_project_type";
+  public DisProjectType = this.baseUrl + this.dashboardPrefix + "disable_project_type";
+
+  // factory item
+  public CreateFactoryItem = this.baseUrl + this.dashboardPrefix + "create_factory_item";
+  public IndexFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_items";
+  public ShowFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_item_details";
+  public EditFactoryItem = this.baseUrl + this.dashboardPrefix + "update_factory_item";
+  public DeleteFactoryItem = this.baseUrl + this.dashboardPrefix + "delete_factory_item";
+  public DisFactoryItem = this.baseUrl + this.dashboardPrefix + "disable_factory_item";
+
+
 
   //Accidents
   public CreateAccidentsType = this.baseUrl + this.dashboardPrefix + 'create_accidents_type'
