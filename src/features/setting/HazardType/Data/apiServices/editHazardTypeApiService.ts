@@ -4,8 +4,8 @@ import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 // import HeaderHandler from '@/base/core/networkStructure/networking/utils/header_handler.ts'
 
-class EditEquipmentTypeApiService extends ServicesInterface {
-  private static instance: EditEquipmentTypeApiService
+class EditHazardTypeApiService extends ServicesInterface {
+  private static instance: EditHazardTypeApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -13,14 +13,14 @@ class EditEquipmentTypeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditEquipmentTypeApiService()
+      this.instance = new EditHazardTypeApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.EditEquipmentType,
+      url: ApiNames.instance.EditHazardType,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -30,4 +30,4 @@ class EditEquipmentTypeApiService extends ServicesInterface {
   }
 }
 
-export { EditEquipmentTypeApiService }
+export { EditHazardTypeApiService }

@@ -44,6 +44,13 @@ class ApiNames {
   public DeleteEquipmentType = this.baseUrl +  this.dashboardPrefix + "delete_equipment_type";
   public DisEquipmentType = this.baseUrl +  this.dashboardPrefix + "disable_equipment_type";
 
+  //HazardType
+  public CreateHazardType = this.baseUrl + this.dashboardPrefix + "create_hazard_type";
+  public IndexHazardType = this.baseUrl + this.dashboardPrefix + "fetch_hazard_types";
+  public ShowHazardType = this.baseUrl + this.dashboardPrefix + "fetch_hazard_type_details";
+  public EditHazardType = this.baseUrl + this.dashboardPrefix + "update_hazard_type";
+  public DeleteHazardType = this.baseUrl + this.dashboardPrefix + "delete_hazard_type";
+  public DisHazardType = this.baseUrl + this.dashboardPrefix + "disable_hazard_type";
 }
 
 export { ApiNames }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
-import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
+import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
+import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -11,8 +11,8 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/deleteEquipmentTypeController'
-import DeleteEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/deleteEquipmentTypeParams'
+import DeleteHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/deleteHazardTypeController'
+import DeleteHazardTypeParams from '@/features/setting/HazardType/Core/params/deleteHazardTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -28,61 +28,55 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusEquipmentType from "@/features/setting/EquipmentTypeuages/Presentation/components/EquipmentType/DialogChangeStatusEquipmentType.vue";
+// import DialogChangeStatusHazardType from "@/features/setting/HazardTypeuages/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
-const state = ref(indexEquipmentTypeController.state.value)
+const indexHazardTypeController = IndexHazardTypeController.getInstance()
+const state = ref(indexHazardTypeController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
+// const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
 
-const fetchEquipmentType = async (
+const fetchHazardType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    id,
-  )
-  await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, id)
+  await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 
 onMounted(() => {
-  fetchEquipmentType()
+  fetchHazardType()
 })
 
-const searchEquipmentType = debounce(() => {
-  fetchEquipmentType(word.value)
+const searchHazardType = debounce(() => {
+  fetchHazardType(word.value)
 })
 
-const deleteEquipmentType = async (id: number) => {
-  const deleteEquipmentTypeParams = new DeleteEquipmentTypeParams(id)
-  await DeleteEquipmentTypeController.getInstance().deleteEquipmentType(deleteEquipmentTypeParams)
-  await fetchEquipmentType()
+const deleteHazardType = async (id: number) => {
+  const deleteHazardTypeParams = new DeleteHazardTypeParams(id)
+  await DeleteHazardTypeController.getInstance().deleteHazardType(deleteHazardTypeParams)
+  await fetchHazardType()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchEquipmentType('', currentPage.value, countPerPage.value)
+  fetchHazardType('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchEquipmentType('', currentPage.value, countPerPage.value)
+  fetchHazardType('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexEquipmentTypeController.state.value,
+  () => indexHazardTypeController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -94,45 +88,45 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
+const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/equipment-type/${id}`,
+    link: `/admin/hazard-type/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_ALL,
     ],
   },
-  {
-    text: t('add_sub_equipment_type'),
-    icon: IconEdit,
-    link: `/admin/equipment-type/add/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-    ],
-  },
-  {
-    text: t('sub_equipment_types'),
-    icon: IconEdit,
-    link: `/admin/equipment-types/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-    ],
-  },
+  // {
+  //   text: t('add_sub_HAZARD_type'),
+  //   icon: IconEdit,
+  //   link: `/admin/Hazard-type/add/${id}`,
+  //   permission: [
+  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //   ],
+  // },
+  // {
+  //   text: t('sub_HAZARD_types'),
+  //   icon: IconEdit,
+  //   link: `/admin/Hazard-types/${id}`,
+  //   permission: [
+  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //   ],
+  // },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteEquipmentType(id),
+    action: () => deleteHazardType(id),
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_ALL,
     ],
   },
 ]
@@ -142,7 +136,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchEquipmentType())">
+      <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
       <input
@@ -150,7 +144,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchEquipmentType"
+        @input="searchHazardType"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -162,9 +156,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
-        <router-link to="/admin/equipment-type/add" class="btn btn-primary">
-          {{ $t('Add_EquipmentType') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+        <router-link to="/admin/hazard-type/add" class="btn btn-primary">
+          {{ $t('Add_HazardType') }}
         </router-link>
       </permission-builder>
     </div>
@@ -173,11 +167,11 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.HAZARD_TYPE_FETCH,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -188,7 +182,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('has_certificate') }}</th>
+                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
@@ -199,18 +193,15 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/EquipmentType/edit/${item.id}`"
-                    >{{ item.id }}
-                  </router-link>
+                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
-                <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
+                      : '---'
                   }}
                 </td>
                 <td data-label="all_industries">
@@ -218,15 +209,15 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
                 </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusEquipmentType-->
-                  <!--                  v-if="item.EquipmentTypeStatus === EquipmentTypeStatusEnum.Draft"-->
-                  <!--                  :EquipmentTypeId="item.id"-->
-                  <!--                  @EquipmentTypeChangeStatus="fetchEquipmentType"-->
+                  <!--                <DialogChangeStatusHazardType-->
+                  <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
+                  <!--                  :HazardTypeId="item.id"-->
+                  <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
                   <DropList
-                    :actionList="actionList(item.id, deleteEquipmentType)"
-                    @delete="deleteEquipmentType(item.id)"
+                    :actionList="actionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)"
                   />
                 </td>
               </tr>
@@ -247,18 +238,18 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypeuages"
+          :link="`/add/HazardType`"
+          addText="Add HazardType"
+          description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HazardTypeuages"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypeuages"
+          :link="`/add/HazardType`"
+          addText="Add HazardType"
+          description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HazardTypeuages"
         />
       </template>
     </DataStatus>
@@ -266,7 +257,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>
