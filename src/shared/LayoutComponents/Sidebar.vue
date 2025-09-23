@@ -39,7 +39,6 @@ const active = ref('0')
                 <IconSetting />
                 Settings
               </div>
-
             </AccordionHeader>
 
             <AccordionContent
@@ -80,7 +79,8 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-              <li>
+
+                <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum?.ADMIN,
@@ -94,6 +94,23 @@ const active = ref('0')
                     <router-link to="/admin/equipment-types">
                       <SidebarVector />
                       <span>Equipment Types</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum.EQUIPMENT_ALL,
+                      PermissionsEnum.EQUIPMENT_CREATE,
+                      PermissionsEnum.EQUIPMENT_DELETE,
+                      PermissionsEnum.EQUIPMENT_FETCH,
+                      PermissionsEnum.EQUIPMENT_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/equipments">
+                      <SidebarVector />
+                      <span>Equipment</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

@@ -8,8 +8,6 @@ import type ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/m
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import EditEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/editEquipmentTypeParams'
-import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
@@ -17,17 +15,27 @@ import { LangsMap } from '@/constant/langs.ts'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
+import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
+import AddEquipmentParams from '../../Core/params/addEquipmentParams'
+import EditEquipmentParams from '../../Core/params/editEquipmentParams'
+import type EquipmentModel from '../../Data/models/equipmentModel'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ShowEquipmentTypeModel
+  data?: EquipmentModel
 }>()
 
 const route = useRoute()
 const id = route.params.id
+
+const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
+const state = ref(indexEquipmentTypeController.state.value)
+
+const indexEquipmentTypeParams = new IndexEquipmentTypeParams('', 1, 10, 1)
 
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -92,6 +100,7 @@ const fetchLang = async (
 
 onMounted(async () => {
   await fetchLang()
+  // fetchEquipmentType()
 })
 
 const updateData = () => {
@@ -101,15 +110,28 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const params = props.data?.id
-  // ? new EditEquipmentTypeParams(
-  //     props.data?.id! ?? 0,
-  //     translationsParams,
-  //     EquipmentType.value?.subtitle! ?? 'en',
-  //   )
-  // : new AddEquipmentTypeParams(translationsParams, EquipmentType.value?.subtitle! ?? 'en')
+  const params = !props.data?.id
+    ? new AddEquipmentParams(
+        translationsParams,
+        hasCertificate.value,
+        allIndustries.value,
+        industry.value.map((i) => i.id),
+        Number(id),
+        // image.value,
+        Equipment?.value?.id!,
+      )
+    : new EditEquipmentParams(
+        props.data?.id! ?? 0,
+        translationsParams,
+        hasCertificate.value,
+        allIndustries.value,
+        industry.value.map((i) => i.id),
+        props.data?.id! ?? 0,
+        // image.value,
+        Equipment?.value?.id!,
+      )
 
-  // console.log(params, 'params')
+  console.log(params, 'params Editststststs')
   emit('update:data', params)
 }
 
@@ -151,18 +173,45 @@ const setImage = async (data: File) => {
   image.value = await filesToBase64(data)
   updateData()
 }
+
+// const fetchEquipmentType = async (
+//   query: string = '',
+//   pageNumber: number = 1,
+//   perPage: number = 10,
+//   withPage: number = 1,
+// ) => {
+//   const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
+//     query,
+//     pageNumber,
+//     perPage,
+//     withPage,
+//     id,
+//   )
+//   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
+// }
+
+// onMounted(() => {
+//   fetchEquipmentType()
+// })
+
+const Equipment = ref<TitleInterface>()
+const setEquipmentType = (data: TitleInterface) => {
+  Equipment.value = data
+  console.log(Equipment.value, 'Equipment')
+  updateData()
+}
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
-
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('has_certificate') }}</label>
     <input type="checkbox" :value="1" v-model="hasCertificate" />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  </div> -->
+
+  <div class="col-span-4 md:col-span-4 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" />
   </div>
@@ -171,14 +220,25 @@ const setImage = async (data: File) => {
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="EquipmentTypeuage"
+      label="Industry"
       id="EquipmentType"
       placeholder="Select industry"
-      :type="multiselect"
+      :type="2"
       @update:modelValue="setIndustry"
     />
   </div>
   <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="Equipment"
+      :controller="indexEquipmentTypeController"
+      :params="indexEquipmentTypeParams"
+      label="EquipmentType"
+      id="EquipmentType"
+      placeholder="Select EquipmentType"
+      @update:modelValue="setEquipmentType"
+    />
+  </div>
+  <!-- <div class="col-span-4 md:col-span-4">
     <FileUpload
       :modelValue="image"
       @update:fileData="setImage"
@@ -188,5 +248,5 @@ const setImage = async (data: File) => {
       :type="file"
       :multiable="false"
     />
-  </div>
+  </div> -->
 </template>
