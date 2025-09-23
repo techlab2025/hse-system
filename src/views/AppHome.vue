@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DataTable from '@/components/Tables/DataTable.vue'
+// import DataTable from '@/components/Tables/DataTable.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 import { ref } from 'vue'
