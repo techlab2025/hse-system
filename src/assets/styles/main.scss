@@ -66,6 +66,9 @@
 /*<editor-fold desc="pagination">*/
 @use './skeleton/skeleton';
 /*</editor-fold>*/
+/*<editor-fold desc="SingleInput">*/
+@use './utils/single_file_input';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

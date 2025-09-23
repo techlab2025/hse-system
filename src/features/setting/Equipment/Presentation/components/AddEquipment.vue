@@ -7,6 +7,7 @@ import type Params from '@/base/core/params/params'
 import EquipmentForm from './EquipmentForm.vue'
 import AddEquipmentController from '../controllers/addEquipmentController'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
+import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -20,6 +21,8 @@ const addEquipment = async () => {
 const setParams = (data: Params) => {
   params.value = data
 }
+
+
 </script>
 
 <template>

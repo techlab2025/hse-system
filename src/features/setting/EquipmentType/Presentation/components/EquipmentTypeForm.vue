@@ -19,6 +19,7 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -102,7 +103,6 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-
     ? new EditEquipmentTypeParams(
         props.data?.id! ?? 0,
         translationsParams,
@@ -110,7 +110,7 @@ const updateData = () => {
         allIndustries.value,
         industry.value?.map((item) => item.id),
         id,
-        image.value,
+        image.value?.file,
         image.value?.id,
       )
     : new AddEquipmentTypeParams(
@@ -166,7 +166,9 @@ watch(
 )
 
 const setImage = async (data: File) => {
+  // console.log(data, 'data image')
   image.value = await filesToBase64(data)
+  console.log(image.value, 'image')
   updateData()
 }
 </script>
@@ -209,7 +211,7 @@ const setImage = async (data: File) => {
     />
   </div>
   <div class="col-span-4 md:col-span-4">
-    <FileUpload
+    <!-- <FileUpload
       :initialFileData="image"
       @update:fileData="setImage"
       label="Image"
@@ -217,6 +219,14 @@ const setImage = async (data: File) => {
       placeholder="Select image"
       :type="file"
       :multiple="false"
+    /> -->
+    <SingleFileUpload
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
     />
+    <!-- <SingleFileUpload v-model="image" label="Image" id="image" placeholder="Select image" /> -->
   </div>
 </template>
