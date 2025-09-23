@@ -105,6 +105,22 @@ const router = createRouter({
           name: 'Edit Project Type',
           component: () => import('../views/ProjectType/EditProjectType.vue'),
         },
+
+        {
+          path: 'factories',
+          name: 'Factories',
+          component: () => import('../views/Factory/IndexFactory.vue'),
+        },
+        {
+          path: 'add/factory',
+          name: 'Add Factory',
+          component: () => import('../views/Factory/AddFactory.vue'),
+        },
+        {
+          path: 'factory/:id',
+          name: 'Edit Factory',
+          component: () => import('../views/Factory/EditFactory.vue'),
+        },
       ],
     },
   ],
