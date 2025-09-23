@@ -1,32 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/HazardTypeModel'
+import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import disActiveEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/useCase/disEquipmentTypeUseCase'
+import disActiveHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/disHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/Error.png'
 
-export default class disActiveEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
-  private static instance: disActiveEquipmentTypeController
+export default class disActiveHazardTypeController extends ControllerInterface<HazardTypeModel> {
+  private static instance: disActiveHazardTypeController
   private constructor() {
     super()
   }
-  private disActiveEquipmentTypeUseCase = new disActiveEquipmentTypeUseCase()
+  private disActiveHazardTypeUseCase = new disActiveHazardTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveEquipmentTypeController()
+      this.instance = new disActiveHazardTypeController()
     }
     return this.instance
   }
 
-  async disActiveEquipmentType(params: Params) {
+  async disActiveHazardType(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<EquipmentTypeModel> =
-      await this.disActiveEquipmentTypeUseCase.call(params)
+    const dataState: DataState<HazardTypeModel> =
+      await this.disActiveHazardTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

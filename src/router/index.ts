@@ -59,7 +59,22 @@ const router = createRouter({
           path: 'equipment-type/:id',
           name: 'Edit Equipment Type',
           component: () => import('../views/EquipmentType/EditEquipmentType.vue'),
-        }
+        },
+        {
+          path: 'hazard-types',
+          name: 'Hazard Type',
+          component: () => import('../views/HazardType/IndexHazardType.vue'),
+        },
+        {
+          path: 'hazard-type/add',
+          name: 'Add Hazard Type',
+          component: () => import('../views/HazardType/AddHazardType.vue'),
+        },
+        {
+          path: 'hazard-type/:id',
+          name: 'Edit Hazard Type',
+          component: () => import('../views/HazardType/EditHazardType.vue'),
+        },
       ],
     },
   ],
