@@ -105,9 +105,9 @@ const updateData = () => {
     ? new EditEquipmentTypeParams(
         props.data?.id! ?? 0,
         translationsParams,
-        hasCertificate.value ,
+        hasCertificate.value,
         allIndustries.value,
-        industry.value.map((item) => item.id),
+        industry.value?.map((item) => item.id),
         id,
         image.value,
         image.value?.id,
@@ -116,9 +116,9 @@ const updateData = () => {
         translationsParams,
         hasCertificate.value,
         allIndustries.value,
-        industry.value.map((item) => item.id),
+        industry.value?.map((item) => item.id),
         id,
-        image.value.file,
+        image.value?.file,
         image.value?.id,
       )
 
@@ -177,11 +177,23 @@ const setImage = async (data: File) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('has_certificate') }}</label>
-    <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate" @change="updateData" />
+    <input
+      type="checkbox"
+      :value="1"
+      v-model="hasCertificate"
+      :checked="hasCertificate == 1"
+      @change="updateData"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries" @change="updateData" />
+    <input
+      type="checkbox"
+      :value="1"
+      v-model="allIndustries"
+      :checked="allIndustries == 1"
+      @change="updateData"
+    />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput

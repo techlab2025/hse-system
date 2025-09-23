@@ -40,7 +40,8 @@ export default class AddEquipmentTypeParams implements Params {
     data['translations'] = this.translation.toMap()
     data['has_certificate'] = this.hasCertificate ? 1 : 0
     data['all_industries'] = this.allIndustries ? 1 : 0
-    data['industry_ids'] = this.industries
+    // console.log(this.allIndustries)
+    if (!this.allIndustries) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
 

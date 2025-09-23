@@ -108,7 +108,17 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('add_sub_equipment_type'),
     icon: IconEdit,
-    link: `/equipment-type/add/${id}`,
+    link: `/admin/equipment-type/add/${id}`,
+    permission: [
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+    ],
+  },
+  {
+    text: t('sub_equipment_types'),
+    icon: IconEdit,
+    link: `/admin/equipment-types/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
