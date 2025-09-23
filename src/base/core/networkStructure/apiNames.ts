@@ -27,6 +27,15 @@ class ApiNames {
   public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
+
+  // Factory
+  public CreateFactory = this.baseUrl + this.dashboardPrefix + 'create_factory'
+  public IndexFactory = this.baseUrl + this.dashboardPrefix + 'fetch_factories'
+  public ShowFactory = this.baseUrl + this.dashboardPrefix + 'fetch_factory_details'
+  public EditFactory = this.baseUrl + this.dashboardPrefix + 'update_factory'
+  public DeleteFactory = this.baseUrl + this.dashboardPrefix + 'delete_factory'
+  public DisFactory = this.baseUrl + this.dashboardPrefix + 'disable_factory'
+
   // Industry
 
   public CreateIndustry = this.baseUrl + this.dashboardPrefix + 'create_industry'
