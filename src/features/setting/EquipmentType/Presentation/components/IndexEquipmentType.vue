@@ -38,7 +38,7 @@ const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const state = ref(indexEquipmentTypeController.state.value)
 const route = useRoute()
 
-const id = route.params.parent_id
+const id = ref(route.params.parent_id)
 
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
@@ -53,7 +53,7 @@ const fetchEquipmentType = async (
     pageNumber,
     perPage,
     withPage,
-    id,
+    id.value,
   )
   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
@@ -142,7 +142,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
 watch(
   () => route?.params?.id,
   (Newvalue) => {
-    id = Newvalue
+    // id = Newvalue
     fetchEquipmentType()
   },
 )
