@@ -2,14 +2,11 @@
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-// import { HazardTypesMap } from '@/constant/HazardTypes'
+// import { FactorysMap } from '@/constant/Factorys'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import EditHazardTypeParams from '@/features/setting/HazardType/Core/params/editHazardTypeParams.ts'
-import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
@@ -18,12 +15,15 @@ import IndexIndustryParams from '@/features/setting/Industries/Core/Params/index
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 // import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { useRoute } from 'vue-router'
+import type FactoryModel from '../../Data/models/FactoryModel'
+import EditFactoryParams from '../../Core/params/editFactoryParams'
+import AddFactoryParams from '../../Core/params/addFactoryParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ShowHazardTypeModel
+  data?: FactoryModel
 }>()
 
 // const route = useRoute()
@@ -51,7 +51,7 @@ const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available HazardTypes
+// default available Factorys
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const fetchLang = async (
@@ -61,16 +61,16 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexHazardTypeController = await IndexLangController.getInstance().getData(params)
+  const indexFactoryController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexHazardTypeController.value
+  const response = indexFactoryController.value
 
   if (response?.data?.length) {
-    // map backend HazardTypes into default structure
+    // map backend Factorys into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
       title: '', // empty initially
-      // if you already have icons mapped, use HazardTypesMap
+      // if you already have icons mapped, use FactorysMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
@@ -103,13 +103,13 @@ const updateData = () => {
   console.log(allIndustries.value, 'industry')
 
   const params = props.data?.id
-    ? new EditHazardTypeParams(
+    ? new EditFactoryParams(
         props.data?.id! ?? 0,
         translationsParams,
         allIndustries.value ?? false,
         industry.value?.map((item) => item.id) ?? [],
       )
-    : new AddHazardTypeParams(
+    : new AddFactoryParams(
         translationsParams,
         allIndustries.value?? false,
         industry.value?.map((item) => item.id),
@@ -134,7 +134,7 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-// init HazardTypes either from backend (edit mode) or from defaults (create mode)
+// init Factorys either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -194,7 +194,7 @@ watch(
       :controller="industryController"
       :params="industryParams"
       label="industry"
-      id="HazardType"
+      id="Factory"
       placeholder="Select industry"
       :type="2"
       @update:modelValue="setIndustry"

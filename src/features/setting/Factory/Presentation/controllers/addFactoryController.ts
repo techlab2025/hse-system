@@ -1,44 +1,44 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import type ProjectTypeModel from '@/features/setting/ProjectType/Data/models/projectTypeModel.ts'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
+// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import EditProjectTypeUseCase from '@/features/setting/ProjectType/Domain/useCase/editProjectTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type { Router } from 'vue-router'
+import type FactoryModel from '../../Data/models/FactoryModel'
+import AddFactoryUseCase from '../../Domain/useCase/addFactoryUseCase'
 
-export default class EditProjectTypeController extends ControllerInterface<ProjectTypeModel> {
-  private static instance: EditProjectTypeController
-
+export default class AddFactoryController extends ControllerInterface<FactoryModel> {
+  private static instance: AddFactoryController
   private constructor() {
     super()
   }
-
-  private EditProjectTypeUseCase = new EditProjectTypeUseCase()
+  private AddFactoryUseCase = new AddFactoryUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditProjectTypeController()
+      this.instance = new AddFactoryController()
     }
     return this.instance
   }
 
-  async editProjectType(params: Params, router: any) {
+  async addFactory(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
     try {
-      const dataState: DataState<ProjectTypeModel> = await this.EditProjectTypeUseCase.call(params)
-
+      const dataState: DataState<FactoryModel> =
+        await this.AddFactoryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: this.state.value.message,
+          titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/project-types')
-        // console.log(this.state.value.data)
+        if (!draft) await router.push('/admin/factories')
+
+        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -47,14 +47,16 @@ export default class EditProjectTypeController extends ControllerInterface<Proje
           messageContent: null,
         })
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.message,
+        titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,
       })
     }
+
+    super.handleResponseDialogs()
     return this.state
   }
 }

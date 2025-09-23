@@ -105,6 +105,37 @@ const router = createRouter({
           name: 'Edit Accidents Type',
           component: () => import('../views/Accidents/EditAccidentsType.vue'),
         },
+        {
+          path: 'project-types',
+          name: 'Project Type',
+          component: () => import('../views/ProjectType/IndexProjectType.vue'),
+        },
+        {
+          path: 'project-type/add',
+          name: 'Add Project Type',
+          component: () => import('../views/ProjectType/AddProjectType.vue'),
+        },
+        {
+          path: 'project-type/:id',
+          name: 'Edit Project Type',
+          component: () => import('../views/ProjectType/EditProjectType.vue'),
+        },
+
+        {
+          path: 'factories',
+          name: 'Factories',
+          component: () => import('../views/Factory/IndexFactory.vue'),
+        },
+        {
+          path: 'add/factory',
+          name: 'Add Factory',
+          component: () => import('../views/Factory/AddFactory.vue'),
+        },
+        {
+          path: 'factory/:id',
+          name: 'Edit Factory',
+          component: () => import('../views/Factory/EditFactory.vue'),
+        },
       ],
     },
   ],

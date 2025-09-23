@@ -36,7 +36,7 @@ export default class AddProjectTypeController extends ControllerInterface<Projec
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/Project-types')
+        if (!draft) await router.push('/admin/project-types')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
