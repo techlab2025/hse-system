@@ -90,6 +90,21 @@ const router = createRouter({
           name: 'Edit Hazard Type',
           component: () => import('../views/HazardType/EditHazardType.vue'),
         },
+        {
+          path: 'project-types',
+          name: 'Project Type',
+          component: () => import('../views/ProjectType/IndexProjectType.vue'),
+        },
+        {
+          path: 'project-type/add',
+          name: 'Add Project Type',
+          component: () => import('../views/ProjectType/AddProjectType.vue'),
+        },
+        {
+          path: 'project-type/:id',
+          name: 'Edit Project Type',
+          component: () => import('../views/ProjectType/EditProjectType.vue'),
+        },
       ],
     },
   ],

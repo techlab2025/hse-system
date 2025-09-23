@@ -129,6 +129,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.PROJECT_TYPE_ALL,
+                      PermissionsEnum.PROJECT_TYPE_CREATE,
+                      PermissionsEnum.PROJECT_TYPE_DELETE,
+                      PermissionsEnum.PROJECT_TYPE_FETCH,
+                      PermissionsEnum.PROJECT_TYPE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/project-types">
+                      <SidebarVector />
+                      <span>Project Types</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>

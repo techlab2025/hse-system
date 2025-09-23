@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
-import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
+import IndexProjectTypeParams from '@/features/setting/ProjectType/Core/params/indexProjectTypeParams'
+import IndexProjectTypeController from '@/features/setting/ProjectType/Presentation/controllers/indexProjectTypeController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -11,8 +11,8 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/deleteHazardTypeController'
-import DeleteHazardTypeParams from '@/features/setting/HazardType/Core/params/deleteHazardTypeParams'
+import DeleteProjectTypeController from '@/features/setting/ProjectType/Presentation/controllers/deleteProjectTypeController'
+import DeleteProjectTypeParams from '@/features/setting/ProjectType/Core/params/deleteProjectTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -28,58 +28,58 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHazardType from "@/features/setting/HazardTypeuages/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
+// import DialogChangeStatusProjectType from "@/features/setting/ProjectTypeuages/Presentation/components/ProjectType/DialogChangeStatusProjectType.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexHazardTypeController = IndexHazardTypeController.getInstance()
-const state = ref(indexHazardTypeController.state.value)
+const indexProjectTypeController = IndexProjectTypeController.getInstance()
+const state = ref(indexProjectTypeController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
+// const type = ref<ProjectTypeStatusEnum>(ProjectTypeStatusEnum[route.params.type as keyof typeof ProjectTypeStatusEnum])
 
-const fetchHazardType = async (
+const fetchProjectType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, id)
-  await indexHazardTypeController.getData(deleteHazardTypeParams)
+  const deleteProjectTypeParams = new IndexProjectTypeParams(query, pageNumber, perPage, withPage, id)
+  await indexProjectTypeController.getData(deleteProjectTypeParams)
 }
 
 onMounted(() => {
-  fetchHazardType()
+  fetchProjectType()
 })
 
-const searchHazardType = debounce(() => {
-  fetchHazardType(word.value)
+const searchProjectType = debounce(() => {
+  fetchProjectType(word.value)
 })
 
-const deleteHazardType = async (id: number) => {
-  const deleteHazardTypeParams = new DeleteHazardTypeParams(id)
-  await DeleteHazardTypeController.getInstance().deleteHazardType(deleteHazardTypeParams)
-  await fetchHazardType()
+const deleteProjectType = async (id: number) => {
+  const deleteProjectTypeParams = new DeleteProjectTypeParams(id)
+  await DeleteProjectTypeController.getInstance().deleteProjectType(deleteProjectTypeParams)
+  await fetchProjectType()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHazardType('', currentPage.value, countPerPage.value)
+  fetchProjectType('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHazardType('', currentPage.value, countPerPage.value)
+  fetchProjectType('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexHazardTypeController.state.value,
+  () => indexProjectTypeController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState)
       state.value = newState
     }
   },
@@ -88,45 +88,45 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteHazardType: (id: number) => void) => [
+const actionList = (id: number, deleteProjectType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/hazard-type/${id}`,
+    link: `/admin/project-type/${id}`,
     permission: [
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.PROJECT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.PROJECT_TYPE_ALL,
     ],
   },
   // {
-  //   text: t('add_sub_HAZARD_type'),
+  //   text: t('add_sub_PROJECT_type'),
   //   icon: IconEdit,
-  //   link: `/admin/Hazard-type/add/${id}`,
+  //   link: `/admin/Project-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.PROJECT_TYPE_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //     PermissionsEnum.PROJECT_TYPE_ALL,
   //   ],
   // },
   // {
-  //   text: t('sub_HAZARD_types'),
+  //   text: t('sub_PROJECT_types'),
   //   icon: IconEdit,
-  //   link: `/admin/Hazard-types/${id}`,
+  //   link: `/admin/Project-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.PROJECT_TYPE_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //     PermissionsEnum.PROJECT_TYPE_ALL,
   //   ],
   // },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHazardType(id),
+    action: () => deleteProjectType(id),
     permission: [
-      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.PROJECT_TYPE_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.PROJECT_TYPE_ALL,
     ],
   },
 ]
@@ -136,7 +136,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchHazardType())">
+      <span class="icon-remove" @click="((word = ''), searchProjectType())">
         <Search />
       </span>
       <input
@@ -144,7 +144,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchHazardType"
+        @input="searchProjectType"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -156,9 +156,9 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
-        <router-link to="/admin/hazard-type/add" class="btn btn-primary">
-          {{ $t('Add_HazardType') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_TYPE_CREATE]">
+        <router-link to="/admin/project-type/add" class="btn btn-primary">
+          {{ $t('Add_ProjectType') }}
         </router-link>
       </permission-builder>
     </div>
@@ -167,11 +167,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.HAZARD_TYPE_FETCH,
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.PROJECT_TYPE_ALL,
+      PermissionsEnum.PROJECT_TYPE_DELETE,
+      PermissionsEnum.PROJECT_TYPE_FETCH,
+      PermissionsEnum.PROJECT_TYPE_UPDATE,
+      PermissionsEnum.PROJECT_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -193,7 +193,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/Project-type/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -209,15 +209,15 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                 </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusHazardType-->
-                  <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
-                  <!--                  :HazardTypeId="item.id"-->
-                  <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
+                  <!--                <DialogChangeStatusProjectType-->
+                  <!--                  v-if="item.ProjectTypeStatus === ProjectTypeStatusEnum.Draft"-->
+                  <!--                  :ProjectTypeId="item.id"-->
+                  <!--                  @ProjectTypeChangeStatus="fetchProjectType"-->
                   <!--                />-->
 
                   <DropList
-                    :actionList="actionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)"
+                    :actionList="actionList(item.id, deleteProjectType)"
+                    @delete="deleteProjectType(item.id)"
                   />
                 </td>
               </tr>
@@ -238,18 +238,18 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          :link="`/add/ProjectType`"
+          addText="Add ProjectType"
+          description="Sorry .. You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No ProjectTypeuages"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          :link="`/add/ProjectType`"
+          addText="Add ProjectType"
+          description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No ProjectTypeuages"
         />
       </template>
     </DataStatus>
@@ -257,7 +257,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

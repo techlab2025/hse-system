@@ -37,7 +37,7 @@ export default class EditProjectTypeController extends ControllerInterface<Proje
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/Project-types')
+        await router.push('/admin/project-types')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
