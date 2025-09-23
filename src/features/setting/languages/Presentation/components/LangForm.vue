@@ -151,7 +151,6 @@ watch(
       :staticOptions="langsList"
       label="Language"
       id="lang"
-      :type="2"
       placeholder="Select Language"
       @update:modelValue="setLang"
       :required="true"
