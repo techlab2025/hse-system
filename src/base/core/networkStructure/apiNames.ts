@@ -44,31 +44,29 @@ class ApiNames {
   public EditIndustry = this.baseUrl + this.dashboardPrefix + 'update_industry'
   public DeleteIndustry = this.baseUrl + this.dashboardPrefix + 'delete_industry'
 
-
   //EquipmentType
-  public CreateEquipmentType = this.baseUrl +  this.dashboardPrefix + "create_equipment_type";
-  public IndexEquipmentType = this.baseUrl +  this.dashboardPrefix + "fetch_equipment_types";
-  public ShowEquipmentType = this.baseUrl +  this.dashboardPrefix + "fetch_equipment_type_details";
-  public EditEquipmentType = this.baseUrl +  this.dashboardPrefix + "update_equipment_type";
-  public DeleteEquipmentType = this.baseUrl +  this.dashboardPrefix + "delete_equipment_type";
-  public DisEquipmentType = this.baseUrl +  this.dashboardPrefix + "disable_equipment_type";
-
+  public CreateEquipmentType = this.baseUrl + this.dashboardPrefix + 'create_equipment_type'
+  public IndexEquipmentType = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_types'
+  public ShowEquipmentType = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_type_details'
+  public EditEquipmentType = this.baseUrl + this.dashboardPrefix + 'update_equipment_type'
+  public DeleteEquipmentType = this.baseUrl + this.dashboardPrefix + 'delete_equipment_type'
+  public DisEquipmentType = this.baseUrl + this.dashboardPrefix + 'disable_equipment_type'
 
   //Equipment
-  public CreateEquipment = this.baseUrl +  this.dashboardPrefix + "create_equipment";
-  public IndexEquipment = this.baseUrl +  this.dashboardPrefix + "fetch_equipments";
-  public ShowEquipment = this.baseUrl +  this.dashboardPrefix + "fetch_equipment_details";
-  public EditEquipment = this.baseUrl +  this.dashboardPrefix + "update_equipment";
-  public DeleteEquipment = this.baseUrl +  this.dashboardPrefix + "delete_equipment";
-  public DisEquipment = this.baseUrl +  this.dashboardPrefix + "disable_equipment";
+  public CreateEquipment = this.baseUrl + this.dashboardPrefix + 'create_equipment'
+  public IndexEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipments'
+  public ShowEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_details'
+  public EditEquipment = this.baseUrl + this.dashboardPrefix + 'update_equipment'
+  public DeleteEquipment = this.baseUrl + this.dashboardPrefix + 'delete_equipment'
+  public DisEquipment = this.baseUrl + this.dashboardPrefix + 'disable_equipment'
 
   //HazardType
-  public CreateHazardType = this.baseUrl + this.dashboardPrefix + "create_hazard_type";
-  public IndexHazardType = this.baseUrl + this.dashboardPrefix + "fetch_hazard_types";
-  public ShowHazardType = this.baseUrl + this.dashboardPrefix + "fetch_hazard_type_details";
-  public EditHazardType = this.baseUrl + this.dashboardPrefix + "update_hazard_type";
-  public DeleteHazardType = this.baseUrl + this.dashboardPrefix + "delete_hazard_type";
-  public DisHazardType = this.baseUrl + this.dashboardPrefix + "disable_hazard_type";
+  public CreateHazardType = this.baseUrl + this.dashboardPrefix + 'create_hazard_type'
+  public IndexHazardType = this.baseUrl + this.dashboardPrefix + 'fetch_hazard_types'
+  public ShowHazardType = this.baseUrl + this.dashboardPrefix + 'fetch_hazard_type_details'
+  public EditHazardType = this.baseUrl + this.dashboardPrefix + 'update_hazard_type'
+  public DeleteHazardType = this.baseUrl + this.dashboardPrefix + 'delete_hazard_type'
+  public DisHazardType = this.baseUrl + this.dashboardPrefix + 'disable_hazard_type'
 
   // Project Type
   public CreateProjectType = this.baseUrl + this.dashboardPrefix + "create_project_type";
@@ -87,6 +85,23 @@ class ApiNames {
   public DisFactoryItem = this.baseUrl + this.dashboardPrefix + "disable_factory_item";
 
 
+
+  //Accidents
+  public CreateAccidentsType = this.baseUrl + this.dashboardPrefix + 'create_accidents_type'
+  public IndexAccidentsType = this.baseUrl + this.dashboardPrefix + 'fetch_accidents_types'
+  public ShowAccidentsType = this.baseUrl + this.dashboardPrefix + 'fetch_accidents_type_details'
+  public EditAccidentsType = this.baseUrl + this.dashboardPrefix + 'update_accidents_type'
+  public DeleteAccidentsType = this.baseUrl + this.dashboardPrefix + 'delete_accidents_type'
+  public DisAccidentsType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
+
+
+  //Organization
+  public CreateOrganization = this.baseUrl + this.dashboardPrefix + 'create_organization'
+  public IndexOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organizations'
+  public ShowOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organization_details'
+  public EditOrganization = this.baseUrl + this.dashboardPrefix + 'update_organization'
+  public DeleteOrganization = this.baseUrl + this.dashboardPrefix + 'delete_organization'
+  // public DisOrganizationType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
 }
 
 export { ApiNames }

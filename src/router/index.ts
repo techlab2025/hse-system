@@ -91,6 +91,21 @@ const router = createRouter({
           component: () => import('../views/HazardType/EditHazardType.vue'),
         },
         {
+          path: 'accidents-types',
+          name: 'Accidents Type',
+          component: () => import('../views/Accidents/IndexAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/add',
+          name: 'Add Accidents Type',
+          component: () => import('../views/Accidents/AddAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/:id',
+          name: 'Edit Accidents Type',
+          component: () => import('../views/Accidents/EditAccidentsType.vue'),
+        },
+        {
           path: 'project-types',
           name: 'Project Type',
           component: () => import('../views/ProjectType/IndexProjectType.vue'),
@@ -136,6 +151,20 @@ const router = createRouter({
           name: 'Edit Factory',
           component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
+    {
+          path: 'organization',
+          name: 'Organization',
+          component: () => import('../views/Organization/IndexOrganization.vue'),
+        },
+        {
+          path: 'organization/add',
+          name: 'Add Organization',
+          component: () => import('../views/Organization/AddOrganization.vue'),
+        },
+        {
+          path: 'organization/:id',
+          name: 'Edit organization',
+          component: () => import('../views/Organization/EditOrganization.vue'),
       ],
     },
   ],
