@@ -1,44 +1,44 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import ClientModel from '@/features/users/clients/Data/models/clientModel.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import AddClientUseCase from '@/features/users/clients/Domain/useCase/add_client_use_case'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/factoryItemModel.ts'
+import EditFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/editFactoryItemUseCase.ts'
 
-export default class AddClientController extends ControllerInterface<ClientModel> {
-  private static instance: AddClientController
+export default class EditFactoryItemController extends ControllerInterface<FactoryItemModel> {
+  private static instance: EditFactoryItemController
+
   private constructor() {
     super()
   }
-  private AddClientUseCase = new AddClientUseCase()
+
+  private EditFactoryUseCase = new EditFactoryItemUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddClientController()
+      this.instance = new EditFactoryItemController()
     }
     return this.instance
   }
 
-  async addClient(params: Params, router: any, draft: boolean = false) {
+  async editFactory(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
     try {
-      const dataState: DataState<ClientModel> = await this.AddClientUseCase.call(params)
+      const dataState: DataState<FactoryItemModel> = await this.EditFactoryUseCase.call(params)
+
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
         })
-
+        await router.push('/admin/factories')
         // console.log(this.state.value.data)
-        // console.log(draft)
-        if (!draft) await router.push('/users/All')
-
-        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -50,13 +50,11 @@ export default class AddClientController extends ControllerInterface<ClientModel
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,
       })
     }
-
-    super.handleResponseDialogs()
     return this.state
   }
 }

@@ -77,6 +77,16 @@ class ApiNames {
   public EditProjectType = this.baseUrl + this.dashboardPrefix + "update_project_type";
   public DeleteProjectType = this.baseUrl + this.dashboardPrefix + "delete_project_type";
   public DisProjectType = this.baseUrl + this.dashboardPrefix + "disable_project_type";
+
+  // factory item
+  public CreateFactoryItem = this.baseUrl + this.dashboardPrefix + "create_factory_item";
+  public IndexFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_items";
+  public ShowFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_item_details";
+  public EditFactoryItem = this.baseUrl + this.dashboardPrefix + "update_factory_item";
+  public DeleteFactoryItem = this.baseUrl + this.dashboardPrefix + "delete_factory_item";
+  public DisFactoryItem = this.baseUrl + this.dashboardPrefix + "disable_factory_item";
+
+
 }
 
 export { ApiNames }

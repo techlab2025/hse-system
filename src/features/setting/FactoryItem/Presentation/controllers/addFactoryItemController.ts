@@ -1,30 +1,33 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import ClientModel from '@/features/users/clients/Data/models/clientModel.ts'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
+// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import AddClientUseCase from '@/features/users/clients/Domain/useCase/add_client_use_case'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type { Router } from 'vue-router'
+import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/factoryItemModel.ts'
+import AddFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/addFactoryItemUseCase.ts'
 
-export default class AddClientController extends ControllerInterface<ClientModel> {
-  private static instance: AddClientController
+export default class AddFactoryItemController extends ControllerInterface<FactoryItemModel> {
+  private static instance: AddFactoryItemController
   private constructor() {
     super()
   }
-  private AddClientUseCase = new AddClientUseCase()
+  private AddFactoryUseCase = new AddFactoryItemUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddClientController()
+      this.instance = new AddFactoryItemController()
     }
     return this.instance
   }
 
-  async addClient(params: Params, router: any, draft: boolean = false) {
+  async addFactory(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ClientModel> = await this.AddClientUseCase.call(params)
+      const dataState: DataState<FactoryItemModel> =
+        await this.AddFactoryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -33,10 +36,7 @@ export default class AddClientController extends ControllerInterface<ClientModel
           imageElement: successImage,
           messageContent: null,
         })
-
-        // console.log(this.state.value.data)
-        // console.log(draft)
-        if (!draft) await router.push('/users/All')
+        if (!draft) await router.push('/admin/factories')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
@@ -47,10 +47,10 @@ export default class AddClientController extends ControllerInterface<ClientModel
           messageContent: null,
         })
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,
       })
