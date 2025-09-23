@@ -46,12 +46,12 @@ const router = createRouter({
           component: () => import('../views/Industry/EditIndustry.vue'),
         },
         {
-          path: 'equipment-types/:id?',
+          path: 'equipment-types/:parent_id?',
           name: 'Equipment Type',
           component: () => import('../views/EquipmentType/IndexEquipmentType.vue'),
         },
         {
-          path: 'equipment-type/add/:id?',
+          path: 'equipment-type/add/:parent_id?',
           name: 'Add Equipment Type',
           component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
         },

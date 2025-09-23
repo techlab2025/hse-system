@@ -23,7 +23,7 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
     return this.instance
   }
 
-  async addLang(params: Params, router: Router, draft: boolean = false) {
+  async addEquipmentType(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<EquipmentTypeModel> =
