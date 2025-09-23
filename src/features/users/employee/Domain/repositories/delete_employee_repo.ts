@@ -1,5 +1,5 @@
-import { DeleteEmployeeApiService } from "@/features/dashboard/users/employee/Data/apiServices/delete_employee_api_service";
-import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
+import { DeleteEmployeeApiService } from "@/features/users/employee/Data/apiServices/delete_employee_api_service";
+import EmployeeModel from "@/features/users/employee/Data/models/index_employee_model";
 import RepoInterface, {
   ResponseType,
 } from "@/base/Domain/Repositories/repo_interface";

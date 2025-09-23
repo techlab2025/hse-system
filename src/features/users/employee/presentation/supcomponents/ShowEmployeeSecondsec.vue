@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
+import ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
 const props = defineProps<{ data: ShowEmployeeModel | null }>();
 </script>
 

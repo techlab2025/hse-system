@@ -3,8 +3,8 @@ import { onMounted, ref, watch } from "vue";
 import ImageUser from "@/components/HelpersComponents/ImageUser.vue";
 import DatePicker from "primevue/datepicker";
 import type TitleInterface from "@/base/Data/Models/title_interface";
-import type ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
-import { convertToBase64 } from "@/base/persention/utils/convert_to_base_64";
+import type ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
+import { convertToBase64 } from "@/base/Presentation/utils/convert_to_base_64";
 import IndexCountryController from "@/features/dashboard/settings/country/Presentation/controllers/index_country_controller";
 import IndexCountryParams from "@/features/dashboard/settings/country/Core/params/index_country_params";
 import IndexGovernorateController from "@/features/dashboard/settings/governorate/Presentation/controllers/index_governorate_controller";
@@ -18,15 +18,15 @@ import IndexPermitController from "@/features/dashboard/settings/permits/Present
 import IndexPermitsParams from "@/features/dashboard/settings/permits/Core/params/index_permits_params";
 import Select from "primevue/select";
 import CustomSelectInput from "@/components/HelpersComponents/CustomSelectInput.vue";
-import AttachmentParams from "@/features/dashboard/users/employee/Core/params/attatchment_params";
-import ContactParams from "@/features/dashboard/users/employee/Core/params/contract_params";
-import AddEmployeeParams from "@/features/dashboard/users/employee/Core/params/add_employee_params";
-import EditEmployeeParams from "@/features/dashboard/users/employee/Core/params/edit_employee_params";
+import AttachmentParams from "@/features/users/employee/Core/params/attatchment_params";
+import ContactParams from "@/features/users/employee/Core/params/contract_params";
+import AddEmployeeParams from "@/features/users/employee/Core/params/add_employee_params";
+import EditEmployeeParams from "@/features/users/employee/Core/params/edit_employee_params";
 import IndexAcademicDegreeController from "@/features/dashboard/settings/academicdegree/Presentation/controllers/index_Academic_Degree_controller";
 import IndexAcademicDegreesParams from "@/features/dashboard/settings/academicdegree/Core/params/index_Academic_Degree_params";
 import IndexHierarchyController from "@/features/dashboard/projects/herikaly/Presentation/controllers/index_hierarchies.controller";
 import IndexHierarchyParams from "@/features/dashboard/projects/herikaly/Core/params/index_hierarchy_params";
-import { MemberTypeEnum } from "@/features/dashboard/users/employee/Core/enums/member_type_enum";
+import { MemberTypeEnum } from "@/features/users/employee/Core/enums/member_type_enum";
 
 const emit = defineEmits(["update:updateData"]);
 const props = defineProps<{

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
-import IndexClientParams from "@/features/dashboard/users/languages/Core/params/index_clients_params";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
-import IndexClientController from "@/features/dashboard/users/languages/Presentation/controllers/index_clients_controller";
+import IndexClientParams from "@/features/users/clients/Core/params/index_clients_params";
+import ClientModel from "@/features/users/clients/Data/models/index_client_model";
+import IndexClientController from "@/features/users/clients/Presentation/controllers/index_clients_controller";
 
 import { onMounted, ref, watch } from "vue";
-import { debounce } from "@/base/persention/utils/debouced";
+import { debounce } from "@/base/Presentation/utils/debouced";
 import DropList from "@/components/HelpersComponents/DropList.vue";
 import Pagination from "@/components/HelpersComponents/Pagination.vue";
 import type PaginationModel from "@/base/core/Models/pagination_model";
@@ -14,12 +14,12 @@ import TableLoader from "@/components/DataStatues/TableLoader.vue";
 import DataEmpty from "@/components/DataStatues/DataEmpty.vue";
 import IconRemoveInput from "@/components/icons/IconRemoveInput.vue";
 import ExportPdf from "@/components/HelpersComponents/ExportPdf.vue";
-import DeleteClientController from "@/features/dashboard/users/languages/Presentation/controllers/delete_client_controller";
-import DeleteClientParams from "@/features/dashboard/users/languages/Core/params/delete_client_params";
-import { ClientStatusEnum } from "@/features/dashboard/users/languages/Core/enums/client_status_enum";
+import DeleteClientController from "@/features/users/clients/Presentation/controllers/delete_client_controller";
+import DeleteClientParams from "@/features/users/clients/Core/params/delete_client_params";
+import { ClientStatusEnum } from "@/features/users/clients/Core/enums/client_status_enum";
 import DataFailed from "@/components/DataStatues/DataFailed.vue";
 import { useRoute } from "vue-router";
-import DialogChangeStatusClient from "@/features/dashboard/users/languages/Presentation/components/client/DialogChangeStatusClient.vue";
+import DialogChangeStatusClient from "@/features/users/clients/Presentation/components/client/DialogChangeStatusClient.vue";
 const route = useRoute();
 
 const clients = ref<ClientModel[] | null>([]);

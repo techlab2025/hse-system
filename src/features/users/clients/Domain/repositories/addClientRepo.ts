@@ -1,5 +1,5 @@
-import { AddClientApiService } from "@/features/dashboard/users/languages/Data/apiServices/add_client_api_service";
-import ClientModel from "@/features/dashboard/users/languages/Data/models/index_client_model";
+import { AddClientApiService } from "@/features/users/clients/Data/apiServices/add_client_api_service";
+import ClientModel from "@/features/users/clients/Data/models/index_client_model";
 import RepoInterface from "@/base/Domain/Repositories/repo_interface";
 import type ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 

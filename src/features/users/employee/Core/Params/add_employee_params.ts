@@ -1,8 +1,8 @@
 import type Params from "@/base/core/params/params";
-import { formatJoinDate } from "@/base/persention/utils/date_format";
-import AttachmentParams from "@/features/dashboard/users/employee/Core/params/attatchment_params";
-import ContactParams from "@/features/dashboard/users/employee/Core/params/contract_params";
-import { MemberTypeEnum } from "@/features/dashboard/users/employee/Core/enums/member_type_enum";
+import { formatJoinDate } from "@/base/Presentation/utils/date_format";
+import AttachmentParams from "@/features/users/employee/Core/params/attatchment_params";
+import ContactParams from "@/features/users/employee/Core/params/contract_params";
+import { MemberTypeEnum } from "@/features/users/employee/Core/enums/member_type_enum";
 
 export default class AddEmployeeParams implements Params {
   public name: string;

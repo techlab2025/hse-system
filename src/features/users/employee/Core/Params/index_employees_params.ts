@@ -1,5 +1,5 @@
 import type Params from "@/base/core/params/params";
-import { formatJoinDate } from "@/base/persention/utils/date_format";
+import { formatJoinDate } from "@/base/Presentation/utils/date_format";
 
 export default class IndexEmployeesParams implements Params {
   public word: string;

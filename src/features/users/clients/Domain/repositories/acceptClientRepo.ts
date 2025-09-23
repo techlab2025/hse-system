@@ -1,5 +1,5 @@
-import { AcceptClientApiService } from "@/features/users/clients/Data/apiServices/acceptClientApiService.ts";
-import ClientModel from "@/features/users/clients/Data/models/clientModel.ts";
+import { AcceptClientApiService } from "@/features/users/clients/clients/Data/apiServices/acceptClientApiService.ts";
+import ClientModel from "@/features/users/clients/clients/Data/models/clientModel.ts";
 import RepoInterface, {
   ResponseType,
 } from "@/base/Domain/Repositories/repo_interface";

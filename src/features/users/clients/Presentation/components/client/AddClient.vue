@@ -2,13 +2,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import ClientForm from "@/features/dashboard/users/languages/Presentation/components/client/LangIndustry.vue";
-import AddClientController from "@/features/dashboard/users/languages/Presentation/controllers/add_client_controller";
-import AddClientParams from "@/features/dashboard/users/languages/Core/params/add_client_params";
+import ClientForm from "@/features/users/clients/Presentation/components/client/LangIndustry.vue";
+import AddClientController from "@/features/users/clients/Presentation/controllers/add_client_controller";
+import AddClientParams from "@/features/users/clients/Core/params/add_client_params";
 import type Params from "@/base/core/params/params";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService";
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService";
 
 const router = useRouter();
 const params = ref<Params | null>(null);

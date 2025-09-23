@@ -33,7 +33,6 @@ const emit = defineEmits<{
   (e: 'update:fileData', file: File | File[] | null, index?: number): void
 }>()
 
-<<<<<<< HEAD
 const fileUrls = ref<string[]>(
   props.initialFileData
     ? Array.isArray(props.initialFileData)
@@ -42,10 +41,8 @@ const fileUrls = ref<string[]>(
     : [],
 )
 const fileData = ref<File[]>([])
-=======
 const pdfUrl = ref<string>(props.initialFileData || '')
 const fileData = ref<File | null>(props.initialFileData || '')
->>>>>>> 6400d0a64146d8476bf8da859fb9c76dee764e57
 
 const placeholderIcons = {
   pdf: PdfIcon,

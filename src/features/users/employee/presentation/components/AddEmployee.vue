@@ -2,13 +2,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import EmployeeForm from "@/features/dashboard/users/employee/Presentation/components/EmployeeForm.vue";
-import AddEmployeeController from "@/features/dashboard/users/employee/Presentation/controllers/add_employee_controller";
-import AddEmployeeParams from "@/features/dashboard/users/employee/Core/params/add_employee_params";
+import EmployeeForm from "@/features/users/employee/Presentation/components/EmployeeForm.vue";
+import AddEmployeeController from "@/features/users/employee/Presentation/controllers/add_employee_controller";
+import AddEmployeeParams from "@/features/users/employee/Core/params/add_employee_params";
 import type Params from "@/base/core/params/params";
-import { validateRequiredFields } from "@/base/persention/utils/validate_required_fields";
-import { validationEnum } from "@/base/persention/utils/validation_enum";
-import validationDialogService from "@/base/persention/utils/validationService"; // Import validation dialog
+import { validateRequiredFields } from "@/base/Presentation/utils/validate_required_fields";
+import { validationEnum } from "@/base/Presentation/utils/validation_enum";
+import validationDialogService from "@/base/Presentation/utils/validationService"; // Import validation dialog
 
 const router = useRouter();
 const params = ref<Params | null>(null);

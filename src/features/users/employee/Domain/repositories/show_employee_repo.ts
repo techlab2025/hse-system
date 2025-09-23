@@ -1,5 +1,5 @@
-import { ShowEmployeeApiService } from "@/features/dashboard/users/employee/Data/apiServices/show_employee_api_service";
-import ShowEmployeeModel from "@/features/dashboard/users/employee/Data/models/show_employee_model";
+import { ShowEmployeeApiService } from "@/features/users/employee/Data/apiServices/show_employee_api_service";
+import ShowEmployeeModel from "@/features/users/employee/Data/models/show_employee_model";
 import RepoInterface from "@/base/Domain/Repositories/repo_interface";
 import type ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 

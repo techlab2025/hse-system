@@ -1,9 +1,9 @@
-import { ControllerInterface } from "@/base/persention/Controller/controller_interface";
-import EmployeeModel from "@/features/dashboard/users/employee/Data/models/index_employee_model";
+import { ControllerInterface } from "@/base/Presentation/Controller/controller_interface";
+import EmployeeModel from "@/features/users/employee/Data/models/index_employee_model";
 import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
 import type Params from "@/base/core/params/params";
-import IndexEmployeeUseCase from "@/features/dashboard/users/employee/Domain/useCase/index_employees_use_case";
-import { SelectControllerInterface } from "@/base/persention/Controller/select_controller_interface";
+import IndexEmployeeUseCase from "@/features/users/employee/Domain/useCase/index_employees_use_case";
+import { SelectControllerInterface } from "@/base/Presentation/Controller/select_controller_interface";
 
 export default class IndexEmployeeController extends SelectControllerInterface<
   EmployeeModel[]
