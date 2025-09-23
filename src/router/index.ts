@@ -151,7 +151,7 @@ const router = createRouter({
           name: 'Edit Factory',
           component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
-    {
+        {
           path: 'organization',
           name: 'Organization',
           component: () => import('../views/Organization/IndexOrganization.vue'),
@@ -165,6 +165,7 @@ const router = createRouter({
           path: 'organization/:id',
           name: 'Edit organization',
           component: () => import('../views/Organization/EditOrganization.vue'),
+        },
       ],
     },
   ],
