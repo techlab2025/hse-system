@@ -55,7 +55,7 @@ const ReverseTable = () => {
           <td data-label="#">
             <router-link :to="`/`">{{ item.id }}</router-link>
           </td>
-          <td :data-label="$t('image')"><img src="../../assets/images/error.png" alt="image" /></td>
+          <td :data-label="$t('image')"><img src="@/assets/images/error.png" alt="image" /></td>
           <td :data-label="$t('title')">{{ item.title }}</td>
           <td :data-label="$t('payment_status')">{{ $t('free') }}</td>
           <td data-label="actions" class="cursor-pointer">
