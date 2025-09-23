@@ -1,17 +1,17 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
+import ShowProjectTypeModel from '@/features/setting/ProjectType/Data/models/projectTypeDetailsModel.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import ShowHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/showHazardTypeUseCase'
+import ShowProjectTypeUseCase from '@/features/setting/ProjectType/Domain/useCase/showProjectTypeUseCase'
 
-export default class ShowProjectTypeController extends ControllerInterface<ShowHazardTypeModel> {
+export default class ShowProjectTypeController extends ControllerInterface<ShowProjectTypeModel> {
   private static instance: ShowProjectTypeController
 
   private constructor() {
     super()
   }
 
-  private ShowHazardTypeUseCase = new ShowHazardTypeUseCase()
+  private ShowProjectTypeUseCase = new ShowProjectTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -20,12 +20,13 @@ export default class ShowProjectTypeController extends ControllerInterface<ShowH
     return this.instance
   }
 
-  async showHazardType(params: Params) {
+  async showProjectType(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ShowHazardTypeModel> = await this.ShowHazardTypeUseCase.call(params)
+    const dataState: DataState<ShowProjectTypeModel> =
+      await this.ShowProjectTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
