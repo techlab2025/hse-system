@@ -1,5 +1,5 @@
 import { DeleteLangApiService } from '@/features/setting/languages/Data/apiServices/deleteLangApiService.ts'
-// import ClientModel from '@/features/setting/languages/Data/models/equipmentTypeModel.ts'
+// import ClientModel from '@/features/setting/languages/Data/models/hazardTypeModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import LangModel from '@/features/setting/languages/Data/models/langModel.ts'

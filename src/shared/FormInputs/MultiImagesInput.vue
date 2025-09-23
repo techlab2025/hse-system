@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref } from 'vue'
 import PdfIcon from '@/assets/images/pdf.png'
 import WordIcon from '@/assets/images/word.png'
 import ExcelIcon from '@/assets/images/excel.png'

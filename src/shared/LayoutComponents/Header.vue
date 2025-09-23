@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineEmits, defineProps, onBeforeUnmount, onMounted, ref } from 'vue'
+import {  onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
 import IconMenu from '@/shared/icons/IconMenu.vue'
