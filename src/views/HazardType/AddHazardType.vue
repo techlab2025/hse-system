@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AddFactory from '@/features/setting/Factory/Presentation/components/AddFactory.vue'
+import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
 </script>
 
 <template>
-  <AddFactory />
+  <AddHazardType />
 </template>
