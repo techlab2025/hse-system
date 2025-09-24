@@ -1,24 +1,46 @@
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class OrganizationDetailsModel {
-  public id: string
+  public id: number
   public name: string
   public phone: string
   public email: string
   public image: string
-  public url: string
+  public website_link: string
+  public industry: string
+  public languages: string
 
-  constructor(id: string, name: string, phone: string, email: string, image: string , url: string) {
+  constructor(
+    id: number,
+    name: string,
+    phone: string,
+    email: string,
+    image: string,
+    website_link: string,
+    industry: string,
+    languages: string,
+  ) {
     this.id = id
     this.name = name
     this.phone = phone
     this.email = email
     this.image = image
-    this.url = url
+    this.website_link = website_link
+    this.industry = industry
+    this.languages = languages
   }
 
   static fromMap(data: any): OrganizationDetailsModel {
-    return new OrganizationDetailsModel(data.id, data.name, data.phone, data.email, data.image, data.url)
+    return new OrganizationDetailsModel(
+      data.id,
+      data.name,
+      data.phone,
+      data.email,
+      data.image,
+      data.website_link,
+      data.industry,
+      data.languages,
+    )
   }
 
   static getTitle(data: any) {

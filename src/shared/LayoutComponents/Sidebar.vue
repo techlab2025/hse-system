@@ -196,6 +196,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORGANIZATION_ALL,
+                      PermissionsEnum.ORGANIZATION_CREATE,
+                      PermissionsEnum.ORGANIZATION_DELETE,
+                      PermissionsEnum.ORGANIZATION_FETCH,
+                      PermissionsEnum.ORGANIZATION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/organization">
+                      <SidebarVector />
+                      <span>Organization</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
