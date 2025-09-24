@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { label } from '@primeuix/themes/aura/metergroup'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -8,12 +8,24 @@ const props = withDefaults(
     modelValue?: { locale: string; title: string }[]
     defaultLang?: { locale: string; title: string }
     label?: string
+    type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
+    placeholder?: string
+    rows?: number
+    maxlength?: number
+    required?: boolean
+    disabled?: boolean
   }>(),
   {
     langs: () => [],
     modelValue: () => [],
     defaultLang: () => ({ locale: 'en', title: '' }),
     label: 'Title',
+    type: 'text',
+    placeholder: '',
+    rows: 4,
+    maxlength: undefined,
+    required: false,
+    disabled: false,
   },
 )
 
@@ -39,6 +51,8 @@ const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 // current title binding
 const title = ref('')
 
+const isTextarea = computed(() => props.type === 'textarea')
+
 // ✅ Sync active title when lang changes
 watch(
   lang,
@@ -58,6 +72,16 @@ watch(title, (val) => {
   emit('update:modelValue', [...titles.value])
 })
 
+const placeholderText = computed(() => {
+  return props.placeholder || props.label || 'Enter text...'
+})
+const inputAttrs = computed(() => ({
+  placeholder: placeholderText.value,
+  maxlength: props.maxlength,
+  required: props.required,
+  disabled: props.disabled,
+  class: isTextarea.value ? 'textarea-input' : 'text-input',
+}))
 // ✅ Sync with parent changes
 watch(
   () => props.modelValue,
@@ -104,8 +128,10 @@ watch(
     </div>
 
     <!-- Title Input -->
-    <input type="text" v-model="title" :placeholder="label" />
+    <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
 
+    <!-- Regular Input -->
+    <input v-else type="text" v-model="title" v-bind="inputAttrs" />
     <!-- Selected Language Info -->
     <span class="select-lang">
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}

@@ -213,6 +213,7 @@ const setImage = async (data: File) => {
       :langs="langDefaultDescription"
       :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)"
+      type="textarea"
     />
   </div>
 
