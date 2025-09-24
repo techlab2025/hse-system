@@ -256,7 +256,7 @@ const active = ref('0')
                       PermissionsEnum.LOCATION_FETCH,
                     ]"
                   >
-                    <router-link to="/admin/locations_country">
+                    <router-link to="/admin/countries">
                       <SidebarVector />
                       <span>Location Country</span>
                     </router-link>
@@ -273,7 +273,7 @@ const active = ref('0')
                       PermissionsEnum.LOCATION_UPDATE,
                     ]"
                   >
-                    <router-link to="/admin/locations_state">
+                    <router-link to="/admin/states">
                       <SidebarVector />
                       <span>Location State</span>
                     </router-link>
@@ -290,7 +290,7 @@ const active = ref('0')
                       PermissionsEnum.LOCATION_UPDATE,
                     ]"
                   >
-                    <router-link to="/admin/locations_city">
+                    <router-link to="/admin/cities">
                       <SidebarVector />
                       <span>Location City</span>
                     </router-link>
@@ -307,7 +307,7 @@ const active = ref('0')
                       PermissionsEnum.LOCATION_UPDATE,
                     ]"
                   >
-                    <router-link to="/admin/locations_area">
+                    <router-link to="/admin/areas">
                       <SidebarVector />
                       <span>Location Area</span>
                     </router-link>

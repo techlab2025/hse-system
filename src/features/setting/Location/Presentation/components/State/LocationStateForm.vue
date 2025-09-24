@@ -5,21 +5,28 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel'
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
+import { LocationEnum } from '../../../Core/Enum/LocationEnum'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import { useRoute, useRouter } from 'vue-router'
+import IndexLocationController from '../../controllers/indexLocationController'
+import IndexLocationParams from '../../../Core/params/indexLocationParams'
 
 const emit = defineEmits(['update:data'])
+
+const route = useRoute()
+const ParentId = ref(route?.params.parent_id)
 
 const props = defineProps<{
   data?: LocationDetailsModel
 }>()
+const Code = ref(props.data?.code ?? '')
+const id = useRoute().params.id ?? 0
 
 // Translations (title per locale)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -29,10 +36,6 @@ const langs = ref<{ locale: string; title: string }[]>([
 
 const allIndustries = ref<boolean>(false)
 const industry = ref<TitleInterface>()
-// const industryParams = new IndexIndustryParams('', 0, 10, 1)
-// const industryController = IndexIndustryController.getInstance()
-
-// Default available langs from API
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const fetchLang = async (
@@ -63,13 +66,7 @@ onMounted(async () => {
   await fetchLang()
 })
 
-const name = ref(props.data?.name ?? '')
-const email = ref(props.data?.email ?? '')
-const Url = ref(props.data?.url ?? '')
-const Phone = ref(props.data?.phone ?? '')
-const image = ref<string>('')
 const lang = ref<TitleInterface[] | null>([]) // selected language
-
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -79,27 +76,20 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-        props.data.id,
-        name.value,
-        Phone.value,
-        email.value,
-        image.value,
-
+        id,
+        translationsParams,
+        Code.value,
+        LocationEnum.STATE,
+        ParentId.value || SelectedCountry?.value?.id,
       )
     : new AddLocationParams(
-        name.value,
-        Phone.value,
-        email.value,
-        image.value,
-
+        translationsParams,
+        Code.value,
+        LocationEnum.STATE,
+        ParentId.value || SelectedCountry?.value?.id,
       )
 
   emit('update:data', params)
-}
-
-const setIndustry = (data: TitleInterface) => {
-  industry.value = data
-  updateData()
 }
 
 const setLangs = (data: { locale: string; title: string }[]) => {
@@ -127,11 +117,6 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
-
 const getLangTitleList = (): TitleInterface[] => {
   return Object.values(LangsMap).map((lang, index) => {
     return new TitleInterface({
@@ -143,66 +128,55 @@ const getLangTitleList = (): TitleInterface[] => {
 }
 const langsList = getLangTitleList()
 
-const setLang = (data: TitleInterface[]) => {
-  lang.value = data
+const UpdateCode = (data) => {
+  Code.value = data.target.value
   updateData()
 }
+
+const SelectedCountry = ref<TitleInterface>()
+
+const SetCountrySelection = (data: TitleInterface) => {
+  SelectedCountry.value = data
+  updateData()
+}
+
+const indexLocationController = IndexLocationController.getInstance()
+const indexLocationParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+
+watch(
+  () => route.params.parent_id,
+  (newParentId) => {
+    ParentId.value = newParentId
+  },
+)
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">Name</label>
-    <input type="text" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="email">Email</label>
-    <input type="email" id="email" v-model="email" class="input" placeholder="Enter Your Email" />
+    <label for="code">Code</label>
+    <input
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      placeholder="Enter The Code"
+      @input="UpdateCode"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="Phone">Phone</label>
-    <input type="text" id="Phone" v-model="Phone" class="input" placeholder="Enter Your Phone" />
-  </div>
-
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId">
     <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Industry"
+      :modelValue="SelectedCountry"
+      :controller="indexLocationController"
+      :params="indexLocationParams"
+      label="Country"
       id="Location"
-      placeholder="Select industry"
-      @update:modelValue="setIndustry"
-    />
-  </div>
-
-  <!-- Language select -->
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="lang"
-      :staticOptions="langsList"
-      label="Language"
-      id="lang"
-      :type="2"
-      placeholder="Select Language"
-      @update:modelValue="setLang"
-      :required="true"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="Url">Url</label>
-    <input type="text" id="Url" v-model="Url" class="input" placeholder="Enter Your Url" />
-  </div>
-
-  <div class="col-span-4 md:col-span-4 input-wrapper">
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
+      placeholder="Selected Country"
+      @update:modelValue="SetCountrySelection"
     />
   </div>
 </template>
