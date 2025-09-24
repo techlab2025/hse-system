@@ -141,6 +141,22 @@ const router = createRouter({
           name: 'Edit Certificate',
           component: () => import('../views/Certificate/EditCertificate.vue'),
         },
+        // Category
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: () => import('../views/Category/IndexCategory.vue'),
+        },
+        {
+          path: 'category/add',
+          name: 'Add Category',
+          component: () => import('../views/Category/AddCategory.vue'),
+        },
+        {
+          path: 'category/:id',
+          name: 'Edit Category',
+          component: () => import('../views/Category/EditCategory.vue'),
+        },
 
         {
           path: 'accidents-types',

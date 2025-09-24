@@ -195,6 +195,8 @@ const active = ref('0')
 <!--                  </PermissionBuilder>-->
 <!--                </li>-->
 
+
+
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -379,6 +381,22 @@ const active = ref('0')
                     <router-link to="/admin/client-opinions">
                       <SidebarVector />
                       <span>Client Opinion</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                      <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.CATEGORY_ALL,
+                      PermissionsEnum.CATEGORY_CREATE,
+                      PermissionsEnum.CATEGORY_DELETE,
+                      PermissionsEnum.CATEGORY_FETCH,
+                      PermissionsEnum.CATEGORY_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/categories">
+                      <SidebarVector />
+                      <span>Categories</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>
