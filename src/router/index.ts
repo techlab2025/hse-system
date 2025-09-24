@@ -93,7 +93,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'templates',
           name: 'Templates',
           component: () => import('../views/Template/IndexTemplate.vue'),
@@ -128,7 +127,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'certificates',
           name: 'Certificates',
           component: () => import('../views/Certificate/IndexCertificate.vue'),
@@ -197,13 +195,13 @@ const router = createRouter({
         },
         {
           path: 'factory-item/:id',
-          name: 'Edit Factory',
+          name: 'Edit Factory Item',
           component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
         {
           path: 'factory-item/add',
-          name: 'Edit Factory',
-          component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
+          name: 'Add Factory Item',
+          component: () => import('../views/FactoryItem/AddFactoryItem.vue'),
         },
         {
           path: 'organization',

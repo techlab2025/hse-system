@@ -28,7 +28,7 @@ export default class EditFactoryItemParams implements Params {
   > {
     const data: Record<string, any> = {}
 
-    data['factory_id'] = this.id
+    data['factory_item_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries

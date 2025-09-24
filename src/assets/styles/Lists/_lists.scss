@@ -40,7 +40,6 @@
   }
   .list-item {
     font-family: 'Regular';
-    padding: $XsSize2 $XsSize;
     min-width: 120px;
     display: flex;
     align-items: center;
@@ -51,6 +50,12 @@
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
     cursor: pointer;
+    a {
+      padding: $XsSize2 $XsSize;
+
+      //color: black;
+      width: 100%;
+    }
     // padding: 0 var(--space-sm);
 
     &:last-child {
@@ -68,6 +73,8 @@
       align-items: center;
       gap: 8px;
       width: 100%;
+      padding: $XsSize2 $XsSize;
+
     }
     &:hover {
       // color: var(--primary-color);
