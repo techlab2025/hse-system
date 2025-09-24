@@ -334,6 +334,41 @@ const active = ref('0')
           </AccordionPanel>
         </PermissionBuilder>
       </Accordion>
+      <Accordion value="2">
+        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
+          <AccordionPanel value="2">
+            <AccordionHeader>
+              <div class="links-header">
+                <IconSetting />
+                Website
+              </div>
+            </AccordionHeader>
+
+            <AccordionContent
+              ><ul>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum?.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_UPDATE,
+                      PermissionsEnum.LOCATION_DETAILS,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/client-opinion">
+                      <SidebarVector />
+                      <span>Client Opinion</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
+      </Accordion>
     </div>
   </aside>
 </template>

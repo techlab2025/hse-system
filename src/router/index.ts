@@ -55,6 +55,7 @@ const router = createRouter({
           name: 'Add Equipment Type',
           component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
         },
+        
         {
           path: 'equipment-type/:id',
           name: 'Edit Equipment Type',
