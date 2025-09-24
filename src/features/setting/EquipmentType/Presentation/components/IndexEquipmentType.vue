@@ -163,6 +163,8 @@ watch(
         @input="searchEquipmentType"
       />
     </div>
+
+
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
         <ExportExcel
