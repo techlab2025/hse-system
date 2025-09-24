@@ -5,6 +5,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import DeleteAccidentsTypeUseCase from '../../Domain/useCase/deleteAccidentsTypeUseCase'
+import successImage from '@/assets/images/Success.png'
 
 export default class DeleteAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: DeleteAccidentsTypeController
@@ -29,6 +30,12 @@ export default class DeleteAccidentsTypeController extends ControllerInterface<A
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
+        DialogSelector.instance.successDialog.openDialog({
+          dialogName: 'dialog',
+          titleContent: 'deleted was successful',
+          imageElement: successImage,
+          messageContent: null,
+        })
         // useLoaderStore().endLoadingWithDialog();
       } else {
         throw new Error('Error while addServices')

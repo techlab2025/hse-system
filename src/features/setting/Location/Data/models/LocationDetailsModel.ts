@@ -1,19 +1,19 @@
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class LocationDetailsModel {
-    public id: number
-    public title: string
-    public code: string
-    public parent:TitleInterface | null
-    public type: number
-    public status: number
-    public image: string
+  public id: number
+  public title: string
+  public code: string
+  public parent: TitleInterface | null
+  public type: number
+  public status: number
+  public image: string
 
   constructor(
     id: number,
-    title: string ,
+    title: string,
     code: string,
-    parent:TitleInterface | null,
+    parent: TitleInterface | null,
     type: number,
     status: number,
     image: string,
@@ -32,13 +32,10 @@ export default class LocationDetailsModel {
       data.id,
       data.title,
       data.code,
-      data.parent
-        ? this.getTitle(data.parent)
-        : null,
+      data.parent ? this.getTitle(data.parent) : null,
       data.type,
       data.status,
       data.image,
-
     )
   }
 

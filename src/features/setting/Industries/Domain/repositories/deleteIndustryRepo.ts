@@ -1,4 +1,4 @@
-import RepoInterface from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import IndustryModel from '../../Data/Models/IndustryModel'
 import { DeleteIndustryApiService } from '../../Data/apiServices/deleteIndustryApiService'
@@ -14,6 +14,10 @@ class DeleteIndustryRepo extends RepoInterface<IndustryModel> {
       this.instance = new DeleteIndustryRepo()
     }
     return this.instance
+  }
+
+  override get responseType(): ResponseType {
+    return ResponseType.withoutData
   }
 
   onParse(data: any): IndustryModel {

@@ -1,14 +1,16 @@
 <!-- ExportExcel.vue -->
 <template>
-  <div class="add-item-button">
-    <button class="btn btn-add-item ms-2" type="button" @click="handleExport">Export Excel</button>
-  </div>
+  <button class="btn btn-secondary ms-2" type="button" @click="handleExport">
+    Export Excel <SaveIcon />
+  </button>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, watch, nextTick } from 'vue'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import ExportIcon from '@/shared/icons/ExportIcon.vue'
+import SaveIcon from '@/shared/icons/SaveIcon.vue'
 
 const props = defineProps({
   data: {
