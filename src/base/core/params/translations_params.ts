@@ -57,8 +57,8 @@ export default class TranslationsParams {
       params.setTranslation('title', locale, title)
     })
 
-    descriptions.forEach(({ locale, description }) => {
-      params.setTranslation('description', locale, description)
+    descriptions.forEach(({ locale, title }) => {
+      params.setTranslation('description', locale, title)
     })
 
     return { titles, descriptions }

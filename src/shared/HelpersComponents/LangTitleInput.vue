@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// import { label } from '@primeuix/themes/aura/metergroup'
 import { ref, watch } from 'vue'
 
 const props = withDefaults(
@@ -36,7 +37,7 @@ const titles = ref<{ locale: string; title: string }[]>(
 const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 
 // current title binding
-const title = ref( '')
+const title = ref('')
 
 // ✅ Sync active title when lang changes
 watch(
@@ -67,7 +68,7 @@ watch(
         return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
       })
       const current = titles.value.find((t) => t.locale === lang.value)
-      if (current) title.value = current.title
+      if (current) title.value = current.title ?? current.description
     }
   },
   { deep: true },
@@ -88,16 +89,22 @@ watch(
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input type="radio" :id="l.locale" name="lang" :value="l.locale" v-model="lang" />
-          <label class="icon-lng" :for="l.locale">
+          <input
+            type="radio"
+            :id="`${label}-${l.locale}`"
+            :name="label"
+            :value="l.locale"
+            v-model="lang"
+          />
+          <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
           </label>
-        </div> 
+        </div>
       </div>
     </div>
 
     <!-- Title Input -->
-    <input type="text" v-model="title" placeholder="Enter Title" />
+    <input type="text" v-model="title" :placeholder="label" />
 
     <!-- Selected Language Info -->
     <span class="select-lang">
