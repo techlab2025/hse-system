@@ -55,7 +55,7 @@ const router = createRouter({
           name: 'Add Equipment Type',
           component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
         },
-        
+
         {
           path: 'equipment-type/:id',
           name: 'Edit Equipment Type',
@@ -186,7 +186,7 @@ const router = createRouter({
         {
           path: 'factory-item/add',
           name: 'Edit Factory',
-          component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
+          component: () => import('../views/FactoryItem/AddFactoryItem.vue'),
         },
         {
           path: 'organization',

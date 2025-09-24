@@ -178,22 +178,22 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
 
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.CERTIFICATE_ALL,
-                      PermissionsEnum.CERTIFICATE_CREATE,
-                      PermissionsEnum.CERTIFICATE_DELETE,
-                      PermissionsEnum.CERTIFICATE_FETCH,
-                      PermissionsEnum.CERTIFICATE_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/certificates">
-                      <SidebarVector />
-                      <span>Certificates</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum.CERTIFICATE_ALL,-->
+<!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
+<!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
+<!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
+<!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/certificates">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Certificates</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
 
                 <li>
                   <PermissionBuilder
