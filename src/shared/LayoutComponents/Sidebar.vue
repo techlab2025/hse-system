@@ -180,6 +180,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.TEMPLATE_ALL,
+                      PermissionsEnum.TEMPLATE_CREATE,
+                      PermissionsEnum.TEMPLATE_DELETE,
+                      PermissionsEnum.TEMPLATE_FETCH,
+                      PermissionsEnum.TEMPLATE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/templates">
+                      <SidebarVector />
+                      <span>Templates</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
 
                 <li>
                   <PermissionBuilder
