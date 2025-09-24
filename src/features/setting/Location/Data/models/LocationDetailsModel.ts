@@ -32,9 +32,9 @@ export default class LocationDetailsModel {
       data.id,
       data.title,
       data.code,
-      data.parent.length > 0
-        ? data.parent?.map((parent) => this.getTitle(parent))
-        : [],
+      data.parent
+        ? this.getTitle(data.parent)
+        : null,
       data.type,
       data.status,
       data.image,

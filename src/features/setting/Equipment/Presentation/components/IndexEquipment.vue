@@ -205,8 +205,11 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">title</th>
-                <th scope="col">Code</th>
+                <th scope="col">{{ $t('title') }}</th>
+<!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                <th scope="col">{{ $t('all_industries') }}</th>
+                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col">{{ $t('EquipmentType') }}</th>
 
                 <th scope="col">Actions</th>
               </tr>
@@ -217,7 +220,18 @@ watch(
                   <router-link :to="`/users/Equipment/edit/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
-                <td data-label="Code">{{ item.code ?? '--' }}</td>
+                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="industries">
+                  {{
+                    item.industries.length > 0
+                      ? item.industries.map((industry) => industry.title).join(', ')
+                      : $t('no')
+                  }}
+                </td>
+                <td data-label="EquipmentType">
+                  {{ item.equipmentTypeId?.title }}
+                </td>
+
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusEquipmentType-->
