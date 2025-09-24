@@ -53,7 +53,7 @@ const fetchEquipmentType = async (
     pageNumber,
     perPage,
     withPage,
-    id.value?? '',
+    id.value ?? '',
   )
   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
@@ -163,9 +163,18 @@ watch(
         @input="searchEquipmentType"
       />
     </div>
+
+
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
+        <ExportExcel
+          :data="state.data!"
+          :columns="customColumns"
+          filename="formatted_export"
+          sheet-name="Equipment Type Data"
+          button-text="Export Formatted"
+          button-class="btn-primary"
+        />
         <SaveIcon />
       </div>
       <div class="btn btn-secondary flex align-center justify-center">

@@ -1,0 +1,51 @@
+import TitleInterface from '@/base/Data/Models/title_interface.ts'
+
+export default class LocationDetailsModel {
+    public id: number
+    public title: string
+    public code: string
+    public parent_id:number
+    public type: number
+    public status: number
+    public image: string
+
+  constructor(
+    id: number,
+    title: string ,
+    code: string,
+    parent_id:number,
+    type: number,
+    status: number,
+    image: string,
+  ) {
+    this.id = id
+    this.title = title
+    this.code = code
+    this.parent_id = parent_id
+    this.type = type
+    this.status = status
+    this.image = image
+  }
+
+  static fromMap(data: any): LocationDetailsModel {
+    return new LocationDetailsModel(
+      data.id,
+      data.title,
+      data.code,
+      data.parent_id,
+      data.type,
+      data.status,
+      data.image,
+
+    )
+  }
+
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
+
+    return new TitleInterface({
+      id: data.id,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
+  }
+}

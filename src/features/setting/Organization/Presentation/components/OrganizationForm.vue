@@ -34,6 +34,8 @@ const industry = ref<TitleInterface>()
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
+const indexLangParams = new IndexLangParams('', 0, 10, 1)
+const indexLangController = IndexLangController.getInstance()
 // Default available langs from API
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
@@ -73,7 +75,7 @@ const email = ref(props.data?.email ?? '')
 const Url = ref(props.data?.url ?? '')
 const Phone = ref(props.data?.phone ?? '')
 const image = ref<string>('')
-const lang = ref<TitleInterface | null>(null) // selected language
+const lang = ref<TitleInterface[] | null>([]) // selected language
 
 // ----------------------------
 // HELPERS
@@ -93,7 +95,7 @@ const updateData = () => {
         image.value,
         Url.value,
         industry.value?.id,
-        lang.value?.id, // selected language id
+        lang.value?.map((l) => l.id), // selected language id
       )
     : new AddOrganizationParams(
         name.value,
@@ -102,10 +104,9 @@ const updateData = () => {
         image.value,
         Url.value,
         industry.value?.id,
-        lang.value?.id,
+        lang.value?.map((l) => l.id),
       )
 
-  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -155,7 +156,7 @@ const getLangTitleList = (): TitleInterface[] => {
 }
 const langsList = getLangTitleList()
 
-const setLang = (data: TitleInterface) => {
+const setLang = (data: TitleInterface[]) => {
   lang.value = data
   updateData()
 }
@@ -193,7 +194,8 @@ const setLang = (data: TitleInterface) => {
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="lang"
-      :staticOptions="langsList"
+      :controller="indexLangController"
+      :params="indexLangParams"
       label="Language"
       id="lang"
       :type="2"
