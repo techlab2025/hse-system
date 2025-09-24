@@ -113,7 +113,6 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -130,7 +129,6 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -147,7 +145,6 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -209,6 +206,92 @@ const active = ref('0')
                     <router-link to="/admin/organization">
                       <SidebarVector />
                       <span>Organization</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
+      </Accordion>
+      <Accordion value="1">
+        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
+          <AccordionPanel value="1">
+            <AccordionHeader>
+              <div class="links-header">
+                <IconSetting />
+                Location
+              </div>
+            </AccordionHeader>
+
+            <AccordionContent
+              ><ul>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum?.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_UPDATE,
+                      PermissionsEnum.LOCATION_DETAILS,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/locations_country">
+                      <SidebarVector />
+                      <span>Location Country</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                      PermissionsEnum.LOCATION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/locations_state">
+                      <SidebarVector />
+                      <span>Location State</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                      PermissionsEnum.LOCATION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/locations_city">
+                      <SidebarVector />
+                      <span>Location City</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                      PermissionsEnum.LOCATION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/locations_area">
+                      <SidebarVector />
+                      <span>Location Area</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

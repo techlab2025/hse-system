@@ -35,7 +35,7 @@ class HeaderHandler {
     }
     headers['Content-Type'] = 'application/json'
     headers['Accept'] = 'application/json'
-    headers['Authorization'] = 'Bearer ' + '85|cvsSGkUSToQ2pIrdhjCY5czG9ypH1c4tFVFDqTTf44a6bdc5'
+    headers['Authorization'] = 'Bearer ' + '1|uGaOEtBqrL718B1lZlllkayaOaxKT91cMcuoHfSa4583ca2b'
 
     return headers
   }
