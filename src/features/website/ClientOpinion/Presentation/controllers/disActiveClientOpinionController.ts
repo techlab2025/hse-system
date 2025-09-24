@@ -1,32 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import disActiveHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/disHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type ClientOpinionModel from '../../Data/models/ClientOpinionModel'
+import DisClientOpinionUseCase from '../../Domain/useCase/disClientOpinionUseCase'
 
-export default class disActiveHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: disActiveHazardTypeController
+export default class disActiveClientOpinionController extends ControllerInterface<ClientOpinionModel> {
+  private static instance: disActiveClientOpinionController
   private constructor() {
     super()
   }
-  private disActiveHazardTypeUseCase = new disActiveHazardTypeUseCase()
+  private disActiveClientOpinionUseCase = new DisClientOpinionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveHazardTypeController()
+      this.instance = new disActiveClientOpinionController()
     }
     return this.instance
   }
 
-  async disActiveHazardType(params: Params) {
+  async disActiveClientOpinion(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HazardTypeModel> =
-      await this.disActiveHazardTypeUseCase.call(params)
+    const dataState: DataState<ClientOpinionModel> =
+      await this.disActiveClientOpinionUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

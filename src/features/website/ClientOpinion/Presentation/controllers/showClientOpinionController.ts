@@ -1,31 +1,31 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import ShowHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/showHazardTypeUseCase'
+import type ClientOpinionDetailsModel from '../../Data/models/ClientOpinionDetailsModel'
+import ShowClientOpinionUseCase from '../../Domain/useCase/showClientOpinionUseCase'
 
-export default class ShowHazardTypeController extends ControllerInterface<ShowHazardTypeModel> {
-  private static instance: ShowHazardTypeController
+export default class ShowClientOpinionController extends ControllerInterface<ClientOpinionDetailsModel> {
+  private static instance: ShowClientOpinionController
 
   private constructor() {
     super()
   }
 
-  private ShowHazardTypeUseCase = new ShowHazardTypeUseCase()
+  private ShowClientOpinionUseCase = new ShowClientOpinionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ShowHazardTypeController()
+      this.instance = new ShowClientOpinionController()
     }
     return this.instance
   }
 
-  async showHazardType(params: Params) {
+  async showClientOpinion(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ShowHazardTypeModel> = await this.ShowHazardTypeUseCase.call(params)
+    const dataState: DataState<ClientOpinionDetailsModel> = await this.ShowClientOpinionUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

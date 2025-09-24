@@ -1,20 +1,18 @@
-import { EditHazardTypeApiService } from '@/features/setting/HazardType/Data/apiServices/editHazardTypeApiService.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
+import ClientOpinionModel from '../../Data/models/ClientOpinionModel'
+import { DisClientOpinionApiService } from '../../Data/apiServices/disClientOpinionApiService'
 
-class EditHazardTypeRepo extends RepoInterface<HazardTypeModel> {
-  private static instance: EditHazardTypeRepo
-
+class DisActiveClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
+  private static instance: DisActiveClientOpinionRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
-
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditHazardTypeRepo()
+      this.instance = new DisActiveClientOpinionRepo()
     }
     return this.instance
   }
@@ -22,13 +20,14 @@ class EditHazardTypeRepo extends RepoInterface<HazardTypeModel> {
   override get responseType(): ResponseType {
     return ResponseType.withoutData
   }
-  onParse(data: any): HazardTypeModel {
-    return HazardTypeModel.fromMap(data)
+
+  onParse(data: any): ClientOpinionModel {
+    return ClientOpinionModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return EditHazardTypeApiService.getInstance()
+    return DisClientOpinionApiService.getInstance()
   }
 }
 
-export { EditHazardTypeRepo }
+export { DisActiveClientOpinionRepo }

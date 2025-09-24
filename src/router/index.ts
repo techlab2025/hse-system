@@ -110,6 +110,23 @@ const router = createRouter({
         },
 
         {
+          path: "client-opinions",
+          name: "Client Opinions",
+          component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
+        },
+
+        {
+          path: 'client-opinion/add',
+          name: 'Add Client Opinion',
+          component: () => import('../views/Website/ClientOpinion/AddClientOpinion.vue'),
+        },
+        {
+          path: 'client-opinion/:id',
+          name: 'Edit Client Opinion',
+          component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
+        },
+
+        {
           path: 'certificates',
           name: 'Certificates',
           component: () => import('../views/Certificate/IndexCertificate.vue'),

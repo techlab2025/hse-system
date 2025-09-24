@@ -1,33 +1,33 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import EditHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/editHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type ClientOpinionModel from '../../Data/models/ClientOpinionModel'
+import EditClientOpinionUseCase from '../../Domain/useCase/editClientOpinionUseCase'
 
-export default class EditHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: EditHazardTypeController
+export default class EditClientOpinionController extends ControllerInterface<ClientOpinionModel> {
+  private static instance: EditClientOpinionController
 
   private constructor() {
     super()
   }
 
-  private EditHazardTypeUseCase = new EditHazardTypeUseCase()
+  private EditClientOpinionUseCase = new EditClientOpinionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditHazardTypeController()
+      this.instance = new EditClientOpinionController()
     }
     return this.instance
   }
 
-  async editHazardType(params: Params, router: any) {
+  async editClientOpinion(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HazardTypeModel> = await this.EditHazardTypeUseCase.call(params)
+      const dataState: DataState<ClientOpinionModel> = await this.EditClientOpinionUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -37,7 +37,7 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/Hazard-types')
+        await router.push('/admin/client-opinions')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
