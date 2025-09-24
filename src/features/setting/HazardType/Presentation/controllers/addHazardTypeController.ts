@@ -26,6 +26,8 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
   async addHazardType(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+
+      console.log("Ssssssss")
       const dataState: DataState<HazardTypeModel> =
         await this.AddHazardTypeUseCase.call(params)
       this.setState(dataState)
