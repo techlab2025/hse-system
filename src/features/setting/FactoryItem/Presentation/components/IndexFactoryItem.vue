@@ -216,9 +216,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                     item.factory.title
                   }}</router-link>
                 </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+<!--                <td data-label="all_industries">-->
+<!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
+<!--                </td>-->
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusFactory-->

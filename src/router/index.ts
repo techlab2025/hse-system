@@ -93,7 +93,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'templates',
           name: 'Templates',
           component: () => import('../views/Template/IndexTemplate.vue'),
@@ -111,7 +110,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'certificates',
           name: 'Certificates',
           component: () => import('../views/Certificate/IndexCertificate.vue'),
@@ -185,7 +183,7 @@ const router = createRouter({
         },
         {
           path: 'factory-item/add',
-          name: 'Edit Factory Item',
+          name: 'Add Factory Item',
           component: () => import('../views/FactoryItem/AddFactoryItem.vue'),
         },
         {
