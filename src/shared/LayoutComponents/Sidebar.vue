@@ -367,16 +367,16 @@ const active = ref('0')
                 <li>
                   <PermissionBuilder
                     :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum?.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_UPDATE,
-                      PermissionsEnum.LOCATION_DETAILS,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
+                      PermissionsEnum?.WEBSITE,
+                      PermissionsEnum?.CLIENT_OPINION_ALL,
+                      PermissionsEnum.CLIENT_OPINION_CREATE,
+                      PermissionsEnum.CLIENT_OPINION_UPDATE,
+                      PermissionsEnum.CLIENT_OPINION_DETAILS,
+                      PermissionsEnum.CLIENT_OPINION_DELETE,
+                      PermissionsEnum.CLIENT_OPINION_FETCH,
                     ]"
                   >
-                    <router-link to="/admin/client-opinion">
+                    <router-link to="/admin/client-opinions">
                       <SidebarVector />
                       <span>Client Opinion</span>
                     </router-link>

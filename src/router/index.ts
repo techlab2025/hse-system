@@ -55,7 +55,7 @@ const router = createRouter({
           name: 'Add Equipment Type',
           component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
         },
-        
+
         {
           path: 'equipment-type/:id',
           name: 'Edit Equipment Type',
@@ -108,6 +108,23 @@ const router = createRouter({
           path: 'template/:id',
           name: 'Edit Template',
           component: () => import('../views/Template/EditTemplate.vue'),
+        },
+
+        {
+          path: "client-opinions",
+          name: "Client Opinions",
+          component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
+        },
+
+        {
+          path: 'client-opinion/add',
+          name: 'Add Client Opinion',
+          component: () => import('../views/Website/ClientOpinion/AddClientOpinion.vue'),
+        },
+        {
+          path: 'client-opinion/:id',
+          name: 'Edit Client Opinion',
+          component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
         },
 
         {

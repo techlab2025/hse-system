@@ -1,12 +1,12 @@
-import { DeleteHazardTypeApiService } from '@/features/setting/HazardType/Data/apiServices/deleteHazardTypeApiService'
 // import ClientModel from '@/features/setting/languages/Data/models/projectTypeModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import ClientOpinionModel from '../../Data/models/ClientOpinionModel'
+import { DeleteClientOpinionApiService } from '../../Data/apiServices/deleteClientOpinionApiService'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
-import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 
-class DeleteHazardTypeRepo extends RepoInterface<HazardTypeModel> {
-  private static instance: DeleteHazardTypeRepo
+class DeleteClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
+  private static instance: DeleteClientOpinionRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -19,18 +19,18 @@ class DeleteHazardTypeRepo extends RepoInterface<HazardTypeModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteHazardTypeRepo()
+      this.instance = new DeleteClientOpinionRepo()
     }
     return this.instance
   }
 
-  onParse(data: any): HazardTypeModel {
-    return HazardTypeModel.fromMap(data)
+  onParse(data: any): ClientOpinionModel {
+    return ClientOpinionModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DeleteHazardTypeApiService.getInstance()
+    return DeleteClientOpinionApiService.getInstance()
   }
 }
 
-export { DeleteHazardTypeRepo }
+export { DeleteClientOpinionRepo }
