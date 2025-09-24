@@ -26,8 +26,7 @@ export default class IndexCertificateController extends SelectControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<CertificateModel[]> =
-      await this.IndexCertificateUseCase.call(params)
+    const dataState: DataState<CertificateModel[]> = await this.IndexCertificateUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
