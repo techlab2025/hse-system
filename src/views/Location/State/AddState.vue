@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AddOrganization from '@/features/setting/Organization/Presentation/components/AddOrganization.vue';
+import AddLocationState from '@/features/setting/Location/Presentation/components/State/AddLocationState.vue';
 
 </script>
 
 <template>
-  <AddOrganization />
+  <AddLocationState />
 </template>

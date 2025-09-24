@@ -6,9 +6,7 @@ import type LocationModel from '../../Data/models/LocationModel'
 import IndexLocationUseCase from '../../Domain/useCase/indexLocationUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexLocationController extends SelectControllerInterface<
-  LocationModel[]
-> {
+export default class IndexLocationController extends SelectControllerInterface<LocationModel[]> {
   private static instance: IndexLocationController
   private constructor() {
     super()
@@ -26,8 +24,7 @@ export default class IndexLocationController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<LocationModel[]> =
-      await this.indexLocationUseCase.call(params)
+    const dataState: DataState<LocationModel[]> = await this.indexLocationUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

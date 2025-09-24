@@ -4,38 +4,39 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import OrganizationForm from './LocationCityForm.vue'
-import ShowOrganizationController from '../../controllers/showLocationController'
-import ShowOrganizationParams from '../../../Core/params/showLocationParams'
-import EditOrganizationController from '../../controllers/editLocationController'
+import ShowLocationController from '../../controllers/showLocationController'
+import ShowLocationParams from '../../../Core/params/showLocationParams'
+import EditLocationController from '../../controllers/editLocationController'
+import LocationCountryForm from './LocationCityForm.vue'
+import LocationCityForm from './LocationCityForm.vue'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showOrganizationController = ShowOrganizationController.getInstance()
-const state = ref(showOrganizationController.state.value)
-const fetchOrganizationDetails = async () => {
-  const showOrganizationParams = new ShowOrganizationParams(Number(id))
+const showLocationController = ShowLocationController.getInstance()
+const state = ref(showLocationController.state.value)
+const fetchLocationDetails = async () => {
+  const showLocationParams = new ShowLocationParams(Number(id))
 
-  await showOrganizationController.showOrganization(showOrganizationParams)
+  await showLocationController.showLocation(showLocationParams)
 }
 
 onMounted(() => {
-  fetchOrganizationDetails()
+  fetchLocationDetails()
 })
 
-const EditOrganization = async (draft: boolean) => {
+const EditLocation = async (draft: boolean) => {
   if (draft) {
-    await EditOrganizationController.getInstance().editOrganization(params.value!, router)
+    await EditLocationController.getInstance().editLocation(params.value!, router)
   } else {
-    await EditOrganizationController.getInstance().editOrganization(params.value!, router)
+    await EditLocationController.getInstance().editLocation(params.value!, router)
   }
 }
 
 watch(
-  () => showOrganizationController.state.value,
+  () => showLocationController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -56,8 +57,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditOrganization">
-        <OrganizationForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditLocation">
+        <LocationCityForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

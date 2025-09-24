@@ -6,6 +6,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import EditLocationUseCase from '../../Domain/useCase/editLocationUseCase'
 import type LocationModel from '../../Data/models/LocationModel'
+import LocationRouterHandler from '../routeHandler/RoutHandler'
 
 export default class EditLocationController extends ControllerInterface<LocationModel> {
   private static instance: EditLocationController
@@ -25,7 +26,7 @@ export default class EditLocationController extends ControllerInterface<Location
 
   async editLocation(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
+    console.log(params , "country param")
     try {
       const dataState: DataState<LocationModel> = await this.editLocationUseCase.call(params)
 
@@ -37,7 +38,10 @@ export default class EditLocationController extends ControllerInterface<Location
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/accidents-types')
+        // await router.push('/admin/locations_country')
+
+        await router.push(LocationRouterHandler.LocationRouter(params.type))
+
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

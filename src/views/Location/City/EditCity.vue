@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import EditOrganization from '@/features/setting/Organization/Presentation/components/EditOrganization.vue';
+import EditLocationCity from '@/features/setting/Location/Presentation/components/City/EditLocationCity.vue';
 
 </script>
 
 <template>
-  <EditOrganization />
+  <EditLocationCity />
 </template>

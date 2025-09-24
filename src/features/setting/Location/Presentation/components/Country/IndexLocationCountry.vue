@@ -24,6 +24,7 @@ import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
 import DeleteLocationParams from '../../../Core/params/deleteLocationParams'
 import DeleteLocationController from '../../controllers/deleteLocationController'
+import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 
 const { t } = useI18n()
 
@@ -45,7 +46,7 @@ const fetchLocation = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexLocationParams = new IndexLocationParams(query, pageNumber, perPage, withPage, id)
+  const indexLocationParams = new IndexLocationParams(query, pageNumber, perPage, withPage, LocationEnum.COUNTRY , id )
   await indexLocationController.getData(indexLocationParams)
 }
 
@@ -91,23 +92,23 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/location_country/${id}`,
+    link: `/admin/countries/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
     ],
   },
-  // {
-  //   text: t('add_sub_HAZARD_type'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-type/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
+  {
+    text: t('add_sub_Country_type'),
+    icon: IconEdit,
+    link: `/admin/states/add/${id}`,
+    permission: [
+      PermissionsEnum.LOCATION_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LOCATION_ALL,
+    ],
+  },
   // {
   //   text: t('sub_HAZARD_types'),
   //   icon: IconEdit,
@@ -156,8 +157,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
-        <router-link to="/admin/location_country/add" class="btn btn-primary">
-          {{ $t('Add_Location') }}
+        <router-link to="/admin/countries/add" class="btn btn-primary">
+          {{ $t('Add_Country') }}
         </router-link>
       </permission-builder>
     </div>
@@ -192,7 +193,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/locations_country/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/countries/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.code }}</td>
                 <td data-label="email">{{ item.title }}</td>

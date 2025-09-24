@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import IndexOrganization from '@/features/setting/Organization/Presentation/components/IndexOrganization.vue';
+import IndexLocationCity from '@/features/setting/Location/Presentation/components/City/IndexLocationCity.vue'
 </script>
 
 <template>
-  <IndexOrganization />
+  <IndexLocationCity />
 </template>
