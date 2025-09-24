@@ -180,12 +180,12 @@ const router = createRouter({
         },
         {
           path: 'factory-item/:id',
-          name: 'Edit Factory',
+          name: 'Edit Factory Item',
           component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
         {
           path: 'factory-item/add',
-          name: 'Edit Factory',
+          name: 'Edit Factory Item',
           component: () => import('../views/FactoryItem/AddFactoryItem.vue'),
         },
         {
