@@ -2,19 +2,39 @@
 @import '../mixins/flex';
 
 .input-search {
-  border: 1px solid $MainBorder;
-  @include flex-row(nowrap, flex-start, center);
-  padding: $XsSize $MdSize;
-  border-radius: calc($XlSize3 + 10px);
-  font-family: "Regular";
+  position: relative;
+
 
   input {
-    border: none;
-    outline: none;
+    width: 100%;
+
+    border: 1px solid $MainBorder;
+    @include flex-row(nowrap, flex-start, center);
+    padding: $XsSize $MdSize;
+    border-radius: calc($XlSize3 + 10px);
+    font-family: "Regular";
+    padding-inline-start: calc(#{$MdSize} + calc(#{$XlSize3} - 4px));
 
     &:focus {
-      border: none;
-      outline: none;
+      border-color: $PrimaryColor;
     }
+  }
+
+  .icon-remove {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: $MdSize;
+    cursor: pointer;
+
+
+  }
+}
+
+
+html[dir="rtl"] .input-search {
+  .icon-remove {
+    left: auto;
+    right: $MdSize;
   }
 }
