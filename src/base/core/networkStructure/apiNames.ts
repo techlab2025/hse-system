@@ -3,7 +3,7 @@ import { baseUrl } from './baseUrl'
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() {}
+  private constructor() { }
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -26,6 +26,15 @@ class ApiNames {
   public ShowLang = this.baseUrl + this.dashboardPrefix + 'fetch_language_details'
   public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
+
+
+  // clientOpinion
+  public CreateClientOpinion = this.baseUrl + this.dashboardPrefix + 'create_client_opinion'
+  public IndexClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinions'
+  public ShowClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinion_details'
+  public EditClientOpinion = this.baseUrl + this.dashboardPrefix + 'update_client_opinion'
+  public DeleteClientOpinion = this.baseUrl + this.dashboardPrefix + 'delete_client_opinion'
+  public DisClientOpinion = this.baseUrl + this.dashboardPrefix + 'disable_client_opinion'
 
 
   // Template

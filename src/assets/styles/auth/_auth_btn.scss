@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins/flex" as *;
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 .auth-layout {
   .btn {
     width: 100%;
