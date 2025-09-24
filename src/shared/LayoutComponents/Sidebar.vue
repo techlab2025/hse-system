@@ -198,6 +198,40 @@ const active = ref('0')
                 <li>
                   <PermissionBuilder
                     :code="[
+                      PermissionsEnum.TEMPLATE_ALL,
+                      PermissionsEnum.TEMPLATE_CREATE,
+                      PermissionsEnum.TEMPLATE_DELETE,
+                      PermissionsEnum.TEMPLATE_FETCH,
+                      PermissionsEnum.TEMPLATE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/templates">
+                      <SidebarVector />
+                      <span>Templates</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.CERTIFICATE_ALL,
+                      PermissionsEnum.CERTIFICATE_CREATE,
+                      PermissionsEnum.CERTIFICATE_DELETE,
+                      PermissionsEnum.CERTIFICATE_FETCH,
+                      PermissionsEnum.CERTIFICATE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/certificates">
+                      <SidebarVector />
+                      <span>Certificates</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
                       PermissionsEnum.PROJECT_TYPE_ALL,
                       PermissionsEnum.PROJECT_TYPE_CREATE,
                       PermissionsEnum.PROJECT_TYPE_DELETE,
@@ -310,6 +344,41 @@ const active = ref('0')
                     <router-link to="/admin/areas">
                       <SidebarVector />
                       <span>Location Area</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        </PermissionBuilder>
+      </Accordion>
+      <Accordion value="2">
+        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
+          <AccordionPanel value="2">
+            <AccordionHeader>
+              <div class="links-header">
+                <IconSetting />
+                Website
+              </div>
+            </AccordionHeader>
+
+            <AccordionContent
+              ><ul>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ADMIN,
+                      PermissionsEnum?.LOCATION_ALL,
+                      PermissionsEnum.LOCATION_CREATE,
+                      PermissionsEnum.LOCATION_UPDATE,
+                      PermissionsEnum.LOCATION_DETAILS,
+                      PermissionsEnum.LOCATION_DELETE,
+                      PermissionsEnum.LOCATION_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/client-opinion">
+                      <SidebarVector />
+                      <span>Client Opinion</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

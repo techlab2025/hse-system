@@ -51,7 +51,9 @@ const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 // current title binding
 const title = ref('')
 
+
 const isTextarea = computed(() => props.type === 'textarea')
+
 
 // ✅ Sync active title when lang changes
 watch(
@@ -128,7 +130,9 @@ watch(
     </div>
 
     <!-- Title Input -->
+
     <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
+
 
     <!-- Regular Input -->
     <input v-else type="text" v-model="title" v-bind="inputAttrs" />

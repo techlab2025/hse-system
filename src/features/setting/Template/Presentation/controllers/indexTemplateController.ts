@@ -2,22 +2,22 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type CertificateModel from '../../Data/models/CertificateModel'
-import IndexCertificateUseCase from '../../Domain/useCase/indexCertificateUseCase'
+import type TemplateModel from '../../Data/models/TemplateModel'
+import IndexTemplateUseCase from '../../Domain/useCase/indexTemplateUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexCertificateController extends SelectControllerInterface<
-  CertificateModel[]
+export default class IndexTemplateController extends SelectControllerInterface<
+  TemplateModel[]
 > {
-  private static instance: IndexCertificateController
+  private static instance: IndexTemplateController
   private constructor() {
     super()
   }
-  private IndexCertificateUseCase = new IndexCertificateUseCase()
+  private IndexTemplateUseCase = new IndexTemplateUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexCertificateController()
+      this.instance = new IndexTemplateController()
     }
     return this.instance
   }
@@ -26,8 +26,8 @@ export default class IndexCertificateController extends SelectControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<CertificateModel[]> =
-      await this.IndexCertificateUseCase.call(params)
+    const dataState: DataState<TemplateModel[]> =
+      await this.IndexTemplateUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

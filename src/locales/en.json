@@ -16,7 +16,6 @@
   "add_our_journey": "Add Our Journey",
   "edit_our_journey": "Edit Our Journey",
   "attach_questions_to_exam": "Attach Questions to Exam",
-
   "login": "Login",
   "min_degree_to_pass": "Min degree to pass exam",
   "degree": "Degree",
@@ -568,5 +567,6 @@
   "teacher_courses": "Teacher Courses",
   "client_opinion_title": "Client Opinion",
   "student_ban": "Student Ban",
-  "edit_data": "Edit Data"
+  "edit_data": "Edit Data",
+  "all_industries": "All Industries"
 }

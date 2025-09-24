@@ -55,6 +55,7 @@ const router = createRouter({
           name: 'Add Equipment Type',
           component: () => import('../views/EquipmentType/AddEquipmentType.vue'),
         },
+        
         {
           path: 'equipment-type/:id',
           name: 'Edit Equipment Type',
@@ -92,6 +93,25 @@ const router = createRouter({
         },
 
         {
+
+          path: 'templates',
+          name: 'Templates',
+          component: () => import('../views/Template/IndexTemplate.vue'),
+        },
+
+        {
+          path: 'template/add',
+          name: 'Add Template',
+          component: () => import('../views/Template/AddTemplate.vue'),
+        },
+        {
+          path: 'template/:id',
+          name: 'Edit Template',
+          component: () => import('../views/Template/EditTemplate.vue'),
+        },
+
+        {
+
           path: 'certificates',
           name: 'Certificates',
           component: () => import('../views/Certificate/IndexCertificate.vue'),

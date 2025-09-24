@@ -28,6 +28,15 @@ class ApiNames {
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
 
+  // Template
+  public CreateTemplate = this.baseUrl + this.dashboardPrefix + 'create_template'
+  public IndexTemplate = this.baseUrl + this.dashboardPrefix + 'fetch_templates'
+  public ShowTemplate = this.baseUrl + this.dashboardPrefix + 'fetch_template_details'
+  public EditTemplate = this.baseUrl + this.dashboardPrefix + 'update_template'
+  public DeleteTemplate = this.baseUrl + this.dashboardPrefix + 'delete_template'
+  public DisActiveTemplate = this.baseUrl + this.dashboardPrefix + 'disable_template'
+
+
   // Factory
   public CreateFactory = this.baseUrl + this.dashboardPrefix + 'create_factory'
   public IndexFactory = this.baseUrl + this.dashboardPrefix + 'fetch_factories'
