@@ -102,6 +102,14 @@ class ApiNames {
   public EditOrganization = this.baseUrl + this.dashboardPrefix + 'update_organization'
   public DeleteOrganization = this.baseUrl + this.dashboardPrefix + 'delete_organization'
   // public DisOrganizationType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
+
+
+  // Location
+  public CreateLocation = this.baseUrl + this.dashboardPrefix + 'create_location'
+  public IndexLocation = this.baseUrl + this.dashboardPrefix + 'fetch_locations'
+  public ShowLocation = this.baseUrl + this.dashboardPrefix + 'fetch_location_details'
+  public EditLocation = this.baseUrl + this.dashboardPrefix + 'update_location'
+  public DeleteLocation = this.baseUrl + this.dashboardPrefix + 'delete_location'
 }
 
 export { ApiNames }

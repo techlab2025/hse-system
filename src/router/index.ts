@@ -166,6 +166,66 @@ const router = createRouter({
           name: 'Edit organization',
           component: () => import('../views/Organization/EditOrganization.vue'),
         },
+        {
+          path: 'locations_country',
+          name: 'locations Country',
+          component: () => import('../views/Location/Countery/IndexCountry.vue'),
+        },
+        {
+          path: 'location_country/add',
+          name: 'Add Location Country',
+          component: () => import('../views/Location/Countery/AddCountry.vue'),
+        },
+        {
+          path: 'location_country/:id',
+          name: 'Edit Location Country',
+          component: () => import('../views/Location/Countery/EditCountry.vue'),
+        },
+        {
+          path: 'locations_state/parent_id?',
+          name: 'locations State',
+          component: () => import('../views/Location/State/IndexState.vue'),
+        },
+        {
+          path: 'location_state/add/parent_id?',
+          name: 'Add Location State',
+          component: () => import('../views/Location/State/AddState.vue'),
+        },
+        {
+          path: 'location_state/:id/parent_id?',
+          name: 'Edit Location State',
+          component: () => import('../views/Location/State/EditState.vue'),
+        },
+        {
+          path: 'locations_city/parent_id?',
+          name: 'locations City',
+          component: () => import('../views/Location/City/IndexCity.vue'),
+        },
+        {
+          path: 'location_city/add/parent_id?',
+          name: 'Add Location City',
+          component: () => import('../views/Location/City/AddCity.vue'),
+        },
+        {
+          path: 'location_city/:id/parent_id?',
+          name: 'Edit Location City',
+          component: () => import('../views/Location/City/EditCity.vue'),
+        },
+        {
+          path: 'locations_area/parent_id?',
+          name: 'locations Area',
+          component: () => import('../views/Location/Area/IndexArea.vue'),
+        },
+        {
+          path: 'location_area/add/parent_id?',
+          name: 'Add Location Area',
+          component: () => import('../views/Location/Area/AddArea.vue'),
+        },
+        {
+          path: 'location_area/:id/parent_id?',
+          name: 'Edit Location Area',
+          component: () => import('../views/Location/Area/EditArea.vue'),
+        },
       ],
     },
   ],

@@ -9,18 +9,16 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
-import EditOrganizationParams from '../../Core/params/editOrganizationParams'
-import AddOrganizationParams from '../../Core/params/addOrganizationParams'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import type OrganizationDetailsModel from '../../Data/models/OrganizationDetailsModel'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
+import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel'
+import EditLocationParams from '../../../Core/params/editLocationParams'
+import AddLocationParams from '../../../Core/params/addLocationParams'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: OrganizationDetailsModel
+  data?: LocationDetailsModel
 }>()
 
 // Translations (title per locale)
@@ -31,11 +29,9 @@ const langs = ref<{ locale: string; title: string }[]>([
 
 const allIndustries = ref<boolean>(false)
 const industry = ref<TitleInterface>()
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-const industryController = IndexIndustryController.getInstance()
+// const industryParams = new IndexIndustryParams('', 0, 10, 1)
+// const industryController = IndexIndustryController.getInstance()
 
-const indexLangParams = new IndexLangParams('', 0, 10, 1)
-const indexLangController = IndexLangController.getInstance()
 // Default available langs from API
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
@@ -67,9 +63,6 @@ onMounted(async () => {
   await fetchLang()
 })
 
-// ----------------------------
-// FORM STATE
-// ----------------------------
 const name = ref(props.data?.name ?? '')
 const email = ref(props.data?.email ?? '')
 const Url = ref(props.data?.url ?? '')
@@ -77,9 +70,7 @@ const Phone = ref(props.data?.phone ?? '')
 const image = ref<string>('')
 const lang = ref<TitleInterface[] | null>([]) // selected language
 
-// ----------------------------
-// HELPERS
-// ----------------------------
+
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
@@ -87,24 +78,20 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditOrganizationParams(
+    ? new EditLocationParams(
         props.data.id,
         name.value,
         Phone.value,
         email.value,
         image.value,
-        Url.value,
-        industry.value?.id,
-        lang.value?.map((l) => l.id), // selected language id
+
       )
-    : new AddOrganizationParams(
+    : new AddLocationParams(
         name.value,
         Phone.value,
         email.value,
         image.value,
-        Url.value,
-        industry.value?.id,
-        lang.value?.map((l) => l.id),
+
       )
 
   emit('update:data', params)
@@ -184,7 +171,7 @@ const setLang = (data: TitleInterface[]) => {
       :controller="industryController"
       :params="industryParams"
       label="Industry"
-      id="Organization"
+      id="Location"
       placeholder="Select industry"
       @update:modelValue="setIndustry"
     />
@@ -194,8 +181,7 @@ const setLang = (data: TitleInterface[]) => {
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="lang"
-      :controller="indexLangController"
-      :params="indexLangParams"
+      :staticOptions="langsList"
       label="Language"
       id="lang"
       :type="2"
