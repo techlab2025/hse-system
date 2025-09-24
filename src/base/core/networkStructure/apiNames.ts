@@ -52,6 +52,15 @@ class ApiNames {
   public DeleteEquipmentType = this.baseUrl + this.dashboardPrefix + 'delete_equipment_type'
   public DisEquipmentType = this.baseUrl + this.dashboardPrefix + 'disable_equipment_type'
 
+
+  // Certificate
+  public CreateCertificate = this.baseUrl + this.dashboardPrefix + 'create_certificate'
+  public IndexCertificate = this.baseUrl + this.dashboardPrefix + 'fetch_certificates'
+  public ShowCertificate = this.baseUrl + this.dashboardPrefix + 'fetch_certificate_details'
+  public EditCertificate = this.baseUrl + this.dashboardPrefix + 'update_certificate'
+  public DeleteCertificate = this.baseUrl + this.dashboardPrefix + 'delete_certificate'
+  public DisCertificate = this.baseUrl + this.dashboardPrefix + 'disable_certificate'
+
   //Equipment
   public CreateEquipment = this.baseUrl + this.dashboardPrefix + 'create_equipment'
   public IndexEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipments'
