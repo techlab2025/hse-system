@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AddCertificate from '@/features/setting/Certificate/Presentation/components/AddCertificate.vue'
+import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
 </script>
 
 <template>
-  <AddCertificate />
+  <AddEquipmentType />
 </template>
