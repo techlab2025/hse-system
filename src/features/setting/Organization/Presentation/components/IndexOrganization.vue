@@ -97,15 +97,15 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteHazardType: (id: number) => void) => [
+const actionList = (id: number, deleteOrganization: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/accidents-type/${id}`,
+    link: `/admin/organization/${id}`,
     permission: [
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORGANIZATION_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORGANIZATION_ALL,
     ],
   },
   // {
@@ -133,9 +133,9 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteOrganization(id),
     permission: [
-      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ORGANIZATION_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORGANIZATION_ALL,
     ],
   },
 ]
@@ -165,7 +165,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ACCIDENTS_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
         <router-link to="/admin/organization/add" class="btn btn-primary">
           {{ $t('Add_Organization') }}
         </router-link>
@@ -176,11 +176,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ORGANIZATION_ALL,
+      PermissionsEnum.ORGANIZATION_DELETE,
+      PermissionsEnum.ORGANIZATION_FETCH,
+      PermissionsEnum.ORGANIZATION_UPDATE,
+      PermissionsEnum.ORGANIZATION_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -201,6 +201,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
+        
                 <td data-label="#">
                   <router-link :to="`/admin/accidents-type/${item.id}`">{{ item.id }} </router-link>
                 </td>
