@@ -92,7 +92,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-        image.value,
+        image.value?.file,
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id), // selected language id
@@ -101,7 +101,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-        image.value,
+      image.value?.file,
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id),
@@ -175,7 +175,7 @@ const setLang = (data: TitleInterface[]) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Phone">Phone</label>
-    <input type="text" id="Phone" v-model="Phone" class="input" placeholder="Enter Your Phone" />
+    <input type="phone" id="Phone" v-model="Phone" class="input" placeholder="Enter Your Phone" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
@@ -207,7 +207,7 @@ const setLang = (data: TitleInterface[]) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Url">Url</label>
-    <input type="text" id="Url" v-model="Url" class="input" placeholder="Enter Your Url" />
+    <input type="url" id="Url" v-model="Url" class="input" placeholder="Enter Your Url" />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">

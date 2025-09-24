@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type LocationModel from '../../Data/models/LocationModel'
 import AddLocationUseCase from '../../Domain/useCase/addLocationUseCase'
+import LocationRouterHandler from '../routeHandler/RoutHandler'
+import type AddLocationParams from '../../Core/params/addLocationParams'
 
 export default class AddLocationController extends ControllerInterface<LocationModel> {
   private static instance: AddLocationController
@@ -23,11 +25,10 @@ export default class AddLocationController extends ControllerInterface<LocationM
     return this.instance
   }
 
-  async addLocation(params: Params, router: Router, draft: boolean = false) {
+  async addLocation(params: AddLocationParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<LocationModel> =
-        await this.addLocationUseCase.call(params)
+      const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -36,7 +37,10 @@ export default class AddLocationController extends ControllerInterface<LocationM
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/locations_country')
+        // if (!draft) await router.push('/admin/locations_country')
+
+        console.log('Path Params', params.type)
+        await router.push(LocationRouterHandler.LocationRouter(params.type))
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

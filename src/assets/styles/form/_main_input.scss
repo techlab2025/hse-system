@@ -47,7 +47,7 @@
     }
   }
 
-  input:not([type='checkbox']) {
+  input:not([type='checkbox']), textarea {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
     padding: $MdSize2 $MdSize;
     font-size: $SmSize;
@@ -92,4 +92,7 @@
     cursor: pointer;
     text-transform: capitalize;
   }
+
+
+
 }

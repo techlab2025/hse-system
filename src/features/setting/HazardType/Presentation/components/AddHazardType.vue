@@ -13,9 +13,11 @@ const params = ref<Params | null>(null)
 const addHazardTypeController = AddHazardTypeController.getInstance()
 
 const addHazardType = async () => {
+  console.log(params.value, 'params')
   await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router)
 }
 const setParams = (data: Params) => {
+  // console.log(data, 'data')
   params.value = data
 }
 </script>

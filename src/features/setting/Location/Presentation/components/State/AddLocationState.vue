@@ -3,17 +3,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import type Params from '@/base/core/params/params'
-import OrganizationForm from './LocationStateForm.vue'
-import AddOrganizationController from '../../controllers/addLocationController'
-import type AddOrganizationParams from '../../../Core/params/addLocationParams'
+import LocationCountryForm from './LocationStateForm.vue'
+import type AddLocationParams from '../../../Core/params/addLocationParams'
+import AddLocationController from '../../controllers/addLocationController'
+import LocationStateForm from './LocationStateForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
-const addOrganizationController = AddOrganizationController.getInstance()
+const addLocationController = AddLocationController.getInstance()
 
-const addOrganization = async () => {
-  await addOrganizationController.addOrganization(params.value as AddOrganizationParams, router)
+const addLocation = async () => {
+  await addLocationController.addLocation(params.value as AddLocationParams, router)
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -21,8 +22,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganization">
-    <OrganizationForm @update:data="setParams" />
+  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addLocation">
+    <LocationStateForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">Add</button>

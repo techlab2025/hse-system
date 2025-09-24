@@ -5,7 +5,7 @@ export default class LocationModel extends TitleInterface {
   public id: number
   public title: string
   public code: string
-  public parent_id: number
+  public parent: TitleInterface | null
   public type: number
   public status: number
   public image: string
@@ -14,7 +14,7 @@ export default class LocationModel extends TitleInterface {
     id: number,
     title: string,
     code: string,
-    parent_id: number,
+    parent: TitleInterface | null,
     type: number,
     status: number,
     image: string,
@@ -23,7 +23,7 @@ export default class LocationModel extends TitleInterface {
     this.id = id
     this.title = title
     this.code = code
-    this.parent_id = parent_id
+    this.parent = parent
     this.type = type
     this.status = status
     this.image = image
@@ -34,10 +34,18 @@ export default class LocationModel extends TitleInterface {
       data.id,
       data.title,
       data.code,
-      data.parent_id,
+      data.parent?.length > 0 ? data.parent?.map((parent) => this.getTitle(parent)) : [],
       data.type,
       data.status,
       data.image,
     )
+  }
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
+
+    return new TitleInterface({
+      id: data.id,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
   }
 }

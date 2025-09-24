@@ -158,8 +158,14 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
-        <SaveIcon />
+        <ExportExcel
+          :data="state.data!"
+          :columns="customColumns"
+          filename="formatted_export"
+          sheet-name="Equipment Type Data"
+          button-text="Export Formatted"
+          button-class="btn-primary"
+        />s <SaveIcon />
       </div>
       <div class="btn btn-secondary flex align-center justify-center">
         <ExportPdf />
@@ -201,7 +207,6 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
-        
                 <td data-label="#">
                   <router-link :to="`/admin/accidents-type/${item.id}`">{{ item.id }} </router-link>
                 </td>

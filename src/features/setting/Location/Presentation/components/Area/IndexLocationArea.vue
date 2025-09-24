@@ -20,14 +20,11 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexOrganizationController from '../../controllers/indexLocationController'
-import IndexOrganizationParams from '../../../Core/params/indexLocationParams'
-import DeleteOrganizationParams from '../../../Core/params/deleteLocationParams'
-import DeleteOrganizationController from '../../controllers/deleteLocationController'
-// import IndexOrganizationParams from '../../Core/params/indexOrganizationParams'
-// import IndexOrganizationController from '../controllers/indexOrganizationController'
-// import DeleteOrganizationParams from '../../Core/params/deleteOrganizationParams'
-// import DeleteOrganizationController from '../controllers/deleteOrganizationController'
+import IndexLocationController from '../../controllers/indexLocationController'
+import IndexLocationParams from '../../../Core/params/indexLocationParams'
+import DeleteLocationParams from '../../../Core/params/deleteLocationParams'
+import DeleteLocationController from '../../controllers/deleteLocationController'
+import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 
 const { t } = useI18n()
 
@@ -37,55 +34,56 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexOrganizationController = IndexOrganizationController.getInstance()
-const state = ref(indexOrganizationController.state.value)
+const indexLocationController = IndexLocationController.getInstance()
+const state = ref(indexLocationController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
 
-const fetchOrganization = async (
+const fetchLocation = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexOrganizationParams = new IndexOrganizationParams(
+  const indexLocationParams = new IndexLocationParams(
     query,
     pageNumber,
     perPage,
     withPage,
+    LocationEnum.AREA,
     id,
   )
-  await indexOrganizationController.getData(indexOrganizationParams)
+  await indexLocationController.getData(indexLocationParams)
 }
 
 onMounted(() => {
-  fetchOrganization()
+  fetchLocation()
 })
 
 const searchHazardType = debounce(() => {
-  fetchOrganization(word.value)
+  fetchLocation(word.value)
 })
 
-const deleteOrganization = async (id: number) => {
-  const deleteOrganizationParams = new DeleteOrganizationParams(id)
-  await DeleteOrganizationController.getInstance().deleteOrganization(deleteOrganizationParams)
-  await fetchOrganization()
+const deleteLocation = async (id: number) => {
+  const deleteLocationParams = new DeleteLocationParams(id)
+  await DeleteLocationController.getInstance().deleteLocation(deleteLocationParams)
+  await fetchLocation()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchOrganization('', currentPage.value, countPerPage.value)
+  fetchLocation('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchOrganization('', currentPage.value, countPerPage.value)
+  fetchLocation('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexOrganizationController.state.value,
+  () => indexLocationController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -97,15 +95,15 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteOrganization: (id: number) => void) => [
+const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/organization/${id}`,
+    link: `/admin/areas/${id}`,
     permission: [
-      PermissionsEnum.ORGANIZATION_UPDATE,
+      PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_ALL,
+      PermissionsEnum.LOCATION_ALL,
     ],
   },
   // {
@@ -131,11 +129,11 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteOrganization(id),
+    action: () => deleteLocation(id),
     permission: [
-      PermissionsEnum.ORGANIZATION_DELETE,
+      PermissionsEnum.LOCATION_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_ALL,
+      PermissionsEnum.LOCATION_ALL,
     ],
   },
 ]
@@ -165,9 +163,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
-        <router-link to="/admin/organization/add" class="btn btn-primary">
-          {{ $t('Add_Organization') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
+        <router-link to="/admin/areas/add" class="btn btn-primary">
+          {{ $t('Add_Location_area') }}
         </router-link>
       </permission-builder>
     </div>
@@ -176,11 +174,11 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_ALL,
-      PermissionsEnum.ORGANIZATION_DELETE,
-      PermissionsEnum.ORGANIZATION_FETCH,
-      PermissionsEnum.ORGANIZATION_UPDATE,
-      PermissionsEnum.ORGANIZATION_CREATE,
+      PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_DELETE,
+      PermissionsEnum.LOCATION_FETCH,
+      PermissionsEnum.LOCATION_UPDATE,
+      PermissionsEnum.LOCATION_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -190,9 +188,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('Name') }}</th>
+                <th scope="col">{{ $t('Code') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('email') }}</th>
+                <th scope="col">{{ $t('title') }}</th>
                 <!-- <th scope="col">{{ $t('industries') }}</th> -->
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
@@ -201,17 +199,16 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
-
                 <td data-label="#">
-                  <router-link :to="`/admin/accidents-type/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/states/${item.id}`">{{ item.id }} </router-link>
                 </td>
-                <td data-label="Name">{{ item.name }}</td>
-                <td data-label="email">{{ item.email }}</td>
+                <td data-label="Name">{{ item.code }}</td>
+                <td data-label="email">{{ item.title }}</td>
 
                 <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteOrganization)"
-                    @delete="deleteOrganization(item.id)"
+                    :actionList="actionList(item.id, deleteLocation)"
+                    @delete="deleteLocation(item.id)"
                   />
                 </td>
               </tr>

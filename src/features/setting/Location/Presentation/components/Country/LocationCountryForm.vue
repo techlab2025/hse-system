@@ -13,6 +13,7 @@ import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const emit = defineEmits(['update:data'])
 
@@ -27,6 +28,7 @@ const props = defineProps<{
   data?: LocationDetailsModel
 }>()
 const Code = ref(props.data?.code ?? '')
+const id = useRoute().params.id ?? 0
 
 // Translations (title per locale)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -74,12 +76,10 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(Code.value, 'Code.valueeueue')
   const params = props.data?.id
     ? new EditLocationParams(id, translationsParams, Code.value, LocationEnum.COUNTRY)
     : new AddLocationParams(translationsParams, Code.value, LocationEnum.COUNTRY)
 
-  console.log(params, 'params Editststststs')
   emit('update:data', params)
 }
 
@@ -124,6 +124,11 @@ const SetLocationType = (data: TitleInterface) => {
   LocationType.value = data
   updateData()
 }
+
+const UpdateCode = (data) => {
+  Code.value = data.target.value
+  updateData()
+}
 </script>
 
 <template>
@@ -133,7 +138,14 @@ const SetLocationType = (data: TitleInterface) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" />
+    <input
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      placeholder="Enter The Code"
+      @input="UpdateCode"
+    />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

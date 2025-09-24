@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import IndexOrganization from '@/features/setting/Organization/Presentation/components/IndexOrganization.vue';
+import IndexLocationState from '@/features/setting/Location/Presentation/components/State/IndexLocationState.vue'
 </script>
 
 <template>
-  <IndexOrganization />
+  <IndexLocationState />
 </template>
