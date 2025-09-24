@@ -6,7 +6,7 @@ import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
 import ShowFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/showFactoryItemController.ts'
 import ShowFactoryItemParams from '@/features/setting/FactoryItem/Core/params/showFactoryItemParams.ts'
-import EditFactoryItemController from '@/features/setting/FactoryItem/controllers/editFactoryItemController.ts'
+import EditFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/editFactoryItemController.ts'
 import FactoryItemForm from './FactoryItemForm.vue'
 
 const route = useRoute()
