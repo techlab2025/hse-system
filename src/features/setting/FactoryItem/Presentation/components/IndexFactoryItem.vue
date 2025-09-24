@@ -24,7 +24,7 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/indexFactoryItemController.ts'
 import IndexFactoryItemParams from '@/features/setting/FactoryItem/Core/params/indexFactoryItemParams.ts'
 import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/deleteFactoryItemParams.ts'
-import DeleteFactoryItemController from '@/features/setting/FactoryItem/controllers/deleteFactoryItemController.ts'
+import DeleteFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/deleteFactoryItemController.ts'
 
 const { t } = useI18n()
 
