@@ -1,25 +1,30 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import type { ActionsEnum } from '../Enum/ActionType'
 
 export default class AddTemplateParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean
   industries: number[]
-  image: string
-  items: AddTemplateParams[]
+  require_image: number
+  action: ActionsEnum | null
+  items: AddTemplateParams[] = []
 
   constructor(
     translation: TranslationsParams,
     allIndustries: boolean,
     industries: number[],
-    image: string,
-    items: AddTemplateParams[]
+    require_image: number,
+    action: ActionsEnum | null,
+    items: AddTemplateParams[] = [],
+
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
-    this.image = image
+    this.require_image = require_image
     this.items = items
+    this.action = action
   }
 
   toMap(): Record<string, unknown> {
@@ -32,7 +37,9 @@ export default class AddTemplateParams implements Params {
       data['industry_ids'] = this.industries
     }
 
-    data['image'] = this.image
+    data['require_image'] = this.require_image
+
+    if (this.action) data['action'] = this.action
 
     if (this.items.length > 0) {
       data['items'] = this.items.map((item) => item.toMap())

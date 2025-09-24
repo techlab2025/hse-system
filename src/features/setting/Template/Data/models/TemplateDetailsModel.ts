@@ -3,6 +3,7 @@ import TranslationsParams, { type TitleLocale } from '@/base/core/params/transla
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
+import { ActionsEnum } from '../../Core/Enum/ActionType'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class TemplateDetailsModel {
@@ -13,7 +14,9 @@ export default class TemplateDetailsModel {
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
-  public items: TemplateDetailsModel[]
+  public templateItems: TemplateDetailsModel[]
+  public requireImage: number
+  public action: TitleInterface | null
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -24,7 +27,11 @@ export default class TemplateDetailsModel {
     industries: TitleModel<string>[] = [],
     parentId: number,
     image: string,
-    items: TemplateDetailsModel[] = [],
+    templateItems: TemplateDetailsModel[] = [],
+    requireImage: number = 0,
+    action: TitleInterface | null = null
+
+
   ) {
     this.id = id
     this.titles = titles
@@ -33,7 +40,10 @@ export default class TemplateDetailsModel {
     this.industries = industries
     this.parentId = parentId
     this.image = image
-    this.items = items
+    this.templateItems = templateItems
+    this.requireImage = requireImage
+    this.action = action
+
   }
 
   static fromMap(data: any): TemplateDetailsModel {
@@ -47,9 +57,12 @@ export default class TemplateDetailsModel {
         : [],
       data.parent_id,
       data.image,
-      data.items?.length > 0
-        ? data.items?.map((item) => this.fromMap(item))
+      data.template_items?.length > 0
+        ? data.template_items?.map((item) => this.fromMap(item))
         : [],
+      data.require_image,
+      this.getTemplateItemsAction(data.action),
+
     )
   }
 
@@ -61,4 +74,23 @@ export default class TemplateDetailsModel {
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+
+  static getTemplateItemsAction(data: ActionsEnum): TitleInterface {
+
+    switch (data) {
+      case ActionsEnum.CheckBox:
+        return new TitleInterface({
+          id: ActionsEnum.CheckBox,
+          title: 'Checkbox',
+          subtitle: '',
+        })
+      default:
+        return new TitleInterface({
+          id: ActionsEnum.CheckBox,
+          title: 'Unknown',
+          subtitle: '',
+        })
+    }
+  }
+
 }

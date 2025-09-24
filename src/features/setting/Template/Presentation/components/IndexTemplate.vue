@@ -185,7 +185,6 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -203,9 +202,6 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
                       ? item.industries.map((industry) => industry.title).join(', ')
                       : '---'
                   }}
-                </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
 
                 <td data-label="Actions">

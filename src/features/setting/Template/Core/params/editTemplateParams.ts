@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import type AddTemplateParams from './addTemplateParams'
 
 export default class EditTemplateParams implements Params {
   id: number
@@ -7,7 +8,7 @@ export default class EditTemplateParams implements Params {
   allIndustries: boolean
   industries: number[]
   image: string
-  items: EditTemplateParams[]
+  items: AddTemplateParams[]
 
 
   constructor(
@@ -16,7 +17,7 @@ export default class EditTemplateParams implements Params {
     allIndustries: boolean,
     industries: number[],
     image: string,
-    items: EditTemplateParams[]
+    items: AddTemplateParams[]
 
   ) {
     this.id = id
@@ -33,7 +34,7 @@ export default class EditTemplateParams implements Params {
   > {
     const data: Record<string, any> = {}
 
-    data['hazard_type_id'] = this.id
+    data['template_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries

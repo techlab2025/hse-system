@@ -1,27 +1,24 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
-// import { TemplatesMap } from '@/constant/Templates'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute } from 'vue-router'
 import type TemplateDetailsModel from '../../Data/models/TemplateDetailsModel'
 import EditTemplateParams from '../../Core/params/editTemplateParams'
 import AddTemplateParams from '../../Core/params/addTemplateParams'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import AddIcon from '@/shared/icons/AddIcon.vue'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+import IconMinus from '@/shared/icons/IconMinus.vue'
+import IconAdd from '@/shared/icons/IconAdd.vue'
+import { ActionsEnum } from '../../Core/Enum/ActionType'
 
 const emit = defineEmits(['update:data'])
 
@@ -29,172 +26,191 @@ const props = defineProps<{
   data?: TemplateDetailsModel
 }>()
 
-// const route = useRoute()
+// Translations
+const langs = ref<{ locale: string; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
-// actual translations (values)
-const langs = ref<{ locale: string; title: string }[]>([
-  {
-    locale: 'en',
-    icon: USA,
-    title: '',
-  },
-  {
-    locale: 'ar',
-    icon: SA,
-    title: '',
-  },
-])
-
+// Industries
 const allIndustries = ref<boolean>(false)
-// const hasCertificate = ref<number>(0)
-const image = ref<string>('')
-
-// industry
 const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available Templates
-const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const ActionsSelection = ref<TitleInterface[]>([
+  new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
+])
 
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0,
-) => {
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexTemplateController = await IndexLangController.getInstance().getData(params)
+// Image
+const image = ref<string>('')
 
-  const response = indexTemplateController.value
+// Items (dynamic list)
+interface Item {
+  langs: { locale: string; title: string }[]
+  allIndustries: boolean
+  industry: TitleInterface[]
+  requireImage: string
+  action: TitleInterface | null
+}
+const items = ref<Item[]>([])
 
-  if (response?.data?.length) {
-    // map backend Templates into default structure
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '', // empty initially
-      // if you already have icons mapped, use TemplatesMap
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      {
-        locale: 'en',
-        icon: USA,
+// helper to create new blank item
+const createNewItem = (): Item => ({
+  langs: langDefault.value.map((l) => ({ locale: l.locale, title: '' })),
+  allIndustries: false,
+  industry: [],
+  requireImage: '',
+  action: null,
+})
+
+// --- Fetch available languages
+const fetchLang = async () => {
+  const params = new IndexLangParams('', 1, 10, 0)
+  const response = (await IndexLangController.getInstance().getData(params)).value
+
+  langDefault.value = response?.data?.length
+    ? response.data.map((item: any) => ({
+        locale: item.code,
         title: '',
-      },
-      {
-        locale: 'ar',
-        icon: SA,
-        title: '',
-      },
-    ]
+        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+      }))
+    : [
+        { locale: 'en', icon: USA, title: '' },
+        { locale: 'ar', icon: SA, title: '' },
+      ]
+
+  if (!items.value.length) {
+    items.value.push(createNewItem())
   }
 }
 
-onMounted(async () => {
-  await fetchLang()
-})
+onMounted(fetchLang)
 
+// --- Sync with parent
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(allIndustries.value, 'industry')
+  const itemsParams = items.value.map((item) => {
+    const itemTranslations = new TranslationsParams()
+    item.langs.forEach((lang) => {
+      itemTranslations.setTranslation('title', lang.locale, lang.title)
+    })
+    const params = new AddTemplateParams(
+      itemTranslations,
+      item.allIndustries,
+      item.industry.map((i) => i.id),
+      item.requireImage ? 1 : 0,
+      item.action?.id,
+    )
+    return params
+  })
 
   const params = props.data?.id
     ? new EditTemplateParams(
-        props.data?.id! ?? 0,
+        props.data?.id ?? 0,
         translationsParams,
-        allIndustries.value ?? false,
-        industry.value?.map((item) => item.id) ?? [],
+        allIndustries.value,
+        industry.value?.map((i) => i.id) ?? [],
         image.value,
-        [],
+        itemsParams,
       )
     : new AddTemplateParams(
         translationsParams,
-        allIndustries.value ?? false,
-        industry.value?.map((item) => item.id),
+        allIndustries.value,
+        industry.value?.map((i) => i.id),
         image.value,
-        [],
-        // id,
+        null,
+        itemsParams,
       )
 
-  console.log(params, 'params')
   emit('update:data', params)
 }
 
+// Setters
 const setIndustry = (data: TitleInterface[]) => {
-  // console.log(data, 'data')
   industry.value = data
   updateData()
 }
-
-// when child emits modelValue (updated translations)
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
-
-  // console.log(langs.value, 'langs')
   updateData()
 }
 
-// init Templates either from backend (edit mode) or from defaults (create mode)
+// Items handlers
+const addItem = () => {
+  items.value.push(createNewItem())
+  updateData()
+}
+const removeItem = (index: number) => {
+  if (items.value.length > 1) {
+    items.value.splice(index, 1)
+    updateData()
+  }
+}
+
+const setItemLangs = (index: number, data: { locale: string; title: string }[]) => {
+  items.value[index].langs = data
+  updateData()
+}
+const setItemIndustry = (index: number, data: TitleInterface[]) => {
+  items.value[index].industry = data
+  updateData()
+}
+const setItemAction = (index: number, data: TitleInterface) => {
+  // console.log(data)
+
+  items.value[index].action = data
+  updateData()
+}
+
+// --- Init watcher
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+    if (!newDefault.length) return
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries!
-      industry.value = newData?.industries!
-    }
+    langs.value = newData?.titles?.length
+      ? newDefault.map((l) => {
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
+
+    allIndustries.value = newData?.allIndustries == 1 ? true : false
+
+    industry.value = newData?.industries ?? []
+
+    image.value = newData?.image ?? ''
+
+    items.value = newData?.templateItems?.length
+      ? newData.templateItems.map((it: any) => ({
+          langs: it.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+          allIndustries: it.allIndustries == 1 ? true : false,
+          industry: it.industries ?? [],
+          requireImage: it.requireImage ?? '',
+          action: it.action ?? null,
+        }))
+      : [createNewItem()]
   },
   { immediate: true },
 )
-
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
 </script>
 
 <template>
+  <!-- Titles -->
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
-  <!--    <label>{{ $t('has_certificate') }}</label>-->
-  <!--    <input-->
-  <!--      type="checkbox"-->
-  <!--      :value="1"-->
-  <!--      v-model="hasCertificate"-->
-  <!--      :checked="hasCertificate == 1"-->
-  <!--      @change="updateData"-->
-  <!--    />-->
-  <!--  </div>-->
+  <!-- All Industries -->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
-      :checked="allIndustries"
-      @change="updateData"
-    />
+    <input type="checkbox" v-model="allIndustries" @change="updateData" />
   </div>
+
+  <!-- Industry Selection -->
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput
       :modelValue="industry"
@@ -207,7 +223,9 @@ const setImage = async (data: File) => {
       @update:modelValue="setIndustry"
     />
   </div>
-  <div class="col-span-4 md:col-span-4">
+
+  <!-- Image 
+  <div class="col-span-4">
     <FileUpload
       :initialFileData="image"
       @update:fileData="setImage"
@@ -216,5 +234,75 @@ const setImage = async (data: File) => {
       placeholder="Select image"
       :multiple="false"
     />
+  </div>
+  -->
+
+  <!-- Items Section -->
+  <div class="col-span-4 border border-gray-200 !p-3 rounded">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-lg">{{ $t('items') }}</h3>
+    </div>
+
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      class="grid grid-cols-4 gap-4 mb-4 !my-2 !p-3 border border-gray-200 rounded"
+    >
+      <div class="col-span-4 md:col-span-2">
+        <LangTitleInput
+          :langs="langDefault"
+          :modelValue="item.langs"
+          @update:modelValue="(val) => setItemLangs(index, val)"
+        />
+      </div>
+
+      <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+        <label>{{ $t('all_industries') }}</label>
+        <input type="checkbox" v-model="item.allIndustries" @change="updateData" />
+      </div>
+
+      <div class="col-span-4 md:col-span-2" v-if="!item.allIndustries">
+        <CustomSelectInput
+          :modelValue="item.industry"
+          :controller="industryController"
+          :params="industryParams"
+          label="industry"
+          :id="'TemplateItem-' + index"
+          placeholder="Select industry"
+          :type="2"
+          @update:modelValue="(val) => setItemIndustry(index, val)"
+        />
+      </div>
+
+      <div class="col-span-4 md:col-span-2">
+        <CustomSelectInput
+          :modelValue="item.action"
+          label="action"
+          :staticOptions="ActionsSelection"
+          :id="'action-' + index"
+          placeholder="Select action"
+          @update:modelValue="(val) => setItemAction(index, val)"
+        />
+      </div>
+
+      <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+        <label>{{ $t('require_image') }}</label>
+        <input type="checkbox" v-model="item.requireImage" @change="updateData" />
+      </div>
+
+      <div class="col-span-4 flex justify-end">
+        <button type="button" class="btn-add flex items-center gap-2 !mx-2" @click="addItem">
+          <IconAdd />
+        </button>
+        <button
+          v-if="items.length > 1"
+          type="button"
+          class="btn-minus flex items-center gap-2 !bg-red-500 w-10 h-10 rounded-full justify-center"
+          @click="removeItem(index)"
+        >
+          <IconMinus />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
