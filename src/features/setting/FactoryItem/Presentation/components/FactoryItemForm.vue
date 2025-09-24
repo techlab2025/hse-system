@@ -223,7 +223,6 @@ const setFactory = (data: TitleInterface) => {
       label="factory"
       id="Factory"
       placeholder="Select factory"
-      :type="2"
       @update:modelValue="setFactory"
     />
   </div>
