@@ -112,6 +112,14 @@ class ApiNames {
   public DeleteTerm = this.baseUrl + this.dashboardPrefix + 'delete_term'
   public DisTerm = this.baseUrl + this.dashboardPrefix + 'change_term_active_status'
 
+  // privacy
+  public CreatePrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
+  public IndexPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
+  public ShowPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
+  public EditPrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
+  public DeletePrivacy = this.baseUrl + this.dashboardPrefix + 'delete_privacy'
+  public DisPrivacy = this.baseUrl + this.dashboardPrefix + 'change_privacy_active_status'
+
   //Equipment
   public CreateEquipment = this.baseUrl + this.dashboardPrefix + 'create_equipment'
   public IndexEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipments'

@@ -451,6 +451,24 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <!-- Privacy -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.PRIVACY_ALL,
+                      PermissionsEnum.PRIVACY_CREATE,
+                      PermissionsEnum.PRIVACY_DELETE,
+                      PermissionsEnum.PRIVACY_FETCH,
+                      PermissionsEnum.PRIVACY_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/privacy/add">
+                      <SidebarVector />
+                      <span>Privacy</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
