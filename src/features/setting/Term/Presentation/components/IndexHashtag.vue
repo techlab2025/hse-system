@@ -21,70 +21,70 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexCategoryController from '../controllers/indexCategoryController'
-import IndexCategoryParams from '../../Core/params/indexCategoryParams'
-import DeleteCategoryParams from '../../Core/params/deleteCategoryParams'
-import DeleteCategoryController from '../controllers/deleteCategoryController'
+import IndexHashtagController from '../controllers/indexHashtagController'
+import IndexHashtagParams from '../../Core/params/indexHashtagParams'
+import DeleteHashtagParams from '../../Core/params/deleteTermParams'
+import DeleteHashtagController from '../controllers/deleteHashtagController'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusCategory from "@/features/setting/Categoryuages/Presentation/components/Category/DialogChangeStatusCategory.vue";
+// import DialogChangeStatusHashtag from "@/features/setting/Hashtaguages/Presentation/components/Hashtag/DialogChangeStatusHashtag.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexCategoryController = IndexCategoryController.getInstance()
-const state = ref(indexCategoryController.state.value)
+const indexHashtagController = IndexHashtagController.getInstance()
+const state = ref(indexHashtagController.state.value)
 const route = useRoute()
 
 // const id = ref(route.params.parent_id)
 
-// const type = ref<CategoryStatusEnum>(CategoryStatusEnum[route.params.type as keyof typeof CategoryStatusEnum])
+// const type = ref<HashtagStatusEnum>(HashtagStatusEnum[route.params.type as keyof typeof HashtagStatusEnum])
 
-const fetchCategory = async (
+const fetchHashtag = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteCategoryParams = new IndexCategoryParams(
+  const deleteHashtagParams = new IndexHashtagParams(
     query,
     pageNumber,
     perPage,
     withPage,
     // id.value?? '',
   )
-  await indexCategoryController.getData(deleteCategoryParams)
+  await indexHashtagController.getData(deleteHashtagParams)
 }
 
 onMounted(() => {
-  fetchCategory()
+  fetchHashtag()
 })
 
-const searchCategory = debounce(() => {
-  fetchCategory(word.value)
+const searchHashtag = debounce(() => {
+  fetchHashtag(word.value)
 })
 
-const deleteCategory = async (id: number) => {
-  const deleteCategoryParams = new DeleteCategoryParams(id)
-  await DeleteCategoryController.getInstance().deleteCategory(deleteCategoryParams)
-  await fetchCategory()
+const deleteHashtag = async (id: number) => {
+  const deleteHashtagParams = new DeleteHashtagParams(id)
+  await DeleteHashtagController.getInstance().deleteHashtag(deleteHashtagParams)
+  await fetchHashtag()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchCategory('', currentPage.value, countPerPage.value)
+  fetchHashtag('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchCategory('', currentPage.value, countPerPage.value)
+  fetchHashtag('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexCategoryController.state.value,
+  () => indexHashtagController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -96,26 +96,26 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteCategory: (id: number) => void) => [
+const actionList = (id: number, deleteHashtag: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/category/${id}`,
+    link: `/admin/hashtag/${id}`,
     permission: [
-      PermissionsEnum.CATEGORY_UPDATE,
+      PermissionsEnum.HASHTAG_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.CATEGORY_ALL,
+      PermissionsEnum.HASHTAG_ALL,
     ],
   },
 
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteCategory(id),
+    action: () => deleteHashtag(id),
     permission: [
-      PermissionsEnum.CATEGORY_DELETE,
+      PermissionsEnum.HASHTAG_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.CATEGORY_ALL,
+      PermissionsEnum.HASHTAG_ALL,
     ],
   },
 ]
@@ -124,7 +124,7 @@ watch(
   () => route?.params?.id,
   (Newvalue) => {
     // id = Newvalue
-    fetchCategory()
+    fetchHashtag()
   },
 )
 </script>
@@ -133,7 +133,7 @@ watch(
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchCategory())">
+      <span class="icon-remove" @click="((word = ''), searchHashtag())">
         <Search />
       </span>
       <input
@@ -141,7 +141,7 @@ watch(
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchCategory"
+        @input="searchHashtag"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -154,8 +154,8 @@ watch(
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
-        <router-link to="/admin/category/add" class="btn btn-primary">
-          {{ $t('Add_Category') }}
+        <router-link to="/admin/hashtag/add" class="btn btn-primary">
+          {{ $t('Add_Hashtag') }}
         </router-link>
       </permission-builder>
     </div>
@@ -188,7 +188,7 @@ watch(
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/Category/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/Hashtag/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
 
@@ -197,15 +197,15 @@ watch(
                 </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusCategory-->
-                  <!--                  v-if="item.CategoryStatus === CategoryStatusEnum.Draft"-->
-                  <!--                  :CategoryId="item.id"-->
-                  <!--                  @CategoryChangeStatus="fetchCategory"-->
+                  <!--                <DialogChangeStatusHashtag-->
+                  <!--                  v-if="item.HashtagStatus === HashtagStatusEnum.Draft"-->
+                  <!--                  :HashtagId="item.id"-->
+                  <!--                  @HashtagChangeStatus="fetchHashtag"-->
                   <!--                />-->
 
                   <DropList
-                    :actionList="actionList(item.id, deleteCategory)"
-                    @delete="deleteCategory(item.id)"
+                    :actionList="actionList(item.id, deleteHashtag)"
+                    @delete="deleteHashtag(item.id)"
                   />
                 </td>
               </tr>
@@ -226,18 +226,18 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/category/add`"
-          addText="Add category"
-          description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Category"
+          :link="`/admin/hashtag/add`"
+          addText="Add hashtag"
+          description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No Hashtag"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/category/add`"
-          addText="Add Category"
-          description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Category"
+          :link="`/admin/hashtag/add`"
+          addText="Add Hashtag"
+          description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No Hashtag"
         />
       </template>
     </DataStatus>
@@ -245,7 +245,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

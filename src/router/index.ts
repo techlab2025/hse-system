@@ -157,6 +157,29 @@ const router = createRouter({
           name: 'Edit Category',
           component: () => import('../views/Category/EditCategory.vue'),
         },
+        // Hashtag
+        {
+          path: 'hashtags',
+          name: 'Hashtags',
+          component: () => import('../views/Hashtag/IndexHashtag.vue'),
+        },
+        {
+          path: 'hashtag/add',
+          name: 'Add Hashtag',
+          component: () => import('../views/Hashtag/AddHashtag.vue'),
+        },
+        {
+          path: 'hashtag/:id',
+          name: 'Edit Hashtag',
+          component: () => import('../views/Hashtag/EditHashtag.vue'),
+        },
+        // Term
+        {
+          path: 'term/add',
+          name: 'Add Term',
+          component: () => import('../views/Term/AddTerm.vue'),
+        },
+
 
         {
           path: 'accidents-types',

@@ -15,14 +15,14 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type CategoryDetailsModel from '../../Data/models/CategoryDetailsModel'
-import EditCategoryParams from '../../Core/params/editCategoryParams'
-import AddCategoryParams from '../../Core/params/addCategoryParams'
+import type HashtagDetailsModel from '../../Data/models/HashtagDetailsModel'
+import EditHashtagParams from '../../Core/params/editHashtagParams'
+import AddHashtagParams from '../../Core/params/addHashtagParams'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: CategoryDetailsModel
+  data?: HashtagDetailsModel
 }>()
 
 const route = useRoute()
@@ -80,9 +80,9 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexCategoryController = await IndexLangController.getInstance().getData(params)
+  const indexHashtagController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexCategoryController.value
+  const response = indexHashtagController.value
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -127,14 +127,14 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditCategoryParams(
+    ? new EditHashtagParams(
         props.data.id,
         translationsParams,
         typeof image.value === 'object' ? image.value.file : undefined,
         // typeof image.value === 'object' ? image.value.id : undefined,
         alt.value,
       )
-    : new AddCategoryParams(
+    : new AddHashtagParams(
         translationsParams,
         typeof image.value === 'object' ? image.value.file : undefined,
         alt.value,
@@ -204,8 +204,8 @@ const setImage = async (data: File) => {
       @update:modelValue="(val) => (langs = val)"
     />
   </div>
-<!-- 
-  <div class="col-span-4 md:col-span-2">
+
+  <!-- <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('description')"
       :langs="langDefaultDescription"

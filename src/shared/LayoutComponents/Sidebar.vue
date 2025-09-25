@@ -178,24 +178,22 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
 
-<!--                <li>-->
-<!--                  <PermissionBuilder-->
-<!--                    :code="[-->
-<!--                      PermissionsEnum.CERTIFICATE_ALL,-->
-<!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
-<!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
-<!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
-<!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
-<!--                    ]"-->
-<!--                  >-->
-<!--                    <router-link to="/admin/certificates">-->
-<!--                      <SidebarVector />-->
-<!--                      <span>Certificates</span>-->
-<!--                    </router-link>-->
-<!--                  </PermissionBuilder>-->
-<!--                </li>-->
-
-
+                <!--                <li>-->
+                <!--                  <PermissionBuilder-->
+                <!--                    :code="[-->
+                <!--                      PermissionsEnum.CERTIFICATE_ALL,-->
+                <!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
+                <!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
+                <!--                    ]"-->
+                <!--                  >-->
+                <!--                    <router-link to="/admin/certificates">-->
+                <!--                      <SidebarVector />-->
+                <!--                      <span>Certificates</span>-->
+                <!--                    </router-link>-->
+                <!--                  </PermissionBuilder>-->
+                <!--                </li>-->
 
                 <li>
                   <PermissionBuilder
@@ -384,7 +382,7 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-                      <li>
+                <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.CATEGORY_ALL,
@@ -397,6 +395,40 @@ const active = ref('0')
                     <router-link to="/admin/categories">
                       <SidebarVector />
                       <span>Categories</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <!-- Hashtag -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HASHTAG_ALL,
+                      PermissionsEnum.HASHTAG_CREATE,
+                      PermissionsEnum.HASHTAG_DELETE,
+                      PermissionsEnum.HASHTAG_FETCH,
+                      PermissionsEnum.HASHTAG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/hashtags">
+                      <SidebarVector />
+                      <span>Hashtags</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <!-- Term -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.TERM_ALL,
+                      PermissionsEnum.TERM_CREATE,
+                      PermissionsEnum.TERM_DELETE,
+                      PermissionsEnum.TERM_FETCH,
+                      PermissionsEnum.TERM_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/term/add">
+                      <SidebarVector />
+                      <span>Terms</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

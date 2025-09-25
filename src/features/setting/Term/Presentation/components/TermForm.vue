@@ -15,18 +15,20 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type CategoryDetailsModel from '../../Data/models/CategoryDetailsModel'
-import EditCategoryParams from '../../Core/params/editCategoryParams'
-import AddCategoryParams from '../../Core/params/addCategoryParams'
+import type TermDetailsModel from '../../Data/models/TermDetailsModel'
+// import EditTermParams from '../../Core/params/editTermParams'
+import AddTermParams from '../../Core/params/addTermParams'
+import ShowTermController from '../controllers/showTermController'
+import ShowTermParams from '../../Core/params/showTermParams'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: CategoryDetailsModel
+  data?: TermDetailsModel
 }>()
 
 const route = useRoute()
-const id = route.params.parent_id
+const id = route.params.id as string | undefined
 
 type ImageValue = string | { file?: File; id?: number }
 
@@ -64,13 +66,7 @@ const langDefault = ref<
     title: string
   }[]
 >([])
-const langDefaultDescription = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
+
 
 // ---------- Fetch available languages ----------
 const fetchLang = async (
@@ -80,9 +76,9 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexCategoryController = await IndexLangController.getInstance().getData(params)
+  const indexTermController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexCategoryController.value
+  const response = indexTermController.value
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -116,29 +112,22 @@ onMounted(async () => {
 const updateData = () => {
   const translationsParams = new TranslationsParams()
 
-  // titles
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
+
 
   // descriptions
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const params = props.data?.id
-    ? new EditCategoryParams(
+    ? new EditTermParams(
         props.data.id,
         translationsParams,
         typeof image.value === 'object' ? image.value.file : undefined,
         // typeof image.value === 'object' ? image.value.id : undefined,
         alt.value,
       )
-    : new AddCategoryParams(
-        translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
-        alt.value,
-      )
+    : new AddTermParams(translationsParams)
 
   // console.log(params, 'params')
 
@@ -194,17 +183,40 @@ watch(
 const setImage = async (data: File) => {
   image.value = await filesToBase64(data)
 }
+const fetchTerm = async (id: string | number) => {
+  const showTermController = ShowTermController.getInstance()
+  const params = new ShowTermParams(id)
+
+  const response = await showTermController.showTerm(params)
+
+  if (response?.data) {
+    const term = response.data as TermDetailsModel
+
+    // titles
+    if (term.titles?.length) {
+      langs.value = langDefault.value.map((l) => {
+        const existing = term.titles.find((t) => t.locale === l.locale)
+        return existing ? existing : { locale: l.locale, title: '' }
+      })
+    }
+
+    // descriptions
+    if (term.descriptions?.length) {
+      langsDescription.value = langDefaultDescription.value.map((l) => {
+        const existing = term.descriptions.find((t) => t.locale === l.locale)
+        return existing ? existing : { locale: l.locale, description: '' }
+      })
+    }
+
+  }
+}
+
+onMounted(() => {
+fetchTerm()
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
-  </div>
-<!-- 
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('description')"
@@ -213,20 +225,5 @@ const setImage = async (data: File) => {
       @update:modelValue="(val) => (langsDescription = val)"
       type="textarea"
     />
-  </div> -->
-
-  <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-4 input-wrapper">
-    <label> Image Alt Text </label>
-    <input type="text" v-model="alt" placeholder="Enter image alt text" />
   </div>
 </template>
