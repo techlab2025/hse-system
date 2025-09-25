@@ -132,6 +132,23 @@ const router = createRouter({
         },
 
         {
+          path: "headers",
+          name: "Headers",
+          component: () => import('../views/Website/Header/IndexHeader.vue'),
+        },
+
+        {
+          path: 'header/add',
+          name: 'Add Header',
+          component: () => import('../views/Website/Header/AddHeader.vue'),
+        },
+        {
+          path: 'header/:id',
+          name: 'Edit Header',
+          component: () => import('../views/Website/Header/EditHeader.vue'),
+        },
+
+        {
           path: 'home-contact-us/add',
           name: 'Add Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),

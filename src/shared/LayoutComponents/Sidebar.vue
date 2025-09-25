@@ -417,6 +417,23 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HEADER_ALL,
+                      PermissionsEnum.HEADER_CREATE,
+                      PermissionsEnum.HEADER_DELETE,
+                      PermissionsEnum.HEADER_FETCH,
+                      PermissionsEnum.HEADER_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/headers">
+                      <SidebarVector />
+                      <span>Header</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
