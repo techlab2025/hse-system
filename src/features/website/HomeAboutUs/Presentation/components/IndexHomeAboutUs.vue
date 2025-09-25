@@ -21,71 +21,79 @@ import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexHomeContactUsController from '../controllers/indexHomeContactUsController'
-import IndexHomeContactUsParams from '../../Core/params/indexHomeContactUsParams'
-import DeleteHomeContactUsParams from '../../Core/params/deleteHomeContactUsParams'
-import DeleteHomeContactUsController from '../controllers/deleteHomeContactUsController'
-import ChangeStatusHomeContactUsParams from '../../Core/params/changeStatusHomeContactUs'
-import ChangeStatusHomeContactUsController from '../controllers/changeStatusHomeContactUsController'
+import IndexHomeAboutUsController from '../controllers/indexHomeAboutUsController'
+import IndexHomeAboutUsParams from '../../Core/params/indexHomeAboutUsParams'
+import DeleteHomeAboutUsParams from '../../Core/params/deleteHomeAboutUsParams'
+import DeleteHomeAboutUsController from '../controllers/deleteHomeAboutUsController'
+import ChangeStatusHomeAboutUsParams from '../../Core/params/changeStatusHomeAboutUS'
+import ChangeStatusHomeAboutUsController from '../controllers/changeStatusHomeAboutUsController'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHomeContactUs from "@/features/setting/HomeContactUsuages/Presentation/components/HomeContactUs/DialogChangeStatusHomeContactUs.vue";
+// import DialogChangeStatusHomeAboutUs from "@/features/setting/HomeAboutUsuages/Presentation/components/HomeAboutUs/DialogChangeStatusHomeAboutUs.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexHomeContactUsController = IndexHomeContactUsController.getInstance()
-const state = ref(indexHomeContactUsController.state.value)
+const indexHomeAboutUsController = IndexHomeAboutUsController.getInstance()
+const state = ref(indexHomeAboutUsController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<HomeContactUsStatusEnum>(HomeContactUsStatusEnum[route.params.type as keyof typeof HomeContactUsStatusEnum])
+// const type = ref<HomeAboutUsStatusEnum>(HomeAboutUsStatusEnum[route.params.type as keyof typeof HomeAboutUsStatusEnum])
 
-const fetchHomeContactUs = async (
+const fetchHomeAboutUs = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteHomeContactUsParams = new IndexHomeContactUsParams(
+  const deleteHomeAboutUsParams = new IndexHomeAboutUsParams(
     query,
     pageNumber,
     perPage,
     withPage,
     id,
   )
-  await indexHomeContactUsController.getData(deleteHomeContactUsParams)
+  await indexHomeAboutUsController.getData(deleteHomeAboutUsParams)
 }
 
 onMounted(() => {
-  fetchHomeContactUs()
+  fetchHomeAboutUs()
 })
 
-const searchHomeContactUs = debounce(() => {
-  fetchHomeContactUs(word.value)
+const searchHomeAboutUs = debounce(() => {
+  fetchHomeAboutUs(word.value)
 })
 
-const deleteHomeContactUs = async (id: number) => {
-  const deleteHomeContactUsParams = new DeleteHomeContactUsParams(id)
-  await DeleteHomeContactUsController.getInstance().deleteHomeContactUs(deleteHomeContactUsParams)
-  await fetchHomeContactUs()
+const deleteHomeAboutUs = async (id: number) => {
+  const deleteHomeAboutUsParams = new DeleteHomeAboutUsParams(id)
+  await DeleteHomeAboutUsController.getInstance().deleteHomeAboutUs(deleteHomeAboutUsParams)
+  await fetchHomeAboutUs()
+}
+
+const changeStatusHomeAboutUs = async (id: number) => {
+  const changeStatusHomeAboutUsParams = new ChangeStatusHomeAboutUsParams(id)
+  await ChangeStatusHomeAboutUsController.getInstance().changeStatusHomeAboutUs(
+    changeStatusHomeAboutUsParams,
+  )
+  await fetchHomeAboutUs()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHomeContactUs('', currentPage.value, countPerPage.value)
+  fetchHomeAboutUs('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHomeContactUs('', currentPage.value, countPerPage.value)
+  fetchHomeAboutUs('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexHomeContactUsController.state.value,
+  () => indexHomeAboutUsController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -97,23 +105,15 @@ watch(
   },
 )
 
-const changeStatusHomeContactUs = async (id: number) => {
-  const changeStatusHomeContactUsParams = new ChangeStatusHomeContactUsParams(id)
-  await ChangeStatusHomeContactUsController.getInstance().changeStatusHomeContactUs(
-    changeStatusHomeContactUsParams,
-  )
-  await fetchHomeContactUs()
-}
-
-const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
+const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/home-contact-us/${id}`,
+    link: `/admin/home-about-us/${id}`,
     permission: [
-      PermissionsEnum.HOME_CONTACT_US_UPDATE,
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HOME_CONTACT_US_ALL,
+      PermissionsEnum.HOME_ABOUT_US_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.HOME_ABOUT_US_ALL,
     ],
   },
   // {
@@ -139,11 +139,11 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHomeContactUs(id),
+    action: () => deleteHomeAboutUs(id),
     permission: [
-      PermissionsEnum.HOME_CONTACT_US_DELETE,
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HOME_CONTACT_US_ALL,
+      PermissionsEnum.HOME_ABOUT_US_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.HOME_ABOUT_US_ALL,
     ],
   },
 ]
@@ -153,7 +153,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchHomeContactUs())">
+      <span class="icon-remove" @click="((word = ''), searchHomeAboutUs())">
         <Search />
       </span>
       <input
@@ -161,28 +161,21 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchHomeContactUs"
+        @input="searchHomeAboutUs"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data!"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Equipment Type Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />
+        <ExportExcel />
         <SaveIcon />
       </div>
       <div class="btn btn-secondary flex align-center justify-center">
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_CONTACT_US_CREATE]">
-        <router-link to="/admin/home-contact-us/add" class="btn btn-primary">
-          {{ $t('Add_HomeContactUs') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_ABOUT_US_CREATE]">
+        <router-link to="/admin/home-about-us/add" class="btn btn-primary">
+          {{ $t('Add_HomeAboutUs') }}
         </router-link>
       </permission-builder>
     </div>
@@ -190,12 +183,12 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
 
   <permission-builder
     :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HOME_CONTACT_US_ALL,
-      PermissionsEnum.HOME_CONTACT_US_DELETE,
-      PermissionsEnum.HOME_CONTACT_US_FETCH,
-      PermissionsEnum.HOME_CONTACT_US_UPDATE,
-      PermissionsEnum.HOME_CONTACT_US_CREATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.HOME_ABOUT_US_ALL,
+      PermissionsEnum.HOME_ABOUT_US_DELETE,
+      PermissionsEnum.HOME_ABOUT_US_FETCH,
+      PermissionsEnum.HOME_ABOUT_US_UPDATE,
+      PermissionsEnum.HOME_ABOUT_US_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -206,9 +199,8 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
+                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('subtitle') }}</th>
-                <th scope="col">{{ $t('button_title') }}</th>
-
                 <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
 
@@ -218,37 +210,33 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/home-contact-us/${item.id}`"
-                    >{{ item.id }}
-                  </router-link>
+                  <router-link :to="`/admin/home-about-us/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
                 <td data-label="subtitle">{{ item.subtitle }}</td>
-                <td data-label="button_title">{{ item.button_title }}</td>
-
                 <td data-label="image">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
+                  <img :src="item.image" width="100" height="100" />
                 </td>
                 <td data-label="status">
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_CONTACT_US_ALL,
-                      PermissionsEnum.HOME_CONTACT_US_CHANGE_STATUS,
+                      PermissionsEnum.HOME_ABOUT_US_ALL,
+                      PermissionsEnum.HOME_ABOUT_US_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch
                       :modelValue="item.is_active === 1"
                       binary
-                      @update:model-value="changeStatusHomeContactUs(item.id)"
+                      @update:model-value="changeStatusHomeAboutUs(item.id)"
                     />
                   </permission-builder>
                 </td>
 
                 <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteHomeContactUs)"
-                    @delete="deleteHomeContactUs(item.id)"
+                    :actionList="actionList(item.id, deleteHomeAboutUs)"
+                    @delete="deleteHomeAboutUs(item.id)"
                   />
                 </td>
               </tr>
@@ -269,18 +257,18 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/home-contact-us/add`"
-          addText="Add HomeContactUs"
-          description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HomeContactUs"
+          :link="`/admin/home-about-us/add`"
+          addText="Add HomeAboutUs"
+          description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HomeAboutUs"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/home-contact-us/add`"
-          addText="Add HomeContactUs"
-          description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HomeContactUs"
+          :link="`/admin/home-about-us/add`"
+          addText="Add HomeAboutUs"
+          description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HomeAboutUs"
         />
       </template>
     </DataStatus>
@@ -288,7 +276,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>
