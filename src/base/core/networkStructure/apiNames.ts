@@ -154,6 +154,14 @@ class ApiNames {
   public ShowLocation = this.baseUrl + this.dashboardPrefix + 'fetch_location_details'
   public EditLocation = this.baseUrl + this.dashboardPrefix + 'update_location'
   public DeleteLocation = this.baseUrl + this.dashboardPrefix + 'delete_location'
+
+  // Website Service
+  public CreateService = this.baseUrl + this.dashboardPrefix + 'create_service'
+  public IndexService = this.baseUrl + this.dashboardPrefix + 'fetch_services'
+  public ShowService = this.baseUrl + this.dashboardPrefix + 'fetch_service_details'
+  public EditService = this.baseUrl + this.dashboardPrefix + 'update_service'
+  public DeleteService = this.baseUrl + this.dashboardPrefix + 'delete_service'
+  public DisService = this.baseUrl + this.dashboardPrefix + 'delete_service'
 }
 
 export { ApiNames }

@@ -417,6 +417,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_ALL,
+                      PermissionsEnum.SERVICE_CREATE,
+                      PermissionsEnum.SERVICE_DELETE,
+                      PermissionsEnum.SERVICE_FETCH,
+                      PermissionsEnum.SERVICE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/services">
+                      <SidebarVector />
+                      <span>Services</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>

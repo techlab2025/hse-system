@@ -110,8 +110,8 @@ const router = createRouter({
         },
 
         {
-          path: "client-opinions",
-          name: "Client Opinions",
+          path: 'client-opinions',
+          name: 'Client Opinions',
           component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
         },
 
@@ -126,8 +126,8 @@ const router = createRouter({
           component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
         },
         {
-          path: "home-contact-us",
-          name: "Home Contact Us",
+          path: 'home-contact-us',
+          name: 'Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/IndexHomeContactUs.vue'),
         },
 
@@ -309,6 +309,21 @@ const router = createRouter({
           path: 'areas/:id',
           name: 'Edit Location Area',
           component: () => import('../views/Location/Area/EditArea.vue'),
+        },
+        {
+          path: 'services',
+          name: 'Services',
+          component: () => import('../views/Website/Service/IndexSerive.vue'),
+        },
+        {
+          path: 'services/add',
+          name: 'Add Service',
+          component: () => import('../views/Website/Service/AddService.vue'),
+        },
+        {
+          path: 'services/:id',
+          name: 'Edit Service',
+          component: () => import('../views/Website/Service/EditService.vue'),
         },
       ],
     },
