@@ -110,6 +110,23 @@ const router = createRouter({
         },
 
         {
+          path: 'home-about-us',
+          name: 'Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/IndexHomeAboutUs.vue'),
+        },
+
+        {
+          path: 'home-about-us/add',
+          name: 'Add Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/AddHomeAboutUs.vue'),
+        },
+        {
+          path: 'home-about-us/:id',
+          name: 'Edit Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/EditHomeAboutUs.vue'),
+        },
+
+        {
           path: 'client-opinions',
           name: 'Client Opinions',
           component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
@@ -265,7 +282,7 @@ const router = createRouter({
 
         // Privacy
 
-  {
+        {
           path: 'privacy/add',
           name: 'Add Privacy',
           component: () => import('../views/Website/Privacy/EditPrivacy.vue'),

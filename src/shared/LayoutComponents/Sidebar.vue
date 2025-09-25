@@ -581,6 +581,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_ABOUT_US_ALL,
+                      PermissionsEnum.HOME_ABOUT_US_CREATE,
+                      PermissionsEnum.HOME_ABOUT_US_DELETE,
+                      PermissionsEnum.HOME_ABOUT_US_FETCH,
+                      PermissionsEnum.HOME_ABOUT_US_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-about-us">
+                      <SidebarVector />
+                      <span>Home About Us</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
