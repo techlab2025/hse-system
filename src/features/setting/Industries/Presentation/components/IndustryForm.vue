@@ -5,23 +5,24 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 // import { IndustrysMap } from '@/constant/Industrys'
 import { LangsMap } from '@/constant/langs'
 
-import type ShowIndustryModel from '@/features/setting/Industries/Data/models/LangDetailsModel.ts'
+// import type ShowIndustryModel from '@/features/setting/Industries/Data/models/LangDetailsModel.ts'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import UpdateIndustryParams from '../../Core/Params/updateIndustryParams'
 import CreateIndustryParams from '../../Core/Params/createIndustryParams'
-import IndexIndustryParams from '../../Core/Params/indexIndustryParams'
-import IndexIndustryController from '../controllers/indexIndustryController'
-import { useRouter } from 'vue-router'
+// import IndexIndustryParams from '../../Core/Params/indexIndustryParams'
+// import IndexIndustryController from '../controllers/indexIndustryController'
+// import { useRouter } from 'vue-router'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
+import IndustryDetailsModel from '@/features/setting/Industries/Data/Models/IndustryDetailsModel.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ShowIndustryModel
+  data?: IndustryDetailsModel
 }>()
 
 // actual translations (values)
@@ -115,14 +116,16 @@ const setIndustrys = (data: { locale: string; title: string }[]) => {
 }
 
 watch(
-  () => props.data,
-  (newData) => {
+  [() => props.data, () => LangsDefault.value],
+
+  ([newData, newDefault]) => {
+    if (!newDefault.length) return
     if (newData?.titles?.length) {
       Industrys.value = LangsDefault.value.map((l) => {
         const existing = newData.titles.find((t) => t.locale === l.locale)
         return existing ? existing : { locale: l.locale, title: '' }
       })
-      console.log(Industrys, 'Industrys')
+      // console.log(Industrys, 'Industrys')
     } else {
       Industrys.value = LangsDefault.value.map((l) => ({
         locale: l.locale,
