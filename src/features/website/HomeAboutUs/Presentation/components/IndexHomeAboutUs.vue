@@ -40,7 +40,6 @@ const countPerPage = ref(10)
 const indexHomeAboutUsController = IndexHomeAboutUsController.getInstance()
 const state = ref(indexHomeAboutUsController.state.value)
 const route = useRoute()
-const id = route.params.parent_id
 // const type = ref<HomeAboutUsStatusEnum>(HomeAboutUsStatusEnum[route.params.type as keyof typeof HomeAboutUsStatusEnum])
 
 const fetchHomeAboutUs = async (
@@ -49,13 +48,7 @@ const fetchHomeAboutUs = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteHomeAboutUsParams = new IndexHomeAboutUsParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    id,
-  )
+  const deleteHomeAboutUsParams = new IndexHomeAboutUsParams(query, pageNumber, perPage, withPage)
   await indexHomeAboutUsController.getData(deleteHomeAboutUsParams)
 }
 
