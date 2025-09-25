@@ -581,6 +581,23 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_LOG_ALL,
+                      PermissionsEnum.SERVICE_LOG_CREATE,
+                      PermissionsEnum.SERVICE_LOG_DELETE,
+                      PermissionsEnum.SERVICE_LOG_FETCH,
+                      PermissionsEnum.SERVICE_LOG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_logs">
+                      <SidebarVector />
+                      <span>Service Logs</span>
+                      </router-link>
+                    </PermissionBuilder>
+                  </li>
+
                 <!-- Blog -->
                 <li>
                   <PermissionBuilder

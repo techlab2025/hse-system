@@ -8,6 +8,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -25,6 +26,8 @@ import IndexServiceSectionController from '../controllers/indexServiceSectionCon
 import IndexServiceSectionParams from '../../Core/params/indexServiceSectionParams'
 import DeleteServiceSectionParams from '../../Core/params/deleteServiceSectionParams'
 import DeleteServiceSectionController from '../controllers/deleteServiceSectionController'
+import ChangeServiceSectionStatusParams from '../../Core/params/changeStatusServiceSectionParams'
+import disActiveServiceSectionController from '../controllers/disActiveServiceSectionController'
 
 const { t } = useI18n()
 
@@ -138,6 +141,14 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     ],
   },
 ]
+
+const changeStatusServiceSection = async (id: number) => {
+  const changeServiceSectionStatusParams = new ChangeServiceSectionStatusParams(id)
+  await disActiveServiceSectionController
+    .getInstance()
+    .disActiveServiceSection(changeServiceSectionStatusParams)
+  await fetchServiceSection()
+}
 </script>
 
 <template>
@@ -200,6 +211,7 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
                 <th scope="col">{{ $t('subtitle') }}</th>
                 <th scope="col">{{ $t('description') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -217,6 +229,21 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
+                </td>
+                <td data-label="status">
+                  <permission-builder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.isActive === 1"
+                      binary
+                      @update:model-value="changeStatusServiceSection(item.id)"
+                    />
+                  </permission-builder>
                 </td>
 
                 <td data-label="Actions">

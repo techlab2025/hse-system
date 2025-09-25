@@ -2,8 +2,9 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class LocationDetailsModel {
   public id: number
+  public titles: { locale: string; title: string }[] 
 
-  public titles: { locale: string; title: string }[] // <-- instead of single title
+
   public code: string
   public parent: TitleInterface | null
   public type: number

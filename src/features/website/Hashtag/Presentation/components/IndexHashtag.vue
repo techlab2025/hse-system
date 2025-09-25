@@ -8,6 +8,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -25,6 +26,8 @@ import IndexHashtagController from '../controllers/indexHashtagController'
 import IndexHashtagParams from '../../Core/params/indexHashtagParams'
 import DeleteHashtagParams from '../../Core/params/deleteHashtagParams'
 import DeleteHashtagController from '../controllers/deleteHashtagController'
+import ChangeServiceHashtagParams from '../../Core/params/changeStatusHashtagParams'
+import disActiveHashtagController from '../controllers/disActiveHashtagController'
 
 const { t } = useI18n()
 
@@ -127,6 +130,12 @@ watch(
     fetchHashtag()
   },
 )
+
+const changeStatusHashtag = async (id: number) => {
+  const changeServiceHashtagParams = new ChangeServiceHashtagParams(id)
+  await disActiveHashtagController.getInstance().disActiveHashtag(changeServiceHashtagParams)
+  await fetchHashtag()
+}
 </script>
 
 <template>
@@ -181,6 +190,7 @@ watch(
                 <th scope="col">{{ $t('title') }}</th>
 
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -195,7 +205,21 @@ watch(
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-
+                <td data-label="status">
+                  <permission-builder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.isActive === 1"
+                      binary
+                      @update:model-value="changeStatusHashtag(item.id)"
+                    />
+                  </permission-builder>
+                </td>
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusHashtag-->
                   <!--                  v-if="item.HashtagStatus === HashtagStatusEnum.Draft"-->
