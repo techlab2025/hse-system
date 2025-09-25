@@ -468,6 +468,23 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CREATE,
+                      PermissionsEnum.HOME_VIEW_PRICING_DELETE,
+                      PermissionsEnum.HOME_VIEW_PRICING_FETCH,
+                      PermissionsEnum.HOME_VIEW_PRICING_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-view-pricing">
+                      <SidebarVector />
+                      <span>Home View Price</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>

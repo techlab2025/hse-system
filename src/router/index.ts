@@ -170,6 +170,23 @@ const router = createRouter({
           component: () => import('../views/Website/SystemWork/IndexSystemWork.vue'),
         },
 
+
+        {
+          path: "home-view-pricing",
+          name: "Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/IndexHomeViewPricing.vue')
+        },
+        {
+          path: "home-view-pricing/add",
+          name: "Add Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/AddHomeViewPricing.vue')
+        },
+        {
+          path: "home-view-pricing/:id",
+          name: "Edit Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/EditHomeViewPricing.vue')
+        },
+
         {
           path: 'system-work/add',
           name: 'Add System Work',

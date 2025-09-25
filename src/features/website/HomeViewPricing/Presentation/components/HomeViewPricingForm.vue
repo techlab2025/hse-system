@@ -18,16 +18,16 @@ import { LangsMap } from '@/constant/langs.ts'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type SystemWorkDetailsModel from '../../Data/models/SystemWorkDetailsModel'
-import EditSystemWorkParams from '../../Core/params/editSystemWorkParams'
-import AddSystemWorkParams from '../../Core/params/addSystemWorkParams'
+import type HomeViewPricingDetailsModel from '../../Data/models/HomeViewPricingDetailsModel'
+import EditHomeViewPricingParams from '../../Core/params/editHomeViewPricingParams'
+import AddHomeViewPricingParams from '../../Core/params/addHomeViewPricingParams'
 
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: SystemWorkDetailsModel
+  data?: HomeViewPricingDetailsModel
 }>()
 
 // const route = useRoute()
@@ -41,13 +41,14 @@ const alt = ref<string>('')
 const langs = ref<{ locale: string; title: string }[]>([])
 
 const langsSub = ref<{ locale: string; title: string }[]>([])
+const langsButton = ref<{ locale: string; title: string }[]>([])
 const langsDescription = ref<{ locale: string; title: string }[]>([])
 
 // const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
 const image = ref<string>('')
 
-// default available SystemWorks
+// default available HomeViewPricings
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const fetchLang = async (
@@ -57,16 +58,16 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexSystemWorkController = await IndexLangController.getInstance().getData(params)
+  const indexHomeViewPricingController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexSystemWorkController.value
+  const response = indexHomeViewPricingController.value
 
   if (response?.data?.length) {
-    // map backend SystemWorks into default structure
+    // map backend HomeViewPricings into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
       title: '', // empty initially
-      // if you already have icons mapped, use SystemWorksMap
+      // if you already have icons mapped, use HomeViewPricingsMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
@@ -100,18 +101,22 @@ const updateData = () => {
     translationsParams.setTranslation('subtitle', lang.locale, lang.title)
   })
 
+  langsButton.value.forEach((lang) => {
+    translationsParams.setTranslation('button_title', lang.locale, lang.title)
+  })
+
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.title)
   })
 
   const params = props.data?.id
-    ? new EditSystemWorkParams(
+    ? new EditHomeViewPricingParams(
         props.data?.id! ?? 0,
         translationsParams,
         alt.value,
         image.value?.file,
       )
-    : new AddSystemWorkParams(translationsParams, alt.value, image.value?.file)
+    : new AddHomeViewPricingParams(translationsParams, alt.value, image.value?.file)
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -129,12 +134,17 @@ const setLangsSub = (value: { locale: string; title: string }[]) => {
   langsSub.value = value
   updateData()
 }
+
+const setLangsButton = (value: { locale: string; title: string }[]) => {
+  langsButton.value = value
+  updateData()
+}
 const setLangsDescription = (value: { locale: string; title: string }[]) => {
   langsDescription.value = value
   updateData()
 }
 
-// init SystemWorks either from backend (edit mode) or from defaults (create mode)
+// init HomeViewPricings either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -155,6 +165,15 @@ watch(
         })
       } else {
         langsSub.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+      }
+
+      if (newData?.buttonTitles?.length) {
+        langsButton.value = newDefault.map((l) => {
+          const existing = newData.buttonTitles.find((t) => t.locale === l.locale)
+          return existing ? existing : { locale: l.locale, title: '' }
+        })
+      } else {
+        langsButton.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
       if (newData?.descriptions?.length) {
@@ -198,6 +217,16 @@ const setImage = async (data: File) => {
       :modelValue="langsSub"
       :label="$t('sub_title')"
       @update:modelValue="setLangsSub"
+    />
+  </div>
+
+  <div class="col-span-4 md:col-span-2">
+    <LangTitleInput
+      type="text"
+      :langs="langDefault"
+      :modelValue="langsButton"
+      :label="$t('button_title')"
+      @update:modelValue="setLangsButton"
     />
   </div>
 

@@ -29,6 +29,17 @@ class ApiNames {
 
 
 
+  // HomeViewPricing
+
+  public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'
+  public IndexHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing'
+  public ShowHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing_details'
+  public EditHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'update_home_view_pricing'
+  public DeleteHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'delete_home_view_pricing'
+  public ChangeStatusHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
+
+
+
   // header
 
   public CreateHeader = this.baseUrl + this.dashboardPrefix + 'create_header'
