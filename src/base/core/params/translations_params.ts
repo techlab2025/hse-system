@@ -1,3 +1,5 @@
+// import { log } from "console"
+
 export default class TranslationsParams {
   // Store translations in a nested structure: { field: { locale: value } }
   private translations: Record<string, Record<string, string>> = {
@@ -66,6 +68,8 @@ export default class TranslationsParams {
     langLocale.forEach(({ locale, value }) => {
       params.setTranslation('lang', locale, value)
     })
+
+    // console.log(this.translations, 'params');  
 
     return { titles, descriptions, langLocale }
   }

@@ -3,8 +3,8 @@ import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 
-class DisServiceApiService extends ServicesInterface {
-  private static instance: DisServiceApiService
+class DisServiceFeatureApiService extends ServicesInterface {
+  private static instance: DisServiceFeatureApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -12,14 +12,14 @@ class DisServiceApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisServiceApiService()
+      this.instance = new DisServiceFeatureApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DisService,
+      url: ApiNames.instance.DisServiceFeature,
       type: CrudType.FormData,
       auth: true,
       params: params,
@@ -27,4 +27,4 @@ class DisServiceApiService extends ServicesInterface {
   }
 }
 
-export { DisServiceApiService }
+export { DisServiceFeatureApiService }

@@ -6,28 +6,29 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type ServiceModel from '@/features/website/Service/Data/models/ServiceModel'
-import AddServiceUseCase from '@/features/website/Service/Domain/useCase/addServiceUseCase'
+import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
+import AddServiceFeatureUseCase from '../../Domain/useCase/addServiceFeatureUseCase'
 
-export default class AddServiceController extends ControllerInterface<ServiceModel> {
-  private static instance: AddServiceController
+export default class AddServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
+  private static instance: AddServiceFeatureController
   private constructor() {
     super()
   }
-  private AddServiceUseCase = new AddServiceUseCase()
+  private addServiceFeatureUseCase = new AddServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddServiceController()
+      this.instance = new AddServiceFeatureController()
     }
     return this.instance
   }
 
-  async addService(params: Params, router: Router, draft: boolean = false) {
+  async addServiceFeature(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       console.log('Ssssssss')
-      const dataState: DataState<ServiceModel> = await this.AddServiceUseCase.call(params)
+      const dataState: DataState<ServiceFeatureModel> =
+        await this.addServiceFeatureUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -36,7 +37,7 @@ export default class AddServiceController extends ControllerInterface<ServiceMod
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/services')
+        if (!draft) await router.push('/admin/service_features')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

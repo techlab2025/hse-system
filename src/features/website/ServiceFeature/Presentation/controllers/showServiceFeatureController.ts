@@ -1,31 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import type ServiceDetailsModel from '../../Data/models/ServiceDetailsFeatureModel'
-import ShowServiceUseCase from '../../Domain/useCase/showServiceFeatureUseCase'
+import type ServiceFeatureDetailsModel from '../../Data/models/ServiceDetailsFeatureModel'
+import ShowServiceFeatureUseCase from '../../Domain/useCase/showServiceFeatureUseCase'
 
-export default class ShowServiceController extends ControllerInterface<ServiceDetailsModel> {
-  private static instance: ShowServiceController
+export default class ShowServiceFeatureController extends ControllerInterface<ServiceFeatureDetailsModel> {
+  private static instance: ShowServiceFeatureController
 
   private constructor() {
     super()
   }
 
-  private ShowServiceUseCase = new ShowServiceUseCase()
+  private showServiceFeatureUseCase = new ShowServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ShowServiceController()
+      this.instance = new ShowServiceFeatureController()
     }
     return this.instance
   }
 
-  async showService(params: Params) {
+  async showServiceFeature(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ServiceDetailsModel> = await this.ShowServiceUseCase.call(params)
+    const dataState: DataState<ServiceFeatureDetailsModel> =
+      await this.showServiceFeatureUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

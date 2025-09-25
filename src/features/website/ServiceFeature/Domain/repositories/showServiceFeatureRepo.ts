@@ -1,12 +1,12 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceDetailsModel from '../../Data/models/ServiceDetailsFeatureModel'
-import { ShowServiceApiService } from '../../Data/apiServices/showServiceFeatureApiService'
+import { ShowServiceFeatureApiService } from '../../Data/apiServices/showServiceFeatureApiService'
+import ServiceFeatureDetailsModel from '../../Data/models/ServiceDetailsFeatureModel'
 
 // import ShowLangModel from '@/features/setting/languages/Data/models/langDetailsModel'
 
-class ShowServiceRepo extends RepoInterface<ServiceDetailsModel> {
-  private static instance: ShowServiceRepo
+class ShowServiceFeatureRepo extends RepoInterface<ServiceFeatureDetailsModel> {
+  private static instance: ShowServiceFeatureRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -15,18 +15,18 @@ class ShowServiceRepo extends RepoInterface<ServiceDetailsModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ShowServiceRepo()
+      this.instance = new ShowServiceFeatureRepo()
     }
     return this.instance
   }
 
-  onParse(data: any): ServiceDetailsModel {
-    return ServiceDetailsModel.fromMap(data)
+  onParse(data: any): ServiceFeatureDetailsModel {
+    return ServiceFeatureDetailsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return ShowServiceApiService.getInstance()
+    return ShowServiceFeatureApiService.getInstance()
   }
 }
 
-export { ShowServiceRepo }
+export { ShowServiceFeatureRepo }

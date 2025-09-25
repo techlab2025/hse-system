@@ -1,12 +1,12 @@
 // import ClientModel from '@/features/setting/languages/Data/models/projectTypeModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceModel from '../../Data/models/ServiceFeatureModel'
-import { DeleteServiceApiService } from '../../Data/apiServices/deleteServiceFeatureApiService'
+import { DeleteServiceFeatureApiService } from '../../Data/apiServices/deleteServiceFeatureApiService'
+import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 
-class DeleteServiceRepo extends RepoInterface<ServiceModel> {
-  private static instance: DeleteServiceRepo
+class DeleteServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
+  private static instance: DeleteServiceFeatureRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -19,18 +19,18 @@ class DeleteServiceRepo extends RepoInterface<ServiceModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteServiceRepo()
+      this.instance = new DeleteServiceFeatureRepo()
     }
     return this.instance
   }
 
-  onParse(data: any): ServiceModel {
-    return ServiceModel.fromMap(data)
+  onParse(data: any): ServiceFeatureModel {
+    return ServiceFeatureModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DeleteServiceApiService.getInstance()
+    return DeleteServiceFeatureApiService.getInstance()
   }
 }
 
-export { DeleteServiceRepo }
+export { DeleteServiceFeatureRepo }

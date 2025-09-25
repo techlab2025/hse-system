@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class DeleteServiceParams implements Params {
+export default class DeleteServiceFeatureParams implements Params {
 
   constructor(public id: number) {
     this.id = id;
@@ -8,7 +8,7 @@ export default class DeleteServiceParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["service_id"] = this.id;
+    data["service_feature_id"] = this.id;
     return data;
   }
 }

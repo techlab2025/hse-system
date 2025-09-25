@@ -1,12 +1,11 @@
 // import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceModel from '../../Data/models/ServiceFeatureModel'
-import { IndexServiceApiService } from '../../Data/apiServices/indexServiceFeatureApiService'
+import { IndexServiceFeatureApiService } from '../../Data/apiServices/indexServiceFeatureApiService'
+import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 
-
-class IndexServiceRepo extends RepoInterface<ServiceModel[]> {
-  private static instance: IndexServiceRepo
+class IndexServiceFeatureRepo extends RepoInterface<ServiceFeatureModel[]> {
+  private static instance: IndexServiceFeatureRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -15,7 +14,7 @@ class IndexServiceRepo extends RepoInterface<ServiceModel[]> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexServiceRepo()
+      this.instance = new IndexServiceFeatureRepo()
     }
     return this.instance
   }
@@ -24,13 +23,13 @@ class IndexServiceRepo extends RepoInterface<ServiceModel[]> {
     return true
   }
 
-  onParse(data: any): ServiceModel[] {
-    return data.map((item: any) => ServiceModel.fromMap(item))
+  onParse(data: any): ServiceFeatureModel[] {
+    return data.map((item: any) => ServiceFeatureModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
-    return IndexServiceApiService.getInstance()
+    return IndexServiceFeatureApiService.getInstance()
   }
 }
 
-export { IndexServiceRepo }
+export { IndexServiceFeatureRepo }

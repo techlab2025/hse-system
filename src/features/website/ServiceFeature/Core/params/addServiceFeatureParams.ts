@@ -1,31 +1,27 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import type ItemParams from './ItemParams'
 
-export default class AddServiceParams implements Params {
+export default class AddServiceFeatureParams implements Params {
+  serviceId: number
   translation: TranslationsParams
-  alt: string
-  image: string
-  includes: TranslationsParams[]
+  items: ItemParams[]
 
   constructor(
+    serviceId: number,
     translation: TranslationsParams,
-    alt: string,
-    image: string,
-    includes: TranslationsParams[],
+    items: ItemParams[],
   ) {
+    this.serviceId = serviceId
     this.translation = translation
-    this.alt = alt
-    this.image = image
-    this.includes = includes
+    this.items = items
   }
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-
-      data['translations'] = this.translation.toMap()
-      data['alt'] = this.alt
-      data['image'] = this.image
-      data['includes'] = this.includes
+    data['service_id'] = this.serviceId
+    data['translations'] = this.translation.toMap()
+    data['items'] = this.items
 
     return data
   }

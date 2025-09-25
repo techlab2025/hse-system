@@ -1,19 +1,18 @@
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceModel from '../../Data/models/ServiceFeatureModel'
-import { DisServiceApiService } from '../../Data/apiServices/disServiceFeatureApiService'
+import { DisServiceFeatureApiService } from '../../Data/apiServices/disServiceFeatureApiService'
+import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 
-
-class DisActiveServiceRepo extends RepoInterface<ServiceModel> {
-  private static instance: DisActiveServiceRepo
+class DisActiveServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
+  private static instance: DisActiveServiceFeatureRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisActiveServiceRepo()
+      this.instance = new DisActiveServiceFeatureRepo()
     }
     return this.instance
   }
@@ -22,13 +21,13 @@ class DisActiveServiceRepo extends RepoInterface<ServiceModel> {
     return ResponseType.withoutData
   }
 
-  onParse(data: any): ServiceModel {
-    return ServiceModel.fromMap(data)
+  onParse(data: any): ServiceFeatureModel {
+    return ServiceFeatureModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DisServiceApiService.getInstance()
+    return DisServiceFeatureApiService.getInstance()
   }
 }
 
-export { DisActiveServiceRepo }
+export { DisActiveServiceFeatureRepo }

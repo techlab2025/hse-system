@@ -3,18 +3,21 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import type Params from '@/base/core/params/params'
-import AddServiceController from '../controllers/addServiceFeatureController'
-import type AddServiceParams from '../../Core/params/addServiceFeatureParams'
-import ServiceForm from './ServiceFeatureForm.vue'
+import ServiceFeatureForm from './ServiceFeatureForm.vue'
+import AddServiceFeatureController from '../controllers/addServiceFeatureController'
+import type AddServiceFeatureParams from '../../Core/params/addServiceFeatureParams'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
-const addServiceController = AddServiceController.getInstance()
+const addServiceFeatureController = AddServiceFeatureController.getInstance()
 
-const addService = async () => {
+const addServiceFeature = async () => {
   console.log(params.value, 'params')
-  await addServiceController.addService(params.value as AddServiceParams, router)
+  await addServiceFeatureController.addServiceFeature(
+    params.value as AddServiceFeatureParams,
+    router,
+  )
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -23,8 +26,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addService">
-    <ServiceForm @update:data="setParams" />
+  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addServiceFeature">
+    <ServiceFeatureForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">Add</button>

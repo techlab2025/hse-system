@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 
-export default class ServiceModel extends TitleInterface {
+export default class ServiceFeatureModel extends TitleInterface {
   public id: number
   public title: string
   public subtitle: string
@@ -38,8 +38,8 @@ export default class ServiceModel extends TitleInterface {
     this.createdAt = createdAt
   }
 
-  static fromMap(data: any): ServiceModel {
-    return new ServiceModel(
+  static fromMap(data: any): ServiceFeatureModel {
+    return new ServiceFeatureModel(
       data.id,
       data.title,
       data.subtitle, // fixed key

@@ -1,18 +1,18 @@
 // import LangModel from '@/features/setting/Service/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceModel from '../../Data/models/ServiceFeatureModel'
-import { AddServiceApiService } from '../../Data/apiServices/addServiceFeatureApiService'
+import { AddServiceFeatureApiService } from '../../Data/apiServices/addServiceFeatureApiService'
+import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 
-class AddServiceRepo extends RepoInterface<ServiceModel> {
-  private static instance: AddServiceRepo
+class AddServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
+  private static instance: AddServiceFeatureRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddServiceRepo()
+      this.instance = new AddServiceFeatureRepo()
     }
     return this.instance
   }
@@ -21,13 +21,13 @@ class AddServiceRepo extends RepoInterface<ServiceModel> {
     return ResponseType.withoutData
   }
 
-  onParse(data: any): ServiceModel {
-    return ServiceModel.fromMap(data)
+  onParse(data: any): ServiceFeatureModel {
+    return ServiceFeatureModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return AddServiceApiService.getInstance()
+    return AddServiceFeatureApiService.getInstance()
   }
 }
 
-export { AddServiceRepo }
+export { AddServiceFeatureRepo }

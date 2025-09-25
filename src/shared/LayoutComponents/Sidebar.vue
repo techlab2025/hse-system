@@ -433,6 +433,54 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HEADER_ALL,
+                      PermissionsEnum.HEADER_CREATE,
+                      PermissionsEnum.HEADER_DELETE,
+                      PermissionsEnum.HEADER_FETCH,
+                      PermissionsEnum.HEADER_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/headers">
+                      <SidebarVector />
+                      <span>Header</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_FEATURE_ALL,
+                      PermissionsEnum.SERVICE_FEATURE_CREATE,
+                      PermissionsEnum.SERVICE_FEATURE_DELETE,
+                      PermissionsEnum.SERVICE_FEATURE_FETCH,
+                      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_features">
+                      <SidebarVector />
+                      <span>Service Features</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_SECTION_ALL,
+                      PermissionsEnum.SERVICE_SECTION_CREATE,
+                      PermissionsEnum.SERVICE_SECTION_DELETE,
+                      PermissionsEnum.SERVICE_SECTION_FETCH,
+                      PermissionsEnum.SERVICE_SECTION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_section">
+                      <SidebarVector />
+                      <span>Service Section</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>

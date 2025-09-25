@@ -6,7 +6,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
-export default class ServiceDetailsModel {
+export default class ServiceFeatureDetailsModel {
   public id: number
   public title: TitleInterface[]
   public subTitle: subTitleInterface[]
@@ -39,8 +39,8 @@ export default class ServiceDetailsModel {
     this.includes = includes
   }
 
-  static fromMap(data: any): ServiceDetailsModel {
-    return new ServiceDetailsModel(
+  static fromMap(data: any): ServiceFeatureDetailsModel {
+    return new ServiceFeatureDetailsModel(
       data.id,
       data.title,
       data.subtitles ?? [],

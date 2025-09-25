@@ -4,38 +4,38 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import ShowServiceController from '../controllers/showServiceFeatureController'
-import ShowServiceParams from '../../Core/params/showServiceFeatureParams'
-import EditServiceController from '../controllers/editServiceFeatureController'
-import ServiceForm from './ServiceFeatureForm.vue'
+import ShowServiceFeatureParams from '../../Core/params/showServiceFeatureParams'
+import ShowServiceFeatureController from '../controllers/showServiceFeatureController'
+import EditServiceFeatureController from '../controllers/editServiceFeatureController'
+import ServiceFeatureForm from './ServiceFeatureForm.vue'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showServiceController = ShowServiceController.getInstance()
-const state = ref(showServiceController.state.value)
-const fetchHomeContactUsDetails = async () => {
-  const showServiceParams = new ShowServiceParams(Number(id))
+const showServiceFeatureController = ShowServiceFeatureController.getInstance()
+const state = ref(showServiceFeatureController.state.value)
+const fetchServiceFeatureDetails = async () => {
+  const showServiceFeatureParams = new ShowServiceFeatureParams(Number(id))
 
-  await showServiceController.showService(showServiceParams)
+  await showServiceFeatureController.showServiceFeature(showServiceFeatureParams)
 }
 
 onMounted(() => {
-  fetchHomeContactUsDetails()
+  fetchServiceFeatureDetails()
 })
 
-const EditService = async (draft: boolean) => {
+const EditServiceFeature = async (draft: boolean) => {
   if (draft) {
-    await EditServiceController.getInstance().editService(params.value!, router)
+    await EditServiceFeatureController.getInstance().editServiceFeature(params.value!, router)
   } else {
-    await EditServiceController.getInstance().editService(params.value!, router)
+    await EditServiceFeatureController.getInstance().editServiceFeature(params.value!, router)
   }
 }
 
 watch(
-  () => showServiceController.state.value,
+  () => showServiceFeatureController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -56,8 +56,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditService">
-        <ServiceForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditServiceFeature">
+        <ServiceFeatureForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

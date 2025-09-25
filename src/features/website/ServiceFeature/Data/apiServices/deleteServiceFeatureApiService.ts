@@ -3,8 +3,8 @@ import ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 import { CrudType } from "@/base/core/params/call_params_interface";
 import type Params from "@/base/core/params/params";
 
-class DeleteServiceApiService extends ServicesInterface {
-  private static instance: DeleteServiceApiService;
+class DeleteServiceFeatureApiService extends ServicesInterface {
+  private static instance: DeleteServiceFeatureApiService;
 
   private constructor() {
     super(); // Ensure this does not call any uninitialized methods or properties
@@ -12,7 +12,7 @@ class DeleteServiceApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteServiceApiService();
+      this.instance = new DeleteServiceFeatureApiService();
     }
     return this.instance;
   }
@@ -21,7 +21,7 @@ class DeleteServiceApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DeleteService,
+      url: ApiNames.instance.DeleteServiceFeature,
       type: CrudType.FormData,
       auth: true,
       params: params,
@@ -30,4 +30,4 @@ class DeleteServiceApiService extends ServicesInterface {
   }
 }
 
-export { DeleteServiceApiService };
+export { DeleteServiceFeatureApiService };

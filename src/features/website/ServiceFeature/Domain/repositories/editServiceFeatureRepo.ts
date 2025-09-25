@@ -1,12 +1,11 @@
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ServiceModel from '../../Data/models/ServiceFeatureModel'
-import { EditServiceApiService } from '../../Data/apiServices/editServiceFeatureApiService'
+import { EditServiceFeatureApiService } from '../../Data/apiServices/editServiceFeatureApiService'
+import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 
-
-class EditServiceRepo extends RepoInterface<ServiceModel> {
-  private static instance: EditServiceRepo
+class EditServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
+  private static instance: EditServiceFeatureRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -15,7 +14,7 @@ class EditServiceRepo extends RepoInterface<ServiceModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditServiceRepo()
+      this.instance = new EditServiceFeatureRepo()
     }
     return this.instance
   }
@@ -23,13 +22,13 @@ class EditServiceRepo extends RepoInterface<ServiceModel> {
   override get responseType(): ResponseType {
     return ResponseType.withoutData
   }
-  onParse(data: any): ServiceModel {
-    return ServiceModel.fromMap(data)
+  onParse(data: any): ServiceFeatureModel {
+    return ServiceFeatureModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return EditServiceApiService.getInstance()
+    return EditServiceFeatureApiService.getInstance()
   }
 }
 
-export { EditServiceRepo }
+export { EditServiceFeatureRepo }

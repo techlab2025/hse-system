@@ -4,30 +4,31 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type ServiceModel from '../../Data/models/ServiceFeatureModel'
-import EditServiceUseCase from '../../Domain/useCase/editServiceFeatureUseCase'
+import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
+import EditServiceFeatureUseCase from '../../Domain/useCase/editServiceFeatureUseCase'
 
-export default class EditServiceController extends ControllerInterface<ServiceModel> {
-  private static instance: EditServiceController
+export default class EditServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
+  private static instance: EditServiceFeatureController
 
   private constructor() {
     super()
   }
 
-  private EditServiceUseCase = new EditServiceUseCase()
+  private editServiceFeatureUseCase = new EditServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditServiceController()
+      this.instance = new EditServiceFeatureController()
     }
     return this.instance
   }
 
-  async editService(params: Params, router: any) {
+  async editServiceFeature(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<ServiceModel> = await this.EditServiceUseCase.call(params)
+      const dataState: DataState<ServiceFeatureModel> =
+        await this.editServiceFeatureUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -37,7 +38,7 @@ export default class EditServiceController extends ControllerInterface<ServiceMo
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/services')
+        await router.push('/admin/service_features')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

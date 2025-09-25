@@ -132,6 +132,23 @@ const router = createRouter({
         },
 
         {
+          path: 'headers',
+          name: 'Headers',
+          component: () => import('../views/Website/Header/IndexHeader.vue'),
+        },
+
+        {
+          path: 'header/add',
+          name: 'Add Header',
+          component: () => import('../views/Website/Header/AddHeader.vue'),
+        },
+        {
+          path: 'header/:id',
+          name: 'Edit Header',
+          component: () => import('../views/Website/Header/EditHeader.vue'),
+        },
+
+        {
           path: 'home-contact-us/add',
           name: 'Add Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),
@@ -324,6 +341,36 @@ const router = createRouter({
           path: 'services/:id',
           name: 'Edit Service',
           component: () => import('../views/Website/Service/EditService.vue'),
+        },
+        {
+          path: 'service_features',
+          name: 'Services Features',
+          component: () => import('../views/Website/ServiceFeatures/IndexSeriveFeatures.vue'),
+        },
+        {
+          path: 'service_feature/add',
+          name: 'Add Service Features',
+          component: () => import('../views/Website/ServiceFeatures/AddServiceFeatures.vue'),
+        },
+        {
+          path: 'service_feature/:id',
+          name: 'Edit Service Features',
+          component: () => import('../views/Website/ServiceFeatures/EditServiceFeatures.vue'),
+        },
+        {
+          path: 'service_section',
+          name: 'Services Sections',
+          component: () => import('../views/Website/ServiceSections/IndexSeriveSection.vue'),
+        },
+        {
+          path: 'service_section/add',
+          name: 'Add Service Sections',
+          component: () => import('../views/Website/ServiceSections/AddServiceSection.vue'),
+        },
+        {
+          path: 'service_section/:id',
+          name: 'Edit Service Sections',
+          component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
         },
       ],
     },

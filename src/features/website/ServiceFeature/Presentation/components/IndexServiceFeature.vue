@@ -21,10 +21,10 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexServiceController from '../controllers/indexServiceFeatureController'
-import IndexServiceParams from '../../Core/params/indexServiceFeatureParams'
-import DeleteServiceParams from '../../Core/params/deleteServiceFeatureParams'
-import DeleteServiceController from '../controllers/deleteServiceFeatureController'
+import IndexServiceFeatureParams from '../../Core/params/indexServiceFeatureParams'
+import IndexServiceFeatureController from '../controllers/indexServiceFeatureController'
+import DeleteServiceFeatureController from '../controllers/deleteServiceFeatureController'
+import DeleteServiceFeatureParams from '../../Core/params/deleteServiceFeatureParams'
 
 const { t } = useI18n()
 
@@ -34,49 +34,57 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexServiceController = IndexServiceController.getInstance()
-const state = ref(indexServiceController.state.value)
+const indexServiceFeatureController = IndexServiceFeatureController.getInstance()
+const state = ref(indexServiceFeatureController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<ServiceStatusEnum>(ServiceStatusEnum[route.params.type as keyof typeof ServiceStatusEnum])
 
-const fetchService = async (
+const fetchServiceFeature = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteServiceParams = new IndexServiceParams(query, pageNumber, perPage, withPage, id)
-  await indexServiceController.getData(deleteServiceParams)
+  const indexServiceFeatureParams = new IndexServiceFeatureParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
+  await indexServiceFeatureController.getData(indexServiceFeatureParams)
 }
 
 onMounted(() => {
-  fetchService()
+  fetchServiceFeature()
 })
 
 const searchService = debounce(() => {
-  fetchService(word.value)
+  fetchServiceFeature(word.value)
 })
 
 const deleteService = async (id: number) => {
-  const deleteServiceParams = new DeleteServiceParams(id)
-  await DeleteServiceController.getInstance().deleteService(deleteServiceParams)
-  await fetchService()
+  const deleteServiceFeatureParams = new DeleteServiceFeatureParams(id)
+  await DeleteServiceFeatureController.getInstance().deleteServiceFeature(
+    deleteServiceFeatureParams,
+  )
+  await fetchServiceFeature()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchService('', currentPage.value, countPerPage.value)
+  fetchServiceFeature('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchService('', currentPage.value, countPerPage.value)
+  fetchServiceFeature('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexServiceController.state.value,
+  () => indexServiceFeatureController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -92,11 +100,11 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/services/${id}`,
+    link: `/admin/service_feature/${id}`,
     permission: [
-      PermissionsEnum.SERVICE_UPDATE,
+      PermissionsEnum.SERVICE_FEATURE_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
+      PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
   // {
@@ -124,9 +132,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteService(id),
     permission: [
-      PermissionsEnum.SERVICE_DELETE,
+      PermissionsEnum.SERVICE_FEATURE_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
+      PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
 ]
@@ -163,9 +171,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_CREATE]">
-        <router-link to="/admin/services/add" class="btn btn-primary">
-          {{ $t('Add_Service') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+        <router-link to="/admin/service_feature/add" class="btn btn-primary">
+          {{ $t('Add_Service_feature') }}
         </router-link>
       </permission-builder>
     </div>
@@ -174,11 +182,11 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
-      PermissionsEnum.SERVICE_DELETE,
-      PermissionsEnum.SERVICE_FETCH,
-      PermissionsEnum.SERVICE_UPDATE,
-      PermissionsEnum.SERVICE_CREATE,
+      PermissionsEnum.SERVICE_FEATURE_ALL,
+      PermissionsEnum.SERVICE_FEATURE_DELETE,
+      PermissionsEnum.SERVICE_FEATURE_FETCH,
+      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+      PermissionsEnum.SERVICE_FEATURE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -197,13 +205,15 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
-                {{ console.log(item , "item") }}
+                {{
+                  console.log(item, 'item')
+                }}
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle || "--"}}</td>
-                <td data-label="description">{{ item.description || "--" }}</td>
+                <td data-label="subtitle">{{ item.subtitle || '--' }}</td>
+                <td data-label="description">{{ item.description || '--' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

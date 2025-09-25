@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 
-export default class ShowServiceParams implements Params {
+export default class ShowServiceFeatureParams implements Params {
   id: number
 
   constructor(id: number) {
@@ -9,7 +9,7 @@ export default class ShowServiceParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['service_id'] = this.id
+    data['serviceFeature_id'] = this.id
     return data
   }
 }
