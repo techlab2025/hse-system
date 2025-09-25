@@ -178,24 +178,22 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
 
-<!--                <li>-->
-<!--                  <PermissionBuilder-->
-<!--                    :code="[-->
-<!--                      PermissionsEnum.CERTIFICATE_ALL,-->
-<!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
-<!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
-<!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
-<!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
-<!--                    ]"-->
-<!--                  >-->
-<!--                    <router-link to="/admin/certificates">-->
-<!--                      <SidebarVector />-->
-<!--                      <span>Certificates</span>-->
-<!--                    </router-link>-->
-<!--                  </PermissionBuilder>-->
-<!--                </li>-->
-
-
+                <!--                <li>-->
+                <!--                  <PermissionBuilder-->
+                <!--                    :code="[-->
+                <!--                      PermissionsEnum.CERTIFICATE_ALL,-->
+                <!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
+                <!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
+                <!--                    ]"-->
+                <!--                  >-->
+                <!--                    <router-link to="/admin/certificates">-->
+                <!--                      <SidebarVector />-->
+                <!--                      <span>Certificates</span>-->
+                <!--                    </router-link>-->
+                <!--                  </PermissionBuilder>-->
+                <!--                </li>-->
 
                 <li>
                   <PermissionBuilder
@@ -384,7 +382,26 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-                      <li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.WEBSITE,
+                      PermissionsEnum?.HOME_CONTACT_US_ALL,
+                      PermissionsEnum.HOME_CONTACT_US_CREATE,
+                      PermissionsEnum.HOME_CONTACT_US_UPDATE,
+                      PermissionsEnum.HOME_CONTACT_US_DETAILS,
+                      PermissionsEnum.HOME_CONTACT_US_DELETE,
+                      PermissionsEnum.HOME_CONTACT_US_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/home-contact-us">
+                      <SidebarVector />
+                      <span>Home Contact Us</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.CATEGORY_ALL,
