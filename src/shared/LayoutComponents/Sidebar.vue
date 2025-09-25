@@ -581,6 +581,23 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <!-- Blog -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.BLOG_ALL,
+                      PermissionsEnum.BLOG_CREATE,
+                      PermissionsEnum.BLOG_DELETE,
+                      PermissionsEnum.BLOG_FETCH,
+                      PermissionsEnum.BLOG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/blog">
+                      <SidebarVector />
+                      <span>Blogs</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
                 <li>
                   <PermissionBuilder
                     :code="[
