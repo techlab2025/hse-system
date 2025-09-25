@@ -240,7 +240,7 @@ class ApiNames {
   public ShowService = this.baseUrl + this.dashboardPrefix + 'fetch_service_details'
   public EditService = this.baseUrl + this.dashboardPrefix + 'update_service'
   public DeleteService = this.baseUrl + this.dashboardPrefix + 'delete_service'
-  public DisService = this.baseUrl + this.dashboardPrefix + 'delete_service'
+  public DisService = this.baseUrl + this.dashboardPrefix + 'change_service_active_status'
 
   // Website Service Feature
   public CreateServiceFeature = this.baseUrl + this.dashboardPrefix + 'create_service_feature'
@@ -248,7 +248,7 @@ class ApiNames {
   public ShowServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_feature_details'
   public EditServiceFeature = this.baseUrl + this.dashboardPrefix + 'update_service_feature'
   public DeleteServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
-  public DisServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
+  public DisServiceFeature = this.baseUrl + this.dashboardPrefix + 'change_service_feature_active_status'
 
   // Website Service Setcion
   public CreateServiceSection = this.baseUrl + this.dashboardPrefix + 'create_service_section'
@@ -256,7 +256,15 @@ class ApiNames {
   public ShowServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_section_details'
   public EditServiceSection = this.baseUrl + this.dashboardPrefix + 'update_service_section'
   public DeleteServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
-  public DisServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
+  public DisServiceSection = this.baseUrl + this.dashboardPrefix + 'change_service_section_active_status'
+
+  // Website Service Log
+  public CreateServiceLog = this.baseUrl + this.dashboardPrefix + 'create_service_log'
+  public IndexServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_logs'
+  public ShowServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_log_details'
+  public EditServiceLog = this.baseUrl + this.dashboardPrefix + 'update_service_log'
+  public DeleteServiceLog = this.baseUrl + this.dashboardPrefix + 'delete_service_logs'
+  public DisServiceLog = this.baseUrl + this.dashboardPrefix + 'change_service_log_active_status'
 }
 
 export { ApiNames }

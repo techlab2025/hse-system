@@ -166,42 +166,41 @@ const router = createRouter({
         },
 
         {
-          path: "powerfull-features",
-          name: "PowerFull",
-          component: () => import('../views/Website/PowerFull/IndexPowerFull.vue')
+          path: 'powerfull-features',
+          name: 'PowerFull',
+          component: () => import('../views/Website/PowerFull/IndexPowerFull.vue'),
         },
         {
-          path: "power-full/add",
-          name: "Add PowerFull ",
-          component: () => import('../views/Website/PowerFull/AddPowerFull.vue')
+          path: 'power-full/add',
+          name: 'Add PowerFull ',
+          component: () => import('../views/Website/PowerFull/AddPowerFull.vue'),
         },
         {
-          path: "power-full/:id",
-          name: "Edit PowerFull",
-          component: () => import('../views/Website/PowerFull/EditPowerFull.vue')
+          path: 'power-full/:id',
+          name: 'Edit PowerFull',
+          component: () => import('../views/Website/PowerFull/EditPowerFull.vue'),
         },
 
         {
-          path: "system-works",
-          name: "System Work",
+          path: 'system-works',
+          name: 'System Work',
           component: () => import('../views/Website/SystemWork/IndexSystemWork.vue'),
         },
 
-
         {
-          path: "home-view-pricing",
-          name: "Home View Pricing",
-          component: () => import('../views/Website/HomeViewPricing/IndexHomeViewPricing.vue')
+          path: 'home-view-pricing',
+          name: 'Home View Pricing',
+          component: () => import('../views/Website/HomeViewPricing/IndexHomeViewPricing.vue'),
         },
         {
-          path: "home-view-pricing/add",
-          name: "Add Home View Pricing",
-          component: () => import('../views/Website/HomeViewPricing/AddHomeViewPricing.vue')
+          path: 'home-view-pricing/add',
+          name: 'Add Home View Pricing',
+          component: () => import('../views/Website/HomeViewPricing/AddHomeViewPricing.vue'),
         },
         {
-          path: "home-view-pricing/:id",
-          name: "Edit Home View Pricing",
-          component: () => import('../views/Website/HomeViewPricing/EditHomeViewPricing.vue')
+          path: 'home-view-pricing/:id',
+          name: 'Edit Home View Pricing',
+          component: () => import('../views/Website/HomeViewPricing/EditHomeViewPricing.vue'),
         },
 
         {
@@ -470,6 +469,22 @@ const router = createRouter({
           component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
         },
 
+        {
+          path: 'service_logs',
+          name: 'Services Logs',
+          component: () => import('../views/Website/ServiceLogs/IndexSeriveLogs.vue'),
+        },
+        {
+          path: 'service_logs/add',
+          name: 'Add Service Logs',
+          component: () => import('../views/Website/ServiceLogs/AddServiceLogs.vue'),
+        },
+        {
+          path: 'service_logs/:id',
+          name: 'Edit Service Logs',
+          component: () => import('../views/Website/ServiceLogs/EditServiceLogs.vue'),
+
+
         // blog
         {
           path: 'blog',
@@ -485,6 +500,7 @@ const router = createRouter({
           path: 'blog/:id',
           name: 'Edit Blog',
           component: () => import('../views/Website/Blog/EditBlog.vue'),
+
         },
       ],
     },
