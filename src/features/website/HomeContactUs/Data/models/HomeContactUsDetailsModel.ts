@@ -7,35 +7,41 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class HomeContactUsDetailsModel {
   public id: number
-  public subTitle: subTitleInterface[]
+  public titles: TitleLocale[]
+  public subtitle: TitleLocale[]
+  public buttonTitles: TitleLocale[]
   public alt: string
   public image: string
-  public descriptions: DescriptionLocale[]
+
 
 
   constructor(
     id: number,
-    subTitle: subTitleInterface[],
+    titles: TitleLocale[],
+    subtitle: TitleLocale[],
+    buttonTitles: TitleLocale[],
     alt: string,
     image: string,
-    descriptions: DescriptionLocale[]
 
   ) {
     this.id = id
-    this.subTitle = subTitle
+
+    this.titles = titles
+    this.subtitle = subtitle
+    this.buttonTitles = buttonTitles
     this.alt = alt
     this.image = image
-    this.descriptions = descriptions
 
   }
 
   static fromMap(data: any): HomeContactUsDetailsModel {
     return new HomeContactUsDetailsModel(
       data.id,
-      data.subTitle,
+      TranslationsParams.fromMap(data.titles).titles,
+      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.button_titles).langLocale,
       data.alt,
       data.image,
-      TranslationsParams.fromMap([], data.descriptions).descriptions,
 
     )
   }
@@ -51,7 +57,3 @@ export default class HomeContactUsDetailsModel {
 }
 
 
-interface subTitleInterface {
-  id: number
-  subtitle: string
-}

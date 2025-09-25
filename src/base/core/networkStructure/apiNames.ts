@@ -29,6 +29,17 @@ class ApiNames {
 
 
 
+  // HomeViewPricing
+
+  public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'
+  public IndexHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing'
+  public ShowHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing_details'
+  public EditHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'update_home_view_pricing'
+  public DeleteHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'delete_home_view_pricing'
+  public ChangeStatusHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
+
+
+
   // header
 
   public CreateHeader = this.baseUrl + this.dashboardPrefix + 'create_header'
@@ -37,6 +48,26 @@ class ApiNames {
   public EditHeader = this.baseUrl + this.dashboardPrefix + 'update_header'
   public DeleteHeader = this.baseUrl + this.dashboardPrefix + 'delete_header'
   public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
+
+
+  // PowerFull
+
+  public CreatePowerFull = this.baseUrl + this.dashboardPrefix + 'create_powerfull'
+  public IndexPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerfulls'
+  public ShowPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerfull_details'
+  public EditPowerFull = this.baseUrl + this.dashboardPrefix + 'update_powerfull'
+  public DeletePowerFull = this.baseUrl + this.dashboardPrefix + 'delete_powerfull'
+  public ChangeStatusPowerFull = this.baseUrl + this.dashboardPrefix + 'change_powerfull_active_status'
+
+
+  // SystemWork
+
+  public CreateSystemWork = this.baseUrl + this.dashboardPrefix + 'create_system_work'
+  public IndexSystemWork = this.baseUrl + this.dashboardPrefix + 'fetch_system_works'
+  public ShowSystemWork = this.baseUrl + this.dashboardPrefix + 'fetch_system_work_details'
+  public EditSystemWork = this.baseUrl + this.dashboardPrefix + 'update_system_work'
+  public DeleteSystemWork = this.baseUrl + this.dashboardPrefix + 'delete_system_work'
+  public ChangeStatusSystemWork = this.baseUrl + this.dashboardPrefix + 'change_system_work_active_status'
 
 
   // HomeContactUs

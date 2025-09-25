@@ -92,9 +92,11 @@ watch(
         return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
       })
 
-      console.log(titles.value, 'titles')
+      // console.log(titles.value, 'titles')
       const current = titles.value.find((t) => t.locale === lang.value)
-      if (current) title.value = current.title ?? current.description ?? current.subtitle 
+      if (current)
+        title.value =
+          current.title ?? current.description ?? current.subtitle ?? current.button_title
     }
   },
   { deep: true },

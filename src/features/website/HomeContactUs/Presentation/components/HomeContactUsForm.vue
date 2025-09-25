@@ -70,8 +70,8 @@ const fetchLang = async (
 
   // assign for description / subtitle / button
   langDefault.value = defaults
-  langDefaultSubTitle.value = JSON.parse(JSON.stringify(defaults))
-  langDefaultButton.value = JSON.parse(JSON.stringify(defaults))
+  // langDefaultSubTitle.value = JSON.parse(JSON.stringify(defaults))
+  // langDefaultButton.value = JSON.parse(JSON.stringify(defaults))
 }
 
 onMounted(async () => {
@@ -120,9 +120,9 @@ watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (newDefault.length) {
-      if (newData?.descriptions?.length) {
+      if (newData?.titles?.length) {
         langs.value = newDefault.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
         })
       } else {
@@ -130,12 +130,12 @@ watch(
       }
 
       langsSubTitle.value = newDefault.map((l) => {
-        const existing = newData?.sub_titles?.find((t: any) => t.locale === l.locale)
+        const existing = newData?.subtitle?.find((t: any) => t.locale === l.locale)
         return existing ? existing : { locale: l.locale, title: '' }
       })
 
       langsButton.value = newDefault.map((l) => {
-        const existing = newData?.buttons?.find((t: any) => t.locale === l.locale)
+        const existing = newData?.buttonTitles?.find((t: any) => t.locale === l.locale)
         return existing ? existing : { locale: l.locale, title: '' }
       })
 
