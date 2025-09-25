@@ -28,13 +28,22 @@ class ApiNames {
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
 
+  // HomeContactUs
+  public CreateHomeContactUs = this.baseUrl + this.dashboardPrefix + 'create_home_contact_us'
+  public IndexHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us'
+  public ShowHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us_details'
+  public EditHomeContactUs = this.baseUrl + this.dashboardPrefix + 'update_home_contact_us'
+  public DeleteHomeContactUs = this.baseUrl + this.dashboardPrefix + 'delete_home_contact_us'
+  public ChangeStatusHomeContactUs = this.baseUrl + this.dashboardPrefix + 'change_home_contact_us_active_status'
+
+
   // clientOpinion
   public CreateClientOpinion = this.baseUrl + this.dashboardPrefix + 'create_client_opinion'
   public IndexClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinions'
   public ShowClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinion_details'
   public EditClientOpinion = this.baseUrl + this.dashboardPrefix + 'update_client_opinion'
   public DeleteClientOpinion = this.baseUrl + this.dashboardPrefix + 'delete_client_opinion'
-  public DisClientOpinion = this.baseUrl + this.dashboardPrefix + 'disable_client_opinion'
+  public ChangeStatusClientOpinion = this.baseUrl + this.dashboardPrefix + 'change_client_opinion_active_status'
 
 
   // Template

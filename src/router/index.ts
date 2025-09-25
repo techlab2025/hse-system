@@ -125,6 +125,22 @@ const router = createRouter({
           name: 'Edit Client Opinion',
           component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
         },
+        {
+          path: "home-contact-us",
+          name: "Home Contact Us",
+          component: () => import('../views/Website/HomeContactUs/IndexHomeContactUs.vue'),
+        },
+
+        {
+          path: 'home-contact-us/add',
+          name: 'Add Home Contact Us',
+          component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),
+        },
+        {
+          path: 'home-contact-us/:id',
+          name: 'Edit Home Contact Us',
+          component: () => import('../views/Website/HomeContactUs/EditHomeContactUs.vue'),
+        },
 
         {
           path: 'certificates',

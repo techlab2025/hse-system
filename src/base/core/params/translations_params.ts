@@ -47,9 +47,11 @@ export default class TranslationsParams {
   static fromMap(
     titles: TitleLocale[],
     descriptions: DescriptionLocale[] = [],
+    langLocale: LangLocale<string>[] = []
   ): {
     titles: TitleLocale[]
     descriptions: DescriptionLocale[]
+    langLocale: LangLocale<string>[]
   } {
     const params = new TranslationsParams()
 
@@ -61,7 +63,11 @@ export default class TranslationsParams {
       params.setTranslation('description', locale, title)
     })
 
-    return { titles, descriptions }
+    langLocale.forEach(({ locale, value }) => {
+      params.setTranslation('lang', locale, value)
+    })
+
+    return { titles, descriptions, langLocale }
   }
 }
 
@@ -74,3 +80,10 @@ export interface DescriptionLocale {
   locale: string
   description: string
 }
+
+export interface LangLocale<T> {
+  locale: string
+  value: T
+}
+
+

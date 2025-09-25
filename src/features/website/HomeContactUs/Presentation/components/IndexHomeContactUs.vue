@@ -22,71 +22,70 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexClientOpinionController from '../controllers/indexClientOpinionController'
-import IndexClientOpinionParams from '../../Core/params/indexClientOpinionParams'
-import DeleteClientOpinionParams from '../../Core/params/deleteClientOpinionParams'
-import DeleteClientOpinionController from '../controllers/deleteClientOpinionController'
-import ChangeStatusClientOpinionParams from '../../Core/params/changeStatusClientOpinionParams'
-import ChangeStatusClientOpinionController from '../controllers/changeStatusClientOpinionController'
+import IndexHomeContactUsController from '../controllers/indexHomeContactUsController'
+import IndexHomeContactUsParams from '../../Core/params/indexHomeContactUsParams'
+import DeleteHomeContactUsParams from '../../Core/params/deleteHomeContactUsParams'
+import DeleteHomeContactUsController from '../controllers/deleteHomeContactUsController'
+import ChangeStatusHomeContactUsParams from '../../Core/params/changeStatusHomeContactUs'
+import ChangeStatusHomeContactUsController from '../controllers/changeStatusHomeContactUsController'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusClientOpinion from "@/features/setting/ClientOpinionuages/Presentation/components/ClientOpinion/DialogChangeStatusClientOpinion.vue";
+// import DialogChangeStatusHomeContactUs from "@/features/setting/HomeContactUsuages/Presentation/components/HomeContactUs/DialogChangeStatusHomeContactUs.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexClientOpinionController = IndexClientOpinionController.getInstance()
-const state = ref(indexClientOpinionController.state.value)
+const indexHomeContactUsController = IndexHomeContactUsController.getInstance()
+const state = ref(indexHomeContactUsController.state.value)
 const route = useRoute()
-// const type = ref<ClientOpinionStatusEnum>(ClientOpinionStatusEnum[route.params.type as keyof typeof ClientOpinionStatusEnum])
+const id = route.params.parent_id
+// const type = ref<HomeContactUsStatusEnum>(HomeContactUsStatusEnum[route.params.type as keyof typeof HomeContactUsStatusEnum])
 
-const fetchClientOpinion = async (
+const fetchHomeContactUs = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const ClientOpinionParams = new IndexClientOpinionParams(query, pageNumber, perPage, withPage)
-  await indexClientOpinionController.getData(ClientOpinionParams)
+  const deleteHomeContactUsParams = new IndexHomeContactUsParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
+  await indexHomeContactUsController.getData(deleteHomeContactUsParams)
 }
 
 onMounted(() => {
-  fetchClientOpinion()
+  fetchHomeContactUs()
 })
 
-const searchClientOpinion = debounce(() => {
-  fetchClientOpinion(word.value)
+const searchHomeContactUs = debounce(() => {
+  fetchHomeContactUs(word.value)
 })
 
-const deleteClientOpinion = async (id: number) => {
-  const deleteClientOpinionParams = new DeleteClientOpinionParams(id)
-  await DeleteClientOpinionController.getInstance().deleteClientOpinion(deleteClientOpinionParams)
-  await fetchClientOpinion()
-}
-
-const changeStatusClientOpinion = async (id: number) => {
-  const changeStatusClientOpinionParams = new ChangeStatusClientOpinionParams(id)
-  await ChangeStatusClientOpinionController.getInstance().changeStatusClientOpinion(
-    changeStatusClientOpinionParams,
-  )
-  await fetchClientOpinion()
+const deleteHomeContactUs = async (id: number) => {
+  const deleteHomeContactUsParams = new DeleteHomeContactUsParams(id)
+  await DeleteHomeContactUsController.getInstance().deleteHomeContactUs(deleteHomeContactUsParams)
+  await fetchHomeContactUs()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchClientOpinion('', currentPage.value, countPerPage.value)
+  fetchHomeContactUs('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchClientOpinion('', currentPage.value, countPerPage.value)
+  fetchHomeContactUs('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexClientOpinionController.state.value,
+  () => indexHomeContactUsController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -98,26 +97,53 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
+const changeStatusHomeContactUs = async (id: number) => {
+  const changeStatusHomeContactUsParams = new ChangeStatusHomeContactUsParams(id)
+  await ChangeStatusHomeContactUsController.getInstance().changeStatusHomeContactUs(
+    changeStatusHomeContactUsParams,
+  )
+  await fetchHomeContactUs()
+}
+
+const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/client-opinion/${id}`,
+    link: `/admin/home-contact-us/${id}`,
     permission: [
-      PermissionsEnum.CLIENT_OPINION_UPDATE,
+      PermissionsEnum.HOME_CONTACT_US_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.CLIENT_OPINION_ALL,
+      PermissionsEnum.HOME_CONTACT_US_ALL,
     ],
   },
-
+  // {
+  //   text: t('add_sub_HAZARD_type'),
+  //   icon: IconEdit,
+  //   link: `/admin/Hazard-type/add/${id}`,
+  //   permission: [
+  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //   ],
+  // },
+  // {
+  //   text: t('sub_HAZARD_types'),
+  //   icon: IconEdit,
+  //   link: `/admin/Hazard-types/${id}`,
+  //   permission: [
+  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //   ],
+  // },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteClientOpinion(id),
+    action: () => deleteHomeContactUs(id),
     permission: [
-      PermissionsEnum.CLIENT_OPINION_DELETE,
+      PermissionsEnum.HOME_CONTACT_US_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.CLIENT_OPINION_ALL,
+      PermissionsEnum.HOME_CONTACT_US_ALL,
     ],
   },
 ]
@@ -127,7 +153,7 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchClientOpinion())">
+      <span class="icon-remove" @click="((word = ''), searchHomeContactUs())">
         <Search />
       </span>
       <input
@@ -135,7 +161,7 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchClientOpinion"
+        @input="searchHomeContactUs"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -155,8 +181,8 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
         <ExportIcon />
       </div>
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
-        <router-link to="/admin/client-opinion/add" class="btn btn-primary">
-          {{ $t('Add_ClientOpinion') }}
+        <router-link to="/admin/home-contact-us/add" class="btn btn-primary">
+          {{ $t('Add_HomeContactUs') }}
         </router-link>
       </permission-builder>
     </div>
@@ -165,11 +191,11 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.CLIENT_OPINION_ALL,
-      PermissionsEnum.CLIENT_OPINION_DELETE,
-      PermissionsEnum.CLIENT_OPINION_FETCH,
-      PermissionsEnum.CLIENT_OPINION_UPDATE,
-      PermissionsEnum.CLIENT_OPINION_CREATE,
+      PermissionsEnum.HOME_CONTACT_US_ALL,
+      PermissionsEnum.HOME_CONTACT_US_DELETE,
+      PermissionsEnum.HOME_CONTACT_US_FETCH,
+      PermissionsEnum.HOME_CONTACT_US_UPDATE,
+      PermissionsEnum.HOME_CONTACT_US_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -179,8 +205,10 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('name') }}</th>
-                <th scope="col">{{ $t('rate') }}</th>
+                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('subtitle') }}</th>
+                <th scope="col">{{ $t('button_title') }}</th>
+
                 <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
 
@@ -190,34 +218,37 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/client-opinion/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/home-contact-us/${item.id}`"
+                    >{{ item.id }}
+                  </router-link>
                 </td>
-                <td data-label="Name">{{ item.name }}</td>
-                <td data-label="rate">{{ item.rate }}</td>
+                <td data-label="title">{{ item.title }}</td>
+                <td data-label="subtitle">{{ item.subtitle }}</td>
+                <td data-label="button_title">{{ item.button_title }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="status">
+                <td data-label="image">
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.CLIENT_OPINION_ALL,
-                      PermissionsEnum.CLIENT_OPINION_CHANGE_STATUS,
+                      PermissionsEnum.HOME_CONTACT_US_ALL,
+                      PermissionsEnum.HOME_CONTACT_US_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch
                       :modelValue="item.is_active === 1"
                       binary
-                      @update:model-value="changeStatusClientOpinion(item.id)"
+                      @update:model-value="changeStatusHomeContactUs(item.id)"
                     />
                   </permission-builder>
                 </td>
 
                 <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteClientOpinion)"
-                    @delete="deleteClientOpinion(item.id)"
+                    :actionList="actionList(item.id, deleteHomeContactUs)"
+                    @delete="deleteHomeContactUs(item.id)"
                   />
                 </td>
               </tr>
@@ -238,18 +269,18 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/client-opinion/add`"
-          addText="Add ClientOpinion"
-          description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ClientOpinion"
+          :link="`/admin/home-contact-us/add`"
+          addText="Add HomeContactUs"
+          description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HomeContactUs"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/client-opinion/add`"
-          addText="Add ClientOpinion"
-          description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ClientOpinion"
+          :link="`/admin/home-contact-us/add`"
+          addText="Add HomeContactUs"
+          description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HomeContactUs"
         />
       </template>
     </DataStatus>
@@ -257,7 +288,7 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no HomeContactUs .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>
