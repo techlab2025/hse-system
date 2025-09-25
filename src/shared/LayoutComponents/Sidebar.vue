@@ -512,7 +512,9 @@ const active = ref('0')
                     <router-link to="/admin/service_section">
                       <SidebarVector />
                       <span>Service Section</span>
-
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
 
                 <li>
                   <PermissionBuilder
@@ -553,10 +555,8 @@ const active = ref('0')
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.PRIVACY_ALL,
-                      PermissionsEnum.PRIVACY_CREATE,
-                      PermissionsEnum.PRIVACY_DELETE,
+                      PermissionsEnum.PRIVACY_CREATE_OR_UPDATE,
                       PermissionsEnum.PRIVACY_FETCH,
-                      PermissionsEnum.PRIVACY_UPDATE,
                     ]"
                   >
                     <router-link to="/admin/privacy/add">
@@ -578,7 +578,6 @@ const active = ref('0')
                     <router-link to="/admin/home-view-pricing">
                       <SidebarVector />
                       <span>Home View Price</span>
-
                     </router-link>
                   </PermissionBuilder>
                 </li>
