@@ -40,7 +40,7 @@ export default class AddPowerFullController extends ControllerInterface<PowerFul
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/power-full')
+        if (!draft) await router.push('/admin/powerfull-features')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

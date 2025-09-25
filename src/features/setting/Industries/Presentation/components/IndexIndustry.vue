@@ -124,21 +124,8 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Industry Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel />
+      <ExportPdf />
       <router-link to="/admin/industry/add" class="btn btn-primary">
         {{ $t('Add_Industry') }}
       </router-link>

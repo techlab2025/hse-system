@@ -153,20 +153,8 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data!"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Equipment Type Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ACCIDENTS_TYPE_CREATE]">
         <router-link to="/admin/accidents-type/add" class="btn btn-primary">
           {{ $t('Add_AccidentsType') }}

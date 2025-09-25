@@ -9,7 +9,7 @@ export default class ShowPowerFullParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['power_full_id'] = this.id
+    data['powerful_feature_id'] = this.id
     return data
   }
 }

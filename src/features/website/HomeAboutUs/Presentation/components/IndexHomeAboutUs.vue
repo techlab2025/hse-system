@@ -158,14 +158,8 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_ABOUT_US_CREATE]">
         <router-link to="/admin/home-about-us/add" class="btn btn-primary">
           {{ $t('Add_HomeAboutUs') }}

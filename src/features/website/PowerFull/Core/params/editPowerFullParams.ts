@@ -22,7 +22,7 @@ export default class EditPowerFullParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-    data['power_full_id'] = this.id
+    data['powerful_feature_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
     data['image'] = this.image
