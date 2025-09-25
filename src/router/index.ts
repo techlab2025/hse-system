@@ -93,7 +93,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'templates',
           name: 'Templates',
           component: () => import('../views/Template/IndexTemplate.vue'),
@@ -144,7 +143,6 @@ const router = createRouter({
         },
 
         {
-
           path: 'certificates',
           name: 'Certificates',
           component: () => import('../views/Certificate/IndexCertificate.vue'),
@@ -158,6 +156,22 @@ const router = createRouter({
           path: 'certificate/:id',
           name: 'Edit Certificate',
           component: () => import('../views/Certificate/EditCertificate.vue'),
+        },
+        // Category
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: () => import('../views/Category/IndexCategory.vue'),
+        },
+        {
+          path: 'category/add',
+          name: 'Add Category',
+          component: () => import('../views/Category/AddCategory.vue'),
+        },
+        {
+          path: 'category/:id',
+          name: 'Edit Category',
+          component: () => import('../views/Category/EditCategory.vue'),
         },
 
         {
@@ -213,13 +227,13 @@ const router = createRouter({
         },
         {
           path: 'factory-item/:id',
-          name: 'Edit Factory',
+          name: 'Edit Factory Item',
           component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
         },
         {
           path: 'factory-item/add',
-          name: 'Edit Factory',
-          component: () => import('../views/FactoryItem/EditFactoryItem.vue'),
+          name: 'Add Factory Item',
+          component: () => import('../views/FactoryItem/AddFactoryItem.vue'),
         },
         {
           path: 'organization',

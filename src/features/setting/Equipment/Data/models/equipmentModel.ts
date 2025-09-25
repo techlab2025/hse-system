@@ -11,7 +11,7 @@ export default class EquipmentModel extends TitleInterface {
   public parentId: number
   public image: string
   public titles: string
-  public equipmentTypeId: EquipmentTypeModel
+  public equipmentType: TitleModel<string> | null
 
   constructor(
     id: number,
@@ -23,7 +23,7 @@ export default class EquipmentModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
-    equipmentTypeId: EquipmentTypeModel,
+    equipmentType: TitleModel<string> | null
   ) {
     super({ id, title, subtitle })
 
@@ -34,7 +34,7 @@ export default class EquipmentModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
-    this.equipmentTypeId = equipmentTypeId
+    this.equipmentType = equipmentType
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -50,7 +50,7 @@ export default class EquipmentModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
-      data.equipmentTypeId,
+      data.equipmentType ? TitleModel.fromMap(data.equipmentType) : null,
     )
   }
 }
