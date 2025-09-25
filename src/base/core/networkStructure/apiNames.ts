@@ -28,6 +28,17 @@ class ApiNames {
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
 
+
+  // header
+
+  public CreateHeader = this.baseUrl + this.dashboardPrefix + 'create_header'
+  public IndexHeader = this.baseUrl + this.dashboardPrefix + 'fetch_headers'
+  public ShowHeader = this.baseUrl + this.dashboardPrefix + 'fetch_header_details'
+  public EditHeader = this.baseUrl + this.dashboardPrefix + 'update_header'
+  public DeleteHeader = this.baseUrl + this.dashboardPrefix + 'delete_header'
+  public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
+
+
   // HomeContactUs
   public CreateHomeContactUs = this.baseUrl + this.dashboardPrefix + 'create_home_contact_us'
   public IndexHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us'

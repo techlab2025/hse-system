@@ -51,9 +51,7 @@ const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 // current title binding
 const title = ref('')
 
-
 const isTextarea = computed(() => props.type === 'textarea')
-
 
 // ✅ Sync active title when lang changes
 watch(
@@ -93,8 +91,10 @@ watch(
         const fromModel = nv.find((f) => f.locale === l.locale)
         return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
       })
+
+      console.log(titles.value, 'titles')
       const current = titles.value.find((t) => t.locale === lang.value)
-      if (current) title.value = current.title ?? current.description
+      if (current) title.value = current.title ?? current.description ?? current.subtitle 
     }
   },
   { deep: true },
@@ -132,7 +132,6 @@ watch(
     <!-- Title Input -->
 
     <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
-
 
     <!-- Regular Input -->
     <input v-else type="text" v-model="title" v-bind="inputAttrs" />
