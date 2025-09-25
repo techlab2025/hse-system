@@ -5,6 +5,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import DeleteEquipmentUseCase from '../../Domain/useCase/deleteEquipmentUseCase'
 import type EquipmentModel from '../../Data/models/equipmentModel'
+import successImage from '@/assets/images/Success.png'
 
 export default class DeleteEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: DeleteEquipmentController
@@ -28,6 +29,13 @@ export default class DeleteEquipmentController extends ControllerInterface<Equip
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
+        DialogSelector.instance.successDialog.openDialog({
+          dialogName: 'dialog',
+          titleContent: 'deleted was successful',
+          imageElement: successImage,
+          messageContent: null,
+        })
+
         // useLoaderStore().endLoadingWithDialog();
       } else {
         throw new Error('Error while addServices')

@@ -116,15 +116,10 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
+      SelectedState.value = newData?.parent
       allIndustries.value = newData?.allIndustries!
       industry.value = newData?.industries!
-      SelectedState.value =newData?.parent
-        ? new TitleInterface({
-            id: newData.parent.id,
-            title: newData.parent.title,
-            subtitle: newData.parent.subtitle,
-          })
-        : undefined
+    
     }
   },
   { immediate: true },
@@ -146,33 +141,38 @@ const UpdateCode = (data) => {
   updateData()
 }
 
-const SelectedCountry = ref<TitleInterface>()
+const SelectedCountry = ref<TitleInterface | null>(null)
 const SetCountrySelection = (data: TitleInterface) => {
   SelectedCountry.value = data
+
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    data.id,
+  )
   updateData()
 }
-const SelectedState = ref<TitleInterface>()
+const SelectedState = ref<TitleInterface | null>(null)
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
   updateData()
 }
 
 const indexLocationCountriesController = IndexLocationController.getInstance()
-const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY, id)
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
 
 const indexLocationStatesController = IndexLocationController.getInstance()
-const indexLocationStatesParams = new IndexLocationParams(
-  '',
-  0,
-  0,
-  0,
-  LocationEnum.STATE,
-  SelectedCountry?.value?.id,
-)
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
 
-watch(()=>route.params.parent_id,(newParentId)=>{
-  ParentId.value = newParentId
-})
+watch(
+  () => route.params.parent_id,
+  (newParentId) => {
+    ParentId.value = newParentId
+  },
+)
 </script>
 
 <template>
@@ -203,7 +203,7 @@ watch(()=>route.params.parent_id,(newParentId)=>{
       @update:modelValue="SetCountrySelection"
     />
   </div>
-  <div class="col-span-4 md:col-span-2"  v-if="!ParentId">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId">
     <CustomSelectInput
       :modelValue="SelectedState"
       :controller="indexLocationStatesController"

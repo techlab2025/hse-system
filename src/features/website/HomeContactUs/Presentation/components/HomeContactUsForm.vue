@@ -69,7 +69,7 @@ const fetchLang = async (
       ]
 
   // assign for description / subtitle / button
-  langDefault.value = defaults
+  langDefault.value = defaults/
   // langDefaultSubTitle.value = JSON.parse(JSON.stringify(defaults))
   // langDefaultButton.value = JSON.parse(JSON.stringify(defaults))
 }

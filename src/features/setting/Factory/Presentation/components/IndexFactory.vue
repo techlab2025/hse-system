@@ -16,7 +16,6 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
@@ -148,20 +147,15 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data!"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Equipment Type Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel
+        :data="state.data!"
+        :columns="customColumns"
+        filename="formatted_export"
+        sheet-name="Equipment Type Data"
+        button-text="Export Formatted"
+        button-class="btn-primary"
+      />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_CREATE]">
         <router-link to="/admin/factory/add" class="btn btn-primary">
           {{ $t('Add_Factory') }}
@@ -191,7 +185,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+<!--                <th scope="col">{{ $t('image') }}</th>-->
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -210,9 +204,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                       : '---'
                   }}
                 </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+<!--                <td data-label="all_industries">-->
+<!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
+<!--                </td>-->
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusFactory-->
