@@ -449,6 +449,7 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -478,6 +479,56 @@ const active = ref('0')
                     <router-link to="/admin/service_section">
                       <SidebarVector />
                       <span>Service Section</span>
+
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.POWERFUL_FEATURE_ALL,
+                      PermissionsEnum.POWERFUL_FEATURE_CREATE,
+                      PermissionsEnum.POWERFUL_FEATURE_DELETE,
+                      PermissionsEnum.POWERFUL_FEATURE_FETCH,
+                      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/powerfull-features">
+                      <SidebarVector />
+                      <span>PowerFull</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SYSTEM_WORK_ALL,
+                      PermissionsEnum.SYSTEM_WORK_CREATE,
+                      PermissionsEnum.SYSTEM_WORK_DELETE,
+                      PermissionsEnum.SYSTEM_WORK_FETCH,
+                      PermissionsEnum.SYSTEM_WORK_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system-works">
+                      <SidebarVector />
+                      <span>System Work</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CREATE,
+                      PermissionsEnum.HOME_VIEW_PRICING_DELETE,
+                      PermissionsEnum.HOME_VIEW_PRICING_FETCH,
+                      PermissionsEnum.HOME_VIEW_PRICING_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-view-pricing">
+                      <SidebarVector />
+                      <span>Home View Price</span>
+
                     </router-link>
                   </PermissionBuilder>
                 </li>

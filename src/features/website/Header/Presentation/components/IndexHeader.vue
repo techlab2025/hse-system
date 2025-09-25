@@ -152,7 +152,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HEADER_CREATE]">
         <router-link to="/admin/header/add" class="btn btn-primary">
           {{ $t('Add_Header') }}
         </router-link>
