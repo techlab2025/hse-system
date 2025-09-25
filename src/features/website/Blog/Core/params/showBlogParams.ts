@@ -9,7 +9,7 @@ export default class ShowBlogParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['category_id'] = this.id
+    data['blog_id'] = this.id
     return data
   }
 }

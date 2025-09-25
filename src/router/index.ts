@@ -452,6 +452,23 @@ const router = createRouter({
           name: 'Edit Service Sections',
           component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
         },
+
+        // blog
+        {
+          path: 'blog',
+          name: 'Blog',
+          component: () => import('../views/Website/Blog/IndexBlog.vue'),
+        },
+        {
+          path: 'blog/add',
+          name: 'Add Blog',
+          component: () => import('../views/Website/Blog/AddBlog.vue'),
+        },
+        {
+          path: 'blog/:id',
+          name: 'Edit Blog',
+          component: () => import('../views/Website/Blog/EditBlog.vue'),
+        },
       ],
     },
   ],

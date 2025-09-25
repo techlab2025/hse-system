@@ -69,7 +69,7 @@ export default class TranslationsParams {
       params.setTranslation('lang', locale, value)
     })
 
-    // console.log(this.translations, 'params');  
+    // console.log(this.translations, 'params');
 
     return { titles, descriptions, langLocale }
   }

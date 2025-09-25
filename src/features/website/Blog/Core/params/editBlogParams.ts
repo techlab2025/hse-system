@@ -13,6 +13,8 @@ export default class EditBlogParams implements Params {
   image: string
   // imageId?: number
   alt: string
+  hashtags?: number[]
+  categories?: number[]
 
   constructor(
     id: number,
@@ -24,6 +26,8 @@ export default class EditBlogParams implements Params {
     image: string,
     // imageId?: number,
     alt: string,
+    hashtags?: number[],
+    categories?: number[]
   ) {
     this.id = id
     this.translation = translation
@@ -34,6 +38,8 @@ export default class EditBlogParams implements Params {
     this.image = image
     // this.imageId = imageId
     this.alt = alt
+    this.hashtags = hashtags
+    this.categories = categories
   }
 
   toMap(): Record<
@@ -48,15 +54,17 @@ export default class EditBlogParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['category_id'] = this.id
+    data['blog_id'] = this.id
     data['translations'] = this.translation.toMap()
-    // data['has_category'] = this.hasBlog ? 1 : 0
+    // data['has_blog'] = this.hasBlog ? 1 : 0
     // data['all_industries'] = this.allIndustries ? 1 : 0
     // if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
     // if (this.imageId) data['image_id'] = this.imageId
     if (this.alt) data['alt'] = this.alt
+    if (this.hashtags && this.hashtags.length) data['hashtags'] = this.hashtags
+    if (this.categories && this.categories.length) data['categories'] = this.categories
 
     return data
   }

@@ -138,6 +138,15 @@ class ApiNames {
   public DeleteCategory = this.baseUrl + this.dashboardPrefix + 'delete_category'
   public DisCategory = this.baseUrl + this.dashboardPrefix + 'change_category_active_status'
 
+  // Blog
+  public CreateBlog = this.baseUrl + this.dashboardPrefix + 'create_blog'
+  public IndexBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blogs'
+  public ShowBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blog_details'
+  public EditBlog = this.baseUrl + this.dashboardPrefix + 'update_blog'
+  public DeleteBlog = this.baseUrl + this.dashboardPrefix + 'delete_blog'
+  public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
+  public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
+
   // Hashtag
   public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
   public IndexHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtags'

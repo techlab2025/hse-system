@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class DeleteBlogParams implements Params {
+export default class ChangeStatusBlogParams implements Params {
 
   constructor(public id: number) {
     this.id = id;

@@ -9,6 +9,8 @@ export default class AddBlogParams implements Params {
   // parentId: number
   image: string
   alt: string
+  hashtags?: number[]
+  categories?: number[]
 
   constructor(
     translation: TranslationsParams,
@@ -18,6 +20,8 @@ export default class AddBlogParams implements Params {
     // parentId: number,
     image: string,
     alt: string,
+    hashtags?: number[],
+    categories?: number[]
   ) {
     this.translation = translation
     // this.hasBlog = hasBlog
@@ -26,6 +30,8 @@ export default class AddBlogParams implements Params {
     // this.parentId = parentId
     this.image = image
     this.alt = alt
+    this.hashtags = hashtags
+    this.categories = categories
   }
 
   toMap(): Record<
@@ -41,13 +47,15 @@ export default class AddBlogParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    // data['has_category'] = this.hasBlog ? 1 : 0
+    // data['has_blog'] = this.hasBlog ? 1 : 0
     // data['all_industries'] = this.allIndustries ? 1 : 0
     // console.log(this.allIndustries)
     // if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
     if (this.alt) data['alt'] = this.alt
+    if (this.hashtags && this.hashtags.length) data['hashtags'] = this.hashtags
+    if (this.categories && this.categories.length) data['categories'] = this.categories
 
     return data
   }
