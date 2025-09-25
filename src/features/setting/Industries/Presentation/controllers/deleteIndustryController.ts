@@ -2,8 +2,8 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/error.png";
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/error.png'
 import type IndustryModel from '../../Data/Models/IndustryModel'
 import DeleteIndustryUseCase from '../../Domain/useCase/deleteIndustryUseCase'
 
@@ -29,14 +29,10 @@ export default class DeleteIndustryController extends ControllerInterface<Indust
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: 'deleted was successful',
           imageElement: successImage,
           messageContent: null,
         })
-
-        // console.log(this.state.value.data)
-        // console.log(draft)
-        if (!draft) await router.push('/')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
