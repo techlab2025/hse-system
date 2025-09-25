@@ -110,16 +110,11 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
+      SelectedCountry.value = newData?.parent
       allIndustries.value = newData?.allIndustries!
       industry.value = newData?.industries!
 
-      SelectedCountry.value = newData?.parent
-        ? new TitleInterface({
-            id: newData.parent.id,
-            title: newData.parent.title,
-            subtitle: newData.parent.subtitle,
-          })
-        : undefined
+     
     }
   },
   { immediate: true },
@@ -141,7 +136,7 @@ const UpdateCode = (data) => {
   updateData()
 }
 
-const SelectedCountry = ref<TitleInterface>()
+const SelectedCountry = ref<TitleInterface | null>(null)
 
 const SetCountrySelection = (data: TitleInterface) => {
   SelectedCountry.value = data

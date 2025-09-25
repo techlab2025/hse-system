@@ -229,7 +229,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="image">
+                <td data-label="status">
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,

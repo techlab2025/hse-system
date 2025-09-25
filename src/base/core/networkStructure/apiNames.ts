@@ -49,6 +49,14 @@ class ApiNames {
   public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
 
 
+  // HomeAboutUs
+
+  public CreateHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'create_home_about_us'
+  public IndexHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us'
+  public ShowHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us_details'
+  public EditHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'update_home_about_us'
+  public DeleteHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'delete_home_about_us'
+  public ChangeStatusHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'change_home_about_us_active_status'
 
 
   // PowerFull

@@ -251,6 +251,7 @@ watch(
       <div class="col-span-4 md:col-span-2">
         <LangTitleInput
           :langs="langDefault"
+          :label="$t('itemTitle') + ' ' + (index + 1)"
           :modelValue="item.langs"
           @update:modelValue="(val) => setItemLangs(index, val)"
         />

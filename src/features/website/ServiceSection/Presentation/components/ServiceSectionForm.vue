@@ -10,14 +10,14 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type ServiceDetailsModel from '../../Data/models/ServiceDetailsSectionModel'
+import type ServiceSectionDetailsModel from '../../Data/models/ServiceDetailsSectionModel'
 import AddServiceSectionParams from '../../Core/params/addServiceSectionParams'
 import ItemParams from '../../Core/params/ItemParams'
 
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type ServiceSectionDetailsModel from '../../Data/models/ServiceDetailsSectionModel'
+import EditServiceSectionParams from '../../Core/params/editServiceSectionParams'
 
 const emit = defineEmits(['update:data'])
 
@@ -35,7 +35,7 @@ const langsDescription = ref<{ locale: string; title: string }[]>([])
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
-// Items array (previously called "includes")
+// Items array
 interface Item {
   translations: {
     title: Record<string, string>
@@ -126,10 +126,17 @@ const updateData = () => {
     )
   })
 
-  const params = new AddServiceSectionParams(
+  const params = props?.data?.id? new EditServiceSectionParams(
+    props?.data?.id,
+   mainTranslations,
+    imageAlt.value,
+    typeof image.value === 'string' ? image.value : '',
+    SelectedService.value?.id,
+  ):
+  new AddServiceSectionParams(
     mainTranslations,
     imageAlt.value,
-    image.value.file,
+    typeof image.value === 'string' ? image.value : '',
     SelectedService.value?.id,
   )
 
@@ -152,51 +159,64 @@ const setLangsDescription = (value: { locale: string; title: string }[]) => {
   updateData()
 }
 
+// Fixed watch function to properly map API data to component state
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (!newData || !newDefault.length) return
 
-    // ---- Main Translations ----
-    langsTitle.value = newDefault.map((l) => {
-      const existing = newData?.title?.find(
-        (t: any) => t.locale === l.locale && t.field === 'title',
-      )
-      return existing
-        ? { locale: l.locale, title: existing.title }
-        : { locale: l.locale, title: '' }
+    console.log('Processing data:', newData)
+
+    // Map titles
+    langsTitle.value = newDefault.map((lang) => {
+      // Find translation for this locale or use the main title
+      const translation = newData.title?.find((t: any) => t.locale === lang.locale)
+      return {
+        locale: lang.locale,
+        title: translation?.title || newData.title?.[0]?.title || ''
+      }
     })
 
-    langsSubTitle.value = newDefault.map((l) => {
-      const existing = newData?.subTitle?.find(
-        (t: any) => t.locale === l.locale && t.field === 'subtitle',
-      )
-      return existing
-        ? { locale: l.locale, title: existing.subtitle }
-        : { locale: l.locale, title: '' }
+    // Map subtitles
+    langsSubTitle.value = newDefault.map((lang) => {
+      const translation = newData.subTitle?.find((t: any) => t.locale === lang.locale)
+      return {
+        locale: lang.locale,
+        title: translation?.subtitle || newData.subTitle?.[0]?.subtitle || ''
+      }
     })
 
-    langsDescription.value = newDefault.map((l) => {
-      const existing = newData?.descriptions?.find(
-        (t: any) => t.locale === l.locale && t.field === 'description',
-      )
-      return existing
-        ? { locale: l.locale, title: existing.description }
-        : { locale: l.locale, title: '' }
+    // Map descriptions
+    langsDescription.value = newDefault.map((lang) => {
+      const translation = newData.descriptions?.find((t: any) => t.locale === lang.locale)
+      return {
+        locale: lang.locale,
+        title: translation?.description || newData.descriptions?.[0]?.description || ''
+      }
     })
 
-    imageAlt.value = newData.alt ?? ''
+    // Set image alt
+    imageAlt.value = newData.alt || ''
 
-    image.value = newData.image ?? ''
+    // Set image (handle both string URL and File object)
+    if (typeof newData.image === 'string') {
+      image.value = newData.image
+    } else {
+      image.value = ''
+    }
 
+    // Set selected service
     if (newData.service) {
       SelectedService.value = {
         id: newData.service.id,
         title: newData.service.title,
       } as TitleInterface
     }
+
+    // Trigger update after setting all values
+    updateData()
   },
-  { immediate: true },
+  { immediate: true, deep: true }
 )
 
 const SelectedService = ref<TitleInterface>()
@@ -206,16 +226,22 @@ const setServiceSelection = (data: TitleInterface) => {
 }
 
 const imageAlt = ref('')
-const UpdateAltImage = (data) => {
-  imageAlt.value = data.target.value
+const UpdateAltImage = (data: Event) => {
+  imageAlt.value = (data.target as HTMLInputElement).value
   updateData()
 }
+
 const image = ref<string>('')
 
 const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  console.log(image.value.file, 'data image')
-  updateData()
+  try {
+    const base64Image = await filesToBase64(data)
+    image.value = base64Image as string
+    updateData()
+  } catch (error) {
+    console.error('Error converting image to base64:', error)
+    image.value = ''
+  }
 }
 </script>
 
@@ -249,6 +275,7 @@ const setImage = async (data: File) => {
       @update:modelValue="setLangsDescription"
     />
   </div>
+
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="SelectedService"
@@ -275,7 +302,7 @@ const setImage = async (data: File) => {
 
   <div class="col-span-4 md:col-span-2">
     <SingleFileUpload
-      v-model="image"
+      :modelValue="image"
       @update:modelValue="setImage"
       label="Image"
       id="image"
