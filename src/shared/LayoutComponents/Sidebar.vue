@@ -417,7 +417,22 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_ALL,
+                      PermissionsEnum.SERVICE_CREATE,
+                      PermissionsEnum.SERVICE_DELETE,
+                      PermissionsEnum.SERVICE_FETCH,
+                      PermissionsEnum.SERVICE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/services">
+                      <SidebarVector />
+                      <span>Services</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -434,6 +449,37 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_FEATURE_ALL,
+                      PermissionsEnum.SERVICE_FEATURE_CREATE,
+                      PermissionsEnum.SERVICE_FEATURE_DELETE,
+                      PermissionsEnum.SERVICE_FEATURE_FETCH,
+                      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_features">
+                      <SidebarVector />
+                      <span>Service Features</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_SECTION_ALL,
+                      PermissionsEnum.SERVICE_SECTION_CREATE,
+                      PermissionsEnum.SERVICE_SECTION_DELETE,
+                      PermissionsEnum.SERVICE_SECTION_FETCH,
+                      PermissionsEnum.SERVICE_SECTION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_section">
+                      <SidebarVector />
+                      <span>Service Section</span>
+
 
                 <li>
                   <PermissionBuilder
@@ -482,6 +528,7 @@ const active = ref('0')
                     <router-link to="/admin/home-view-pricing">
                       <SidebarVector />
                       <span>Home View Price</span>
+
                     </router-link>
                   </PermissionBuilder>
                 </li>

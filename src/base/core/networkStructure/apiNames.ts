@@ -3,7 +3,7 @@ import { baseUrl } from './baseUrl'
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -29,6 +29,7 @@ class ApiNames {
 
 
 
+
   // HomeViewPricing
 
   public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'
@@ -38,8 +39,6 @@ class ApiNames {
   public DeleteHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'delete_home_view_pricing'
   public ChangeStatusHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
 
-
-
   // header
 
   public CreateHeader = this.baseUrl + this.dashboardPrefix + 'create_header'
@@ -48,6 +47,8 @@ class ApiNames {
   public EditHeader = this.baseUrl + this.dashboardPrefix + 'update_header'
   public DeleteHeader = this.baseUrl + this.dashboardPrefix + 'delete_header'
   public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
+
+
 
 
   // PowerFull
@@ -70,14 +71,15 @@ class ApiNames {
   public ChangeStatusSystemWork = this.baseUrl + this.dashboardPrefix + 'change_system_work_active_status'
 
 
+
   // HomeContactUs
   public CreateHomeContactUs = this.baseUrl + this.dashboardPrefix + 'create_home_contact_us'
   public IndexHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us'
   public ShowHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us_details'
   public EditHomeContactUs = this.baseUrl + this.dashboardPrefix + 'update_home_contact_us'
   public DeleteHomeContactUs = this.baseUrl + this.dashboardPrefix + 'delete_home_contact_us'
-  public ChangeStatusHomeContactUs = this.baseUrl + this.dashboardPrefix + 'change_home_contact_us_active_status'
-
+  public ChangeStatusHomeContactUs =
+    this.baseUrl + this.dashboardPrefix + 'change_home_contact_us_active_status'
 
   // clientOpinion
   public CreateClientOpinion = this.baseUrl + this.dashboardPrefix + 'create_client_opinion'
@@ -85,8 +87,8 @@ class ApiNames {
   public ShowClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinion_details'
   public EditClientOpinion = this.baseUrl + this.dashboardPrefix + 'update_client_opinion'
   public DeleteClientOpinion = this.baseUrl + this.dashboardPrefix + 'delete_client_opinion'
-  public ChangeStatusClientOpinion = this.baseUrl + this.dashboardPrefix + 'change_client_opinion_active_status'
-
+  public ChangeStatusClientOpinion =
+    this.baseUrl + this.dashboardPrefix + 'change_client_opinion_active_status'
 
   // Template
   public CreateTemplate = this.baseUrl + this.dashboardPrefix + 'create_template'
@@ -95,7 +97,6 @@ class ApiNames {
   public EditTemplate = this.baseUrl + this.dashboardPrefix + 'update_template'
   public DeleteTemplate = this.baseUrl + this.dashboardPrefix + 'delete_template'
   public DisActiveTemplate = this.baseUrl + this.dashboardPrefix + 'disable_template'
-
 
   // Factory
   public CreateFactory = this.baseUrl + this.dashboardPrefix + 'create_factory'
@@ -120,7 +121,6 @@ class ApiNames {
   public EditEquipmentType = this.baseUrl + this.dashboardPrefix + 'update_equipment_type'
   public DeleteEquipmentType = this.baseUrl + this.dashboardPrefix + 'delete_equipment_type'
   public DisEquipmentType = this.baseUrl + this.dashboardPrefix + 'disable_equipment_type'
-
 
   // Certificate
   public CreateCertificate = this.baseUrl + this.dashboardPrefix + 'create_certificate'
@@ -155,22 +155,20 @@ class ApiNames {
   public DisHazardType = this.baseUrl + this.dashboardPrefix + 'disable_hazard_type'
 
   // Project Type
-  public CreateProjectType = this.baseUrl + this.dashboardPrefix + "create_project_type";
-  public IndexProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_types";
-  public ShowProjectType = this.baseUrl + this.dashboardPrefix + "fetch_project_type_details";
-  public EditProjectType = this.baseUrl + this.dashboardPrefix + "update_project_type";
-  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + "delete_project_type";
-  public DisProjectType = this.baseUrl + this.dashboardPrefix + "disable_project_type";
+  public CreateProjectType = this.baseUrl + this.dashboardPrefix + 'create_project_type'
+  public IndexProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_types'
+  public ShowProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_type_details'
+  public EditProjectType = this.baseUrl + this.dashboardPrefix + 'update_project_type'
+  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + 'delete_project_type'
+  public DisProjectType = this.baseUrl + this.dashboardPrefix + 'disable_project_type'
 
   // factory item
-  public CreateFactoryItem = this.baseUrl + this.dashboardPrefix + "create_factory_item";
-  public IndexFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_items";
-  public ShowFactoryItem = this.baseUrl + this.dashboardPrefix + "fetch_factory_item_details";
-  public EditFactoryItem = this.baseUrl + this.dashboardPrefix + "update_factory_item";
-  public DeleteFactoryItem = this.baseUrl + this.dashboardPrefix + "delete_factory_item";
-  public DisFactoryItem = this.baseUrl + this.dashboardPrefix + "disable_factory_item";
-
-
+  public CreateFactoryItem = this.baseUrl + this.dashboardPrefix + 'create_factory_item'
+  public IndexFactoryItem = this.baseUrl + this.dashboardPrefix + 'fetch_factory_items'
+  public ShowFactoryItem = this.baseUrl + this.dashboardPrefix + 'fetch_factory_item_details'
+  public EditFactoryItem = this.baseUrl + this.dashboardPrefix + 'update_factory_item'
+  public DeleteFactoryItem = this.baseUrl + this.dashboardPrefix + 'delete_factory_item'
+  public DisFactoryItem = this.baseUrl + this.dashboardPrefix + 'disable_factory_item'
 
   //Accidents
   public CreateAccidentsType = this.baseUrl + this.dashboardPrefix + 'create_accidents_type'
@@ -180,7 +178,6 @@ class ApiNames {
   public DeleteAccidentsType = this.baseUrl + this.dashboardPrefix + 'delete_accidents_type'
   public DisAccidentsType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
 
-
   //Organization
   public CreateOrganization = this.baseUrl + this.dashboardPrefix + 'create_organization'
   public IndexOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organizations'
@@ -189,13 +186,36 @@ class ApiNames {
   public DeleteOrganization = this.baseUrl + this.dashboardPrefix + 'delete_organization'
   // public DisOrganizationType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
 
-
   // Location
   public CreateLocation = this.baseUrl + this.dashboardPrefix + 'create_location'
   public IndexLocation = this.baseUrl + this.dashboardPrefix + 'fetch_locations'
   public ShowLocation = this.baseUrl + this.dashboardPrefix + 'fetch_location_details'
   public EditLocation = this.baseUrl + this.dashboardPrefix + 'update_location'
   public DeleteLocation = this.baseUrl + this.dashboardPrefix + 'delete_location'
+
+  // Website Service
+  public CreateService = this.baseUrl + this.dashboardPrefix + 'create_service'
+  public IndexService = this.baseUrl + this.dashboardPrefix + 'fetch_services'
+  public ShowService = this.baseUrl + this.dashboardPrefix + 'fetch_service_details'
+  public EditService = this.baseUrl + this.dashboardPrefix + 'update_service'
+  public DeleteService = this.baseUrl + this.dashboardPrefix + 'delete_service'
+  public DisService = this.baseUrl + this.dashboardPrefix + 'delete_service'
+
+  // Website Service Feature
+  public CreateServiceFeature = this.baseUrl + this.dashboardPrefix + 'create_service_feature'
+  public IndexServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_features'
+  public ShowServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_feature_details'
+  public EditServiceFeature = this.baseUrl + this.dashboardPrefix + 'update_service_feature'
+  public DeleteServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
+  public DisServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
+
+  // Website Service Setcion
+  public CreateServiceSection = this.baseUrl + this.dashboardPrefix + 'create_service_section'
+  public IndexServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_sections'
+  public ShowServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_section_details'
+  public EditServiceSection = this.baseUrl + this.dashboardPrefix + 'update_service_section'
+  public DeleteServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
+  public DisServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
 }
 
 export { ApiNames }

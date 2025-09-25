@@ -110,8 +110,8 @@ const router = createRouter({
         },
 
         {
-          path: "client-opinions",
-          name: "Client Opinions",
+          path: 'client-opinions',
+          name: 'Client Opinions',
           component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
         },
 
@@ -126,14 +126,14 @@ const router = createRouter({
           component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
         },
         {
-          path: "home-contact-us",
-          name: "Home Contact Us",
+          path: 'home-contact-us',
+          name: 'Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/IndexHomeContactUs.vue'),
         },
 
         {
-          path: "headers",
-          name: "Headers",
+          path: 'headers',
+          name: 'Headers',
           component: () => import('../views/Website/Header/IndexHeader.vue'),
         },
 
@@ -376,6 +376,51 @@ const router = createRouter({
           path: 'areas/:id',
           name: 'Edit Location Area',
           component: () => import('../views/Location/Area/EditArea.vue'),
+        },
+        {
+          path: 'services',
+          name: 'Services',
+          component: () => import('../views/Website/Service/IndexSerive.vue'),
+        },
+        {
+          path: 'services/add',
+          name: 'Add Service',
+          component: () => import('../views/Website/Service/AddService.vue'),
+        },
+        {
+          path: 'services/:id',
+          name: 'Edit Service',
+          component: () => import('../views/Website/Service/EditService.vue'),
+        },
+        {
+          path: 'service_features',
+          name: 'Services Features',
+          component: () => import('../views/Website/ServiceFeatures/IndexSeriveFeatures.vue'),
+        },
+        {
+          path: 'service_feature/add',
+          name: 'Add Service Features',
+          component: () => import('../views/Website/ServiceFeatures/AddServiceFeatures.vue'),
+        },
+        {
+          path: 'service_feature/:id',
+          name: 'Edit Service Features',
+          component: () => import('../views/Website/ServiceFeatures/EditServiceFeatures.vue'),
+        },
+        {
+          path: 'service_section',
+          name: 'Services Sections',
+          component: () => import('../views/Website/ServiceSections/IndexSeriveSection.vue'),
+        },
+        {
+          path: 'service_section/add',
+          name: 'Add Service Sections',
+          component: () => import('../views/Website/ServiceSections/AddServiceSection.vue'),
+        },
+        {
+          path: 'service_section/:id',
+          name: 'Edit Service Sections',
+          component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
         },
       ],
     },
