@@ -118,6 +118,13 @@ watch(
 
       allIndustries.value = newData?.allIndustries!
       industry.value = newData?.industries!
+      SelectedState.value =newData?.parent
+        ? new TitleInterface({
+            id: newData.parent.id,
+            title: newData.parent.title,
+            subtitle: newData.parent.subtitle,
+          })
+        : undefined
     }
   },
   { immediate: true },
