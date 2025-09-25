@@ -180,7 +180,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_CONTACT_US_CREATE]">
         <router-link to="/admin/home-contact-us/add" class="btn btn-primary">
           {{ $t('Add_HomeContactUs') }}
         </router-link>

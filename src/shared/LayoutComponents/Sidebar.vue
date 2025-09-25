@@ -417,7 +417,7 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-                <!-- Hashtag -->
+
                 <li>
                   <PermissionBuilder
                     :code="[
@@ -451,6 +451,56 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HEADER_ALL,
+                      PermissionsEnum.HEADER_CREATE,
+                      PermissionsEnum.HEADER_DELETE,
+                      PermissionsEnum.HEADER_FETCH,
+                      PermissionsEnum.HEADER_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/headers">
+                      <SidebarVector />
+                      <span>Header</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.POWERFUL_FEATURE_ALL,
+                      PermissionsEnum.POWERFUL_FEATURE_CREATE,
+                      PermissionsEnum.POWERFUL_FEATURE_DELETE,
+                      PermissionsEnum.POWERFUL_FEATURE_FETCH,
+                      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/powerfull-features">
+                      <SidebarVector />
+                      <span>PowerFull</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SYSTEM_WORK_ALL,
+                      PermissionsEnum.SYSTEM_WORK_CREATE,
+                      PermissionsEnum.SYSTEM_WORK_DELETE,
+                      PermissionsEnum.SYSTEM_WORK_FETCH,
+                      PermissionsEnum.SYSTEM_WORK_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system-works">
+                      <SidebarVector />
+                      <span>System Work</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
 
                 <!-- Privacy -->
                 <li>
@@ -466,6 +516,22 @@ const active = ref('0')
                     <router-link to="/admin/privacy/add">
                       <SidebarVector />
                       <span>Privacy</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CREATE,
+                      PermissionsEnum.HOME_VIEW_PRICING_DELETE,
+                      PermissionsEnum.HOME_VIEW_PRICING_FETCH,
+                      PermissionsEnum.HOME_VIEW_PRICING_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-view-pricing">
+                      <SidebarVector />
+                      <span>Home View Price</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

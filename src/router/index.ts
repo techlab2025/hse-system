@@ -132,6 +132,73 @@ const router = createRouter({
         },
 
         {
+          path: "headers",
+          name: "Headers",
+          component: () => import('../views/Website/Header/IndexHeader.vue'),
+        },
+
+        {
+          path: 'header/add',
+          name: 'Add Header',
+          component: () => import('../views/Website/Header/AddHeader.vue'),
+        },
+        {
+          path: 'header/:id',
+          name: 'Edit Header',
+          component: () => import('../views/Website/Header/EditHeader.vue'),
+        },
+
+        {
+          path: "powerfull-features",
+          name: "PowerFull",
+          component: () => import('../views/Website/PowerFull/IndexPowerFull.vue')
+        },
+        {
+          path: "power-full/add",
+          name: "Add PowerFull ",
+          component: () => import('../views/Website/PowerFull/AddPowerFull.vue')
+        },
+        {
+          path: "power-full/:id",
+          name: "Edit PowerFull",
+          component: () => import('../views/Website/PowerFull/EditPowerFull.vue')
+        },
+
+        {
+          path: "system-works",
+          name: "System Work",
+          component: () => import('../views/Website/SystemWork/IndexSystemWork.vue'),
+        },
+
+
+        {
+          path: "home-view-pricing",
+          name: "Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/IndexHomeViewPricing.vue')
+        },
+        {
+          path: "home-view-pricing/add",
+          name: "Add Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/AddHomeViewPricing.vue')
+        },
+        {
+          path: "home-view-pricing/:id",
+          name: "Edit Home View Pricing",
+          component: () => import('../views/Website/HomeViewPricing/EditHomeViewPricing.vue')
+        },
+
+        {
+          path: 'system-work/add',
+          name: 'Add System Work',
+          component: () => import('../views/Website/SystemWork/AddSystemWork.vue'),
+        },
+        {
+          path: 'system-work/:id',
+          name: 'Edit System Work',
+          component: () => import('../views/Website/SystemWork/EditSystemWork.vue'),
+        },
+
+        {
           path: 'home-contact-us/add',
           name: 'Add Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),
