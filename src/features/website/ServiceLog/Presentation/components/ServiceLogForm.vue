@@ -10,19 +10,19 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type ServiceSectionDetailsModel from '../../Data/models/ServiceDetailsSectionModel'
-import AddServiceSectionParams from '../../Core/params/addServiceSectionParams'
 import ItemParams from '../../Core/params/ItemParams'
 
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type ServiceLogDetailsModel from '../../Data/models/ServiceDetailsLogModel'
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import EditServiceSectionParams from '../../Core/params/editServiceSectionParams'
+import EditServiceLogParams from '../../Core/params/editServiceLogParams'
+import AddServiceLogParams from '../../Core/params/addServiceLogParams'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ServiceSectionDetailsModel
+  data?: ServiceLogDetailsModel
   serviceId: number
 }>()
 
@@ -127,19 +127,8 @@ const updateData = () => {
   })
 
   const params = props?.data?.id
-    ? new EditServiceSectionParams(
-        props?.data?.id,
-        mainTranslations,
-        imageAlt.value,
-        typeof image.value === 'string' ? image.value : '',
-        SelectedService.value?.id,
-      )
-    : new AddServiceSectionParams(
-        mainTranslations,
-        imageAlt.value,
-        typeof image.value === 'string' ? image.value : '',
-        SelectedService.value?.id,
-      )
+    ? new EditServiceLogParams(props?.data?.id, mainTranslations, SelectedService.value?.id)
+    : new AddServiceLogParams(mainTranslations, SelectedService.value?.id)
 
   emit('update:data', params)
 }
@@ -173,24 +162,6 @@ watch(
       return {
         locale: lang.locale,
         title: translation?.title || '',
-      }
-    })
-
-    // Map subtitles
-    langsSubTitle.value = newDefault.map((lang) => {
-      const translation = newData.subTitle?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.subtitle || '',
-      }
-    })
-
-    // Map descriptions
-    langsDescription.value = newDefault.map((lang) => {
-      const translation = newData.descriptions?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.description || '',
       }
     })
 
@@ -247,26 +218,6 @@ const setImage = async (data: File) => {
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langsSubTitle"
-      :label="$t('sub_title')"
-      @update:modelValue="setLangsSubTitle"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="textarea"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      :label="$t('Description')"
-      @update:modelValue="setLangsDescription"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="SelectedService"
       :controller="indexServiceController"
@@ -275,28 +226,6 @@ const setImage = async (data: File) => {
       id="Service"
       placeholder="Select Service"
       @update:modelValue="setServiceSelection"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="image-alt">{{ $t('alt_image') }}</label>
-    <input
-      id="image-alt"
-      v-model="imageAlt"
-      type="text"
-      class="input"
-      placeholder="alt"
-      @input="UpdateAltImage"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <SingleFileUpload
-      :modelValue="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
     />
   </div>
 </template>

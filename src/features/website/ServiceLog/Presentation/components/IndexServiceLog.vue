@@ -22,12 +22,12 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexServiceController from '../controllers/indexServiceController'
-import IndexServiceParams from '../../Core/params/indexServiceParams'
-import DeleteServiceParams from '../../Core/params/deleteServiceParams'
-import DeleteServiceController from '../controllers/deleteServiceController'
-import disActiveServiceController from '../controllers/disActiveServiceController'
-import ChangeServiceStatusParams from '../../Core/params/changeStatusServiceParams'
+import IndexServiceLogController from '../controllers/indexServiceLogController'
+import IndexServiceLogParams from '../../Core/params/indexServiceLogParams'
+import DeleteServiceLogParams from '../../Core/params/deleteServiceLogParams'
+import DeleteServiceLogController from '../controllers/deleteServiceLogController'
+import ChangeServiceLogStatusParams from '../../Core/params/changeStatusServiceLogParams'
+import disActiveServiceLogController from '../controllers/disActiveServiceLogController'
 
 const { t } = useI18n()
 
@@ -37,49 +37,49 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexServiceController = IndexServiceController.getInstance()
-const state = ref(indexServiceController.state.value)
+const indexServiceLogController = IndexServiceLogController.getInstance()
+const state = ref(indexServiceLogController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<ServiceStatusEnum>(ServiceStatusEnum[route.params.type as keyof typeof ServiceStatusEnum])
 
-const fetchService = async (
+const fetchServiceLog = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteServiceParams = new IndexServiceParams(query, pageNumber, perPage, withPage, id)
-  await indexServiceController.getData(deleteServiceParams)
+  const indexServiceLogParams = new IndexServiceLogParams(query, pageNumber, perPage, withPage, id)
+  await indexServiceLogController.getData(indexServiceLogParams)
 }
 
 onMounted(() => {
-  fetchService()
+  fetchServiceLog()
 })
 
 const searchService = debounce(() => {
-  fetchService(word.value)
+  fetchServiceLog(word.value)
 })
 
 const deleteService = async (id: number) => {
-  const deleteServiceParams = new DeleteServiceParams(id)
-  await DeleteServiceController.getInstance().deleteService(deleteServiceParams)
-  await fetchService()
+  const deleteServiceLogParams = new DeleteServiceLogParams(id)
+  await DeleteServiceLogController.getInstance().deleteServiceLog(deleteServiceLogParams)
+  await fetchServiceLog()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchService('', currentPage.value, countPerPage.value)
+  fetchServiceLog('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchService('', currentPage.value, countPerPage.value)
+  fetchServiceLog('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexServiceController.state.value,
+  () => indexServiceLogController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -95,11 +95,11 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/services/${id}`,
+    link: `/admin/service_logs/${id}`,
     permission: [
-      PermissionsEnum.SERVICE_UPDATE,
+      PermissionsEnum.SERVICE_LOG_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
+      PermissionsEnum.SERVICE_SECTION_ALL,
     ],
   },
   // {
@@ -127,17 +127,19 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteService(id),
     permission: [
-      PermissionsEnum.SERVICE_DELETE,
+      PermissionsEnum.SERVICE_SECTION_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
+      PermissionsEnum.SERVICE_SECTION_ALL,
     ],
   },
 ]
 
-const changeStatusService = async (id: number) => {
-  const changeServiceStatusParams = new ChangeServiceStatusParams(id)
-  await disActiveServiceController.getInstance().disActiveService(changeServiceStatusParams)
-  await fetchService()
+const changeStatusServiceLog = async (id: number) => {
+  const changeServiceLogStatusParams = new ChangeServiceLogStatusParams(id)
+  await disActiveServiceLogController
+    .getInstance()
+    .disActiveServiceLog(changeServiceLogStatusParams)
+  await fetchServiceLog()
 }
 </script>
 
@@ -172,9 +174,9 @@ const changeStatusService = async (id: number) => {
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_CREATE]">
-        <router-link to="/admin/services/add" class="btn btn-primary">
-          {{ $t('Add_Service') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+        <router-link to="/admin/service_logs/add" class="btn btn-primary">
+          {{ $t('Add_Service_section') }}
         </router-link>
       </permission-builder>
     </div>
@@ -183,11 +185,11 @@ const changeStatusService = async (id: number) => {
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_ALL,
-      PermissionsEnum.SERVICE_DELETE,
-      PermissionsEnum.SERVICE_FETCH,
-      PermissionsEnum.SERVICE_UPDATE,
-      PermissionsEnum.SERVICE_CREATE,
+      PermissionsEnum.SERVICE_SECTION_ALL,
+      PermissionsEnum.SERVICE_SECTION_DELETE,
+      PermissionsEnum.SERVICE_SECTION_FETCH,
+      PermissionsEnum.SERVICE_SECTION_UPDATE,
+      PermissionsEnum.SERVICE_SECTION_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -198,11 +200,7 @@ const changeStatusService = async (id: number) => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('subtitle') }}</th>
-                <th scope="col">{{ $t('description') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
-
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -215,12 +213,6 @@ const changeStatusService = async (id: number) => {
                   <router-link :to="`/admin/services/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle || '--' }}</td>
-                <td data-label="description">{{ item.description || '--' }}</td>
-
-                <td data-label="image">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
 
                 <td data-label="status">
                   <permission-builder
@@ -233,7 +225,7 @@ const changeStatusService = async (id: number) => {
                     <ToggleSwitch
                       :modelValue="item.isActive === 1"
                       binary
-                      @update:model-value="changeStatusService(item.id)"
+                      @update:model-value="changeStatusServiceLog(item.id)"
                     />
                   </permission-builder>
                 </td>

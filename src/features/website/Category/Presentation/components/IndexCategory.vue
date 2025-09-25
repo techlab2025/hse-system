@@ -8,6 +8,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -25,6 +26,8 @@ import IndexCategoryController from '../controllers/indexCategoryController'
 import IndexCategoryParams from '../../Core/params/indexCategoryParams'
 import DeleteCategoryParams from '../../Core/params/deleteCategoryParams'
 import DeleteCategoryController from '../controllers/deleteCategoryController'
+import ChangeCategoryStatusParams from '../../Core/params/changeStatusCategoryParams'
+import disActiveCategoryController from '../controllers/disActiveCategoryController'
 
 const { t } = useI18n()
 
@@ -127,6 +130,12 @@ watch(
     fetchCategory()
   },
 )
+
+const changeStatusCategory = async (id: number) => {
+  const changeCategoryStatusParams = new ChangeCategoryStatusParams(id)
+  await disActiveCategoryController.getInstance().disActiveCategory(changeCategoryStatusParams)
+  await fetchCategory()
+}
 </script>
 
 <template>
@@ -181,6 +190,7 @@ watch(
                 <th scope="col">{{ $t('title') }}</th>
 
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -195,7 +205,21 @@ watch(
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-
+                <td data-label="status">
+                  <permission-builder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.isActive === 1"
+                      binary
+                      @update:model-value="changeStatusCategory(item.id)"
+                    />
+                  </permission-builder>
+                </td>
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusCategory-->
                   <!--                  v-if="item.CategoryStatus === CategoryStatusEnum.Draft"-->

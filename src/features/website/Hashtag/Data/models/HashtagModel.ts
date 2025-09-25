@@ -11,6 +11,7 @@ export default class HashtagModel extends TitleInterface {
   public image: string
   public titles: string
   public descriptions: string
+  public isActive: number
 
   constructor(
     id: number,
@@ -23,6 +24,7 @@ export default class HashtagModel extends TitleInterface {
     image: string,
     titles: string,
     descriptions: string,
+    isActive: number,
   ) {
     super({ id, title, subtitle })
 
@@ -34,6 +36,7 @@ export default class HashtagModel extends TitleInterface {
     this.image = image
     this.titles = titles
     this.descriptions = descriptions
+    this.isActive = isActive
   }
 
   static fromMap(data: any): HashtagModel {
@@ -50,6 +53,7 @@ export default class HashtagModel extends TitleInterface {
       data.image,
       data.titles,
       data.descriptions,
+      data.is_active,
     )
   }
 }
