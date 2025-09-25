@@ -148,20 +148,8 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data!"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Equipment Type Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_TYPE_CREATE]">
         <router-link to="/admin/project-type/add" class="btn btn-primary">
           {{ $t('Add_ProjectType') }}

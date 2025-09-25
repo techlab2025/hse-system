@@ -39,7 +39,7 @@ export default class EditPowerFullController extends ControllerInterface<PowerFu
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/power-full')
+        await router.push('/admin/powerfull-features')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
