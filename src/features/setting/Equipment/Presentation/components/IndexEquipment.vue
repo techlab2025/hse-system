@@ -165,21 +165,8 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel
-          :data="state.data"
-          :columns="customColumns"
-          filename="formatted_export"
-          sheet-name="Equipment Data"
-          button-text="Export Formatted"
-          button-class="btn-primary"
-        />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/equipment/add" class="btn btn-primary">
           {{ $t('Add_Equipment') }}
@@ -206,7 +193,7 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-<!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
                 <th scope="col">{{ $t('EquipmentType') }}</th>
@@ -231,7 +218,6 @@ watch(
                 <td data-label="EquipmentType">
                   {{ item.equipmentTypeId?.title }}
                 </td>
-
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusEquipmentType-->

@@ -61,12 +61,12 @@ class ApiNames {
 
   // PowerFull
 
-  public CreatePowerFull = this.baseUrl + this.dashboardPrefix + 'create_powerfull'
-  public IndexPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerfulls'
-  public ShowPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerfull_details'
-  public EditPowerFull = this.baseUrl + this.dashboardPrefix + 'update_powerfull'
-  public DeletePowerFull = this.baseUrl + this.dashboardPrefix + 'delete_powerfull'
-  public ChangeStatusPowerFull = this.baseUrl + this.dashboardPrefix + 'change_powerfull_active_status'
+  public CreatePowerFull = this.baseUrl + this.dashboardPrefix + 'create_powerful_feature'
+  public IndexPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerful_features'
+  public ShowPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerful_feature_details'
+  public EditPowerFull = this.baseUrl + this.dashboardPrefix + 'update_powerful_feature'
+  public DeletePowerFull = this.baseUrl + this.dashboardPrefix + 'delete_powerful_feature'
+  public ChangeStatusPowerFull = this.baseUrl + this.dashboardPrefix + 'change_powerful_feature_active_status'
 
 
   // SystemWork
