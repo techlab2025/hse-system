@@ -5,29 +5,29 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type HomeContactUsModel from '../../Data/models/HomeContactUsModel'
-import DisHomeContactUsUseCase from '../../Domain/useCase/disHomeContactUsUseCase'
+import ChangeStatusHomeContactUsUseCase from '../../Domain/useCase/changeStatusHomeContactUsUseCase'
 
 
-export default class disActiveHomeContactUsController extends ControllerInterface<HomeContactUsModel> {
-  private static instance: disActiveHomeContactUsController
+export default class ChangeStatusHomeContactUsController extends ControllerInterface<HomeContactUsModel> {
+  private static instance: ChangeStatusHomeContactUsController
   private constructor() {
     super()
   }
-  private disActiveHomeContactUsUseCase = new DisHomeContactUsUseCase()
+  private ChangeStatusHomeContactUsUseCase = new ChangeStatusHomeContactUsUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveHomeContactUsController()
+      this.instance = new ChangeStatusHomeContactUsController()
     }
     return this.instance
   }
 
-  async disActiveHomeContactUs(params: Params) {
+  async changeStatusHomeContactUs(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
     const dataState: DataState<HomeContactUsModel> =
-      await this.disActiveHomeContactUsUseCase.call(params)
+      await this.ChangeStatusHomeContactUsUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

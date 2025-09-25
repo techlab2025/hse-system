@@ -4,13 +4,13 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 
 export default class ClientOpinionModel extends TitleInterface {
   public id: number
-  // public hasCertificate: number
   public name: string
   public rate: number
   public date: string
   public description: string
   public image: string
   public alt: string
+  public is_active: number
 
   constructor(
     id: number,
@@ -18,8 +18,9 @@ export default class ClientOpinionModel extends TitleInterface {
     rate: number,
     date: string,
     description: string,
-    alt: string,
     image: string,
+    alt: string,
+    is_active: number
 
   ) {
     super({ id })
@@ -28,8 +29,9 @@ export default class ClientOpinionModel extends TitleInterface {
     this.rate = rate
     this.date = date
     this.description = description
-    this.alt = alt
     this.image = image
+    this.alt = alt
+    this.is_active = is_active
   }
 
   static fromMap(data: any): ClientOpinionModel {
@@ -39,8 +41,9 @@ export default class ClientOpinionModel extends TitleInterface {
       data.rate,
       data.date,
       data.description,
+      data.image,
       data.alt,
-      data.image
+      data.is_active
 
     )
   }

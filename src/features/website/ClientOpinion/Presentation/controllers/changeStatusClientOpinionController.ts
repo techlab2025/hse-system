@@ -5,28 +5,28 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type ClientOpinionModel from '../../Data/models/ClientOpinionModel'
-import DisClientOpinionUseCase from '../../Domain/useCase/disClientOpinionUseCase'
+import ChangeStatusClientOpinionUseCase from '../../Domain/useCase/changeStatusClientOpinionUseCase'
 
-export default class disActiveClientOpinionController extends ControllerInterface<ClientOpinionModel> {
-  private static instance: disActiveClientOpinionController
+export default class ChangeStatusClientOpinionController extends ControllerInterface<ClientOpinionModel> {
+  private static instance: ChangeStatusClientOpinionController
   private constructor() {
     super()
   }
-  private disActiveClientOpinionUseCase = new DisClientOpinionUseCase()
+  private ChangeStatusClientOpinionUseCase = new ChangeStatusClientOpinionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveClientOpinionController()
+      this.instance = new ChangeStatusClientOpinionController()
     }
     return this.instance
   }
 
-  async disActiveClientOpinion(params: Params) {
+  async changeStatusClientOpinion(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
     const dataState: DataState<ClientOpinionModel> =
-      await this.disActiveClientOpinionUseCase.call(params)
+      await this.ChangeStatusClientOpinionUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

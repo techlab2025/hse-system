@@ -8,6 +8,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -25,6 +26,8 @@ import IndexHomeContactUsController from '../controllers/indexHomeContactUsContr
 import IndexHomeContactUsParams from '../../Core/params/indexHomeContactUsParams'
 import DeleteHomeContactUsParams from '../../Core/params/deleteHomeContactUsParams'
 import DeleteHomeContactUsController from '../controllers/deleteHomeContactUsController'
+import ChangeStatusHomeContactUsParams from '../../Core/params/changeStatusHomeContactUs'
+import ChangeStatusHomeContactUsController from '../controllers/changeStatusHomeContactUsController'
 
 const { t } = useI18n()
 
@@ -93,6 +96,14 @@ watch(
     deep: true,
   },
 )
+
+const changeStatusHomeContactUs = async (id: number) => {
+  const changeStatusHomeContactUsParams = new ChangeStatusHomeContactUsParams(id)
+  await ChangeStatusHomeContactUsController.getInstance().changeStatusHomeContactUs(
+    changeStatusHomeContactUsParams,
+  )
+  await fetchHomeContactUs()
+}
 
 const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
   {
@@ -199,6 +210,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
                 <th scope="col">{{ $t('button_title') }}</th>
 
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -217,14 +229,23 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
+                <td data-label="image">
+                  <permission-builder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_CONTACT_US_ALL,
+                      PermissionsEnum.HOME_CONTACT_US_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.is_active === 1"
+                      binary
+                      @update:model-value="changeStatusHomeContactUs(item.id)"
+                    />
+                  </permission-builder>
+                </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusHomeContactUs-->
-                  <!--                  v-if="item.HomeContactUsStatus === HomeContactUsStatusEnum.Draft"-->
-                  <!--                  :HomeContactUsId="item.id"-->
-                  <!--                  @HomeContactUsChangeStatus="fetchHomeContactUs"-->
-                  <!--                />-->
-
                   <DropList
                     :actionList="actionList(item.id, deleteHomeContactUs)"
                     @delete="deleteHomeContactUs(item.id)"

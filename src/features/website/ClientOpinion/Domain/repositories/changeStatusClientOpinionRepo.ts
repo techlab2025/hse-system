@@ -2,17 +2,17 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import ClientOpinionModel from '../../Data/models/ClientOpinionModel'
-import { DisClientOpinionApiService } from '../../Data/apiServices/disClientOpinionApiService'
+import { ChangeStatusClientOpinionApiService } from '../../Data/apiServices/changeStatusClientOpinionApiService'
 
-class DisActiveClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
-  private static instance: DisActiveClientOpinionRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+class ChangeStatusClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
+  private static instance: ChangeStatusClientOpinionRepo
+  // eslint-ChangeStatusable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisActiveClientOpinionRepo()
+      this.instance = new ChangeStatusClientOpinionRepo()
     }
     return this.instance
   }
@@ -26,8 +26,8 @@ class DisActiveClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
   }
 
   get serviceInstance(): ServicesInterface {
-    return DisClientOpinionApiService.getInstance()
+    return ChangeStatusClientOpinionApiService.getInstance()
   }
 }
 
-export { DisActiveClientOpinionRepo }
+export { ChangeStatusClientOpinionRepo }

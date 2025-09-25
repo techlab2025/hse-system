@@ -12,12 +12,6 @@
 //@use "./utils/_explore_btn";
 @use './normalize';
 
-
-
-
-
-
-
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
@@ -111,4 +105,8 @@ body {
       fill: $PrimaryColor !important;
     }
   }
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+  background-color: $PrimaryColor !important;
 }

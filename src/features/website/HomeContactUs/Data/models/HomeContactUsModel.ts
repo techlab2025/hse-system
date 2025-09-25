@@ -10,7 +10,7 @@ export default class HomeContactUsModel extends TitleInterface {
   public button_title: string
   public image: string
   public alt: string
-
+  public is_active: number
   constructor(
     id: number,
     description: string,
@@ -19,6 +19,7 @@ export default class HomeContactUsModel extends TitleInterface {
     button_title: string,
     alt: string,
     image: string,
+    is_active: number
 
   ) {
     super({ id })
@@ -29,6 +30,7 @@ export default class HomeContactUsModel extends TitleInterface {
     this.button_title = button_title
     this.alt = alt
     this.image = image
+    this.is_active = is_active
   }
 
   static fromMap(data: any): HomeContactUsModel {
@@ -39,7 +41,8 @@ export default class HomeContactUsModel extends TitleInterface {
       data.subtitle,
       data.button_title,
       data.alt,
-      data.image
+      data.image,
+      data.is_active
 
     )
   }

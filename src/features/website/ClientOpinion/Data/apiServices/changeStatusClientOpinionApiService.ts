@@ -3,8 +3,8 @@ import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 
-class DisHomeContactUsApiService extends ServicesInterface {
-  private static instance: DisHomeContactUsApiService
+class ChangeStatusClientOpinionApiService extends ServicesInterface {
+  private static instance: ChangeStatusClientOpinionApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -12,14 +12,14 @@ class DisHomeContactUsApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisHomeContactUsApiService()
+      this.instance = new ChangeStatusClientOpinionApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DisHomeContactUs,
+      url: ApiNames.instance.ChangeStatusClientOpinion,
       type: CrudType.FormData,
       auth: true,
       params: params,
@@ -27,4 +27,4 @@ class DisHomeContactUsApiService extends ServicesInterface {
   }
 }
 
-export { DisHomeContactUsApiService }
+export { ChangeStatusClientOpinionApiService }
