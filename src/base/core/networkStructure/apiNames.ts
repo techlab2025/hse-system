@@ -138,6 +138,30 @@ class ApiNames {
   public DeleteCategory = this.baseUrl + this.dashboardPrefix + 'delete_category'
   public DisCategory = this.baseUrl + this.dashboardPrefix + 'change_category_active_status'
 
+  // Hashtag
+  public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
+  public IndexHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtags'
+  public ShowHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtag_details'
+  public EditHashtag = this.baseUrl + this.dashboardPrefix + 'update_hashtag'
+  public DeleteHashtag = this.baseUrl + this.dashboardPrefix + 'delete_hashtag'
+  public DisHashtag = this.baseUrl + this.dashboardPrefix + 'change_hashtag_active_status'
+
+  // Term
+  public CreateTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
+  public IndexTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
+  public ShowTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
+  public EditTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
+  public DeleteTerm = this.baseUrl + this.dashboardPrefix + 'delete_term'
+  public DisTerm = this.baseUrl + this.dashboardPrefix + 'change_term_active_status'
+
+  // privacy
+  public CreatePrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
+  public IndexPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
+  public ShowPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
+  public EditPrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
+  public DeletePrivacy = this.baseUrl + this.dashboardPrefix + 'delete_privacy'
+  public DisPrivacy = this.baseUrl + this.dashboardPrefix + 'change_privacy_active_status'
+
   //Equipment
   public CreateEquipment = this.baseUrl + this.dashboardPrefix + 'create_equipment'
   public IndexEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipments'

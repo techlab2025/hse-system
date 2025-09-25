@@ -228,17 +228,47 @@ const router = createRouter({
         {
           path: 'categories',
           name: 'Categories',
-          component: () => import('../views/Category/IndexCategory.vue'),
+          component: () => import('../views/Website/Category/IndexCategory.vue'),
         },
         {
           path: 'category/add',
           name: 'Add Category',
-          component: () => import('../views/Category/AddCategory.vue'),
+          component: () => import('../views/Website/Category/AddCategory.vue'),
         },
         {
           path: 'category/:id',
           name: 'Edit Category',
-          component: () => import('../views/Category/EditCategory.vue'),
+          component: () => import('../views/Website/Category/EditCategory.vue'),
+        },
+        // Hashtag
+        {
+          path: 'hashtags',
+          name: 'Hashtags',
+          component: () => import('../views/Website/Hashtag/IndexHashtag.vue'),
+        },
+        {
+          path: 'hashtag/add',
+          name: 'Add Hashtag',
+          component: () => import('../views/Website/Hashtag/AddHashtag.vue'),
+        },
+        {
+          path: 'hashtag/:id',
+          name: 'Edit Hashtag',
+          component: () => import('../views/Website/Hashtag/EditHashtag.vue'),
+        },
+        // Term
+        {
+          path: 'term/add',
+          name: 'Add Term',
+          component: () => import('../views/Website/Term/EditTerms.vue'),
+        },
+
+        // Privacy
+
+  {
+          path: 'privacy/add',
+          name: 'Add Privacy',
+          component: () => import('../views/Website/Privacy/EditPrivacy.vue'),
         },
 
         {

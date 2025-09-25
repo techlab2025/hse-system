@@ -436,6 +436,39 @@ const active = ref('0')
                 <li>
                   <PermissionBuilder
                     :code="[
+                      PermissionsEnum.HASHTAG_ALL,
+                      PermissionsEnum.HASHTAG_CREATE,
+                      PermissionsEnum.HASHTAG_DELETE,
+                      PermissionsEnum.HASHTAG_FETCH,
+                      PermissionsEnum.HASHTAG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/hashtags">
+                      <SidebarVector />
+                      <span>Hashtags</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <!-- Term -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.TERM_ALL,
+                      PermissionsEnum.TERM_CREATE,
+                      PermissionsEnum.TERM_DELETE,
+                      PermissionsEnum.TERM_FETCH,
+                      PermissionsEnum.TERM_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/term/add">
+                      <SidebarVector />
+                      <span>Terms</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
                       PermissionsEnum.HEADER_ALL,
                       PermissionsEnum.HEADER_CREATE,
                       PermissionsEnum.HEADER_DELETE,
@@ -515,6 +548,23 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
 
+                <!-- Privacy -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.PRIVACY_ALL,
+                      PermissionsEnum.PRIVACY_CREATE,
+                      PermissionsEnum.PRIVACY_DELETE,
+                      PermissionsEnum.PRIVACY_FETCH,
+                      PermissionsEnum.PRIVACY_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/privacy/add">
+                      <SidebarVector />
+                      <span>Privacy</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
                 <li>
                   <PermissionBuilder
                     :code="[
