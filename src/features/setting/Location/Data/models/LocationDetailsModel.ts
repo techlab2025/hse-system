@@ -3,6 +3,8 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 export default class LocationDetailsModel {
   public id: number
   public titles: { locale: string; title: string }[] 
+
+
   public code: string
   public parent: TitleInterface | null
   public type: number
@@ -11,6 +13,7 @@ export default class LocationDetailsModel {
 
   constructor(
     id: number,
+
     titles: { locale: string; title: string }[],
     code: string,
     parent: TitleInterface | null,

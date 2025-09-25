@@ -594,6 +594,40 @@ const active = ref('0')
                     <router-link to="/admin/service_logs">
                       <SidebarVector />
                       <span>Service Logs</span>
+                      </router-link>
+                    </PermissionBuilder>
+                  </li>
+
+                <!-- Blog -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.BLOG_ALL,
+                      PermissionsEnum.BLOG_CREATE,
+                      PermissionsEnum.BLOG_DELETE,
+                      PermissionsEnum.BLOG_FETCH,
+                      PermissionsEnum.BLOG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/blog">
+                      <SidebarVector />
+                      <span>Blogs</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_ABOUT_US_ALL,
+                      PermissionsEnum.HOME_ABOUT_US_CREATE,
+                      PermissionsEnum.HOME_ABOUT_US_DELETE,
+                      PermissionsEnum.HOME_ABOUT_US_FETCH,
+                      PermissionsEnum.HOME_ABOUT_US_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-about-us">
+                      <SidebarVector />
+                      <span>Home About Us</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

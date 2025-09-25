@@ -49,6 +49,14 @@ class ApiNames {
   public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
 
 
+  // HomeAboutUs
+
+  public CreateHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'create_home_about_us'
+  public IndexHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us'
+  public ShowHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us_details'
+  public EditHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'update_home_about_us'
+  public DeleteHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'delete_home_about_us'
+  public ChangeStatusHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'change_home_about_us_active_status'
 
 
   // PowerFull
@@ -137,6 +145,15 @@ class ApiNames {
   public EditCategory = this.baseUrl + this.dashboardPrefix + 'update_category'
   public DeleteCategory = this.baseUrl + this.dashboardPrefix + 'delete_category'
   public DisCategory = this.baseUrl + this.dashboardPrefix + 'change_category_active_status'
+
+  // Blog
+  public CreateBlog = this.baseUrl + this.dashboardPrefix + 'create_blog'
+  public IndexBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blogs'
+  public ShowBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blog_details'
+  public EditBlog = this.baseUrl + this.dashboardPrefix + 'update_blog'
+  public DeleteBlog = this.baseUrl + this.dashboardPrefix + 'delete_blog'
+  public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
+  public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
 
   // Hashtag
   public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'

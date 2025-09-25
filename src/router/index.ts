@@ -110,6 +110,23 @@ const router = createRouter({
         },
 
         {
+          path: 'home-about-us',
+          name: 'Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/IndexHomeAboutUs.vue'),
+        },
+
+        {
+          path: 'home-about-us/add',
+          name: 'Add Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/AddHomeAboutUs.vue'),
+        },
+        {
+          path: 'home-about-us/:id',
+          name: 'Edit Home About Us',
+          component: () => import('../views/Website/HomeAboutUs/EditHomeAboutUs.vue'),
+        },
+
+        {
           path: 'client-opinions',
           name: 'Client Opinions',
           component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
@@ -451,6 +468,7 @@ const router = createRouter({
           name: 'Edit Service Sections',
           component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
         },
+
         {
           path: 'service_logs',
           name: 'Services Logs',
@@ -465,6 +483,24 @@ const router = createRouter({
           path: 'service_logs/:id',
           name: 'Edit Service Logs',
           component: () => import('../views/Website/ServiceLogs/EditServiceLogs.vue'),
+
+
+        // blog
+        {
+          path: 'blog',
+          name: 'Blog',
+          component: () => import('../views/Website/Blog/IndexBlog.vue'),
+        },
+        {
+          path: 'blog/add',
+          name: 'Add Blog',
+          component: () => import('../views/Website/Blog/AddBlog.vue'),
+        },
+        {
+          path: 'blog/:id',
+          name: 'Edit Blog',
+          component: () => import('../views/Website/Blog/EditBlog.vue'),
+
         },
       ],
     },

@@ -3,9 +3,11 @@
 .btn-primary {
   background-color: $PrimaryColor;
   color: $White;
+  border-color: $PrimaryColor;
+  font-family: "Regular";
+  font-size: $XsSize;
   &:hover {
     background-color: transparent;
     color: $PrimaryColor;
-    border: 1px solid $MainBorder;
   }
 }

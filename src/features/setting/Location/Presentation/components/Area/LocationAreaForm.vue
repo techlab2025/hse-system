@@ -150,12 +150,28 @@ const UpdateCode = (data) => {
 const SelectedCountry = ref<TitleInterface>()
 const SetCountrySelection = (data: TitleInterface) => {
   SelectedCountry.value = data
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    data.id,
+  )
   updateData()
 }
 
 const SelectedState = ref<TitleInterface>()
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
+  indexLocationAreasParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.CITY,
+    data.id,
+  )
   updateData()
 }
 
@@ -169,24 +185,10 @@ const indexLocationCountriesController = IndexLocationController.getInstance()
 const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
 
 const indexLocationStatesController = IndexLocationController.getInstance()
-const indexLocationStatesParams = new IndexLocationParams(
-  '',
-  0,
-  0,
-  0,
-  LocationEnum.STATE,
-  SelectedCountry.value?.id,
-)
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
 
 const indexLocationAreasController = IndexLocationController.getInstance()
-const indexLocationAreasParams = new IndexLocationParams(
-  '',
-  0,
-  0,
-  0,
-  LocationEnum.CITY,
-  SelectedCity?.value?.id,
-)
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
 </script>
 
 <template>
