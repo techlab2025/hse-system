@@ -483,9 +483,7 @@ const router = createRouter({
           path: 'service_logs/:id',
           name: 'Edit Service Logs',
           component: () => import('../views/Website/ServiceLogs/EditServiceLogs.vue'),
-
-
-        // blog
+        },
         {
           path: 'blog',
           name: 'Blog',
@@ -500,7 +498,6 @@ const router = createRouter({
           path: 'blog/:id',
           name: 'Edit Blog',
           component: () => import('../views/Website/Blog/EditBlog.vue'),
-
         },
       ],
     },
