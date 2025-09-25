@@ -111,8 +111,10 @@ watch(
       }
 
       SelectedCountry.value = newData?.parent
+      allIndustries.value = newData?.allIndustries!
+      industry.value = newData?.industries!
 
-
+     
     }
   },
   { immediate: true },

@@ -2,7 +2,8 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class LocationDetailsModel {
   public id: number
-  public title: string
+
+  public titles: { locale: string; title: string }[] // <-- instead of single title
   public code: string
   public parent: TitleInterface | null
   public type: number
@@ -11,7 +12,8 @@ export default class LocationDetailsModel {
 
   constructor(
     id: number,
-    title: string,
+
+    titles: { locale: string; title: string }[],
     code: string,
     parent: TitleInterface | null,
     type: number,
@@ -19,7 +21,7 @@ export default class LocationDetailsModel {
     image: string,
   ) {
     this.id = id
-    this.title = title
+    this.titles = titles
     this.code = code
     this.parent = parent
     this.type = type
@@ -30,7 +32,7 @@ export default class LocationDetailsModel {
   static fromMap(data: any): LocationDetailsModel {
     return new LocationDetailsModel(
       data.id,
-      data.title,
+      data.titles ?? [],
       data.code,
       data.parent ? this.getTitle(data.parent) : null,
       data.type,
@@ -41,7 +43,6 @@ export default class LocationDetailsModel {
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,

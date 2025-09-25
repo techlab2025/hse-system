@@ -156,7 +156,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
         <router-link to="/admin/template/add" class="btn btn-primary">
           {{ $t('Add_Template') }}
         </router-link>

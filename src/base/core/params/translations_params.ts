@@ -1,3 +1,5 @@
+// import { log } from "console"
+
 export default class TranslationsParams {
   // Store translations in a nested structure: { field: { locale: value } }
   private translations: Record<string, Record<string, string>> = {
@@ -47,9 +49,11 @@ export default class TranslationsParams {
   static fromMap(
     titles: TitleLocale[],
     descriptions: DescriptionLocale[] = [],
+    langLocale: LangLocale<string>[] = []
   ): {
     titles: TitleLocale[]
     descriptions: DescriptionLocale[]
+    langLocale: LangLocale<string>[]
   } {
     const params = new TranslationsParams()
 
@@ -61,7 +65,13 @@ export default class TranslationsParams {
       params.setTranslation('description', locale, title)
     })
 
-    return { titles, descriptions }
+    langLocale.forEach(({ locale, value }) => {
+      params.setTranslation('lang', locale, value)
+    })
+
+    // console.log(this.translations, 'params');  
+
+    return { titles, descriptions, langLocale }
   }
 }
 
@@ -74,3 +84,10 @@ export interface DescriptionLocale {
   locale: string
   description: string
 }
+
+export interface LangLocale<T> {
+  locale: string
+  value: T
+}
+
+
