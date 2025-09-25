@@ -178,22 +178,22 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
 
-<!--                <li>-->
-<!--                  <PermissionBuilder-->
-<!--                    :code="[-->
-<!--                      PermissionsEnum.CERTIFICATE_ALL,-->
-<!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
-<!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
-<!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
-<!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
-<!--                    ]"-->
-<!--                  >-->
-<!--                    <router-link to="/admin/certificates">-->
-<!--                      <SidebarVector />-->
-<!--                      <span>Certificates</span>-->
-<!--                    </router-link>-->
-<!--                  </PermissionBuilder>-->
-<!--                </li>-->
+                <!--                <li>-->
+                <!--                  <PermissionBuilder-->
+                <!--                    :code="[-->
+                <!--                      PermissionsEnum.CERTIFICATE_ALL,-->
+                <!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
+                <!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
+                <!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
+                <!--                    ]"-->
+                <!--                  >-->
+                <!--                    <router-link to="/admin/certificates">-->
+                <!--                      <SidebarVector />-->
+                <!--                      <span>Certificates</span>-->
+                <!--                    </router-link>-->
+                <!--                  </PermissionBuilder>-->
+                <!--                </li>-->
 
                 <li>
                   <PermissionBuilder
@@ -367,18 +367,267 @@ const active = ref('0')
                 <li>
                   <PermissionBuilder
                     :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum?.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_UPDATE,
-                      PermissionsEnum.LOCATION_DETAILS,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
+                      PermissionsEnum?.WEBSITE,
+                      PermissionsEnum?.CLIENT_OPINION_ALL,
+                      PermissionsEnum.CLIENT_OPINION_CREATE,
+                      PermissionsEnum.CLIENT_OPINION_UPDATE,
+                      PermissionsEnum.CLIENT_OPINION_DETAILS,
+                      PermissionsEnum.CLIENT_OPINION_DELETE,
+                      PermissionsEnum.CLIENT_OPINION_FETCH,
                     ]"
                   >
-                    <router-link to="/admin/client-opinion">
+                    <router-link to="/admin/client-opinions">
                       <SidebarVector />
                       <span>Client Opinion</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.WEBSITE,
+                      PermissionsEnum?.HOME_CONTACT_US_ALL,
+                      PermissionsEnum.HOME_CONTACT_US_CREATE,
+                      PermissionsEnum.HOME_CONTACT_US_UPDATE,
+                      PermissionsEnum.HOME_CONTACT_US_DETAILS,
+                      PermissionsEnum.HOME_CONTACT_US_DELETE,
+                      PermissionsEnum.HOME_CONTACT_US_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/home-contact-us">
+                      <SidebarVector />
+                      <span>Home Contact Us</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.CATEGORY_ALL,
+                      PermissionsEnum.CATEGORY_CREATE,
+                      PermissionsEnum.CATEGORY_DELETE,
+                      PermissionsEnum.CATEGORY_FETCH,
+                      PermissionsEnum.CATEGORY_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/categories">
+                      <SidebarVector />
+                      <span>Categories</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_ALL,
+                      PermissionsEnum.SERVICE_CREATE,
+                      PermissionsEnum.SERVICE_DELETE,
+                      PermissionsEnum.SERVICE_FETCH,
+                      PermissionsEnum.SERVICE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/services">
+                      <SidebarVector />
+                      <span>Services</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HASHTAG_ALL,
+                      PermissionsEnum.HASHTAG_CREATE,
+                      PermissionsEnum.HASHTAG_DELETE,
+                      PermissionsEnum.HASHTAG_FETCH,
+                      PermissionsEnum.HASHTAG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/hashtags">
+                      <SidebarVector />
+                      <span>Hashtags</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <!-- Term -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.TERM_ALL,
+                      PermissionsEnum.TERM_CREATE,
+                      PermissionsEnum.TERM_DELETE,
+                      PermissionsEnum.TERM_FETCH,
+                      PermissionsEnum.TERM_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/term/add">
+                      <SidebarVector />
+                      <span>Terms</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HEADER_ALL,
+                      PermissionsEnum.HEADER_CREATE,
+                      PermissionsEnum.HEADER_DELETE,
+                      PermissionsEnum.HEADER_FETCH,
+                      PermissionsEnum.HEADER_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/headers">
+                      <SidebarVector />
+                      <span>Header</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_FEATURE_ALL,
+                      PermissionsEnum.SERVICE_FEATURE_CREATE,
+                      PermissionsEnum.SERVICE_FEATURE_DELETE,
+                      PermissionsEnum.SERVICE_FEATURE_FETCH,
+                      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_features">
+                      <SidebarVector />
+                      <span>Service Features</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_SECTION_ALL,
+                      PermissionsEnum.SERVICE_SECTION_CREATE,
+                      PermissionsEnum.SERVICE_SECTION_DELETE,
+                      PermissionsEnum.SERVICE_SECTION_FETCH,
+                      PermissionsEnum.SERVICE_SECTION_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_section">
+                      <SidebarVector />
+                      <span>Service Section</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.POWERFUL_FEATURE_ALL,
+                      PermissionsEnum.POWERFUL_FEATURE_CREATE,
+                      PermissionsEnum.POWERFUL_FEATURE_DELETE,
+                      PermissionsEnum.POWERFUL_FEATURE_FETCH,
+                      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/powerfull-features">
+                      <SidebarVector />
+                      <span>PowerFull</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SYSTEM_WORK_ALL,
+                      PermissionsEnum.SYSTEM_WORK_CREATE,
+                      PermissionsEnum.SYSTEM_WORK_DELETE,
+                      PermissionsEnum.SYSTEM_WORK_FETCH,
+                      PermissionsEnum.SYSTEM_WORK_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system-works">
+                      <SidebarVector />
+                      <span>System Work</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <!-- Privacy -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.PRIVACY_ALL,
+                      PermissionsEnum.PRIVACY_CREATE_OR_UPDATE,
+                      PermissionsEnum.PRIVACY_FETCH,
+                    ]"
+                  >
+                    <router-link to="/admin/privacy/add">
+                      <SidebarVector />
+                      <span>Privacy</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CREATE,
+                      PermissionsEnum.HOME_VIEW_PRICING_DELETE,
+                      PermissionsEnum.HOME_VIEW_PRICING_FETCH,
+                      PermissionsEnum.HOME_VIEW_PRICING_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-view-pricing">
+                      <SidebarVector />
+                      <span>Home View Price</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.SERVICE_LOG_ALL,
+                      PermissionsEnum.SERVICE_LOG_CREATE,
+                      PermissionsEnum.SERVICE_LOG_DELETE,
+                      PermissionsEnum.SERVICE_LOG_FETCH,
+                      PermissionsEnum.SERVICE_LOG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/service_logs">
+                      <SidebarVector />
+                      <span>Service Logs</span>
+                      </router-link>
+                    </PermissionBuilder>
+                  </li>
+
+                <!-- Blog -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.BLOG_ALL,
+                      PermissionsEnum.BLOG_CREATE,
+                      PermissionsEnum.BLOG_DELETE,
+                      PermissionsEnum.BLOG_FETCH,
+                      PermissionsEnum.BLOG_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/blog">
+                      <SidebarVector />
+                      <span>Blogs</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.HOME_ABOUT_US_ALL,
+                      PermissionsEnum.HOME_ABOUT_US_CREATE,
+                      PermissionsEnum.HOME_ABOUT_US_DELETE,
+                      PermissionsEnum.HOME_ABOUT_US_FETCH,
+                      PermissionsEnum.HOME_ABOUT_US_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/home-about-us">
+                      <SidebarVector />
+                      <span>Home About Us</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

@@ -148,15 +148,9 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+     <ExportExcel />
+      <ExportPdf />
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
         <router-link to="/admin/template/add" class="btn btn-primary">
           {{ $t('Add_Template') }}
         </router-link>

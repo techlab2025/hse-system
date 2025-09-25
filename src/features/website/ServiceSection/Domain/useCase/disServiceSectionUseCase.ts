@@ -1,0 +1,12 @@
+import type Params from '@/base/core/params/params'
+// import type LangModel from '@/features/setting/languages/Data/models/langModel'
+import type UseCase from '@/base/Domain/UseCase/use_case'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type ServiceSectionModel from '../../Data/models/ServiceSectionModel'
+import { DisActiveServiceSectionRepo } from '../repositories/disActiveServiceSectionRepo'
+
+export default class DisServiceSectionUseCase implements UseCase<ServiceSectionModel, Params> {
+  async call(params: Params): Promise<DataState<ServiceSectionModel>> {
+    return DisActiveServiceSectionRepo.getInstance().call(params)
+  }
+}

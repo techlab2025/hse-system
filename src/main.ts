@@ -49,6 +49,11 @@ app.use(i18n)
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
+    options: {
+      prefix: 'p',
+      darkModeSelector: false,
+      cssLayer: false
+    }
   },
 })
 app.mount('#app')
