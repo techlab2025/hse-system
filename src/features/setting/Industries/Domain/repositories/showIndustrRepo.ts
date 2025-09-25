@@ -1,9 +1,10 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import IndustryModel from '../../Data/Models/IndustryModel'
-import { ShowIndustryApiService } from '../../Data/apiServices/showIndustryApiService'
+// import IndustryModel from '../../Data/Models/IndustryModel'
+import { ShowIndustryApiService } from '@/features/setting/Industries/Data/apiServices/showIndustryApiService'
+import IndustryDetailsModel from '@/features/setting/Industries/Data/Models/IndustryDetailsModel.ts'
 
-class ShowIndustryRepo extends RepoInterface<IndustryModel> {
+class ShowIndustryRepo extends RepoInterface<IndustryDetailsModel> {
   private static instance: ShowIndustryRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -16,8 +17,8 @@ class ShowIndustryRepo extends RepoInterface<IndustryModel> {
     return this.instance
   }
 
-  onParse(data: any): IndustryModel {
-    return IndustryModel.fromMap(data)
+  onParse(data: any): IndustryDetailsModel {
+    return IndustryDetailsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
