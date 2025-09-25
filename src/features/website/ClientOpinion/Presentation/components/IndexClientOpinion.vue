@@ -154,7 +154,7 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.CLIENT_OPINION_CREATE]">
         <router-link to="/admin/client-opinion/add" class="btn btn-primary">
           {{ $t('Add_ClientOpinion') }}
         </router-link>

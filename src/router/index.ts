@@ -149,6 +149,39 @@ const router = createRouter({
         },
 
         {
+          path: "powerfull-features",
+          name: "PowerFull",
+          component: () => import('../views/Website/PowerFull/IndexPowerFull.vue')
+        },
+        {
+          path: "power-full/add",
+          name: "Add PowerFull ",
+          component: () => import('../views/Website/PowerFull/AddPowerFull.vue')
+        },
+        {
+          path: "power-full/:id",
+          name: "Edit PowerFull",
+          component: () => import('../views/Website/PowerFull/EditPowerFull.vue')
+        },
+
+        {
+          path: "system-works",
+          name: "System Work",
+          component: () => import('../views/Website/SystemWork/IndexSystemWork.vue'),
+        },
+
+        {
+          path: 'system-work/add',
+          name: 'Add System Work',
+          component: () => import('../views/Website/SystemWork/AddSystemWork.vue'),
+        },
+        {
+          path: 'system-work/:id',
+          name: 'Edit System Work',
+          component: () => import('../views/Website/SystemWork/EditSystemWork.vue'),
+        },
+
+        {
           path: 'home-contact-us/add',
           name: 'Add Home Contact Us',
           component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),

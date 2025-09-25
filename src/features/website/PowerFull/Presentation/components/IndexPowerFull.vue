@@ -22,69 +22,71 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexHeaderController from '../controllers/indexHeadersController'
-import IndexHeaderParams from '../../Core/params/indexHeaderParams'
-import DeleteHeaderParams from '../../Core/params/deleteHeaderParams'
-import DeleteHeaderController from '../controllers/deleteHeaderController'
-import ChangeStatusHeaderParams from '../../Core/params/changeStatusHeaderParams'
-import ChangeStatusHeaderController from '../controllers/changeStatusHeaderController'
+import IndexPowerFullController from '../controllers/indexPowerFullController'
+import IndexPowerFullParams from '../../Core/params/indexPowerFullParams'
+import DeletePowerFullParams from '../../Core/params/deletePowerFullParams'
+import DeletePowerFullController from '../controllers/deletePowerFullController'
+import ChangeStatusPowerFullParams from '../../Core/params/changeStatusPowerFullParams'
+import ChangeStatusPowerFullController from '../controllers/changeStatusPowerFullController'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHeader from "@/features/setting/Headeruages/Presentation/components/Header/DialogChangeStatusHeader.vue";
+// import DialogChangeStatusPowerFull from "@/features/setting/PowerFulluages/Presentation/components/PowerFull/DialogChangeStatusPowerFull.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexHeaderController = IndexHeaderController.getInstance()
-const state = ref(indexHeaderController.state.value)
+const indexPowerFullController = IndexPowerFullController.getInstance()
+const state = ref(indexPowerFullController.state.value)
 const route = useRoute()
-// const type = ref<HeaderStatusEnum>(HeaderStatusEnum[route.params.type as keyof typeof HeaderStatusEnum])
+// const type = ref<PowerFullStatusEnum>(PowerFullStatusEnum[route.params.type as keyof typeof PowerFullStatusEnum])
 
-const fetchHeader = async (
+const fetchPowerFull = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HeaderParams = new IndexHeaderParams(query, pageNumber, perPage, withPage)
-  await indexHeaderController.getData(HeaderParams)
+  const PowerFullParams = new IndexPowerFullParams(query, pageNumber, perPage, withPage)
+  await indexPowerFullController.getData(PowerFullParams)
 }
 
 onMounted(() => {
-  fetchHeader()
+  fetchPowerFull()
 })
 
-const searchHeader = debounce(() => {
-  fetchHeader(word.value)
+const searchPowerFull = debounce(() => {
+  fetchPowerFull(word.value)
 })
 
-const deleteHeader = async (id: number) => {
-  const deleteHeaderParams = new DeleteHeaderParams(id)
-  await DeleteHeaderController.getInstance().deleteHeader(deleteHeaderParams)
-  await fetchHeader()
+const deletePowerFull = async (id: number) => {
+  const deletePowerFullParams = new DeletePowerFullParams(id)
+  await DeletePowerFullController.getInstance().deletePowerFull(deletePowerFullParams)
+  await fetchPowerFull()
 }
 
-const changeStatusHeader = async (id: number) => {
-  const changeStatusHeaderParams = new ChangeStatusHeaderParams(id)
-  await ChangeStatusHeaderController.getInstance().changeStatusHeader(changeStatusHeaderParams)
-  await fetchHeader()
+const changeStatusPowerFull = async (id: number) => {
+  const changeStatusPowerFullParams = new ChangeStatusPowerFullParams(id)
+  await ChangeStatusPowerFullController.getInstance().changeStatusPowerFull(
+    changeStatusPowerFullParams,
+  )
+  await fetchPowerFull()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHeader('', currentPage.value, countPerPage.value)
+  fetchPowerFull('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHeader('', currentPage.value, countPerPage.value)
+  fetchPowerFull('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexHeaderController.state.value,
+  () => indexPowerFullController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -96,26 +98,26 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteHeader: (id: number) => void) => [
+const actionList = (id: number, deletePowerFull: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/header/${id}`,
+    link: `/admin/power-full/${id}`,
     permission: [
-      PermissionsEnum.HEADER_UPDATE,
+      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.HEADER_ALL,
+      PermissionsEnum.POWERFUL_FEATURE_ALL,
     ],
   },
 
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHeader(id),
+    action: () => deletePowerFull(id),
     permission: [
-      PermissionsEnum.HEADER_DELETE,
+      PermissionsEnum.POWERFUL_FEATURE_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.HEADER_ALL,
+      PermissionsEnum.POWERFUL_FEATURE_ALL,
     ],
   },
 ]
@@ -125,7 +127,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchHeader())">
+      <span class="icon-remove" @click="((word = ''), searchPowerFull())">
         <Search />
       </span>
       <input
@@ -133,7 +135,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchHeader"
+        @input="searchPowerFull"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -152,9 +154,9 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HEADER_CREATE]">
-        <router-link to="/admin/header/add" class="btn btn-primary">
-          {{ $t('Add_Header') }}
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.POWERFUL_FEATURE_CREATE]">
+        <router-link to="/admin/power-full/add" class="btn btn-primary">
+          {{ $t('Add_PowerFull') }}
         </router-link>
       </permission-builder>
     </div>
@@ -163,11 +165,11 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.HEADER_ALL,
-      PermissionsEnum.HEADER_DELETE,
-      PermissionsEnum.HEADER_FETCH,
-      PermissionsEnum.HEADER_UPDATE,
-      PermissionsEnum.HEADER_CREATE,
+      PermissionsEnum.POWERFUL_FEATURE_ALL,
+      PermissionsEnum.POWERFUL_FEATURE_DELETE,
+      PermissionsEnum.POWERFUL_FEATURE_FETCH,
+      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
+      PermissionsEnum.POWERFUL_FEATURE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -188,7 +190,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/header/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/power-full/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
                 <td data-label="subtitle">{{ item.subtitle }}</td>
@@ -200,22 +202,22 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HEADER_ALL,
-                      PermissionsEnum.HEADER_STATUS,
+                      PermissionsEnum.POWERFUL_FEATURE_ALL,
+                      PermissionsEnum.POWERFUL_FEATURE_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch
                       :modelValue="item.is_active === 1"
                       binary
-                      @update:model-value="changeStatusHeader(item.id)"
+                      @update:model-value="changeStatusPowerFull(item.id)"
                     />
                   </permission-builder>
                 </td>
 
                 <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteHeader)"
-                    @delete="deleteHeader(item.id)"
+                    :actionList="actionList(item.id, deletePowerFull)"
+                    @delete="deletePowerFull(item.id)"
                   />
                 </td>
               </tr>
@@ -236,18 +238,18 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/header/add`"
-          addText="Add Header"
-          description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Header"
+          :link="`/admin/power-full/add`"
+          addText="Add PowerFull"
+          description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No PowerFull"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/header/add`"
-          addText="Add Header"
-          description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Header"
+          :link="`/admin/power-full/add`"
+          addText="Add PowerFull"
+          description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No PowerFull"
         />
       </template>
     </DataStatus>
@@ -255,7 +257,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>
