@@ -8,6 +8,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -25,6 +26,8 @@ import IndexClientOpinionController from '../controllers/indexClientOpinionContr
 import IndexClientOpinionParams from '../../Core/params/indexClientOpinionParams'
 import DeleteClientOpinionParams from '../../Core/params/deleteClientOpinionParams'
 import DeleteClientOpinionController from '../controllers/deleteClientOpinionController'
+import ChangeStatusClientOpinionParams from '../../Core/params/changeStatusClientOpinionParams'
+import ChangeStatusClientOpinionController from '../controllers/changeStatusClientOpinionController'
 
 const { t } = useI18n()
 
@@ -37,7 +40,6 @@ const countPerPage = ref(10)
 const indexClientOpinionController = IndexClientOpinionController.getInstance()
 const state = ref(indexClientOpinionController.state.value)
 const route = useRoute()
-const id = route.params.parent_id
 // const type = ref<ClientOpinionStatusEnum>(ClientOpinionStatusEnum[route.params.type as keyof typeof ClientOpinionStatusEnum])
 
 const fetchClientOpinion = async (
@@ -61,6 +63,14 @@ const searchClientOpinion = debounce(() => {
 const deleteClientOpinion = async (id: number) => {
   const deleteClientOpinionParams = new DeleteClientOpinionParams(id)
   await DeleteClientOpinionController.getInstance().deleteClientOpinion(deleteClientOpinionParams)
+  await fetchClientOpinion()
+}
+
+const changeStatusClientOpinion = async (id: number) => {
+  const changeStatusClientOpinionParams = new ChangeStatusClientOpinionParams(id)
+  await ChangeStatusClientOpinionController.getInstance().changeStatusClientOpinion(
+    changeStatusClientOpinionParams,
+  )
   await fetchClientOpinion()
 }
 
@@ -100,16 +110,6 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
     ],
   },
 
-  {
-    text: t('change_status'),
-    icon: IconDelete,
-    action: () => changeClientOpinionStatus(id),
-    permission: [
-      PermissionsEnum.CLIENT_OPINION_CHANGE_STATUS,
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.CLIENT_OPINION_ALL,
-    ],
-  },
   {
     text: t('delete'),
     icon: IconDelete,
@@ -179,11 +179,10 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('name') }}</th>
                 <th scope="col">{{ $t('rate') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -199,14 +198,23 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
+                <td data-label="status">
+                  <permission-builder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.CLIENT_OPINION_ALL,
+                      PermissionsEnum.CLIENT_OPINION_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.is_active === 1"
+                      binary
+                      @update:model-value="changeStatusClientOpinion(item.id)"
+                    />
+                  </permission-builder>
+                </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusClientOpinion-->
-                  <!--                  v-if="item.ClientOpinionStatus === ClientOpinionStatusEnum.Draft"-->
-                  <!--                  :ClientOpinionId="item.id"-->
-                  <!--                  @ClientOpinionChangeStatus="fetchClientOpinion"-->
-                  <!--                />-->
-
                   <DropList
                     :actionList="actionList(item.id, deleteClientOpinion)"
                     @delete="deleteClientOpinion(item.id)"

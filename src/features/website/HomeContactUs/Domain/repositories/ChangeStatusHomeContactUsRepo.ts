@@ -2,18 +2,18 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import HomeContactUsModel from '../../Data/models/HomeContactUsModel'
-import { DisHomeContactUsApiService } from '../../Data/apiServices/disHomeContactUsApiService'
+import { ChangeStatusHomeContactUsApiService } from '../../Data/apiServices/changeStatusHomeContactUsApiService'
 
 
-class DisActiveHomeContactUsRepo extends RepoInterface<HomeContactUsModel> {
-  private static instance: DisActiveHomeContactUsRepo
+class ChangeStatusHomeContactUsRepo extends RepoInterface<HomeContactUsModel> {
+  private static instance: ChangeStatusHomeContactUsRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisActiveHomeContactUsRepo()
+      this.instance = new ChangeStatusHomeContactUsRepo()
     }
     return this.instance
   }
@@ -27,8 +27,8 @@ class DisActiveHomeContactUsRepo extends RepoInterface<HomeContactUsModel> {
   }
 
   get serviceInstance(): ServicesInterface {
-    return DisHomeContactUsApiService.getInstance()
+    return ChangeStatusHomeContactUsApiService.getInstance()
   }
 }
 
-export { DisActiveHomeContactUsRepo }
+export { ChangeStatusHomeContactUsRepo }
