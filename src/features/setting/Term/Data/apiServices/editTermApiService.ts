@@ -4,8 +4,8 @@ import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 // import HeaderHandler from '@/base/core/networkStructure/networking/utils/header_handler.ts'
 
-class EditHashtagApiService extends ServicesInterface {
-  private static instance: EditHashtagApiService
+class EditTermApiService extends ServicesInterface {
+  private static instance: EditTermApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -13,14 +13,14 @@ class EditHashtagApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditHashtagApiService()
+      this.instance = new EditTermApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.EditHashtag,
+      url: ApiNames.instance.EditTerm,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -30,4 +30,4 @@ class EditHashtagApiService extends ServicesInterface {
   }
 }
 
-export { EditHashtagApiService }
+export { EditTermApiService }

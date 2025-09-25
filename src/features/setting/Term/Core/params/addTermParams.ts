@@ -12,18 +12,8 @@ export default class AddTermParams implements Params {
 
   }
 
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-    > = {}
-
+  toMap(): Record<string, unknown> {
+    const data: Record<string, unknown> = {}
     data['translations'] = this.translation.toMap()
 
 

@@ -193,7 +193,7 @@ const router = createRouter({
         {
           path: 'term/add',
           name: 'Add Term',
-          component: () => import('../views/Term/AddTerm.vue'),
+          component: () => import('../views/Term/EditTerms.vue'),
         },
 
 

@@ -4,30 +4,31 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type HashtagModel from '../../Data/models/TermModel'
-import EditHashtagUseCase from '../../Domain/useCase/editHashtagUseCase'
+import type TermModel from '../../Data/models/TermModel'
+import EditTermUseCase from '../../Domain/useCase/editTermUseCase'
 
-export default class EditHashtagController extends ControllerInterface<HashtagModel> {
-  private static instance: EditHashtagController
+
+export default class EditTermController extends ControllerInterface<TermModel> {
+  private static instance: EditTermController
 
   private constructor() {
     super()
   }
 
-  private EditHashtagUseCase = new EditHashtagUseCase()
+  private EditTermUseCase = new EditTermUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditHashtagController()
+      this.instance = new EditTermController()
     }
     return this.instance
   }
 
-  async editHashtag(params: Params, router: any) {
+  async editTerm(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HashtagModel> = await this.EditHashtagUseCase.call(params)
+      const dataState: DataState<TermModel> = await this.EditTermUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

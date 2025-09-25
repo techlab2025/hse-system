@@ -3,10 +3,10 @@ import type Params from '@/base/core/params/params'
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
-export default class EditHashtagParams implements Params {
+export default class EditTermParams implements Params {
   id: number
   translation: TranslationsParams
-  // hasHashtag: number
+  // hasTerm: number
   // allIndustries: number
   // industries: number[]
   // parentId: number
@@ -17,7 +17,7 @@ export default class EditHashtagParams implements Params {
   constructor(
     id: number,
     translation: TranslationsParams,
-    // hasHashtag: number,
+    // hasTerm: number,
     // allIndustries: number,
     // industries: number[],
     // parentId: number,
@@ -27,7 +27,7 @@ export default class EditHashtagParams implements Params {
   ) {
     this.id = id
     this.translation = translation
-    // this.hasHashtag = hasHashtag
+    // this.hasTerm = hasTerm
     // this.allIndustries = allIndustries
     // this.industries = industries
     // this.parentId = parentId
@@ -50,7 +50,7 @@ export default class EditHashtagParams implements Params {
 
     data['hashtag_id'] = this.id
     data['translations'] = this.translation.toMap()
-    // data['has_hashtag'] = this.hasHashtag ? 1 : 0
+    // data['has_hashtag'] = this.hasTerm ? 1 : 0
     // data['all_industries'] = this.allIndustries ? 1 : 0
     // if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId

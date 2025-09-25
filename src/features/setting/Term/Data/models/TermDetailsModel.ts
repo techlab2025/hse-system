@@ -42,15 +42,8 @@ export default class TermDetailsModel {
     return new TermDetailsModel(
       data.id,
       // TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap(data.titles, data.descriptions).descriptions,
-      // data.has_term,
-      // data.all_industries,
-      // data.industries?.length > 0
-      //   ? data.industries?.map((industry) => this.getTitle(industry))
-      //   : [],
-      // data.parent_id,
-      // data.image,
-      // data.alt
+      TranslationsParams.fromMap([], data.descriptions).descriptions,
+    
     )
   }
 

@@ -3,39 +3,39 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import HashtagForm from '@/features/setting/Hashtag/Presentation/components/HashtagForm.vue'
+import TermForm from '@/features/setting/Term/Presentation/components/TermForm.vue'
 import type Params from '@/base/core/params/params'
-import ShowHashtagParams from '../../Core/params/showTermParams'
-import ShowHashtagController from '../controllers/showTermController'
-import EditHashtagController from '../controllers/editHashtagController'
+import ShowTermParams from '../../Core/params/showTermParams'
+import ShowTermController from '../controllers/showTermController'
+import EditTermController from '../controllers/editTermController'
 
-const route = useRoute()
 const router = useRouter()
-const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showHashtagController = ShowHashtagController.getInstance()
-const state = ref(showHashtagController.state.value)
-const fetchHashtagDetails = async () => {
-  const HashtagParams = new ShowHashtagParams(Number(id))
+const showTermController = ShowTermController.getInstance()
+const state = ref(showTermController.state.value)
+const fetchTermDetails = async () => {
+  const TermParams = new ShowTermParams(1)
 
-  await showHashtagController.showHashtag(HashtagParams)
+  await showTermController.showTerm(TermParams)
 }
 
 onMounted(() => {
-  fetchHashtagDetails()
+  fetchTermDetails()
+  // console.log('fetchTermDetails');
+
 })
 
-const EditHashtag = async (draft: boolean) => {
+const EditTerm = async (draft: boolean) => {
   if (draft) {
-    await EditHashtagController.getInstance().editHashtag(params.value!, router)
+    await EditTermController.getInstance().editTerm(params.value!, router)
   } else {
-    await EditHashtagController.getInstance().editHashtag(params.value!, router)
+    await EditTermController.getInstance().editTerm(params.value!, router)
   }
 }
 
 watch(
-  () => showHashtagController.state.value,
+  () => showTermController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -56,8 +56,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHashtag">
-        <HashtagForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTerm">
+        <TermForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

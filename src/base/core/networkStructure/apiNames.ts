@@ -108,7 +108,7 @@ class ApiNames {
   public CreateTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
   public IndexTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
   public ShowTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
-  public EditTerm = this.baseUrl + this.dashboardPrefix + 'update_term'
+  public EditTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
   public DeleteTerm = this.baseUrl + this.dashboardPrefix + 'delete_term'
   public DisTerm = this.baseUrl + this.dashboardPrefix + 'change_term_active_status'
 
