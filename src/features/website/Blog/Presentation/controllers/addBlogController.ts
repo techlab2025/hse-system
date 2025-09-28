@@ -36,7 +36,7 @@ export default class AddBlogController extends ControllerInterface<BlogModel> {
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/categories')
+        if (!draft) await router.push('/admin/blog')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

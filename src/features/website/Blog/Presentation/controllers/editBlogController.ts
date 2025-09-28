@@ -37,7 +37,7 @@ export default class EditBlogController extends ControllerInterface<BlogModel> {
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/categories')
+        await router.push('/admin/blog')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

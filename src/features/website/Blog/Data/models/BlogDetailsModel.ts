@@ -1,67 +1,63 @@
-// import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleModel from '@/base/Data/Models/title_model.ts'
+import TranslationsParams, { type DescriptionLocale, type TitleLocale, type SubtitlesLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import HashtagDetailsModel from '@/features/website/Hashtag/Data/models/HashtagDetailsModel'
+import CategoryDetailsModel from '@/features/website/Category/Data/models/CategoryDetailsModel'
 
 export default class BlogDetailsModel {
   public id: number
   public titles: TitleLocale[]
   public descriptions: DescriptionLocale[]
-  // public hasBlog: number
-  // public allIndustries: number
-  // public parentId: number
+  public subtitles: SubtitlesLocale[]
   public image: string
-  // public industries: TitleModel<string>[]
   public alt: string
+  public hashtags?: HashtagDetailsModel[]
+  public categories?: CategoryDetailsModel[]
 
   constructor(
     id: number,
     titles: TitleLocale[],
     descriptions: DescriptionLocale[],
-    // hasBlog: number,
-    // allIndustries: number,
-    // industries: TitleModel<string>[] = [],
-    // parentId: number,
+    subtitles: SubtitlesLocale[],
     image: string,
     alt: string,
+    hashtags?: HashtagDetailsModel[],
+    categories?: CategoryDetailsModel[]
+
   ) {
     this.id = id
     this.titles = titles
     this.descriptions = descriptions
-    // this.hasBlog = hasBlog
-    // this.allIndustries = allIndustries
-    // this.industries = industries
-    // this.parentId = parentId
+    this.subtitles = subtitles
     this.image = image
     this.alt = alt
+    this.hashtags = hashtags
+    this.categories = categories
   }
 
   static fromMap(data: any): BlogDetailsModel {
+    const translations = TranslationsParams.fromMap(
+      data.titles || [],
+      data.descriptions || [],
+      data.subtitles || []
+    )
+
     return new BlogDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap(data.titles, data.descriptions).descriptions,
-      // data.has_blog,
-      // data.all_industries,
-      // data.industries?.length > 0
-      //   ? data.industries?.map((industry) => this.getTitle(industry))
-      //   : [],
-      // data.parent_id,
+      translations.titles,
+      translations.descriptions,
+      translations.subtitles,
       data.image,
-      data.alt
+      data.alt,
+      data.hashtags?.map((hashtag: any) => HashtagDetailsModel.fromMap(hashtag)) || [],
+      data.categories?.map((category: any) => CategoryDetailsModel.fromMap(category)) || []
     )
   }
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
-
-
 }
