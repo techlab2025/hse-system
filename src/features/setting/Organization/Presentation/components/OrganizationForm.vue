@@ -101,7 +101,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-      image.value?.file,
+        image.value?.file,
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id),
@@ -133,8 +133,12 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
+      console.log(newData, 'newData')
+      Url.value = newData?.website_link
       allIndustries.value = newData?.allIndustries!
-      industry.value = newData?.industries!
+      industry.value = newData?.industry
+      lang.value = newData?.languages
+      image.value = newData?.image
     }
   },
   { immediate: true },

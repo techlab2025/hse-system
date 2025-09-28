@@ -71,12 +71,9 @@ const searchBlog = debounce(() => {
 
 const changeStatusBlog = async (id: number) => {
   const changeStatusBlogParams = new ChangeStatusBlogParams(id)
-  await ChangeStatusBlogController.getInstance().changeStatusBlog(
-    changeStatusBlogParams,
-  )
+  await ChangeStatusBlogController.getInstance().changeStatusBlog(changeStatusBlogParams)
   await fetchBlog()
 }
-
 
 const deleteBlog = async (id: number) => {
   const deleteBlogParams = new DeleteBlogParams(id)
@@ -143,14 +140,8 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchBlog" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel :data="state.data" />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/blog/add" class="btn btn-primary">
           {{ $t('Add_Blog') }}
@@ -195,7 +186,7 @@ watch(
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
 
-                  <td data-label="status">
+                <td data-label="status">
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,

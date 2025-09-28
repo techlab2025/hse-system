@@ -140,14 +140,8 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchFaq" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel :data="state.data" />
+      <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/faq/add" class="btn btn-primary">
           {{ $t('Add_Faq') }}

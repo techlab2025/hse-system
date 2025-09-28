@@ -10,6 +10,7 @@ export default class IndexFaqParams implements Params {
   // public id?: number
   // public code?: LangEnum
 
+
   constructor(
     word: string,
     pageNumber: number = 1,
@@ -28,7 +29,7 @@ export default class IndexFaqParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
-    if (this.word) data['title'] = this.word
+    if (this.word) data['question'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage

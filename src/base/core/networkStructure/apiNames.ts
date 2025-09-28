@@ -313,6 +313,22 @@ class ApiNames {
   public EditServiceLog = this.baseUrl + this.dashboardPrefix + 'update_service_log'
   public DeleteServiceLog = this.baseUrl + this.dashboardPrefix + 'delete_service_logs'
   public DisServiceLog = this.baseUrl + this.dashboardPrefix + 'change_service_log_active_status'
+
+  // Website System Banner
+  public CreateSystemBanner = this.baseUrl + this.dashboardPrefix + 'create_our_system_banner'
+  public IndexSystemBanner = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_banners'
+  public ShowSystemBanner = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_banner_details'
+  public EditSystemBanner = this.baseUrl + this.dashboardPrefix + 'update_our_system_banner'
+  public DeleteSystemBanner = this.baseUrl + this.dashboardPrefix + 'delete_our_system_banner'
+  public DisSystemBanner = this.baseUrl + this.dashboardPrefix + 'change_our_system_banner_active_status'
+
+  // Website System Feature
+  public CreateSystemFeature = this.baseUrl + this.dashboardPrefix + 'create_our_system_feature'
+  public IndexSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_features'
+  public ShowSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_feature_details'
+  public EditSystemFeature = this.baseUrl + this.dashboardPrefix + 'update_our_system_feature'
+  public DeleteSystemFeature = this.baseUrl + this.dashboardPrefix + 'delete_our_system_feature'
+  public DisSystemFeature = this.baseUrl + this.dashboardPrefix + 'change_our_system_feature_active_status'
 }
 
 export { ApiNames }

@@ -10,6 +10,7 @@ import type OrganizationModel from '../../Data/models/OrganizationModel'
 import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
 
 export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
+  
   private static instance: AddOrganizationController
   private constructor() {
     super()
