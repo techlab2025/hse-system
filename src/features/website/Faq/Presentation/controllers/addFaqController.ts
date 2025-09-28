@@ -25,7 +25,7 @@ export default class AddFaqController extends ControllerInterface<FaqModel> {
 
   async addFaq(params: Params, router: Router, draft: boolean = false) {
     try {
-      // ✅ validation: لازم Question و Answer الاتنين يتملاوا
+      // ✅ validation: check if question and answer is not empty
       const hasQuestion =
         params.translation?.translations?.question &&
         Object.values(params.translation?.translations?.question).some(
@@ -48,10 +48,10 @@ export default class AddFaqController extends ControllerInterface<FaqModel> {
         return this.state
       }
 
-      // ✅ لو الاتنين موجودين
+      // ✅ if question and answer is not empty
       const dataState: DataState<FaqModel> =
         await this.AddFaqUseCase.call(params)
-      console.log(params, "pppp")
+      // console.log(params, "pppp")
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
