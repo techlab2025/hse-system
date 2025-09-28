@@ -284,23 +284,20 @@ const setImage = async (data: File) => {
       @update:modelValue="(val) => (langs = val)"
     />
   </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('description')"
-      :langs="langDefaultDescription"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      type="textarea"
-    />
-  </div>
-
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('subtitle')"
       :langs="langDefaultSubtitle"
       :modelValue="langsSubtitle"
       @update:modelValue="(val) => (langsSubtitle = val)"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      :label="$t('description')"
+      :langs="langDefaultDescription"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
       type="textarea"
     />
   </div>
@@ -314,6 +311,10 @@ const setImage = async (data: File) => {
       placeholder="Select image"
     />
   </div>
+
+
+
+
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <label> Image Alt Text </label>

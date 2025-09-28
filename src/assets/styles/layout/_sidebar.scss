@@ -13,6 +13,17 @@
   border-radius: 0 $XlSize $XlSize 0;
   position: relative;
 
+
+  .sidebar-wrapper {
+    @include flex-column();
+    gap: $MdSize;
+    position: fixed;
+    height: 100vh;
+    width: 250px;
+    background-color: $White;
+
+  }
+
   @include flex-column();
   gap: $MdSize;
 
