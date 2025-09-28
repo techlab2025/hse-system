@@ -329,6 +329,23 @@ class ApiNames {
   public EditSystemFeature = this.baseUrl + this.dashboardPrefix + 'update_our_system_feature'
   public DeleteSystemFeature = this.baseUrl + this.dashboardPrefix + 'delete_our_system_feature'
   public DisSystemFeature = this.baseUrl + this.dashboardPrefix + 'change_our_system_feature_active_status'
+
+  // Website System Risk Type
+  public CreateSystemRiskType = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_type'
+  public IndexSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_types'
+  public ShowSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_type_details'
+  public EditSystemRiskType = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_type'
+  public DeleteSystemRiskType = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_type'
+  public DisSystemRiskType = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_type_active_status'
+
+
+  // Website System Component
+  public CreateSystemComponent = this.baseUrl + this.dashboardPrefix + 'create_our_system_component'
+  public IndexSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_components'
+  public ShowSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_component_details'
+  public EditSystemComponent = this.baseUrl + this.dashboardPrefix + 'update_our_system_component'
+  public DeleteSystemComponent = this.baseUrl + this.dashboardPrefix + 'delete_our_system_component'
+  public DisSystemComponent = this.baseUrl + this.dashboardPrefix + 'change_our_system_component_active_status'
 }
 
 export { ApiNames }

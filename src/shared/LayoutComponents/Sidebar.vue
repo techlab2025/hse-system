@@ -752,6 +752,38 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system_risk_type">
+                      <SidebarVector />
+                      <span>System Risk Type</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_RISK_TYPE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system_components">
+                      <SidebarVector />
+                      <span>System Component</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
               </AccordionContent>
             </AccordionPanel>
