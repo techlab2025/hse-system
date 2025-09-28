@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
-export default class AddAboutUsFeatureParams implements Params {
+export default class AddSystemRiskManagementParams implements Params {
   translation: TranslationsParams
   alt: string
   image: string

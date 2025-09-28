@@ -39,6 +39,16 @@ class ApiNames {
   public ChangeStatusAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
 
 
+  // systemRiskManagement
+
+  public CreateSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_management'
+  public IndexSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_managements'
+  public ShowSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_management_details'
+  public EditSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_management'
+  public DeleteSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_management'
+  public ChangeStatusSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_management_active_status'
+
+
   // AboutUsCore
 
   public CreateAboutUsCore = this.baseUrl + this.dashboardPrefix + 'create_about_us_core'

@@ -682,6 +682,24 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <!-- system risk management -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum. OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system-risk-management">
+                      <SidebarVector />
+                      <span>System Risk Management</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
