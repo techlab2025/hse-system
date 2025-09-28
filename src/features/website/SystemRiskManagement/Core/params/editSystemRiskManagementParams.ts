@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 
-export default class EditAboutUsFeatureParams implements Params {
+export default class EditSystemRiskManagementParams implements Params {
   id: number
   translation: TranslationsParams
   alt: string
@@ -22,7 +22,7 @@ export default class EditAboutUsFeatureParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-    data['about_us_feature_id'] = this.id
+    data['our_system_risk_management_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
     data['image'] = this.image

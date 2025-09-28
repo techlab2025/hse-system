@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class DeleteSystemRiskManagementParams implements Params {
+export default class ChangeStatusOurSystemStepParams implements Params {
 
   constructor(public id: number) {
     this.id = id;
@@ -8,7 +8,7 @@ export default class DeleteSystemRiskManagementParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["our_system_risk_management_id"] = this.id;
+    data["our_system_step_id"] = this.id;
     return data;
   }
 }
