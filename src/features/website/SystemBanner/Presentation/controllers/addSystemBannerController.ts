@@ -6,29 +6,29 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type OrganizationModel from '../../Data/models/OrganizationModel'
-import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
+import type SystemBannerModel from '../../Data/models/SystemBannerModel'
+import AddSystemBannerUseCase from '../../Domain/useCase/addSystemBannerUseCase'
 
-export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
-  
-  private static instance: AddOrganizationController
+export default class AddSystemBannerController extends ControllerInterface<SystemBannerModel> {
+  private static instance: AddSystemBannerController
   private constructor() {
     super()
   }
-  private addOrganizationUseCase = new AddOrganizationUseCase()
+  private addSystemBannerUseCase = new AddSystemBannerUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddOrganizationController()
+      this.instance = new AddSystemBannerController()
     }
     return this.instance
   }
 
-  async addOrganization(params: Params, router: Router, draft: boolean = false) {
+  async addSystemBanner(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<OrganizationModel> =
-        await this.addOrganizationUseCase.call(params)
+      console.log('Ssssssss')
+      const dataState: DataState<SystemBannerModel> =
+        await this.addSystemBannerUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -37,7 +37,7 @@ export default class AddOrganizationController extends ControllerInterface<Organ
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/accidents-types')
+        if (!draft) await router.push('/admin/system_banner')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

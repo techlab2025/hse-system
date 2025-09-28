@@ -534,6 +534,37 @@ const router = createRouter({
           name: 'Edit Blog',
           component: () => import('../views/Website/Blog/EditBlog.vue'),
         },
+
+        {
+          path: 'system_banner',
+          name: 'System Banner',
+          component: () => import('../views/Website/SystemBanner/IndexSystemBanner.vue'),
+        },
+        {
+          path: 'system_banner/add',
+          name: 'Add System Banner',
+          component: () => import('../views/Website/SystemBanner/AddSystemBanner.vue'),
+        },
+        {
+          path: 'system_banner/:id',
+          name: 'Edit System Banner',
+          component: () => import('../views/Website/SystemBanner/EditSystemBanner.vue'),
+        },
+        {
+          path: 'system_feature',
+          name: 'System Feature',
+          component: () => import('../views/Website/SystemFeature/IndexSystemFeature.vue'),
+        },
+        {
+          path: 'system_feature/add',
+          name: 'Add System Feature',
+          component: () => import('../views/Website/SystemFeature/AddSystemFeature.vue'),
+        },
+        {
+          path: 'system_feature/:id',
+          name: 'Edit System Feature',
+          component: () => import('../views/Website/SystemFeature/EditSystemFeature.vue'),
+        },
         // Faq
         {
           path: 'faq',

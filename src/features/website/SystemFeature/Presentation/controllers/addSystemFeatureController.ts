@@ -6,29 +6,29 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type OrganizationModel from '../../Data/models/OrganizationModel'
-import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
+import type SystemFeatureModel from '../../Data/models/SystemFeatureModel'
+import AddSystemFeatureUseCase from '../../Domain/useCase/addSystemFeatureUseCase'
 
-export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
-  
-  private static instance: AddOrganizationController
+export default class AddSystemFeatureController extends ControllerInterface<SystemFeatureModel> {
+  private static instance: AddSystemFeatureController
   private constructor() {
     super()
   }
-  private addOrganizationUseCase = new AddOrganizationUseCase()
+  private addSystemFeatureUseCase = new AddSystemFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddOrganizationController()
+      this.instance = new AddSystemFeatureController()
     }
     return this.instance
   }
 
-  async addOrganization(params: Params, router: Router, draft: boolean = false) {
+  async addSystemFeature(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<OrganizationModel> =
-        await this.addOrganizationUseCase.call(params)
+      console.log('Ssssssss')
+      const dataState: DataState<SystemFeatureModel> =
+        await this.addSystemFeatureUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -37,7 +37,7 @@ export default class AddOrganizationController extends ControllerInterface<Organ
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/accidents-types')
+        if (!draft) await router.push('/admin/system_feature')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

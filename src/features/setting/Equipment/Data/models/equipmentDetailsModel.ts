@@ -3,6 +3,7 @@ import TranslationsParams, { type TitleLocale } from '@/base/core/params/transla
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import type EquipmentTypeModel from './equipmentModel'
+import TitleInterface from '@/base/Data/Models/title_interface'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class EquipmentDetailsModel {
@@ -48,7 +49,16 @@ export default class EquipmentDetailsModel {
         : [],
       data.parent_id,
       data.image,
-      data.equipmentTypeId,
+      this.getTitle(data.equipment_type_id),
     )
   }
+
+    static getTitle(data: any) {
+      const savedLocale = localStorage.getItem('lang')
+
+      return new TitleInterface({
+        id: data.id,
+        title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      })
+    }
 }
