@@ -647,7 +647,7 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
-                <!-- <li>
+                <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
@@ -662,7 +662,7 @@ const active = ref('0')
                       <span>System Feature</span>
                     </router-link>
                   </PermissionBuilder>
-                </li> -->
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
