@@ -104,7 +104,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/about-us-features/${id}`,
+    link: `/admin/system-risk-management/${id}`,
     permission: [
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_UPDATE,
       PermissionsEnum.WEBSITE,
@@ -183,8 +183,8 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                     >{{ item.id }}
                   </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle }}</td>
+                <td data-label="title">{{ item.title || '___' }}</td>
+                <td data-label="subtitle">{{ item.subtitle || '___' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
@@ -193,8 +193,8 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.ABOUT_US_FEATURE_ALL,
-                      PermissionsEnum.ABOUT_US_FEATURE_CHANGE_STATUS,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch

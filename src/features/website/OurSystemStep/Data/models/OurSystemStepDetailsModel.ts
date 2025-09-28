@@ -1,61 +1,55 @@
-// import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, { type DescriptionLocale, type TitleLocale, type SubtitlesLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-// import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-// import { LangEnum } from '../../Core/enums/langEnum'
 
-export default class SystemRiskManagementDetailsModel {
+
+export default class OurSystemStepDetailsModel {
   public id: number
   public titles: TitleLocale[]
-
+  public descriptions: DescriptionLocale[]
   public subtitles: SubtitlesLocale[]
-
   public image: string
   public alt: string
-
 
 
   constructor(
     id: number,
     titles: TitleLocale[],
+    descriptions: DescriptionLocale[],
     subtitles: SubtitlesLocale[],
-
-    alt: string,
     image: string,
+    alt: string,
+
 
   ) {
     this.id = id
     this.titles = titles
+    this.descriptions = descriptions
     this.subtitles = subtitles
-
-    this.alt = alt
     this.image = image
+    this.alt = alt
 
   }
 
-static fromMap(data: any): SystemRiskManagementDetailsModel {
-  const translations = TranslationsParams.fromMap(
-    data.titles,
-    [],
-    data.subtitles,
-  )
+  static fromMap(data: any): OurSystemStepDetailsModel {
+    const translations = TranslationsParams.fromMap(
+      data.titles || [],
+      data.descriptions || [],
+      data.subtitles || []
+    )
 
-  console.log('translations', translations)
+    return new OurSystemStepDetailsModel(
+      data.id,
+      translations.titles,
+      translations.descriptions,
+      translations.subtitles,
+      data.image,
+      data.alt,
 
-  return new SystemRiskManagementDetailsModel(
-    data.id,
-    translations.titles,
-    translations.subtitles,
-    data.alt,
-    data.image,
-  )
-}
-
+    )
+  }
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,

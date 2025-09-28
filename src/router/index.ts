@@ -566,6 +566,22 @@ const router = createRouter({
           name: 'Edit System Risk Management',
           component: () => import('../views/Website/SystemRiskManagement/EditSystemRiskManagement.vue'),
         },
+        // OuR System Step
+        {
+          path: 'our-system-step',
+          name: 'Our System Step',
+          component: () => import('../views/Website/OurSystemStep/IndexOurSystemStep.vue'),
+        },
+        {
+          path: 'our-system-step/add',
+          name: 'Add Our System Step',
+          component: () => import('../views/Website/OurSystemStep/AddOurSystemStep.vue'),
+        },
+        {
+          path: 'our-system-step/:id',
+          name: 'Edit Our System Step',
+          component: () => import('../views/Website/OurSystemStep/EditOurSystemStep.vue'),
+        },
       ],
     },
   ],

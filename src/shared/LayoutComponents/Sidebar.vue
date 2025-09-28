@@ -701,6 +701,25 @@ const active = ref('0')
                   </PermissionBuilder>
                 </li>
               </ul>
+              <!-- OUR SYSTEM STEP -->
+              <ul>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OUR_SYSTEM_STEP_ALL,
+                      PermissionsEnum.OUR_SYSTEM_STEP_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_STEP_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_STEP_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_STEP_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/our-system-step">
+                      <SidebarVector />
+                      <span>Our System Steps</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+              </ul>
             </AccordionContent>
           </AccordionPanel>
         </PermissionBuilder>

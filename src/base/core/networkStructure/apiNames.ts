@@ -184,6 +184,15 @@ class ApiNames {
   public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
   public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
 
+  // OuSystemStep
+  public CreateOurSystemStep = this.baseUrl + this.dashboardPrefix + 'create_our_system_step'
+  public IndexOurSystemStep = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_steps'
+  public ShowOurSystemStep = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_step_details'
+  public EditOurSystemStep = this.baseUrl + this.dashboardPrefix + 'update_our_system_step'
+  public DeleteOurSystemStep = this.baseUrl + this.dashboardPrefix + 'delete_our_system_step'
+  public DisOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
+  public ChangeStatusOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
+
   // Faq
   public CreateFaq = this.baseUrl + this.dashboardPrefix + 'create_faq'
   public IndexFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faqs'
