@@ -99,6 +99,41 @@ const router = createRouter({
         },
 
         {
+          path: "about-us-features",
+          name: "About Us Features",
+          component: () => import('../views/Website/AboutUsFeature/IndexAboutUsFeature.vue'),
+        },
+
+        {
+          path: 'about-us-features/add',
+          name: 'Add About Us Features',
+          component: () => import('../views/Website/AboutUsFeature/AddAboutUsFeature.vue'),
+        },
+        {
+          path: 'about-us-features/:id',
+          name: 'Edit About Us Features',
+          component: () => import('../views/Website/AboutUsFeature/EditAboutUsFeature.vue'),
+        },
+
+
+        {
+          path: "about-us-core",
+          name: "About Us Core",
+          component: () => import('../views/Website/AboutUsCore/IndexAboutUsCore.vue'),
+        },
+
+        {
+          path: 'about-us-core/add',
+          name: 'Add About Us Core',
+          component: () => import('../views/Website/AboutUsCore/AddAboutUsCore.vue'),
+        },
+        {
+          path: 'about-us-core/:id',
+          name: 'Edit About Us Core',
+          component: () => import('../views/Website/AboutUsCore/EditAboutUsCore.vue'),
+        },
+
+        {
           path: 'template/add',
           name: 'Add Template',
           component: () => import('../views/Template/AddTemplate.vue'),
@@ -499,6 +534,7 @@ const router = createRouter({
           name: 'Edit Blog',
           component: () => import('../views/Website/Blog/EditBlog.vue'),
         },
+
         {
           path: 'system_banner',
           name: 'System Banner',
@@ -528,6 +564,22 @@ const router = createRouter({
           path: 'system_feature/:id',
           name: 'Edit System Feature',
           component: () => import('../views/Website/SystemFeature/EditSystemFeature.vue'),
+        },
+        // Faq
+        {
+          path: 'faq',
+          name: 'Faq',
+          component: () => import('../views/Website/Faq/IndexFaq.vue'),
+        },
+        {
+          path: 'faq/add',
+          name: 'Add Faq',
+          component: () => import('../views/Website/Faq/AddFaq.vue'),
+        },
+        {
+          path: 'faq/:id',
+          name: 'Edit Faq',
+          component: () => import('../views/Website/Faq/EditFaq.vue'),
         },
       ],
     },

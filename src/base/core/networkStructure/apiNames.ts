@@ -3,7 +3,7 @@ import { baseUrl } from './baseUrl'
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() {}
+  private constructor() { }
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -28,6 +28,25 @@ class ApiNames {
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
 
+
+  // AboutUsFeature
+
+  public CreateAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'create_about_us_feature'
+  public IndexAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_features'
+  public ShowAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_feature_details'
+  public EditAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'update_about_us_feature'
+  public DeleteAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'delete_about_us_feature'
+  public ChangeStatusAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
+
+
+  // AboutUsCore
+
+  public CreateAboutUsCore = this.baseUrl + this.dashboardPrefix + 'create_about_us_core'
+  public IndexAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core'
+  public ShowAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core_details'
+  public EditAboutUsCore = this.baseUrl + this.dashboardPrefix + 'update_about_us_core'
+  public DeleteAboutUsCore = this.baseUrl + this.dashboardPrefix + 'delete_about_us_core'
+  public ChangeStatusAboutUsCore = this.baseUrl + this.dashboardPrefix + 'change_about_us_core_active_status'
 
 
   // HomeViewPricing
@@ -154,6 +173,16 @@ class ApiNames {
   public DeleteBlog = this.baseUrl + this.dashboardPrefix + 'delete_blog'
   public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
   public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
+
+  // Faq
+  public CreateFaq = this.baseUrl + this.dashboardPrefix + 'create_faq'
+  public IndexFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faqs'
+  public ShowFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faq_details'
+  public EditFaq = this.baseUrl + this.dashboardPrefix + 'update_faq'
+  public DeleteFaq = this.baseUrl + this.dashboardPrefix + 'delete_faq'
+  public DisFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
+  public ChangeStatusFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
+
 
   // Hashtag
   public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
