@@ -664,6 +664,24 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+
+                <!-- Faq -->
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.FAQ_ALL,
+                      PermissionsEnum.FAQ_CREATE,
+                      PermissionsEnum.FAQ_DELETE,
+                      PermissionsEnum.FAQ_FETCH,
+                      PermissionsEnum.FAQ_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/faq">
+                      <SidebarVector />
+                      <span>Faqs</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
               </ul>
             </AccordionContent>
           </AccordionPanel>
