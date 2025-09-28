@@ -152,7 +152,7 @@ watch(
 
     // Map descriptions
     langsDescription.value = newDefault.map((lang) => {
-      const translation = newData.News?.find((t: any) => t.locale === lang.locale)
+      const translation = newData.news?.find((t: any) => t.locale === lang.locale)
       return {
         locale: lang.locale,
         title: translation?.new || '',
@@ -171,7 +171,7 @@ watch(
       type="text"
       :langs="langDefault"
       :modelValue="langsTitle"
-      :label="$t('title')"
+      :label="$t('Feature')"
       @update:modelValue="setLangsTitle"
     />
   </div>
@@ -181,7 +181,7 @@ watch(
       type="text"
       :langs="langDefault"
       :modelValue="langsSubTitle"
-      :label="$t('sub_title')"
+      :label="$t('Old')"
       @update:modelValue="setLangsSubTitle"
     />
   </div>
@@ -191,7 +191,7 @@ watch(
       type="textarea"
       :langs="langDefault"
       :modelValue="langsDescription"
-      :label="$t('Description')"
+      :label="$t('New')"
       @update:modelValue="setLangsDescription"
     />
   </div>
