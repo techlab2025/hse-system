@@ -9,7 +9,7 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 
@@ -51,17 +51,17 @@ const createNewItem = (): Item => ({
 })
 
 const langsSub = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+// const langsDescription = ref<{ locale: string; title: string }[]>([])
 
 const setLangsSub = (value: { locale: string; title: string }[]) => {
   langsSub.value = value
   updateData()
 }
 
-const setLangsDescription = (value: { locale: string; title: string }[]) => {
-  langsDescription.value = value
-  updateData()
-}
+// const setLangsDescription = (value: { locale: string; title: string }[]) => {
+//   langsDescription.value = value
+//   updateData()
+// }
 
 // --- Fetch available languages
 const fetchLang = async () => {
@@ -97,9 +97,9 @@ const updateData = () => {
     translationsParams.setTranslation('subtitle', lang.locale, lang.title)
   })
 
-  langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
-  })
+  // langsDescription.value.forEach((lang) => {
+  //   translationsParams.setTranslation('description', lang.locale, lang.title)
+  // })
 
   const itemsParams = items.value.map((item) => {
     const itemTranslations = new TranslationsParams()
@@ -188,20 +188,22 @@ watch(
         })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    langsDescription.value = newData?.descriptions?.length
-      ? newDefault.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
-      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
+    // langsDescription.value = newData?.descriptions?.length
+    //   ? newDefault.map((l) => {
+    //       const existing = newData.descriptions.find((t) => t.locale === l.locale)
+    //       return existing ?? { locale: l.locale, title: '' }
+    //     })
+    //   : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
     alt_image.value = newData?.alt ?? ''
     image.value = newData?.image ?? ''
 
+    console.log(newData?.AboutUsCoreItems, 'newData?.AboutUsCoreItems')
+
     items.value = newData?.AboutUsCoreItems?.length
       ? newData.AboutUsCoreItems.map((it: any) => ({
-          langs: it.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
-          langs_sub: it.subTitles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+          langs: it?.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+          langs_sub: it?.subTitles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
           image: it.image ?? '',
           alt_image: it.alt ?? '',
         }))
@@ -209,7 +211,7 @@ watch(
 
     updateData()
   },
-  { immediate: true },
+  { immediate: true, deep: true },
 )
 </script>
 
@@ -235,15 +237,6 @@ watch(
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :label="$t('description')"
-      :modelValue="langsDescription"
-      type="textarea"
-      @update:modelValue="setLangsDescription"
-    />
-  </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="alt_image">
       {{ $t('alt_image') }}

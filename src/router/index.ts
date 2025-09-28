@@ -115,6 +115,24 @@ const router = createRouter({
           component: () => import('../views/Website/AboutUsFeature/EditAboutUsFeature.vue'),
         },
 
+
+        {
+          path: "about-us-core",
+          name: "About Us Core",
+          component: () => import('../views/Website/AboutUsCore/IndexAboutUsCore.vue'),
+        },
+
+        {
+          path: 'about-us-core/add',
+          name: 'Add About Us Core',
+          component: () => import('../views/Website/AboutUsCore/AddAboutUsCore.vue'),
+        },
+        {
+          path: 'about-us-core/:id',
+          name: 'Edit About Us Core',
+          component: () => import('../views/Website/AboutUsCore/EditAboutUsCore.vue'),
+        },
+
         {
           path: 'template/add',
           name: 'Add Template',

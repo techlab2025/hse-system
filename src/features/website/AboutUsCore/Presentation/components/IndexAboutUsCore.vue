@@ -160,7 +160,7 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_ABOUT_US_CREATE]">
+      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ABOUT_US_CORE_CREATE]">
         <router-link to="/admin/about-us-core/add" class="btn btn-primary">
           {{ $t('add_about_us') }}
         </router-link>

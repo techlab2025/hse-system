@@ -99,7 +99,7 @@ watch(
           current.title ?? current.description ?? current.subtitle ?? current.button_title
     }
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 </script>
 
