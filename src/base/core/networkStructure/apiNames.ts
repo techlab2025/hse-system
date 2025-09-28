@@ -174,6 +174,16 @@ class ApiNames {
   public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
   public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
 
+  // Faq
+  public CreateFaq = this.baseUrl + this.dashboardPrefix + 'create_faq'
+  public IndexFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faqs'
+  public ShowFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faq_details'
+  public EditFaq = this.baseUrl + this.dashboardPrefix + 'update_faq'
+  public DeleteFaq = this.baseUrl + this.dashboardPrefix + 'delete_faq'
+  public DisFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
+  public ChangeStatusFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
+
+
   // Hashtag
   public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
   public IndexHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtags'

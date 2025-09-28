@@ -534,6 +534,22 @@ const router = createRouter({
           name: 'Edit Blog',
           component: () => import('../views/Website/Blog/EditBlog.vue'),
         },
+        // Faq
+        {
+          path: 'faq',
+          name: 'Faq',
+          component: () => import('../views/Website/Faq/IndexFaq.vue'),
+        },
+        {
+          path: 'faq/add',
+          name: 'Add Faq',
+          component: () => import('../views/Website/Faq/AddFaq.vue'),
+        },
+        {
+          path: 'faq/:id',
+          name: 'Edit Faq',
+          component: () => import('../views/Website/Faq/EditFaq.vue'),
+        },
       ],
     },
   ],
