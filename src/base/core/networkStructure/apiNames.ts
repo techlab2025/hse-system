@@ -39,6 +39,16 @@ class ApiNames {
   public ChangeStatusAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
 
 
+  // AboutUsCore
+
+  public CreateAboutUsCore = this.baseUrl + this.dashboardPrefix + 'create_about_us_core'
+  public IndexAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_cores'
+  public ShowAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core_details'
+  public EditAboutUsCore = this.baseUrl + this.dashboardPrefix + 'update_about_us_core'
+  public DeleteAboutUsCore = this.baseUrl + this.dashboardPrefix + 'delete_about_us_core'
+  public ChangeStatusAboutUsCore = this.baseUrl + this.dashboardPrefix + 'change_about_us_core_active_status'
+
+
   // HomeViewPricing
 
   public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'

@@ -577,7 +577,7 @@ const active = ref('0')
                   >
                     <router-link to="/admin/home-view-pricing">
                       <SidebarVector />
-                      <span>Home View Price</span>
+                      <span>{{ $t('homeViewPricing') }}</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>
@@ -627,7 +627,7 @@ const active = ref('0')
                   >
                     <router-link to="/admin/home-about-us">
                       <SidebarVector />
-                      <span>Home About Us</span>
+                      <span>{{ $t('home_about_us') }}</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>
@@ -643,7 +643,24 @@ const active = ref('0')
                   >
                     <router-link to="/admin/about-us-features">
                       <SidebarVector />
-                      <span>About Us Feature</span>
+                      <span>{{ $t('about_us_features') }}</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ABOUT_US_CORE_ALL,
+                      PermissionsEnum.ABOUT_US_CORE_CREATE,
+                      PermissionsEnum.ABOUT_US_CORE_DELETE,
+                      PermissionsEnum.ABOUT_US_CORE_FETCH,
+                      PermissionsEnum.ABOUT_US_CORE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/about-us-core">
+                      <SidebarVector />
+                      <span>{{ $t('about_us_core') }}</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>
