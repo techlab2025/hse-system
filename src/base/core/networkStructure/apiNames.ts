@@ -42,7 +42,7 @@ class ApiNames {
   // AboutUsCore
 
   public CreateAboutUsCore = this.baseUrl + this.dashboardPrefix + 'create_about_us_core'
-  public IndexAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_cores'
+  public IndexAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core'
   public ShowAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core_details'
   public EditAboutUsCore = this.baseUrl + this.dashboardPrefix + 'update_about_us_core'
   public DeleteAboutUsCore = this.baseUrl + this.dashboardPrefix + 'delete_about_us_core'
