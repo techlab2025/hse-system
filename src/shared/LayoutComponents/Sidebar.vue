@@ -685,7 +685,7 @@ const active = ref('0')
                 </li>
 
                 <!-- system risk management -->
-                <li>
+                <!-- <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum. OUR_SYSTEM_RISK_MANAGEMENT_ALL,
@@ -700,11 +700,11 @@ const active = ref('0')
                       <span>System Risk Management</span>
                     </router-link>
                   </PermissionBuilder>
-                </li>
+                </li> -->
               </ul>
               <!-- OUR SYSTEM STEP -->
               <ul>
-                <li>
+                <!-- <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
@@ -717,10 +717,10 @@ const active = ref('0')
                     <router-link to="/admin/our-system-step">
                       <SidebarVector />
                       <span>Our System Steps</span>
-                    </router-link>  
+                    </router-link>
                   </PermissionBuilder>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
@@ -735,7 +735,7 @@ const active = ref('0')
                       <span>System Banner</span>
                     </router-link>
                   </PermissionBuilder>
-                </li>
+                </li> -->
                 <li>
                   <PermissionBuilder
                     :code="[
