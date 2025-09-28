@@ -594,9 +594,9 @@ const active = ref('0')
                     <router-link to="/admin/service_logs">
                       <SidebarVector />
                       <span>Service Logs</span>
-                      </router-link>
-                    </PermissionBuilder>
-                  </li>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
 
                 <!-- Blog -->
                 <li>
@@ -628,6 +628,22 @@ const active = ref('0')
                     <router-link to="/admin/home-about-us">
                       <SidebarVector />
                       <span>Home About Us</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ABOUT_US_FEATURE_ALL,
+                      PermissionsEnum.ABOUT_US_FEATURE_CREATE,
+                      PermissionsEnum.ABOUT_US_FEATURE_DELETE,
+                      PermissionsEnum.ABOUT_US_FEATURE_FETCH,
+                      PermissionsEnum.ABOUT_US_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/about-us-features">
+                      <SidebarVector />
+                      <span>About Us Feature</span>
                     </router-link>
                   </PermissionBuilder>
                 </li>

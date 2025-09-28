@@ -99,6 +99,23 @@ const router = createRouter({
         },
 
         {
+          path: "about-us-features",
+          name: "About Us Features",
+          component: () => import('../views/Website/AboutUsFeature/IndexAboutUsFeature.vue'),
+        },
+
+        {
+          path: 'about-us-features/add',
+          name: 'Add About Us Features',
+          component: () => import('../views/Website/AboutUsFeature/AddAboutUsFeature.vue'),
+        },
+        {
+          path: 'about-us-features/:id',
+          name: 'Edit About Us Features',
+          component: () => import('../views/Website/AboutUsFeature/EditAboutUsFeature.vue'),
+        },
+
+        {
           path: 'template/add',
           name: 'Add Template',
           component: () => import('../views/Template/AddTemplate.vue'),
