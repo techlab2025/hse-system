@@ -195,163 +195,163 @@ const active = ref('0')
                 <!--                  </PermissionBuilder>-->
                 <!--                </li>-->
 
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.TEMPLATE_ALL,
-                      PermissionsEnum.TEMPLATE_CREATE,
-                      PermissionsEnum.TEMPLATE_DELETE,
-                      PermissionsEnum.TEMPLATE_FETCH,
-                      PermissionsEnum.TEMPLATE_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/templates">
-                      <SidebarVector />
-                      <span>Templates</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum.TEMPLATE_ALL,-->
+<!--                      PermissionsEnum.TEMPLATE_CREATE,-->
+<!--                      PermissionsEnum.TEMPLATE_DELETE,-->
+<!--                      PermissionsEnum.TEMPLATE_FETCH,-->
+<!--                      PermissionsEnum.TEMPLATE_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/templates">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Templates</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
 
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.CERTIFICATE_ALL,
-                      PermissionsEnum.CERTIFICATE_CREATE,
-                      PermissionsEnum.CERTIFICATE_DELETE,
-                      PermissionsEnum.CERTIFICATE_FETCH,
-                      PermissionsEnum.CERTIFICATE_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/certificates">
-                      <SidebarVector />
-                      <span>Certificates</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum.CERTIFICATE_ALL,-->
+<!--                      PermissionsEnum.CERTIFICATE_CREATE,-->
+<!--                      PermissionsEnum.CERTIFICATE_DELETE,-->
+<!--                      PermissionsEnum.CERTIFICATE_FETCH,-->
+<!--                      PermissionsEnum.CERTIFICATE_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/certificates">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Certificates</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
 
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.PROJECT_TYPE_ALL,
-                      PermissionsEnum.PROJECT_TYPE_CREATE,
-                      PermissionsEnum.PROJECT_TYPE_DELETE,
-                      PermissionsEnum.PROJECT_TYPE_FETCH,
-                      PermissionsEnum.PROJECT_TYPE_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/project-types">
-                      <SidebarVector />
-                      <span>Project Types</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.ORGANIZATION_ALL,
-                      PermissionsEnum.ORGANIZATION_CREATE,
-                      PermissionsEnum.ORGANIZATION_DELETE,
-                      PermissionsEnum.ORGANIZATION_FETCH,
-                      PermissionsEnum.ORGANIZATION_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/organization">
-                      <SidebarVector />
-                      <span>Organization</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum.PROJECT_TYPE_ALL,-->
+<!--                      PermissionsEnum.PROJECT_TYPE_CREATE,-->
+<!--                      PermissionsEnum.PROJECT_TYPE_DELETE,-->
+<!--                      PermissionsEnum.PROJECT_TYPE_FETCH,-->
+<!--                      PermissionsEnum.PROJECT_TYPE_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/project-types">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Project Types</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum.ORGANIZATION_ALL,-->
+<!--                      PermissionsEnum.ORGANIZATION_CREATE,-->
+<!--                      PermissionsEnum.ORGANIZATION_DELETE,-->
+<!--                      PermissionsEnum.ORGANIZATION_FETCH,-->
+<!--                      PermissionsEnum.ORGANIZATION_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/organization">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Organization</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
               </ul>
             </AccordionContent>
           </AccordionPanel>
         </PermissionBuilder>
       </Accordion>
-      <Accordion value="1">
-        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
-          <AccordionPanel value="1">
-            <AccordionHeader>
-              <div class="links-header">
-                <IconSetting />
-                Location
-              </div>
-            </AccordionHeader>
+<!--      <Accordion value="1">-->
+<!--        <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">-->
+<!--          <AccordionPanel value="1">-->
+<!--            <AccordionHeader>-->
+<!--              <div class="links-header">-->
+<!--                <IconSetting />-->
+<!--                Location-->
+<!--              </div>-->
+<!--            </AccordionHeader>-->
 
-            <AccordionContent
-              ><ul>
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum?.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_UPDATE,
-                      PermissionsEnum.LOCATION_DETAILS,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
-                    ]"
-                  >
-                    <router-link to="/admin/countries">
-                      <SidebarVector />
-                      <span>Location Country</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
-                      PermissionsEnum.LOCATION_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/states">
-                      <SidebarVector />
-                      <span>Location State</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
-                      PermissionsEnum.LOCATION_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/cities">
-                      <SidebarVector />
-                      <span>Location City</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-                <li>
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum?.ADMIN,
-                      PermissionsEnum.LOCATION_ALL,
-                      PermissionsEnum.LOCATION_CREATE,
-                      PermissionsEnum.LOCATION_DELETE,
-                      PermissionsEnum.LOCATION_FETCH,
-                      PermissionsEnum.LOCATION_UPDATE,
-                    ]"
-                  >
-                    <router-link to="/admin/areas">
-                      <SidebarVector />
-                      <span>Location Area</span>
-                    </router-link>
-                  </PermissionBuilder>
-                </li>
-              </ul>
-            </AccordionContent>
-          </AccordionPanel>
-        </PermissionBuilder>
-      </Accordion>
+<!--            <AccordionContent-->
+<!--              ><ul>-->
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum?.ADMIN,-->
+<!--                      PermissionsEnum?.LOCATION_ALL,-->
+<!--                      PermissionsEnum.LOCATION_CREATE,-->
+<!--                      PermissionsEnum.LOCATION_UPDATE,-->
+<!--                      PermissionsEnum.LOCATION_DETAILS,-->
+<!--                      PermissionsEnum.LOCATION_DELETE,-->
+<!--                      PermissionsEnum.LOCATION_FETCH,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/countries">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Location Country</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum?.ADMIN,-->
+<!--                      PermissionsEnum.LOCATION_ALL,-->
+<!--                      PermissionsEnum.LOCATION_CREATE,-->
+<!--                      PermissionsEnum.LOCATION_DELETE,-->
+<!--                      PermissionsEnum.LOCATION_FETCH,-->
+<!--                      PermissionsEnum.LOCATION_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/states">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Location State</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum?.ADMIN,-->
+<!--                      PermissionsEnum.LOCATION_ALL,-->
+<!--                      PermissionsEnum.LOCATION_CREATE,-->
+<!--                      PermissionsEnum.LOCATION_DELETE,-->
+<!--                      PermissionsEnum.LOCATION_FETCH,-->
+<!--                      PermissionsEnum.LOCATION_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/cities">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Location City</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <PermissionBuilder-->
+<!--                    :code="[-->
+<!--                      PermissionsEnum?.ADMIN,-->
+<!--                      PermissionsEnum.LOCATION_ALL,-->
+<!--                      PermissionsEnum.LOCATION_CREATE,-->
+<!--                      PermissionsEnum.LOCATION_DELETE,-->
+<!--                      PermissionsEnum.LOCATION_FETCH,-->
+<!--                      PermissionsEnum.LOCATION_UPDATE,-->
+<!--                    ]"-->
+<!--                  >-->
+<!--                    <router-link to="/admin/areas">-->
+<!--                      <SidebarVector />-->
+<!--                      <span>Location Area</span>-->
+<!--                    </router-link>-->
+<!--                  </PermissionBuilder>-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </AccordionContent>-->
+<!--          </AccordionPanel>-->
+<!--        </PermissionBuilder>-->
+<!--      </Accordion>-->
       <Accordion value="2">
         <PermissionBuilder :code="[PermissionsEnum?.ADMIN]">
           <AccordionPanel value="2">
