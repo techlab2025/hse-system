@@ -18,7 +18,6 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type BlogDetailsModel from '../../Data/models/BlogDetailsModel'
 import EditBlogParams from '../../Core/params/editBlogParams'
 import AddBlogParams from '../../Core/params/addBlogParams'
-import IndexHashtag from '@/views/Website/Term/IndexHashtag.vue'
 import IndexHashtagController from '@/features/website/Term/Presentation/controllers/indexHashtagController.ts'
 import IndexHashtagParams from '@/features/website/Term/Core/params/indexHashtagParams'
 import IndexCategoryController from '@/features/website/Category/Presentation/controllers/indexCategoryController'
@@ -33,19 +32,21 @@ const props = defineProps<{
 const route = useRoute()
 const id = route.params.parent_id
 
+// ---------- Hashtags ----------
 const indexHashtagParams = new IndexHashtagParams('', 1, 10, 1, id ? Number(id) : 0)
 const indexHashtagController = IndexHashtagController.getInstance()
-const SelectedHashtag = ref<TitleInterface>()
-
-const indexCategoryParams = new IndexCategoryParams('', 1, 10, 1, id ? Number(id) : 0)
-const indexCategoryController = IndexCategoryController.getInstance()
-const SelectedCategory = ref<TitleInterface>()
+const SelectedHashtag = ref<TitleInterface[]>([])
 
 const SetHashtagSelection = (val: TitleInterface[]) => {
   console.log('Selected Hashtags:', val)
   SelectedHashtag.value = val
   updateData()
 }
+
+// ---------- Categories ----------
+const indexCategoryParams = new IndexCategoryParams('', 1, 10, 1, id ? Number(id) : 0)
+const indexCategoryController = IndexCategoryController.getInstance()
+const SelectedCategory = ref<TitleInterface[]>([])
 
 const SetCategorySelection = (val: TitleInterface[]) => {
   console.log('Selected Category:', val)
@@ -56,29 +57,9 @@ const SetCategorySelection = (val: TitleInterface[]) => {
 type ImageValue = string | { file?: File; id?: number }
 
 // ---------- State ----------
-const langs = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-const langsDescription = ref<
-  {
-    locale: string
-    icon?: any
-    description: string
-  }[]
->([])
-
-const langsSubtitle = ref<
-  {
-    locale: string
-    icon?: any
-    subtitle: string
-  }[]
->([])
+const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langsDescription = ref<{ locale: string; icon?: any; description: string }[]>([])
+const langsSubtitle = ref<{ locale: string; icon?: any; subtitle: string }[]>([])
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
@@ -90,28 +71,9 @@ const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
 // default available langs from backend
-const langDefault = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-const langDefaultDescription = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-const langDefaultSubtitle = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
+const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langDefaultDescription = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langDefaultSubtitle = ref<{ locale: string; icon?: any; title: string }[]>([])
 
 // ---------- Fetch available languages ----------
 const fetchLang = async (
@@ -163,22 +125,18 @@ onMounted(async () => {
   await fetchLang()
 })
 
-
 // ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()
 
-  // titles
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  // descriptions
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.title)
   })
 
-  // subtitles
   langsSubtitle.value.forEach((lang) => {
     translationsParams.setTranslation('subtitle', lang.locale, lang.title)
   })
@@ -214,7 +172,6 @@ const updateData = () => {
 }
 
 // ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
 watch(
   [
     () => props.data,
@@ -247,7 +204,6 @@ watch(
         }))
       }
 
-      // subtitles
       if (newData?.subtitles?.length) {
         langsSubtitle.value = newDefault.map((l) => {
           const existing = newData.subtitles.find((t) => t.locale === l.locale)
@@ -262,6 +218,44 @@ watch(
 
       image.value = newData?.image ?? ''
       alt.value = newData?.alt ?? ''
+
+      if (newData?.hashtags?.length) {
+        SelectedHashtag.value = newData.hashtags.map((h: any) => {
+          const matched = langDefault.value.find((l) =>
+            h?.titles.some((t: any) => t.locale === l.locale),
+          )
+
+          return new TitleInterface({
+            id: h?.id,
+            title:
+              h?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
+              h?.titles?.title ||
+              'No Title',
+          })
+        })
+      } else {
+        SelectedHashtag.value = []
+      }
+
+      if (newData?.categories?.length) {
+        SelectedCategory.value = newData.categories.map((c: any) => {
+          const matched = langDefault.value.find((l) =>
+            c?.titles.some((t: any) => t.locale === l.locale),
+          )
+
+          return new TitleInterface({
+            id: c?.id,
+            title:
+              c?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
+              c?.titles?.title ||
+              'No Title',
+          })
+        })
+      } else {
+        SelectedCategory.value = []
+      }
+
+      updateData()
     }
   },
   { immediate: true },
@@ -325,6 +319,7 @@ const setImage = async (data: File) => {
     <label> Image Alt Text </label>
     <input type="text" v-model="alt" placeholder="Enter image alt text" />
   </div>
+
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :controller="indexHashtagController"
@@ -332,8 +327,9 @@ const setImage = async (data: File) => {
       label="Hashtag"
       id="Hashtag"
       placeholder="Selected Hashtag"
-      @update:modelValue="SetHashtagSelection"
       :type="2"
+      :modelValue="SelectedHashtag"
+      @update:modelValue="SetHashtagSelection"
     />
   </div>
 
@@ -344,8 +340,9 @@ const setImage = async (data: File) => {
       label="Category"
       id="Category"
       placeholder="Selected Category"
-      @update:modelValue="SetCategorySelection"
       :type="2"
+      :modelValue="SelectedCategory"
+      @update:modelValue="SetCategorySelection"
     />
   </div>
 </template>

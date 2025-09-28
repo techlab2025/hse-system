@@ -1,22 +1,18 @@
-// import { log } from "console"
-
 export default class TranslationsParams {
-  // Store translations in a nested structure: { field: { locale: value } }
   private translations: Record<string, Record<string, string>> = {
     title: {},
     description: {},
+    subtitle: {},
   }
 
   constructor(locales: string[] = ['en', 'ar', 'fr']) {
-    // Initialize empty translations for all locales
-    for (const field of ['title', 'description']) {
+    for (const field of ['title', 'description', 'subtitle']) {
       for (const locale of locales) {
         this.translations[field][locale] = ''
       }
     }
   }
 
-  // Set translation for a specific field and locale
   setTranslation(field: string, locale: string, value: string): void {
     if (!this.translations[field]) {
       this.translations[field] = {}
@@ -24,35 +20,31 @@ export default class TranslationsParams {
     this.translations[field][locale] = value
   }
 
-  // Get translation for a specific field and locale
   getTranslation(field: string, locale: string): string {
     return this.translations[field]?.[locale] || ''
   }
 
-  // Convert to API-ready format with dynamic keys
   toMap(): Record<string, any> {
     const result: Record<string, any> = {}
-
     for (const [field, localeValues] of Object.entries(this.translations)) {
       for (const [locale, value] of Object.entries(localeValues)) {
         if (value) {
-          // Only include non-empty values
           result[`${field}_${locale}`] = value
         }
       }
     }
-
     return result
   }
 
-  // Static method to create from an array of translations
   static fromMap(
-    titles: TitleLocale[],
+    titles: TitleLocale[] = [],
     descriptions: DescriptionLocale[] = [],
+    subtitles: SubtitlesLocale[] = [],
     langLocale: LangLocale<string>[] = []
   ): {
     titles: TitleLocale[]
     descriptions: DescriptionLocale[]
+    subtitles: SubtitlesLocale[]
     langLocale: LangLocale<string>[]
   } {
     const params = new TranslationsParams()
@@ -65,13 +57,15 @@ export default class TranslationsParams {
       params.setTranslation('description', locale, title)
     })
 
+    subtitles.forEach(({ locale, subtitle }) => {
+      params.setTranslation('subtitle', locale, subtitle)
+    })
+
     langLocale.forEach(({ locale, value }) => {
       params.setTranslation('lang', locale, value)
     })
 
-    // console.log(this.translations, 'params');
-
-    return { titles, descriptions, langLocale }
+    return { titles, descriptions, subtitles, langLocale }
   }
 }
 
@@ -85,9 +79,12 @@ export interface DescriptionLocale {
   description: string
 }
 
+export interface SubtitlesLocale {
+  locale: string
+  subtitle: string
+}
+
 export interface LangLocale<T> {
   locale: string
   value: T
 }
-
-
