@@ -96,10 +96,15 @@ watch(
       const current = titles.value.find((t) => t.locale === lang.value)
       if (current)
         title.value =
-          current.title ?? current.description ?? current.subtitle ?? current.button_title
+          current.title ??
+          current.description ??
+          current.subtitle ??
+          current.button_title ??
+          current.answer ??
+          current.question
     }
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 </script>
 
