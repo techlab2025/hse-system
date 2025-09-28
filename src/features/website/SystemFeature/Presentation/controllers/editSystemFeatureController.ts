@@ -1,45 +1,45 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
-import type OrganizationModel from '../../Data/models/OrganizationModel'
-import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
+import type SystemFeatureModel from '../../Data/models/SystemFeatureModel'
+import EditSystemFeatureUseCase from '../../Domain/useCase/editSystemFeatureUseCase'
 
-export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
-  
-  private static instance: AddOrganizationController
+export default class EditSystemFeatureController extends ControllerInterface<SystemFeatureModel> {
+  private static instance: EditSystemFeatureController
+
   private constructor() {
     super()
   }
-  private addOrganizationUseCase = new AddOrganizationUseCase()
+
+  private editSystemFeatureUseCase = new EditSystemFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddOrganizationController()
+      this.instance = new EditSystemFeatureController()
     }
     return this.instance
   }
 
-  async addOrganization(params: Params, router: Router, draft: boolean = false) {
+  async editSystemFeature(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
     try {
-      const dataState: DataState<OrganizationModel> =
-        await this.addOrganizationUseCase.call(params)
+      const dataState: DataState<SystemFeatureModel> =
+        await this.editSystemFeatureUseCase.call(params)
+
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/accidents-types')
-
-        // useLoaderStore().endLoadingWithDialog();
+        await router.push('/admin/system_feature')
+        // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -48,16 +48,14 @@ export default class AddOrganizationController extends ControllerInterface<Organ
           messageContent: null,
         })
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? (error as string),
+        titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,
       })
     }
-
-    super.handleResponseDialogs()
     return this.state
   }
 }

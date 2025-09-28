@@ -163,7 +163,10 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      langs.value = newData?.code
+      industry.value = newData?.industries ?? []
+      Equipment.value = newData?.equipmentTypeId
+      console.log(newData?.equipmentTypeId, 'newData')
+      // langs.value = newData?.code
     }
   },
   { immediate: true },

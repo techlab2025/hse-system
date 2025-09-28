@@ -7,8 +7,8 @@ export default class OrganizationDetailsModel {
   public email: string
   public image: string
   public website_link: string
-  public industry: string
-  public languages: string
+  public industry: TitleInterface
+  public languages: TitleInterface[]
 
   constructor(
     id: number,
@@ -17,8 +17,8 @@ export default class OrganizationDetailsModel {
     email: string,
     image: string,
     website_link: string,
-    industry: string,
-    languages: string,
+    industry: TitleInterface,
+    languages: TitleInterface[],
   ) {
     this.id = id
     this.name = name
@@ -38,8 +38,9 @@ export default class OrganizationDetailsModel {
       data.email,
       data.image,
       data.website_link,
-      data.industry,
-      data.languages,
+      // data.industry
+      this.getTitle(data.industry),
+      data.languages.length > 0 ? data.languages?.map((language) => this.getTitle(language)) : [],
     )
   }
 

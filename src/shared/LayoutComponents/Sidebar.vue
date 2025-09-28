@@ -631,6 +631,38 @@ const active = ref('0')
                     </router-link>
                   </PermissionBuilder>
                 </li>
+                <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
+                      PermissionsEnum.OUR_SYSTEM_BANNER_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_BANNER_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_BANNER_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_BANNER_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system_banner">
+                      <SidebarVector />
+                      <span>System Banner</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li>
+                <!-- <li>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_DELETE,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_FETCH,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_UPDATE,
+                    ]"
+                  >
+                    <router-link to="/admin/system_feature">
+                      <SidebarVector />
+                      <span>System Feature</span>
+                    </router-link>
+                  </PermissionBuilder>
+                </li> -->
               </ul>
             </AccordionContent>
           </AccordionPanel>
