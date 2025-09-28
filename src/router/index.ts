@@ -581,6 +581,36 @@ const router = createRouter({
           name: 'Edit Faq',
           component: () => import('../views/Website/Faq/EditFaq.vue'),
         },
+        {
+          path: 'system_risk_type',
+          name: 'System Risk Type',
+          component: () => import('../views/Website/SystemRiskType/IndexSystemRiskType.vue'),
+        },
+        {
+          path: 'system_risk_type/add',
+          name: 'Add System Risk Type',
+          component: () => import('../views/Website/SystemRiskType/AddSystemRiskType.vue'),
+        },
+        {
+          path: 'system_risk_type/:id',
+          name: 'Edit System Risk Type',
+          component: () => import('../views/Website/SystemRiskType/EditSystemRiskType.vue'),
+        },
+        {
+          path: 'system_components',
+          name: 'System Components',
+          component: () => import('../views/Website/SystemComponents/IndexSystemComponents.vue'),
+        },
+        {
+          path: 'system_components/add',
+          name: 'Add System Components',
+          component: () => import('../views/Website/SystemComponents/AddSystemComponents.vue'),
+        },
+        {
+          path: 'system_components/:id',
+          name: 'Edit System Components',
+          component: () => import('../views/Website/SystemComponents/EditSystemComponents.vue'),
+        },
       ],
     },
   ],
