@@ -1,33 +1,37 @@
-export default class SystemFeatureDetailsModel {
+import TitleInterface from '@/base/Data/Models/title_interface'
+
+export default class SystemFeatureModel extends TitleInterface {
   public id: number
-  public features: { locale: string; feature: string }[]
-  public olds: { locale: string; old: string }[]
-  public news: { locale: string; new: string }[]
+  public feature: string
+  public old: string
+  public New: string
   public order: number
   public isActive: number
 
   constructor(
     id: number,
-    features: { locale: string; feature: string }[],
-    olds: { locale: string; old: string }[],
-    news: { locale: string; new: string }[],
+    feature: string,
+    old: string,
+    New: string,
     order: number,
     isActive: number,
   ) {
+    super({ id })
     this.id = id
-    this.features = features
-    this.olds = olds
-    this.news = news
+
+    this.feature = feature
+    this.old = old
+    this.New = New
     this.order = order
     this.isActive = isActive
   }
 
-  static fromMap(data: any): SystemFeatureDetailsModel {
-    return new SystemFeatureDetailsModel(
+  static fromMap(data: any): SystemFeatureModel {
+    return new SystemFeatureModel(
       data.id,
-      data.features,
-      data.olds,
-      data.news,
+      data.feature,
+      data.old,
+      data.new,
       data.order,
       data.is_active,
     )
