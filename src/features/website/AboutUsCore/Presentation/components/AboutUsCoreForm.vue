@@ -198,7 +198,7 @@ watch(
     alt_image.value = newData?.alt ?? ''
     image.value = newData?.image ?? ''
 
-    console.log(newData?.AboutUsCoreItems, 'newData?.AboutUsCoreItems')
+    // console.log(newData?.AboutUsCoreItems, 'newData?.AboutUsCoreItems')
 
     items.value = newData?.AboutUsCoreItems?.length
       ? newData.AboutUsCoreItems.map((it: any) => ({

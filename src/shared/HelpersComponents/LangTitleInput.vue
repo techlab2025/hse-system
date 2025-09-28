@@ -141,7 +141,7 @@ watch(
     <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
 
     <!-- Regular Input -->
-    <input v-else type="text" v-model="title" v-bind="inputAttrs" />
+    <input v-else type="text" v-model="title" v-bind="inputAttrs" required />
     <!-- Selected Language Info -->
     <span class="select-lang">
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}
