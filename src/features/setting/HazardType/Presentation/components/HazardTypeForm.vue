@@ -100,7 +100,7 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(allIndustries.value, 'industry')
+  // console.log(allIndustries.value, 'industry')
 
   const params = props.data?.id
     ? new EditHazardTypeParams(
@@ -116,7 +116,7 @@ const updateData = () => {
         // id,
       )
 
-  console.log(params, 'params')
+  // console.log(params, 'params')
   emit('update:data', params)
 }
 

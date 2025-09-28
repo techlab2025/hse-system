@@ -6,8 +6,9 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type IndustryModel from '../../Data/Models/IndustryModel'
 import ShowIndustryUseCase from '../../Domain/useCase/showIndustryUseCase'
+import IndustryDetailsModel from '@/features/setting/Industries/Data/Models/IndustryDetailsModel.ts'
 
-export default class ShowIndustryController extends ControllerInterface<IndustryModel> {
+export default class ShowIndustryController extends ControllerInterface<IndustryDetailsModel> {
   private static instance: ShowIndustryController
   private constructor() {
     super()
@@ -24,7 +25,7 @@ export default class ShowIndustryController extends ControllerInterface<Industry
   async ShowIndustry(params: Params, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<IndustryModel> = await this.showIndustryUseCase.call(params)
+      const dataState: DataState<IndustryDetailsModel> = await this.showIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // console.log(this.state.value.data)
