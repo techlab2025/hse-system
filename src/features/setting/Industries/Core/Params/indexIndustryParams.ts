@@ -15,7 +15,7 @@ export default class IndexIndustryParams implements Params {
 
   toMap(): Record<string, number | string | Record<string, string>> {
     const data: Record<string, number | string | Record<string, string>> = {}
-    if (this.word) data['title'] = this.word
+    if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage

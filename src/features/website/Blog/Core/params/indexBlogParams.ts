@@ -28,7 +28,7 @@ export default class IndexBlogParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
-    if (this.word) data['title'] = this.word
+    if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage

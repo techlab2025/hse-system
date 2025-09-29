@@ -48,7 +48,12 @@ const fetchSystemRiskManagement = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const SystemRiskManagementParams = new IndexSystemRiskManagementParams(query, pageNumber, perPage, withPage)
+  const SystemRiskManagementParams = new IndexSystemRiskManagementParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+  )
   await indexSystemRiskManagementController.getData(SystemRiskManagementParams)
 }
 
