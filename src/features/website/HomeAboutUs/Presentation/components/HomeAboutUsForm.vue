@@ -234,7 +234,7 @@ watch(
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       :langs="langDefault"
       :label="$t('description')"

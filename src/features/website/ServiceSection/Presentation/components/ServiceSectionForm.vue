@@ -248,25 +248,25 @@ const setImage = async (data: File) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+
+  <div class="col-span-4 md:col-span-4">
+    <CustomSelectInput
+    :modelValue="SelectedService"
+    :controller="indexServiceController"
+    :params="indexServiceParams"
+    label="Service"
+    id="Service"
+    placeholder="Select Service"
+    @update:modelValue="setServiceSelection"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       type="textarea"
       :langs="langDefault"
       :modelValue="langsDescription"
       :label="$t('Description')"
       @update:modelValue="setLangsDescription"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedService"
-      :controller="indexServiceController"
-      :params="indexServiceParams"
-      label="Service"
-      id="Service"
-      placeholder="Select Service"
-      @update:modelValue="setServiceSelection"
     />
   </div>
 
@@ -282,7 +282,9 @@ const setImage = async (data: File) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="image">{{ $t('image') }}</label>
+
     <SingleFileUpload
       :modelValue="image"
       @update:modelValue="setImage"

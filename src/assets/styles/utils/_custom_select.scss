@@ -97,11 +97,10 @@
   color: black !important;
   // color: ;
   // background-color: rgb(29, 79, 216) !important;
-  margin-inline:5px ;
+  margin-inline: 5px;
   border-radius: 20px;
   width: fit-content;
 }
-
 
 .p-checkbox-box {
   background-color: white !important;
@@ -148,12 +147,19 @@
 }
 
 .p-multiselect-chip-item {
-  background-color: #1d4fd860 !important;
+  background-color: #1d4ed81a !important;
   border-radius: $XlSize !important;
   .p-chip {
     border-radius: $XlSize !important;
-    background-color: #1d4fd860 !important;
-    color: white !important;
+    // background-color: #1D4ED8 !important;
+    color: #1d4ed8 !important;
+  }
+
+  svg {
+    background: white !important;
+    path {
+      fill: #1d4ed8 !important;
+    }
   }
 }
 

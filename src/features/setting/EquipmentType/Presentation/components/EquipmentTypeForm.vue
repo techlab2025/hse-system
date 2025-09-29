@@ -174,30 +174,49 @@ const setImage = async (data: File) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
+  <!-- Has Certificate -->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
-    <label>{{ $t('has_certificate') }}</label>
+    <label for="has_certificate">{{ $t('has_certificate') }}</label>
     <input
       type="checkbox"
       :value="1"
       v-model="hasCertificate"
       :checked="hasCertificate == 1"
       @change="updateData"
+      id="has_certificate"
     />
   </div>
+
+  <!-- all_industries -->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
-    <label>{{ $t('all_industries') }}</label>
+    <label for="all_industries">{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
       :value="1"
       v-model="allIndustries"
       :checked="allIndustries == 1"
       @change="updateData"
+      id="all_industries"
     />
   </div>
+
+  <!-- image -->
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="image">Image</label>
+    <SingleFileUpload
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
+  </div>
+
+  <!--industry  -->
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput
       :modelValue="industry"
@@ -209,24 +228,5 @@ const setImage = async (data: File) => {
       :type="2"
       @update:modelValue="setIndustry"
     />
-  </div>
-  <div class="col-span-4 md:col-span-4">
-    <!-- <FileUpload
-      :initialFileData="image"
-      @update:fileData="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-      :type="file"
-      :multiple="false"
-    /> -->
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
-    <!-- <SingleFileUpload v-model="image" label="Image" id="image" placeholder="Select image" /> -->
   </div>
 </template>
