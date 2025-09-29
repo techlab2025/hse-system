@@ -36,7 +36,7 @@ export default class SystemWorkDetailsModel {
     return new SystemWorkDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       TranslationsParams.fromMap([], data.descriptions, []).descriptions,
       data.alt,
       data.image,

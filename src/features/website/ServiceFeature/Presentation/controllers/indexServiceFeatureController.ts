@@ -2,8 +2,9 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import IndexServiceFeatureUseCase from '../../Domain/useCase/indexServiceFeatureUseCase'
+import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
+
 
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -14,7 +15,7 @@ export default class IndexServiceFeatureController extends SelectControllerInter
   private constructor() {
     super()
   }
-  private indexServiceFeatureUseCase = new IndexServiceFeatureUseCase()
+  private IndexServiceFeatureUseCase = new IndexServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -28,7 +29,7 @@ export default class IndexServiceFeatureController extends SelectControllerInter
     // console.log(params)
     this.setLoading()
     const dataState: DataState<ServiceFeatureModel[]> =
-      await this.indexServiceFeatureUseCase.call(params)
+      await this.IndexServiceFeatureUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

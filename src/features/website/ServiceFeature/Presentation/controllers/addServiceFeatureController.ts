@@ -9,12 +9,14 @@ import type { Router } from 'vue-router'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import AddServiceFeatureUseCase from '../../Domain/useCase/addServiceFeatureUseCase'
 
+
+
 export default class AddServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
   private static instance: AddServiceFeatureController
   private constructor() {
     super()
   }
-  private addServiceFeatureUseCase = new AddServiceFeatureUseCase()
+  private AddServiceFeatureUseCase = new AddServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -26,9 +28,8 @@ export default class AddServiceFeatureController extends ControllerInterface<Ser
   async addServiceFeature(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      console.log('Ssssssss')
       const dataState: DataState<ServiceFeatureModel> =
-        await this.addServiceFeatureUseCase.call(params)
+        await this.AddServiceFeatureUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -37,7 +38,7 @@ export default class AddServiceFeatureController extends ControllerInterface<Ser
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/service_features')
+        if (!draft) await router.push('/admin/service-features')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

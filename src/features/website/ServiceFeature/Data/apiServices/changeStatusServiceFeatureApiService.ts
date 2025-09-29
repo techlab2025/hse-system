@@ -3,8 +3,8 @@ import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 
-class DisServiceFeatureApiService extends ServicesInterface {
-  private static instance: DisServiceFeatureApiService
+class ChangeStatusServiceFeatureApiService extends ServicesInterface {
+  private static instance: ChangeStatusServiceFeatureApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -12,7 +12,7 @@ class DisServiceFeatureApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisServiceFeatureApiService()
+      this.instance = new ChangeStatusServiceFeatureApiService()
     }
     return this.instance
   }
@@ -27,4 +27,4 @@ class DisServiceFeatureApiService extends ServicesInterface {
   }
 }
 
-export { DisServiceFeatureApiService }
+export { ChangeStatusServiceFeatureApiService }

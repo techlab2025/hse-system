@@ -1,18 +1,20 @@
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { DisServiceFeatureApiService } from '../../Data/apiServices/disServiceFeatureApiService'
 import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
+import { ChangeStatusServiceFeatureApiService } from '../../Data/apiServices/changeStatusServiceFeatureApiService'
 
-class DisActiveServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
-  private static instance: DisActiveServiceFeatureRepo
+
+
+class ChangeStatusServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
+  private static instance: ChangeStatusServiceFeatureRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DisActiveServiceFeatureRepo()
+      this.instance = new ChangeStatusServiceFeatureRepo()
     }
     return this.instance
   }
@@ -26,8 +28,8 @@ class DisActiveServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
   }
 
   get serviceInstance(): ServicesInterface {
-    return DisServiceFeatureApiService.getInstance()
+    return ChangeStatusServiceFeatureApiService.getInstance()
   }
 }
 
-export { DisActiveServiceFeatureRepo }
+export { ChangeStatusServiceFeatureRepo }
