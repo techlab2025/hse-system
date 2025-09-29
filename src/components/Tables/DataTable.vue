@@ -51,9 +51,9 @@ const ReverseTable = () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item.id">
+        <tr v-for="(item,index) in items" :key="item.id">
           <td data-label="#">
-            <router-link :to="`/`">{{ item.id }}</router-link>
+            <router-link :to="`/`">{{ index + 1 }}</router-link>
           </td>
           <td :data-label="$t('image')"><img src="@/assets/images/error.png" alt="image" /></td>
           <td :data-label="$t('title')">{{ item.title }}</td>
