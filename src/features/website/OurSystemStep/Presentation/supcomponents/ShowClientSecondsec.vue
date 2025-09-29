@@ -125,7 +125,7 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in projects" :key="item.id">
+              <tr v-for="(item,index) in projects" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/edit-project/${item.id}`">{{
                     item.id

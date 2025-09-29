@@ -195,9 +195,9 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in state.data" :key="item.id">
+              <tr v-for="(item,index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/home-about-us/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/home-about-us/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
                 <td data-label="subtitle">{{ item.subtitle }}</td>
