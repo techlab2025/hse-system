@@ -654,9 +654,14 @@ const router = createRouter({
     },
     {
       path: '/organization',
-      name: 'Organization',
-      component: () => import('../views/AppHome.vue'),
+      name: 'Organization Home',
+      component: Dashboard,
       children: [
+        {
+          path: '/',
+          name: 'OrganizationHome',
+          component: () => import('../views/AppHome.vue'),
+        },
         {
           path: 'accidents-types',
           name: 'Accidents Type',
