@@ -266,17 +266,7 @@ watch(
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :label="$t('description')"
-      :modelValue="langsDescription"
-      type="textarea"
-      @update:modelValue="setLangsDescription"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <CustomSelectInput
       :controller="indexServiceController"
       :modelValue="service_id"
@@ -287,6 +277,16 @@ watch(
       @update:modelValue="setIndexService"
     />
   </div>
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      :langs="langDefault"
+      :label="$t('description')"
+      :modelValue="langsDescription"
+      type="textarea"
+      @update:modelValue="setLangsDescription"
+    />
+  </div>
+
 
   <!-- Items Section -->
   <div class="col-span-4 border border-gray-200 !p-3 rounded">
