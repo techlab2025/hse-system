@@ -13,7 +13,7 @@ const router = createRouter({
         {
           path: '',
           name: 'Home',
-          component: () => import('../views/Admin/AppHome.vue'),
+          component: () => import('../views/AppHome.vue'),
         },
         {
           path: 'lang/add',
@@ -251,8 +251,8 @@ const router = createRouter({
         },
 
         {
-          path: "about-us-features",
-          name: "About Us Features",
+          path: 'about-us-features',
+          name: 'About Us Features',
           component: () => import('../views/Website/AboutUsFeature/IndexAboutUsFeature.vue'),
         },
 
@@ -267,10 +267,9 @@ const router = createRouter({
           component: () => import('../views/Website/AboutUsFeature/EditAboutUsFeature.vue'),
         },
 
-
         {
-          path: "about-us-core",
-          name: "About Us Core",
+          path: 'about-us-core',
+          name: 'About Us Core',
           component: () => import('../views/Website/AboutUsCore/IndexAboutUsCore.vue'),
         },
 
@@ -288,12 +287,12 @@ const router = createRouter({
         {
           path: 'template/add',
           name: 'Add Template',
-          component: () => import('../views/Template/AddTemplate.vue'),
+          component: () => import('../views/Admin/Template/AddTemplate.vue'),
         },
         {
           path: 'template/:id',
           name: 'Edit Template',
-          component: () => import('../views/Template/EditTemplate.vue'),
+          component: () => import('../views/Admin/Template/EditTemplate.vue'),
         },
 
         {
@@ -412,7 +411,6 @@ const router = createRouter({
           component: () => import('../views/Website/HomeContactUs/EditHomeContactUs.vue'),
         },
 
-
         // Category
         {
           path: 'categories',
@@ -459,7 +457,6 @@ const router = createRouter({
           name: 'Add Privacy',
           component: () => import('../views/Website/Privacy/EditPrivacy.vue'),
         },
-
 
         {
           path: 'services',
@@ -618,17 +615,20 @@ const router = createRouter({
         {
           path: 'system-risk-management',
           name: 'System Risk Management',
-          component: () => import('../views/Website/SystemRiskManagement/IndexSystemRiskManagement.vue'),
+          component: () =>
+            import('../views/Website/SystemRiskManagement/IndexSystemRiskManagement.vue'),
         },
         {
           path: 'system-risk-management/add',
           name: 'Add System Risk Management',
-          component: () => import('../views/Website/SystemRiskManagement/AddSystemRiskManagement.vue'),
+          component: () =>
+            import('../views/Website/SystemRiskManagement/AddSystemRiskManagement.vue'),
         },
         {
           path: 'system-risk-management/:id',
           name: 'Edit System Risk Management',
-          component: () => import('../views/Website/SystemRiskManagement/EditSystemRiskManagement.vue'),
+          component: () =>
+            import('../views/Website/SystemRiskManagement/EditSystemRiskManagement.vue'),
         },
         // OuR System Step
         {
@@ -645,7 +645,6 @@ const router = createRouter({
           path: 'our-system-step/:id',
           name: 'Edit Our System Step',
           component: () => import('../views/Website/OurSystemStep/EditOurSystemStep.vue'),
-
         },
       ],
     },
