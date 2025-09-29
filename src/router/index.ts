@@ -376,7 +376,8 @@ const router = createRouter({
         {
           path: 'home-view-pricing',
           name: 'Home View Pricing',
-          component: () => import('../views/Admin/Website/HomeViewPricing/IndexHomeViewPricing.vue'),
+          component: () =>
+            import('../views/Admin/Website/HomeViewPricing/IndexHomeViewPricing.vue'),
         },
         {
           path: 'home-view-pricing/add',
@@ -599,17 +600,20 @@ const router = createRouter({
         {
           path: 'system_components',
           name: 'System Components',
-          component: () => import('../views/Admin/Website/SystemComponents/IndexSystemComponents.vue'),
+          component: () =>
+            import('../views/Admin/Website/SystemComponents/IndexSystemComponents.vue'),
         },
         {
           path: 'system_components/add',
           name: 'Add System Components',
-          component: () => import('../views/Admin/Website/SystemComponents/AddSystemComponents.vue'),
+          component: () =>
+            import('../views/Admin/Website/SystemComponents/AddSystemComponents.vue'),
         },
         {
           path: 'system_components/:id',
           name: 'Edit System Components',
-          component: () => import('../views/Admin/Website/SystemComponents/EditSystemComponents.vue'),
+          component: () =>
+            import('../views/Admin/Website/SystemComponents/EditSystemComponents.vue'),
         },
         // system risk management
         {
@@ -645,6 +649,124 @@ const router = createRouter({
           path: 'our-system-step/:id',
           name: 'Edit Our System Step',
           component: () => import('../views/Admin/Website/OurSystemStep/EditOurSystemStep.vue'),
+        },
+      ],
+    },
+    {
+      path: '/organization',
+      name: 'Organization',
+      component: () => import('../views/AppHome.vue'),
+      children: [
+        {
+          path: 'accidents-types',
+          name: 'Accidents Type',
+          component: () => import('../views/Admin/Accidents/IndexAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/add',
+          name: 'Add Accidents Type',
+          component: () => import('../views/Admin/Accidents/AddAccidentsType.vue'),
+        },
+        {
+          path: 'accidents-type/:id',
+          name: 'Edit Accidents Type',
+          component: () => import('../views/Admin/Accidents/EditAccidentsType.vue'),
+        },
+        {
+          path: 'certificates',
+          name: 'Certificates',
+          component: () => import('../views/Admin/Certificate/IndexCertificate.vue'),
+        },
+        {
+          path: 'certificate/add',
+          name: 'Add Certificate',
+          component: () => import('../views/Admin/Certificate/AddCertificate.vue'),
+        },
+        {
+          path: 'certificate/:id',
+          name: 'Edit Certificate',
+          component: () => import('../views/Admin/Certificate/EditCertificate.vue'),
+        },
+        {
+          path: 'equipment-types/:parent_id?',
+          name: 'Equipment Type',
+          component: () => import('../views/Admin/EquipmentType/IndexEquipmentType.vue'),
+        },
+        {
+          path: 'equipment-type/add/:parent_id?',
+          name: 'Add Equipment Type',
+          component: () => import('../views/Admin/EquipmentType/AddEquipmentType.vue'),
+        },
+
+        {
+          path: 'equipment-type/:id',
+          name: 'Edit Equipment Type',
+          component: () => import('../views/Admin/EquipmentType/EditEquipmentType.vue'),
+        },
+        {
+          path: 'equipments/:id?',
+          name: 'Equipment ',
+          component: () => import('../views/Admin/Equipment/IndexEquipment.vue'),
+        },
+        {
+          path: 'equipment/add/:id?',
+          name: 'Add Equipment ',
+          component: () => import('../views/Admin/Equipment/AddEquipment.vue'),
+        },
+        {
+          path: 'equipment/:id',
+          name: 'Edit Equipment ',
+          component: () => import('../views/Admin/Equipment/EditEquipment.vue'),
+        },
+        {
+          path: 'factories',
+          name: 'Factories',
+          component: () => import('../views/Admin/Factory/IndexFactory.vue'),
+        },
+        {
+          path: 'factory/add',
+          name: 'Add Factory',
+          component: () => import('../views/Admin/Factory/AddFactory.vue'),
+        },
+        {
+          path: 'factory/:id',
+          name: 'Edit Factory',
+          component: () => import('../views/Admin/Factory/EditFactory.vue'),
+        },
+        {
+          path: 'factories-items',
+          name: 'Factories Items',
+          component: () => import('../views/Admin/FactoryItem/IndexFactoryItem.vue'),
+        },
+        {
+          path: 'factory-item/:id',
+          name: 'Edit Factory Item',
+          component: () => import('../views/Admin/FactoryItem/EditFactoryItem.vue'),
+        },
+        {
+          path: 'factory-item/add',
+          name: 'Add Factory Item',
+          component: () => import('../views/Admin/FactoryItem/AddFactoryItem.vue'),
+        },
+        {
+          path: 'hazard-types',
+          name: 'Hazard Type',
+          component: () => import('../views/Admin/HazardType/IndexHazardType.vue'),
+        },
+        {
+          path: 'hazard-type/add',
+          name: 'Add Hazard Type',
+          component: () => import('../views/Admin/HazardType/AddHazardType.vue'),
+        },
+        {
+          path: 'hazard-type/:id',
+          name: 'Edit Hazard Type',
+          component: () => import('../views/Admin/HazardType/EditHazardType.vue'),
+        },
+        {
+          path: 'templates',
+          name: 'Templates',
+          component: () => import('../views/Admin/Template/IndexTemplate.vue'),
         },
       ],
     },
