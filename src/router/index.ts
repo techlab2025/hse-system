@@ -474,17 +474,17 @@ const router = createRouter({
           component: () => import('../views/Website/Service/EditService.vue'),
         },
         {
-          path: 'service_features',
+          path: 'service-features',
           name: 'Services Features',
           component: () => import('../views/Website/ServiceFeatures/IndexSeriveFeatures.vue'),
         },
         {
-          path: 'service_feature/add',
+          path: 'service-feature/add',
           name: 'Add Service Features',
           component: () => import('../views/Website/ServiceFeatures/AddServiceFeatures.vue'),
         },
         {
-          path: 'service_feature/:id',
+          path: 'service-feature/:id',
           name: 'Edit Service Features',
           component: () => import('../views/Website/ServiceFeatures/EditServiceFeatures.vue'),
         },

@@ -36,7 +36,7 @@ export default class PowerFullDetailsModel {
     return new PowerFullDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       TranslationsParams.fromMap([], data.descriptions, []).descriptions,
       data.alt,
       data.image,

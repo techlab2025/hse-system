@@ -39,9 +39,9 @@ export default class HomeViewPricingDetailsModel {
     return new HomeViewPricingDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       TranslationsParams.fromMap([], data.descriptions, []).descriptions,
-      TranslationsParams.fromMap([], [], data.button_titles).langLocale,
+      TranslationsParams.fromMap([], [], [], data.button_titles).buttonTitles,
       data.alt,
       data.image,
     )

@@ -311,7 +311,7 @@ class ApiNames {
   public IndexServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_logs'
   public ShowServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_log_details'
   public EditServiceLog = this.baseUrl + this.dashboardPrefix + 'update_service_log'
-  public DeleteServiceLog = this.baseUrl + this.dashboardPrefix + 'delete_service_logs'
+  public DeleteServiceLog = this.baseUrl + this.dashboardPrefix + 'delete_service_log'
   public DisServiceLog = this.baseUrl + this.dashboardPrefix + 'change_service_log_active_status'
 
   // Website System Banner

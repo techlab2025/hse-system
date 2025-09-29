@@ -6,12 +6,15 @@ import errorImage from '@/assets/images/error.png'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import DeleteServiceFeatureUseCase from '../../Domain/useCase/deleteServiceFeatureUseCase'
 
+
+
+
 export default class DeleteServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
   private static instance: DeleteServiceFeatureController
   private constructor() {
     super()
   }
-  private deleteServiceFeatureUseCase = new DeleteServiceFeatureUseCase()
+  private DeleteServiceFeatureUseCase = new DeleteServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -25,7 +28,7 @@ export default class DeleteServiceFeatureController extends ControllerInterface<
     // console.log(params)
     try {
       const dataState: DataState<ServiceFeatureModel> =
-        await this.deleteServiceFeatureUseCase.call(params)
+        await this.DeleteServiceFeatureUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

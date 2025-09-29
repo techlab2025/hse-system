@@ -5,28 +5,30 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
-import DisServiceFeatureUseCase from '../../Domain/useCase/disServiceFeatureUseCase'
+import ChangeStatusServiceFeatureUseCase from '../../Domain/useCase/changeStatusServiceFeatureUseCase'
 
-export default class disActiveServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
-  private static instance: disActiveServiceFeatureController
+
+
+export default class ChangeStatusServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
+  private static instance: ChangeStatusServiceFeatureController
   private constructor() {
     super()
   }
-  private disServiceFeatureUseCase = new DisServiceFeatureUseCase()
+  private ChangeStatusServiceFeatureUseCase = new ChangeStatusServiceFeatureUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new disActiveServiceFeatureController()
+      this.instance = new ChangeStatusServiceFeatureController()
     }
     return this.instance
   }
 
-  async disActiveServiceFeature(params: Params) {
+  async changeStatusServiceFeature(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
     const dataState: DataState<ServiceFeatureModel> =
-      await this.disServiceFeatureUseCase.call(params)
+      await this.ChangeStatusServiceFeatureUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

@@ -17,21 +17,21 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexServiceFeatureParams from '../../Core/params/indexServiceFeatureParams'
 import IndexServiceFeatureController from '../controllers/indexServiceFeatureController'
-import DeleteServiceFeatureController from '../controllers/deleteServiceFeatureController'
+import IndexServiceFeatureParams from '../../Core/params/indexServiceFeatureParams'
 import DeleteServiceFeatureParams from '../../Core/params/deleteServiceFeatureParams'
-import ChangeServiceFeatureStatusParams from '../../Core/params/changeStatusServiceFeatureParams'
-import disActiveServiceFeatureController from '../controllers/disActiveServiceFeatureController'
+import DeleteServiceFeatureController from '../controllers/deleteServiceFeatureController'
+import ChangeStatusServiceFeatureParams from '../../Core/params/changeStatusServiceFeature'
+import ChangeStatusServiceFeatureController from '../controllers/changeStatusServiceFeatureController'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusService from "@/features/setting/Serviceuages/Presentation/components/Service/DialogChangeStatusService.vue";
+// import DialogChangeStatusServiceFeature from "@/features/setting/ServiceFeatureuages/Presentation/components/ServiceFeature/DialogChangeStatusServiceFeature.vue";
 // const route = useRoute()
 
 const word = ref('')
@@ -39,9 +39,8 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexServiceFeatureController = IndexServiceFeatureController.getInstance()
 const state = ref(indexServiceFeatureController.state.value)
-const route = useRoute()
-const id = route.params.parent_id
-// const type = ref<ServiceStatusEnum>(ServiceStatusEnum[route.params.type as keyof typeof ServiceStatusEnum])
+// const route = useRoute()
+// const type = ref<ServiceFeatureStatusEnum>(ServiceFeatureStatusEnum[route.params.type as keyof typeof ServiceFeatureStatusEnum])
 
 const fetchServiceFeature = async (
   query: string = '',
@@ -49,28 +48,35 @@ const fetchServiceFeature = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexServiceFeatureParams = new IndexServiceFeatureParams(
+  const deleteServiceFeatureParams = new IndexServiceFeatureParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id,
   )
-  await indexServiceFeatureController.getData(indexServiceFeatureParams)
+  await indexServiceFeatureController.getData(deleteServiceFeatureParams)
 }
 
 onMounted(() => {
   fetchServiceFeature()
 })
 
-const searchService = debounce(() => {
+const searchServiceFeature = debounce(() => {
   fetchServiceFeature(word.value)
 })
 
-const deleteService = async (id: number) => {
+const deleteServiceFeature = async (id: number) => {
   const deleteServiceFeatureParams = new DeleteServiceFeatureParams(id)
   await DeleteServiceFeatureController.getInstance().deleteServiceFeature(
     deleteServiceFeatureParams,
+  )
+  await fetchServiceFeature()
+}
+
+const changeStatusServiceFeature = async (id: number) => {
+  const changeStatusServiceFeatureParams = new ChangeStatusServiceFeatureParams(id)
+  await ChangeStatusServiceFeatureController.getInstance().changeStatusServiceFeature(
+    changeStatusServiceFeatureParams,
   )
   await fetchServiceFeature()
 }
@@ -99,14 +105,14 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteService: (id: number) => void) => [
+const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/service_feature/${id}`,
+    link: `/admin/service-feature/${id}`,
     permission: [
       PermissionsEnum.SERVICE_FEATURE_UPDATE,
-      PermissionsEnum.WEBSITE,
+      PermissionsEnum.ADMIN,
       PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
@@ -133,28 +139,21 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteService(id),
+    action: () => deleteServiceFeature(id),
     permission: [
       PermissionsEnum.SERVICE_FEATURE_DELETE,
-      PermissionsEnum.WEBSITE,
+      PermissionsEnum.ADMIN,
       PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
 ]
-
-
-const changeStatusServiceFeature = async (id: number) => {
-  const changeServiceFeatureStatusParams = new ChangeServiceFeatureStatusParams(id)
-  await disActiveServiceFeatureController.getInstance().disActiveServiceFeature(changeServiceFeatureStatusParams)
-  await fetchServiceFeature()
-}
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchService())">
+      <span class="icon-remove" @click="((word = ''), searchServiceFeature())">
         <Search />
       </span>
       <input
@@ -162,15 +161,15 @@ const changeStatusServiceFeature = async (id: number) => {
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchService"
+        @input="searchServiceFeature"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel />
+      <ExportExcel />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
-        <router-link to="/admin/service_feature/add" class="btn btn-primary">
-          {{ $t('Add_Service_feature') }}
+        <router-link to="/admin/service-feature/add" class="btn btn-primary">
+          {{ $t('add_service_feature') }}
         </router-link>
       </permission-builder>
     </div>
@@ -178,7 +177,7 @@ const changeStatusServiceFeature = async (id: number) => {
 
   <permission-builder
     :code="[
-      PermissionsEnum.WEBSITE,
+      PermissionsEnum.ADMIN,
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_DELETE,
       PermissionsEnum.SERVICE_FEATURE_FETCH,
@@ -194,9 +193,8 @@ const changeStatusServiceFeature = async (id: number) => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
+                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('subtitle') }}</th>
-                <th scope="col">{{ $t('description') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -204,44 +202,32 @@ const changeStatusServiceFeature = async (id: number) => {
             </thead>
             <tbody>
               <tr v-for="item in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
                 <td data-label="#">
-                  <router-link :to="`/admin/services/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/about-us-core/${item.id}`">{{ item.id }} </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle || '--' }}</td>
-                <td data-label="description">{{ item.description || '--' }}</td>
+                <td data-label="subtitle">{{ item.subtitle }}</td>
 
-                <td data-label="image">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
                 <td data-label="status">
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                      PermissionsEnum.SERVICE_FEATURE_ALL,
+                      PermissionsEnum.SERVICE_FEATURE_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch
-                      :modelValue="item.isActive === 1"
+                      :modelValue="item.is_active === 1"
                       binary
                       @update:model-value="changeStatusServiceFeature(item.id)"
                     />
                   </permission-builder>
                 </td>
-                <td data-label="Actions">
-                  <!--                <DialogChangeStatusService-->
-                  <!--                  v-if="item.ServiceStatus === ServiceStatusEnum.Draft"-->
-                  <!--                  :ServiceId="item.id"-->
-                  <!--                  @ServiceChangeStatus="fetchService"-->
-                  <!--                />-->
 
+                <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteService)"
-                    @delete="deleteService(item.id)"
+                    :actionList="actionList(item.id, deleteServiceFeature)"
+                    @delete="deleteServiceFeature(item.id)"
                   />
                 </td>
               </tr>
@@ -262,18 +248,18 @@ const changeStatusServiceFeature = async (id: number) => {
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/home-contact-us/add`"
-          addText="Add Service"
-          description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Service"
+          :link="`/admin/service-feature/add`"
+          addText="Add ServiceFeature"
+          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No ServiceFeature"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/home-contact-us/add`"
-          addText="Add Service"
-          description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Service"
+          :link="`/admin/service-feature/add`"
+          addText="Add ServiceFeature"
+          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No ServiceFeature"
         />
       </template>
     </DataStatus>
@@ -281,7 +267,7 @@ const changeStatusServiceFeature = async (id: number) => {
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import type Params from '@/base/core/params/params'
 import ServiceFeatureForm from './ServiceFeatureForm.vue'
+import type Params from '@/base/core/params/params'
 import AddServiceFeatureController from '../controllers/addServiceFeatureController'
 import type AddServiceFeatureParams from '../../Core/params/addServiceFeatureParams'
 
@@ -13,14 +13,12 @@ const params = ref<Params | null>(null)
 const addServiceFeatureController = AddServiceFeatureController.getInstance()
 
 const addServiceFeature = async () => {
-  console.log(params.value, 'params')
   await addServiceFeatureController.addServiceFeature(
     params.value as AddServiceFeatureParams,
     router,
   )
 }
 const setParams = (data: Params) => {
-  // console.log(data, 'data')
   params.value = data
 }
 </script>

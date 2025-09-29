@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import type Params from '@/base/core/params/params'
-import ShowServiceFeatureParams from '../../Core/params/showServiceFeatureParams'
-import ShowServiceFeatureController from '../controllers/showServiceFeatureController'
-import EditServiceFeatureController from '../controllers/editServiceFeatureController'
 import ServiceFeatureForm from './ServiceFeatureForm.vue'
+import type Params from '@/base/core/params/params'
+import ShowServiceFeatureController from '../controllers/showServiceFeatureController'
+import ShowServiceFeatureParams from '../../Core/params/showServiceFeatureParams'
+import EditServiceFeatureController from '../controllers/editServiceFeatureController'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -17,9 +19,9 @@ const params = ref<Params | null>(null)
 const showServiceFeatureController = ShowServiceFeatureController.getInstance()
 const state = ref(showServiceFeatureController.state.value)
 const fetchServiceFeatureDetails = async () => {
-  const showServiceFeatureParams = new ShowServiceFeatureParams(Number(id))
+  const ServiceFeatureParams = new ShowServiceFeatureParams(Number(id))
 
-  await showServiceFeatureController.showServiceFeature(showServiceFeatureParams)
+  await showServiceFeatureController.showServiceFeature(ServiceFeatureParams)
 }
 
 onMounted(() => {
