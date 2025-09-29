@@ -253,35 +253,35 @@ const router = createRouter({
         {
           path: 'about-us-features',
           name: 'About Us Features',
-          component: () => import('../views/Website/AboutUsFeature/IndexAboutUsFeature.vue'),
+          component: () => import('../views/Admin/Website/AboutUsFeature/IndexAboutUsFeature.vue'),
         },
 
         {
           path: 'about-us-features/add',
           name: 'Add About Us Features',
-          component: () => import('../views/Website/AboutUsFeature/AddAboutUsFeature.vue'),
+          component: () => import('../views/Admin/Website/AboutUsFeature/AddAboutUsFeature.vue'),
         },
         {
           path: 'about-us-features/:id',
           name: 'Edit About Us Features',
-          component: () => import('../views/Website/AboutUsFeature/EditAboutUsFeature.vue'),
+          component: () => import('../views/Admin/Website/AboutUsFeature/EditAboutUsFeature.vue'),
         },
 
         {
           path: 'about-us-core',
           name: 'About Us Core',
-          component: () => import('../views/Website/AboutUsCore/IndexAboutUsCore.vue'),
+          component: () => import('../views/Admin/Website/AboutUsCore/IndexAboutUsCore.vue'),
         },
 
         {
           path: 'about-us-core/add',
           name: 'Add About Us Core',
-          component: () => import('../views/Website/AboutUsCore/AddAboutUsCore.vue'),
+          component: () => import('../views/Admin/Website/AboutUsCore/AddAboutUsCore.vue'),
         },
         {
           path: 'about-us-core/:id',
           name: 'Edit About Us Core',
-          component: () => import('../views/Website/AboutUsCore/EditAboutUsCore.vue'),
+          component: () => import('../views/Admin/Website/AboutUsCore/EditAboutUsCore.vue'),
         },
 
         {
@@ -298,156 +298,156 @@ const router = createRouter({
         {
           path: 'home-about-us',
           name: 'Home About Us',
-          component: () => import('../views/Website/HomeAboutUs/IndexHomeAboutUs.vue'),
+          component: () => import('../views/Admin/Website/HomeAboutUs/IndexHomeAboutUs.vue'),
         },
 
         {
           path: 'home-about-us/add',
           name: 'Add Home About Us',
-          component: () => import('../views/Website/HomeAboutUs/AddHomeAboutUs.vue'),
+          component: () => import('../views/Admin/Website/HomeAboutUs/AddHomeAboutUs.vue'),
         },
         {
           path: 'home-about-us/:id',
           name: 'Edit Home About Us',
-          component: () => import('../views/Website/HomeAboutUs/EditHomeAboutUs.vue'),
+          component: () => import('../views/Admin/Website/HomeAboutUs/EditHomeAboutUs.vue'),
         },
 
         {
           path: 'client-opinions',
           name: 'Client Opinions',
-          component: () => import('../views/Website/ClientOpinion/IndexClientOpinion.vue'),
+          component: () => import('../views/Admin/Website/ClientOpinion/IndexClientOpinion.vue'),
         },
 
         {
           path: 'client-opinion/add',
           name: 'Add Client Opinion',
-          component: () => import('../views/Website/ClientOpinion/AddClientOpinion.vue'),
+          component: () => import('../views/Admin/Website/ClientOpinion/AddClientOpinion.vue'),
         },
         {
           path: 'client-opinion/:id',
           name: 'Edit Client Opinion',
-          component: () => import('../views/Website/ClientOpinion/EditClientOpinion.vue'),
+          component: () => import('../views/Admin/Website/ClientOpinion/EditClientOpinion.vue'),
         },
         {
           path: 'home-contact-us',
           name: 'Home Contact Us',
-          component: () => import('../views/Website/HomeContactUs/IndexHomeContactUs.vue'),
+          component: () => import('../views/Admin/Website/HomeContactUs/IndexHomeContactUs.vue'),
         },
 
         {
           path: 'headers',
           name: 'Headers',
-          component: () => import('../views/Website/Header/IndexHeader.vue'),
+          component: () => import('../views/Admin/Website/Header/IndexHeader.vue'),
         },
 
         {
           path: 'header/add',
           name: 'Add Header',
-          component: () => import('../views/Website/Header/AddHeader.vue'),
+          component: () => import('../views/Admin/Website/Header/AddHeader.vue'),
         },
         {
           path: 'header/:id',
           name: 'Edit Header',
-          component: () => import('../views/Website/Header/EditHeader.vue'),
+          component: () => import('../views/Admin/Website/Header/EditHeader.vue'),
         },
 
         {
           path: 'powerfull-features',
           name: 'PowerFull',
-          component: () => import('../views/Website/PowerFull/IndexPowerFull.vue'),
+          component: () => import('../views/Admin/Website/PowerFull/IndexPowerFull.vue'),
         },
         {
           path: 'power-full/add',
           name: 'Add PowerFull ',
-          component: () => import('../views/Website/PowerFull/AddPowerFull.vue'),
+          component: () => import('../views/Admin/Website/PowerFull/AddPowerFull.vue'),
         },
         {
           path: 'power-full/:id',
           name: 'Edit PowerFull',
-          component: () => import('../views/Website/PowerFull/EditPowerFull.vue'),
+          component: () => import('../views/Admin/Website/PowerFull/EditPowerFull.vue'),
         },
 
         {
           path: 'system-works',
           name: 'System Work',
-          component: () => import('../views/Website/SystemWork/IndexSystemWork.vue'),
+          component: () => import('../views/Admin/Website/SystemWork/IndexSystemWork.vue'),
         },
 
         {
           path: 'home-view-pricing',
           name: 'Home View Pricing',
-          component: () => import('../views/Website/HomeViewPricing/IndexHomeViewPricing.vue'),
+          component: () => import('../views/Admin/Website/HomeViewPricing/IndexHomeViewPricing.vue'),
         },
         {
           path: 'home-view-pricing/add',
           name: 'Add Home View Pricing',
-          component: () => import('../views/Website/HomeViewPricing/AddHomeViewPricing.vue'),
+          component: () => import('../views/Admin/Website/HomeViewPricing/AddHomeViewPricing.vue'),
         },
         {
           path: 'home-view-pricing/:id',
           name: 'Edit Home View Pricing',
-          component: () => import('../views/Website/HomeViewPricing/EditHomeViewPricing.vue'),
+          component: () => import('../views/Admin/Website/HomeViewPricing/EditHomeViewPricing.vue'),
         },
 
         {
           path: 'system-work/add',
           name: 'Add System Work',
-          component: () => import('../views/Website/SystemWork/AddSystemWork.vue'),
+          component: () => import('../views/Admin/Website/SystemWork/AddSystemWork.vue'),
         },
         {
           path: 'system-work/:id',
           name: 'Edit System Work',
-          component: () => import('../views/Website/SystemWork/EditSystemWork.vue'),
+          component: () => import('../views/Admin/Website/SystemWork/EditSystemWork.vue'),
         },
 
         {
           path: 'home-contact-us/add',
           name: 'Add Home Contact Us',
-          component: () => import('../views/Website/HomeContactUs/AddHomeContactUs.vue'),
+          component: () => import('../views/Admin/Website/HomeContactUs/AddHomeContactUs.vue'),
         },
         {
           path: 'home-contact-us/:id',
           name: 'Edit Home Contact Us',
-          component: () => import('../views/Website/HomeContactUs/EditHomeContactUs.vue'),
+          component: () => import('../views/Admin/Website/HomeContactUs/EditHomeContactUs.vue'),
         },
 
         // Category
         {
           path: 'categories',
           name: 'Categories',
-          component: () => import('../views/Website/Category/IndexCategory.vue'),
+          component: () => import('../views/Admin/Website/Category/IndexCategory.vue'),
         },
         {
           path: 'category/add',
           name: 'Add Category',
-          component: () => import('../views/Website/Category/AddCategory.vue'),
+          component: () => import('../views/Admin/Website/Category/AddCategory.vue'),
         },
         {
           path: 'category/:id',
           name: 'Edit Category',
-          component: () => import('../views/Website/Category/EditCategory.vue'),
+          component: () => import('../views/Admin/Website/Category/EditCategory.vue'),
         },
         // Hashtag
         {
           path: 'hashtags',
           name: 'Hashtags',
-          component: () => import('../views/Website/Hashtag/IndexHashtag.vue'),
+          component: () => import('../views/Admin/Website/Hashtag/IndexHashtag.vue'),
         },
         {
           path: 'hashtag/add',
           name: 'Add Hashtag',
-          component: () => import('../views/Website/Hashtag/AddHashtag.vue'),
+          component: () => import('../views/Admin/Website/Hashtag/AddHashtag.vue'),
         },
         {
           path: 'hashtag/:id',
           name: 'Edit Hashtag',
-          component: () => import('../views/Website/Hashtag/EditHashtag.vue'),
+          component: () => import('../views/Admin/Website/Hashtag/EditHashtag.vue'),
         },
         // Term
         {
           path: 'term/add',
           name: 'Add Term',
-          component: () => import('../views/Website/Term/EditTerms.vue'),
+          component: () => import('../views/Admin/Website/Term/EditTerms.vue'),
         },
 
         // Privacy
@@ -455,196 +455,196 @@ const router = createRouter({
         {
           path: 'privacy/add',
           name: 'Add Privacy',
-          component: () => import('../views/Website/Privacy/EditPrivacy.vue'),
+          component: () => import('../views/Admin/Website/Privacy/EditPrivacy.vue'),
         },
 
         {
           path: 'services',
           name: 'Services',
-          component: () => import('../views/Website/Service/IndexSerive.vue'),
+          component: () => import('../views/Admin/Website/Service/IndexSerive.vue'),
         },
         {
           path: 'services/add',
           name: 'Add Service',
-          component: () => import('../views/Website/Service/AddService.vue'),
+          component: () => import('../views/Admin/Website/Service/AddService.vue'),
         },
         {
           path: 'services/:id',
           name: 'Edit Service',
-          component: () => import('../views/Website/Service/EditService.vue'),
+          component: () => import('../views/Admin/Website/Service/EditService.vue'),
         },
         {
           path: 'service-features',
           name: 'Services Features',
-          component: () => import('../views/Website/ServiceFeatures/IndexSeriveFeatures.vue'),
+          component: () => import('../views/Admin/Website/ServiceFeatures/IndexSeriveFeatures.vue'),
         },
         {
           path: 'service-feature/add',
           name: 'Add Service Features',
-          component: () => import('../views/Website/ServiceFeatures/AddServiceFeatures.vue'),
+          component: () => import('../views/Admin/Website/ServiceFeatures/AddServiceFeatures.vue'),
         },
         {
           path: 'service-feature/:id',
           name: 'Edit Service Features',
-          component: () => import('../views/Website/ServiceFeatures/EditServiceFeatures.vue'),
+          component: () => import('../views/Admin/Website/ServiceFeatures/EditServiceFeatures.vue'),
         },
         {
           path: 'service_section',
           name: 'Services Sections',
-          component: () => import('../views/Website/ServiceSections/IndexSeriveSection.vue'),
+          component: () => import('../views/Admin/Website/ServiceSections/IndexSeriveSection.vue'),
         },
         {
           path: 'service_section/add',
           name: 'Add Service Sections',
-          component: () => import('../views/Website/ServiceSections/AddServiceSection.vue'),
+          component: () => import('../views/Admin/Website/ServiceSections/AddServiceSection.vue'),
         },
         {
           path: 'service_section/:id',
           name: 'Edit Service Sections',
-          component: () => import('../views/Website/ServiceSections/EditServiceSection.vue'),
+          component: () => import('../views/Admin/Website/ServiceSections/EditServiceSection.vue'),
         },
 
         {
           path: 'service_logs',
           name: 'Services Logs',
-          component: () => import('../views/Website/ServiceLogs/IndexSeriveLogs.vue'),
+          component: () => import('../views/Admin/Website/ServiceLogs/IndexSeriveLogs.vue'),
         },
         {
           path: 'service_logs/add',
           name: 'Add Service Logs',
-          component: () => import('../views/Website/ServiceLogs/AddServiceLogs.vue'),
+          component: () => import('../views/Admin/Website/ServiceLogs/AddServiceLogs.vue'),
         },
         {
           path: 'service_logs/:id',
           name: 'Edit Service Logs',
-          component: () => import('../views/Website/ServiceLogs/EditServiceLogs.vue'),
+          component: () => import('../views/Admin/Website/ServiceLogs/EditServiceLogs.vue'),
         },
         {
           path: 'blog',
           name: 'Blog',
-          component: () => import('../views/Website/Blog/IndexBlog.vue'),
+          component: () => import('../views/Admin/Website/Blog/IndexBlog.vue'),
         },
         {
           path: 'blog/add',
           name: 'Add Blog',
-          component: () => import('../views/Website/Blog/AddBlog.vue'),
+          component: () => import('../views/Admin/Website/Blog/AddBlog.vue'),
         },
         {
           path: 'blog/:id',
           name: 'Edit Blog',
-          component: () => import('../views/Website/Blog/EditBlog.vue'),
+          component: () => import('../views/Admin/Website/Blog/EditBlog.vue'),
         },
 
         {
           path: 'system_banner',
           name: 'System Banner',
-          component: () => import('../views/Website/SystemBanner/IndexSystemBanner.vue'),
+          component: () => import('../views/Admin/Website/SystemBanner/IndexSystemBanner.vue'),
         },
         {
           path: 'system_banner/add',
           name: 'Add System Banner',
-          component: () => import('../views/Website/SystemBanner/AddSystemBanner.vue'),
+          component: () => import('../views/Admin/Website/SystemBanner/AddSystemBanner.vue'),
         },
         {
           path: 'system_banner/:id',
           name: 'Edit System Banner',
-          component: () => import('../views/Website/SystemBanner/EditSystemBanner.vue'),
+          component: () => import('../views/Admin/Website/SystemBanner/EditSystemBanner.vue'),
         },
         {
           path: 'system_feature',
           name: 'System Feature',
-          component: () => import('../views/Website/SystemFeature/IndexSystemFeature.vue'),
+          component: () => import('../views/Admin/Website/SystemFeature/IndexSystemFeature.vue'),
         },
         {
           path: 'system_feature/add',
           name: 'Add System Feature',
-          component: () => import('../views/Website/SystemFeature/AddSystemFeature.vue'),
+          component: () => import('../views/Admin/Website/SystemFeature/AddSystemFeature.vue'),
         },
         {
           path: 'system_feature/:id',
           name: 'Edit System Feature',
-          component: () => import('../views/Website/SystemFeature/EditSystemFeature.vue'),
+          component: () => import('../views/Admin/Website/SystemFeature/EditSystemFeature.vue'),
         },
         // Faq
         {
           path: 'faq',
           name: 'Faq',
-          component: () => import('../views/Website/Faq/IndexFaq.vue'),
+          component: () => import('../views/Admin/Website/Faq/IndexFaq.vue'),
         },
         {
           path: 'faq/add',
           name: 'Add Faq',
-          component: () => import('../views/Website/Faq/AddFaq.vue'),
+          component: () => import('../views/Admin/Website/Faq/AddFaq.vue'),
         },
         {
           path: 'faq/:id',
           name: 'Edit Faq',
-          component: () => import('../views/Website/Faq/EditFaq.vue'),
+          component: () => import('../views/Admin/Website/Faq/EditFaq.vue'),
         },
         {
           path: 'system_risk_type',
           name: 'System Risk Type',
-          component: () => import('../views/Website/SystemRiskType/IndexSystemRiskType.vue'),
+          component: () => import('../views/Admin/Website/SystemRiskType/IndexSystemRiskType.vue'),
         },
         {
           path: 'system_risk_type/add',
           name: 'Add System Risk Type',
-          component: () => import('../views/Website/SystemRiskType/AddSystemRiskType.vue'),
+          component: () => import('../views/Admin/Website/SystemRiskType/AddSystemRiskType.vue'),
         },
         {
           path: 'system_risk_type/:id',
           name: 'Edit System Risk Type',
-          component: () => import('../views/Website/SystemRiskType/EditSystemRiskType.vue'),
+          component: () => import('../views/Admin/Website/SystemRiskType/EditSystemRiskType.vue'),
         },
         {
           path: 'system_components',
           name: 'System Components',
-          component: () => import('../views/Website/SystemComponents/IndexSystemComponents.vue'),
+          component: () => import('../views/Admin/Website/SystemComponents/IndexSystemComponents.vue'),
         },
         {
           path: 'system_components/add',
           name: 'Add System Components',
-          component: () => import('../views/Website/SystemComponents/AddSystemComponents.vue'),
+          component: () => import('../views/Admin/Website/SystemComponents/AddSystemComponents.vue'),
         },
         {
           path: 'system_components/:id',
           name: 'Edit System Components',
-          component: () => import('../views/Website/SystemComponents/EditSystemComponents.vue'),
+          component: () => import('../views/Admin/Website/SystemComponents/EditSystemComponents.vue'),
         },
         // system risk management
         {
           path: 'system-risk-management',
           name: 'System Risk Management',
           component: () =>
-            import('../views/Website/SystemRiskManagement/IndexSystemRiskManagement.vue'),
+            import('../views/Admin/Website/SystemRiskManagement/IndexSystemRiskManagement.vue'),
         },
         {
           path: 'system-risk-management/add',
           name: 'Add System Risk Management',
           component: () =>
-            import('../views/Website/SystemRiskManagement/AddSystemRiskManagement.vue'),
+            import('../views/Admin/Website/SystemRiskManagement/AddSystemRiskManagement.vue'),
         },
         {
           path: 'system-risk-management/:id',
           name: 'Edit System Risk Management',
           component: () =>
-            import('../views/Website/SystemRiskManagement/EditSystemRiskManagement.vue'),
+            import('../views/Admin/Website/SystemRiskManagement/EditSystemRiskManagement.vue'),
         },
         // OuR System Step
         {
           path: 'our-system-step',
           name: 'Our System Step',
-          component: () => import('../views/Website/OurSystemStep/IndexOurSystemStep.vue'),
+          component: () => import('../views/Admin/Website/OurSystemStep/IndexOurSystemStep.vue'),
         },
         {
           path: 'our-system-step/add',
           name: 'Add Our System Step',
-          component: () => import('../views/Website/OurSystemStep/AddOurSystemStep.vue'),
+          component: () => import('../views/Admin/Website/OurSystemStep/AddOurSystemStep.vue'),
         },
         {
           path: 'our-system-step/:id',
           name: 'Edit Our System Step',
-          component: () => import('../views/Website/OurSystemStep/EditOurSystemStep.vue'),
+          component: () => import('../views/Admin/Website/OurSystemStep/EditOurSystemStep.vue'),
         },
       ],
     },
