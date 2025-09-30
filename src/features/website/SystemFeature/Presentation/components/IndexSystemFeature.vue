@@ -69,9 +69,7 @@ const searchService = debounce(() => {
 
 const deleteService = async (id: number) => {
   const deleteSystemFeatureParams = new DeleteSystemFeatureParams(id)
-  await DeleteSystemFeatureController.getInstance().deleteSystemFeature(
-    deleteSystemFeatureParams,
-  )
+  await DeleteSystemFeatureController.getInstance().deleteSystemFeature(deleteSystemFeatureParams)
   await fetchSystemFeature()
 }
 
@@ -105,9 +103,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconEdit,
     link: `/admin/system_feature/${id}`,
     permission: [
-      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+      PermissionsEnum.OUR_SYSTEM_FEATURE_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_FEATURE_ALL,
+      PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
     ],
   },
   // {
@@ -135,9 +133,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteService(id),
     permission: [
-      PermissionsEnum.SERVICE_SECTION_DELETE,
+      PermissionsEnum.OUR_SYSTEM_FEATURE_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_SECTION_ALL,
+      PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
     ],
   },
 ]
@@ -167,9 +165,11 @@ const changeStatusSystemFeature = async (id: number) => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]">
+      <permission-builder
+        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE]"
+      >
         <router-link to="/admin/system_feature/add" class="btn btn-primary">
           {{ $t('Add_System_feature') }}
         </router-link>
@@ -202,12 +202,11 @@ const changeStatusSystemFeature = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/system_banner/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/system_banner/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
 
                 <td data-label="feature">{{ item.feature }}</td>
@@ -217,8 +216,8 @@ const changeStatusSystemFeature = async (id: number) => {
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
-                      PermissionsEnum.OUR_SYSTEM_BANNER_CHANGE_STATUS,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
+                      PermissionsEnum.OUR_SYSTEM_FEATURE_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch

@@ -112,14 +112,22 @@ const actionList = (id: number, deleteOurSystemStep: (id: number) => void) => [
     text: t('edit'),
     icon: IconEdit,
     link: `/admin/our-system-step/${id}`,
-    permission: [PermissionsEnum.OUR_SYSTEM_STEP_UPDATE, PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_STEP_ALL],
+    permission: [
+      PermissionsEnum.OUR_SYSTEM_STEP_UPDATE,
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.OUR_SYSTEM_STEP_ALL,
+    ],
   },
 
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteOurSystemStep(id),
-    permission: [PermissionsEnum.OUR_SYSTEM_STEP_DELETE, PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_STEP_ALL],
+    permission: [
+      PermissionsEnum.OUR_SYSTEM_STEP_DELETE,
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.OUR_SYSTEM_STEP_ALL,
+    ],
   },
 ]
 
@@ -149,16 +157,16 @@ watch(
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel />
+        <ExportExcel :data="state.data" />
         <SaveIcon />
       </div>
       <div class="btn btn-secondary flex align-center justify-center">
         <ExportPdf />
         <ExportIcon />
       </div>
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/our-system-step/add" class="btn btn-primary">
-          {{ $t('Add_OurSystemStep') }}
+          {{ $t('add_our_system_step') }}
         </router-link>
       </permission-builder>
     </div>
@@ -166,12 +174,12 @@ watch(
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.OUR_SYSTEM_STEP_ALL,
+      PermissionsEnum.OUR_SYSTEM_STEP_DELETE,
+      PermissionsEnum.OUR_SYSTEM_STEP_FETCH,
+      PermissionsEnum.OUR_SYSTEM_STEP_UPDATE,
+      PermissionsEnum.OUR_SYSTEM_STEP_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -190,9 +198,11 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/OurSystemStep/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/OurSystemStep/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title || '___' }}</td>
 

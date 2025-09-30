@@ -157,9 +157,9 @@ const changeStatusService = async (id: number) => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_CREATE]">
         <router-link to="/admin/services/add" class="btn btn-primary">
           {{ $t('Add_Service') }}
         </router-link>
@@ -194,7 +194,7 @@ const changeStatusService = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 {{
                   console.log(item, 'item')
                 }}

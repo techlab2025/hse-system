@@ -141,7 +141,7 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/blog/add" class="btn btn-primary">
           {{ $t('Add_Blog') }}
         </router-link>
@@ -151,7 +151,7 @@ watch(
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
       PermissionsEnum.EQUIPMENT_TYPE_DELETE,
       PermissionsEnum.EQUIPMENT_TYPE_FETCH,

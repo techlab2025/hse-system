@@ -37,8 +37,8 @@ export default class LoginController extends ControllerInterface<UserModel> {
         });
 
         const userStore = useUserStore();
+        console.log('ww');
         if (this.state.value.data) {
-          console.log('ww');
           console.log(this.state.value.data, 'this.state.value.data');
 
           userStore.setUser(this.state.value.data as UserModel);

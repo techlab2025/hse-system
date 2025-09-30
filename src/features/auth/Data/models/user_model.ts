@@ -1,4 +1,5 @@
 import LangModel from "@/features/setting/languages/Data/models/langModel";
+import { OrganizationTypeEnum } from "../../Core/Enum/organization_type";
 
 export default class UserModel {
   public id: number;
@@ -9,7 +10,6 @@ export default class UserModel {
   public isMaster?: number;
   public firstName?: string;
   public lastName?: string;
-  public type?: number;
   public apiToken: string;
   public aboutMe?: string;
   public sendNotifications?: boolean;
@@ -20,6 +20,7 @@ export default class UserModel {
   public linkedin?: string;
   public whatsapp?: string;
   public languages: LangModel[] = []
+  public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
 
   constructor(
     id: number,
@@ -31,7 +32,6 @@ export default class UserModel {
     isMaster?: number,
     firstName?: string,
     lastName?: string,
-    type?: number,
     aboutMe?: string,
     sendNotifications?: boolean,
     facebook?: string,
@@ -40,7 +40,8 @@ export default class UserModel {
     youtube?: string,
     linkedin?: string,
     whatsapp?: string,
-    languages: LangModel[] = []
+    languages: LangModel[] = [],
+    type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   ) {
     this.id = id;
     this.name = name;
@@ -48,7 +49,6 @@ export default class UserModel {
     this.image = image;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.type = type;
     this.phone = phone;
     this.isMaster = isMaster
     this.apiToken = apiToken;
@@ -61,6 +61,7 @@ export default class UserModel {
     this.linkedin = linkedin;
     this.whatsapp = whatsapp;
     this.languages = languages
+    this.type = type
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -74,7 +75,6 @@ export default class UserModel {
       map["is_master"],
       map["first_name"],
       map["last_name"],
-      map["type"],
       map["about_me"],
       map["send_notifications"],
       map["facebook"],
@@ -83,7 +83,8 @@ export default class UserModel {
       map["youtube"],
       map["linkedin"],
       map["whatsapp"],
-      map["languages"].map((lang: any) => LangModel.fromMap(lang))
+      map["languages"]?.map((lang: any) => LangModel.fromMap(lang)),
+      map["type"]
     );
   }
 }

@@ -17,11 +17,11 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexSystemComponentController from '../controllers/indexSystemComponentController'
 import IndexSystemComponentParams from '../../Core/params/indexSystemComponentParams'
 import DeleteSystemComponentParams from '../../Core/params/deleteSystemComponentParams'
@@ -90,7 +90,7 @@ watch(
   () => indexSystemComponentController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState)
       state.value = newState
     }
   },
@@ -105,9 +105,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconEdit,
     link: `/admin/system_components/${id}`,
     permission: [
-      PermissionsEnum.SERVICE_FEATURE_UPDATE,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_UPDATE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_FEATURE_ALL,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
     ],
   },
   // {
@@ -135,9 +135,9 @@ const actionList = (id: number, deleteService: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteService(id),
     permission: [
-      PermissionsEnum.SERVICE_FEATURE_DELETE,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_DELETE,
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_FEATURE_ALL,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
     ],
   },
 ]
@@ -167,9 +167,11 @@ const changeStatusSystemComponent = async (id: number) => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+      <permission-builder
+        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE]"
+      >
         <router-link to="/admin/system_components/add" class="btn btn-primary">
           {{ $t('Add_Service_component') }}
         </router-link>
@@ -180,11 +182,11 @@ const changeStatusSystemComponent = async (id: number) => {
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_FEATURE_ALL,
-      PermissionsEnum.SERVICE_FEATURE_DELETE,
-      PermissionsEnum.SERVICE_FEATURE_FETCH,
-      PermissionsEnum.SERVICE_FEATURE_UPDATE,
-      PermissionsEnum.SERVICE_FEATURE_CREATE,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_DELETE,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_FETCH,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_UPDATE,
+      PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -202,10 +204,7 @@ const changeStatusSystemComponent = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -215,8 +214,8 @@ const changeStatusSystemComponent = async (id: number) => {
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                      PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
+                      PermissionsEnum.OUR_SYSTEM_COMPONENT_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch

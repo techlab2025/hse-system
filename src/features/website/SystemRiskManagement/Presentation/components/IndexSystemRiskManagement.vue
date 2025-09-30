@@ -146,9 +146,11 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ABOUT_US_FEATURE_CREATE]">
+      <permission-builder
+        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_FEATURE_CREATE]"
+      >
         <router-link to="/admin/system-risk-management/add" class="btn btn-primary">
           {{ $t('Add_System_Risk_Management') }}
         </router-link>
@@ -182,7 +184,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/about-us-features/${item.id}`"
                     >{{ index + 1 }}

@@ -137,9 +137,9 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HEADER_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HEADER_CREATE]">
         <router-link to="/admin/header/add" class="btn btn-primary">
           {{ $t('Add_Header') }}
         </router-link>
@@ -173,7 +173,7 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/header/${item.id}`">{{ index + 1 }} </router-link>
                 </td>

@@ -1,4 +1,6 @@
+import { useUserStore } from '@/stores/user'
 import { baseUrl } from './baseUrl'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 class ApiNames {
   private static _instance: ApiNames
@@ -14,354 +16,373 @@ class ApiNames {
 
   public baseUrl = baseUrl
 
+  private userStore = useUserStore()
+
   //Website
-  public apiPrefix = 'api/'
   public dashboardPrefix = 'dashboard/'
-  public employeePrefix = 'employee/'
   public organizationPrefix = 'organization/'
 
-  //languages
+  public getPrefix(): string {
+    if (this.userStore?.user?.type === OrganizationTypeEnum.ORGANIZATION) {
+      return this.organizationPrefix;
+    }
+    return this.dashboardPrefix;
 
-  public AddLang = this.baseUrl + this.dashboardPrefix + 'create_language'
-  public IndexLang = this.baseUrl + this.dashboardPrefix + 'fetch_languages'
-  public ShowLang = this.baseUrl + this.dashboardPrefix + 'fetch_language_details'
-  public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
-  public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
+  }
+
+  public prefix = this.baseUrl + this.getPrefix()
+
+
+
+  //languages
+  public AddLang = this.prefix + 'create_language'
+  public IndexLang = this.prefix + 'fetch_languages'
+  public ShowLang = this.prefix + 'fetch_language_details'
+  public EditLang = this.prefix + 'update_language'
+  public DeleteLang = this.prefix + 'delete_language'
 
 
   // auth
-
   public AuthLogin = this.baseUrl + this.organizationPrefix + 'login'
 
 
 
   // Partner
 
-  public CreatePartner = this.baseUrl + this.organizationPrefix + 'create_partner'
-  public IndexPartner = this.baseUrl + this.organizationPrefix + 'fetch_partners'
-  public ShowPartner = this.baseUrl + this.organizationPrefix + 'fetch_partner_details'
-  public EditPartner = this.baseUrl + this.organizationPrefix + 'update_partner'
-  public DeletePartner = this.baseUrl + this.organizationPrefix + 'delete_partner'
+  public CreatePartner = this.prefix + 'create_partner'
+  public IndexPartner = this.prefix + 'fetch_partners'
+  public ShowPartner = this.prefix + 'fetch_partner_details'
+  public EditPartner = this.prefix + 'update_partner'
+  public DeletePartner = this.prefix + 'delete_partner'
+
+
+  // OrganizationLocation
+
+  public CreateOrganizationLocation = this.prefix + 'create_organization_location'
+  public IndexOrganizationLocation = this.prefix + 'fetch_organization_locations'
+  public ShowOrganizationLocation = this.prefix + 'fetch_organization_location_details'
+  public EditOrganizationLocation = this.prefix + 'update_organization_location'
+  public DeleteOrganizationLocation = this.prefix + 'delete_organization_location'
 
 
 
   // AboutUsFeature
 
-  public CreateAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'create_about_us_feature'
-  public IndexAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_features'
-  public ShowAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_feature_details'
-  public EditAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'update_about_us_feature'
-  public DeleteAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'delete_about_us_feature'
-  public ChangeStatusAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
+  public CreateAboutUsFeature = this.prefix + 'create_about_us_feature'
+  public IndexAboutUsFeature = this.prefix + 'fetch_about_us_features'
+  public ShowAboutUsFeature = this.prefix + 'fetch_about_us_feature_details'
+  public EditAboutUsFeature = this.prefix + 'update_about_us_feature'
+  public DeleteAboutUsFeature = this.prefix + 'delete_about_us_feature'
+  public ChangeStatusAboutUsFeature = this.prefix + 'change_about_us_feature_active_status'
 
 
   // systemRiskManagement
 
-  public CreateSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_management'
-  public IndexSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_managements'
-  public ShowSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_management_details'
-  public EditSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_management'
-  public DeleteSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_management'
-  public ChangeStatusSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_management_active_status'
+  public CreateSystemRiskManagement = this.prefix + 'create_our_system_risk_management'
+  public IndexSystemRiskManagement = this.prefix + 'fetch_our_system_risk_managements'
+  public ShowSystemRiskManagement = this.prefix + 'fetch_our_system_risk_management_details'
+  public EditSystemRiskManagement = this.prefix + 'update_our_system_risk_management'
+  public DeleteSystemRiskManagement = this.prefix + 'delete_our_system_risk_management'
+  public ChangeStatusSystemRiskManagement = this.prefix + 'change_our_system_risk_management_active_status'
 
 
   // AboutUsCore
 
-  public CreateAboutUsCore = this.baseUrl + this.dashboardPrefix + 'create_about_us_core'
-  public IndexAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core'
-  public ShowAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core_details'
-  public EditAboutUsCore = this.baseUrl + this.dashboardPrefix + 'update_about_us_core'
-  public DeleteAboutUsCore = this.baseUrl + this.dashboardPrefix + 'delete_about_us_core'
-  public ChangeStatusAboutUsCore = this.baseUrl + this.dashboardPrefix + 'change_about_us_core_active_status'
+  public CreateAboutUsCore = this.prefix + 'create_about_us_core'
+  public IndexAboutUsCore = this.prefix + 'fetch_about_us_core'
+  public ShowAboutUsCore = this.prefix + 'fetch_about_us_core_details'
+  public EditAboutUsCore = this.prefix + 'update_about_us_core'
+  public DeleteAboutUsCore = this.prefix + 'delete_about_us_core'
+  public ChangeStatusAboutUsCore = this.prefix + 'change_about_us_core_active_status'
 
 
   // HomeViewPricing
 
-  public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'
-  public IndexHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing'
-  public ShowHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing_details'
-  public EditHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'update_home_view_pricing'
-  public DeleteHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'delete_home_view_pricing'
-  public ChangeStatusHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
+  public CreateHomeViewPricing = this.prefix + 'create_home_view_pricing'
+  public IndexHomeViewPricing = this.prefix + 'fetch_home_view_pricing'
+  public ShowHomeViewPricing = this.prefix + 'fetch_home_view_pricing_details'
+  public EditHomeViewPricing = this.prefix + 'update_home_view_pricing'
+  public DeleteHomeViewPricing = this.prefix + 'delete_home_view_pricing'
+  public ChangeStatusHomeViewPricing = this.prefix + 'change_home_view_pricing_active_status'
 
   // header
 
-  public CreateHeader = this.baseUrl + this.dashboardPrefix + 'create_header'
-  public IndexHeader = this.baseUrl + this.dashboardPrefix + 'fetch_headers'
-  public ShowHeader = this.baseUrl + this.dashboardPrefix + 'fetch_header_details'
-  public EditHeader = this.baseUrl + this.dashboardPrefix + 'update_header'
-  public DeleteHeader = this.baseUrl + this.dashboardPrefix + 'delete_header'
-  public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
+  public CreateHeader = this.prefix + 'create_header'
+  public IndexHeader = this.prefix + 'fetch_headers'
+  public ShowHeader = this.prefix + 'fetch_header_details'
+  public EditHeader = this.prefix + 'update_header'
+  public DeleteHeader = this.prefix + 'delete_header'
+  public ChangeStatusHeader = this.prefix + 'change_header_active_status'
 
 
   // HomeAboutUs
 
-  public CreateHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'create_home_about_us'
-  public IndexHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us'
-  public ShowHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us_details'
-  public EditHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'update_home_about_us'
-  public DeleteHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'delete_home_about_us'
-  public ChangeStatusHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'change_home_about_us_active_status'
+  public CreateHomeAboutUs = this.prefix + 'create_home_about_us'
+  public IndexHomeAboutUs = this.prefix + 'fetch_home_about_us'
+  public ShowHomeAboutUs = this.prefix + 'fetch_home_about_us_details'
+  public EditHomeAboutUs = this.prefix + 'update_home_about_us'
+  public DeleteHomeAboutUs = this.prefix + 'delete_home_about_us'
+  public ChangeStatusHomeAboutUs = this.prefix + 'change_home_about_us_active_status'
 
 
   // PowerFull
 
-  public CreatePowerFull = this.baseUrl + this.dashboardPrefix + 'create_powerful_feature'
-  public IndexPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerful_features'
-  public ShowPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerful_feature_details'
-  public EditPowerFull = this.baseUrl + this.dashboardPrefix + 'update_powerful_feature'
-  public DeletePowerFull = this.baseUrl + this.dashboardPrefix + 'delete_powerful_feature'
-  public ChangeStatusPowerFull = this.baseUrl + this.dashboardPrefix + 'change_powerful_feature_active_status'
+  public CreatePowerFull = this.prefix + 'create_powerful_feature'
+  public IndexPowerFull = this.prefix + 'fetch_powerful_features'
+  public ShowPowerFull = this.prefix + 'fetch_powerful_feature_details'
+  public EditPowerFull = this.prefix + 'update_powerful_feature'
+  public DeletePowerFull = this.prefix + 'delete_powerful_feature'
+  public ChangeStatusPowerFull = this.prefix + 'change_powerful_feature_active_status'
 
 
   // SystemWork
 
-  public CreateSystemWork = this.baseUrl + this.dashboardPrefix + 'create_system_work'
-  public IndexSystemWork = this.baseUrl + this.dashboardPrefix + 'fetch_system_works'
-  public ShowSystemWork = this.baseUrl + this.dashboardPrefix + 'fetch_system_work_details'
-  public EditSystemWork = this.baseUrl + this.dashboardPrefix + 'update_system_work'
-  public DeleteSystemWork = this.baseUrl + this.dashboardPrefix + 'delete_system_work'
-  public ChangeStatusSystemWork = this.baseUrl + this.dashboardPrefix + 'change_system_work_active_status'
+  public CreateSystemWork = this.prefix + 'create_system_work'
+  public IndexSystemWork = this.prefix + 'fetch_system_works'
+  public ShowSystemWork = this.prefix + 'fetch_system_work_details'
+  public EditSystemWork = this.prefix + 'update_system_work'
+  public DeleteSystemWork = this.prefix + 'delete_system_work'
+  public ChangeStatusSystemWork = this.prefix + 'change_system_work_active_status'
 
 
 
   // HomeContactUs
-  public CreateHomeContactUs = this.baseUrl + this.dashboardPrefix + 'create_home_contact_us'
-  public IndexHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us'
-  public ShowHomeContactUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_contact_us_details'
-  public EditHomeContactUs = this.baseUrl + this.dashboardPrefix + 'update_home_contact_us'
-  public DeleteHomeContactUs = this.baseUrl + this.dashboardPrefix + 'delete_home_contact_us'
+  public CreateHomeContactUs = this.prefix + 'create_home_contact_us'
+  public IndexHomeContactUs = this.prefix + 'fetch_home_contact_us'
+  public ShowHomeContactUs = this.prefix + 'fetch_home_contact_us_details'
+  public EditHomeContactUs = this.prefix + 'update_home_contact_us'
+  public DeleteHomeContactUs = this.prefix + 'delete_home_contact_us'
   public ChangeStatusHomeContactUs =
-    this.baseUrl + this.dashboardPrefix + 'change_home_contact_us_active_status'
+    this.prefix + 'change_home_contact_us_active_status'
 
   // clientOpinion
-  public CreateClientOpinion = this.baseUrl + this.dashboardPrefix + 'create_client_opinion'
-  public IndexClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinions'
-  public ShowClientOpinion = this.baseUrl + this.dashboardPrefix + 'fetch_client_opinion_details'
-  public EditClientOpinion = this.baseUrl + this.dashboardPrefix + 'update_client_opinion'
-  public DeleteClientOpinion = this.baseUrl + this.dashboardPrefix + 'delete_client_opinion'
+  public CreateClientOpinion = this.prefix + 'create_client_opinion'
+  public IndexClientOpinion = this.prefix + 'fetch_client_opinions'
+  public ShowClientOpinion = this.prefix + 'fetch_client_opinion_details'
+  public EditClientOpinion = this.prefix + 'update_client_opinion'
+  public DeleteClientOpinion = this.prefix + 'delete_client_opinion'
   public ChangeStatusClientOpinion =
-    this.baseUrl + this.dashboardPrefix + 'change_client_opinion_active_status'
+    this.prefix + 'change_client_opinion_active_status'
 
   // Template
-  public CreateTemplate = this.baseUrl + this.dashboardPrefix + 'create_template'
-  public IndexTemplate = this.baseUrl + this.dashboardPrefix + 'fetch_templates'
-  public ShowTemplate = this.baseUrl + this.dashboardPrefix + 'fetch_template_details'
-  public EditTemplate = this.baseUrl + this.dashboardPrefix + 'update_template'
-  public DeleteTemplate = this.baseUrl + this.dashboardPrefix + 'delete_template'
-  public DisActiveTemplate = this.baseUrl + this.dashboardPrefix + 'disable_template'
+  public CreateTemplate = this.prefix + 'create_template'
+  public IndexTemplate = this.prefix + 'fetch_templates'
+  public ShowTemplate = this.prefix + 'fetch_template_details'
+  public EditTemplate = this.prefix + 'update_template'
+  public DeleteTemplate = this.prefix + 'delete_template'
+  public DisActiveTemplate = this.prefix + 'disable_template'
 
   // Factory
-  public CreateFactory = this.baseUrl + this.dashboardPrefix + 'create_factory'
-  public IndexFactory = this.baseUrl + this.dashboardPrefix + 'fetch_factories'
-  public ShowFactory = this.baseUrl + this.dashboardPrefix + 'fetch_factory_details'
-  public EditFactory = this.baseUrl + this.dashboardPrefix + 'update_factory'
-  public DeleteFactory = this.baseUrl + this.dashboardPrefix + 'delete_factory'
-  public DisFactory = this.baseUrl + this.dashboardPrefix + 'disable_factory'
+  public CreateFactory = this.prefix + 'create_factory'
+  public IndexFactory = this.prefix + 'fetch_factories'
+  public ShowFactory = this.prefix + 'fetch_factory_details'
+  public EditFactory = this.prefix + 'update_factory'
+  public DeleteFactory = this.prefix + 'delete_factory'
+  public DisFactory = this.prefix + 'disable_factory'
 
   // Industry
 
-  public CreateIndustry = this.baseUrl + this.dashboardPrefix + 'create_industry'
-  public IndexIndustry = this.baseUrl + this.dashboardPrefix + 'fetch_industries'
-  public ShowIndustry = this.baseUrl + this.dashboardPrefix + 'fetch_industry_details'
-  public EditIndustry = this.baseUrl + this.dashboardPrefix + 'update_industry'
-  public DeleteIndustry = this.baseUrl + this.dashboardPrefix + 'delete_industry'
+  public CreateIndustry = this.prefix + 'create_industry'
+  public IndexIndustry = this.prefix + 'fetch_industries'
+  public ShowIndustry = this.prefix + 'fetch_industry_details'
+  public EditIndustry = this.prefix + 'update_industry'
+  public DeleteIndustry = this.prefix + 'delete_industry'
 
   //EquipmentType
-  public CreateEquipmentType = this.baseUrl + this.dashboardPrefix + 'create_equipment_type'
-  public IndexEquipmentType = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_types'
-  public ShowEquipmentType = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_type_details'
-  public EditEquipmentType = this.baseUrl + this.dashboardPrefix + 'update_equipment_type'
-  public DeleteEquipmentType = this.baseUrl + this.dashboardPrefix + 'delete_equipment_type'
-  public DisEquipmentType = this.baseUrl + this.dashboardPrefix + 'disable_equipment_type'
+  public CreateEquipmentType = this.prefix + 'create_equipment_type'
+  public IndexEquipmentType = this.prefix + 'fetch_equipment_types'
+  public ShowEquipmentType = this.prefix + 'fetch_equipment_type_details'
+  public EditEquipmentType = this.prefix + 'update_equipment_type'
+  public DeleteEquipmentType = this.prefix + 'delete_equipment_type'
+  public DisEquipmentType = this.prefix + 'disable_equipment_type'
 
   // Certificate
-  public CreateCertificate = this.baseUrl + this.dashboardPrefix + 'create_certificate'
-  public IndexCertificate = this.baseUrl + this.dashboardPrefix + 'fetch_certificates'
-  public ShowCertificate = this.baseUrl + this.dashboardPrefix + 'fetch_certificate_details'
-  public EditCertificate = this.baseUrl + this.dashboardPrefix + 'update_certificate'
-  public DeleteCertificate = this.baseUrl + this.dashboardPrefix + 'delete_certificate'
-  public DisCertificate = this.baseUrl + this.dashboardPrefix + 'disable_certificate'
+  public CreateCertificate = this.prefix + 'create_certificate'
+  public IndexCertificate = this.prefix + 'fetch_certificates'
+  public ShowCertificate = this.prefix + 'fetch_certificate_details'
+  public EditCertificate = this.prefix + 'update_certificate'
+  public DeleteCertificate = this.prefix + 'delete_certificate'
+  public DisCertificate = this.prefix + 'disable_certificate'
 
   // Category
-  public CreateCategory = this.baseUrl + this.dashboardPrefix + 'create_category'
-  public IndexCategory = this.baseUrl + this.dashboardPrefix + 'fetch_categories'
-  public ShowCategory = this.baseUrl + this.dashboardPrefix + 'fetch_category_details'
-  public EditCategory = this.baseUrl + this.dashboardPrefix + 'update_category'
-  public DeleteCategory = this.baseUrl + this.dashboardPrefix + 'delete_category'
-  public DisCategory = this.baseUrl + this.dashboardPrefix + 'change_category_active_status'
+  public CreateCategory = this.prefix + 'create_category'
+  public IndexCategory = this.prefix + 'fetch_categories'
+  public ShowCategory = this.prefix + 'fetch_category_details'
+  public EditCategory = this.prefix + 'update_category'
+  public DeleteCategory = this.prefix + 'delete_category'
+  public DisCategory = this.prefix + 'change_category_active_status'
 
   // Blog
-  public CreateBlog = this.baseUrl + this.dashboardPrefix + 'create_blog'
-  public IndexBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blogs'
-  public ShowBlog = this.baseUrl + this.dashboardPrefix + 'fetch_blog_details'
-  public EditBlog = this.baseUrl + this.dashboardPrefix + 'update_blog'
-  public DeleteBlog = this.baseUrl + this.dashboardPrefix + 'delete_blog'
-  public DisBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
-  public ChangeStatusBlog = this.baseUrl + this.dashboardPrefix + 'change_blog_active_status'
+  public CreateBlog = this.prefix + 'create_blog'
+  public IndexBlog = this.prefix + 'fetch_blogs'
+  public ShowBlog = this.prefix + 'fetch_blog_details'
+  public EditBlog = this.prefix + 'update_blog'
+  public DeleteBlog = this.prefix + 'delete_blog'
+  public DisBlog = this.prefix + 'change_blog_active_status'
+  public ChangeStatusBlog = this.prefix + 'change_blog_active_status'
 
   // OuSystemStep
-  public CreateOurSystemStep = this.baseUrl + this.dashboardPrefix + 'create_our_system_step'
-  public IndexOurSystemStep = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_steps'
-  public ShowOurSystemStep = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_step_details'
-  public EditOurSystemStep = this.baseUrl + this.dashboardPrefix + 'update_our_system_step'
-  public DeleteOurSystemStep = this.baseUrl + this.dashboardPrefix + 'delete_our_system_step'
-  public DisOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
-  public ChangeStatusOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
+  public CreateOurSystemStep = this.prefix + 'create_our_system_step'
+  public IndexOurSystemStep = this.prefix + 'fetch_our_system_steps'
+  public ShowOurSystemStep = this.prefix + 'fetch_our_system_step_details'
+  public EditOurSystemStep = this.prefix + 'update_our_system_step'
+  public DeleteOurSystemStep = this.prefix + 'delete_our_system_step'
+  public DisOurSystemStep = this.prefix + 'change_our_system_step_active_status'
+  public ChangeStatusOurSystemStep = this.prefix + 'change_our_system_step_active_status'
 
   // Faq
-  public CreateFaq = this.baseUrl + this.dashboardPrefix + 'create_faq'
-  public IndexFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faqs'
-  public ShowFaq = this.baseUrl + this.dashboardPrefix + 'fetch_faq_details'
-  public EditFaq = this.baseUrl + this.dashboardPrefix + 'update_faq'
-  public DeleteFaq = this.baseUrl + this.dashboardPrefix + 'delete_faq'
-  public DisFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
-  public ChangeStatusFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
+  public CreateFaq = this.prefix + 'create_faq'
+  public IndexFaq = this.prefix + 'fetch_faqs'
+  public ShowFaq = this.prefix + 'fetch_faq_details'
+  public EditFaq = this.prefix + 'update_faq'
+  public DeleteFaq = this.prefix + 'delete_faq'
+  public DisFaq = this.prefix + 'change_faq_active_status'
+  public ChangeStatusFaq = this.prefix + 'change_faq_active_status'
 
 
   // Hashtag
-  public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
-  public IndexHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtags'
-  public ShowHashtag = this.baseUrl + this.dashboardPrefix + 'fetch_hashtag_details'
-  public EditHashtag = this.baseUrl + this.dashboardPrefix + 'update_hashtag'
-  public DeleteHashtag = this.baseUrl + this.dashboardPrefix + 'delete_hashtag'
-  public DisHashtag = this.baseUrl + this.dashboardPrefix + 'change_hashtag_active_status'
+  public CreateHashtag = this.prefix + 'create_hashtag'
+  public IndexHashtag = this.prefix + 'fetch_hashtags'
+  public ShowHashtag = this.prefix + 'fetch_hashtag_details'
+  public EditHashtag = this.prefix + 'update_hashtag'
+  public DeleteHashtag = this.prefix + 'delete_hashtag'
+  public DisHashtag = this.prefix + 'change_hashtag_active_status'
 
   // Term
-  public CreateTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
-  public IndexTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
-  public ShowTerm = this.baseUrl + this.dashboardPrefix + 'fetch_terms'
-  public EditTerm = this.baseUrl + this.dashboardPrefix + 'create_or_update_term'
-  public DeleteTerm = this.baseUrl + this.dashboardPrefix + 'delete_term'
-  public DisTerm = this.baseUrl + this.dashboardPrefix + 'change_term_active_status'
+  public CreateTerm = this.prefix + 'create_or_update_term'
+  public IndexTerm = this.prefix + 'fetch_terms'
+  public ShowTerm = this.prefix + 'fetch_terms'
+  public EditTerm = this.prefix + 'create_or_update_term'
+  public DeleteTerm = this.prefix + 'delete_term'
+  public DisTerm = this.prefix + 'change_term_active_status'
 
   // privacy
-  public CreatePrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
-  public IndexPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
-  public ShowPrivacy = this.baseUrl + this.dashboardPrefix + 'fetch_privacy'
-  public EditPrivacy = this.baseUrl + this.dashboardPrefix + 'create_or_update_privacy'
-  public DeletePrivacy = this.baseUrl + this.dashboardPrefix + 'delete_privacy'
-  public DisPrivacy = this.baseUrl + this.dashboardPrefix + 'change_privacy_active_status'
+  public CreatePrivacy = this.prefix + 'create_or_update_privacy'
+  public IndexPrivacy = this.prefix + 'fetch_privacy'
+  public ShowPrivacy = this.prefix + 'fetch_privacy'
+  public EditPrivacy = this.prefix + 'create_or_update_privacy'
+  public DeletePrivacy = this.prefix + 'delete_privacy'
+  public DisPrivacy = this.prefix + 'change_privacy_active_status'
 
   //Equipment
-  public CreateEquipment = this.baseUrl + this.dashboardPrefix + 'create_equipment'
-  public IndexEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipments'
-  public ShowEquipment = this.baseUrl + this.dashboardPrefix + 'fetch_equipment_details'
-  public EditEquipment = this.baseUrl + this.dashboardPrefix + 'update_equipment'
-  public DeleteEquipment = this.baseUrl + this.dashboardPrefix + 'delete_equipment'
-  public DisEquipment = this.baseUrl + this.dashboardPrefix + 'disable_equipment'
+  public CreateEquipment = this.prefix + 'create_equipment'
+  public IndexEquipment = this.prefix + 'fetch_equipments'
+  public ShowEquipment = this.prefix + 'fetch_equipment_details'
+  public EditEquipment = this.prefix + 'update_equipment'
+  public DeleteEquipment = this.prefix + 'delete_equipment'
+  public DisEquipment = this.prefix + 'disable_equipment'
 
   //HazardType
-  public CreateHazardType = this.baseUrl + this.dashboardPrefix + 'create_hazard_type'
-  public IndexHazardType = this.baseUrl + this.dashboardPrefix + 'fetch_hazard_types'
-  public ShowHazardType = this.baseUrl + this.dashboardPrefix + 'fetch_hazard_type_details'
-  public EditHazardType = this.baseUrl + this.dashboardPrefix + 'update_hazard_type'
-  public DeleteHazardType = this.baseUrl + this.dashboardPrefix + 'delete_hazard_type'
-  public DisHazardType = this.baseUrl + this.dashboardPrefix + 'disable_hazard_type'
+  public CreateHazardType = this.prefix + 'create_hazard_type'
+  public IndexHazardType = this.prefix + 'fetch_hazard_types'
+  public ShowHazardType = this.prefix + 'fetch_hazard_type_details'
+  public EditHazardType = this.prefix + 'update_hazard_type'
+  public DeleteHazardType = this.prefix + 'delete_hazard_type'
+  public DisHazardType = this.prefix + 'disable_hazard_type'
 
   // Project Type
-  public CreateProjectType = this.baseUrl + this.dashboardPrefix + 'create_project_type'
-  public IndexProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_types'
-  public ShowProjectType = this.baseUrl + this.dashboardPrefix + 'fetch_project_type_details'
-  public EditProjectType = this.baseUrl + this.dashboardPrefix + 'update_project_type'
-  public DeleteProjectType = this.baseUrl + this.dashboardPrefix + 'delete_project_type'
-  public DisProjectType = this.baseUrl + this.dashboardPrefix + 'disable_project_type'
+  public CreateProjectType = this.prefix + 'create_project_type'
+  public IndexProjectType = this.prefix + 'fetch_project_types'
+  public ShowProjectType = this.prefix + 'fetch_project_type_details'
+  public EditProjectType = this.prefix + 'update_project_type'
+  public DeleteProjectType = this.prefix + 'delete_project_type'
+  public DisProjectType = this.prefix + 'disable_project_type'
 
   // factory item
-  public CreateFactoryItem = this.baseUrl + this.dashboardPrefix + 'create_factory_item'
-  public IndexFactoryItem = this.baseUrl + this.dashboardPrefix + 'fetch_factory_items'
-  public ShowFactoryItem = this.baseUrl + this.dashboardPrefix + 'fetch_factory_item_details'
-  public EditFactoryItem = this.baseUrl + this.dashboardPrefix + 'update_factory_item'
-  public DeleteFactoryItem = this.baseUrl + this.dashboardPrefix + 'delete_factory_item'
-  public DisFactoryItem = this.baseUrl + this.dashboardPrefix + 'disable_factory_item'
+  public CreateFactoryItem = this.prefix + 'create_factory_item'
+  public IndexFactoryItem = this.prefix + 'fetch_factory_items'
+  public ShowFactoryItem = this.prefix + 'fetch_factory_item_details'
+  public EditFactoryItem = this.prefix + 'update_factory_item'
+  public DeleteFactoryItem = this.prefix + 'delete_factory_item'
+  public DisFactoryItem = this.prefix + 'disable_factory_item'
 
   //Accidents
-  public CreateAccidentsType = this.baseUrl + this.dashboardPrefix + 'create_accidents_type'
-  public IndexAccidentsType = this.baseUrl + this.dashboardPrefix + 'fetch_accidents_types'
-  public ShowAccidentsType = this.baseUrl + this.dashboardPrefix + 'fetch_accidents_type_details'
-  public EditAccidentsType = this.baseUrl + this.dashboardPrefix + 'update_accidents_type'
-  public DeleteAccidentsType = this.baseUrl + this.dashboardPrefix + 'delete_accidents_type'
-  public DisAccidentsType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
+  public CreateAccidentsType = this.prefix + 'create_accidents_type'
+  public IndexAccidentsType = this.prefix + 'fetch_accidents_types'
+  public ShowAccidentsType = this.prefix + 'fetch_accidents_type_details'
+  public EditAccidentsType = this.prefix + 'update_accidents_type'
+  public DeleteAccidentsType = this.prefix + 'delete_accidents_type'
+  public DisAccidentsType = this.prefix + 'disable_accidents_type'
 
   //Organization
-  public CreateOrganization = this.baseUrl + this.dashboardPrefix + 'create_organization'
-  public IndexOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organizations'
-  public ShowOrganization = this.baseUrl + this.dashboardPrefix + 'fetch_organization_details'
-  public EditOrganization = this.baseUrl + this.dashboardPrefix + 'update_organization'
-  public DeleteOrganization = this.baseUrl + this.dashboardPrefix + 'delete_organization'
-  // public DisOrganizationType = this.baseUrl + this.dashboardPrefix + 'disable_accidents_type'
+  public CreateOrganization = this.prefix + 'create_organization'
+  public IndexOrganization = this.prefix + 'fetch_organizations'
+  public ShowOrganization = this.prefix + 'fetch_organization_details'
+  public EditOrganization = this.prefix + 'update_organization'
+  public DeleteOrganization = this.prefix + 'delete_organization'
+  // public DisOrganizationType = this.prefix  + 'disable_accidents_type'
 
   // Location
-  public CreateLocation = this.baseUrl + this.dashboardPrefix + 'create_location'
-  public IndexLocation = this.baseUrl + this.dashboardPrefix + 'fetch_locations'
-  public ShowLocation = this.baseUrl + this.dashboardPrefix + 'fetch_location_details'
-  public EditLocation = this.baseUrl + this.dashboardPrefix + 'update_location'
-  public DeleteLocation = this.baseUrl + this.dashboardPrefix + 'delete_location'
+  public CreateLocation = this.prefix + 'create_location'
+  public IndexLocation = this.prefix + 'fetch_locations'
+  public ShowLocation = this.prefix + 'fetch_location_details'
+  public EditLocation = this.prefix + 'update_location'
+  public DeleteLocation = this.prefix + 'delete_location'
 
   // Website Service
-  public CreateService = this.baseUrl + this.dashboardPrefix + 'create_service'
-  public IndexService = this.baseUrl + this.dashboardPrefix + 'fetch_services'
-  public ShowService = this.baseUrl + this.dashboardPrefix + 'fetch_service_details'
-  public EditService = this.baseUrl + this.dashboardPrefix + 'update_service'
-  public DeleteService = this.baseUrl + this.dashboardPrefix + 'delete_service'
-  public DisService = this.baseUrl + this.dashboardPrefix + 'change_service_active_status'
+  public CreateService = this.prefix + 'create_service'
+  public IndexService = this.prefix + 'fetch_services'
+  public ShowService = this.prefix + 'fetch_service_details'
+  public EditService = this.prefix + 'update_service'
+  public DeleteService = this.prefix + 'delete_service'
+  public DisService = this.prefix + 'change_service_active_status'
 
   // Website Service Feature
-  public CreateServiceFeature = this.baseUrl + this.dashboardPrefix + 'create_service_feature'
-  public IndexServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_features'
-  public ShowServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_feature_details'
-  public EditServiceFeature = this.baseUrl + this.dashboardPrefix + 'update_service_feature'
-  public DeleteServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
-  public DisServiceFeature = this.baseUrl + this.dashboardPrefix + 'change_service_feature_active_status'
+  public CreateServiceFeature = this.prefix + 'create_service_feature'
+  public IndexServiceFeature = this.prefix + 'fetch_service_features'
+  public ShowServiceFeature = this.prefix + 'fetch_service_feature_details'
+  public EditServiceFeature = this.prefix + 'update_service_feature'
+  public DeleteServiceFeature = this.prefix + 'delete_service_feature'
+  public DisServiceFeature = this.prefix + 'change_service_feature_active_status'
 
   // Website Service Setcion
-  public CreateServiceSection = this.baseUrl + this.dashboardPrefix + 'create_service_section'
-  public IndexServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_sections'
-  public ShowServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_section_details'
-  public EditServiceSection = this.baseUrl + this.dashboardPrefix + 'update_service_section'
-  public DeleteServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
-  public DisServiceSection = this.baseUrl + this.dashboardPrefix + 'change_service_section_active_status'
+  public CreateServiceSection = this.prefix + 'create_service_section'
+  public IndexServiceSection = this.prefix + 'fetch_service_sections'
+  public ShowServiceSection = this.prefix + 'fetch_service_section_details'
+  public EditServiceSection = this.prefix + 'update_service_section'
+  public DeleteServiceSection = this.prefix + 'delete_service_section'
+  public DisServiceSection = this.prefix + 'change_service_section_active_status'
 
   // Website Service Log
-  public CreateServiceLog = this.baseUrl + this.dashboardPrefix + 'create_service_log'
-  public IndexServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_logs'
-  public ShowServiceLog = this.baseUrl + this.dashboardPrefix + 'fetch_service_log_details'
-  public EditServiceLog = this.baseUrl + this.dashboardPrefix + 'update_service_log'
-  public DeleteServiceLog = this.baseUrl + this.dashboardPrefix + 'delete_service_log'
-  public DisServiceLog = this.baseUrl + this.dashboardPrefix + 'change_service_log_active_status'
+  public CreateServiceLog = this.prefix + 'create_service_log'
+  public IndexServiceLog = this.prefix + 'fetch_service_logs'
+  public ShowServiceLog = this.prefix + 'fetch_service_log_details'
+  public EditServiceLog = this.prefix + 'update_service_log'
+  public DeleteServiceLog = this.prefix + 'delete_service_log'
+  public DisServiceLog = this.prefix + 'change_service_log_active_status'
 
   // Website System Banner
-  public CreateSystemBanner = this.baseUrl + this.dashboardPrefix + 'create_our_system_banner'
-  public IndexSystemBanner = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_banners'
-  public ShowSystemBanner = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_banner_details'
-  public EditSystemBanner = this.baseUrl + this.dashboardPrefix + 'update_our_system_banner'
-  public DeleteSystemBanner = this.baseUrl + this.dashboardPrefix + 'delete_our_system_banner'
-  public DisSystemBanner = this.baseUrl + this.dashboardPrefix + 'change_our_system_banner_active_status'
+  public CreateSystemBanner = this.prefix + 'create_our_system_banner'
+  public IndexSystemBanner = this.prefix + 'fetch_our_system_banners'
+  public ShowSystemBanner = this.prefix + 'fetch_our_system_banner_details'
+  public EditSystemBanner = this.prefix + 'update_our_system_banner'
+  public DeleteSystemBanner = this.prefix + 'delete_our_system_banner'
+  public DisSystemBanner = this.prefix + 'change_our_system_banner_active_status'
 
   // Website System Feature
-  public CreateSystemFeature = this.baseUrl + this.dashboardPrefix + 'create_our_system_feature'
-  public IndexSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_features'
-  public ShowSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_feature_details'
-  public EditSystemFeature = this.baseUrl + this.dashboardPrefix + 'update_our_system_feature'
-  public DeleteSystemFeature = this.baseUrl + this.dashboardPrefix + 'delete_our_system_feature'
-  public DisSystemFeature = this.baseUrl + this.dashboardPrefix + 'change_our_system_feature_active_status'
+  public CreateSystemFeature = this.prefix + 'create_our_system_feature'
+  public IndexSystemFeature = this.prefix + 'fetch_our_system_features'
+  public ShowSystemFeature = this.prefix + 'fetch_our_system_feature_details'
+  public EditSystemFeature = this.prefix + 'update_our_system_feature'
+  public DeleteSystemFeature = this.prefix + 'delete_our_system_feature'
+  public DisSystemFeature = this.prefix + 'change_our_system_feature_active_status'
 
   // Website System Risk Type
-  public CreateSystemRiskType = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_type'
-  public IndexSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_types'
-  public ShowSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_type_details'
-  public EditSystemRiskType = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_type'
-  public DeleteSystemRiskType = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_type'
-  public DisSystemRiskType = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_type_active_status'
+  public CreateSystemRiskType = this.prefix + 'create_our_system_risk_type'
+  public IndexSystemRiskType = this.prefix + 'fetch_our_system_risk_types'
+  public ShowSystemRiskType = this.prefix + 'fetch_our_system_risk_type_details'
+  public EditSystemRiskType = this.prefix + 'update_our_system_risk_type'
+  public DeleteSystemRiskType = this.prefix + 'delete_our_system_risk_type'
+  public DisSystemRiskType = this.prefix + 'change_our_system_risk_type_active_status'
 
 
   // Website System Component
-  public CreateSystemComponent = this.baseUrl + this.dashboardPrefix + 'create_our_system_component'
-  public IndexSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_components'
-  public ShowSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_component_details'
-  public EditSystemComponent = this.baseUrl + this.dashboardPrefix + 'update_our_system_component'
-  public DeleteSystemComponent = this.baseUrl + this.dashboardPrefix + 'delete_our_system_component'
-  public DisSystemComponent = this.baseUrl + this.dashboardPrefix + 'change_our_system_component_active_status'
+  public CreateSystemComponent = this.prefix + 'create_our_system_component'
+  public IndexSystemComponent = this.prefix + 'fetch_our_system_components'
+  public ShowSystemComponent = this.prefix + 'fetch_our_system_component_details'
+  public EditSystemComponent = this.prefix + 'update_our_system_component'
+  public DeleteSystemComponent = this.prefix + 'delete_our_system_component'
+  public DisSystemComponent = this.prefix + 'change_our_system_component_active_status'
 }
 
 export { ApiNames }
