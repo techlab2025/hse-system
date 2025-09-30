@@ -101,7 +101,7 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/partner/${id}`,
+    link: `/organization/partner/${id}`,
     permission: [
       PermissionsEnum.PARTNER_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
