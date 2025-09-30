@@ -182,7 +182,8 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('name') }}</th>
+                <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -193,7 +194,10 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
+                <td data-label="Name">{{ item.name }}</td>
+                <td data-label="images">
+                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
+                </td>
 
                 <td data-label="Actions">
                   <DropList

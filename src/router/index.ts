@@ -673,18 +673,18 @@ const router = createRouter({
           component: () => import('../views/Admin/Accidents/IndexAccidentsType.vue'),
         },
         {
-          path: "partners",
-          name: "Partners",
+          path: 'partners',
+          name: 'Partners',
           component: () => import('../views/Organization/Partener/IndexPartener.vue'),
         },
         {
-          path: "partner/add",
-          name: "Add Partner",
+          path: 'partner/add',
+          name: 'Add Partner',
           component: () => import('../views/Organization/Partener/AddPartener.vue'),
         },
         {
-          path: "partner/:id",
-          name: "Edit Partner",
+          path: 'partner/:id',
+          name: 'Edit Partner',
           component: () => import('../views/Organization/Partener/EditPartener.vue'),
         },
 
@@ -814,6 +814,41 @@ const router = createRouter({
           path: 'organization-employee/add',
           name: 'Add Organization Employee ',
           component: () => import('../views/Organization/OrganizationEmployee/AddOrganization.vue'),
+        },
+
+        // Herikaly
+
+        {
+          path: 'herikaly/:parent_id?',
+          name: 'Herikaly',
+          component: () => import('../views/Organization/Herikaly/IndexHerikaly.vue'),
+        },
+        {
+          path: 'herikaly/:id',
+          name: 'Edit Herikaly',
+          component: () => import('../views/Organization/Herikaly/EditHerikaly.vue'),
+        },
+        {
+          path: 'herikaly/add/:parent_id?',
+          name: 'Add Herikaly ',
+          component: () => import('../views/Organization/Herikaly/AddHerikaly.vue'),
+        },
+
+        // Project Zone
+        {
+          path: 'project-zone',
+          name: 'Project Zone',
+          component: () => import('../views/Organization/ProjectZone/IndexProjectZone.vue'),
+        },
+        {
+          path: 'project-zone/:id',
+          name: 'Edit Project Zone',
+          component: () => import('../views/Organization/ProjectZone/EditProjectZone.vue'),
+        },
+        {
+          path: 'project-zone/add',
+          name: 'Add Project Zone ',
+          component: () => import('../views/Organization/ProjectZone/AddProjectZone.vue'),
         },
       ],
     },

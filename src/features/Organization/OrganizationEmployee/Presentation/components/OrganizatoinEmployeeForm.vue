@@ -1,46 +1,24 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
-
-// import { OrganizatoinEmployeesMap } from '@/constant/OrganizatoinEmployees'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
-import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 import EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEmployeeParams'
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
-// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-// import { useRoute } from 'vue-router'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+
+const Name = ref('')
+const Phone = ref('')
+const Email = ref('')
+const Password = ref('')
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: OrganizatoinEmployeeDetailsModel
 }>()
-
-// const route = useRoute()
-
-// actual translations (values)
-const langs = ref<{ locale: string; title: string }[]>([
-  {
-    locale: 'en',
-    icon: USA,
-    title: '',
-  },
-  {
-    locale: 'ar',
-    icon: SA,
-    title: '',
-  },
-])
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
@@ -94,7 +72,6 @@ const updateData = () => {
         Password.value,
       )
     : new AddOrganizatoinEmployeeParams(Name.value, Phone.value, Email.value, Password.value)
-
   emit('update:data', params)
 }
 
@@ -105,16 +82,10 @@ watch(
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
-      // Password.value = newData.
     }
   },
   { immediate: true },
 )
-
-const Name = ref('')
-const Phone = ref('')
-const Email = ref('')
-const Password = ref('')
 
 const UpdateName = (data) => {
   Name.value = data.target.value

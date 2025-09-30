@@ -6,28 +6,32 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import AddOrganizatoinEmployeeUseCase from '../../Domain/useCase/addOrganizatoinEmployeeUseCase'
-import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
+import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
+import AddProjectZoneUseCase from '../../Domain/useCase/addProjectZoneUseCase'
 
-export default class AddOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
-  private static instance: AddOrganizatoinEmployeeController
+
+
+export default class AddProjectZoneController extends ControllerInterface<ProjectZoneModel> {
+  private static instance: AddProjectZoneController
   private constructor() {
     super()
   }
-  private AddOrganizatoinEmployeeUseCase = new AddOrganizatoinEmployeeUseCase()
+  private AddProjectZoneUseCase = new AddProjectZoneUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddOrganizatoinEmployeeController()
+      this.instance = new AddProjectZoneController()
     }
     return this.instance
   }
 
-  async addOrganizatoinEmployee(params: Params, router: Router, draft: boolean = false) {
+  async addProjectZone(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<OrganizatoinEmployeeModel> =
-        await this.AddOrganizatoinEmployeeUseCase.call(params)
+
+      // console.log("Ssssssss")
+      const dataState: DataState<ProjectZoneModel> =
+        await this.AddProjectZoneUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -36,7 +40,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/organization-employee')
+        if (!draft) await router.push('/organization/project-zone')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

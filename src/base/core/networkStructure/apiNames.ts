@@ -3,7 +3,7 @@ import { baseUrl } from './baseUrl'
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -28,12 +28,9 @@ class ApiNames {
   public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
 
-
   // auth
 
   public AuthLogin = this.baseUrl + this.organizationPrefix + 'login'
-
-
 
   // Partner
 
@@ -43,8 +40,6 @@ class ApiNames {
   public EditPartner = this.baseUrl + this.organizationPrefix + 'update_partner'
   public DeletePartner = this.baseUrl + this.organizationPrefix + 'delete_partner'
 
-
-
   // AboutUsFeature
 
   public CreateAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'create_about_us_feature'
@@ -52,18 +47,23 @@ class ApiNames {
   public ShowAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_feature_details'
   public EditAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'update_about_us_feature'
   public DeleteAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'delete_about_us_feature'
-  public ChangeStatusAboutUsFeature = this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
-
+  public ChangeStatusAboutUsFeature =
+    this.baseUrl + this.dashboardPrefix + 'change_about_us_feature_active_status'
 
   // systemRiskManagement
 
-  public CreateSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_management'
-  public IndexSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_managements'
-  public ShowSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_management_details'
-  public EditSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_management'
-  public DeleteSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_management'
-  public ChangeStatusSystemRiskManagement = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_management_active_status'
-
+  public CreateSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_management'
+  public IndexSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_managements'
+  public ShowSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_management_details'
+  public EditSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_management'
+  public DeleteSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_management'
+  public ChangeStatusSystemRiskManagement =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_management_active_status'
 
   // AboutUsCore
 
@@ -72,17 +72,19 @@ class ApiNames {
   public ShowAboutUsCore = this.baseUrl + this.dashboardPrefix + 'fetch_about_us_core_details'
   public EditAboutUsCore = this.baseUrl + this.dashboardPrefix + 'update_about_us_core'
   public DeleteAboutUsCore = this.baseUrl + this.dashboardPrefix + 'delete_about_us_core'
-  public ChangeStatusAboutUsCore = this.baseUrl + this.dashboardPrefix + 'change_about_us_core_active_status'
-
+  public ChangeStatusAboutUsCore =
+    this.baseUrl + this.dashboardPrefix + 'change_about_us_core_active_status'
 
   // HomeViewPricing
 
   public CreateHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'create_home_view_pricing'
   public IndexHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing'
-  public ShowHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing_details'
+  public ShowHomeViewPricing =
+    this.baseUrl + this.dashboardPrefix + 'fetch_home_view_pricing_details'
   public EditHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'update_home_view_pricing'
   public DeleteHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'delete_home_view_pricing'
-  public ChangeStatusHomeViewPricing = this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
+  public ChangeStatusHomeViewPricing =
+    this.baseUrl + this.dashboardPrefix + 'change_home_view_pricing_active_status'
 
   // header
 
@@ -93,7 +95,6 @@ class ApiNames {
   public DeleteHeader = this.baseUrl + this.dashboardPrefix + 'delete_header'
   public ChangeStatusHeader = this.baseUrl + this.dashboardPrefix + 'change_header_active_status'
 
-
   // HomeAboutUs
 
   public CreateHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'create_home_about_us'
@@ -101,8 +102,8 @@ class ApiNames {
   public ShowHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'fetch_home_about_us_details'
   public EditHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'update_home_about_us'
   public DeleteHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'delete_home_about_us'
-  public ChangeStatusHomeAboutUs = this.baseUrl + this.dashboardPrefix + 'change_home_about_us_active_status'
-
+  public ChangeStatusHomeAboutUs =
+    this.baseUrl + this.dashboardPrefix + 'change_home_about_us_active_status'
 
   // PowerFull
 
@@ -111,8 +112,8 @@ class ApiNames {
   public ShowPowerFull = this.baseUrl + this.dashboardPrefix + 'fetch_powerful_feature_details'
   public EditPowerFull = this.baseUrl + this.dashboardPrefix + 'update_powerful_feature'
   public DeletePowerFull = this.baseUrl + this.dashboardPrefix + 'delete_powerful_feature'
-  public ChangeStatusPowerFull = this.baseUrl + this.dashboardPrefix + 'change_powerful_feature_active_status'
-
+  public ChangeStatusPowerFull =
+    this.baseUrl + this.dashboardPrefix + 'change_powerful_feature_active_status'
 
   // SystemWork
 
@@ -121,9 +122,8 @@ class ApiNames {
   public ShowSystemWork = this.baseUrl + this.dashboardPrefix + 'fetch_system_work_details'
   public EditSystemWork = this.baseUrl + this.dashboardPrefix + 'update_system_work'
   public DeleteSystemWork = this.baseUrl + this.dashboardPrefix + 'delete_system_work'
-  public ChangeStatusSystemWork = this.baseUrl + this.dashboardPrefix + 'change_system_work_active_status'
-
-
+  public ChangeStatusSystemWork =
+    this.baseUrl + this.dashboardPrefix + 'change_system_work_active_status'
 
   // HomeContactUs
   public CreateHomeContactUs = this.baseUrl + this.dashboardPrefix + 'create_home_contact_us'
@@ -206,8 +206,10 @@ class ApiNames {
   public ShowOurSystemStep = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_step_details'
   public EditOurSystemStep = this.baseUrl + this.dashboardPrefix + 'update_our_system_step'
   public DeleteOurSystemStep = this.baseUrl + this.dashboardPrefix + 'delete_our_system_step'
-  public DisOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
-  public ChangeStatusOurSystemStep = this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
+  public DisOurSystemStep =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
+  public ChangeStatusOurSystemStep =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_step_active_status'
 
   // Faq
   public CreateFaq = this.baseUrl + this.dashboardPrefix + 'create_faq'
@@ -217,7 +219,6 @@ class ApiNames {
   public DeleteFaq = this.baseUrl + this.dashboardPrefix + 'delete_faq'
   public DisFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
   public ChangeStatusFaq = this.baseUrl + this.dashboardPrefix + 'change_faq_active_status'
-
 
   // Hashtag
   public CreateHashtag = this.baseUrl + this.dashboardPrefix + 'create_hashtag'
@@ -312,7 +313,8 @@ class ApiNames {
   public ShowServiceFeature = this.baseUrl + this.dashboardPrefix + 'fetch_service_feature_details'
   public EditServiceFeature = this.baseUrl + this.dashboardPrefix + 'update_service_feature'
   public DeleteServiceFeature = this.baseUrl + this.dashboardPrefix + 'delete_service_feature'
-  public DisServiceFeature = this.baseUrl + this.dashboardPrefix + 'change_service_feature_active_status'
+  public DisServiceFeature =
+    this.baseUrl + this.dashboardPrefix + 'change_service_feature_active_status'
 
   // Website Service Setcion
   public CreateServiceSection = this.baseUrl + this.dashboardPrefix + 'create_service_section'
@@ -320,7 +322,8 @@ class ApiNames {
   public ShowServiceSection = this.baseUrl + this.dashboardPrefix + 'fetch_service_section_details'
   public EditServiceSection = this.baseUrl + this.dashboardPrefix + 'update_service_section'
   public DeleteServiceSection = this.baseUrl + this.dashboardPrefix + 'delete_service_section'
-  public DisServiceSection = this.baseUrl + this.dashboardPrefix + 'change_service_section_active_status'
+  public DisServiceSection =
+    this.baseUrl + this.dashboardPrefix + 'change_service_section_active_status'
 
   // Website Service Log
   public CreateServiceLog = this.baseUrl + this.dashboardPrefix + 'create_service_log'
@@ -336,41 +339,67 @@ class ApiNames {
   public ShowSystemBanner = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_banner_details'
   public EditSystemBanner = this.baseUrl + this.dashboardPrefix + 'update_our_system_banner'
   public DeleteSystemBanner = this.baseUrl + this.dashboardPrefix + 'delete_our_system_banner'
-  public DisSystemBanner = this.baseUrl + this.dashboardPrefix + 'change_our_system_banner_active_status'
+  public DisSystemBanner =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_banner_active_status'
 
   // Website System Feature
   public CreateSystemFeature = this.baseUrl + this.dashboardPrefix + 'create_our_system_feature'
   public IndexSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_features'
-  public ShowSystemFeature = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_feature_details'
+  public ShowSystemFeature =
+    this.baseUrl + this.dashboardPrefix + 'fetch_our_system_feature_details'
   public EditSystemFeature = this.baseUrl + this.dashboardPrefix + 'update_our_system_feature'
   public DeleteSystemFeature = this.baseUrl + this.dashboardPrefix + 'delete_our_system_feature'
-  public DisSystemFeature = this.baseUrl + this.dashboardPrefix + 'change_our_system_feature_active_status'
+  public DisSystemFeature =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_feature_active_status'
 
   // Website System Risk Type
   public CreateSystemRiskType = this.baseUrl + this.dashboardPrefix + 'create_our_system_risk_type'
   public IndexSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_types'
-  public ShowSystemRiskType = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_type_details'
+  public ShowSystemRiskType =
+    this.baseUrl + this.dashboardPrefix + 'fetch_our_system_risk_type_details'
   public EditSystemRiskType = this.baseUrl + this.dashboardPrefix + 'update_our_system_risk_type'
   public DeleteSystemRiskType = this.baseUrl + this.dashboardPrefix + 'delete_our_system_risk_type'
-  public DisSystemRiskType = this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_type_active_status'
-
+  public DisSystemRiskType =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_risk_type_active_status'
 
   // Website System Component
   public CreateSystemComponent = this.baseUrl + this.dashboardPrefix + 'create_our_system_component'
   public IndexSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_components'
-  public ShowSystemComponent = this.baseUrl + this.dashboardPrefix + 'fetch_our_system_component_details'
+  public ShowSystemComponent =
+    this.baseUrl + this.dashboardPrefix + 'fetch_our_system_component_details'
   public EditSystemComponent = this.baseUrl + this.dashboardPrefix + 'update_our_system_component'
   public DeleteSystemComponent = this.baseUrl + this.dashboardPrefix + 'delete_our_system_component'
-  public DisSystemComponent = this.baseUrl + this.dashboardPrefix + 'change_our_system_component_active_status'
+  public DisSystemComponent =
+    this.baseUrl + this.dashboardPrefix + 'change_our_system_component_active_status'
 
+  // Organization Employee
+  public CreateOrganizatoinEmployee =
+    this.baseUrl + this.organizationPrefix + 'create_organization_employee'
+  public IndexOrganizatoinEmployee =
+    this.baseUrl + this.organizationPrefix + 'fetch_organization_employees'
+  public ShowOrganizatoinEmployee =
+    this.baseUrl + this.organizationPrefix + 'fetch_organization_employee_details'
+  public EditOrganizatoinEmployee =
+    this.baseUrl + this.organizationPrefix + 'update_organization_employee'
+  public DeleteOrganizatoinEmployee =
+    this.baseUrl + this.organizationPrefix + 'delete_organization_employee'
+  public DisOrganizatoinEmployee = this.baseUrl + this.organizationPrefix + 'disable_project_type'
 
-  // Project Type
-  public CreateOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'create_organization_employee'
-  public IndexOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'fetch_organization_employees'
-  public ShowOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'fetch_organization_employee_details'
-  public EditOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'update_organization_employee'
-  public DeleteOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'delete_organization_employee'
-  public DisOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'disable_project_type'
+  // Herikaly
+  public CreateHerikaly = this.baseUrl + this.organizationPrefix + 'create_herikaly'
+  public IndexHerikaly = this.baseUrl + this.organizationPrefix + 'fetch_herikalys'
+  public ShowHerikaly = this.baseUrl + this.organizationPrefix + 'fetch_herikaly_details'
+  public EditHerikaly = this.baseUrl + this.organizationPrefix + 'update_herikaly'
+  public DeleteHerikaly = this.baseUrl + this.organizationPrefix + 'delete_herikaly'
+  // public DisHerikaly = this.baseUrl + this.organizationPrefix + 'disable_project_type'
+
+  // ProjectZone
+  public CreateProjectZone = this.baseUrl + this.organizationPrefix + 'create_project_zone'
+  public IndexProjectZone = this.baseUrl + this.organizationPrefix + 'fetch_project_zones'
+  public ShowProjectZone = this.baseUrl + this.organizationPrefix + 'fetch_project_zone_details'
+  public EditProjectZone = this.baseUrl + this.organizationPrefix + 'update_project_zone'
+  public DeleteProjectZone = this.baseUrl + this.organizationPrefix + 'delete_project_zone'
+  // public DisHerikaly = this.baseUrl + this.organizationPrefix + 'disable_project_type'
 }
 
 export { ApiNames }

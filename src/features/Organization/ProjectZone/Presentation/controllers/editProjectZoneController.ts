@@ -4,30 +4,33 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import EditOrganizatoinEmployeeUseCase from '../../Domain/useCase/editOrganizatoinEmployeeUseCase'
-import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
+import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
+import EditProjectZoneUseCase from '../../Domain/useCase/editProjectZoneUseCase'
 
-export default class EditOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
-  private static instance: EditOrganizatoinEmployeeController
+
+
+
+export default class EditProjectZoneController extends ControllerInterface<ProjectZoneModel> {
+  private static instance: EditProjectZoneController
 
   private constructor() {
     super()
   }
 
-  private EditOrganizatoinEmployeeUseCase = new EditOrganizatoinEmployeeUseCase()
+  private EditProjectZoneUseCase = new EditProjectZoneUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditOrganizatoinEmployeeController()
+      this.instance = new EditProjectZoneController()
     }
     return this.instance
   }
 
-  async editOrganizatoinEmployee(params: Params, router: any) {
+  async editProjectZone(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<OrganizatoinEmployeeModel> = await this.EditOrganizatoinEmployeeUseCase.call(params)
+      const dataState: DataState<ProjectZoneModel> = await this.EditProjectZoneUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -37,7 +40,7 @@ export default class EditOrganizatoinEmployeeController extends ControllerInterf
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/organization-employee')
+        await router.push('/organization/project-zone')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

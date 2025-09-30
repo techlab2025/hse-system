@@ -3,8 +3,8 @@ import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
 
-class DeleteOrganizatoinEmployeeApiService extends ServicesInterface {
-  private static instance: DeleteOrganizatoinEmployeeApiService
+class ChangeStatusHerikalyApiService extends ServicesInterface {
+  private static instance: ChangeStatusHerikalyApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -12,20 +12,19 @@ class DeleteOrganizatoinEmployeeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteOrganizatoinEmployeeApiService()
+      this.instance = new ChangeStatusHerikalyApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DeleteOrganizatoinEmployee,
+      url: ApiNames.instance.DeleteHerikaly,
       type: CrudType.FormData,
       auth: true,
       params: params,
-      showLoadingDialog: true,
     })
   }
 }
 
-export { DeleteOrganizatoinEmployeeApiService }
+export { ChangeStatusHerikalyApiService }

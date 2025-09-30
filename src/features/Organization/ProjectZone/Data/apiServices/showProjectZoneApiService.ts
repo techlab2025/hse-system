@@ -2,9 +2,10 @@ import { ApiNames } from '@/base/core/networkStructure/apiNames'
 import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
+import HeaderHandler from '@/base/core/networkStructure/networking/utils/header_handler'
 
-class DeleteOrganizatoinEmployeeApiService extends ServicesInterface {
-  private static instance: DeleteOrganizatoinEmployeeApiService
+class ShowProjectZoneApiService extends ServicesInterface {
+  private static instance: ShowProjectZoneApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -12,20 +13,20 @@ class DeleteOrganizatoinEmployeeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteOrganizatoinEmployeeApiService()
+      this.instance = new ShowProjectZoneApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DeleteOrganizatoinEmployee,
+      url: ApiNames.instance.ShowProjectZone,
       type: CrudType.FormData,
       auth: true,
       params: params,
-      showLoadingDialog: true,
+      headers: HeaderHandler.Instance.getHeader(true, false), // Exclude Accept-Language
     })
   }
 }
 
-export { DeleteOrganizatoinEmployeeApiService }
+export { ShowProjectZoneApiService }
