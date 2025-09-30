@@ -664,12 +664,12 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: 'OrganizationHome',
+          name: 'Organization Home',
           component: () => import('../views/AppHome.vue'),
         },
         {
           path: 'accidents-types',
-          name: 'Accidents Type',
+          name: 'Accidents Type Organization',
           component: () => import('../views/Admin/Accidents/IndexAccidentsType.vue'),
         },
         {
@@ -679,12 +679,12 @@ const router = createRouter({
         },
         {
           path: "partner/add",
-          name: "Add Partner",
+          name: "Add Partner Organization",
           component: () => import('../views/Organization/Partener/AddPartener.vue'),
         },
         {
           path: "partner/:id",
-          name: "Edit Partner",
+          name: "Edit Partner Organization",
           component: () => import('../views/Organization/Partener/EditPartener.vue'),
         },
 
@@ -707,108 +707,108 @@ const router = createRouter({
 
         {
           path: 'accidents-type/add',
-          name: 'Add Accidents Type',
+          name: 'Add Accidents Type Organization',
           component: () => import('../views/Admin/Accidents/AddAccidentsType.vue'),
         },
         {
           path: 'accidents-type/:id',
-          name: 'Edit Accidents Type',
+          name: 'Edit Accidents Type Organization',
           component: () => import('../views/Admin/Accidents/EditAccidentsType.vue'),
         },
         {
           path: 'certificates',
-          name: 'Certificates',
+          name: 'Certificates Organization',
           component: () => import('../views/Admin/Certificate/IndexCertificate.vue'),
         },
         {
           path: 'certificate/add',
-          name: 'Add Certificate',
+          name: 'Add Certificate Organization',
           component: () => import('../views/Admin/Certificate/AddCertificate.vue'),
         },
         {
           path: 'certificate/:id',
-          name: 'Edit Certificate',
+          name: 'Edit Certificate Organization',
           component: () => import('../views/Admin/Certificate/EditCertificate.vue'),
         },
         {
           path: 'equipment-types/:parent_id?',
-          name: 'Equipment Type',
+          name: 'Equipment Type Organization',
           component: () => import('../views/Admin/EquipmentType/IndexEquipmentType.vue'),
         },
         {
           path: 'equipment-type/add/:parent_id?',
-          name: 'Add Equipment Type',
+          name: 'Add Equipment Type Organization',
           component: () => import('../views/Admin/EquipmentType/AddEquipmentType.vue'),
         },
 
         {
           path: 'equipment-type/:id',
-          name: 'Edit Equipment Type',
+          name: 'Edit Equipment Type Organization',
           component: () => import('../views/Admin/EquipmentType/EditEquipmentType.vue'),
         },
         {
           path: 'equipments/:id?',
-          name: 'Equipment ',
+          name: 'Equipment Organization',
           component: () => import('../views/Admin/Equipment/IndexEquipment.vue'),
         },
         {
           path: 'equipment/add/:id?',
-          name: 'Add Equipment ',
+          name: 'Add Equipment Organization ',
           component: () => import('../views/Admin/Equipment/AddEquipment.vue'),
         },
         {
           path: 'equipment/:id',
-          name: 'Edit Equipment ',
+          name: 'Edit Equipment Organization ',
           component: () => import('../views/Admin/Equipment/EditEquipment.vue'),
         },
         {
           path: 'factories',
-          name: 'Factories',
+          name: 'Factories Organization',
           component: () => import('../views/Admin/Factory/IndexFactory.vue'),
         },
         {
           path: 'factory/add',
-          name: 'Add Factory',
+          name: 'Add Factory Organization',
           component: () => import('../views/Admin/Factory/AddFactory.vue'),
         },
         {
           path: 'factory/:id',
-          name: 'Edit Factory',
+          name: 'Edit Factory Organization',
           component: () => import('../views/Admin/Factory/EditFactory.vue'),
         },
         {
           path: 'factories-items',
-          name: 'Factories Items',
+          name: 'Factories Items Organization',
           component: () => import('../views/Admin/FactoryItem/IndexFactoryItem.vue'),
         },
         {
           path: 'factory-item/:id',
-          name: 'Edit Factory Item',
+          name: 'Edit Factory Item Organization',
           component: () => import('../views/Admin/FactoryItem/EditFactoryItem.vue'),
         },
         {
           path: 'factory-item/add',
-          name: 'Add Factory Item',
+          name: 'Add Factory Item Organization',
           component: () => import('../views/Admin/FactoryItem/AddFactoryItem.vue'),
         },
         {
           path: 'hazard-types',
-          name: 'Hazard Type',
+          name: 'Hazard Type Organization',
           component: () => import('../views/Admin/HazardType/IndexHazardType.vue'),
         },
         {
           path: 'hazard-type/add',
-          name: 'Add Hazard Type',
+          name: 'Add Hazard Type Organization',
           component: () => import('../views/Admin/HazardType/AddHazardType.vue'),
         },
         {
           path: 'hazard-type/:id',
-          name: 'Edit Hazard Type',
+          name: 'Edit Hazard Type Organization',
           component: () => import('../views/Admin/HazardType/EditHazardType.vue'),
         },
         {
           path: 'templates',
-          name: 'Templates',
+          name: 'Templates Organization',
           component: () => import('../views/Admin/Template/IndexTemplate.vue'),
         },
       ],
