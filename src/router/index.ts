@@ -659,7 +659,7 @@ const router = createRouter({
     },
     {
       path: '/organization',
-      name: 'Organization Home',
+      name: 'Organization App',
       component: Dashboard,
       children: [
         {
@@ -674,7 +674,7 @@ const router = createRouter({
         },
         {
           path: "partners",
-          name: "Partners",
+          name: "Partners Organization",
           component: () => import('../views/Organization/Partener/IndexPartener.vue'),
         },
         {
