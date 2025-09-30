@@ -165,7 +165,7 @@ const actionList = (id: number, deleteHomeContactUs: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_CONTACT_US_CREATE]">
         <router-link to="/admin/home-contact-us/add" class="btn btn-primary">

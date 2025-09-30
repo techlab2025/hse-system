@@ -105,7 +105,7 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
     link: `/admin/home-about-us/${id}`,
     permission: [
       PermissionsEnum.HOME_ABOUT_US_UPDATE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.HOME_ABOUT_US_ALL,
     ],
   },
@@ -135,7 +135,7 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
     action: () => deleteHomeAboutUs(id),
     permission: [
       PermissionsEnum.HOME_ABOUT_US_DELETE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.HOME_ABOUT_US_ALL,
     ],
   },
@@ -158,9 +158,9 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_ABOUT_US_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HOME_ABOUT_US_CREATE]">
         <router-link to="/admin/home-about-us/add" class="btn btn-primary">
           {{ $t('Add_HomeAboutUs') }}
         </router-link>
@@ -170,7 +170,7 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.HOME_ABOUT_US_ALL,
       PermissionsEnum.HOME_ABOUT_US_DELETE,
       PermissionsEnum.HOME_ABOUT_US_FETCH,
@@ -195,9 +195,11 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/home-about-us/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/home-about-us/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
                 <td data-label="subtitle">{{ item.subtitle }}</td>

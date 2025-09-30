@@ -124,7 +124,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <router-link to="/admin/industry/add" class="btn btn-primary">
         {{ $t('Add_Industry') }}

@@ -161,7 +161,7 @@ const changeStatusServiceLog = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_LOG_CREATE]">
         <router-link to="/admin/service_logs/add" class="btn btn-primary">
           {{ $t('Add_Service_section') }}
         </router-link>
@@ -172,11 +172,11 @@ const changeStatusServiceLog = async (id: number) => {
   <permission-builder
     :code="[
       PermissionsEnum.WEBSITE,
-      PermissionsEnum.SERVICE_SECTION_ALL,
-      PermissionsEnum.SERVICE_SECTION_DELETE,
-      PermissionsEnum.SERVICE_SECTION_FETCH,
-      PermissionsEnum.SERVICE_SECTION_UPDATE,
-      PermissionsEnum.SERVICE_SECTION_CREATE,
+      PermissionsEnum.SERVICE_LOG_ALL,
+      PermissionsEnum.SERVICE_LOG_DELETE,
+      PermissionsEnum.SERVICE_LOG_FETCH,
+      PermissionsEnum.SERVICE_LOG_UPDATE,
+      PermissionsEnum.SERVICE_LOG_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -192,10 +192,7 @@ const changeStatusServiceLog = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -205,8 +202,8 @@ const changeStatusServiceLog = async (id: number) => {
                   <permission-builder
                     :code="[
                       PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                      PermissionsEnum.SERVICE_LOG_ALL,
+                      PermissionsEnum.SERVICE_LOG_CHANGE_STATUS,
                     ]"
                   >
                     <ToggleSwitch
@@ -247,7 +244,7 @@ const changeStatusServiceLog = async (id: number) => {
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/admin/home-contact-us/add`"
+          :link="`/admin/service-log/add`"
           addText="Add Service"
           description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Service"
@@ -255,7 +252,7 @@ const changeStatusServiceLog = async (id: number) => {
       </template>
       <template #failed>
         <DataFailed
-          :link="`/admin/home-contact-us/add`"
+          :link="`/admin/service-log/add`"
           addText="Add Service"
           description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Service"

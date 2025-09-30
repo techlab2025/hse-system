@@ -154,9 +154,9 @@ const changeStatusCategory = async (id: number) => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel />
+     <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/category/add" class="btn btn-primary">
           {{ $t('Add_Category') }}
         </router-link>
@@ -166,7 +166,7 @@ const changeStatusCategory = async (id: number) => {
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
       PermissionsEnum.EQUIPMENT_TYPE_DELETE,
       PermissionsEnum.EQUIPMENT_TYPE_FETCH,
