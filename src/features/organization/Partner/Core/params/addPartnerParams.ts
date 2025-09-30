@@ -7,8 +7,7 @@ export default class AddPartnerParams implements Params {
   // allIndustries: number
   // industries: number[]
   // parentId: number
-  image: string
-  alt: string
+  phone: string
 
   constructor(
     translation: TranslationsParams,
@@ -16,16 +15,14 @@ export default class AddPartnerParams implements Params {
     // allIndustries: number,
     // industries: number[],
     // parentId: number,
-    image: string,
-    alt: string,
+    phone: string,
   ) {
     this.translation = translation
     // this.hasPartner = hasPartner
     // this.allIndustries = allIndustries
     // this.industries = industries
     // this.parentId = parentId
-    this.image = image
-    this.alt = alt
+    this.phone = phone
   }
 
   toMap(): Record<
@@ -46,8 +43,7 @@ export default class AddPartnerParams implements Params {
     // console.log(this.allIndustries)
     // if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
-    if (this.image) data['image'] = this.image
-    if (this.alt) data['alt'] = this.alt
+    if (this.phone) data['phone'] = this.phone
 
     return data
   }
