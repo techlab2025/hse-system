@@ -40,7 +40,7 @@ export default class AddEquipmentParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['translations'] = this.translation.toMap()
+    data['translations'] = this.translation.toMap() // tranlations:asd
     data['all_industries'] = this.allIndustries ? 1 : 0
     data['industry_ids'] = this.industries
     data['equipment_type_id'] = this.equipmentTypeId

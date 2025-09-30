@@ -234,7 +234,7 @@ watch(
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       :langs="langDefault"
       :label="$t('description')"
@@ -314,7 +314,7 @@ watch(
         <button
           v-if="items.length > 1"
           type="button"
-          class="btn-minus flex items-center gap-2 !bg-red-500 w-10 h-10 rounded-full justify-center"
+          class="btn-minus flex items-center gap-2 !bg-red-500 w-8 h-8 rounded-full justify-center"
           @click="removeItem(index)"
         >
           <IconMinus />

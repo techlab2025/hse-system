@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -8,72 +7,83 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import type ServiceDetailsModel from '../../Data/models/ServiceDetailsFeatureModel'
-import AddServiceFeatureParams from '../../Core/params/addServiceFeatureParams'
-import ItemParams from '../../Core/params/ItemParams'
 
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
+
+import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+import type ServiceFeatureDetailsModel from '../../Data/models/ServiceFeatureDetailsModel'
+import AddServiceFeatureParams from '../../Core/params/addServiceFeatureParams'
+import EditServiceFeatureParams from '../../Core/params/editServiceFeatureParams'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import { useI18n } from 'vue-i18n'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: ServiceDetailsModel
-  serviceId: number
+  data?: ServiceFeatureDetailsModel
 }>()
 
-const indexServiceController = IndexServiceController.getInstance()
-const indexServiceParams = new IndexServiceParams('', 1, 10, 1)
-
-const langsTitle = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
-
+// Translations
+const langs = ref<{ locale: string; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
-// Items array (previously called "includes")
+const alt_image = ref<string>('')
+
+const indexServiceController = IndexServiceController.getInstance()
+const ServiceParams = new IndexServiceParams('', 0, 0, 0, 0)
+
+// Image
+const image = ref<string>('')
+
+const service_id = ref<TitleInterface | null>(null)
+
+const setIndexService = (value: TitleInterface | null) => {
+  service_id.value = value
+  updateData()
+}
+
+// Items (dynamic list)
 interface Item {
-  translations: {
-    title: Record<string, string>
-    subtitle: Record<string, string>
-  }
-  alt: string
-  image: string | File
+  langs: { locale: string; title: string }[]
+  langs_sub: { locale: string; title: string }[]
+  image: string
+  alt_image: string
 }
 const items = ref<Item[]>([])
 
-const createNewItem = (): Item => {
-  const title: Record<string, string> = {}
-  const subtitle: Record<string, string> = {}
+// helper to create new blank item
+const createNewItem = (): Item => ({
+  langs: langDefault.value.map((l) => ({ locale: l.locale, title: '' })),
+  langs_sub: langDefault.value.map((l) => ({ locale: l.locale, title: '' })),
+  image: '',
+  alt_image: '',
+})
 
-  langDefault.value.forEach((l) => {
-    title[l.locale] = ''
-    subtitle[l.locale] = ''
-  })
+const langsSub = ref<{ locale: string; title: string }[]>([])
+const langsDescription = ref<{ locale: string; title: string }[]>([])
 
-  return {
-    translations: { title, subtitle },
-    alt: '',
-    image: '',
-  }
+const setLangsSub = (value: { locale: string; title: string }[]) => {
+  langsSub.value = value
+  updateData()
 }
 
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0,
-) => {
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexLangController = await IndexLangController.getInstance().getData(params)
-  const response = indexLangController.value
+const setLangsDescription = (value: { locale: string; title: string }[]) => {
+  langsDescription.value = value
+  updateData()
+}
 
-  const defaults = response?.data?.length
+// --- Fetch available languages
+const fetchLang = async () => {
+  const params = new IndexLangParams('', 1, 10, 0)
+  const response = (await IndexLangController.getInstance().getData(params)).value
+
+  langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
         locale: item.code,
         title: '',
@@ -84,79 +94,77 @@ const fetchLang = async (
         { locale: 'ar', icon: SA, title: '' },
       ]
 
-  langDefault.value = defaults
   if (!items.value.length) {
     items.value.push(createNewItem())
   }
 }
 
-onMounted(async () => {
-  await fetchLang()
-})
+onMounted(fetchLang)
 
+// --- Sync with parent
 const updateData = () => {
-  const mainTranslations = new TranslationsParams()
-
-  langsTitle.value.forEach((lang) => {
-    mainTranslations.setTranslation('title', lang.locale, lang.title)
+  const translationsParams = new TranslationsParams()
+  langs.value.forEach((lang) => {
+    translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  langsSubTitle.value.forEach((lang) => {
-    mainTranslations.setTranslation('subtitle', lang.locale, lang.title)
+  langsSub.value.forEach((lang) => {
+    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
   })
 
   langsDescription.value.forEach((lang) => {
-    mainTranslations.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.title)
   })
 
   const itemsParams = items.value.map((item) => {
     const itemTranslations = new TranslationsParams()
-
-    Object.entries(item.translations.title).forEach(([locale, value]) => {
-      itemTranslations.setTranslation('title', locale, value)
+    item.langs.forEach((lang) => {
+      itemTranslations.setTranslation('title', lang.locale, lang.title)
     })
 
-    Object.entries(item.translations.subtitle).forEach(([locale, value]) => {
-      itemTranslations.setTranslation('subtitle', locale, value)
+    item.langs_sub.forEach((lang) => {
+      itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
     })
 
-    return new ItemParams(
-      itemTranslations,
-      item.alt,
-      typeof item.image === 'string' ? item.image : '',
-    )
+    const params = new AddServiceFeatureParams(itemTranslations, item.alt_image, item.image?.file)
+    return params
   })
 
-  const params = new AddServiceFeatureParams(
-    SelectedService.value?.id,
-    mainTranslations,
-    itemsParams,
-  )
+  const params = props.data?.id
+    ? new EditServiceFeatureParams(
+        props.data?.id ?? 0,
+        translationsParams,
+        alt_image.value,
+        image.value?.file,
+        itemsParams,
+        service_id.value?.id,
+      )
+    : new AddServiceFeatureParams(
+        translationsParams,
+        alt_image.value,
+        image.value?.file,
+        itemsParams,
+        service_id.value?.id,
+      )
 
   emit('update:data', params)
 }
 
-// Helper functions
-const setLangsTitle = (data: { locale: string; title: string }[]) => {
-  langsTitle.value = data
+// Setters
+const setLangs = (data: { locale: string; title: string }[]) => {
+  langs.value = data
+  updateData()
+}
+const setImage = async (file: File) => {
+  image.value = file ? await filesToBase64(file) : ''
   updateData()
 }
 
-const setLangsSubTitle = (value: { locale: string; title: string }[]) => {
-  langsSubTitle.value = value
-  updateData()
-}
-
-const setLangsDescription = (value: { locale: string; title: string }[]) => {
-  langsDescription.value = value
-  updateData()
-}
-
+// Items handlers
 const addItem = () => {
   items.value.push(createNewItem())
   updateData()
 }
-
 const removeItem = (index: number) => {
   if (items.value.length > 1) {
     items.value.splice(index, 1)
@@ -164,141 +172,123 @@ const removeItem = (index: number) => {
   }
 }
 
-const setItemTitleLangs = (index: number, data: { locale: string; title: string }[]) => {
-  data.forEach((d) => {
-    items.value[index].translations.title[d.locale] = d.title
-  })
+const setItemLangs = (index: number, data: { locale: string; title: string }[]) => {
+  items.value[index].langs = data
   updateData()
 }
 
-const setItemSubtitleLangs = (index: number, data: { locale: string; title: string }[]) => {
-  data.forEach((d) => {
-    items.value[index].translations.subtitle[d.locale] = d.title
-  })
-  updateData()
-}
-
-const setItemAlt = (index: number, alt: string) => {
-  items.value[index].alt = alt
+const setItemSubLangs = (index: number, data: { locale: string; title: string }[]) => {
+  items.value[index].langs_sub = data
   updateData()
 }
 
 const setItemImage = async (index: number, file: File) => {
-  items.value[index].image = await filesToBase64(file)
+  items.value[index].image = file ? await filesToBase64(file) : ''
   updateData()
 }
 
+// Watch for alt_image global change
+watch(alt_image, () => updateData())
+
+const { locale } = useI18n()
+
+// --- Init watcher
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (newDefault.length) {
-      // Main translations
-      langsTitle.value = newDefault.map((l) => {
-        const existing = newData?.translations?.find(
-          (t: any) => t.locale === l.locale && t.field === 'title',
-        )
-        return existing
-          ? { locale: l.locale, title: existing.title }
-          : { locale: l.locale, title: '' }
-      })
+    if (!newDefault.length) return
 
-      langsSubTitle.value = newDefault.map((l) => {
-        const existing = newData?.translations?.find(
-          (t: any) => t.locale === l.locale && t.field === 'subtitle',
-        )
-        return existing
-          ? { locale: l.locale, title: existing.title }
-          : { locale: l.locale, title: '' }
-      })
+    langs.value = newData?.titles?.length
+      ? newDefault.map((l) => {
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-      langsDescription.value = newDefault.map((l) => {
-        const existing = newData?.translations?.find(
-          (t: any) => t.locale === l.locale && t.field === 'description',
-        )
-        return existing
-          ? { locale: l.locale, title: existing.title }
-          : { locale: l.locale, title: '' }
-      })
+    langsSub.value = newData?.subTitles?.length
+      ? newDefault.map((l) => {
+          const existing = newData.subTitles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-      // Items data
-      items.value = newData?.items?.length
-        ? newData.items.map((item: any) => {
-            const title: Record<string, string> = {}
-            const subtitle: Record<string, string> = {}
+    langsDescription.value = newData?.descriptions?.length
+      ? newDefault.map((l) => {
+          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-            newDefault.forEach((l: any) => {
-              const foundTitle = item.translations?.find(
-                (t: any) => t.locale === l.locale && t.field === 'title',
-              )
-              const foundSubtitle = item.translations?.find(
-                (t: any) => t.locale === l.locale && t.field === 'subtitle',
-              )
+    alt_image.value = newData?.alt ?? ''
+    image.value = newData?.image ?? ''
 
-              title[l.locale] = foundTitle?.title ?? ''
-              subtitle[l.locale] = foundSubtitle?.title ?? ''
-            })
+    // console.log(newData?.service, 'wwww')
 
-            return {
-              translations: { title, subtitle },
-              alt: item.alt ?? '',
-              image: item.image ?? '',
-            }
-          })
-        : [createNewItem()]
-    }
+    service_id.value = newData?.service
+
+    // console.log(newData?.ServiceFeatureItems, 'newData?.ServiceFeatureItems')
+
+    items.value = newData?.ServiceFeatureItems?.length
+      ? newData.ServiceFeatureItems.map((it: any) => ({
+          langs: it?.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+          langs_sub: it?.subTitles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+          image: it.image ?? '',
+          alt_image: it.alt ?? '',
+        }))
+      : [createNewItem()]
+
+    updateData()
   },
   { immediate: true },
 )
 
-const SelectedService = ref<TitleInterface>()
-const setServiceSelection = (data: TitleInterface) => {
-  SelectedService.value = data
-  updateData()
-}
 </script>
 
 <template>
+  <!-- Titles -->
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langsTitle"
       :label="$t('title')"
-      @update:modelValue="setLangsTitle"
+      :langs="langDefault"
+      type="text"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
     />
   </div>
 
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
-      type="text"
       :langs="langDefault"
-      :modelValue="langsSubTitle"
       :label="$t('sub_title')"
-      @update:modelValue="setLangsSubTitle"
+      :modelValue="langsSub"
+      type="text"
+      @update:modelValue="setLangsSub"
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
+    <CustomSelectInput
+      :controller="indexServiceController"
+      :modelValue="service_id"
+      :params="ServiceParams"
+      label="service"
+      id="service"
+      placeholder="Select service"
+      @update:modelValue="setIndexService"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
-      type="text"
       :langs="langDefault"
+      :label="$t('description')"
       :modelValue="langsDescription"
-      :label="$t('Description')"
+      type="textarea"
       @update:modelValue="setLangsDescription"
     />
   </div>
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedService"
-      :controller="indexServiceController"
-      :params="indexServiceParams"
-      label="Service"
-      id="Service"
-      placeholder="Select Service"
-      @update:modelValue="setServiceSelection"
-    />
-  </div>
 
+
+  <!-- Items Section -->
   <div class="col-span-4 border border-gray-200 !p-3 rounded">
     <div class="flex items-center justify-between mb-4">
       <h3 class="font-bold text-lg">{{ $t('items') }}</h3>
@@ -312,50 +302,36 @@ const setServiceSelection = (data: TitleInterface) => {
       <div class="col-span-4 md:col-span-2">
         <LangTitleInput
           :langs="langDefault"
-          :modelValue="
-            langDefault.map((l) => ({
-              locale: l.locale,
-              title: item.translations.title[l.locale],
-            }))
-          "
-          :label="$t('title')"
-          @update:modelValue="(val) => setItemTitleLangs(index, val)"
+          :label="$t('itemTitle') + ' ' + (index + 1)"
+          :modelValue="item.langs"
+          @update:modelValue="(val) => setItemLangs(index, val)"
         />
       </div>
 
       <div class="col-span-4 md:col-span-2">
         <LangTitleInput
           :langs="langDefault"
-          :modelValue="
-            langDefault.map((l) => ({
-              locale: l.locale,
-              title: item.translations.subtitle[l.locale],
-            }))
-          "
-          :label="$t('sub_title')"
-          @update:modelValue="(val) => setItemSubtitleLangs(index, val)"
+          :label="$t('itemSubTitle') + ' ' + (index + 1)"
+          :modelValue="item.langs_sub"
+          @update:modelValue="(val) => setItemSubLangs(index, val)"
         />
       </div>
 
       <div class="col-span-4 md:col-span-2 input-wrapper">
-        <label :for="`alt-${index}`">{{ $t('alt_image') }}</label>
-        <input
-          :id="`alt-${index}`"
-          :value="item.alt"
-          type="text"
-          class="input"
-          placeholder="alt"
-          @input="setItemAlt(index, ($event.target as HTMLInputElement).value)"
-        />
+        <label for="alt_image">
+          {{ $t('alt_image') }}
+        </label>
+        <input type="text" v-model="item.alt_image" @input="updateData" />
       </div>
 
-      <div class="col-span-4 md:col-span-2">
+      <div class="col-span-4">
         <SingleFileUpload
-          :modelValue="item.image"
-          @update:modelValue="(file) => setItemImage(index, file)"
-          :label="`Image ${index + 1}`"
-          :id="`image-${index}`"
+          v-model="item.image"
+          @update:modelValue="(val) => setItemImage(index, val)"
+          :label="`Image-${index + 1}`"
+          :id="`image-${index + 1}`"
           placeholder="Select image"
+          :index="index"
         />
       </div>
 
@@ -366,7 +342,7 @@ const setServiceSelection = (data: TitleInterface) => {
         <button
           v-if="items.length > 1"
           type="button"
-          class="btn-minus flex items-center gap-2 !bg-red-500 w-10 h-10 rounded-full justify-center"
+          class="btn-minus flex items-center gap-2 !bg-red-500 w-8 h-8 rounded-full justify-center"
           @click="removeItem(index)"
         >
           <IconMinus />

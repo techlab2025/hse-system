@@ -35,7 +35,7 @@ const numberOfPages = computed(() => {
         Prev
       </button>
       <span
-        v-for="item in numberOfPages.slice(
+        v-for="(item,index) in numberOfPages.slice(
           pagination?.current! > 2 ? pagination?.current! - 2 : 0,
           pagination?.current! + 2,
         )"

@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class ChangeServiceFeatureStatusParams implements Params {
+export default class ChangeStatusServiceFeatureParams implements Params {
 
   constructor(public id: number) {
     this.id = id;

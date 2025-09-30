@@ -455,10 +455,8 @@ const active = ref('0')
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum.TERM_ALL,
-                        PermissionsEnum.TERM_CREATE,
-                        PermissionsEnum.TERM_DELETE,
+                        PermissionsEnum.TERM_CREATE_OR_UPDATE,
                         PermissionsEnum.TERM_FETCH,
-                        PermissionsEnum.TERM_UPDATE,
                       ]"
                     >
                       <router-link to="/admin/term/add">
@@ -494,7 +492,7 @@ const active = ref('0')
                         PermissionsEnum.SERVICE_FEATURE_UPDATE,
                       ]"
                     >
-                      <router-link to="/admin/service_features">
+                      <router-link to="/admin/service-features">
                         <SidebarVector />
                         <span>Service Features</span>
                       </router-link>

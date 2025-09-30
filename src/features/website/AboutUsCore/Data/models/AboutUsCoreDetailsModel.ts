@@ -37,7 +37,7 @@ export default class AboutUsCoreDetailsModel {
     return new AboutUsCoreDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       TranslationsParams.fromMap([], data.descriptions, []).descriptions,
       data.image,
       data.alt,

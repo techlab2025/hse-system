@@ -181,9 +181,9 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in state.data" :key="item.id">
+              <tr v-for="(item,index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/Certificate/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/admin/Certificate/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>

@@ -38,7 +38,7 @@ export default class HomeContactUsDetailsModel {
     return new HomeContactUsDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       TranslationsParams.fromMap([], [], data.button_titles).langLocale,
       data.alt,
       data.image,

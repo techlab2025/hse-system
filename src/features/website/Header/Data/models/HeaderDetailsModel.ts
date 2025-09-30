@@ -33,7 +33,7 @@ export default class HeaderDetailsModel {
     return new HeaderDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).langLocale,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
       data.alt,
       data.image,
     )

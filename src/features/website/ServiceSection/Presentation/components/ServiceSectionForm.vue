@@ -131,13 +131,13 @@ const updateData = () => {
         props?.data?.id,
         mainTranslations,
         imageAlt.value,
-        typeof image.value === 'string' ? image.value : '',
+        image.value?.file,
         SelectedService.value?.id,
       )
     : new AddServiceSectionParams(
         mainTranslations,
         imageAlt.value,
-        typeof image.value === 'string' ? image.value : '',
+        image.value?.file,
         SelectedService.value?.id,
       )
 
@@ -160,54 +160,46 @@ const setLangsDescription = (value: { locale: string; title: string }[]) => {
   updateData()
 }
 
-const SelectedService = ref<TitleInterface>()
+const SelectedService = ref<TitleInterface | null>(null)
 
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (!newData || !newDefault.length) return
+    if (!newDefault.length) return
 
-    // Map titles
-    langsTitle.value = newDefault.map((lang) => {
-      const translation = newData.title?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.title || '',
-      }
-    })
+    langsTitle.value = newData?.titles?.length
+      ? newDefault.map((l) => {
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    // Map subtitles
-    langsSubTitle.value = newDefault.map((lang) => {
-      const translation = newData.subTitle?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.subtitle || '',
-      }
-    })
+    langsSubTitle.value = newData?.subTitles?.length
+      ? newDefault.map((l) => {
+          const existing = newData.subTitles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    // Map descriptions
-    langsDescription.value = newDefault.map((lang) => {
-      const translation = newData.descriptions?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.description || '',
-      }
-    })
+    langsDescription.value = newData?.descriptions?.length
+      ? newDefault.map((l) => {
+          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    imageAlt.value = newData.alt || ''
+    imageAlt.value = newData?.alt ?? ''
+    image.value = newData?.image ?? ''
 
-    image.value = newData.image || ''
+    // console.log(newData?.service, 'wwww')
 
-    if (newData.service) {
-      console.log(newData.service, 'newData.service')
-      SelectedService.value.id = newData?.service?.id
-      SelectedService.value.title = newData?.service?.title
-    } else if (newData.serviceId) {
-      console.log('asdasdasdas')
-    }
+    SelectedService.value = newData?.service
+
+    // console.log(newData?.ServiceFeatureItems, 'newData?.ServiceFeatureItems')
+
     updateData()
   },
-  { immediate: true, deep: true },
+  { immediate: true },
 )
 
 const setServiceSelection = (data: TitleInterface) => {
@@ -256,25 +248,25 @@ const setImage = async (data: File) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+
+  <div class="col-span-4 md:col-span-4">
+    <CustomSelectInput
+    :modelValue="SelectedService"
+    :controller="indexServiceController"
+    :params="indexServiceParams"
+    label="Service"
+    id="Service"
+    placeholder="Select Service"
+    @update:modelValue="setServiceSelection"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       type="textarea"
       :langs="langDefault"
       :modelValue="langsDescription"
       :label="$t('Description')"
       @update:modelValue="setLangsDescription"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedService"
-      :controller="indexServiceController"
-      :params="indexServiceParams"
-      label="Service"
-      id="Service"
-      placeholder="Select Service"
-      @update:modelValue="setServiceSelection"
     />
   </div>
 
@@ -290,7 +282,9 @@ const setImage = async (data: File) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="image">{{ $t('image') }}</label>
+
     <SingleFileUpload
       :modelValue="image"
       @update:modelValue="setImage"

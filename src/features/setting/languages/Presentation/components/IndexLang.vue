@@ -119,7 +119,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel />
+      <ExportExcel />
       <ExportPdf />
       <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>
     </div>
@@ -136,7 +136,6 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
   >
     <DataStatus :controller="state">
       <template #success>
-
         <div class="table-responsive">
           <table class="main-table">
             <thead>
@@ -149,9 +148,9 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/Lang/edit/${item.id}`">{{ item.id }} </router-link>
+                  <router-link :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="Code">{{ item.code ?? '--' }}</td>

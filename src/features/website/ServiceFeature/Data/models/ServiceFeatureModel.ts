@@ -1,55 +1,38 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
+// import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
 export default class ServiceFeatureModel extends TitleInterface {
   public id: number
+  // public hasCertificate: number
   public title: string
   public subtitle: string
-  public description: string
-  public alt: string
   public image: string
-  public isActive: number
-  public order: number
-  public includes: TitleModel[]
-  public createdAt?: string
+  public is_active: number
 
   constructor(
     id: number,
     title: string,
     subtitle: string,
-    description: string,
-    alt: string,
     image: string,
-    isActive: number,
-    order: number,
-    includes: TitleModel[],
-    createdAt?: string,
+    is_active: number
   ) {
-    super({ id })
+    super({ id, title, subtitle })
+
     this.id = id
     this.title = title
     this.subtitle = subtitle
-    this.description = description
-    this.alt = alt
     this.image = image
-    this.isActive = isActive
-    this.order = order
-    this.includes = includes
-    this.createdAt = createdAt
+    this.is_active = is_active
   }
 
   static fromMap(data: any): ServiceFeatureModel {
     return new ServiceFeatureModel(
       data.id,
       data.title,
-      data.subtitle, // fixed key
-      data.description,
-      data.alt,
+      data.subtitle,
       data.image,
-      data.is_active,
-      data.order,
-      data.includes?.map((i: any) => TitleModel.fromMap(i)) ?? [],
-      data.created_at,
+      data.is_active
     )
   }
 }

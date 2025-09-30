@@ -1,8 +1,12 @@
-// import LangModel from '@/features/setting/Service/Data/models/langModel.ts'
+// import LangModel from '@/features/setting/ServiceFeature/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { AddServiceFeatureApiService } from '../../Data/apiServices/addServiceFeatureApiService'
 import ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
+import { AddServiceFeatureApiService } from '../../Data/apiServices/addServiceFeatureApiService'
+
+
+
+
 
 class AddServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
   private static instance: AddServiceFeatureRepo

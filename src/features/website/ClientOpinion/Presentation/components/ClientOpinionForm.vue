@@ -180,7 +180,13 @@ const setImage = async (data: File) => {
       @input="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="date">
+      {{ $t('date') }}
+    </label>
+    <DatePicker v-model="date" id="date" />
+  </div>
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       type="textarea"
       :langs="langDefault"
@@ -204,12 +210,7 @@ const setImage = async (data: File) => {
       @input="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="date">
-      {{ $t('date') }}
-    </label>
-    <DatePicker v-model="date" id="date" />
-  </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="alt">
       {{ $t('alt_image') }}

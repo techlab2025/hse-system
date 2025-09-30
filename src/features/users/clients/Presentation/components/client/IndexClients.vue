@@ -149,10 +149,10 @@ watch(
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in clients" :key="item.id">
+            <tr v-for="(item,index) in clients" :key="item.id">
               <td data-label="#">
                 <router-link :to="`/users/clients/edit/${item.id}`"
-                  >{{ item.id }}
+                  >{{ index + 1 }}
                 </router-link>
               </td>
               <td data-label="Name">{{ item.name }}</td>

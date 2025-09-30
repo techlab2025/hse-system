@@ -5,10 +5,11 @@ export default class TranslationsParams {
     subtitle: {},
     question: {},
     answer: {},
+    buttonTitles: {}
   }
 
   constructor(locales: string[] = ['en', 'ar', 'fr']) {
-    for (const field of ['title', 'description', 'subtitle', 'question', 'answer']) {
+    for (const field of ['title', 'description', 'subtitle', 'question', 'answer', 'buttonTitles']) {
       for (const locale of locales) {
         this.translations[field][locale] = ''
       }
@@ -42,6 +43,7 @@ export default class TranslationsParams {
     titles: TitleLocale[] = [],
     descriptions: DescriptionLocale[] = [],
     subtitles: SubtitlesLocale[] = [],
+    buttonTitles: ButtonTitleLocale[] = [],
     questions: QuestionLocale[] = [],
     answers: AnswerLocale[] = [],
     langLocale: LangLocale<string>[] = []
@@ -49,6 +51,7 @@ export default class TranslationsParams {
     titles: TitleLocale[]
     descriptions: DescriptionLocale[]
     subtitles: SubtitlesLocale[]
+    buttonTitles: ButtonTitleLocale[]
     questions: QuestionLocale[]
     answers: AnswerLocale[]
     langLocale: LangLocale<string>[]
@@ -67,6 +70,10 @@ export default class TranslationsParams {
       params.setTranslation('subtitle', locale, subtitle)
     })
 
+    buttonTitles.forEach(({ locale, title }) => {
+      params.setTranslation('buttonTitles', locale, title)
+    })
+
     questions.forEach(({ locale, question }) => {
       params.setTranslation('question', locale, question)
     })
@@ -79,7 +86,7 @@ export default class TranslationsParams {
       params.setTranslation('lang', locale, value)
     })
 
-    return { titles, descriptions, subtitles, questions, answers, langLocale }
+    return { titles, descriptions, subtitles, buttonTitles, questions, answers, langLocale }
   }
 }
 
@@ -96,6 +103,11 @@ export interface DescriptionLocale {
 export interface SubtitlesLocale {
   locale: string
   subtitle: string
+}
+
+export interface ButtonTitleLocale {
+  locale: string
+  title: string
 }
 
 export interface QuestionLocale {
