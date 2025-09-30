@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+// import { defineProps } from 'vue'
 
 const props = defineProps({
   addLink: {
@@ -16,7 +16,7 @@ const props = defineProps({
 <template>
   <div class="add-item-button">
     <router-link :to="props.addLink">
-      <button class="btn btn-add-item ">
+      <button class="btn btn-add-item">
         {{ props.addText }}
       </button>
     </router-link>

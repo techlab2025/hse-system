@@ -1,22 +1,18 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
-// import { EquipmentTypesMap } from '@/constant/EquipmentTypes'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import type ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/EquipmentTypeDetailsModel.ts'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
-import TranslationsParams from '@/base/core/params/translations_params.ts'
+import TranslationsParams from '@/base/core/params/translations_params'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
-import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
-import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
+import { LangsMap } from '@/constant/langs'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
+import { useRoute } from 'vue-router'
+// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import AddEquipmentParams from '../../Core/params/addEquipmentParams'
@@ -24,88 +20,47 @@ import EditEquipmentParams from '../../Core/params/editEquipmentParams'
 import type EquipmentModel from '../../Data/models/equipmentModel'
 
 const emit = defineEmits(['update:data'])
-
-const props = defineProps<{
-  data?: EquipmentModel
-}>()
+const props = defineProps<{ data?: EquipmentModel }>()
 
 const route = useRoute()
-const id = route.params.id
+const id = Number(route.params.id)
 
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
-const state = ref(indexEquipmentTypeController.state.value)
-
 const indexEquipmentTypeParams = new IndexEquipmentTypeParams('', 1, 10, 1)
-
-// actual translations (values)
-const langs = ref<{ locale: string; title: string }[]>([
-  {
-    locale: 'en',
-    icon: USA,
-    title: '',
-  },
-  {
-    locale: 'ar',
-    icon: SA,
-    title: '',
-  },
-])
-
-const allIndustries = ref<number>(0)
-const hasCertificate = ref<number>(0)
-const image = ref<string>('')
-
-// industry
-const industry = ref<TitleInterface[]>([])
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
 
-// default available EquipmentTypes
-const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
+const industry = ref<TitleInterface[]>([])
+const Equipment = ref<TitleInterface | null>(null)
+const allIndustries = ref(0)
+const hasCertificate = ref(0)
 
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0,
-) => {
+// Fetch available languages and set defaults
+const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexEquipmentTypeController = await IndexLangController.getInstance().getData(params)
-
-  const response = indexEquipmentTypeController.value
+  const controller = await IndexLangController.getInstance().getData(params)
+  const response = controller.value
 
   if (response?.data?.length) {
-    // map backend EquipmentTypes into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
-      // if you already have icons mapped, use EquipmentTypesMap
+      title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
     langDefault.value = [
-      {
-        locale: 'en',
-        icon: USA,
-        title: '',
-      },
-      {
-        locale: 'ar',
-        icon: SA,
-        title: '',
-      },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
 
-onMounted(async () => {
-  await fetchLang()
-  // fetchEquipmentType()
-})
+onMounted(fetchLang)
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
@@ -116,93 +71,52 @@ const updateData = () => {
         hasCertificate.value,
         allIndustries.value,
         industry.value.map((i) => i.id),
-        Number(id),
-        // image.value,
-        Equipment?.value?.id!,
+        id,
+        Equipment.value?.id!,
       )
     : new EditEquipmentParams(
-        props.data?.id! ?? 0,
+        props.data.id ?? 0,
         translationsParams,
         hasCertificate.value,
         allIndustries.value,
         industry.value.map((i) => i.id),
-        props.data?.id! ?? 0,
-        // image.value,
-        Equipment?.value?.id!,
+        props.data.id ?? 0,
+        Equipment.value?.id!,
       )
 
-  console.log(params, 'params Editststststs')
   emit('update:data', params)
 }
 
 const setIndustry = (data: TitleInterface[]) => {
-  // console.log(data, 'data')
   industry.value = data
   updateData()
 }
 
-// when child emits modelValue (updated translations)
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
-
-  // console.log(langs.value, 'langs')
   updateData()
 }
 
-// init EquipmentTypes either from backend (edit mode) or from defaults (create mode)
+const setEquipmentType = (data: TitleInterface) => {
+  Equipment.value = data
+  updateData()
+}
+
+// Watch for changes in props.data or langDefault to initialize form values
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
-
+      langs.value = newDefault.map((l) => {
+        const existing = newData?.titles?.find((t) => t.locale === l.locale)
+        return existing ? { ...l, title: existing.title } : { ...l }
+      })
       industry.value = newData?.industries ?? []
-      Equipment.value = newData?.equipmentTypeId
-      console.log(newData?.equipmentTypeId, 'newData')
-      // langs.value = newData?.code
+      Equipment.value = newData?.equipmentType
     }
   },
   { immediate: true },
 )
-
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
-
-// const fetchEquipmentType = async (
-//   query: string = '',
-//   pageNumber: number = 1,
-//   perPage: number = 10,
-//   withPage: number = 1,
-// ) => {
-//   const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
-//     query,
-//     pageNumber,
-//     perPage,
-//     withPage,
-//     id,
-//   )
-//   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
-// }
-
-// onMounted(() => {
-//   fetchEquipmentType()
-// })
-
-const Equipment = ref<TitleInterface>()
-const setEquipmentType = (data: TitleInterface) => {
-  Equipment.value = data
-  console.log(Equipment.value, 'Equipment')
-  updateData()
-}
 </script>
 
 <template>

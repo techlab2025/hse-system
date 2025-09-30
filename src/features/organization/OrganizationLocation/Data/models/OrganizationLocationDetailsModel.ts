@@ -7,8 +7,6 @@ export default class OrganizationLocationDetailsModel {
   public titles: TitleLocale[]
   public lat: number
   public lng: number
-
-  // 👇 هنطلع كل واحدة لوحدها
   public country: TitleInterface | null
   public state: TitleInterface | null
   public city: TitleInterface | null
@@ -61,20 +59,20 @@ export default class OrganizationLocationDetailsModel {
     })
   }
 
-  // ✅ يرجع object فيه country, state, city, area
-  static getLocationsWithKeys(data: any, level: number) {
+  static getLocationsWithKeys(data: LocationData | null, level: number): TitleInterface | null {
+    if (!data || level < 1) return null
 
-    switch (level) {
-      case 4:
-        return this.getTitle(data?.parent?.parent?.parent)
-      case 3:
-        return this.getTitle(data?.parent?.parent)
-      case 2:
-        return this.getTitle(data?.parent)
-      case 1:
-        return this.getTitle(data)
-      default:
-        return null
+    let current: LocationData | null = data
+    for (let i = 1; i < level; i++) {
+      current = current?.parent ?? null
+      if (!current) return null
     }
+    return this.getTitle(current)
   }
+}
+
+type LocationData = {
+  id: number
+  titles: TitleLocale[]
+  parent?: LocationData | null
 }
