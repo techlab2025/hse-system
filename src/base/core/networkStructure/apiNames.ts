@@ -65,6 +65,15 @@ class ApiNames {
   public DeleteOrganizationLocation = this.prefix + 'delete_organization_location'
 
 
+  // Project
+
+  public CreateProject = this.prefix + 'create_project'
+  public IndexProject = this.prefix + 'fetch_projects'
+  public ShowProject = this.prefix + 'fetch_project_details'
+  public EditProject = this.prefix + 'update_project'
+  public DeleteProject = this.prefix + 'delete_project'
+
+
 
   // AboutUsFeature
 

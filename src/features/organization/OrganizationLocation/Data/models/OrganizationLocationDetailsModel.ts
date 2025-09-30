@@ -46,8 +46,8 @@ export default class OrganizationLocationDetailsModel {
       Number(data.lat),
       Number(data.lng),
       this.getLocationsWithKeys(data.location, 4),
-      this.getLocationsWithKeys(data.location, 3),
       this.getLocationsWithKeys(data.location, 2),
+      this.getLocationsWithKeys(data.location, 3),
       this.getLocationsWithKeys(data.location, 1),
     )
   }
@@ -57,6 +57,7 @@ export default class OrganizationLocationDetailsModel {
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((t: any) => t.locale === locale)?.title,
+      // subtitle: data.code,
     })
   }
 
