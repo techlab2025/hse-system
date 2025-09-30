@@ -10,14 +10,13 @@ import type PartnerDetailsModel from '@/features/organization/Partner/Data/model
 export default class ProjectDetailsModel {
   public id: number
   public titles: TitleLocale[]
-
-  public partner: PartnerDetailsModel | null
+  public partner: TitleInterface
   public organizationLocation: TitleInterface[]
 
   constructor(
     id: number,
     titles: TitleLocale[],
-    partner: PartnerDetailsModel | null,
+    partner: TitleInterface,
     organizationLocation: TitleInterface[],
   ) {
     this.id = id
@@ -32,17 +31,17 @@ export default class ProjectDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       this.getTitle(data.partner),
       data.organization_locations?.length > 0
-        ? data.organization_locations
+        ? data.organization_locations?.map((location) => this.getTitle(location))
         : [],
     )
   }
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-    console.log('sss', data);
+
     return new TitleInterface({
       id: data?.id,
-      title: data?.titles?.find((title: any) => title.locale == savedLocale)?.title,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
 
