@@ -177,7 +177,41 @@ watch(
       lat.value = newData?.lat ?? 0
       lng.value = newData?.lng ?? 0
 
-      
+      // setCountry(newData?.country)
+      // setCity(newData?.city)
+      // setState(newData?.state)
+      // setArea(newData?.area)
+      country_id.value = newData?.country
+      indexCityParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.CITY,
+        newData?.country?.id ?? 0,
+      )
+
+      city_id.value = newData?.city
+      indexStateParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.STATE,
+        newData?.city?.id ?? 0,
+      )
+
+      state_id.value = newData?.state
+      indexAreaParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.AREA,
+        newData?.state?.id ?? 0,
+      )
+
+      area_id.value = newData?.area
 
       updateData()
     }
@@ -187,7 +221,7 @@ watch(
 
 // Auto-update emit whenever key data changes
 watch(
-  [langs, phone],
+  [langs, phone, country_id, city_id, state_id, area_id, lat, lng],
   () => {
     updateData()
   },
@@ -230,6 +264,7 @@ watch(
       :placeholder="$t('select_country')"
     />
   </div>
+  
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :controller="indexCityController"
@@ -240,6 +275,7 @@ watch(
       :placeholder="$t('select_city')"
     />
   </div>
+  
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :controller="indexStateController"

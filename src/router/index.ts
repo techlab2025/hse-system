@@ -255,6 +255,8 @@ const router = createRouter({
           component: () => import('../views/Admin/Location/Area/EditArea.vue'),
         },
 
+
+
         {
           path: 'about-us-features',
           name: 'About Us Features',
@@ -703,6 +705,23 @@ const router = createRouter({
           path: 'organization-location/:id',
           name: 'Edit Organization Location',
           component: () => import('../views/Organization/OrganizationLocation/EditOrganizationLocation.vue'),
+        },
+
+        {
+          path: "projects",
+          name: "Projects",
+          component: () => import('../views/Organization/Project/IndexProject.vue'),
+        },
+
+        {
+          path: "project/add",
+          name: "Add Project",
+          component: () => import('../views/Organization/Project/AddProject.vue'),
+        },
+        {
+          path: "project/:id",
+          name: "Edit Project",
+          component: () => import('../views/Organization/Project/EditProject.vue'),
         },
 
         {
