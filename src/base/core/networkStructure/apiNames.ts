@@ -39,7 +39,7 @@ class ApiNames {
   public DeleteLang = this.prefix + 'delete_language'
 
   // auth
-  public AuthLogin = this.prefix + 'login'
+  public AuthLogin =  this.baseUrl + this.organizationPrefix + 'login'
 
   // Partner
 

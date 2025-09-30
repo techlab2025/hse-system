@@ -21,6 +21,10 @@ import EditProjectZoneParams from '../../Core/params/editProjectZoneParams'
 import AddProjectZoneParams from '../../Core/params/addProjectZoneParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
+import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
 
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
@@ -29,6 +33,12 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: ProjectZoneDetailsModel
 }>()
+
+const OrganizationProjectController = IndexProjectController.getInstance()
+const OrganizationProjectParams = new IndexProjectParams('', 0, 0, 0)
+
+const OrganizationLocationController = IndexOrganizationLocationController.getInstance()
+const OrganizationLocationParams = new IndexOrganizationLocationParams('', 0, 0, 0)
 
 const route = useRoute()
 // const route = useRoute()
@@ -151,6 +161,9 @@ watch(
     }
     Lat.value = newData?.lat || ''
     Long.value = newData?.lng || ''
+
+    SelectedLocation.value = newData?.organizationLocation
+    SelectedProject.value = newData?.project
   },
   { immediate: true },
 )
@@ -168,7 +181,7 @@ watch(
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="lat">Lat</label>
-    <input type="text" id="lat" v-model="Lat" class="input" @change="updateData"/>
+    <input type="text" id="lat" v-model="Lat" class="input" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="long">long</label>
@@ -178,6 +191,8 @@ watch(
     <!--    :controller="industryController"
       :params="industryParams" -->
     <CustomSelectInput
+      :controller="OrganizationProjectController"
+      :params="OrganizationProjectParams"
       :modelValue="SelectedProject"
       label="Project"
       id="project"
@@ -189,6 +204,8 @@ watch(
     <!--    :controller="industryController"
       :params="industryParams" -->
     <CustomSelectInput
+      :controller="OrganizationLocationController"
+      :params="OrganizationLocationParams"
       :modelValue="SelectedLocation"
       label="Location"
       id="Location"
