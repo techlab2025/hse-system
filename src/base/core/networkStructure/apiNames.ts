@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -24,15 +24,12 @@ class ApiNames {
 
   public getPrefix(): string {
     if (this.userStore?.user?.type === OrganizationTypeEnum.ORGANIZATION) {
-      return this.organizationPrefix;
+      return this.organizationPrefix
     }
-    return this.dashboardPrefix;
-
+    return this.dashboardPrefix
   }
 
   public prefix = this.baseUrl + this.getPrefix()
-
-
 
   //languages
   public AddLang = this.prefix + 'create_language'
@@ -41,11 +38,8 @@ class ApiNames {
   public EditLang = this.prefix + 'update_language'
   public DeleteLang = this.prefix + 'delete_language'
 
-
   // auth
-  public AuthLogin = this.baseUrl + this.organizationPrefix + 'login'
-
-
+  public AuthLogin =  this.baseUrl + this.organizationPrefix + 'login'
 
   // Partner
 
@@ -55,7 +49,6 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
-
   // OrganizationLocation
 
   public CreateOrganizationLocation = this.prefix + 'create_organization_location'
@@ -64,7 +57,6 @@ class ApiNames {
   public EditOrganizationLocation = this.prefix + 'update_organization_location'
   public DeleteOrganizationLocation = this.prefix + 'delete_organization_location'
 
-
   // Project
 
   public CreateProject = this.prefix + 'create_project'
@@ -72,8 +64,6 @@ class ApiNames {
   public ShowProject = this.prefix + 'fetch_project_details'
   public EditProject = this.prefix + 'update_project'
   public DeleteProject = this.prefix + 'delete_project'
-
-
 
   // AboutUsFeature
 
@@ -84,7 +74,6 @@ class ApiNames {
   public DeleteAboutUsFeature = this.prefix + 'delete_about_us_feature'
   public ChangeStatusAboutUsFeature = this.prefix + 'change_about_us_feature_active_status'
 
-
   // systemRiskManagement
 
   public CreateSystemRiskManagement = this.prefix + 'create_our_system_risk_management'
@@ -92,8 +81,8 @@ class ApiNames {
   public ShowSystemRiskManagement = this.prefix + 'fetch_our_system_risk_management_details'
   public EditSystemRiskManagement = this.prefix + 'update_our_system_risk_management'
   public DeleteSystemRiskManagement = this.prefix + 'delete_our_system_risk_management'
-  public ChangeStatusSystemRiskManagement = this.prefix + 'change_our_system_risk_management_active_status'
-
+  public ChangeStatusSystemRiskManagement =
+    this.prefix + 'change_our_system_risk_management_active_status'
 
   // AboutUsCore
 
@@ -103,7 +92,6 @@ class ApiNames {
   public EditAboutUsCore = this.prefix + 'update_about_us_core'
   public DeleteAboutUsCore = this.prefix + 'delete_about_us_core'
   public ChangeStatusAboutUsCore = this.prefix + 'change_about_us_core_active_status'
-
 
   // HomeViewPricing
 
@@ -123,7 +111,6 @@ class ApiNames {
   public DeleteHeader = this.prefix + 'delete_header'
   public ChangeStatusHeader = this.prefix + 'change_header_active_status'
 
-
   // HomeAboutUs
 
   public CreateHomeAboutUs = this.prefix + 'create_home_about_us'
@@ -132,7 +119,6 @@ class ApiNames {
   public EditHomeAboutUs = this.prefix + 'update_home_about_us'
   public DeleteHomeAboutUs = this.prefix + 'delete_home_about_us'
   public ChangeStatusHomeAboutUs = this.prefix + 'change_home_about_us_active_status'
-
 
   // PowerFull
 
@@ -143,7 +129,6 @@ class ApiNames {
   public DeletePowerFull = this.prefix + 'delete_powerful_feature'
   public ChangeStatusPowerFull = this.prefix + 'change_powerful_feature_active_status'
 
-
   // SystemWork
 
   public CreateSystemWork = this.prefix + 'create_system_work'
@@ -153,16 +138,13 @@ class ApiNames {
   public DeleteSystemWork = this.prefix + 'delete_system_work'
   public ChangeStatusSystemWork = this.prefix + 'change_system_work_active_status'
 
-
-
   // HomeContactUs
   public CreateHomeContactUs = this.prefix + 'create_home_contact_us'
   public IndexHomeContactUs = this.prefix + 'fetch_home_contact_us'
   public ShowHomeContactUs = this.prefix + 'fetch_home_contact_us_details'
   public EditHomeContactUs = this.prefix + 'update_home_contact_us'
   public DeleteHomeContactUs = this.prefix + 'delete_home_contact_us'
-  public ChangeStatusHomeContactUs =
-    this.prefix + 'change_home_contact_us_active_status'
+  public ChangeStatusHomeContactUs = this.prefix + 'change_home_contact_us_active_status'
 
   // clientOpinion
   public CreateClientOpinion = this.prefix + 'create_client_opinion'
@@ -170,8 +152,7 @@ class ApiNames {
   public ShowClientOpinion = this.prefix + 'fetch_client_opinion_details'
   public EditClientOpinion = this.prefix + 'update_client_opinion'
   public DeleteClientOpinion = this.prefix + 'delete_client_opinion'
-  public ChangeStatusClientOpinion =
-    this.prefix + 'change_client_opinion_active_status'
+  public ChangeStatusClientOpinion = this.prefix + 'change_client_opinion_active_status'
 
   // Template
   public CreateTemplate = this.prefix + 'create_template'
@@ -247,7 +228,6 @@ class ApiNames {
   public DeleteFaq = this.prefix + 'delete_faq'
   public DisFaq = this.prefix + 'change_faq_active_status'
   public ChangeStatusFaq = this.prefix + 'change_faq_active_status'
-
 
   // Hashtag
   public CreateHashtag = this.prefix + 'create_hashtag'
@@ -384,7 +364,6 @@ class ApiNames {
   public DeleteSystemRiskType = this.prefix + 'delete_our_system_risk_type'
   public DisSystemRiskType = this.prefix + 'change_our_system_risk_type_active_status'
 
-
   // Website System Component
   public CreateSystemComponent = this.prefix + 'create_our_system_component'
   public IndexSystemComponent = this.prefix + 'fetch_our_system_components'
@@ -392,6 +371,28 @@ class ApiNames {
   public EditSystemComponent = this.prefix + 'update_our_system_component'
   public DeleteSystemComponent = this.prefix + 'delete_our_system_component'
   public DisSystemComponent = this.prefix + 'change_our_system_component_active_status'
+
+  public CreateOrganizatoinEmployee = this.prefix + 'create_organization_employee'
+  public IndexOrganizatoinEmployee = this.prefix + 'fetch_organization_employees'
+  public ShowOrganizatoinEmployee = this.prefix + 'fetch_organization_employee_details'
+  public EditOrganizatoinEmployee = this.prefix + 'update_organization_employee'
+  public DeleteOrganizatoinEmployee = this.prefix + 'delete_organization_employee'
+  public DisOrganizatoinEmployee = this.prefix + 'disable_project_type'
+
+  // Herikaly
+  public CreateHerikaly = this.prefix + 'create_herikaly'
+  public IndexHerikaly = this.prefix + 'fetch_herikalys'
+  public ShowHerikaly = this.prefix + 'fetch_herikaly_details'
+  public EditHerikaly = this.prefix + 'update_herikaly'
+  public DeleteHerikaly = this.prefix + 'delete_herikaly'
+  // public DisHerikaly =this.prefix + 'disable_project_type'
+
+  // ProjectZone
+  public CreateProjectZone = this.prefix + 'create_project_zone'
+  public IndexProjectZone = this.prefix + 'fetch_project_zones'
+  public ShowProjectZone = this.prefix + 'fetch_project_zone_details'
+  public EditProjectZone = this.prefix + 'update_project_zone'
+  public DeleteProjectZone = this.prefix + 'delete_project_zone'
 }
 
 export { ApiNames }
