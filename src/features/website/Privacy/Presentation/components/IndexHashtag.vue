@@ -145,9 +145,9 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HASHTAG_CREATE]">
         <router-link to="/admin/hashtag/add" class="btn btn-primary">
           {{ $t('Add_Hashtag') }}
         </router-link>
@@ -157,12 +157,12 @@ watch(
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.HASHTAG_ALL,
+      PermissionsEnum.HASHTAG_DELETE,
+      PermissionsEnum.HASHTAG_FETCH,
+      PermissionsEnum.HASHTAG_UPDATE,
+      PermissionsEnum.HASHTAG_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -180,7 +180,7 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/Hashtag/${item.id}`">{{ index + 1 }} </router-link>
                 </td>

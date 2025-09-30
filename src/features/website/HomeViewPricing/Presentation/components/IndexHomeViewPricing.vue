@@ -141,9 +141,9 @@ const actionList = (id: number, deleteHomeViewPricing: (id: number) => void) => 
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel />
+    <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HOME_VIEW_PRICING_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HOME_VIEW_PRICING_CREATE]">
         <router-link to="/admin/home-view-pricing/add" class="btn btn-primary">
           {{ $t('Add_HomeViewPricing') }}
         </router-link>

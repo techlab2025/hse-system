@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
-export default class LocationModel extends TitleInterface {
+export default class LocationDetailsModel extends TitleInterface {
   public id: number
   public title: string
   public code: string
@@ -29,8 +29,8 @@ export default class LocationModel extends TitleInterface {
     this.image = image
   }
 
-  static fromMap(data: any): LocationModel {
-    return new LocationModel(
+  static fromMap(data: any): LocationDetailsModel {
+    return new LocationDetailsModel(
       data.id,
       data.title,
       data.code,

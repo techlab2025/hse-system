@@ -51,11 +51,6 @@ const langs = ref<
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
 const image = ref<ImageValue>('')
-const alt = ref<string>('')
-
-// industry controller
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-const industryController = IndexIndustryController.getInstance()
 
 // default available langs from backend
 const langDefault = ref<
@@ -82,7 +77,7 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  console.log(user.user, 'user')
+  // console.log(user.user, 'user')
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
@@ -120,6 +115,8 @@ const fetchLang = async (
   }
 }
 
+const phone = ref<string>('')
+
 onMounted(async () => {
   await fetchLang()
 })
@@ -139,8 +136,8 @@ const updateData = () => {
   // })
 
   const params = props.data?.id
-    ? new EditPartnerParams(props.data.id, translationsParams, photo.value)
-    : new AddPartnerParams(translationsParams, image.value?.file, alt.value)
+    ? new EditPartnerParams(props.data.id, translationsParams, phone.value)
+    : new AddPartnerParams(translationsParams, phone.value)
 
   // console.log(params, 'params')
 
@@ -150,9 +147,9 @@ const updateData = () => {
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
 watch(
-  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
-  ([newData, newDefault, newDefaultDesc]) => {
-    if (newDefault.length && newDefaultDesc.length) {
+  [() => props.data, () => langDefault.value],
+  ([newData, newDefault]) => {
+    if (newDefault.length) {
       // titles
       if (newData?.titles?.length) {
         langs.value = newDefault.map((l) => {
@@ -163,23 +160,9 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      // descriptions
-      // if (newData?.descriptions?.length) {
-      //   langsDescription.value = newDefaultDesc.map((l) => {
-      //     const existing = newData.descriptions.find((t) => t.locale === l.locale)
-      //     return existing ? existing : { locale: l.locale, description: '' }
-      //   })
-      // } else {
-      //   langsDescription.value = newDefaultDesc.map((l) => ({
-      //     locale: l.locale,
-      //     description: '',
-      //   }))
-      // }
-
       phone.value = newData?.phone ?? ''
 
-      image.value = newData?.image ?? ''
-      alt.value = newData?.alt ?? ''
+      updateData()
     }
   },
   { immediate: true },
@@ -187,13 +170,7 @@ watch(
 
 // Auto-update emit whenever key data changes
 watch(
-  [
-    langs,
-    // langsDescription,
-    industry,
-    allIndustries,
-    image,
-  ],
+  [langs, phone],
   () => {
     updateData()
   },
@@ -209,18 +186,8 @@ watch(
       @update:modelValue="(val) => (langs = val)"
     />
   </div>
-  <!-- 
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('description')"
-      :langs="langDefaultDescription"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      type="textarea"
-    />
-  </div> -->
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('phone') }}</label>
     <input
       type="phone"

@@ -145,7 +145,7 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel />
+     <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/certificate/add" class="btn btn-primary">

@@ -107,9 +107,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_City_type'),
+    text: t('add_sub_areas_type'),
     icon: IconEdit,
-    link: `/admin/states/${id}`,
+    link: `/admin/areas/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -155,7 +155,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel />
+     <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link to="/admin/states/add" class="btn btn-primary">

@@ -10,9 +10,8 @@ export default class EditPartnerParams implements Params {
   // allIndustries: number
   // industries: number[]
   // parentId: number
-  image: string
-  // imageId?: number
-  alt: string
+  phone: string
+  // phoneId?: number
 
   constructor(
     id: number,
@@ -21,9 +20,8 @@ export default class EditPartnerParams implements Params {
     // allIndustries: number,
     // industries: number[],
     // parentId: number,
-    image: string,
-    // imageId?: number,
-    alt: string,
+    phone: string,
+    // phoneId?: number,
   ) {
     this.id = id
     this.translation = translation
@@ -31,9 +29,8 @@ export default class EditPartnerParams implements Params {
     // this.allIndustries = allIndustries
     // this.industries = industries
     // this.parentId = parentId
-    this.image = image
-    // this.imageId = imageId
-    this.alt = alt
+    this.phone = phone
+    // this.phoneId = phoneId
   }
 
   toMap(): Record<
@@ -54,9 +51,8 @@ export default class EditPartnerParams implements Params {
     // data['all_industries'] = this.allIndustries ? 1 : 0
     // if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
-    if (this.image) data['image'] = this.image
-    // if (this.imageId) data['image_id'] = this.imageId
-    if (this.alt) data['alt'] = this.alt
+    if (this.phone) data['phone'] = this.phone
+    // if (this.phoneId) data['phone_id'] = this.phoneId
 
     return data
   }

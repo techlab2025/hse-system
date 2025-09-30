@@ -158,9 +158,9 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ABOUT_US_CORE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_CORE_CREATE]">
         <router-link to="/admin/about-us-core/add" class="btn btn-primary">
           {{ $t('add_about_us') }}
         </router-link>
@@ -170,7 +170,7 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.ABOUT_US_CORE_ALL,
       PermissionsEnum.ABOUT_US_CORE_DELETE,
       PermissionsEnum.ABOUT_US_CORE_FETCH,
@@ -195,9 +195,11 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/about-us-core/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/about-us-core/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="title">{{ item.title }}</td>
                 <td data-label="subtitle">{{ item.subtitle }}</td>

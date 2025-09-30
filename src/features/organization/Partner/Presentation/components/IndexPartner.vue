@@ -101,7 +101,7 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/partner/${id}`,
+    link: `/organization/partner/${id}`,
     permission: [
       PermissionsEnum.PARTNER_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -146,7 +146,7 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PARTNER_CREATE]"

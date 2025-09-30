@@ -112,7 +112,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
     link: `/admin/service-feature/${id}`,
     permission: [
       PermissionsEnum.SERVICE_FEATURE_UPDATE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
@@ -142,7 +142,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
     action: () => deleteServiceFeature(id),
     permission: [
       PermissionsEnum.SERVICE_FEATURE_DELETE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_FEATURE_ALL,
     ],
   },
@@ -165,9 +165,9 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_FEATURE_CREATE]">
         <router-link to="/admin/service-feature/add" class="btn btn-primary">
           {{ $t('add_service_feature') }}
         </router-link>
@@ -177,7 +177,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
 
   <permission-builder
     :code="[
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_DELETE,
       PermissionsEnum.SERVICE_FEATURE_FETCH,

@@ -8,49 +8,27 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 export default class PartnerDetailsModel {
   public id: number
   public titles: TitleLocale[]
-  public descriptions: DescriptionLocale[]
-  // public hasPartner: number
-  // public allIndustries: number
-  // public parentId: number
-  public image: string
-  // public industries: TitleModel<string>[]
-  public alt: string
+
+  public phone: string
 
   constructor(
     id: number,
     titles: TitleLocale[],
-    descriptions: DescriptionLocale[],
-    // hasPartner: number,
-    // allIndustries: number,
-    // industries: TitleModel<string>[] = [],
-    // parentId: number,
-    image: string,
-    alt: string,
+
+    phone: string,
   ) {
     this.id = id
     this.titles = titles
-    this.descriptions = descriptions
-    // this.hasPartner = hasPartner
-    // this.allIndustries = allIndustries
-    // this.industries = industries
-    // this.parentId = parentId
-    this.image = image
-    this.alt = alt
+
+    this.phone = phone
   }
 
   static fromMap(data: any): PartnerDetailsModel {
     return new PartnerDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap(data.titles, data.descriptions).descriptions,
-      // data.has_Partner,
-      // data.all_industries,
-      // data.industries?.length > 0
-      //   ? data.industries?.map((industry) => this.getTitle(industry))
-      //   : [],
-      // data.parent_id,
-      data.image,
-      data.alt
+
+      data.phone,
     )
   }
 
