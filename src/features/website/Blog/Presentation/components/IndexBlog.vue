@@ -9,7 +9,6 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
-
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -28,7 +27,6 @@ import DeleteBlogParams from '../../Core/params/deleteBlogParams'
 import DeleteBlogController from '../controllers/deleteBlogController'
 import ChangeStatusBlogController from '../controllers/changeStatusBlogController'
 import ChangeStatusBlogParams from '../../Core/params/changeStatusBlogParams'
-
 const { t } = useI18n()
 
 // import DialogChangeStatusBlog from "@/features/setting/Bloguages/Presentation/components/Blog/DialogChangeStatusBlog.vue";
@@ -40,6 +38,7 @@ const countPerPage = ref(10)
 const indexBlogController = IndexBlogController.getInstance()
 const state = ref(indexBlogController.state.value)
 const route = useRoute()
+
 
 // const id = ref(route.params.parent_id)
 
