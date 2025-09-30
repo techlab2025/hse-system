@@ -177,7 +177,10 @@ watch(
       lat.value = newData?.lat ?? 0
       lng.value = newData?.lng ?? 0
 
-      
+      country_id.value = newData?.country
+      city_id.value = newData?.city
+      state_id.value = newData?.state
+      area_id.value = newData?.area
 
       updateData()
     }
@@ -187,7 +190,7 @@ watch(
 
 // Auto-update emit whenever key data changes
 watch(
-  [langs, phone],
+  [langs, phone, country_id, city_id, state_id, area_id, lat, lng],
   () => {
     updateData()
   },
