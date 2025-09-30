@@ -773,6 +773,27 @@ const router = createRouter({
           name: 'Templates',
           component: () => import('../views/Admin/Template/IndexTemplate.vue'),
         },
+
+        // Organization Employee
+
+        {
+          path: 'organization-employee',
+          name: 'Organization Employee',
+
+          component: () =>
+            import('../views/Organization/OrganizationEmployee/IndexOrganization.vue'),
+        },
+        {
+          path: 'organization-employee/:id',
+          name: 'Edit Organization Employee',
+          component: () =>
+            import('../views/Organization/OrganizationEmployee/EditOrganization.vue'),
+        },
+        {
+          path: 'organization-employee/add',
+          name: 'Add Organization Employee ',
+          component: () => import('../views/Organization/OrganizationEmployee/AddOrganization.vue'),
+        },
       ],
     },
   ],

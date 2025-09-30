@@ -346,6 +346,15 @@ class ApiNames {
   public EditSystemComponent = this.baseUrl + this.dashboardPrefix + 'update_our_system_component'
   public DeleteSystemComponent = this.baseUrl + this.dashboardPrefix + 'delete_our_system_component'
   public DisSystemComponent = this.baseUrl + this.dashboardPrefix + 'change_our_system_component_active_status'
+
+
+  // Project Type
+  public CreateOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'create_organization_employee'
+  public IndexOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'fetch_organization_employees'
+  public ShowOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'fetch_organization_employee_details'
+  public EditOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'update_organization_employee'
+  public DeleteOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'delete_organization_employee'
+  public DisOrganizatoinEmployee = this.baseUrl + this.dashboardPrefix + 'disable_project_type'
 }
 
 export { ApiNames }
