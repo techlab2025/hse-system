@@ -58,7 +58,6 @@ type ImageValue = string | { file?: File; id?: number }
 // ---------- State ----------
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 
-// 👇 جديد
 const langsQuestion = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langsAnswer = ref<{ locale: string; icon?: any; title: string }[]>([])
 
@@ -68,7 +67,6 @@ const alt = ref<string>('')
 // default available langs from backend
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 
-// 👇 جديد
 const langDefaultQuestion = ref<{ locale: string; icon?: any; question: string }[]>([])
 const langDefaultAnswer = ref<{ locale: string; icon?: any; answer: string }[]>([])
 
@@ -90,7 +88,6 @@ const fetchLang = async (
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
-    // 👇 جديد
     langDefaultQuestion.value = response.data.map((item: any) => ({
       locale: item.code,
       question: '',
@@ -102,7 +99,6 @@ const fetchLang = async (
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
-    // 👇 جديد
     langDefaultQuestion.value = [
       { locale: 'en', icon: USA, question: '' },
       { locale: 'ar', icon: SA, question: '' },
