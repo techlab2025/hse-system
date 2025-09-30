@@ -6,6 +6,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/auth/login.vue'),
+    },
+    {
       path: '/admin',
       name: 'dashboard',
       component: Dashboard,
@@ -667,6 +672,22 @@ const router = createRouter({
           name: 'Accidents Type',
           component: () => import('../views/Admin/Accidents/IndexAccidentsType.vue'),
         },
+        {
+          path: "partners",
+          name: "Partners",
+          component: () => import('../views/Organization/Partener/IndexPartener.vue'),
+        },
+        {
+          path: "partner/add",
+          name: "Add Partner",
+          component: () => import('../views/Organization/Partener/AddPartener.vue'),
+        },
+        {
+          path: "partner/:id",
+          name: "Edit Partner",
+          component: () => import('../views/Organization/Partener/EditPartener.vue'),
+        },
+
         {
           path: 'accidents-type/add',
           name: 'Add Accidents Type',

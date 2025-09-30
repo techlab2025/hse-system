@@ -37,7 +37,7 @@ export default class EditOrganizationController extends ControllerInterface<Orga
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/accidents-types')
+        await router.push('/admin/organization')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

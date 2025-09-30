@@ -16,6 +16,7 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import type OrganizationDetailsModel from '../../Data/models/OrganizationDetailsModel'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
+import { useRoute } from 'vue-router'
 
 const emit = defineEmits(['update:data'])
 
@@ -80,6 +81,8 @@ const lang = ref<TitleInterface[] | null>([]) // selected language
 // ----------------------------
 // HELPERS
 // ----------------------------
+
+const route = useRoute()
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
@@ -88,7 +91,7 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditOrganizationParams(
-        props.data.id,
+        +route.params.id,
         name.value,
         Phone.value,
         email.value,
@@ -169,17 +172,38 @@ const setLang = (data: TitleInterface[]) => {
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">Name</label>
-    <input type="text" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
+    <input
+      type="text"
+      @change="updateData"
+      id="name"
+      v-model="name"
+      class="input"
+      placeholder="Enter Your Name"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">Email</label>
-    <input type="email" id="email" v-model="email" class="input" placeholder="Enter Your Email" />
+    <input
+      type="email"
+      id="email"
+      @change="updateData"
+      v-model="email"
+      class="input"
+      placeholder="Enter Your Email"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Phone">Phone</label>
-    <input type="phone" id="Phone" v-model="Phone" class="input" placeholder="Enter Your Phone" />
+    <input
+      type="phone"
+      id="Phone"
+      @change="updateData"
+      v-model="Phone"
+      class="input"
+      placeholder="Enter Your Phone"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
@@ -211,7 +235,14 @@ const setLang = (data: TitleInterface[]) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Url">Url</label>
-    <input type="url" id="Url" v-model="Url" class="input" placeholder="Enter Your Url" />
+    <input
+      type="url"
+      id="Url"
+      v-model="Url"
+      @change="updateData"
+      class="input"
+      placeholder="Enter Your Url"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">

@@ -10,7 +10,7 @@ import type OrganizationModel from '../../Data/models/OrganizationModel'
 import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
 
 export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
-  
+
   private static instance: AddOrganizationController
   private constructor() {
     super()
@@ -37,7 +37,7 @@ export default class AddOrganizationController extends ControllerInterface<Organ
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/accidents-types')
+        if (!draft) await router.push('/admin/organization')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

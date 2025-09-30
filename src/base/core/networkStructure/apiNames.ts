@@ -18,6 +18,7 @@ class ApiNames {
   public apiPrefix = 'api/'
   public dashboardPrefix = 'dashboard/'
   public employeePrefix = 'employee/'
+  public organizationPrefix = 'organization/'
 
   //languages
 
@@ -26,6 +27,21 @@ class ApiNames {
   public ShowLang = this.baseUrl + this.dashboardPrefix + 'fetch_language_details'
   public EditLang = this.baseUrl + this.dashboardPrefix + 'update_language'
   public DeleteLang = this.baseUrl + this.dashboardPrefix + 'delete_language'
+
+
+  // auth
+
+  public AuthLogin = this.baseUrl + this.organizationPrefix + 'login'
+
+
+
+  // Partner
+
+  public CreatePartner = this.baseUrl + this.organizationPrefix + 'create_partner'
+  public IndexPartner = this.baseUrl + this.organizationPrefix + 'fetch_partners'
+  public ShowPartner = this.baseUrl + this.organizationPrefix + 'fetch_partner_details'
+  public EditPartner = this.baseUrl + this.organizationPrefix + 'update_partner'
+  public DeletePartner = this.baseUrl + this.organizationPrefix + 'delete_partner'
 
 
 

@@ -36,6 +36,7 @@ export default class EditOrganizationParams implements Params {
   > {
     const data: Record<string, any> = {}
 
+    data['organization_id'] = this.id
     data['name'] = this.name
     data['phone'] = this.phone
     data['email'] = this.email
