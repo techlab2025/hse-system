@@ -38,7 +38,7 @@ watch(
   () => showProjectController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      console.log(newState, 'newState')
       state.value = newState
     }
   },
