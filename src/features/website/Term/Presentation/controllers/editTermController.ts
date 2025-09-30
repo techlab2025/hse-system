@@ -38,7 +38,7 @@ export default class EditTermController extends ControllerInterface<TermModel> {
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/privacy/add')
+        await router.push('/admin/term/add')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
