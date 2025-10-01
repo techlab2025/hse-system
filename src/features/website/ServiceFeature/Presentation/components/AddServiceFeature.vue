@@ -13,6 +13,7 @@ const params = ref<Params | null>(null)
 const addServiceFeatureController = AddServiceFeatureController.getInstance()
 
 const addServiceFeature = async () => {
+  console.log(params.value, 'Final params From Add ')
   await addServiceFeatureController.addServiceFeature(
     params.value as AddServiceFeatureParams,
     router,
