@@ -819,7 +819,7 @@ const user = useUserStore()
                       >
                         <router-link to="/organization/accidents-types">
                           <SidebarVector />
-                          <span>Accidents Types</span>
+                          <span>{{ $t("Accidents Types") }}</span>
                         </router-link>
                       </PermissionBuilder>
                     </li>

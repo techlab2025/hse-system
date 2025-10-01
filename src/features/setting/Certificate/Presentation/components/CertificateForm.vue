@@ -227,7 +227,7 @@ const setImage = async (data: File) => {
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="all_industries"
+      :label="$t('all_industries')"
       id="all_industries"
       placeholder="Select industry"
       :type="2"
