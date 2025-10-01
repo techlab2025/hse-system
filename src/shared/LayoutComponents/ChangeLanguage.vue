@@ -98,11 +98,3 @@ onMounted(async () => {
     </Popover>
   </div>
 </template>
-
-<style scoped>
-/* Ensure smooth transitions for the button */
-button:focus {
-  outline: none;
-  border: none;
-}
-</style>
