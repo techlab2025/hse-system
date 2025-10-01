@@ -147,6 +147,7 @@ const updateData = () => {
         service_id.value?.id,
       )
 
+  console.log(params, 'params From Form')
   emit('update:data', params)
 }
 
@@ -241,7 +242,6 @@ watch(
   },
   { immediate: true },
 )
-
 </script>
 
 <template>
@@ -286,7 +286,6 @@ watch(
       @update:modelValue="setLangsDescription"
     />
   </div>
-
 
   <!-- Items Section -->
   <div class="col-span-4 border border-gray-200 !p-3 rounded">

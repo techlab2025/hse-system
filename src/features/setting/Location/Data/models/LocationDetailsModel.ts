@@ -2,7 +2,7 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class LocationDetailsModel {
   public id: number
-  public titles: { locale: string; title: string }[] 
+  public titles: { locale: string; title: string }[]
 
 
   public code: string
