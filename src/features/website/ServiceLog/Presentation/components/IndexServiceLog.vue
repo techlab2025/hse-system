@@ -7,6 +7,8 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 
@@ -196,7 +198,7 @@ const changeStatusServiceLog = async (id: number) => {
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
+                <td data-label="title">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="status">
                   <permission-builder

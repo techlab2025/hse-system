@@ -7,6 +7,8 @@ import DeleteProjectParams from "@/features/dashboard/projects/project/Core/para
 import DeleteProjectDashboardController from "@/features/dashboard/projects/project/Presentation/controllers/delete_project_controller";
 import ProjectStatusEnum from "@/features/dashboard/projects/project/Data/enums/project_status_enum";
 import { onMounted, ref, watch } from "vue";
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import { debounce } from "@/base/Presentation/utils/debouced";
 import DropList from "@/components/HelpersComponents/DropList.vue";
 import { useRoute } from "vue-router";
@@ -133,7 +135,7 @@ watch(
                 </td>
                 <td data-label="Customer name">{{ item.project_code }}</td>
                 <td data-label="Customer name">{{ item.client }}</td>
-                <td data-label="Project name">{{ item.title }}</td>
+                <td data-label="Project name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Project type">{{ item.project_type }}</td>
                 <td data-label="Marketer">
                   {{ item?.marketers[0]?.name ?? "___" }}

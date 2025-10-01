@@ -13,6 +13,8 @@ import ToggleSwitch from 'primevue/toggleswitch'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
@@ -190,8 +192,8 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="title">{{ item.title || '___' }}</td>
-                <td data-label="subtitle">{{ item.subtitle || '___' }}</td>
+                <td data-label="title">{{ wordSlice(item.title) || '___' }}</td>
+                <td data-label="subtitle">{{ wordSlice(item.subtitle) || '___' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

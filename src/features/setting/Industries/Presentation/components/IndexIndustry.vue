@@ -5,6 +5,8 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -158,7 +160,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
+                <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusLang-->

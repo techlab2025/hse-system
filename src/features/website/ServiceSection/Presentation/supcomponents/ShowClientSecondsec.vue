@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
-import IndexProjectParams from "@/features/dashboard/projects/project/Core/params/index_projects_params";
-import ProjectModel from "@/features/dashboard/projects/project/Data/models/index_projects_model";
-import IndexProjectController from "@/features/dashboard/projects/project/Presentation/controllers/index_projects_controller";
-import DeleteProjectParams from "@/features/dashboard/projects/project/Core/params/delete_project_params";
-import DeleteProjectDashboardController from "@/features/dashboard/projects/project/Presentation/controllers/delete_project_controller";
-import ProjectStatusEnum from "@/features/dashboard/projects/project/Data/enums/project_status_enum";
-import { onMounted, ref, watch } from "vue";
-import { debounce } from "@/base/Presentation/utils/debouced";
-import DropList from "@/components/HelpersComponents/DropList.vue";
-import { useRoute } from "vue-router";
+import AddItemButton from '@/components/HelpersComponents/AddItemButton.vue'
+import IndexProjectParams from '@/features/dashboard/projects/project/Core/params/index_projects_params'
+import ProjectModel from '@/features/dashboard/projects/project/Data/models/index_projects_model'
+import IndexProjectController from '@/features/dashboard/projects/project/Presentation/controllers/index_projects_controller'
+import DeleteProjectParams from '@/features/dashboard/projects/project/Core/params/delete_project_params'
+import DeleteProjectDashboardController from '@/features/dashboard/projects/project/Presentation/controllers/delete_project_controller'
+import ProjectStatusEnum from '@/features/dashboard/projects/project/Data/enums/project_status_enum'
+import { onMounted, ref, watch } from 'vue'
+import { debounce } from '@/base/Presentation/utils/debouced'
+import DropList from '@/components/HelpersComponents/DropList.vue'
+import { useRoute } from 'vue-router'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 // import type PaginationModel from "@/base/core/Models/pagination_model";
 // import Pagination from "@/components/HelpersComponents/Pagination.vue";
-import DataStatus from "@/components/DataStatues/DataStatus.vue";
-import TableLoader from "@/components/DataStatues/TableLoader.vue";
-import DataEmpty from "@/components/DataStatues/DataEmpty.vue";
+import DataStatus from '@/components/DataStatues/DataStatus.vue'
+import TableLoader from '@/components/DataStatues/TableLoader.vue'
+import DataEmpty from '@/components/DataStatues/DataEmpty.vue'
 
-const route = useRoute();
-const projects = ref<ProjectModel[] | null>([]);
-const projectType = ref<string>(<string>route.params.type);
+const route = useRoute()
+const projects = ref<ProjectModel[] | null>([])
+const projectType = ref<string>(<string>route.params.type)
 // const pagination = ref<PaginationModel | null>(null);
-const currentPage = ref(1);
-const countPerPage = ref(10);
-const indexProjectController = IndexProjectController.getInstance();
-const state = ref(indexProjectController.state.value);
+const currentPage = ref(1)
+const countPerPage = ref(10)
+const indexProjectController = IndexProjectController.getInstance()
+const state = ref(indexProjectController.state.value)
 
 const fetchProjects = async (
-  query: string = "",
+  query: string = '',
   page: number = 1,
   count: number = 10,
   withPage: number = 1,
@@ -35,74 +37,65 @@ const fetchProjects = async (
   // const projectTypeKey = projectType.value as keyof typeof ProjectStatusEnum;
   // const projectTypeValue = ProjectStatusEnum[projectTypeKey] ?? null;
 
-  const ProjectParams = new IndexProjectParams(
-    query,
-    page,
-    count,
-    withPage,
-    clientId,
-  );
+  const ProjectParams = new IndexProjectParams(query, page, count, withPage, clientId)
 
-  const response =
-    await IndexProjectController.getInstance().getData(ProjectParams);
-  projects.value = response.value.data;
+  const response = await IndexProjectController.getInstance().getData(ProjectParams)
+  projects.value = response.value.data
   //   pagination.value = response.value.pagination;
-};
+}
 
 const handleChangePage = (page: number) => {
-  currentPage.value = page;
-  fetchProjects("", currentPage.value, countPerPage.value);
-};
+  currentPage.value = page
+  fetchProjects('', currentPage.value, countPerPage.value)
+}
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
-  countPerPage.value = count;
-  fetchProjects("", currentPage.value, countPerPage.value);
-};
+  countPerPage.value = count
+  fetchProjects('', currentPage.value, countPerPage.value)
+}
 
 onMounted(() => {
-  fetchProjects();
-});
+  fetchProjects()
+})
 
 const searchProjects = debounce((event: InputEvent) => {
-  fetchProjects((event.target as HTMLInputElement).value);
-});
+  fetchProjects((event.target as HTMLInputElement).value)
+})
 
 const DeleteProject = async (id: any) => {
-  const deleteProjectParams = new DeleteProjectParams(id);
+  const deleteProjectParams = new DeleteProjectParams(id)
 
-  await DeleteProjectDashboardController.getInstance().deleteProject(
-    deleteProjectParams,
-  );
-  await fetchProjects();
-};
+  await DeleteProjectDashboardController.getInstance().deleteProject(deleteProjectParams)
+  await fetchProjects()
+}
 
 // Replace the `statusLabel` computed property with a method
 const getStatusLabel = (id: number): string => {
-  return ProjectStatusEnum[id] || "Unknown";
-};
+  return ProjectStatusEnum[id] || 'Unknown'
+}
 
 // I want watch route params type
 watch(
   () => route.params.type,
   (newType) => {
-    projectType.value = newType;
-    fetchProjects();
+    projectType.value = newType
+    fetchProjects()
   },
-);
+)
 
 watch(
   () => indexProjectController.state.value,
   (newState) => {
     if (newState) {
       // console.log(newState)
-      state.value = newState;
+      state.value = newState
     }
   },
   {
     deep: true,
   },
-);
+)
 </script>
 
 <template>
@@ -125,18 +118,16 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in projects" :key="item.id">
+              <tr v-for="(item, index) in projects" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/edit-project/${item.id}`">{{
-                    item.id
-                  }}</router-link>
+                  <router-link :to="`/edit-project/${item.id}`">{{ item.id }}</router-link>
                 </td>
                 <td data-label="Customer name">{{ item.project_code }}</td>
                 <td data-label="Customer name">{{ item.client }}</td>
-                <td data-label="Project name">{{ item.title }}</td>
+                <td data-label="Project name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Project type">{{ item.project_type }}</td>
                 <td data-label="Marketer">
-                  {{ item?.marketers[0]?.name ?? "___" }}
+                  {{ item?.marketers[0]?.name ?? '___' }}
                 </td>
                 <!--            <td data-label="Project contracted for">-->
                 <!--              <span v-if="item.design_exist">Design</span>-->
@@ -144,10 +135,9 @@ watch(
                 <!--              <span v-if="item.authorty_exist">, Authority</span>-->
                 <!--            </td>-->
                 <td data-label="Status">
-                  <span
-                    :class="`status status_${getStatusLabel(item.project_status)}`"
-                    >{{ getStatusLabel(item.project_status) }}</span
-                  >
+                  <span :class="`status status_${getStatusLabel(item.project_status)}`">{{
+                    getStatusLabel(item.project_status)
+                  }}</span>
                 </td>
                 <td data-label="Actions">
                   <DropList

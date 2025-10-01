@@ -9,7 +9,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+// import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import ItemParams from '../../Core/params/ItemParams'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -18,6 +18,7 @@ import IndexServiceController from '@/features/website/Service/Presentation/cont
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
 import EditServiceLogParams from '../../Core/params/editServiceLogParams'
 import AddServiceLogParams from '../../Core/params/addServiceLogParams'
+import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['update:data'])
 
@@ -46,21 +47,7 @@ interface Item {
 }
 const items = ref<Item[]>([])
 
-const createNewItem = (): Item => {
-  const title: Record<string, string> = {}
-  const subtitle: Record<string, string> = {}
-
-  langDefault.value.forEach((l) => {
-    title[l.locale] = ''
-    subtitle[l.locale] = ''
-  })
-
-  return {
-    translations: { title, subtitle },
-    alt: '',
-    image: '',
-  }
-}
+const user = useUserStore()
 
 const fetchLang = async (
   query: string = '',
@@ -68,24 +55,31 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+  // console.log(user.user, 'user')
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexLangController = await IndexLangController.getInstance().getData(params)
-  const response = indexLangController.value
+  const indexPartnerController = await IndexLangController.getInstance().getData(params)
 
-  const defaults = response?.data?.length
-    ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
-    : [
-        { locale: 'en', icon: USA, title: '' },
-        { locale: 'ar', icon: SA, title: '' },
-      ]
+  const response = indexPartnerController.value
 
-  langDefault.value = defaults
-  if (!items.value.length) {
-    items.value.push(createNewItem())
+  if (response?.data?.length) {
+    langDefault.value = response.data.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+  } else {
+    langDefault.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
   }
 }
 
@@ -98,32 +92,6 @@ const updateData = () => {
 
   langsTitle.value.forEach((lang) => {
     mainTranslations.setTranslation('title', lang.locale, lang.title)
-  })
-
-  langsSubTitle.value.forEach((lang) => {
-    mainTranslations.setTranslation('subtitle', lang.locale, lang.title)
-  })
-
-  langsDescription.value.forEach((lang) => {
-    mainTranslations.setTranslation('description', lang.locale, lang.title)
-  })
-
-  const itemsParams = items.value.map((item) => {
-    const itemTranslations = new TranslationsParams()
-
-    Object.entries(item.translations.title).forEach(([locale, value]) => {
-      itemTranslations.setTranslation('title', locale, value)
-    })
-
-    Object.entries(item.translations.subtitle).forEach(([locale, value]) => {
-      itemTranslations.setTranslation('subtitle', locale, value)
-    })
-
-    return new ItemParams(
-      itemTranslations,
-      item.alt,
-      typeof item.image === 'string' ? item.image : '',
-    )
   })
 
   const params = props?.data?.id
@@ -139,17 +107,11 @@ const setLangsTitle = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-const setLangsSubTitle = (value: { locale: string; title: string }[]) => {
-  langsSubTitle.value = value
+const SelectedService = ref<TitleInterface | null>(null)
+const setServiceSelection = (data: TitleInterface) => {
+  SelectedService.value = data
   updateData()
 }
-
-const setLangsDescription = (value: { locale: string; title: string }[]) => {
-  langsDescription.value = value
-  updateData()
-}
-
-const SelectedService = ref<TitleInterface>()
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -165,45 +127,12 @@ watch(
       }
     })
 
-    imageAlt.value = newData.alt || ''
+    SelectedService.value = newData?.service
 
-    image.value = newData.image || ''
-
-    if (newData.service) {
-      console.log(newData.service, 'newData.service')
-      SelectedService.value.id = newData?.service?.id
-      SelectedService.value.title = newData?.service?.title
-    } else if (newData.serviceId) {
-      console.log('asdasdasdas')
-    }
     updateData()
   },
   { immediate: true, deep: true },
 )
-
-const setServiceSelection = (data: TitleInterface) => {
-  SelectedService.value = data
-  updateData()
-}
-
-const imageAlt = ref('')
-const UpdateAltImage = (data: Event) => {
-  imageAlt.value = (data.target as HTMLInputElement).value
-  updateData()
-}
-
-const image = ref<string>('')
-
-const setImage = async (data: File) => {
-  try {
-    const base64Image = await filesToBase64(data)
-    image.value = base64Image as string
-    updateData()
-  } catch (error) {
-    console.error('Error converting image to base64:', error)
-    image.value = ''
-  }
-}
 </script>
 
 <template>

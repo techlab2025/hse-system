@@ -4,6 +4,9 @@ import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 import EditIcon from '@/shared/icons/EditIcon.vue'
 import SortIcon from '@/shared/icons/SortIcon.vue'
 import TrashIcon from '@/shared/icons/TrashIcon.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
+
 import { onMounted, ref } from 'vue'
 
 const actionList = (id: number, deleteStudents: (id: number) => void) => [
@@ -51,12 +54,12 @@ const ReverseTable = () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item,index) in items" :key="item.id">
+        <tr v-for="(item, index) in items" :key="item.id">
           <td data-label="#">
             <router-link :to="`/`">{{ index + 1 }}</router-link>
           </td>
           <td :data-label="$t('image')"><img src="@/assets/images/error.png" alt="image" /></td>
-          <td :data-label="$t('title')">{{ item.title }}</td>
+          <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
           <td :data-label="$t('payment_status')">{{ $t('free') }}</td>
           <td data-label="actions" class="cursor-pointer">
             <!-- <ActionsIcon /> -->

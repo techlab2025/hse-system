@@ -7,6 +7,8 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 
@@ -181,8 +183,8 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/power-full/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle }}</td>
+                <td data-label="title">{{ wordSlice(item.title) }}</td>
+                <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
