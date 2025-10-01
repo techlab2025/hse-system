@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() {}
+  private constructor() { }
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -39,7 +39,8 @@ class ApiNames {
   public DeleteLang = this.prefix + 'delete_language'
 
   // auth
-  public AuthLogin =  this.baseUrl + this.organizationPrefix + 'login'
+  public AuthLoginOrganization = this.baseUrl + this.organizationPrefix + 'login'
+  public AuthLogin = this.baseUrl + this.dashboardPrefix + 'login'
 
   // Partner
 

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import HomeView from '../views/AboutView.vue'
 import Dashboard from '../views/Dashboard.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -891,5 +893,18 @@ const router = createRouter({
     },
   ],
 })
+
+
+
+// router.beforeEach((to, from, next) => {
+//   const userData = useUserStore()
+//   if (to.name !== 'Login' && !userData.isAuth) {
+//     next({ path: '/login' })
+//   } else if (to.name === 'Login' && userData.isAuth) {
+//     next({ path: userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization' })
+//   } else {
+//     next()
+//   }
+// })
 
 export default router
