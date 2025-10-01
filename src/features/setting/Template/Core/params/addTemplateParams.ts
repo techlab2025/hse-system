@@ -4,7 +4,7 @@ import type { ActionsEnum } from '../Enum/ActionType'
 
 export default class AddTemplateParams implements Params {
   translation: TranslationsParams
-  allIndustries: boolean
+  allIndustries: boolean | null
   industries: number[]
   require_image: number
   action: ActionsEnum | null
@@ -12,12 +12,11 @@ export default class AddTemplateParams implements Params {
 
   constructor(
     translation: TranslationsParams,
-    allIndustries: boolean,
+    allIndustries: boolean | null,
     industries: number[],
     require_image: number,
     action: ActionsEnum | null,
     items: AddTemplateParams[] = [],
-
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
@@ -31,7 +30,7 @@ export default class AddTemplateParams implements Params {
     const data: Record<string, unknown> = {}
 
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
 
     if (!this.allIndustries) {
       data['industry_ids'] = this.industries
@@ -48,4 +47,3 @@ export default class AddTemplateParams implements Params {
     return data
   }
 }
-

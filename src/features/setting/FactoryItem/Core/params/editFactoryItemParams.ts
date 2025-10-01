@@ -4,14 +4,14 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class EditFactoryItemParams implements Params {
   id: number
   translation: TranslationsParams
-  allIndustries: boolean
+  allIndustries: boolean | null
   industries: number[]
   factoryId: number
 
   constructor(
     id: number,
     translation: TranslationsParams,
-    allIndustries: boolean,
+    allIndustries: boolean | null,
     industries: number[],
     factoryId: number,
   ) {
@@ -30,7 +30,7 @@ export default class EditFactoryItemParams implements Params {
 
     data['factory_item_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['factory_id'] = this.factoryId
 

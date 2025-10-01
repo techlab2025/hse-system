@@ -21,6 +21,8 @@ import AddFactoryItemParams from '@/features/setting/FactoryItem/Core/params/add
 import IndexFactoryController from '@/features/setting/Factory/Presentation/controllers/indexFactoryController.ts'
 import type FactoryItemDetailsModel from '@/features/setting/FactoryItem/Data/models/factoryItemDetailsModel.ts'
 import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFactoryParams.ts'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -56,13 +58,21 @@ const industryController = IndexIndustryController.getInstance()
 
 // default available Factorys
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
+const user = useUserStore()
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+    if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexFactoryController = await IndexLangController.getInstance().getData(params)
 
@@ -108,18 +118,19 @@ const updateData = () => {
   })
 
   console.log(allIndustries.value, 'industry')
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   const params = props.data?.id
     ? new EditFactoryItemParams(
         props.data?.id! ?? 0,
         translationsParams,
-        allIndustries.value ?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
         factory.value?.id ?? 0,
       )
     : new AddFactoryItemParams(
         translationsParams,
-        allIndustries.value ?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         factory.value?.id ?? 0,
         // id,
@@ -193,7 +204,7 @@ const setFactory = (data: TitleInterface) => {
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
@@ -203,7 +214,7 @@ const setFactory = (data: TitleInterface) => {
       @change="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries &&user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
@@ -215,7 +226,7 @@ const setFactory = (data: TitleInterface) => {
       @update:modelValue="setIndustry"
     />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="factory"
       :controller="factoryController"

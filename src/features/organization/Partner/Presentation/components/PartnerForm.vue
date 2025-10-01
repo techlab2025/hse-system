@@ -19,6 +19,7 @@ import type PartnerDetailsModel from '../../Data/models/PartnerDetailsModel'
 import EditPartnerParams from '../../Core/params/editPartnerParams'
 import AddPartnerParams from '../../Core/params/addPartnerParams'
 import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
 
@@ -134,6 +135,7 @@ const updateData = () => {
   // langsDescription.value.forEach((lang) => {
   //   translationsParams.setTranslation('description', lang.locale, lang.title)
   // })
+
 
   const params = props.data?.id
     ? new EditPartnerParams(props.data.id, translationsParams, phone.value)

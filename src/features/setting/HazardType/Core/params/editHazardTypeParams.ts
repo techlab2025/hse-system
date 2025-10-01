@@ -4,13 +4,13 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class EditHazardTypeParams implements Params {
   id: number
   translation: TranslationsParams
-  allIndustries: boolean
+  allIndustries: boolean | null
   industries: number[]
 
   constructor(
     id: number,
     translation: TranslationsParams,
-    allIndustries: boolean,
+    allIndustries: boolean | null,
     industries: number[],
   ) {
     this.id = id
@@ -27,10 +27,9 @@ export default class EditHazardTypeParams implements Params {
 
     data['hazard_type_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
   }
 }
-

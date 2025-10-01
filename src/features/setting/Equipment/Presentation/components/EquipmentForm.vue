@@ -18,6 +18,8 @@ import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/para
 import AddEquipmentParams from '../../Core/params/addEquipmentParams'
 import EditEquipmentParams from '../../Core/params/editEquipmentParams'
 import type EquipmentModel from '../../Data/models/equipmentModel'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: EquipmentModel }>()
@@ -37,8 +39,17 @@ const Equipment = ref<TitleInterface | null>(null)
 const allIndustries = ref(0)
 const hasCertificate = ref(0)
 
+const user = useUserStore()
 // Fetch available languages and set defaults
 const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const controller = await IndexLangController.getInstance().getData(params)
   const response = controller.value
@@ -65,11 +76,13 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
   const params = !props.data?.id
     ? new AddEquipmentParams(
         translationsParams,
         hasCertificate.value,
-        allIndustries.value,
+        AllIndustry,
         industry.value.map((i) => i.id),
         id,
         Equipment.value?.id!,
@@ -78,7 +91,7 @@ const updateData = () => {
         props.data.id ?? 0,
         translationsParams,
         hasCertificate.value,
-        allIndustries.value,
+        AllIndustry,
         industry.value.map((i) => i.id),
         props.data.id ?? 0,
         Equipment.value?.id!,
@@ -128,11 +141,17 @@ watch(
     <input type="checkbox" :value="1" v-model="hasCertificate" />
   </div> -->
 
-  <div class="col-span-4 md:col-span-4 input-wrapper check-box">
+  <div
+    class="col-span-4 md:col-span-4 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

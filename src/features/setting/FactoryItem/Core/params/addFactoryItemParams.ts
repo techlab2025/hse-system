@@ -4,7 +4,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class AddFactoryItemParams implements Params {
   translation: TranslationsParams
   // hasCertificate: number
-  allIndustries: boolean
+  allIndustries: boolean | null
   industries: number[]
   factoryId: number
   // parentId: number
@@ -12,7 +12,7 @@ export default class AddFactoryItemParams implements Params {
 
   constructor(
     translation: TranslationsParams,
-    allIndustries: boolean,
+    allIndustries: boolean | null,
     industries: number[],
     factoryId: number,
 
@@ -37,7 +37,7 @@ export default class AddFactoryItemParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['factory_id'] = this.factoryId
 

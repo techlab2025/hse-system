@@ -18,6 +18,8 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type CertificateDetailsModel from '../../Data/models/CertificateDetailsModel'
 import EditCertificateParams from '../../Core/params/editCertificateParams'
 import AddCertificateParams from '../../Core/params/addCertificateParams'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
 
@@ -71,6 +73,7 @@ const langDefaultDescription = ref<
   }[]
 >([])
 
+const user = useUserStore()
 // ---------- Fetch available languages ----------
 const fetchLang = async (
   query: string = '',
@@ -78,6 +81,14 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexCertificateController = await IndexLangController.getInstance().getData(params)
 
@@ -125,18 +136,20 @@ const updateData = () => {
     translationsParams.setTranslation('description', lang.locale, lang.title)
   })
 
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
   const params = props.data?.id
     ? new EditCertificateParams(
         props.data.id,
         translationsParams,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         typeof image.value === 'object' ? image.value.file : undefined,
         typeof image.value === 'object' ? image.value.id : undefined,
       )
     : new AddCertificateParams(
         translationsParams,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         typeof image.value === 'object' ? image.value.file : undefined,
       )
@@ -217,12 +230,12 @@ const setImage = async (data: File) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

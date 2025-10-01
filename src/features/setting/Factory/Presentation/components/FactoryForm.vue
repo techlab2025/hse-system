@@ -18,6 +18,8 @@ import { useRoute } from 'vue-router'
 import type FactoryModel from '../../Data/models/FactoryModel'
 import EditFactoryParams from '../../Core/params/editFactoryParams'
 import AddFactoryParams from '../../Core/params/addFactoryParams'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -54,12 +56,21 @@ const industryController = IndexIndustryController.getInstance()
 // default available Factorys
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
+const user = useUserStore()
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+    if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexFactoryController = await IndexLangController.getInstance().getData(params)
 
@@ -101,17 +112,18 @@ const updateData = () => {
   })
 
   console.log(allIndustries.value, 'industry')
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   const params = props.data?.id
     ? new EditFactoryParams(
         props.data?.id! ?? 0,
         translationsParams,
-        allIndustries.value ?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
       )
     : new AddFactoryParams(
         translationsParams,
-        allIndustries.value?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         // id,
       )
@@ -178,7 +190,7 @@ watch(
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
@@ -188,7 +200,7 @@ watch(
       @change="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
