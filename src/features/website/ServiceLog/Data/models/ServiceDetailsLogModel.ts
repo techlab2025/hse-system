@@ -22,9 +22,9 @@ export default class ServiceLogDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
     return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle,
+      id: data?.id,
+      title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      subtitle: data?.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle,
     })
   }
 }
