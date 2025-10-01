@@ -82,17 +82,17 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-        id,
+        props.data?.id,
         translationsParams,
         Code.value,
         LocationEnum.CITY,
-        ParentId?.value || SelectedState.value?.id,
+        +ParentId?.value || SelectedState.value?.id!,
       )
     : new AddLocationParams(
         translationsParams,
         Code.value,
         LocationEnum.CITY,
-        ParentId?.value || SelectedState?.value?.id,
+        +ParentId?.value || SelectedState.value?.id!,
       )
 
   emit('update:data', params)
@@ -116,10 +116,21 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedState.value = newData?.parent
+      SelectedCountry.value = newData?.country
+
+      indexLocationStatesParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.STATE,
+        newData?.country?.id,
+      )
+
+      SelectedState.value = newData?.state
+
       allIndustries.value = newData?.allIndustries!
       industry.value = newData?.industries!
-
     }
   },
   { immediate: true },

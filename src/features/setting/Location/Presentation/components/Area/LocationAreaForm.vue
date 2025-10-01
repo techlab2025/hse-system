@@ -118,14 +118,32 @@ watch(
       }
 
       allIndustries.value = newData?.allIndustries!
+
       industry.value = newData?.industries!
-      SelectedCity.value = newData?.parent
-        ? new TitleInterface({
-            id: newData.parent.id,
-            title: newData.parent.title,
-            subtitle: newData.parent.subtitle,
-          })
-        : undefined
+
+      SelectedCountry.value = newData?.country
+
+      indexLocationStatesParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.STATE,
+        newData?.country?.id,
+      )
+
+      SelectedState.value = newData?.state
+
+      indexLocationAreasParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.CITY,
+        newData?.state?.id,
+      )
+
+      SelectedCity.value = newData?.city
     }
   },
   { immediate: true },
@@ -164,20 +182,13 @@ const SetCountrySelection = (data: TitleInterface) => {
 const SelectedState = ref<TitleInterface>()
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
-  indexLocationAreasParams.value = new IndexLocationParams(
-    '',
-    0,
-    0,
-    0,
-    LocationEnum.CITY,
-    data.id,
-  )
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
   updateData()
 }
 
 const SelectedCity = ref<TitleInterface>()
 const SetCitySelection = (data: TitleInterface) => {
-  SelectedState.value = data
+  SelectedCity.value = data
   updateData()
 }
 

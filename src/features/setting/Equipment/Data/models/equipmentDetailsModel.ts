@@ -45,7 +45,7 @@ export default class EquipmentDetailsModel {
       data.has_certificate,
       data.all_industries,
       data.industries.length > 0
-        ? data.industries.map((industry) => TitleModel.fromMap(industry))
+        ? data.industries.map((industry) => this.getTitle(industry))
         : [],
       data.parent_id,
       data.image,
@@ -53,12 +53,12 @@ export default class EquipmentDetailsModel {
     )
   }
 
-    static getTitle(data: any) {
-      const savedLocale = localStorage.getItem('lang')
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
 
-      return new TitleInterface({
-        id: data.id,
-        title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-      })
-    }
+    return new TitleInterface({
+      id: data.id,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
+  }
 }
