@@ -275,7 +275,7 @@ export default class PermissionModel {
     const titles: TitleModel[] = [];
 
     data?.forEach((item: any) => {
-      const index: number = maps.findIndex((e) => e.subtitle == item.title);
+      const index: number = maps.findIndex((e) => e.subtitle == wordSlice(item.title));
 
       // console.log(index, "index");
       titles.push(

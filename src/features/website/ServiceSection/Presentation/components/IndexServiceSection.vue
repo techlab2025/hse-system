@@ -28,6 +28,7 @@ import DeleteServiceSectionParams from '../../Core/params/deleteServiceSectionPa
 import DeleteServiceSectionController from '../controllers/deleteServiceSectionController'
 import ChangeServiceSectionStatusParams from '../../Core/params/changeStatusServiceSectionParams'
 import disActiveServiceSectionController from '../controllers/disActiveServiceSectionController'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 const { t } = useI18n()
 
@@ -207,9 +208,9 @@ const changeStatusServiceSection = async (id: number) => {
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle || '--' }}</td>
-                <td data-label="description">{{ item.description || '--' }}</td>
+                <td data-label="title">{{ wordSlice(item.title) }}</td>
+                <td data-label="subtitle">{{ wordSlice(item.subtitle) || '--' }}</td>
+                <td data-label="description">{{ wordSlice(item.description) || '--' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

@@ -8,6 +8,8 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -190,7 +192,7 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
+                <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="phone">
                   {{ item.phone }}

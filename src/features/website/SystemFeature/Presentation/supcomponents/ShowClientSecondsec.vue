@@ -10,6 +10,8 @@ import { onMounted, ref, watch } from "vue";
 import { debounce } from "@/base/Presentation/utils/debouced";
 import DropList from "@/components/HelpersComponents/DropList.vue";
 import { useRoute } from "vue-router";
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 // import type PaginationModel from "@/base/core/Models/pagination_model";
 // import Pagination from "@/components/HelpersComponents/Pagination.vue";
 import DataStatus from "@/components/DataStatues/DataStatus.vue";
@@ -133,7 +135,7 @@ watch(
                 </td>
                 <td data-label="Customer name">{{ item.project_code }}</td>
                 <td data-label="Customer name">{{ item.client }}</td>
-                <td data-label="Project name">{{ item.title }}</td>
+                <td data-label="Project name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Project type">{{ item.project_type }}</td>
                 <td data-label="Marketer">
                   {{ item?.marketers[0]?.name ?? "___" }}

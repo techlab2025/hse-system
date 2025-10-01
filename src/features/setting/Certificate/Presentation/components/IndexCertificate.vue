@@ -6,6 +6,8 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 
@@ -204,7 +206,7 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
+                <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries">
                   {{

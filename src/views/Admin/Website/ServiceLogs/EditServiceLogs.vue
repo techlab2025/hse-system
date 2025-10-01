@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import EditServiceLog from '@/features/website/ServiceLog/Presentation/components/EditServiceLog.vue';
-
-
-
+import EditServiceLog from '@/features/website/ServiceLog/Presentation/components/EditServiceLog.vue'
 </script>
 
 <template>

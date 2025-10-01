@@ -9,6 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -202,16 +203,15 @@ const changeStatusSystemRiskType = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/system_banner/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/system_banner/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
 
-                <td data-label="feature">{{ item.title }}</td>
-                <td data-label="old">{{ item.subtitle }}</td>
+                <td data-label="feature">{{ wordSlice(item.title) }}</td>
+                <td data-label="old">{{ wordSlice(item.subtitle) }}</td>
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>

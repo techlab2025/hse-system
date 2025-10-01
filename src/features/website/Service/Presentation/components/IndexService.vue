@@ -9,6 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -17,9 +18,9 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexServiceController from '../controllers/indexServiceController'
@@ -195,15 +196,12 @@ const changeStatusService = async (id: number) => {
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
-                <td data-label="subtitle">{{ item.subtitle || '--' }}</td>
-                <td data-label="description">{{ item.description || '--' }}</td>
+                <td data-label="title">{{ wordSlice(item.title, 20) }}</td>
+                <td data-label="subtitle">{{ wordSlice(item.subtitle, 25) || '--' }}</td>
+                <td data-label="description">{{ wordSlice(item.description, 50) || '--' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

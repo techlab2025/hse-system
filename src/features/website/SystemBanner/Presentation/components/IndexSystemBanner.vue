@@ -69,9 +69,7 @@ const searchService = debounce(() => {
 
 const deleteService = async (id: number) => {
   const deleteSystemBannerParams = new DeleteSystemBannerParams(id)
-  await DeleteSystemBannerController.getInstance().deleteSystemBanner(
-    deleteSystemBannerParams,
-  )
+  await DeleteSystemBannerController.getInstance().deleteSystemBanner(deleteSystemBannerParams)
   await fetchSystemBanner()
 }
 
@@ -167,9 +165,11 @@ const changeStatusSystemBanner = async (id: number) => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel :data="state.data" />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]">
+      <permission-builder
+        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]"
+      >
         <router-link to="/admin/system_banner/add" class="btn btn-primary">
           {{ $t('Add_System_Banner') }}
         </router-link>
@@ -200,12 +200,11 @@ const changeStatusSystemBanner = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
-                {{
-                  console.log(item, 'item')
-                }}
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/system_banner/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link :to="`/admin/system_banner/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
 
                 <td data-label="image">

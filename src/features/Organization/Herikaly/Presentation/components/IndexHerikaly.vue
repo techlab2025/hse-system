@@ -28,6 +28,7 @@ import DeleteHerikalyParams from '../../Core/params/deleteHerikalyParams'
 import DeleteHerikalyController from '../controllers/deleteHerikalyController'
 import ChangeStatusHerikalyParams from '../../Core/params/changeStatusHerikalyParams'
 import ChangeStatusHerikalyController from '../controllers/changeStatusHerikalyController'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 const { t } = useI18n()
 
@@ -187,8 +188,8 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/herikaly/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ item.title }}</td>
-                <!-- <td data-label="subtitle">{{ item.subtitle }}</td> -->
+                <td data-label="title">{{ wordSlice(item.title) }}</td>
+                <!-- <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td> -->
 
                 <!-- <td data-label="status">
                   <permission-builder

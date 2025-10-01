@@ -5,6 +5,8 @@ import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
@@ -190,7 +192,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
                   <router-link :to="`/admin/countries/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
                 <td data-label="Name">{{ item.code }}</td>
-                <td data-label="email">{{ item.title }}</td>
+                <td data-label="email">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="Actions">
                   <DropList

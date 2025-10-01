@@ -7,6 +7,8 @@ import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
@@ -208,7 +210,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ item.title }}</td>
+                <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries">
                   {{

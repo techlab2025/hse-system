@@ -16,7 +16,7 @@ export default class ServiceLogDetailsModel {
   }
 
   static fromMap(data: any): ServiceLogDetailsModel {
-    return new ServiceLogDetailsModel(data.id, data.titles ?? [], data.service ?? null)
+    return new ServiceLogDetailsModel(data.id, data.titles, this.getTitle(data.service))
   }
 
   static getTitle(data: any) {
@@ -24,6 +24,7 @@ export default class ServiceLogDetailsModel {
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale).subtitle,
     })
   }
 }

@@ -15,6 +15,8 @@ import { useRoute } from "vue-router";
 import DataStatus from "@/components/DataStatues/DataStatus.vue";
 import TableLoader from "@/components/DataStatues/TableLoader.vue";
 import DataEmpty from "@/components/DataStatues/DataEmpty.vue";
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 
 const route = useRoute();
 const projects = ref<ProjectModel[] | null>([]);
@@ -133,7 +135,7 @@ watch(
                 </td>
                 <td data-label="Customer name">{{ item.project_code }}</td>
                 <td data-label="Customer name">{{ item.client }}</td>
-                <td data-label="Project name">{{ item.title }}</td>
+                <td data-label="Project name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Project type">{{ item.project_type }}</td>
                 <td data-label="Marketer">
                   {{ item?.marketers[0]?.name ?? "___" }}
