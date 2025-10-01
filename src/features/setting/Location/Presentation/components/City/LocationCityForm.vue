@@ -95,6 +95,7 @@ const updateData = () => {
         ParentId?.value || SelectedState?.value?.id,
       )
 
+      // console.log(params, 'Newparams')
   emit('update:data', params)
 }
 
