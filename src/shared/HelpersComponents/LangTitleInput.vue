@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { label } from '@primeuix/themes/aura/metergroup'
-import { computed, ref, watch } from 'vue'
+// import { log } from 'console';
+import { computed, nextTick, ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -71,6 +72,21 @@ watch(title, (val) => {
   }
   emit('update:modelValue', [...titles.value])
 })
+
+// const updateTitle = (e: Event) => {
+//   const idx = titles.value.findIndex((t) => t.locale === lang.value)
+
+//   if (idx !== -1) {
+//     // remove the object at idx
+//     const updated = [
+//       ...titles.value.slice(0, idx),
+//       ...titles.value.slice(idx + 1)
+//     ]
+
+//     titles.value = updated
+//     emit("update:modelValue", updated)
+//   }
+// }
 
 const placeholderText = computed(() => {
   return props.placeholder || props.label || 'Enter text...'
