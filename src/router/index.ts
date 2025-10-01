@@ -659,6 +659,14 @@ const router = createRouter({
           name: 'Edit Our System Step',
           component: () => import('../views/Admin/Website/OurSystemStep/EditOurSystemStep.vue'),
         },
+
+        {
+          path: 'permission/:id',
+          name: 'Permission',
+          component: () => import('../views/Premission.vue'),
+
+        },
+
       ],
     },
     {
@@ -888,6 +896,13 @@ const router = createRouter({
           path: 'project-zone/add',
           name: 'Add Project Zone ',
           component: () => import('../views/Organization/ProjectZone/AddProjectZone.vue'),
+        },
+
+        {
+          path: 'permission/:id',
+          name: 'Permission',
+          component: () => import('../views/Premission.vue'),
+
         },
       ],
     },
