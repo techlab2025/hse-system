@@ -4,8 +4,3 @@
   harum corrupti repellendus?
 </template>
 
-<script>
-export default {}
-</script>
-
-<style></style>
