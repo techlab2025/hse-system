@@ -204,7 +204,7 @@ const setImage = async (data: File) => {
       @update:modelValue="(val) => (langs = val)"
     />
   </div>
-<!-- 
+<!--
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('description')"

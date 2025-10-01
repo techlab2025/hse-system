@@ -183,7 +183,7 @@ watch(
 
 // Auto-update emit whenever key data changes
 watch(
-  [langs, langsDescription, industry, allIndustries, image],
+  [langs, langsDescription, industry, allIndustries, image, alt],
   () => {
     updateData()
   },

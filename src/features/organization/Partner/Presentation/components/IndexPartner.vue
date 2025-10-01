@@ -180,7 +180,7 @@ watch(
                 <th scope="col">{{ $t('title') }}</th>
 
                 <th scope="col">{{ $t('phone') }}</th>
-                <th scope="col">{{ $t('status') }}</th>
+                <!-- <th scope="col">{{ $t('status') }}</th> -->
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
