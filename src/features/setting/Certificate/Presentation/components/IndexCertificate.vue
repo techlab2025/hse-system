@@ -16,15 +16,17 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexCertificateController from '../controllers/indexCertificateController'
 import IndexCertificateParams from '../../Core/params/indexCertificateParams'
 import DeleteCertificateParams from '../../Core/params/deleteCertificateParams'
 import DeleteCertificateController from '../controllers/deleteCertificateController'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 const { t } = useI18n()
 
@@ -96,14 +98,17 @@ watch(
   },
 )
 
+const { user } = useUserStore()
+
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/certificate/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${id}`,
     permission: [
       PermissionsEnum.CERTIFICATE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.CERTIFICATE_ALL,
     ],
   },
@@ -115,6 +120,7 @@ const actionList = (id: number, deleteCertificate: (id: number) => void) => [
     permission: [
       PermissionsEnum.CERTIFICATE_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.CERTIFICATE_ALL,
     ],
   },
@@ -145,10 +151,19 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel :data="state.data" />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
-        <router-link to="/admin/certificate/add" class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.CERTIFICATE_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Certificate') }}
         </router-link>
       </permission-builder>
@@ -158,11 +173,12 @@ watch(
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CERTIFICATE_ALL,
+      PermissionsEnum.CERTIFICATE_DELETE,
+      PermissionsEnum.CERTIFICATE_FETCH,
+      PermissionsEnum.CERTIFICATE_UPDATE,
+      PermissionsEnum.CERTIFICATE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -181,9 +197,12 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/Certificate/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -228,7 +247,7 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/certificate/add`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
           addText="Add certificate"
           description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Certificate"
@@ -236,7 +255,7 @@ watch(
       </template>
       <template #failed>
         <DataFailed
-          :link="`/certificate/add`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
           addText="Add Certificate"
           description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Certificate"

@@ -25,6 +25,8 @@ import IndexFactoryItemController from '@/features/setting/FactoryItem/Presentat
 import IndexFactoryItemParams from '@/features/setting/FactoryItem/Core/params/indexFactoryItemParams.ts'
 import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/deleteFactoryItemParams.ts'
 import DeleteFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/deleteFactoryItemController.ts'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 const { t } = useI18n()
 
@@ -88,14 +90,17 @@ watch(
   },
 )
 
+const { user } = useUserStore()
+
 const actionList = (id: number, deleteFactory: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/factory-item/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/${id}`,
     permission: [
       PermissionsEnum.FACTORY_ITEM_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
@@ -126,6 +131,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     permission: [
       PermissionsEnum.FACTORY_ITEM_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ITEM_ALL,
     ],
   },
@@ -150,8 +156,17 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.FACTORY_ITEM_CREATE]">
-        <router-link to="/admin/factory-item/add" class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.FACTORY_ITEM_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Factory') }}
         </router-link>
       </permission-builder>
@@ -161,6 +176,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ITEM_ALL,
       PermissionsEnum.FACTORY_ITEM_DELETE,
       PermissionsEnum.FACTORY_ITEM_FETCH,
@@ -186,9 +202,12 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -200,13 +219,14 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                   }}
                 </td>
                 <td data-label="factory">
-                  <router-link :to="`/admin/factory-item/${item.id}`">{{
-                    item.factory.title
-                  }}</router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/${item.id}`"
+                    >{{ item.factory.title }}</router-link
+                  >
                 </td>
-<!--                <td data-label="all_industries">-->
-<!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
-<!--                </td>-->
+                <!--                <td data-label="all_industries">-->
+                <!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
+                <!--                </td>-->
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusFactory-->
@@ -238,7 +258,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`admin/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"
@@ -246,7 +266,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`admin/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"

@@ -15,19 +15,23 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexAccidentsTypeParams from '../../Core/params/indexAccidentsTypeParams'
 import IndexAccidentsTypeController from '../controllers/indexAccidentsTypeController'
 import DeleteAccidentsTypeParams from '../../Core/params/deleteAccidentsTypeParams'
 import DeleteAccidentsTypeController from '../controllers/deleteAccidentsTypeController'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHazardType from "@/features/setting/HazardTypeuages/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
+const { user } = useUserStore()
+
+// import DialogChangeStatusAccidentType from "@/features/setting/AccidentType/Presentation/components/AccidentType/DialogChangeStatusAccidentType.vue";
 // const route = useRoute()
 
 const word = ref('')
@@ -37,7 +41,7 @@ const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
 const state = ref(indexAccidentsTypeController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
+// const type = ref<AccidentTypeStatusEnum>(AccidentTypeStatusEnum[route.params.type as keyof typeof AccidentTypeStatusEnum])
 
 const fetchAccidentsType = async (
   query: string = '',
@@ -59,7 +63,7 @@ onMounted(() => {
   fetchAccidentsType()
 })
 
-const searchHazardType = debounce(() => {
+const searchAccidentType = debounce(() => {
   fetchAccidentsType(word.value)
 })
 
@@ -93,15 +97,16 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteHazardType: (id: number) => void) => [
+const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/accidents-type/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type/${id}`,
     permission: [
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
     ],
   },
   // {
@@ -127,10 +132,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHazardType(id),
+    action: () => deleteAccidentType(id),
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
     ],
   },
@@ -141,7 +147,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchHazardType())">
+      <span class="icon-remove" @click="((word = ''), searchAccidentType())">
         <Search />
       </span>
       <input
@@ -149,14 +155,23 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchHazardType"
+        @input="searchAccidentType"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ACCIDENTS_TYPE_CREATE]">
-        <router-link to="/admin/accidents-type/add" class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_AccidentsType') }}
         </router-link>
       </permission-builder>
@@ -166,6 +181,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_DELETE,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -190,9 +206,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/accidents-type/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -208,10 +227,10 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                 </td> -->
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusHazardType-->
-                  <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
-                  <!--                  :HazardTypeId="item.id"-->
-                  <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
+                  <!--                <DialogChangeStatusAccidentType-->
+                  <!--                  v-if="item.AccidentTypeStatus === AccidentTypeStatusEnum.Draft"-->
+                  <!--                  :AccidentTypeId="item.id"-->
+                  <!--                  @AccidentTypeChangeStatus="fetchAccidentType"-->
                   <!--                />-->
 
                   <DropList
@@ -237,18 +256,18 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/accidents-type`"
+          addText="Add AccidentType"
+          description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No AccidentType"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/accidents-type`"
+          addText="Add AccidentType"
+          description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No AccidentType"
         />
       </template>
     </DataStatus>
@@ -256,7 +275,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

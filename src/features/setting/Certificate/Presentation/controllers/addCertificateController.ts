@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type CertificateModel from '../../Data/models/CertificateModel'
 import AddCertificateUseCase from '../../Domain/useCase/addCertificateUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class AddCertificateController extends ControllerInterface<CertificateModel> {
   private static instance: AddCertificateController
@@ -25,6 +27,9 @@ export default class AddCertificateController extends ControllerInterface<Certif
 
   async addCertificate(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+
+    const { user } = useUserStore();
+
     try {
       const dataState: DataState<CertificateModel> =
         await this.AddCertificateUseCase.call(params)
@@ -36,7 +41,7 @@ export default class AddCertificateController extends ControllerInterface<Certif
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/certificates')
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificates`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -41,13 +41,7 @@ const langs = ref<
   }[]
 >([])
 
-const langsDescription = ref<
-  {
-    locale: string
-    icon?: any
-    description: string
-  }[]
->([])
+const langsDescription = ref<{ locale: string; title: string }[]>([])
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
@@ -112,8 +106,8 @@ const fetchLang = async (
       { locale: 'ar', icon: SA, title: '' },
     ]
     langDefaultDescription.value = [
-      { locale: 'en', icon: USA, description: '' },
-      { locale: 'ar', icon: SA, description: '' },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
@@ -144,14 +138,13 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        typeof image.value === 'object' ? image.value.file : undefined,
-        typeof image.value === 'object' ? image.value.id : undefined,
+        image.value?.file,
       )
     : new AddCertificateParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        typeof image.value === 'object' ? image.value.file : undefined,
+        image.value?.file,
       )
 
   // console.log(params, 'params')
@@ -164,29 +157,25 @@ const updateData = () => {
 watch(
   [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
   ([newData, newDefault, newDefaultDesc]) => {
-    if (newDefault.length && newDefaultDesc.length) {
+    // console.log(newData, 'newData');
+
+    if (newDefault.length) {
       // titles
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+
+      langs.value = newData?.titles?.length
+        ? newDefault.map((l) => {
+            const existing = newData.titles.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
+        : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       // descriptions
-      if (newData?.descriptions?.length) {
-        langsDescription.value = newDefaultDesc.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, description: '' }
-        })
-      } else {
-        langsDescription.value = newDefaultDesc.map((l) => ({
-          locale: l.locale,
-          description: '',
-        }))
-      }
+      langsDescription.value = newData?.descriptions?.length
+        ? newDefault.map((l) => {
+            const existing = newData.descriptions.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
+        : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       allIndustries.value = newData?.allIndustries ?? 0
       industry.value = newData?.industries ?? []
@@ -223,19 +212,25 @@ const setImage = async (data: File) => {
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('description')"
-      :langs="langDefaultDescription"
+      :langs="langDefault"
       :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)"
       type="textarea"
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
