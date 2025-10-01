@@ -25,10 +25,12 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHazardType from "@/features/setting/HazardTypeuages/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
+// import DialogChangeStatusHazardType from "@/features/setting/HazardType/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
 // const route = useRoute()
 
 const word = ref('')
@@ -88,14 +90,17 @@ watch(
   },
 )
 
+const { user } = useUserStore()
+
 const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/hazard-type/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
     ],
   },
@@ -126,6 +131,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     permission: [
       PermissionsEnum.HAZARD_TYPE_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
     ],
   },
@@ -150,8 +156,17 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HAZARD_TYPE_CREATE]">
-        <router-link to="/admin/hazard-type/add" class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.HAZARD_TYPE_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_HazardType') }}
         </router-link>
       </permission-builder>
@@ -161,6 +176,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_DELETE,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -185,9 +201,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/hazard-type/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -232,18 +251,18 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/HazardType`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
           addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HazardType"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/HazardType`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
           addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
+          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No HazardType"
         />
       </template>
     </DataStatus>
@@ -251,7 +270,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

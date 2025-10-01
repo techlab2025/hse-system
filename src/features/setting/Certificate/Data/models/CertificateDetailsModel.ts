@@ -8,7 +8,7 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 export default class CertificateDetailsModel {
   public id: number
   public titles: TitleLocale[]
-  public descriptions: DescriptionLocale[]
+  public descriptions: TitleLocale[]
   public hasCertificate: number
   public allIndustries: number
   public parentId: number
@@ -18,7 +18,7 @@ export default class CertificateDetailsModel {
   constructor(
     id: number,
     titles: TitleLocale[],
-    descriptions: DescriptionLocale[],
+    descriptions: TitleLocale[],
     hasCertificate: number,
     allIndustries: number,
     industries: TitleModel<string>[] = [],
@@ -39,7 +39,7 @@ export default class CertificateDetailsModel {
     return new CertificateDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap(data.titles, data.descriptions).descriptions,
+      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
       data.has_certificate,
       data.all_industries,
       data.industries?.length > 0

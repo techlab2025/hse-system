@@ -25,10 +25,12 @@ import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusEquipmentType from "@/features/setting/EquipmentTypeuages/Presentation/components/EquipmentType/DialogChangeStatusEquipmentType.vue";
+// import DialogChangeStatusEquipmentType from "@/features/setting/EquipmentTypes/Presentation/components/EquipmentType/DialogChangeStatusEquipmentType.vue";
 // const route = useRoute()
 
 const word = ref('')
@@ -96,34 +98,39 @@ watch(
   },
 )
 
+const { user } = useUserStore()
+
 const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/equipment-type/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
   {
     text: t('add_sub_equipment_type'),
     icon: IconEdit,
-    link: `/admin/equipment-type/add/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
   {
     text: t('sub_equipment_types'),
     icon: IconEdit,
-    link: `/admin/equipment-types/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
@@ -134,6 +141,7 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
     ],
   },
@@ -164,12 +172,14 @@ watch(
       />
     </div>
 
-
     <div class="col-span-2 flex justify-end gap-2">
-    <ExportExcel :data="state.data" />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
-        <router-link to="/admin/equipment-type/add" class="btn btn-primary">
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_EquipmentType') }}
         </router-link>
       </permission-builder>
@@ -179,6 +189,7 @@ watch(
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
       PermissionsEnum.EQUIPMENT_TYPE_DELETE,
       PermissionsEnum.EQUIPMENT_TYPE_FETCH,
@@ -203,11 +214,9 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/EquipmentType/edit/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
+                  {{ index + 1 }}
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td>
@@ -253,18 +262,18 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/EquipmentType`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypeuages"
+          description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No EquipmentTypes"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/EquipmentType`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypeuages"
+          description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No EquipmentTypes"
         />
       </template>
     </DataStatus>
@@ -272,7 +281,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </permission-builder>

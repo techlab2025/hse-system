@@ -25,6 +25,8 @@ import IndexTemplateController from '../controllers/indexTemplateController'
 import IndexTemplateParams from '../../Core/params/indexTemplateParams'
 import DeleteTemplateParams from '../../Core/params/deleteTemplateParams'
 import DeleteTemplateController from '../controllers/deleteTemplateController'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 const { t } = useI18n()
 
@@ -88,14 +90,17 @@ watch(
   },
 )
 
+const { user } = useUserStore()
+
 const actionList = (id: number, deleteTemplate: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/template/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${id}`,
     permission: [
       PermissionsEnum.TEMPLATE_UPDATE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.TEMPLATE_ALL,
     ],
   },
@@ -126,6 +131,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     permission: [
       PermissionsEnum.TEMPLATE_DELETE,
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.TEMPLATE_ALL,
     ],
   },
@@ -148,10 +154,13 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel :data="state.data" />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
-        <router-link to="/admin/template/add" class="btn btn-primary">
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Template') }}
         </router-link>
       </permission-builder>
@@ -161,6 +170,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
   <permission-builder
     :code="[
       PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.TEMPLATE_ALL,
       PermissionsEnum.TEMPLATE_DELETE,
       PermissionsEnum.TEMPLATE_FETCH,
@@ -184,9 +194,12 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/template/${item.id}`">{{ index + 1 }} </router-link>
+                  <router-link
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
                 </td>
                 <td data-label="Name">{{ item.title }}</td>
                 <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
@@ -228,7 +241,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/add/template`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Template"
@@ -236,7 +249,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/add/template`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Template"
