@@ -5,7 +5,6 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import type ServiceDetailsModel from '@/features/website/Service/Data/models/ServiceDetailsModel'
 import ServiceModel from '@/features/website/Service/Data/models/ServiceModel'
 
-
 export default class ServiceFeatureDetailsModel {
   public id: number
   public service: TitleInterface | null
@@ -35,7 +34,6 @@ export default class ServiceFeatureDetailsModel {
     this.image = image
     this.alt = alt
     this.ServiceFeatureItems = ServiceFeatureItems
-
   }
 
   static fromMap(data: any): ServiceFeatureDetailsModel {
@@ -43,15 +41,17 @@ export default class ServiceFeatureDetailsModel {
     return new ServiceFeatureDetailsModel(
       data.id,
       data.service ? this.getTitle(data.service ? data.service : null) : null,
-      TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
-      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
+      // TranslationsParams.fromMap(data.titles).titles,
+      // TranslationsParams.fromMap([], [], data.subtitles).subtitles,
+      // TranslationsParams.fromMap([], data.descriptions, []).descriptions,
+      data.titles,
+      data.subtitles,
+      data.descriptions,
       data.image,
       data.alt,
       data.items?.length > 0
         ? data.items?.map((item: any) => ServiceFeatureDetailsModel.fromMap(item))
         : [],
-
     )
   }
 
@@ -62,10 +62,7 @@ export default class ServiceFeatureDetailsModel {
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle
+      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle,
     })
   }
-
-
-
 }

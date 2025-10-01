@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { label } from '@primeuix/themes/aura/metergroup'
-import { computed, ref, watch } from 'vue'
+// import { log } from 'console';
+import { computed, nextTick, ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -64,13 +65,49 @@ watch(
 )
 
 // ✅ Update titles when input changes
-watch(title, (val) => {
+
+// watch(
+//   title,
+//   (val) => {
+//     console.log('Watch triggered with:', val)
+//     console.log('Current titles:', titles.value)
+
+//     const idx = titles.value.findIndex((t) => t.locale === lang.value)
+//     if (idx !== -1) {
+//       const updated = titles.value.map((t, i) =>
+//         i === idx ? { ...t, title: val } : t
+//       )
+
+//       console.log('Before assignment:', titles.value)
+//       titles.value = updated
+//       console.log('After assignment:', titles.value)
+
+//       emit("update:modelValue", updated)
+//       console.log('Emitted:', updated)
+//     }
+//   },
+//   { immediate: true }
+// )
+
+
+
+const updateTitle = (e: Event) => {
   const idx = titles.value.findIndex((t) => t.locale === lang.value)
+
   if (idx !== -1) {
-    titles.value[idx].title = val
+    // remove the object at idx
+    const updated = [
+      ...titles.value.slice(0, idx),
+      ...titles.value.slice(idx + 1)
+    ]
+
+    titles.value = updated
+    emit("update:modelValue", updated)
   }
-  emit('update:modelValue', [...titles.value])
-})
+}
+
+
+
 
 const placeholderText = computed(() => {
   return props.placeholder || props.label || 'Enter text...'
@@ -141,7 +178,7 @@ watch(
     <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
 
     <!-- Regular Input -->
-    <input v-else type="text" v-model="title" v-bind="inputAttrs" required />
+    <input v-else type="text" v-model="title" v-bind="inputAttrs" required  @input="updateTitle"  />
     <!-- Selected Language Info -->
     <span class="select-lang">
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}

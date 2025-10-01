@@ -70,8 +70,9 @@ onMounted(async () => {
 
 const lang = ref<TitleInterface[] | null>([]) // selected language
 
-const updateData = () => {
+const updateData =async () => {
   const translationsParams = new TranslationsParams()
+  console.log(langs.value , "langs.value")
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
@@ -80,6 +81,7 @@ const updateData = () => {
     ? new EditLocationParams(id, translationsParams, Code.value, LocationEnum.COUNTRY)
     : new AddLocationParams(translationsParams, Code.value, LocationEnum.COUNTRY)
 
+  console.log(params, 'Locatio nparams')
   emit('update:data', params)
 }
 
