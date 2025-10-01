@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
+// import TitleInterface from '@/base/Data/Models/title_interface'
 
 // import { ClientOpinionsMap } from '@/constant/ClientOpinions'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -11,10 +11,10 @@ import DatePicker from 'primevue/datepicker'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute } from 'vue-router'
+// import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
+// import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
+// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+// import { useRoute } from 'vue-router'
 import type ClientOpinionDetailsModel from '../../Data/models/ClientOpinionDetailsModel'
 import EditClientOpinionParams from '../../Core/params/editClientOpinionParams'
 import AddClientOpinionParams from '../../Core/params/addClientOpinionParams'
@@ -50,7 +50,7 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
-const allIndustries = ref<boolean>(false)
+// const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
 const image = ref<string>('')
 
@@ -177,6 +177,7 @@ const setImage = async (data: File) => {
       type="text"
       class="input"
       placeholder="name"
+      required
       @input="updateData"
     />
   </div>
@@ -203,6 +204,7 @@ const setImage = async (data: File) => {
       id="rate"
       v-model="rate"
       type="number"
+      required
       min="0"
       max="5"
       class="input"

@@ -125,7 +125,9 @@ watch(
         return existing ? { ...l, title: existing.title } : { ...l }
       })
       industry.value = newData?.industries ?? []
-      Equipment.value = newData?.equipmentType
+      Equipment.value = newData?.equipmentTypeId
+      allIndustries.value = newData?.allIndustries == 1
+      
     }
   },
   { immediate: true },

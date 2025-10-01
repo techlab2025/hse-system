@@ -30,7 +30,7 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
-const id = route.params.parent_id
+const parent_id = ref(route.params.parent_id)
 
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([
@@ -65,7 +65,8 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-    if (user?.user?.languages.length) {
+  // console.log(user.user, 'user')
+  if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
@@ -74,30 +75,21 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexEquipmentTypeController = await IndexLangController.getInstance().getData(params)
+  const indexOrganizationLocationController =
+    await IndexLangController.getInstance().getData(params)
 
-  const response = indexEquipmentTypeController.value
+  const response = indexOrganizationLocationController.value
 
   if (response?.data?.length) {
-    // map backend EquipmentTypes into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
-      // if you already have icons mapped, use EquipmentTypesMap
+      title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
     langDefault.value = [
-      {
-        locale: 'en',
-        icon: USA,
-        title: '',
-      },
-      {
-        locale: 'ar',
-        icon: SA,
-        title: '',
-      },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
@@ -122,18 +114,16 @@ const updateData = () => {
         hasCertificate.value,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        id,
+        +parent_id.value,
         image.value?.file,
-        image.value?.id,
       )
     : new AddEquipmentTypeParams(
         translationsParams,
         hasCertificate.value,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        id,
+        +parent_id.value,
         image.value?.file,
-        image.value?.id,
       )
 
   // console.log(params, 'params')
@@ -205,7 +195,10 @@ const setImage = async (data: File) => {
   </div>
 
   <!-- all_industries -->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label for="all_industries">{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
@@ -230,7 +223,10 @@ const setImage = async (data: File) => {
   </div>
 
   <!--industry  -->
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
