@@ -25,6 +25,8 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import EditAccidentsTypeParams from '../../Core/params/editAccidentsTypeParams'
 import AddAccidentsTypeParams from '../../Core/params/addAccidentsTypeParams'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -61,12 +63,21 @@ const industryController = IndexIndustryController.getInstance()
 // default available AccidentsTypes
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
+const user = useUserStore()
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexAccidentsTypeController = await IndexLangController.getInstance().getData(params)
 
@@ -109,16 +120,17 @@ const updateData = () => {
 
   console.log(allIndustries.value, 'industry')
 
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   const params = props.data?.id
     ? new EditAccidentsTypeParams(
         props.data?.id! ?? 0,
         translationsParams,
-        allIndustries.value ?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
       )
     : new AddAccidentsTypeParams(
         translationsParams,
-        allIndustries.value ?? false,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         // id,
       )
@@ -185,7 +197,10 @@ watch(
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
@@ -195,7 +210,10 @@ watch(
       @change="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

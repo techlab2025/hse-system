@@ -5,7 +5,7 @@ import type AddTemplateParams from './addTemplateParams'
 export default class EditTemplateParams implements Params {
   id: number
   translation: TranslationsParams
-  allIndustries: boolean
+  allIndustries: boolean  | null
   industries: number[]
   image: string
   items: AddTemplateParams[]
@@ -14,7 +14,7 @@ export default class EditTemplateParams implements Params {
   constructor(
     id: number,
     translation: TranslationsParams,
-    allIndustries: boolean,
+    allIndustries: boolean | null,
     industries: number[],
     image: string,
     items: AddTemplateParams[]
@@ -36,7 +36,7 @@ export default class EditTemplateParams implements Params {
 
     data['template_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     data['image'] = this.image

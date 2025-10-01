@@ -8,6 +8,7 @@ import { LangsMap } from '@/constant/langs.ts'
 import EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEmployeeParams'
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
+import { useUserStore } from '@/stores/user'
 
 const Name = ref('')
 const Phone = ref('')
@@ -21,13 +22,22 @@ const props = defineProps<{
 }>()
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
+const user  = useUserStore();
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+
+    if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexOrganizatoinEmployeeController =
     await IndexLangController.getInstance().getData(params)

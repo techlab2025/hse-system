@@ -75,7 +75,7 @@ const router = createRouter({
         },
         {
           path: 'equipment/add/:id?',
-          name: 'Add Equipment ',
+          name: 'Add Equipment',
           component: () => import('../views/Admin/Equipment/AddEquipment.vue'),
         },
         {
@@ -859,7 +859,7 @@ const router = createRouter({
         },
         {
           path: 'organization-employee/add',
-          name: 'Add Organization Employee ',
+          name: 'Add Organization Employee',
           component: () => import('../views/Organization/OrganizationEmployee/AddOrganization.vue'),
         },
 
@@ -877,7 +877,7 @@ const router = createRouter({
         },
         {
           path: 'herikaly/add/:parent_id?',
-          name: 'Add Herikaly ',
+          name: 'Add Herikaly',
           component: () => import('../views/Organization/Herikaly/AddHerikaly.vue'),
         },
 
@@ -894,7 +894,7 @@ const router = createRouter({
         },
         {
           path: 'project-zone/add',
-          name: 'Add Project Zone ',
+          name: 'Add Project Zone',
           component: () => import('../views/Organization/ProjectZone/AddProjectZone.vue'),
         },
 

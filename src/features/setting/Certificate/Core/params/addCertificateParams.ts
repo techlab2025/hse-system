@@ -4,7 +4,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class AddCertificateParams implements Params {
   translation: TranslationsParams
   // hasCertificate: number
-  allIndustries: number
+  allIndustries: number | null
   industries: number[]
   // parentId: number
   image: string
@@ -12,7 +12,7 @@ export default class AddCertificateParams implements Params {
   constructor(
     translation: TranslationsParams,
     // hasCertificate: number,
-    allIndustries: number,
+    allIndustries: number | null,
     industries: number[],
     // parentId: number,
     image: string,
@@ -39,7 +39,7 @@ export default class AddCertificateParams implements Params {
 
     data['translations'] = this.translation.toMap()
     // data['has_certificate'] = this.hasCertificate ? 1 : 0
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     // console.log(this.allIndustries)
     if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
