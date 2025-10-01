@@ -7,6 +7,8 @@ import { useUserStore } from "@/stores/user";
 import errorImage from "@/assets/images/error.png";
 import successImage from "@/assets/images/success-dialog.png";
 import DialogSelector from "@/base/Presentation/Dialogs/dialog_selector";
+import { OrganizationTypeEnum } from "../../Core/Enum/organization_type";
+import LoginOrganizationUseCase from "../../Domain/use_case/login_organization_use_case";
 
 export default class LoginController extends ControllerInterface<UserModel> {
   private static instance: LoginController;
@@ -14,6 +16,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
     super();
   }
   private LoginUseCase = new LoginUseCase();
+  private LoginOrganizationUseCase = new LoginOrganizationUseCase();
 
   static getInstance() {
     if (!this.instance) {
@@ -22,10 +25,18 @@ export default class LoginController extends ControllerInterface<UserModel> {
     return this.instance;
   }
 
-  async login(params: Params, router: any) {
+  async login(params: Params, router: any, activeType: number) {
     try {
-      const dataState: DataState<UserModel> =
-        await this.LoginUseCase.call(params);
+      let dataState: DataState<UserModel>;
+
+      if (activeType === OrganizationTypeEnum.ADMIN) {
+        dataState = await this.LoginUseCase.call(params);
+      } else if (activeType === OrganizationTypeEnum.ORGANIZATION) {
+        dataState = await this.LoginOrganizationUseCase.call(params);
+      } else {
+        throw new Error("Invalid user type");
+      }
+
       this.setState(dataState);
 
       if (this.isDataSuccess()) {
@@ -37,32 +48,28 @@ export default class LoginController extends ControllerInterface<UserModel> {
         });
 
         const userStore = useUserStore();
-        console.log('ww');
-        if (this.state.value.data) {
-          console.log(this.state.value.data, 'this.state.value.data');
 
+        if (this.state.value.data) {
           userStore.setUser(this.state.value.data as UserModel);
-          localStorage.setItem(
-            "token",
-            JSON.stringify(this.state.value.data.apiToken)
-          );
-          localStorage.setItem(
-            "user",
-            JSON.stringify(this.state.value.data)
-          );
+
+          localStorage.setItem("token", JSON.stringify(this.state.value.data.apiToken));
+          localStorage.setItem("user", JSON.stringify(this.state.value.data));
         }
 
-        await router.push({ name: "Home" });
+        await router.push({
+          path: activeType === OrganizationTypeEnum.ADMIN ? "/admin" : "/organization",
+        });
       } else {
-        throw new Error(this.state.value.error?.title);
+        throw new Error(this.state.value.error?.title ?? "Unknown login error");
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: "dialog",
-        titleContent: error,
+        titleContent: error?.message ?? String(error),
         imageElement: errorImage,
         messageContent: null,
       });
     }
   }
+
 }
