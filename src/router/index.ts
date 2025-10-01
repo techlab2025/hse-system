@@ -896,15 +896,15 @@ const router = createRouter({
 
 
 
-// router.beforeEach((to, from, next) => {
-//   const userData = useUserStore()
-//   if (to.name !== 'Login' && !userData.isAuth) {
-//     next({ path: '/login' })
-//   } else if (to.name === 'Login' && userData.isAuth) {
-//     next({ path: userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization' })
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const userData = useUserStore()
+  if (to.name !== 'Login' && !userData.isAuth) {
+    next({ path: '/login' })
+  } else if (to.name === 'Login' && userData.isAuth) {
+    next({ path: userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization' })
+  } else {
+    next()
+  }
+})
 
 export default router
