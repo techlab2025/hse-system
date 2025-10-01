@@ -893,7 +893,7 @@ const user = useUserStore()
                         </router-link>
                       </PermissionBuilder>
                     </li>
-                    <!-- Term -->
+                    <!-- eQuipment Types -->
                     <li>
                       <PermissionBuilder
                         :code="[
@@ -996,7 +996,7 @@ const user = useUserStore()
                         </router-link>
                       </PermissionBuilder>
                     </li>
-                    <!-- Privacy -->
+                    <!-- Organization Employee -->
                     <li>
                       <PermissionBuilder
                         :code="[

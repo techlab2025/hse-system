@@ -7,7 +7,7 @@ export default class implements Params {
   id: number
   translation: TranslationsParams
   hasCertificate: number
-  allIndustries: number
+  allIndustries: number  | null
   industries: number[]
   parentId: number
   // image: string
@@ -17,7 +17,7 @@ export default class implements Params {
     id: number,
     translation: TranslationsParams,
     hasCertificate: number,
-    allIndustries: number,
+    allIndustries: number | null,
     industries: number[],
     parentId: number,
     // image: string,
@@ -47,7 +47,7 @@ export default class implements Params {
 
     data['equipment_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     data['industry_ids'] = this.industries
     data['equipment_type_id'] = this.equipmentTypeId
     if (this.parentId) data['parent_id'] = this.parentId

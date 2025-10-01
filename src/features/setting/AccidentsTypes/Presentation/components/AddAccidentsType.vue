@@ -6,6 +6,7 @@ import HazardTypeForm from '@/features/setting/HazardType/Presentation/component
 import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import AddAccidentsTypeController from '../controllers/addAccidentsTypeController'
+import AccidentsTypeForm from './AccidentsTypeForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -22,7 +23,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAccidentsType">
-    <HazardTypeForm @update:data="setParams" />
+    <AccidentsTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">Add</button>

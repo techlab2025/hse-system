@@ -19,6 +19,8 @@ import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 import { ActionsEnum } from '../../Core/Enum/ActionType'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
 
@@ -62,8 +64,17 @@ const createNewItem = (): Item => ({
   action: null,
 })
 
+const user = useUserStore()
 // --- Fetch available languages
 const fetchLang = async () => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams('', 1, 10, 0)
   const response = (await IndexLangController.getInstance().getData(params)).value
 
@@ -97,9 +108,11 @@ const updateData = () => {
     item.langs.forEach((lang) => {
       itemTranslations.setTranslation('title', lang.locale, lang.title)
     })
+    const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? item.allIndustries : null
+
     const params = new AddTemplateParams(
       itemTranslations,
-      item.allIndustries,
+      AllIndustry,
       item.industry.map((i) => i.id),
       item.requireImage ? 1 : 0,
       item.action?.id,
@@ -107,18 +120,20 @@ const updateData = () => {
     return params
   })
 
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
   const params = props.data?.id
     ? new EditTemplateParams(
         props.data?.id ?? 0,
         translationsParams,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((i) => i.id) ?? [],
         image.value,
         itemsParams,
       )
     : new AddTemplateParams(
         translationsParams,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((i) => i.id),
         image.value,
         null,
@@ -205,13 +220,19 @@ watch(
   </div>
 
   <!-- All Industries -->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" v-model="allIndustries" @change="updateData" />
   </div>
 
   <!-- Industry Selection -->
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
@@ -224,7 +245,7 @@ watch(
     />
   </div>
 
-  <!-- Image 
+  <!-- Image
   <div class="col-span-4">
     <FileUpload
       :initialFileData="image"
@@ -257,12 +278,18 @@ watch(
         />
       </div>
 
-      <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+      <div
+        class="col-span-4 md:col-span-2 input-wrapper check-box"
+        v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+      >
         <label>{{ $t('all_industries') }}</label>
         <input type="checkbox" v-model="item.allIndustries" @change="updateData" />
       </div>
 
-      <div class="col-span-4 md:col-span-2" v-if="!item.allIndustries">
+      <div
+        class="col-span-4 md:col-span-2"
+        v-if="!item.allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+      >
         <CustomSelectInput
           :modelValue="item.industry"
           :controller="industryController"

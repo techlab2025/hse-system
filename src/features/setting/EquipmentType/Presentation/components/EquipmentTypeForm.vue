@@ -20,6 +20,8 @@ import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
 
@@ -56,12 +58,21 @@ const industryController = IndexIndustryController.getInstance()
 // default available EquipmentTypes
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
+const user = useUserStore()
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+    if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexEquipmentTypeController = await IndexLangController.getInstance().getData(params)
 
@@ -102,12 +113,14 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
         props.data?.id! ?? 0,
         translationsParams,
         hasCertificate.value,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         id,
         image.value?.file,
@@ -116,7 +129,7 @@ const updateData = () => {
     : new AddEquipmentTypeParams(
         translationsParams,
         hasCertificate.value,
-        allIndustries.value,
+        AllIndustry,
         industry.value?.map((item) => item.id),
         id,
         image.value?.file,
@@ -192,7 +205,7 @@ const setImage = async (data: File) => {
   </div>
 
   <!-- all_industries -->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="all_industries">{{ $t('all_industries') }}</label>
     <input
       type="checkbox"
@@ -217,7 +230,7 @@ const setImage = async (data: File) => {
   </div>
 
   <!--industry  -->
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
