@@ -33,6 +33,7 @@ static fromMap(data: any): FaqDetailsModel {
     [],
     [],
     [],
+    [],
     data.questions || [],
     data.answers || [],
     []
@@ -41,9 +42,11 @@ static fromMap(data: any): FaqDetailsModel {
   return new FaqDetailsModel(
     data.id,
     translations.questions,
-    translations.answers,
+    translations.answers
   )
 }
+
+
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
