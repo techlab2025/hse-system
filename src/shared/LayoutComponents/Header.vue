@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {  onBeforeUnmount, onMounted, ref } from 'vue'
+import { markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
-import IconMenu from '@/shared/icons/IconMenu.vue'
+// import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
+// import IconMenu from '@/shared/icons/IconMenu.vue'
 import IconLogout from '@/shared/icons/IconLogout.vue'
 import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
@@ -12,6 +12,8 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import ChangeLanguage from './ChangeLanguage.vue'
 import Notification from '../icons/Notification.vue'
 import SearchIcon from '../icons/SearchIcon.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const route = useRoute()
 // console.log(route.name)
@@ -26,77 +28,15 @@ const props = defineProps({
 
 const emit = defineEmits(['open'])
 
-const toggleSidebar = () => {
-  emit('open', !props.open)
-}
-
-const isFullScreen = ref(false)
-
-const toggleFullScreen = () => {
-  if (!isFullScreen.value) {
-    enterFullScreen()
-  } else {
-    exitFullScreen()
-  }
-}
-
-const enterFullScreen = () => {
-  const elem = document.documentElement // Make the entire page full screen
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen()
-  } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen() // Firefox
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen() // Chrome, Safari, and Opera
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen() // IE/Edge
-  }
-}
-
-const exitFullScreen = () => {
-  if (document.exitFullscreen) {
-    document.exitFullscreen()
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen() // Firefox
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen() // Chrome, Safari, and Opera
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen() // IE/Edge
-  }
-}
-
-const updateFullScreenState = () => {
-  isFullScreen.value = !!(
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement
-  )
-}
-
-onMounted(() => {
-  document.addEventListener('fullscreenchange', updateFullScreenState)
-  document.addEventListener('webkitfullscreenchange', updateFullScreenState)
-  document.addEventListener('mozfullscreenchange', updateFullScreenState)
-  document.addEventListener('MSFullscreenChange', updateFullScreenState)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('fullscreenchange', updateFullScreenState)
-  document.removeEventListener('webkitfullscreenchange', updateFullScreenState)
-  document.removeEventListener('mozfullscreenchange', updateFullScreenState)
-  document.removeEventListener('MSFullscreenChange', updateFullScreenState)
-})
-
 const language = ref<string>('')
 
 const router = useRouter()
 // const userStore = useUserStore();
 
-const logout = async () => {
+const logout = () => {
   localStorage.removeItem('user')
-  // await userStore.logout();
-  await router.push('/login')
+  localStorage.removeItem('token')
+  router.push('/login')
 }
 
 const isDropMenuOpen = ref(false)
@@ -106,7 +46,7 @@ const toggleDropMenu = () => {
 }
 
 // fetch user store data
-// const user = useUserStore()?.user;
+const { user } = useUserStore()
 </script>
 
 <template>
@@ -143,16 +83,17 @@ const toggleDropMenu = () => {
         <div class="user cursor-pointer dropdown-trigger" @click="toggleDropMenu">
           <IconArrowDownNav class="drop-icon" />
           <div class="profile-data">
-            <span>Mohab Mohamed</span>
-            <span>Manger</span>
+            <span>{{ user?.name.split(' ')[0] }}</span>
+            <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span>
           </div>
+
           <img alt="user" src="../../assets/images/travel.png" />
 
           <div class="dropdown-menu" v-if="isDropMenuOpen">
             <ul>
               <li @click="logout">
                 <IconLogout />
-                <span> Logout </span>
+                <span> {{ $t('logout') }} </span>
               </li>
             </ul>
           </div>
