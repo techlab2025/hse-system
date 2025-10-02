@@ -6,6 +6,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type TemplateModel from '../../Data/models/TemplateModel'
 import EditTemplateUseCase from '../../Domain/useCase/editTemplateUseCase'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditTemplateController extends ControllerInterface<TemplateModel> {
   private static instance: EditTemplateController
@@ -37,7 +39,8 @@ export default class EditTemplateController extends ControllerInterface<Template
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/templates')
+        const { user } = useUserStore()
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

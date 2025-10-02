@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type FactoryModel from '../../Data/models/FactoryModel'
 import AddFactoryUseCase from '../../Domain/useCase/addFactoryUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class AddFactoryController extends ControllerInterface<FactoryModel> {
   private static instance: AddFactoryController
@@ -36,7 +38,10 @@ export default class AddFactoryController extends ControllerInterface<FactoryMod
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/factories')
+
+        const { user } = useUserStore()
+
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

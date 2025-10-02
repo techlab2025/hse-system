@@ -660,13 +660,13 @@ const router = createRouter({
           component: () => import('../views/Admin/Website/OurSystemStep/EditOurSystemStep.vue'),
         },
 
+
         {
           path: 'permission/:id',
-          name: 'Permission',
+          name: 'Permission Admin',
           component: () => import('../views/Premission.vue'),
 
         },
-
       ],
     },
     {
@@ -900,7 +900,7 @@ const router = createRouter({
 
         {
           path: 'permission/:id',
-          name: 'Permission',
+          name: 'Permission Organization',
           component: () => import('../views/Premission.vue'),
 
         },

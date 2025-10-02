@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import AddAccidentsTypeUseCase from '../../Domain/useCase/addAccidentsTypeUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class AddAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: AddAccidentsTypeController
@@ -36,7 +38,10 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/accidents-types')
+
+        const { user } = useUserStore()
+
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
