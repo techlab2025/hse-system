@@ -111,7 +111,7 @@ const updateData = () => {
         rate.value,
         formatJoinDate(date.value),
         alt.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddClientOpinionParams(
         translationsParams,

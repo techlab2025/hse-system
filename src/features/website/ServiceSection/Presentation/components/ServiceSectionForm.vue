@@ -131,7 +131,8 @@ const updateData = () => {
         props?.data?.id,
         mainTranslations,
         imageAlt.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
+
         SelectedService.value?.id,
       )
     : new AddServiceSectionParams(
@@ -248,16 +249,15 @@ const setImage = async (data: File) => {
     />
   </div>
 
-
   <div class="col-span-4 md:col-span-4">
     <CustomSelectInput
-    :modelValue="SelectedService"
-    :controller="indexServiceController"
-    :params="indexServiceParams"
-    label="Service"
-    id="Service"
-    placeholder="Select Service"
-    @update:modelValue="setServiceSelection"
+      :modelValue="SelectedService"
+      :controller="indexServiceController"
+      :params="indexServiceParams"
+      label="Service"
+      id="Service"
+      placeholder="Select Service"
+      @update:modelValue="setServiceSelection"
     />
   </div>
   <div class="col-span-4 md:col-span-4">

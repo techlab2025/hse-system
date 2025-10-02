@@ -12,6 +12,7 @@
 @use './utils/data_empty';
 //@use "./utils/_explore_btn";
 @use './normalize';
+@use './permission';
 
 //@use "./utils/input_filter";
 //@use "./utils/_section_title";
@@ -122,4 +123,3 @@ body {
   cursor: pointer;
   color: black;
 }
-

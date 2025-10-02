@@ -32,8 +32,8 @@ export default class ProjectZoneDetailsModel {
     return new ProjectZoneDetailsModel(
       data.id,
       data.titles,
-      this.getTitle(data.project),
-      this.getTitle(data.organization_location),
+      data?.project ? this.getTitle(data.project) : null,
+      data?.organization_location ? this.getTitle(data.organization_location) : null,
       data.lat,
       data.lng,
     )
@@ -42,6 +42,9 @@ export default class ProjectZoneDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
+
+
+    if (!data.id) return null
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,

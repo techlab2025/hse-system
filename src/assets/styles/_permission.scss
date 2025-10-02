@@ -1,0 +1,9 @@
+@import './mixins/grid';
+
+.permission {
+  width: 100%;
+  .tabs {
+    width: 100%;
+    @include grid(3, 1fr, 10px);
+  }
+}
