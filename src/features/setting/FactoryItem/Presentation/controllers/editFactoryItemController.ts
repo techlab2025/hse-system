@@ -6,6 +6,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/factoryItemModel.ts'
 import EditFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/editFactoryItemUseCase.ts'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditFactoryItemController extends ControllerInterface<FactoryItemModel> {
   private static instance: EditFactoryItemController
@@ -37,7 +39,10 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/factories-items')
+
+        const { user } = useUserStore()
+
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

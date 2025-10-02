@@ -41,8 +41,8 @@ export default class OrganizationLocationDetailsModel {
     return new OrganizationLocationDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      Number(data.lat),
-      Number(data.lng),
+      data.lat,
+      data.lng,
       this.getLocationsWithKeys(data.location, 4),
       this.getLocationsWithKeys(data.location, 2),
       this.getLocationsWithKeys(data.location, 3),

@@ -4,32 +4,31 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type EquipmentModel from '../../Data/models/equipmentModel'
-import EditEquipmentUseCase from '../../Domain/useCase/editEquipmentUseCase'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useUserStore } from '@/stores/user'
+import type PermissionModel from '../../Data/models/PermissionModel'
+import EditPermissionUseCase from '../../Domain/useCase/editPermissionUseCase'
 
-export default class EditEquipmentController extends ControllerInterface<EquipmentModel> {
-  private static instance: EditEquipmentController
+
+export default class EditPermissionController extends ControllerInterface<PermissionModel> {
+  private static instance: EditPermissionController
 
   private constructor() {
     super()
   }
 
-  private editEquipmentUseCase = new EditEquipmentUseCase()
+  private EditPermissionUseCase = new EditPermissionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditEquipmentController()
+      this.instance = new EditPermissionController()
     }
     return this.instance
   }
 
-  async editEquipment(params: Params, router: any) {
+  async editPermission(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<EquipmentModel> = await this.editEquipmentUseCase.call(params)
+      const dataState: DataState<PermissionModel> = await this.EditPermissionUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -39,10 +38,7 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
           imageElement: successImage,
           messageContent: null,
         })
-
-        const { user } = useUserStore()
-
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+        // await router.push('/organization/permission')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

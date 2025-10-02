@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type TemplateModel from '../../Data/models/TemplateModel'
 import AddTemplateUseCase from '../../Domain/useCase/addTemplateUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class AddTemplateController extends ControllerInterface<TemplateModel> {
   private static instance: AddTemplateController
@@ -36,7 +38,9 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/templates')
+
+        const { user } = useUserStore()
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

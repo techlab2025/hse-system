@@ -37,7 +37,7 @@ export default class EditProjectParams implements Params {
     data['project_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.partner_id) data['partner_id'] = this.partner_id
-    if (this.organization_location_ids?.length > 0) data['organization_location_ids'] = this.organization_location_ids
+    if (this.organization_location_ids?.length > 0) data['organization_location_ids'] = this.organization_location_ids.map((item) => item?.id)
 
     return data
   }

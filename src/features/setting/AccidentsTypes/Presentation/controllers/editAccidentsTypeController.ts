@@ -6,6 +6,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import EditAccidentsTypeUseCase from '../../Domain/useCase/editAccidentsTypeUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class EditAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: EditAccidentsTypeController
@@ -37,7 +39,11 @@ export default class EditAccidentsTypeController extends ControllerInterface<Acc
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/accidents-types')
+
+
+        const { user } = useUserStore()
+
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

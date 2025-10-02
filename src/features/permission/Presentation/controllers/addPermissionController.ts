@@ -6,30 +6,28 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/factoryItemModel.ts'
-import AddFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/addFactoryItemUseCase.ts'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useUserStore } from '@/stores/user'
+import type PermissionModel from '../../Data/models/PermissionModel'
+import AddPermissionteUseCase from '../../Domain/useCase/addPermissionUseCase'
 
-export default class AddFactoryItemController extends ControllerInterface<FactoryItemModel> {
-  private static instance: AddFactoryItemController
+export default class AddPermissionController extends ControllerInterface<PermissionModel> {
+  private static instance: AddPermissionController
   private constructor() {
     super()
   }
-  private AddFactoryUseCase = new AddFactoryItemUseCase()
+  private AddPermissionUseCase = new AddPermissionteUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddFactoryItemController()
+      this.instance = new AddPermissionController()
     }
     return this.instance
   }
 
-  async addFactory(params: Params, router: Router, draft: boolean = false) {
+  async addPermission(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<FactoryItemModel> =
-        await this.AddFactoryUseCase.call(params)
+      const dataState: DataState<PermissionModel> =
+        await this.AddPermissionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -38,10 +36,7 @@ export default class AddFactoryItemController extends ControllerInterface<Factor
           imageElement: successImage,
           messageContent: null,
         })
-
-        const { user } = useUserStore()
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`)
+        // if (!draft) await router.push('/organization/permission')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

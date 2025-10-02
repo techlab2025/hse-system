@@ -8,6 +8,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: AddHazardTypeController
@@ -38,7 +40,11 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/hazard-types')
+
+        const { user } = useUserStore()
+
+
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

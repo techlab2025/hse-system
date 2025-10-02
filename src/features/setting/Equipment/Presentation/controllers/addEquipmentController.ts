@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type EquipmentModel from '@/features/setting/Equipment/Data/models/equipmentModel'
 import AddEquipmentUseCase from '../../Domain/useCase/addEquipmentUseCase'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class AddEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: AddEquipmentController
@@ -36,7 +38,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/admin/equipments')
+
+        const { user } = useUserStore()
+
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

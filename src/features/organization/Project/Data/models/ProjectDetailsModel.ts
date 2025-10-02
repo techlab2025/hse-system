@@ -39,6 +39,10 @@ export default class ProjectDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
+
+    // console.log(data, 'data in get title');
+
+
     return new TitleInterface({
       id: data?.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,

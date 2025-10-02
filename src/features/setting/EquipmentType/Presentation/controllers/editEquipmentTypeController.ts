@@ -6,6 +6,8 @@ import EditEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/us
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: EditEquipmentTypeController
@@ -37,7 +39,9 @@ export default class EditEquipmentTypeController extends ControllerInterface<Equ
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/equipment-types')
+        const { user } = useUserStore()
+
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

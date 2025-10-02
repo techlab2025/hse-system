@@ -192,6 +192,7 @@ watch(
       }
 
       partner_id.value = newData?.partner
+      
       organization_location_ids.value = newData?.organizationLocation
 
       updateData()

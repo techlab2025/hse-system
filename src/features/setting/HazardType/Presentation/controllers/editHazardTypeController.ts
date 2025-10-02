@@ -6,6 +6,8 @@ import EditHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: EditHazardTypeController
@@ -37,7 +39,10 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/Hazard-types')
+
+        const { user } = useUserStore()
+
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
