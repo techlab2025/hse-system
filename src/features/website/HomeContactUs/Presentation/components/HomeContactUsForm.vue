@@ -95,13 +95,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditHomeContactUsParams(
-        props.data?.id!,
-        translationsParams,
-        alt.value,
-        image.value ? (image.value as any).file : '',
-      )
-    : new AddHomeContactUsParams(translationsParams, alt.value, image.value?.file)
+    ? new EditHomeContactUsParams(props.data?.id!, translationsParams, alt.value, image.value)
+    : new AddHomeContactUsParams(translationsParams, alt.value, image.value)
 
   emit('update:data', params)
 }
@@ -155,8 +150,9 @@ watch(
 )
 
 // --- image handling
-const setImage = async (file: File) => {
-  image.value = await filesToBase64(file)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
@@ -206,6 +202,8 @@ const setImage = async (file: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="280 / 278"
     />
   </div>
 </template>

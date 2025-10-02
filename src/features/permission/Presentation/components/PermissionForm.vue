@@ -7,6 +7,7 @@ import type PermissionDetailsModel from '../../Data/models/PermissionDetailsMode
 import EditPermissionParams from '../../Core/params/editPermissionParams'
 import AddPermissionParams from '../../Core/params/addPermissionParams'
 import PermissionTabsType from '../supcomponents/PermissionTabsType.vue'
+import PermissionTabContent from '../supcomponents/PermissionTabContent.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -42,6 +43,7 @@ watch(
 
 <template>
   <div class="permission">
-    <PermissionTabsType />
+    <PermissionTabsType @update:type="updateData" />
+    <PermissionTabContent />
   </div>
 </template>

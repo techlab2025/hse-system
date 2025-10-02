@@ -36,7 +36,7 @@ export default class EditAboutUsCoreParams implements Params {
 
     data['alt'] = this.alt
 
-    if (this.image && this.image.startsWith('data:image')) data['image'] = this.image
+    if (this.image == '' || this.image.startsWith('data:image')) data['image'] = this.image
 
     if (this.items.length > 0) {
       data['items'] = this.items.map((item) => item.toMap())

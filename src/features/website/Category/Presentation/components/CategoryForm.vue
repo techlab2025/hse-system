@@ -6,12 +6,12 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+// import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
+// import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
+// import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
@@ -26,7 +26,7 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
-const id = route.params.parent_id
+// const id = route.params.parent_id
 
 type ImageValue = string | { file?: File; id?: number }
 
@@ -53,8 +53,8 @@ const image = ref<ImageValue>('')
 const alt = ref<string>('')
 
 // industry controller
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-const industryController = IndexIndustryController.getInstance()
+// const industryParams = new IndexIndustryParams('', 0, 10, 1)
+// const industryController = IndexIndustryController.getInstance()
 
 // default available langs from backend
 const langDefault = ref<
@@ -127,18 +127,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditCategoryParams(
-        props.data.id,
-        translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
-        // typeof image.value === 'object' ? image.value.id : undefined,
-        alt.value,
-      )
-    : new AddCategoryParams(
-        translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
-        alt.value,
-      )
+    ? new EditCategoryParams(props.data.id, translationsParams, image.value, alt.value)
+    : new AddCategoryParams(translationsParams, image.value, alt.value)
 
   // console.log(params, 'params')
 
@@ -191,8 +181,10 @@ watch(
 )
 
 // ---------- Helpers ----------
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
@@ -204,7 +196,7 @@ const setImage = async (data: File) => {
       @update:modelValue="(val) => (langs = val)"
     />
   </div>
-<!--
+  <!--
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="$t('description')"
@@ -222,6 +214,8 @@ const setImage = async (data: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1 / 1"
     />
   </div>
 

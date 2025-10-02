@@ -19,7 +19,7 @@ export default class AddSystemRiskTypeParams implements Params {
     data['translations'] = this.translations.toMap()
     data['color'] = this.color
     data['alt'] = this.alt
-    data['image'] = this.image
+  if(this.image)  data['image'] = this.image
     return data
   }
 }

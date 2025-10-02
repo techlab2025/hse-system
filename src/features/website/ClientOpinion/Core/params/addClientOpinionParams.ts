@@ -35,7 +35,7 @@ export default class AddClientOpinionParams implements Params {
     data['rate'] = this.rate
     data['date'] = this.date
     data['alt'] = this.alt
-    data['image'] = this.image
+    if (this.image) data['image'] = this.image
 
     return data
 

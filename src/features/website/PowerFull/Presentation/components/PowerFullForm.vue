@@ -105,13 +105,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditPowerFullParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        alt.value,
-        image.value ? (image.value as any).file : '',
-      )
-    : new AddPowerFullParams(translationsParams, alt.value, image.value?.file)
+    ? new EditPowerFullParams(props.data?.id! ?? 0, translationsParams, alt.value, image.value)
+    : new AddPowerFullParams(translationsParams, alt.value, image.value)
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -174,8 +169,9 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
@@ -231,6 +227,8 @@ const setImage = async (data: File) => {
       @update:modelValue="setImage"
       label="Image"
       id="image"
+      :isCrop="true"
+      :aspectRatio="164 / 126"
       placeholder="Select image"
     />
   </div>

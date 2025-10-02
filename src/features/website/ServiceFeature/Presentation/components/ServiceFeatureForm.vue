@@ -126,7 +126,7 @@ const updateData = () => {
       itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
     })
 
-    const params = new AddServiceFeatureParams(itemTranslations, item.alt_image, item.image?.file)
+    const params = new AddServiceFeatureParams(itemTranslations, item.alt_image, item.image)
     return params
   })
 
@@ -135,7 +135,7 @@ const updateData = () => {
         props.data?.id ?? 0,
         translationsParams,
         alt_image.value,
-        image.value ? (image.value as any).file : '',
+        image.value,
 
         itemsParams,
         service_id.value?.id,
@@ -143,12 +143,12 @@ const updateData = () => {
     : new AddServiceFeatureParams(
         translationsParams,
         alt_image.value,
-        image.value?.file,
+        image.value,
         itemsParams,
         service_id.value?.id,
       )
 
-  console.log(params, 'params From Form')
+  // console.log(params, 'params From Form')
   emit('update:data', params)
 }
 
@@ -184,8 +184,17 @@ const setItemSubLangs = (index: number, data: { locale: string; title: string }[
   updateData()
 }
 
-const setItemImage = async (index: number, file: File) => {
-  items.value[index].image = file ? await filesToBase64(file) : ''
+const setItemImage = async (index: number, file: File | string | null) => {
+  if (!file) {
+    items.value[index].image = ''
+  } else if (file instanceof File) {
+    // File → Base64
+    items.value[index].image = await filesToBase64(file)
+  } else if (typeof file === 'string') {
+    // String (Base64 or URL)
+    items.value[index].image = file
+  }
+
   updateData()
 }
 
@@ -332,6 +341,8 @@ watch(
           :id="`image-${index + 1}`"
           placeholder="Select image"
           :index="index"
+          :aspectRatio="1 / 1"
+          :isCrop="true"
         />
       </div>
 

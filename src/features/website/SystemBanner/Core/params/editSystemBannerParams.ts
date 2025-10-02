@@ -14,7 +14,7 @@ export default class EditSystemBannerParams implements Params {
     const data: Record<string, unknown> = {}
     data['our_system_banner_id'] = this.id
     data['link'] = this.link
-    data['image'] = this.image
+    if (this.image == '' || this.image.startsWith('data:image')) data['image'] = this.image
 
     return data
   }

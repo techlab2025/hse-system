@@ -22,10 +22,10 @@ export default class AddServiceParams implements Params {
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
 
-      data['translations'] = this.translation.toMap()
-      data['alt'] = this.alt
-      data['image'] = this.image
-      data['includes'] = this.includes
+    data['translations'] = this.translation.toMap()
+    data['alt'] = this.alt
+    if (this.image) data['image'] = this.image
+    data['includes'] = this.includes
 
     return data
   }

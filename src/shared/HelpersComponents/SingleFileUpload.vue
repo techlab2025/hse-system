@@ -1,123 +1,180 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref, defineProps, defineEmits, nextTick } from 'vue'
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
+
 import UploadAppend from '@/shared/icons/UploadAppend.vue'
-import TrashIcon from '@/shared/icons/TrashIcon.vue'
 import RemoveImageIcon from '../icons/RemoveImageIcon.vue'
+import Dialog from 'primevue/dialog'
 
 interface Props {
-  modelValue?: string
-  id?: string
-  name?: string
-}
-
-interface Emits {
-  (e: 'update:modelValue', value: string): void
-  (e: 'change', file: File): void
-  (e: 'remove'): void
+  modelValue?: string | File
+  aspectRatio?: number
+  isCrop?: boolean
+  maxSize?: number
+  returnType?: 'base64' | 'file'
+  index?: number | string // ✅ أضفنا index
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  id: 'file',
-  name: 'file',
+  modelValue: '',
+  aspectRatio: 1,
+  isCrop: false,
+  maxSize: 3.5,
+  returnType: 'base64',
+  index: 0,
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string | File, index?: number | string): void
+  (e: 'remove', index?: number | string): void
+}>()
 
-// Track the current file for name and size info
-const currentFile = ref<File | null>(null)
+// state
+const imageSrc = ref<string | null>(null)
+const cropper = ref<Cropper | null>(null)
+const visible = ref(false)
 
+// تحويل Base64 → File
+function base64ToFile(base64: string, fileName: string): File {
+  const arr = base64.split(',')
+  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png'
+  const bstr = atob(arr[1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new File([u8arr], fileName, { type: mime })
+}
+
+// لما يتغير الفايل
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
+  if (!file) return
 
-  if (file) {
-    const maxSize = 3.5 * 1024 * 1024
-    if (file.size > maxSize) {
-      alert('File size exceeds 3.5MB. Please choose a smaller file.')
-      target.value = ''
-      return
-    }
+  if (!file.type.startsWith('image/')) {
+    alert('Please select an image file')
+    return
+  }
+  if (file.size > props.maxSize * 1024 * 1024) {
+    alert(`File size exceeds ${props.maxSize} MB`)
+    return
+  }
 
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file.')
-      target.value = ''
-      return
-    }
+  const reader = new FileReader()
 
-    currentFile.value = file
+  if (props.isCrop) {
+    reader.onload = async (e) => {
+      imageSrc.value = e.target?.result as string
+      visible.value = true
 
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const result = e.target?.result as string
-      emit('update:modelValue', file)
-      emit('change', file)
+      await nextTick()
+      const imageElement = document.getElementById(
+        `cropper-image-${props.index}`,
+      ) as HTMLImageElement
+      if (cropper.value) cropper.value.destroy()
+      if (imageElement) {
+        cropper.value = new Cropper(imageElement, {
+          aspectRatio: +props.aspectRatio,
+          viewMode: 1,
+          dragMode: 'move',
+          cropBoxResizable: false,
+        })
+      }
     }
     reader.readAsDataURL(file)
+  } else {
+    if (props.returnType === 'file') {
+      emit('update:modelValue', file, props.index)
+    } else {
+      reader.onload = (e) => {
+        emit('update:modelValue', e.target?.result as string, props.index)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 }
 
+// crop
+const cropImage = () => {
+  if (cropper.value) {
+    const canvas = cropper.value.getCroppedCanvas()
+    const croppedBase64 = canvas.toDataURL('image/webp')
+
+    if (props.returnType === 'file') {
+      const croppedFile = base64ToFile(croppedBase64, `cropped-image-${props.index}.webp`)
+      emit('update:modelValue', croppedFile, props.index)
+    } else {
+      emit('update:modelValue', croppedBase64, props.index)
+    }
+
+    visible.value = false
+  }
+}
+
+// remove
 const removeImage = () => {
-  emit('update:modelValue', '')
-  emit('remove')
-  currentFile.value = null
-
-  const fileInput = document.getElementById(props.id) as HTMLInputElement
-  if (fileInput) {
-    fileInput.value = ''
-  }
-}
-
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-const fileName = computed(() => {
-  return currentFile.value?.name || 'Uploaded image'
-})
-
-function getFileNameFromUrl(url: string): string {
-  try {
-    return url.split('/').pop() || ''
-  } catch {
-    return ''
-  }
+  emit('update:modelValue', '', props.index)
+  emit('remove', props.index)
+  imageSrc.value = null
 }
 </script>
 
 <template>
   <div class="file-append">
-    <input type="file" hidden :id="id" :name="name" accept="image/*" @change="handleFileChange" />
+    <input
+      type="file"
+      hidden
+      :id="`file-${props.index}`"
+      accept="image/*"
+      @change="handleFileChange"
+    />
 
     <!-- Upload area -->
     <label
-      :for="id"
+      :for="`file-${props.index}`"
       v-if="!modelValue"
       class="flex justify-center gap-4 file-label items-center cursor-pointer"
     >
       <UploadAppend />
-      <p class="text-gray-500">Attach an image no larger than 3.5MB.</p>
+      <p class="text-gray-500">Attach an image no larger than {{ props.maxSize }}MB.</p>
     </label>
 
-    <!-- File preview -->
+    <!-- Preview -->
     <div v-if="modelValue" class="file-preview">
-      <div class="file-info flex justify-between items-center" v-if="currentFile">
-        <div class="file-name text-[#242424]">
-          {{ currentFile.name }}
-        </div>
+      <div class="file-info flex justify-between items-center">
+        <div class="file-name text-[#242424]">Image selected</div>
         <RemoveImageIcon @click="removeImage" class="cursor-pointer close-icon" />
       </div>
-      <div class="file-info flex justify-between items-center" v-else-if="modelValue">
-        <div class="file-name text-[#242424]">
-          {{ getFileNameFromUrl(modelValue) }}
-        </div>
-        <RemoveImageIcon @click="removeImage" class="cursor-pointer close-icon" />
-      </div>
+
+      <img
+        v-if="typeof modelValue === 'string'"
+        :src="modelValue"
+        alt="Preview"
+        class="mt-2 max-h-48 rounded"
+      />
+      <img
+        v-else-if="modelValue instanceof File"
+        :src="URL.createObjectURL(modelValue)"
+        alt="Preview"
+        class="mt-2 max-h-48 rounded"
+      />
     </div>
+
+    <!-- Dialog for crop -->
+    <Dialog
+      v-if="props.isCrop"
+      v-model:visible="visible"
+      dismissableMask
+      modal
+      :style="{ width: '40rem' }"
+    >
+      <div>
+        <img :id="`cropper-image-${props.index}`" :src="imageSrc" alt="Cropper" class="w-full" />
+        <button @click="cropImage" class="btn btn-primary mt-4">Crop</button>
+      </div>
+    </Dialog>
   </div>
 </template>
-
-<style scoped lang="scss"></style>
