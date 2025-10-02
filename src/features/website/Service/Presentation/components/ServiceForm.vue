@@ -231,7 +231,7 @@ const setImage = async (file: File) => {
       :modelValue="langsButton"
       :label="$t('Description')"
       @update:modelValue="setLangsButton"
-      :type="'textarea'"
+      type="textarea"
     />
   </div>
 
