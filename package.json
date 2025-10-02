@@ -25,6 +25,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.3",
     "pinia": "^3.0.3",
+    "cropperjs": "^1.6.2",
     "pinia-plugin-persistedstate": "^4.5.0",
     "primevue": "^4.3.9",
     "quill": "^2.0.3",

@@ -12,7 +12,7 @@ export default class AddSystemBannerParams implements Params {
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
     data['link'] = this.link
-    data['image'] = this.image
+    if (this.image) data['image'] = this.image
 
     return data
   }

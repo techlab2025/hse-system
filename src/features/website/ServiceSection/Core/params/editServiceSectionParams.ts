@@ -20,7 +20,7 @@ export default class EditServiceSectionParams implements Params {
     data['service_section_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
-    data['image'] = this.image
+    if (this.image == '' || this.image.startsWith('data:image')) data['image'] = this.image
 
     return data
   }

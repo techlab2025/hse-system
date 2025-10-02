@@ -115,8 +115,8 @@ const updateData = () => {
   })
 
   const params = props?.data?.id
-    ? new EditSystemBannerParams(props?.data?.id, imageLink.value, image.value.file || props.data?.image)
-    : new AddSystemBannerParams(imageLink.value, image.value.file)
+    ? new EditSystemBannerParams(props?.data?.id, imageLink.value, image.value)
+    : new AddSystemBannerParams(imageLink.value, image.value)
 
   emit('update:data', params)
 }
@@ -139,16 +139,10 @@ const UpdateAltImage = (data: Event) => {
 
 const image = ref<string>('')
 
-const setImage = async (data: File) => {
-  try {
-    const base64Image = await filesToBase64(data)
-    image.value = base64Image as string
-    console.log(image.value, 'image.value')
-    updateData()
-  } catch (error) {
-    console.error('Error converting image to base64:', error)
-    image.value = ''
-  }
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
@@ -173,6 +167,8 @@ const setImage = async (data: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1372 / 522"
     />
   </div>
 </template>

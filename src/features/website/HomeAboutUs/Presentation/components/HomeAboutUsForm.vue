@@ -110,7 +110,7 @@ const updateData = () => {
       itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
     })
 
-    const params = new AddHomeAboutUsParams(itemTranslations, item.alt_image, item.image?.file)
+    const params = new AddHomeAboutUsParams(itemTranslations, item.alt_image, item.image)
     return params
   })
 
@@ -119,11 +119,11 @@ const updateData = () => {
         props.data?.id ?? 0,
         translationsParams,
         alt_image.value,
-        image.value ? (image.value as any).file : '',
+        image.value,
 
         itemsParams,
       )
-    : new AddHomeAboutUsParams(translationsParams, alt_image.value, image.value?.file, itemsParams)
+    : new AddHomeAboutUsParams(translationsParams, alt_image.value, image.value, itemsParams)
 
   emit('update:data', params)
 }
@@ -133,8 +133,9 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
-const setImage = async (file: File) => {
-  image.value = file ? await filesToBase64(file) : ''
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 
@@ -160,8 +161,17 @@ const setItemSubLangs = (index: number, data: { locale: string; title: string }[
   updateData()
 }
 
-const setItemImage = async (index: number, file: File) => {
-  items.value[index].image = file ? await filesToBase64(file) : ''
+const setItemImage = async (index: number, file: File | string | null) => {
+  if (!file) {
+    items.value[index].image = ''
+  } else if (file instanceof File) {
+    // File → Base64
+    items.value[index].image = await filesToBase64(file)
+  } else if (typeof file === 'string') {
+    // String (Base64 or URL)
+    items.value[index].image = file
+  }
+
   updateData()
 }
 
@@ -258,6 +268,9 @@ watch(
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1280 / 513"
+      :index="0"
     />
   </div>
 
@@ -304,7 +317,9 @@ watch(
           :label="`Image-${index + 1}`"
           :id="`image-${index + 1}`"
           placeholder="Select image"
-          :index="index"
+          :index="index + 1"
+          :isCrop="true"
+          :aspectRatio="1 / 1"
         />
       </div>
 

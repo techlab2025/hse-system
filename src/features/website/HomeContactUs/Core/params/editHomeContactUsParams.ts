@@ -26,7 +26,7 @@ export default class EditHomeContactUsParams implements Params {
     data['home_contact_us_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
-    if (this.image && this.image.startsWith('data:image')) data['image'] = this.image
+    if (this.image == '' || this.image.startsWith('data:image')) data['image'] = this.image
 
     return data
 

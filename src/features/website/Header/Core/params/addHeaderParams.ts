@@ -23,7 +23,7 @@ export default class AddHeaderParams implements Params {
 
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
-    data['image'] = this.image
+    if (this.image) data['image'] = this.image
 
     return data
 
