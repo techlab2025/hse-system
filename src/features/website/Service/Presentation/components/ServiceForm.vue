@@ -220,13 +220,13 @@ const setImage = async (data: File | string) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
-      type="text"
       :langs="langDefault"
       :modelValue="langsButton"
       :label="$t('Description')"
       @update:modelValue="setLangsButton"
+      type="textarea"
     />
   </div>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddPartner from '@/features/organization/Partner/Presentation/components/AddPartner.vue'
+import AddPartner from '@/features/Organization/Partner/Presentation/components/AddPartner.vue'
 </script>
 
 <template>

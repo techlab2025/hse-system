@@ -201,7 +201,7 @@ const changeStatusService = async (id: number) => {
                 </td>
                 <td data-label="title">{{ wordSlice(item.title, 20) }}</td>
                 <td data-label="subtitle">{{ wordSlice(item.subtitle, 25) || '--' }}</td>
-                <td data-label="description">{{ wordSlice(item.description, 50) || '--' }}</td>
+                <td data-label="description" v-html="wordSlice(item.description, 50)"></td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
