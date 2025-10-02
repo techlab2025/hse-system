@@ -3,6 +3,8 @@
 // import { log } from 'console';
 import { computed, nextTick, ref, watch } from 'vue'
 
+import Editor from 'primevue/editor';
+
 const props = withDefaults(
   defineProps<{
     langs: { title: string; locale: string; icon?: any }[]
@@ -154,7 +156,7 @@ watch(
 
     <!-- Title Input -->
 
-    <textarea v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs"></textarea>
+    <Editor v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
 
     <!-- Regular Input -->
     <input v-else type="text" v-model="title" v-bind="inputAttrs" required />
