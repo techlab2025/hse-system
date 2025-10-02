@@ -138,7 +138,7 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddCertificateParams(
         translationsParams,

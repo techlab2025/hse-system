@@ -842,6 +842,18 @@ const router = createRouter({
           component: () => import('../views/Admin/Template/IndexTemplate.vue'),
         },
 
+          {
+          path: 'template/add',
+          name: 'Add Template Organization',
+          component: () => import('../views/Admin/Template/AddTemplate.vue'),
+        },
+
+        {
+          path: 'template/:id',
+          name: 'Edit Template Organization',
+          component: () => import('../views/Admin/Template/EditTemplate.vue'),
+        },
+
         // Organization Employee
 
         {

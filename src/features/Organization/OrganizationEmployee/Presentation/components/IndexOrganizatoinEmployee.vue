@@ -190,7 +190,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/organization-employee/${item.id}`"
+                  <router-link :to="`/organization/organization-employee/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
