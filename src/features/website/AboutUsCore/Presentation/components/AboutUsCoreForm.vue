@@ -120,7 +120,7 @@ const updateData = () => {
         props.data?.id ?? 0,
         translationsParams,
         alt_image.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
         itemsParams,
       )
     : new AddAboutUsCoreParams(translationsParams, alt_image.value, image.value?.file, itemsParams)

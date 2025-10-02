@@ -115,7 +115,7 @@ const updateData = () => {
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
         industry.value?.map((item) => item.id),
         +parent_id.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddEquipmentTypeParams(
         translationsParams,

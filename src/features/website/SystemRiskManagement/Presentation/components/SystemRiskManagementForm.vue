@@ -86,7 +86,7 @@ const updateData = () => {
         props.data?.id! ?? 0,
         translationsParams,
         alt.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddSystemRiskManagementParams(translationsParams, alt.value, image.value?.file)
 
@@ -127,8 +127,6 @@ watch(
       } else {
         langsSub.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
-
-
 
       alt.value = newData?.alt ?? ''
       image.value = newData?.image ?? ''

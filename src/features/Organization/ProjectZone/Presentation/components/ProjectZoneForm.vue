@@ -25,6 +25,7 @@ import IndexProjectController from '@/features/Organization/Project/Presentation
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
 import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
+import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsModel'
 
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
@@ -181,11 +182,11 @@ watch(
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="lat">Lat</label>
-    <input type="text" id="lat" v-model="Lat" class="input" @change="updateData" />
+    <input type="number" id="lat" v-model="Lat" class="input" step="any" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="long">long</label>
-    <input type="text" id="long" v-model="Long" class="input" @change="updateData" />
+    <input type="number" id="long" v-model="Long" class="input" step="any" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2">
     <!--    :controller="industryController"

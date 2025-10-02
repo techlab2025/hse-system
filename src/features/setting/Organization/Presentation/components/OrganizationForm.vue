@@ -95,7 +95,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id), // selected language id

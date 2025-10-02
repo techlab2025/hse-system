@@ -22,7 +22,6 @@ import type AboutUsFeatureDetailsModel from '../../Data/models/AboutUsFeatureDet
 import EditAboutUsFeatureParams from '../../Core/params/editAboutUsFeatureParams'
 import AddAboutUsFeatureParams from '../../Core/params/addAboutUsFeatureParams'
 
-
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -110,7 +109,7 @@ const updateData = () => {
         props.data?.id! ?? 0,
         translationsParams,
         alt.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddAboutUsFeatureParams(translationsParams, alt.value, image.value?.file)
 
@@ -201,8 +200,6 @@ const setImage = async (data: File) => {
       @update:modelValue="setLangsSub"
     />
   </div>
-
-
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="alt">

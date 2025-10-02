@@ -95,7 +95,12 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditHomeContactUsParams(props.data?.id!, translationsParams, alt.value, image.value?.file)
+    ? new EditHomeContactUsParams(
+        props.data?.id!,
+        translationsParams,
+        alt.value,
+        image.value ? (image.value as any).file : '',
+      )
     : new AddHomeContactUsParams(translationsParams, alt.value, image.value?.file)
 
   emit('update:data', params)

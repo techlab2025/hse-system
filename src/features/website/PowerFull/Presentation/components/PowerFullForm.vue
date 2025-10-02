@@ -109,7 +109,7 @@ const updateData = () => {
         props.data?.id! ?? 0,
         translationsParams,
         alt.value,
-        image.value?.file,
+        image.value ? (image.value as any).file : '',
       )
     : new AddPowerFullParams(translationsParams, alt.value, image.value?.file)
 

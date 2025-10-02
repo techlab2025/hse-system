@@ -99,7 +99,12 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditHeaderParams(props.data?.id! ?? 0, translationsParams, alt.value, image.value?.file)
+    ? new EditHeaderParams(
+        props.data?.id! ?? 0,
+        translationsParams,
+        alt.value,
+        image.value ? (image.value as any).file : '',
+      )
     : new AddHeaderParams(translationsParams, alt.value, image.value?.file)
 
   // console.log(params, 'params')
