@@ -115,7 +115,7 @@ const updateData = () => {
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
         industry.value?.map((item) => item.id),
         +parent_id.value,
-        image.value ? (image.value as any).file : '',
+        image.value,
       )
     : new AddEquipmentTypeParams(
         translationsParams,
@@ -123,7 +123,7 @@ const updateData = () => {
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
         industry.value?.map((item) => item.id),
         +parent_id.value,
-        image.value?.file,
+        image.value,
       )
 
   // console.log(params, 'params')
@@ -168,10 +168,9 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (data: File) => {
-  // console.log(data, 'data image')
-  image.value = await filesToBase64(data)
-  console.log(image.value, 'image')
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
