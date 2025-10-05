@@ -34,6 +34,7 @@ const toggleModuleSelectAll = (module: any, event: Event) => {
   module.permissions.forEach((group: any) => {
     group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
   })
+
   emit('update:permissions', getSelectedPermissions())
 }
 
@@ -47,12 +48,10 @@ const togglePermission = (perm: any, event: Event) => {
   <div class="premission-cards">
     <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
       <div class="header">
-        <span>{{ item.label }}</span>
-
         <label class="select_all">
-          <input type="checkbox" @change="toggleModuleSelectAll(item, $event)" />
+          <input type="checkbox" :id="item.label" @change="toggleModuleSelectAll(item, $event)" />
           <span class="checkmark"></span>
-          <span>{{ $t('select_all') }}</span>
+          <span :for="item.label">{{ item.label }}</span>
         </label>
       </div>
 

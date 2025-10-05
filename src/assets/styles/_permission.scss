@@ -55,16 +55,11 @@
       font-size: var(--md-size-2);
       font-family: 'Bold';
       color: var(--PrimaryColor);
-      @include flex(row, wrap, space-between, center);
+      gap: 5px;
       .select_all {
-        @include flex(row-reverse, wrap, center, center);
-        gap: 8px;
+        @include flex(row, wrap, flex-end, center);
 
-        span {
-          color: #9ca3af;
-          font-family: 'Bold';
-          font-size: var(--sm-size);
-        }
+        gap: 5px;
 
         input {
           appearance: none;
@@ -113,6 +108,8 @@
     .tab-content {
       @include grid(3, 1fr, 10px);
       gap: 10px;
+      height: 50vh;
+      overflow-y: auto;
 
       @media screen and (max-width: 1350px) {
         @include grid(2, 1fr, 10px);
@@ -150,7 +147,7 @@
             span {
               color: #9ca3af;
               font-family: 'Bold';
-              font-size: var(--sm-size);
+              font-size: var(--xs-size);
             }
 
             input {

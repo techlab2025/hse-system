@@ -8,6 +8,7 @@ import type Params from '@/base/core/params/params'
 import ShowPermissionteController from '../controllers/showPermissionController'
 import ShowPermissionParams from '../../Core/params/showPermissionParams'
 import EditPermissionController from '../controllers/editPermissionController'
+import { getOrganizationType } from '../Helpers/organization_type'
 
 const route = useRoute()
 const router = useRouter()
@@ -16,8 +17,12 @@ const params = ref<Params | null>(null)
 
 const showPermissionController = ShowPermissionteController.getInstance()
 const state = ref(showPermissionController.state.value)
+
+const baseSegment = `${route.path.split('/')[1]}`
+const type = getOrganizationType(baseSegment)
+
 const fetchPermissionDetails = async () => {
-  const PermissionParams = new ShowPermissionParams(Number(id))
+  const PermissionParams = new ShowPermissionParams(type, +route.params.id)
 
   await showPermissionController.showPermission(PermissionParams)
 }
@@ -56,7 +61,7 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditPermission">
+      <form @submit.prevent="EditPermission">
         <PermissionForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>

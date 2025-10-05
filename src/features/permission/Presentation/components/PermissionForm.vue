@@ -39,6 +39,13 @@ const updateData = () => {
   // console.log(params)
   emit('update:data', params)
 }
+
+onMounted(() => {
+  if (props.data) {
+    allPermission.value = props.data.permissions || []
+    updateData()
+  }
+})
 </script>
 
 <template>
