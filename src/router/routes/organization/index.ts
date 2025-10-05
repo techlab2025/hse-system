@@ -3,7 +3,7 @@ import { partnerRoutes } from '@/router/routes/organization/partner.ts'
 import { projectRoutes } from '@/router/routes/organization/project.ts'
 import { projectZoneRoutes } from '@/router/routes/organization/projectZone.ts'
 import { organizationEmployeeRoutes } from '@/router/routes/organization/organizationEmployee.ts'
-import { organizationEmployeeRoutes } from '@/router/routes/routes/organization/orgnaztionEmployee.ts'
+import { organizationLocationRoutes } from '@/router/routes/organization/organizationLocation.ts'
 import { herikalyRoutes } from '@/router/routes/organization/herikaly.ts'
 
 export const organizationRoutes: RouteRecordRaw[] = [
@@ -16,7 +16,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...projectRoutes,
   ...projectZoneRoutes,
   ...organizationEmployeeRoutes,
-  ...organizationEmployeeRoutes,
+  ...organizationLocationRoutes,
   ...herikalyRoutes,
   {
     path: 'permission/:id',

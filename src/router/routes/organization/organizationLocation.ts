@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from '@/router/types'
 
-export const organizationEmployeeRoutes: RouteRecordRaw[] = [
+export const organizationLocationRoutes: RouteRecordRaw[] = [
   {
     path: 'organization-locations',
     name: 'Organization Locations',

@@ -1,30 +1,47 @@
 <script setup lang="ts">
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import AdminPermission from '@/shared/icons/AdminPermission.vue'
-import OrganizationPermission from '@/shared/icons/OrganizationPermission.vue'
-import { useUserStore } from '@/stores/user'
+import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
+import { OrgPermissions } from '@/constant/organizationPremission'
 
-const { user } = useUserStore()
+const permissionRoots: PermissionItem[] = [adminPermissions, OrgPermissions]
+
+const selectAll = (event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked
+  const checkboxes = document.querySelectorAll(
+    '.card-body input[type="checkbox"]',
+  ) as NodeListOf<HTMLInputElement>
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = isChecked
+  })
+}
+
+const webSitePremission = permissionRoots.find((item) => item.label === 'Website')
+
+console.log(webSitePremission)
 </script>
 
 <template>
-  <div class="tab-content">
-    <div class="card">
-      <div class="card-header">
-        <h5>x-Card</h5>
-        <div class="select_all">
-          <label for="selectAll">
-            {{ $t('select_all') }}
-          </label>
-          <input type="checkbox" id="selectAll" />
+  <div class="premission-cards">
+    <div class="cards" v-for="item in permissionRoots" :key="item.code">
+      <div class="header">{{ item.label }}</div>
+      <div class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h5>X-Card</h5>
+
+            <label class="select_all" for="selectAll">
+              <input type="checkbox" id="selectAll" @change="selectAll" />
+              <span class="checkmark"></span>
+              <span> {{ $t('select_all') }}</span>
+            </label>
+          </div>
+          <hr />
+          <div class="card-body">
+            <label :for="index" v-for="(item, index) in 8" :key="item">
+              <input type="checkbox" :name="index" :id="index" />
+              <span> add </span>
+            </label>
+          </div>
         </div>
-      </div>
-      <hr />
-      <div class="card-body">
-        <label for="admin">
-          <input type="checkbox" name="admin" id="admin" />
-          <span> admin </span>
-        </label>
       </div>
     </div>
   </div>
