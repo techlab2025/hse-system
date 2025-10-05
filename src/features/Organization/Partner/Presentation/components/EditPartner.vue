@@ -5,7 +5,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import PartnerForm from '@/features/Organization/Partner/Presentation/components/PartnerForm.vue'
 import type Params from '@/base/core/params/params'
-import ShowPartnerteController from '../controllers/showPartnerController'
+import ShowPartnertController from '../controllers/showPartnerController'
 import ShowPartnerParams from '../../Core/params/showPartnerParams'
 import EditPartnerController from '../controllers/editPartnerController'
 
@@ -14,7 +14,7 @@ const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showPartnerController = ShowPartnerteController.getInstance()
+const showPartnerController = ShowPartnertController.getInstance()
 const state = ref(showPartnerController.state.value)
 const fetchPartnerDetails = async () => {
   const PartnerParams = new ShowPartnerParams(Number(id))
