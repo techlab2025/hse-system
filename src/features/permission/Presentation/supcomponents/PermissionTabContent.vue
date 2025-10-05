@@ -1,44 +1,87 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
-import { OrgPermissions } from '@/constant/organizationPremission'
 
-const permissionRoots: PermissionItem[] = [adminPermissions, OrgPermissions]
+const emit = defineEmits<{
+  (e: 'update:permissions', value: string[]): void
+}>()
 
-const selectAll = (event: Event) => {
-  const isChecked = (event.target as HTMLInputElement).checked
-  const checkboxes = document.querySelectorAll(
-    '.card-body input[type="checkbox"]',
-  ) as NodeListOf<HTMLInputElement>
-  checkboxes.forEach((checkbox) => {
-    checkbox.checked = isChecked
+const permissionRoots = ref<PermissionItem>(adminPermissions)
+
+const getSelectedPermissions = (): string[] => {
+  const selected: string[] = []
+  permissionRoots.value.permissions.forEach((module: any) => {
+    module.permissions.forEach((group: any) => {
+      group.permissions?.forEach((perm: any) => {
+        if (perm.checked) selected.push(perm.code)
+      })
+    })
   })
+  return selected
 }
 
-const webSitePremission = permissionRoots.find((item) => item.label === 'Website')
+const toggleGroupSelectAll = (group: any, event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked
+  group.permissions.forEach((perm: any) => {
+    perm.checked = isChecked
+    perm.permissions?.forEach((sub: any) => (sub.checked = isChecked))
+  })
+  emit('update:permissions', getSelectedPermissions())
+}
 
-console.log(webSitePremission)
+const toggleModuleSelectAll = (module: any, event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked
+  module.permissions.forEach((group: any) => {
+    group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
+  })
+  emit('update:permissions', getSelectedPermissions())
+}
+
+const togglePermission = (perm: any, event: Event) => {
+  perm.checked = (event.target as HTMLInputElement).checked
+  emit('update:permissions', getSelectedPermissions())
+}
 </script>
 
 <template>
   <div class="premission-cards">
-    <div class="cards" v-for="item in permissionRoots" :key="item.code">
-      <div class="header">{{ item.label }}</div>
-      <div class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h5>X-Card</h5>
+    <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
+      <div class="header">
+        <span>{{ item.label }}</span>
 
-            <label class="select_all" for="selectAll">
-              <input type="checkbox" id="selectAll" @change="selectAll" />
+        <label class="select_all">
+          <input type="checkbox" @change="toggleModuleSelectAll(item, $event)" />
+          <span class="checkmark"></span>
+          <span>{{ $t('select_all') }}</span>
+        </label>
+      </div>
+
+      <div class="tab-content">
+        <div class="card" v-for="prem in item.permissions" :key="prem.code">
+          <div class="card-header">
+            <h5>{{ prem.label }}</h5>
+
+            <label class="select_all">
+              <input type="checkbox" @change="toggleGroupSelectAll(prem, $event)" />
               <span class="checkmark"></span>
-              <span> {{ $t('select_all') }}</span>
+              <span>{{ $t('select_all') }}</span>
             </label>
           </div>
+
           <hr />
+
           <div class="card-body">
-            <label :for="index" v-for="(item, index) in 8" :key="item">
-              <input type="checkbox" :name="index" :id="index" />
-              <span> add </span>
+            <label
+              v-for="premAction in prem.permissions"
+              :key="premAction.code"
+              class="permission-item"
+            >
+              <input
+                type="checkbox"
+                v-model="premAction.checked"
+                @change="togglePermission(premAction, $event)"
+              />
+              <span>{{ premAction.label }}</span>
             </label>
           </div>
         </div>

@@ -17,11 +17,12 @@ const addPermission = async () => {
 }
 const setParams = (data: Params) => {
   params.value = data
+  console.log(data)
 }
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPermission">
+  <form @submit.prevent="addPermission">
     <PermissionForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">

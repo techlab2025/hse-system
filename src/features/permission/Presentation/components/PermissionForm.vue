@@ -1,13 +1,17 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 
-import TranslationsParams from '@/base/core/params/translations_params.ts'
+// import TranslationsParams from '@/base/core/params/translations_params.ts'
 
 import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
-import EditPermissionParams from '../../Core/params/editPermissionParams'
-import AddPermissionParams from '../../Core/params/addPermissionParams'
-import PermissionTabsType from '../supcomponents/PermissionTabsType.vue'
+// import EditPermissionParams from '../../Core/params/editPermissionParams'
+// import AddPermissionParams from '../../Core/params/addPermissionParams'
+// import PermissionTabsType from '../supcomponents/PermissionTabsType.vue'
 import PermissionTabContent from '../supcomponents/PermissionTabContent.vue'
+import AddPermissionParams from '../../Core/params/addPermissionParams'
+import { useRoute } from 'vue-router'
+import { getOrganizationPermissionLabel } from '../Helpers/organization_permission'
+import { getOrganizationType } from '../Helpers/organization_type'
 
 const emit = defineEmits(['update:data'])
 
@@ -15,35 +19,31 @@ const props = defineProps<{
   data?: PermissionDetailsModel
 }>()
 
-// ---------- Emit update ----------
-const updateData = () => {
-  const translationsParams = new TranslationsParams()
+const route = useRoute()
 
-  const params = props.data?.id
-    ? new EditPermissionParams(+route.params.id, translationsParams)
-    : new AddPermissionParams(translationsParams)
+const baseSegment = `${route.path.split('/')[1]}`
 
-  // console.log(params, 'params')
+const allPermission = getOrganizationPermissionLabel(baseSegment)
 
-  emit('update:data', params)
+const setPermission = (val) => {
+  allPermission.value = val
+  updateData()
 }
 
-// ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
-watch(
-  [() => props.data],
-  ([newData]) => {
-    // titles
+const type = getOrganizationType(baseSegment)
 
-    updateData()
-  },
-  { immediate: true },
-)
+// ---------- Emit update ----------
+const updateData = () => {
+  // const translationsParams = new TranslationsParams()
+  const params = new AddPermissionParams(type, +route.params.id, allPermission.value)
+  // console.log(params)
+  emit('update:data', params)
+}
 </script>
 
 <template>
   <div class="permission">
-    <PermissionTabsType @update:type="updateData" />
-    <PermissionTabContent />
+    <!-- <PermissionTabsType @update:type="updateData" />-->
+    <PermissionTabContent @update:permissions="setPermission" />
   </div>
 </template>

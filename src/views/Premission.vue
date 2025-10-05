@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PermissionForm from '@/features/permission/Presentation/components/PermissionForm.vue'
+import PermissionForm from '@/features/permission/Presentation/components/AddPermission.vue'
 </script>
 
 <template>

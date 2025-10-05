@@ -55,11 +55,74 @@
       font-size: var(--md-size-2);
       font-family: 'Bold';
       color: var(--PrimaryColor);
+      @include flex(row, wrap, space-between, center);
+      .select_all {
+        @include flex(row-reverse, wrap, center, center);
+        gap: 8px;
+
+        span {
+          color: #9ca3af;
+          font-family: 'Bold';
+          font-size: var(--sm-size);
+        }
+
+        input {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          width: 0;
+          height: 0;
+          position: absolute;
+          opacity: 0;
+        }
+
+        .checkmark {
+          width: 18px;
+          height: 18px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          display: inline-block;
+          position: relative;
+          transition: all 0.2s ease;
+
+          &::after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+          }
+        }
+
+        input:checked + .checkmark {
+          background-color: var(--PrimaryColor);
+          border-color: var(--PrimaryColor);
+
+          &::after {
+            display: block;
+          }
+        }
+      }
     }
 
     .tab-content {
-      @include grid(2, 1fr, 10px);
+      @include grid(3, 1fr, 10px);
       gap: 10px;
+
+      @media screen and (max-width: 1350px) {
+        @include grid(2, 1fr, 10px);
+        gap: 10px;
+      }
+
+      @media screen and (max-width: 900px) {
+        @include grid(1, 1fr, 10px);
+        gap: 10px;
+      }
 
       .card {
         border-radius: 24px;
@@ -87,7 +150,7 @@
             span {
               color: #9ca3af;
               font-family: 'Bold';
-              font-size: var(--md-size);
+              font-size: var(--sm-size);
             }
 
             input {
@@ -137,6 +200,11 @@
         .card-body {
           width: 100%;
           @include grid(3, 1fr);
+
+          @media screen and (max-width: 900px) {
+            @include grid(2, 1fr);
+          }
+
           gap: 7px;
 
           label {
@@ -147,7 +215,7 @@
             span {
               background-color: var(--BgWhite);
               border-radius: 50rem;
-              padding: 6px 30px;
+              padding: 6px 10px;
               width: 100%;
               transition: all 0.2s ease;
             }
