@@ -1,9 +1,63 @@
 @import './mixins/grid';
+@import './mixins/flex';
 
 .permission {
   width: 100%;
   .tabs {
     width: 100%;
     @include grid(3, 1fr, 10px);
+    gap: 10px;
+
+    .tab {
+      padding: 10px;
+      background-color: #f6f9ff;
+      width: 100%;
+      position: relative;
+
+      input {
+        position: absolute;
+        top: 14px;
+        width: 15px;
+        height: 15px;
+        left: 10px;
+      }
+
+      label {
+        @include flex(row, wrap, space-around, center);
+        .card-content {
+          @include flex(column, wrap, start, start);
+          margin-top: 1rem;
+          gap: 5px;
+          h4 {
+            color: #121212;
+            font-size: 22px;
+            font-weight: 600;
+          }
+          p {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  .tab-content {
+    @include grid(2, 1fr, 10px);
+    margin-top: 2rem;
+    gap: 10px;
+    .card {
+      border-radius: 24px;
+      background: #f8f9fb;
+      padding: 12px;
+      @include flex(column, wrap, start, start);
+      width: 100%;
+      .card-header {
+        width: 100%;
+        @include flex(row, wrap, space-between, start);
+      }
+
+      gap: 20px;
+    }
   }
 }

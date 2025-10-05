@@ -25,7 +25,7 @@ export default class EditHomeViewPricingParams implements Params {
     data['home_view_pricing_id'] = this.id
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
-    data['image'] = this.image
+    if (this.image == '' || this.image.startsWith('data:image')) data['image'] = this.image
 
     return data
 

@@ -101,16 +101,20 @@ const updateData = () => {
     mainTranslations.setTranslation('subtitle', lang.locale, lang.title)
   })
 
-
   const params = props?.data?.id
     ? new EditSystemRiskTypeParams(
         props?.data?.id,
         mainTranslations,
         SelectedColor.value,
         imageAlt.value,
-        image.value.file,
+        image.value,
       )
-    : new AddSystemRiskTypeParams(mainTranslations, SelectedColor.value,imageAlt.value , image.value.file)
+    : new AddSystemRiskTypeParams(
+        mainTranslations,
+        SelectedColor.value,
+        imageAlt.value,
+        image.value,
+      )
   emit('update:data', params)
 }
 
@@ -124,8 +128,6 @@ const setLangsSubTitle = (value: { locale: string; title: string }[]) => {
   langsSubTitle.value = value
   updateData()
 }
-
-
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -147,11 +149,10 @@ watch(
       return {
         locale: lang.locale,
         title: translation?.subtitle || '',
-
       }
     })
-     SelectedColor.value =  newData.color
-     imageAlt.value =  newData.alt
+    SelectedColor.value = newData.color
+    imageAlt.value = newData.alt
     image.value = newData.image
 
     updateData()
@@ -169,16 +170,10 @@ const UpdateAltImage = (data: Event) => {
 
 const image = ref<string>('')
 
-const setImage = async (data: File) => {
-  try {
-    const base64Image = await filesToBase64(data)
-    image.value = base64Image as string
-    console.log(image.value, 'image.value')
-    updateData()
-  } catch (error) {
-    console.error('Error converting image to base64:', error)
-    image.value = ''
-  }
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
@@ -232,6 +227,8 @@ const setImage = async (data: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1 / 1"
     />
   </div>
 </template>

@@ -158,14 +158,9 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportExcel :data="state.data" />
-        <SaveIcon />
-      </div>
-      <div class="btn btn-secondary flex align-center justify-center">
-        <ExportPdf />
-        <ExportIcon />
-      </div>
+      <ExportExcel :data="state.data" />
+      <ExportPdf />
+
       <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/our-system-step/add" class="btn btn-primary">
           {{ $t('add_our_system_step') }}

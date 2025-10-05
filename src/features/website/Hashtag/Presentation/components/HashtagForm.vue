@@ -127,18 +127,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditHashtagParams(
-        props.data.id,
-        translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
-        // typeof image.value === 'object' ? image.value.id : undefined,
-        alt.value,
-      )
-    : new AddHashtagParams(
-        translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
-        alt.value,
-      )
+    ? new EditHashtagParams(props.data.id, translationsParams, image.value, alt.value)
+    : new AddHashtagParams(translationsParams, image.value, alt.value)
 
   // console.log(params, 'params')
 
@@ -191,8 +181,10 @@ watch(
 )
 
 // ---------- Helpers ----------
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
@@ -222,6 +214,8 @@ const setImage = async (data: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1 / 1"
     />
   </div>
 

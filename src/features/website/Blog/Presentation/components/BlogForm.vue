@@ -271,8 +271,10 @@ watch(
 )
 
 // ---------- Helpers ----------
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
@@ -308,13 +310,11 @@ const setImage = async (data: File) => {
       @update:modelValue="setImage"
       label="Image"
       id="image"
+      :isCrop="true"
+      :aspectRatio="872 / 433"
       placeholder="Select image"
     />
   </div>
-
-
-
-
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <label> Image Alt Text </label>

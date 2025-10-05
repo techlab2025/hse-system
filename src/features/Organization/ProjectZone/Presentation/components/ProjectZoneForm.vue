@@ -180,17 +180,18 @@ watch(
       @update:modelValue="setLangs"
     />
   </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="lat">Lat</label>
     <input type="number" id="lat" v-model="Lat" class="input" step="any" @change="updateData" />
   </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="long">long</label>
     <input type="number" id="long" v-model="Long" class="input" step="any" @change="updateData" />
   </div>
+
   <div class="col-span-4 md:col-span-2">
-    <!--    :controller="industryController"
-      :params="industryParams" -->
     <CustomSelectInput
       :controller="OrganizationProjectController"
       :params="OrganizationProjectParams"
@@ -201,6 +202,7 @@ watch(
       @update:modelValue="setProject"
     />
   </div>
+
   <div class="col-span-4 md:col-span-2">
     <!--    :controller="industryController"
       :params="industryParams" -->

@@ -9,6 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -211,7 +212,7 @@ const changeStatusSystemFeature = async (id: number) => {
 
                 <td data-label="feature">{{ item.feature }}</td>
                 <td data-label="old">{{ item.old }}</td>
-                <td data-label="new">{{ item.New }}</td>
+                <td data-label="description" v-html="wordSlice(item.New, 50)"></td>
                 <td data-label="status">
                   <permission-builder
                     :code="[

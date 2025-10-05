@@ -113,15 +113,10 @@ const updateData = () => {
         props.data?.id!,
         translationsParams,
         alt.value,
-        (image.value as any)?.file,
+        image.value,
         includesParams,
       )
-    : new AddServiceParams(
-        translationsParams,
-        alt.value,
-        (image.value as any)?.file,
-        includesParams,
-      )
+    : new AddServiceParams(translationsParams, alt.value, image.value, includesParams)
 
   emit('update:data', params)
 }
@@ -197,8 +192,9 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (file: File) => {
-  image.value = await filesToBase64(file)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
@@ -246,6 +242,8 @@ const setImage = async (file: File) => {
       label="Image"
       id="image"
       placeholder="Select image"
+      :isCrop="true"
+      :aspectRatio="1 / 1"
     />
   </div>
 

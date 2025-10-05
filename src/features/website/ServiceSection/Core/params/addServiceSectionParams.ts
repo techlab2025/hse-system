@@ -6,7 +6,7 @@ export default class AddServiceSectionParams implements Params {
   alt: string
   image: string
   serviceId: number
-  constructor(translation: TranslationsParams, alt: string, image: string , serviceId: number) {
+  constructor(translation: TranslationsParams, alt: string, image: string, serviceId: number) {
     this.translation = translation
     this.alt = alt
     this.image = image
@@ -17,7 +17,7 @@ export default class AddServiceSectionParams implements Params {
     const data: Record<string, unknown> = {}
     data['translations'] = this.translation.toMap()
     data['alt'] = this.alt
-    data['image'] = this.image
+    if (this.image) data['image'] = this.image
     data['service_id'] = this.serviceId
     return data
   }

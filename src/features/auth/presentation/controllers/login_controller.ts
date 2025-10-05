@@ -9,6 +9,7 @@ import successImage from "@/assets/images/success-dialog.png";
 import DialogSelector from "@/base/Presentation/Dialogs/dialog_selector";
 import { OrganizationTypeEnum } from "../../Core/Enum/organization_type";
 import LoginOrganizationUseCase from "../../Domain/use_case/login_organization_use_case";
+import axios from "axios";
 
 export default class LoginController extends ControllerInterface<UserModel> {
   private static instance: LoginController;
@@ -54,6 +55,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
           localStorage.setItem("token", JSON.stringify(this.state.value.data.apiToken));
           localStorage.setItem("user", JSON.stringify(this.state.value.data));
+          axios.defaults.headers.common["Authorization"] = `Bearer ${this.state.value.data.apiToken}`;
         }
 
         await router.push({

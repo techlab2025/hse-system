@@ -138,13 +138,13 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        image.value ? (image.value as any).file : '',
+        image.value,
       )
     : new AddCertificateParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        image.value?.file,
+        image.value,
       )
 
   // console.log(params, 'params')
@@ -195,8 +195,10 @@ watch(
 )
 
 // ---------- Helpers ----------
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
 }
 </script>
 
