@@ -36,7 +36,8 @@ const router = useRouter()
 const logout = () => {
   localStorage.removeItem('user')
   localStorage.removeItem('token')
-  router.push('/login')
+  window.location.href = '/login'
+  // router.push("/login");
 }
 
 const isDropMenuOpen = ref(false)

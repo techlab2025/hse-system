@@ -95,7 +95,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-        image.value ? (image.value as any).file : '',
+        image.value,
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id), // selected language id
@@ -104,7 +104,7 @@ const updateData = () => {
         name.value,
         Phone.value,
         email.value,
-        image.value?.file,
+        image.value,
         Url.value,
         industry.value?.id,
         lang.value?.map((l) => l.id),
@@ -147,8 +147,9 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
+const setImage = async (data: File | string) => {
+  // image.value = await filesToBase64(data)
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 
