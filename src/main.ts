@@ -29,21 +29,24 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
-
-Sentry.init({
-  app,
-  dsn: 'https://cfe55d2f98b4608cd87f9adca3a5163a@o1353746.ingest.us.sentry.io/4509994332585984',
-  sendDefaultPii: true,
-  integrations: [
-    Sentry.browserTracingIntegration({ router }),
-    Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
-  ],
-  enableLogs: true,
-  tracesSampleRate: 1.0,
-  _experiments: {
-    enableLogger: true,
-  },
-})
+if (process.env.NODE_ENV !== "development") {
+  Sentry.init({
+    app,
+    dsn: 'https://cfe55d2f98b4608cd87f9adca3a5163a@o1353746.ingest.us.sentry.io/4509994332585984',
+    sendDefaultPii: true,
+    integrations: [
+      Sentry.browserTracingIntegration({ router }),
+      Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+    ],
+    enableLogs: true,
+    tracesSampleRate: 1.0,
+    _experiments: {
+      enableLogger: true,
+    },
+  })
+} else {
+  console.log("🔕 Sentry disabled in local environment");
+}
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

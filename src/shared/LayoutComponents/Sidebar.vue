@@ -239,7 +239,7 @@ const user = useUserStore()
                       </PermissionBuilder>
                     </li>
 
-                    <li>
+                    <!-- <li>
                       <PermissionBuilder
                         :code="[
                           PermissionsEnum.CERTIFICATE_ALL,
@@ -254,7 +254,7 @@ const user = useUserStore()
                           <span>Certificates</span>
                         </router-link>
                       </PermissionBuilder>
-                    </li>
+                    </li> -->
 
                     <li>
                       <PermissionBuilder

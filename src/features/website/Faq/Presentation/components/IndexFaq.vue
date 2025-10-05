@@ -28,6 +28,7 @@ import DeleteFaqParams from '../../Core/params/deleteFaqParams'
 import DeleteFaqController from '../controllers/deleteFaqController'
 import ChangeStatusFaqController from '../controllers/changeStatusFaqController'
 import ChangeStatusFaqParams from '../../Core/params/changeStatusFaqParams'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 const { t } = useI18n()
 
@@ -181,8 +182,8 @@ watch(
                 <td data-label="#">
                   <router-link :to="`/admin/Faq/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ item.question || '___' }}</td>
-                <td data-label="Name">{{ item.answer || '___' }}</td>
+                <td data-label="Name">{{ wordSlice(item.question) }}</td>
+                <td data-label="Name">{{ wordSlice(item.answer) }}</td>
 
                 <td data-label="status">
                   <permission-builder

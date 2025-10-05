@@ -12,17 +12,17 @@ export function createCrudRoutes(
     {
       path,
       name,
-      component: () => import(`../../views/${basePath}/Index${name}.vue`),
+      component: () => import(`@/views/${basePath}/Index${name}.vue`),
     },
     {
       path: `${path}/add`,
       name: `Add ${name}`,
-      component: () => import(`../../views/${basePath}/Add${name}.vue`),
+      component: () => import(`@/views/${basePath}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
       name: `Edit ${name}`,
-      component: () => import(`../../views/${basePath}/Edit${name}.vue`),
+      component: () => import(`@/views/${basePath}/Edit${name}.vue`),
     },
   ]
 }
@@ -38,17 +38,17 @@ export function createLocationRoutes(
     {
       path: `${path}/:parent_id?`,
       name: `locations ${name}`,
-      component: () => import(`../../views/Admin/Location/${name}/Index${name}.vue`),
+      component: () => import(`@/views/Admin/Location/${name}/Index${name}.vue`),
     },
     {
       path: `${path}/add/:parent_id?`,
       name: `Add Location ${name}`,
-      component: () => import(`../../views/Admin/Location/${name}/Add${name}.vue`),
+      component: () => import(`@/views/Admin/Location/${name}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
       name: `Edit Location ${name}`,
-      component: () => import(`../../views/Admin/Location/${name}/Edit${name}.vue`),
+      component: () => import(`@/views/Admin/Location/${name}/Edit${name}.vue`),
     },
   ]
 }
@@ -69,17 +69,17 @@ export function createWebsiteModuleRoutes(
       {
         path: module.path,
         name: displayName,
-        component: () => import(`../../views/Admin/Website/${module.name}/Index${module.name}.vue`),
+        component: () => import(`@/views/Admin/Website/${module.name}/Index${module.name}.vue`),
       },
       {
         path: `${singular}/add`,
         name: `Add ${displayName}`,
-        component: () => import(`../../views/Admin/Website/${module.name}/Add${module.name}.vue`),
+        component: () => import(`@/views/Admin/Website/${module.name}/Add${module.name}.vue`),
       },
       {
         path: `${singular}/:id`,
         name: `Edit ${displayName}`,
-        component: () => import(`../../views/Admin/Website/${module.name}/Edit${module.name}.vue`),
+        component: () => import(`@/views/Admin/Website/${module.name}/Edit${module.name}.vue`),
       }
     )
   })
