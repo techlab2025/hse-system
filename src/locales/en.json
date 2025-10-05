@@ -28,6 +28,7 @@
   "total_quizzes": "Total Quizzes",
   "total_lectures": "Total Lectures",
   "total_pdfs": "Total PDFs",
+  "select_all": "Select All",
   "total_videos": "Total Videos",
   "total_live": "Total Live",
   "explain_question": "Explain Question",
@@ -707,12 +708,12 @@
   "Factories Items Organization": "Factories Items Organization",
   "Add Factory Item": "Add Factories Item",
   "Edit Factory Item": "Edit Factories Item",
-  "Templates Organization":"Templates Organization",
-  "Add Template":"Add Template",
-  "Edit Template":"Edit Template",
-  "Organization Employee":"Organization Employee",
-  "Add Organization Employee":"Add Organization Employee",
-  "Edit Organization Employee":"Edit Organization Employee",
-  "Herikaly":"Herikaly",
-  "Accidents Type":"Accidents Type"
+  "Templates Organization": "Templates Organization",
+  "Add Template": "Add Template",
+  "Edit Template": "Edit Template",
+  "Organization Employee": "Organization Employee",
+  "Add Organization Employee": "Add Organization Employee",
+  "Edit Organization Employee": "Edit Organization Employee",
+  "Herikaly": "Herikaly",
+  "Accidents Type": "Accidents Type"
 }
