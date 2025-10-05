@@ -3,7 +3,7 @@ import { markRaw, onMounted, ref, watch } from 'vue'
 
 // import TranslationsParams from '@/base/core/params/translations_params.ts'
 
-import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
+import PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
 // import EditPermissionParams from '../../Core/params/editPermissionParams'
 // import AddPermissionParams from '../../Core/params/addPermissionParams'
 // import PermissionTabsType from '../supcomponents/PermissionTabsType.vue'
@@ -25,6 +25,8 @@ const baseSegment = `${route.path.split('/')[1]}`
 
 const allPermission = getOrganizationPermissionLabel(baseSegment)
 
+const permissions = ref<PermissionDetailsModel[]>([])
+
 const setPermission = (val) => {
   allPermission.value = val
   updateData()
@@ -42,7 +44,7 @@ const updateData = () => {
 
 onMounted(() => {
   if (props.data) {
-    allPermission.value = props.data.permissions || []
+    permissions.value = props.data?.permission || []
     updateData()
   }
 })
@@ -51,6 +53,6 @@ onMounted(() => {
 <template>
   <div class="permission">
     <!-- <PermissionTabsType @update:type="updateData" />-->
-    <PermissionTabContent @update:permissions="setPermission" />
+    <PermissionTabContent @update:permissions="setPermission" :permissions="permissions" />
   </div>
 </template>

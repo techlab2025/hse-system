@@ -50,6 +50,14 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
+  // admin
+
+  public CreateAdmin = this.prefix + 'create_admin'
+  public IndexAdmin = this.prefix + 'fetch_admins'
+  public ShowAdmin = this.prefix + 'fetch_admin_details'
+  public EditAdmin = this.prefix + 'update_admin'
+  public DeleteAdmin = this.prefix + 'delete_admin'
+
 
 
 

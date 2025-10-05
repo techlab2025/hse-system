@@ -43,7 +43,7 @@ watch(
   () => showPermissionController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState.data?.permission)
       state.value = newState
     }
   },

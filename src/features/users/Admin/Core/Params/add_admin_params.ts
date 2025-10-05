@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class AddEmployeeParams implements Params {
+export default class AddAdminParams implements Params {
   public name: string;
   public email: string;
   public password: string;

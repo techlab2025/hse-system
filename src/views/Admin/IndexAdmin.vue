@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AddAdmin from '@/features/users/Admin/Presentation/components/AddAdmin.vue'
+import IndexAdmin from '@/features/users/Admin/Presentation/components/IndexAdmin.vue'
 </script>
 
 <template>
-  <AddAdmin />
+  <IndexAdmin />
 </template>

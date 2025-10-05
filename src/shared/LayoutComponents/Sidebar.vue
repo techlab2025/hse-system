@@ -52,6 +52,24 @@ const user = useUserStore()
                       <PermissionBuilder
                         :code="[
                           PermissionsEnum?.ADMIN,
+                          PermissionsEnum?.ADMIN_ALL,
+                          PermissionsEnum.ADMIN_CREATE,
+                          PermissionsEnum.ADMIN_UPDATE,
+                          PermissionsEnum.ADMIN_DETAILS,
+                          PermissionsEnum.ADMIN_DELETE,
+                          PermissionsEnum.ADMIN_FETCH,
+                        ]"
+                      >
+                        <router-link to="/admin/admins">
+                          <SidebarVector />
+                          <span>admins</span>
+                        </router-link>
+                      </PermissionBuilder>
+                    </li>
+                    <li>
+                      <PermissionBuilder
+                        :code="[
+                          PermissionsEnum?.ADMIN,
                           PermissionsEnum?.LANGUAGE_ALL,
                           PermissionsEnum.LANGUAGE_CREATE,
                           PermissionsEnum.LANGUAGE_UPDATE,
