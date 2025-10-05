@@ -23,7 +23,7 @@ const name = ref('')
 const rate = ref(0)
 const date = ref('')
 const alt = ref('')
-const image = ref<string | File>('')
+// const image = ref<string | File>('')
 
 const langs = ref<{ locale: string; title: string }[]>([])
 const langsSubTitle = ref<{ locale: string; title: string }[]>([])
@@ -87,14 +87,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditServiceParams(
-        props.data.id!,
-        translationsParams,
-        alt.value,
-        image.value,
-        includesParams,
-      )
-    : new AddServiceParams(translationsParams, alt.value, image.value, includesParams)
+    ? new EditServiceParams(props.data.id!, translationsParams, includesParams)
+    : new AddServiceParams(translationsParams, includesParams)
 
   emit('update:data', params)
 }
@@ -146,8 +140,8 @@ watch(
       return existing ?? { locale: l.locale, title: '' }
     })
 
-    alt.value = newData?.alt ?? ''
-    image.value = newData?.image ?? ''
+    // alt.value = newData?.alt ?? ''
+    // image.value = newData?.image ?? ''
 
     includes.value = newData?.includes?.length
       ? newData.includes.map((it: any) => {
@@ -165,10 +159,10 @@ watch(
   { immediate: true },
 )
 
-const setImage = async (data: File | string) => {
-  image.value = typeof data === 'string' ? data : await filesToBase64(data)
-  updateData()
-}
+// const setImage = async (data: File | string) => {
+//   image.value = typeof data === 'string' ? data : await filesToBase64(data)
+//   updateData()
+// }
 </script>
 
 <template>
@@ -203,6 +197,7 @@ const setImage = async (data: File | string) => {
     />
   </div>
 
+  <!--
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="alt">{{ $t('alt_image') }}</label>
     <input id="alt" v-model="alt" type="text" class="input" placeholder="alt" @input="updateData" />
@@ -219,6 +214,7 @@ const setImage = async (data: File | string) => {
       :aspectRatio="1 / 1"
     />
   </div>
+  -->
 
   <!-- INCLUDES -->
   <div class="col-span-4 border border-gray-200 !p-3 rounded">
