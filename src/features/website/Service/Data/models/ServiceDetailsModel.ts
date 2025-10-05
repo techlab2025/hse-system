@@ -8,25 +8,25 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class ServiceDetailsModel {
   public id: number
-  public title: TitleInterface[]
-  public subTitle: subTitleInterface[]
-  public descriptions: DescriptionLocale[]
+  public title: TitleLocale[]
+  public subTitle: TitleLocale[]
+  public descriptions: TitleLocale[]
   public alt: string
   public image: string
   public isActive: number
   public order: number
-  public includes: TitleInterface[]
+  public includes: ServiceDetailsModel[]
 
   constructor(
     id: number,
-    title: TitleInterface[],
-    subTitle: subTitleInterface[],
-    descriptions: DescriptionLocale[],
+    title: TitleLocale[],
+    subTitle: TitleLocale[],
+    descriptions: TitleLocale[],
     alt: string,
     image: string,
     isActive: number,
     order: number,
-    includes: TitleInterface[],
+    includes: ServiceDetailsModel[],
   ) {
     this.id = id
     this.title = title
@@ -42,14 +42,14 @@ export default class ServiceDetailsModel {
   static fromMap(data: any): ServiceDetailsModel {
     return new ServiceDetailsModel(
       data.id,
-      data.title,
-      data.subtitles ?? [],
-      TranslationsParams.fromMap([], data.descriptions).descriptions,
+      TranslationsParams.fromMap(data.titles).titles,
+      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
+      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
       data.alt,
       data.image,
       data.is_active,
       data.order,
-      data.includes,
+      data.includes?.length > 0 ? data.includes.map((item: any) => ServiceDetailsModel.fromMap(item)) : [],
     )
   }
 

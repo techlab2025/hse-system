@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -13,29 +12,25 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type ServiceDetailsModel from '../../Data/models/ServiceDetailsModel'
 import EditServiceParams from '../../Core/params/editServiceParams'
 import AddServiceParams from '../../Core/params/addServiceParams'
-
 import IconMinus from '@/shared/icons/IconMinus.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 
 const emit = defineEmits(['update:data'])
+const props = defineProps<{ data?: ServiceDetailsModel }>()
 
-const props = defineProps<{
-  data?: ServiceDetailsModel
-}>()
-
-const name = ref<string>('')
-const rate = ref<number>(0)
-const date = ref<string>('')
-const alt = ref<string>('')
+// MAIN FIELDS
+const name = ref('')
+const rate = ref(0)
+const date = ref('')
+const alt = ref('')
+const image = ref<string | File>('')
 
 const langs = ref<{ locale: string; title: string }[]>([])
 const langsSubTitle = ref<{ locale: string; title: string }[]>([])
 const langsButton = ref<{ locale: string; title: string }[]>([])
-
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
-const image = ref<string | File>('')
-
+// INCLUDES (only multilingual title)
 interface IncludeItem {
   translations: {
     title: Record<string, string>
@@ -51,17 +46,12 @@ const createNewInclude = (): IncludeItem => {
   return { translations: { title } }
 }
 
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0,
-) => {
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexLangController = await IndexLangController.getInstance().getData(params)
-  const response = indexLangController.value
+// FETCH LANGUAGES
+const fetchLang = async () => {
+  const params = new IndexLangParams('', 1, 10, 0)
+  const response = (await IndexLangController.getInstance().getData(params)).value
 
-  const defaults = response?.data?.length
+  langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
         locale: item.code,
         title: '',
@@ -72,45 +62,33 @@ const fetchLang = async (
         { locale: 'ar', icon: SA, title: '' },
       ]
 
-  langDefault.value = defaults
-  if (!includes.value.length) {
-    includes.value.push(createNewInclude())
-  }
+  if (!includes.value.length) includes.value.push(createNewInclude())
 }
 
-onMounted(async () => {
-  await fetchLang()
-})
+onMounted(fetchLang)
 
-// --- updating parent
+// UPDATE PARENT
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
-
-  langsSubTitle.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
-  })
-
-  langsButton.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
-  })
+  langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
+  langsSubTitle.value.forEach((lang) =>
+    translationsParams.setTranslation('subtitle', lang.locale, lang.title),
+  )
+  langsButton.value.forEach((lang) =>
+    translationsParams.setTranslation('description', lang.locale, lang.title),
+  )
 
   const includesParams = includes.value.map((inc) => {
     const incTranslations = new TranslationsParams()
     Object.entries(inc.translations.title).forEach(([locale, value]) => {
       incTranslations.setTranslation('title', locale, value)
     })
-    return {
-      translations: incTranslations.toMap(),
-    }
+    return { translations: incTranslations.toMap() }
   })
 
   const params = props.data?.id
     ? new EditServiceParams(
-        props.data?.id!,
+        props.data.id!,
         translationsParams,
         alt.value,
         image.value,
@@ -121,17 +99,17 @@ const updateData = () => {
   emit('update:data', params)
 }
 
-// helpers
+// HELPERS
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
-const setLangsSubTitle = (value: { locale: string; title: string }[]) => {
-  langsSubTitle.value = value
+const setLangsSubTitle = (data: { locale: string; title: string }[]) => {
+  langsSubTitle.value = data
   updateData()
 }
-const setLangsButton = (value: { locale: string; title: string }[]) => {
-  langsButton.value = value
+const setLangsButton = (data: { locale: string; title: string }[]) => {
+  langsButton.value = data
   updateData()
 }
 
@@ -140,82 +118,77 @@ const addInclude = () => {
   updateData()
 }
 const removeInclude = (index: number) => {
-  if (includes.value.length > 1) {
-    includes.value.splice(index, 1)
-    updateData()
-  }
+  if (includes.value.length > 1) includes.value.splice(index, 1)
+  updateData()
 }
 const setIncludeTitleLangs = (index: number, data: { locale: string; title: string }[]) => {
-  data.forEach((d) => {
-    includes.value[index].translations.title[d.locale] = d.title
-  })
+  data.forEach((d) => (includes.value[index].translations.title[d.locale] = d.title))
   updateData()
 }
 
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (newDefault.length) {
-      langs.value = newDefault.map((l) => {
-        const existing = newData?.descriptions?.find((t) => t.locale === l.locale)
-        return existing ? existing : { locale: l.locale, title: '' }
-      })
+    if (!newDefault.length) return
 
-      langsSubTitle.value = newDefault.map((l) => {
-        const existing = newData?.subTitle?.find((t: any) => t.locale === l.locale)
-        return existing ? existing : { locale: l.locale, title: '' }
-      })
+    langs.value = newDefault.map((l) => {
+      const existing = newData?.title?.find((t) => t.locale === l.locale)
+      return existing ?? { locale: l.locale, title: '' }
+    })
 
-      langsButton.value = newDefault.map((l) => {
-        const existing = newData?.descriptions?.find((t: any) => t.locale === l.locale)
-        return existing ? existing : { locale: l.locale, title: '' }
-      })
+    langsSubTitle.value = newDefault.map((l) => {
+      const existing = newData?.subTitle?.find((t) => t.locale === l.locale)
+      return existing ?? { locale: l.locale, title: '' }
+    })
 
-      name.value = newData?.name ?? ''
-      rate.value = newData?.rate ?? 0
-      date.value = newData?.date ?? ''
-      alt.value = newData?.alt ?? ''
-      image.value = newData?.image ?? ''
+    langsButton.value = newDefault.map((l) => {
+      const existing = newData?.descriptions?.find((t) => t.locale === l.locale)
+      return existing ?? { locale: l.locale, title: '' }
+    })
 
-      includes.value = newData?.includes?.length
-        ? newData.includes.map((inc: any) => {
-            const title: Record<string, string> = {}
-            newDefault.forEach((l: any) => {
-              const foundTitle = inc.titles?.find((t: any) => t.locale === l.locale)
-              title[l.locale] = foundTitle?.title ?? ''
-            })
-            return { translations: { title } }
+    alt.value = newData?.alt ?? ''
+    image.value = newData?.image ?? ''
+
+    includes.value = newData?.includes?.length
+      ? newData.includes.map((it: any) => {
+          const title: Record<string, string> = {}
+          newDefault.forEach((l: any) => {
+            const found = it?.title?.find((t: any) => t.locale === l.locale)
+            title[l.locale] = found?.title ?? ''
           })
-        : [createNewInclude()]
-    }
+          return { translations: { title } }
+        })
+      : [createNewInclude()]
+
+    updateData()
   },
   { immediate: true },
 )
 
 const setImage = async (data: File | string) => {
-  // image.value = await filesToBase64(data)
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
 
 <template>
+  <!-- Title fields -->
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
-      type="text"
       :langs="langDefault"
       :modelValue="langs"
       :label="$t('title')"
+      type="text"
       @update:modelValue="setLangs"
     />
   </div>
 
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
-      type="text"
       :langs="langDefault"
       :modelValue="langsSubTitle"
       :label="$t('sub_title')"
+      type="text"
       @update:modelValue="setLangsSubTitle"
     />
   </div>
@@ -225,8 +198,8 @@ const setImage = async (data: File | string) => {
       :langs="langDefault"
       :modelValue="langsButton"
       :label="$t('Description')"
-      @update:modelValue="setLangsButton"
       type="textarea"
+      @update:modelValue="setLangsButton"
     />
   </div>
 
@@ -247,6 +220,7 @@ const setImage = async (data: File | string) => {
     />
   </div>
 
+  <!-- INCLUDES -->
   <div class="col-span-4 border border-gray-200 !p-3 rounded">
     <div class="flex items-center justify-between mb-4">
       <h3 class="font-bold text-lg">{{ $t('includes') }}</h3>
@@ -266,7 +240,7 @@ const setImage = async (data: File | string) => {
               title: include.translations.title[l.locale],
             }))
           "
-          :label="$t('title')"
+          :label="$t('title') + ' ' + (index + 1)"
           @update:modelValue="(val) => setIncludeTitleLangs(index, val)"
         />
       </div>
