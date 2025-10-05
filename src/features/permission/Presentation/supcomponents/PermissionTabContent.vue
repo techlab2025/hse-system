@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
+import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
 
 const emit = defineEmits<{
   (e: 'update:permissions', value: string[]): void
@@ -8,6 +9,34 @@ const emit = defineEmits<{
 
 const permissionRoots = ref<PermissionItem>(adminPermissions)
 
+const { permissions } = defineProps<{
+  permissions: PermissionDetailsModel[]
+}>()
+
+// ✅ Mark permissions as checked based on backend data
+const applyCheckedPermissions = () => {
+  if (!permissions || !Array.isArray(permissions)) return
+
+  const permissionCodes = permissions.map((p) => p.permission)
+
+  permissionRoots.value.permissions.forEach((module: any) => {
+    module.permissions.forEach((group: any) => {
+      group.permissions?.forEach((perm: any) => {
+        perm.checked = permissionCodes.includes(perm.code)
+      })
+    })
+  })
+}
+
+onMounted(applyCheckedPermissions)
+
+watch(
+  () => permissions,
+  () => applyCheckedPermissions(),
+  { deep: true },
+)
+
+// ✅ Return all selected codes
 const getSelectedPermissions = (): string[] => {
   const selected: string[] = []
   permissionRoots.value.permissions.forEach((module: any) => {
@@ -20,11 +49,17 @@ const getSelectedPermissions = (): string[] => {
   return selected
 }
 
+// ✅ Helpers to detect “select all” states
+const isGroupFullyChecked = (group: any) => group.permissions?.every((perm: any) => perm.checked)
+
+const isModuleFullyChecked = (module: any) =>
+  module.permissions?.every((group: any) => group.permissions?.every((perm: any) => perm.checked))
+
+// ✅ Event handlers
 const toggleGroupSelectAll = (group: any, event: Event) => {
   const isChecked = (event.target as HTMLInputElement).checked
   group.permissions.forEach((perm: any) => {
     perm.checked = isChecked
-    perm.permissions?.forEach((sub: any) => (sub.checked = isChecked))
   })
   emit('update:permissions', getSelectedPermissions())
 }
@@ -47,12 +82,15 @@ const togglePermission = (perm: any, event: Event) => {
   <div class="premission-cards">
     <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
       <div class="header">
-        <span>{{ item.label }}</span>
-
+        <!-- ✅ Module Select All auto-sync -->
         <label class="select_all">
-          <input type="checkbox" @change="toggleModuleSelectAll(item, $event)" />
+          <input
+            type="checkbox"
+            :checked="isModuleFullyChecked(item)"
+            @change="toggleModuleSelectAll(item, $event)"
+          />
           <span class="checkmark"></span>
-          <span>{{ $t('select_all') }}</span>
+          <span>{{ item.label }}</span>
         </label>
       </div>
 
@@ -61,8 +99,13 @@ const togglePermission = (perm: any, event: Event) => {
           <div class="card-header">
             <h5>{{ prem.label }}</h5>
 
+            <!-- ✅ Group Select All auto-sync -->
             <label class="select_all">
-              <input type="checkbox" @change="toggleGroupSelectAll(prem, $event)" />
+              <input
+                type="checkbox"
+                :checked="isGroupFullyChecked(prem)"
+                @change="toggleGroupSelectAll(prem, $event)"
+              />
               <span class="checkmark"></span>
               <span>{{ $t('select_all') }}</span>
             </label>

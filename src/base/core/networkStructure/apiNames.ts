@@ -50,14 +50,22 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
+  // admin
+
+  public CreateAdmin = this.prefix + 'create_admin'
+  public IndexAdmin = this.prefix + 'fetch_admins'
+  public ShowAdmin = this.prefix + 'fetch_admin_details'
+  public EditAdmin = this.prefix + 'update_admin'
+  public DeleteAdmin = this.prefix + 'delete_admin'
+
 
 
 
   // Permission
-  public CreatePermission = this.prefix + 'create_permissions'
+  // public CreatePermission = this.prefix + 'create_permissions'
   public IndexPermission = this.prefix + 'fetch_permissions'
-  public ShowPermission = this.prefix + 'fetch_permission_details'
-  public EditPermission = this.prefix + 'update_permission'
+  public ShowPermission = this.prefix + 'show_permissions'
+  public EditPermission = this.prefix + 'create_permissions'
   public DeletePermission = this.prefix + 'delete_permission'
 
 
