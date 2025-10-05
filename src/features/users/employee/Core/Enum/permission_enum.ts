@@ -3,6 +3,7 @@ export enum PermissionsEnum {
   ADMIN = 'A',
   ORGANIZATION_EMPLOYEE = 'O',
   WEBSITE = 'W',
+  SETTING = 'S',
 
   // ADMIN
   ADMIN_ALL = 'A00',
