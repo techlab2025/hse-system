@@ -160,13 +160,7 @@ const updateData = () => {
         hashtagsArray,
         categoriesArray,
       )
-    : new AddBlogParams(
-        translationsParams,
-        image.value,
-        alt.value,
-        hashtagsArray,
-        categoriesArray,
-      )
+    : new AddBlogParams(translationsParams, image.value, alt.value, hashtagsArray, categoriesArray)
 
   emit('update:data', params)
 }
