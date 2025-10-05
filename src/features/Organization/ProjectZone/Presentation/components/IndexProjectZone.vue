@@ -11,7 +11,6 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 
-
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
