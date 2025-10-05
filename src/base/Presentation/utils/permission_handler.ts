@@ -1,4 +1,4 @@
-import type { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
+import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { useUserStore } from '@/stores/user'
 // import { useUserStore } from "@/stores/user";
 // import { PermissionsEnum } from "@/features/users/employee/Core/Enum/permission_enum";

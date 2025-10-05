@@ -1,4 +1,4 @@
-import { PermissionsEnum } from "@/features/users/employee/Core/Enum/permission_enum";
+import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
 import type { PermissionItem } from "./adminPremission";
 
 export const OrgPermissions: PermissionItem = {

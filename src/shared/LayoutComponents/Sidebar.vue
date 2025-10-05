@@ -8,7 +8,7 @@ import CloseSidebar from '@/shared/icons/CloseSidebar.vue'
 import { ref } from 'vue'
 import SidebarVector from '@/shared/icons/SidebarVector.vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
-import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IconSetting from '@/shared/icons/IconSetting.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -48,6 +48,24 @@ const user = useUserStore()
 
                 <AccordionContent
                   ><ul>
+                    <li>
+                      <PermissionBuilder
+                        :code="[
+                          PermissionsEnum?.ADMIN,
+                          PermissionsEnum?.ADMIN_ALL,
+                          PermissionsEnum.ADMIN_CREATE,
+                          PermissionsEnum.ADMIN_UPDATE,
+                          PermissionsEnum.ADMIN_DETAILS,
+                          PermissionsEnum.ADMIN_DELETE,
+                          PermissionsEnum.ADMIN_FETCH,
+                        ]"
+                      >
+                        <router-link to="/admin/admins">
+                          <SidebarVector />
+                          <span>admins</span>
+                        </router-link>
+                      </PermissionBuilder>
+                    </li>
                     <li>
                       <PermissionBuilder
                         :code="[
