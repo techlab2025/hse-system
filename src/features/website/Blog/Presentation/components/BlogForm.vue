@@ -63,7 +63,7 @@ const langsSubtitle = ref<{ locale: string; icon?: any; subtitle: string }[]>([]
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
-const image = ref<ImageValue>('')
+const image = ref<string>('')
 const alt = ref<string>('')
 
 // industry controller
@@ -155,14 +155,14 @@ const updateData = () => {
     ? new EditBlogParams(
         props.data.id,
         translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
+        image.value,
         alt.value,
         hashtagsArray,
         categoriesArray,
       )
     : new AddBlogParams(
         translationsParams,
-        typeof image.value === 'object' ? image.value.file : undefined,
+        image.value,
         alt.value,
         hashtagsArray,
         categoriesArray,
