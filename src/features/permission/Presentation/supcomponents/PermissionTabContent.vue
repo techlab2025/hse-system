@@ -10,7 +10,6 @@ const permissionRoots = ref<PermissionItem>(adminPermissions)
 
 const getSelectedPermissions = (): string[] => {
   const selected: string[] = []
-
   permissionRoots.value.permissions.forEach((module: any) => {
     module.permissions.forEach((group: any) => {
       group.permissions?.forEach((perm: any) => {
@@ -18,18 +17,23 @@ const getSelectedPermissions = (): string[] => {
       })
     })
   })
-
   return selected
 }
 
-const toggleSelectAll = (group: any, event: Event) => {
+const toggleGroupSelectAll = (group: any, event: Event) => {
   const isChecked = (event.target as HTMLInputElement).checked
-
   group.permissions.forEach((perm: any) => {
     perm.checked = isChecked
     perm.permissions?.forEach((sub: any) => (sub.checked = isChecked))
   })
+  emit('update:permissions', getSelectedPermissions())
+}
 
+const toggleModuleSelectAll = (module: any, event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked
+  module.permissions.forEach((group: any) => {
+    group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
+  })
   emit('update:permissions', getSelectedPermissions())
 }
 
@@ -37,8 +41,6 @@ const togglePermission = (perm: any, event: Event) => {
   perm.checked = (event.target as HTMLInputElement).checked
   emit('update:permissions', getSelectedPermissions())
 }
-
-// console.log(permissionRoots.value)
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const togglePermission = (perm: any, event: Event) => {
         <span>{{ item.label }}</span>
 
         <label class="select_all">
-          <input type="checkbox" @change="toggleSelectAll(item, $event)" />
+          <input type="checkbox" @change="toggleModuleSelectAll(item, $event)" />
           <span class="checkmark"></span>
           <span>{{ $t('select_all') }}</span>
         </label>
@@ -60,7 +62,7 @@ const togglePermission = (perm: any, event: Event) => {
             <h5>{{ prem.label }}</h5>
 
             <label class="select_all">
-              <input type="checkbox" @change="toggleSelectAll(prem, $event)" />
+              <input type="checkbox" @change="toggleGroupSelectAll(prem, $event)" />
               <span class="checkmark"></span>
               <span>{{ $t('select_all') }}</span>
             </label>
