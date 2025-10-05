@@ -54,7 +54,7 @@ class ApiNames {
 
 
   // Permission
-  public CreatePermission = this.prefix + 'create_permission'
+  public CreatePermission = this.prefix + 'create_permissions'
   public IndexPermission = this.prefix + 'fetch_permissions'
   public ShowPermission = this.prefix + 'fetch_permission_details'
   public EditPermission = this.prefix + 'update_permission'

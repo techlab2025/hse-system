@@ -22,7 +22,7 @@ export default class AddPermissionParams implements Params {
     const data: { [key: string]: any } = {};
     data['type'] = this.type;
     data['type_id'] = this.type_id;
-    data['permission'] = this.permission;
+    data['permissions'] = this.permission;
     return data;
   }
 }
