@@ -188,7 +188,7 @@ const changeStatusService = async (id: number) => {
                 <th scope="col">{{ $t('title') }}</th>
                 <th scope="col">{{ $t('subtitle') }}</th>
                 <th scope="col">{{ $t('description') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
                 <th scope="col">{{ $t('status') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -203,9 +203,9 @@ const changeStatusService = async (id: number) => {
                 <td data-label="subtitle">{{ wordSlice(item.subtitle, 25) || '--' }}</td>
                 <td data-label="description" v-html="wordSlice(item.description, 50)"></td>
 
-                <td data-label="image">
+                <!-- <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+                </td> -->
 
                 <td data-label="status">
                   <permission-builder
