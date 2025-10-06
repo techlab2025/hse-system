@@ -2,12 +2,21 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
 import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
+import { getOrganizationType } from '../Helpers/organization_type'
+import { useRoute } from 'vue-router'
+import { getOrganizationPermissionLabel } from '../Helpers/organization_permission'
 
 const emit = defineEmits<{
   (e: 'update:permissions', value: string[]): void
 }>()
 
-const permissionRoots = ref<PermissionItem>(adminPermissions)
+const route = useRoute()
+
+const baseSegment = `${route.path.split('/')[1]}`
+
+const type = getOrganizationPermissionLabel(baseSegment)
+
+const permissionRoots = ref<PermissionItem>(type)
 
 const { permissions } = defineProps<{
   permissions: PermissionDetailsModel[]
@@ -26,9 +35,9 @@ const applyCheckedPermissions = () => {
       })
     })
   })
-}
 
-onMounted(applyCheckedPermissions)
+  emit('update:permissions', getSelectedPermissions())
+}
 
 watch(
   () => permissions,
@@ -76,6 +85,10 @@ const togglePermission = (perm: any, event: Event) => {
   perm.checked = (event.target as HTMLInputElement).checked
   emit('update:permissions', getSelectedPermissions())
 }
+
+onMounted(() => {
+  applyCheckedPermissions()
+})
 </script>
 
 <template>

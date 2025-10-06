@@ -100,9 +100,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/${id}`,
     permission: [
       PermissionsEnum.FACTORY_UPDATE,
+      PermissionsEnum.ORG_FACTORY_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.ORG_FACTORY_ALL,
     ],
   },
   // {
@@ -131,9 +133,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     action: () => deleteFactory(id),
     permission: [
       PermissionsEnum.FACTORY_DELETE,
+      PermissionsEnum.ORG_FACTORY_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ALL,
+      PermissionsEnum.ORG_FACTORY_ALL,
     ],
   },
 ]
@@ -163,11 +167,12 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         button-class="btn-primary"
       />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.FACTORY_CREATE,
+          PermissionsEnum.ORG_FACTORY_CREATE,
         ]"
       >
         <router-link
@@ -176,11 +181,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         >
           {{ $t('Add_Factory') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -189,6 +194,12 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       PermissionsEnum.FACTORY_FETCH,
       PermissionsEnum.FACTORY_UPDATE,
       PermissionsEnum.FACTORY_CREATE,
+
+      PermissionsEnum.ORG_FACTORY_ALL,
+      PermissionsEnum.ORG_FACTORY_DELETE,
+      PermissionsEnum.ORG_FACTORY_FETCH,
+      PermissionsEnum.ORG_FACTORY_UPDATE,
+      PermissionsEnum.ORG_FACTORY_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -280,7 +291,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

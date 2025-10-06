@@ -143,15 +143,15 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ADMIN_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ADMIN_CREATE]">
         <router-link to="/admin/admins/add" class="btn btn-primary">
           {{ $t('Add_Admin') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ADMIN_ALL,
@@ -243,7 +243,7 @@ watch(
         description="Sorry .. You have no Admin .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

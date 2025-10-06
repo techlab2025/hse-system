@@ -168,17 +168,17 @@ const changeStatusSystemFeature = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE]"
       >
         <router-link to="/admin/system_feature/add" class="btn btn-primary">
           {{ $t('Add_System_feature') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
@@ -214,7 +214,7 @@ const changeStatusSystemFeature = async (id: number) => {
                 <td data-label="old">{{ item.old }}</td>
                 <td data-label="description" v-html="wordSlice(item.New, 50)"></td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
@@ -226,7 +226,7 @@ const changeStatusSystemFeature = async (id: number) => {
                       binary
                       @update:model-value="changeStatusSystemFeature(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -281,7 +281,7 @@ const changeStatusSystemFeature = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

@@ -161,15 +161,15 @@ watch(
       <ExportExcel :data="state.data" />
       <ExportPdf />
 
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/our-system-step/add" class="btn btn-primary">
           {{ $t('add_our_system_step') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
@@ -208,7 +208,7 @@ watch(
                 </td>
 
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
@@ -220,7 +220,7 @@ watch(
                       binary
                       @update:model-value="changeStatusOurSystemStep(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -275,7 +275,7 @@ watch(
         description="Sorry .. You have no OurSystemStep .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

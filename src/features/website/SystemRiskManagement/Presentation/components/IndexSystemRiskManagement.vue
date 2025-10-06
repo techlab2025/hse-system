@@ -150,17 +150,17 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_FEATURE_CREATE]"
       >
         <router-link to="/admin/system-risk-management/add" class="btn btn-primary">
           {{ $t('Add_System_Risk_Management') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
@@ -199,7 +199,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
@@ -211,7 +211,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                       binary
                       @update:model-value="changeStatusSystemRiskManagement(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -260,7 +260,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
         description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

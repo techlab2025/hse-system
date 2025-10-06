@@ -155,27 +155,19 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CERTIFICATE_CREATE,
-        ]"
-      >
+      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_Certificate') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.CERTIFICATE_ALL,
       PermissionsEnum.CERTIFICATE_DELETE,
       PermissionsEnum.CERTIFICATE_FETCH,
@@ -268,10 +260,10 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

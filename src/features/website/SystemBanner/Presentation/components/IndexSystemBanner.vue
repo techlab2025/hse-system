@@ -167,17 +167,17 @@ const changeStatusSystemBanner = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]"
       >
         <router-link to="/admin/system_banner/add" class="btn btn-primary">
           {{ $t('Add_System_Banner') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
@@ -211,7 +211,7 @@ const changeStatusSystemBanner = async (id: number) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
@@ -223,7 +223,7 @@ const changeStatusSystemBanner = async (id: number) => {
                       binary
                       @update:model-value="changeStatusSystemBanner(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -278,7 +278,7 @@ const changeStatusSystemBanner = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

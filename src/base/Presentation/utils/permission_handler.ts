@@ -18,14 +18,15 @@ export default class PermissionHandler {
   handle(code: PermissionsEnum[]): boolean {
     const handlePermission = true
     const user = this.userStore.user!
+    // console.log(code);
 
     if (handlePermission && user) {
       if (user.isMaster === 1) {
         return true
       } else {
         // Check if ANY permission in the code array exists in user's permissions
-        // return code.some((permission) => user.permission?.includes(permission))
-        return true
+        return code.some((permission) => user.permission?.includes(permission))
+        // return true
       }
     } else {
       return true

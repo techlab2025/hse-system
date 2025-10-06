@@ -170,15 +170,15 @@ const changeStatusSystemRiskType = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.OUR_SYSTEM_BANNER_CREATE]">
         <router-link to="/admin/system_risk_type/add" class="btn btn-primary">
           {{ $t('Add_System_risk_type') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
@@ -216,7 +216,7 @@ const changeStatusSystemRiskType = async (id: number) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
@@ -228,7 +228,7 @@ const changeStatusSystemRiskType = async (id: number) => {
                       binary
                       @update:model-value="changeStatusSystemRiskType(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -283,7 +283,7 @@ const changeStatusSystemRiskType = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

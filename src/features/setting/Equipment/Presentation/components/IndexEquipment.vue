@@ -110,9 +110,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -121,9 +123,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -132,9 +136,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -143,9 +149,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     action: () => deleteEquipment(id),
     permission: [
       PermissionsEnum.EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
 ]
@@ -177,11 +185,12 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.EQUIPMENT_CREATE,
+          PermissionsEnum.ORG_EQUIPMENT_CREATE,
         ]"
       >
         <router-link
@@ -190,11 +199,11 @@ watch(
         >
           {{ $t('Add_Equipment') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -203,6 +212,11 @@ watch(
       PermissionsEnum.EQUIPMENT_FETCH,
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -294,7 +308,7 @@ watch(
         description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>
