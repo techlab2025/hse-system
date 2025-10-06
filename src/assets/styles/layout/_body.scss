@@ -7,7 +7,7 @@ body {
 }
 
 .content {
-  @include flex(row, wrap, flex-start, stretch);
+  @include flex(row, flex-start, stretch);
   gap: $XlSize3;
   //padding: $MdSize;
 
