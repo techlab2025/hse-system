@@ -101,9 +101,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     ],
   },
   // {
@@ -132,9 +134,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     action: () => deleteHazardType(id),
     permission: [
       PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     ],
   },
 ]
@@ -163,6 +167,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
         ]"
       >
         <router-link
@@ -184,6 +189,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       PermissionsEnum.HAZARD_TYPE_FETCH,
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.HAZARD_TYPE_CREATE,
+
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">

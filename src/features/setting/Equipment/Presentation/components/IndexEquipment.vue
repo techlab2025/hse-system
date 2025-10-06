@@ -110,9 +110,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -121,9 +123,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -132,9 +136,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
   {
@@ -143,9 +149,11 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     action: () => deleteEquipment(id),
     permission: [
       PermissionsEnum.EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
 ]
@@ -182,6 +190,7 @@ watch(
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.EQUIPMENT_CREATE,
+          PermissionsEnum.ORG_EQUIPMENT_CREATE,
         ]"
       >
         <router-link
@@ -203,6 +212,11 @@ watch(
       PermissionsEnum.EQUIPMENT_FETCH,
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
     ]"
   >
     <DataStatus :controller="state">

@@ -101,9 +101,11 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${id}`,
     permission: [
       PermissionsEnum.TEMPLATE_UPDATE,
+      PermissionsEnum.ORG_TEMPLATE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.TEMPLATE_ALL,
+      PermissionsEnum.ORG_TEMPLATE_ALL,
     ],
   },
   // {
@@ -132,9 +134,11 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     action: () => deleteTemplate(id),
     permission: [
       PermissionsEnum.TEMPLATE_DELETE,
+      PermissionsEnum.ORG_TEMPLATE_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.TEMPLATE_ALL,
+      PermissionsEnum.ORG_TEMPLATE_ALL,
     ],
   },
 ]
@@ -158,7 +162,14 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.TEMPLATE_CREATE,
+          PermissionsEnum.ORG_TEMPLATE_CREATE,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        ]"
+      >
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
           class="btn btn-primary"
@@ -178,6 +189,12 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       PermissionsEnum.TEMPLATE_FETCH,
       PermissionsEnum.TEMPLATE_UPDATE,
       PermissionsEnum.TEMPLATE_CREATE,
+
+      PermissionsEnum.ORG_TEMPLATE_ALL,
+      PermissionsEnum.ORG_TEMPLATE_DELETE,
+      PermissionsEnum.ORG_TEMPLATE_FETCH,
+      PermissionsEnum.ORG_TEMPLATE_UPDATE,
+      PermissionsEnum.ORG_TEMPLATE_CREATE,
     ]"
   >
     <DataStatus :controller="state">

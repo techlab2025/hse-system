@@ -106,9 +106,11 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type/${id}`,
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
     ],
   },
   // {
@@ -137,9 +139,11 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
     action: () => deleteAccidentType(id),
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
     ],
   },
 ]
@@ -160,7 +164,9 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
         @input="searchAccidentType"
       />
     </div>
-    <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE]">
+    <PermissionBuilder
+      :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
+    >
       <div class="col-span-2 flex justify-end gap-2">
         <ExportExcel :data="state.data" />
         <ExportPdf />
@@ -177,6 +183,11 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
   <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_DELETE,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,

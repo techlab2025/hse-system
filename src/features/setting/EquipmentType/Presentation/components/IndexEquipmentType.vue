@@ -109,9 +109,11 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
     ],
   },
   {
@@ -120,9 +122,11 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
     ],
   },
   {
@@ -131,9 +135,11 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
     ],
   },
   {
@@ -145,6 +151,8 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
     ],
   },
 ]
@@ -177,7 +185,14 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+        ]"
+      >
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add`"
           class="btn btn-primary"
@@ -197,6 +212,11 @@ watch(
       PermissionsEnum.EQUIPMENT_TYPE_FETCH,
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">

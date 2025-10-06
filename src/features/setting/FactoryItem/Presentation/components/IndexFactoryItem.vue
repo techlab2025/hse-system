@@ -18,11 +18,11 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/indexFactoryItemController.ts'
 import IndexFactoryItemParams from '@/features/setting/FactoryItem/Core/params/indexFactoryItemParams.ts'
 import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/deleteFactoryItemParams.ts'
@@ -101,9 +101,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/${id}`,
     permission: [
       PermissionsEnum.FACTORY_ITEM_UPDATE,
+      PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ITEM_ALL,
+      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
     ],
   },
   // {
@@ -132,9 +134,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
     action: () => deleteFactory(id),
     permission: [
       PermissionsEnum.FACTORY_ITEM_DELETE,
+      PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.FACTORY_ITEM_ALL,
+      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
     ],
   },
 ]
@@ -163,6 +167,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.FACTORY_ITEM_CREATE,
+          PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
         ]"
       >
         <router-link
@@ -184,6 +189,11 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       PermissionsEnum.FACTORY_ITEM_FETCH,
       PermissionsEnum.FACTORY_ITEM_UPDATE,
       PermissionsEnum.FACTORY_ITEM_CREATE,
+      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
+      PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
+      PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
+      PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
+      PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
     ]"
   >
     <DataStatus :controller="state">

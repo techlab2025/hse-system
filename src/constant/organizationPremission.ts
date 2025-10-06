@@ -33,6 +33,20 @@ export const OrgPermissions: PermissionItem = {
                 //     ],
                 // },
 
+
+
+                // Permission
+                {
+                    key: PermissionsEnum.CREATE_PERMISSION,
+                    code: PermissionsEnum.CREATE_PERMISSION,
+                    label: "Permission",
+                    permissions: [
+                        { key: PermissionsEnum.CREATE_PERMISSION, code: PermissionsEnum.CREATE_PERMISSION, label: "Create" },
+
+                    ],
+                },
+
+
                 // Equipment Type
                 {
                     key: PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,

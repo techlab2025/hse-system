@@ -697,6 +697,17 @@ export const adminPermissions: PermissionItem = {
                     ],
                 },
 
+                // Permission
+                {
+                    key: PermissionsEnum.CREATE_PERMISSION,
+                    code: PermissionsEnum.CREATE_PERMISSION,
+                    label: "Permission",
+                    permissions: [
+                        { key: PermissionsEnum.CREATE_PERMISSION, code: PermissionsEnum.CREATE_PERMISSION, label: "Create" },
+
+                    ],
+                },
+
                 // Organization (if needed in settings)
                 {
                     key: PermissionsEnum.ORGANIZATION_ALL,
