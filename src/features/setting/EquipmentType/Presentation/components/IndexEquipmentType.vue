@@ -177,18 +177,18 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_EquipmentType') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -286,7 +286,7 @@ watch(
         description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

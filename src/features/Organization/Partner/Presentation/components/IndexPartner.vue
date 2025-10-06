@@ -10,7 +10,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 
-import ToggleSwitch from 'primevue/toggleswitch'
+// import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -19,11 +19,11 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexPartnerController from '../controllers/indexPartnerController'
 import IndexPartnerParams from '../../Core/params/indexPartnerParams'
 import DeletePartnerParams from '../../Core/params/deletePartnerParams'
@@ -51,13 +51,7 @@ const fetchPartner = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deletePartnerParams = new IndexPartnerParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    // id.value?? '',
-  )
+  const deletePartnerParams = new IndexPartnerParams(query, pageNumber, perPage, withPage)
   await indexPartnerController.getData(deletePartnerParams)
 }
 
@@ -150,17 +144,17 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
-        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PARTNER_CREATE]"
+      <PermissionBuilder
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
       >
         <router-link to="/organization/partner/add" class="btn btn-primary">
           {{ $t('Add_Partner') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.PARTNER_ALL,
@@ -248,9 +242,10 @@ watch(
       <DataFailed
         addText="Have not  Permission"
         description="Sorry .. You have no Partner .. All your joined customers will appear here when you add your customer data"
+        link=""
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

@@ -7,8 +7,8 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+// import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type ServiceDetailsModel from '../../Data/models/ServiceDetailsModel'
 import EditServiceParams from '../../Core/params/editServiceParams'
 import AddServiceParams from '../../Core/params/addServiceParams'
@@ -19,10 +19,10 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: ServiceDetailsModel }>()
 
 // MAIN FIELDS
-const name = ref('')
-const rate = ref(0)
-const date = ref('')
-const alt = ref('')
+// const name = ref('')
+// const rate = ref(0)
+// const date = ref('')
+// const alt = ref('')
 // const image = ref<string | File>('')
 
 const langs = ref<{ locale: string; title: string }[]>([])

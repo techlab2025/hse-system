@@ -162,15 +162,15 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_CORE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_CORE_CREATE]">
         <router-link to="/admin/about-us-core/add" class="btn btn-primary">
           {{ $t('add_about_us') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.ABOUT_US_CORE_ALL,
@@ -209,7 +209,7 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
                   <img :src="item.image" width="100" height="100" />
                 </td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.ABOUT_US_CORE_ALL,
@@ -221,7 +221,7 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
                       binary
                       @update:model-value="changeStatusAboutUsCore(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -270,7 +270,7 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
         description="Sorry .. You have no AboutUsCore .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

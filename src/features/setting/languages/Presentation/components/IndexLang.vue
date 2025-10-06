@@ -123,11 +123,15 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <router-link to="/admin/lang/add" class="btn btn-primary"> {{ $t('Add_Lang') }} </router-link>
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LANGUAGE_CREATE]">
+        <router-link to="/admin/lang/add" class="btn btn-primary">
+          {{ $t('Add_Lang') }}
+        </router-link>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.LANGUAGE_ALL,
@@ -209,7 +213,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

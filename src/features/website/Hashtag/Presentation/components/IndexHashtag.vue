@@ -158,15 +158,15 @@ const changeStatusHashtag = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HASHTAG_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HASHTAG_CREATE]">
         <router-link to="/admin/hashtag/add" class="btn btn-primary">
           {{ $t('Add_Hashtag') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.HASHTAG_ALL,
@@ -202,7 +202,7 @@ const changeStatusHashtag = async (id: number) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.HOME_VIEW_PRICING_ALL,
@@ -214,7 +214,7 @@ const changeStatusHashtag = async (id: number) => {
                       binary
                       @update:model-value="changeStatusHashtag(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusHashtag-->
@@ -268,7 +268,7 @@ const changeStatusHashtag = async (id: number) => {
         description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

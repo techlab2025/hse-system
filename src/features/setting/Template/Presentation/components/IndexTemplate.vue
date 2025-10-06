@@ -158,18 +158,18 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.TEMPLATE_CREATE]">
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_Template') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -265,7 +265,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

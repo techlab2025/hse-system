@@ -158,7 +158,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -171,11 +171,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         >
           {{ $t('Add_HazardType') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -275,7 +275,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

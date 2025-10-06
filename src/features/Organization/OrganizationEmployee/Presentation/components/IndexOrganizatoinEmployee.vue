@@ -15,9 +15,9 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
+// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
+// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexOrganizatoinEmployeeController from '../controllers/indexOrganizatoinEmployeeController'
@@ -50,7 +50,6 @@ const fetchOrganizatoinEmployee = async (
     pageNumber,
     perPage,
     withPage,
-    id,
   )
   await indexOrganizatoinEmployeeController.getData(deleteOrganizatoinEmployeeParams)
 }
@@ -126,6 +125,14 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   //     PermissionsEnum.PROJECT_TYPE_ALL,
   //   ],
   // },
+
+  {
+    text: t('add_permission'),
+    icon: IconEdit,
+    link: `/organization/permission/${id}`,
+    permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+
   {
     text: t('delete'),
     icon: IconDelete,
@@ -157,15 +164,15 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
           {{ $t('Add_OrganizatoinEmployee') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORG_EMPLOYEE_ALL,
@@ -245,7 +252,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
         description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

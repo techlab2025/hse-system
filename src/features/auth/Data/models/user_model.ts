@@ -21,6 +21,7 @@ export default class UserModel {
   public whatsapp?: string;
   public languages: LangModel[] = []
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
+  public permission: string[] = []
 
   constructor(
     id: number,
@@ -41,7 +42,8 @@ export default class UserModel {
     linkedin?: string,
     whatsapp?: string,
     languages: LangModel[] = [],
-    type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
+    type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN,
+    permission: string[] = []
   ) {
     this.id = id;
     this.name = name;
@@ -62,6 +64,7 @@ export default class UserModel {
     this.whatsapp = whatsapp;
     this.languages = languages
     this.type = type
+    this.permission = permission
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -84,7 +87,8 @@ export default class UserModel {
       map["linkedin"],
       map["whatsapp"],
       map["languages"]?.map((lang: any) => LangModel.fromMap(lang)),
-      map["type"]
+      map["type"],
+      map["permissions"]
     );
   }
 }

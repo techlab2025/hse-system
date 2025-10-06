@@ -149,15 +149,15 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.TERM_CREATE_OR_UPDATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.TERM_CREATE_OR_UPDATE]">
         <router-link to="/admin/hashtag/add" class="btn btn-primary">
           {{ $t('Add_Hashtag') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.TERM_ALL,
@@ -242,7 +242,7 @@ watch(
         description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

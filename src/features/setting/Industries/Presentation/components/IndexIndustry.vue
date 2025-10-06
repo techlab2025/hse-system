@@ -134,7 +134,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.LANGUAGE_ALL,
@@ -214,6 +214,6 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 <style scoped></style>

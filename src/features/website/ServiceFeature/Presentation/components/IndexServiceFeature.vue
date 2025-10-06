@@ -169,15 +169,15 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_FEATURE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_FEATURE_CREATE]">
         <router-link to="/admin/service-feature/add" class="btn btn-primary">
           {{ $t('add_service_feature') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_FEATURE_ALL,
@@ -211,7 +211,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
                 <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td>
 
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.SERVICE_FEATURE_ALL,
@@ -223,7 +223,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
                       binary
                       @update:model-value="changeStatusServiceFeature(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -272,7 +272,7 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
         description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

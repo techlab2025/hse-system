@@ -518,6 +518,20 @@ export const adminPermissions: PermissionItem = {
             code: PermissionsEnum.SETTING,
             label: "Settings",
             permissions: [
+                // Admin
+                {
+                    key: PermissionsEnum.ADMIN_ALL,
+                    code: PermissionsEnum.ADMIN_ALL,
+                    label: "Admin",
+                    permissions: [
+                        { key: PermissionsEnum.ADMIN_ALL, code: PermissionsEnum.ADMIN_ALL, label: "All" },
+                        { key: PermissionsEnum.ADMIN_FETCH, code: PermissionsEnum.ADMIN_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.ADMIN_DETAILS, code: PermissionsEnum.ADMIN_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.ADMIN_CREATE, code: PermissionsEnum.ADMIN_CREATE, label: "Create" },
+                        { key: PermissionsEnum.ADMIN_UPDATE, code: PermissionsEnum.ADMIN_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.ADMIN_DELETE, code: PermissionsEnum.ADMIN_DELETE, label: "Delete" },
+                    ],
+                },
                 // Language
                 {
                     key: PermissionsEnum.LANGUAGE_ALL,
