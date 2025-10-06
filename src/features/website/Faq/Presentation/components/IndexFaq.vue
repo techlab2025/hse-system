@@ -178,12 +178,12 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/Faq/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.question) }}</td>
-                <td data-label="Name">{{ wordSlice(item.answer) }}</td>
+                <td data-label="Name" v-html="wordSlice(item.question)"></td>
+                <td data-label="Name" v-html="wordSlice(item.answer)"></td>
 
                 <td data-label="status">
                   <permission-builder
