@@ -1,73 +1,135 @@
+@import '../mixins/grid';
+@import '../mixins/flex';
+@import '../variables';
+
 .login {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem 0;
-  background-color: var(--primary-color);
-  // background-image: url("../../images/login-bg.png");
-  // background-size: cover;
-  // background-position: center;
-  // background-repeat: no-repeat;
+  @include grid(2, 1fr, 10px);
+
+  @media screen and (max-width: 900px) {
+    @include flex(column-reverse, wrap, center, center);
+    gap: $MdSize;
+  }
+
   min-height: 100vh;
+  background: linear-gradient(247.48deg, #1d4ed8 -32.76%, #163ca5 61.38%, #0f2972 99.86%);
+  width: 100%;
 
-  .tabs {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    align-items: center;
-    justify-content: center;
+  .images {
+    @include flex(row, wrap, center, center);
     width: 100%;
-
-    .tab {
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.2);
-      font-family: 'Regular', sans-serif;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    img {
+      height: 90%;
+      width: 100%;
+      object-fit: contain;
     }
-
-    .tab.active {
-      background-color: var(--PrimaryColor);
-      color: var(--BgWhite);
-      font-family: 'Bold', sans-serif;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      // border-radius: 50%;
+    svg {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
     }
   }
 
   .login-form {
-    width: 100%;
-    display: flex;
-    max-width: 450px;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    @media screen and (max-width: 900px) {
+      @include flex(column, wrap, center, center);
+      gap: $MdSize;
+      border-radius: 0;
+    }
     .title {
-      font-family: 'bold', sans-serif;
-      font-size: 1.2rem;
-      text-align: center;
-      color: var(--primary-color);
+      @include flex(column, wrap, center, center);
+      gap: 5rem;
+      .text {
+        width: 100%;
+        @include flex(column, wrap, center, center);
+        p {
+          font-family: 'Bold', sans-serif;
+          font-size: var(--xl-size-base);
+        }
+        span {
+          font-family: 'Regular', sans-serif;
+          font-size: var(--md-size-base);
+          color: #9ca3af;
+        }
+      }
+
+      .logo {
+        @include flex(row, wrap, center, center);
+        gap: $XsSize3;
+        h2 {
+          font-size: var(--xl-size-1);
+          font-family: 'Bold', sans-serif;
+        }
+      }
     }
-    .description {
-      font-family: 'regular', sans-serif;
-      font-size: 1rem;
-      text-align: center;
-      margin-bottom: 1rem;
-      color: var(--text-color-2);
+    .tabs {
+      @include flex(row, wrap, center, center);
+      gap: 1rem;
+      margin-block: 2rem;
+      width: 100%;
+
+      .tab {
+        padding: 0.5rem 1rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        font-family: 'Regular', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: fit-content;
+        border-bottom: 2px solid var(--PrimaryColor);
+      }
+
+      .tab.active {
+        background-color: var(--PrimaryColor);
+        color: var(--BgWhite);
+        font-family: 'Bold', sans-serif;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        // border-radius: 50%;
+      }
     }
-    label {
-      font-family: 'bold', sans-serif;
-      font-size: 0.9rem;
-      color: var(--primary-color);
+    width: 100%;
+    @include flex(column, wrap, center, center);
+    padding: $MdSize;
+    background-color: white;
+    border-radius: 50px 0 0 50px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .inputs {
+      @include flex(column, wrap, center, center);
+      gap: $MdSize;
+      width: 100%;
+      margin-block: $XlSize2;
+      .input-wrapper {
+        width: 100%;
+        position: relative;
+
+        .icon {
+          position: absolute;
+          left: calc(2.3rem / 2);
+          top: 50%;
+          transform: translateY(-50%);
+          // width: $MdSize;
+          // height: $MdSize;
+        }
+
+        .icon-eye {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+        }
+
+        input {
+          width: 100%;
+          padding: 1rem 1rem 1rem 2.3rem;
+          &::placeholder {
+            font-family: 'Regular', sans-serif;
+            font-size: var(--md-size-base);
+          }
+        }
+      }
     }
+
     button {
       width: 100%;
       justify-content: center;
