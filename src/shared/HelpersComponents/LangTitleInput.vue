@@ -1,9 +1,6 @@
 <script setup lang="ts">
-// import { label } from '@primeuix/themes/aura/metergroup'
-// import { log } from 'console';
-import { computed, nextTick, ref, watch } from 'vue'
-
-import Editor from 'primevue/editor';
+import { computed, ref, watch } from 'vue'
+import Editor from 'primevue/editor'
 
 const props = withDefaults(
   defineProps<{
@@ -27,36 +24,63 @@ const props = withDefaults(
     placeholder: '',
     rows: 4,
     maxlength: undefined,
-    required: false,
+    required: true,
     disabled: false,
   },
 )
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: { locale: string; title: string }[]): void
+  (e: 'validate', isValid: boolean): void
 }>()
 
-// ✅ Build titles for all langs (from modelValue, defaultLang, or empty)
+// Build titles for all langs
 const titles = ref<{ locale: string; title: string }[]>(
   props.langs.map((l) => {
     const fromModel = props.modelValue?.find((f) => f.locale === l.locale)
     if (fromModel) return { ...fromModel }
     if (props.defaultLang?.locale === l.locale) {
-      return { locale: l.locale, title: props.defaultLang.title } // ✅ FIXED
+      return { locale: l.locale, title: props.defaultLang.title }
     }
-    return { locale: l.locale, title: '' } // ✅ FIXED
+    return { locale: l.locale, title: '' }
   }),
 )
 
-// active language
+// Active language
 const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 
-// current title binding
+// Current title binding
 const title = ref('')
+
+// Validation error
+const validationError = ref('')
 
 const isTextarea = computed(() => props.type === 'textarea')
 
-// ✅ Sync active title when lang changes
+// Check if at least one language has a title
+const hasAtLeastOneTitle = computed(() => {
+  return titles.value.some((t) => t.title && t.title.trim().length > 0)
+})
+
+// Validate and emit validation status
+const validateTitles = () => {
+  if (props.required && !hasAtLeastOneTitle.value) {
+    validationError.value = 'At least one language title is required'
+    emit('validate', false)
+    return false
+  }
+  validationError.value = ''
+  emit('validate', true)
+  return true
+}
+
+// Expose validate method for parent component
+defineExpose({
+  validate: validateTitles,
+  isValid: hasAtLeastOneTitle,
+})
+
+// Sync active title when lang changes
 watch(
   lang,
   (newLang) => {
@@ -66,41 +90,32 @@ watch(
   { immediate: true },
 )
 
-// ✅ Update titles when input changes
+// Update titles when input changes
 watch(title, (val) => {
   const idx = titles.value.findIndex((t) => t.locale === lang.value)
   if (idx !== -1) {
     titles.value[idx].title = val
   }
   emit('update:modelValue', [...titles.value])
+
+  // Clear validation error when user starts typing
+  if (val && val.trim().length > 0) {
+    validationError.value = ''
+  }
 })
-
-// const updateTitle = (e: Event) => {
-//   const idx = titles.value.findIndex((t) => t.locale === lang.value)
-
-//   if (idx !== -1) {
-//     // remove the object at idx
-//     const updated = [
-//       ...titles.value.slice(0, idx),
-//       ...titles.value.slice(idx + 1)
-//     ]
-
-//     titles.value = updated
-//     emit("update:modelValue", updated)
-//   }
-// }
 
 const placeholderText = computed(() => {
   return props.placeholder || props.label || 'Enter text...'
 })
+
 const inputAttrs = computed(() => ({
   placeholder: placeholderText.value,
   maxlength: props.maxlength,
-  required: props.required,
   disabled: props.disabled,
   class: isTextarea.value ? 'textarea-input' : 'text-input',
 }))
-// ✅ Sync with parent changes
+
+// Sync with parent changes
 watch(
   () => props.modelValue,
   (nv) => {
@@ -110,9 +125,8 @@ watch(
         return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
       })
 
-      // console.log(titles.value, 'titles')
       const current = titles.value.find((t) => t.locale === lang.value)
-      if (current)
+      if (current) {
         title.value =
           current.title ??
           current.description ??
@@ -120,10 +134,16 @@ watch(
           current.button_title ??
           current.answer ??
           current.question
+      }
     }
   },
   { deep: true, immediate: true },
 )
+
+// Watch for validation changes
+watch(hasAtLeastOneTitle, (isValid) => {
+  emit('validate', isValid)
+})
 </script>
 
 <template>
@@ -131,12 +151,9 @@ watch(
     <div class="label-wrapper">
       <label>
         {{ label }}
-        <span class="text-red-500">*</span>
+        <span class="text-red-500" v-if="required">*</span>
       </label>
 
-      <!--      <pre>-->
-      <!--        {{ langs }}-->
-      <!--      </pre>-->
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
@@ -149,20 +166,67 @@ watch(
           />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
+            <!-- Visual indicator if this language has content -->
+            <span
+              v-if="titles.find((t) => t.locale === l.locale)?.title"
+              class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`"
+            >
+              ✓
+            </span>
           </label>
         </div>
       </div>
     </div>
 
     <!-- Title Input -->
-
-    <Editor v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
+    <Editor
+      v-if="isTextarea"
+      v-model="title"
+      :rows="rows"
+      v-bind="inputAttrs"
+      editorStyle="height: 320px"
+    />
 
     <!-- Regular Input -->
-    <input v-else type="text" v-model="title" v-bind="inputAttrs" required />
+    <input v-else :type="type" v-model="title" v-bind="inputAttrs" />
+
     <!-- Selected Language Info -->
     <span class="select-lang">
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}
     </span>
+
+    <!-- Validation Error -->
+    <span class="text-red-500 text-sm mt-1" v-if="validationError">
+      {{ validationError }}
+    </span>
+
+    <!-- Required Field Info -->
+    <span class="text-gray-500 text-sm" v-else-if="required">
+      * {{ $t('required_field') }} - At least one language
+    </span>
   </div>
 </template>
+
+<style scoped>
+.lang-indicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.icon-lng {
+  position: relative;
+  display: inline-block;
+}
+</style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -21,11 +21,56 @@ import type EquipmentModel from '../../Data/models/equipmentModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'validate'])
 const props = defineProps<{ data?: EquipmentModel }>()
 
 const route = useRoute()
 const id = Number(route.params.id)
+
+// Validation states
+const langTitleValid = ref(false)
+const equipmentTypeValid = ref(false)
+const industryValid = ref(false)
+
+// Ref to LangTitleInput component
+const langTitleInputRef = ref<InstanceType<typeof LangTitleInput> | null>(null)
+
+// Validation computed
+const isFormValid = computed(() => {
+  const hasValidLangTitle = langTitleValid.value
+  const hasEquipmentType = Equipment.value !== null
+  const hasValidIndustry = allIndustries.value === 1 || industry.value.length > 0
+
+  return (
+    hasValidLangTitle &&
+    hasEquipmentType &&
+    (user.user?.type !== OrganizationTypeEnum?.ADMIN || hasValidIndustry)
+  )
+})
+
+defineExpose({
+  validate: () => {
+    // Manually trigger validation on LangTitleInput
+    if (langTitleInputRef.value) {
+      langTitleInputRef.value.validate()
+    }
+
+    // Validate equipment type
+    if (!Equipment.value) {
+      equipmentTypeValid.value = false
+    }
+
+    // Validate industry (if admin)
+    if (user.user?.type === OrganizationTypeEnum?.ADMIN) {
+      if (!allIndustries.value && industry.value.length === 0) {
+        industryValid.value = false
+      }
+    }
+
+    return isFormValid.value
+  },
+  isValid: isFormValid,
+})
 
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const indexEquipmentTypeParams = new IndexEquipmentTypeParams('', 1, 10, 1)
@@ -98,10 +143,12 @@ const updateData = () => {
       )
 
   emit('update:data', params)
+  emit('validate', isFormValid.value)
 }
 
 const setIndustry = (data: TitleInterface[]) => {
   industry.value = data
+  industryValid.value = data.length > 0
   updateData()
 }
 
@@ -127,16 +174,34 @@ watch(
       industry.value = newData?.industries ?? []
       Equipment.value = newData?.equipmentTypeId
       allIndustries.value = newData?.allIndustries == 1
-      
+
+      // Set initial validation states
+      langTitleValid.value = langs.value.some((l) => l.title && l.title.trim().length > 0)
+      equipmentTypeValid.value = Equipment.value !== null
+      industryValid.value = allIndustries.value === 1 || industry.value.length > 0
     }
   },
   { immediate: true },
 )
+
+const handleLangValidation = (isValid: boolean) => {
+  langTitleValid.value = isValid
+  emit('validate', isFormValid.value)
+}
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4">
+  <!-- <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div> -->
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+      type="number"
+      @validate="handleLangValidation"
+    />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('has_certificate') }}</label>
