@@ -1,8 +1,8 @@
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type OrganizationLocationModel from '@/features/organization/OrganizationLocation/Data/models/OrganizationLocationModel'
-import type ProjectModel from '@/features/organization/Project/Data/models/ProjectModel'
+import type OrganizationLocationModel from '@/features/Organization/OrganizationLocation/Data/models/OrganizationLocationModel'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
 export default class ProjectZoneDetailsModel {
   public id: number
