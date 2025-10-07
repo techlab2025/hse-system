@@ -4,17 +4,17 @@ export const projectZoneRoutes: RouteRecordRaw[] = [
   {
     path: 'project-zone',
     name: 'Project Zone',
-    component: () => import('@/views/organization/ProjectZone/IndexProjectZone.vue'),
+    component: () => import('@/views/Organization/ProjectZone/IndexProjectZone.vue'),
   },
   {
     path: 'project-zone/:id',
     name: 'Edit Project Zone',
-    component: () => import('@/views/organization/ProjectZone/EditProjectZone.vue'),
+    component: () => import('@/views/Organization/ProjectZone/EditProjectZone.vue'),
   },
   {
     path: 'project-zone/add',
     name: 'Add Project Zone',
-    component: () => import('@/views/organization/ProjectZone/AddProjectZone.vue'),
+    component: () => import('@/views/Organization/ProjectZone/AddProjectZone.vue'),
   },
 ]
 

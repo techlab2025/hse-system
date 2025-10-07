@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddHerikaly from '@/features/organization/Herikaly/Presentation/components/AddHerikaly.vue'
+import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
 </script>
 <template>
   <AddHerikaly />

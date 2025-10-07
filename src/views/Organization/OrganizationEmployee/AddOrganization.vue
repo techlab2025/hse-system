@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddOrganizatoinEmployee from '@/features/organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue';
+import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue';
 
 </script>
 <template>
