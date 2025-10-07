@@ -22,8 +22,9 @@ const changeLang = (langCode: string) => {
   document.documentElement.lang = langCode
   document.dir = langCode === 'ar' ? 'rtl' : 'ltr'
   localStorage.setItem('lang', langCode)
+
   op.value.hide()
-  window.location.reload()
+  
 }
 
 const initializeLang = (langCode: string) => {
