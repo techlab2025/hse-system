@@ -4,16 +4,16 @@ export const partnerRoutes: RouteRecordRaw[] = [
   {
     path: 'partners',
     name: 'Partners Organization',
-    component: () => import('@/views/Organization/Partener/IndexPartener.vue'),
+    component: () => import('@/views/organization/Partener/IndexPartener.vue'),
   },
   {
     path: 'partner/add',
     name: 'Add Partner Organization',
-    component: () => import('@/views/Organization/Partener/AddPartener.vue'),
+    component: () => import('@/views/organization/Partener/AddPartener.vue'),
   },
   {
     path: 'partner/:id',
     name: 'Edit Partner Organization',
-    component: () => import('@/views/Organization/Partener/EditPartener.vue'),
+    component: () => import('@/views/organization/Partener/EditPartener.vue'),
   },
 ]

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IndexOrganizationLocation from '@/features/Organization/OrganizationLocation/Presentation/components/IndexOrganizationLocation.vue'
+import IndexOrganizationLocation from '@/features/organization/OrganizationLocation/Presentation/components/IndexOrganizationLocation.vue'
 </script>
 
 <template>
