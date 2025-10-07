@@ -58,7 +58,7 @@ const user = useUserStore()
                 <AccordionHeader>
                   <div class="links-header">
                     <IconSetting />
-                    Settings
+                    {{ $t('settings') }}
                   </div>
                 </AccordionHeader>
 
@@ -78,7 +78,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/admins">
                           <SidebarVector />
-                          <span>admins</span>
+                          <span>{{ $t('admins') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -96,7 +96,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/languages">
                           <SidebarVector />
-                          <span>languages</span>
+                          <span>{{ $t('languages') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -113,7 +113,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/industry">
                           <SidebarVector />
-                          <span>Industries</span>
+                          <span>{{ $t('industry') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -130,7 +130,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/equipment-types">
                           <SidebarVector />
-                          <span>Equipment Types</span>
+                          <span>{{ $t('Equipment Types') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -147,7 +147,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/equipments">
                           <SidebarVector />
-                          <span>Equipment</span>
+                          <span>{{ $t('Equipments') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -164,7 +164,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/hazard-types">
                           <SidebarVector />
-                          <span>Hazard Types</span>
+                          <span>{{ $t('Hazard Types') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -181,7 +181,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/accidents-types">
                           <SidebarVector />
-                          <span>Accidents Types</span>
+                          <span>{{ $t('Accidents Types') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -198,7 +198,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/factories-items">
                           <SidebarVector />
-                          <span>Factories Items</span>
+                          <span>{{ $t('Factory Items') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -215,7 +215,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/factories">
                           <SidebarVector />
-                          <span>Factories</span>
+                          <span>{{ $t('Factories') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -232,7 +232,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/templates">
                           <SidebarVector />
-                          <span>Templates</span>
+                          <span>{{ $t('Templates') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -249,7 +249,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/certificates">
                           <SidebarVector />
-                          <span>Certificates</span>
+                          <span>{{ $t('Certificates') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -266,7 +266,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/project-types">
                           <SidebarVector />
-                          <span>Project Types</span>
+                          <span>{{ $t('Project Types') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -283,7 +283,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/organization">
                           <SidebarVector />
-                          <span>Organization</span>
+                          <span>{{ $t('Organization') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -298,7 +298,7 @@ const user = useUserStore()
                 <AccordionHeader>
                   <div class="links-header">
                     <IconSetting />
-                    Location
+                    {{ $t('location') }}
                   </div>
                 </AccordionHeader>
                 <AccordionContent
@@ -317,7 +317,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/countries">
                           <SidebarVector />
-                          <span>Location Country</span>
+                          <span>{{ $t('country') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -334,7 +334,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/states">
                           <SidebarVector />
-                          <span>Location State</span>
+                          <span>{{ $t('state') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -351,7 +351,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/cities">
                           <SidebarVector />
-                          <span>Location City</span>
+                          <span>{{ $t('city') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -368,7 +368,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/areas">
                           <SidebarVector />
-                          <span>Location Area</span>
+                          <span>{{ $t('area') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -412,7 +412,7 @@ const user = useUserStore()
                 <AccordionHeader>
                   <div class="links-header">
                     <IconSetting />
-                    Website
+                    {{ $t('website') }}
                   </div>
                 </AccordionHeader>
 
@@ -432,7 +432,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/client-opinions">
                           <SidebarVector />
-                          <span>Client Opinion</span>
+                          <span>{{ $t('client_opinion') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -450,7 +450,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/home-contact-us">
                           <SidebarVector />
-                          <span>Home Contact Us</span>
+                          <span>{{ $t('home_contact_us') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -467,7 +467,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/categories">
                           <SidebarVector />
-                          <span>Categories</span>
+                          <span>{{ $t('categories') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -483,7 +483,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/services">
                           <SidebarVector />
-                          <span>Services</span>
+                          <span>{{ $t('services') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -499,7 +499,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/hashtags">
                           <SidebarVector />
-                          <span>Hashtags</span>
+                          <span>{{ $t('hashtags') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -514,7 +514,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/term/add">
                           <SidebarVector />
-                          <span>Terms</span>
+                          <span>{{ $t('terms') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -530,7 +530,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/headers">
                           <SidebarVector />
-                          <span>Header</span>
+                          <span>{{ $t('headers') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -547,7 +547,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/service-features">
                           <SidebarVector />
-                          <span>Service Features</span>
+                          <span>{{ $t('service_features') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -563,7 +563,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/service_section">
                           <SidebarVector />
-                          <span>Service Section</span>
+                          <span>{{ $t('service_section') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -580,7 +580,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/powerfull-features">
                           <SidebarVector />
-                          <span>PowerFull</span>
+                          <span>{{ $t('powerful_features') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -597,7 +597,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system-works">
                           <SidebarVector />
-                          <span>System Work</span>
+                          <span>{{ $t('system_works') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -613,7 +613,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/privacy/add">
                           <SidebarVector />
-                          <span>Privacy</span>
+                          <span>{{ $t('privacy') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -645,7 +645,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/service_logs">
                           <SidebarVector />
-                          <span>Service Logs</span>
+                          <span>{{ $t('service_logs') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -663,7 +663,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/blog">
                           <SidebarVector />
-                          <span>Blogs</span>
+                          <span>{{ $t('blogs') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -730,7 +730,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/faq">
                           <SidebarVector />
-                          <span>Faqs</span>
+                          <span>{{ $t('faqs') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -748,7 +748,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system-risk-management">
                           <SidebarVector />
-                          <span>System Risk Management</span>
+                          <span>{{ $t('systemRiskManagement') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -767,7 +767,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/our-system-step">
                           <SidebarVector />
-                          <span>Our System Steps</span>
+                          <span>{{ $t('ourSystemStep') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -783,7 +783,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system_banner">
                           <SidebarVector />
-                          <span>System Banner</span>
+                          <span>{{ $t('systemBanner') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -799,7 +799,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system_feature">
                           <SidebarVector />
-                          <span>System Feature</span>
+                          <span>{{ $t('systemFeature') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -815,7 +815,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system_risk_type">
                           <SidebarVector />
-                          <span>System Risk Type</span>
+                          <span>{{ $t('systemRiskType') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -831,7 +831,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/system_components">
                           <SidebarVector />
-                          <span>System Component</span>
+                          <span>{{ $t('systemComponents') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
@@ -847,7 +847,7 @@ const user = useUserStore()
               <AccordionHeader>
                 <div class="links-header">
                   <IconSetting />
-                  Organization
+                  {{ $t('Organization') }}
                 </div>
               </AccordionHeader>
 
@@ -887,7 +887,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/partners">
                         <SidebarVector />
-                        <span>Partners</span>
+                        <span>{{ $t('partners') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -904,7 +904,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/organization-locations">
                         <SidebarVector />
-                        <span>Organization Location</span>
+                        <span>{{ $t('organization_locations') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -921,7 +921,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/projects">
                         <SidebarVector />
-                        <span>Projects</span>
+                        <span>{{ $t('Projects') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -938,7 +938,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/certificates">
                         <SidebarVector />
-                        <span>Certificates</span>
+                        <span>{{ $t('Certificates') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -956,7 +956,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/equipment-types">
                         <SidebarVector />
-                        <span>Equipment Types</span>
+                        <span>{{ $t('Equipment Types') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -973,7 +973,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/equipments">
                         <SidebarVector />
-                        <span>Equipments</span>
+                        <span>{{ $t('Equipments') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -990,7 +990,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/factories">
                         <SidebarVector />
-                        <span>Factories</span>
+                        <span>{{ $t('Factories') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1007,7 +1007,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/factories-items">
                         <SidebarVector />
-                        <span>Factories Item</span>
+                        <span>{{ $t('Factories Item') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1024,7 +1024,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/hazard-types">
                         <SidebarVector />
-                        <span>Hazard Types</span>
+                        <span>{{ $t('Hazard Types') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1041,7 +1041,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/templates">
                         <SidebarVector />
-                        <span>Templates</span>
+                        <span>{{ $t('Templates') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1059,7 +1059,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/organization-employee">
                         <SidebarVector />
-                        <span>Organization Employee</span>
+                        <span>{{ $t('Organization Employee') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1093,7 +1093,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/project-zone">
                         <SidebarVector />
-                        <span>Project Zone</span>
+                        <span>{{ $t('project Zone') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
