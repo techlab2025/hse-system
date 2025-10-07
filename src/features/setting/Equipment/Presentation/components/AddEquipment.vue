@@ -43,7 +43,7 @@ const addEquipment = async () => {
 
   try {
     isSubmitting.value = true
-    console.log(params.value, 'params')
+    // console.log(params.value, 'params')
 
     await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router)
   } catch (error) {
