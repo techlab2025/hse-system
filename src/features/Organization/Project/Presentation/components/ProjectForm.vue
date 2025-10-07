@@ -16,10 +16,10 @@ import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
 import EditProjectParams from '../../Core/params/editProjectParams'
 import AddProjectParams from '../../Core/params/addProjectParams'
-import IndexPartnerController from '@/features/organization/Partner/Presentation/controllers/indexPartnerController'
-import IndexPartnerParams from '@/features/organization/Partner/Core/params/indexPartnerParams'
-import IndexOrganizationLocationController from '@/features/organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
-import IndexOrganizationLocationParams from '@/features/organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
+import IndexPartnerController from '@/features/Organization/Partner/Presentation/controllers/indexPartnerController'
+import IndexPartnerParams from '@/features/Organization/Partner/Core/params/indexPartnerParams'
+import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
+import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
 
 const emit = defineEmits(['update:data'])
 

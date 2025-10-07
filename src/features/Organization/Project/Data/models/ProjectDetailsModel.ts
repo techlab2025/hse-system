@@ -3,8 +3,8 @@ import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type PartnerModel from '@/features/organization/Partner/Data/models/PartnerModel'
-import type PartnerDetailsModel from '@/features/organization/Partner/Data/models/PartnerDetailsModel'
+import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
+import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class ProjectDetailsModel {
