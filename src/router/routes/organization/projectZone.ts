@@ -17,3 +17,6 @@ export const projectZoneRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/organization/ProjectZone/AddProjectZone.vue'),
   },
 ]
+
+
+
