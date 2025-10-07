@@ -1,4 +1,4 @@
-// import LangModel from '@/features/setting/organization/Data/models/langModel.ts'
+// import LangModel from '@/features/setting/Organization/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import OrganizationModel from '../../Data/models/OrganizationModel'
