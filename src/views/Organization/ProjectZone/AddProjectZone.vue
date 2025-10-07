@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddProjectZone from '@/features/Organization/ProjectZone/Presentation/components/AddProjectZone.vue';
+import AddProjectZone from '@/features/organization/ProjectZone/Presentation/components/AddProjectZone.vue';
 
 
 </script>
