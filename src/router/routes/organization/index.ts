@@ -10,7 +10,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   {
     path: 'organization',
     name: 'Organization',
-    component: () => import('@/views/AppHome.vue'),
+    component: () => import('@/views/AppHome'),
   },
   ...partnerRoutes,
   ...projectRoutes,
