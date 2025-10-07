@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import EditProjectZone from '@/features/organization/ProjectZone/Presentation/components/EditProjectZone.vue';
+import EditProjectZone from '@/features/Organization/ProjectZone/Presentation/components/EditProjectZone.vue';
 
 
 </script>

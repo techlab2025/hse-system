@@ -5,18 +5,18 @@ export const organizationLocationRoutes: RouteRecordRaw[] = [
     path: 'organization-locations',
     name: 'Organization Locations',
     component: () =>
-      import('@/views/organization/OrganizationLocation/IndexOrganizationLocation.vue'),
+      import('@/views/Organization/OrganizationLocation/IndexOrganizationLocation.vue'),
   },
   {
     path: 'organization-location/add',
     name: 'Add Organization Location',
     component: () =>
-      import('@/views/organization/OrganizationLocation/AddOrganizationLocation.vue'),
+      import('@/views/Organization/OrganizationLocation/AddOrganizationLocation.vue'),
   },
   {
     path: 'organization-location/:id',
     name: 'Edit Organization Location',
     component: () =>
-      import('@/views/organization/OrganizationLocation/EditOrganizationLocation.vue'),
+      import('@/views/Organization/OrganizationLocation/EditOrganizationLocation.vue'),
   },
 ]
