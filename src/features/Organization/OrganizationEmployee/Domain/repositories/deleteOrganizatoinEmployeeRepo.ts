@@ -1,6 +1,6 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { DeleteOrganizationApiService } from '@/features/setting/organization/Data/apiServices/deleteOrganizationApiService';
+import { DeleteOrganizationApiService } from '@/features/setting/Organization/Data/apiServices/deleteOrganizationApiService';
 import OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel';
 
 class DeleteOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeModel> {
