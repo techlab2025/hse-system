@@ -13,7 +13,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "create:feature": "tsx scripts/createFeature.ts"
   },
   "dependencies": {
     "@primeuix/themes": "^1.2.3",
@@ -23,8 +24,10 @@
     "axois": "^0.0.1-security",
     "cropperjs": "^1.6.2",
     "file-saver": "^2.0.5",
+    "fs": "^0.0.1-security",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.3",
+    "path": "^0.12.7",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "primevue": "^4.3.9",
@@ -38,7 +41,7 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.16.5",
+    "@types/node": "^22.18.8",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
@@ -49,6 +52,7 @@
     "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
     "sass-embedded": "^1.92.1",
+    "tsx": "^4.20.6",
     "typescript": "~5.8.0",
     "vite": "npm:rolldown-vite@latest",
     "vite-plugin-vue-devtools": "^8.0.0",
