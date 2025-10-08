@@ -3,7 +3,7 @@
 // import { log } from 'console';
 import { computed, nextTick, ref, watch } from 'vue'
 
-import Editor from 'primevue/editor'
+import Editor from 'primevue/editor';
 
 const props = withDefaults(
   defineProps<{
@@ -48,42 +48,8 @@ const titles = ref<{ locale: string; title: string }[]>(
   }),
 )
 
-// تحديد اللغة النشطة بناءً على القيم الممررة
-const initialLang = computed(() => {
-  // 1️⃣ ابحث عن أول لغة تحتوي على عنوان فعلي (title) في modelValue
-  const langWithTitle = props.langs.find((lang) =>
-    props.modelValue?.some((item) => item.locale === lang.locale && item.title?.trim().length > 0),
-  )
-
-  // 2️⃣ لو مش موجودة، استخدم اللغة الافتراضية (defaultLang)
-  if (langWithTitle) return langWithTitle.locale
-
-  if (props.defaultLang && props.langs.some((l) => l.locale === props.defaultLang.locale)) {
-    return props.defaultLang.locale
-  }
-
-  // 3️⃣ fallback → أول لغة متاحة أو "en"
-  return props.langs[0]?.locale || 'en'
-})
-
-// اللغة النشطة القابلة للتغيير
-const lang = ref(props.modelValue?.length ? props.modelValue[0]?.locale : initialLang.value)
-
-watch(
-  () => props.modelValue,
-  (newVal) => {
-    // في حال تغيّر modelValue، حدث اللغة النشطة
-    const found = newVal?.find((i) => i.locale === lang.value)
-    if (!found) {
-      lang.value = initialLang.value
-    }
-  },
-  { immediate: true, deep: true },
-)
-
-// console.log('Model Value:', props.modelValue)
-// console.log('Initial Lang:', initialLang.value)
-// console.log('Active Lang:', lang.value)
+// active language
+const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 
 // current title binding
 const title = ref('')
@@ -173,12 +139,7 @@ watch(
       <!--      </pre>-->
       <!-- Dynamic Languages -->
       <div class="languages">
-        <div
-          class="input-lang"
-          v-for="(l, index) in langs"
-          :key="index"
-          :class="{ active: l.locale === lang }"
-        >
+        <div class="input-lang" v-for="(l, index) in langs" :key="index">
           <input
             type="radio"
             :id="`${label}-${l.locale}`"
@@ -195,13 +156,7 @@ watch(
 
     <!-- Title Input -->
 
-    <Editor
-      v-if="isTextarea"
-      v-model="title"
-      :rows="rows"
-      v-bind="inputAttrs"
-      editorStyle="height: 320px"
-    />
+    <Editor v-if="isTextarea" v-model="title" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
 
     <!-- Regular Input -->
     <input v-else type="text" v-model="title" v-bind="inputAttrs" required />
