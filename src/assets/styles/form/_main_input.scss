@@ -43,11 +43,15 @@
       display: none;
       &:checked + .icon-lng {
         opacity: 1;
+        border: 1px solid $PrimaryColor;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       }
     }
   }
 
-  input:not([type='checkbox']), textarea {
+  input:not([type='checkbox']),
+  textarea {
     @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
     padding: $MdSize2 $MdSize;
     font-size: $SmSize;
@@ -61,6 +65,13 @@
     border-radius: $XlSize3;
     transition: all 0.3s ease-in-out;
     background-color: transparent;
+
+    &:focus-visible:valid {
+      border-color: rgba(217, 219, 233, 1);
+    }
+    &:focus-visible:invalid {
+      border-color: $Red;
+    }
 
     &:focus {
       border-color: $PrimaryColor;
@@ -92,7 +103,4 @@
     cursor: pointer;
     text-transform: capitalize;
   }
-
-
-
 }
