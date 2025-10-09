@@ -199,7 +199,6 @@ const handleLangValidation = (isValid: boolean) => {
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="setLangs"
-      type="number"
       @validate="handleLangValidation"
     />
   </div>

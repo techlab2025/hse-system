@@ -47,9 +47,9 @@ const titles = ref<{ locale: string; title: string }[]>(
 )
 
 // Active language
-const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
+const lang = ref(titles.value.find((t) => t.title)?.locale || props.defaultLang?.locale || '')
 
-console.log('Initial titles:', props.modelValue)
+// console.log('Initial titles:', props.modelValue)
 // Current title binding
 const title = ref('')
 
@@ -63,6 +63,7 @@ const hasAtLeastOneTitle = computed(() => {
   return titles.value.some((t) => t.title && t.title.trim().length > 0)
 })
 
+// console.log(titles.value.find((t) => t.title)?.locale, 'title')
 // Validate and emit validation status
 const validateTitles = () => {
   if (props.required && !hasAtLeastOneTitle.value) {
