@@ -49,6 +49,7 @@ const titles = ref<{ locale: string; title: string }[]>(
 // Active language
 const lang = ref(props.langs[0]?.locale || props.defaultLang?.locale || '')
 
+console.log('Initial titles:', props.modelValue)
 // Current title binding
 const title = ref('')
 
@@ -196,15 +197,7 @@ watch(hasAtLeastOneTitle, (isValid) => {
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}
     </span>
 
-    <!-- Validation Error -->
-    <span class="text-red-500 text-sm mt-1" v-if="validationError">
-      {{ validationError }}
-    </span>
-
     <!-- Required Field Info -->
-    <span class="text-gray-500 text-sm" v-else-if="required">
-      * {{ $t('required_field') }} - At least one language
-    </span>
   </div>
 </template>
 

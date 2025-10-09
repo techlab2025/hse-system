@@ -43,6 +43,9 @@
       display: none;
       &:checked + .icon-lng {
         opacity: 1;
+        border: 1px solid $PrimaryColor;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       }
     }
   }
