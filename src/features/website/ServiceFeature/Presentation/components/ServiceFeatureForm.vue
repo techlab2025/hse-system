@@ -126,7 +126,11 @@ const updateData = () => {
       itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
     })
 
-    const params = new AddServiceFeatureParams(itemTranslations, item.alt_image, item.image)
+    const params = new AddServiceFeatureParams(
+      itemTranslations,
+      item.alt_image,
+      item.image.startsWith('data:image') ? item.image : '',
+    )
     return params
   })
 

@@ -111,7 +111,11 @@ const updateData = () => {
       itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
     })
 
-    const params = new AddAboutUsCoreParams(itemTranslations, item.alt_image, item.image)
+    const params = new AddAboutUsCoreParams(
+      itemTranslations,
+      item.alt_image,
+      item.image.startsWith('data:image') ? item.image : '',
+    )
     return params
   })
 
@@ -222,8 +226,6 @@ watch(
   },
   { immediate: true, deep: true },
 )
-
-
 </script>
 
 <template>

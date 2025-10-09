@@ -8,6 +8,7 @@ import Email from '@/shared/icons/email.vue'
 import Lock from '@/shared/icons/lock.vue'
 import CloseEye from '@/shared/icons/closeEye.vue'
 import Loca from '@/shared/icons/loca.vue'
+import EyeIcon from '@/shared/icons/EyeIcon.vue'
 
 const router = useRouter()
 const email = ref('')
@@ -26,6 +27,8 @@ const login = () => {
     activeTab.value,
   )
 }
+
+const isPasswordVisible = ref()
 </script>
 
 <template>
@@ -119,13 +122,18 @@ const login = () => {
         <div class="input-wrapper">
           <Loca class="icon" />
           <input
-            type="password"
+            :type="isPasswordVisible ? 'text' : 'password'"
             id="password"
             :placeholder="$t('Password')"
             class="input"
             v-model="password"
           />
-          <CloseEye class="icon-eye" />
+          <CloseEye
+            class="icon-eye"
+            v-if="!isPasswordVisible"
+            @click="isPasswordVisible = !isPasswordVisible"
+          />
+          <EyeIcon class="icon-eye" v-else @click="isPasswordVisible = !isPasswordVisible" />
         </div>
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('login') }}</button>
