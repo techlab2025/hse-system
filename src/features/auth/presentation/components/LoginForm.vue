@@ -5,7 +5,7 @@ import LoginParams from '@/features/auth/Core/Params/login_params'
 import { useRouter } from 'vue-router'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import Email from '@/shared/icons/email.vue'
-import Lock from '@/shared/icons/lock.vue'
+// import Lock from '@/shared/icons/lock.vue'
 import CloseEye from '@/shared/icons/closeEye.vue'
 import Loca from '@/shared/icons/loca.vue'
 import EyeIcon from '@/shared/icons/EyeIcon.vue'
@@ -34,7 +34,17 @@ const isPasswordVisible = ref()
 <template>
   <section class="login">
     <div class="images">
-      <img src="@/assets/images/login.png" alt="" />
+      <div class="login-image">
+        <div class="top-glass-card">
+          <p>{{ $t('See your entire safety operation at a glance') }}</p>
+          <span>{{ $t('Real-time data. One powerful dashboard') }}</span>
+        </div>
+        <img src="@/assets/images/login.png" alt="" />
+        <div class="bottom-glass-card">
+          <p>{{ $t('Work from the field — even offline') }}</p>
+          <span>{{ $t('Submit reports, inspections & observations anytime, anywhere') }}</span>
+        </div>
+      </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="111"
