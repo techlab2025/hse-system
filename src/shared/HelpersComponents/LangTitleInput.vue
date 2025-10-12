@@ -46,8 +46,6 @@ const titles = ref<{ locale: string; title: string }[]>(
   }),
 )
 
-// Active language
-
 const getActiveTitle = computed(() => {
   return (
     titles.value.find((t) => t.title)?.locale ||
@@ -60,9 +58,8 @@ const getActiveTitle = computed(() => {
   )
 })
 
-// console.log(getActiveTitle, 'titles')
-
-const lang = ref(getActiveTitle || props.defaultLang?.locale || '')
+// Active language
+const lang = ref('')
 
 // console.log('Initial titles:', props.modelValue)
 // Current title binding
@@ -152,6 +149,8 @@ watch(
           current.answer ??
           current.question
       }
+
+      lang.value = getActiveTitle.value
     }
   },
   { deep: true, immediate: true },
