@@ -22,7 +22,7 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 // import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexServiceController from '../controllers/indexServiceController'
 import IndexServiceParams from '../../Core/params/indexServiceParams'
 import DeleteServiceParams from '../../Core/params/deleteServiceParams'
