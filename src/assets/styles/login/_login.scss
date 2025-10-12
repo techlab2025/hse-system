@@ -126,8 +126,9 @@
       gap: 5rem;
 
       @media screen and (max-width: 1179px) {
-        gap: 3rem;
+        gap: 2rem;
       }
+      
 
       .logo {
         @include flex(row, wrap, center, center);
