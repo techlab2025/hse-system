@@ -47,7 +47,22 @@ const titles = ref<{ locale: string; title: string }[]>(
 )
 
 // Active language
-const lang = ref(titles.value.find((t) => t.title)?.locale || props.defaultLang?.locale || '')
+
+const getActiveTitle = computed(() => {
+  return (
+    titles.value.find((t) => t.title)?.locale ||
+    titles.value.find((t) => t.subtitle)?.locale ||
+    titles.value.find((t) => t.description)?.locale ||
+    titles.value.find((t) => t.button_title)?.locale ||
+    titles.value.find((t) => t.answer)?.locale ||
+    titles.value.find((t) => t.question)?.locale ||
+    ''
+  )
+})
+
+// console.log(getActiveTitle, 'titles')
+
+const lang = ref(getActiveTitle || props.defaultLang?.locale || '')
 
 // console.log('Initial titles:', props.modelValue)
 // Current title binding
