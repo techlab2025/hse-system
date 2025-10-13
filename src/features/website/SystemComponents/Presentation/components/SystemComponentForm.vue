@@ -177,6 +177,7 @@ watch(
       :langs="langDefault"
       :modelValue="subtitlelangs"
       @update:modelValue="setSubtitleLangs"
+      field-type="subtitle"
     />
   </div>
 

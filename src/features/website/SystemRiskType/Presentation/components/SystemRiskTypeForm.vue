@@ -195,6 +195,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsSubTitle"
       :label="$t('Subtitle')"
       @update:modelValue="setLangsSubTitle"
+      field-type="subtitle"
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

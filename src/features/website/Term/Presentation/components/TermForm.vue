@@ -107,6 +107,7 @@ watch(
       :modelValue="langs"
       :label="$t('description')"
       @update:modelValue="setLangs"
+      field-type="description"
     />
   </div>
 </template>
