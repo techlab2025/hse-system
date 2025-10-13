@@ -286,6 +286,7 @@ const setImage = async (data: File | string) => {
       :langs="langDefaultSubtitle"
       :modelValue="langsSubtitle"
       @update:modelValue="(val) => (langsSubtitle = val)"
+      field-type="subtitle"
     />
   </div>
   <div class="col-span-4 md:col-span-4">
@@ -294,6 +295,7 @@ const setImage = async (data: File | string) => {
       :langs="langDefaultDescription"
       :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
       type="textarea"
     />
   </div>
