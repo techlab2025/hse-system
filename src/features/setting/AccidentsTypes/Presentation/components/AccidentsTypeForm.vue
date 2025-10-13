@@ -206,7 +206,7 @@ watch(
       type="checkbox"
       :value="true"
       v-model="allIndustries"
-      :checked="allIndustries"
+
       @change="updateData"
     />
   </div>

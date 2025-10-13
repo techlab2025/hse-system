@@ -5,8 +5,24 @@ import Editor from 'primevue/editor'
 const props = withDefaults(
   defineProps<{
     langs: { title: string; locale: string; icon?: any }[]
-    modelValue?: { locale: string; title: string }[]
-    defaultLang?: { locale: string; title: string }
+    modelValue?: {
+      locale: string;
+      title?: string;
+      subtitle?: string;
+      description?: string;
+      button_title?: string;
+      answer?: string;
+      question?: string;
+    }[]
+    defaultLang?: {
+      locale: string;
+      title?: string;
+      subtitle?: string;
+      description?: string;
+      button_title?: string;
+      answer?: string;
+      question?: string;
+    }
     label?: string
     type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
     placeholder?: string
@@ -14,11 +30,12 @@ const props = withDefaults(
     maxlength?: number
     required?: boolean
     disabled?: boolean
+    fieldType?: 'title' | 'subtitle' | 'description' | 'button_title' | 'answer' | 'question'
   }>(),
   {
     langs: () => [],
     modelValue: () => [],
-    defaultLang: () => ({ locale: 'en', title: '' }),
+    defaultLang: () => ({ locale: 'en' }),
     label: 'Title',
     type: 'text',
     placeholder: '',
@@ -26,60 +43,108 @@ const props = withDefaults(
     maxlength: undefined,
     required: true,
     disabled: false,
+    fieldType: 'title'
   },
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: { locale: string; title: string }[]): void
+  (e: 'update:modelValue', value: { locale: string; title?: string; subtitle?: string; description?: string; button_title?: string; answer?: string; question?: string }[]): void
   (e: 'validate', isValid: boolean): void
 }>()
 
-// Build titles for all langs
-const titles = ref<{ locale: string; title: string }[]>(
+// Build titles for all langs with support for multiple field types
+const titles = ref<{
+  locale: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  button_title?: string;
+  answer?: string;
+  question?: string;
+}[]>(
   props.langs.map((l) => {
     const fromModel = props.modelValue?.find((f) => f.locale === l.locale)
     if (fromModel) return { ...fromModel }
     if (props.defaultLang?.locale === l.locale) {
-      return { locale: l.locale, title: props.defaultLang.title }
+      return {
+        locale: l.locale,
+        title: props.defaultLang.title,
+        subtitle: props.defaultLang.subtitle,
+        description: props.defaultLang.description,
+        button_title: props.defaultLang.button_title,
+        answer: props.defaultLang.answer,
+        question: props.defaultLang.question
+      }
     }
-    return { locale: l.locale, title: '' }
+    return { locale: l.locale }
   }),
 )
 
-const getActiveTitle = computed(() => {
-  return (
-    titles.value.find((t) => t.title)?.locale ||
-    titles.value.find((t) => t.subtitle)?.locale ||
-    titles.value.find((t) => t.description)?.locale ||
-    titles.value.find((t) => t.button_title)?.locale ||
-    titles.value.find((t) => t.answer)?.locale ||
-    titles.value.find((t) => t.question)?.locale ||
-    ''
-  )
-})
+// Get the current field value based on fieldType
+const getFieldValue = (item: any) => {
+  switch (props.fieldType) {
+    case 'subtitle': return item.subtitle
+    case 'description': return item.description
+    case 'button_title': return item.button_title
+    case 'answer': return item.answer
+    case 'question': return item.question
+    default: return item.title
+  }
+}
 
-// Active language
-const lang = ref('')
+// Set the current field value based on fieldType
+const setFieldValue = (item: any, value: string) => {
+  switch (props.fieldType) {
+    case 'subtitle': item.subtitle = value; break
+    case 'description': item.description = value; break
+    case 'button_title': item.button_title = value; break
+    case 'answer': item.answer = value; break
+    case 'question': item.question = value; break
+    default: item.title = value; break
+  }
+}
 
-// console.log('Initial titles:', props.modelValue)
-// Current title binding
-const title = ref('')
+// Get initial active language - FIXED to handle all field types
+const getInitialActiveLang = () => {
+  // First, try to find the first language that has content for the current field type
+  const langWithContent = titles.value.find((t) => {
+    const value = getFieldValue(t)
+    return value && value.trim().length > 0
+  })
+  if (langWithContent) return langWithContent.locale
+
+  // If no content, try to use the default language if it exists in langs
+  if (props.defaultLang && props.langs.some(l => l.locale === props.defaultLang?.locale)) {
+    return props.defaultLang.locale
+  }
+
+  // Otherwise, use the first available language
+  return props.langs[0]?.locale || ''
+}
+
+// Active language - initialized properly
+const lang = ref(getInitialActiveLang())
+
+// Current field value binding
+const fieldValue = ref('')
 
 // Validation error
 const validationError = ref('')
 
 const isTextarea = computed(() => props.type === 'textarea')
 
-// Check if at least one language has a title
-const hasAtLeastOneTitle = computed(() => {
-  return titles.value.some((t) => t.title && t.title.trim().length > 0)
+// Check if at least one language has content for the current field type
+const hasAtLeastOneValue = computed(() => {
+  return titles.value.some((t) => {
+    const value = getFieldValue(t)
+    return value && value.trim().length > 0
+  })
 })
 
-// console.log(titles.value.find((t) => t.title)?.locale, 'title')
 // Validate and emit validation status
 const validateTitles = () => {
-  if (props.required && !hasAtLeastOneTitle.value) {
-    validationError.value = 'At least one language title is required'
+  if (props.required && !hasAtLeastOneValue.value) {
+    validationError.value = `At least one language ${props.fieldType} is required`
     emit('validate', false)
     return false
   }
@@ -91,24 +156,24 @@ const validateTitles = () => {
 // Expose validate method for parent component
 defineExpose({
   validate: validateTitles,
-  isValid: hasAtLeastOneTitle,
+  isValid: hasAtLeastOneValue,
 })
 
-// Sync active title when lang changes
+// Sync active field value when lang changes
 watch(
   lang,
   (newLang) => {
     const found = titles.value.find((t) => t.locale === newLang)
-    title.value = found ? found.title : ''
+    fieldValue.value = found ? getFieldValue(found) || '' : ''
   },
   { immediate: true },
 )
 
 // Update titles when input changes
-watch(title, (val) => {
+watch(fieldValue, (val) => {
   const idx = titles.value.findIndex((t) => t.locale === lang.value)
   if (idx !== -1) {
-    titles.value[idx].title = val
+    setFieldValue(titles.value[idx], val)
   }
   emit('update:modelValue', [...titles.value])
 
@@ -119,7 +184,7 @@ watch(title, (val) => {
 })
 
 const placeholderText = computed(() => {
-  return props.placeholder || props.label || 'Enter text...'
+  return props.placeholder || props.label || `Enter ${props.fieldType}...`
 })
 
 const inputAttrs = computed(() => ({
@@ -136,28 +201,27 @@ watch(
     if (nv) {
       titles.value = props.langs.map((l) => {
         const fromModel = nv.find((f) => f.locale === l.locale)
-        return fromModel ? { ...fromModel } : { locale: l.locale, title: '' }
+        return fromModel ? { ...fromModel } : { locale: l.locale }
       })
 
+      // Only update the current field value if the selected lang's content changed
       const current = titles.value.find((t) => t.locale === lang.value)
       if (current) {
-        title.value =
-          current.title ??
-          current.description ??
-          current.subtitle ??
-          current.button_title ??
-          current.answer ??
-          current.question
+        fieldValue.value = getFieldValue(current) || ''
       }
 
-      lang.value = getActiveTitle.value
+      // Don't change lang selection here to preserve user choice
+      // Only set initial lang if it's empty
+      if (!lang.value && props.langs.length > 0) {
+        lang.value = getInitialActiveLang()
+      }
     }
   },
   { deep: true, immediate: true },
 )
 
 // Watch for validation changes
-watch(hasAtLeastOneTitle, (isValid) => {
+watch(hasAtLeastOneValue, (isValid) => {
   emit('validate', isValid)
 })
 </script>
@@ -182,9 +246,9 @@ watch(hasAtLeastOneTitle, (isValid) => {
           />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
-            <!-- Visual indicator if this language has content -->
+            <!-- Visual indicator if this language has content for the current field type -->
             <span
-              v-if="titles.find((t) => t.locale === l.locale)?.title"
+              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
               class="lang-indicator"
               :title="`${l.locale.toUpperCase()} has content`"
             >
@@ -198,21 +262,24 @@ watch(hasAtLeastOneTitle, (isValid) => {
     <!-- Title Input -->
     <Editor
       v-if="isTextarea"
-      v-model="title"
+      v-model="fieldValue"
       :rows="rows"
       v-bind="inputAttrs"
       editorStyle="height: 320px"
     />
 
     <!-- Regular Input -->
-    <input v-else :type="type" v-model="title" v-bind="inputAttrs" />
+    <input v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" />
 
     <!-- Selected Language Info -->
     <span class="select-lang">
       {{ lang ? lang.toUpperCase() : 'select language from the top' }}
     </span>
 
-    <!-- Required Field Info -->
+    <!-- Validation Error -->
+    <div v-if="validationError" class="validation-error">
+      {{ validationError }}
+    </div>
   </div>
 </template>
 
@@ -236,5 +303,11 @@ watch(hasAtLeastOneTitle, (isValid) => {
 .icon-lng {
   position: relative;
   display: inline-block;
+}
+
+.validation-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 </style>

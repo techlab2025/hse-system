@@ -218,6 +218,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsSub"
       :label="$t('sub_title')"
       @update:modelValue="setLangsSub"
+      field-type="subtitle"
     />
   </div>
 
@@ -228,6 +229,8 @@ const setImage = async (data: File | string) => {
       :modelValue="langsButton"
       :label="$t('button_title')"
       @update:modelValue="setLangsButton"
+      field-type="button_title"
+
     />
   </div>
 
@@ -238,6 +241,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsDescription"
       :label="$t('description')"
       @update:modelValue="setLangsDescription"
+      field-type="description"
     />
   </div>
 
