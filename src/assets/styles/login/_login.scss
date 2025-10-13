@@ -3,22 +3,17 @@
 @import '../variables';
 
 .login {
-  /* ========== Base Layout ========== */
   @include grid(2, 1fr, 10px);
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(247.48deg, #1d4ed8 -32.76%, #163ca5 61.38%, #0f2972 99.86%);
 
-  /* ========== Responsive (Mobile) ========== */
   @media screen and (max-width: 1179px) {
     @include flex(column-reverse, wrap, center, center);
     gap: $MdSize;
     padding: $MdSize;
   }
 
-  /* ===============================
-     LEFT SIDE — IMAGES
-  =============================== */
   .images {
     @include flex(row, wrap, center, center);
     position: relative;
@@ -98,9 +93,6 @@
     }
   }
 
-  /* ===============================
-     RIGHT SIDE — LOGIN FORM
-  =============================== */
   .login-form {
     @include flex(column, wrap, center, center);
     width: 100%;
@@ -158,7 +150,6 @@
       }
     }
 
-    /* ---------- Tabs ---------- */
     .tabs {
       @include flex(row, wrap, center, center);
       width: 100%;
@@ -185,7 +176,6 @@
       }
     }
 
-    /* ---------- Inputs ---------- */
     .inputs {
       @include flex(column, wrap, center, center);
       width: 100%;
@@ -222,7 +212,6 @@
       }
     }
 
-    /* ---------- Button ---------- */
     button {
       width: 100%;
       justify-content: center;
