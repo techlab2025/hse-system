@@ -11,21 +11,16 @@ const props = defineProps<{
   dropdown?: boolean,
   textarea?: boolean
 }>()
-const CheckedButton = ref(0);
+const CheckedButton = ref(1);
 const emit = defineEmits(['update:action'])
 const items = ref([])
-const UpdateData = (data) => {
-  console.log(data.target.value , "data.target.value");
-  console.log(CheckedButton.value , "data.target.value");
-  if (CheckedButton.value == data.target.value) {
-    CheckedButton.value = 0;
-  }
-  else {
-    CheckedButton.value = +data.target.value;
-  }
+const UpdateData = () => {
+
   emit('update:action', CheckedButton.value)
 }
 
+
+UpdateData()
 
 const GetItems = (data ) => {
   items.value = data
@@ -44,7 +39,6 @@ const GetItems = (data ) => {
       <ActionsSection />
     </p>
     <div class="actions-container">
-
       <div class="action-container" v-if="checkbox">
         <input class="action" type="radio" id="checkbox-btn" value="1" v-model="CheckedButton" name="action"
           @change="UpdateData" :checked="CheckedButton === 1">

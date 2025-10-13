@@ -75,6 +75,8 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  console.log(ImageChecked , "ImageChecked");
+  console.log(ActionChecked , "ActionChecked");
   const params = !props.data?.id
     ? new AddTemplateItemParams(
       translationsParams,
@@ -116,9 +118,15 @@ watch(
 const ImageChecked = ref()
 const ActionChecked = ref()
 
-const ActionCheckbox = (data) => {
-  console.log(data , "data");
+const ActionCheckbox = (data:number) => {
+  // console.log(data , "data");
   ActionChecked.value = data
+  updateData()
+}
+const ImageRequiredCheckbox = (data:number) => {
+  // console.log(data , "data");
+  ImageChecked.value = data
+  updateData()
 }
 
 </script>
@@ -129,7 +137,7 @@ const ActionCheckbox = (data) => {
       <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
     </div>
     <ActionsButtons @update:action="ActionCheckbox" :checkbox="true" />
-    <CheckBoxButton @update:checked="ImageChecked" :checked="ImageChecked"
+    <CheckBoxButton @update:checked="ImageRequiredCheckbox" :checked="ImageChecked"
       :title="`Does it require uploading an image?`" />
   </div>
 
