@@ -1,0 +1,71 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.items-list-container {
+  border-radius: $XlSize;
+  background-color: #f8f8f8;
+  font-family: 'Regular';
+  margin-top: $XsSize2;
+  border: none;
+  .items-list-header {
+    padding: $XsSize $MdSize;
+    border-bottom: 1px solid #f2f2f2;
+    .add-item {
+      background-color: #1d4ed8;
+      border-radius: 50%;
+      width: 30px !important;
+      height: 30px !important;
+      @include flex-row(nowrap, center, center);
+      .icon {
+        color: white !important;
+        svg {
+          path {
+            fill: white !important;
+          }
+        }
+      }
+    }
+  }
+
+  .input-item {
+    width: 90%;
+    .item-title {
+      background-color: white !important;
+      border: 1px solid #d9dbe9 !important;
+
+      &::placeholder {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+
+  .items-actions {
+    background-color: white !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50%;
+    margin-top: calc($XlSize2 + 4px);
+    border: 1px solid #d9dbe9;
+
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize2;
+
+    .remove-item {
+      background-color: #1d4ed8;
+      border-radius: 50%;
+      width: 30px !important;
+      height: 30px !important;
+      @include flex-row(nowrap, center, center);
+      .icon {
+        color: white !important;
+        svg {
+          path {
+            fill: white !important;
+          }
+        }
+      }
+    }
+  }
+}

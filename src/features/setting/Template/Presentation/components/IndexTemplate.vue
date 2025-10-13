@@ -108,16 +108,14 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       PermissionsEnum.ORG_TEMPLATE_ALL,
     ],
   },
-  // {
-  //   text: t('add_sub_HAZARD_type'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-type/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
+  {
+    text: t('add_template_item'),
+    icon: IconEdit,
+    link: `/admin/template-item/add/${id}`,
+    permission: [
+      PermissionsEnum.ADMIN,
+    ],
+  },
   // {
   //   text: t('sub_HAZARD_types'),
   //   icon: IconEdit,
@@ -151,52 +149,40 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchTemplate())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchTemplate"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTemplate" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.TEMPLATE_CREATE,
-          PermissionsEnum.ORG_TEMPLATE_CREATE,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
-          class="btn btn-primary"
-        >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.TEMPLATE_CREATE,
+        PermissionsEnum.ORG_TEMPLATE_CREATE,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
+          class="btn btn-primary">
           {{ $t('Add_Template') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.TEMPLATE_ALL,
-      PermissionsEnum.TEMPLATE_DELETE,
-      PermissionsEnum.TEMPLATE_FETCH,
-      PermissionsEnum.TEMPLATE_UPDATE,
-      PermissionsEnum.TEMPLATE_CREATE,
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.TEMPLATE_ALL,
+    PermissionsEnum.TEMPLATE_DELETE,
+    PermissionsEnum.TEMPLATE_FETCH,
+    PermissionsEnum.TEMPLATE_UPDATE,
+    PermissionsEnum.TEMPLATE_CREATE,
 
-      PermissionsEnum.ORG_TEMPLATE_ALL,
-      PermissionsEnum.ORG_TEMPLATE_DELETE,
-      PermissionsEnum.ORG_TEMPLATE_FETCH,
-      PermissionsEnum.ORG_TEMPLATE_UPDATE,
-      PermissionsEnum.ORG_TEMPLATE_CREATE,
-    ]"
-  >
+    PermissionsEnum.ORG_TEMPLATE_ALL,
+    PermissionsEnum.ORG_TEMPLATE_DELETE,
+    PermissionsEnum.ORG_TEMPLATE_FETCH,
+    PermissionsEnum.ORG_TEMPLATE_UPDATE,
+    PermissionsEnum.ORG_TEMPLATE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -216,8 +202,8 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${item.id}`">{{
+                    index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -237,20 +223,13 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
                   <!--                  @TemplateChangeStatus="fetchTemplate"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteTemplate)"
-                    @delete="deleteTemplate(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteTemplate)" @delete="deleteTemplate(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -259,28 +238,22 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Template"
-        />
+          title="..ops! You have No Template" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Template"
-        />
+          title="..ops! You have No Template" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
