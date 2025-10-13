@@ -1,0 +1,43 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.form-header-container {
+  @include flex-row(nowrap, space-between, flex-start);
+  width: 100%;
+  padding: $XlSize2 $SmSize;
+  font-family: 'Regular';
+  background-color: #f8f9fb;
+  border-radius: calc($XlSize2 + 3px);
+  .form-header {
+    background-color: #f8f9fb;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize3;
+    .title {
+      color: #121212;
+      font-size: calc($XlSize2 + 2px);
+      font-weight: $BaseFontWeightBold;
+    }
+    .subtiltle {
+      color: $PrimaryColor;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+
+  .edit {
+    @include flex-row(nowrap, flex-end, center);
+    gap: $XsSize4;
+    color: $PrimaryColor;
+    font-size: $SmSize;
+    font-weight: $BaseFontWeightBold;
+    cursor: pointer;
+
+    span {
+      text-decoration: underline;
+    }
+    .icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

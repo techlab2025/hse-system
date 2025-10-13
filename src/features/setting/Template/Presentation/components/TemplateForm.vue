@@ -259,7 +259,7 @@ watch(
   -->
 
   <!-- Items Section -->
-  <div class="col-span-4 border border-gray-200 !p-3 rounded">
+  <!-- <div class="col-span-4 border border-gray-200 !p-3 rounded">
     <div class="flex items-center justify-between mb-4">
       <h3 class="font-bold text-lg">{{ $t('items') }}</h3>
     </div>
@@ -332,5 +332,5 @@ watch(
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>

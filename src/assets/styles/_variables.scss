@@ -12,7 +12,7 @@
   --Black: rgba(0, 0, 0, 1);
   --Red: rgba(237, 28, 36, 1);
   --main-border: rgb(221, 226, 237);
-
+  --checkbox-bg :#F5F5FF;
   --base-width: 1440;
   --base-height: 900;
   --font-family: 'URW DIN Arabic';
@@ -57,8 +57,9 @@ $DarkGray: var(--DarkGray);
 $LightGray: var(--LightGray);
 $Red: var(--Red);
 $MainBorder: var(--main-border);
-
 $Black: var(--Black);
+$CheckboxBg :var(--checkbox-bg);
+
 /*</editor-fold>*/
 
 /*<editor-fold desc="sizes">*/
