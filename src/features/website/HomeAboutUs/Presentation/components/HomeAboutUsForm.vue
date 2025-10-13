@@ -246,6 +246,7 @@ watch(
       :modelValue="langsSub"
       type="text"
       @update:modelValue="setLangsSub"
+      field-type="subtitle"
     />
   </div>
 
@@ -256,6 +257,7 @@ watch(
       :modelValue="langsDescription"
       type="textarea"
       @update:modelValue="setLangsDescription"
+      field-type="description"
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -295,6 +297,7 @@ watch(
           :label="$t('itemTitle') + ' ' + (index + 1)"
           :modelValue="item.langs"
           @update:modelValue="(val) => setItemLangs(index, val)"
+          field-type="title"
         />
       </div>
 
@@ -304,6 +307,7 @@ watch(
           :label="$t('itemSubTitle') + ' ' + (index + 1)"
           :modelValue="item.langs_sub"
           @update:modelValue="(val) => setItemSubLangs(index, val)"
+          field-type="subtitle"
         />
       </div>
 

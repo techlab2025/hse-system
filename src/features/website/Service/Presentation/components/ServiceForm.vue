@@ -184,6 +184,7 @@ watch(
       :label="$t('sub_title')"
       type="text"
       @update:modelValue="setLangsSubTitle"
+      field-type="subtitle"
     />
   </div>
 
@@ -194,6 +195,7 @@ watch(
       :label="$t('Description')"
       type="textarea"
       @update:modelValue="setLangsButton"
+      field-type="description"
     />
   </div>
 

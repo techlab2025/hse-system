@@ -192,6 +192,7 @@ watch(
       :modelValue="langsQuestion"
       @update:modelValue="(val) => (langsQuestion = val)"
       type="textarea"
+      field-type="question"
     />
   </div>
 
@@ -202,6 +203,7 @@ watch(
       :modelValue="langsAnswer"
       @update:modelValue="(val) => (langsAnswer = val)"
       type="textarea"
+      field-type="answer"
     />
   </div>
 </template>

@@ -183,6 +183,7 @@ watch(
       :modelValue="langsSubTitle"
       :label="$t('Old')"
       @update:modelValue="setLangsSubTitle"
+      field-type="subtitle"
     />
   </div>
 
@@ -193,6 +194,7 @@ watch(
       :modelValue="langsDescription"
       :label="$t('New')"
       @update:modelValue="setLangsDescription"
+      field-type="description"
     />
   </div>
 </template>
