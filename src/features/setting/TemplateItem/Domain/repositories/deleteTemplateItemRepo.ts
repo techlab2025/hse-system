@@ -2,7 +2,7 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
-import TemplateItemModel from '../../Data/models/equipmentModel'
+import TemplateItemModel from '../../Data/models/TemplateItemModel'
 import { DeleteTemplateItemApiService } from '../../Data/apiServices/deleteTemplateItemApiService'
 
 class DeleteTemplateItemRepo extends RepoInterface<TemplateItemModel> {

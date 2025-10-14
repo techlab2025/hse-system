@@ -6,17 +6,20 @@ export default class AddTemplateItemParams implements Params {
   require_image: number
   action: number
   parentId: number
+  AllIndustries: number
 
   constructor(
     translation: TranslationsParams,
     require_image: number,
     action: number,
     parentId: number,
+    AllIndustries: number,
   ) {
     this.translation = translation
     this.require_image = require_image
     this.action = action
     this.parentId = parentId
+    this.AllIndustries = AllIndustries
     // this.image = image
   }
 
@@ -33,9 +36,10 @@ export default class AddTemplateItemParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap() // tranlations:asd
-    if (this.parentId) data['parent_id'] = this.parentId
+    if (this.parentId) data['template_id'] = this.parentId
     data['require_image'] = this.require_image
     if (this.action) data['action'] = this.action
+    if (this.AllIndustries) data['all_industries'] = this.AllIndustries
     return data
   }
 }

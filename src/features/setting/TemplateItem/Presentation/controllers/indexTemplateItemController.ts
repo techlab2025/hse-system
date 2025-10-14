@@ -2,7 +2,7 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type TemplateItemModel from '../../Data/models/equipmentModel'
+import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import IndexTemplateItemUseCase from '../../Domain/useCase/indexTemplateItemUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 

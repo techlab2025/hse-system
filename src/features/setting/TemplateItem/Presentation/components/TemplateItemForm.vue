@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { markRaw, onMounted, ref, TransitionGroup, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -17,15 +17,19 @@ import IndexTemplateItemTypeController from '@/features/setting/TemplateItem/Pre
 import IndexTemplateItemTypeParams from '@/features/setting/TemplateItem/Core/params/indexTemplateItemParams'
 import AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 import EditTemplateItemParams from '../../Core/params/editTemplateItemParams'
-import type TemplateItemModel from '../../Data/models/equipmentModel'
+import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsButtons from '@/shared/Actions/ActionsButtons.vue'
 import CheckBoxButton from '@/shared/Checkbox/CheckBoxButton.vue'
+import FormHeaderSection from '@/shared/FormHeader/FormHeaderSection.vue'
+import TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
 
 const emit = defineEmits(['update:data'])
-const props = defineProps<{ data?: TemplateItemModel }>()
-
+const props = defineProps<{ data?: TemplateItemDetailsModel }>()
+// const { user } = useUserStore()
+const ImageChecked = ref()
+const ActionChecked = ref()
 const route = useRoute()
 const id = Number(route.params.parent_id)
 
@@ -74,15 +78,13 @@ const updateData = () => {
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
-  console.log(ImageChecked , "ImageChecked");
-  console.log(ActionChecked , "ActionChecked");
   const params = !props.data?.id
     ? new AddTemplateItemParams(
       translationsParams,
       ImageChecked.value ? 1 : 0,
       ActionChecked.value ? 1 : 0,
       id,
+      1
     )
     : new EditTemplateItemParams(
       props.data.id ?? 0,
@@ -112,18 +114,21 @@ watch(
         return existing ? { ...l, title: existing.title } : { ...l }
       })
     }
+    if (newData) {
+      ImageChecked.value = newData.requiredImage ? true : false
+      ActionChecked.value = newData.action == 1 ? true : false
+    }
   },
   { immediate: true },
 )
-const ImageChecked = ref()
-const ActionChecked = ref()
 
-const ActionCheckbox = (data:number) => {
+
+const ActionCheckbox = (data: number) => {
   // console.log(data , "data");
   ActionChecked.value = data
   updateData()
 }
-const ImageRequiredCheckbox = (data:number) => {
+const ImageRequiredCheckbox = (data: number) => {
   // console.log(data , "data");
   ImageChecked.value = data
   updateData()
@@ -133,10 +138,14 @@ const ImageRequiredCheckbox = (data:number) => {
 
 <template>
   <div class="col-span-4 md:col-span-4 form-container ">
+    <FormHeaderSection title="Template Item" subtitle="All industry"
+      :editLink="`/${user?.user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/${props.data?.id}`" />
+
     <div class="col-span-4 md:col-span-4">
       <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
     </div>
-    <ActionsButtons @update:action="ActionCheckbox" :checkbox="true" />
+    <ActionsButtons @update:action="ActionCheckbox" :checkboxVisable="true" />
+
     <CheckBoxButton @update:checked="ImageRequiredCheckbox" :checked="ImageChecked"
       :title="`Does it require uploading an image?`" />
   </div>

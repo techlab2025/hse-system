@@ -4,7 +4,7 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import DeleteTemplateItemUseCase from '../../Domain/useCase/deleteTemplateItemUseCase'
-import type TemplateItemModel from '../../Data/models/equipmentModel'
+import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import successImage from '@/assets/images/Success.png'
 
 export default class DeleteTemplateItemController extends ControllerInterface<TemplateItemModel> {

@@ -3,7 +3,8 @@ import HeaderEditIcon from '../icons/HeaderEditIcon.vue';
 
 const props = defineProps<{
   title: string,
-  subtitle: string
+  subtitle: string,
+  editLink: string
 }>()
 </script>
 
@@ -13,10 +14,10 @@ const props = defineProps<{
       <p class="title">{{ title }}</p>
       <p class="subtiltle">{{ subtitle }}</p>
     </div>
-    <div class="edit">
+    <router-link :to="editLink" class="edit">
       <HeaderEditIcon class="icon" />
       <span>Edit</span>
-    </div>
+    </router-link>
   </div>
 </template>
 <style scoped>

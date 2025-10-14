@@ -1,7 +1,7 @@
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import TemplateItemModel from '../../Data/models/equipmentModel'
+import TemplateItemModel from '../../Data/models/TemplateItemModel'
 import { DisTemplateItemApiService } from '../../Data/apiServices/disTemplateItemApiService'
 
 class DisActiveTemplateItemRepo extends RepoInterface<TemplateItemModel> {

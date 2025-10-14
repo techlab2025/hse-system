@@ -4,7 +4,7 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type TemplateItemModel from '../../Data/models/equipmentModel'
+import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import DisTemplateItemUseCase from '../../Domain/useCase/disTemplateItemUseCase'
 
 export default class disActiveTemplateItemController extends ControllerInterface<TemplateItemModel> {

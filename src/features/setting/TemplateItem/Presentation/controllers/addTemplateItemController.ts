@@ -6,7 +6,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type TemplateItemModel from '@/features/setting/TemplateItem/Data/models/equipmentModel'
+import type TemplateItemModel from '@/features/setting/TemplateItem/Data/models/TemplateItemModel'
 import AddTemplateItemUseCase from '../../Domain/useCase/addTemplateItemUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -41,7 +41,7 @@ export default class AddTemplateItemController extends ControllerInterface<Templ
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -2,7 +2,7 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import ShowTemplateItemUseCase from '../../Domain/useCase/showTemplateItemUseCase'
-import type TemplateItemDetailsModel from '../../Data/models/equipmentDetailsModel'
+import type TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
 
 export default class ShowTemplateItemController extends ControllerInterface<TemplateItemDetailsModel> {
   private static instance: ShowTemplateItemController

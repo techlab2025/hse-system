@@ -4,7 +4,7 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type TemplateItemModel from '../../Data/models/equipmentModel'
+import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import EditTemplateItemUseCase from '../../Domain/useCase/editTemplateItemUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -29,7 +29,8 @@ export default class EditTemplateItemController extends ControllerInterface<Temp
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<TemplateItemModel> = await this.editTemplateItemUseCase.call(params)
+      const dataState: DataState<TemplateItemModel> =
+        await this.editTemplateItemUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -42,7 +43,10 @@ export default class EditTemplateItemController extends ControllerInterface<Temp
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item`,
+        )
+
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
