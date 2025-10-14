@@ -21,7 +21,7 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
-import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
+// import { PermissionsEnum } from '@/features/users/employee/Core/Enum/permission_enum.ts'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import SaveIcon from '@/shared/icons/SaveIcon.vue'
@@ -32,6 +32,7 @@ import DeleteTemplateItemParams from '../../Core/params/deleteTemplateItemParams
 import DeleteTemplateItemController from '../controllers/deleteTemplateItemController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const { t } = useI18n()
 
@@ -107,45 +108,39 @@ const actionList = (id: number, deleteTemplateItem: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
     ],
   },
-  {
-    text: t('add_sub_equipment'),
-    icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-    ],
-  },
-  {
-    text: t('sub_equipment'),
-    icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-    ],
-  },
+  // {
+  //   text: t('add_sub_equipment'),
+  //   icon: IconEdit,
+  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
+  //   permission: [
+  //     PermissionsEnum.EQUIPMENT_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.EQUIPMENT_ALL,
+  //   ],
+  // },
+  // {
+  //   text: t('sub_equipment'),
+  //   icon: IconEdit,
+  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments/${id}`,
+  //   permission: [
+  //     PermissionsEnum.EQUIPMENT_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.EQUIPMENT_ALL,
+  //   ],
+  // },
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteTemplateItem(id),
     permission: [
-      PermissionsEnum.EQUIPMENT_DELETE,
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
     ],
   },
 ]
@@ -166,45 +161,35 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchTemplateItemType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchTemplateItemType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTemplateItemType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
-          class="btn btn-primary"
-        >
+      <permission-builder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.TEMPLATE_ITEM_ALL,
+        PermissionsEnum.TEMPLATE_ITEM_CREATE,
+        PermissionsEnum.TEMPLATE_ITEM_DELETE,
+        PermissionsEnum.TEMPLATE_ITEM_FETCH,
+        PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+      ]">
+        <!-- <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add`"
+          class="btn btn-primary">
           {{ $t('Add_TemplateItem') }}
-        </router-link>
+        </router-link> -->
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.EQUIPMENT_DELETE,
-      PermissionsEnum.EQUIPMENT_FETCH,
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.EQUIPMENT_CREATE,
-    ]"
-  >
+  <permission-builder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.TEMPLATE_ITEM_ALL,
+    PermissionsEnum.TEMPLATE_ITEM_CREATE,
+    PermissionsEnum.TEMPLATE_ITEM_DELETE,
+    PermissionsEnum.TEMPLATE_ITEM_FETCH,
+    PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -216,7 +201,6 @@ watch(
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('TemplateItemType') }}</th>
 
                 <th scope="col">Actions</th>
               </tr>
@@ -225,8 +209,8 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`">{{
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -238,9 +222,7 @@ watch(
                       : $t('no')
                   }}
                 </td>
-                <td data-label="TemplateItemType">
-                  {{ item.equipmentType?.title }}
-                </td>
+
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusTemplateItemType-->
@@ -249,20 +231,14 @@ watch(
                   <!--                  @TemplateItemTypeChangeStatus="fetchTemplateItemType"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteTemplateItem)"
-                    @delete="deleteTemplateItem(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteTemplateItem)"
+                    @delete="deleteTemplateItem(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -275,24 +251,20 @@ watch(
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
           addText="Add TemplateItemType"
           description="Sorry .. You have no TemplateItemTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No TemplateItemTypes"
-        />
+          title="..ops! You have No TemplateItemTypes" />
       </template>
       <template #failed>
         <DataFailed
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
           addText="Add TemplateItemType"
           description="Sorry .. You have no TemplateItemType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No TemplateItemTypes"
-        />
+          title="..ops! You have No TemplateItemTypes" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no TemplateItemType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no TemplateItemType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

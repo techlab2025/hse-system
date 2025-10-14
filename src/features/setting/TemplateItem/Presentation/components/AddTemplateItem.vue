@@ -27,7 +27,6 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <FormHeaderSection title="Templet 1 for all" subtitle="All industry" />
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-4" @submit.prevent="addTemplateItem">
     <TemplateItemForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">

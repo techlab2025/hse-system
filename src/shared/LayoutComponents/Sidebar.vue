@@ -236,6 +236,22 @@ const user = useUserStore()
                         </router-link>
                       </li>
                     </PermissionBuilder>
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.TEMPLATE_ITEM_ALL,
+                        PermissionsEnum.TEMPLATE_ITEM_CREATE,
+                        PermissionsEnum.TEMPLATE_ITEM_DELETE,
+                        PermissionsEnum.TEMPLATE_ITEM_FETCH,
+                        PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/template-item">
+                          <SidebarVector />
+                          <span>{{ $t('Template_Item') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
 
                     <PermissionBuilder
                       :code="[

@@ -1,7 +1,7 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import ShowLangModel from '@/features/setting/languages/Data/models/langDetailsModel'
-import TemplateItemDetailsModel from '../../Data/models/equipmentDetailsModel'
+import TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
 import { ShowTemplateItemApiService } from '../../Data/apiServices/showTemplateItemApiService'
 
 class ShowTemplateItemRepo extends RepoInterface<TemplateItemDetailsModel> {

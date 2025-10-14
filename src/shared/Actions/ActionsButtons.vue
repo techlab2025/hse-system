@@ -7,27 +7,22 @@ import TextAreaIcon from "../icons/TextAreaIcon.vue";
 import ListItemsAddition from "../ItemsList/ListItemsAddition.vue";
 
 const props = defineProps<{
-  checkbox?: boolean,
-  dropdown?: boolean,
-  textarea?: boolean
+  checkboxVisable?: boolean,
+  dropdownVisable?: boolean,
+  textareaVisable?: boolean
 }>()
-const CheckedButton = ref(0);
+const CheckedButton = ref(1);
 const emit = defineEmits(['update:action'])
 const items = ref([])
-const UpdateData = (data) => {
-  console.log(data.target.value , "data.target.value");
-  console.log(CheckedButton.value , "data.target.value");
-  if (CheckedButton.value == data.target.value) {
-    CheckedButton.value = 0;
-  }
-  else {
-    CheckedButton.value = +data.target.value;
-  }
+const UpdateData = () => {
+
   emit('update:action', CheckedButton.value)
 }
 
 
-const GetItems = (data ) => {
+UpdateData()
+
+const GetItems = (data) => {
   items.value = data
   console.log(items.value, "data");
 
@@ -44,8 +39,7 @@ const GetItems = (data ) => {
       <ActionsSection />
     </p>
     <div class="actions-container">
-
-      <div class="action-container" v-if="checkbox">
+      <div class="action-container" v-if="checkboxVisable">
         <input class="action" type="radio" id="checkbox-btn" value="1" v-model="CheckedButton" name="action"
           @change="UpdateData" :checked="CheckedButton === 1">
         <label for="checkbox-btn" class="action-box" :class="CheckedButton == 1 ? 'active' : ''">
@@ -55,7 +49,7 @@ const GetItems = (data ) => {
         </label>
       </div>
 
-      <div class="action-container" v-if="dropdown">
+      <div class="action-container" v-if="dropdownVisable">
         <input class="action" type="radio" id="drop-down" value="2" v-model="CheckedButton" name="action"
           @change="UpdateData">
         <label for="drop-down" class="action-box" :class="CheckedButton == 2 ? 'active' : ''">
@@ -65,7 +59,7 @@ const GetItems = (data ) => {
         </label>
       </div>
 
-      <div class="action-container" v-if="textarea">
+      <div class="action-container" v-if="textareaVisable">
         <input class="action" type="radio" id="text-area" value="3" v-model="CheckedButton" name="action"
           @change="UpdateData">
         <label for="text-area" class="action-box" :class="CheckedButton == 3 ? 'active' : ''">

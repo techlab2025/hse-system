@@ -9,7 +9,7 @@ export default class ShowTemplateItemParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['equipment_id'] = this.id
+    data['template_item_id'] = this.id
     return data
   }
 }

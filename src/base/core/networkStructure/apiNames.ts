@@ -414,6 +414,13 @@ class ApiNames {
   public ShowProjectZone = this.prefix + 'fetch_project_zone_details'
   public EditProjectZone = this.prefix + 'update_project_zone'
   public DeleteProjectZone = this.prefix + 'delete_project_zone'
+
+  // ProjectZone
+  public CreateTemplateItem = this.prefix + 'create_template_item'
+  public IndexTemplateItem = this.prefix + 'fetch_template_items'
+  public ShowTemplateItem = this.prefix + 'fetch_template_item_details'
+  public EditTemplateItem = this.prefix + 'update_template_item'
+  public DeleteTemplateItem = this.prefix + 'delete_template_item'
 }
 
 export { ApiNames }
