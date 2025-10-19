@@ -36,8 +36,8 @@ const alt = ref<string>('')
 
 // language sets
 const langs = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsButton = ref<{ locale: string; title: string }[]>([])
+const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
+const langsButton = ref<{ locale: string; button_title: string }[]>([])
 
 // default available langs (for input rendering)
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
@@ -87,11 +87,11 @@ const updateData = () => {
   })
 
   langsSubTitle.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   langsButton.value.forEach((lang) => {
-    translationsParams.setTranslation('button_title', lang.locale, lang.title)
+    translationsParams.setTranslation('button_title', lang.locale, lang.button_title)
   })
 
   const params = props.data?.id

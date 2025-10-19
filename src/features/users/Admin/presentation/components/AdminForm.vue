@@ -68,7 +68,8 @@ const updateTeamMember = () => {
 
 <template>
   <div class="input-wrapper">
-    <label class="input-label required" for="name">name</label>
+    <label  for="name">name        <span class="text-red-500" >*</span>
+    </label>
     <input
       id="name"
       v-model="name"
@@ -79,7 +80,7 @@ const updateTeamMember = () => {
     />
   </div>
   <div class="input-wrapper">
-    <label class="input-label required" for="phone">phone</label>
+    <label  for="phone">phone <span class="text-red-500" >*</span></label>
     <input
       id="phone"
       v-model="phone"
@@ -91,7 +92,7 @@ const updateTeamMember = () => {
   </div>
 
   <div class="input-wrapper">
-    <label class="input-label required" for="name">Email</label>
+    <label  for="name">Email <span class="text-red-500" >*</span></label>
     <input
       id="email"
       v-model="email"
@@ -102,7 +103,7 @@ const updateTeamMember = () => {
     />
   </div>
   <div class="input-wrapper">
-    <label class="input-label required" for="password">Password</label>
+    <label  for="password">Password <span class="text-red-500" >*</span></label>
     <input
       id="password"
       v-model="password"

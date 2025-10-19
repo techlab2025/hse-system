@@ -60,13 +60,13 @@ const items = ref<Item[]>([])
 // helper to create new blank item
 const createNewItem = (): Item => ({
   langs: langDefault.value.map((l) => ({ locale: l.locale, title: '' })),
-  langs_sub: langDefault.value.map((l) => ({ locale: l.locale, title: '' })),
+  langs_sub: langDefault.value.map((l) => ({ locale: l.locale, subtitle: '' })),
   image: '',
   alt_image: '',
 })
 
-const langsSub = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsSub = ref<{ locale: string; subtitle: string }[]>([])
+const langsDescription = ref<{ locale: string; description: string }[]>([])
 
 const setLangsSub = (value: { locale: string; title: string }[]) => {
   langsSub.value = value
@@ -109,11 +109,11 @@ const updateData = () => {
   })
 
   langsSub.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const itemsParams = items.value.map((item) => {
@@ -123,7 +123,7 @@ const updateData = () => {
     })
 
     item.langs_sub.forEach((lang) => {
-      itemTranslations.setTranslation('subtitle', lang.locale, lang.title)
+      itemTranslations.setTranslation('subtitle', lang.locale, lang.subtitle)
     })
 
     const params = new AddServiceFeatureParams(

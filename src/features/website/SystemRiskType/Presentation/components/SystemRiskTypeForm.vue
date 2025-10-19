@@ -23,12 +23,10 @@ const props = defineProps<{
   serviceId: number
 }>()
 
-const indexServiceController = IndexServiceController.getInstance()
-const indexServiceParams = new IndexServiceParams('', 1, 10, 1)
+
 
 const langsTitle = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
@@ -98,7 +96,7 @@ const updateData = () => {
   })
 
   langsSubTitle.value.forEach((lang) => {
-    mainTranslations.setTranslation('subtitle', lang.locale, lang.title)
+    mainTranslations.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const params = props?.data?.id
@@ -132,28 +130,24 @@ const setLangsSubTitle = (value: { locale: string; title: string }[]) => {
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (!newData || !newDefault.length) return
+    if (!newDefault.length) return
 
-    // Map titles
-    langsTitle.value = newDefault.map((lang) => {
-      const translation = newData.titles?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.title || '',
-      }
-    })
+    langsTitle.value = newData?.titles?.length
+      ? newDefault.map((l) => {
+        const existing = newData.titles.find((t) => t.locale === l.locale)
+        return existing ?? { locale: l.locale, title: '' }
+      })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    // Map subtitles
-    langsSubTitle.value = newDefault.map((lang) => {
-      const translation = newData.subtitles?.find((t: any) => t.locale === lang.locale)
-      return {
-        locale: lang.locale,
-        title: translation?.subtitle || '',
-      }
-    })
-    SelectedColor.value = newData.color
-    imageAlt.value = newData.alt
-    image.value = newData.image
+    langsSubTitle.value = newData?.subtitles?.length
+      ? newDefault.map((l) => {
+        const existing = newData.subtitles.find((t) => t.locale === l.locale)
+        return existing ?? { locale: l.locale, subtitle: '' }
+      })
+      : newDefault.map((l) => ({ locale: l.locale, title: '' }))
+    SelectedColor.value = newData?.color??''
+    imageAlt.value = newData?.alt??''
+    image.value = newData?.image??''
 
     updateData()
   },

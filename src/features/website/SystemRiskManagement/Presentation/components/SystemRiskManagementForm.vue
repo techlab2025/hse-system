@@ -23,7 +23,7 @@ const alt = ref<string>('')
 
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([])
-const langsSub = ref<{ locale: string; title: string }[]>([])
+const langsSub = ref<{ locale: string; subtitle: string }[]>([])
 // const langsDescription = ref<{ locale: string; title: string }[]>([])
 
 const image = ref<string>('')
@@ -78,7 +78,7 @@ const updateData = () => {
   })
 
   langsSub.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const params = props.data?.id
@@ -109,24 +109,13 @@ watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
-      if (newData?.subtitles?.length) {
-        langsSub.value = newDefault.map((l) => {
-          const existing = newData.subtitles.find((t) => t.locale === l.locale)
-          return existing
-            ? { locale: l.locale, title: existing.subtitle }
-            : { locale: l.locale, title: '' }
-        })
-      } else {
-        langsSub.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+      langs.value = newData.titles ?
+        newData.titles.map((t) => ({ locale: t.locale, title: t.title })) :
+        newDefault.map((l) => ({ locale: l.locale, title: '' }))
+
+      langsSub.value = newData.subtitles ?
+        newData.subtitles.map((t) => ({ locale: t.locale, subtitle: t.subtitle })) :
+        newDefault.map((l) => ({ locale: l.locale, subtitle: '' }))
 
       alt.value = newData?.alt ?? ''
       image.value = newData?.image ?? ''

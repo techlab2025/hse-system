@@ -38,7 +38,7 @@ const indexHashtagController = IndexHashtagController.getInstance()
 const SelectedHashtag = ref<TitleInterface[]>([])
 
 const SetHashtagSelection = (val: TitleInterface[]) => {
-  console.log('Selected Hashtags:', val)
+  // console.log('Selected Hashtags:', val)
   SelectedHashtag.value = val
   updateData()
 }
@@ -134,11 +134,11 @@ const updateData = () => {
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   langsSubtitle.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const hashtagsArray =
@@ -213,41 +213,8 @@ watch(
       image.value = newData?.image ?? ''
       alt.value = newData?.alt ?? ''
 
-      if (newData?.hashtags?.length) {
-        SelectedHashtag.value = newData.hashtags.map((h: any) => {
-          const matched = langDefault.value.find((l) =>
-            h?.titles.some((t: any) => t.locale === l.locale),
-          )
-
-          return new TitleInterface({
-            id: h?.id,
-            title:
-              h?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
-              h?.titles?.title ||
-              'No Title',
-          })
-        })
-      } else {
-        SelectedHashtag.value = []
-      }
-
-      if (newData?.categories?.length) {
-        SelectedCategory.value = newData.categories.map((c: any) => {
-          const matched = langDefault.value.find((l) =>
-            c?.titles.some((t: any) => t.locale === l.locale),
-          )
-
-          return new TitleInterface({
-            id: c?.id,
-            title:
-              c?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
-              c?.titles?.title ||
-              'No Title',
-          })
-        })
-      } else {
-        SelectedCategory.value = []
-      }
+      SelectedHashtag.value = newData?.hashtags
+      SelectedCategory.value = newData?.categories
 
       updateData()
     }
