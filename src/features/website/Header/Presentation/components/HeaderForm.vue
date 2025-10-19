@@ -39,7 +39,7 @@ const alt = ref<string>('')
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([])
 
-const langsSub = ref<{ locale: string; title: string }[]>([])
+const langsSub = ref<{ locale: string; subtitle: string }[]>([])
 
 // const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
@@ -95,7 +95,7 @@ const updateData = () => {
   })
 
   langsSub.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const params = props.data?.id
@@ -114,7 +114,7 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-const setLangsSub = (value: { locale: string; title: string }[]) => {
+const setLangsSub = (value: { locale: string; subtitle: string }[]) => {
   langsSub.value = value
   updateData()
 }

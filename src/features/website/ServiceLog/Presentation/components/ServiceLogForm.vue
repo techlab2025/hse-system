@@ -116,16 +116,21 @@ const setServiceSelection = (data: TitleInterface) => {
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (!newData || !newDefault.length) return
+    if (!newDefault.length) return
 
-    // Map titles
-    langsTitle.value = newDefault.map((lang) => {
-      const translation = newData.title?.find((t: any) => t.locale === lang.locale)
-      return {
+
+    if(newData?.title?.length){
+      langsTitle.value = newData.title.map((item: any) => ({
+        locale: item.locale,
+        title: item.title,
+      }))
+
+    }else {
+      langsTitle.value = newDefault.map((lang) => ({
         locale: lang.locale,
-        title: translation?.title || '',
-      }
-    })
+        title: '',
+      }))
+    }
 
     SelectedService.value = newData?.service
 

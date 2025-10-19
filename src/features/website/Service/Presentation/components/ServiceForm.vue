@@ -26,8 +26,8 @@ const props = defineProps<{ data?: ServiceDetailsModel }>()
 // const image = ref<string | File>('')
 
 const langs = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsButton = ref<{ locale: string; title: string }[]>([])
+const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
+const langsButton = ref<{ locale: string; description: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 // INCLUDES (only multilingual title)
@@ -72,10 +72,10 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
   langsSubTitle.value.forEach((lang) =>
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title),
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle),
   )
   langsButton.value.forEach((lang) =>
-    translationsParams.setTranslation('description', lang.locale, lang.title),
+    translationsParams.setTranslation('description', lang.locale, lang.description),
   )
 
   const includesParams = includes.value.map((inc) => {

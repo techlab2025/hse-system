@@ -48,8 +48,8 @@ export default class BlogDetailsModel {
       translations.subtitles,
       data.image,
       data.alt,
-      data.hashtags?.map((hashtag: any) => HashtagDetailsModel.fromMap(hashtag)) || [],
-      data.categories?.map((category: any) => CategoryDetailsModel.fromMap(category)) || []
+      data.hashtags?.map((hashtag: any) =>this.getTitle(hashtag)) || [],
+      data.categories?.map((category: any) =>this.getTitle(category)) || []
     )
   }
 

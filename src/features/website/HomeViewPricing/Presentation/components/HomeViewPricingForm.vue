@@ -40,9 +40,9 @@ const alt = ref<string>('')
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([])
 
-const langsSub = ref<{ locale: string; title: string }[]>([])
-const langsButton = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsSub = ref<{ locale: string; subtitle: string }[]>([])
+const langsButton = ref<{ locale: string; button_title: string }[]>([])
+const langsDescription = ref<{ locale: string; description: string }[]>([])
 
 // const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
@@ -98,15 +98,15 @@ const updateData = () => {
   })
 
   langsSub.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   langsButton.value.forEach((lang) => {
-    translationsParams.setTranslation('button_title', lang.locale, lang.title)
+    translationsParams.setTranslation('button_title', lang.locale, lang.button_title)
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const params = props.data?.id
