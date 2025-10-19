@@ -5,11 +5,18 @@ export default class TranslationsParams {
     subtitle: {},
     question: {},
     answer: {},
-    buttonTitles: {}
+    buttonTitles: {},
   }
 
   constructor(locales: string[] = ['en', 'ar', 'fr']) {
-    for (const field of ['title', 'description', 'subtitle', 'question', 'answer', 'buttonTitles']) {
+    for (const field of [
+      'title',
+      'description',
+      'subtitle',
+      'question',
+      'answer',
+      'buttonTitles',
+    ]) {
       for (const locale of locales) {
         this.translations[field][locale] = ''
       }
@@ -46,7 +53,7 @@ export default class TranslationsParams {
     buttonTitles: ButtonTitleLocale[] = [],
     questions: QuestionLocale[] = [],
     answers: AnswerLocale[] = [],
-    langLocale: LangLocale<string>[] = []
+    langLocale: LangLocale<string>[] = [],
   ): {
     titles: TitleLocale[]
     descriptions: DescriptionLocale[]

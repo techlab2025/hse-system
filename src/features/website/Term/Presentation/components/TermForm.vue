@@ -20,7 +20,7 @@ const props = defineProps<{
 }>()
 
 // language sets
-const langs = ref<{ locale: string; title: string }[]>([])
+const langs = ref<{ locale: string; description: string }[]>([])
 // const showTermControllerInstance = ShowTermController.getInstance()
 
 // default available langs (for input rendering)
@@ -40,14 +40,14 @@ const fetchLang = async (
 
   const defaults = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
     : [
-        { locale: 'en', icon: USA, title: '' },
-        { locale: 'ar', icon: SA, title: '' },
-      ]
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
 
   // assign for description / subtitle / button
   langDefault.value = defaults
@@ -64,7 +64,7 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const params = new AddTermParams(translationsParams)
@@ -73,7 +73,7 @@ const updateData = () => {
 }
 
 // --- when child updates translations
-const setLangs = (data: { locale: string; title: string }[]) => {
+const setLangs = (data: { locale: string; description: string }[]) => {
   langs.value = data
   updateData()
 }
@@ -84,12 +84,23 @@ watch(
   ([newData, newDefault]) => {
     if (newDefault.length) {
       if (newData?.descriptions?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
+
+
+        // langs.value = newDefault.map((l) => {
+        //   const existing = newData.descriptions.find((t) => t.locale === l.locale)
+        //   return existing ? existing : { locale: l.locale, title: '' }
+        // })
+
+
+        langs.value = newData?.descriptions?.length
+          ? newDefault.map((l) => {
+            const existing = newData.descriptions.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, description: '' }
+          })
+          : newDefault.map((l) => ({ locale: l.locale, description: '' }))
+
       } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+        langs.value = newDefault.map((l) => ({ locale: l.locale, description: '' }))
       }
       updateData()
     }
@@ -101,13 +112,7 @@ watch(
 <template>
   <div class="col-span-4 md:col-span-4">
     <!-- {{ langs }} -->
-    <LangTitleInput
-      type="textarea"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="$t('description')"
-      @update:modelValue="setLangs"
-      field-type="description"
-    />
+    <LangTitleInput type="textarea" :langs="langDefault" :modelValue="langs" :label="$t('description')"
+      @update:modelValue="setLangs" field-type="description" />
   </div>
 </template>
