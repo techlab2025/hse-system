@@ -41,7 +41,7 @@ const langs = ref<
   }[]
 >([])
 
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsDescription = ref<{ locale: string; description: string }[]>([])
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
@@ -127,7 +127,7 @@ const updateData = () => {
 
   // descriptions
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
@@ -203,7 +203,7 @@ const setImage = async (data: File | string) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       :langs="langDefault"
       :modelValue="langs"
@@ -211,7 +211,7 @@ const setImage = async (data: File | string) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       :label="$t('description')"
       :langs="langDefault"

@@ -172,7 +172,7 @@ const setLang = (data: TitleInterface[]) => {
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">Name</label>
+    <label  for="name">Name</label>
     <input
       type="text"
       @change="updateData"
