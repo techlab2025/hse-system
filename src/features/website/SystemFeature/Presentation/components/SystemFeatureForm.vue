@@ -189,7 +189,7 @@ watch(
 </script>
 
 <template>
-  {{ langsTitle }}
+<!--  {{ langsTitle }}-->
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput type="text" :langs="langDefault" :modelValue="langsTitle" :label="$t('Feature')"
       @update:modelValue="setLangsTitle" :fieldType="`feature`" />
