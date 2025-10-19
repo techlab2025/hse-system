@@ -186,7 +186,7 @@ const actionList = (id: number, deleteHomeViewPricing: (id: number) => void) => 
                   </router-link>
                 </td>
                 <td data-label="title">{{ wordSlice(item.title) }}</td>
-                <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td>
+                <td data-label="subtitle">{{ wordSlice(item.subtitle) || '--' }}</td>
 
                 <td data-label="image">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />

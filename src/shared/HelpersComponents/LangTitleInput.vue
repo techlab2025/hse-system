@@ -13,6 +13,9 @@ const props = withDefaults(
       button_title?: string;
       answer?: string;
       question?: string;
+      feature?: string;
+      old?: string;
+      new?: string;
     }[]
     defaultLang?: {
       locale: string;
@@ -22,6 +25,9 @@ const props = withDefaults(
       button_title?: string;
       answer?: string;
       question?: string;
+      feature?: string;
+      old?: string;
+      new?: string;
     }
     label?: string
     type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
@@ -30,7 +36,7 @@ const props = withDefaults(
     maxlength?: number
     required?: boolean
     disabled?: boolean
-    fieldType?: 'title' | 'subtitle' | 'description' | 'button_title' | 'answer' | 'question'
+    fieldType?: 'title' | 'subtitle' | 'description' | 'button_title' | 'answer' | 'question' | 'old' | 'new' | 'feature'
   }>(),
   {
     langs: () => [],
@@ -48,7 +54,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: { locale: string; title?: string; subtitle?: string; description?: string; button_title?: string; answer?: string; question?: string }[]): void
+  (e: 'update:modelValue', value: { locale: string; title?: string; subtitle?: string; description?: string; button_title?: string; answer?: string; question?: string; feature?: string; old?: string; new?: string }[]): void
   (e: 'validate', isValid: boolean): void
 }>()
 
@@ -61,6 +67,9 @@ const titles = ref<{
   button_title?: string;
   answer?: string;
   question?: string;
+  feature?: string;
+  old?: string;
+  new?: string;
 }[]>(
   props.langs.map((l) => {
     const fromModel = props.modelValue?.find((f) => f.locale === l.locale)
@@ -73,7 +82,10 @@ const titles = ref<{
         description: props.defaultLang.description,
         button_title: props.defaultLang.button_title,
         answer: props.defaultLang.answer,
-        question: props.defaultLang.question
+        question: props.defaultLang.question,
+        feature: props.defaultLang.feature,
+        old: props.defaultLang.old,
+        new: props.defaultLang.new
       }
     }
     return { locale: l.locale }
@@ -88,6 +100,9 @@ const getFieldValue = (item: any) => {
     case 'button_title': return item.button_title
     case 'answer': return item.answer
     case 'question': return item.question
+    case 'old': return item.old
+    case 'new': return item.new
+    case 'feature': return item.feature
     default: return item.title
   }
 }
@@ -100,6 +115,9 @@ const setFieldValue = (item: any, value: string) => {
     case 'button_title': item.button_title = value; break
     case 'answer': item.answer = value; break
     case 'question': item.question = value; break
+    case 'old': item.old = value; break
+    case 'new': item.new = value; break
+    case 'feature': item.feature = value; break
     default: item.title = value; break
   }
 }
@@ -237,21 +255,12 @@ watch(hasAtLeastOneValue, (isValid) => {
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input
-            type="radio"
-            :id="`${label}-${l.locale}`"
-            :name="label"
-            :value="l.locale"
-            v-model="lang"
-          />
+          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang" />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->
-            <span
-              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
-              class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`"
-            >
+            <span v-if="getFieldValue(titles.find((t) => t.locale === l.locale))" class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`">
               ✓
             </span>
           </label>
@@ -260,13 +269,7 @@ watch(hasAtLeastOneValue, (isValid) => {
     </div>
 
     <!-- Title Input -->
-    <Editor
-      v-if="isTextarea"
-      v-model="fieldValue"
-      :rows="rows"
-      v-bind="inputAttrs"
-      editorStyle="height: 320px"
-    />
+    <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
 
     <!-- Regular Input -->
     <input v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" />
