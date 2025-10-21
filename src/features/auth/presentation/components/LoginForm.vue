@@ -121,7 +121,7 @@ const isPasswordVisible = ref()
           />
           <CloseEye
             class="icon-eye"
-            v-if="!isPasswordVisible"
+            v-if="isPasswordVisible"
             @click="isPasswordVisible = !isPasswordVisible"
           />
           <EyeIcon class="icon-eye" v-else @click="isPasswordVisible = !isPasswordVisible" />
