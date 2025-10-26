@@ -27,10 +27,7 @@ import IndexProjectController from '../controllers/indexProjectController'
 import IndexProjectParams from '../../Core/params/indexProjectParams'
 import DeleteProjectParams from '../../Core/params/deleteProjectParams'
 import DeleteProjectController from '../controllers/deleteProjectController'
-import MainObjectivesSection from './Details/Objectives/MainObjectivesSection.vue'
-import ProjectSiteSection from './Details/ProjectSite/ProjectSiteSection.vue'
-import LocationsTeamsSection from './Details/LocationsTeams/LocationsTeamsSection.vue'
-import EquipmentSection from './Details/Equipment/EquipmentSection.vue'
+
 
 const { t } = useI18n()
 
@@ -136,10 +133,7 @@ watch(
 </script>
 
 <template>
-  <MainObjectivesSection />
-  <ProjectSiteSection />
-  <LocationsTeamsSection />
-  <EquipmentSection />
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
