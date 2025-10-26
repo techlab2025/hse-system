@@ -132,14 +132,11 @@ const Equipments = ref<EquipmentInterface[]>([
         subtitle="View and manage all equipment assigned to each operational zone" />
       <p class="show-all">Show all</p>
     </div>
-
     <div class="equipments-sections" v-if="Equipments.length > 0">
       <EquipmentCard v-for="(Equipment, index) in Equipments" :key="index" :equipment="Equipment" />
     </div>
-
     <EmptyData :img="EquimentFolderEmpty" title="No Equipment Added Yet"
       subtitle="Start adding your site equipment to manage inspections, maintenance, and safety logs in one place"
       v-else />
-
   </div>
 </template>

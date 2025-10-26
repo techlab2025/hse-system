@@ -10,7 +10,6 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 import wordSlice from '@/base/Presentation/utils/word_slice'
-
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -133,7 +132,6 @@ watch(
 </script>
 
 <template>
-
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
