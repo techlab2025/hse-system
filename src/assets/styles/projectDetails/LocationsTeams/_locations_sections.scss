@@ -1,0 +1,64 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.teams-locations {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize;
+  width: 100%;
+
+  .location {
+    position: relative;
+    width: 100%;
+    margin-block: $MdSize;
+    &::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-80%);
+      width: 12px;
+      height: 12px;
+      background-color: #1d4ed81a;
+      rotate: 45deg;
+      z-index: 999;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-80%);
+      width: 12px;
+      height: 12px;
+      background-color: #1d4ed81a;
+      rotate: 45deg;
+    }
+    .location-hr {
+      width: 100%;
+      border: none;
+      height: 2px;
+      background-color: #1d4ed81a;
+    }
+    .location-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $PrimaryColor;
+      z-index: 999;
+      font-size: $MdSize2;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+
+  .teams {
+    @include grid(3 , 20px , (
+      1440px: 3,
+      1000px: 2,
+      768px: 1
+    ));
+    // @include flex-row(wrap, space-between, flex-start);
+    width: 100%;
+  }
+}

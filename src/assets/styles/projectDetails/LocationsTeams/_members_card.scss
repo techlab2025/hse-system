@@ -1,0 +1,41 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.member-card {
+  @include flex-row(nowrap, flex-start, center);
+  width: 100%;
+  gap: $XsSize3;
+  font-family: 'Regular';
+  margin-top: $XsSize2;
+  border-radius: $MdSize;
+  border: 1px solid #f9f9f9;
+  position: relative;
+  width: 50%;
+
+  .member-img{
+    width: 60px;
+    height: 60px;
+  }
+  .card-delete {
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+
+  .member-data {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize4;
+    width: 100%;
+    .name {
+      color: #0f1927;
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      text-decoration: underline;
+    }
+    .position {
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+}

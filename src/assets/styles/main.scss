@@ -86,6 +86,10 @@
 @use './FormHeader/form_header';
 /*</editor-fold>*/
 
+/*<editor-fold desc="ProjectDetails">*/
+@use './projectDetails/projects_details_imports';
+/*</editor-fold>*/
+
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
