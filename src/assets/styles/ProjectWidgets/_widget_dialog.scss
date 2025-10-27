@@ -1,0 +1,19 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.p-dialog {
+  font-family: 'Regular';
+  .add-widget-header {
+    width: 100%;
+  }
+
+  .widget-dialog-data {
+    .add-widget-hr {
+      width: 100%;
+      border: none;
+      background-color: #f1f3f5;
+      height: 1px;
+    }
+
+  }
+}

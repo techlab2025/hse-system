@@ -3,7 +3,7 @@
 
 .member-card {
   @include flex-row(nowrap, flex-start, center);
-  width: 100%;
+  // width: 100%;
   gap: $XsSize3;
   font-family: 'Regular';
   margin-top: $XsSize2;
@@ -12,7 +12,17 @@
   position: relative;
   width: 50%;
 
-  .member-img{
+  &.employee-card {
+    width: 25%;
+    @media(max-width:1000px){
+      width: 50%;
+    }
+    @media(max-width:768px){
+      width: 100%;
+    }
+  }
+
+  .member-img {
     width: 60px;
     height: 60px;
   }

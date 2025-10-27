@@ -3,9 +3,9 @@
 @import '../../mixins/grid';
 
 .section-header {
-  @include flex-row(nowrap, flex-start, flex-start);
+  @include flex-row(nowrap, flex-start, center);
   gap: calc($XsSize4 + 1px);
-
+  font-family: "Regular";
   .section-img {
     width: 40px;
     height: 40px;

@@ -3,15 +3,15 @@ import TeamsIcon from '@/shared/icons/TeamsIcon.vue';
 import TeamMemberCard from './TeamMemberCard.vue';
 
 
-interface TeamInterface {
+  interface TeamInterface {
 
-  members: number,
-  teamMembers: {
-    img: string,
-    name: string,
-    poistion: string
-  }[]
-}
+    members: number,
+    teamMembers: {
+      img: string,
+      name: string,
+      poistion: string
+    }[]
+  }
 const props = defineProps<{
   team: TeamInterface
 }>()

@@ -26,6 +26,7 @@ import IndexProjectController from '../controllers/indexProjectController'
 import IndexProjectParams from '../../Core/params/indexProjectParams'
 import DeleteProjectParams from '../../Core/params/deleteProjectParams'
 import DeleteProjectController from '../controllers/deleteProjectController'
+import MainWidgetDialog from './Widget/MainWidgetDialog.vue'
 
 
 const { t } = useI18n()
@@ -132,6 +133,7 @@ watch(
 </script>
 
 <template>
+  <!-- <MainWidgetDialog /> -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->

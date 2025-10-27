@@ -1,0 +1,52 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.p-dialog {
+  font-family: 'Regular';
+  .add-employee-header {
+    width: 100%;
+  }
+
+  .employee-dialog-data {
+    .add-employee-hr {
+      width: 100%;
+      border: none;
+      background-color: #f1f3f5;
+      height: 1px;
+    }
+    .p-tablist-tab-list {
+      margin-top: 10px;
+      border: none !important;
+      width: 100% !important;
+      .p-tab {
+        width: 50% !important;
+        color: #e4e4e4 !important;
+        position: relative;
+        transition: 0.3s all linear;
+        &::before {
+          position: absolute;
+          content: '';
+          top: 0px;
+          left: 0px;
+          height: 5px;
+          width: 100%;
+          background-color: #f8f8f8 !important;
+          transition: 0.3s all linear;
+          z-index: 1;
+          border-radius: 20px;
+        }
+        &.p-tab-active {
+          // background-color: #f8f8f8 !important;
+          color: $PrimaryColor !important;
+          border-radius: $XlSize;
+          border: none !important;
+          z-index: 1000 !important;
+          &::before {
+            height: 100%;
+            z-index: -1;
+          }
+        }
+      }
+    }
+  }
+}

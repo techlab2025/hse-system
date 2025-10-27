@@ -89,6 +89,12 @@
 /*<editor-fold desc="ProjectDetails">*/
 @use './projectDetails/projects_details_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="ProjectEmployee">*/
+@use './ProjectEmplyee/project_employee_imports';
+/*</editor-fold>*/
+/*<editor-fold desc="projectWidget">*/
+@use './ProjectWidgets/project_widgets_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

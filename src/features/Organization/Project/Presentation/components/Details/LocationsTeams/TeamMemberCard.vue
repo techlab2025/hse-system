@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import MemberDeleteIcon from '@/shared/icons/MemberDeleteIcon.vue';
 
-interface TeamMemberInterface {
-  img: string,
-  name: string,
-  poistion: string
-}
+  interface TeamMemberInterface {
+    img: string,
+    name: string,
+    poistion: string
+  }
 const props = defineProps<{
   member: TeamMemberInterface
 }>()

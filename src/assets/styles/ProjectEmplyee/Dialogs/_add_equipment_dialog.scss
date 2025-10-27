@@ -1,0 +1,19 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.p-dialog {
+  font-family: 'Regular';
+  .add-equipment-header {
+    width: 100%;
+  }
+
+  .equipment-dialog-data {
+    .add-equipment-hr {
+      width: 100%;
+      border: none;
+      background-color: #f1f3f5;
+      height: 1px;
+    }
+    
+  }
+}

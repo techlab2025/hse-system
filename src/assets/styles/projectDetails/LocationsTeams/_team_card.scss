@@ -10,65 +10,79 @@
   height: 100%;
   // max-width: 33%;
 
-  .team-card-header {
-    @include flex-row(nowrap, space-between, center);
-    .team-card-header-content {
-      @include flex-row(nowrap, flex-start, center);
-      width: 100%;
-      gap: $XsSize2;
-
-      .team-card-text {
-        @include flex-column(nowrap, flex-start, flex-start);
-        gap: 2px;
-
-        .team-card-title {
-          color: $PrimaryColor;
-          font-weight: $BaseFontWeightBold;
-          font-size: $SmSize;
+  &.employee-card {
+    .members-section {
+      .member-card {
+        width: 25%;
+        @media (max-width: 1000px) {
+          width: 50%;
         }
-
-        .team-card-members {
-          color: #6b7280;
-          font-size: $XsSize;
-          font-weight: $BaseFontMediumWeight;
+        @media (max-width: 768px) {
+          width: 100%;
         }
-      }
-    }
-    .state {
-      color: #121212;
-      font-size: $SmSize;
-      font-weight: $BaseFontWeightBold;
-      button {
-        text-decoration: underline;
       }
     }
   }
-  .members-section {
+}
+
+.team-card-header {
+  @include flex-row(nowrap, space-between, center);
+  .team-card-header-content {
     @include flex-row(nowrap, flex-start, center);
+    width: 100%;
     gap: $XsSize2;
-    margin-top: $XsSize2;
 
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: $XsSize3;
+    .team-card-text {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 2px;
 
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
+      .team-card-title {
+        color: $PrimaryColor;
+        font-weight: $BaseFontWeightBold;
+        font-size: $SmSize;
+      }
 
-    .member-card {
-      scroll-snap-align: start;
-      flex: 0 0 auto;
+      .team-card-members {
+        color: #6b7280;
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+      }
     }
+  }
+  .state {
+    color: #121212;
+    font-size: $SmSize;
+    font-weight: $BaseFontWeightBold;
+    button {
+      text-decoration: underline;
+    }
+  }
+}
+.members-section {
+  @include flex-row(nowrap, flex-start, center);
+  gap: $XsSize2;
+  margin-top: $XsSize2;
 
-    &::-webkit-scrollbar {
-      height: 6px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-    }
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: $XsSize3;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  .member-card {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+  }
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 }
