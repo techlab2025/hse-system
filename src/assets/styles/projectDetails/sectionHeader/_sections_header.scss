@@ -1,0 +1,29 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.section-header {
+  @include flex-row(nowrap, flex-start, center);
+  gap: calc($XsSize4 + 1px);
+  font-family: "Regular";
+  .section-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-text {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize4;
+
+    .title {
+      font-weight: $BaseFontWeightBold;
+      font-size: calc($XlSize + 2px);
+    }
+
+    .subtitle {
+      color: $SubtitleColor;
+      font-weight: $BaseFontMediumWeight;
+      font-size: $SmSize;
+    }
+  }
+}

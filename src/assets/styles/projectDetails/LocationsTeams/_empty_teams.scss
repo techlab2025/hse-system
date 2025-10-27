@@ -1,0 +1,24 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.empty-teams {
+  @include flex-row(nowrap, center, center);
+  gap: $MdSize;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  .empty-text {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize4;
+    .title {
+      color: #4b5563;
+      font-size: $MdSize2;
+      font-weight: $BaseFontWeightBold;
+    }
+    .subtitle {
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.equipment-section {
+  background-color: #fafafacc;
+  padding: $MdSize $MdSize $XlSize3 $MdSize;
+  border-radius: $XlSize;
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize;
+  width: 100%;
+
+  .equipment-section-header {
+    @include flex-row(nowrap, space-between, center);
+    gap: $XsSize3;
+    width: 100%;
+
+    .show-all {
+      color: #3d4c5e;
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      text-decoration: underline;
+    }
+  }
+
+  .equipments-sections {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize2;
+    width: 100%;
+  }
+}

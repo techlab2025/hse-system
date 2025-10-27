@@ -1,0 +1,64 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.location-card {
+  background-color: white;
+  padding: $XsSize;
+  border-radius: $XlSize;
+  width: 50%;
+  font-family: 'Regular';
+
+  .card-header {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 4px;
+    .location-header {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      .title {
+        font-weight: $BaseFontWeightBold;
+        color: #121212;
+        font-size: $MdSize2;
+      }
+
+      .zone {
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: #6b7280;
+
+        span {
+          color: #121212;
+        }
+      }
+    }
+
+    .location {
+      color: $PrimaryColor;
+      font-size: $MdSize;
+      font-weight: $BaseFontMediumWeight;
+      text-decoration: underline;
+    }
+  }
+
+  .card-hr {
+    width: 100%;
+    border: none;
+    height: 1px;
+    background-color: #f1f3f5;
+    margin-block: $MdSize;
+  }
+
+  .locations {
+    @include flex-row(wrap, flex-start, center);
+    gap: $XsSize;
+
+    .location-title {
+      color: #6b7280;
+      background-color: #fcfcfc;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      padding: $XsSize2 $MdSize2;
+      border: 1px solid #f1f3f5;
+      border-radius: $SmSize;
+    }
+  }
+}
