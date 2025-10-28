@@ -10,7 +10,7 @@ const visible = ref(false);
 
 <template>
   <button @click="visible = true">Add Widget</button>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '40%' }">
+  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '60rem', height: '70%' }">
     <template #header>
       <div class="add-widget-header">
         <HeaderSection :img="Widget" title="Widget Settings & Customization"

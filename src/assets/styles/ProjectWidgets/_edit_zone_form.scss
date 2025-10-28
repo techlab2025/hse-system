@@ -1,0 +1,101 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.edit-zone {
+  font-family: 'Regular';
+  .edit-zone-hr {
+    margin-block: $XlSize2;
+    border: none;
+    background-color: #f1f3f5;
+    width: 100%;
+    height: 2px;
+  }
+
+  .zone-form-container {
+    @include grid(
+      5,
+      20px,
+      (
+        1400: 5,
+        1000: 3,
+        768: 2,
+        400: 1,
+      )
+    );
+
+    .zone-data {
+      grid-column: span 3;
+      width: 100%;
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XlSize;
+      .zone-header-container {
+        width: 100%;
+        @include flex-justify();
+        .zone-header {
+          @include flex-row(nowrap, flex-start, center);
+          gap: 4px;
+          .icon {
+            width: 20px;
+            height: 20px;
+          }
+          .title {
+            font-size: $MdSize;
+            font-weight: $BaseFontWeightBold;
+            color: #121212;
+          }
+        }
+        .delete {
+          color: #e23535;
+          font-size: 16px;
+          font-weight: $MdSize$BaseFontWeightBold;
+          text-decoration: underline;
+        }
+      }
+    }
+    .zone-image {
+      grid-column: span 2;
+      width: 100%;
+      background-color: #f9f9f9;
+      padding: $MdSize $XlSize;
+      height: fit-content;
+      border-radius: $MdSize2;
+      @include flex-column(nowrap, center, center);
+      gap: $SmSize;
+      margin-top: 30px;
+      margin-bottom: auto;
+      // grid-column: span 2;
+      // width: 100%;
+      // background-color: #f9f9f9;
+      // padding: var(--md-size) var(--xl-size-base);
+      // border-radius: var(--md-size-2);
+      // display: flex;
+      // flex-direction: column;
+      // flex-wrap: nowrap;
+      // justify-content: center;
+      // align-items: center;
+      // gap: var(--sm-size);
+      // margin-top: 55px;
+      // height: 40%;
+      .zone-image-header {
+        @include flex-row(nowrap, center, center);
+        gap: 6px;
+        width: 100%;
+
+        .title {
+
+          color: #202020;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+}

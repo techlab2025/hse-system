@@ -1,0 +1,68 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.radio-selection-containre {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize;
+  width: 100%;
+  margin-top: $XlSize;
+
+  .radio-selection-header {
+    @include flex-justify();
+    width: 100%;
+    .title {
+      color: #202020;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .checkbox-header {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      .checkbox {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize2;
+        cursor: pointer;
+        .checkbox-label {
+          color: #0f1927;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+
+  .selection-container {
+    @include flex-row(wrap, flex-start, center);
+    gap: calc($XlSize3 + 10px);
+    width: 100%;
+
+    &.selection-image-container {
+      input {
+        display: none;
+      }
+      .selection {
+        &.selected {
+          border: 1px solid $PrimaryColor;
+          border-radius: 10px;
+        }
+      }
+    }
+
+    .selection {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      cursor: pointer;
+
+      &:not(.selected) {
+        opacity: 0.6;
+      }
+
+      label {
+        color: #0f1927;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+  }
+}

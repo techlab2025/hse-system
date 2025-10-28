@@ -1,0 +1,73 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+.chart-color-container {
+  width: 100%;
+  @include flex-justify();
+
+  .color-selection-container {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize;
+    .title {
+      color: #202020;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .colors {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize2;
+
+      .color-selection {
+        @include flex-column(nowrap, center, center);
+        position: relative;
+
+        &.maincolor {
+          &:not(:first-child) {
+            label {
+              opacity: 0.6;
+              cursor: not-allowed;
+              pointer-events: none;
+            }
+          }
+        }
+
+        input {
+          display: none;
+        }
+
+        label {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        .selected-icon {
+          display: none;
+        }
+
+        &.selected {
+          border: 3px solid #e5e5e5;
+          border-radius: 50%;
+          .selected-icon {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+    }
+  }
+
+  .main-color {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 4px;
+    label {
+      color: #6b7280;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+}
