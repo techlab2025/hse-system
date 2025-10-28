@@ -1,0 +1,23 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.zone-data-container {
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize;
+  .input-wrapper {
+    width: 100%;
+    .input-title {
+      width: 100%;
+      @include flex-justify();
+      .title {
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+      input{
+        background-color: white !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.selctors-container {
+  @include flex-column(nowrap, flex-start, flex-start);
+  width: 100%;
+  font-family: 'Regular';
+  gap: $XlSize;
+  .title {
+    color: #202020;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+  }
+  .setting-form {
+    @include flex-justify();
+    width: 100%;
+  }
+}
