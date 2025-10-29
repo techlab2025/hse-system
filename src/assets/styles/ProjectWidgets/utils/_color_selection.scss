@@ -69,5 +69,16 @@
       font-size: $SmSize;
       font-weight: $BaseFontMediumWeight;
     }
+
+    .p-checkbox-box {
+      border-radius: 5px !important;
+      svg {
+        fill: white !important;
+      }
+    }
+    .p-checkbox-checked .p-checkbox-box svg {
+      fill: white !important;
+      display: block !important;
+    }
   }
 }

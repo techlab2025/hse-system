@@ -15,9 +15,21 @@
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
-      input{
+      input {
         background-color: white !important;
+        color: #3d4c5e !important;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        &::placeholder {
+          color: #9ca3af !important;
+        }
       }
     }
   }
+}
+
+.input-wrapper input:not([type='checkbox']):disabled,
+.input-wrapper textarea:disabled {
+  background-color: white !important;
+  color: #9ca3af !important;
 }

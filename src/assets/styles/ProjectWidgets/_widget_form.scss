@@ -5,7 +5,6 @@
   margin-top: $XsSize;
   font-family: 'Regular';
   .widgets-container {
-    // @include flex-row(nowrap, center, center);
     grid-template-rows: 1fr;
     max-width: 100%;
     @include grid(
@@ -19,6 +18,38 @@
       )
     );
     gap: $XlSize;
+
+    &.scroll-mode {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 12px;
+
+      /* Custom scrollbar styling */
+      &::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .widgets-types {
+        flex: 0 0 auto;
+        min-width: 200px;
+      }
+    }
 
     .widgets-types {
       background-color: #fafafa;
