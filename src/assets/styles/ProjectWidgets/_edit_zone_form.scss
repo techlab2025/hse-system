@@ -64,26 +64,13 @@
       gap: $SmSize;
       margin-top: 30px;
       margin-bottom: auto;
-      // grid-column: span 2;
-      // width: 100%;
-      // background-color: #f9f9f9;
-      // padding: var(--md-size) var(--xl-size-base);
-      // border-radius: var(--md-size-2);
-      // display: flex;
-      // flex-direction: column;
-      // flex-wrap: nowrap;
-      // justify-content: center;
-      // align-items: center;
-      // gap: var(--sm-size);
-      // margin-top: 55px;
-      // height: 40%;
+
       .zone-image-header {
         @include flex-row(nowrap, center, center);
         gap: 6px;
         width: 100%;
 
         .title {
-
           color: #202020;
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
@@ -95,7 +82,17 @@
         height: 100%;
         margin-left: auto;
         margin-right: auto;
+        object-fit: cover;
+        object-position: center;
       }
+    }
+  }
+
+  .save {
+    width: 100%;
+    margin-top: $SmSize;
+    button {
+      width: 100%;
     }
   }
 }

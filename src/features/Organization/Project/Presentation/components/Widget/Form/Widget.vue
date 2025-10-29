@@ -6,12 +6,14 @@ import EmployeePerformance from '@/assets/images/EmployeePerformance.png'
 import NeedMentance from '@/assets/images/NeedMentance.png'
 import NumberOfIncidence from '@/assets/images/NumberOfIncidence.png'
 import EquipmentDevices from '@/assets/images/EquipmentDevices.png'
-import { ref } from 'vue';
+import NoteWidget from '@/assets/images/NotesWidget.png'
+import { ref, watch } from 'vue';
 import { WidgetEnum } from '@/features/Organization/Project/Core/Enums/widget_enum';
-import AddWidgetIcon from '@/shared/icons/AddWidgetIcon.vue';
-import wordSlice from '@/base/Presentation/utils/word_slice';
-import EditZoneFrom from './EditZoneFrom.vue'
+import WidgetFrom from './WidgetFrom.vue'
+import WidgetType from './WidgetType.vue'
 
+
+const emit = defineEmits(['selected:widget']);
 interface WidgetInterface {
   id: number,
   name: string,
@@ -59,39 +61,31 @@ const WidgetsTypes = ref<WidgetInterface[]>([
     name: 'Teams Ratio',
     img: EquipmentDevices
   },
+  {
+    id: WidgetEnum.Noteswidget,
+    name: 'Note Widget',
+    img: NoteWidget
+  },
 ]
 )
 
-const WidgetsData = ref(WidgetsTypes.value.slice(0, 4))
-const AddWidgetDisplay = ref(true)
-const AddWidget = () => {
-  AddWidgetDisplay.value = false;
-  WidgetsData.value = WidgetsTypes.value.slice(0, 8)
+const GetSelectedWidget = (data) => {
+  SelectedWidget.value = data
+
 }
+watch(() => SelectedWidget.value, (newValue) => {
+  SelectedWidget.value = newValue
+  emit('selected:widget', newValue)
+})
+
 
 </script>
 
 <template>
   <div class="widgets-form">
-    <div class="widgets-container">
-      <div class="widgets-types" v-for="(widget, index) in WidgetsData" :key="index"
-        :class="SelectedWidget == widget.id ? 'active' : ''">
-        <div class="types">
-          <input type="radio" :id="`radio-${widget.id}`" name="radio" v-model="SelectedWidget" :value="widget.id">
-          <img :src="widget.img" class="item" @click="SelectedWidget = widget.id" :for="`radio-${widget.id}`">
-        </div>
-        <p class="title">{{ wordSlice(widget.name, 18) }}</p>
-      </div>
-      <div class="add-widget" @click="AddWidget" :class="AddWidgetDisplay ? '' : 'hide'">
-        <AddWidgetIcon />
-        <div class="add-widget-text">
-          <p class="title">Add Widget</p>
-          <p class="subtitle">You can add one from the available to the project and control it easily.</p>
-        </div>
-      </div>
-    </div>
+    <WidgetType @selected:widget="GetSelectedWidget" />
     <div class="edit-zone-form" v-if="SelectedWidget">
-      <EditZoneFrom :type="WidgetsTypes.find(x => x.id == SelectedWidget)?.id"
+      <WidgetFrom :type="WidgetsTypes.find(x => x.id == SelectedWidget)?.id"
         :img="WidgetsTypes.find(x => x.id == SelectedWidget)?.img"
         :title="WidgetsTypes.find(x => x.id == SelectedWidget)?.name" />
     </div>

@@ -8,4 +8,5 @@ export enum WidgetEnum {
   EquipmentDevices = 7,
   TeamsRatio = 8,
   Noteswidget = 9,
+  
 }

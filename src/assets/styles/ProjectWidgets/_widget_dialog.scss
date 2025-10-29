@@ -1,6 +1,20 @@
 @import '../variables';
 @import '../mixins/flex';
 
+.widget-btn {
+  @include flex-row(nowrap, flex-start, center);
+  gap: 4px;
+  background-color: #1d4ed80f;
+  padding: $XsSize2 $XlSize3;
+  border-radius: $XlSize4;
+  font-family: 'Regular';
+  span {
+    color: $PrimaryColor;
+    font-weight: $BaseFontWeightBold;
+    font-size: $MdSize;
+  }
+}
+
 .p-dialog {
   font-family: 'Regular';
   .add-widget-header {
@@ -14,6 +28,5 @@
       background-color: #f1f3f5;
       height: 1px;
     }
-
   }
 }

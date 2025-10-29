@@ -24,10 +24,10 @@ const colors = ref([
 const UpdateData = () => {
   emit('update:value', {
     MainTitle: MainTitle.value || null,
-    Hint: Hint.value || null,
     MiniTitle: MiniTitle.value || null,
-    SelectedAvailable: SelectedAvailable.value || null,
+    Hint: Hint.value || null,
     SelectedColor: SelectedColor.value || null,
+    SelectedAvailable: SelectedAvailable.value || null,
   })
 }
 

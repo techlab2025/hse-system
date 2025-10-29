@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import SelectedIcon from '@/shared/icons/SelectedIcon.vue';
 import { ref } from 'vue';
+import Checkbox from 'primevue/checkbox';
 
 const props = defineProps<{
   title: string
-  colors:string[]
+  colors: string[]
 }>()
 
 const emit = defineEmits(['update:value'])
@@ -19,9 +20,11 @@ const MainColorSelection = (data) => {
   else {
     selectedColor.value = ""
   }
+  emit("update:value", selectedColor.value)
+
 }
 
-const UpdateData = ()=>{
+const UpdateData = () => {
   emit("update:value", selectedColor.value)
 }
 </script>
@@ -33,8 +36,8 @@ const UpdateData = ()=>{
       <div class="colors">
         <div v-for="(color, index) in colors" :key="index" class="color-selection"
           :class="{ selected: selectedColor === color, maincolor: mainColor }">
-          <label :for="`color-${index}`" :style="{ backgroundColor: color }"></label>
-          <input type="radio" name="color" :id="`color-${index}`" :value="color" v-model="selectedColor"
+          <label :for="`${title}-color-${index}`" :style="{ backgroundColor: color }"></label>
+          <input type="radio" name="color" :id="`${title}-color-${index}`" :value="color" v-model="selectedColor"
             @change="UpdateData" />
           <SelectedIcon v-if="selectedColor === color" class="selected-icon" />
         </div>
@@ -42,8 +45,9 @@ const UpdateData = ()=>{
     </div>
 
     <div class="main-color">
-      <input id="main-color" type="checkbox" v-model="mainColor" @change="MainColorSelection">
-      <label for="main-color">Main Color</label>
+      <!-- <input id="main-color" type="checkbox" v-model="mainColor" @change="MainColorSelection"> -->
+      <Checkbox :id="`${title}-main-color`" v-model="mainColor" @change="MainColorSelection" binary />
+      <label :for="`${title}-main-color`" @click="mainColor = !mainColor">Main Color</label>
     </div>
   </div>
 
