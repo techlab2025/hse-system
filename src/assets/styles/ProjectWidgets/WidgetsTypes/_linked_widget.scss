@@ -4,7 +4,7 @@
 .selctors-container {
   @include flex-column(nowrap, flex-start, flex-start);
   width: 100%;
-  font-family: 'Regular';
+  font-family: 'Light';
   gap: $XlSize;
   .title {
     color: #202020;
@@ -13,6 +13,10 @@
   }
   .setting-form {
     @include flex-justify();
+    @media(max-width:768px){
+      flex-direction: column;
+      gap: 10px;
+    }
     width: 100%;
   }
 }

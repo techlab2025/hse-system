@@ -29,6 +29,7 @@ import DeleteProjectController from '../controllers/deleteProjectController'
 import MainWidgetDialog from './Widget/MainWidgetDialog.vue'
 
 
+
 const { t } = useI18n()
 
 // import DialogChangeStatusProject from "@/features/setting/Projectuages/Presentation/components/Project/DialogChangeStatusProject.vue";
@@ -133,7 +134,8 @@ watch(
 </script>
 
 <template>
-  <!-- <MainWidgetDialog /> -->
+  <MainWidgetDialog />
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->

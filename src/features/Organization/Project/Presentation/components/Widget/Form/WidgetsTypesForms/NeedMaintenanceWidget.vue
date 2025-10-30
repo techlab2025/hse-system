@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
-import RadioSection from '../../../../../../../../shared/HelpersComponents/RadioSection.vue'
-import ProgressSection from '../WidgetUtils/ProgressSection.vue'
-import Progress1 from "@/assets/images/progress1.png";
+import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import TitleInterface from '@/base/Data/Models/title_interface';
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue';
@@ -47,7 +45,7 @@ const UpdateData = () => {
     lastInspectionDate: lastInspectionDate.value || null,
     AppearWay: AppearWay.value || null,
     WantedType: WantedType.value || null,
-    SelectedOption: SelectedOption.value || null,
+    SelectedOption: SelectedOption.value?.id || null,
     SelectedColor: SelectedColor.value || null,
     SelectedAvailable: SelectedAvailable.value || null,
   })
@@ -82,7 +80,7 @@ const Options = ref<TitleInterface[]>([
 ])
 const UpdateOption = (data: TitleInterface) => {
   SelectedOption.value = data
-  updateField('SelectedOption', SelectedOption.value.id)
+  updateField('SelectedOption', SelectedOption.value)
 
 }
 
@@ -107,7 +105,7 @@ const UpdateTitle = (data) => {
       @update:value="v => updateField('WantedType', v)" :Customize="true" @update:customize="console.log($event);" />
   </div>
   <div class="type-select">
-    <CustomSelectInput :staticOptions="Options" @update:value="UpdateOption" :modelValue="SelectedOption"
+    <CustomSelectInput :staticOptions="Options" @update:modelValue="UpdateOption" :modelValue="SelectedOption"
       label="select the types you want" id="EmployeeType" placeholder="select here" />
   </div>
   <div class="selctors-container">

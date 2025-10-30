@@ -85,7 +85,8 @@ watch(() => SelectedWidget.value, (newValue) => {
   <div class="widgets-form">
     <WidgetType @selected:widget="GetSelectedWidget" />
     <div class="edit-zone-form" v-if="SelectedWidget">
-      <WidgetFrom :type="WidgetsTypes.find(x => x.id == SelectedWidget)?.id"
+      <WidgetFrom
+        :type="WidgetsTypes.find(x => x.id == SelectedWidget)?.id"
         :img="WidgetsTypes.find(x => x.id == SelectedWidget)?.img"
         :title="WidgetsTypes.find(x => x.id == SelectedWidget)?.name" />
     </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
-import RadioSection from '../../../../../../../../shared/HelpersComponents/RadioSection.vue'
+import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import Pogress2 from "@/assets/images/Pogress2.png";
 import EquipmentProgress2 from "@/assets/images/EquipmentProgress2.png";
 import EquipmentProgress3 from "@/assets/images/EquipmentProgress3.png";
@@ -60,7 +60,6 @@ const UpdateTitle = (data) => {
 
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
-
   <ColorSelection title="chart color" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
   <RadioSection title="choose progress ui" :images_selections="[Pogress2, EquipmentProgress2, EquipmentProgress3]"
     @update:value="v => updateField('Progress', v)" />

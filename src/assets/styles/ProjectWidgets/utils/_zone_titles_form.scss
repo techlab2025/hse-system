@@ -6,12 +6,14 @@
   width: 100%;
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XlSize;
+  font-family: 'Light';
   .input-wrapper {
     width: 100%;
     .input-title {
       width: 100%;
       @include flex-justify();
       .title {
+        font-family: 'Light' !important;
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
       }

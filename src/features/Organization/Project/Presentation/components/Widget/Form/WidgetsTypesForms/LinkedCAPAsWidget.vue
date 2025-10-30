@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
-import RadioSection from '../../../../../../../../shared/HelpersComponents/RadioSection.vue'
+import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue'
 
 const emit = defineEmits(['update:value'])
@@ -86,44 +86,35 @@ const UpdateTitle = (data) => {
 
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
-
   <div class="selctors-container">
     <p class="title">check on details you want it to appear in your widget</p>
-
     <div class="setting-form">
       <RadioSection title="Raised by" :selections="['Yes', 'On']" @update:value="v => updateField('RaisedBy', v)" />
       <RadioSection title="Assigned to" :selections="['Yes', 'No']" @update:value="v => updateField('AssignedTo', v)" />
     </div>
-
     <div class="setting-form">
       <RadioSection title="Date" :selections="['Yes', 'On']" @update:value="v => updateField('Date', v)" />
       <RadioSection title="Remarks" :selections="['Yes', 'No']" @update:value="v => updateField('Remarks', v)" />
     </div>
-
     <div class="setting-form">
       <RadioSection title="Time" :selections="['Yes', 'On']" @update:value="v => updateField('Time', v)" />
       <RadioSection title="Root cause analysis" :selections="['Yes', 'No']"
         @update:value="v => updateField('Analysis', v)" />
     </div>
-
     <div class="setting-form">
       <RadioSection title="Correction" :selections="['Yes', 'On']" @update:value="v => updateField('Correction', v)" />
       <RadioSection title="Closed out by" :selections="['Yes', 'No']" @update:value="v => updateField('ClosedBy', v)" />
     </div>
-
     <div class="setting-form">
       <RadioSection title="Real completed by" :selections="['Yes', 'On']"
         @update:value="v => updateField('ComplatedBy', v)" />
       <RadioSection title="Closed time" :selections="['Yes', 'No']" @update:value="v => updateField('ClosedTime', v)" />
     </div>
-
     <div class="setting-form">
       <RadioSection title="Closed date" :selections="['Yes', 'On']" @update:value="v => updateField('ClosedDate', v)" />
     </div>
   </div>
-
   <ColorSelection title="chart color" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-
   <RadioSection title="Available to" :selections="['anyone', 'only me']"
     @update:value="v => updateField('SelectedAvailable', v)" />
 </template>

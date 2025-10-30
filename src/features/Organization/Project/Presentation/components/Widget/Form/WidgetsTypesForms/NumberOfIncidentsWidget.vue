@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
-import RadioSection from '../../../../../../../../shared/HelpersComponents/RadioSection.vue'
+import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue'
 
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
-import RadioSection from '../../../../../../../../shared/HelpersComponents/RadioSection.vue'
+import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import Pogress2 from "@/assets/images/Pogress2.png";
 import EquipmentProgress2 from "@/assets/images/EquipmentProgress2.png";
 import EquipmentProgress3 from "@/assets/images/EquipmentProgress3.png";
