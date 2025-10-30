@@ -2,9 +2,6 @@
 import { ref, computed, watch } from 'vue'
 import EditTollIcon from '@/shared/icons/EditTollIcon.vue'
 import ZoneIcon from '@/shared/icons/ZoneIcon.vue'
-import WidgetSetting from './WidgetSetting.vue'
-import ZoneTitlesForm from './WidgetUtils/ZoneTitlesForm.vue'
-
 import NewProjectSafetyScoreWidget from '@/assets/images/NewProjectSafetyScoreWidget.png'
 import NewProjectLocation from '@/assets/images/NewProjectLocation.png'
 import NewLinkedCAPAs from '@/assets/images/NewLinkedCAPAs.png'
@@ -13,12 +10,9 @@ import NewNeedMentance from '@/assets/images/NewNeedMentance.png'
 import NewNumberOfIncidence from '@/assets/images/NewNumberOfIncidence.png'
 import NewEquipmentDevices from '@/assets/images/NewEquipmentDevices.png'
 import TeamRatio from '@/assets/images/TeamRatio.png'
-
 import NoteWidget from '@/assets/images/NotesWidget.png'
-
 import ProjectSafetyWidget from './WidgetsTypesForms/ProjectSafetyWidget.vue'
 import ProjectLocationsWidget from './WidgetsTypesForms/ProjectLocationsWidget.vue'
-
 import { WidgetEnum } from '@/features/Organization/Project/Core/Enums/widget_enum'
 import LinkedCAPAsWidget from './WidgetsTypesForms/LinkedCAPAsWidget.vue'
 import EmployeePerformanceWidget from './WidgetsTypesForms/EmployeePerformanceWidget.vue'
@@ -56,39 +50,42 @@ watch(() => props.type, newType => {
   selectedType.value = newType
 })
 
-
+const Data = ref()
 const WidgetDate = (data) => {
-  console.log(data, "data");
+  Data.value = data
+  // console.log(data, "data");
+}
+const SubmitData = () => {
+  console.log(Data.value, "data.value");
 }
 </script>
 
 <template>
   <div class="edit-zone">
     <hr class="edit-zone-hr" />
-
     <div class="zone-form-container">
       <div class="zone-data">
         <div class="zone-header-container">
           <div class="zone-header">
             <EditTollIcon class="icon" />
-            <p class="title">Edit Zone</p>
+            <p class="title">{{ $t('edit_zone') }}</p>
           </div>
-          <p class="delete">Delete</p>
+          <button class="delete">{{ $t('delete') }}</button>
         </div>
         <component @update:value="WidgetDate($event)" :is="selectedWidget?.component" :id="selectedWidget.id"
           v-if="selectedWidget?.component" />
       </div>
-
       <div class="zone-image">
         <div class="zone-image-header">
           <p class="title">{{ props.title }}</p>
           <ZoneIcon />
         </div>
-        <img :src=" selectedWidget?.img" alt="Widget Image" />
+        <img :src="selectedWidget?.img" alt="Widget Image" />
       </div>
     </div>
+
     <div class="save">
-      <button class="btn btn-primary">save changes</button>
+      <button @click="SubmitData" class="btn btn-primary">{{ $t('save_changes') }}</button>
     </div>
   </div>
 </template>

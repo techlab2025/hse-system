@@ -46,8 +46,8 @@ const UpdateData = () => {
 
     <div class="main-color">
       <!-- <input id="main-color" type="checkbox" v-model="mainColor" @change="MainColorSelection"> -->
-      <Checkbox :id="`${title}-main-color`" v-model="mainColor" @change="MainColorSelection" binary />
-      <label :for="`${title}-main-color`" @click="mainColor = !mainColor">Main Color</label>
+      <Checkbox :inputId="`${title}-main-color`" v-model="mainColor" @change="MainColorSelection" binary />
+      <label :for="`${title}-main-color`">{{ $t('main_color') }}</label>
     </div>
   </div>
 

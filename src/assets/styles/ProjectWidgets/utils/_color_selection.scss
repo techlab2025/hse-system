@@ -4,6 +4,7 @@
 .chart-color-container {
   width: 100%;
   @include flex-justify();
+  font-family: 'Light' !important;
 
   .color-selection-container {
     @include flex-column(nowrap, flex-start, flex-start);

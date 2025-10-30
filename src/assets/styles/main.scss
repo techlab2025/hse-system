@@ -23,7 +23,6 @@
 @use './utils/danger_btn';
 /*</editor-fold>*/
 
-
 /*<editor-fold desc="layout">*/
 @use './layout/layout_imports';
 /*</editor-fold>*/
@@ -94,6 +93,9 @@
 /*</editor-fold>*/
 /*<editor-fold desc="projectWidget">*/
 @use './ProjectWidgets/project_widgets_imports';
+/*</editor-fold>*/
+/*<editor-fold desc="TopSlider">*/
+@use './TopSlider/top_slider';
 /*</editor-fold>*/
 
 html {

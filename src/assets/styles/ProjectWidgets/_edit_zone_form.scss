@@ -3,7 +3,7 @@
 @import '../mixins/grid';
 
 .edit-zone {
-  font-family: 'Regular';
+  font-family: 'Light';
   .edit-zone-hr {
     margin-block: $XlSize2;
     border: none;
@@ -23,12 +23,19 @@
         400: 1,
       )
     );
+    @media (max-width: 768px) {
+      @include flex-column-reverse(nowrap, center, center);
+      gap: 12px;
+    }
 
     .zone-data {
       grid-column: span 3;
       width: 100%;
       @include flex-column(nowrap, flex-start, flex-start);
       gap: $XlSize;
+      @media (max-width: 768px) {
+        grid-column: span 5;
+      }
       .zone-header-container {
         width: 100%;
         @include flex-justify();
@@ -64,13 +71,19 @@
       gap: $SmSize;
       margin-top: 30px;
       margin-bottom: auto;
-
+      @media (max-width: 768px) {
+        grid-column: span 5;
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
       .zone-image-header {
         @include flex-row(nowrap, center, center);
         gap: 6px;
         width: 100%;
 
         .title {
+          font-family: 'Light';
+
           color: #202020;
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
