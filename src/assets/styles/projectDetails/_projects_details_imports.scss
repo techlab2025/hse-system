@@ -1,6 +1,8 @@
 @import './objectives/main_objectives';
 @import './objectives/objective_details';
 @import './sectionHeader/sections_header';
+@import './sectionHeader/header_page';
+@import './sectionHeader/breadcrumbs';
 @import './projectSite/project_site_section';
 @import './projectSite/location_card';
 @import './LocationsTeams/location_teams_section';
@@ -12,3 +14,5 @@
 @import './EquipmentSection/equipment_card';
 @import './EquipmentSection/tool_card';
 @import './project_details_section';
+@import './hierarchy/index';
+@import './employee/index';

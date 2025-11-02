@@ -1,0 +1,67 @@
+@import '../../mixins/flex';
+
+.add-hierarchy {
+  width: 100%;
+  .submit-btn {
+    width: 100%;
+    @include flex(row, nowrap, flex-start, center);
+    gap: $XsSize;
+    margin-top: $MdSize;
+    button {
+      padding: $MdSize;
+      width: 100%;
+      color: white;
+      background-color: $PrimaryColor;
+    }
+    .btn-cancel {
+      border-radius: 36px;
+      border: 1px solid rgba(226, 53, 53, 0.4);
+      background: rgba(226, 53, 53, 0.1);
+      color: var(--danger-color);
+      width: 25%;
+    }
+  }
+
+  .hierarchy-form {
+    margin-top: $XlSize4;
+    background-color: #fbfbfb;
+    padding: $SmSize $XsSize;
+    border-radius: $XlSize;
+    .dashed-line {
+      margin-block: $SmSize;
+      width: 100%;
+    }
+
+    .form-employee-wrapper {
+      margin-block: $SmSize;
+      width: 100%;
+      background-color: var(--BgWhite);
+      padding: $SmSize $XsSize;
+      border-radius: $XlSize;
+    }
+
+    .art-line {
+      margin-block: $SmSize;
+      width: 100%;
+    }
+
+    .equipment-form {
+      width: 100%;
+      .input-container {
+        margin: 0;
+      }
+    }
+    @include flex(column, nowrap, flex-start, flex-start);
+    width: 100%;
+    .title {
+      @include flex(row, wrap, flex-start, center);
+      padding-inline: $SmSize;
+      gap: 0.5rem;
+      h5 {
+        color: var(--second-dark-color);
+        font-family: 'Bold';
+        font-size: $XlSize2;
+      }
+    }
+  }
+}

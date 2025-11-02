@@ -71,9 +71,13 @@ const TeamsData = ref<TeamInterface[]>([
     <div class="card-header">
       <HeaderSection :img="EmployeeIcon" title="cairo" subtitle="100 employee" />
       <div class="card-actions">
-        <button class="edit-btn">Edit Hierarchy</button>
+        <RouterLink :to="`project-hierarchy/1`" class="edit-btn">
+           Edit Hierarchy 
+        </RouterLink>
         <AddCreateTeam />
-        <button class="add-btn">add employee</button>
+        <RouterLink :to="`project-employee/1`" class="add-btn">
+           Add employee 
+        </RouterLink>
       </div>
     </div>
     <hr class="employee-hr" />
