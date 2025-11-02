@@ -1,0 +1,22 @@
+@import '../../mixins/flex';
+
+.breadcrumbs {
+  @include flex(row, nowrap, flex-start, center);
+  gap: $XsSize2;
+  .first-item {
+    color: var(--PrimaryColor);
+    @include flex(row, nowrap, center, baseline);
+    font-family: 'Bold';
+    gap: $XsSize;
+    .small-circle {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--PrimaryColor);
+    }
+  }
+  .last-child {
+    color: var(--subtitle-color);
+    font-family: 'Regular';
+  }
+}

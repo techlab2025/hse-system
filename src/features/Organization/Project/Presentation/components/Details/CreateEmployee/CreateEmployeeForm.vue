@@ -34,16 +34,12 @@ const setTool = (data: TitleInterface) => {
             :modelValue="Device"
             :static-options="Devices"
             class="input"
-            :label="$t('functional Hierarchy')"
+            :label="$t('employee')"
             id="employee"
-            :placeholder="$t('functional Hierarchy')"
+            :placeholder="$t('employee')"
             @update:modelValue="setDevices"
           />
         </div>
-      </div>
-
-      <div class="submit-btn">
-        <button class="btn btn-ptimary">confirm</button>
       </div>
     </form>
   </div>

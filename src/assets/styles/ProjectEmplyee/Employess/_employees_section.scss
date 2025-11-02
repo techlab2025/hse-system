@@ -10,7 +10,8 @@
     .card-actions {
       @include flex-row(nowrap, flex-end, center);
       gap: $MdSize;
-      button {
+      button,
+      a {
         padding-inline: calc($XlSize + 2px);
         padding-block: $XsSize3;
         font-size: $SmSize;
