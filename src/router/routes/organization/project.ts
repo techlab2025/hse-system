@@ -16,4 +16,14 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'Edit Project',
     component: () => import('@/views/Organization/Project/EditProject.vue'),
   },
+  {
+    path: 'project-details',
+    name: 'Project Details',
+    component: () => import('@/views/Organization/Project/projectDetails.vue'),
+  },
+  {
+    path: 'employee-details',
+    name: 'Employee Details',
+    component: () => import('@/views/Organization/Project/EmployeeDetails.vue'),
+  },
 ]

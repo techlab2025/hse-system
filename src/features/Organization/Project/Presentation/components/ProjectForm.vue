@@ -11,6 +11,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import { useRoute } from 'vue-router'
+import DatePicker from 'primevue/datepicker'
 
 import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
@@ -20,16 +21,26 @@ import IndexPartnerController from '@/features/Organization/Partner/Presentation
 import IndexPartnerParams from '@/features/Organization/Partner/Core/params/indexPartnerParams'
 import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
 import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
+import EmployeeHeader from './Employee/EmployeeHeader.vue'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
+import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
+import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: ProjectDetailsModel
 }>()
+const EvaluatingMethod = ref<TitleInterface | null>(null)
 
 const partner_id = ref<TitleInterface | null>(null)
+const location = ref<TitleInterface[]>([])
 
 const indexPartnerController = IndexPartnerController.getInstance()
+const indexLocationController = IndexLocationController.getInstance()
+const indexLocationParams = new IndexLocationParams("", 0, 0, 0,)
+const langsDescription = ref<{ locale: string; icon?: any; description: string }[]>([])
 
 const indexPartnerParams = new IndexPartnerParams(
   '',
@@ -108,12 +119,14 @@ const fetchLang = async (
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
+
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexProjectController = await IndexLangController.getInstance().getData(params)
 
   const response = indexProjectController.value
+  console.log(response.data, "da");
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -127,6 +140,7 @@ const fetchLang = async (
       description: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
+
   } else {
     langDefault.value = [
       { locale: 'en', icon: USA, title: '' },
@@ -152,6 +166,9 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  langsDescription.value.forEach((lang) => {
+    translationsParams.setTranslation('description', lang.locale, lang.description)
+  })
   // descriptions
   // langsDescription.value.forEach((lang) => {
   //   translationsParams.setTranslation('description', lang.locale, lang.title)
@@ -159,16 +176,16 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditProjectParams(
-        props.data.id,
-        translationsParams,
-        partner_id.value?.id,
-        organization_location_ids.value,
-      )
+      props.data.id,
+      translationsParams,
+      partner_id.value?.id,
+      organization_location_ids.value,
+    )
     : new AddProjectParams(
-        translationsParams,
-        partner_id.value?.id,
-        organization_location_ids.value,
-      )
+      translationsParams,
+      partner_id.value?.id,
+      organization_location_ids.value,
+    )
 
   // console.log(params, 'params')
 
@@ -178,8 +195,8 @@ const updateData = () => {
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
 watch(
-  [() => props.data, () => langDefault.value],
-  ([newData, newDefault]) => {
+  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
+  ([newData, newDefault, newDefaultDesc]) => {
     if (newDefault.length) {
       // titles
       if (newData?.titles?.length) {
@@ -189,6 +206,19 @@ watch(
         })
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+      }
+
+      // descriptions
+      if (newData?.descriptions?.length) {
+        langsDescription.value = newDefaultDesc.map((l) => {
+          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          return existing ? existing : { locale: l.locale, description: '' }
+        })
+      } else {
+        langsDescription.value = newDefaultDesc.map((l) => ({
+          locale: l.locale,
+          description: '',
+        }))
       }
 
       partner_id.value = newData?.partner
@@ -209,37 +239,57 @@ watch(
   },
   { deep: true },
 )
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: '', enabled: false },
+])
+
+const setLocations = (data: TitleInterface[]) => {
+  location.value = data
+}
+const setEvaluatingMethod = (data: TitleInterface) => {
+  EvaluatingMethod.value = data
+}
 </script>
 
 <template>
+  <div class="col-span-4">
+    <EmployeeHeader :title="`project info`" />
+  </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <SwitchInput :fields="fields" :switch_title="'Auto'" @update:value="console.log($event)" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="date">
+      {{ $t('Start Date') }}
+    </label>
+    <DatePicker v-model="date" id="date" :placeholder="`select the date`" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
+      :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" :type="2" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="location" @update:modelValue="setLocations" :controller="indexLocationController"
+      :params="indexLocationParams" :label="$t('location')" :placeholder="$t('location')" :type="2" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="">Zones</label>
+    <AddZoneDialog :locations="location"  />
+  </div>
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
+      :controller="indexLocationController" :params="indexLocationParams"
+      :label="$t('the method of evaluating employee performance')"
+      :placeholder="$t('choose your method of evaluating employee performance')" />
+  </div>
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <LangTitleInput :label="$t('project objectives')" :langs="langDefault" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
+      :placeholder="`What are the project objectives?`" />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="partner_id"
-      @update:modelValue="setPartnerId"
-      :controller="indexPartnerController"
-      :params="indexPartnerParams"
-      :label="$t('partner')"
-      :placeholder="$t('select_partner')"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="organization_location_ids"
-      @update:modelValue="setOrganizationLocationIds"
-      :controller="indexOrganizationLocationController"
-      :params="indexOrganizationLocationParams"
-      :label="$t('organization_locations')"
-      :placeholder="$t('organization_locations')"
-      :type="2"
-    />
-  </div>
 </template>
