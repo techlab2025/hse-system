@@ -4,20 +4,20 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class AddMethodsParams implements Params {
   translation: TranslationsParams
   // hasCertificate: number
-  // allIndustries: boolean | null
-  // industries: number[]
+  allIndustries: boolean | null
+  industries: number[]
   // parentId: number
   // image: string
 
   constructor(
     translation: TranslationsParams,
-    // allIndustries: boolean | null,
-    // industries: number[],
+    allIndustries: boolean | null,
+    industries: number[],
 
   ) {
     this.translation = translation
-    // this.allIndustries = allIndustries
-    // this.industries = industries
+    this.allIndustries = allIndustries
+    this.industries = industries
 
   }
 
@@ -34,8 +34,8 @@ export default class AddMethodsParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    // if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
-    // if (!this.allIndustries) data['industry_ids'] = this.industries
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
   }

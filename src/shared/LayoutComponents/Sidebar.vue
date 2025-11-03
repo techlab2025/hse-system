@@ -154,6 +154,40 @@ const user = useUserStore()
 
                     <PermissionBuilder
                       :code="[
+                        PermissionsEnum.METHOD_ALL,
+                        PermissionsEnum.METHOD_CREATE,
+                        PermissionsEnum.METHOD_DELETE,
+                        PermissionsEnum.METHOD_FETCH,
+                        PermissionsEnum.METHOD_UPDATE,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/methods">
+                          <SidebarVector />
+                          <span>{{ $t('methods') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.TEAM_ALL,
+                        PermissionsEnum.TEAM_CREATE,
+                        PermissionsEnum.TEAM_DELETE,
+                        PermissionsEnum.TEAM_FETCH,
+                        PermissionsEnum.TEAM_UPDATE,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/teams">
+                          <SidebarVector />
+                          <span>{{ $t('team') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
+                    <PermissionBuilder
+                      :code="[
                         PermissionsEnum.HAZARD_TYPE_ALL,
                         PermissionsEnum.HAZARD_TYPE_CREATE,
                         PermissionsEnum.HAZARD_TYPE_DELETE,
@@ -1115,17 +1149,34 @@ const user = useUserStore()
                   </PermissionBuilder>
                   <PermissionBuilder
                     :code="[
-                      PermissionsEnum.PROJECT_ZONE_ALL,
-                      PermissionsEnum.PROJECT_ZONE_CREATE,
-                      PermissionsEnum.PROJECT_ZONE_DELETE,
-                      PermissionsEnum.PROJECT_ZONE_FETCH,
-                      PermissionsEnum.PROJECT_ZONE_UPDATE,
+                      PermissionsEnum.ORG_METHOD_ALL,
+                      PermissionsEnum.ORG_METHOD_CREATE,
+                      PermissionsEnum.ORG_METHOD_DELETE,
+                      PermissionsEnum.ORG_METHOD_FETCH,
+                      PermissionsEnum.ORG_METHOD_UPDATE,
                     ]"
                   >
                     <li>
                       <router-link to="/organization/methods">
                         <SidebarVector />
                         <span>{{ $t('methods') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_TEAM_ALL,
+                      PermissionsEnum.ORG_TEAM_CREATE,
+                      PermissionsEnum.ORG_TEAM_DELETE,
+                      PermissionsEnum.ORG_TEAM_FETCH,
+                      PermissionsEnum.ORG_TEAM_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/teams">
+                        <SidebarVector />
+                        <span>{{ $t('team') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>

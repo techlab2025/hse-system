@@ -1,27 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import BlueBack from '@/assets/images/BgGroup.png'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import yelloecircle from '@/assets/images/yelloecircle.png'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import { onMounted, ref, watch } from 'vue'
 
-const Device = ref<TitleInterface>()
-const Devices = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Device 1', subtitle: '' }),
-  new TitleInterface({ id: 2, title: 'Device 2', subtitle: '' }),
-  new TitleInterface({ id: 3, title: 'Device 3', subtitle: '' }),
-])
-const setDevices = (data: TitleInterface) => {
-  Device.value = data
-}
-const Tool = ref<TitleInterface>()
-const Tools = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Tool 1', subtitle: '' }),
-  new TitleInterface({ id: 2, title: 'Tool 2', subtitle: '' }),
-  new TitleInterface({ id: 3, title: 'Tool 3', subtitle: '' }),
-])
-const setTool = (data: TitleInterface) => {
-  Tool.value = data
+const indexHerikalyController = IndexHerikalyController.getInstance()
+const HerikalyParams = new IndexHerikalyParams('', 0, 0, 0)
+const emit = defineEmits(['update:herikaly'])
+
+const herikaly = ref<TitleInterface | null>(null)
+
+const updateHerikaly = (value: TitleInterface | null) => {
+  herikaly.value = value
+  emit('update:herikaly', value)
 }
 </script>
 
@@ -31,14 +23,15 @@ const setTool = (data: TitleInterface) => {
       <div class="input-container">
         <div class="input-wrapper">
           <CustomSelectInput
-            :modelValue="Device"
-            :static-options="Devices"
+            :modelValue="herikaly"
+            :params="HerikalyParams"
+            :controller="indexHerikalyController"
             class="input"
             :label="$t('functional Hierarchy')"
             id="employee"
             :type="2"
             :placeholder="$t('functional Hierarchy')"
-            @update:modelValue="setDevices"
+            @update:modelValue="updateHerikaly"
           />
         </div>
       </div>

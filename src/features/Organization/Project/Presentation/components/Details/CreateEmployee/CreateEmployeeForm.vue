@@ -1,27 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import BlueBack from '@/assets/images/BgGroup.png'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import yelloecircle from '@/assets/images/yelloecircle.png'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
-const Device = ref<TitleInterface>()
-const Devices = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Device 1', subtitle: '' }),
-  new TitleInterface({ id: 2, title: 'Device 2', subtitle: '' }),
-  new TitleInterface({ id: 3, title: 'Device 3', subtitle: '' }),
-])
-const setDevices = (data: TitleInterface) => {
-  Device.value = data
-}
-const Tool = ref<TitleInterface>()
-const Tools = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Tool 1', subtitle: '' }),
-  new TitleInterface({ id: 2, title: 'Tool 2', subtitle: '' }),
-  new TitleInterface({ id: 3, title: 'Tool 3', subtitle: '' }),
-])
-const setTool = (data: TitleInterface) => {
-  Tool.value = data
+const indexEmployeeTypeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexEmployeeTypeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+const emit = defineEmits(['update:employee'])
+
+const employee = ref<TitleInterface | null>(null)
+
+const updateEmployee = (value: TitleInterface | null) => {
+  employee.value = value
+  emit('update:employee', value)
 }
 </script>
 
@@ -31,13 +23,15 @@ const setTool = (data: TitleInterface) => {
       <div class="input-container">
         <div class="input-wrapper">
           <CustomSelectInput
-            :modelValue="Device"
-            :static-options="Devices"
+            :modelValue="employee"
+            :params="indexEmployeeTypeParams"
+            :controller="indexEmployeeTypeController"
             class="input"
             :label="$t('employee')"
+            :type="2"
             id="employee"
             :placeholder="$t('employee')"
-            @update:modelValue="setDevices"
+            @update:modelValue="updateEmployee"
           />
         </div>
       </div>

@@ -50,6 +50,25 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
+
+
+  // location hierarchy
+  public CreateLocationHierarchy = this.prefix + 'create_location'
+  public IndexLocationHierarchy = this.prefix + 'fetch_project_location_hierarchies'
+  public ShowLocationHierarchy = this.prefix + 'fetch_location_details'
+  public EditLocationHierarchy = this.prefix + 'update_location'
+  public DeleteLocationHierarchy = this.prefix + 'delete_location'
+
+
+  // HierarchyEmployee
+
+  public CreateHierarchyEmployee = this.prefix + 'create_project_location_hierarchy_employee'
+  public IndexHierarchyEmployee = this.prefix + 'fetch_project_location_hierarchy_employees'
+  public ShowHierarchyEmployee = this.prefix + 'fetch_hierarchy_employee_details'
+  public EditHierarchyEmployee = this.prefix + 'update_hierarchy_employee'
+  public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
+
+
   // admin
   public CreateAdmin = this.prefix + 'create_admin'
   public IndexAdmin = this.prefix + 'fetch_admins'
@@ -64,6 +83,14 @@ class ApiNames {
   public ShowMethod = this.prefix + 'fetch_method_details'
   public EditMethod = this.prefix + 'update_method'
   public DeleteMethod = this.prefix + 'delete_method'
+
+
+  public CreateTeam = this.prefix + 'create_team'
+  public IndexTeam = this.prefix + 'fetch_teams'
+  public ShowTeam = this.prefix + 'fetch_team_details'
+  public EditTeam = this.prefix + 'update_team'
+  public DeleteTeam = this.prefix + 'delete_team'
+
 
 
   // Permission

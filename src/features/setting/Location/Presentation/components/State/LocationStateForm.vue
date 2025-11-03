@@ -110,8 +110,8 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedCountry.value = newData?.country
-      allIndustries.value = newData?.allIndustries!
+      SelectedCountry.value = newData?.country 
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },

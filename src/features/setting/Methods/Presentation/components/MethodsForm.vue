@@ -1,16 +1,27 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+
+// import { MethodssMap } from '@/constant/Methodss'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+import type ShowMethodsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
+// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
 import EditMethodsParams from '../../Core/params/editMethodsParams'
 import AddMethodsParams from '../../Core/params/addMethodsParams'
+// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
@@ -33,6 +44,15 @@ const langs = ref<{ locale: string; title: string }[]>([
     title: '',
   },
 ])
+
+const allIndustries = ref<boolean>(false)
+// const hasCertificate = ref<number>(0)
+// const image = ref<string>('')
+
+// industry
+const industry = ref<TitleInterface[]>([])
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
+const industryController = IndexIndustryController.getInstance()
 
 // default available Methodss
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
@@ -91,12 +111,31 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  // console.log(allIndustries.value, 'industry')
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
   const params = props.data?.id
-    ? new EditMethodsParams(props.data?.id! ?? 0, translationsParams)
-    : new AddMethodsParams(translationsParams)
+    ? new EditMethodsParams(
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+      )
+    : new AddMethodsParams(
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        // id,
+      )
 
   // console.log(params, 'params')
   emit('update:data', params)
+}
+
+const setIndustry = (data: TitleInterface[]) => {
+  // console.log(data, 'data')
+  industry.value = data
+  updateData()
 }
 
 // when child emits modelValue (updated translations)
@@ -120,6 +159,11 @@ watch(
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
+
+      // langs.value = newData?.code
+      // hasCertificate.value = newData?.hasCertificate
+      allIndustries.value = newData?.allIndustries! ?? false
+      industry.value = newData?.industries!
     }
   },
   { immediate: true },
@@ -135,4 +179,47 @@ watch(
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
+
+  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
+  <!--    <label>{{ $t('has_certificate') }}</label>-->
+  <!--    <input-->
+  <!--      type="checkbox"-->
+  <!--      :value="1"-->
+  <!--      v-model="hasCertificate"-->
+  <!--      :checked="hasCertificate == 1"-->
+  <!--      @change="updateData"-->
+  <!--    />-->
+  <!--  </div>-->
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <label>{{ $t('all_industries') }}</label>
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
+  </div>
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="Methods"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
+  </div>
+  <!--  <div class="col-span-4 md:col-span-4">-->
+  <!--    <FileUpload-->
+  <!--      :initialFileData="image"-->
+  <!--      @update:fileData="setImage"-->
+  <!--      label="Image"-->
+  <!--      id="image"-->
+  <!--      placeholder="Select image"-->
+  <!--      :multiple="false"-->
+  <!--    />-->
+  <!--  </div>-->
 </template>

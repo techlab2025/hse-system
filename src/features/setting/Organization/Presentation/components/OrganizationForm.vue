@@ -144,7 +144,7 @@ watch(
 
       console.log(newData, 'newData')
       Url.value = newData?.website_link
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industry
       lang.value = newData?.languages
       image.value = newData?.image

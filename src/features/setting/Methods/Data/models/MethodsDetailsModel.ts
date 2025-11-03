@@ -8,22 +8,42 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 export default class MethodsDetailsModel {
   public id: number
   public titles: TitleLocale[]
- 
+  // public hasCertificate: number
+  public allIndustries: number
+  public parentId: number
+  public image: string
+  public industries: TitleModel<string>[]
   // public descriptions: DescriptionLocale[]
 
   constructor(
     id: number,
     titles: TitleLocale[],
-
+    // hasCertificate: number,
+    allIndustries: number,
+    industries: TitleModel<string>[] = [],
+    parentId: number,
+    image: string,
   ) {
     this.id = id
     this.titles = titles
+    // this.hasCertificate = hasCertificate
+    this.allIndustries = allIndustries
+    this.industries = industries
+    this.parentId = parentId
+    this.image = image
   }
 
   static fromMap(data: any): MethodsDetailsModel {
     return new MethodsDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
+      // data.has_certificate,
+      data.all_industries,
+      data.industries?.length > 0
+        ? data.industries?.map((industry) => this.getTitle(industry))
+        : [],
+      data.parent_id,
+      data.image,
     )
   }
 

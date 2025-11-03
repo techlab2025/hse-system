@@ -3,6 +3,33 @@ import LocationColor from '@/shared/icons/locationColor.vue'
 import Breadcrumbs from '../DetailsHeader/Breadcrumbs.vue'
 import HeaderPage from '../DetailsHeader/HeaderPage.vue'
 import CreateHierarchyForm from './CreateHierarchyForm.vue'
+import { useRoute } from 'vue-router'
+import { onMounted, ref, watch } from 'vue'
+import IndexProjectLocationParams from '@/features/Organization/Project/Core/params/Hierarchy/ProjectLocations/indexProjectLocationParams'
+import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
+
+const route = useRoute()
+const indexLocationHierarchyController = IndexLocationHierarchyController.getInstance()
+const state = ref(indexLocationHierarchyController.state.value)
+
+const fetchProjectLocation = async () => {
+  const indexProjectLocationParams = new IndexProjectLocationParams(+route.params.project_id)
+
+  indexLocationHierarchyController.getData(indexProjectLocationParams)
+}
+
+onMounted(() => {
+  fetchProjectLocation()
+})
+
+watch(
+  () => indexLocationHierarchyController.state.value,
+  (newState) => {
+    if (newState) {
+      state.value = newState
+    }
+  },
+)
 </script>
 
 <template>
@@ -19,7 +46,7 @@ import CreateHierarchyForm from './CreateHierarchyForm.vue'
         <LocationColor />
         <h5>Alexandria</h5>
       </div>
-      <CreateHierarchyForm />
+      <CreateHierarchyForm @update:herikaly="fetchProjectLocation" />
     </div>
 
     <div class="submit-btn">
