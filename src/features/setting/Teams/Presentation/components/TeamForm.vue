@@ -2,9 +2,7 @@
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-// import { MethodssMap } from '@/constant/Methodss'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import type ShowMethodsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -18,15 +16,15 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
-import EditMethodsParams from '../../Core/params/editMethodsParams'
-import AddMethodsParams from '../../Core/params/addMethodsParams'
+import type TeamDetailsModel from '../../Data/models/TeamDetailsModel'
+import editTeamParams from '../../Core/params/editTeamParams'
+import AddTeamParams from '../../Core/params/addTeamParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: MethodsDetailsModel
+  data?: TeamDetailsModel
 }>()
 
 // const route = useRoute()
@@ -54,7 +52,7 @@ const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available Methodss
+// default available Teamss
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 const user = useUserStore()
 const fetchLang = async (
@@ -72,16 +70,16 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexMethodsController = await IndexLangController.getInstance().getData(params)
+  const indexTeamsController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexMethodsController.value
+  const response = indexTeamsController.value
 
   if (response?.data?.length) {
-    // map backend Methodss into default structure
+    // map backend Teamss into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
       title: '', // empty initially
-      // if you already have icons mapped, use MethodssMap
+      // if you already have icons mapped, use TeamssMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
@@ -111,17 +109,17 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  // console.log(allIndustries.value, 'industry')
+  console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   const params = props.data?.id
-    ? new EditMethodsParams(
+    ? new editTeamParams(
         props.data?.id! ?? 0,
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
       )
-    : new AddMethodsParams(
+    : new AddTeamParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
@@ -146,7 +144,7 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-// init Methodss either from backend (edit mode) or from defaults (create mode)
+// init Teamss either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -162,7 +160,7 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },
@@ -206,7 +204,7 @@ watch(
       :controller="industryController"
       :params="industryParams"
       label="industry"
-      id="Methods"
+      id="Teams"
       placeholder="Select industry"
       :type="2"
       @update:modelValue="setIndustry"

@@ -5,10 +5,9 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
-export default class MethodsDetailsModel {
+export default class TeamDetailsModel {
   public id: number
   public titles: TitleLocale[]
-  // public hasCertificate: number
   public allIndustries: number
   public parentId: number
   public image: string
@@ -18,7 +17,6 @@ export default class MethodsDetailsModel {
   constructor(
     id: number,
     titles: TitleLocale[],
-    // hasCertificate: number,
     allIndustries: number,
     industries: TitleModel<string>[] = [],
     parentId: number,
@@ -26,18 +24,17 @@ export default class MethodsDetailsModel {
   ) {
     this.id = id
     this.titles = titles
-    // this.hasCertificate = hasCertificate
     this.allIndustries = allIndustries
     this.industries = industries
     this.parentId = parentId
     this.image = image
+
   }
 
-  static fromMap(data: any): MethodsDetailsModel {
-    return new MethodsDetailsModel(
+  static fromMap(data: any): TeamDetailsModel {
+    return new TeamDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      // data.has_certificate,
       data.all_industries,
       data.industries?.length > 0
         ? data.industries?.map((industry) => this.getTitle(industry))

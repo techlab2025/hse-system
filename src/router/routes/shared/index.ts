@@ -6,6 +6,8 @@ import { factoryRoutes } from './factory'
 import { hazardRoutes } from './hazard'
 import { templateRoutes } from './template'
 import { templateItemRoutes } from './templateItem'
+import { methodsRoutes } from './methods'
+import { teamsRoutes } from './team'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -15,5 +17,8 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...hazardRoutes,
   ...templateRoutes,
   ...templateItemRoutes,
+  ...methodsRoutes,
+  ...teamsRoutes
+
 
 ]
