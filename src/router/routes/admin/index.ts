@@ -3,8 +3,9 @@ import { languageRoutes } from './language'
 import { industryRoutes } from './industry'
 import { locationRoutes } from './location'
 import { websiteRoutes } from './website'
-import {projectTypesRoutes} from './projectTypes'
-import {adminsRoutes} from './admins'
+import { projectTypesRoutes } from './projectTypes'
+import { adminsRoutes } from './admins'
+import { organizationRoutes } from './organization'
 
 export const adminRoutes: RouteRecordRaw[] = [
   {
@@ -18,6 +19,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   ...websiteRoutes,
   ...projectTypesRoutes,
   ...adminsRoutes,
+  ...organizationRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Admin',

@@ -1,6 +1,8 @@
-  :root {
+:root {
   /* Light mode defaults */
   --PrimaryColor: #1d4ed8;
+  --header-page-color: #041953;
+  --second-dark-color: #121212;
   --BgWhite: rgba(255, 255, 255, 1);
   --Gray-1: rgba(248, 249, 250, 1);
   --Gray-2: rgba(241, 243, 245, 1);
@@ -11,6 +13,7 @@
   --LightGray: rgba(248, 249, 250, 1);
   --Black: rgba(0, 0, 0, 1);
   --Red: rgba(237, 28, 36, 1);
+  --danger-color: #e23535;
   --main-border: rgb(221, 226, 237);
   --checkbox-bg: #f5f5ff;
   --subtitle-color: #9ca3af;

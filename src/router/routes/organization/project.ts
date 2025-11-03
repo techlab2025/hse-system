@@ -26,4 +26,14 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'Employee Details',
     component: () => import('@/views/Organization/Project/EmployeeDetails.vue'),
   },
+  {
+    path: 'project-hierarchy/:id',
+    name: 'Project Hierarchy',
+    component: () => import('@/views/Organization/Project/Hierarchy/addHierarchy.vue'),
+  },
+  {
+    path: 'project-employee/:id',
+    name: 'Project Employee',
+    component: () => import('@/views/Organization/Project/Employee/addEmployee.vue'),
+  },
 ]

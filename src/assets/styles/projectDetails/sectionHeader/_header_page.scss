@@ -1,0 +1,50 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.section-header-page {
+  @include flex-row(nowrap, flex-start, center);
+  gap: $SmSize;
+  font-family: 'Regular';
+  background: #f7f9fc;
+  border-radius: calc($XlSize + 3px);
+  padding: $XsSize2 $MdSize;
+  margin-block: $MdSize;
+
+  .section-img-page {
+    width: 40px;
+    height: 40px;
+  }
+
+  .section-number-page {
+    border-radius: 11px;
+    border: 2px solid #fff;
+    background: #f7f9fc;
+    @include flex(row, nowrap, center, center);
+
+    width: 45px;
+    height: 45px;
+    padding: $XsSize;
+    span {
+      color: var(--PrimaryColor);
+      font-family: 'Bold';
+      font-size: $XlSize;
+    }
+  }
+
+  .header-text-page {
+    @include flex-column(nowrap, flex-start, flex-start);
+
+    .title-page {
+      font-weight: $BaseFontWeightBold;
+      font-size: calc($XlSize + 2px);
+      color: var(--header-page-color);
+    }
+
+    .subtitle-page {
+      color: $SubtitleColor;
+      font-weight: $BaseFontMediumWeight;
+      font-size: $SmSize;
+    }
+  }
+}
