@@ -161,7 +161,7 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },

@@ -117,7 +117,7 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
 
       industry.value = newData?.industries!
 
