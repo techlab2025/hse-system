@@ -2,7 +2,7 @@ import type Params from '@/base/core/params/params'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
-export default class IndexProjectZoneParams implements Params {
+export default class IndexProjectLocationZonesParams implements Params {
   public word: string
   public withPage: number = 1
   public perPage: number = 10
@@ -35,7 +35,7 @@ export default class IndexProjectZoneParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    data['location_id'] = this.LocationId
+    data['location_ids'] = this.LocationId
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
     return data

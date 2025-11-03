@@ -16,6 +16,7 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsModel'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -23,10 +24,10 @@ const props = defineProps<{
   data?: ProjectZoneDetailsModel
 }>()
 
-const indexLocationController = IndexLocationController.getInstance()
-const indexLocationParams = new IndexLocationParams('', 0, 0, 0)
-const SelectedLocation = ref<TitleInterface>()
 
+
+
+const SelectedLocation = ref<TitleInterface>()
 const langs = ref<{ locale: string; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 const user = useUserStore()
@@ -84,7 +85,9 @@ const updateData = () => {
     )
     : new AddProjectZoneParams(
       translationsParams,
-      SelectedLocation.value?.id,
+      SelectedArea.value?.id,
+      // SelectedArea.value?.id,
+
 
     )
 
@@ -96,10 +99,6 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-const setLocation = (data: TitleInterface) => {
-  SelectedLocation.value = data
-  updateData()
-}
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -119,6 +118,59 @@ watch(
   { immediate: true },
 )
 
+
+
+
+
+const indexLocationCountriesController = IndexLocationController.getInstance()
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+
+const indexLocationStatesController = IndexLocationController.getInstance()
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationCityController = IndexLocationController.getInstance()
+const indexLocationCityParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationAreasController = IndexLocationController.getInstance()
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
+
+
+
+const SelectedCountry = ref<TitleInterface>()
+const SetCountrySelection = (data: TitleInterface) => {
+  SelectedCountry.value = data
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    data.id,
+  )
+  updateData()
+}
+
+const SelectedState = ref<TitleInterface>()
+const SetStateSelection = (data: TitleInterface) => {
+  SelectedState.value = data
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
+  updateData()
+}
+
+const SelectedCity = ref<TitleInterface>()
+const SetCitySelection = (data: TitleInterface) => {
+  SelectedCity.value = data
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, data.id)
+  updateData()
+}
+
+const SelectedArea = ref<TitleInterface>()
+const SetAreaSelection = (data: TitleInterface) => {
+  SelectedArea.value = data
+  console.log(SelectedArea, "SelectedArea");
+  updateData()
+}
+
 </script>
 
 <template>
@@ -127,9 +179,36 @@ watch(
       @update:modelValue="setLangs" />
   </div>
 
+
   <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      @update:modelValue="SetCountrySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      @update:modelValue="SetStateSelection" />
+  </div>
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      @update:modelValue="SetCitySelection" />
+  </div>
+
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedArea" :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
+      @update:modelValue="SetAreaSelection" />
+  </div>
+
+  <!-- <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :controller="indexLocationController" :params="indexLocationParams"
       :modelValue="SelectedLocation" label="Location" id="location" placeholder="Select Location"
       @update:modelValue="setLocation" />
-  </div>
+  </div> -->
+
+
 </template>

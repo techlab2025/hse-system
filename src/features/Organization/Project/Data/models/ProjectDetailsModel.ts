@@ -8,6 +8,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
 import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
+import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class ProjectDetailsModel {
@@ -15,20 +16,26 @@ export default class ProjectDetailsModel {
   public titles: TitleLocale[]
   public descriptions: DescriptionLocale[]
   public partner: TitleInterface
-  public organizationLocation: TitleInterface[]
+  public locations: LocationDetailsModel[]
+  public SerialNumber: string
+  public startDate: string
 
   constructor(
     id: number,
     titles: TitleLocale[],
     descriptions: DescriptionLocale[],
     partner: TitleInterface,
-    organizationLocation: TitleInterface[],
+    locations: LocationDetailsModel[],
+    SerialNumber: string,
+    startDate: string,
   ) {
     this.id = id
     this.titles = titles
     this.descriptions = descriptions
     this.partner = partner
-    this.organizationLocation = organizationLocation
+    this.locations = locations
+    this.SerialNumber = SerialNumber
+    this.startDate = startDate
   }
 
   static fromMap(data: any): ProjectDetailsModel {
@@ -37,9 +44,12 @@ export default class ProjectDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap(data.descriptions).descriptions,
       this.getTitle(data.partner),
+      data.locations,
       data.organization_locations?.length > 0
         ? data.organization_locations?.map((location) => this.getTitle(location))
         : [],
+      data.serial_number,
+
     )
   }
 

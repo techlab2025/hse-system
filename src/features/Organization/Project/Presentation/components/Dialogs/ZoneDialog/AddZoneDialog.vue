@@ -65,9 +65,16 @@ const formattedZones = computed(() => {
       </div>
     </template>
 
-    <div class="equipment-dialog-data">
+    <div class="equipment-dialog-data" v-if="locations.length > 0">
       <hr class="add-equipment-hr" />
       <ZoneDialogForm :locations="locations" @update:data="GetData" :selected-zones="Zones" />
     </div>
+    <div class="empty" v-else>
+      <p>No Selected locations </p>
+    </div>
   </Dialog>
 </template>
+
+<style scoped>
+
+</style>

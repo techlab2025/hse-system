@@ -249,13 +249,13 @@ watch(
                 <th scope="col">{{ $t('project_name') }}</th>
                 <th scope="col">{{ $t('contractors') }}</th>
                 <th scope="col">{{ $t('locations') }}</th>
-                <th scope="col">{{ $t('supervisors') }}</th>
-                <th scope="col">{{ $t('teams') }}</th>
+                <!-- <th scope="col">{{ $t('supervisors') }}</th> -->
+                <!-- <th scope="col">{{ $t('teams') }}</th> -->
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in Data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="Select">
                   <input type="checkbox" class="checkbox-input" />
                 </td>
@@ -266,30 +266,31 @@ watch(
                 </td>
                 <td data-label="Project Name">
                   <div class="project-info">
-                    <div class="project-date">{{ item.created_at || '--' }}</div>
+                    <div class="project-date">{{ item.start_date || '--' }}</div>
                     <div class="project-title">{{ wordSlice(item.title) }}</div>
                   </div>
                 </td>
                 <td data-label="Contractors">
-                  <div class="tag-container">
-                    <TablePopover :data="item.contractors" />
-                  </div>
+                  <!-- <div class="tag-container">
+                    <TablePopover :data="item.partner" />
+                  </div> -->
+                  {{ item.partner?.title }}
                 </td>
                 <td data-label="Locations">
                   <div class="tag-container">
                     <TablePopover :data="item.locations" />
                   </div>
                 </td>
-                <td data-label="Supervisors">
-                  <div class="avatar-group">
-                    <TablePopover :data_img="item.supervisors" />
-                  </div>
-                </td>
-                <td data-label="Teams">
-                  <div class="tag-container">
+                <!-- <td data-label="Supervisors"> -->
+                  <!-- <div class="avatar-group">
+                    <TablePopover :data_img="item." />
+                  </div> -->
+                <!-- </td> -->
+                <!-- <td data-label="Teams"> -->
+                  <!-- <div class="tag-container">
                     <TablePopover :data="item.teams" />
-                  </div>
-                </td>
+                  </div> -->
+                <!-- </td> -->
                 <td data-label="Actions">
                   <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
                 </td>

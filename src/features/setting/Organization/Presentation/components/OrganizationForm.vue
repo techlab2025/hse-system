@@ -17,6 +17,9 @@ import type OrganizationDetailsModel from '../../Data/models/OrganizationDetails
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 import { useRoute } from 'vue-router'
+import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
+import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -91,24 +94,27 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditOrganizationParams(
-        +route.params.id,
-        name.value,
-        Phone.value,
-        email.value,
-        image.value,
-        Url.value,
-        industry.value?.id,
-        lang.value?.map((l) => l.id), // selected language id
-      )
+      +route.params.id,
+      name.value,
+      Phone.value,
+      email.value,
+      image.value,
+      Url.value,
+      industry.value?.id,
+      lang.value?.map((l) => l.id), // selected language id
+      SelectedCountry.value.map((l) => l.id),
+
+    )
     : new AddOrganizationParams(
-        name.value,
-        Phone.value,
-        email.value,
-        image.value,
-        Url.value,
-        industry.value?.id,
-        lang.value?.map((l) => l.id),
-      )
+      name.value,
+      Phone.value,
+      email.value,
+      image.value,
+      Url.value,
+      industry.value?.id,
+      lang.value?.map((l) => l.id),
+      SelectedCountry.value.map((l) => l.id),
+    )
 
   emit('update:data', params)
 }
@@ -168,91 +174,57 @@ const setLang = (data: TitleInterface[]) => {
   lang.value = data
   updateData()
 }
+
+const SelectedCountry = ref<TitleInterface[]>()
+const indexLocationCountriesController = IndexLocationController.getInstance()
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+const setCountry = (data: TitleInterface[]) => {
+  SelectedCountry.value = data
+  updateData();
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label  for="name">Name</label>
-    <input
-      type="text"
-      @change="updateData"
-      id="name"
-      v-model="name"
-      class="input"
-      placeholder="Enter Your Name"
-    />
+    <label for="name">Name</label>
+    <input type="text" @change="updateData" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">Email</label>
-    <input
-      type="email"
-      id="email"
-      @change="updateData"
-      v-model="email"
-      class="input"
-      placeholder="Enter Your Email"
-    />
+    <input type="email" id="email" @change="updateData" v-model="email" class="input" placeholder="Enter Your Email" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Phone">Phone</label>
-    <input
-      type="phone"
-      id="Phone"
-      @change="updateData"
-      v-model="Phone"
-      class="input"
-      placeholder="Enter Your Phone"
-    />
+    <input type="phone" id="Phone" @change="updateData" v-model="Phone" class="input" placeholder="Enter Your Phone" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Industry"
-      id="Organization"
-      placeholder="Select industry"
-      @update:modelValue="setIndustry"
-    />
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="Industry"
+      id="Organization" placeholder="Select industry" @update:modelValue="setIndustry" />
   </div>
 
   <!-- Language select -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="lang"
-      :controller="indexLangController"
-      :params="indexLangParams"
-      label="Language"
-      id="lang"
-      :type="2"
-      placeholder="Select Language"
-      @update:modelValue="setLang"
-      :required="true"
-    />
+    <CustomSelectInput :modelValue="lang" :controller="indexLangController" :params="indexLangParams" label="Language"
+      id="lang" :type="2" placeholder="Select Language" @update:modelValue="setLang" :required="true" />
+  </div>
+
+  <!-- Country select -->
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country" id="Country" :type="2" placeholder="Select Country"
+      @update:modelValue="setCountry" :required="true" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Url">Url</label>
-    <input
-      type="url"
-      id="Url"
-      v-model="Url"
-      @change="updateData"
-      class="input"
-      placeholder="Enter Your Url"
-    />
+    <input type="url" id="Url" v-model="Url" @change="updateData" class="input" placeholder="Enter Your Url" />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+      placeholder="Select image" />
   </div>
 </template>

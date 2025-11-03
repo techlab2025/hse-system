@@ -26,6 +26,9 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
+import IndexMethodsController from '@/features/setting/Methods/Presentation/controllers/indexMethodsController'
+import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMethodsParams'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -34,13 +37,18 @@ const props = defineProps<{
 }>()
 const EvaluatingMethod = ref<TitleInterface[] | null>([])
 
-const partner_id = ref<TitleInterface[] | null>(null)
+const partner_id = ref<TitleInterface>(null)
 const location = ref<TitleInterface[]>([])
 
 const indexPartnerController = IndexPartnerController.getInstance()
 const indexLocationController = IndexLocationController.getInstance()
 const indexLocationParams = new IndexLocationParams("", 0, 0, 0,)
-const langsDescription = ref<{ locale: string; icon?: any; description: string }[]>([])
+
+
+const indexMethodsController = IndexMethodsController.getInstance()
+const indexMethodsParams = new IndexMethodsParams("", 0, 0, 0,)
+
+
 
 const indexPartnerParams = new IndexPartnerParams(
   '',
@@ -50,33 +58,15 @@ const indexPartnerParams = new IndexPartnerParams(
   // id.value?? '',
 )
 
-const setPartnerId = (data: TitleInterface[] | null) => {
+const setPartnerId = (data: TitleInterface | null) => {
   partner_id.value = data
-  updateData()
-}
-
-const organization_location_ids = ref<TitleInterface[]>([])
-
-const indexOrganizationLocationController = IndexOrganizationLocationController.getInstance()
-const indexOrganizationLocationParams = new IndexOrganizationLocationParams(
-  '',
-  0,
-  0,
-  0,
-  // id.value?? '',
-)
-
-const setOrganizationLocationIds = (data: TitleInterface[]) => {
-  organization_location_ids.value = data
   updateData()
 }
 
 const route = useRoute()
 const id = route.params.parent_id
 
-type ImageValue = string | { file?: File; id?: number }
 
-// ---------- State ----------
 const langs = ref<
   {
     locale: string
@@ -84,6 +74,13 @@ const langs = ref<
     title: string
   }[]
 >([])
+
+const langsDescription = ref<{
+  locale: string;
+  icon?: any;
+  description: string
+}[]>([])
+
 
 // default available langs from backend
 const langDefault = ref<
@@ -133,7 +130,6 @@ const fetchLang = async (
   const indexProjectController = await IndexLangController.getInstance().getData(params)
 
   const response = indexProjectController.value
-  console.log(response.data, "da");
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -154,8 +150,8 @@ const fetchLang = async (
       { locale: 'ar', icon: SA, title: '' },
     ]
     langDefaultDescription.value = [
-      { locale: 'en', icon: USA, description: '' },
-      { locale: 'ar', icon: SA, description: '' },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
@@ -178,19 +174,11 @@ const updateData = () => {
   })
 
 
-  // console.log({
-  //   partner_id: partner_id.value?.map((p) => p.id),
-  //   date: date.value,
-  //   SerialNumber: SerialNumber.value?.SerialNumber,
-  //   locations: location.value.map((l) => l.id),
-  //   ZoneIds: ZoneIds.value.map((z) => z),
-  //   EvaluatingMethod: EvaluatingMethod.value?.map((p) => p.id)
-  // }, "data");
   const params = props.data?.id
     ? new EditProjectParams(
       props.data.id,
       translationsParams,
-      partner_id.value?.map((p) => p.id),
+      partner_id.value?.id,
       date.value,
       location.value.map((l) => l.id),
       ZoneIds.value.map((z) => z),
@@ -198,15 +186,13 @@ const updateData = () => {
     )
     : new AddProjectParams(
       translationsParams,
-      partner_id.value?.map((p) => p.id),
+      partner_id.value?.id,
       date.value,
       SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
       ZoneIds.value.map((z) => z),
       EvaluatingMethod.value?.map((p) => p.id)
     )
-
-
   emit('update:data', params)
 }
 
@@ -239,6 +225,10 @@ watch(
         }))
       }
 
+      SerialNumber.value = newData?.SerialNumber;
+      date.value = newData?.startDate;
+      partner_id.value = newData?.partner;
+      SelectedCountry.value = newData?.locations[0];
 
       updateData()
     }
@@ -246,17 +236,8 @@ watch(
   { immediate: true },
 )
 
-// Auto-update emit whenever key data changes
-watch(
-  [langs, partner_id, organization_location_ids],
-  () => {
-    updateData()
-  },
-  { deep: true },
-)
-
 const fields = ref([
-  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: '', enabled: false },
+  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: props.data?.SerialNumber, enabled: false },
 ])
 
 const setLocations = (data: TitleInterface[]) => {
@@ -275,13 +256,11 @@ const UpdateZones = (data: { locationId: number; locationName: string; zones: { 
   data.forEach(item => {
     item.zones.forEach(z => ZoneIds.value.push(z.id))
   })
-  console.log(ZoneIds.value, "ZoneIds.value");
   updateData()
 }
 
 const SerialNumber = ref()
 const UpdateSerial = (data) => {
-  console.log(data, "serial");
   SerialNumber.value = data
   updateData()
 }
@@ -289,6 +268,73 @@ const UpdateDate = (date) => {
   date.value = date
   updateData()
 }
+
+
+// Location Handel Start
+
+const indexLocationCountriesController = IndexLocationController.getInstance()
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+
+const indexLocationStatesController = IndexLocationController.getInstance()
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationCityController = IndexLocationController.getInstance()
+const indexLocationCityParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationAreasController = IndexLocationController.getInstance()
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
+
+
+
+const SelectedCountry = ref<TitleInterface>()
+const SetCountrySelection = (data: TitleInterface) => {
+  SelectedCountry.value = data
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    data.id,
+  )
+  updateData()
+}
+
+const SelectedState = ref<TitleInterface>()
+const SetStateSelection = (data: TitleInterface) => {
+  SelectedState.value = data
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
+  updateData()
+}
+
+const SelectedCity = ref<TitleInterface>()
+const SetCitySelection = (data: TitleInterface) => {
+  SelectedCity.value = data
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, data.id)
+  updateData()
+}
+
+const SelectedArea = ref<TitleInterface[]>()
+const SetAreaSelection = (data: TitleInterface[]) => {
+  SelectedArea.value = data
+  location.value = data
+  updateData()
+}
+
+
+// Location Handel End
+
+
+
+
+watch(() => langs.value,
+  () => {
+    updateData()
+  })
+watch(() => langsDescription.value,
+  () => {
+    updateData()
+  })
 </script>
 
 <template>
@@ -309,11 +355,35 @@ const UpdateDate = (date) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
-      :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" :type="2" />
+      :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" />
   </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      @update:modelValue="SetCountrySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      @update:modelValue="SetStateSelection" />
+  </div>
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      @update:modelValue="SetCitySelection" />
+  </div>
+
+
+  <!-- <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedArea" :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
+      @update:modelValue="SetAreaSelection" />
+  </div> -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="location" @update:modelValue="setLocations" :controller="indexLocationController"
-      :params="indexLocationParams" :label="$t('location')" :placeholder="$t('location')" :type="2" />
+    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('location')"
+      :placeholder="$t('location')" :type="2" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="">Zones</label>
@@ -321,7 +391,7 @@ const UpdateDate = (date) => {
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
-      :controller="indexLocationController" :params="indexLocationParams"
+      :controller="indexMethodsController" :params="indexMethodsParams"
       :label="$t('the method of evaluating employee performance')" :type="2"
       :placeholder="$t('choose your method of evaluating employee performance')" />
   </div>

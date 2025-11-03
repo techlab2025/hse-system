@@ -424,6 +424,9 @@ class ApiNames {
   public ShowTemplateItem = this.prefix + 'fetch_template_item_details'
   public EditTemplateItem = this.prefix + 'update_template_item'
   public DeleteTemplateItem = this.prefix + 'delete_template_item'
+
+
+  public IndexProjectLocationZones = this.prefix + 'fetch_zoons_by_location_ids'
 }
 
 export { ApiNames }
