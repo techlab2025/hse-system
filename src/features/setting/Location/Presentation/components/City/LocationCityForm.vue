@@ -130,7 +130,7 @@ watch(
 
       SelectedState.value = newData?.state
 
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },
