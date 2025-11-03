@@ -50,6 +50,28 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
+
+
+  // location hierarchy
+  public CreateLocationHierarchy = this.prefix + 'create_location'
+  public IndexLocationHierarchy = this.prefix + 'fetch_project_location_hierarchies'
+  public ShowLocationHierarchy = this.prefix + 'fetch_location_details'
+  public EditLocationHierarchy = this.prefix + 'update_location'
+  public DeleteLocationHierarchy = this.prefix + 'delete_location'
+
+
+  // HierarchyEmployee
+
+  public CreateHierarchyEmployee = this.prefix + 'create_hierarchy_employee'
+  public IndexHierarchyEmployee = this.prefix + 'fetch_hierarchy_employees'
+  public ShowHierarchyEmployee = this.prefix + 'fetch_hierarchy_employee_details'
+  public EditHierarchyEmployee = this.prefix + 'update_hierarchy_employee'
+  public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
+
+  // project location
+  public IndexProjectLocation = this.prefix + 'fetch_project_locations'
+
+
   // admin
   public CreateAdmin = this.prefix + 'create_admin'
   public IndexAdmin = this.prefix + 'fetch_admins'

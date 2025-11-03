@@ -5,6 +5,36 @@ import HeaderPage from '../DetailsHeader/HeaderPage.vue'
 import CreateEmployeeForm from './CreateEmployeeForm.vue'
 import Person from '@/shared/icons/person.vue'
 import ArtLine from '@/shared/icons/artLine.vue'
+import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
+import { useRoute } from 'vue-router'
+import { onMounted } from 'vue'
+import { watch, ref } from 'vue'
+import IndexLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeParams'
+
+const route = useRoute()
+
+const indexLocationHierarchyController = IndexLocationHierarchyController.getInstance()
+
+const state = ref(indexLocationHierarchyController.state.value)
+
+const fetchLocationHierarchy = async () => {
+  const indexLocationHierarchyParams = new IndexLocationHierarchyParams(+route.params.project_id)
+
+  indexLocationHierarchyController.getData(indexLocationHierarchyParams)
+}
+
+onMounted(() => {
+  fetchLocationHierarchy()
+})
+
+watch(
+  () => indexLocationHierarchyController.state.value,
+  (newState) => {
+    if (newState) {
+      state.value = newState
+    }
+  },
+)
 </script>
 
 <template>
@@ -27,12 +57,12 @@ import ArtLine from '@/shared/icons/artLine.vue'
       <div class="form-employee-wrapper" v-for="j in 2" :key="j">
         <div class="title">
           <Person />
-          <h5>Alexandria</h5>
+          <h5>CTO</h5>
         </div>
 
         <DashedLine class="dashed-line" />
 
-        <CreateEmployeeForm />
+        <CreateEmployeeForm @update:employee="fetchLocationHierarchy" />
       </div>
     </div>
 
