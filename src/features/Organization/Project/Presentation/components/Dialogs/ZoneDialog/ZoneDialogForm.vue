@@ -4,7 +4,10 @@ import { ref, watch, onMounted } from 'vue'
 
 const props = defineProps<{
   locations: TitleInterface[]
+    selectedZones?: { locationId: number, zones: { id: number, title: string }[] }[]
+
 }>()
+
 const emit = defineEmits(['update:data'])
 
 const AllLocations = ref(props.locations)
@@ -37,9 +40,34 @@ watch(
 onMounted(() => {
   initializeZones(AllLocations.value)
 })
+
 const UpdateData = () => {
-  emit('update:data', SelectedZone.value)
+  const result = Object.entries(SelectedZone.value).map(([locationId, zoneIds]) => {
+    const selectedZones = (zoneIds as number[])
+      .map((id) => {
+        const zone = Zones.value.find((z) => z.id === id)
+        return zone ? { id: zone.id, title: zone.title } : null
+      })
+      .filter((z) => z !== null)
+
+    return {
+      locationId: Number(locationId),
+      locationName: props.locations.find((l) => l.id === Number(locationId))?.title,
+      zones: selectedZones
+    }
+  })
+
+  emit('update:data', result)
 }
+
+onMounted(() => {
+  initializeZones(AllLocations.value)
+  if (props.selectedZones) {
+    props.selectedZones.forEach((loc) => {
+      SelectedZone.value[loc.locationId] = loc.zones.map((z) => z.id)
+    })
+  }
+})
 </script>
 
 <template>
@@ -50,7 +78,6 @@ const UpdateData = () => {
           Location: <span>{{ location.title }}</span>
         </h2>
       </div>
-
 
       <div class="zone-content-container">
         <div v-for="zone in Zones" :key="zone.id" class="zone-content" :class="{

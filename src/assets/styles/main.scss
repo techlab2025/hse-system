@@ -10,6 +10,7 @@
 @use './utils/_secondary_btn';
 @use './utils/input_serach';
 @use './utils/data_empty';
+@use './utils/popover';
 //@use "./utils/_explore_btn";
 @use './normalize';
 @use './permission';
@@ -102,6 +103,12 @@
 /*</editor-fold>*/
 /*<editor-fold desc="ProjectZoneForm">*/
 @use './ProjectZoneForm/project_zone_form';
+/*</editor-fold>*/
+/*<editor-fold desc="zonedialog">*/
+@use './ProjectZoneForm/add_zone_dialog';
+/*</editor-fold>*/
+/*<editor-fold desc="ModernTable">*/
+@use './ModernTable/table_imports';
 /*</editor-fold>*/
 
 html {
