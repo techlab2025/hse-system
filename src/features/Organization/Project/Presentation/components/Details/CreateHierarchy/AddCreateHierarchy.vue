@@ -5,15 +5,15 @@ import HeaderPage from '../DetailsHeader/HeaderPage.vue'
 import CreateHierarchyForm from './CreateHierarchyForm.vue'
 import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
-import IndexProjectLocationParams from '@/features/Organization/Project/Core/params/Hierarchy/ProjectLocations/indexProjectLocationParams'
 import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
+import IndexLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/LocationHierarchy/indexLocationHierarchiesParams'
 
 const route = useRoute()
 const indexLocationHierarchyController = IndexLocationHierarchyController.getInstance()
 const state = ref(indexLocationHierarchyController.state.value)
 
 const fetchProjectLocation = async () => {
-  const indexProjectLocationParams = new IndexProjectLocationParams(+route.params.project_id)
+  const indexProjectLocationParams = new IndexLocationHierarchyParams(+route.params.project_id)
 
   indexLocationHierarchyController.getData(indexProjectLocationParams)
 }
