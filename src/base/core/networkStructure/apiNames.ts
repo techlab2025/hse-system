@@ -69,6 +69,8 @@ class ApiNames {
   public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
 
 
+  public IndexProjectLocationHierarchy = this.prefix + 'fetch_project_location'
+
   // admin
   public CreateAdmin = this.prefix + 'create_admin'
   public IndexAdmin = this.prefix + 'fetch_admins'
