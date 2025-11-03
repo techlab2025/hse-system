@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -58,17 +58,12 @@ class ApiNames {
   public EditAdmin = this.prefix + 'update_admin'
   public DeleteAdmin = this.prefix + 'delete_admin'
 
-
-
-
   // Permission
   // public CreatePermission = this.prefix + 'create_permissions'
   public IndexPermission = this.prefix + 'fetch_permissions'
   public ShowPermission = this.prefix + 'show_permissions'
   public EditPermission = this.prefix + 'create_permissions'
   public DeletePermission = this.prefix + 'delete_permission'
-
-
 
   // OrganizationLocation
 
@@ -409,11 +404,11 @@ class ApiNames {
   // public DisHerikaly =this.prefix + 'disable_project_type'
 
   // ProjectZone
-  public CreateProjectZone = this.prefix + 'create_project_zone'
-  public IndexProjectZone = this.prefix + 'fetch_project_zones'
-  public ShowProjectZone = this.prefix + 'fetch_project_zone_details'
-  public EditProjectZone = this.prefix + 'update_project_zone'
-  public DeleteProjectZone = this.prefix + 'delete_project_zone'
+  public CreateProjectZone = this.prefix + 'create_zoon'
+  public IndexProjectZone = this.prefix + 'fetch_zoons'
+  public ShowProjectZone = this.prefix + 'fetch_zoon_details'
+  public EditProjectZone = this.prefix + 'update_zoon'
+  public DeleteProjectZone = this.prefix + 'delete_zoon'
 
   // ProjectZone
   public CreateTemplateItem = this.prefix + 'create_template_item'

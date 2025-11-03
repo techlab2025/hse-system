@@ -32,9 +32,9 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: ProjectDetailsModel
 }>()
-const EvaluatingMethod = ref<TitleInterface | null>(null)
+const EvaluatingMethod = ref<TitleInterface[] | null>([])
 
-const partner_id = ref<TitleInterface | null>(null)
+const partner_id = ref<TitleInterface[] | null>(null)
 const location = ref<TitleInterface[]>([])
 
 const indexPartnerController = IndexPartnerController.getInstance()
@@ -50,7 +50,7 @@ const indexPartnerParams = new IndexPartnerParams(
   // id.value?? '',
 )
 
-const setPartnerId = (data: TitleInterface | null) => {
+const setPartnerId = (data: TitleInterface[] | null) => {
   partner_id.value = data
   updateData()
 }
@@ -58,7 +58,6 @@ const setPartnerId = (data: TitleInterface | null) => {
 const organization_location_ids = ref<TitleInterface[]>([])
 
 const indexOrganizationLocationController = IndexOrganizationLocationController.getInstance()
-
 const indexOrganizationLocationParams = new IndexOrganizationLocationParams(
   '',
   0,
@@ -120,6 +119,14 @@ const fetchLang = async (
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
 
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+
+
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
@@ -156,7 +163,7 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-
+const date = ref()
 // ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -169,25 +176,36 @@ const updateData = () => {
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.description)
   })
-  // descriptions
-  // langsDescription.value.forEach((lang) => {
-  //   translationsParams.setTranslation('description', lang.locale, lang.title)
-  // })
 
+
+  // console.log({
+  //   partner_id: partner_id.value?.map((p) => p.id),
+  //   date: date.value,
+  //   SerialNumber: SerialNumber.value?.SerialNumber,
+  //   locations: location.value.map((l) => l.id),
+  //   ZoneIds: ZoneIds.value.map((z) => z),
+  //   EvaluatingMethod: EvaluatingMethod.value?.map((p) => p.id)
+  // }, "data");
   const params = props.data?.id
     ? new EditProjectParams(
       props.data.id,
       translationsParams,
-      partner_id.value?.id,
-      organization_location_ids.value,
+      partner_id.value?.map((p) => p.id),
+      date.value,
+      location.value.map((l) => l.id),
+      ZoneIds.value.map((z) => z),
+      EvaluatingMethod.value?.id
     )
     : new AddProjectParams(
       translationsParams,
-      partner_id.value?.id,
-      organization_location_ids.value,
+      partner_id.value?.map((p) => p.id),
+      date.value,
+      SerialNumber.value?.SerialNumber,
+      location.value.map((l) => l.id),
+      ZoneIds.value.map((z) => z),
+      EvaluatingMethod.value?.map((p) => p.id)
     )
 
-  // console.log(params, 'params')
 
   emit('update:data', params)
 }
@@ -221,9 +239,6 @@ watch(
         }))
       }
 
-      partner_id.value = newData?.partner
-
-      organization_location_ids.value = newData?.organizationLocation
 
       updateData()
     }
@@ -246,9 +261,33 @@ const fields = ref([
 
 const setLocations = (data: TitleInterface[]) => {
   location.value = data
+  updateData()
 }
-const setEvaluatingMethod = (data: TitleInterface) => {
+const setEvaluatingMethod = (data: TitleInterface[]) => {
   EvaluatingMethod.value = data
+
+  updateData()
+}
+
+const ZoneIds = ref<number[]>([])
+const UpdateZones = (data: { locationId: number; locationName: string; zones: { id: number; title: string }[] }[]) => {
+  ZoneIds.value = []
+  data.forEach(item => {
+    item.zones.forEach(z => ZoneIds.value.push(z.id))
+  })
+  console.log(ZoneIds.value, "ZoneIds.value");
+  updateData()
+}
+
+const SerialNumber = ref()
+const UpdateSerial = (data) => {
+  console.log(data, "serial");
+  SerialNumber.value = data
+  updateData()
+}
+const UpdateDate = (date) => {
+  date.value = date
+  updateData()
 }
 </script>
 
@@ -260,13 +299,13 @@ const setEvaluatingMethod = (data: TitleInterface) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <SwitchInput :fields="fields" :switch_title="'Auto'" @update:value="console.log($event)" />
+    <SwitchInput :fields="fields" :switch_title="'Auto'" :switch_reverse="true" @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
       {{ $t('Start Date') }}
     </label>
-    <DatePicker v-model="date" id="date" :placeholder="`select the date`" />
+    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
@@ -278,12 +317,12 @@ const setEvaluatingMethod = (data: TitleInterface) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="">Zones</label>
-    <AddZoneDialog :locations="location"  />
+    <AddZoneDialog :locations="location" @update:data="UpdateZones" />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
       :controller="indexLocationController" :params="indexLocationParams"
-      :label="$t('the method of evaluating employee performance')"
+      :label="$t('the method of evaluating employee performance')" :type="2"
       :placeholder="$t('choose your method of evaluating employee performance')" />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">

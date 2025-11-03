@@ -141,13 +141,7 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchProjectZone())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchProjectZone"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchProjectZone" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
@@ -160,16 +154,14 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.PROJECT_ZONE_ALL,
-      PermissionsEnum.PROJECT_ZONE_DELETE,
-      PermissionsEnum.PROJECT_ZONE_FETCH,
-      PermissionsEnum.PROJECT_ZONE_UPDATE,
-      PermissionsEnum.PROJECT_ZONE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.PROJECT_ZONE_ALL,
+    PermissionsEnum.PROJECT_ZONE_DELETE,
+    PermissionsEnum.PROJECT_ZONE_FETCH,
+    PermissionsEnum.PROJECT_ZONE_UPDATE,
+    PermissionsEnum.PROJECT_ZONE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -206,20 +198,13 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
                 </td> -->
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteProjectZone)"
-                    @delete="deleteProjectZone(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteProjectZone)" @delete="deleteProjectZone(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -228,28 +213,20 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/about-us-features/add`"
-          addText="Add ProjectZone"
+        <DataEmpty :link="`/admin/about-us-features/add`" addText="Add ProjectZone"
           description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectZone"
-        />
+          title="..ops! You have No ProjectZone" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/about-us-features/add`"
-          addText="Add ProjectZone"
+        <DataFailed :link="`/admin/about-us-features/add`" addText="Add ProjectZone"
           description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectZone"
-        />
+          title="..ops! You have No ProjectZone" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
