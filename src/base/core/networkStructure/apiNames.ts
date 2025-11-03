@@ -62,14 +62,11 @@ class ApiNames {
 
   // HierarchyEmployee
 
-  public CreateHierarchyEmployee = this.prefix + 'create_hierarchy_employee'
-  public IndexHierarchyEmployee = this.prefix + 'fetch_hierarchy_employees'
+  public CreateHierarchyEmployee = this.prefix + 'create_project_location_hierarchy_employee'
+  public IndexHierarchyEmployee = this.prefix + 'fetch_project_location_hierarchy_employees'
   public ShowHierarchyEmployee = this.prefix + 'fetch_hierarchy_employee_details'
   public EditHierarchyEmployee = this.prefix + 'update_hierarchy_employee'
   public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
-
-  // project location
-  public IndexProjectLocation = this.prefix + 'fetch_project_locations'
 
 
   // admin
