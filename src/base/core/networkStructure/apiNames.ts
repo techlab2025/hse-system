@@ -51,13 +51,20 @@ class ApiNames {
   public DeletePartner = this.prefix + 'delete_partner'
 
   // admin
-
   public CreateAdmin = this.prefix + 'create_admin'
   public IndexAdmin = this.prefix + 'fetch_admins'
   public ShowAdmin = this.prefix + 'fetch_admin_details'
   public EditAdmin = this.prefix + 'update_admin'
   public DeleteAdmin = this.prefix + 'delete_admin'
 
+
+  // methods
+
+  public CreateMethod = this.prefix + 'create_method'
+  public IndexMethod = this.prefix + 'fetch_methods'
+  public ShowMethod = this.prefix + 'fetch_method_details'
+  public EditMethod = this.prefix + 'update_method'
+  public DeleteMethod = this.prefix + 'delete_method'
 
 
 

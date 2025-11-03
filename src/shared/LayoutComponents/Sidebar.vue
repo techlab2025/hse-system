@@ -1113,6 +1113,22 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.PROJECT_ZONE_ALL,
+                      PermissionsEnum.PROJECT_ZONE_CREATE,
+                      PermissionsEnum.PROJECT_ZONE_DELETE,
+                      PermissionsEnum.PROJECT_ZONE_FETCH,
+                      PermissionsEnum.PROJECT_ZONE_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/methods">
+                        <SidebarVector />
+                        <span>{{ $t('methods') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
                 </ul>
               </AccordionContent>
             </AccordionPanel>
