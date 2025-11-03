@@ -1,33 +1,22 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-// import TitleInterface from '@/base/Data/Models/title_in
-// terface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-// import DatePicker from 'primevue/datepicker'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-// import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-// import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-// import { useRoute } from 'vue-router'
-
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import EditProjectZoneParams from '../../Core/params/editProjectZoneParams'
 import AddProjectZoneParams from '../../Core/params/addProjectZoneParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
-import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
-import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
-import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
-import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
 import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsModel'
-
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
+import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -35,29 +24,12 @@ const props = defineProps<{
   data?: ProjectZoneDetailsModel
 }>()
 
-const OrganizationProjectController = IndexProjectController.getInstance()
-const OrganizationProjectParams = new IndexProjectParams('', 0, 0, 0)
 
-const OrganizationLocationController = IndexOrganizationLocationController.getInstance()
-const OrganizationLocationParams = new IndexOrganizationLocationParams('', 0, 0, 0)
 
-const route = useRoute()
-// const route = useRoute()
-const ParentId = route.params.parent_id
 
-// actual translations (values)
+const SelectedLocation = ref<TitleInterface>()
 const langs = ref<{ locale: string; title: string }[]>([])
-
-const langsSub = ref<{ locale: string; title: string }[]>([])
-// const langsDescription = ref<{ locale: string; title: string }[]>([])
-
-// const allIndustries = ref<boolean>(false)
-// const hasCertificate = ref<number>(0)
-const image = ref<string>('')
-
-// default available ProjectZones
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
 const user = useUserStore()
 
 const fetchLang = async (
@@ -66,7 +38,6 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  console.log(user.user, 'user')
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
@@ -107,45 +78,27 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditProjectZoneParams(
-        props?.data?.id,
-        translationsParams,
-        SelectedProject.value?.id,
-        Lat.value,
-        Long.value,
-        SelectedLocation.value?.id,
-      )
-    : new AddProjectZoneParams(
-        translationsParams,
-        SelectedProject.value?.id,
-        Lat.value,
-        Long.value,
-        SelectedLocation.value?.id,
-      )
+      props?.data?.id,
+      translationsParams,
+      SelectedLocation.value?.id,
 
-  // console.log(params, 'params')
+    )
+    : new AddProjectZoneParams(
+      translationsParams,
+      SelectedArea.value?.id,
+      // SelectedArea.value?.id,
+
+
+    )
+
   emit('update:data', params)
 }
 
-// when child emits modelValue (updated translations)
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
 
-const Lat = ref('')
-const Long = ref('')
-const SelectedProject = ref<TitleInterface>()
-const SelectedLocation = ref<TitleInterface>()
-
-const setProject = (data: TitleInterface) => {
-  SelectedProject.value = data
-  updateData()
-}
-
-const setLocation = (data: TitleInterface) => {
-  SelectedLocation.value = data
-  updateData()
-}
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -160,60 +113,102 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
     }
-    Lat.value = newData?.lat || ''
-    Long.value = newData?.lng || ''
-
-    SelectedLocation.value = newData?.organizationLocation
-    SelectedProject.value = newData?.project
+    SelectedLocation.value = newData?.location
   },
   { immediate: true },
 )
+
+
+
+
+
+const indexLocationCountriesController = IndexLocationController.getInstance()
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+
+const indexLocationStatesController = IndexLocationController.getInstance()
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationCityController = IndexLocationController.getInstance()
+const indexLocationCityParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationAreasController = IndexLocationController.getInstance()
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
+
+
+
+const SelectedCountry = ref<TitleInterface>()
+const SetCountrySelection = (data: TitleInterface) => {
+  SelectedCountry.value = data
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    data.id,
+  )
+  updateData()
+}
+
+const SelectedState = ref<TitleInterface>()
+const SetStateSelection = (data: TitleInterface) => {
+  SelectedState.value = data
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
+  updateData()
+}
+
+const SelectedCity = ref<TitleInterface>()
+const SetCitySelection = (data: TitleInterface) => {
+  SelectedCity.value = data
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, data.id)
+  updateData()
+}
+
+const SelectedArea = ref<TitleInterface>()
+const SetAreaSelection = (data: TitleInterface) => {
+  SelectedArea.value = data
+  console.log(SelectedArea, "SelectedArea");
+  updateData()
+}
+
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="$t('title')"
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
+      @update:modelValue="setLangs" />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="lat">Lat</label>
-    <input type="number" id="lat" v-model="Lat" class="input" step="any" @change="updateData" />
-  </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="long">long</label>
-    <input type="number" id="long" v-model="Long" class="input" step="any" @change="updateData" />
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      @update:modelValue="SetCountrySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :controller="OrganizationProjectController"
-      :params="OrganizationProjectParams"
-      :modelValue="SelectedProject"
-      label="Project"
-      id="project"
-      placeholder="Select Project"
-      @update:modelValue="setProject"
-    />
+    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      @update:modelValue="SetCitySelection" />
   </div>
 
+
   <div class="col-span-4 md:col-span-2">
-    <!--    :controller="industryController"
-      :params="industryParams" -->
-    <CustomSelectInput
-      :controller="OrganizationLocationController"
-      :params="OrganizationLocationParams"
-      :modelValue="SelectedLocation"
-      label="Location"
-      id="Location"
-      placeholder="Select Location"
-      @update:modelValue="setLocation"
-    />
+    <CustomSelectInput :modelValue="SelectedArea" :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
+      @update:modelValue="SetAreaSelection" />
   </div>
+
+  <!-- <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :controller="indexLocationController" :params="indexLocationParams"
+      :modelValue="SelectedLocation" label="Location" id="location" placeholder="Select Location"
+      @update:modelValue="setLocation" />
+  </div> -->
+
+
 </template>

@@ -9,7 +9,7 @@ export default class ShowProjectZoneParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['project_zone_id'] = this.id
+    data['zoon_id'] = this.id
     return data
   }
 }

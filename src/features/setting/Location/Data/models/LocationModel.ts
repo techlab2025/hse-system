@@ -5,7 +5,7 @@ export default class LocationDetailsModel extends TitleInterface {
   public id: number
   public title: string
   public code: string
-  public parent: TitleInterface | null
+  public parent: LocationDetailsModel | null
   public type: number
   public status: number
   public image: string
@@ -14,7 +14,7 @@ export default class LocationDetailsModel extends TitleInterface {
     id: number,
     title: string,
     code: string,
-    parent: TitleInterface | null,
+    parent: LocationDetailsModel | null,
     type: number,
     status: number,
     image: string,

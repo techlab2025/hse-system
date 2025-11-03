@@ -6,13 +6,20 @@ const emit = defineEmits(['update:value'])
 const props = defineProps<{
   fields: { key: string, label: string, placeholder: string, value: string, enabled: boolean }[]
   switch_title?: string
+  switch_reverse?: boolean
 }>()
 
 
 watch(props.fields, (newVal) => {
   const payload: Record<string, string> = {}
   newVal.forEach(field => {
-    payload[field.key] = field.enabled ? field.value : ''
+    if (props.switch_reverse) {
+
+      payload[field.key] = field.enabled ? '' : field.value
+    }
+    else {
+      payload[field.key] = field.enabled ? field.value : ''
+    }
   })
   emit('update:value', payload)
 }, { deep: true })
@@ -29,7 +36,7 @@ watch(props.fields, (newVal) => {
         </div>
       </div>
       <input :id="field.key" v-model="field.value" type="text" :placeholder="field.placeholder"
-        :disabled="!field.enabled" />
+        :disabled="switch_reverse ? field.enabled : !field.enabled" />
     </div>
   </div>
 </template>

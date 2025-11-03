@@ -51,6 +51,7 @@
     font-size: calc($XlSize + 2px);
     font-weight: $BaseFontWeightBold;
     z-index: 999;
+    text-transform: capitalize;
   }
 
   .subtitle {

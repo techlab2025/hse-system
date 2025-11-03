@@ -6,7 +6,6 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 import wordSlice from '@/base/Presentation/utils/word_slice'
@@ -26,14 +25,21 @@ import IndexProjectController from '../controllers/indexProjectController'
 import IndexProjectParams from '../../Core/params/indexProjectParams'
 import DeleteProjectParams from '../../Core/params/deleteProjectParams'
 import DeleteProjectController from '../controllers/deleteProjectController'
-// import MainWidgetDialog from './Widget/MainWidgetDialog.vue'
+import DropIcon from '@/shared/icons/DropIcon.vue'
+import Popover from 'primevue/popover';
+import TablePopover from '@/shared/FormInputs/TablePopover.vue'
 
+const op = ref();
+// const members = ref([
+//     { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
+//     { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
+//     { name: 'Ioni Bowcher', image: 'ionibowcher.png', email: 'ioni@email.com', role: 'Viewer' }
+// ]);
 
-
+const toggle = (event) => {
+  op.value.toggle(event);
+}
 const { t } = useI18n()
-
-// import DialogChangeStatusProject from "@/features/setting/Projectuages/Presentation/components/Project/DialogChangeStatusProject.vue";
-// const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
@@ -41,10 +47,6 @@ const countPerPage = ref(10)
 const indexProjectController = IndexProjectController.getInstance()
 const state = ref(indexProjectController.state.value)
 const route = useRoute()
-
-// const id = ref(route.params.parent_id)
-
-// const type = ref<ProjectStatusEnum>(ProjectStatusEnum[route.params.type as keyof typeof ProjectStatusEnum])
 
 const fetchProject = async (
   query: string = '',
@@ -57,7 +59,6 @@ const fetchProject = async (
     pageNumber,
     perPage,
     withPage,
-    // id.value?? '',
   )
   await indexProjectController.getData(deleteProjectParams)
 }
@@ -81,7 +82,6 @@ const handleChangePage = (page: number) => {
   fetchProject('', currentPage.value, countPerPage.value)
 }
 
-// Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
   fetchProject('', currentPage.value, countPerPage.value)
@@ -111,7 +111,6 @@ const actionList = (id: number, deleteProject: (id: number) => void) => [
       PermissionsEnum.PROJECT_ALL,
     ],
   },
-
   {
     text: t('delete'),
     icon: IconDelete,
@@ -127,17 +126,92 @@ const actionList = (id: number, deleteProject: (id: number) => void) => [
 watch(
   () => route?.params?.id,
   (Newvalue) => {
-    // id = Newvalue
     fetchProject()
   },
 )
+
+// const Data = ref([
+//   {
+//     id: 1,
+//     title: 'Smart City Project',
+//     created_at: '2025-11-01',
+//     contractors: [
+//       { name: 'BuildCorp' },
+//       { name: 'TechInfra' },
+//       { name: 'GreenSpace' },
+//       { name: 'SkyBuild' },
+//     ],
+//     locations: [
+//       { name: 'Downtown' },
+//       { name: 'North Zone' },
+//       { name: 'Industrial Area' },
+//     ],
+//     supervisors: [
+//       { name: 'Ali Hassan', avatar: '/avatars/ali.png' },
+//       { name: 'Sara Mahmoud', avatar: '/avatars/sara.png' },
+//       { name: 'Omar Khaled', avatar: '/avatars/omar.png' },
+//       { name: 'Nour Ibrahim', avatar: '/avatars/nour.png' },
+//     ],
+//     teams: [
+//       { name: 'Electrical Team' },
+//       { name: 'Civil Team' },
+//       { name: 'Safety Team' },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     title: 'Metro Line Extension',
+//     created_at: '2025-10-22',
+//     contractors: [
+//       { name: 'MegaBuild' },
+//       { name: 'CityWorks' },
+//     ],
+//     locations: [
+//       { name: 'South District' },
+//       { name: 'Tunnel Area' },
+//     ],
+//     supervisors: [
+//       { name: 'Mohamed Salah', avatar: '/avatars/mohamed.png' },
+//       { name: 'Laila Ahmed', avatar: '/avatars/laila.png' },
+//     ],
+//     teams: [
+//       { name: 'Drilling Team' },
+//       { name: 'Inspection Team' },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     title: 'Airport Renovation',
+//     created_at: '2025-09-10',
+//     contractors: [
+//       { name: 'AeroBuild' },
+//     ],
+//     locations: [
+//       { name: 'Terminal 1' },
+//       { name: 'Runway Section' },
+//       { name: 'Cargo Zone' },
+//       { name: 'Parking Area' },
+//     ],
+//     supervisors: [
+//       { name: 'Rana Saeed', avatar: '/avatars/rana.png' },
+//       { name: 'Youssef Adel', avatar: '/avatars/youssef.png' },
+//       { name: 'Tarek Hassan', avatar: '/avatars/tarek.png' },
+//       { name: 'Aya Nabil', avatar: '/avatars/aya.png' },
+//       { name: 'Ahmed Fathy', avatar: '/avatars/ahmed.png' },
+//     ],
+//     teams: [
+//       { name: 'Maintenance Team' },
+//       { name: 'Security Team' },
+//       { name: 'Lighting Team' },
+//     ],
+//   },
+// ])
+
 </script>
 
 <template>
-
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchProject())">
         <Search />
       </span>
@@ -164,38 +238,60 @@ watch(
   ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
+        <div class="modern-table-responsive">
           <table class="main-table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-
-                <th scope="col">{{ $t('partner') }}</th>
-                <th scope="col">{{ $t('status') }}</th>
-
+                <th scope="col" class="w-20">
+                  <input type="checkbox" class="checkbox-input" />
+                </th>
+                <th scope="col">{{ $t('serial') }}</th>
+                <th scope="col">{{ $t('project_name') }}</th>
+                <th scope="col">{{ $t('contractors') }}</th>
+                <th scope="col">{{ $t('locations') }}</th>
+                <!-- <th scope="col">{{ $t('supervisors') }}</th> -->
+                <!-- <th scope="col">{{ $t('teams') }}</th> -->
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/project/${item.id}`">{{ index + 1 }}
+                <td data-label="Select">
+                  <input type="checkbox" class="checkbox-input" />
+                </td>
+                <td data-label="Serial">
+                  <router-link :to="`/organization/project/${item.id}`" class="serial-number">
+                    #{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-
-                <td data-label="partner">
+                <td data-label="Project Name">
+                  <div class="project-info">
+                    <div class="project-date">{{ item.start_date || '--' }}</div>
+                    <div class="project-title">{{ wordSlice(item.title) }}</div>
+                  </div>
+                </td>
+                <td data-label="Contractors">
+                  <!-- <div class="tag-container">
+                    <TablePopover :data="item.partner" />
+                  </div> -->
                   {{ item.partner?.title }}
                 </td>
-
+                <td data-label="Locations">
+                  <div class="tag-container">
+                    <TablePopover :data="item.locations" />
+                  </div>
+                </td>
+                <!-- <td data-label="Supervisors"> -->
+                  <!-- <div class="avatar-group">
+                    <TablePopover :data_img="item." />
+                  </div> -->
+                <!-- </td> -->
+                <!-- <td data-label="Teams"> -->
+                  <!-- <div class="tag-container">
+                    <TablePopover :data="item.teams" />
+                  </div> -->
+                <!-- </td> -->
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusProject-->
-                  <!--                  v-if="item.ProjectStatus === ProjectStatusEnum.Draft"-->
-                  <!--                  :ProjectId="item.id"-->
-                  <!--                  @ProjectChangeStatus="fetchProject"-->
-                  <!--                />-->
-
                   <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
                 </td>
               </tr>
@@ -205,10 +301,10 @@ watch(
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="8" :rows="10" />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="8" :rows="10" />
       </template>
       <template #empty>
         <DataEmpty :link="`/organization/project/add`" addText="Add Project"
@@ -223,10 +319,8 @@ watch(
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
+      <DataFailed addText="Have not Permission"
         description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
-
-<style scoped></style>

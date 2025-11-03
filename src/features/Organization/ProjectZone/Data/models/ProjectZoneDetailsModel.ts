@@ -8,7 +8,7 @@ export default class ProjectZoneDetailsModel {
   public id: number
   public titles: string[]
   public project: ProjectModel
-  public organizationLocation: OrganizationLocationModel
+  public location: OrganizationLocationModel
   public lat: string
   public lng: string
 
@@ -16,14 +16,14 @@ export default class ProjectZoneDetailsModel {
     id: number,
     titles: string[],
     project: ProjectModel,
-    organizationLocation: OrganizationLocationModel,
+    location: OrganizationLocationModel,
     lat: string,
     lng: string,
   ) {
     this.id = id
     this.titles = titles
     this.project = project
-    this.organizationLocation = organizationLocation
+    this.location = location
     this.lat = lat
     this.lng = lng
   }
@@ -33,7 +33,7 @@ export default class ProjectZoneDetailsModel {
       data.id,
       data.titles,
       data?.project ? this.getTitle(data.project) : null,
-      data?.organization_location ? this.getTitle(data.organization_location) : null,
+      data?.location ? this.getTitle(data.location) : null,
       data.lat,
       data.lng,
     )
@@ -41,8 +41,6 @@ export default class ProjectZoneDetailsModel {
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-
-
 
     if (!data.id) return null
     return new TitleInterface({
