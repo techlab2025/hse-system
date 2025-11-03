@@ -226,7 +226,7 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/methods`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
           addText="Add Methods"
           description="Sorry .. You have no Methods .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Methods"
@@ -234,7 +234,7 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/methods`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
           addText="Add Methods"
           description="Sorry .. You have no Methods .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Methods"

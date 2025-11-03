@@ -67,6 +67,14 @@ class ApiNames {
   public DeleteMethod = this.prefix + 'delete_method'
 
 
+  // team
+
+  public CreateTeam = this.prefix + 'create_team'
+  public IndexTeam = this.prefix + 'fetch_teams'
+  public ShowTeam = this.prefix + 'fetch_team_details'
+  public EditTeam = this.prefix + 'update_team'
+  public DeleteTeam = this.prefix + 'delete_team'
+
 
   // Permission
   // public CreatePermission = this.prefix + 'create_permissions'
