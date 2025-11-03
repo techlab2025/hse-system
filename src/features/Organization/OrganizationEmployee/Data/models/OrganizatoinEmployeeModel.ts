@@ -9,13 +9,14 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public image: null
   constructor(
     id: number,
+    title: string,
     name: string,
     phone: string,
     email: string,
     is_master: number,
     image: null,
   ) {
-    super({ id })
+    super({ id, title })
 
     this.id = id
     this.name = name
@@ -28,6 +29,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   static fromMap(data: any): OrganizatoinEmployeeModel {
     return new OrganizatoinEmployeeModel(
       data.id,
+      data.name,
       data.name,
       data.phone,
       data.email,
