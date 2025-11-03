@@ -5,22 +5,22 @@ import HeaderPage from '../DetailsHeader/HeaderPage.vue'
 import CreateEmployeeForm from './CreateEmployeeForm.vue'
 import Person from '@/shared/icons/person.vue'
 import ArtLine from '@/shared/icons/artLine.vue'
-import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
 import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
 import { watch, ref } from 'vue'
 import IndexLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeParams'
+import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeController'
 
 const route = useRoute()
 
-const indexLocationHierarchyController = IndexLocationHierarchyController.getInstance()
+const indexLocationHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
 
-const state = ref(indexLocationHierarchyController.state.value)
+const state = ref(indexLocationHierarchyEmployeeController.state.value)
 
 const fetchLocationHierarchy = async () => {
   const indexLocationHierarchyParams = new IndexLocationHierarchyParams(+route.params.project_id)
 
-  indexLocationHierarchyController.getData(indexLocationHierarchyParams)
+  indexLocationHierarchyEmployeeController.getData(indexLocationHierarchyParams)
 }
 
 onMounted(() => {
@@ -28,7 +28,7 @@ onMounted(() => {
 })
 
 watch(
-  () => indexLocationHierarchyController.state.value,
+  () => indexLocationHierarchyEmployeeController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
