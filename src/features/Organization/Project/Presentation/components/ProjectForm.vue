@@ -29,6 +29,7 @@ import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
 import IndexMethodsController from '@/features/setting/Methods/Presentation/controllers/indexMethodsController'
 import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMethodsParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
+import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
 
 const emit = defineEmits(['update:data'])
 
@@ -180,9 +181,10 @@ const updateData = () => {
       translationsParams,
       partner_id.value?.id,
       date.value,
+      SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
       ZoneIds.value.map((z) => z),
-      EvaluatingMethod.value?.id
+      EvaluatingMethod.value?.map((p) => p.id)
     )
     : new AddProjectParams(
       translationsParams,
@@ -228,16 +230,54 @@ watch(
       SerialNumber.value = newData?.SerialNumber;
       date.value = newData?.startDate;
       partner_id.value = newData?.partner;
-      SelectedCountry.value = newData?.locations[0];
+      fields.value[0].value = SerialNumber.value
+
+      SelectedCountry.value = newData?.country ?? [];
+      indexLocationStatesParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.STATE,
+        null,
+        SelectedCountry.value.map((c) => c.id),
+      )
+      SelectedState.value = newData?.state ?? [];
+      indexLocationCityParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.CITY,
+        null,
+        SelectedState.value.map((c) => c.id),
+      )
+      SelectedCity.value = newData?.city ?? [];
+      indexLocationAreasParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.AREA,
+        null,
+        SelectedCity.value.map((c) => c.id),
+      )
+      location.value = newData?.area ?? [];
+      EvaluatingMethod.value = newData?.methods ?? [];
+
+      SelectedZones.value = newData?.Zones ?? [];
+      console.log(newData, "newdata");
+
 
       updateData()
     }
   },
   { immediate: true },
 )
+const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: props.data?.SerialNumber, enabled: false },
+  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: false },
 ])
 
 const setLocations = (data: TitleInterface[]) => {
@@ -251,6 +291,7 @@ const setEvaluatingMethod = (data: TitleInterface[]) => {
 }
 
 const ZoneIds = ref<number[]>([])
+const SelectedZones = ref<ProjectLocationZonesModel[]>([])
 const UpdateZones = (data: { locationId: number; locationName: string; zones: { id: number; title: string }[] }[]) => {
   ZoneIds.value = []
   data.forEach(item => {
@@ -259,7 +300,6 @@ const UpdateZones = (data: { locationId: number; locationName: string; zones: { 
   updateData()
 }
 
-const SerialNumber = ref()
 const UpdateSerial = (data) => {
   SerialNumber.value = data
   updateData()
@@ -286,8 +326,8 @@ const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
 
 
 
-const SelectedCountry = ref<TitleInterface>()
-const SetCountrySelection = (data: TitleInterface) => {
+const SelectedCountry = ref<TitleInterface[]>()
+const SetCountrySelection = (data: TitleInterface[]) => {
   SelectedCountry.value = data
   indexLocationStatesParams.value = new IndexLocationParams(
     '',
@@ -295,22 +335,23 @@ const SetCountrySelection = (data: TitleInterface) => {
     0,
     0,
     LocationEnum.STATE,
-    data.id,
+    null,
+    data.map((c) => c.id),
   )
   updateData()
 }
 
-const SelectedState = ref<TitleInterface>()
-const SetStateSelection = (data: TitleInterface) => {
+const SelectedState = ref<TitleInterface[]>()
+const SetStateSelection = (data: TitleInterface[]) => {
   SelectedState.value = data
-  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, data.map((c) => c.id))
   updateData()
 }
 
-const SelectedCity = ref<TitleInterface>()
-const SetCitySelection = (data: TitleInterface) => {
+const SelectedCity = ref<TitleInterface[]>()
+const SetCitySelection = (data: TitleInterface[]) => {
   SelectedCity.value = data
-  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, data.id)
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, data.map((c) => c.id))
   updateData()
 }
 
@@ -359,35 +400,29 @@ watch(() => langsDescription.value,
   </div>
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
       @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
-      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City" :type="2"
       @update:modelValue="SetCitySelection" />
   </div>
-
-
-  <!-- <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedArea" :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
-      @update:modelValue="SetAreaSelection" />
-  </div> -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('location')"
       :placeholder="$t('location')" :type="2" />
   </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="">Zones</label>
-    <AddZoneDialog :locations="location" @update:data="UpdateZones" />
+    <AddZoneDialog :locations="location" @update:data="UpdateZones"  />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"

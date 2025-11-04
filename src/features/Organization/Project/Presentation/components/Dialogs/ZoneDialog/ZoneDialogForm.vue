@@ -79,6 +79,7 @@ onMounted(() => {
     })
   }
 })
+
 </script>
 
 <template>
@@ -91,14 +92,17 @@ onMounted(() => {
       </div>
 
       <div class="zone-content-container">
-        <div v-for="zone in (AllZones.find((z) => z.id === location.id)?.zoons || [])" :key="zone.id"
+        <div v-for="zone in (AllZones.find((z) => z.location.id === location.id)?.zoons || [])" :key="zone.id"
           class="zone-content" :class="{ active: SelectedZone[location.id]?.includes(zone.id) }">
+
           <label :for="`${location.id}-${zone.id}`" class="zone-title">
             {{ zone.title }}
           </label>
+          
           <input type="checkbox" :id="`${location.id}-${zone.id}`" :value="zone.id"
             v-model="SelectedZone[location.id]" />
         </div>
+
       </div>
     </div>
 

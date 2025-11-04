@@ -1,22 +1,20 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type ZoonModel from './ZoonModel'
 // import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
-export default class ProjectLocationZonesModel {
-  public location: TitleInterface
-  public zoons: ZoonModel[]
+export default class ZoonModel {
+  public id: number
+  public title: string
+  public location: location
 
-  constructor(location: TitleInterface, zoons: ZoonModel[]) {
+  constructor(id: number, title: string, location: location) {
+    this.id = id
+    this.title = title
     this.location = location
-    this.zoons = zoons
   }
 
-  static fromMap(data: any): ProjectLocationZonesModel {
-    return new ProjectLocationZonesModel(
-      this.getTitle(data),
-      data.zoons,
-    )
+  static fromMap(data: any): ZoonModel {
+    return new ZoonModel(data.id, data.title, data.location)
   }
 
   static getTitle(data: any) {
@@ -31,11 +29,6 @@ export default class ProjectLocationZonesModel {
   }
 }
 
-interface Zoons {
-  id: number
-  title: string
-  location: location
-}
 
 interface location {
   id: number
