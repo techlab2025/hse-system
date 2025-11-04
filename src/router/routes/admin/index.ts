@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from '@/router/types'
 import { languageRoutes } from './language'
 import { industryRoutes } from './industry'
-import { locationRoutes } from './location'
+// import { locationRoutes } from './location'
 import { websiteRoutes } from './website'
 import { projectTypesRoutes } from './projectTypes'
 import { adminsRoutes } from './admins'
@@ -15,7 +15,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   },
   ...languageRoutes,
   ...industryRoutes,
-  ...locationRoutes,
+  // ...locationRoutes,
   ...websiteRoutes,
   ...projectTypesRoutes,
   ...adminsRoutes,

@@ -941,7 +941,7 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
-                  <!-- organization-locations -->
+                  <!-- organization-locations 
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_LOCATION_ALL,
@@ -958,6 +958,7 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  -->
                   <!-- projects -->
                   <PermissionBuilder
                     :code="[
@@ -1179,6 +1180,92 @@ const user = useUserStore()
                         <span>{{ $t('team') }}</span>
                       </router-link>
                     </li>
+                  </PermissionBuilder>
+
+                  <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
+                    <Accordion value="1">
+                      <AccordionPanel value="1">
+                        <AccordionHeader>
+                          <div class="links-header">
+                            <IconSetting />
+                            {{ $t('location') }}
+                          </div>
+                        </AccordionHeader>
+                        <AccordionContent
+                          ><ul>
+                            <PermissionBuilder
+                              :code="[
+                                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                                PermissionsEnum?.LOCATION_ORG_ALL,
+                                PermissionsEnum.LOCATION_ORG_CREATE,
+                                PermissionsEnum.LOCATION_ORG_UPDATE,
+                                PermissionsEnum.LOCATION_ORG_DETAILS,
+                                PermissionsEnum.LOCATION_ORG_DELETE,
+                                PermissionsEnum.LOCATION_ORG_FETCH,
+                              ]"
+                            >
+                              <li>
+                                <router-link to="/organization/countries">
+                                  <SidebarVector />
+                                  <span>{{ $t('country') }}</span>
+                                </router-link>
+                              </li>
+                            </PermissionBuilder>
+                            <PermissionBuilder
+                              :code="[
+                                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                                PermissionsEnum.LOCATION_ORG_ALL,
+                                PermissionsEnum.LOCATION_ORG_CREATE,
+                                PermissionsEnum.LOCATION_ORG_DELETE,
+                                PermissionsEnum.LOCATION_ORG_FETCH,
+                                PermissionsEnum.LOCATION_ORG_UPDATE,
+                              ]"
+                            >
+                              <li>
+                                <router-link to="/organization/states">
+                                  <SidebarVector />
+                                  <span>{{ $t('state') }}</span>
+                                </router-link>
+                              </li>
+                            </PermissionBuilder>
+                            <PermissionBuilder
+                              :code="[
+                                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                                PermissionsEnum.LOCATION_ORG_ALL,
+                                PermissionsEnum.LOCATION_ORG_CREATE,
+                                PermissionsEnum.LOCATION_ORG_DELETE,
+                                PermissionsEnum.LOCATION_ORG_FETCH,
+                                PermissionsEnum.LOCATION_ORG_UPDATE,
+                              ]"
+                            >
+                              <li>
+                                <router-link to="/organization/cities">
+                                  <SidebarVector />
+                                  <span>{{ $t('city') }}</span>
+                                </router-link>
+                              </li>
+                            </PermissionBuilder>
+                            <PermissionBuilder
+                              :code="[
+                                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                                PermissionsEnum.LOCATION_ORG_ALL,
+                                PermissionsEnum.LOCATION_ORG_CREATE,
+                                PermissionsEnum.LOCATION_ORG_DELETE,
+                                PermissionsEnum.LOCATION_ORG_FETCH,
+                                PermissionsEnum.LOCATION_ORG_UPDATE,
+                              ]"
+                            >
+                              <li>
+                                <router-link to="/organization/areas">
+                                  <SidebarVector />
+                                  <span>{{ $t('area') }}</span>
+                                </router-link>
+                              </li>
+                            </PermissionBuilder>
+                          </ul>
+                        </AccordionContent>
+                      </AccordionPanel>
+                    </Accordion>
                   </PermissionBuilder>
                 </ul>
               </AccordionContent>
