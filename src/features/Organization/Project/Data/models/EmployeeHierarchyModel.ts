@@ -3,19 +3,21 @@ import LocationHierarchyModel from './LocationHierarchyModel'
 import EmployeeModel from '@/features/employee/Data/models/equipmentModel'
 
 export default class EmployeeHierarchyModel {
-
-    public hierarchy: LocationHierarchyModel[]
+    public id: number;
+    public title: string;
     public employee: EmployeeModel[]
 
-    constructor(hierarchy: LocationHierarchyModel[], employee: EmployeeModel[],) {
-        this.hierarchy = hierarchy
+    constructor(id: number, title: string, employee: EmployeeModel[],) {
+        this.id = id
+        this.title = title
         this.employee = employee
     }
 
     static fromMap(data: any): EmployeeHierarchyModel {
         return new EmployeeHierarchyModel(
-            data.hierarchy.map((item: any) => LocationHierarchyModel.fromMap(item)),
-            data.employee.map((item: any) => EmployeeModel.fromMap(item)),
+            data.id,
+            data.title,
+            data.employee?.map((item: any) => EmployeeModel.fromMap(item)),
         )
     }
 }

@@ -9,10 +9,10 @@ const indexEmployeeTypeController = IndexOrganizatoinEmployeeController.getInsta
 const indexEmployeeTypeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
 const emit = defineEmits(['update:employee'])
 
-const employee = ref<TitleInterface | null>(null)
+const employees = ref<TitleInterface[] | []>([])
 
-const updateEmployee = (value: TitleInterface | null) => {
-  employee.value = value
+const updateEmployee = (value: TitleInterface[] | []) => {
+  employees.value = value
   emit('update:employee', value)
 }
 </script>
@@ -23,7 +23,7 @@ const updateEmployee = (value: TitleInterface | null) => {
       <div class="input-container">
         <div class="input-wrapper">
           <CustomSelectInput
-            :modelValue="employee"
+            :modelValue="employees"
             :params="indexEmployeeTypeParams"
             :controller="indexEmployeeTypeController"
             class="input"

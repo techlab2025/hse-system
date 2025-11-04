@@ -1,7 +1,6 @@
 // import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { IndexLocationHierarchyApiService } from '@/features/Organization/Project/Data/apiServices/Hierarchy/LocationHierarchy/indexLocationHierarchiesApiService'
 import LocationHierarchyModel from '@/features/Organization/Project/Data/models/LocationHierarchyModel'
 

@@ -24,7 +24,7 @@ export default class AddLocationHierarchyController extends ControllerInterface<
     return this.instance
   }
 
-  async addLocationHierarchy(params: Params, router: Router, draft: boolean = false) {
+  async addLocationHierarchy(params: Params, router: Router) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<LocationHierarchyModel> =
@@ -37,7 +37,9 @@ export default class AddLocationHierarchyController extends ControllerInterface<
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.go(-1)
+
+
+        await router.push(`/organization/employee-details/${params?.projectId}`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
