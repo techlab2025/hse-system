@@ -241,16 +241,46 @@ export const OrgPermissions: PermissionItem = {
 
                 // Location
                 {
-                    key: PermissionsEnum.ORG_LOCATION_ALL,
-                    code: PermissionsEnum.ORG_LOCATION_ALL,
+                    key: PermissionsEnum.LOCATION_ORG_ALL,
+                    code: PermissionsEnum.LOCATION_ORG_ALL,
                     label: "Location",
                     permissions: [
-                        { key: PermissionsEnum.ORG_LOCATION_ALL, code: PermissionsEnum.ORG_LOCATION_ALL, label: "All" },
-                        { key: PermissionsEnum.ORG_LOCATION_FETCH, code: PermissionsEnum.ORG_LOCATION_FETCH, label: "Fetch" },
-                        { key: PermissionsEnum.ORG_LOCATION_DETAILS, code: PermissionsEnum.ORG_LOCATION_DETAILS, label: "Details" },
-                        { key: PermissionsEnum.ORG_LOCATION_CREATE, code: PermissionsEnum.ORG_LOCATION_CREATE, label: "Create" },
-                        { key: PermissionsEnum.ORG_LOCATION_UPDATE, code: PermissionsEnum.ORG_LOCATION_UPDATE, label: "Update" },
-                        { key: PermissionsEnum.ORG_LOCATION_DELETE, code: PermissionsEnum.ORG_LOCATION_DELETE, label: "Delete" },
+                        { key: PermissionsEnum.LOCATION_ORG_ALL, code: PermissionsEnum.LOCATION_ORG_ALL, label: "All" },
+                        { key: PermissionsEnum.LOCATION_ORG_FETCH, code: PermissionsEnum.LOCATION_ORG_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.LOCATION_ORG_DETAILS, code: PermissionsEnum.LOCATION_ORG_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.LOCATION_ORG_CREATE, code: PermissionsEnum.LOCATION_ORG_CREATE, label: "Create" },
+                        { key: PermissionsEnum.LOCATION_ORG_UPDATE, code: PermissionsEnum.LOCATION_ORG_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.LOCATION_ORG_DELETE, code: PermissionsEnum.LOCATION_ORG_DELETE, label: "Delete" },
+
+                    ],
+                },
+                // methods
+                {
+                    key: PermissionsEnum.ORG_METHOD_ALL,
+                    code: PermissionsEnum.ORG_METHOD_ALL,
+                    label: "Method",
+                    permissions: [
+                        { key: PermissionsEnum.ORG_METHOD_ALL, code: PermissionsEnum.ORG_METHOD_ALL, label: "All" },
+                        { key: PermissionsEnum.ORG_METHOD_FETCH, code: PermissionsEnum.ORG_METHOD_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.ORG_METHOD_DETAILS, code: PermissionsEnum.ORG_METHOD_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.ORG_METHOD_CREATE, code: PermissionsEnum.ORG_METHOD_CREATE, label: "Create" },
+                        { key: PermissionsEnum.ORG_METHOD_UPDATE, code: PermissionsEnum.ORG_METHOD_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.ORG_METHOD_DELETE, code: PermissionsEnum.ORG_METHOD_DELETE, label: "Delete" },
+
+                    ],
+                },
+                // team
+                {
+                    key: PermissionsEnum.ORG_TEAM_ALL,
+                    code: PermissionsEnum.ORG_TEAM_ALL,
+                    label: "Team",
+                    permissions: [
+                        { key: PermissionsEnum.ORG_TEAM_ALL, code: PermissionsEnum.ORG_TEAM_ALL, label: "All" },
+                        { key: PermissionsEnum.ORG_TEAM_FETCH, code: PermissionsEnum.ORG_TEAM_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.ORG_TEAM_DETAILS, code: PermissionsEnum.ORG_TEAM_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.ORG_TEAM_CREATE, code: PermissionsEnum.ORG_TEAM_CREATE, label: "Create" },
+                        { key: PermissionsEnum.ORG_TEAM_UPDATE, code: PermissionsEnum.ORG_TEAM_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.ORG_TEAM_DELETE, code: PermissionsEnum.ORG_TEAM_DELETE, label: "Delete" },
 
                     ],
                 },

@@ -13,7 +13,7 @@
     gap: $MdSize;
     padding: $MdSize;
   }
-
+  
   .images {
     @include flex(row, wrap, center, center);
     position: relative;

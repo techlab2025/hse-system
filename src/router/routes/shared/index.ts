@@ -8,6 +8,7 @@ import { templateRoutes } from './template'
 import { templateItemRoutes } from './templateItem'
 import { methodsRoutes } from './methods'
 import { teamsRoutes } from './team'
+import { locationRoutes } from './location'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -18,7 +19,8 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...templateRoutes,
   ...templateItemRoutes,
   ...methodsRoutes,
-  ...teamsRoutes
+  ...teamsRoutes,
+  ...locationRoutes
 
 
 ]
