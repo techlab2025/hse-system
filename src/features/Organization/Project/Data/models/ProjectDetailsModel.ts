@@ -9,6 +9,8 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
 import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
+import ProjectLocationZonesModel from './ProjectLocationZones'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class ProjectDetailsModel {
@@ -19,6 +21,12 @@ export default class ProjectDetailsModel {
   public locations: LocationDetailsModel[]
   public SerialNumber: string
   public startDate: string
+  public country: TitleInterface | null
+  public state: TitleInterface | null
+  public city: TitleInterface | null
+  public area: TitleInterface | null
+  public Zones: ProjectLocationZonesModel[] | null
+  public methods: TitleInterface | null
 
   constructor(
     id: number,
@@ -28,6 +36,12 @@ export default class ProjectDetailsModel {
     locations: LocationDetailsModel[],
     SerialNumber: string,
     startDate: string,
+    country: TitleInterface | null,
+    state: TitleInterface | null,
+    city: TitleInterface | null,
+    area: TitleInterface | null,
+    Zones: ProjectLocationZonesModel[] | null,
+    methods: TitleInterface | null,
   ) {
     this.id = id
     this.titles = titles
@@ -36,20 +50,29 @@ export default class ProjectDetailsModel {
     this.locations = locations
     this.SerialNumber = SerialNumber
     this.startDate = startDate
+    this.country = country
+    this.state = state
+    this.city = city
+    this.area = area
+    this.Zones = Zones
+    this.methods = methods
   }
 
   static fromMap(data: any): ProjectDetailsModel {
     return new ProjectDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap(data.descriptions).descriptions,
+      TranslationsParams.fromMap([], data.descriptions).descriptions,
       this.getTitle(data.partner),
       data.locations,
-      data.organization_locations?.length > 0
-        ? data.organization_locations?.map((location) => this.getTitle(location))
-        : [],
       data.serial_number,
-
+      data.start_date,
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
+      data.locations.map((item: any) => ProjectLocationZonesModel.fromMap(item)),
+      data.methods.map((item: any) => this.getTitle(item)),
     )
   }
 
@@ -63,4 +86,33 @@ export default class ProjectDetailsModel {
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+
+  static getLocationsWithKeys(
+    data: LocationData | null,
+    level: number,
+    type: LocationEnum,
+  ): TitleInterface | null {
+    if (!data || level < 1) return null
+
+    let current: LocationData | null = data
+    if (current?.type === type) return this.getTitle(current)
+    for (let i = 1; i <= level; i++) {
+      // console.log(data, 'data');
+
+      current = current?.parent ?? null
+      if (current?.type === type) {
+        return this.getTitle(current)
+      }
+
+      if (!current) return null
+    }
+    return this.getTitle(current)
+  }
+}
+
+type LocationData = {
+  id: number
+  titles: TitleLocale[]
+  parent?: LocationData | null
+  type: number
 }
