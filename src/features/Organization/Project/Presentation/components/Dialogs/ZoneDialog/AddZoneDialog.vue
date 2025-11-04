@@ -34,9 +34,7 @@ const GetData = (data: ProjectLocationZonesModel[]) => {
 const deleteZone = (locationId: number, zoneId: number) => {
   const locationObj = Zones.value.find((l) => l.location.id === locationId)
   if (!locationObj) return
-
   locationObj.zoons = locationObj.zoons.filter((z) => z.id !== zoneId)
-
   if (locationObj.zoons.length === 0) {
     Zones.value = Zones.value.filter((l) => l.location.id !== locationId)
   }
