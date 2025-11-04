@@ -6,7 +6,10 @@ import { ref } from 'vue'
 import member from '@/assets/images/member.png'
 import EmptyData from './EmptyData.vue'
 import EmptyFolder from '@/assets/images/EmptyFolder.png'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+const id = route.params.id
 interface LocationInterface {
   location: string
   teams: {
@@ -190,7 +193,7 @@ const Locations = ref<LocationInterface[]>([
         title="Teams by Operational location"
         subtitle="View all working teams assigned to each operational zone"
       />
-      <RouterLink :to="`/organization/employee-details/1`" class="show-all">Show all</RouterLink>
+      <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
     <div class="locations-sections" v-if="Locations.length > 0">
       <LocationsSection v-for="(location, index) in Locations" :key="index" :location="location" />

@@ -1,51 +1,76 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import ZoneDialogForm from './ZoneDialogForm.vue'
 import CloseDelete from '@/shared/icons/CloseDelete.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones'
+import { useRoute } from 'vue-router'
 
 const visible = ref(false)
+const route = useRoute()
+const id = route.params.id
 
 const emit = defineEmits(['update:data'])
+
 const props = defineProps<{
   locations: TitleInterface[]
+  selectedZones: ProjectLocationZonesModel[]
 }>()
 
-const Zones = ref<{ locationId: number; locationName: string; zones: { id: number; title: string }[] }[]>([])
 
-const GetData = (data: { locationId: number; locationName: string; zones: any[] }[]) => {
+const Zones = ref<ProjectLocationZonesModel[]>(props.selectedZones)
+
+
+const GetData = (data: ProjectLocationZonesModel[]) => {
   visible.value = false
   Zones.value = data
   emit('update:data', data)
 }
 
+
 const deleteZone = (locationId: number, zoneId: number) => {
-  const location = Zones.value.find((l) => l.locationId === locationId)
-  if (!location) return
-  location.zones = location.zones.filter((z) => z.id !== zoneId)
-  if (location.zones.length === 0) {
-    Zones.value = Zones.value.filter((l) => l.locationId !== locationId)
+  const locationObj = Zones.value.find((l) => l.location.id === locationId)
+  if (!locationObj) return
+
+  locationObj.zoons = locationObj.zoons.filter((z) => z.id !== zoneId)
+
+  if (locationObj.zoons.length === 0) {
+    Zones.value = Zones.value.filter((l) => l.location.id !== locationId)
   }
+
   emit('update:data', Zones.value)
 }
+
 
 const formattedZones = computed(() => {
   if (!Zones.value || Zones.value.length === 0) return []
 
-  return Zones.value.map((location) => {
-    const zoneTitles = location.zones.map((z) => z.title).join(' / ')
+  return Zones.value.map((item , index) => {
+    // console.log(Zones.value[index].location.title, "Zones.value");
+    // Zones.value[index].location.title
+    const zoneTitles = id ?  item.zoons
+      .map((z) => z.titles?.[0]?.title || 'Untitled')
+      .join(' / ') : item.zoons
+        .map((z) => z.title)
+        .join(' / ')
+
     return {
-      key: location.locationId,
+      key: item.location.id,
       text: zoneTitles,
-      locationId: location.locationId,
-      zoneIds: location.zones.map((z) => z.id),
+      locationId: item.location.id,
+      zoneIds: item.zoons.map((z) => z.id),
     }
   })
 })
 
+watch(() => props.selectedZones,
+  () => {
+    Zones.value = props.selectedZones
+    GetData(Zones.value);
+  })
 </script>
 
 <template>
@@ -53,7 +78,7 @@ const formattedZones = computed(() => {
     <div class="zones" @click="visible = true">
       <div class="zone" v-for="zone in formattedZones" :key="zone.key" @click.stop>
         <span>{{ zone.text }}</span>
-        <CloseDelete class="delete" @click.stop="deleteZone(zone.locationId, zone.zoneId)" />
+        <CloseDelete class="delete" @click.stop="deleteZone(zone.locationId, zone.zoneIds[0])" />
       </div>
     </div>
   </div>
@@ -67,14 +92,13 @@ const formattedZones = computed(() => {
 
     <div class="equipment-dialog-data" v-if="locations.length > 0">
       <hr class="add-equipment-hr" />
-      <ZoneDialogForm :locations="locations" @update:data="GetData" :selected-zones="Zones" />
+      <ZoneDialogForm :locations="locations" @update:data="GetData" :selectedZones="Zones" />
     </div>
+
     <div class="empty" v-else>
-      <p>No Selected locations </p>
+      <p>No Selected locations</p>
     </div>
   </Dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

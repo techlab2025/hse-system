@@ -17,7 +17,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/EditProject.vue'),
   },
   {
-    path: 'project-details',
+    path: 'project-details/:id',
     name: 'Project Details',
     component: () => import('@/views/Organization/Project/projectDetails.vue'),
   },

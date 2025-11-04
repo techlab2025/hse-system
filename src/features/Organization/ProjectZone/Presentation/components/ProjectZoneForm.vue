@@ -145,7 +145,8 @@ const SetCountrySelection = (data: TitleInterface) => {
     0,
     0,
     LocationEnum.STATE,
-    data.id,
+    null,
+    [data.id],
   )
   updateData()
 }
@@ -153,21 +154,20 @@ const SetCountrySelection = (data: TitleInterface) => {
 const SelectedState = ref<TitleInterface>()
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
-  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, data.id)
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, [data.id])
   updateData()
 }
 
 const SelectedCity = ref<TitleInterface>()
 const SetCitySelection = (data: TitleInterface) => {
   SelectedCity.value = data
-  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, data.id)
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, [data.id])
   updateData()
 }
 
 const SelectedArea = ref<TitleInterface>()
 const SetAreaSelection = (data: TitleInterface) => {
   SelectedArea.value = data
-  console.log(SelectedArea, "SelectedArea");
   updateData()
 }
 

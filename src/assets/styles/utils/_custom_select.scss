@@ -148,11 +148,26 @@
 
 .p-multiselect-chip-item {
   background-color: #1d4ed81a !important;
-  border-radius: $XlSize !important;
+  // border-radius: $XlSize !important;
+  border-radius: $SmSize !important;
   .p-chip {
-    border-radius: $XlSize !important;
-    // background-color: #1D4ED8 !important;
-    color: #1d4ed8 !important;
+    // border-radius: $XlSize !important;
+    // // background-color: #1D4ED8 !important;
+    // color: #1d4ed8 !important;
+    background-color: #ffffff !important;
+    color: $PrimaryColor !important;
+    padding: $XsSize2 $XsSize !important;
+    border-radius: $SmSize !important;
+    font-size: $SmSize !important;
+    font-weight: $BaseFontSemiBoldWeight !important;
+    box-shadow: inset 3px 2px 13px rgba(29, 79, 216, 0.2) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    border: 1px solid #d9dbe9 !important;
+    flex-shrink: 0 !important;
+    height: 32px !important;
+    line-height: 1 !important;
   }
 
   svg {
@@ -164,9 +179,13 @@
 }
 
 .p-select-label {
-  color: #242424 !important;
+  // color: #242424 !important;
   font-size: $SmSize !important;
   font-weight: $BaseFontMediumWeight !important;
+  // background-color: #1d4ed81a !important;
+  border-radius: 20px !important;
+  width: fit-content !important;
+  color: $PrimaryColor !important;
 }
 
 .input-label {
