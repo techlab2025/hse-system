@@ -1,27 +1,22 @@
-import ProjectModel from './ProjectModel'
-import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
-import EmployeeHierarchyModel from './EmployeeHierarchyModel'
+
+import ProjectLocationModel from './projectLocation'
 
 export default class LocationHierarchyModel {
-    public project_location_hierarchy_id: number
-    public project: ProjectModel
-    public location: LocationDetailsModel
-    public hierarchy: EmployeeHierarchyModel[]
+    public projectLocationHierarchyId: number
+    public projectLocation: ProjectLocationModel
 
-    constructor(project_location_hierarchy_id: number, project: ProjectModel, location: LocationDetailsModel, hierarchy: EmployeeHierarchyModel[],) {
 
-        this.project_location_hierarchy_id = project_location_hierarchy_id
-        this.project = project
-        this.location = location
-        this.hierarchy = hierarchy
+    constructor(projectLocationHierarchyId: number, projectLocation: ProjectLocationModel,) {
+
+        this.projectLocationHierarchyId = projectLocationHierarchyId
+        this.projectLocation = projectLocation
+
     }
 
     static fromMap(data: any): LocationHierarchyModel {
         return new LocationHierarchyModel(
             data.project_location_hierarchy_id,
-            ProjectModel.fromMap(data.project),
-            LocationDetailsModel.fromMap(data.location),
-            data.hierarchy.map((item: any) => EmployeeHierarchyModel.fromMap(item)),
+            ProjectLocationModel.fromMap(data.project_location),
         )
     }
 }

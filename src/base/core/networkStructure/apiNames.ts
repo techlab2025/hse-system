@@ -53,11 +53,11 @@ class ApiNames {
 
 
   // location hierarchy
-  public CreateLocationHierarchy = this.prefix + 'create_location'
+  public CreateLocationHierarchy = this.prefix + 'create_project_location_hierarchy'
   public IndexLocationHierarchy = this.prefix + 'fetch_project_location_hierarchies'
   public ShowLocationHierarchy = this.prefix + 'fetch_location_details'
-  public EditLocationHierarchy = this.prefix + 'update_location'
-  public DeleteLocationHierarchy = this.prefix + 'delete_location'
+  // public EditLocationHierarchy = this.prefix + 'update_location'
+  // public DeleteLocationHierarchy = this.prefix + 'delete_location'
 
 
   // HierarchyEmployee
@@ -69,7 +69,7 @@ class ApiNames {
   public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
 
 
-  public IndexProjectLocation = this.prefix + 'fetch_project_location'
+  public IndexProjectLocation = this.prefix + 'fetch_project_locations'
 
   // admin
   public CreateAdmin = this.prefix + 'create_admin'
