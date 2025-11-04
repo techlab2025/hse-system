@@ -231,7 +231,6 @@ watch(
       date.value = newData?.startDate;
       partner_id.value = newData?.partner;
       fields.value[0].value = SerialNumber.value
-
       SelectedCountry.value = newData?.country ?? [];
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -264,11 +263,7 @@ watch(
       )
       location.value = newData?.area ?? [];
       EvaluatingMethod.value = newData?.methods ?? [];
-
       SelectedZones.value = newData?.Zones ?? [];
-      console.log(newData, "newdata");
-
-
       updateData()
     }
   },
@@ -292,10 +287,12 @@ const setEvaluatingMethod = (data: TitleInterface[]) => {
 
 const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<ProjectLocationZonesModel[]>([])
-const UpdateZones = (data: { locationId: number; locationName: string; zones: { id: number; title: string }[] }[]) => {
+const UpdateZones = (data: ProjectLocationZonesModel[]) => {
   ZoneIds.value = []
-  data.forEach(item => {
-    item.zones.forEach(z => ZoneIds.value.push(z.id))
+
+  data.forEach((d) => {
+    ZoneIds.value = data.flatMap(d => d.zoons.map(z => z.id))
+
   })
   updateData()
 }
@@ -366,8 +363,6 @@ const SetAreaSelection = (data: TitleInterface[]) => {
 // Location Handel End
 
 
-
-
 watch(() => langs.value,
   () => {
     updateData()
@@ -422,7 +417,7 @@ watch(() => langsDescription.value,
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="">Zones</label>
-    <AddZoneDialog :locations="location" @update:data="UpdateZones"  />
+    <AddZoneDialog :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"

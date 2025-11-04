@@ -48,7 +48,7 @@ const fetchLocation = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexLocationParams = new IndexLocationParams(query, pageNumber, perPage, withPage, LocationEnum.COUNTRY , id )
+  const indexLocationParams = new IndexLocationParams(query, pageNumber, perPage, withPage, LocationEnum.COUNTRY, id)
   await indexLocationController.getData(indexLocationParams)
 }
 
@@ -102,9 +102,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_Cities_type'),
+    text: t('add_sub_Stats_type'),
     icon: IconEdit,
-    link: `/admin/cities/add/${id}`,
+    link: `/admin/states/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -141,16 +141,10 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHazardType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel :data="state.data" />
+      <ExportExcel :data="state.data" />
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link to="/admin/countries/add" class="btn btn-primary">
@@ -160,16 +154,14 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.LOCATION_ALL,
-      PermissionsEnum.LOCATION_DELETE,
-      PermissionsEnum.LOCATION_FETCH,
-      PermissionsEnum.LOCATION_UPDATE,
-      PermissionsEnum.LOCATION_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LOCATION_ALL,
+    PermissionsEnum.LOCATION_DELETE,
+    PermissionsEnum.LOCATION_FETCH,
+    PermissionsEnum.LOCATION_UPDATE,
+    PermissionsEnum.LOCATION_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -187,7 +179,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/countries/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -195,20 +187,13 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
                 <td data-label="email">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteLocation)"
-                    @delete="deleteLocation(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteLocation)" @delete="deleteLocation(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -217,28 +202,20 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
+        <DataEmpty :link="`/add/HazardType`" addText="Add HazardType"
           description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
-        />
+          title="..ops! You have No HazardTypeuages" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
+        <DataFailed :link="`/add/HazardType`" addText="Add HazardType"
           description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
-        />
+          title="..ops! You have No HazardTypeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
