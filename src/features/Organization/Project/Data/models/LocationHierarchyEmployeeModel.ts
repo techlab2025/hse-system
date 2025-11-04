@@ -1,4 +1,4 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
+// import TitleInterface from '@/base/Data/Models/title_interface'
 import ProjectModel from './ProjectModel'
 import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import LocationHierarchyModel from './LocationHierarchyModel'
