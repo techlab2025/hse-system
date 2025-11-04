@@ -38,7 +38,6 @@ watch(
   () => showProjectController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState, 'newState')
       state.value = newState
     }
   },
@@ -58,8 +57,8 @@ const setParams = (data: Params) => {
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditProject">
         <ProjectForm @update:data="setParams" :data="state.data!" />
-        <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+        <div class="col-span-4 button-wrapper w-full">
+          <button type="submit" class="btn btn-primary w-full">Edit</button>
         </div>
       </form>
     </template>

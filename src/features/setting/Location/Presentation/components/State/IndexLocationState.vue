@@ -109,9 +109,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_areas_type'),
+    text: t('add_sub_cities_type'),
     icon: IconEdit,
-    link: `/admin/areas/add/${id}`,
+    link: `/admin/cities/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
