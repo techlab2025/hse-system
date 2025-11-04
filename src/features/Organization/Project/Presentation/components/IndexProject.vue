@@ -91,7 +91,7 @@ watch(
   () => indexProjectController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState)
       state.value = newState
     }
   },
