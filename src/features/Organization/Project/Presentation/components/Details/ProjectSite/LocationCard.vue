@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones';
+
 const props = defineProps<{
   title: string,
-  zone: number,
-  location: string
-  Locations: string[]
+  zone: ProjectLocationZonesModel[],
+  zoons: string[]
 }>()
 
 </script>
@@ -17,11 +18,11 @@ const props = defineProps<{
         <p class="title">{{ title }}</p>
         <p class="zone"><span>{{ zone }}</span> zone</p>
       </div>
-      <p class="location">{{ location }}</p>
+      <!-- <p class="location">{{ location }}</p> -->
     </div>
     <hr class="card-hr">
     <div class="locations">
-      <p class="location-title" v-for="(location, index) in Locations" :key="index">{{ location }}</p>
+      <p class="location-title" v-for="(location, index) in zoons" :key="index">{{ location.title }}</p>
     </div>
   </div>
 </template>

@@ -3,6 +3,7 @@ import Location from "@/assets/images/Location.png";
 import HeaderSection from "../DetailsHeader/HeaderSection.vue";
 import LocationCard from "./LocationCard.vue";
 import { ref } from "vue";
+import type LocationDetailsModel from "@/features/setting/Location/Data/models/LocationModel";
 
 const Cards = ref([
   {
@@ -31,7 +32,7 @@ const Cards = ref([
   },
 ])
 
-
+const props = defineProps<{ locations: LocationDetailsModel[] }>()
 </script>
 
 
@@ -41,8 +42,8 @@ const Cards = ref([
       :subtitle="`Mapping each main site with its associated working areas`" />
 
     <div class="card-section">
-      <LocationCard v-for="(card, index) in Cards" :key="index" :title="card.title" :zone="card.zone"
-        :location="card.location" :Locations="card.Locations" />
+      <LocationCard v-for="(card, index) in locations" :key="index" :title="card.title" :zone="card.zoons.length"
+        :zoons="card.zoons" />
     </div>
   </div>
 </template>
