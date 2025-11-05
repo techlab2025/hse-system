@@ -1,4 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
+import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones'
+import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
 export default class LocationDetailsModel extends TitleInterface {
@@ -9,6 +11,7 @@ export default class LocationDetailsModel extends TitleInterface {
   public type: number
   public status: number
   public image: string
+  public zoons :ProjectLocationZonesModel[]
 
   constructor(
     id: number,
@@ -18,6 +21,7 @@ export default class LocationDetailsModel extends TitleInterface {
     type: number,
     status: number,
     image: string,
+    zoons: ProjectLocationZonesModel[]
   ) {
     super({ id: 0, title: '', subtitle: '' })
     this.id = id
@@ -27,6 +31,7 @@ export default class LocationDetailsModel extends TitleInterface {
     this.type = type
     this.status = status
     this.image = image
+    this.zoons = zoons
   }
 
   static fromMap(data: any): LocationDetailsModel {
@@ -38,6 +43,7 @@ export default class LocationDetailsModel extends TitleInterface {
       data.type,
       data.status,
       data.image,
+      data.zoons
     )
   }
   static getTitle(data: any) {

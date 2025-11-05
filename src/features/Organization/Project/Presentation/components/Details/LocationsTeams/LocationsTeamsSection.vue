@@ -7,182 +7,186 @@ import member from '@/assets/images/member.png'
 import EmptyData from './EmptyData.vue'
 import EmptyFolder from '@/assets/images/EmptyFolder.png'
 import { useRoute } from 'vue-router'
+import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
 
 const route = useRoute()
 const id = route.params.id
-interface LocationInterface {
-  location: string
-  teams: {
-    members: number
-    teamMembers: {
-      img: string
-      name: string
-      poistion: string
-    }[]
-  }[]
-}
-const Locations = ref<LocationInterface[]>([
-  {
-    location: 'Cairo',
-    teams: [
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    location: 'Alexandria',
-    teams: [
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-      {
-        members: 10,
-        teamMembers: [
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-          {
-            img: member,
-            name: 'mohab',
-            poistion: 'manger',
-          },
-        ],
-      },
-    ],
-  },
-])
+const props = defineProps<{
+  teamLocations: TeamLocation[]
+}>()
+// interface LocationInterface {
+//   location: string
+//   teams: {
+//     members: number
+//     teamMembers: {
+//       img: string
+//       name: string
+//       poistion: string
+//     }[]
+//   }[]
+// }
+// const Locations = ref<LocationInterface[]>([
+//   {
+//     location: 'Cairo',
+//     teams: [
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     location: 'Alexandria',
+//     teams: [
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//       {
+//         members: 10,
+//         teamMembers: [
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//           {
+//             img: member,
+//             name: 'mohab',
+//             poistion: 'manger',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ])
 </script>
 
 <template>
@@ -195,8 +199,8 @@ const Locations = ref<LocationInterface[]>([
       />
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
-    <div class="locations-sections" v-if="Locations.length > 0">
-      <LocationsSection v-for="(location, index) in Locations" :key="index" :location="location" />
+    <div class="locations-sections" v-if="teamLocations?.length > 0">
+      <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location" />
     </div>
 
     <EmptyData

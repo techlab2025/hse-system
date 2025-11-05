@@ -1,34 +1,23 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type ZoonModel from './ZoonModel'
+// import type ZoonModel from './ZoonModel'
+import  TitleModel from '@/base/Data/Models/title_model'
 // import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
 export default class ProjectLocationZonesModel {
-  public location: TitleInterface
-  public zoons: ZoonModel[]
+  public location: TitleModel<string>
+  public zoons: TitleModel<string>[]
 
-  constructor(location: TitleInterface, zoons: ZoonModel[]) {
+  constructor(location: TitleModel<string>, zoons: TitleModel<string>[]) {
     this.location = location
     this.zoons = zoons
   }
 
   static fromMap(data: any): ProjectLocationZonesModel {
-    return new ProjectLocationZonesModel(
-      this.getTitle(data),
-      data.zoons,
-    )
+    return new ProjectLocationZonesModel(TitleModel.fromMap(data), data.zoons.map((z: any) => TitleModel.fromMap(z)))
   }
 
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
 
-    // console.log(data, 'data in get title');
-
-    return new TitleInterface({
-      id: data?.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
-  }
 }
 
 interface Zoons {

@@ -11,8 +11,8 @@ import SohwProjectZoonModel from './ShowProjectZone'
 
 export default class ShowProjectDetailsModel {
   public id: number
-  public titles: TitleLocale[]
-  public descriptions: TitleLocale[]
+  public title: string
+  public description: string
   public partner: TitleInterface
   public locations: LocationDetailsModel[]
   public TeamLocations: TeamLocation[]
@@ -29,8 +29,8 @@ export default class ShowProjectDetailsModel {
 
   constructor(
     id: number,
-    titles: TitleLocale[],
-    descriptions: TitleLocale[],
+    title: string,
+    description: string,
     partner: TitleInterface,
     locations: LocationDetailsModel[],
     TeamLocations: TeamLocation[],
@@ -46,8 +46,8 @@ export default class ShowProjectDetailsModel {
     Zones: ProjectLocationZonesModel[] | null,
   ) {
     this.id = id
-    this.titles = titles
-    this.descriptions = descriptions
+    this.title = title
+    this.description = description
     this.partner = partner
     this.locations = locations
     this.TeamLocations = TeamLocations
@@ -66,8 +66,8 @@ export default class ShowProjectDetailsModel {
   static fromMap(data: any): ShowProjectDetailsModel {
     return new ShowProjectDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
+      data.title,
+      data.description,
       this.getTitle(data.partner),
       data.locations,
       data.team_locations,
@@ -102,13 +102,18 @@ export default class ShowProjectDetailsModel {
     if (!data || level < 1) return null
 
     let current: LocationData | null = data
-    if (current?.type === type) return this.getTitle(current)
+    if (current?.type === type)
+      return new TitleInterface({
+        id: data?.id,
+        title: data.title,
+      })
     for (let i = 1; i <= level; i++) {
-      // console.log(data, 'data');
-
       current = current?.parent ?? null
       if (current?.type === type) {
-        return this.getTitle(current)
+        return new TitleInterface({
+          id: data?.id,
+          title: data.title,
+        })
       }
 
       if (!current) return null

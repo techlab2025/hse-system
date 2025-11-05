@@ -3,18 +3,18 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 export default class TeamLocation {
   public projectLocationId: number
   public locationId: number
-  public locationTitle: string
+  public location_title: string
   public projectLocationTeams: TitleInterface[]
 
   constructor(
     projectLocationId: number,
     locationId: number,
-    locationTitle: string,
+    location_title: string,
     projectLocationTeams: TitleInterface[],
   ) {
     this.projectLocationId = projectLocationId
     this.locationId = locationId
-    this.locationTitle = locationTitle
+    this.location_title = location_title
     this.projectLocationTeams = projectLocationTeams
   }
 
