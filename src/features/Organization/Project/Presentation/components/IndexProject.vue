@@ -28,6 +28,8 @@ import DeleteProjectController from '../controllers/deleteProjectController'
 import DropIcon from '@/shared/icons/DropIcon.vue'
 import Popover from 'primevue/popover';
 import TablePopover from '@/shared/FormInputs/TablePopover.vue'
+import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
+import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 
 const op = ref();
 // const members = ref([
@@ -117,6 +119,16 @@ const actionList = (id: number, deleteProject: (id: number) => void) => [
     action: () => deleteProject(id),
     permission: [
       PermissionsEnum.PROJECT_DELETE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PROJECT_ALL,
+    ],
+  },
+  {
+    text: t('show'),
+    icon: ShowProjectIcon,
+    link: `/organization/project-details/${id}`,
+    permission: [
+      PermissionsEnum.PROJECT_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.PROJECT_ALL,
     ],
@@ -292,7 +304,7 @@ watch(
                   </div> -->
                 <!-- </td> -->
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
+                  <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)"  />
                 </td>
               </tr>
             </tbody>
