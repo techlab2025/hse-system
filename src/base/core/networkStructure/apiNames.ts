@@ -54,7 +54,7 @@ class ApiNames {
 
   // location hierarchy
   public CreateLocationHierarchy = this.prefix + 'create_project_location_hierarchy'
-  public IndexLocationHierarchy = this.prefix + 'fetch_project_location_hierarchies'
+  public IndexLocationHierarchy = this.prefix + 'fetch_project_locations_hierarchies'
   public ShowLocationHierarchy = this.prefix + 'fetch_location_details'
   // public EditLocationHierarchy = this.prefix + 'update_location'
   // public DeleteLocationHierarchy = this.prefix + 'delete_location'
@@ -454,6 +454,10 @@ class ApiNames {
   public EditTemplateItem = this.prefix + 'update_template_item'
   public DeleteTemplateItem = this.prefix + 'delete_template_item'
 
+  public FetchProjectLocationEmployee = this.prefix + 'fetch_project_location_employees'
+  public FetchProjectLocationsEmployee = this.prefix + 'fetch_project_locations_employees'
+
+  public FetchProjectLocationTeamEmployees = this.prefix + 'fetch_project_location_team_employees'
 
   public IndexProjectLocationZones = this.prefix + 'fetch_zoons_by_location_ids'
 }

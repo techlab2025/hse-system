@@ -17,18 +17,20 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeController'
 
 const route = useRoute()
 const router = useRouter()
 
-const indexHierarchyController = IndexLocationHierarchyController.getInstance()
-const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
+// const indexHierarchyController = IndexLocationHierarchyController.getInstance()
+const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
+// const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
 
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
-const state = ref(indexHierarchyController.state.value)
+const state = ref(indexHierarchyEmployeeController.state.value)
 
 watch(
-  () => indexHierarchyController.state.value,
+  () => indexHierarchyEmployeeController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -38,16 +40,24 @@ watch(
 
 // const hierarchyState = computed(() => indexHierarchyController.state.value)
 
-const fetchHierarchies = async () => {
+// const fetchHierarchies = async () => {
+//   try {
+//     const params = new IndexLocationHierarchyParams(+route.params.project_id)
+//     await indexHierarchyController.getData(params)
+//   } catch (err) {
+//     console.error('Error fetching hierarchies:', err)
+//   }
+// }
+const fetchHierarchiesEmployees = async () => {
   try {
     const params = new IndexLocationHierarchyParams(+route.params.project_id)
-    await indexHierarchyController.getData(params)
+    await indexHierarchyEmployeeController.getData(params)
   } catch (err) {
     console.error('Error fetching hierarchies:', err)
   }
 }
 
-onMounted(fetchHierarchies)
+onMounted(fetchHierarchiesEmployees)
 
 const handleEmployeesUpdate = (hierarchyId: number, value: TitleInterface[]) => {
   employeesByHierarchy.value[hierarchyId] = value || []
@@ -85,7 +95,7 @@ const handleAddAllEmployees = async () => {
       <template #success>
         <div
           v-for="item in state.data"
-          :key="item?.projectLocationHierarchyId"
+          :key="item?.project_location_hierarchy_employee_id"
           class="employee-form"
         >
           <div class="type">
