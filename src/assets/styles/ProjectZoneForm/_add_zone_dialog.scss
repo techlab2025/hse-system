@@ -1,0 +1,52 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.zones {
+  @include flex-row(nowrap, flex-start, center);
+  gap: 6px;
+  padding: $SmSize;
+  margin-top: $XsSize4;
+  border-radius: $XlSize2;
+  border: 1px solid #d9dbe9;
+  font-family: 'Light';
+  height: 50px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
+  .zone {
+    background-color: #ffffff;
+    color: $PrimaryColor;
+    padding: $XsSize2 $XsSize;
+    border-radius: $SmSize;
+    font-size: $SmSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    box-shadow: inset 3px 2px 13px rgba(29, 79, 216, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid #d9dbe9;
+    flex-shrink: 0;
+    height: 32px;
+    line-height: 1;
+
+    .delete {
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}

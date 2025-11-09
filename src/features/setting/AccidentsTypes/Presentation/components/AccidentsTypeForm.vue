@@ -169,7 +169,7 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },
@@ -206,7 +206,7 @@ watch(
       type="checkbox"
       :value="true"
       v-model="allIndustries"
-      :checked="allIndustries"
+
       @change="updateData"
     />
   </div>

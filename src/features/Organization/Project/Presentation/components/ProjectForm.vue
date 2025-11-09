@@ -11,6 +11,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import { useRoute } from 'vue-router'
+import DatePicker from 'primevue/datepicker'
 
 import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
@@ -20,16 +21,35 @@ import IndexPartnerController from '@/features/Organization/Partner/Presentation
 import IndexPartnerParams from '@/features/Organization/Partner/Core/params/indexPartnerParams'
 import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
 import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
+import EmployeeHeader from './Employee/EmployeeHeader.vue'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
+import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
+import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
+import IndexMethodsController from '@/features/setting/Methods/Presentation/controllers/indexMethodsController'
+import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMethodsParams'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
+import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: ProjectDetailsModel
 }>()
+const EvaluatingMethod = ref<TitleInterface[] | null>([])
 
-const partner_id = ref<TitleInterface | null>(null)
+const partner_id = ref<TitleInterface>(null)
+const location = ref<TitleInterface[]>([])
 
 const indexPartnerController = IndexPartnerController.getInstance()
+const indexLocationController = IndexLocationController.getInstance()
+const indexLocationParams = new IndexLocationParams("", 0, 0, 0,)
+
+
+const indexMethodsController = IndexMethodsController.getInstance()
+const indexMethodsParams = new IndexMethodsParams("", 0, 0, 0,)
+
+
 
 const indexPartnerParams = new IndexPartnerParams(
   '',
@@ -44,29 +64,10 @@ const setPartnerId = (data: TitleInterface | null) => {
   updateData()
 }
 
-const organization_location_ids = ref<TitleInterface[]>([])
-
-const indexOrganizationLocationController = IndexOrganizationLocationController.getInstance()
-
-const indexOrganizationLocationParams = new IndexOrganizationLocationParams(
-  '',
-  0,
-  0,
-  0,
-  // id.value?? '',
-)
-
-const setOrganizationLocationIds = (data: TitleInterface[]) => {
-  organization_location_ids.value = data
-  updateData()
-}
-
 const route = useRoute()
 const id = route.params.parent_id
 
-type ImageValue = string | { file?: File; id?: number }
 
-// ---------- State ----------
 const langs = ref<
   {
     locale: string
@@ -74,6 +75,13 @@ const langs = ref<
     title: string
   }[]
 >([])
+
+const langsDescription = ref<{
+  locale: string;
+  icon?: any;
+  description: string
+}[]>([])
+
 
 // default available langs from backend
 const langDefault = ref<
@@ -108,6 +116,15 @@ const fetchLang = async (
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
+
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+
+
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
@@ -127,14 +144,15 @@ const fetchLang = async (
       description: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
+
   } else {
     langDefault.value = [
       { locale: 'en', icon: USA, title: '' },
       { locale: 'ar', icon: SA, title: '' },
     ]
     langDefaultDescription.value = [
-      { locale: 'en', icon: USA, description: '' },
-      { locale: 'ar', icon: SA, description: '' },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
@@ -142,7 +160,7 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-
+const date = ref()
 // ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -152,34 +170,39 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  // descriptions
-  // langsDescription.value.forEach((lang) => {
-  //   translationsParams.setTranslation('description', lang.locale, lang.title)
-  // })
+  langsDescription.value.forEach((lang) => {
+    translationsParams.setTranslation('description', lang.locale, lang.description)
+  })
+
 
   const params = props.data?.id
     ? new EditProjectParams(
-        props.data.id,
-        translationsParams,
-        partner_id.value?.id,
-        organization_location_ids.value,
-      )
+      props.data.id,
+      translationsParams,
+      partner_id.value?.id,
+      date.value,
+      SerialNumber.value?.SerialNumber,
+      location.value.map((l) => l.id),
+      ZoneIds.value.map((z) => z),
+      EvaluatingMethod.value?.map((p) => p.id)
+    )
     : new AddProjectParams(
-        translationsParams,
-        partner_id.value?.id,
-        organization_location_ids.value,
-      )
-
-  // console.log(params, 'params')
-
+      translationsParams,
+      partner_id.value?.id,
+      date.value,
+      SerialNumber.value?.SerialNumber,
+      location.value.map((l) => l.id),
+      ZoneIds.value.map((z) => z),
+      EvaluatingMethod.value?.map((p) => p.id)
+    )
   emit('update:data', params)
 }
 
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
 watch(
-  [() => props.data, () => langDefault.value],
-  ([newData, newDefault]) => {
+  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
+  ([newData, newDefault, newDefaultDesc]) => {
     if (newDefault.length) {
       // titles
       if (newData?.titles?.length) {
@@ -191,55 +214,221 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      partner_id.value = newData?.partner
+      // descriptions
+      if (newData?.descriptions?.length) {
+        langsDescription.value = newDefaultDesc.map((l) => {
+          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          return existing ? existing : { locale: l.locale, description: '' }
+        })
+      } else {
+        langsDescription.value = newDefaultDesc.map((l) => ({
+          locale: l.locale,
+          description: '',
+        }))
+      }
 
-      organization_location_ids.value = newData?.organizationLocation
-
+      SerialNumber.value = newData?.SerialNumber;
+      date.value = newData?.startDate;
+      partner_id.value = newData?.partner;
+      fields.value[0].value = SerialNumber.value
+      SelectedCountry.value = newData?.country ?? [];
+      indexLocationStatesParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.STATE,
+        null,
+        SelectedCountry.value.map((c) => c.id),
+      )
+      SelectedState.value = newData?.state ?? [];
+      indexLocationCityParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.CITY,
+        null,
+        SelectedState.value.map((c) => c.id),
+      )
+      SelectedCity.value = newData?.city ?? [];
+      indexLocationAreasParams.value = new IndexLocationParams(
+        '',
+        0,
+        0,
+        0,
+        LocationEnum.AREA,
+        null,
+        SelectedCity.value.map((c) => c.id),
+      )
+      location.value = newData?.area ?? [];
+      EvaluatingMethod.value = newData?.methods ?? [];
+      SelectedZones.value = newData?.Zones ?? [];
       updateData()
     }
   },
   { immediate: true },
 )
+const SerialNumber = ref()
 
-// Auto-update emit whenever key data changes
-watch(
-  [langs, partner_id, organization_location_ids],
+const fields = ref([
+  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: false },
+])
+
+const setLocations = (data: TitleInterface[]) => {
+  location.value = data
+  updateData()
+}
+const setEvaluatingMethod = (data: TitleInterface[]) => {
+  EvaluatingMethod.value = data
+
+  updateData()
+}
+
+const ZoneIds = ref<number[]>([])
+const SelectedZones = ref<ProjectLocationZonesModel[]>([])
+const UpdateZones = (data: ProjectLocationZonesModel[]) => {
+  ZoneIds.value = []
+
+  data.forEach((d) => {
+    ZoneIds.value = data.flatMap(d => d.zoons.map(z => z.id))
+
+  })
+  updateData()
+}
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+const UpdateDate = (date) => {
+  date.value = date
+  updateData()
+}
+
+
+// Location Handel Start
+
+const indexLocationCountriesController = IndexLocationController.getInstance()
+const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+
+const indexLocationStatesController = IndexLocationController.getInstance()
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationCityController = IndexLocationController.getInstance()
+const indexLocationCityParams = ref<IndexLocationParams | null>(null)
+
+const indexLocationAreasController = IndexLocationController.getInstance()
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
+
+
+
+const SelectedCountry = ref<TitleInterface[]>()
+const SetCountrySelection = (data: TitleInterface[]) => {
+  SelectedCountry.value = data
+  indexLocationStatesParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.STATE,
+    null,
+    data.map((c) => c.id),
+  )
+  updateData()
+}
+
+const SelectedState = ref<TitleInterface[]>()
+const SetStateSelection = (data: TitleInterface[]) => {
+  SelectedState.value = data
+  indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, data.map((c) => c.id))
+  updateData()
+}
+
+const SelectedCity = ref<TitleInterface[]>()
+const SetCitySelection = (data: TitleInterface[]) => {
+  SelectedCity.value = data
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, data.map((c) => c.id))
+  updateData()
+}
+
+const SelectedArea = ref<TitleInterface[]>()
+const SetAreaSelection = (data: TitleInterface[]) => {
+  SelectedArea.value = data
+  location.value = data
+  updateData()
+}
+
+
+// Location Handel End
+
+
+watch(() => langs.value,
   () => {
     updateData()
-  },
-  { deep: true },
-)
+  })
+watch(() => langsDescription.value,
+  () => {
+    updateData()
+  })
 </script>
 
 <template>
+  <div class="col-span-4">
+    <EmployeeHeader :title="`project info`" />
+  </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <SwitchInput :fields="fields" :switch_title="'Auto'" :switch_reverse="true" @update:value="UpdateSerial" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="date">
+      {{ $t('Start Date') }}
+    </label>
+    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
+      :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
+      @update:modelValue="SetCountrySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
+      @update:modelValue="SetStateSelection" />
+  </div>
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City" :type="2"
+      @update:modelValue="SetCitySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('location')"
+      :placeholder="$t('location')" :type="2" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="partner_id"
-      @update:modelValue="setPartnerId"
-      :controller="indexPartnerController"
-      :params="indexPartnerParams"
-      :label="$t('partner')"
-      :placeholder="$t('select_partner')"
-    />
+    <label for="">Zones</label>
+    <AddZoneDialog :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
+  </div>
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
+      :controller="indexMethodsController" :params="indexMethodsParams"
+      :label="$t('the method of evaluating employee performance')" :type="2"
+      :placeholder="$t('choose your method of evaluating employee performance')" />
+  </div>
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <LangTitleInput :label="$t('project objectives')" :langs="langDefault" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
+      :placeholder="`What are the project objectives?`" />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="organization_location_ids"
-      @update:modelValue="setOrganizationLocationIds"
-      :controller="indexOrganizationLocationController"
-      :params="indexOrganizationLocationParams"
-      :label="$t('organization_locations')"
-      :placeholder="$t('organization_locations')"
-      :type="2"
-    />
-  </div>
 </template>

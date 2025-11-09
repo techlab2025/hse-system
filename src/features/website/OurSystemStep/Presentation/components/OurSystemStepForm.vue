@@ -108,11 +108,11 @@ const updateData = () => {
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   langsSubtitle.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const params = props.data?.id
@@ -204,23 +204,26 @@ const setImage = async (data: File | string) => {
 
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
+      :label="$t('subtitle')"
+      :langs="langDefaultSubtitle"
+      :modelValue="langsSubtitle"
+      @update:modelValue="(val) => (langsSubtitle = val)"
+      field-type="subtitle"
+    />
+
+  </div>
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
       :label="$t('description')"
       :langs="langDefaultDescription"
       :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)"
       type="textarea"
+      field-type="description"
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('subtitle')"
-      :langs="langDefaultSubtitle"
-      :modelValue="langsSubtitle"
-      @update:modelValue="(val) => (langsSubtitle = val)"
-      type="textarea"
-    />
-  </div>
+
 
   <div class="col-span-4 md:col-span-4">
     <SingleFileUpload

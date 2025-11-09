@@ -1,0 +1,64 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.zone-form {
+  font-family: 'Light';
+  margin-top: $XlSize;
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize2;
+  width: 100%;
+  .zone-container {
+    width: 100%;
+    // padding-top: $MdSize2;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize3;
+
+    .location-header {
+      .title {
+        color: #9ca3af;
+        font-size: $MdSize2;
+        font-weight: 800;
+        span {
+          color: black;
+        }
+      }
+    }
+
+    .zone-content-container {
+      border: 1px solid #d9dbe9;
+      padding: calc($MdSize2 + 1px);
+      border-radius: calc($XlSize + 2px);
+      width: 100%;
+      @include flex-row(wrap, flex-start, center);
+      gap: $XsSize3;
+      .zone-content {
+        &.active {
+          .zone-title {
+            // border: 2px solid $PrimaryColor;
+            background-color: $PrimaryColor;
+            color: white;
+          }
+        }
+
+        .zone-title {
+          color: #6b7280;
+          font-size: $MdSize2;
+          font-weight: $MdSize2;
+          padding-inline: $XlSize;
+          padding-block: $XsSize2;
+          background-color: #fafafa;
+          border-radius: $SmSize;
+          transition: 0.1s all linear;
+          cursor: pointer;
+        }
+
+        input {
+          display: none;
+        }
+      }
+    }
+  }
+  .confirm-btn {
+    width: 100%;
+  }
+}

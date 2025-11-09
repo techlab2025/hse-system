@@ -152,17 +152,17 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]"
       >
         <router-link to="/organization/organization-location/add" class="btn btn-primary">
           {{ $t('Add_organization_location') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_LOCATION_ALL,
@@ -260,7 +260,7 @@ watch(
         description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

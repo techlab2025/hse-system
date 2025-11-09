@@ -109,9 +109,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_areas_type'),
+    text: t('add_sub_cities_type'),
     icon: IconEdit,
-    link: `/admin/areas/add/${id}`,
+    link: `/admin/cities/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -159,15 +159,15 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
      <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link to="/admin/states/add" class="btn btn-primary">
           {{ $t('Add_Location_State') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -247,7 +247,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

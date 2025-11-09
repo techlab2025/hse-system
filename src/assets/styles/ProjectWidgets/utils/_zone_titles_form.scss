@@ -1,0 +1,37 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.zone-data-container {
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize;
+  font-family: 'Light';
+  .input-wrapper {
+    width: 100%;
+    .input-title {
+      width: 100%;
+      @include flex-justify();
+      .title {
+        font-family: 'Light' !important;
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+      input {
+        background-color: white !important;
+        color: #3d4c5e !important;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        &::placeholder {
+          color: #9ca3af !important;
+        }
+      }
+    }
+  }
+}
+
+.input-wrapper input:not([type='checkbox']):disabled,
+.input-wrapper textarea:disabled {
+  background-color: white !important;
+  color: #9ca3af !important;
+}

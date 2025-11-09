@@ -38,7 +38,7 @@ const indexHashtagController = IndexHashtagController.getInstance()
 const SelectedHashtag = ref<TitleInterface[]>([])
 
 const SetHashtagSelection = (val: TitleInterface[]) => {
-  console.log('Selected Hashtags:', val)
+  // console.log('Selected Hashtags:', val)
   SelectedHashtag.value = val
   updateData()
 }
@@ -134,11 +134,11 @@ const updateData = () => {
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   langsSubtitle.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const hashtagsArray =
@@ -153,13 +153,13 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditBlogParams(
-        props.data.id,
-        translationsParams,
-        image.value,
-        alt.value,
-        hashtagsArray,
-        categoriesArray,
-      )
+      props.data.id,
+      translationsParams,
+      image.value,
+      alt.value,
+      hashtagsArray,
+      categoriesArray,
+    )
     : new AddBlogParams(translationsParams, image.value, alt.value, hashtagsArray, categoriesArray)
 
   emit('update:data', params)
@@ -213,41 +213,8 @@ watch(
       image.value = newData?.image ?? ''
       alt.value = newData?.alt ?? ''
 
-      if (newData?.hashtags?.length) {
-        SelectedHashtag.value = newData.hashtags.map((h: any) => {
-          const matched = langDefault.value.find((l) =>
-            h?.titles.some((t: any) => t.locale === l.locale),
-          )
-
-          return new TitleInterface({
-            id: h?.id,
-            title:
-              h?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
-              h?.titles?.title ||
-              'No Title',
-          })
-        })
-      } else {
-        SelectedHashtag.value = []
-      }
-
-      if (newData?.categories?.length) {
-        SelectedCategory.value = newData.categories.map((c: any) => {
-          const matched = langDefault.value.find((l) =>
-            c?.titles.some((t: any) => t.locale === l.locale),
-          )
-
-          return new TitleInterface({
-            id: c?.id,
-            title:
-              c?.titles.find((t: any) => t.locale === matched?.locale)?.title ||
-              c?.titles?.title ||
-              'No Title',
-          })
-        })
-      } else {
-        SelectedCategory.value = []
-      }
+      SelectedHashtag.value = newData?.hashtags
+      SelectedCategory.value = newData?.categories
 
       updateData()
     }
@@ -274,40 +241,20 @@ const setImage = async (data: File | string) => {
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('subtitle')"
-      :langs="langDefaultSubtitle"
-      :modelValue="langsSubtitle"
-      @update:modelValue="(val) => (langsSubtitle = val)"
-    />
+    <LangTitleInput :label="$t('subtitle')" :langs="langDefaultSubtitle" :modelValue="langsSubtitle"
+      @update:modelValue="(val) => (langsSubtitle = val)" field-type="subtitle" />
   </div>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput
-      :label="$t('description')"
-      :langs="langDefaultDescription"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      type="textarea"
-    />
+    <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea" />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      :isCrop="true"
-      :aspectRatio="872 / 433"
-      placeholder="Select image"
-    />
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" :isCrop="true"
+      :aspectRatio="872 / 433" placeholder="Select image" />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
@@ -316,28 +263,13 @@ const setImage = async (data: File | string) => {
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :controller="indexHashtagController"
-      :params="indexHashtagParams"
-      label="Hashtag"
-      id="Hashtag"
-      placeholder="Selected Hashtag"
-      :type="2"
-      :modelValue="SelectedHashtag"
-      @update:modelValue="SetHashtagSelection"
-    />
+    <CustomSelectInput :controller="indexHashtagController" :params="indexHashtagParams" label="Hashtag" id="Hashtag"
+      placeholder="Selected Hashtag" :type="2" :modelValue="SelectedHashtag" @update:modelValue="SetHashtagSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :controller="indexCategoryController"
-      :params="indexCategoryParams"
-      label="Category"
-      id="Category"
-      placeholder="Selected Category"
-      :type="2"
-      :modelValue="SelectedCategory"
-      @update:modelValue="SetCategorySelection"
-    />
+    <CustomSelectInput :controller="indexCategoryController" :params="indexCategoryParams" label="Category"
+      id="Category" placeholder="Selected Category" :type="2" :modelValue="SelectedCategory"
+      @update:modelValue="SetCategorySelection" />
   </div>
 </template>

@@ -1,0 +1,16 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.main-objective {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XlSize;
+  padding: $MdSize;
+  font-family: 'Regular';
+  background-color: #fafafacc;
+  border-radius: $XlSize;
+  width: 100%;
+
+  .objective-details {
+    width: 100%;
+  }
+}

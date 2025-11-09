@@ -1,0 +1,71 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.emoloyees-details {
+  background-color: #fcfcfc;
+  padding: $SmSize;
+  .card-header {
+    @include flex-row(nowrap, space-between, center);
+
+    .card-actions {
+      @include flex-row(nowrap, flex-end, center);
+      gap: $MdSize;
+      button,
+      a {
+        padding-inline: calc($XlSize + 2px);
+        padding-block: $XsSize3;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        border-radius: calc($XlSize3 + 16px);
+
+        &.edit-btn {
+          background-color: #1d4ed80f;
+          border: 1px solid $PrimaryColor;
+          color: $PrimaryColor;
+        }
+        &.create-btn {
+          background-color: $PrimaryColor;
+          color: white;
+        }
+        &.add-btn {
+          background-color: #041953;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .employee-hr {
+    margin-block: $MdSize2;
+    border-style: dashed;
+    border-color: #dce3ef;
+  }
+  .employees-section {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize2;
+    margin-top: $XsSize2;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: $XsSize3;
+
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
+    .member-card {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+    }
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  }
+}

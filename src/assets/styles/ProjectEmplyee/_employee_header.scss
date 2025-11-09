@@ -1,0 +1,63 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.employee-header {
+  @include flex-column(nowrap, flex-start, flex-start);
+  padding: $MdSize;
+  background: #f7f9fc33;
+  font-family: 'Regular';
+  gap: $XsSize4;
+  position: relative;
+  overflow: hidden;
+  border-radius: $XlSize;
+
+  .left-header-background {
+    position: absolute;
+    left: 0px;
+    top: 0;
+    height: 100%;
+    scale: 1.2;
+    @include flex-center();
+    .left-blue-background {
+      opacity: 0.2;
+    }
+    .left-yellow-background {
+      position: relative;
+      left: -280px;
+      opacity: 0.2;
+    }
+  }
+
+  .right-header-background {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    scale: 1.2;
+    @include flex-center();
+    .right-yellow-background {
+      position: relative;
+      right: -280px;
+      opacity: 0.2;
+    }
+    .right-blue-background {
+      opacity: 0.2;
+      rotate: 180deg;
+    }
+  }
+
+  .title {
+    color: $PrimaryColor;
+    font-size: calc($XlSize + 2px);
+    font-weight: $BaseFontWeightBold;
+    z-index: 999;
+    text-transform: capitalize;
+  }
+
+  .subtitle {
+    color: #9ca3af;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    z-index: 999;
+  }
+}

@@ -1,0 +1,50 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.checkbox-button {
+  @include flex-row(nowrap, space-between, center);
+  background-color: $CheckboxBg;
+  width: 100%;
+  padding: $XlSize;
+  border-radius: $XlSize;
+  font-family: 'Regular';
+  position: relative;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border-left: 3px solid #8886ff;
+  @media (max-width: 768px) {
+    @include flex-column(nowrap, center, center);
+    gap: $XsSize;
+  }
+  .checkbox-data {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize4;
+    @media (max-width: 768px) {
+      @include flex-column(nowrap, center, center);
+    }
+
+    img {
+      max-width: 20px;
+      max-height: 20px;
+    }
+
+    .title {
+      color: #121212;
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize2;
+      @media (max-width: 768px) {
+        text-align: center;
+      }
+    }
+  }
+
+  .p-checkbox-box {
+    border-radius: 3px !important;
+    svg {
+      display: block !important;
+      width: 15px !important;
+      height: 15px !important;
+      margin: auto !important;
+      color: white !important;
+    }
+  }
+}

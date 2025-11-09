@@ -57,8 +57,8 @@ type ImageValue = string | { file?: File; id?: number }
 // ---------- State ----------
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 
-const langsQuestion = ref<{ locale: string; icon?: any; title: string }[]>([])
-const langsAnswer = ref<{ locale: string; icon?: any; title: string }[]>([])
+const langsQuestion = ref<{ locale: string; title?: any; question: string }[]>([])
+const langsAnswer = ref<{ locale: string; title?: any; answer: string }[]>([])
 
 const image = ref<ImageValue>('')
 const alt = ref<string>('')
@@ -117,15 +117,16 @@ onMounted(async () => {
 const updateData = () => {
   const translationsParams = new TranslationsParams()
 
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
+  // langs.value.forEach((lang) => {
+  //   translationsParams.setTranslation('title', lang.locale, lang.title)
+  // })
 
   langsQuestion.value.forEach((lang) => {
-    translationsParams.setTranslation('question', lang.locale, lang.title)
+    translationsParams.setTranslation('question', lang.locale, lang.question)
   })
+
   langsAnswer.value.forEach((lang) => {
-    translationsParams.setTranslation('answer', lang.locale, lang.title)
+    translationsParams.setTranslation('answer', lang.locale, lang.answer)
   })
 
   const params = props.data?.id
@@ -186,22 +187,12 @@ watch(
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('question')"
-      :langs="langDefaultQuestion"
-      :modelValue="langsQuestion"
-      @update:modelValue="(val) => (langsQuestion = val)"
-      type="textarea"
-    />
+    <LangTitleInput :label="$t('question')" :langs="langDefaultQuestion" :modelValue="langsQuestion"
+      @update:modelValue="(val) => (langsQuestion = val)" type="textarea" field-type="question" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :label="$t('answer')"
-      :langs="langDefaultAnswer"
-      :modelValue="langsAnswer"
-      @update:modelValue="(val) => (langsAnswer = val)"
-      type="textarea"
-    />
+    <LangTitleInput :label="$t('answer')" :langs="langDefaultAnswer" :modelValue="langsAnswer"
+      @update:modelValue="(val) => (langsAnswer = val)" type="textarea" field-type="answer" />
   </div>
 </template>

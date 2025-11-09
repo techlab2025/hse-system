@@ -170,17 +170,17 @@ const changeStatusSystemComponent = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[PermissionsEnum.WEBSITE, PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE]"
       >
         <router-link to="/admin/system_components/add" class="btn btn-primary">
           {{ $t('Add_Service_component') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
@@ -212,7 +212,7 @@ const changeStatusSystemComponent = async (id: number) => {
                 <td data-label="title">{{ wordSlice(item.title) }}</td>
                 <td data-label="subtitle">{{ wordSlice(item.subtitle) || '--' }}</td>
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
@@ -224,7 +224,7 @@ const changeStatusSystemComponent = async (id: number) => {
                       binary
                       @update:model-value="changeStatusSystemComponent(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusService-->
@@ -278,7 +278,7 @@ const changeStatusSystemComponent = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

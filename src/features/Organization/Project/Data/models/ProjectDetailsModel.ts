@@ -1,47 +1,85 @@
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params.ts'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+} from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type PartnerModel from '@/features/organization/Partner/Data/models/PartnerModel'
-import type PartnerDetailsModel from '@/features/organization/Partner/Data/models/PartnerDetailsModel'
+import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
+import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
+import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
+import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
+import ProjectLocationZonesModel from './ProjectLocationZones'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class ProjectDetailsModel {
   public id: number
   public titles: TitleLocale[]
+  public descriptions: DescriptionLocale[]
   public partner: TitleInterface
-  public organizationLocation: TitleInterface[]
+  public locations: LocationDetailsModel[]
+  public SerialNumber: string
+  public startDate: string
+  public country: TitleInterface | null
+  public state: TitleInterface | null
+  public city: TitleInterface | null
+  public area: TitleInterface | null
+  public Zones: ProjectLocationZonesModel[] | null
+  public methods: TitleInterface | null
 
   constructor(
     id: number,
     titles: TitleLocale[],
+    descriptions: DescriptionLocale[],
     partner: TitleInterface,
-    organizationLocation: TitleInterface[],
+    locations: LocationDetailsModel[],
+    SerialNumber: string,
+    startDate: string,
+    country: TitleInterface | null,
+    state: TitleInterface | null,
+    city: TitleInterface | null,
+    area: TitleInterface | null,
+    Zones: ProjectLocationZonesModel[] | null,
+    methods: TitleInterface | null,
   ) {
     this.id = id
     this.titles = titles
+    this.descriptions = descriptions
     this.partner = partner
-    this.organizationLocation = organizationLocation
+    this.locations = locations
+    this.SerialNumber = SerialNumber
+    this.startDate = startDate
+    this.country = country
+    this.state = state
+    this.city = city
+    this.area = area
+    this.Zones = Zones
+    this.methods = methods
   }
 
   static fromMap(data: any): ProjectDetailsModel {
     return new ProjectDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
+      TranslationsParams.fromMap([], data.descriptions).descriptions,
       this.getTitle(data.partner),
-      data.organization_locations?.length > 0
-        ? data.organization_locations?.map((location) => this.getTitle(location))
-        : [],
+      data.locations,
+      data.serial_number,
+      data.start_date,
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
+      data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
+      data.locations.map((item: any) => ProjectLocationZonesModel.fromMap(item)),
+      data.methods.map((item: any) => this.getTitle(item)),
     )
   }
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
-
     // console.log(data, 'data in get title');
-
 
     return new TitleInterface({
       id: data?.id,
@@ -49,5 +87,32 @@ export default class ProjectDetailsModel {
     })
   }
 
+  static getLocationsWithKeys(
+    data: LocationData | null,
+    level: number,
+    type: LocationEnum,
+  ): TitleInterface | null {
+    if (!data || level < 1) return null
 
+    let current: LocationData | null = data
+    if (current?.type === type) return this.getTitle(current)
+    for (let i = 1; i <= level; i++) {
+      // console.log(data, 'data');
+
+      current = current?.parent ?? null
+      if (current?.type === type) {
+        return this.getTitle(current)
+      }
+
+      if (!current) return null
+    }
+    return this.getTitle(current)
+  }
+}
+
+type LocationData = {
+  id: number
+  titles: TitleLocale[]
+  parent?: LocationData | null
+  type: number
 }

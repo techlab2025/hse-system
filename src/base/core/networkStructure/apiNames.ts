@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -50,14 +50,48 @@ class ApiNames {
   public EditPartner = this.prefix + 'update_partner'
   public DeletePartner = this.prefix + 'delete_partner'
 
-  // admin
 
+
+  // location hierarchy
+  public CreateLocationHierarchy = this.prefix + 'create_project_location_hierarchy'
+  public IndexLocationHierarchy = this.prefix + 'fetch_project_locations_hierarchies'
+  public ShowLocationHierarchy = this.prefix + 'fetch_location_details'
+  // public EditLocationHierarchy = this.prefix + 'update_location'
+  // public DeleteLocationHierarchy = this.prefix + 'delete_location'
+
+
+  // HierarchyEmployee
+
+  public CreateHierarchyEmployee = this.prefix + 'create_project_location_hierarchy_employee'
+  public IndexHierarchyEmployee = this.prefix + 'fetch_project_location_hierarchy_employees'
+  public ShowHierarchyEmployee = this.prefix + 'fetch_hierarchy_employee_details'
+  public EditHierarchyEmployee = this.prefix + 'update_hierarchy_employee'
+  public DeleteHierarchyEmployee = this.prefix + 'delete_hierarchy_employee'
+
+
+  public IndexProjectLocation = this.prefix + 'fetch_project_locations'
+
+  // admin
   public CreateAdmin = this.prefix + 'create_admin'
   public IndexAdmin = this.prefix + 'fetch_admins'
   public ShowAdmin = this.prefix + 'fetch_admin_details'
   public EditAdmin = this.prefix + 'update_admin'
   public DeleteAdmin = this.prefix + 'delete_admin'
 
+  // methods
+
+  public CreateMethod = this.prefix + 'create_method'
+  public IndexMethod = this.prefix + 'fetch_methods'
+  public ShowMethod = this.prefix + 'fetch_method_details'
+  public EditMethod = this.prefix + 'update_method'
+  public DeleteMethod = this.prefix + 'delete_method'
+
+
+  public CreateTeam = this.prefix + 'create_team'
+  public IndexTeam = this.prefix + 'fetch_teams'
+  public ShowTeam = this.prefix + 'fetch_team_details'
+  public EditTeam = this.prefix + 'update_team'
+  public DeleteTeam = this.prefix + 'delete_team'
 
 
 
@@ -67,8 +101,6 @@ class ApiNames {
   public ShowPermission = this.prefix + 'show_permissions'
   public EditPermission = this.prefix + 'create_permissions'
   public DeletePermission = this.prefix + 'delete_permission'
-
-
 
   // OrganizationLocation
 
@@ -409,11 +441,26 @@ class ApiNames {
   // public DisHerikaly =this.prefix + 'disable_project_type'
 
   // ProjectZone
-  public CreateProjectZone = this.prefix + 'create_project_zone'
-  public IndexProjectZone = this.prefix + 'fetch_project_zones'
-  public ShowProjectZone = this.prefix + 'fetch_project_zone_details'
-  public EditProjectZone = this.prefix + 'update_project_zone'
-  public DeleteProjectZone = this.prefix + 'delete_project_zone'
+  public CreateProjectZone = this.prefix + 'create_zoon'
+  public IndexProjectZone = this.prefix + 'fetch_zoons'
+  public ShowProjectZone = this.prefix + 'fetch_zoon_details'
+  public EditProjectZone = this.prefix + 'update_zoon'
+  public DeleteProjectZone = this.prefix + 'delete_zoon'
+
+  // ProjectZone
+  public CreateTemplateItem = this.prefix + 'create_template_item'
+  public IndexTemplateItem = this.prefix + 'fetch_template_items'
+  public ShowTemplateItem = this.prefix + 'fetch_template_item_details'
+  public EditTemplateItem = this.prefix + 'update_template_item'
+  public DeleteTemplateItem = this.prefix + 'delete_template_item'
+
+  public FetchProjectLocationEmployee = this.prefix + 'fetch_project_location_employees'
+  public FetchProjectLocationsEmployee = this.prefix + 'fetch_project_locations_employees'
+
+  public FetchProjectLocationTeamEmployees = this.prefix + 'fetch_project_location_team_employees'
+
+  public IndexProjectLocationZones = this.prefix + 'fetch_zoons_by_location_ids'
+  public ProjectCustomLocation = this.prefix + 'fetch_zoons_by_location_ids'
 }
 
 export { ApiNames }

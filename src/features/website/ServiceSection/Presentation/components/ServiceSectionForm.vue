@@ -30,8 +30,8 @@ const indexServiceController = IndexServiceController.getInstance()
 const indexServiceParams = new IndexServiceParams('', 1, 10, 1)
 
 const langsTitle = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
+const langsDescription = ref<{ locale: string; description: string }[]>([])
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
@@ -101,11 +101,11 @@ const updateData = () => {
   })
 
   langsSubTitle.value.forEach((lang) => {
-    mainTranslations.setTranslation('subtitle', lang.locale, lang.title)
+    mainTranslations.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   langsDescription.value.forEach((lang) => {
-    mainTranslations.setTranslation('description', lang.locale, lang.title)
+    mainTranslations.setTranslation('description', lang.locale, lang.description)
   })
 
   const itemsParams = items.value.map((item) => {
@@ -241,6 +241,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsSubTitle"
       :label="$t('sub_title')"
       @update:modelValue="setLangsSubTitle"
+      field-type="subtitle"
     />
   </div>
 
@@ -262,6 +263,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsDescription"
       :label="$t('Description')"
       @update:modelValue="setLangsDescription"
+      field-type="description"
     />
   </div>
 

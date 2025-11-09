@@ -40,8 +40,8 @@ const alt = ref<string>('')
 // actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([])
 
-const langsSub = ref<{ locale: string; title: string }[]>([])
-const langsDescription = ref<{ locale: string; title: string }[]>([])
+const langsSub = ref<{ locale: string; subtitle: string }[]>([])
+const langsDescription = ref<{ locale: string; description: string }[]>([])
 
 // const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
@@ -97,11 +97,11 @@ const updateData = () => {
   })
 
   langsSub.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const params = props.data?.id
@@ -194,6 +194,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsSub"
       :label="$t('sub_title')"
       @update:modelValue="setLangsSub"
+      field-type="subtitle"
     />
   </div>
 
@@ -204,6 +205,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langsDescription"
       :label="$t('description')"
       @update:modelValue="setLangsDescription"
+      field-type="description"
     />
   </div>
 

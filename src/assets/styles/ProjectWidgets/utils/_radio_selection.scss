@@ -1,0 +1,108 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.radio-selection-containre {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize;
+  width: 100%;
+  margin-top: $XlSize;
+  font-family: "Light";
+
+  .radio-selection-header {
+    @include flex-justify();
+    width: 100%;
+    .title {
+      color: #202020;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .checkbox-header {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      .checkbox {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize2;
+        cursor: pointer;
+        .checkbox-label {
+          color: #0f1927;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+
+  .selection-container {
+    @include flex-row(wrap, flex-start, center);
+    gap: calc($XlSize3 + 10px);
+    width: 100%;
+
+    &.selection-image-container {
+      label {
+        img {
+          cursor: pointer;
+        }
+      }
+      input {
+        display: none;
+      }
+      .selection {
+        transition: 0.2s all linear;
+        border-radius: 10px;
+        &.selected {
+          border: 1px solid $PrimaryColor;
+          border-radius: 10px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        &.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
+      }
+    }
+
+    .selection {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      cursor: pointer;
+
+      &:not(.selected) {
+        opacity: 0.6;
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      label {
+        color: #0f1927;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box {
+    border-color: $PrimaryColor !important;
+    background-color: $PrimaryColor !important;
+  }
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    border-color: $PrimaryColor !important;
+    background-color: $PrimaryColor !important;
+  }
+
+  .p-checkbox-box {
+    border-radius: 5px !important;
+    svg {
+      fill: white !important;
+    }
+  }
+  .p-checkbox-checked .p-checkbox-box svg {
+    fill: white !important;
+    display: block !important;
+  }
+}

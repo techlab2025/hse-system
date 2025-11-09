@@ -109,9 +109,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_states_type'),
+    text: t('add_sub_areas_type'),
     icon: IconEdit,
-    link: `/admin/states/add/${id}`,
+    link: `/admin/areas/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -148,35 +148,27 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHazardType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link to="/admin/cities/add" class="btn btn-primary">
           {{ $t('Add_Location_city') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.LOCATION_ALL,
-      PermissionsEnum.LOCATION_DELETE,
-      PermissionsEnum.LOCATION_FETCH,
-      PermissionsEnum.LOCATION_UPDATE,
-      PermissionsEnum.LOCATION_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LOCATION_ALL,
+    PermissionsEnum.LOCATION_DELETE,
+    PermissionsEnum.LOCATION_FETCH,
+    PermissionsEnum.LOCATION_UPDATE,
+    PermissionsEnum.LOCATION_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -202,20 +194,13 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
                 <td data-label="email">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteLocation)"
-                    @delete="deleteLocation(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteLocation)" @delete="deleteLocation(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -224,30 +209,22 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
+        <DataEmpty :link="`/add/HazardType`" addText="Add HazardType"
           description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
-        />
+          title="..ops! You have No HazardTypeuages" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/add/HazardType`"
-          addText="Add HazardType"
+        <DataFailed :link="`/add/HazardType`" addText="Add HazardType"
           description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages"
-        />
+          title="..ops! You have No HazardTypeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

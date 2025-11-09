@@ -518,6 +518,20 @@ export const adminPermissions: PermissionItem = {
             code: PermissionsEnum.SETTING,
             label: "Settings",
             permissions: [
+                // Admin
+                {
+                    key: PermissionsEnum.ADMIN_ALL,
+                    code: PermissionsEnum.ADMIN_ALL,
+                    label: "Admin",
+                    permissions: [
+                        { key: PermissionsEnum.ADMIN_ALL, code: PermissionsEnum.ADMIN_ALL, label: "All" },
+                        { key: PermissionsEnum.ADMIN_FETCH, code: PermissionsEnum.ADMIN_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.ADMIN_DETAILS, code: PermissionsEnum.ADMIN_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.ADMIN_CREATE, code: PermissionsEnum.ADMIN_CREATE, label: "Create" },
+                        { key: PermissionsEnum.ADMIN_UPDATE, code: PermissionsEnum.ADMIN_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.ADMIN_DELETE, code: PermissionsEnum.ADMIN_DELETE, label: "Delete" },
+                    ],
+                },
                 // Language
                 {
                     key: PermissionsEnum.LANGUAGE_ALL,
@@ -547,6 +561,38 @@ export const adminPermissions: PermissionItem = {
                         { key: PermissionsEnum.LOCATION_DELETE, code: PermissionsEnum.LOCATION_DELETE, label: "Delete" },
                     ],
                 },
+
+                // methods
+                {
+                    key: PermissionsEnum.METHOD_ALL,
+                    code: PermissionsEnum.METHOD_ALL,
+                    label: "Method",
+                    permissions: [
+                        { key: PermissionsEnum.METHOD_ALL, code: PermissionsEnum.METHOD_ALL, label: "All" },
+                        { key: PermissionsEnum.METHOD_FETCH, code: PermissionsEnum.METHOD_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.METHOD_DETAILS, code: PermissionsEnum.METHOD_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.METHOD_CREATE, code: PermissionsEnum.METHOD_CREATE, label: "Create" },
+                        { key: PermissionsEnum.METHOD_UPDATE, code: PermissionsEnum.METHOD_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.METHOD_DELETE, code: PermissionsEnum.METHOD_DELETE, label: "Delete" },
+
+                    ],
+                },
+                // team
+                {
+                    key: PermissionsEnum.TEAM_ALL,
+                    code: PermissionsEnum.TEAM_ALL,
+                    label: "Team",
+                    permissions: [
+                        { key: PermissionsEnum.TEAM_ALL, code: PermissionsEnum.TEAM_ALL, label: "All" },
+                        { key: PermissionsEnum.TEAM_FETCH, code: PermissionsEnum.TEAM_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.TEAM_DETAILS, code: PermissionsEnum.TEAM_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.TEAM_CREATE, code: PermissionsEnum.TEAM_CREATE, label: "Create" },
+                        { key: PermissionsEnum.TEAM_UPDATE, code: PermissionsEnum.TEAM_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.TEAM_DELETE, code: PermissionsEnum.TEAM_DELETE, label: "Delete" },
+
+                    ],
+                },
+
 
                 // Industry
                 {
@@ -680,6 +726,17 @@ export const adminPermissions: PermissionItem = {
                         { key: PermissionsEnum.CERTIFICATE_CREATE, code: PermissionsEnum.CERTIFICATE_CREATE, label: "Create" },
                         { key: PermissionsEnum.CERTIFICATE_UPDATE, code: PermissionsEnum.CERTIFICATE_UPDATE, label: "Update" },
                         { key: PermissionsEnum.CERTIFICATE_DELETE, code: PermissionsEnum.CERTIFICATE_DELETE, label: "Delete" },
+                    ],
+                },
+
+                // Permission
+                {
+                    key: PermissionsEnum.CREATE_PERMISSION,
+                    code: PermissionsEnum.CREATE_PERMISSION,
+                    label: "Permission",
+                    permissions: [
+                        { key: PermissionsEnum.CREATE_PERMISSION, code: PermissionsEnum.CREATE_PERMISSION, label: "Create" },
+
                     ],
                 },
 

@@ -85,7 +85,7 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
   subtitlelangs.value.forEach((lang) => {
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title)
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle)
   })
 
   const itemsParams = items.value.map((item) => {
@@ -177,6 +177,7 @@ watch(
       :langs="langDefault"
       :modelValue="subtitlelangs"
       @update:modelValue="setSubtitleLangs"
+      field-type="subtitle"
     />
   </div>
 

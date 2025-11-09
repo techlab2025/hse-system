@@ -1,0 +1,67 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.equipment-card {
+  @include flex-column(nowrap, flex-start, flex-start);
+  width: 100%;
+  font-family: 'Regular';
+  background-color: white;
+  border-radius: $XlSize;
+  padding: $XsSize;
+
+  .equipment-card-header-container {
+    @include flex-row(nowrap, space-between, center);
+    width: 100%;
+
+    .equipment-card-header {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      width: 100%;
+
+      .equipment-card-header-text {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: 2px;
+        .title {
+          color: #121212;
+          font-weight: $BaseFontWeightBold;
+          font-size: $MdSize2;
+        }
+
+        .subtitle {
+          color: #6b7280;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          span {
+            color: #121212;
+          }
+        }
+      }
+    }
+  }
+
+  .equipment-card-actions {
+    @include flex-row(nowrap, flex-end, center);
+    gap: $XsSize3;
+  }
+
+  .equipment-hr {
+    border: none;
+    height: 1px;
+    margin-block: $MdSize;
+    background-color: #f1f3f5;
+    width: 100%;
+  }
+
+  .tool-cards {
+    @include grid(
+      2,
+      20px,
+      (
+        1440px: 2,
+        900px: 1,
+      )
+    );
+    gap: 10px;
+  }
+}

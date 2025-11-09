@@ -25,7 +25,7 @@ const setParams = (data: Params) => {
     <ProjectForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full">Add</button>
     </div>
   </form>
 </template>

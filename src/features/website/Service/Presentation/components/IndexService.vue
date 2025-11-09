@@ -22,7 +22,7 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 // import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexServiceController from '../controllers/indexServiceController'
 import IndexServiceParams from '../../Core/params/indexServiceParams'
 import DeleteServiceParams from '../../Core/params/deleteServiceParams'
@@ -160,15 +160,15 @@ const changeStatusService = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_CREATE]">
         <router-link to="/admin/services/add" class="btn btn-primary">
           {{ $t('Add_Service') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_ALL,
@@ -208,7 +208,7 @@ const changeStatusService = async (id: number) => {
                 </td> -->
 
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.HOME_VIEW_PRICING_ALL,
@@ -220,7 +220,7 @@ const changeStatusService = async (id: number) => {
                       binary
                       @update:model-value="changeStatusService(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -275,7 +275,7 @@ const changeStatusService = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

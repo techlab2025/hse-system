@@ -163,15 +163,15 @@ const changeStatusServiceLog = async (id: number) => {
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_LOG_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.SERVICE_LOG_CREATE]">
         <router-link to="/admin/service_logs/add" class="btn btn-primary">
           {{ $t('Add_Service_section') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.WEBSITE,
       PermissionsEnum.SERVICE_LOG_ALL,
@@ -201,7 +201,7 @@ const changeStatusServiceLog = async (id: number) => {
                 <td data-label="title">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="status">
-                  <permission-builder
+                  <PermissionBuilder
                     :code="[
                       PermissionsEnum.WEBSITE,
                       PermissionsEnum.SERVICE_LOG_ALL,
@@ -213,7 +213,7 @@ const changeStatusServiceLog = async (id: number) => {
                       binary
                       @update:model-value="changeStatusServiceLog(item.id)"
                     />
-                  </permission-builder>
+                  </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
@@ -268,7 +268,7 @@ const changeStatusServiceLog = async (id: number) => {
         description="Sorry .. You have no Service .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

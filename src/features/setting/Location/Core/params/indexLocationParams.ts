@@ -10,6 +10,7 @@ export default class IndexLocationParams implements Params {
   public pageNumber: number = 10
   public type: LocationEnum
   public id?: number
+  public ids?: number[]
   // public code?: LangEnum
 
   constructor(
@@ -19,6 +20,8 @@ export default class IndexLocationParams implements Params {
     withPage: number = 1,
     type: number,
     id?: number,
+    ids?: number[],
+
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +30,7 @@ export default class IndexLocationParams implements Params {
     this.perPage = perPage
     this.id = id
     this.type = type
+    this.ids = ids
     // this.code = code
   }
 
@@ -37,6 +41,7 @@ export default class IndexLocationParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+    if (this.ids) data['parent_id'] = this.ids
     data['type'] = this.type
     // if (this.code) data['code'] = this.code
     return data

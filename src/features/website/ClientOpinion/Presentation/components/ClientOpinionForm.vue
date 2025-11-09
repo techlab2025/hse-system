@@ -55,7 +55,7 @@ const langs = ref<{ locale: string; title: string }[]>([
 const image = ref<string>('')
 
 // default available ClientOpinions
-const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: string; description: string }[]>([])
 
 const fetchLang = async (
   query: string = '',
@@ -72,7 +72,7 @@ const fetchLang = async (
     // map backend ClientOpinions into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
+      description: '', // empty initially
       // if you already have icons mapped, use ClientOpinionsMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
@@ -81,12 +81,12 @@ const fetchLang = async (
       {
         locale: 'en',
         icon: USA,
-        title: '',
+        description: '',
       },
       {
         locale: 'ar',
         icon: SA,
-        title: '',
+        description: '',
       },
     ]
   }
@@ -100,7 +100,7 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   const params = props.data?.id
@@ -195,6 +195,7 @@ const setImage = async (data: File | string) => {
       :modelValue="langs"
       :label="$t('description')"
       @update:modelValue="setLangs"
+      field-type="description"
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

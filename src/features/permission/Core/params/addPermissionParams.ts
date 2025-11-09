@@ -4,7 +4,7 @@ import type { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organizatio
 export default class AddPermissionParams implements Params {
   type: OrganizationTypeEnum
   type_id: number
-  permission: string[]
+  permission:  string[]
   constructor(
     type: OrganizationTypeEnum,
     type_id: number,

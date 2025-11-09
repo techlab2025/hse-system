@@ -1,0 +1,109 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.widgets-form {
+  margin-top: $XsSize;
+  font-family: 'Regular';
+  // .widgets-container {
+  //   grid-template-rows: 1fr;
+  //   max-width: 100%;
+  //   @include grid(
+  //     5,
+  //     20px,
+  //     (
+  //       1400: 5,
+  //       1000: 4,
+  //       768: 3,
+  //       400: 2,
+  //     )
+  //   );
+  //   gap: $XlSize;
+
+  //   &.scroll-mode {
+  //     display: flex;
+  //     flex-wrap: nowrap;
+  //     overflow-x: auto;
+  //     overflow-y: hidden;
+  //     padding-bottom: 12px;
+
+  //     /* Custom scrollbar styling */
+  //     &::-webkit-scrollbar {
+  //       height: 8px;
+  //     }
+
+  //     &::-webkit-scrollbar-track {
+  //       background: #f1f1f1;
+  //       border-radius: 10px;
+  //     }
+
+  //     &::-webkit-scrollbar-thumb {
+  //       background: #888;
+  //       border-radius: 10px;
+  //     }
+
+  //     &::-webkit-scrollbar-thumb:hover {
+  //       background: #555;
+  //     }
+
+  //     .widgets-types {
+  //       flex: 0 0 auto;
+  //       min-width: 200px;
+  //     }
+  //   }
+
+  //   .widgets-types {
+  //     background-color: #fafafa;
+  //     @include flex-column(nowrap, center, center);
+  //     gap: $XlSize;
+  //     border-radius: $XsSize;
+  //     transition: 0.1s all linear;
+  //     cursor: pointer;
+  //     &.active {
+  //       border: 1px solid $PrimaryColor;
+  //     }
+
+  //     .types {
+  //       padding: $XsSize2;
+  //       input {
+  //         display: none;
+  //       }
+  //     }
+
+  //     .title {
+  //       color: #041953;
+  //       font-size: $XsSize;
+  //       font-weight: $BaseFontSemiBoldWeight;
+  //       text-align: center;
+  //       background-color: white;
+  //       padding: $XsSize4 $XsSize2;
+  //       border-radius: $SmSize;
+  //       width: 100%;
+  //     }
+  //   }
+
+  //   .add-widget {
+  //     padding: $XsSize2;
+  //     border-radius: $XsSize;
+  //     background-color: #1d4ed80f;
+  //     border-radius: $XsSize;
+  //     @include flex-column(nowrap, flex-start, flex-start);
+  //     gap: $XsSize2;
+  //     cursor: pointer;
+  //     &.hide {
+  //       display: none;
+  //     }
+  //     .title {
+  //       color: $PrimaryColor;
+  //       font-size: $MdSize;
+  //       font-weight: $BaseFontWeightBold;
+  //       text-align: start;
+  //     }
+  //     .subtitle {
+  //       color: #9ca3af;
+  //       font-size: $XsSize;
+  //       font-weight: $BaseFontMediumWeight;
+  //       max-width: 120px;
+  //     }
+  //   }
+  // }
+}

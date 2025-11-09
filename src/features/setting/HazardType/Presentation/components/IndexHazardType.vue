@@ -101,9 +101,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     ],
   },
   // {
@@ -132,9 +134,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     action: () => deleteHazardType(id),
     permission: [
       PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     ],
   },
 ]
@@ -158,11 +162,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
+      <PermissionBuilder
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
         ]"
       >
         <router-link
@@ -171,11 +176,11 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         >
           {{ $t('Add_HazardType') }}
         </router-link>
-      </permission-builder>
+      </PermissionBuilder>
     </div>
   </div>
 
-  <permission-builder
+  <PermissionBuilder
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -184,6 +189,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       PermissionsEnum.HAZARD_TYPE_FETCH,
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.HAZARD_TYPE_CREATE,
+
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -275,7 +286,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
-  </permission-builder>
+  </PermissionBuilder>
 </template>
 
 <style scoped></style>

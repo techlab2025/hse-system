@@ -52,12 +52,11 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
         if (this.state.value.data) {
           userStore.setUser(this.state.value.data as UserModel);
-
-          localStorage.setItem("token", JSON.stringify(this.state.value.data.apiToken));
+          const apiToken = this.state.value.data.apiToken;
+          localStorage.setItem("token", JSON.stringify(apiToken));
           localStorage.setItem("user", JSON.stringify(this.state.value.data));
-          axios.defaults.headers.common["Authorization"] = `Bearer ${this.state.value.data.apiToken}`;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${apiToken}`;
         }
-
         await router.push({
           path: activeType === OrganizationTypeEnum.ADMIN ? "/admin" : "/organization",
         });

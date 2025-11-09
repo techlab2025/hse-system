@@ -7,8 +7,8 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+// import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type ServiceDetailsModel from '../../Data/models/ServiceDetailsModel'
 import EditServiceParams from '../../Core/params/editServiceParams'
 import AddServiceParams from '../../Core/params/addServiceParams'
@@ -19,15 +19,15 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: ServiceDetailsModel }>()
 
 // MAIN FIELDS
-const name = ref('')
-const rate = ref(0)
-const date = ref('')
-const alt = ref('')
+// const name = ref('')
+// const rate = ref(0)
+// const date = ref('')
+// const alt = ref('')
 // const image = ref<string | File>('')
 
 const langs = ref<{ locale: string; title: string }[]>([])
-const langsSubTitle = ref<{ locale: string; title: string }[]>([])
-const langsButton = ref<{ locale: string; title: string }[]>([])
+const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
+const langsButton = ref<{ locale: string; description: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 // INCLUDES (only multilingual title)
@@ -72,10 +72,10 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
   langsSubTitle.value.forEach((lang) =>
-    translationsParams.setTranslation('subtitle', lang.locale, lang.title),
+    translationsParams.setTranslation('subtitle', lang.locale, lang.subtitle),
   )
   langsButton.value.forEach((lang) =>
-    translationsParams.setTranslation('description', lang.locale, lang.title),
+    translationsParams.setTranslation('description', lang.locale, lang.description),
   )
 
   const includesParams = includes.value.map((inc) => {
@@ -184,6 +184,7 @@ watch(
       :label="$t('sub_title')"
       type="text"
       @update:modelValue="setLangsSubTitle"
+      field-type="subtitle"
     />
   </div>
 
@@ -194,6 +195,7 @@ watch(
       :label="$t('Description')"
       type="textarea"
       @update:modelValue="setLangsButton"
+      field-type="description"
     />
   </div>
 

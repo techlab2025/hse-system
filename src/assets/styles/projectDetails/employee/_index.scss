@@ -1,0 +1,113 @@
+@import '../../mixins/flex';
+
+.add-employee {
+  width: 100%;
+
+  .submit-btn {
+    width: 100%;
+    margin-top: $MdSize;
+    @include flex(row, nowrap, flex-start, center);
+    gap: $XsSize;
+
+    .btn {
+      padding: $MdSize;
+      flex: 1;
+      color: #fff;
+      background-color: $PrimaryColor;
+      border-radius: 36px;
+      text-align: center;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: $PrimaryColor;
+      }
+
+      &.btn-cancel {
+        flex: 0.25;
+        border: 1px solid rgba(226, 53, 53, 0.4);
+        background: rgba(226, 53, 53, 0.1);
+        color: var(--danger-color);
+
+        &:hover {
+          background: rgba(226, 53, 53, 0.2);
+        }
+      }
+    }
+  }
+
+  .employee-form {
+    margin-top: $XlSize4;
+    width: 100%;
+    background-color: #fbfbfb;
+    padding: $SmSize $XsSize;
+    border-radius: $XlSize;
+    @include flex(column, nowrap, flex-start, flex-start);
+
+    .type {
+      position: relative;
+      width: 100%;
+
+      .art-line {
+        position: relative;
+        margin-block: $SmSize;
+        width: 100%;
+      }
+
+      .location {
+        position: absolute;
+        top: 39%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fbfbfb;
+        // margin-bottom: 1.5rem;
+        border-radius: 50%;
+        @include flex(row, nowrap, center, center);
+        gap: 0.5rem;
+
+        h5 {
+          color: var(--header-page-color);
+          font-family: 'Bold';
+          font-size: $XlSize3;
+        }
+
+        sub {
+          color: #cdcdcd;
+          font-family: 'Regular';
+          font-size: $XsSize;
+        }
+      }
+    }
+
+    .dashed-line {
+      margin-block: $SmSize;
+      width: 100%;
+    }
+
+    .form-employee-wrapper {
+      width: 100%;
+      background-color: var(--BgWhite);
+      padding: $SmSize $XsSize;
+      border-radius: $XlSize;
+    }
+
+    .equipment-form {
+      width: 100%;
+
+      .input-container {
+        margin: 0;
+      }
+    }
+
+    .title {
+      @include flex(row, wrap, flex-start, center);
+      padding-inline: $SmSize;
+      gap: 0.5rem;
+
+      h5 {
+        color: var(--PrimaryColor);
+        font-family: 'Bold';
+        font-size: $XlSize2;
+      }
+    }
+  }
+}

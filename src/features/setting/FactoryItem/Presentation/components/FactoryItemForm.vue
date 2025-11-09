@@ -117,7 +117,7 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(allIndustries.value, 'industry')
+  // console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   const params = props.data?.id
@@ -170,7 +170,7 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries!
+      allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
       factory.value = newData?.factory!
     }
@@ -210,7 +210,7 @@ const setFactory = (data: TitleInterface) => {
       type="checkbox"
       :value="true"
       v-model="allIndustries"
-      :checked="allIndustries"
+
       @change="updateData"
     />
   </div>
