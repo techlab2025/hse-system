@@ -21,7 +21,7 @@ import IndexPartnerController from '@/features/Organization/Partner/Presentation
 import IndexPartnerParams from '@/features/Organization/Partner/Core/params/indexPartnerParams'
 import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
 import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
-import EmployeeHeader from './Employee/EmployeeHeader.vue'
+import PagesHeader from '../../../../../shared/HelpersComponents/PagesHeader.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
@@ -375,7 +375,7 @@ watch(() => langsDescription.value,
 
 <template>
   <div class="col-span-4">
-    <EmployeeHeader :title="`project info`" />
+    <PagesHeader :title="`project info`" />
   </div>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />

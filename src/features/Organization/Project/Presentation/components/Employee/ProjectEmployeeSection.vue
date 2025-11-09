@@ -19,27 +19,32 @@ const id = router.params.project_id
 const fetchProjectLocationsTeamsEmployeeController = FetchProjectLocationsTeamsEmployeeController.getInstance()
 const state = ref(fetchProjectLocationsTeamsEmployeeController.state.value)
 interface TeamMemberInterface {
+  id: number
   img: string
   name: string
   poistion: string
 }
 const TeamsMembers = ref<TeamMemberInterface[]>([
   {
+    id: 1,
     img: EmployeeIcon,
     name: 'mohab',
     poistion: 'manger',
   },
   {
+    id: 2,
     img: EmployeeIcon,
     name: 'mohab',
     poistion: 'manger',
   },
   {
+    id: 3,
     img: EmployeeIcon,
     name: 'mohab',
     poistion: 'manger',
   },
   {
+    id: 4,
     img: EmployeeIcon,
     name: 'mohab',
     poistion: 'manger',
@@ -47,6 +52,7 @@ const TeamsMembers = ref<TeamMemberInterface[]>([
 ])
 
 interface TeamInterface {
+  LocationId: number
   members: number
   teamMembers: {
     img: string
@@ -57,6 +63,7 @@ interface TeamInterface {
 
 const TeamsData = ref<TeamInterface[]>([
   {
+    LocationId: 1,
     members: 10,
     teamMembers: [
       {
@@ -85,6 +92,9 @@ const GetProjectLocationsEmployes = async () => {
   console.log(response, "response");
 }
 
+const DeleteMember = (id: number) => {
+  console.log(id, "delete");
+}
 onMounted(() => {
   GetProjectLocationsEmployes();
 })
@@ -104,7 +114,7 @@ watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState)
         <RouterLink :to="`/organization/project-hierarchy/project/${id}`" class="edit-btn">
           Edit Hierarchy
         </RouterLink>
-        <AddCreateTeam />
+        <AddCreateTeam :LocationId="locationTeam.LocationId" />
         <RouterLink :to="`/organization/project-employee/project/${id}`" class="add-btn">
           Add employee
         </RouterLink>
@@ -112,7 +122,8 @@ watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState)
     </div>
     <hr class="employee-hr" />
     <div class="employees-section">
-      <TeamMemberCard class="employee-card" v-for="(member, index) in TeamsMembers" :key="index" :member="member" />
+      <TeamMemberCard @update:data="DeleteMember(index)" class="employee-card" v-for="(member, index) in TeamsMembers"
+        :key="index" :member="member" />
     </div>
     <div>
       <TeamCard class="employee-card" v-for="(team, index) in TeamsData" :key="index" :team="team" />

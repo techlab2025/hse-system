@@ -110,6 +110,9 @@
 /*<editor-fold desc="ModernTable">*/
 @use './ModernTable/table_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="TreeTable">*/
+@use './TreeTable/tree_table';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

@@ -46,10 +46,10 @@ const deleteZone = (locationId: number, zoneId: number) => {
 const formattedZones = computed(() => {
   if (!Zones.value || Zones.value.length === 0) return []
 
-  return Zones.value.map((item , index) => {
+  return Zones.value.map((item, index) => {
     // console.log(Zones.value[index].location.title, "Zones.value");
     // Zones.value[index].location.title
-    const zoneTitles = id ?  item.zoons
+    const zoneTitles = id ? item.zoons
       .map((z) => z.titles?.[0]?.title || 'Untitled')
       .join(' / ') : item.zoons
         .map((z) => z.title)

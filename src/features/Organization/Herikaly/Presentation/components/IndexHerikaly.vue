@@ -29,6 +29,11 @@ import DeleteHerikalyController from '../controllers/deleteHerikalyController'
 import ChangeStatusHerikalyParams from '../../Core/params/changeStatusHerikalyParams'
 import ChangeStatusHerikalyController from '../controllers/changeStatusHerikalyController'
 import wordSlice from '@/base/Presentation/utils/word_slice'
+import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
+import Heirarchy from "@/assets/images/Heirarchy.png"
+import Timeline from 'primevue/timeline';
+import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
+import TreeTimeLine from '@/shared/HelpersComponents/TreeTimeLine.vue'
 
 const { t } = useI18n()
 
@@ -132,22 +137,71 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     ],
   },
 ]
+
+const Hierarchies = ref([
+  {
+    status: "Hierarchy 1",
+    children: [
+      {
+        status: "Level 2-A",
+        children: [
+          {
+            status: "Level 3-A",
+            children: [
+              { status: "Level 4-A" }
+            ]
+          },
+
+        ]
+      },
+
+    ]
+  },
+  {
+    status: "Hierarchy 2",
+    children: [
+      {
+        status: "Level 2-B",
+        children: [
+          {
+            status: "Level 3-B",
+            children: [
+              { status: "Level 4-B" }
+            ]
+          },
+        ]
+      },
+    ]
+  },
+  {
+    status: "Hierarchy 3",
+    children: [
+      {
+        status: "Level 3-C",
+        children: [
+          {
+            status: "Level 3-C",
+            children: [
+              { status: "Level 4-C" }
+            ]
+          },
+        ]
+      },
+    ]
+  },
+])
+
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <PagesHeader :title="$t('functional Hierarchy')"
+    :subtitle="`Define the hierarchy and assign roles for your project team`" :img="Heirarchy" />
+  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchHerikaly())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHerikaly"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHerikaly" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
@@ -158,70 +212,27 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         </router-link>
       </PermissionBuilder>
     </div>
-  </div>
+  </div> -->
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HERIKALY_ALL,
-      PermissionsEnum.HERIKALY_DELETE,
-      PermissionsEnum.HERIKALY_FETCH,
-      PermissionsEnum.HERIKALY_UPDATE,
-      PermissionsEnum.HERIKALY_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.HERIKALY_ALL,
+    PermissionsEnum.HERIKALY_DELETE,
+    PermissionsEnum.HERIKALY_FETCH,
+    PermissionsEnum.HERIKALY_UPDATE,
+    PermissionsEnum.HERIKALY_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!-- <th scope="col">{{ $t('subtitle') }}</th> -->
-                <!-- <th scope="col">{{ $t('status') }}</th> -->
-                <th scope="col">{{ $t('actions') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/admin/herikaly/${item.id}`">{{ index + 1 }} </router-link>
-                </td>
-                <td data-label="title">{{ wordSlice(item.title) }}</td>
-                <!-- <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td> -->
-
-                <!-- <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.ABOUT_US_FEATURE_ALL,
-                      PermissionsEnum.ABOUT_US_FEATURE_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusHerikaly(item.id)"
-                    />
-                  </PermissionBuilder>
-                </td> -->
-
-                <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteHerikaly)"
-                    @delete="deleteHerikaly(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- :Hierarchies="" -->
+        <TreeTimeLine :Hierarchies="Hierarchies" />
+        <div class="btn-container">
+          <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn">
+            {{ $t('add_new_heirarchy') }}
+          </router-link>
+          <button class="btn btn-secondary edit-btn "> edit</button>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -230,28 +241,20 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/about-us-features/add`"
-          addText="Add Herikaly"
+        <DataEmpty :link="`/admin/about-us-features/add`" addText="Add Herikaly"
           description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Herikaly"
-        />
+          title="..ops! You have No Herikaly" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/about-us-features/add`"
-          addText="Add Herikaly"
+        <DataFailed :link="`/admin/about-us-features/add`" addText="Add Herikaly"
           description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Herikaly"
-        />
+          title="..ops! You have No Herikaly" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
