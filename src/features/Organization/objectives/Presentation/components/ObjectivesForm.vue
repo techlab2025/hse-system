@@ -1,26 +1,17 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { LangsMap } from '@/constant/langs'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
-import { useRoute } from 'vue-router'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { useUserStore } from '@/stores/user'
-import type ObjectivesModel from '../../Data/models/objectivesModel'
-import IndexObjectivesController from '../controllers/indexObjectivesController'
-import IndexObjectivesParams from '../../Core/params/indexObjectivesParams'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import AddObjectivesParams from '../../Core/params/addObjectivesParams'
 import editObjectivesParams from '../../Core/params/editObjectivesParams'
 import type ObjectivesDetailsModel from '../../Data/models/objectivesDetailsModel'
+import { useRoute } from 'vue-router'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: ObjectivesDetailsModel }>()
@@ -28,17 +19,8 @@ const props = defineProps<{ data?: ObjectivesDetailsModel }>()
 const route = useRoute()
 const id = Number(route.params.id)
 
-const indexObjectivesTypeController = IndexObjectivesController.getInstance()
-const indexObjectivesTypeParams = new IndexObjectivesParams('', 1, 10, 1)
-const industryController = IndexIndustryController.getInstance()
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
-const industry = ref<TitleInterface[]>([])
-const Objectives = ref<TitleInterface | null>(null)
-const allIndustries = ref(0)
-const hasCertificate = ref(0)
 
 const user = useUserStore()
 // Fetch available languages and set defaults
@@ -77,8 +59,6 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
-
   const params = !props.data?.id
     ? new AddObjectivesParams(translationsParams)
     : new editObjectivesParams(props.data.id ?? 0, translationsParams)
@@ -86,18 +66,8 @@ const updateData = () => {
   emit('update:data', params)
 }
 
-const setIndustry = (data: TitleInterface[]) => {
-  industry.value = data
-  updateData()
-}
-
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
-  updateData()
-}
-
-const setObjectivesType = (data: TitleInterface) => {
-  Objectives.value = data
   updateData()
 }
 

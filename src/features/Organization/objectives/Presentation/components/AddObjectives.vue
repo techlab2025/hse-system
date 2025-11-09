@@ -7,21 +7,17 @@ import ObjectivesForm from './ObjectivesForm.vue'
 import type AddObjectivesParams from '../../Core/params/addObjectivesParams'
 import AddObjectivesController from '../controllers/addObjectivesController'
 
-
 const router = useRouter()
 const params = ref<Params | null>(null)
 
 const addObjectivesController = AddObjectivesController.getInstance()
 
 const addObjectives = async () => {
-  console.log(params.value, 'params')
   await addObjectivesController.addObjectives(params.value as AddObjectivesParams, router)
 }
 const setParams = (data: Params) => {
   params.value = data
 }
-
-
 </script>
 
 <template>

@@ -2,7 +2,7 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import ShowObjectivesUseCase from '../../Domain/useCase/showObjectivesUseCase'
-import type ObjectivesDetailsModel from '../../Data/models/equipmentDetailsModel'
+import type ObjectivesDetailsModel from '../../Data/models/objectivesDetailsModel'
 
 export default class ShowObjectivesController extends ControllerInterface<ObjectivesDetailsModel> {
   private static instance: ShowObjectivesController
