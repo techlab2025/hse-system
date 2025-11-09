@@ -68,6 +68,13 @@ class ApiNames {
 
   public get IndexProjectLocation() { return this.prefix + 'fetch_project_locations' }
 
+  // objectives
+  public get CreateObjective() { return this.prefix + 'create_objective' }
+  public get IndexObjectives() { return this.prefix + 'fetch_objectives' }
+  public get ShowObjective() { return this.prefix + 'fetch_objective_details' }
+  public get EditObjective() { return this.prefix + 'update_objective' }
+  public get DeleteObjective() { return this.prefix + 'delete_objective' }
+
   // admin
   public get CreateAdmin() { return this.prefix + 'create_admin' }
   public get IndexAdmin() { return this.prefix + 'fetch_admins' }

@@ -63,6 +63,22 @@ export const OrgPermissions: PermissionItem = {
                     ],
                 },
 
+                // Objective
+                {
+                    key: PermissionsEnum.OBJECTIVE_ORG_ALL,
+                    code: PermissionsEnum.OBJECTIVE_ORG_ALL,
+                    label: "Objective",
+                    permissions: [
+                        { key: PermissionsEnum.OBJECTIVE_ORG_ALL, code: PermissionsEnum.OBJECTIVE_ORG_ALL, label: "All" },
+                        { key: PermissionsEnum.OBJECTIVE_ORG_FETCH, code: PermissionsEnum.OBJECTIVE_ORG_FETCH, label: "Fetch" },
+                        { key: PermissionsEnum.OBJECTIVE_ORG_DETAILS, code: PermissionsEnum.OBJECTIVE_ORG_DETAILS, label: "Details" },
+                        { key: PermissionsEnum.OBJECTIVE_ORG_CREATE, code: PermissionsEnum.OBJECTIVE_ORG_CREATE, label: "Create" },
+                        { key: PermissionsEnum.OBJECTIVE_ORG_UPDATE, code: PermissionsEnum.OBJECTIVE_ORG_UPDATE, label: "Update" },
+                        { key: PermissionsEnum.OBJECTIVE_ORG_DELETE, code: PermissionsEnum.OBJECTIVE_ORG_DELETE, label: "Delete" },
+
+                    ],
+                },
+
                 // Factory
                 {
                     key: PermissionsEnum.ORG_FACTORY_ALL,
@@ -83,7 +99,7 @@ export const OrgPermissions: PermissionItem = {
                 {
                     key: PermissionsEnum.PROJECT_ZONE_ALL,
                     code: PermissionsEnum.PROJECT_ZONE_ALL,
-                    label: "Factory",
+                    label: "Project Zone",
                     permissions: [
                         { key: PermissionsEnum.PROJECT_ZONE_ALL, code: PermissionsEnum.PROJECT_ZONE_ALL, label: "All" },
                         { key: PermissionsEnum.PROJECT_ZONE_FETCH, code: PermissionsEnum.PROJECT_ZONE_FETCH, label: "Fetch" },
@@ -99,7 +115,7 @@ export const OrgPermissions: PermissionItem = {
                 {
                     key: PermissionsEnum.HERIKALY_ALL,
                     code: PermissionsEnum.HERIKALY_ALL,
-                    label: "Factory",
+                    label: "HiRikaly",
                     permissions: [
                         { key: PermissionsEnum.HERIKALY_ALL, code: PermissionsEnum.HERIKALY_ALL, label: "All" },
                         { key: PermissionsEnum.HERIKALY_FETCH, code: PermissionsEnum.HERIKALY_FETCH, label: "Fetch" },
