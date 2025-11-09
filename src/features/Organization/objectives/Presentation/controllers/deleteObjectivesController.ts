@@ -4,8 +4,8 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import DeleteObjectivesUseCase from '../../Domain/useCase/deleteObjectivesUseCase'
-import type ObjectivesModel from '../../Data/models/equipmentModel'
 import successImage from '@/assets/images/Success.png'
+import type ObjectivesModel from '../../Data/models/objectivesModel'
 
 export default class DeleteObjectivesController extends ControllerInterface<ObjectivesModel> {
   private static instance: DeleteObjectivesController

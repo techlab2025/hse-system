@@ -4,10 +4,8 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type ObjectivesModel from '../../Data/models/equipmentModel'
 import EditObjectivesUseCase from '../../Domain/useCase/editObjectivesUseCase'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useUserStore } from '@/stores/user'
+import type ObjectivesModel from '../../Data/models/objectivesModel'
 
 export default class EditObjectivesController extends ControllerInterface<ObjectivesModel> {
   private static instance: EditObjectivesController
@@ -40,9 +38,9 @@ export default class EditObjectivesController extends ControllerInterface<Object
           messageContent: null,
         })
 
-        const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+
+        await router.push(`/organization/objectives`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

@@ -9,7 +9,6 @@ import ShowObjectivesParams from '../../Core/params/showObjectivesParams'
 import EditObjectivesController from '../controllers/editObjectivesController'
 import ObjectivesForm from './ObjectivesForm.vue'
 
-
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
@@ -40,7 +39,7 @@ watch(
   () => showObjectivesController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      // console.log(newState)
       state.value = newState
     }
   },
@@ -54,10 +53,6 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <!--      <pre>-->
-      <!--              {{ state.data?.titles }}-->
-
-      <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditObjectives">
         <ObjectivesForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
