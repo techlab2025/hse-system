@@ -3,7 +3,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ObjectivesModel extends TitleInterface {
   public id: number
-
+  public title: string
 
   constructor(
     id: number,
@@ -13,6 +13,7 @@ export default class ObjectivesModel extends TitleInterface {
     super({ id, title })
 
     this.id = id
+    this.title = title
 
   }
 

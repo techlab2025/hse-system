@@ -185,7 +185,7 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
 
                 <td data-label="Actions">
                   <DropList
