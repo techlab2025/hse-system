@@ -9,8 +9,6 @@ export default class ObjectivesDetailsModel {
   public titles: TitleLocale[]
 
 
-  // public descriptions: DescriptionLocale[]
-
   constructor(
     id: number,
     titles: TitleLocale[],
