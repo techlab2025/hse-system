@@ -941,7 +941,7 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
-                  <!-- organization-locations 
+                  <!-- organization-locations
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_LOCATION_ALL,
@@ -1178,6 +1178,24 @@ const user = useUserStore()
                       <router-link to="/organization/teams">
                         <SidebarVector />
                         <span>{{ $t('team') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <!-- Contractor -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.CONTRACTOR_All,
+                      PermissionsEnum.CONTRACTOR_CREATE,
+                      PermissionsEnum.CONTRACTOR_DELETE,
+                      PermissionsEnum.CONTRACTOR_FETCH,
+                      PermissionsEnum.CONTRACTOR_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/contractors">
+                        <SidebarVector />
+                        <span>{{ $t('contractors') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>

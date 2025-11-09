@@ -93,6 +93,13 @@ class ApiNames {
   public EditTeam = this.prefix + 'update_team'
   public DeleteTeam = this.prefix + 'delete_team'
 
+  // contractor
+  public CreateContractor = this.prefix + 'create_contractor'
+  public IndexContractor = this.prefix + 'fetch_contractors'
+  public ShowContractor = this.prefix + 'fetch_contractor_details'
+  public EditContractor = this.prefix + 'update_contractor'
+  public DeleteContractor = this.prefix + 'delete_contractor'
+
 
 
   // Permission
