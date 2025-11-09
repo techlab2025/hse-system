@@ -46,8 +46,11 @@ const props = defineProps<{
       </div>
     </div>
     <hr class="equipment-hr">
-    <div class="tool-cards">
-      <!-- <ToolCard v-for="(tool, index) in equipment.projectZoonEquipments" :key="index" :tool="tool" /> -->
+    <div class="tool-cards" v-if="equipment.projectZoonEquipments?.length > 0">
+      <ToolCard v-for="(tool, index) in equipment.projectZoonEquipments" :key="index" :tool="tool" />
+    </div>
+    <div class="empty-tools" v-else>
+      <h2>No Equipments</h2>
     </div>
   </div>
 </template>

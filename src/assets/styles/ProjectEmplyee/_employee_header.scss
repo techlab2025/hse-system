@@ -46,18 +46,28 @@
     }
   }
 
-  .title {
-    color: $PrimaryColor;
-    font-size: calc($XlSize + 2px);
-    font-weight: $BaseFontWeightBold;
-    z-index: 999;
-    text-transform: capitalize;
-  }
+  .employee-header-text {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 6px;
+    img {
+      max-width: 40px;
+      max-height: 40px;
+    }
+    .header-text {
+      .title {
+        color: $PrimaryColor;
+        font-size: calc($XlSize + 2px);
+        font-weight: $BaseFontWeightBold;
+        z-index: 999;
+        text-transform: capitalize;
+      }
 
-  .subtitle {
-    color: #9ca3af;
-    font-size: $SmSize;
-    font-weight: $BaseFontMediumWeight;
-    z-index: 999;
+      .subtitle {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        z-index: 999;
+      }
+    }
   }
 }

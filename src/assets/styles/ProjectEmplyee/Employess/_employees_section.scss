@@ -17,11 +17,17 @@
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
         border-radius: calc($XlSize3 + 16px);
+        transition: all 0.3s linear;
 
         &.edit-btn {
           background-color: #1d4ed80f;
           border: 1px solid $PrimaryColor;
           color: $PrimaryColor;
+          &:hover {
+            color: white;
+            background-color: $PrimaryColor;
+            border: 1px solid #1d4ed80f;
+          }
         }
         &.create-btn {
           background-color: $PrimaryColor;
@@ -30,6 +36,12 @@
         &.add-btn {
           background-color: #041953;
           color: white;
+
+          &:hover {
+            color: #041953;
+            background-color: white;
+            border: 1px solid #041953;
+          }
         }
       }
     }

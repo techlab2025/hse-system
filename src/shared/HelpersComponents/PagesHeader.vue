@@ -4,6 +4,7 @@ import Yellowback from '@/assets/images/Yellowback.png'
 const props = defineProps<{
   title: string,
   subtitle?: string
+  img?: string
 }>()
 </script>
 <template>
@@ -12,8 +13,14 @@ const props = defineProps<{
       <img class="left-blue-background" :src="EmployeeBg" alt="bg">
       <img class="left-yellow-background" :src="Yellowback" alt="bg">
     </div>
-    <p class="title">{{ title }}</p>
-    <p class="subtitle">{{ subtitle }}</p>
+    <div class="employee-header-text">
+      <!-- <span>image</span> -->
+      <img v-if="img" :src="img" alt="Header-img">
+      <div class="header-text">
+        <p class="title">{{ title }}</p>
+        <p class="subtitle">{{ subtitle }}</p>
+      </div>
+    </div>
     <div class="right-header-background">
       <img class="right-yellow-background" :src="Yellowback" alt="bg">
       <img class="right-blue-background" :src="EmployeeBg" alt="bg">
