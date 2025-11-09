@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddContractor from '@/features/setting/Contractor/Presentation/components/AddContractor.vue'
+import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
 </script>
 
 
