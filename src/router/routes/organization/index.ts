@@ -5,6 +5,7 @@ import { projectZoneRoutes } from '@/router/routes/organization/projectZone.ts'
 import { organizationEmployeeRoutes } from '@/router/routes/organization/organizationEmployee.ts'
 import { organizationLocationRoutes } from '@/router/routes/organization/organizationLocation.ts'
 import { herikalyRoutes } from '@/router/routes/organization/herikaly.ts'
+import { objectivesRoutes } from './objectives'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -18,6 +19,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...organizationEmployeeRoutes,
   ...organizationLocationRoutes,
   ...herikalyRoutes,
+  ...objectivesRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

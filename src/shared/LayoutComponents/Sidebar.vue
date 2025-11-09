@@ -941,6 +941,23 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.OBJECTIVE_ORG_ALL,
+                      PermissionsEnum.OBJECTIVE_ORG_CREATE,
+                      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+                      PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+                      PermissionsEnum.OBJECTIVE_ORG_DELETE,
+                      PermissionsEnum.OBJECTIVE_ORG_FETCH,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/objectives">
+                        <SidebarVector />
+                        <span>{{ $t('objectives') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
                   <!-- organization-locations
                   <PermissionBuilder
                     :code="[

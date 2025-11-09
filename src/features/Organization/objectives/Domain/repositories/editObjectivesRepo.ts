@@ -1,0 +1,31 @@
+// import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
+import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import ObjectivesModel from '../../Data/models/objectivesModel'
+import { EditObjectivesApiService } from '../../Data/apiServices/editObjectivesApiService'
+
+class EditObjectivesRepo extends RepoInterface<ObjectivesModel> {
+  private static instance: EditObjectivesRepo
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {
+    super()
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new EditObjectivesRepo()
+    }
+    return this.instance
+  }
+
+  onParse(data: any): ObjectivesModel {
+    return ObjectivesModel.fromMap(data)
+  }
+
+  get serviceInstance(): ServicesInterface {
+    return EditObjectivesApiService.getInstance()
+  }
+}
+
+export { EditObjectivesRepo }
