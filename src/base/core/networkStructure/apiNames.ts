@@ -460,6 +460,7 @@ class ApiNames {
   public FetchProjectLocationTeamEmployees = this.prefix + 'fetch_project_location_team_employees'
 
   public IndexProjectLocationZones = this.prefix + 'fetch_zoons_by_location_ids'
+  public ProjectCustomLocation = this.prefix + 'fetch_zoons_by_location_ids'
 }
 
 export { ApiNames }

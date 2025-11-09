@@ -95,45 +95,45 @@ watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState)
 </script>
 <template>
   <!-- <DataStatus :controller="state"> -->
-    <!-- <template #success> -->
-      <div class="emoloyees-details" v-for="(locationTeam, index) in TeamsData" :key="index">
-        <div class="card-header">
-          <HeaderSection :img="EmployeeIcon" :title="`locationTeam.locationTitle`"
-            :subtitle="`locationTeam.projectLocationEmployees.length`" />
-          <div class="card-actions">
-            <RouterLink :to="`/organization/project-hierarchy/project/${id}`" class="edit-btn">
-              Edit Hierarchy
-            </RouterLink>
-            <AddCreateTeam />
-            <RouterLink :to="`/organization/project-employee/project/${id}`" class="add-btn">
-              Add employee
-            </RouterLink>
-          </div>
-        </div>
-        <hr class="employee-hr" />
-        <div class="employees-section">
-          <TeamMemberCard class="employee-card" v-for="(member, index) in TeamsMembers" :key="index" :member="member" />
-        </div>
-        <div>
-          <TeamCard class="employee-card" v-for="(team, index) in TeamsData" :key="index" :team="team" />
-        </div>
+  <!-- <template #success> -->
+  <div class="emoloyees-details" v-for="(locationTeam, index) in TeamsData" :key="index">
+    <div class="card-header">
+      <HeaderSection :img="EmployeeIcon" :title="`locationTeam.locationTitle`"
+        :subtitle="`locationTeam.projectLocationEmployees.length`" />
+      <div class="card-actions">
+        <RouterLink :to="`/organization/project-hierarchy/project/${id}`" class="edit-btn">
+          Edit Hierarchy
+        </RouterLink>
+        <AddCreateTeam />
+        <RouterLink :to="`/organization/project-employee/project/${id}`" class="add-btn">
+          Add employee
+        </RouterLink>
       </div>
-    <!-- </template>
-    <template #loader>
+    </div>
+    <hr class="employee-hr" />
+    <div class="employees-section">
+      <TeamMemberCard class="employee-card" v-for="(member, index) in TeamsMembers" :key="index" :member="member" />
+    </div>
+    <div>
+      <TeamCard class="employee-card" v-for="(team, index) in TeamsData" :key="index" :team="team" />
+    </div>
+  </div>
+  <!-- </template>
+<template #loader>
       <TableLoader :cols="3" :rows="10" />
     </template>
-    <template #initial>
+<template #initial>
       <TableLoader :cols="3" :rows="10" />
     </template>
-    <template #empty>
+<template #empty>
       <DataEmpty :link="`/add-project`"
         description="Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data"
         title="..ops! You have No Projects" addText="Add Projects" />
     </template>
-    <template #failed>
+<template #failed>
       <DataFailed />
     </template>
-  </DataStatus> -->
+</DataStatus> -->
 
 
 
