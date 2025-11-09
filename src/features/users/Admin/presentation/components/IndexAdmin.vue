@@ -58,7 +58,7 @@ const fetchAdmin = async (
 
 onMounted(() => {
   fetchAdmin()
-})
+}) 
 
 const searchAdmin = debounce(() => {
   fetchAdmin(word.value)
