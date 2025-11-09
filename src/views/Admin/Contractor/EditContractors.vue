@@ -3,5 +3,5 @@ import EditContractor from '@/features/setting/contractor/Presentation/component
 </script>
 
 <template>
-  <EditContractors />
+  <EditContractor />
 </template>
