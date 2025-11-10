@@ -61,7 +61,7 @@ class ApiNames {
 
   // HierarchyEmployee
   public get CreateHierarchyEmployee() { return this.prefix + 'create_project_location_hierarchy_employee' }
-  public get IndexHierarchyEmployee() { return this.prefix + 'fetch_project_location_hierarchy_employees' }
+  public get IndexHierarchyEmployee() { return this.prefix + 'fetch_project_locations_hierarchy_employees' }
   public get ShowHierarchyEmployee() { return this.prefix + 'fetch_hierarchy_employee_details' }
   public get EditHierarchyEmployee() { return this.prefix + 'update_hierarchy_employee' }
   public get DeleteHierarchyEmployee() { return this.prefix + 'delete_hierarchy_employee' }
@@ -453,8 +453,10 @@ class ApiNames {
   public get FetchProjectLocationsEmployee() { return this.prefix + 'fetch_project_locations_employees' }
   public get FetchProjectLocationTeamEmployees() { return this.prefix + 'fetch_project_location_team_employees' }
 
+  public get CreateProjectLocationTeamEmployee() { return this.prefix + 'create_project_location_team_employee' }
+
   public get IndexProjectLocationZones() { return this.prefix + 'fetch_zoons_by_location_ids' }
-  public get ProjectCustomLocation() { return this.prefix + 'fetch_zoons_by_location_ids' }
+  public get ProjectCustomLocation() { return this.prefix + 'fetch_full_project_locations' }
 }
 
 export { ApiNames }

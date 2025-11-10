@@ -9,8 +9,8 @@ const props = defineProps<{
   <div class="section-header">
     <img class="section-img" :src="img" alt="objective logo" />
     <div class="header-text">
-      <p class="title">{{ $t(title) }}</p>
-      <p class="subtitle">{{ $t(subtitle) }}</p>
+      <p class="title" v-if="title">{{ $t(title) }}</p>
+      <p class="subtitle" v-if="subtitle">{{ $t(subtitle) }}</p>
     </div>
   </div>
 </template>

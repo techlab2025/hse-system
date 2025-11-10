@@ -13,7 +13,9 @@ const params = ref<Params | null>(null)
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
 
 const addOrganizatoinEmployee = async () => {
-  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(params.value as AddOrganizatoinEmployeeParams, router)
+  if (params.value) {
+    await addOrganizatoinEmployeeController.addOrganizatoinEmployee(params.value as AddOrganizatoinEmployeeParams, router)
+  }
 }
 const setParams = (data: Params) => {
   params.value = data

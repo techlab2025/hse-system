@@ -14,6 +14,7 @@ import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['update:data'])
 
@@ -39,6 +40,7 @@ const langs = ref<{ locale: string; title: string }[]>([
 const allIndustries = ref<boolean>(false)
 const industry = ref<TitleInterface>()
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const user = useUserStore()
 
 const fetchLang = async (
   query: string = '',
@@ -46,6 +48,14 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexLangController = await IndexLangController.getInstance().getData(params)
 
@@ -70,9 +80,9 @@ onMounted(async () => {
 
 const lang = ref<TitleInterface[] | null>([]) // selected language
 
-const updateData =async () => {
+const updateData = async () => {
   const translationsParams = new TranslationsParams()
-  console.log(langs.value , "langs.value")
+  console.log(langs.value, "langs.value")
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
@@ -140,14 +150,7 @@ const UpdateCode = (data) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input
-      type="text"
-      id="code"
-      v-model="Code"
-      class="input"
-      placeholder="Enter The Code"
-      @input="UpdateCode"
-    />
+    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

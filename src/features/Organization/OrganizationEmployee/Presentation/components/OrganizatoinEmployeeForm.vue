@@ -9,7 +9,9 @@ import EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEm
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 import { useUserStore } from '@/stores/user'
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
 const Name = ref('')
 const Phone = ref('')
 const Email = ref('')
@@ -22,7 +24,7 @@ const props = defineProps<{
 }>()
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-const user  = useUserStore();
+const user = useUserStore();
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
@@ -30,7 +32,7 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
 
-    if (user?.user?.languages.length) {
+  if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
@@ -73,14 +75,15 @@ onMounted(async () => {
 })
 
 const updateData = () => {
+
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
-        props?.data?.id,
-        Name.value,
-        Phone.value,
-        Email.value,
-        Password.value,
-      )
+      props?.data?.id,
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+    )
     : new AddOrganizatoinEmployeeParams(Name.value, Phone.value, Email.value, Password.value)
   emit('update:data', params)
 }
@@ -130,6 +133,6 @@ const UpdatePassword = (data) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input id="password" type="text" v-model="Password" @change="UpdatePassword" />
+    <input id="password" type="text" min="8" v-model="Password" @change="UpdatePassword" />
   </div>
 </template>

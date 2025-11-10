@@ -213,12 +213,12 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/about-us-features/add`" addText="Add ProjectZone"
+        <DataEmpty :link="`/organization/project-zone/add`" addText="Add ProjectZone"
           description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No ProjectZone" />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/about-us-features/add`" addText="Add ProjectZone"
+        <DataFailed :link="`/organization/project-zone/add`" addText="Add ProjectZone"
           description="Sorry .. You have no ProjectZone .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No ProjectZone" />
       </template>

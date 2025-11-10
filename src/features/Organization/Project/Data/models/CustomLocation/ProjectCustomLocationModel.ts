@@ -1,11 +1,12 @@
 import TitleModel from '@/base/core/Models/title_model'
 import type ProjectLocationZoneModel from './ProjectLocationZoneModel'
-import type ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
-import type ProjectLocationTeamModel from './ProjectLocationTeamModel'
-import type ProjectLocationEquipmentModel from './ProjectLocationEquipmentModel'
-import type ProjectLocationHierarchyModel from './ProjectLocationHierarchyModel'
+import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
+import ProjectLocationTeamModel from './ProjectLocationTeamModel'
+import ProjectLocationEquipmentModel from './ProjectLocationEquipmentModel'
+import ProjectLocationHierarchyModel from './ProjectLocationHierarchyModel'
 
 export default class ProjectCustomLocationModel extends TitleModel {
+  public projectLocationId: number
   public locationZones: ProjectLocationZoneModel[]
   public locationHierarchy: ProjectLocationHierarchyModel[]
   public locationEmplyees: ProjectLocationEmployeeModel[]
@@ -13,6 +14,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
   public locationEquipments: ProjectLocationEquipmentModel[]
 
   constructor(
+    projectLocationId: number,
     id: number,
     title: string,
     locationZones: ProjectLocationZoneModel[],
@@ -22,6 +24,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
     locationEquipments: ProjectLocationEquipmentModel[],
   ) {
     super(title, id)
+    this.projectLocationId = projectLocationId
     this.locationZones = locationZones
     this.locationHierarchy = locationHierarchy
     this.locationEmplyees = locationEmplyees
@@ -31,13 +34,16 @@ export default class ProjectCustomLocationModel extends TitleModel {
 
   static fromMap(data: any): ProjectCustomLocationModel {
     return new ProjectCustomLocationModel(
-      data.id,
-      data.title,
-      data.locationZones,
-      data.locationHierarchy,
-      data.locationEmplyees,
-      data.locationTeams,
-      data.locationEquipments,
+      data.project_location_id,
+      data.location_id,
+      data.location_title,
+      data.project_location_zoons,
+      data.project_location_hierarchies?.map((item) => ProjectLocationHierarchyModel.fromMap(item)),
+      data.project_location_hierarchy_employees?.map((item: any) =>
+        ProjectLocationEmployeeModel.fromMap(item),
+      ),
+      data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)),
+      data.project_location_equipments,
     )
   }
 }

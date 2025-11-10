@@ -8,6 +8,7 @@ export default class AddEquipmentTypeParams implements Params {
   industries: number[]
   parentId: number
   image: string
+  type: number
 
   constructor(
     translation: TranslationsParams,
@@ -16,6 +17,7 @@ export default class AddEquipmentTypeParams implements Params {
     industries: number[],
     parentId: number,
     image: string,
+    type: number,
   ) {
     this.translation = translation
     this.hasCertificate = hasCertificate
@@ -23,6 +25,7 @@ export default class AddEquipmentTypeParams implements Params {
     this.industries = industries
     this.parentId = parentId
     this.image = image
+    this.type = type
   }
 
   toMap(): Record<
@@ -39,11 +42,12 @@ export default class AddEquipmentTypeParams implements Params {
 
     data['translations'] = this.translation.toMap()
     data['has_certificate'] = this.hasCertificate ? 1 : 0
-    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     // console.log(this.allIndustries)
     if (!this.allIndustries) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
+    if (this.type) data['type'] = this.type
 
     return data
   }

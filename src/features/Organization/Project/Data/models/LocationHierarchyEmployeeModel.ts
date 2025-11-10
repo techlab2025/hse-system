@@ -1,27 +1,29 @@
-// import TitleInterface from '@/base/Data/Models/title_interface'
-import ProjectModel from './ProjectModel'
-import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
-import LocationHierarchyModel from './LocationHierarchyModel'
+import TitleModel from '@/base/core/Models/title_model'
+import ProjectLocationHierarchyModel from './CustomLocation/ProjectLocationHierarchyModel'
 
-export default class HierarchyEmployeeModel {
-    public project_location_hierarchy_employee_id: number
-    public project: ProjectModel
-    public location: LocationDetailsModel
-    public hierarchy: LocationHierarchyModel[]
+export default class HierarchyEmployeeModel extends TitleModel {
+  public projectLocationId: number
+  public projectLocationHierarchies: ProjectLocationHierarchyModel[]
 
-    constructor(project_location_hierarchy_employee_id: number, project: ProjectModel, location: LocationDetailsModel, hierarchy: LocationHierarchyModel[]) {
-        this.project_location_hierarchy_employee_id = project_location_hierarchy_employee_id
-        this.project = project
-        this.location = location
-        this.hierarchy = hierarchy
-    }
+  constructor(
+    id: number,
+    title: string,
+    projectLocationId: number,
+    projectLocationHierarchies: ProjectLocationHierarchyModel[],
+  ) {
+    super(title, id)
+    this.projectLocationId = projectLocationId
+    this.projectLocationHierarchies = projectLocationHierarchies
+  }
 
-    static fromMap(data: any): HierarchyEmployeeModel {
-        return new HierarchyEmployeeModel(
-            data.project_location_hierarchy_employee_id,
-            ProjectModel.fromMap(data.project),
-            LocationDetailsModel.fromMap(data.location),
-            data.hierarchy.map((item: any) => LocationHierarchyModel.fromMap(item)),
-        )
-    }
+  static fromMap(data: any): HierarchyEmployeeModel {
+    return new HierarchyEmployeeModel(
+      data.project_location_hierarchy_employee_id,
+      data.name,
+      data.employee_id,
+      data.project_location_hierarchies?.map((item: any) =>
+        ProjectLocationHierarchyModel.fromMap(item),
+      ),
+    )
+  }
 }

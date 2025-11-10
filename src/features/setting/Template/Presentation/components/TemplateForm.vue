@@ -21,6 +21,7 @@ import IconAdd from '@/shared/icons/IconAdd.vue'
 import { ActionsEnum } from '../../Core/Enum/ActionType'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { EquipmentTypesEnum } from '../../Core/Enum/EquipmentsTypeEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -80,14 +81,14 @@ const fetchLang = async () => {
 
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
     : [
-        { locale: 'en', icon: USA, title: '' },
-        { locale: 'ar', icon: SA, title: '' },
-      ]
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
 
   if (!items.value.length) {
     items.value.push(createNewItem())
@@ -124,21 +125,21 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditTemplateParams(
-        props.data?.id ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((i) => i.id) ?? [],
-        image.value,
-        itemsParams,
-      )
+      props.data?.id ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((i) => i.id) ?? [],
+      image.value,
+      itemsParams,
+    )
     : new AddTemplateParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((i) => i.id),
-        image.value,
-        null,
-        itemsParams,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((i) => i.id),
+      image.value,
+      null,
+      itemsParams,
+    )
 
   emit('update:data', params)
 }
@@ -188,9 +189,9 @@ watch(
 
     langs.value = newData?.titles?.length
       ? newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+        const existing = newData.titles.find((t) => t.locale === l.locale)
+        return existing ?? { locale: l.locale, title: '' }
+      })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
     allIndustries.value = newData?.allIndustries == 1 ? true : false
@@ -201,16 +202,18 @@ watch(
 
     items.value = newData?.templateItems?.length
       ? newData.templateItems.map((it: any) => ({
-          langs: it.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
-          allIndustries: it.allIndustries == 1 ? true : false,
-          industry: it.industries ?? [],
-          requireImage: it.requireImage ?? '',
-          action: it.action ?? null,
-        }))
+        langs: it.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
+        allIndustries: it.allIndustries == 1 ? true : false,
+        industry: it.industries ?? [],
+        requireImage: it.requireImage ?? '',
+        action: it.action ?? null,
+      }))
       : [createNewItem()]
   },
   { immediate: true },
 )
+
+
 </script>
 
 <template>
@@ -220,30 +223,18 @@ watch(
   </div>
 
   <!-- All Industries -->
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" v-model="allIndustries" @change="updateData" />
   </div>
 
   <!-- Industry Selection -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="Template"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="Template" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
+
+
 
   <!-- Image
   <div class="col-span-4">
