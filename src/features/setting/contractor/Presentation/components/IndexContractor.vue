@@ -52,7 +52,13 @@ const fetchContractor = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteContractorTypeParams = new IndexContractorParams(query, pageNumber, perPage, withPage, id)
+  const deleteContractorTypeParams = new IndexContractorParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexContractorController.getData(deleteContractorTypeParams)
 }
 
@@ -102,12 +108,11 @@ const actionList = (id: number, deleteContractor: (id: number) => void) => [
     icon: IconEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/${id}`,
     permission: [
-      PermissionsEnum.TEAM_UPDATE,
-      PermissionsEnum.ORG_TEAM_UPDATE,
+      PermissionsEnum.CONTRACTOR_UPDATE,
+      PermissionsEnum.CONTRACTOR_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CONTRACTOR_All,
     ],
   },
 
@@ -116,12 +121,10 @@ const actionList = (id: number, deleteContractor: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteContractor(id),
     permission: [
-      PermissionsEnum.TEAM_DELETE,
-      PermissionsEnum.ORG_TEAM_DELETE,
+      PermissionsEnum.CONTRACTOR_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CONTRACTOR_All,
     ],
   },
 ]
@@ -157,8 +160,8 @@ watch(
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
+          PermissionsEnum.CONTRACTOR_CREATE,
+          PermissionsEnum.CONTRACTOR_CREATE,
         ]"
       >
         <router-link
@@ -175,16 +178,11 @@ watch(
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.TEAM_ALL,
-      PermissionsEnum.TEAM_DELETE,
-      PermissionsEnum.TEAM_FETCH,
-      PermissionsEnum.TEAM_UPDATE,
-      PermissionsEnum.TEAM_CREATE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.ORG_TEAM_DELETE,
-      PermissionsEnum.ORG_TEAM_FETCH,
-      PermissionsEnum.ORG_TEAM_UPDATE,
-      PermissionsEnum.ORG_TEAM_CREATE,
+      PermissionsEnum.CONTRACTOR_All,
+      PermissionsEnum.CONTRACTOR_DELETE,
+      PermissionsEnum.CONTRACTOR_FETCH,
+      PermissionsEnum.CONTRACTOR_UPDATE,
+      PermissionsEnum.CONTRACTOR_CREATE,
     ]"
   >
     <DataStatus :controller="state">
