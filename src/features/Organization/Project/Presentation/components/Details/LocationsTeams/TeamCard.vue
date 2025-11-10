@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue';
 import TeamMemberCard from './TeamMemberCard.vue';
+import type ProjectLocationTeamModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationTeamModel';
 
 
 const props = defineProps<{
-  team: TeamInterface
+  team: ProjectLocationTeamModel
 }>()
 </script>
 
@@ -15,7 +16,7 @@ const props = defineProps<{
         <TeamsIcon class="team-icon" />
         <div class="team-card-text">
           <p class="team-card-title">Team</p>
-          <p class="team-card-members"><span>{{ team.members }}</span> members</p>
+          <p class="team-card-members"><span>{{ team.Employees?.length }}</span> members</p>
         </div>
       </div>
       <div class="state">
@@ -23,7 +24,7 @@ const props = defineProps<{
       </div>
     </div>
     <div class="members-section">
-      <TeamMemberCard v-for="(member, index) in team.teamMembers" :key="index" :member="member" />
+      <TeamMemberCard v-for="(member, index) in team.Employees" :key="index" :member="member" />
     </div>
   </div>
 </template>

@@ -8,6 +8,7 @@ const props = defineProps<{
   title: string,
   subtitle: string
   link?: string
+  linkText?: string
 }>()
 
 </script>
@@ -16,7 +17,7 @@ const props = defineProps<{
     <img :src="img" alt="empty">
     <div class="empty-text">
       <p class="title">{{ title }}</p>
-      <p class="subtitle">{{ subtitle }}</p>
+      <p class="subtitle">{{ subtitle }} <span v-if="linkText">{{ linkText }}</span></p>
     </div>
   </router-link>
 </template>

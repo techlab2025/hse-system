@@ -7,6 +7,7 @@ import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import CreateTeamForm from './CreateTeamForm.vue'
 
 const props = defineProps<{
+  ProjectLocationId: number,
   LocationId: number
 }>()
 const visible = ref(false)
@@ -23,7 +24,7 @@ const visible = ref(false)
     </template>
     <div class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-      <CreateTeamForm :LocationId="LocationId" />
+      <CreateTeamForm :ProjectLocationId="ProjectLocationId" :LocationId="LocationId" />
     </div>
   </Dialog>
 </template>

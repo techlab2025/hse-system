@@ -22,6 +22,7 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -107,24 +108,28 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
+  console.log(EquipmentType.value.id, "EquipmentType.value");
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        hasCertificate.value,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        +parent_id.value,
-        image.value,
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      hasCertificate.value,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+      +parent_id.value,
+      image.value,
+      null,
+      EquipmentType.value.id
+    )
     : new AddEquipmentTypeParams(
-        translationsParams,
-        hasCertificate.value,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        +parent_id.value,
-        image.value,
-      )
+      translationsParams,
+      hasCertificate.value,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+      +parent_id.value,
+      image.value,
+      EquipmentType.value.id
+    )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -173,6 +178,18 @@ const setImage = async (data: File | string) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
+
+const EquipmentsTypes = ref([
+  new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: 'Device', subtitle: '' }),
+  new TitleInterface({ id: EquipmentTypesEnum.EQUIPMENT, title: 'Equipment', subtitle: '' }),
+  new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: 'TOOL', subtitle: '' }),
+])
+
+const EquipmentType = ref<TitleInterface | null>(null)
+const setEquipmentType = (data) => {
+  EquipmentType.value = data
+  updateData();
+}
 </script>
 
 <template>
@@ -183,58 +200,34 @@ const setImage = async (data: File | string) => {
   <!-- Has Certificate -->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label for="has_certificate">{{ $t('has_certificate') }}</label>
-    <input
-      type="checkbox"
-      :value="1"
-      v-model="hasCertificate"
-      :checked="hasCertificate == 1"
-      @change="updateData"
-      id="has_certificate"
-    />
+    <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate == 1" @change="updateData"
+      id="has_certificate" />
   </div>
 
   <!-- all_industries -->
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="all_industries">{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="1"
-      v-model="allIndustries"
-      :checked="allIndustries == 1"
-      @change="updateData"
-      id="all_industries"
-    />
+    <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" @change="updateData"
+      id="all_industries" />
   </div>
 
   <!-- image -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="image">Image</label>
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+      placeholder="Select image" />
   </div>
 
   <!--industry  -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="EquipmentTypeuage"
-      id="EquipmentType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+      label="EquipmentTypeuage" id="EquipmentType" placeholder="Select industry" :type="2"
+      @update:modelValue="setIndustry" />
+  </div>
+
+  <!-- Equipment Selection -->
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="industry" :static-options="EquipmentsTypes" label="Type" id="Type"
+      placeholder="Select Type" @update:modelValue="setEquipmentType" />
   </div>
 </template>

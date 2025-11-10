@@ -5,6 +5,7 @@ import './assets/styles/tailwind.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import ToastService from 'primevue/toastservice';
 
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
@@ -54,6 +55,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+app.use(ToastService);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

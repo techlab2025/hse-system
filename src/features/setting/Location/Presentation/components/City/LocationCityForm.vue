@@ -16,6 +16,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
+import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
@@ -43,6 +44,7 @@ const langs = ref<{ locale: string; title: string }[]>([
 const allIndustries = ref<boolean>(false)
 const industry = ref<TitleInterface>()
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const user = useUserStore()
 
 const fetchLang = async (
   query: string = '',
@@ -50,6 +52,14 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexLangController = await IndexLangController.getInstance().getData(params)
 
@@ -82,20 +92,20 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-        props.data?.id,
-        translationsParams,
-        Code.value,
-        LocationEnum.CITY,
-        +ParentId?.value || SelectedState.value?.id!,
-      )
+      props.data?.id,
+      translationsParams,
+      Code.value,
+      LocationEnum.CITY,
+      +ParentId?.value || SelectedState.value?.id!,
+    )
     : new AddLocationParams(
-        translationsParams,
-        Code.value,
-        LocationEnum.CITY,
-        +ParentId?.value || SelectedState.value?.id!,
-      )
+      translationsParams,
+      Code.value,
+      LocationEnum.CITY,
+      +ParentId?.value || SelectedState.value?.id!,
+    )
 
-      // console.log(params, 'Newparams')
+  // console.log(params, 'Newparams')
   emit('update:data', params)
 }
 
@@ -153,8 +163,8 @@ const UpdateCode = (data) => {
   updateData()
 }
 
-const SelectedCountry = ref<TitleInterface | null>(null)
-const SetCountrySelection = (data: TitleInterface) => {
+const SelectedCountry = ref<TitleInterface[] | null>(null)
+const SetCountrySelection = (data: TitleInterface[]) => {
   SelectedCountry.value = data
 
   indexLocationStatesParams.value = new IndexLocationParams(
@@ -163,7 +173,8 @@ const SetCountrySelection = (data: TitleInterface) => {
     0,
     0,
     LocationEnum.STATE,
-    data.id,
+    null,
+    data.map((c) => c.id),
   )
   updateData()
 }
@@ -194,36 +205,17 @@ watch(
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input
-      type="text"
-      id="code"
-      v-model="Code"
-      class="input"
-      placeholder="Enter The Code"
-      @input="UpdateCode"
-    />
+    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput
-      :modelValue="SelectedCountry"
-      :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams"
-      label="Country"
-      id="Location"
-      placeholder="Select  Country"
-      @update:modelValue="SetCountrySelection"
-    />
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country" id="Location" placeholder="Select  Country" :type="2"
+      @update:modelValue="SetCountrySelection" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput
-      :modelValue="SelectedState"
-      :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams"
-      label="State"
-      id="Location"
-      placeholder="Select State"
-      @update:modelValue="SetStateSelection"
-    />
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      @update:modelValue="SetStateSelection" />
   </div>
 </template>

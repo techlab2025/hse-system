@@ -16,6 +16,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
+import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['update:data'])
 
@@ -37,6 +38,7 @@ const langs = ref<{ locale: string; title: string }[]>([
 const allIndustries = ref<boolean>(false)
 const industry = ref<TitleInterface>()
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const user = useUserStore()
 
 const fetchLang = async (
   query: string = '',
@@ -44,6 +46,14 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
+    if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
   const indexLangController = await IndexLangController.getInstance().getData(params)
 
@@ -110,7 +120,7 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedCountry.value = newData?.country 
+      SelectedCountry.value = newData?.country
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }

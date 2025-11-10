@@ -1,130 +1,15 @@
 <script lang="ts" setup>
 import HeaderSection from "../DetailsHeader/HeaderSection.vue";
-import { ref } from "vue";
 import Equipment from "@/assets/images/Equipment.png"
 import EmptyData from "../LocationsTeams/EmptyData.vue";
 import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
 import EquipmentCard from "./EquipmentCard.vue";
-import Tool from "@/assets/images/Tool.png"
 import type SohwProjectZoonModel from "@/features/Organization/Project/Data/models/ShowProjectZone";
-// interface EquipmentTool {
-//   img: string,
-//   title: string,
-//   type: string,
-//   subtype: string,
-//   subtitle: string
-//   date: string,
-//   addedby: string,
-//   status: string
-// }
-// interface EquipmentInterface {
-//   title: string,
-//   NumberOfEquipment: string,
-//   img: string
-//   tools: EquipmentTool[]
-// }
-// const Equipments = ref<EquipmentInterface[]>([
-//   {
-//     title: "Zone 1",
-//     NumberOfEquipment: "20",
-//     img: LocationPin,
-//     tools: [
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-
-//     ]
-//   },
-//   {
-//     title: "Zone 1",
-//     NumberOfEquipment: "20",
-//     img: LocationPin,
-//     tools: [
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-//       {
-//         img: Tool,
-//         title: "Drilling Rig",
-//         type: "tools",
-//         subtype: "hand tool",
-//         subtitle: "last inspection",
-//         date: " 22 june",
-//         addedby: "by : Ahmed hawam",
-//         status: "done"
-//       },
-
-//     ]
-//   },
-// ])
 
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]
 }>()
+
 </script>
 
 

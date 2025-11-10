@@ -19,6 +19,12 @@
       color: #9ca3af;
       font-size: $SmSize;
       font-weight: $BaseFontMediumWeight;
+      max-width: 400px;
+      span {
+        color: $PrimaryColor;
+        text-decoration: underline;
+        font-weight: 600;
+      }
     }
   }
 }
