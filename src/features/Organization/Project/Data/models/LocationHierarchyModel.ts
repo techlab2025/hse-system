@@ -1,5 +1,3 @@
-import ProjectLocationModel from './projectLocation'
-
 export default class LocationHierarchyModel {
   public locationId: number
   public locationTitle: string

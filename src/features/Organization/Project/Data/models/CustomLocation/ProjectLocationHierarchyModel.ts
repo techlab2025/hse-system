@@ -21,7 +21,7 @@ export default class ProjectLocationHierarchyModel extends TitleModel {
       data.title,
       data.hierarchy_id,
       data.project_location_hierarchy_id,
-      data.project_location_hierarchy_employees.map((item) =>
+      data.project_location_hierarchy_employees?.map((item) =>
         ProjectLocationEmployeeModel.fromMap(item),
       ),
       // data.project_location_id,

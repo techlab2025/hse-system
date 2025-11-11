@@ -7,7 +7,7 @@ import errorImage from '@/assets/images/error.png'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import CreateProjectLocationTeamEmployeeUseCase from '../../Domain/useCase/CreateProjectLocationTeamEmployeeUseCase'
 
-export default class CreateProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
+export default class  CreateProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectLocationTeamEmployeeController
 
   private constructor() {
@@ -32,29 +32,29 @@ export default class CreateProjectLocationTeamEmployeeController extends Control
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.message,
-          imageElement: successImage,
-          messageContent: null,
-        })
-        await router.push('/organization/projects')
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.message,
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
+        // await router.push('/organization/projects')
         // console.log(this.state.value.data)
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
       }
     } catch (error: any) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
-        titleContent: this.state.value.message,
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog',
+      //   titleContent: this.state.value.message,
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
     return this.state
   }
