@@ -48,7 +48,8 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
             <RouterLink :to="`/organization/project-hierarchy/project/${id}`" class="edit-btn">
               Edit Hierarchy
             </RouterLink>
-            <AddCreateTeam :ProjectLocationId="locationTeam.projectLocationId" :LocationId="locationTeam.id" />
+            <AddCreateTeam :ProjectLocationId="locationTeam.projectLocationId" :LocationId="locationTeam.id"
+              @update:data="GetProjectLocationsEmployes" />
             <RouterLink :to="`/organization/project-employee/project/${id}`" class="add-btn">
               Add employee
             </RouterLink>
@@ -60,7 +61,8 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
             v-for="(member, index) in locationTeam.locationEmplyees" :key="index" :member="member" />
         </div>
         <div>
-          <TeamCard class="employee-card" v-for="(team, index) in locationTeam.locationTeams" :key="index" :team="team" />
+          <TeamCard class="employee-card" v-for="(team, index) in locationTeam.locationTeams" :key="index"
+            :team="team" />
         </div>
       </div>
     </template>

@@ -15,7 +15,7 @@ const props = defineProps<{
       <div class="team-card-header-content">
         <TeamsIcon class="team-icon" />
         <div class="team-card-text">
-          <p class="team-card-title">Team</p>
+          <p class="team-card-title">{{ team.title }}</p>
           <p class="team-card-members"><span>{{ team.Employees?.length }}</span> members</p>
         </div>
       </div>

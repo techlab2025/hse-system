@@ -6,11 +6,17 @@ import { ref } from 'vue'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import CreateTeamForm from './CreateTeamForm.vue'
 
+const emit = defineEmits(['update:data'])
 const props = defineProps<{
   ProjectLocationId: number,
   LocationId: number
 }>()
 const visible = ref(false)
+
+const UpdateData = () => {
+  emit('update:data')
+  visible.value = false
+}
 </script>
 
 <template>
@@ -24,7 +30,7 @@ const visible = ref(false)
     </template>
     <div class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-      <CreateTeamForm :ProjectLocationId="ProjectLocationId" :LocationId="LocationId" />
+      <CreateTeamForm :ProjectLocationId="ProjectLocationId" :LocationId="LocationId" @update:data="UpdateData" />
     </div>
   </Dialog>
 </template>

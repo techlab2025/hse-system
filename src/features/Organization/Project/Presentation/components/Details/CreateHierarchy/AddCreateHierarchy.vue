@@ -1,55 +1,45 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Breadcrumbs from '../DetailsHeader/Breadcrumbs.vue'
 import HeaderPage from '../DetailsHeader/HeaderPage.vue'
 import CreateHierarchyForm from './CreateHierarchyForm.vue'
 import LocationColor from '@/shared/icons/locationColor.vue'
-import IndexLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/LocationHierarchy/indexLocationHierarchiesParams'
 import AddLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/LocationHierarchy/addLocationHierarchyParams'
 import LocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/LocationHierarchy/locationHierarchyParams'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import AddLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/addLocationHierarchyController'
-import IndexProjectLocationController from '../../../controllers/Hierarchy/ProjectLocations/indexProjectLocationController'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/projectCustomLocationEnum'
+import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 
 const route = useRoute()
 const router = useRouter()
+const id = route.params.project_id
 
-// const projectLocationController = IndexProjectLocationController.getInstance()
-const indexHierarchyController = IndexLocationHierarchyController.getInstance()
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 
 const addHierarchyController = AddLocationHierarchyController.getInstance()
-const state = ref(indexHierarchyController.state.value)
+const state = ref(projectCustomLocationController.state.value)
 
 const hierarchies = ref<Record<number, TitleInterface[]>>({})
 
 
 
-
-// const fetchProjectLocations = async () => {
-//   try {
-//     const params = new IndexLocationHierarchyParams(+route.params.project_id)
-//     await projectLocationController.getData(params)
-//   } catch (error) {
-//     console.error('Error fetching project locations:', error)
-//   }
-// }
-
-const fetchHierarchies = async () => {
-  try {
-    const params = new IndexLocationHierarchyParams(+route.params.project_id)
-    await indexHierarchyController.getData(params)
-  } catch (err) {
-    console.error('Error fetching hierarchies:', err)
-  }
+const GetProjectLocationsHirarchy = async () => {
+  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY])
+  const response = await projectCustomLocationController.FetchProjecuCustomLocation(projectCustomLocationParams)
 }
 
-onMounted(fetchHierarchies)
+onMounted(
+  async () => {
+    await GetProjectLocationsHirarchy();
+  }
+)
 
 const handleHierarchyUpdate = (projectLocationId: number, value: TitleInterface[]) => {
   hierarchies.value[projectLocationId] = value || []
@@ -72,7 +62,7 @@ const handleAddAllHierarchies = async () => {
   }
 }
 
-watch(() => indexHierarchyController.state.value, (newState) => {
+watch(() => projectCustomLocationController.state.value, (newState) => {
   if (!newState) return
   state.value = newState
 })
@@ -81,21 +71,16 @@ watch(() => indexHierarchyController.state.value, (newState) => {
 <template>
   <div class="add-hierarchy">
     <Breadcrumbs />
-    <!--    {{ state.data }}-->
-
     <HeaderPage title="Add your hierarchy" subtitle="Select your hierarchy for each location from your main hierarchy"
       :number="1" />
     <DataStatus :controller="state">
       <template #success>
-        <!-- <pre>{{ state.data }}</pre> -->
-
         <div v-for="(item, index) in state.data" :key="index" class="hierarchy-form">
           <div class="title">
             <LocationColor />
-            <h5>{{ item.locationTitle }}</h5>
+            <h5>{{ item.title }}</h5>
           </div>
-
-          <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationHierarchies, value)" />
+          <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)" :selectedHirarchy="item.locationHierarchy" />
         </div>
 
         <div class="submit-btn">

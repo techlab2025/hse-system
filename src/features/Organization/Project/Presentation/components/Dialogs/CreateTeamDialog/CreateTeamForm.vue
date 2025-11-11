@@ -21,6 +21,7 @@ const props = defineProps<{
   LocationId: number
 }>()
 
+const emit = defineEmits(['update:data'])
 
 const route = useRoute()
 const id = Number(route.params.project_id)
@@ -47,7 +48,6 @@ const loading = ref(false)
 
 const CreateProjectLocationTeamEmployee = async () => {
   if (!TeamType.value || Employees.value.length === 0) {
-    alert('Please select team and employees')
     return
   }
 
@@ -67,6 +67,7 @@ const CreateProjectLocationTeamEmployee = async () => {
   try {
     loading.value = true
     const response = await controller.CreatePorjectLocationTeamEmployee(createParams, useRouter())
+    emit('update:data')
   } finally {
     loading.value = false
   }
