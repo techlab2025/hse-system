@@ -208,6 +208,7 @@ const setImage = async (data: File | string) => {
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
+      :required="true"
     />
   </div>
 

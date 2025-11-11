@@ -10,6 +10,12 @@ import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmpl
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 import { useUserStore } from '@/stores/user'
 import { useToast } from 'primevue/usetoast';
+import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
+import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 
 const toast = useToast();
 const Name = ref('')
@@ -22,6 +28,13 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: OrganizatoinEmployeeDetailsModel
 }>()
+
+const indexHerikalyController = IndexHerikalyController.getInstance()
+const HerikalyParams = new IndexHerikalyParams("", 0, 0, 0)
+
+const indexCertificateController = IndexCertificateController.getInstance()
+const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
+
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 const user = useUserStore();
@@ -83,8 +96,18 @@ const updateData = () => {
       Phone.value,
       Email.value,
       Password.value,
+      // Heirarchy.value?.id
+      // Certificates.value.map((item) => item.id)
     )
-    : new AddOrganizatoinEmployeeParams(Name.value, Phone.value, Email.value, Password.value)
+    : new AddOrganizatoinEmployeeParams(
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+      // Heirarchy.value?.id
+      // Certificates.value.map((item) => item.id)
+
+    )
   emit('update:data', params)
 }
 
@@ -116,6 +139,18 @@ const UpdatePassword = (data) => {
   Password.value = data.target.value
   updateData()
 }
+
+const Heirarchy = ref<TitleInterface>()
+const setHeirarchy = (data: TitleInterface) => {
+  Heirarchy.value = data
+  updateData()
+}
+
+const Certificates = ref<TitleInterface[]>()
+const setCertificates = (data: TitleInterface[]) => {
+  Certificates.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -135,4 +170,13 @@ const UpdatePassword = (data) => {
     <label for="password">{{ $t('Password') }}</label>
     <input id="password" type="text" min="8" v-model="Password" @change="UpdatePassword" />
   </div>
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
+      :params="HerikalyParams" :label="$t('Herikaly')" :placeholder="$t('Select Heirarchy')" />
+  </div> -->
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
+      :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
+      :placeholder="$t('Select Certificates')" />
+  </div> -->
 </template>

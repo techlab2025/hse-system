@@ -10,12 +10,13 @@ const props = defineProps<{
 </script>
 
 <template>
+  <!-- <pre>{{ team }}</pre> -->
   <div class="team-card">
     <div class="team-card-header">
       <div class="team-card-header-content">
         <TeamsIcon class="team-icon" />
         <div class="team-card-text">
-          <p class="team-card-title">{{ team.title }}</p>
+          <p class="team-card-title">{{ team.teamTitle }}</p>
           <p class="team-card-members"><span>{{ team.Employees?.length }}</span> members</p>
         </div>
       </div>

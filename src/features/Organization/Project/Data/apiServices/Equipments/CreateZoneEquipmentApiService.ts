@@ -2,10 +2,9 @@ import { ApiNames } from '@/base/core/networkStructure/apiNames'
 import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
-// import HeaderHandler from '@/base/core/networkStructure/networking/utils/header_handler.ts'
 
-class FetchProjectLocationsTeamEmployeeApiService extends ServicesInterface {
-  private static instance: FetchProjectLocationsTeamEmployeeApiService
+class CreateProjectZoneEquipmentApiService extends ServicesInterface {
+  private static instance: CreateProjectZoneEquipmentApiService
 
   private constructor() {
     super() // Ensure this does not call any uninitialized methods or properties
@@ -13,14 +12,14 @@ class FetchProjectLocationsTeamEmployeeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new FetchProjectLocationsTeamEmployeeApiService()
+      this.instance = new CreateProjectZoneEquipmentApiService()
     }
     return this.instance
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.FetchProjectLocationTeamEmployees,
+      url: ApiNames.instance.CreateProjectZoonEquipment,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -29,4 +28,4 @@ class FetchProjectLocationsTeamEmployeeApiService extends ServicesInterface {
   }
 }
 
-export { FetchProjectLocationsTeamEmployeeApiService }
+export { CreateProjectZoneEquipmentApiService }

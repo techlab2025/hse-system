@@ -9,6 +9,7 @@ export default class AddEquipmentParams implements Params {
   parentId: number
   // image: string
   equipmentTypeId: number
+  // certificates: number[]
 
   constructor(
     translation: TranslationsParams,
@@ -18,6 +19,7 @@ export default class AddEquipmentParams implements Params {
     parentId: number,
     // image: string,
     equipmentTypeId: number,
+    // certificates: number[],
   ) {
     this.translation = translation
     this.hasCertificate = hasCertificate
@@ -26,6 +28,7 @@ export default class AddEquipmentParams implements Params {
     this.parentId = parentId
     // this.image = image
     this.equipmentTypeId = equipmentTypeId
+    // this.certificates = certificates
   }
 
   toMap(): Record<
@@ -45,6 +48,7 @@ export default class AddEquipmentParams implements Params {
     data['industry_ids'] = this.industries
     data['equipment_type_id'] = this.equipmentTypeId
     if (this.parentId) data['parent_id'] = this.parentId
+    // if (this.certificates) data['certificates'] = this.certificates
     // if (this.image) data['image'] = this.image
 
     return data

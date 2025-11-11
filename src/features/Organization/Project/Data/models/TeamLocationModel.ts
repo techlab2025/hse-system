@@ -1,16 +1,16 @@
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import ProjectLocationTeamModel from './CustomLocation/ProjectLocationTeamModel'
 
 export default class TeamLocation {
   public projectLocationId: number
   public locationId: number
   public location_title: string
-  public projectLocationTeams: TitleInterface[]
+  public projectLocationTeams: ProjectLocationTeamModel[]
 
   constructor(
     projectLocationId: number,
     locationId: number,
     location_title: string,
-    projectLocationTeams: TitleInterface[],
+    projectLocationTeams: ProjectLocationTeamModel[],
   ) {
     this.projectLocationId = projectLocationId
     this.locationId = locationId
@@ -23,7 +23,7 @@ export default class TeamLocation {
       data.project_location_id,
       data.location_id,
       data.location_title,
-      data.project_location_teams,
+      data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)),
     )
   }
 }

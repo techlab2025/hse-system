@@ -15,6 +15,7 @@ const UpdateData = () => {
 }
 </script>
 <template>
+  <!-- {{ member }} -->
   <div class="member-card">
     <MemberDeleteIcon class="card-delete" @click="UpdateData" />
     <img class="member-img" :src="member?.image || person" @error="setDefaultImage" :alt="member.name">

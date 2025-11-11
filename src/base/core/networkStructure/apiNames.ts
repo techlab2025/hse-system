@@ -454,6 +454,7 @@ class ApiNames {
   public get FetchProjectLocationTeamEmployees() { return this.prefix + 'fetch_project_location_team_employees' }
 
   public get CreateProjectLocationTeamEmployee() { return this.prefix + 'create_project_location_team_employee' }
+  public get CreateProjectZoonEquipment() { return this.prefix + 'create_project_zoon_equipment' }
 
   public get IndexProjectLocationZones() { return this.prefix + 'fetch_zoons_by_location_ids' }
   public get ProjectCustomLocation() { return this.prefix + 'fetch_full_project_locations' }

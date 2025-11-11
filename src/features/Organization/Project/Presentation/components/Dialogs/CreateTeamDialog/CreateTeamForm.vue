@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
-// components & models
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
-// controllers & params
 import IndexTeamController from '@/features/setting/Teams/Presentation/controllers/indexTeamController'
 import IndexTeamParams from '@/features/setting/Teams/Core/params/indexTeamParams'
-
 import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeController'
 import IndexLocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeParams'
-
 import CreateProjectLocationTeamEmployeeController from '../../../controllers/CreateProjectLocationTeamEmployeeController'
 import CreateProjectLocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/CreateProjectLocationTeamEmployeeParams'
 
@@ -40,7 +34,6 @@ const Employees = ref<TitleInterface[]>([])
 const setEmployees = (data: TitleInterface[]) => {
   Employees.value = data
 }
-
 const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
 const indexLocationHierarchyEmployeeParams = new IndexLocationHierarchyEmployeeParams(id, props.LocationId, null)
 
