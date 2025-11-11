@@ -20,6 +20,8 @@ import EditEquipmentParams from '../../Core/params/editEquipmentParams'
 import type EquipmentModel from '../../Data/models/equipmentModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
+import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 
 const emit = defineEmits(['update:data', 'validate'])
 const props = defineProps<{ data?: EquipmentModel }>()
@@ -31,6 +33,10 @@ const id = Number(route.params.id)
 const langTitleValid = ref(false)
 const equipmentTypeValid = ref(false)
 const industryValid = ref(false)
+
+
+const indexCertificateController = IndexCertificateController.getInstance()
+const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
 
 // Ref to LangTitleInput component
 const langTitleInputRef = ref<InstanceType<typeof LangTitleInput> | null>(null)
@@ -125,22 +131,25 @@ const updateData = () => {
 
   const params = !props.data?.id
     ? new AddEquipmentParams(
-        translationsParams,
-        hasCertificate.value,
-        AllIndustry,
-        industry.value.map((i) => i.id),
-        id,
-        Equipment.value?.id!,
-      )
+      translationsParams,
+      hasCertificate.value,
+      AllIndustry,
+      industry.value.map((i) => i.id),
+      id,
+      Equipment.value?.id!,
+      // Certificates.value.map((item) => item.id)
+    )
     : new EditEquipmentParams(
-        props.data.id ?? 0,
-        translationsParams,
-        hasCertificate.value,
-        AllIndustry,
-        industry.value.map((i) => i.id),
-        props.data.id ?? 0,
-        Equipment.value?.id!,
-      )
+      props.data.id ?? 0,
+      translationsParams,
+      hasCertificate.value,
+      AllIndustry,
+      industry.value.map((i) => i.id),
+      props.data.id ?? 0,
+      Equipment.value?.id!,
+      // Certificates.value.map((item) => item.id)
+
+    )
 
   emit('update:data', params)
   emit('validate', isFormValid.value)
@@ -188,6 +197,12 @@ const handleLangValidation = (isValid: boolean) => {
   langTitleValid.value = isValid
   emit('validate', isFormValid.value)
 }
+
+const Certificates = ref<TitleInterface[]>()
+const setCertificates = (data: TitleInterface[]) => {
+  Certificates.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -195,51 +210,32 @@ const handleLangValidation = (isValid: boolean) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div> -->
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="setLangs"
-      @validate="handleLangValidation"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs"
+      @validate="handleLangValidation" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('has_certificate') }}</label>
     <input type="checkbox" :value="1" v-model="hasCertificate" />
   </div> -->
 
-  <div
-    class="col-span-4 md:col-span-4 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-4 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" />
   </div>
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Industry"
-      id="EquipmentType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="Industry"
+      id="EquipmentType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="Equipment"
-      :controller="indexEquipmentTypeController"
-      :params="indexEquipmentTypeParams"
-      label="EquipmentType"
-      id="EquipmentType"
-      placeholder="Select EquipmentType"
-      @update:modelValue="setEquipmentType"
-    />
+    <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentTypeController"
+      :params="indexEquipmentTypeParams" label="EquipmentType" id="EquipmentType" placeholder="Select EquipmentType"
+      @update:modelValue="setEquipmentType" />
   </div>
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
+      :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
+      :placeholder="$t('Select Certificates')" />
+  </div> -->
   <!-- <div class="col-span-4 md:col-span-4">
     <FileUpload
       :modelValue="image"

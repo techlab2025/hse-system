@@ -6,7 +6,7 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 import ProjectLocationZonesModel from './ProjectLocationZones'
-import type TeamLocation from './TeamLocationModel'
+import TeamLocation from './TeamLocationModel'
 import SohwProjectZoonModel from './ShowProjectZone'
 
 export default class ShowProjectDetailsModel {
@@ -70,7 +70,7 @@ export default class ShowProjectDetailsModel {
       data.description,
       this.getTitle(data.partner),
       data.locations,
-      data.team_locations,
+      data.team_locations.map((item: any) => TeamLocation.fromMap(item)),
       data.methods.map((item: any) => this.getTitle(item)),
       data.project_zoons.map((item: any) => SohwProjectZoonModel.fromMap(item)),
       data.serial_number,

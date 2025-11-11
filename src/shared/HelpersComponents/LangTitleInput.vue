@@ -255,7 +255,7 @@ watch(hasAtLeastOneValue, (isValid) => {
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang" />
+          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang" :required="props.required" />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->

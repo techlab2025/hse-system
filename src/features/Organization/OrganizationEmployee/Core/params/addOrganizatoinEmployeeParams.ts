@@ -5,12 +5,23 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   phone: string
   email: string
   password: string
+  // heriarachyId: number
+  // certificateId: number[]
 
-  constructor(name: string, phone: string, email: string, password: string) {
+  constructor(
+    name: string,
+    phone: string,
+    email: string,
+    password: string,
+    // heriarachyId: number,
+    // certificateId: number[],
+  ) {
     this.name = name
     this.phone = phone
     this.email = email
     this.password = password
+    // this.heriarachyId = heriarachyId
+    // this.certificateId = certificateId
   }
 
   toMap(): Record<
@@ -29,6 +40,8 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['phone'] = this.phone
     data['email'] = this.email
     data['password'] = this.password
+    // data['heriarachy_id'] = this.heriarachyId
+    // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data
   }

@@ -1,5 +1,5 @@
 import TitleModel from '@/base/core/Models/title_model'
-import type ProjectLocationZoneModel from './ProjectLocationZoneModel'
+import ProjectLocationZoneModel from './ProjectLocationZoneModel'
 import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
 import ProjectLocationTeamModel from './ProjectLocationTeamModel'
 import ProjectLocationEquipmentModel from './ProjectLocationEquipmentModel'
@@ -37,7 +37,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
       data.project_location_id,
       data.location_id,
       data.location_title,
-      data.project_location_zoons,
+      data.project_location_zoons?.map((item: any) => ProjectLocationZoneModel.fromMap(item)),
       data.project_location_hierarchies?.map((item) => ProjectLocationHierarchyModel.fromMap(item)),
       data.project_location_hierarchy_employees?.map((item: any) =>
         ProjectLocationEmployeeModel.fromMap(item),

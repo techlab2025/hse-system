@@ -1,3 +1,4 @@
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class OrganizatoinEmployeeDetailsModel {
   public id: number
@@ -6,6 +7,8 @@ export default class OrganizatoinEmployeeDetailsModel {
   public email: string
   public is_master: number
   public image: null
+  // public heriarachy: number
+  // public certificates: number
 
   constructor(
     id: number,
@@ -14,6 +17,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     email: string,
     is_master: number,
     image: null,
+    // heriarachy: number,
+    // certificates: number
   ) {
     this.id = id
     this.name = name
@@ -21,6 +26,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.email = email
     this.is_master = is_master
     this.image = image
+    // this.heriarachy = heriarachy
+    // this.certificates = certificates
   }
 
   static fromMap(data: any): OrganizatoinEmployeeDetailsModel {
@@ -31,6 +38,8 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.email,
       data.is_master,
       data.image,
+      // data.heriarachy,
+      // data.certificates
     )
   }
 }

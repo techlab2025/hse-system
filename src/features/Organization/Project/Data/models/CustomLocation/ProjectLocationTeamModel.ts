@@ -5,6 +5,7 @@ export default class ProjectLocationTeamModel extends TitleModel {
   public Employees: ProjectLocationEmployeeModel[]
   public projectLocationTeamId: number
   public teamId: number
+  public teamTitle?: string
 
   constructor(
     id: number,
@@ -12,22 +13,25 @@ export default class ProjectLocationTeamModel extends TitleModel {
     Employees: ProjectLocationEmployeeModel[],
     projectLocationTeamId: number,
     teamId: number,
+    teamTitle?: string,
   ) {
     super(title, id)
     this.Employees = Employees
     this.projectLocationTeamId = projectLocationTeamId
     this.teamId = teamId
+    this.teamTitle = teamTitle
   }
 
   static fromMap(data: any): ProjectLocationTeamModel {
     return new ProjectLocationTeamModel(
       data.project_location_id,
-      data.title,
-      data.project_location_team_employees.map((item) =>
+      data.location_title,
+      (data.project_location_team_employees || data.project_location_employees)?.map((item) =>
         ProjectLocationEmployeeModel.fromMap(item),
       ),
-      data.project_location_team_id,
+      data.location_id,
       data.team_id,
+      data.team_title,
     )
   }
 }

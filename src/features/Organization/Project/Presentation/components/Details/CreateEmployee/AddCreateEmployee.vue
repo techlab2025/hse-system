@@ -17,21 +17,16 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeController'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/projectCustomLocationEnum'
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.project_id
 
 
-// const indexHierarchyController = IndexLocationHierarchyController.getInstance()
-// const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
 const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
 
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})

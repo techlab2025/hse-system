@@ -3,11 +3,7 @@ import TranslationsParams, {
   type DescriptionLocale,
   type TitleLocale,
 } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
-import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 import ProjectLocationZonesModel from './ProjectLocationZones'
