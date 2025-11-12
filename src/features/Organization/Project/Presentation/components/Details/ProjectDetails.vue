@@ -37,14 +37,13 @@ watch(() => showProjectDetailsController.state.value, (newState) => {
 </script>
 <template>
 
-
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
-        <MainObjectivesSection :description="ProjectDetails?.description" />
-        <ProjectSiteSection :locations="ProjectDetails?.locations" />
-        <LocationsTeamsSection :teamLocations="ProjectDetails?.TeamLocations" />
-        <EquipmentSection :project_zoons="ProjectDetails?.projectZoons" />
+        <MainObjectivesSection :description="state.data?.description" />
+        <ProjectSiteSection :locations="state.data?.locations" />
+        <LocationsTeamsSection :teamLocations="state.data?.TeamLocations" />
+        <EquipmentSection :project_zoons="state.data?.projectZoons" />
       </div>
     </template>
     <template #loader>

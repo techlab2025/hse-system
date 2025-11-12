@@ -2,13 +2,14 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
+// import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
 import IndexProjectLocationZonesUseCase from '../../Domain/useCase/fetchLocationZonesUseCase'
+import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class IndexProjectLocationZonesController extends SelectControllerInterface<
-  ProjectLocationZonesModel[]
+  SohwProjectZoonModel[]
 > {
   private static instance: IndexProjectLocationZonesController
   private constructor() {
@@ -27,7 +28,7 @@ export default class IndexProjectLocationZonesController extends SelectControlle
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<ProjectLocationZonesModel[]> =
+    const dataState: DataState<SohwProjectZoonModel[]> =
       await this.indexProjectLocationZonesUseCase.call(params)
 
     this.setState(dataState)
