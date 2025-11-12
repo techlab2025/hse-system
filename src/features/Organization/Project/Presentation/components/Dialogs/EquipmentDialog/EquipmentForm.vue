@@ -12,7 +12,8 @@ import CreateProjectZoneEquipment from '@/features/Organization/Project/Core/par
 const route = useRoute()
 const router = useRouter()
 
-const id = Number(route.params.project_id)
+const id = Number(route.params.project_id || route.params.id)
+
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   zoonId: number
@@ -57,6 +58,7 @@ const AddEquipment = async () => {
     console.log(error);
   }
 };
+
 
 </script>
 

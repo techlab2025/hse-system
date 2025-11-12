@@ -11,6 +11,8 @@ import CreateProjectZoonEquipmentUseCase from '../../../Domain/useCase/Equipment
 import ProjectCustomLocationController from '../ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '../../../Core/Enums/projectCustomLocationEnum'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
+import ShowProjectDetailsController from '../ShowProjectDetailsController'
+import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 
 export default class CreateProjectZoneEquipmentsController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectZoneEquipmentsController
@@ -51,6 +53,13 @@ export default class CreateProjectZoneEquipmentsController extends ControllerInt
             ProjectCustomLocationEnum.ZOON_EQUIPMENT,
           ]),
         )
+
+        console.log('detaile start')
+        console.log(projectId )
+        ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(projectId),
+        )
+        console.log('detaile end')
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

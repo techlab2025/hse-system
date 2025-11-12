@@ -1,4 +1,3 @@
-// import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, {
   type DescriptionLocale,
   type TitleLocale,
@@ -6,8 +5,7 @@ import TranslationsParams, {
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import ProjectLocationZonesModel from './ProjectLocationZones'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import SohwProjectZoonModel from './ShowProjectZone'
 
 export default class ProjectDetailsModel {
   public id: number
@@ -21,7 +19,7 @@ export default class ProjectDetailsModel {
   public state: TitleInterface | null
   public city: TitleInterface | null
   public area: TitleInterface | null
-  public Zones: ProjectLocationZonesModel[] | null
+  public Zones: SohwProjectZoonModel[] | null
   public methods: TitleInterface | null
 
   constructor(
@@ -36,7 +34,7 @@ export default class ProjectDetailsModel {
     state: TitleInterface | null,
     city: TitleInterface | null,
     area: TitleInterface | null,
-    Zones: ProjectLocationZonesModel[] | null,
+    Zones: SohwProjectZoonModel[] | null,
     methods: TitleInterface | null,
   ) {
     this.id = id
@@ -67,7 +65,8 @@ export default class ProjectDetailsModel {
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
-      data.locations.map((item: any) => ProjectLocationZonesModel.fromMap(item)),
+      // data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
+      data.locations,
       data.methods.map((item: any) => this.getTitle(item)),
     )
   }

@@ -29,7 +29,8 @@ import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
 import IndexMethodsController from '@/features/setting/Methods/Presentation/controllers/indexMethodsController'
 import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMethodsParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
+// import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
+import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 
 const emit = defineEmits(['update:data'])
 
@@ -286,14 +287,11 @@ const setEvaluatingMethod = (data: TitleInterface[]) => {
 }
 
 const ZoneIds = ref<number[]>([])
-const SelectedZones = ref<ProjectLocationZonesModel[]>([])
-const UpdateZones = (data: ProjectLocationZonesModel[]) => {
+const SelectedZones = ref<SohwProjectZoonModel[]>([])
+const UpdateZones = (data: { zoonTitles: string[]; zoonIds: { locationId: number; ZoneIds: number[] }[] }) => {
   ZoneIds.value = []
-
-  data.forEach((d) => {
-    ZoneIds.value = data.flatMap(d => d.zoons.map(z => z.id))
-
-  })
+  ZoneIds.value = data.zoonIds.flatMap(d => d.ZoneIds)
+  console.log(ZoneIds.value, "ZoneIds after update")
   updateData()
 }
 

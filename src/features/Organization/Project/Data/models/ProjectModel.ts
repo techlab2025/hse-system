@@ -3,7 +3,6 @@ import type PartnerModel from '@/features/Organization/Partner/Data/models/Partn
 import type ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
-// import ClientProjectModel from "@/features/dashboard/settings/clientProject/Data/models/index_client_Project_model";
 
 export default class ProjectModel extends TitleInterface {
   public id: number

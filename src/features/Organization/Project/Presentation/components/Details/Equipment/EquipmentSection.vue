@@ -6,12 +6,18 @@ import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
 import EquipmentCard from "./EquipmentCard.vue";
 import type SohwProjectZoonModel from "@/features/Organization/Project/Data/models/ShowProjectZone";
 import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
 
 const route = useRoute()
 const id = route.params.id
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]
 }>()
+
+const ProjectZones = ref(props.project_zoons)
+watch(()=>props.project_zoons,(newValue)=>{
+  ProjectZones.value = newValue
+})
 
 </script>
 
@@ -24,8 +30,8 @@ const props = defineProps<{
         subtitle="View and manage all equipment assigned to each operational zone" />
       <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">Show all</router-link>
     </div>
-    <div class="equipments-sections" v-if="project_zoons?.length > 0">
-      <EquipmentCard v-for="(Equipment, index) in project_zoons" :key="index" :zones="Equipment" />
+    <div class="equipments-sections" v-if="ProjectZones?.length > 0">
+      <EquipmentCard v-for="(Equipment, index) in ProjectZones" :key="index" :zones="Equipment" />
     </div>
     <EmptyData :img="EquimentFolderEmpty" title="No Equipment Added Yet"
       subtitle="Start adding your site equipment to manage inspections, maintenance, and safety logs in one place"

@@ -2,9 +2,10 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { IndexProjectLocationZonesApiService } from '../../Data/apiServices/fetchProjectLocationsZonesApiService'
-import ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
+// import ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
+import SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 
-class IndexProjectLocationZonesRepo extends RepoInterface<ProjectLocationZonesModel[]> {
+class IndexProjectLocationZonesRepo extends RepoInterface<SohwProjectZoonModel[]> {
   private static instance: IndexProjectLocationZonesRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -23,8 +24,8 @@ class IndexProjectLocationZonesRepo extends RepoInterface<ProjectLocationZonesMo
     return true
   }
 
-  onParse(data: any): ProjectLocationZonesModel[] {
-    return data.map((item: any) => ProjectLocationZonesModel.fromMap(item))
+  onParse(data: any): SohwProjectZoonModel[] {
+    return data.map((item: any) => SohwProjectZoonModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
