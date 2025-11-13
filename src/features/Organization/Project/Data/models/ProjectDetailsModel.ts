@@ -21,6 +21,7 @@ export default class ProjectDetailsModel {
   public area: TitleInterface | null
   public Zones: SohwProjectZoonModel[] | null
   public methods: TitleInterface | null
+  public contractors: TitleInterface | null
 
   constructor(
     id: number,
@@ -36,6 +37,7 @@ export default class ProjectDetailsModel {
     area: TitleInterface | null,
     Zones: SohwProjectZoonModel[] | null,
     methods: TitleInterface | null,
+    contractors: TitleInterface | null,
   ) {
     this.id = id
     this.titles = titles
@@ -50,6 +52,7 @@ export default class ProjectDetailsModel {
     this.area = area
     this.Zones = Zones
     this.methods = methods
+    this.contractors = contractors
   }
 
   static fromMap(data: any): ProjectDetailsModel {
@@ -57,7 +60,7 @@ export default class ProjectDetailsModel {
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap([], data.descriptions).descriptions,
-      this.getTitle(data.partner),
+      data.partner,
       data.locations,
       data.serial_number,
       data.start_date,
@@ -68,6 +71,7 @@ export default class ProjectDetailsModel {
       // data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
       data.locations,
       data.methods.map((item: any) => this.getTitle(item)),
+      data.contractors.map((item: any) => this.getTitle(item)),
     )
   }
 
@@ -78,7 +82,7 @@ export default class ProjectDetailsModel {
 
     return new TitleInterface({
       id: data?.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title || data.name,
     })
   }
 
