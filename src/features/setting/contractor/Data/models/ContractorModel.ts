@@ -1,25 +1,14 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from "@/base/Data/Models/title_interface"
 
 export default class ContractorModel extends TitleInterface {
-  public id: number
-  public title: string
+  public phone: string
 
-  constructor(
-    id: number,
-    title: string,
-
-  ) {
-    super({ id, title, })
-
-    this.id = id
-    this.title = title
+  constructor(id: number, name: string, phone: string) {
+    super({ id, title: name })
+    this.phone = phone
   }
 
   static fromMap(data: any): ContractorModel {
-    return new ContractorModel(
-      data.id,
-      data.title,
-
-    )
+    return new ContractorModel(data.id, data.name, data.phone)
   }
 }

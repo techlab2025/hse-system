@@ -286,7 +286,8 @@ watch(
                   <!-- <div class="tag-container">
                     <TablePopover :data="item.partner" />
                   </div> -->
-                  {{ item.partner?.title }}
+                  <!-- {{ item.partner?.title }} -->
+                  {{ item.contractor }}
                 </td>
                 <td data-label="Locations">
                   <div class="tag-container">
@@ -294,17 +295,17 @@ watch(
                   </div>
                 </td>
                 <!-- <td data-label="Supervisors"> -->
-                  <!-- <div class="avatar-group">
+                <!-- <div class="avatar-group">
                     <TablePopover :data_img="item." />
                   </div> -->
                 <!-- </td> -->
                 <!-- <td data-label="Teams"> -->
-                  <!-- <div class="tag-container">
+                <!-- <div class="tag-container">
                     <TablePopover :data="item.teams" />
                   </div> -->
                 <!-- </td> -->
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)"  />
+                  <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
                 </td>
               </tr>
             </tbody>

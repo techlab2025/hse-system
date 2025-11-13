@@ -145,46 +145,34 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchContractorType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchContractorType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchContractorType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CONTRACTOR_CREATE,
-          PermissionsEnum.CONTRACTOR_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-          class="btn btn-primary"
-        >
+      <permission-builder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.CONTRACTOR_CREATE,
+        PermissionsEnum.CONTRACTOR_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+          class="btn btn-primary">
           {{ $t('Add_Contractor') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CONTRACTOR_All,
-      PermissionsEnum.CONTRACTOR_DELETE,
-      PermissionsEnum.CONTRACTOR_FETCH,
-      PermissionsEnum.CONTRACTOR_UPDATE,
-      PermissionsEnum.CONTRACTOR_CREATE,
-    ]"
-  >
+  <permission-builder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.CONTRACTOR_All,
+    PermissionsEnum.CONTRACTOR_DELETE,
+    PermissionsEnum.CONTRACTOR_FETCH,
+    PermissionsEnum.CONTRACTOR_UPDATE,
+    PermissionsEnum.CONTRACTOR_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -201,11 +189,11 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/edit/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/edit/${item.id}`">{{
+                    index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusContractorType-->
@@ -214,20 +202,13 @@ watch(
                   <!--                  @ContractorTypeChangeStatus="fetchContractorType"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteContractor)"
-                    @delete="deleteContractor(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteContractor)" @delete="deleteContractor(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -236,28 +217,22 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
           addText="Add ContractorType"
           description="Sorry .. You have no ContractorTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ContractorTypes"
-        />
+          title="..ops! You have No ContractorTypes" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
           addText="Add ContractorType"
           description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ContractorTypes"
-        />
+          title="..ops! You have No ContractorTypes" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

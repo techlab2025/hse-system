@@ -64,7 +64,7 @@ export default class ShowProjectDetailsModel {
       data.id,
       data.title,
       data.description,
-      this.getTitle(data.partner),
+      data.partner,
       data.locations,
       data.team_locations.map((item: any) => TeamLocation.fromMap(item)),
       data.methods.map((item: any) => this.getTitle(item)),

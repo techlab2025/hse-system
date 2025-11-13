@@ -7,7 +7,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 export default class EditProjectParams implements Params {
   id: number
   translation: TranslationsParams
-  partnerId: number
+  partnerId: number[]
   startDate: string
   SerialNumber: string
   locationIds: number[]
@@ -17,7 +17,7 @@ export default class EditProjectParams implements Params {
   constructor(
     id: number,
     translation: TranslationsParams,
-    partnerId: number,
+    partnerId: number[],
     startDate: string,
     SerialNumber: string,
     locationIds: number[],
@@ -48,7 +48,7 @@ export default class EditProjectParams implements Params {
 
     data['project_id'] = this.id
     data['translations'] = this.translation.toMap()
-    if (this.partnerId) data['partner_id'] = this.partnerId
+    if (this.partnerId?.length > 0) data['contractor_ids'] = this.partnerId
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
     if (this.SerialNumber) data['serial_number'] = this.SerialNumber
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
