@@ -25,9 +25,5 @@ const props = defineProps<{
     <div class="locations-sections" v-if="teamLocations?.length > 0">
       <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location" />
     </div>
-
-    <EmptyData :img="EmptyFolder" title="No Team Members Yet"
-      subtitle="You haven’t added any employees to this team. Start building your crew now!"
-      :link="`/organization/employee-details/${id}`" linkText=" Start building your crew now!" v-else />
   </div>
 </template>

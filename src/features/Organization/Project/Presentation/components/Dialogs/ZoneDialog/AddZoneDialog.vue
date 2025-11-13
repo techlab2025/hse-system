@@ -17,45 +17,44 @@ const props = defineProps<{
 
 const Zones = ref<SohwProjectZoonModel[]>(props.selectedZones)
 
-const GetData = (data: { zoonTitles: string[], zoonIds: number }) => {
-  visible.value = false
-  Zones.value = data
-  emit('update:data', data.zoonIds)
+const ZoonsIds = ref<number[]>([])
+const Zoones = ref<string[]>([])
+
+// function to extract zone ids and names
+const updateLists = (data: SohwProjectZoonModel[]) => {
+  ZoonsIds.value = data.flat().map(el => el.zoons).flat().map(el => el?.id)
+  Zoones.value = data.flat().map(z => z.zoons).flat().map(el => el?.titles).flat().map(el => el?.title)
 }
 
-
-
-const Zoones = ref(props.selectedZones.flat().map(z => z.zoons).flat().map((el) => el?.titles).flat().map((el) => el?.title))
+updateLists(props.selectedZones)
 
 watch(
   () => props.selectedZones,
   (newVal) => {
     Zones.value = newVal
-    Zoones.value = newVal.flat().map(z => z.zoons).flat().map((el) => el?.titles).flat().map((el) => el?.title)
+    updateLists(newVal)
   }
 )
-const deleteZone = (index: number) => {
-  Zones.value.splice(index, 1)
-  Zoones.value.splice(index, 1)
 
-  emit('update:data', {
-    zoonTitles: Zoones.value,
-    zoonIds: Zones.value.map(z => ({
-      locationId: z.location?.id,
-      ZoneIds: z.zoons.map(zoon => zoon.id)
-    }))
-  })
+const GetData = (data: { zoonTitles: string[], zoonIds: number[] }) => {
+  visible.value = false
+  Zoones.value = data.zoonTitles
+  ZoonsIds.value = data.zoonIds
+  emit('update:data', ZoonsIds.value)
 }
 
+const deleteZone = (index: number) => {
+  ZoonsIds.value.splice(index, 1)
+  Zoones.value.splice(index, 1)
+  emit('update:data', ZoonsIds.value)
+}
 </script>
 
 <template>
   <div class="input-wrapper">
-    <div class="zones" @click="visible = true">
-      <div class="zone" v-for="(zone, index) in Zones.zoonTitles || Zoones" :key="index" @click.stop>
+    <div class="zones input" @click="visible = true" >
+      <div class="zone" v-for="(zone, index) in Zoones" :key="index" @click.stop>
         {{ zone }}
-        <span>
-        </span>
         <CloseDelete class="delete" @click.stop="deleteZone(index)" />
       </div>
     </div>

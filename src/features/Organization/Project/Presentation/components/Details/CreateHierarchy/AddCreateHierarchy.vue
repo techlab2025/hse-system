@@ -56,7 +56,8 @@ const handleAddAllHierarchies = async () => {
     )
 
     const params = new AddLocationHierarchyParams(+route.params.project_id, hierarchyList)
-    await addHierarchyController.addLocationHierarchy(params, router)
+     await addHierarchyController.addLocationHierarchy(params, router ,id )
+
   } catch (error) {
     console.error('Error adding hierarchies:', error)
   }

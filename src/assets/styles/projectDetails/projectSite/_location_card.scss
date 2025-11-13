@@ -5,9 +5,9 @@
   background-color: white;
   padding: $XsSize;
   border-radius: $XlSize;
-  width: 50%;
+  width: 100%;
   font-family: 'Regular';
-
+  height: 11rem;
   .card-header {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
