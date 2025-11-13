@@ -33,8 +33,6 @@ watch(()=>props.project_zoons,(newValue)=>{
     <div class="equipments-sections" v-if="ProjectZones?.length > 0">
       <EquipmentCard v-for="(Equipment, index) in ProjectZones" :key="index" :zones="Equipment" />
     </div>
-    <EmptyData :img="EquimentFolderEmpty" title="No Equipment Added Yet"
-      subtitle="Start adding your site equipment to manage inspections, maintenance, and safety logs in one place"
-      v-else />
+
   </div>
 </template>

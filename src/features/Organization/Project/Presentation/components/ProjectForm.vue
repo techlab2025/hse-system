@@ -31,6 +31,8 @@ import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMeth
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 // import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
 import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
+import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
+import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 
 const emit = defineEmits(['update:data'])
 
@@ -46,6 +48,8 @@ const indexPartnerController = IndexPartnerController.getInstance()
 const indexLocationController = IndexLocationController.getInstance()
 const indexLocationParams = new IndexLocationParams("", 0, 0, 0,)
 
+const indexContractorController = IndexContractorController.getInstance()
+const indexContractorTypeParams = new IndexContractorParams("", 0, 0, 0)
 
 const indexMethodsController = IndexMethodsController.getInstance()
 const indexMethodsParams = new IndexMethodsParams("", 0, 0, 0,)
@@ -232,6 +236,8 @@ watch(
       date.value = newData?.startDate;
       partner_id.value = newData?.partner;
       fields.value[0].value = SerialNumber.value
+      console.log(id, "id");
+      fields.value[0].enabled = props?.data?.id ? false : true
       SelectedCountry.value = newData?.country ?? [];
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -260,7 +266,8 @@ watch(
         0,
         LocationEnum.AREA,
         null,
-        SelectedCity.value.map((c) => c.id),
+        null
+        // SelectedCity.value.map((c) => c.id),
       )
       location.value = newData?.area ?? [];
       EvaluatingMethod.value = newData?.methods ?? [];
@@ -273,7 +280,7 @@ watch(
 const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: false },
+  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
 ])
 
 const setLocations = (data: TitleInterface[]) => {
@@ -282,18 +289,18 @@ const setLocations = (data: TitleInterface[]) => {
 }
 const setEvaluatingMethod = (data: TitleInterface[]) => {
   EvaluatingMethod.value = data
-
   updateData()
 }
 
 const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
-const UpdateZones = (data: { zoonTitles: string[]; zoonIds: { locationId: number; ZoneIds: number[] }[] }) => {
+const UpdateZones = (data) => {
   ZoneIds.value = []
-  ZoneIds.value = data.zoonIds.flatMap(d => d.ZoneIds)
-  console.log(ZoneIds.value, "ZoneIds after update")
+  console.log(data.flatMap(item => item), "data");
+  ZoneIds.value = data.flatMap(item => item.ZoneIds || item)
   updateData()
 }
+
 
 const UpdateSerial = (data) => {
   SerialNumber.value = data
@@ -346,7 +353,7 @@ const SetStateSelection = (data: TitleInterface[]) => {
 const SelectedCity = ref<TitleInterface[]>()
 const SetCitySelection = (data: TitleInterface[]) => {
   SelectedCity.value = data
-  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, data.map((c) => c.id))
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, null)
   updateData()
 }
 
@@ -369,6 +376,8 @@ watch(() => langsDescription.value,
   () => {
     updateData()
   })
+
+
 </script>
 
 <template>
@@ -391,7 +400,12 @@ watch(() => langsDescription.value,
     <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
       :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" />
   </div>
-  <div class="col-span-4 md:col-span-2">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId"
+      :controller="indexContractorController" :params="indexContractorTypeParams" :label="$t('contractor')"
+      :placeholder="$t('contractor')" />
+  </div> -->
+  <!-- <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
@@ -406,7 +420,7 @@ watch(() => langsDescription.value,
     <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
       :params="indexLocationCityParams" label="City" id="City" placeholder="Select City" :type="2"
       @update:modelValue="SetCitySelection" />
-  </div>
+  </div> -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('location')"
@@ -415,7 +429,7 @@ watch(() => langsDescription.value,
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="">Zones</label>
-    <AddZoneDialog :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
+    <AddZoneDialog class="input" :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"

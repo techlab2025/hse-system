@@ -9,7 +9,6 @@ import type { Router } from 'vue-router'
 import AddLocationHierarchyUseCase from '@/features/Organization/Project/Domain/useCase/Hierarchy/LocationHierarchy/addLocationHierarchyUseCase'
 import type LocationHierarchyModel from '@/features/Organization/Project/Data/models/LocationHierarchyModel'
 
-
 export default class AddLocationHierarchyController extends ControllerInterface<LocationHierarchyModel> {
   private static instance: AddLocationHierarchyController
   private constructor() {
@@ -24,7 +23,7 @@ export default class AddLocationHierarchyController extends ControllerInterface<
     return this.instance
   }
 
-  async addLocationHierarchy(params: Params, router: Router) {
+  async addLocationHierarchy(params: Params, router: Router, ProjectId: number) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<LocationHierarchyModel> =
@@ -38,8 +37,7 @@ export default class AddLocationHierarchyController extends ControllerInterface<
           messageContent: null,
         })
 
-
-        await router.push(`/organization/employee-details/${params?.projectId}`)
+        await router.push(`/organization/project-employee/project/${ProjectId}`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -5,7 +5,13 @@ import LocationPin from "@/assets/images/LocationPin.png"
 import AddEquipmentDialog from '../../Dialogs/EquipmentDialog/AddEquipmentDialog.vue';
 import { ref, watch } from 'vue';
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone';
+import EmptyData from '../LocationsTeams/EmptyData.vue';
+import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
+import { useRoute } from 'vue-router';
 
+
+const route = useRoute()
+const id = route.params.id
 const props = defineProps<{
   zones: SohwProjectZoonModel
 }>()
@@ -42,7 +48,10 @@ watch(() => props.zones, (newValue) => {
       <ToolCard v-for="(tool, index) in Zones?.projectZoonEquipments" :key="index" :tool="tool" />
     </div>
     <div class="empty-tools" v-else>
-      <h2>No Equipments</h2>
+      <EmptyData :img="EquimentFolderEmpty" title="No Equipment Added Yet"
+        subtitle="Start adding your site equipment to manage inspections, maintenance, and safety logs in one place"
+        :link="`/organization/project-equipment/project/${id}`" :linkText="`Start adding your site assets`" />
     </div>
   </div>
+
 </template>

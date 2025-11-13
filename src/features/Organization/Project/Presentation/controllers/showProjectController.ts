@@ -31,6 +31,7 @@ export default class ShowProjectController extends ControllerInterface<ProjectDe
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
+
     } else {
       throw new Error('Error while addServices')
     }

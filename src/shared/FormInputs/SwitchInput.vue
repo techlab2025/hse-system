@@ -14,8 +14,10 @@ watch(props.fields, (newVal) => {
   const payload: Record<string, string> = {}
   newVal.forEach(field => {
     if (props.switch_reverse) {
-
       payload[field.key] = field.enabled ? '' : field.value
+      if (field.enabled) {
+        field.value = ""
+      }
     }
     else {
       payload[field.key] = field.enabled ? field.value : ''
