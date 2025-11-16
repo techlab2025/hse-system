@@ -31,4 +31,9 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     name: 'Edit Equipment',
     component: () => import('@/views/Admin/Equipment/EditEquipment.vue'),
   },
+  {
+    path: 'equipment-show/:id',
+    name: 'Show Equipment',
+    component: () => import('@/views/Admin/Equipment/showEquipment.vue'),
+  },
 ]

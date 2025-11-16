@@ -17,6 +17,8 @@
 
 @use './crop';
 
+@use './equipment/imports_equipment';
+
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
 //@use "./utils/input_filter";
@@ -170,4 +172,3 @@ body {
   cursor: pointer;
   color: black;
 }
-

@@ -4,6 +4,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
+import DatePicker from 'primevue/datepicker'
 import TranslationsParams from '@/base/core/params/translations_params'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -12,7 +13,6 @@ import { LangsMap } from '@/constant/langs'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 import { useRoute } from 'vue-router'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import AddEquipmentParams from '../../Core/params/addEquipmentParams'
@@ -20,8 +20,10 @@ import EditEquipmentParams from '../../Core/params/editEquipmentParams'
 import type EquipmentModel from '../../Data/models/equipmentModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
-import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
+import Car from '@/shared/icons/car.vue'
+import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+import QrCard from './QrCard.vue'
+import DemoCard from './DemoCard.vue'
 
 const emit = defineEmits(['update:data', 'validate'])
 const props = defineProps<{ data?: EquipmentModel }>()
@@ -33,10 +35,6 @@ const id = Number(route.params.id)
 const langTitleValid = ref(false)
 const equipmentTypeValid = ref(false)
 const industryValid = ref(false)
-
-
-const indexCertificateController = IndexCertificateController.getInstance()
-const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
 
 // Ref to LangTitleInput component
 const langTitleInputRef = ref<InstanceType<typeof LangTitleInput> | null>(null)
@@ -131,25 +129,24 @@ const updateData = () => {
 
   const params = !props.data?.id
     ? new AddEquipmentParams(
-      translationsParams,
-      hasCertificate.value,
-      AllIndustry,
-      industry.value.map((i) => i.id),
-      id,
-      Equipment.value?.id!,
-      // Certificates.value.map((item) => item.id)
-    )
+        translationsParams,
+        hasCertificate.value,
+        AllIndustry,
+        industry.value.map((i) => i.id),
+        id,
+        Equipment.value?.id!,
+        // Certificates.value.map((item) => item.id)
+      )
     : new EditEquipmentParams(
-      props.data.id ?? 0,
-      translationsParams,
-      hasCertificate.value,
-      AllIndustry,
-      industry.value.map((i) => i.id),
-      props.data.id ?? 0,
-      Equipment.value?.id!,
-      // Certificates.value.map((item) => item.id)
-
-    )
+        props.data.id ?? 0,
+        translationsParams,
+        hasCertificate.value,
+        AllIndustry,
+        industry.value.map((i) => i.id),
+        props.data.id ?? 0,
+        Equipment.value?.id!,
+        // Certificates.value.map((item) => item.id)
+      )
 
   emit('update:data', params)
   emit('validate', isFormValid.value)
@@ -198,53 +195,147 @@ const handleLangValidation = (isValid: boolean) => {
   emit('validate', isFormValid.value)
 }
 
-const Certificates = ref<TitleInterface[]>()
-const setCertificates = (data: TitleInterface[]) => {
-  Certificates.value = data
-  updateData()
-}
+const image = ref<string | null>(null)
+const decommissioningDate = ref<string | null>(null)
 </script>
 
 <template>
-  <!-- <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-  </div> -->
-  <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs"
-      @validate="handleLangValidation" />
-  </div>
-  <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box">
-    <label>{{ $t('has_certificate') }}</label>
-    <input type="checkbox" :value="1" v-model="hasCertificate" />
-  </div> -->
+  <form class="w-full">
+    <div class="vehicle">
+      <Car />
 
-  <div class="col-span-4 md:col-span-4 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="1" v-model="allIndustries" />
-  </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="Industry"
-      id="EquipmentType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
-  </div>
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentTypeController"
-      :params="indexEquipmentTypeParams" label="EquipmentType" id="EquipmentType" placeholder="Select EquipmentType"
-      @update:modelValue="setEquipmentType" />
-  </div>
-  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
-      :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
-      :placeholder="$t('Select Certificates')" />
-  </div> -->
-  <!-- <div class="col-span-4 md:col-span-4">
-    <FileUpload
-      :modelValue="image"
-      @update:fileData="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-      :type="file"
-      :multiable="false"
-    />
-  </div> -->
+      <div class="input-wrapper check-box">
+        <label for="vehicle">
+          <p>Mark if this equipment is a <b>vehicle</b></p>
+        </label>
+        <input type="checkbox" id="vehicle" />
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 sm:grid-cols-2 gap-6 mt-8">
+      <div class="">
+        <LangTitleInput
+          :langs="langDefault"
+          :modelValue="langs"
+          @update:modelValue="setLangs"
+          @validate="handleLangValidation"
+        />
+      </div>
+
+      <div>
+        <CustomSelectInput
+          :modelValue="Equipment"
+          :controller="indexEquipmentTypeController"
+          :params="indexEquipmentTypeParams"
+          label="EquipmentType"
+          id="EquipmentType"
+          placeholder="Select EquipmentType"
+          @update:modelValue="setEquipmentType"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2 input-wrapper">
+        <label>{{ $t('upload image') }}</label>
+        <SingleFileUpload
+          v-model="image"
+          @update:modelValue="setImage"
+          label="Image"
+          id="image"
+          placeholder="upload image"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2 input-wrapper">
+        <label class="flex justify-between">
+          <p>{{ $t('Certification upload') }}</p>
+          <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
+        </label>
+        <SingleFileUpload
+          v-model="image"
+          @update:modelValue="setImage"
+          label="Image"
+          id="image"
+          placeholder="Certification upload"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2 input-wrapper">
+        <label>{{ $t('Date of Decommissioning') }}</label>
+        <DatePicker
+          v-model="decommissioningDate"
+          id="Date of Decommissioning"
+          :placeholder="`Date of Decommissioning`"
+        />
+      </div>
+
+      <div>
+        <CustomSelectInput
+          :modelValue="industry"
+          :controller="industryController"
+          :params="industryParams"
+          label="Equipment status"
+          id="Equipment status"
+          placeholder="Equipment status"
+          :type="2"
+          @update:modelValue="setIndustry"
+        />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="inspection duration">
+          {{ $t('inspection duration') }}
+        </label>
+        <input type="number" id="inspection duration" :placeholder="$t('inspection duration')" />
+      </div>
+
+      <div>
+        <CustomSelectInput
+          :modelValue="industry"
+          :controller="industryController"
+          :params="industryParams"
+          label="inspection template"
+          id="inspection template"
+          placeholder="inspection template"
+          :type="2"
+          @update:modelValue="setIndustry"
+        />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="License number">
+          {{ $t('License number') }}
+        </label>
+        <input type="number" id="License number" :placeholder="$t('License number')" />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="License Plate Number">
+          {{ $t('License Plate Number') }}
+        </label>
+        <input type="number" id="License Plate Number" :placeholder="$t('License Plate Number')" />
+      </div>
+
+      <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+        <label>{{ $t('all_industries') }}</label>
+        <input type="checkbox" :value="1" v-model="allIndustries" />
+      </div>
+
+      <div v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomSelectInput
+          :modelValue="industry"
+          :controller="industryController"
+          :params="industryParams"
+          label="Industry"
+          id="EquipmentType"
+          placeholder="Select industry"
+          :type="2"
+          @update:modelValue="setIndustry"
+        />
+      </div>
+
+      <DemoCard />
+
+      <QrCard />
+    </div>
+  </form>
 </template>
