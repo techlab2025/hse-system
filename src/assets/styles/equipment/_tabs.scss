@@ -1,0 +1,33 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.equipment-form {
+  .tabs-container {
+    @include grid(3, 10px);
+    width: 100%;
+    margin: $XlSize 0 $XlSize 0;
+    padding-inline: $MdSize;
+    .tab {
+      text-align: center;
+      width: 100%;
+      background-color: rgba(252, 252, 252, 1);
+      //   border: 2px dashed rgba(29, 78, 216, 0.3);
+      border-radius: $XlSize;
+      color: rgba(156, 163, 175, 1);
+      font-weight: $BaseFontSemiBoldWeight;
+      text-transform: capitalize;
+      cursor: pointer;
+      padding: $MdSize;
+      @media (max-width: 768px) {
+        @include flex-column(nowrap, center, center);
+      }
+      transition: all 0.3s ease-in-out;
+    }
+    .activeTab {
+      background-color: rgba(240, 244, 255, 1);
+      border: 2px dashed rgba(29, 78, 216, 1);
+      color: var(--PrimaryColor);
+    }
+  }
+}

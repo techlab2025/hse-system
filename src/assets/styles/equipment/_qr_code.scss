@@ -1,0 +1,33 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.equipment-form {
+  .qr-code {
+    @include flex-row(nowrap, center, center);
+    @media screen and (max-width: 900px) {
+      @include flex(row, wrap, center, center);
+    }
+    gap: $XsSize;
+    padding: $XlSize $XlSize4;
+    background-color: #fafbfc;
+
+    .texts {
+      @include flex-column(nowrap, flex-start, flex-start);
+      .title {
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        color: $PrimaryColor;
+      }
+      .subtitle {
+        font-size: $SmSize;
+        color: var(--subtitle-color);
+        width: 85%;
+      }
+    }
+    .qr-scan {
+      width: 110px;
+      height: 110px;
+    }
+  }
+}

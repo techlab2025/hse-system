@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ArrowIcons from '@/shared/icons/ArrowIcons.vue'
+
+
 </script>
 <template>
   <div class="breadcrumbs">

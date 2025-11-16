@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 // import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
 import type Params from '@/base/core/params/params'
-import EquipmentForm from './EquipmentForm.vue'
+import EquipmentForm from './FormData.vue'
 import AddEquipmentController from '../controllers/addEquipmentController'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
 // import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
@@ -63,23 +63,27 @@ const handleValidation = (valid: boolean) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addEquipment">
+  <form class="equipment-form" @submit.prevent="addEquipment">
     <EquipmentForm ref="equipmentFormRef" @update:data="setParams" @validate="handleValidation" />
 
-    <div class="col-span-4 button-wrapper">
+    <div class="flex items-center gap-2">
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary w-30"
         :disabled="isSubmitting"
         :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
       >
-        <span v-if="!isSubmitting">Add Equipment</span>
-        <span v-else>Adding...</span>
+        <span>Cancel</span>
       </button>
 
-      <p v-if="showValidationErrors && !isFormValid" class="text-red-500 text-sm mt-2">
-        Please fill in all required fields before submitting
-      </p>
+      <button
+        type="submit"
+        class="btn btn-primary w-full"
+        :disabled="isSubmitting"
+        :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
+      >
+        <span>Add Equipment</span>
+      </button>
     </div>
   </form>
 </template>
