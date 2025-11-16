@@ -729,6 +729,29 @@ class ApiNames {
     return this.prefix + 'disable_hazard_type'
   }
 
+  // ObserverationType
+  public get CreateObserverationType() {
+    return this.prefix + 'create_observeration_type'
+  }
+  public get IndexObserverationType() {
+    return this.prefix + 'fetch_observeration_types'
+  }
+  public get ShowObserverationType() {
+    return this.prefix + 'fetch_observeration_type_details'
+  }
+  public get EditObserverationType() {
+    return this.prefix + 'update_observeration_type'
+  }
+  public get DeleteObserverationType() {
+    return this.prefix + 'delete_observeration_type'
+  }
+  public get DisObserverationType() {
+    return this.prefix + 'disable_observeration_type'
+  }
+
+
+
+
   // Project Type
   public get CreateProjectType() {
     return this.prefix + 'create_project_type'
