@@ -113,6 +113,9 @@
 /*<editor-fold desc="TreeTable">*/
 @use './TreeTable/tree_table';
 /*</editor-fold>*/
+/*<editor-fold desc="_template_imports">*/
+@use './TemplateItem/template_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

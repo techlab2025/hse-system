@@ -1,0 +1,59 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.template-types-container {
+  margin-top: $XlSize;
+  font-family: 'Light';
+  @include grid(
+    2,
+    10px,
+    (
+      1000px: 1,
+    )
+  );
+  gap: 1rem;
+  .template-title {
+    grid-column: span 2;
+    color: #202020;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+  }
+
+  .action-box {
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: $SmSize;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #9ca3af;
+    font-size: $SmSize;
+    font-weight: $BaseFontSemiBoldWeight;
+
+    &.selected {
+      border-color: $PrimaryColor;
+      color: $PrimaryColor;
+      label {
+        color: $PrimaryColor;
+      }
+    }
+
+    label {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XlSize;
+    }
+    input {
+      display: none;
+    }
+    &:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+}

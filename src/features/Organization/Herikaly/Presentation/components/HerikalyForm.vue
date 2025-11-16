@@ -1,27 +1,21 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-// import TitleInterface from '@/base/Data/Models/title_in
-// terface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-// import DatePicker from 'primevue/datepicker'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-// import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-// import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-// import { useRoute } from 'vue-router'
-
 import type HerikalyDetailsModel from '../../Data/models/HerikalyDetailsModel'
 import EditHerikalyParams from '../../Core/params/editHerikalyParams'
 import AddHerikalyParams from '../../Core/params/addHerikalyParams'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
-
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
+import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 
 const emit = defineEmits(['update:data'])
 
@@ -29,23 +23,13 @@ const props = defineProps<{
   data?: HerikalyDetailsModel
 }>()
 
+const indexCertificateController = IndexCertificateController.getInstance()
+const indexCertificateParams = new IndexCertificateParams('', 1, 10, 1)
+
 const route = useRoute()
-// const route = useRoute()
 const ParentId = route.params.parent_id
-
-// actual translations (values)
 const langs = ref<{ locale: string; title: string }[]>([])
-
-const langsSub = ref<{ locale: string; title: string }[]>([])
-// const langsDescription = ref<{ locale: string; title: string }[]>([])
-
-// const allIndustries = ref<boolean>(false)
-// const hasCertificate = ref<number>(0)
-const image = ref<string>('')
-
-// default available Herikalys
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
 const user = useUserStore()
 
 const fetchLang = async (
@@ -97,11 +81,9 @@ const updateData = () => {
     ? new EditHerikalyParams(props?.data?.id, translationsParams, ParentId)
     : new AddHerikalyParams(translationsParams, ParentId)
 
-  // console.log(params, 'params')
   emit('update:data', params)
 }
 
-// when child emits modelValue (updated translations)
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
@@ -121,19 +103,25 @@ watch(
       }
 
 
-  }},
+    }
+  },
   { immediate: true },
 )
+// const Certificate = ref<TitleInterface[]>([]);
+// const setCertificate = (data: TitleInterface[]) => {
+//   Certificate.value = data;
+//   updateData()
+// }
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="$t('title')"
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
+      @update:modelValue="setLangs" />
   </div>
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="Certificate" :controller="indexCertificateController"
+      :params="indexCertificateParams" label="Certificate" id="Certificate" placeholder="Select certificate" :type="2"
+      @update:modelValue="setCertificate" />
+  </div> -->
 </template>

@@ -65,6 +65,12 @@
   color: #0f1927 !important;
   font-size: $SmSize !important;
   font-weight: $BaseFontSemiBoldWeight !important;
+  // New Styles Start
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: space-between !important;
+  padding: 20px !important;
+  // New Styles End
 
   &:hover {
     background-color: #1d4ed80f !important;
