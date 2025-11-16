@@ -28,22 +28,17 @@ export default class AddTemplateParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
 
     if (!this.allIndustries) {
       data['industry_ids'] = this.industries
     }
-
-    data['require_image'] = this.require_image
-
+    if (this.require_image != null) data['require_image'] = this.require_image
     if (this.action) data['action'] = this.action
-
     if (this.items.length > 0) {
       data['items'] = this.items.map((item) => item.toMap())
     }
-
     return data
   }
 }

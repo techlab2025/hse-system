@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
-import EmployeeLinkIcon from '../icons/EmployeeLinkIcon.vue';
+import EmployeeLinkIcon from '../../../../../shared/icons/EmployeeLinkIcon.vue';
+import type HerikalyModel from '../../Data/models/HerikalyModel';
+import DeleteHerikalyController from '../controllers/deleteHerikalyController';
+import DeleteHerikalyParams from '../../Core/params/deleteHerikalyParams';
 
+const emit = defineEmits(['delete-data']);
 
 const props = defineProps<{
-  Hierarchies: any[]
+  Hierarchies: HerikalyModel[]
 }>()
 
 
@@ -29,6 +33,13 @@ const flattenedHierarchies = computed(() => {
     flatItems: flattenHierarchy([hierarchy])
   }))
 })
+
+const DeleteHierarchy = async (Id: number) => {
+  const deleteHerikalyParams = new DeleteHerikalyParams(Id);
+  const deleteHerikalyController = DeleteHerikalyController.getInstance();
+  await deleteHerikalyController.deleteHerikaly(deleteHerikalyParams);
+  emit("delete-data");
+}
 </script>
 
 <template>
@@ -51,32 +62,37 @@ const flattenedHierarchies = computed(() => {
 
 
           <div class="timeline-content">
-            <router-link v-for="(item, itemIndex) in hierarchyGroup.flatItems" :key="itemIndex"
-              :to="`/organization/herikaly/add/${item.status}`">
+            <div v-for="(item, itemIndex) in hierarchyGroup.flatItems" :key="itemIndex">
               <div class="timeline-card-header" :class="{
                 'timeline-card': item.level === 0,
                 'timeline-card-header-2': item.level > 0
               }" :style="{ marginLeft: `${item.level * 20}px` }">
-                <div class="heirarchy-container">
-                  <div class="heirarchy-header">
-                    <EmployeeIcon class="icon" />
-                    <p class="heirarchy-title">{{ item.status }}</p>
+
+                <router-link :to="`/organization/herikaly/add/${item.id}`">
+
+                  <div class="heirarchy-container">
+                    <div class="heirarchy-header">
+                      <EmployeeIcon class="icon" />
+                      <p class="heirarchy-title">{{ item.title }}</p>
+                    </div>
+                    <div class="heirarchy-details">
+                      <p>Employees: <span>{{ item.employees || 100 }}</span></p>
+                      <p>Certifications: <span>{{ item.certifications || 10 }}</span></p>
+                    </div>
                   </div>
-                  <div class="heirarchy-details">
-                    <p>Employees: <span>{{ item.employees || 100 }}</span></p>
-                    <p>Certifications: <span>{{ item.certifications || 10 }}</span></p>
-                  </div>
-                </div>
+                </router-link>
+
                 <div class="actions">
                   <router-link class="btn edit-btn flex "
-                    :to="{ name: 'Organization Employee', params: { parent_id: item.status } }">
+                    :to="{ name: 'Organization Employee', params: { parent_id: item.id } }">
                     <span>Employees</span>
                     <EmployeeLinkIcon class="w-[15px] h-[15px]" />
                   </router-link>
                   <button class="btn add-btn">Certificates</button>
+                  <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> Delete </button>
                 </div>
               </div>
-            </router-link>
+            </div>
 
           </div>
 
