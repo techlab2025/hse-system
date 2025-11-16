@@ -245,3 +245,8 @@
 :deep(.ql-editor:not(.ql-blank)::before) {
   opacity: 0;
 }
+
+.p-checkbox {
+  width: 28px !important;
+  height: 20px !important;
+}

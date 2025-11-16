@@ -37,6 +37,7 @@ watch(
 )
 
 const GetData = (data: { zoonTitles: string[], zoonIds: number[] }) => {
+  console.log(data, "data");
   visible.value = false
   Zoones.value = data.zoonTitles
   ZoonsIds.value = data.zoonIds
@@ -52,7 +53,7 @@ const deleteZone = (index: number) => {
 
 <template>
   <div class="input-wrapper">
-    <div class="zones input" @click="visible = true" >
+    <div class="zones input" @click="visible = true">
       <div class="zone" v-for="(zone, index) in Zoones" :key="index" @click.stop>
         {{ zone }}
         <CloseDelete class="delete" @click.stop="deleteZone(index)" />

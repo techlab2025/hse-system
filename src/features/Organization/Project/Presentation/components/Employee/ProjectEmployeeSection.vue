@@ -10,8 +10,8 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from "@/shared/DataStatues/TableLoader.vue";
 import DataEmpty from "@/shared/DataStatues/DataEmpty.vue";
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
-import { ProjectCustomLocationEnum } from '../../../Core/Enums/projectCustomLocationEnum'
 import ProjectCustomLocationController from '../../controllers/ProjectCustomLocationController'
+import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
 
 const router = useRoute()
 const id = router.params.project_id
