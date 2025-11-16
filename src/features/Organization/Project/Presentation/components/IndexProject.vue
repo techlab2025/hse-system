@@ -114,21 +114,21 @@ const actionList = (id: number, deleteProject: (id: number) => void) => [
     ],
   },
   {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteProject(id),
-    permission: [
-      PermissionsEnum.PROJECT_DELETE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PROJECT_ALL,
-    ],
-  },
-  {
     text: t('show'),
     icon: ShowProjectIcon,
     link: `/organization/project-details/${id}`,
     permission: [
       PermissionsEnum.PROJECT_DETAILS,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PROJECT_ALL,
+    ],
+  },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteProject(id),
+    permission: [
+      PermissionsEnum.PROJECT_DELETE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.PROJECT_ALL,
     ],

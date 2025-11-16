@@ -19,7 +19,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
-import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/projectCustomLocationEnum'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 
 
 const route = useRoute()

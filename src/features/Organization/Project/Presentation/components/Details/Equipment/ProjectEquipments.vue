@@ -2,7 +2,6 @@
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue';
 import EquipmentCard from './EquipmentCard.vue';
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
-import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/projectCustomLocationEnum';
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -10,6 +9,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
 
 const route = useRoute()
 const id = route.params.project_id

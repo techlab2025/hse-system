@@ -75,7 +75,6 @@ const UpdateData = () => {
 </script>
 
 <template>
-  <!-- <pre>{{ SelectedZones }}</pre> -->
   <div class="zone-form">
     <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
       <div class="location-header">
@@ -85,17 +84,19 @@ const UpdateData = () => {
       </div>
 
       <div class="zone-content-container">
-        <div v-for="(zone, index2) in location.zoons" :key="index2" class="zone-content"
+        <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2" class="zone-content"
           :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
+
           <label :for="`${location.zoonTitle}-${zone.title}-${zone.id}`" class="zone-title">
             {{ zone.title }}
-
           </label>
-
           <input type="checkbox" :id="`${location.zoonTitle}-${zone.title}-${zone.id}`"
             :checked="isZoneSelected(location.zoonId, zone.id)"
             @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)" />
+
         </div>
+        <div v-else class="empty-zone"> No Available Zones</div>
+
       </div>
     </div>
     <button class="confirm-btn btn btn-primary" @click="UpdateData">
