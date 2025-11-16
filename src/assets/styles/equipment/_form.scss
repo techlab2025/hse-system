@@ -1,0 +1,25 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.equipment-form {
+  .vehicle {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $SmSize;
+    background-color: rgba(241, 243, 245, 0.4);
+    padding: $SmSize;
+    border-radius: $SmSize;
+    margin-block: $MdSize;
+    label {
+      p {
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        b {
+          font-size: $MdSize;
+
+          font-weight: $BaseFontWeightBold;
+        }
+      }
+    }
+  }
+}

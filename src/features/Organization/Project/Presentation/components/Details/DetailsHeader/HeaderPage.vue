@@ -3,7 +3,7 @@ const props = defineProps<{
   img?: string
   number?: number
   title: string
-  subtitle: string
+  subtitle?: string
 }>()
 </script>
 <template>
@@ -14,7 +14,7 @@ const props = defineProps<{
     </div>
     <div class="header-text-page">
       <p class="title-page">{{ $t(title) }}</p>
-      <p class="subtitle-page">{{ $t(subtitle) }}</p>
+      <p class="subtitle-page" v-if="subtitle">{{ $t(subtitle) }}</p>
     </div>
   </div>
 </template>

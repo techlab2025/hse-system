@@ -201,17 +201,6 @@ const decommissioningDate = ref<string | null>(null)
 
 <template>
   <form class="w-full">
-    <div class="vehicle">
-      <Car />
-
-      <div class="input-wrapper check-box">
-        <label for="vehicle">
-          <p>Mark if this equipment is a <b>vehicle</b></p>
-        </label>
-        <input type="checkbox" id="vehicle" />
-      </div>
-    </div>
-
     <div class="grid lg:grid-cols-2 sm:grid-cols-2 gap-6 mt-8">
       <div class="">
         <LangTitleInput
@@ -219,18 +208,6 @@ const decommissioningDate = ref<string | null>(null)
           :modelValue="langs"
           @update:modelValue="setLangs"
           @validate="handleLangValidation"
-        />
-      </div>
-
-      <div>
-        <CustomSelectInput
-          :modelValue="Equipment"
-          :controller="indexEquipmentTypeController"
-          :params="indexEquipmentTypeParams"
-          label="EquipmentType"
-          id="EquipmentType"
-          placeholder="Select EquipmentType"
-          @update:modelValue="setEquipmentType"
         />
       </div>
 
@@ -256,6 +233,19 @@ const decommissioningDate = ref<string | null>(null)
           label="Image"
           id="image"
           placeholder="Certification upload"
+        />
+      </div>
+
+      <div>
+        <CustomSelectInput
+          :modelValue="industry"
+          :controller="industryController"
+          :params="industryParams"
+          label="Device status"
+          id="Device status"
+          placeholder="Device status"
+          :type="2"
+          @update:modelValue="setIndustry"
         />
       </div>
 
@@ -301,20 +291,6 @@ const decommissioningDate = ref<string | null>(null)
         />
       </div>
 
-      <div class="input-wrapper">
-        <label for="License number">
-          {{ $t('License number') }}
-        </label>
-        <input type="number" id="License number" :placeholder="$t('License number')" />
-      </div>
-
-      <div class="input-wrapper">
-        <label for="License Plate Number">
-          {{ $t('License Plate Number') }}
-        </label>
-        <input type="number" id="License Plate Number" :placeholder="$t('License Plate Number')" />
-      </div>
-
       <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
         <input type="checkbox" :value="1" v-model="allIndustries" />
@@ -333,7 +309,7 @@ const decommissioningDate = ref<string | null>(null)
         />
       </div>
 
-      <DemoCard />
+      <DemoCard :isBreadCramp="false" />
 
       <QrCard />
     </div>

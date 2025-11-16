@@ -7,7 +7,7 @@ import type Params from '@/base/core/params/params'
 import EditEquipmentController from '../controllers/editEquipmentController'
 import ShowEquipmentParams from '../../Core/params/showEquipmentParams'
 import ShowEquipmentController from '../controllers/showEquipmentController'
-import EquipmentForm from './EquipmentForm.vue'
+import EquipmentForm from './FormData.vue'
 
 const route = useRoute()
 const router = useRouter()
