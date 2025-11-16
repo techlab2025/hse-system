@@ -731,22 +731,22 @@ class ApiNames {
 
   // ObserverationType
   public get CreateObserverationType() {
-    return this.prefix + 'create_observeration_type'
+    return this.prefix + 'create_observation_type'
   }
   public get IndexObserverationType() {
-    return this.prefix + 'fetch_observeration_types'
+    return this.prefix + 'fetch_observation_types'
   }
   public get ShowObserverationType() {
-    return this.prefix + 'fetch_observeration_type_details'
+    return this.prefix + 'fetch_observation_type_details'
   }
   public get EditObserverationType() {
-    return this.prefix + 'update_observeration_type'
+    return this.prefix + 'update_observation_type'
   }
   public get DeleteObserverationType() {
-    return this.prefix + 'delete_observeration_type'
+    return this.prefix + 'delete_observation_type'
   }
   public get DisObserverationType() {
-    return this.prefix + 'disable_observeration_type'
+    return this.prefix + 'disable_observation_type'
   }
 
 
