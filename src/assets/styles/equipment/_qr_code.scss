@@ -5,6 +5,9 @@
 .equipment-form {
   .qr-code {
     @include flex-row(nowrap, center, center);
+    @media screen and (max-width: 900px) {
+      @include flex(row, wrap, center, center);
+    }
     gap: $XsSize;
     padding: $XlSize $XlSize4;
     background-color: #fafbfc;
