@@ -169,6 +169,25 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
+                    <!-- ObserverationType -->
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.OBSERVATION_TYPE_ALL,
+                        PermissionsEnum.OBSERVATION_TYPE_CREATE,
+                        PermissionsEnum.OBSERVATION_TYPE_DELETE,
+                        PermissionsEnum.OBSERVATION_TYPE_FETCH,
+                        PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/observation-types">
+                          <SidebarVector />
+                          <span>{{ $t('Observation Types') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -1062,6 +1081,25 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+                      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/observation-types">
+                        <SidebarVector />
+                        <span>{{ $t('Observation Types') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
                   <!-- templates -->
                   <PermissionBuilder
                     :code="[

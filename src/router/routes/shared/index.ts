@@ -10,6 +10,7 @@ import { methodsRoutes } from './methods'
 import { teamsRoutes } from './team'
 import { contractorsRoutes } from './contractor'
 import { locationRoutes } from './location'
+import { observerationRoutes } from './observeration'
 
 
 export const sharedRoutes: RouteRecordRaw[] = [
@@ -23,7 +24,8 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...methodsRoutes,
   ...teamsRoutes,
   ...contractorsRoutes,
-  ...locationRoutes
+  ...locationRoutes,
+  ...observerationRoutes,
 
 
 ]
