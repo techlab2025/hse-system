@@ -2,36 +2,36 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import AddHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/addHazardTypeUseCase'
+import AddObserverationTypeUseCase from '@/features/setting/ObserverationType/Domain/useCase/addObserverationTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
+import type ObserverationTypeModel from '@/features/setting/ObserverationType/Data/models/observerationTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
-export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: AddHazardTypeController
+export default class AddObserverationTypeController extends ControllerInterface<ObserverationTypeModel> {
+  private static instance: AddObserverationTypeController
   private constructor() {
     super()
   }
-  private AddHazardTypeUseCase = new AddHazardTypeUseCase()
+  private AddObserverationTypeUseCase = new AddObserverationTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddHazardTypeController()
+      this.instance = new AddObserverationTypeController()
     }
     return this.instance
   }
 
-  async addHazardType(params: Params, router: Router, draft: boolean = false) {
+  async addObserverationType(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
 
       console.log("Ssssssss")
-      const dataState: DataState<HazardTypeModel> =
-        await this.AddHazardTypeUseCase.call(params)
+      const dataState: DataState<ObserverationTypeModel> =
+        await this.AddObserverationTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -44,7 +44,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         const { user } = useUserStore()
 
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-types`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

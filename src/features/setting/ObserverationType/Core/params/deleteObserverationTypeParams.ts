@@ -8,7 +8,7 @@ export default class DeleteObserverationTypeParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["observeration_type_id"] = this.id;
+    data["observation_type_id"] = this.id;
     return data;
   }
 }

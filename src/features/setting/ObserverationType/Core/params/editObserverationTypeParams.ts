@@ -25,7 +25,7 @@ export default class EditObserverationTypeParams implements Params {
   > {
     const data: Record<string, any> = {}
 
-    data['observeration_type_id'] = this.id
+    data['observation_type_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
