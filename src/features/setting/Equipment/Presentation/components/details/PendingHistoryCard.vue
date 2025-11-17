@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Clock from '@/shared/icons/clock.vue'
 import InfoIcon from '@/shared/icons/infoIcon.vue'
 </script>
 
@@ -8,7 +9,10 @@ import InfoIcon from '@/shared/icons/infoIcon.vue'
       <InfoIcon />
       <div class="history-card-title">
         <div class="title">
-          <span class="status">{{ $t('pending request') }}</span>
+          <div class="status">
+            <span class="status-title">{{ $t('pending request') }}</span>
+            <Clock />
+          </div>
           <div class="date-title">
             <h5>inspection</h5>
             <span>22 july / 10 : 30 AM</span>
@@ -30,9 +34,16 @@ import InfoIcon from '@/shared/icons/infoIcon.vue'
           <button class="assign">
             {{ $t('Assign') }}
           </button>
+          <!--
           <button class="done">
             {{ $t('Done') }}
           </button>
+          -->
+          <!--
+          <button class="delay">
+            {{ $t('delay for now') }}
+          </button>
+          -->
           <button class="inspection-details">
             {{ $t('view inspection details') }}
           </button>

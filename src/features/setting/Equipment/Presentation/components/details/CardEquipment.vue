@@ -6,6 +6,9 @@ import Car from '@/shared/icons/car.vue'
 import DropdownIcons from '@/shared/icons/DropdownIcons.vue'
 import Popover from 'primevue/popover'
 import { ref } from 'vue'
+import Edit from '@/shared/icons/edit.vue'
+import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
+import EyeIcon from '@/shared/icons/EyeIcon.vue'
 
 const { t } = useI18n()
 
@@ -14,13 +17,18 @@ const op = ref()
 const actions = ref([
   {
     title: t('edit'),
-    icon: Car,
+    icon: Edit,
     id: 1,
   },
   {
     title: t('delete'),
-    icon: DropdownIcons,
+    icon: DeleteIcon,
     id: 2,
+  },
+  {
+    title: t('view'),
+    icon: EyeIcon,
+    id: 3,
   },
 ])
 
