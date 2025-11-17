@@ -4,7 +4,7 @@
 
 .select-container {
   font-family: 'Regular';
-  border-radius: 20px;
+  border-radius: $XlSize;
   transition: all 0.1s linear;
   cursor: pointer;
 
@@ -14,13 +14,13 @@
 
   label {
     @include flex-center();
-    gap: 10px;
-    font-size: 16px;
-    font-weight: 600;
+    gap: $XsSize2;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
     color: #9ca3af;
     background-color: #f8f9fa99;
-    padding: 20px 16px;
-    border-radius: 10px;
+    padding: $XlSize $MdSize;
+    border-radius: $XsSize2;
     cursor: pointer;
     border: none;
     outline: none;
@@ -40,9 +40,7 @@
     outline: none !important;
     box-shadow: none !important;
     width: 100%;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
   }
-
-
 }

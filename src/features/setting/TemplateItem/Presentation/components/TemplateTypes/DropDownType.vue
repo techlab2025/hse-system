@@ -1,25 +1,37 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface';
 import AddAnswer from '@/shared/icons/AddAnswer.vue';
 import DangerIcon from '@/shared/icons/DangerIcon.vue';
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue';
-import { ref } from 'vue';
+import RedDangerIcon from '@/shared/icons/RedDangerIcon.vue';
+import { onMounted, ref } from 'vue';
 
-const Answers = ref<TitleInterface[]>([
+const emit = defineEmits(['update:data'])
+const Answers = ref([
   {
-    id: 1,
     title: '',
+    isDanger: false
   }
 ]);
 
 const addNewAnswer = () => {
   Answers.value.push({
-    id: Date.now(),
-    title: ''
+    title: '',
+    isDanger: false
   });
+  UpdateData()
 }
 
+const DeleteItem = (index: number) => {
+  Answers.value.splice(index, 1)
+  UpdateData()
+}
 
+const UpdateData = () => {
+  emit('update:data', Answers.value.filter(answer => answer.title.trim() !== ''))
+}
+onMounted(() => {
+  emit('update:data', Answers.value.filter(answer => answer.title.trim() !== ''))
+})
 </script>
 <template>
   <div class="template-container">
@@ -44,18 +56,20 @@ const addNewAnswer = () => {
 
               <div class="timeline-icon">
                 <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
-                  @click="Answers.splice(index, 1)" />
+                  @click="DeleteItem(index)" />
                 <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
               </div>
             </div>
 
             <div class="timeline-content">
               <div class="dropdown-type input-wrapper">
-                <input type="text" v-model="item.title" class="input" placeholder="Enter text" />
-                <DangerIcon class="icon cursor-pointer" />
+                <input type="text" v-model="item.title" class="input" placeholder="Enter text" @input="UpdateData" />
+                <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
+                  @click="Answers[index].isDanger = true; UpdateData()" />
+                <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].isDanger"
+                  @click="Answers[index].isDanger = false; UpdateData()" />
               </div>
             </div>
-
           </div>
         </div>
       </div>

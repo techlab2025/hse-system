@@ -11,6 +11,9 @@
 @use './utils/input_serach';
 @use './utils/data_empty';
 @use './utils/popover';
+@use './utils/btn_add';
+@use './utils/btn_cancel';
+@use './utils/breadCrumb';
 //@use "./utils/_explore_btn";
 @use './normalize';
 @use './permission';
@@ -19,6 +22,7 @@
 
 @use './equipment/imports_equipment';
 @use './observation/imports_observation';
+@use './equipment/details/imports_details';
 
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
@@ -134,7 +138,7 @@ html {
 }
 
 body {
-  font-family: var(--font-family), sans-serif;
+  font-family: 'Regular', sans-serif;
   color: black;
   overflow-x: hidden;
 }

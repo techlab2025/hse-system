@@ -1,58 +1,40 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, TransitionGroup, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { LangsMap } from '@/constant/langs'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 import { useRoute } from 'vue-router'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import IndexTemplateItemTypeController from '@/features/setting/TemplateItem/Presentation/controllers/indexTemplateItemController'
-import IndexTemplateItemTypeParams from '@/features/setting/TemplateItem/Core/params/indexTemplateItemParams'
 import AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 import EditTemplateItemParams from '../../Core/params/editTemplateItemParams'
-import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import ActionsButtons from '@/shared/Actions/ActionsButtons.vue'
-import CheckBoxButton from '@/shared/Checkbox/CheckBoxButton.vue'
-import FormHeaderSection from '@/shared/FormHeader/FormHeaderSection.vue'
 import TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
-import Setting from '@/assets/images/setting.png'
 import SmartContract from '@/assets/images/SmartContract.png'
-import Select from 'primevue/select';
 import TemplateTypesSection from './TemplateTypes/TemplateTypesSection.vue'
-import type { ActionsEnum } from '../../Core/Enum/ActionsEnum'
+import { ActionsEnum } from '../../Core/Enum/ActionsEnum'
 import DropDownType from './TemplateTypes/DropDownType.vue'
-
+import TemplateImage from './TemplateTypes/TemplateImage.vue'
+import RadioButtonType from './TemplateTypes/RadioButtonType.vue'
+import CheckboxType from './TemplateTypes/CheckboxType.vue'
+import ShowTemplate from './ShowTemplate.vue'
 
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: TemplateItemDetailsModel }>()
-// const { user } = useUserStore()
 const ImageChecked = ref()
 const ActionChecked = ref()
 const route = useRoute()
 const id = Number(route.params.parent_id)
-
-const indexTemplateItemTypeController = IndexTemplateItemTypeController.getInstance()
-const indexTemplateItemTypeParams = new IndexTemplateItemTypeParams('', 1, 10, 1)
-const industryController = IndexIndustryController.getInstance()
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
-const TemplateItem = ref<TitleInterface | null>(null)
+const SelectedComponent = ref<ActionsEnum>(3)
+const TemplateData = ref()
 
 const user = useUserStore()
-// Fetch available languages and set defaults
 const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
@@ -79,7 +61,6 @@ const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0)
     ]
   }
 }
-
 onMounted(fetchLang)
 
 const updateData = () => {
@@ -89,11 +70,13 @@ const updateData = () => {
   })
   const params = !props.data?.id
     ? new AddTemplateItemParams(
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
       id,
-      null
+      translationsParams,
+      SelectedComponent.value,
+      TemplateData.value,
+      isUpdloadImage.value,
+      ImageStatus.value,
+
     )
     : new EditTemplateItemParams(
       props.data.id ?? 0,
@@ -106,14 +89,11 @@ const updateData = () => {
   emit('update:data', params)
 }
 
-
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
 
-
-// Watch for changes in props.data or langDefault to initialize form values
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -131,31 +111,41 @@ watch(
   { immediate: true },
 )
 
-
-const ActionCheckbox = (data: number) => {
-  // console.log(data , "data");
-  ActionChecked.value = data
-  updateData()
-}
-const ImageRequiredCheckbox = (data: number) => {
-  // console.log(data , "data");
-  ImageChecked.value = data
-  updateData()
-}
-const IndustrySelctOption = ref<number>()
-
-const selectedCity = ref();
-const cities = ref([
-  { name: 'New York', code: 'NY' },
-  { name: 'Rome', code: 'RM' },
-  { name: 'London', code: 'LDN' },
-  { name: 'Istanbul', code: 'IST' },
-  { name: 'Paris', code: 'PRS' }
-]);
-
-
 const GetTemplateType = (data: ActionsEnum) => {
-  console.log(data);
+  SelectedComponent.value = data
+}
+
+const ComponentsOptions = [
+  { id: ActionsEnum.DROPDOWN, name: 'DropDown', component: DropDownType },
+  { id: ActionsEnum.RADIOBUTTON, name: 'Radio Button', component: RadioButtonType },
+  { id: ActionsEnum.CHECKBOX, name: 'Check Box', component: CheckboxType },
+]
+
+const selectedComponent = computed(() => {
+  return ComponentsOptions.find(Component => Component.id === SelectedComponent.value)
+})
+
+const GetData = (data: any) => {
+  TemplateData.value = data
+}
+
+const AddToTemplate = () => {
+  console.log(TemplateData.value, "add to template clicked");
+}
+
+watch(() => TemplateData.value, () => {
+  updateData()
+})
+watch(() => SelectedComponent.value, () => {
+  updateData()
+})
+
+const isUpdloadImage = ref()
+const ImageStatus = ref();
+const UpdateImageInfo = (data: any) => {
+  isUpdloadImage.value = data.isUpdloadImage
+  ImageStatus.value = data.ImageType
+  updateData()
 }
 </script>
 
@@ -164,29 +154,29 @@ const GetTemplateType = (data: ActionsEnum) => {
     <PagesHeader :img="SmartContract" title="smart create for your inspection templet"
       subtitle="add your items one by one to the templet and you can see them" />
   </div>
-
   <div class="col-span-4 md:col-span-2">
     <div class="col-span-4 md:col-span-2">
       <LangTitleInput :label="$t('item_title')" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs"
         :placeholder="`add your title here..`" />
     </div>
-    <div class="col-span-4 md:col-span-2 mt-[15px]">
+    <div class="col-span-4 md:col-span-2 form-container">
       <TemplateTypesSection @update:data="GetTemplateType" />
-      <component :is="DropDownType" />
+      <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
+        v-if="selectedComponent?.component" />
+      <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
+      <button class="btn add-btn w-full " @click="AddToTemplate">{{ $t('add_to_template') }}</button>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2">
-    <div>
-      View Container
-    </div>
+    <ShowTemplate />
   </div>
-
 </template>
 
 <style scoped>
 .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  .add-btn {
+    margin-top: 15px;
+
+  }
 }
 </style>

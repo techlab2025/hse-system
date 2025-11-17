@@ -1,0 +1,199 @@
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
+
+.show-equipment {
+  .history-qr {
+    .history-log {
+      .history-card {
+        border: 1px solid $Gray-4;
+        border-radius: $SmSize;
+        padding: $MdSize;
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -2rem;
+          width: 70px;
+          height: 20px;
+          background: linear-gradient(180.31deg, #1092cf -10.32%, #c7c9d6 68.63%);
+          z-index: 1;
+          filter: blur(16px);
+          opacity: 1;
+        }
+
+        .card-header {
+          @include flex(row, nowrap, flex-start, flex-start);
+          gap: $XsSize2;
+          width: 100%;
+
+          svg {
+            margin-top: 0.5rem;
+          }
+
+          @media screen and (max-width: 1200px) {
+            @include flex(column, nowrap, flex-start, flex-start);
+          }
+
+          .user {
+            width: 30%;
+            @media screen and (max-width: 1200px) {
+              width: 100%;
+            }
+            @include flex(row, nowrap, flex-start, flex-start);
+            gap: $XsSize2;
+
+            img {
+              width: 40px;
+              height: 40px;
+            }
+
+            .name {
+              @include flex(column, nowrap, flex-start, flex-start);
+            }
+          }
+
+          .history-card-title {
+            width: 70%;
+            @include flex(column, nowrap, flex-start, flex-start);
+            gap: $XsSize4;
+
+            @media screen and (max-width: 1200px) {
+              width: 100%;
+            }
+
+            .title {
+              @include flex(column, nowrap, flex-start, flex-start);
+              width: 100%;
+              gap: 0;
+              border-bottom: none;
+              .status {
+                @include flex(row, nowrap, flex-start, center);
+                gap: $XsSize4;
+                svg {
+                  margin: 0;
+                }
+                .status-title {
+                  color: $PrimaryColor;
+                  font-size: $SmSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                }
+              }
+            }
+
+            .date-title {
+              @include flex(row, nowrap, flex-start, center);
+              gap: $XsSize2;
+
+              h5 {
+                font-size: $XlSize;
+                font-weight: $BaseFontWeightBold;
+              }
+
+              span {
+                font-size: $SmSize;
+                color: $Gray-3;
+              }
+            }
+
+            .items {
+              @include flex(row, wrap, flex-start, flex-start);
+              gap: $XlSize;
+
+              .item {
+                @include flex(row, wrap, flex-start, flex-start);
+                gap: $XsSize4;
+
+                span {
+                  color: $red-opacity;
+                  font-weight: $BaseFontWeight;
+                }
+
+                p {
+                  color: var(--Red);
+                  font-weight: $BaseFontWeightBold;
+                }
+              }
+            }
+
+            .notes {
+              @include flex(row, nowrap, flex-start, flex-start);
+              gap: $XsSize2;
+              width: 100%;
+
+              span {
+                color: $SubtitleColor;
+              }
+
+              p {
+                color: #4b5563;
+                font-weight: $BaseFontWeightBold;
+                font-size: $SmSize;
+              }
+              @media screen and (max-width: 900px) {
+                width: 100%;
+                gap: $XsSize;
+
+                @include flex(column, nowrap, flex-start, flex-start);
+              }
+            }
+
+            .buttons {
+              width: 100%;
+              @include flex(row, nowrap, center, center);
+              margin-top: $XsSize2;
+              gap: $SmSize;
+
+              @media screen and (max-width: 910px) {
+                @include flex(row, wrap, center, center);
+              }
+
+              .assign {
+                border: 0.5px solid $primary-dark;
+                border-radius: 50px;
+                padding: $XsSize $MdSize;
+                color: $PrimaryColor;
+                background-color: #1d4ed81a;
+                width: 100%;
+                font-weight: $BaseFontWeightBold;
+              }
+
+              .done {
+                border: 0.5px solid $greenDone;
+                border-radius: 50px;
+                padding: $XsSize $MdSize;
+                color: #4caf50;
+                background-color: $greenDone;
+                width: 100%;
+                font-weight: $BaseFontWeightBold;
+              }
+
+              .delay {
+                border: 0.5px solid $DelayColor;
+                border-radius: 50px;
+                padding: $XsSize $MdSize;
+                color: #ffbf52;
+                background-color: $DelayColor;
+                width: 100%;
+                font-weight: $BaseFontWeightBold;
+              }
+
+              .inspection-details {
+                border: 0.5px solid #04195380;
+                border-radius: 50px;
+                padding: $XsSize $MdSize;
+                font-weight: $BaseFontWeightBold;
+                color: var(--header-page-color);
+                background-color: #0419531a;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

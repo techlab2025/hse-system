@@ -37,6 +37,11 @@
       }
       .sub-card-body {
         width: 100%;
+        .first-item {
+          font-weight: $BaseFontSemiBoldWeight;
+          font-size: $SmSize;
+          color: var(--PrimaryColor);
+        }
         .demo-title {
           font-size: $MdSize2;
           font-weight: $BaseFontWeightBold;
@@ -59,14 +64,7 @@
 
         .sub-card-header {
           @include flex(row, nowrap, space-between, center);
-          .breadcrumbs {
-            @include flex(row, nowrap, flex-start, center);
-            gap: $XsSize;
-            .first-itemm,
-            .last-child {
-              font-size: $SmSize;
-            }
-          }
+
           .link {
             text-decoration: underline;
             font-size: $SmSize;

@@ -23,7 +23,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { EquipmentTypesEnum } from '../../Core/Enum/EquipmentsTypeEnum'
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
-import Setting from '@/assets/images/setting.png'
+import Setting from '@/assets/images/Setting.png'
 import Geer from '@/assets/images/Geer.png'
 import hand from '@/assets/images/hand.png'
 import Select from 'primevue/select';

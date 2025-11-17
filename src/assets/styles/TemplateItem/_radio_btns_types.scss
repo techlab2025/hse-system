@@ -1,0 +1,33 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.radio-btns {
+  @include flex-row(nowrap, flex-start, center);
+  margin-top: $XlSize;
+  gap: $XsSize;
+  font-family: 'Light';
+  font-size: $SmSize;
+  font-weight: $BaseFontWeightBold;
+  padding-left: $XlSize;
+  input {
+    background-color: #f6f6f699;
+    width: 90px;
+    text-align: center;
+    height: fit-content;
+    padding: $XsSize2 calc($XlSize2 + 2px);
+    border-radius: $XsSize2;
+    border: none;
+    outline: none;
+
+    &.green {
+      color: #4caf50;
+    }
+    &.red {
+      color: #e23535;
+    }
+    &.random {
+      color: #969eff;
+    }
+  }
+}
