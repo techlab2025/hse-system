@@ -69,7 +69,7 @@ const handleValidation = (valid: boolean) => {
     <div class="flex items-center gap-2">
       <button
         type="submit"
-        class="btn btn-primary w-30"
+        class="btn btn-danger w-30"
         :disabled="isSubmitting"
         :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
       >
