@@ -1,0 +1,93 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.observation-level {
+  margin-top: 3rem;
+  .select-container {
+    font-family: 'Regular';
+    border-radius: 20px;
+    transition: all 0.1s linear;
+    cursor: pointer;
+    position: relative;
+
+    &.selected {
+      border: 2px solid #ffbf52;
+      // background-color: #FFBF5280;
+    }
+
+    label {
+      @include flex-row(wrap, flex-start, center);
+      gap: 10px;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: #9ca3af;
+      background-color: #f8f9fa99;
+      padding: 20px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    input {
+      display: none;
+    }
+
+    .p-multiselect {
+      background: unset !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      width: 100%;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+
+    .details-box {
+      border: 1px solid rgba($PrimaryColor, 0.4);
+      // background-color: #FFBF5280;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-top: 5px;
+
+      .title {
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        color: #ffbf52;
+        margin-bottom: 8px;
+      }
+
+      .status-label {
+        font-size: $SmSize;
+        color: #777;
+      }
+      .status-container {
+        @include flex-row(nowrap, flex-start, space-between);
+        gap: 10px;
+
+        .status-value {
+          font-size: $MdSize;
+          margin-top: 4px;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: #ffbf52;
+        }
+        .status-values {
+          font-size: $MdSize;
+          margin-top: 4px;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: #9da4b2;
+        }
+      }
+    }
+    .circle {
+      width: 20px;
+      height: 20px;
+      background-color: #ffbf52;
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+  }
+}

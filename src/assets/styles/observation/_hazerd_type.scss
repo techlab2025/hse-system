@@ -1,0 +1,7 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.hazard-type-container {
+  margin-top: 3rem;
+}
