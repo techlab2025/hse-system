@@ -11,6 +11,7 @@
 @use './utils/input_serach';
 @use './utils/data_empty';
 @use './utils/popover';
+@use './utils/breadCrumb';
 //@use "./utils/_explore_btn";
 @use './normalize';
 @use './permission';
@@ -116,6 +117,9 @@
 /*<editor-fold desc="TreeTable">*/
 @use './TreeTable/tree_table';
 /*</editor-fold>*/
+/*<editor-fold desc="_template_imports">*/
+@use './TemplateItem/template_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;
@@ -131,7 +135,7 @@ html {
 }
 
 body {
-  font-family: var(--font-family), sans-serif;
+  font-family: 'Regular', sans-serif;
   color: black;
   overflow-x: hidden;
 }

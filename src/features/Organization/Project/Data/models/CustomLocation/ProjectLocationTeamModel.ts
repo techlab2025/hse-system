@@ -31,7 +31,7 @@ export default class ProjectLocationTeamModel extends TitleModel {
       ),
       data.location_id,
       data.team_id,
-      data.team_title,
+      data.team_title || data.title,
     )
   }
 }

@@ -13,6 +13,7 @@ const params = ref<Params | null>(null)
 const addTemplateController = AddTemplateController.getInstance()
 
 const addTemplate = async () => {
+  console.log(params.value, 'Add params')
   await addTemplateController.addTemplate(params.value as AddTemplateParams, router)
 }
 const setParams = (data: Params) => {
@@ -26,7 +27,7 @@ const setParams = (data: Params) => {
     <TemplateForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t("add") }}</button>
     </div>
   </form>
 </template>

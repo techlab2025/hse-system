@@ -33,7 +33,7 @@ import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import Heirarchy from "@/assets/images/Heirarchy.png"
 import Timeline from 'primevue/timeline';
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
-import TreeTimeLine from '@/shared/HelpersComponents/TreeTimeLine.vue'
+import TreeTimeLine from './TreeTimeLine.vue'
 
 const { t } = useI18n()
 
@@ -140,15 +140,15 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 
 const Hierarchies = ref([
   {
-    status: "Hierarchy 1",
+    title: "Hierarchy 1",
     children: [
       {
-        status: "Level 2-A",
+        title: "Level 2-A",
         children: [
           {
-            status: "Level 3-A",
+            title: "Level 3-A",
             children: [
-              { status: "Level 4-A" }
+              { title: "Level 4-A" }
             ]
           },
 
@@ -158,15 +158,15 @@ const Hierarchies = ref([
     ]
   },
   {
-    status: "Hierarchy 2",
+    title: "Hierarchy 2",
     children: [
       {
-        status: "Level 2-B",
+        title: "Level 2-B",
         children: [
           {
-            status: "Level 3-B",
+            title: "Level 3-B",
             children: [
-              { status: "Level 4-B" }
+              { title: "Level 4-B" }
             ]
           },
         ]
@@ -174,15 +174,15 @@ const Hierarchies = ref([
     ]
   },
   {
-    status: "Hierarchy 3",
+    title: "Hierarchy 3",
     children: [
       {
-        status: "Level 3-C",
+        title: "Level 3-C",
         children: [
           {
-            status: "Level 3-C",
+            title: "Level 3-C",
             children: [
-              { status: "Level 4-C" }
+              { title: "Level 4-C" }
             ]
           },
         ]
@@ -225,7 +225,7 @@ const Hierarchies = ref([
     <DataStatus :controller="state">
       <template #success>
         <!-- :Hierarchies="" -->
-        <TreeTimeLine :Hierarchies="Hierarchies" />
+        <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <div class="btn-container">
           <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn">
             {{ $t('add_new_heirarchy') }}

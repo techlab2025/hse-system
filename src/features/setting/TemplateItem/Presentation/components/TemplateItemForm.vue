@@ -24,6 +24,13 @@ import ActionsButtons from '@/shared/Actions/ActionsButtons.vue'
 import CheckBoxButton from '@/shared/Checkbox/CheckBoxButton.vue'
 import FormHeaderSection from '@/shared/FormHeader/FormHeaderSection.vue'
 import TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
+import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
+import Setting from '@/assets/images/Setting.png'
+import SmartContract from '@/assets/images/SmartContract.png'
+import Select from 'primevue/select'
+import TemplateTypesSection from './TemplateTypes/TemplateTypesSection.vue'
+import type { ActionsEnum } from '../../Core/Enum/ActionsEnum'
+import DropDownType from './TemplateTypes/DropDownType.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: TemplateItemDetailsModel }>()
@@ -80,29 +87,27 @@ const updateData = () => {
   })
   const params = !props.data?.id
     ? new AddTemplateItemParams(
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
-      id,
-      1
-    )
+        translationsParams,
+        ImageChecked.value ? 1 : 0,
+        ActionChecked.value ? 1 : 0,
+        id,
+        null,
+      )
     : new EditTemplateItemParams(
-      props.data.id ?? 0,
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
-      props.data.id ?? 0,
-    )
+        props.data.id ?? 0,
+        translationsParams,
+        ImageChecked.value ? 1 : 0,
+        ActionChecked.value ? 1 : 0,
+        props.data.id ?? 0,
+      )
 
   emit('update:data', params)
 }
-
 
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
-
 
 // Watch for changes in props.data or langDefault to initialize form values
 watch(
@@ -122,7 +127,6 @@ watch(
   { immediate: true },
 )
 
-
 const ActionCheckbox = (data: number) => {
   // console.log(data , "data");
   ActionChecked.value = data
@@ -133,23 +137,49 @@ const ImageRequiredCheckbox = (data: number) => {
   ImageChecked.value = data
   updateData()
 }
+const IndustrySelctOption = ref<number>()
 
+const selectedCity = ref()
+const cities = ref([
+  { name: 'New York', code: 'NY' },
+  { name: 'Rome', code: 'RM' },
+  { name: 'London', code: 'LDN' },
+  { name: 'Istanbul', code: 'IST' },
+  { name: 'Paris', code: 'PRS' },
+])
+
+const GetTemplateType = (data: ActionsEnum) => {
+  console.log(data)
+}
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4 form-container ">
-    <FormHeaderSection title="Template Item" subtitle="All industry"
-      :editLink="`/${user?.user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/${props.data?.id}`" />
-
-    <div class="col-span-4 md:col-span-4">
-      <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-    </div>
-    <ActionsButtons @update:action="ActionCheckbox" :checkboxVisable="true" />
-
-    <CheckBoxButton @update:checked="ImageRequiredCheckbox" :checked="ImageChecked"
-      :title="`Does it require uploading an image?`" />
+  <div class="w-full col-span-4">
+    <PagesHeader
+      :img="SmartContract"
+      title="smart create for your inspection templet"
+      subtitle="add your items one by one to the templet and you can see them"
+    />
   </div>
 
+  <div class="col-span-4 md:col-span-2">
+    <div class="col-span-4 md:col-span-2">
+      <LangTitleInput
+        :label="$t('item_title')"
+        :langs="langDefault"
+        :modelValue="langs"
+        @update:modelValue="setLangs"
+        :placeholder="`add your title here..`"
+      />
+    </div>
+    <div class="col-span-4 md:col-span-2 mt-[15px]">
+      <TemplateTypesSection @update:data="GetTemplateType" />
+      <component :is="DropDownType" />
+    </div>
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <div>View Container</div>
+  </div>
 </template>
 
 <style scoped>
