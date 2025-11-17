@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
 import ArrowIcons from '@/shared/icons/ArrowIcons.vue'
 
 const { isBreadCramp, BreadCramps } = defineProps<{
@@ -21,13 +22,7 @@ const { isBreadCramp, BreadCramps } = defineProps<{
         <p class="first-item" v-if="!isBreadCramp">device</p>
 
         <div class="sub-card-header" v-if="isBreadCramp">
-          <div class="breadcrumbs">
-            <p class="first-item">select hierarchy</p>
-
-            <ArrowIcons />
-
-            <p class="last-child">select hierarchy</p>
-          </div>
+          <BreadCrumb :BreadCramps="BreadCramps" />
 
           <span class="link">Certification</span>
         </div>

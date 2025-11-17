@@ -1,11 +1,15 @@
-<template>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam, omnis, numquam possimus repellat
-  rem dignissimos minima consequuntur quis magni aliquid maiores tempore impedit suscipit delectus
-  consectetur earum illo nulla ratione.
-</template>
-
-<script>
-export default {}
+<script setup lang="ts">
+import CardEquipment from './CardEquipment.vue'
+import HistoryLog from './HistoryLog.vue'
+import QrCode from './QrCode.vue'
 </script>
 
-<style></style>
+<template>
+  <div class="show-equipment">
+    <CardEquipment />
+    <div class="history-qr">
+      <HistoryLog />
+      <QrCode />
+    </div>
+  </div>
+</template>

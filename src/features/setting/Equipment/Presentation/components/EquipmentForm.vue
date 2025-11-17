@@ -24,6 +24,7 @@ import Car from '@/shared/icons/car.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import QrCard from './QrCard.vue'
 import DemoCard from './DemoCard.vue'
+import { useI18n } from 'vue-i18n'
 
 const emit = defineEmits(['update:data', 'validate'])
 const props = defineProps<{ data?: EquipmentModel }>()
@@ -197,6 +198,18 @@ const handleLangValidation = (isValid: boolean) => {
 
 const image = ref<string | null>(null)
 const decommissioningDate = ref<string | null>(null)
+
+const { t } = useI18n()
+const breadcrumbs = [
+  {
+    title: t('equipment'),
+    link: '',
+  },
+  {
+    title: t('heavy'),
+    link: '',
+  },
+]
 </script>
 
 <template>
@@ -333,7 +346,7 @@ const decommissioningDate = ref<string | null>(null)
         />
       </div>
 
-      <DemoCard />
+      <DemoCard :isBreadCramp="true" :BreadCramps="breadcrumbs" />
 
       <QrCard />
     </div>

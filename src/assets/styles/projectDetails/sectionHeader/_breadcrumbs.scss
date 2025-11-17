@@ -1,6 +1,6 @@
 @import '../../mixins/flex';
 
-.breadcrumbs {
+.breadcrumbs-project {
   @include flex(row, nowrap, flex-start, center);
   gap: $XsSize2;
   .first-item {
