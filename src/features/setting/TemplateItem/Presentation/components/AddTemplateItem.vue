@@ -30,9 +30,26 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-4" @submit.prevent="addTemplateItem">
     <TemplateItemForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">start create</button>
+      <button type="submit" class="btn btn-cancel w-full">cancel</button>
+      <button type="submit" class="btn btn-primary w-full">confirm</button>
     </div>
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  .btn-primary {
+    width: 70%;
+  }
+
+  .btn-cancel {
+
+    width: 30%;
+  }
+
+}
+</style>

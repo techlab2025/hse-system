@@ -5,24 +5,24 @@
 .template-container {
   .dropdwon-title {
     @include flex-column(nowrap, flex-start, flex-start);
-    margin-top: 20px;
+    margin-top: $XlSize;
     gap: 3px;
     font-family: 'Light';
-    padding-left: 25px;
+    padding-left: calc($XlSize2 + 1px);
     .title {
       color: #202020;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
     }
     .subtitle {
       color: #9ca3af;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: $XsSize;
+      font-weight: $BaseFontMediumWeight;
     }
 
     .alert {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: $XsSize;
+      font-weight: $BaseFontSemiBoldWeight;
       color: $PrimaryColor;
     }
   }

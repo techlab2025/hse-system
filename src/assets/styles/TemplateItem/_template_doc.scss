@@ -1,0 +1,61 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.template-document-container {
+  width: 100%;
+  font-family: 'Light';
+  // height: 50vh;
+  border: 1px solid #f8f8f8;
+  margin-top: $XlSize2;
+  border-radius: $XlSize;
+
+  .template-document-header {
+    background-color: #f8f8f8;
+    border-top-left-radius: $XlSize;
+    border-top-right-radius: $XlSize;
+    width: 100%;
+    position: relative;
+    z-index: 9999;
+    padding: $MdSize;
+
+    @include flex-row(nowrap, space-between, center);
+    .template-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize2;
+      .header-title {
+        font-family: 'Regular';
+        color: #041953;
+        font-size: calc($XlSize + 2px);
+        font-weight: $BaseFontWeightBold;
+      }
+      .template-details {
+        @include flex-row(nowrap, flex-start, center);
+        font-family: 'Regular';
+        gap: $XlSize;
+
+        p {
+          font-size: $XsSize;
+          font-weight: $BaseFontMediumWeight;
+          color: #6b7280;
+          span {
+            color: #121212;
+          }
+        }
+      }
+    }
+    img {
+      max-width: 80px;
+    }
+  }
+  .template-document-content {
+    padding: $MdSize;
+    margin-top: $XsSize2;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 20px;
+    background-color: white;
+    z-index: 999;
+    position: relative;
+    border-radius: 0 0 15px 15px;
+  }
+}
