@@ -34,13 +34,13 @@
             margin-top: 0.5rem;
           }
 
-          @media screen and (max-width: 1100px) {
+          @media screen and (max-width: 1200px) {
             @include flex(column, nowrap, flex-start, flex-start);
           }
 
           .user {
             width: 30%;
-            @media screen and (max-width: 1100px) {
+            @media screen and (max-width: 1200px) {
               width: 100%;
             }
             @include flex(row, nowrap, flex-start, flex-start);
@@ -61,7 +61,7 @@
             @include flex(column, nowrap, flex-start, flex-start);
             gap: $XsSize4;
 
-            @media screen and (max-width: 1100px) {
+            @media screen and (max-width: 1200px) {
               width: 100%;
             }
 
