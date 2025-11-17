@@ -20,6 +20,7 @@
   --base-width: 1440;
   --base-height: 900;
   --font-family: 'URW DIN Arabic';
+  --third-color: #170F49;
 
   --icon-bg: #f2f4f6;
   --xl-size-3: clamp(calc(50 * 0.8px), calc(50 * 100vw / var(--base-width)), calc(50 * 1.2px));
@@ -64,6 +65,8 @@ $MainBorder: var(--main-border);
 $Black: var(--Black);
 $CheckboxBg: var(--checkbox-bg);
 $SubtitleColor: var(--subtitle-color);
+$ThirdColor: var(--third-color);
+$FontFamily: var(--font-family);
 
 /*</editor-fold>*/
 

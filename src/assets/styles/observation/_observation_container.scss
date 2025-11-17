@@ -1,0 +1,49 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.observation-container {
+  margin-top:3rem ;
+  .select-container { 
+    font-family: 'Regular';
+    border-radius: 20px;
+    transition: all 0.1s linear;
+    cursor: pointer;
+
+    &.selected {
+      border: 2px solid $PrimaryColor;
+    }
+
+    label {
+      @include flex-center();
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #9ca3af;
+      background-color: #f8f9fa99;
+      padding: 20px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      img {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    input {
+      display: none;
+    }
+
+    .p-multiselect {
+      background: unset !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
