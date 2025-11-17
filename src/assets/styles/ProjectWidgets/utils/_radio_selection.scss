@@ -7,7 +7,7 @@
   gap: $XsSize;
   width: 100%;
   margin-top: $XlSize;
-  font-family: "Light";
+  font-family: 'Light';
 
   .radio-selection-header {
     @include flex-justify();

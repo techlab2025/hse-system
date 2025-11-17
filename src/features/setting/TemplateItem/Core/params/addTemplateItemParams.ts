@@ -2,25 +2,27 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class AddTemplateItemParams implements Params {
+  id:number
   translation: TranslationsParams
-  require_image: number
-  action: number
-  parentId: number
-  AllIndustries: number
+  type: number
+  answers: number
+  isImageRequired: number
+  imageType: number
 
   constructor(
+    id: number,
     translation: TranslationsParams,
-    require_image: number,
-    action: number,
-    parentId: number,
-    AllIndustries: number,
+    type: number,
+    answers: number,
+    isImageRequired: number,
+    imageType: number,
   ) {
+    this.id = id
     this.translation = translation
-    this.require_image = require_image
-    this.action = action
-    this.parentId = parentId
-    this.AllIndustries = AllIndustries
-    // this.image = image
+    this.type = type
+    this.answers = answers
+    this.isImageRequired = isImageRequired
+    this.imageType = imageType
   }
 
   toMap(): Record<
@@ -34,12 +36,12 @@ export default class AddTemplateItemParams implements Params {
       | number[]
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
-
+    data['template_id'] = this.id
     data['translations'] = this.translation.toMap() // tranlations:asd
-    if (this.parentId) data['template_id'] = this.parentId
-    data['require_image'] = this.require_image
-    if (this.action) data['action'] = this.action
-    if (this.AllIndustries) data['all_industries'] = this.AllIndustries
+    data['action'] = this.type
+    data['answers'] = this.answers
+    data['is_image_required'] = this.isImageRequired
+    data['image_type'] = this.imageType
     return data
   }
 }

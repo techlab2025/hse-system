@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type TitleInterface from '@/base/Data/Models/title_interface';
 import AddAnswer from '@/shared/icons/AddAnswer.vue';
 import DangerIcon from '@/shared/icons/DangerIcon.vue';
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue';
@@ -27,10 +28,10 @@ const DeleteItem = (index: number) => {
 }
 
 const UpdateData = () => {
-  emit('update:data', Answers.value.filter(answer => answer.title.trim() !== ''))
+  emit('update:data', Answers.value)
 }
 onMounted(() => {
-  emit('update:data', Answers.value.filter(answer => answer.title.trim() !== ''))
+  emit('update:data', Answers.value)
 })
 </script>
 <template>
