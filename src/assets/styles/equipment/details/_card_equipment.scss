@@ -1,0 +1,16 @@
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
+
+.show-equipment {
+  .card-equipment {
+    @include flex(row, nowrap, flex-start, center);
+    gap: $XsSize2;
+    .card-body {
+    }
+    .img-equipment {
+      width: 167px;
+      height: 167px;
+    }
+  }
+}
