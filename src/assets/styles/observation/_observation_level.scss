@@ -2,6 +2,7 @@
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
 
+
 .observation-level {
   margin-top: 3rem;
   .select-container {
@@ -11,9 +12,44 @@
     cursor: pointer;
     position: relative;
 
-    &.selected {
-      border: 2px solid #ffbf52;
-      // background-color: #FFBF5280;
+
+    &.low-selected {
+      border: 2px solid $LowColor;
+      .circle {
+        background-color: $LowColor;
+      }
+      .details-box {
+        border-color: rgba($LowColor, 0.5);
+        .status-value {
+          color: $LowColor;
+        }
+      }
+    }
+
+    &.medium-selected {
+      border: 2px solid $MediumColor;
+      .circle {
+        background-color: $MediumColor;
+      }
+      .details-box {
+        border-color: rgba($MediumColor, 0.4);
+        .status-value {
+          color: $MediumColor;
+        }
+      }
+    }
+
+    &.high-selected {
+      border: 2px solid $HighColor;
+      .circle {
+        background-color: $HighColor;
+      }
+      .details-box {
+        border-color: rgba($HighColor, 0.4);
+        .status-value {
+          color: $HighColor;
+        }
+      }
     }
 
     label {
@@ -46,7 +82,6 @@
 
     .details-box {
       border: 1px solid rgba($PrimaryColor, 0.4);
-      // background-color: #FFBF5280;
       padding: 12px 18px;
       border-radius: 12px;
       margin-top: 5px;

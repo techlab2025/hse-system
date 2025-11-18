@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import Check from '@/assets/images/check.png'
-import alert from '@/assets/images/alert-sign.png'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 const selectedIndustry = ref(1)
@@ -13,36 +11,34 @@ watch(selectedIndustry, (val) => {
 
 <template>
   <div class="observation-level lg:grid grid-cols-12 gap-4 mt-6">
-    <!-- Negative -->
+    <!-- Low -->
     <div
       class="col-span-4 select-container"
-      :class="{ selected: selectedIndustry === 1 }"
-      @click="selectedIndustry = 1"
+      :class="{
+        selected: selectedIndustry === 1,
+        'low-selected': selectedIndustry === 1,
+      }"
     >
       <label>
+        <input type="radio" v-model="selectedIndustry" :value="1" class="radio-input" />
         <span>Low</span>
       </label>
 
-      <!-- دائرة الاختيار -->
       <div class="circle" v-if="selectedIndustry === 1"></div>
 
-      <div class="details-box" v-if="selectedIndustry === 1">
-        <p class="status-label">Status:</p>
 
-        <div class="status-container">
-          <p class="status-value">Medium</p>
-          <p class="status-values">Non</p>
-        </div>
-      </div>
     </div>
 
-    <!-- Positive -->
+    <!-- Medium -->
     <div
       class="col-span-4 select-container"
-      :class="{ selected: selectedIndustry === 2 }"
-      @click="selectedIndustry = 2"
+      :class="{
+        selected: selectedIndustry === 2,
+        'medium-selected': selectedIndustry === 2,
+      }"
     >
       <label>
+        <input type="radio" v-model="selectedIndustry" :value="2" class="radio-input" />
         <span>Medium</span>
       </label>
 
@@ -51,34 +47,29 @@ watch(selectedIndustry, (val) => {
 
       <div class="details-box" v-if="selectedIndustry === 2">
         <p class="status-label">Status:</p>
-
         <div class="status-container">
           <p class="status-value">Medium</p>
           <p class="status-values">Non</p>
         </div>
       </div>
     </div>
-    <!-- Positive -->
+
+    <!-- High -->
     <div
       class="col-span-4 select-container"
-      :class="{ selected: selectedIndustry === 3 }"
-      @click="selectedIndustry = 3"
+      :class="{
+        selected: selectedIndustry === 3,
+        'high-selected': selectedIndustry === 3,
+      }"
     >
       <label>
-        <span>Heigh</span>
+        <input type="radio" v-model="selectedIndustry" :value="3" class="radio-input" />
+        <span>High</span>
       </label>
 
-      <!-- دائرة الاختيار -->
       <div class="circle" v-if="selectedIndustry === 3"></div>
 
-      <div class="details-box" v-if="selectedIndustry === 3">
-        <p class="status-label">Status:</p>
-
-        <div class="status-container">
-          <p class="status-value">Medium</p>
-          <p class="status-values">Non</p>
-        </div>
-      </div>
+    
     </div>
   </div>
 </template>

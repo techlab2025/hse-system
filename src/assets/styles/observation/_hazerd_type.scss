@@ -4,4 +4,12 @@
 
 .hazard-type-container {
   margin-top: 3rem;
+  .radio-container {
+    margin-top: 1.5rem;
+    .radio-title {
+      font-weight: $BaseFontWeightBold !important;
+      font-size: $MdSize !important;
+      color: #202020 !important;
+    }
+  }
 }
