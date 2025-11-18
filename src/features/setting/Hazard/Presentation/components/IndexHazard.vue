@@ -206,7 +206,7 @@ const Filters = ref<TitleInterface[]>([
   new TitleInterface({ id: 9, title: "Giza" }),
 ]
 )
-const ShowDetails = ref<number[]>()
+const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
@@ -233,7 +233,6 @@ const ShowDetails = ref<number[]>()
       </PermissionBuilder>
     </div>
   </div> -->
-
   <PermissionBuilder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -255,7 +254,7 @@ const ShowDetails = ref<number[]>()
       <IndexFilter :filters="Filters" @update:data="console.log($event)" />
       <div class="index-table-card-container">
         <div class="index-table-card" v-for="(item, index) in HazardData" :key="index">
-          <div class="card-header-container">
+          <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
             <div class="header-container">
               <div class="card-content">
                 <div class="card-header">
@@ -276,14 +275,14 @@ const ShowDetails = ref<number[]>()
                 <img :src="item.HazardImg" alt="hazard-img">
               </div>
             </div>
-            <p class="show-more" @click="ShowDetails?.push(index)">
-              <span v-if="ShowDetails?.includes(index)">Show Less</span>
+            <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+              <span v-if="ShowDetails[index]">Show Less</span>
               <span v-else>Show More</span>
               <ShowMoreIcon />
             </p>
           </div>
 
-          <div v-if="ShowDetails?.includes(index)" class="card-description">
+          <div v-if="ShowDetails[index]" class="card-description">
             <p class="title">Description</p>
             <p class="description">
               {{ item.description }}
