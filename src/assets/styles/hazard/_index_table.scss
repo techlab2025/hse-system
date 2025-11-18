@@ -2,11 +2,11 @@
 @import '../mixins/flex';
 @import '../mixins/grid';
 
-.index-table-card-container{
+.index-table-card-container {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XsSize3;
+  gap: $SmSize;
   width: 100%;
-  
+
   .index-table-card {
     @include flex-column(nowrap, flex-start, flex-start);
     border: 1px solid #f6f6f6;
@@ -18,25 +18,29 @@
       padding-bottom: $XsSize;
       border-bottom: 2px dashed #e1e4ed;
       width: 100%;
+      gap: $XsSize;
+      &.show {
+        border-bottom: none;
+      }
       .header-container {
         @include flex-row(nowrap, space-between, center);
         width: 100%;
         gap: $XsSize4;
         font-family: 'Regular';
-  
+
         .card-content {
           @include flex-column(nowrap, flex-start, flex-start);
           gap: $XsSize4;
-  
+
           .card-header {
             @include flex-row(nowrap, flex-start, center);
             gap: $XlSize4;
           }
-  
+
           .card-details {
             @include flex-column(nowrap, flex-start, flex-start);
             gap: $XsSize4;
-  
+
             .title {
               color: #0f1927;
               font-size: $MdSize;
@@ -59,7 +63,7 @@
             }
           }
         }
-  
+
         .card-info {
           @include flex-column(nowrap, flex-start, flex-start);
           gap: 6px;
@@ -87,7 +91,7 @@
         }
       }
     }
-  
+
     .card-description {
       padding-top: $XsSize2;
       @include flex-column(nowrap, flex-start, flex-start);
