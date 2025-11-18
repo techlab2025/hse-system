@@ -25,21 +25,22 @@ watch(selectedAnswer, (val) => {
 
 <template>
   <div class="hazard-type-container grid grid-cols-12 gap-4">
-    <div class="input-wrapper col-span-12  ">
-      <CustomSelectInput
-        :modelValue="hazerd"
-        :staticOptions="hazerdTypes"
-        label="Hazerd Type"
-        placeholder="Select Hazerd"
-        @update:modelValue="setHazerd"
-      />
-
+    <div class="col-span-12">
+      <div class="input-wrapper">
+        <CustomSelectInput
+          :modelValue="hazerd"
+          :staticOptions="hazerdTypes"
+          label="Hazerd Type"
+          placeholder="Select Hazerd"
+          @update:modelValue="setHazerd"
+        />
+      </div>
 
       <!-- radio buttons -->
-      <div class="grid grid-cols-12 gap-6 radio-container ">
-        <div class="col-span-12 md:col-span-6 ">
+      <div class="grid grid-cols-12 gap-6 radio-container">
+        <div class="col-span-12 md:col-span-6">
           <label class="radio-title">{{ $t('take action') }}</label>
-          <div class="flex items-center gap-6 mt-2">
+          <div class="flex items-center gap-6 radio-answers">
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="radio" value="yes" v-model="title" />
               <span>Yes</span>
@@ -54,7 +55,7 @@ watch(selectedAnswer, (val) => {
         <!-- السؤال الثاني -->
         <div class="col-span-12 md:col-span-6">
           <label class="radio-title">{{ $t('solved') }}</label>
-          <div class="flex items-center gap-6 mt-2">
+          <div class="flex items-center gap-6 radio-answers">
             <label class="flex items-center gap-2 cursor-pointer">
               <input type="radio" value="yes" v-model="title" />
               <span>Yes</span>
@@ -69,24 +70,23 @@ watch(selectedAnswer, (val) => {
 
       <!-- end radio buttons -->
 
-      <div class="input-wrapper col-span-12">
-        <label>{{ $t('Description') }}</label>
-        <input
-          class="input"
-          :placeholder="$t('add your description')"
-          type="text"
-          v-model="title"
-        />
-      </div>
-
-      <div class="input-wrapper col-span-12">
-        <label>{{ $t('preventive action') }}</label>
-        <input
-          class="input"
-          :placeholder="$t('add your description')"
-          type="text"
-          v-model="title"
-        />
+      <div class="col-span-12">
+        <div class="input-wrapper">
+          <label>{{ $t('Description') }}</label>
+          <input
+            class="input"
+            :placeholder="$t('add your description')"
+            type="text"
+            v-model="title"
+          />
+          <label>{{ $t('preventive action') }}</label>
+          <input
+            class="input"
+            :placeholder="$t('add your description')"
+            type="text"
+            v-model="title"
+          />
+        </div>
       </div>
     </div>
   </div>
