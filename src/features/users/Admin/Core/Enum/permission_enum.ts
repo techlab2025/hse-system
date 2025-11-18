@@ -29,6 +29,16 @@ export enum PermissionsEnum {
   HASHTAG_CHANGE_STATUS = 'H07',
 
 
+  // incedant organization
+  ORG_INCEDANT_ALL = 'OI00',
+  ORG_INCEDANT_FETCH = 'OI01',
+  ORG_INCEDANT_DETAILS = 'OI02',
+  ORG_INCEDANT_CREATE = 'OI03',
+  ORG_INCEDANT_UPDATE = 'OI04',
+  ORG_INCEDANT_DELETE = 'OI05',
+
+
+
   // objectives Organization
   OBJECTIVE_ORG_ALL = 'OO00',
   OBJECTIVE_ORG_FETCH = 'OO01',

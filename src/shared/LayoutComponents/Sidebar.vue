@@ -189,7 +189,7 @@ const user = useUserStore()
                     </PermissionBuilder>
 
                     <!-- Observation -->
-                     <PermissionBuilder
+                    <PermissionBuilder
                       :code="[
                         PermissionsEnum.OBSERVATION_ALL,
                         PermissionsEnum.OBSERVATION_CREATE,
@@ -923,6 +923,25 @@ const user = useUserStore()
                       <router-link to="/organization/accidents-types">
                         <SidebarVector />
                         <span>{{ $t('Accidents Types') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                      PermissionsEnum?.ORG_INCEDANT_ALL,
+                      PermissionsEnum?.ORG_INCEDANT_CREATE,
+                      PermissionsEnum?.ORG_INCEDANT_UPDATE,
+                      PermissionsEnum?.ORG_INCEDANT_DETAILS,
+                      PermissionsEnum?.ORG_INCEDANT_DELETE,
+                      PermissionsEnum?.ORG_INCEDANT_FETCH,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/incedant">
+                        <SidebarVector />
+                        <span>{{ $t('incedant') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
