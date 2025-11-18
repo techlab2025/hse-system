@@ -11,6 +11,11 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsModel'
 import { EquipmentStatus } from '../../../Core/enum/EquipmentStatus'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
+import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
 
 const { t } = useI18n()
 
@@ -19,10 +24,14 @@ const { equipmentData } = defineProps<{
 }>()
 
 const op = ref()
+const { user } = useUserStore()
+
+const route = useRoute()
 
 const actions = ref([
   {
     title: t('edit'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${route.params.id}`,
     icon: IconEdit,
     id: 1,
   },
@@ -58,6 +67,11 @@ const { locale } = useI18n()
 const tTitle = computed(() => {
   return equipmentData?.titles?.find((item) => item.locale === locale.value)?.title || ''
 })
+
+const deleteEquipment = async (id: number) => {
+  const deleteEquipmentParams = new DeleteEquipmentParams(+route.params.id!)
+  await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
+}
 </script>
 
 <template>
@@ -110,12 +124,27 @@ const tTitle = computed(() => {
                     :key="action.id"
                     class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
                   >
-                    <div class="flex items-center gap-3">
+                    <RouterLink
+                      :to="action.link"
+                      class="flex items-center gap-3"
+                      v-if="action.id == 1"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
-                    </div>
+                    </RouterLink>
+
+                    <button
+                      v-else-if="action.id == 2"
+                      @click="deleteEquipment"
+                      class="flex items-center gap-3 w-full"
+                    >
+                      <component :is="action.icon" />
+                      <div class="text-sm text-surface-500 dark:text-surface-400">
+                        {{ action.title }}
+                      </div>
+                    </button>
                   </li>
                 </ul>
               </div>

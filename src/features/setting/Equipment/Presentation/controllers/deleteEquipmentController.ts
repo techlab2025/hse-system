@@ -6,6 +6,9 @@ import errorImage from '@/assets/images/error.png'
 import DeleteEquipmentUseCase from '../../Domain/useCase/deleteEquipmentUseCase'
 import type EquipmentModel from '../../Data/models/equipmentModel'
 import successImage from '@/assets/images/Success.png'
+import { useUserStore } from '@/stores/user'
+import router from '@/router'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class DeleteEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: DeleteEquipmentController
@@ -36,6 +39,10 @@ export default class DeleteEquipmentController extends ControllerInterface<Equip
           messageContent: null,
         })
 
+
+        const { user } = useUserStore()
+
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
         // useLoaderStore().endLoadingWithDialog();
       } else {
         throw new Error('Error while addServices')
