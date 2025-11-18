@@ -24,35 +24,69 @@ watch(selectedAnswer, (val) => {
 </script>
 
 <template>
-  <div class="hazard-type-container lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
-    <div class="input-wrapper col-span-12 md:grid-cols-12">
-      <CustomSelectInput
-        :modelValue="hazerd"
-        :staticOptions="hazerdTypes"
-        label="Hazerd Type"
-        placeholder="Select Hazerd"
-        @update:modelValue="setHazerd"
-      />
-
-      <div class="input-wrapper col-span-12">
-        <label for="text">{{ $t('Description') }}</label>
-        <input
-          class="input"
-          :placeholder="$t('add your description')"
-          type="text"
-          id="title"
-          v-model="title"
+  <div class="hazard-type-container grid grid-cols-12 gap-4">
+    <div class="col-span-12">
+      <div class="input-wrapper">
+        <CustomSelectInput
+          :modelValue="hazerd"
+          :staticOptions="hazerdTypes"
+          label="Hazerd Type"
+          placeholder="Select Hazerd"
+          @update:modelValue="setHazerd"
         />
       </div>
-      <div class="input-wrapper col-span-12">
-        <label for="text">{{ $t('preventive action') }}</label>
-        <input
-          class="input"
-          :placeholder="$t('add your description')"
-          type="text"
-          id="title"
-          v-model="title"
-        />
+
+      <!-- radio buttons -->
+      <div class="grid grid-cols-12 gap-6 radio-container">
+        <div class="col-span-12 md:col-span-6">
+          <label class="radio-title">{{ $t('take action') }}</label>
+          <div class="flex items-center gap-6 radio-answers">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" value="yes" v-model="title" />
+              <span>Yes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" value="no" v-model="title" />
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- السؤال الثاني -->
+        <div class="col-span-12 md:col-span-6">
+          <label class="radio-title">{{ $t('solved') }}</label>
+          <div class="flex items-center gap-6 radio-answers">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" value="yes" v-model="title" />
+              <span>Yes</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" value="no" v-model="title" />
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- end radio buttons -->
+
+      <div class="col-span-12">
+        <div class="input-wrapper">
+          <label>{{ $t('Description') }}</label>
+          <input
+            class="input"
+            :placeholder="$t('add your description')"
+            type="text"
+            v-model="title"
+          />
+          <label>{{ $t('preventive action') }}</label>
+          <input
+            class="input"
+            :placeholder="$t('add your description')"
+            type="text"
+            v-model="title"
+          />
+        </div>
       </div>
     </div>
   </div>
