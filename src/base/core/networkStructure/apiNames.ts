@@ -1099,7 +1099,6 @@ class ApiNames {
     return this.prefix + 'fetch_full_project_locations'
   }
 
-<<<<<<< HEAD
   // observation
   public get CreateObservation() {
     return this.prefix + 'create_observation'
