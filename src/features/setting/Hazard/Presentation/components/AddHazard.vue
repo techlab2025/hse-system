@@ -23,12 +23,12 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHazardType">
+  <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addHazardType">
 
     <HazardForm @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+    <div class="col-span-6 button-wrapper">
+      <button type="submit" class="btn btn-primary w-full">Add</button>
     </div>
   </form>
 </template>

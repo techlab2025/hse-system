@@ -21,6 +21,14 @@ import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
+import HazardIcon from '@/shared/icons/HazardIcon.vue'
+import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
+import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import FileUpload from '@/shared/FormInputs/FileUpload.vue'
+import ImageInput from '@/shared/FormInputs/ImageInput.vue'
+import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -169,28 +177,61 @@ watch(
   { immediate: true },
 )
 
-const ZonesOptions = ref([
-  new TitleInterface({ id: 1, title: 'Zone 1' }),
-  new TitleInterface({ id: 2, title: 'Zone 2' }),
-  new TitleInterface({ id: 3, title: 'Zone 3' }),
-  new TitleInterface({ id: 4, title: 'Zone 4' })
+const text = ref<string>('')
+const date = ref<Date>()
 
-])
+const indexHazardTypeParams = new IndexHazardTypeParams("", 1, 10, 1)
+const indexHazardTypeController = IndexHazardTypeController.getInstance()
+const HazardType = ref<TitleInterface[]>([])
+const setHazardType = (data: TitleInterface[]) => {
+  HazardType.value = data
+  updateData();
+}
+const indexEquipmentParams = new IndexEquipmentParams("", 1, 10, 1)
+const indexEquipmentController = IndexEquipmentController.getInstance()
+const SelectedMachine = ref<TitleInterface[]>([])
+const setMachine = (data: TitleInterface[]) => {
+  SelectedMachine.value = data
+  updateData();
+}
+const descripe = ref<string>("")
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="console.log($event, 'event')" />
   </div>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  <div class="hazard-form col-span-6 md:col-span-6">
+    <div class="hazard-form-header">
+      <HazardIcon class="icon" />
+      <p class="title">Hazerd form <span>( #001 )</span></p>
+    </div>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
-    <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
+  <div class="col-span-6 md:col-span-6 input-wrapper">
+    <label for="text">Text</label>
+    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text">
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="HazardType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div class="col-span-6 md:col-span-2 input-wrapper">
+    <label for="date">Date</label>
+    <input placeholder="Add your title" type="date" class="input" id="date" v-model="date">
   </div>
+  <div class="col-span-6 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
+      :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type" :type="2"
+      @update:modelValue="setHazardType" />
+  </div>
+  <div class="col-span-6 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
+      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
+      :type="2" @update:modelValue="setMachine" />
+  </div>
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <label for="">upload image</label>
+    <FileUpload class="w-full" />
+  </div>
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <label for="descripe">descripe <span class="optional">(optional)</span></label>
+    <textarea v-model="descripe" id="descripe"></textarea>
+  </div>
+
 </template>
