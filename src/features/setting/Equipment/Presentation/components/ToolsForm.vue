@@ -152,18 +152,20 @@ watch(
       return match ? { ...l, title: match.title } : { ...l }
     })
 
-    industry.value = newData?.industries ?? []
-    equipmentType.value = newData?.equipmentTypeId ?? null
-    allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
-    inspectionDuration.value = newData?.inspectionDuration || null
-    // licenseNumber.value = newData?.licenseNumber || null
-    // licensePlateNumber.value = newData?.licensePlateNumber || null
-    toolStatus.value = newData?.status || null
-    image.value = newData?.image || null
-    decommissioningDate.value = newData?.date || null
-    certificateImage.value = newData?.certificateImage || null
+    if (route.params.id) {
+      industry.value = newData?.industries ?? []
+      equipmentType.value = newData?.equipmentTypeId ?? null
+      allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
+      inspectionDuration.value = newData?.inspectionDuration || null
+      // licenseNumber.value = newData?.licenseNumber || null
+      // licensePlateNumber.value = newData?.licensePlateNumber || null
+      toolStatus.value = newData?.status || null
+      image.value = newData?.image || null
+      decommissioningDate.value = newData?.date || null
+      certificateImage.value = newData?.certificateImage || null
 
-    langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
+      langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
+    }
   },
   { immediate: true },
 )

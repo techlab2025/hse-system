@@ -28,7 +28,11 @@ const fetchEquipmentDetails = async () => {
   await controller.showEquipmentType(params)
 }
 
-onMounted(fetchEquipmentDetails)
+onMounted(async () => {
+  if (route.params.id) {
+    await fetchEquipmentDetails()
+  }
+})
 
 watch(
   () => controller.state.value,
