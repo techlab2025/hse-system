@@ -29,6 +29,7 @@ import FormPen from '@/shared/icons/FormPen.vue'
 import ObservationContainer from './ObservationContainer.vue'
 import ObservationLevel from './ObservationLevel.vue'
 import HazerdType from './HazerdType.vue'
+import LocationsZone from './LocationsZone.vue'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -167,55 +168,8 @@ const machineTypes = [
       :img="ToDoList"
     />
 
-    <div class="tabs-div">
-      <div class="tabs-title">
-        <p>{{ $t('zones') }}</p>
-        <div class="line">
-          <p><span>main location is</span> : cairo</p>
-        </div>
-      </div>
-      <div class="tabs-container">
-        <button
-          class="tab"
-          @click="changeTab('Nasr City')"
-          :class="{ activeTab: activeTab === 'Nasr City' }"
-        >
-          {{ $t('Nasr City') }}
-        </button>
+    <LocationsZone />
 
-        <button
-          class="tab"
-          @click="changeTab('Heliopolis')"
-          :class="{ activeTab: activeTab === 'Heliopolis' }"
-        >
-          {{ $t('Heliopolis') }}
-        </button>
-
-        <button
-          class="tab"
-          @click="changeTab('Zamalek')"
-          :class="{ activeTab: activeTab === 'Zamalek' }"
-        >
-          {{ $t('Zamalek') }}
-        </button>
-
-        <button
-          class="tab"
-          @click="changeTab('6th of October')"
-          :class="{ activeTab: activeTab === '6th of October' }"
-        >
-          {{ $t('6th of October') }}
-        </button>
-
-        <button
-          class="tab"
-          @click="changeTab('Obour City')"
-          :class="{ activeTab: activeTab === 'Obour City' }"
-        >
-          {{ $t('Obour City') }}
-        </button>
-      </div>
-    </div>
 
     <p class="first-section-par">
       <component :is="FormPen" />
@@ -265,7 +219,6 @@ const machineTypes = [
         </div>
       </div>
     </div>
-
 
     <ObservationContainer />
     <ObservationLevel />
