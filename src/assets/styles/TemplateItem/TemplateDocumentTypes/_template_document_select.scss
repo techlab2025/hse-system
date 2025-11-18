@@ -21,16 +21,23 @@
     .input-wrapper {
       width: 100%;
       position: relative;
-       &:after{
+      &:after {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
         height: 100%;
-       }
+      }
       .input {
         width: 100%;
+      }
+      .input-label {
+        display: none;
+      }
+      label {
+        white-space: initial;
+        text-wrap: wrap;
       }
     }
     .image-upload {

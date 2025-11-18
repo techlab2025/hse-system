@@ -172,11 +172,10 @@ const UpdateImageInfo = (data: any) => {
   </div>
 </template>
 
-<style scoped>
+<style scoped >
 .form-container {
   .add-btn {
     margin-top: 15px;
-
   }
 }
 </style>
