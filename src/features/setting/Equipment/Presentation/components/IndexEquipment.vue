@@ -32,6 +32,7 @@ import DeleteEquipmentParams from '../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../controllers/deleteEquipmentController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IconEye from '@/shared/icons/IconEye.vue'
 
 const { t } = useI18n()
 
@@ -150,6 +151,19 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     permission: [
       PermissionsEnum.EQUIPMENT_DELETE,
       PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+    ],
+  },
+  {
+    text: t('show'),
+    icon: IconEye,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-show/${id}`,
+    permission: [
+      PermissionsEnum.EQUIPMENT_DETAILS,
+      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
