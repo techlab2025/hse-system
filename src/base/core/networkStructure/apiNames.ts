@@ -1115,7 +1115,7 @@ class ApiNames {
   }
   public get DeleteObservation() {
     return this.prefix + 'delete_observation'
-=======
+  }
   // Hazard
   public get CreateHazard() {
     return this.prefix + 'create_hazard'
@@ -1131,7 +1131,6 @@ class ApiNames {
   }
   public get DeleteHazard() {
     return this.prefix + 'delete_hazard'
->>>>>>> abf7b71eed3848de50457e5d4588d8bbd3fd3df6
   }
 }
 
