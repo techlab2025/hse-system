@@ -343,7 +343,6 @@ const breadcrumbs = [
         />
       </div>
 
-      <div v-else class=""></div>
 
       <DemoCard
         :equipmentName="equipmentName"

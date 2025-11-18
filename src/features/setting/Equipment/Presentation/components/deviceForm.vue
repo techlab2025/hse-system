@@ -277,7 +277,7 @@ const addEquipment = async () => {
         />
       </div>
 
-      <div class=""></div>
+      <div v-if="user.user?.type !== OrganizationTypeEnum.ORGANIZATION" class=""></div>
 
       <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
