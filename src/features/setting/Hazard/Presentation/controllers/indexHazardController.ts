@@ -1,23 +1,23 @@
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import IndexHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/indexHazardTypeUseCase'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
+import IndexHazardUseCase from '../../Domain/useCase/indexHazardUseCase'
+import type HazardModel from '../../Data/models/hazardModel'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexHazardTypeController extends SelectControllerInterface<
-  HazardTypeModel[]
+export default class IndexHazardController extends SelectControllerInterface<
+  HazardModel[]
 > {
-  private static instance: IndexHazardTypeController
+  private static instance: IndexHazardController
   private constructor() {
     super()
   }
-  private IndexHazardTypeUseCase = new IndexHazardTypeUseCase()
+  private IndexHazardUseCase = new IndexHazardUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexHazardTypeController()
+      this.instance = new IndexHazardController()
     }
     return this.instance
   }
@@ -26,8 +26,8 @@ export default class IndexHazardTypeController extends SelectControllerInterface
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HazardTypeModel[]> =
-      await this.IndexHazardTypeUseCase.call(params)
+    const dataState: DataState<HazardModel[]> =
+      await this.IndexHazardUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

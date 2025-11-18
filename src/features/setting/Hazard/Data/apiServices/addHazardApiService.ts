@@ -3,8 +3,8 @@ import ServicesInterface from "@/base/Data/ApiService/api_service_interface";
 import { CrudType } from "@/base/core/params/call_params_interface";
 import type Params from "@/base/core/params/params";
 
-class AddHazardTypeApiService extends ServicesInterface {
-  private static instance: AddHazardTypeApiService;
+class AddHazardApiService extends ServicesInterface {
+  private static instance: AddHazardApiService;
 
   private constructor() {
     super(); // Ensure this does not call any uninitialized methods or properties
@@ -12,7 +12,7 @@ class AddHazardTypeApiService extends ServicesInterface {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddHazardTypeApiService();
+      this.instance = new AddHazardApiService();
     }
     return this.instance;
   }
@@ -21,7 +21,7 @@ class AddHazardTypeApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.CreateHazardType,
+      url: ApiNames.instance.CreateHazard,
       type: CrudType.POST,
       auth: true,
       params: params,
@@ -30,4 +30,4 @@ class AddHazardTypeApiService extends ServicesInterface {
   }
 }
 
-export { AddHazardTypeApiService };
+export { AddHazardApiService };

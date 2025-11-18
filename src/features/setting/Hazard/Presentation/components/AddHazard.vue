@@ -1,20 +1,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-// import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import AddHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/addHazardTypeController.ts'
-import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import HazardForm from './HazardForm.vue'
+import AddHazardController from '../controllers/addHazardController'
+import type AddHazardParams from '../../Core/params/addHazardParams'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
-const addHazardTypeController = AddHazardTypeController.getInstance()
+const addHazardController = AddHazardController.getInstance()
 
-const addHazardType = async () => {
+const addHazard = async () => {
   console.log(params.value, 'params')
-  await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router)
+  await addHazardController.addHazard(params.value as AddHazardParams, router)
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -23,7 +22,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addHazardType">
+  <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addHazard">
 
     <HazardForm @update:data="setParams" />
 

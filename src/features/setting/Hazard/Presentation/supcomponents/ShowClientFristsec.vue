@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ShowClientModel from "../../Data/models/hazardTypeDetailsModel.ts";
+import type ShowClientModel from "../../Data/models/hazardDetailsModel.ts";
 import IconsSms from "@/components/icons/sms.vue";
 import IconsWhatsApp from "@/components/icons/SocialIcons.vue";
 import IconsNotification from "@/components/icons/notificationBing.vue";

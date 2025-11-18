@@ -168,7 +168,7 @@ const machineTypes = [
       :img="ToDoList"
     />
 
-    <TabsSelection :LocationIds="[137]" />
+    <TabsSelection :LocationIds="[137 ]" />
 
     <p class="first-section-par">
       <component :is="FormPen" />

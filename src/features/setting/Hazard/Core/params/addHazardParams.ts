@@ -1,9 +1,6 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class AddHazardParams implements Params {
-  // translation: TranslationsParams
-
   text: string | null = null
   date: string | null = null
   zoonIds: number[] | null = null
@@ -13,7 +10,6 @@ export default class AddHazardParams implements Params {
   desciption: string | null = null
 
   constructor(
-    // translation: TranslationsParams,
     text: string | null = null,
     date: string | null = null,
     zoonIds: number[] | null = null,
@@ -22,7 +18,6 @@ export default class AddHazardParams implements Params {
     image: string | null = null,
     desciption: string | null = null,
   ) {
-    // this.translation = translation
     this.text = text
     this.date = date
     this.zoonIds = zoonIds
@@ -44,14 +39,13 @@ export default class AddHazardParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    // data['translations'] = this.translation.toMap()
     if (this.text != null) data['text'] = this.text
     if (this.date != null) data['date'] = this.date
-    if (!this.zoonIds) data['zoon_ids'] = this.zoonIds
-    if (!this.hazardId) data['hazard_id'] = this.hazardId
-    if (!this.machineId) data['machine_id'] = this.machineId
-    if (!this.image) data['image'] = this.image
-    if (!this.desciption) data['desciption'] = this.desciption
+    if (this.zoonIds) data['zoon_ids'] = this.zoonIds
+    if (this.hazardId) data['hazard_id'] = this.hazardId
+    if (this.machineId) data['machine_id'] = this.machineId
+    if (this.image) data['image'] = this.image
+    if (this.desciption) data['desciption'] = this.desciption
 
     return data
   }
