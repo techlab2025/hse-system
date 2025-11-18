@@ -17,17 +17,17 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/EquipmentType/EditEquipmentType.vue'),
   },
   {
-    path: 'equipments/:id?',
+    path: 'equipments/:parent_id?',
     name: 'Equipment',
     component: () => import('@/views/Admin/Equipment/IndexEquipment.vue'),
   },
   {
-    path: 'equipment/add/:id?',
+    path: 'equipment/add/:parent_id?',
     name: 'Add Equipment',
     component: () => import('@/views/Admin/Equipment/AddEquipment.vue'),
   },
   {
-    path: 'equipment/:id',
+    path: 'equipment/:id/:parent_id?',
     name: 'Edit Equipment',
     component: () => import('@/views/Admin/Equipment/EditEquipment.vue'),
   },
