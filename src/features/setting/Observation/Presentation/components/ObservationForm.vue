@@ -26,10 +26,14 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import ToDoList from '@/assets/images/to-do-list.png'
 import FormPen from '@/shared/icons/FormPen.vue'
-import ObservationContainer from './ObservationContainer.vue'
+import SaveStatusSelector from './SaveStatusSelector.vue'
 import ObservationLevel from './ObservationLevel.vue'
 import HazerdType from './HazerdType.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
+import IndexEquipmentParams from '@/features/setting/equipment/Core/params/indexEquipmentParams.ts'
+import IndexEquipmentController from '@/features/setting/equipment/Presentation/controllers/indexEquipmentController.ts'
+import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
+import { SaveStatusEnum } from '../../Core/Enums/save_status_enum'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -47,77 +51,90 @@ const langs = ref<{ locale: string; title: string }[]>([
 const industry = ref<TitleInterface[]>([])
 const allIndustries = ref<boolean>(false)
 
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-const industryController = IndexIndustryController.getInstance()
-
+const equipment = ref<TitleInterface[]>([])
+const equipmentParams = new IndexEquipmentParams('', 0, 10, 1)
+const equipmentController = IndexEquipmentController.getInstance()
 // dynamic languages from backend
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 
 const user = useUserStore()
 
-const fetchLang = async () => {
-  if (user?.user?.languages?.length) {
-    langDefault.value = user.user.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
+const title = ref<string>('')
+const description = ref<string>('')
+const image = ref<string | null>(null)
+const date = ref<Date | null>(null)
+const equipmentId = ref<number | null>(null)
 
-  const params = new IndexLangParams('', 1, 10, 0)
-  const response = await IndexLangController.getInstance().getData(params)
-
-  if (response.value?.data?.length) {
-    langDefault.value = response.value.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      { locale: 'en', title: '', icon: USA },
-      { locale: 'ar', title: '', icon: SA },
-    ]
-  }
-}
-
-onMounted(async () => {
-  await fetchLang()
-})
+const hazardTypeId = ref<number | null>(null)
+const riskLevel = ref<RiskLevelEnum | null>(null)
+const takeAction = ref<'yes' | 'no' | null>(null)
+const solved = ref<'yes' | 'no' | null>(null)
+const preventiveAction = ref<string>('')
+const isNearMiss = ref<boolean>(false)
+const isResult = ref<boolean>(false)
+const capaStatus = ref<boolean>(false)
+const isAction = ref<boolean>(false)
+const saveStatus = ref<SaveStatusEnum | null>(null)
+const actionText = ref<string>('')
+const zoneId = ref<number | null>(null)
+const LocationIds = ref<number[]>([])
+const type_id = ref<number | null>(null)
+const type = ref<string | null>(null)
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const AllIndustry = user.user?.type == OrganizationTypeEnum.ADMIN ? allIndustries.value : null
+  const AllIndustry = user.user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
 
-  const params = props.data?.id
-    ? new EditObservationParams(
-        props.data.id!,
-        translationsParams,
-        AllIndustry,
-        industry.value.map((i) => i.id),
-      )
-    : new AddObservationParams(
-        translationsParams,
-        AllIndustry,
-        industry.value.map((i) => i.id),
-      )
+  const industryIds = industry.value.map((i) => i.id)
+
+  const commonData = {
+    title: title.value,
+    description: description.value,
+
+    image: image.value,
+    type_id: type_id.value || undefined,
+    equipment_id: equipmentId.value || undefined,
+    zone_id: zoneId.value || undefined,
+    project_id: undefined,
+    date: date.value ? date.value.toISOString().split('T')[0] : undefined,
+
+    hazard_type_id: hazardTypeId.value,
+    take_action: takeAction.value,
+    solved: solved.value,
+    preventive_action: preventiveAction.value,
+
+    is_result: isResult.value,
+    risk_level: riskLevel.value || undefined,
+    save_status: saveStatus.value || undefined,
+    action: actionText.value,
+    is_near_miss: isNearMiss.value,
+    capa_status: capaStatus.value,
+    is_action: isAction.value,
+  }
+
+  let params: AddObservationParams | EditObservationParams
+
+  if (props.data?.id) {
+    params = new EditObservationParams(
+      props.data.id,
+      translationsParams,
+      AllIndustry,
+      industryIds,
+      commonData,
+    )
+  } else {
+    params = new AddObservationParams(translationsParams, AllIndustry, industryIds, commonData)
+  }
 
   emit('update:data', params)
 }
 
-const setLangs = (data: { locale: string; title: string }[]) => {
-  langs.value = data
-  updateData()
-}
-
-const setIndustry = (data: TitleInterface[]) => {
-  industry.value = data
+const setEquipment = (data: TitleInterface[]) => {
+  equipment.value = data
   updateData()
 }
 
@@ -141,23 +158,6 @@ watch(
   },
   { immediate: true },
 )
-
-const activeTab = ref('Equipment')
-const changeTab = (tab: string) => {
-  activeTab.value = tab
-  emit('update:activeTab', tab)
-}
-const machine = ref(null)
-
-const setMachine = (value: any) => {
-  machine.value = value
-}
-
-const machineTypes = [
-  { id: 1, title: 'Forklift' },
-  { id: 2, title: 'Safety Helmet' },
-  { id: 3, title: 'Fire Extinguisher' },
-]
 </script>
 
 <template>
@@ -168,8 +168,7 @@ const machineTypes = [
       :img="ToDoList"
     />
 
-    <TabsSelection :LocationIds="[137]" />
-
+    <TabsSelection :LocationIds="[137]" @update:zoneId="zoneId = $event" />
     <p class="first-section-par">
       <component :is="FormPen" />
       {{ $t('Observation ') }}<span>(#001)</span>
@@ -197,11 +196,13 @@ const machineTypes = [
 
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput
-          :modelValue="machine"
-          :staticOptions="machineTypes"
-          label="Machine Type"
-          placeholder="Select Machine"
-          @update:modelValue="setMachine"
+          :modelValue="equipment"
+          :controller="equipmentController"
+          :params="equipmentParams"
+          label="Equipment"
+          id="Equipment"
+          placeholder="Select Equipment"
+          @update:modelValue="setEquipment"
         />
       </div>
 
@@ -219,7 +220,7 @@ const machineTypes = [
       </div>
     </div>
 
-    <ObservationContainer />
+    <SaveStatusSelector @update:saveStatus="saveStatus = $event" /> 
     <ObservationLevel />
     <HazerdType />
   </div>
