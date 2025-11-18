@@ -169,6 +169,7 @@ watch(
     />
 
     <TabsSelection :LocationIds="[137]" @update:zoneId="zoneId = $event" />
+
     <p class="first-section-par">
       <component :is="FormPen" />
       {{ $t('Observation ') }}<span>(#001)</span>

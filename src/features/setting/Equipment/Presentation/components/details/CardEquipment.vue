@@ -5,31 +5,46 @@ import RentIcons from '@/shared/icons/RentIcons.vue'
 import Car from '@/shared/icons/car.vue'
 import DropdownIcons from '@/shared/icons/DropdownIcons.vue'
 import Popover from 'primevue/popover'
-import { ref } from 'vue'
-import Edit from '@/shared/icons/edit.vue'
-import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
-import EyeIcon from '@/shared/icons/EyeIcon.vue'
+import { computed, ref } from 'vue'
+import IconEye from '@/shared/icons/IconEye.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import IconEdit from '@/shared/icons/IconEdit.vue'
+import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsModel'
+import { EquipmentStatus } from '../../../Core/enum/EquipmentStatus'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
+import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
 
 const { t } = useI18n()
 
+const { equipmentData } = defineProps<{
+  equipmentData: EquipmentDetailsModel
+}>()
+
 const op = ref()
+const { user } = useUserStore()
+
+const route = useRoute()
 
 const actions = ref([
   {
     title: t('edit'),
-    icon: Edit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${route.params.id}`,
+    icon: IconEdit,
     id: 1,
   },
   {
     title: t('delete'),
-    icon: DeleteIcon,
+    icon: IconDelete,
     id: 2,
   },
-  {
-    title: t('view'),
-    icon: EyeIcon,
-    id: 3,
-  },
+  // {
+  //   title: t('view'),
+  //   icon: IconEye,
+  //   id: 3,
+  // },
 ])
 
 const toggle = (event) => {
@@ -46,27 +61,38 @@ const breadcrumbs = [
     link: '',
   },
 ]
+
+const { locale } = useI18n()
+
+const tTitle = computed(() => {
+  return equipmentData?.titles?.find((item) => item.locale === locale.value)?.title || ''
+})
+
+const deleteEquipment = async (id: number) => {
+  const deleteEquipmentParams = new DeleteEquipmentParams(+route.params.id!)
+  await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
+}
 </script>
 
 <template>
   <div class="card-equipment">
-    <img src="@/assets/images/Rectangle 39933.png" alt="" class="img-equipment" />
+    <img :src="equipmentData.image" alt="" class="img-equipment" />
     <div class="card-body">
       <div class="card-body-content-left">
         <BreadCrumb :BreadCramps="breadcrumbs" />
         <div class="card-body-title">
-          <h3 class="title">Shale Shaker</h3>
-          <RentIcons />
+          <h3 class="title">{{ tTitle }}</h3>
+          <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
         </div>
         <div class="inspection">
           <span>{{ $t('inspection date') }} :</span>
           <p>
-            22 june <span>({{ $t('per_week') }})</span>
+            {{ equipmentData.inspectionDuration }} <span>({{ $t('per_week') }})</span>
           </p>
         </div>
         <div class="date-of-decommissioning">
           <span>{{ $t('Date of Decommissioning') }} :</span>
-          <p>2026 / 10 / 10</p>
+          <p>{{ new Date(equipmentData.date).toLocaleDateString() }}</p>
         </div>
         <div class="vehicle">
           <Car />
@@ -74,7 +100,7 @@ const breadcrumbs = [
           <div class="items">
             <div class="item">
               <span>{{ $t('License number') }} : </span>
-              <p>ABC - 4589</p>
+              <p>{{ equipmentData?.licenseNumber }}</p>
             </div>
             <div class="item">
               <span>{{ $t('Vehicle License No') }} : </span>
@@ -98,12 +124,27 @@ const breadcrumbs = [
                     :key="action.id"
                     class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
                   >
-                    <div class="flex items-center gap-3">
+                    <RouterLink
+                      :to="action.link"
+                      class="flex items-center gap-3"
+                      v-if="action.id == 1"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
-                    </div>
+                    </RouterLink>
+
+                    <button
+                      v-else-if="action.id == 2"
+                      @click="deleteEquipment"
+                      class="flex items-center gap-3 w-full"
+                    >
+                      <component :is="action.icon" />
+                      <div class="text-sm text-surface-500 dark:text-surface-400">
+                        {{ action.title }}
+                      </div>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -115,7 +156,7 @@ const breadcrumbs = [
             <p>Lorem ipsum dolor</p>
             <span>{{ $t('EXP-Date') }} 12/5/2025</span>
           </div>
-          <img src="@/assets/images/add_Hierarchy.png" alt="" class="" />
+          <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>
       </div>
     </div>

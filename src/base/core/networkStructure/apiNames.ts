@@ -749,9 +749,6 @@ class ApiNames {
     return this.prefix + 'disable_observation_type'
   }
 
-
-
-
   // Project Type
   public get CreateProjectType() {
     return this.prefix + 'create_project_type'
@@ -1102,6 +1099,7 @@ class ApiNames {
     return this.prefix + 'fetch_full_project_locations'
   }
 
+<<<<<<< HEAD
   // observation
   public get CreateObservation() {
     return this.prefix + 'create_observation'
@@ -1117,6 +1115,23 @@ class ApiNames {
   }
   public get DeleteObservation() {
     return this.prefix + 'delete_observation'
+=======
+  // Hazard
+  public get CreateHazard() {
+    return this.prefix + 'create_hazard'
+  }
+  public get IndexHazard() {
+    return this.prefix + 'fetch_hazard'
+  }
+  public get ShowHazard() {
+    return this.prefix + 'fetch_hazard'
+  }
+  public get EditHazard() {
+    return this.prefix + 'update_hazard'
+  }
+  public get DeleteHazard() {
+    return this.prefix + 'delete_hazard'
+>>>>>>> abf7b71eed3848de50457e5d4588d8bbd3fd3df6
   }
 }
 
