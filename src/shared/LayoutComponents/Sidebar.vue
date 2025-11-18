@@ -188,6 +188,25 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
+                    <!-- Observation -->
+                     <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.OBSERVATION_ALL,
+                        PermissionsEnum.OBSERVATION_CREATE,
+                        PermissionsEnum.OBSERVATION_DELETE,
+                        PermissionsEnum.OBSERVATION_FETCH,
+                        PermissionsEnum.OBSERVATION_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/observation">
+                          <SidebarVector />
+                          <span>{{ $t('Observation') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -1096,6 +1115,24 @@ const user = useUserStore()
                       <router-link to="/organization/observation-types">
                         <SidebarVector />
                         <span>{{ $t('Observation Types') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <!-- Observation -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/observation">
+                        <SidebarVector />
+                        <span>{{ $t('Observation') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>

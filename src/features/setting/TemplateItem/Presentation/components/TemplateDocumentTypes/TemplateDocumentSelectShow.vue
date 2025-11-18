@@ -14,7 +14,8 @@ const props = defineProps<{
   <div class="show-template-document-select">
     <div class="options-container">
       <div class="input-wrapper">
-        <CustomSelectInput id="selec" :label="title"  :disabled="true" class="input" />
+        <label>{{ title }}</label>
+        <CustomSelectInput id="selec" :disabled="true" class="input" />
       </div>
       <UploadImage class="image-upload" />
     </div>

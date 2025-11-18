@@ -156,9 +156,12 @@ async function reloadData(): Promise<void> {
 </script>
 
 <template>
-    <div class="input-label flex justify-between w-full">
-    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-      @click="reloadData">
+  <div class="input-label flex justify-between w-full">
+    <span
+      v-if="enableReload"
+      class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+      @click="reloadData"
+    >
       <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
       <IconBackStage />
     </span>
@@ -166,13 +169,21 @@ async function reloadData(): Promise<void> {
       <span class="text-red-500">*</span>
 
       {{ label }}
-
     </label>
   </div>
 
-  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-    :empty-message="message" />
+  <component
+    :is="componentType"
+    v-model="normalizedValue"
+    :options="mergedOptions"
+    :placeholder="placeholder"
+    class="input-select w-full"
+    option-label="title"
+    v-bind="multiselectProps"
+    filter
+    :loading="loading"
+    :empty-message="message"
+  />
 
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 </template>
