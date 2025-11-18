@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import type { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -8,6 +9,7 @@ export default class IndexEquipmentTypeParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
+  public type?: EquipmentTypesEnum
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +18,7 @@ export default class IndexEquipmentTypeParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
+    type?: EquipmentTypesEnum,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,6 +26,7 @@ export default class IndexEquipmentTypeParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.type = type
     // this.code = code
   }
 
@@ -33,6 +37,7 @@ export default class IndexEquipmentTypeParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+    if (this.type) data['type'] = `${this.type}`
     // if (this.code) data['code'] = this.code
     return data
   }
