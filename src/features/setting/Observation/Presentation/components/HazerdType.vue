@@ -79,13 +79,13 @@ watch(selectedAnswer, (val) => {
             type="text"
             v-model="title"
           />
-          <label>{{ $t('preventive action') }}</label>
+          <!-- <label>{{ $t('preventive action') }}</label>
           <input
             class="input"
             :placeholder="$t('add your description')"
             type="text"
             v-model="title"
-          />
+          /> -->
         </div>
       </div>
     </div>
