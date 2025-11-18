@@ -1099,6 +1099,22 @@ class ApiNames {
     return this.prefix + 'fetch_full_project_locations'
   }
 
+  // observation
+  public get CreateObservation() {
+    return this.prefix + 'create_observation'
+  }
+  public get IndexObservation() {
+    return this.prefix + 'fetch_observations'
+  }
+  public get ShowObservation() {
+    return this.prefix + 'fetch_observation_details'
+  }
+  public get EditObservation() {
+    return this.prefix + 'update_observation'
+  }
+  public get DeleteObservation() {
+    return this.prefix + 'delete_observation'
+  }
   // Hazard
   public get CreateHazard() {
     return this.prefix + 'create_hazard'
