@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
-import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -11,10 +9,7 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/deleteHazardTypeController'
-import DeleteHazardTypeParams from '@/features/setting/HazardType/Core/params/deleteHazardTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,58 +24,66 @@ import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-
+import IndexHazardController from '../controllers/indexHazardController'
+import IndexHazardParams from '../../Core/params/indexHazardParams'
+import DeleteHazardParams from '../../Core/params/deleteHazardParams'
+import DeleteHazardController from '../controllers/deleteHazardController'
+import IndexHazardHeader from './HazardUtils/IndexHazardHeader.vue'
+import IndexFilter from './HazardUtils/IndexFilter.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import HazardType from "@/assets/images/HazardType.jpg"
+import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 const { t } = useI18n()
 
-// import DialogChangeStatusHazardType from "@/features/setting/HazardType/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
+// import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexHazardTypeController = IndexHazardTypeController.getInstance()
-const state = ref(indexHazardTypeController.state.value)
+const indexHazardController = IndexHazardController.getInstance()
+const state = ref(indexHazardController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
+// const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
-const fetchHazardType = async (
+const fetchHazard = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, id)
-  await indexHazardTypeController.getData(deleteHazardTypeParams)
+  const deleteHazardParams = new IndexHazardParams(query, pageNumber, perPage, withPage, id)
+  await indexHazardController.getData(deleteHazardParams)
 }
 
 onMounted(() => {
-  fetchHazardType()
+  fetchHazard()
 })
 
-const searchHazardType = debounce(() => {
-  fetchHazardType(word.value)
+const searchHazard = debounce(() => {
+  fetchHazard(word.value)
 })
 
-const deleteHazardType = async (id: number) => {
-  const deleteHazardTypeParams = new DeleteHazardTypeParams(id)
-  await DeleteHazardTypeController.getInstance().deleteHazardType(deleteHazardTypeParams)
-  await fetchHazardType()
+const deleteHazard = async (id: number) => {
+  const deleteHazardParams = new DeleteHazardParams(id)
+  await DeleteHazardController.getInstance().deleteHazard(deleteHazardParams)
+  await fetchHazard()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHazardType('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHazardType('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexHazardTypeController.state.value,
+  () => indexHazardController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -94,7 +97,7 @@ watch(
 
 const { user } = useUserStore()
 
-const actionList = (id: number, deleteHazardType: (id: number) => void) => [
+const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
@@ -131,7 +134,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteHazardType(id),
+    action: () => deleteHazard(id),
     permission: [
       PermissionsEnum.HAZARD_TYPE_DELETE,
       PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
@@ -142,149 +145,178 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     ],
   },
 ]
+
+const HazardData = ref([
+  {
+    serial: "OBS-2025-0112",
+    DateTime: "2025-11-05, 10:45 AM",
+    employee: "Ahmed Hassan",
+    employeeType: "( observer )",
+    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
+    zone: "Nasr City",
+    machine: "Shale Shaker Area",
+    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
+    HazardImg: HazardType,
+  },
+  {
+    serial: "OBS-2025-0112",
+    DateTime: "2025-11-05, 10:45 AM",
+    employee: "Ahmed Hassan",
+    employeeType: "( observer )",
+    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
+    zone: "Nasr City",
+    machine: "Shale Shaker Area",
+    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
+    HazardImg: HazardType,
+  },
+  {
+    serial: "OBS-2025-0112",
+    DateTime: "2025-11-05, 10:45 AM",
+    employee: "Ahmed Hassan",
+    employeeType: "( observer )",
+    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
+    zone: "Nasr City",
+    machine: "Shale Shaker Area",
+    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
+    HazardImg: HazardType,
+  },
+  {
+    serial: "OBS-2025-0112",
+    DateTime: "2025-11-05, 10:45 AM",
+    employee: "Ahmed Hassan",
+    employeeType: "( observer )",
+    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
+    zone: "Nasr City",
+    machine: "Shale Shaker Area",
+    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
+    HazardImg: HazardType,
+  },
+])
+
+const categories = ref(["Sustainability-oriented Names", "Eco-friendly", "oriented Names", "Eco-friendly"])
+const Filters = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: "Cairo" }),
+  new TitleInterface({ id: 2, title: "Alexandria" }),
+  new TitleInterface({ id: 3, title: "Giza" }),
+  new TitleInterface({ id: 4, title: "Cairo" }),
+  new TitleInterface({ id: 5, title: "Alexandria" }),
+  new TitleInterface({ id: 6, title: "Giza" }),
+  new TitleInterface({ id: 7, title: "Cairo" }),
+  new TitleInterface({ id: 8, title: "Alexandria" }),
+  new TitleInterface({ id: 9, title: "Giza" }),
+]
+)
+const ShowDetails = ref<number[]>()
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchHazardType())">
+      <span class="icon-remove" @click="((word = ''), searchHazard())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHazardType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazard" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
-          class="btn btn-primary"
-        >
-          {{ $t('Add_HazardType') }}
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.HAZARD_TYPE_CREATE,
+        PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+          class="btn btn-primary">
+          {{ $t('Add_Hazard') }}
         </router-link>
       </PermissionBuilder>
     </div>
-  </div>
+  </div> -->
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.HAZARD_TYPE_FETCH,
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-      PermissionsEnum.HAZARD_TYPE_CREATE,
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.HAZARD_TYPE_ALL,
+    PermissionsEnum.HAZARD_TYPE_DELETE,
+    PermissionsEnum.HAZARD_TYPE_FETCH,
+    PermissionsEnum.HAZARD_TYPE_UPDATE,
+    PermissionsEnum.HAZARD_TYPE_CREATE,
+    PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+    PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+    PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+    PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+    PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+  ]">
+    <!-- <DataStatus :controller="state">
+      <template #success> -->
+    <div class="table-responsive">
+      <IndexHazardHeader :title="`Hazard`" :length="120" :categories="categories" />
+      <IndexFilter :filters="Filters" @update:data="console.log($event)" />
+      <div class="index-table-card-container">
+        <div class="index-table-card" v-for="(item, index) in HazardData" :key="index">
+          <div class="card-header-container">
+            <div class="header-container">
+              <div class="card-content">
+                <div class="card-header">
+                  <p class="label-item-primary">Serial : <span>{{ item.serial }}</span></p>
+                  <p class="label-item-secondary">Date & Time : <span>{{ item.DateTime }}</span></p>
+                </div>
+                <div class="card-details">
+                  <p class="title">{{ item.employee }} <span>{{ item.employeeType }}</span> </p>
+                  <p class="subtitle">{{ item.subtitle }}</p>
+                  <div class="project-details">
+                    <p class="label-item-primary">Zone : <span>{{ item.zone }}</span></p>
+                    <p class="label-item-primary">Machine : <span>{{ item.machine }}</span></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-info">
+                <p class="title">Hazard Type</p>
+                <img :src="item.HazardImg" alt="hazard-img">
+              </div>
+            </div>
+            <p class="show-more" @click="ShowDetails?.push(index)">
+              <span v-if="ShowDetails?.includes(index)">Show Less</span>
+              <span v-else>Show More</span>
+              <ShowMoreIcon />
+            </p>
+          </div>
 
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
-
-                <th scope="col">{{ $t('actions') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
-
-                <td data-label="Actions">
-                  <!--                <DialogChangeStatusHazardType-->
-                  <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
-                  <!--                  :HazardTypeId="item.id"-->
-                  <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div v-if="ShowDetails?.includes(index)" class="card-description">
+            <p class="title">Description</p>
+            <p class="description">
+              {{ item.description }}
+            </p>
+          </div>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType"
-        />
-      </template>
-      <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          addText="Add HazardType"
-          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType"
-        />
-      </template>
-    </DataStatus>
+      </div>
+    </div>
+    <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+    <!-- </template> -->
+    <template #loader>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #initial>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #empty>
+      <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
+        addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+    <template #failed>
+      <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
+        addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+    <!-- </DataStatus> -->
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

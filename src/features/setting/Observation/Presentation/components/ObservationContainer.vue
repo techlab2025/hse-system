@@ -16,9 +16,14 @@ watch(selectedIndustry, (val) => {
     <div
       class="col-span-6 select-container"
       :class="{ selected: selectedIndustry === 1 }"
-      @click="selectedIndustry = 1"
     >
       <label>
+        <input
+          type="radio"
+          v-model="selectedIndustry"
+          :value="1"
+          class="radio-input"
+        />
         <span>Negative</span>
         <img :src="Check" alt="negative" />
       </label>
@@ -27,14 +32,19 @@ watch(selectedIndustry, (val) => {
     <div
       class="col-span-6 select-container"
       :class="{ selected: selectedIndustry === 2 }"
-      @click="selectedIndustry = 2"
     >
       <label>
+        <input
+          type="radio"
+          v-model="selectedIndustry"
+          :value="2"
+          class="radio-input"
+        />
         <span>Positive</span>
         <img :src="alert" alt="positive" />
       </label>
     </div>
-
-    
   </div>
 </template>
+
+

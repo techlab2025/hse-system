@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import type ShowClientModel from "../../Data/models/hazardTypeDetailsModel.ts";
+import type ShowClientModel from "../../Data/models/hazardDetailsModel.ts";
 
 const props = defineProps<{ data: Array<ShowClientModel> | null }>();
 </script>

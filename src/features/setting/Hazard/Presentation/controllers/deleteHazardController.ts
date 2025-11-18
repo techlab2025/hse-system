@@ -1,31 +1,31 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import DeleteHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/deleteHazardTypeUseCase.ts'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
+import DeleteHazardUseCase from '../../Domain/useCase/deleteHazardUseCase'
+import type HazardModel from '../../Data/models/hazardModel'
 
-export default class DeleteHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: DeleteHazardTypeController
+export default class DeleteHazardController extends ControllerInterface<HazardModel> {
+  private static instance: DeleteHazardController
   private constructor() {
     super()
   }
-  private DeleteHazardTypeUseCase = new DeleteHazardTypeUseCase()
+  private DeleteHazardUseCase = new DeleteHazardUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteHazardTypeController()
+      this.instance = new DeleteHazardController()
     }
     return this.instance
   }
 
-  async deleteHazardType(params: Params) {
+  async deleteHazard(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HazardTypeModel> =
-        await this.DeleteHazardTypeUseCase.call(params)
+      const dataState: DataState<HazardModel> =
+        await this.DeleteHazardUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

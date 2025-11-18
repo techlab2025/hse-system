@@ -1,52 +1,49 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import AddHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/addHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
-import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import EditHazardUseCase from '../../Domain/useCase/editHazardUseCase'
+import type HazardModel from '../../Data/models/hazardModel'
 
-export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: AddHazardTypeController
+export default class EditHazardController extends ControllerInterface<HazardModel> {
+  private static instance: EditHazardController
+
   private constructor() {
     super()
   }
-  private AddHazardTypeUseCase = new AddHazardTypeUseCase()
+
+  private EditHazardUseCase = new EditHazardUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddHazardTypeController()
+      this.instance = new EditHazardController()
     }
     return this.instance
   }
 
-  async addHazardType(params: Params, router: Router, draft: boolean = false) {
+  async editHazard(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
     try {
+      const dataState: DataState<HazardModel> = await this.EditHazardUseCase.call(params)
 
-      console.log("Ssssssss")
-      const dataState: DataState<HazardTypeModel> =
-        await this.AddHazardTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
         })
 
         const { user } = useUserStore()
 
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`)
-
-        // useLoaderStore().endLoadingWithDialog();
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`)
+        // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -55,16 +52,14 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
           messageContent: null,
         })
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? (error as string),
+        titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,
       })
     }
-
-    super.handleResponseDialogs()
     return this.state
   }
 }
