@@ -6,6 +6,7 @@ import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
+import Image from 'primevue/image';
 
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -33,6 +34,7 @@ import IndexFilter from './HazardUtils/IndexFilter.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardType from "@/assets/images/HazardType.jpg"
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
+import ViewIcon from '@/shared/icons/ViewIcon.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -272,7 +274,17 @@ const ShowDetails = ref<number[]>([])
               </div>
               <div class="card-info">
                 <p class="title">Hazard Type</p>
-                <img :src="item.HazardImg" alt="hazard-img">
+                <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
+                <Image :src="item.HazardImg" alt="Image" preview>
+                  
+                  <template #previewicon>
+                    <div class="perview">
+                      <span>view</span>
+                      <ViewIcon />
+                    </div>
+                  </template>
+                </Image>
+
               </div>
             </div>
             <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">

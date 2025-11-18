@@ -72,11 +72,30 @@
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
           }
-          img {
+          .p-image {
             object-fit: cover;
             width: 100%;
             height: 70px;
             border-radius: 12px;
+            .p-image-preview-mask{
+              border-radius: 12px;
+              display: block;
+              opacity: 1;
+              background: #00000069;
+              backdrop-filter: blur(1px);
+            }
+            img {
+              border-radius: 12px;
+            }
+            .perview {
+              @include flex-center();
+              gap: 5px;
+              span {
+                color: white;
+                font-size: $SmSize;
+                font-weight: $BaseFontSemiBoldWeight;
+                            }
+            }
           }
         }
       }
