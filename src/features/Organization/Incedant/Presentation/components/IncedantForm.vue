@@ -1,26 +1,27 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
+
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
-import HazardIcon from '@/shared/icons/HazardIcon.vue'
 import DatePicker from 'primevue/datepicker'
+import incedantImage from '@/assets/images/alert 2.png'
 
-import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
-import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import EditHazardParams from '../../Core/params/editHazardParams'
-import hazardImage from '@/assets/images/alert 1.png'
-import AddHazardParams from '../../Core/params/addHazardParams'
+import type IncedantDetailsModel from '../../Data/models/IncedantDetailsModel'
+import EditIncedantParams from '../../Core/params/editIncedantParams'
+import AddIncedantParams from '../../Core/params/addIncedantParams'
+import IndexIncedantController from '../controllers/indexIncedantController'
+import IndexIncedantParams from '../../Core/params/indexIncedantParams'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
+import { title } from 'process'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
-  data?: ShowHazardTypeModel
+  data?: IncedantDetailsModel
 }>()
 const text = ref<string>('')
 const date = ref<Date>()
@@ -29,21 +30,21 @@ const image = ref<string>('')
 
 const updateData = () => {
   const params = props.data?.id
-    ? new EditHazardParams(
+    ? new EditIncedantParams(
         props.data?.id! ?? 0,
         text.value,
         date.value,
         ZoneIds.value,
-        HazardType.value.map((h) => h.id),
+        IncedantType.value.map((h) => h.id),
         SelectedMachine.value.map((el) => el.id),
         image.value,
         descripe.value,
       )
-    : new AddHazardParams(
+    : new AddIncedantParams(
         text.value,
         date.value,
         ZoneIds.value,
-        HazardType.value.map((h) => h.id),
+        IncedantType.value.map((h) => h.id),
         SelectedMachine.value.map((el) => el.id),
         image.value,
         descripe.value,
@@ -54,11 +55,11 @@ const updateData = () => {
 
 watch([() => props.data], ([newData]) => {}, { immediate: true })
 
-const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 1)
-const indexHazardTypeController = IndexHazardTypeController.getInstance()
-const HazardType = ref<TitleInterface[]>([])
-const setHazardType = (data: TitleInterface[]) => {
-  HazardType.value = data
+const indexIncedantTypeParams = new IndexIncedantParams('', 1, 10, 1)
+const indexIncedantTypeController = IndexIncedantController.getInstance()
+const IncedantType = ref<TitleInterface[]>([])
+const setIncedantType = (data: TitleInterface[]) => {
+  IncedantType.value = data
   updateData()
 }
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
@@ -83,17 +84,18 @@ const GetZones = (data: number[]) => {
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage
-      :title="'create Hazerd'"
+      :title="'create incedant'"
       :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="hazardImage"
+      :img="incedantImage"
     />
   </div>
+
   <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
   </div>
-  <div class="hazard-form col-span-6 md:col-span-6">
-    <div class="hazard-form-header">
-      <HazardIcon class="icon" />
+  <div class="Incedant-form col-span-6 md:col-span-6">
+    <div class="Incedant-form-header">
+      <IncedantIcon class="icon" />
       <p class="title">Hazerd form <span>( #001 )</span></p>
     </div>
   </div>
@@ -105,19 +107,7 @@ const GetZones = (data: number[]) => {
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="HazardType"
-      class="input"
-      :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams"
-      label="HazardType"
-      id="HazardType"
-      placeholder="Select Hazard Type"
-      :type="2"
-      @update:modelValue="setHazardType"
-    />
-  </div>
+
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :modelValue="SelectedMachine"
