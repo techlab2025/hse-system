@@ -124,6 +124,9 @@
 /*<editor-fold desc="_template_imports">*/
 @use './TemplateItem/template_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="hazard_imports">*/
+@use './hazard/hazard_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;
