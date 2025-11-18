@@ -29,7 +29,7 @@ import FormPen from '@/shared/icons/FormPen.vue'
 import ObservationContainer from './ObservationContainer.vue'
 import ObservationLevel from './ObservationLevel.vue'
 import HazerdType from './HazerdType.vue'
-import LocationsZone from './LocationsZone.vue'
+import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -168,8 +168,7 @@ const machineTypes = [
       :img="ToDoList"
     />
 
-    <LocationsZone />
-
+    <TabsSelection :LocationIds="[137]" />
 
     <p class="first-section-par">
       <component :is="FormPen" />
