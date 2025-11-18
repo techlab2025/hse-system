@@ -1,7 +1,23 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { ref } from 'vue'
 
-const activeTab = ref('Equipment')
+const { activeTabData } = defineProps<{
+  activeTabData: string
+}>()
+
+const activeTab = ref(activeTabData || 'equipment')
+
+watch(
+  () => activeTabData,
+  (newVal) => {
+    if (newVal) {
+      activeTab.value = newVal
+    }
+  },
+  { immediate: true },
+)
+
 const emit = defineEmits(['update:activeTab'])
 const changeTab = (tab: string) => {
   activeTab.value = tab
@@ -13,9 +29,9 @@ const changeTab = (tab: string) => {
   <div class="tabs-container">
     <button
       class="tab"
-      @click="changeTab('Equipment')"
+      @click="changeTab('equipment')"
       :class="{
-        activeTab: activeTab == 'Equipment',
+        activeTab: activeTab == 'equipment',
       }"
     >
       {{ $t('Equipment') }}
