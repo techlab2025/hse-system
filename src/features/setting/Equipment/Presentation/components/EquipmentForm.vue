@@ -251,7 +251,7 @@ const breadcrumbs = [
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-2 sm:grid-cols-2 gap-6 mt-8">
+    <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-6 mt-8">
       <div class="">
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
@@ -281,7 +281,7 @@ const breadcrumbs = [
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
-        <label class="flex justify-between">
+        <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification upload') }}</p>
           <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
         </label>
