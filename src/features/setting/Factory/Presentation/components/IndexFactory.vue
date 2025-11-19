@@ -269,7 +269,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"
@@ -277,7 +277,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"

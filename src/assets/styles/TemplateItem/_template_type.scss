@@ -21,7 +21,7 @@
   }
 
   .action-box {
-    padding: 1.5rem;
+    padding: 1rem;
     border: 1px solid #e2e8f0;
     border-radius: $SmSize;
     background-color: white;
@@ -30,6 +30,10 @@
     color: #9ca3af;
     font-size: $SmSize;
     font-weight: $BaseFontSemiBoldWeight;
+    width: 100%;
+    @media (max-width:1000px) {
+      grid-column: span 2;
+    }
 
     &.selected {
       border-color: $PrimaryColor;

@@ -37,6 +37,14 @@ export enum PermissionsEnum {
   ORG_INCEDANT_UPDATE = 'OI04',
   ORG_INCEDANT_DELETE = 'OI05',
 
+  // Inspection organization
+  ORG_INSPECTION_ALL = 'OIS00',
+  ORG_INSPECTION_FETCH = 'OIS01',
+  ORG_INSPECTION_DETAILS = 'OIS02',
+  ORG_INSPECTION_CREATE = 'OIS03',
+  ORG_INSPECTION_UPDATE = 'OIS04',
+  ORG_INSPECTION_DELETE = 'OIS05',
+
 
 
   // objectives Organization

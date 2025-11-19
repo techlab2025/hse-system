@@ -16,4 +16,9 @@ export const observationRoutes: RouteRecordRaw[] = [
     name: 'Edit Observeration',
     component: () => import('@/views/Admin/Observation/EditObservation.vue'),
   },
+  {
+    path: 'all-observatin',
+    name: 'All Observeration',
+    component: () => import('@/views/Admin/Observation/AllObservation.vue'),
+  },
 ]

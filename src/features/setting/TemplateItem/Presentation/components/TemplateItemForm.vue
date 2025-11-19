@@ -7,7 +7,7 @@ import TranslationsParams from '@/base/core/params/translations_params'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { LangsMap } from '@/constant/langs'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 import EditTemplateItemParams from '../../Core/params/editTemplateItemParams'
 import { useUserStore } from '@/stores/user'
@@ -21,9 +21,11 @@ import TemplateImage from './TemplateTypes/TemplateImage.vue'
 import RadioButtonType from './TemplateTypes/RadioButtonType.vue'
 import CheckboxType from './TemplateTypes/CheckboxType.vue'
 import ShowTemplate from './ShowTemplate.vue'
+// import AddTemplateItemController from '../controllers/addTemplateItemController'
 
 
 const emit = defineEmits(['update:data'])
+// const router = useRouter()
 const props = defineProps<{ data?: TemplateItemDetailsModel }>()
 const ImageChecked = ref()
 const ActionChecked = ref()
@@ -33,66 +35,67 @@ const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 const SelectedComponent = ref<ActionsEnum>(3)
 const TemplateData = ref()
+// const addTemplateItemController = AddTemplateItemController.getInstance()
+const title = ref('')
+// const user = useUserStore()
+// const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
+//   if (user?.user?.languages.length) {
+//     langDefault.value = user?.user?.languages.map((item: any) => ({
+//       locale: item.code,
+//       title: '',
+//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+//     }))
+//     return
+//   }
+//   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
+//   const controller = await IndexLangController.getInstance().getData(params)
+//   const response = controller.value
 
-const user = useUserStore()
-const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
-  if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const controller = await IndexLangController.getInstance().getData(params)
-  const response = controller.value
-
-  if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-  }
-}
-onMounted(fetchLang)
+//   if (response?.data?.length) {
+//     langDefault.value = response.data.map((item: any) => ({
+//       locale: item.code,
+//       title: '',
+//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+//     }))
+//   } else {
+//     langDefault.value = [
+//       { locale: 'en', icon: USA, title: '' },
+//       { locale: 'ar', icon: SA, title: '' },
+//     ]
+//   }
+// }
+// onMounted(() => {
+//   fetchLang();
+// })
 
 const updateData = () => {
-  const translationsParams = new TranslationsParams()
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
+  // const translationsParams = new TranslationsParams()
+  // langs.value.forEach((lang) => {
+  //   translationsParams.setTranslation('title', lang.locale, lang.title)
+  // })
   const params = !props.data?.id
     ? new AddTemplateItemParams(
       id,
-      translationsParams,
+      title.value,
       SelectedComponent.value,
       TemplateData.value,
       isUpdloadImage.value,
       ImageStatus.value,
-
     )
     : new EditTemplateItemParams(
       props.data.id ?? 0,
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
-      props.data.id ?? 0,
+      id,
+      title.value,
+      SelectedComponent.value,
+      TemplateData.value,
+      isUpdloadImage.value,
+      ImageStatus.value,
     )
 
   emit('update:data', params)
 }
 
-const setLangs = (data: { locale: string; title: string }[]) => {
-  langs.value = data
-  updateData()
-}
+
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -127,11 +130,35 @@ const selectedComponent = computed(() => {
 
 const GetData = (data: any) => {
   TemplateData.value = data
+
 }
 
-const AddToTemplate = () => {
-  console.log(TemplateData.value, "add to template clicked");
-}
+// const AddToTemplate = async () => {
+//   updateData()
+//   const translationsParams = new TranslationsParams()
+//   langs.value.forEach((lang) => {
+//     translationsParams.setTranslation('title', lang.locale, lang.title)
+//   })
+//   const params = !props.data?.id
+//     ? new AddTemplateItemParams(
+//       id,
+//       title.value,
+//       SelectedComponent.value,
+//       TemplateData.value,
+//       isUpdloadImage.value,
+//       ImageStatus.value,
+
+//     )
+//     : new EditTemplateItemParams(
+//       props.data.id ?? 0,
+//       title.value,
+//       ImageChecked.value ? 1 : 0,
+//       ActionChecked.value ? 1 : 0,
+//       props.data.id ?? 0,
+//     )
+//   await addTemplateItemController.addTemplateItem(params as AddTemplateItemParams, router)
+//   // console.log(TemplateData.value, "add to template clicked");
+// }
 
 watch(() => TemplateData.value, () => {
   updateData()
@@ -147,6 +174,7 @@ const UpdateImageInfo = (data: any) => {
   ImageStatus.value = data.ImageType
   updateData()
 }
+
 </script>
 
 <template>
@@ -155,16 +183,18 @@ const UpdateImageInfo = (data: any) => {
       subtitle="add your items one by one to the templet and you can see them" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <div class="col-span-4 md:col-span-2">
-      <LangTitleInput :label="$t('item_title')" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs"
-        :placeholder="`add your title here..`" />
+    <div class="col-span-4 md:col-span-2 input-wrapper">
+
+      <label for="item-title">{{ $t('item_title') }}</label>
+      <input type="text" id="item-title" v-model="title" class="input" placeholder="add your title here.."
+        @input="updateData">
     </div>
     <div class="col-span-4 md:col-span-2 form-container">
       <TemplateTypesSection @update:data="GetTemplateType" />
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
       <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
-      <button class="btn add-btn w-full " @click="AddToTemplate">{{ $t('add_to_template') }}</button>
+      <button class="btn add-btn w-full">{{ $t('add_to_template') }}</button>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2">
@@ -172,7 +202,7 @@ const UpdateImageInfo = (data: any) => {
   </div>
 </template>
 
-<style scoped >
+<style scoped>
 .form-container {
   .add-btn {
     margin-top: 15px;

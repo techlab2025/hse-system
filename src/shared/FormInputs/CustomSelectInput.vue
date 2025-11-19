@@ -11,7 +11,7 @@ import IconBackStage from '@/shared/icons/IconBackStage.vue'
 export type ComponentType = 'select' | 'multiselect'
 
 interface Props {
-  label: string
+  label?: string
   options?: TitleInterface[]
   staticOptions?: TitleInterface[] | null
   modelValue: TitleInterface | TitleInterface[] | null
@@ -168,7 +168,7 @@ async function reloadData(): Promise<void> {
     <label :class="{ required: required }" class="input-label">
       <span class="text-red-500">*</span>
 
-      {{ $t(label) }}
+      {{ $t(label ?? '') }}
     </label>
   </div>
 
