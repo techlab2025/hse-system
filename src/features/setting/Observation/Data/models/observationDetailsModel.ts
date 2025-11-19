@@ -7,47 +7,56 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class ObservationDetailsModel {
   public id: number
-  public titles: TitleLocale[]
-  // public hasCertificate: number
-  public allIndustries: number
-  public parentId: number
+  public title: string
+  public date: string
+  public equipment: TitleInterface
   public image: string
-  public industries: TitleModel<string>[]
-  // public descriptions: DescriptionLocale[]
+  public save_status: number
+  public risk_level: number
+  public is_near_miss: number
+  public is_action: boolean
+  public is_result: boolean
+  public action: string
 
-  constructor(
-    id: number,
-    titles: TitleLocale[],
-    // hasCertificate: number,
-    allIndustries: number,
-    industries: TitleModel<string>[] = [],
-    parentId: number,
-    image: string,
+  constructor(id: number, title: string, date: string, equipment: TitleInterface, image: string, save_status: number, risk_level: number, is_near_miss: number, is_action: boolean,
+    is_result: boolean, action: string = ''
+
   ) {
     this.id = id
-    this.titles = titles
-    // this.hasCertificate = hasCertificate
-    this.allIndustries = allIndustries
-    this.industries = industries
-    this.parentId = parentId
+    this.title = title
+    this.date = date
+    this.equipment = equipment
     this.image = image
+    this.save_status = save_status
+    this.risk_level = risk_level
+    this.is_near_miss = is_near_miss
+    this.is_action = is_action
+    this.is_result = is_result
+    this.action = action
+
   }
 
   static fromMap(data: any): ObservationDetailsModel {
+
+    const currentLocale = localStorage.getItem("locale") || "en"
+    const title = typeof data.title === "object" ? data.title[currentLocale] : data.title
+
     return new ObservationDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => this.getTitle(industry))
-        : [],
-      data.parent_id,
+      title,
+      data.date,
+      this.getTitle(data.equipment),
       data.image,
+      data.save_status,
+      data.risk_level,
+      data.is_near_miss,
+      data.is_action,
+      data.is_result,
+      data.action
+
     )
   }
-
-  static getTitle(data: any) {
+  static getTitle(data: any): TitleInterface {
     const savedLocale = localStorage.getItem('lang')
 
     return new TitleInterface({
@@ -56,3 +65,4 @@ export default class ObservationDetailsModel {
     })
   }
 }
+
