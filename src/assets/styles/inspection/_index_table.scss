@@ -1,0 +1,87 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.index-table-card-container-inspection {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $SmSize;
+  width: 100%;
+
+  .index-table-card {
+    @include flex-column(nowrap, flex-start, flex-start);
+    border: 1px solid #f6f6f6;
+    padding: $XsSize;
+    border-radius: $XlSize;
+    width: 100%;
+    .card-header-container {
+      @include flex-column(nowrap, flex-end, flex-end);
+      //   padding-bottom: $XsSize;
+      border-bottom: 2px dashed #e1e4ed;
+      width: 100%;
+      gap: $XsSize;
+      &.show {
+        border-bottom: none;
+      }
+      .header-container {
+        @include flex-row(nowrap, space-between, center);
+        width: 100%;
+        gap: $XsSize4;
+        font-family: 'Regular';
+
+        .card-content {
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: $XsSize4;
+
+          .card-header {
+            @include flex-row(nowrap, flex-start, center);
+            gap: $XlSize4;
+            .label-item-primary {
+              span {
+                font-weight: $BaseFontWeightBold;
+              }
+            }
+          }
+
+          .card-details {
+            @include flex(row, nowrap, flex-start, center);
+            gap: $XsSize4;
+
+            .title {
+              color: #0f1927;
+              font-size: $XlSize;
+              text-decoration: underline;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+            span {
+              font-family: 'Light';
+              color: #6b7280;
+              font-size: $XsSize;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
+        }
+
+        .card-info-status {
+          background: $greenDone;
+          color: #4caf50;
+          padding: $XsSize2 $XlSize4;
+          border-radius: $XlSize2;
+          font-weight: $BaseFontWeightBold;
+          font-size: $MdSize;
+        }
+        .show-details {
+          @include flex(row, nowrap, center, center);
+          gap: $XsSize2;
+          background: #1f41bb0a;
+          border: 1px solid #1f41bb80;
+          color: #1f41bb;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          cursor: pointer;
+          padding: $XsSize2 $XlSize2;
+          border-radius: $XlSize2;
+        }
+      }
+    }
+  }
+}

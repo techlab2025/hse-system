@@ -12,7 +12,7 @@ import { contractorsRoutes } from './contractor'
 import { locationRoutes } from './location'
 import { observerationRoutes } from './observeration'
 import { observationRoutes } from './observation'
-import { hazardRoutes } from './hazard'
+// import { hazardRoutes } from './hazard'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -20,7 +20,7 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...equipmentRoutes,
   ...factoryRoutes,
   ...hazardTypesRoutes,
-  ...hazardRoutes,
+  // ...hazardRoutes,
   ...templateRoutes,
   ...templateItemRoutes,
   ...methodsRoutes,

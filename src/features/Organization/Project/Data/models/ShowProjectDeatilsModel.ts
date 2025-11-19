@@ -16,7 +16,6 @@ export default class ShowProjectDetailsModel {
   public projectZoons: SohwProjectZoonModel[]
   public SerialNumber: string
   public startDate: string
-
   public country: TitleInterface | null
   public state: TitleInterface | null
   public city: TitleInterface | null

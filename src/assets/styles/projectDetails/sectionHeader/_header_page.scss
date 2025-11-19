@@ -3,7 +3,7 @@
 @import '../../mixins/grid';
 
 .section-header-page {
-  @include flex-row(nowrap, flex-start, center);
+  @include flex-row(wrap, flex-start, center);
   gap: $SmSize;
   font-family: 'Regular';
   background: #f7f9fc;
