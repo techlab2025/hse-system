@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type CapaParams from './CapaParam'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -76,7 +77,7 @@ export default class AddHazardParams implements Params {
     if (this.typeId) data['type_id'] = this.typeId
     if (this.type) data['type'] = this.type
     if (this.equipmentId) data['equipment_id'] = this.equipmentId
-    if (this.zoonId) data['zoon_id'] = this.zoonId
+    if (this.zoonId) data['zoon_id'] = Number(this.zoonId)
     if (this.projectId) data['project_id'] = this.projectId
     if (this.isResult) data['is_result'] = this.isResult
     if (this.riskLevel) data['risk_level'] = this.riskLevel
@@ -84,7 +85,7 @@ export default class AddHazardParams implements Params {
     if (this.action) data['action'] = this.action
     if (this.isNearMiss) data['is_near_miss'] = this.isNearMiss
     if (this.capaStatus) data['capa_status'] = this.capaStatus
-    if (this.date) data['date'] = this.date
+    if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
 
