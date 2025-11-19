@@ -12,7 +12,7 @@ export const observationRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Observation/AddObservation.vue'),
   },
   {
-    path: 'observatin/:id',
+    path: 'observation/:id',
     name: 'Edit Observeration',
     component: () => import('@/views/Admin/Observation/EditObservation.vue'),
   },
