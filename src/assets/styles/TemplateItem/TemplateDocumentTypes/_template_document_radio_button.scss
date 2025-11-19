@@ -13,12 +13,12 @@
   }
   .options-container {
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
+    @include flex-row(wrap, space-between, center);
     border-bottom: 1px dashed #ebebeb;
     width: 100%;
     padding-bottom: 12px;
     .options {
-      @include flex-row(nowrap, flex-start, center);
+      @include flex-row(wrap, flex-start, center);
       gap: 20px;
       .options-box {
         @include flex-row(nowrap, flex-start, center);

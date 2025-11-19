@@ -7,16 +7,18 @@ import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import HazardIcon from '@/shared/icons/HazardIcon.vue'
 import DatePicker from 'primevue/datepicker'
 
-import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
-import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
+
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import EditHazardParams from '../../Core/params/editHazardParams'
 import hazardImage from '@/assets/images/alert 1.png'
-import AddHazardParams from '../../Core/params/addHazardParams'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
+import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
+import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
+import EditHazardParams from '../../../Core/params/editHazardParams'
+import AddHazardParams from '../../../Core/params/addHazardParams'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -28,43 +30,71 @@ const descripe = ref<string>('')
 const image = ref<string>('')
 
 const updateData = () => {
+  console.log(ZoneIds.value, "ZoneIds.value");
   const params = props.data?.id
     ? new EditHazardParams(
-        props.data?.id! ?? 0,
-        text.value,
-        date.value,
-        ZoneIds.value,
-        HazardType.value.map((h) => h.id),
-        SelectedMachine.value.map((el) => el.id),
-        image.value,
-        descripe.value,
-      )
+      props.data?.id! ?? 0,
+      text.value,
+      descripe.value,
+      image.value,
+      HazardType.value.id,
+      2,
+      SelectedMachine.value.id,
+      ZoneIds.value,
+      22,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      date.value,
+      null,
+      null
+    )
     : new AddHazardParams(
-        text.value,
-        date.value,
-        ZoneIds.value,
-        HazardType.value.map((h) => h.id),
-        SelectedMachine.value.map((el) => el.id),
-        image.value,
-        descripe.value,
-      )
+      text.value,
+      descripe.value,
+      image.value?.file,
+      HazardType.value.id,
+      Observation.HazardType,
+      SelectedMachine.value.id,
+      ZoneIds.value,
+      37,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      date.value,
+      null,
+      null
+    )
+  //  text.value,
+  //   date.value,
+  //   ZoneIds.value,
+  //   HazardType.value.map((h) => h.id),
+  //   SelectedMachine.value.map((el) => el.id),
+  //   image.value,
+  //   descripe.value,
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => {}, { immediate: true })
+watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 1)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
-const HazardType = ref<TitleInterface[]>([])
-const setHazardType = (data: TitleInterface[]) => {
+const HazardType = ref<TitleInterface>()
+const setHazardType = (data: TitleInterface) => {
   HazardType.value = data
   updateData()
 }
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const SelectedMachine = ref<TitleInterface[]>([])
-const setMachine = (data: TitleInterface[]) => {
+const SelectedMachine = ref<TitleInterface>()
+const setMachine = (data: TitleInterface) => {
   SelectedMachine.value = data
   updateData()
 }
@@ -82,11 +112,8 @@ const GetZones = (data: number[]) => {
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage
-      :title="'create Hazerd'"
-      :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="hazardImage"
-    />
+    <HeaderPage :title="'create Hazerd'" :subtitle="'Identify and report potential hazards before they cause harm'"
+      :img="hazardImage" />
   </div>
   <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
@@ -106,30 +133,14 @@ const GetZones = (data: number[]) => {
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="HazardType"
-      class="input"
-      :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams"
-      label="HazardType"
-      id="HazardType"
-      placeholder="Select Hazard Type"
-      :type="2"
-      @update:modelValue="setHazardType"
-    />
+    <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
+      :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
+      @update:modelValue="setHazardType" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="select machine (optional)"
-      id="machine"
-      placeholder="select your machine"
-      :type="2"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
+      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
+      :type="2" @update:modelValue="setMachine" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>

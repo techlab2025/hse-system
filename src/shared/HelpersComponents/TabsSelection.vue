@@ -12,6 +12,7 @@ const props = defineProps<{
   LocationIds: number[]
 }>()
 const updateData = (data) => {
+  console.log(data);
   emit('update:data', data.target.value)
 }
 

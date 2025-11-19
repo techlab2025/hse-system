@@ -5,9 +5,10 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import HazardForm from '@/features/setting/Hazard/Presentation/components/HazardForm.vue'
 import type Params from '@/base/core/params/params'
-import ShowHazardController from '../controllers/showHazardController'
-import ShowHazardParams from '../../Core/params/showHazardParams'
-import EditHazardController from '../controllers/editHazardController'
+import ShowHazardController from '../../controllers/showHazardController'
+import ShowHazardParams from '../../../Core/params/showHazardParams'
+import EditHazardController from '../../controllers/editHazardController'
+
 
 const route = useRoute()
 const router = useRouter()

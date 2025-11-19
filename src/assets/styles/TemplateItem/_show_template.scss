@@ -46,6 +46,9 @@
 
   .template-title {
     @include flex-center();
+    @media(max-width:768px){
+      @include flex-column-reverse(nowrap, center, center);
+    }
     gap: 4px;
     .title {
       font-family: 'Regular';

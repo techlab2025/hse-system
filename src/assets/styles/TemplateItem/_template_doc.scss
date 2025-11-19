@@ -20,8 +20,12 @@
     padding: $MdSize;
 
     @include flex-row(nowrap, space-between, center);
+    @media(max-width: 768px) {
+      @include flex-column-reverse(nowrap, flex-start, flex-start);
+
+    }
     .template-header {
-      @include flex-column(nowrap, flex-start, flex-start);
+      @include flex-column(wrap, flex-start, flex-start);
       gap: $XsSize2;
       .header-title {
         font-family: 'Regular';
@@ -30,7 +34,7 @@
         font-weight: $BaseFontWeightBold;
       }
       .template-details {
-        @include flex-row(nowrap, flex-start, center);
+        @include flex-row(wrap, flex-start, center);
         font-family: 'Regular';
         gap: $XlSize;
 
@@ -48,14 +52,18 @@
       max-width: 80px;
     }
   }
-  .template-document-content {
-    padding: $MdSize;
-    margin-top: $XsSize2;
-    @include flex-column(nowrap, flex-start, flex-start);
-    gap: 20px;
-    background-color: white;
-    z-index: 999;
-    position: relative;
-    border-radius: 0 0 15px 15px;
+  .template-document-content-container{
+    width: 100%;
+    .template-document-content {
+      width: 100%;
+      padding: $MdSize;
+      margin-top: $XsSize2;
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 20px;
+      background-color: white;
+      z-index: 999;
+      position: relative;
+      border-radius: 0 0 15px 15px;
+    }
   }
 }

@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
 import HazardForm from './HazardForm.vue'
-import AddHazardController from '../controllers/addHazardController'
-import type AddHazardParams from '../../Core/params/addHazardParams'
+import AddHazardController from '../../controllers/addHazardController'
+import type AddHazardParams from '../../../Core/params/addHazardParams'
 
 const router = useRouter()
 const params = ref<Params | null>(null)

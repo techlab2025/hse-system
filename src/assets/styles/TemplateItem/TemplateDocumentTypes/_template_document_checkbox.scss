@@ -13,32 +13,41 @@
     font-weight: $BaseFontMediumWeight;
   }
   .options-container {
-    @include flex-row(nowrap, flex-start, center);
-    gap: 20px;
+    width: 100%;
+    @include flex-row(wrap, space-between, center);
     border-bottom: 1px dashed #ebebeb;
     width: 100%;
     padding-bottom: 12px;
-    .options-box {
-      @include flex-row(nowrap, flex-start, center);
-      gap: 8px;
-      .label {
-        font-family: 'Light';
+    .options {
+      @include flex-row(wrap, flex-start, center);
+      gap: 20px;
 
-        color: #9ea5b3;
-        font-size: $MdSize;
-        font-weight: $BaseFontSemiBoldWeight;
-      }
-      .p-checkbox-box {
-        border-radius: 5px !important;
-        border: 1px solid #f0f2f4 !important;
-        svg {
+      .options-box {
+        @include flex-row(nowrap, flex-start, center);
+        gap: 8px;
+        .label {
+          font-family: 'Light';
+
+          color: #9ea5b3;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+        .p-checkbox-box {
+          border-radius: 5px !important;
+          border: 1px solid #f0f2f4 !important;
+          svg {
+            fill: white !important;
+          }
+        }
+        .p-checkbox-checked .p-checkbox-box svg {
           fill: white !important;
+          display: block !important;
         }
       }
-      .p-checkbox-checked .p-checkbox-box svg {
-        fill: white !important;
-        display: block !important;
-      }
+    }
+    .image-upload {
+      width: 50px;
+      height: 50px;
     }
   }
 }

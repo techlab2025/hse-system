@@ -3,7 +3,7 @@
 @import '../mixins/grid';
 
 .radio-btns {
-  @include flex-row(nowrap, flex-start, center);
+  @include flex-row(  wrap, flex-start, center);
   margin-top: $XlSize;
   gap: $XsSize;
   font-family: 'Light';
