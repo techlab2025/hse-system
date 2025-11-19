@@ -103,12 +103,12 @@ const GetZones = (data: number[]) => {
     <label for="text">Text</label>
     <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-3 input-wrapper">
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
 
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-3 input-wrapper">
     <CustomSelectInput
       :modelValue="SelectedMachine"
       class="input"

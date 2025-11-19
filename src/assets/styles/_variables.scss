@@ -7,6 +7,7 @@
   --Red-opacity: #e2353599;
   --green: #4aae3a;
   --green-done: #4caf501a;
+  --card-observation-bg: #f8f9fb;
   --delay-color: #ffbf521a;
   --BgWhite: rgba(255, 255, 255, 1);
   --Gray-1: rgba(248, 249, 250, 1);
@@ -27,9 +28,9 @@
   --base-height: 900;
   --font-family: 'URW DIN Arabic';
   --third-color: #170f49;
-  --low-color: #8A38F5;
+  --low-color: #8a38f5;
   --medium-color: #ffbf52;
-  --high-color: #E23535;
+  --high-color: #e23535;
 
   --icon-bg: #f2f4f6;
   --xl-size-3: clamp(calc(50 * 0.8px), calc(50 * 100vw / var(--base-width)), calc(50 * 1.2px));
@@ -70,6 +71,7 @@ $Green: var(--green);
 $greenDone: var(--green-done);
 $GrayText-1: var(--GrayText-1);
 $GrayText: var(--GrayText);
+$CardObservationBg: var(--card-observation-bg);
 $DarkGray: var(--DarkGray);
 $LightGray: var(--LightGray);
 $Red: var(--Red);

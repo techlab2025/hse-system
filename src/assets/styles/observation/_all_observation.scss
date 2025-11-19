@@ -1,0 +1,44 @@
+@use '../mixins/grid' as *;
+@use '../mixins/flex' as *;
+@use '../variables' as *;
+
+.all-observation {
+  .cards {
+    @include grid(2, $SmSize);
+    margin-top: $XlSize2;
+    @media screen and (max-width: 800px) {
+      @include grid(1, $SmSize);
+    }
+
+    .card {
+      background-color: $CardObservationBg;
+      padding: $XsSize $XlSize;
+      border-radius: $XlSize2;
+
+      .card-header {
+        @include flex(row, wrap, space-between, center);
+        margin-bottom: $MdSize;
+
+        .card-header-title {
+          font-size: $XlSize2;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: $ThirdColor;
+        }
+        .card-header-item {
+          @include flex(row, wrap, center, center);
+          gap: $XsSize3;
+          span {
+            font-size: $SmSize;
+            color: #c0c0c5;
+          }
+
+          p {
+            font-size: $SmSize;
+            font-weight: $BaseFontSemiBoldWeight;
+            color: $PrimaryColor;
+          }
+        }
+      }
+    }
+  }
+}
