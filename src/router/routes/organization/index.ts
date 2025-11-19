@@ -7,6 +7,7 @@ import { organizationLocationRoutes } from '@/router/routes/organization/organiz
 import { herikalyRoutes } from '@/router/routes/organization/herikaly.ts'
 import { objectivesRoutes } from './objectives'
 import { IncedantRoutes } from './Incedant'
+import { InspectionRoutes } from './inspection'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -22,6 +23,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...herikalyRoutes,
   ...objectivesRoutes,
   ...IncedantRoutes,
+  ...InspectionRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

@@ -945,6 +945,25 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                      PermissionsEnum?.ORG_INSPECTION_ALL,
+                      PermissionsEnum?.ORG_INSPECTION_CREATE,
+                      PermissionsEnum?.ORG_INSPECTION_UPDATE,
+                      PermissionsEnum?.ORG_INSPECTION_DETAILS,
+                      PermissionsEnum?.ORG_INSPECTION_DELETE,
+                      PermissionsEnum?.ORG_INSPECTION_FETCH,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/inspection">
+                        <SidebarVector />
+                        <span>{{ $t('inspection') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
                   <!-- partners -->
                   <PermissionBuilder
                     :code="[
@@ -1204,7 +1223,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/herikaly">
                         <SidebarVector />
-                        <span>{{ $t('herikaly') }}</span>
+                        <span>{{ $t('hierarchy') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
