@@ -140,7 +140,7 @@ const GetZones = (data: number[]) => {
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
       :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
-      :type="2" @update:modelValue="setMachine" />
+      @update:modelValue="setMachine" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
