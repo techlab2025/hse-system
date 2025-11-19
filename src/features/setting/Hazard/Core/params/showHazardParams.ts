@@ -9,7 +9,7 @@ export default class ShowHazardParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['hazard_id'] = this.id
+    data['observation_id'] = this.id
     return data
   }
 }

@@ -1,23 +1,24 @@
 import type Params from '@/base/core/params/params'
+import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class AddTemplateItemParams implements Params {
-  id: number
-  title: string
+  id:number
+  translation: TranslationsParams
   type: number
-  answers: items[]
+  answers: number
   isImageRequired: number
   imageType: number
 
   constructor(
     id: number,
-    title: string,
+    translation: TranslationsParams,
     type: number,
-    answers: items[],
+    answers: number,
     isImageRequired: number,
     imageType: number,
   ) {
     this.id = id
-    this.title = title
+    this.translation = translation
     this.type = type
     this.answers = answers
     this.isImageRequired = isImageRequired
@@ -26,11 +27,7 @@ export default class AddTemplateItemParams implements Params {
 
   toMap(): Record<
     string,
-    | number
-    | string
-    | number[]
-    | Record<string, string | number[] | number | Record<string, string>>
-    | Array<Record<string, string | number>>
+    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
@@ -38,22 +35,13 @@ export default class AddTemplateItemParams implements Params {
       | string
       | number[]
       | Record<string, string | number[] | number | Record<string, string>>
-      | Array<Record<string, string | number>>
     > = {}
     data['template_id'] = this.id
-    data['name'] = this.title
+    data['translations'] = this.translation.toMap() // tranlations:asd
     data['action'] = this.type
-    data['options'] = this.answers.map((item) => ({
-      title: item.title,
-      is_danger: item.isDanger ? 1 : 0,
-    }))
-    data['require_image'] = this.isImageRequired || 0
-    data['required_type'] = this.imageType || 0
+    data['answers'] = this.answers
+    data['is_image_required'] = this.isImageRequired
+    data['image_type'] = this.imageType
     return data
   }
-}
-
-interface items {
-  title: string
-  isDanger: boolean
 }

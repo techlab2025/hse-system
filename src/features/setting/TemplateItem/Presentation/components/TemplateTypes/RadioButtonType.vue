@@ -7,19 +7,35 @@ const RedValue = ref("No")
 const RandomValue = ref("N/A")
 
 const UpdateData = () => {
-  const params = {
-    green: GreenValue.value,
-    red: RedValue.value,
-    random: RandomValue.value
-  }
+  const params = [
+    {
+      title: GreenValue.value,
+      isDanger: false
+    },
+    {
+      title: RedValue.value,
+      isDanger: false
+    },
+    {
+      title: RandomValue.value,
+      isDanger: false
+    }]
   emit('update:data', params)
 }
 onMounted(() => {
-  const params = {
-    green: GreenValue.value,
-    red: RedValue.value,
-    random: RandomValue.value
-  }
+  const params = [
+    {
+      title: GreenValue.value,
+      isDanger: false
+    },
+    {
+      title: RedValue.value,
+      isDanger: true
+    },
+    {
+      title: RandomValue.value,
+      isDanger: false
+    }]
   emit('update:data', params)
 })
 </script>

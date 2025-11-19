@@ -35,7 +35,7 @@ export default class EditHazardParams implements Params {
   > {
     const data: Record<string, any> = {}
 
-    data['hazard_id'] = this.id
+    data['observation_id'] = this.id
     if (this.text != null) data['text'] = this.text
     if (this.date != null) data['date'] = this.date
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds

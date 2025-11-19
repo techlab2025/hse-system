@@ -5,136 +5,52 @@ import TemplateDocumentCheckboxShow from './TemplateDocumentTypes/TemplateDocume
 import TemplateDocumentSelectShow from './TemplateDocumentTypes/TemplateDocumentSelectShow.vue';
 import TemplateDocumentTextAreaShow from './TemplateDocumentTypes/TemplateDocumentTextAreaShow.vue';
 import TitleInterface from '@/base/Data/Models/title_interface';
+import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel';
+import { ActionsEnum } from '../../Core/Enum/ActionsEnum';
+import { watch } from 'vue';
 
+const props = defineProps<{
+  allData: TemplateDetailsModel
+}>()
 
-const CheckBoxData = [
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'option 1', value: 1 },
-      { label: 'option 2', value: 2 },
-      { label: 'option 3', value: 3 },
-    ],
+watch(
+  () => props.allData,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+    }
   },
   {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'option 1', value: 1 },
-      { label: 'option 2', value: 2 },
-      { label: 'option 3', value: 3 },
-    ],
+    deep: true,
   },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'option 1', value: 1 },
-      { label: 'option 2', value: 2 },
-      { label: 'option 3', value: 3 },
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'option 1', value: 1 },
-      { label: 'option 2', value: 2 },
-      { label: 'option 3', value: 3 },
-    ],
-  },
-];
-const RadioButtonData = [
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'Yes', value: 1 },
-      { label: 'No', value: 2 },
-      { label: 'N/A', value: 3 },
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'Yes', value: 1 },
-      { label: 'No', value: 2 },
-      { label: 'N/A', value: 3 },
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'Yes', value: 1 },
-      { label: 'No', value: 2 },
-      { label: 'N/A', value: 3 },
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      { label: 'Yes', value: 1 },
-      { label: 'No', value: 2 },
-      { label: 'N/A', value: 3 },
-    ],
-  },
-
-];
-const SelectData = [
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      new TitleInterface({ title: 'option 1', id: 1 }),
-      new TitleInterface({ title: 'option 2', id: 2 }),
-      new TitleInterface({ title: 'option 3', id: 3 }),
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      new TitleInterface({ title: 'option 1', id: 1 }),
-      new TitleInterface({ title: 'option 2', id: 2 }),
-      new TitleInterface({ title: 'option 3', id: 3 }),
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      new TitleInterface({ title: 'option 1', id: 1 }),
-      new TitleInterface({ title: 'option 2', id: 2 }),
-      new TitleInterface({ title: 'option 3', id: 3 }),
-    ],
-  },
-  {
-    title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    options: [
-      new TitleInterface({ title: 'option 1', id: 1 }),
-      new TitleInterface({ title: 'option 2', id: 2 }),
-      new TitleInterface({ title: 'option 3', id: 3 }),
-    ],
-  },
-
-
-];
+)
 
 </script>
 <template>
   <div class="template-document-container">
     <div class="template-document-header">
       <div class="template-header">
-        <p class="header-title">vehicle ABC - 4589</p>
+        <p class="header-title">{{allData?.titles?.filter(item => item.locale === 'en').map(item =>
+          item.title).join('')}}</p>
         <div class="template-details">
-          <p>Id : <span>example</span></p>
+          <p>Id : <span>{{ allData?.id }}</span></p>
           <p>location :<span>example</span></p>
           <p>Zone :<span>example</span></p>
         </div>
       </div>
       <img :src="DocumnetHeader" alt="header" />
     </div>
-    <div class="template-document-content">
-      <TemplateDocumentCheckboxShow v-for="(item, index) in CheckBoxData" :key="index" :title="item.title"
-        :options="item.options" />
-      <TemplateDocumentRadioButtonShow v-for="(item, index) in RadioButtonData" :key="index" :title="item.title"
-        :options="item.options" />
-      <TemplateDocumentSelectShow v-for="(select, index) in SelectData" :title="select.title" :key="index"
-        :options="select.options" />
-      <TemplateDocumentTextAreaShow title="Lorem Ipsum is simply dummy text of the printing and typesetting industry" />
+    <div class="template-document-content-container">
+      <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
+        <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
+          :require_image="item.requiredImage" />
+      </div>
     </div>
   </div>
 </template>

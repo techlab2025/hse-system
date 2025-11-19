@@ -26,14 +26,16 @@ const UpdateData = () => {
       <Checkbox binary type="checkbox" class="input" v-model="isUpdloadImage" @change="UpdateData" />
     </div>
     <hr class="template-hr">
-    <div class="template-image-type-container">
+    <div class="template-image-type-container" v-if="isUpdloadImage">
       <div class="template-image-type">
         <label for="requierd">Required</label>
-        <RadioButton type="radio" value="1" v-model="ImageType" name="image-type" inputId="requierd" @change="UpdateData" />
+        <RadioButton type="radio" value="1" v-model="ImageType" name="image-type" inputId="requierd"
+          @change="UpdateData" />
       </div>
       <div class="template-image-type">
         <label for="optional">optional</label>
-        <RadioButton type="radio" value="2" v-model="ImageType" name="image-type" inputId="optional" @change="UpdateData" />
+        <RadioButton type="radio" value="2" v-model="ImageType" name="image-type" inputId="optional"
+          @change="UpdateData" />
       </div>
       <div class="template-image-type">
         <label for="danger-req">required in danger case</label>

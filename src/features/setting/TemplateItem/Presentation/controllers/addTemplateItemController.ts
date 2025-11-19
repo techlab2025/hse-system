@@ -10,6 +10,8 @@ import type TemplateItemModel from '@/features/setting/TemplateItem/Data/models/
 import AddTemplateItemUseCase from '../../Domain/useCase/addTemplateItemUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams'
+import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 
 export default class AddTemplateItemController extends ControllerInterface<TemplateItemModel> {
   private static instance: AddTemplateItemController
@@ -25,11 +27,10 @@ export default class AddTemplateItemController extends ControllerInterface<Templ
     return this.instance
   }
 
-  async addTemplateItem(params: Params, router: Router, draft: boolean = false) {
+  async addTemplateItem(params: Params, router: Router, draft: boolean = false, id: number) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<TemplateItemModel> =
-        await this.addTemplateItemUseCase.call(params)
+      const dataState: DataState<TemplateItemModel> = await this.addTemplateItemUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -39,9 +40,10 @@ export default class AddTemplateItemController extends ControllerInterface<Templ
           messageContent: null,
         })
 
-        const { user } = useUserStore()
+        await ShowTemplateController.getInstance().showTemplate(new ShowTemplateParams(id))
+        // const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item`)
+        // if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
