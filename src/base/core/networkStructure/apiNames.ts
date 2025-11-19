@@ -78,6 +78,23 @@ class ApiNames {
     return this.prefix + 'delete_partner'
   }
 
+  // Inspection
+  public get CreateInspection() {
+    return this.prefix + 'create_inspection'
+  }
+  public get IndexInspection() {
+    return this.prefix + 'fetch_inspection'
+  }
+  public get ShowInspection() {
+    return this.prefix + 'fetch_inspection_details'
+  }
+  public get EditInspection() {
+    return this.prefix + 'update_inspection'
+  }
+  public get DeleteInspection() {
+    return this.prefix + 'delete_inspection'
+  }
+
   // location hierarchy
   public get CreateLocationHierarchy() {
     return this.prefix + 'create_project_location_hierarchy'
@@ -749,7 +766,7 @@ class ApiNames {
   public get DisIncedant() {
     return this.prefix + 'disable_incedant'
   }
-  
+
 
   // ObserverationType
   public get CreateObserverationType() {
