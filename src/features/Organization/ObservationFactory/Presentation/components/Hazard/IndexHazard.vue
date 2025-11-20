@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import Image from 'primevue/image';
+import Image from 'primevue/image'
 // import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -18,7 +17,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import IndexHazardHeader from './HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from './HazardUtils/IndexFilter.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardType from "@/assets/images/HazardType.jpg"
+import HazardType from '@/assets/images/HazardType.jpg'
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import IndexHazardController from '../../controllers/indexHazardController'
@@ -27,6 +26,7 @@ import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
 import DeleteHazardController from '../../controllers/deleteHazardController'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -47,7 +47,14 @@ const fetchHazard = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteHazardParams = new IndexHazardParams(query, pageNumber, perPage, withPage, id)
+  const deleteHazardParams = new IndexHazardParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    Observation.HazardType,
+    37,
+  )
   await indexHazardController.getData(deleteHazardParams)
 }
 
@@ -140,66 +147,23 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
   },
 ]
 
-const HazardData = ref([
-  {
-    serial: "OBS-2025-0112",
-    DateTime: "2025-11-05, 10:45 AM",
-    employee: "Ahmed Hassan",
-    employeeType: "( observer )",
-    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
-    zone: "Nasr City",
-    machine: "Shale Shaker Area",
-    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
-    HazardImg: HazardType,
-  },
-  {
-    serial: "OBS-2025-0112",
-    DateTime: "2025-11-05, 10:45 AM",
-    employee: "Ahmed Hassan",
-    employeeType: "( observer )",
-    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
-    zone: "Nasr City",
-    machine: "Shale Shaker Area",
-    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
-    HazardImg: HazardType,
-  },
-  {
-    serial: "OBS-2025-0112",
-    DateTime: "2025-11-05, 10:45 AM",
-    employee: "Ahmed Hassan",
-    employeeType: "( observer )",
-    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
-    zone: "Nasr City",
-    machine: "Shale Shaker Area",
-    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
-    HazardImg: HazardType,
-  },
-  {
-    serial: "OBS-2025-0112",
-    DateTime: "2025-11-05, 10:45 AM",
-    employee: "Ahmed Hassan",
-    employeeType: "( observer )",
-    subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and",
-    zone: "Nasr City",
-    machine: "Shale Shaker Area",
-    description: "The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.",
-    HazardImg: HazardType,
-  },
+const categories = ref([
+  'Sustainability-oriented Names',
+  'Eco-friendly',
+  'oriented Names',
+  'Eco-friendly',
 ])
-
-const categories = ref(["Sustainability-oriented Names", "Eco-friendly", "oriented Names", "Eco-friendly"])
 const Filters = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: "Cairo" }),
-  new TitleInterface({ id: 2, title: "Alexandria" }),
-  new TitleInterface({ id: 3, title: "Giza" }),
-  new TitleInterface({ id: 4, title: "Cairo" }),
-  new TitleInterface({ id: 5, title: "Alexandria" }),
-  new TitleInterface({ id: 6, title: "Giza" }),
-  new TitleInterface({ id: 7, title: "Cairo" }),
-  new TitleInterface({ id: 8, title: "Alexandria" }),
-  new TitleInterface({ id: 9, title: "Giza" }),
-]
-)
+  new TitleInterface({ id: 1, title: 'Cairo' }),
+  new TitleInterface({ id: 2, title: 'Alexandria' }),
+  new TitleInterface({ id: 3, title: 'Giza' }),
+  new TitleInterface({ id: 4, title: 'Cairo' }),
+  new TitleInterface({ id: 5, title: 'Alexandria' }),
+  new TitleInterface({ id: 6, title: 'Giza' }),
+  new TitleInterface({ id: 7, title: 'Cairo' }),
+  new TitleInterface({ id: 8, title: 'Alexandria' }),
+  new TitleInterface({ id: 9, title: 'Giza' }),
+])
 const ShowDetails = ref<number[]>([])
 </script>
 
@@ -227,22 +191,23 @@ const ShowDetails = ref<number[]>([])
       </PermissionBuilder>
     </div>
   </div> -->
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.HAZARD_TYPE_ALL,
-    PermissionsEnum.HAZARD_TYPE_DELETE,
-    PermissionsEnum.HAZARD_TYPE_FETCH,
-    PermissionsEnum.HAZARD_TYPE_UPDATE,
-    PermissionsEnum.HAZARD_TYPE_CREATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-    PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-    PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-    PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.HAZARD_TYPE_FETCH,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
-
       <template #success>
         <div class="table-responsive">
           <IndexHazardHeader :title="`Hazard`" :length="120" :categories="categories" />
@@ -253,15 +218,23 @@ const ShowDetails = ref<number[]>([])
                 <div class="header-container">
                   <div class="card-content">
                     <div class="card-header">
-                      <p class="label-item-primary">Serial : <span>{{ item.serial }}</span></p>
-                      <p class="label-item-secondary">Date & Time : <span>{{ item.date }}</span></p>
+                      <p class="label-item-primary">
+                        Serial : <span>{{ item.serial }}</span>
+                      </p>
+                      <p class="label-item-secondary">
+                        Date & Time : <span>{{ item.date }}</span>
+                      </p>
                     </div>
                     <div class="card-details">
-                      <p class="title">{{ item.observer.name }} <span>(observer)</span> </p>
+                      <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
                       <p class="subtitle">{{ item.description }}</p>
                       <div class="project-details">
-                        <p class="label-item-primary">Zone : <span>{{ item.zoon?.title }}</span></p>
-                        <p class="label-item-primary">Machine : <span>{{ item.equipment?.title }}</span></p>
+                        <p class="label-item-primary">
+                          Zone : <span>{{ item.zoon?.title }}</span>
+                        </p>
+                        <p class="label-item-primary">
+                          Machine : <span>{{ item.equipment?.title }}</span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -269,7 +242,6 @@ const ShowDetails = ref<number[]>([])
                     <p class="title">Hazard Type</p>
                     <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
                     <Image :src="item.image" alt="Image" preview>
-
                       <template #previewicon>
                         <div class="perview">
                           <span>view</span>
@@ -277,7 +249,6 @@ const ShowDetails = ref<number[]>([])
                         </div>
                       </template>
                     </Image>
-
                   </div>
                 </div>
                 <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
@@ -296,7 +267,11 @@ const ShowDetails = ref<number[]>([])
             </div>
           </div>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -305,21 +280,27 @@ const ShowDetails = ref<number[]>([])
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
+        <DataEmpty
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
           addText="Add Hazard"
           description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Hazard" />
+          title="..ops! You have No Hazard"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
+        <DataFailed
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Hazard`"
           addText="Add Hazard"
           description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Hazard" />
+          title="..ops! You have No Hazard"
+        />
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

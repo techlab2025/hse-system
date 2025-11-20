@@ -926,7 +926,7 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
-
+<!--
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -964,6 +964,7 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+-->
                   <!-- partners -->
                   <PermissionBuilder
                     :code="[

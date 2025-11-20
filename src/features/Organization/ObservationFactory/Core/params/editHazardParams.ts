@@ -1,4 +1,6 @@
 import type Params from '@/base/core/params/params.ts'
+import type { Observation } from '../Enums/ObservationTypeEnum'
+import type CapaParams from './CapaParam'
 
 export default class EditHazardParams implements Params {
   public id: number
@@ -6,7 +8,7 @@ export default class EditHazardParams implements Params {
   public description: string | null
   public image: string | null
   public typeId: number | null
-  public type: number | null
+  public type: Observation | null
   public equipmentId: number | null
   public zoonId: number | null
   public projectId: number | null
@@ -25,7 +27,7 @@ export default class EditHazardParams implements Params {
     description: string | null,
     image: string | null,
     typeId: number | null,
-    type: number | null,
+    type: Observation | null,
     equipmentId: number | null,
     zoonId: number | null,
     projectId: number | null,
