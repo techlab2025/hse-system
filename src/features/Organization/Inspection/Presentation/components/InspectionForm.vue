@@ -1,27 +1,14 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
-import DatePicker from 'primevue/datepicker'
-import InspectionImage from '@/assets/images/alert 2.png'
-
-import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
-import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-
-import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { title } from 'process'
 import type InspectionDetailsModel from '../../Data/models/InspectionDetailsModel'
 import EditInspectionParams from '../../Core/params/editInspectionParams'
 import AddInspectionParams from '../../Core/params/addInspectionParams'
-import IndexInspectionParams from '../../Core/params/indexInspectionParams'
-import IndexInspectionController from '../controllers/indexInspectionController'
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import TaskAssignTo from './InspectionUtils/TaskAssignTo.vue'
 import InspectionEmployeeForm from './InspectionForms/InspectionEmployeeForm.vue'
+import { AssignToTypeEnum } from '../../Core/Enum/AssignToTypesEnum'
+import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -33,6 +20,7 @@ const descripe = ref<string>('')
 const image = ref<string>('')
 
 const updateData = () => {
+  console.log(DataParams, "DataParams");
   const params = props.data?.id
     ? new EditInspectionParams(
       props.data?.id! ?? 0,
@@ -59,40 +47,23 @@ const updateData = () => {
 
 watch([() => props.data], ([newData]) => { }, { immediate: true })
 
-const indexInspectionTypeParams = new IndexInspectionParams('', 1, 10, 1)
-const indexInspectionTypeController = IndexInspectionController.getInstance()
-const InspectionType = ref<TitleInterface[]>([])
-const setInspectionType = (data: TitleInterface[]) => {
-  InspectionType.value = data
-  updateData()
-}
-const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
-const indexEquipmentController = IndexEquipmentController.getInstance()
-const SelectedMachine = ref<TitleInterface[]>([])
-const setMachine = (data: TitleInterface[]) => {
-  SelectedMachine.value = data
-  updateData()
-}
-
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
-const ZoneIds = ref<number[]>()
-const GetZones = (data: number[]) => {
-  ZoneIds.value = data
-  updateData()
-}
-
 const AssignToOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'Employee' }),
   new TitleInterface({ id: 2, title: 'Zone' }),
 ])
 
-const SelectedAssigned = ref()
-const GetSelectedAssigned = (data) => {
+const SelectedAssigned = ref<TitleInterface>()
+const GetSelectedAssigned = (data: TitleInterface) => {
   SelectedAssigned.value = data
+  updateData()
 }
+const DataParams = ref()
+const UpdateFormData = (data) => {
+  console.log(data, "data");
+  DataParams.value = data
+  updateData()
+}
+
 </script>
 
 <template>
@@ -105,7 +76,8 @@ const GetSelectedAssigned = (data) => {
   </div>
   <div class="inspection-form col-span-6 md:col-span-6">
     <div class="inspection-details">
-      <InspectionEmployeeForm />
+      <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" @update:data="UpdateFormData" />
+      <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
     </div>
     <div class="inspection-show">
     </div>

@@ -1,48 +1,42 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface';
-import IndexEmployeeParams from '@/features/employee/Core/params/indexEmployeeParams';
-import IndexEmployeeController from '@/features/employee/Presentation/controllers/indexEmployeeController';
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import { ref } from 'vue';
-import InspectionTypeSelection from '../InspectionUtils/InspectionTypeSelection.vue';
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams';
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController';
+import InspectionGeneralForm from './InspectionGeneralForm.vue';
 
 const emit = defineEmits(['update:data'])
 const SelectedEmployee = ref<TitleInterface>()
-const indexEmployeeController = IndexEmployeeController.getInstance()
-const indexEmployeeParams = new IndexEmployeeParams('', 1, 10, 1)
+const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+
+const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 
 const UpdateData = () => {
   emit('update:data', {
     employee: SelectedEmployee.value,
-    inspectionType: SelectedInspectionType.value
+    data: Data.value
+
   })
 }
 const setEmployee = (data: TitleInterface) => {
   SelectedEmployee.value = data
   UpdateData()
 }
+const Data = ref()
 
-const inspectionType = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'day' }),
-  new TitleInterface({ id: 2, title: 'period' }),
-])
-const SelectedInspectionType = ref()
-const GetInspectionType = (data: numbre) => {
-  SelectedInspectionType.value = data
+const GetGeneralData = (data) => {
+  Data.value = data
   UpdateData()
 }
+
 </script>
 <template>
-
   <div class="input-wrapper">
-    <CustomSelectInput :modelValue="SelectedEmployee" class="input" :controller="indexEmployeeController"
-      :params="indexEmployeeParams" label="Employee" id="employee" placeholder="select your employee"
+    <CustomSelectInput :modelValue="SelectedEmployee" class="input" :controller="indexOrganizatoinEmployeeController"
+      :params="indexEmployeeParams" :label="$t('employee')" id="employee" placeholder="select your employee"
       @update:modelValue="setEmployee" />
-    <!-- Dialog -->
-    <InspectionTypeSelection :options="inspectionType" :title="`inspect type`" @update:data="GetInspectionType" />
-    <div class="select-time">
-
-    </div>
-
   </div>
+  <!-- Dialog -->
+  <InspectionGeneralForm @update:data="GetGeneralData" />
 </template>
