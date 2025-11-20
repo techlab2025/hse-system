@@ -28,8 +28,8 @@ import IndexHazardParams from '../../../Core/params/indexHazardParams'
 import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
 import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
-import IndexFilter from './IncedantUtils/IndexFilter.vue'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 
 const { t } = useI18n()
 
@@ -200,7 +200,7 @@ const ShowDetails = ref<number[]>([])
       <template #success> -->
     <div class="table-responsive">
       <IndexHazardHeader :title="`Incedant`" :length="120" :categories="categories" />
-      <IndexFilter :filters="Filters" @update:data="console.log($event)" />
+      <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/incedant/add'" :linkText="'Create Incedant'" />
       <div class="index-table-card-container">
         <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
           <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">

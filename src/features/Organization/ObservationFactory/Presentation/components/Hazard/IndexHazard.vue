@@ -15,7 +15,6 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexHazardHeader from './HazardUtils/IndexHazardHeader.vue'
-import IndexFilter from './HazardUtils/IndexFilter.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardType from '@/assets/images/HazardType.jpg'
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
@@ -27,6 +26,7 @@ import DeleteHazardController from '../../controllers/deleteHazardController'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import IndexFilter from './HazardUtils/IndexFilter.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -211,7 +211,7 @@ const ShowDetails = ref<number[]>([])
       <template #success>
         <div class="table-responsive">
           <IndexHazardHeader :title="`Hazard`" :length="120" :categories="categories" />
-          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'organizatio/hazard/add'" :linkTitle="'Create Hazard'" />
+          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/hazard/add'" :linkText="'Create Hazard'" />
           <div class="index-table-card-container">
             <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
               <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
