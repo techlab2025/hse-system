@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import RadioButton from 'primevue/radiobutton'
+
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController.ts'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
-import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import { label } from '@primeuix/themes/aura/metergroup'
 
 // Props from parent
 const props = defineProps<{
@@ -40,14 +43,7 @@ const showRadioAndDescription = computed(() => {
   )
 })
 
-const showRadioButtons = computed(() => {
-  return (
-    props.riskLevel === RiskLevelEnum.Low ||
-    props.riskLevel === RiskLevelEnum.Medium ||
-    props.riskLevel === RiskLevelEnum.High
-  )
-})
-
+const showRadioButtons = computed(() => showRadioAndDescription.value)
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 
 // Sync when parent updates (important for edit mode)
@@ -56,7 +52,7 @@ watch(
   (val) => {
     hazerd.value = val ?? null
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // Emit updated data
@@ -69,6 +65,7 @@ const setHazerd = (data: TitleInterface) => {
   hazardTypeId.value = data.id
   updateEmitData()
 }
+
 const updateEmitData = () => {
   emit('update:data', {
     hazerd: hazerd.value ? [hazerd.value] : [],
@@ -78,57 +75,60 @@ const updateEmitData = () => {
     action: description.value,
   })
 }
-
 </script>
-
 
 <template>
   <div class="hazard-type-container grid grid-cols-12 gap-4" v-if="showRadioAndDescription">
     <div class="col-span-12">
+      <!-- Hazard Type Select -->
       <div class="input-wrapper" v-if="showHazardSection">
         <CustomSelectInput
           :modelValue="hazerd"
           :controller="indexHazardController"
           :params="hazerdParams"
           id="Hazerd"
-          label="Hazerd Type"
-          placeholder="Select Hazerd"
+          label="Hazard Type"
+          placeholder="Select Hazard"
           @update:modelValue="setHazerd"
         />
       </div>
 
-      <div class="grid grid-cols-12 gap-6 radio-container" v-if="showRadioButtons">
+      <!-- Take Action & Solved Radios -->
+      <div class="grid grid-cols-12 gap-1 radio-container" v-if="showRadioButtons">
+        <!-- Take Action -->
         <div class="col-span-12 md:col-span-6">
           <label class="radio-title">{{ $t('take action') }}</label>
-          <div class="flex items-center gap-6 radio-answers">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="yes" v-model="takeAction" />
-              <span>Yes</span>
-            </label>
+          <div class="radio-answers">
+            <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
+              <RadioButton v-model="takeAction" name="takeAction" value="yes" />
+              <label>Yes</label>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="no" v-model="takeAction" />
-              <span>No</span>
-            </label>
+            <div class=" radio-selection" :class="{ selected: takeAction === 'no' }">
+              <RadioButton v-model="takeAction" name="takeAction" value="no" />
+              <label>No</label>
+            </div>
           </div>
         </div>
 
+        <!-- Solved -->
         <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
           <label class="radio-title">{{ $t('solved') }}</label>
-          <div class="flex items-center gap-6 radio-answers">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="yes" v-model="solved" />
-              <span>Yes</span>
-            </label>
+          <div class="radio-answers">
+            <div class="radio-selection" :class="{ selected: solved === 'yes' }">
+              <RadioButton v-model="solved" name="solved" value="yes" />
+              <label>Yes</label>
+            </div>
 
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="radio" value="no" v-model="solved" />
-              <span>No</span>
-            </label>
+            <div class="radio-selection" :class="{ selected: solved === 'no' }">
+              <RadioButton v-model="solved" name="solved" value="no" />
+              <label>No</label>
+            </div>
           </div>
         </div>
       </div>
 
+      <!-- Action Description -->
       <div class="col-span-12" v-show="showSolvedAndDescription">
         <div class="input-wrapper">
           <label>{{ $t('action Description') }}</label>

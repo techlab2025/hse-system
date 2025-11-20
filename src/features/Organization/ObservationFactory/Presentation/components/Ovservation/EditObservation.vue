@@ -6,8 +6,8 @@ import ShowObservationParams from '@/features/setting/Observation/Core/params/sh
 import ShowObservationController from '@/features/setting/Observation/Presentation/controllers/showObservationController.ts'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import ObservationForm from '@/features/setting/Observation/Presentation/components/ObservationForm.vue'
 import type Params from '@/base/core/params/params'
+import ObservationForm from './ObservationForm.vue'
 
 const route = useRoute()
 const router = useRouter()

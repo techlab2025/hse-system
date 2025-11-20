@@ -1,6 +1,6 @@
-@use '../variables' as *;
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
+@use '../variables' as *;
 
 .hazard-type-container {
   margin-top: 3rem;
@@ -13,8 +13,48 @@
     font-weight: $BaseFontWeightBold !important;
     font-size: $MdSize !important;
     color: #202020 !important;
+    display: block;
+    margin-bottom: 0.5rem;
   }
-  .radio-answers{
-    padding: .7rem 0;
+
+  .radio-answers {
+    display: flex;
+    gap: 2rem;
+
+    label {
+      color: #3d4c5e;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+
+  .radio-selection {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    cursor: pointer;
+    padding: 1rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s linear;
+    opacity: 0.6;
+
+    &.selected {
+      opacity: 1;
+      background: rgba($PrimaryColor, 0.05);
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box {
+    background-color: $PrimaryColor !important;
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    background-color: $PrimaryColor !important;
   }
 }

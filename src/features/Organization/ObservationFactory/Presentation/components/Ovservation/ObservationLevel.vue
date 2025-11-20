@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
+import  { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
+// import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
 
 const props = defineProps<{
   modelRiskLevel?: RiskLevelEnum | null
