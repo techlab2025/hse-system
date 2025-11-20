@@ -7,13 +7,13 @@
   gap: calc($XsSize4 + 1px);
   font-family: "Regular";
   .section-img {
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
   }
 
   .header-text {
     @include flex-column(nowrap, flex-start, flex-start);
-    gap: $XsSize4;
+    // gap: $XsSize4;
 
     .title {
       font-weight: $BaseFontWeightBold;
