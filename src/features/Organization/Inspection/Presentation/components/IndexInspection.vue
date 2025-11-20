@@ -226,7 +226,7 @@ const ShowDetails = ref<number[]>([])
       <template #success> -->
     <div class="table-responsive">
       <IndexInspectionHeader :title="`Inspection`" :length="120" :categories="categories" />
-      <IndexFilter :filters="Filters" @update:data="console.log($event)" />
+      <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'organizatio/inspection/add'" :linkTitle="'Create Inspection'" />
       <div class="index-table-card-container-inspection">
         <div class="index-table-card" v-for="(item, index) in InspectionData" :key="index">
           <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">

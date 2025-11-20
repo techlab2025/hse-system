@@ -6,6 +6,8 @@ const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   filters: TitleInterface[]
+  link: string
+  linkText: string
 }>()
 
 const SelectedFilter = ref<number[]>([])
@@ -31,8 +33,8 @@ const UpdateData = (data: number, index: number) => {
         <span>Filter</span>
         <IndexFilterIcon />
       </button>
-      <router-link to="/organization/hazard/add">
-        <button class="btn btn-primary">Create Hazard</button>
+      <router-link :to="link">
+        <button class="btn btn-primary">{{ linkText }}</button>
       </router-link>
     </div>
   </div>
