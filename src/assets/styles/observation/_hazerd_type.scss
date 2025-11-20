@@ -1,6 +1,6 @@
-@import '../../variables';
-@import '../../mixins/flex';
-@import '../../mixins/grid';
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+@use '../variables' as *;
 
 .hazard-type-container {
   margin-top: 3rem;
@@ -8,18 +8,7 @@
   .radio-container {
     margin-top: 1.5rem;
   }
-  .answer {
-    @include flex-row(nowrap, center, center);
-    gap: 1rem;
-    .answer .p-radiobutton {
-      margin-right: 10px !important;
-    }
-    label {
-      color: #3d4c5e;
-      font-size: $SmSize;
-      font-weight: $BaseFontSemiBoldWeight;
-    }
-  }
+
   label.radio-title {
     font-weight: $BaseFontWeightBold !important;
     font-size: $MdSize !important;
@@ -32,52 +21,40 @@
     display: flex;
     gap: 2rem;
 
-    .radio-selection {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      padding: 1rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s linear;
-      opacity: 0.6;
+    label {
+      color: #3d4c5e;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
 
-      &.selected {
-        opacity: 1;
-      }
+  .radio-selection {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    cursor: pointer;
+    padding: 1rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s linear;
+    opacity: 0.6;
 
-      &:hover {
-        border: 1px solid $PrimaryColor;
-      }
-
-      &.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        pointer-events: none;
-      }
+    &.selected {
+      opacity: 1;
+      background: rgba($PrimaryColor, 0.05);
     }
 
-    .p-radiobutton-checked .p-radiobutton-box {
-      border-color: $PrimaryColor !important;
-      background-color: $PrimaryColor !important;
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
     }
-    .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
-      border-color: $PrimaryColor !important;
-      background-color: $PrimaryColor !important;
-    }
-    .radio-selection {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+  }
 
-    .radio-answers {
-      display: flex;
-      gap: 2rem;
-    }
+  .p-radiobutton-checked .p-radiobutton-box {
+    background-color: $PrimaryColor !important;
+  }
 
-    ::v-deep(.p-radiobutton) {
-      margin-right: 1rem;
-    }
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    background-color: $PrimaryColor !important;
   }
 }

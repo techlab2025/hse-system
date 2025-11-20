@@ -99,12 +99,12 @@ const updateEmitData = () => {
         <div class="col-span-12 md:col-span-6">
           <label class="radio-title">{{ $t('take action') }}</label>
           <div class="radio-answers">
-            <div class="answer radio-selection" :class="{ selected: takeAction === 'yes' }">
+            <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton v-model="takeAction" name="takeAction" value="yes" />
               <label>Yes</label>
             </div>
 
-            <div class="answer radio-selection" :class="{ selected: takeAction === 'no' }">
+            <div class=" radio-selection" :class="{ selected: takeAction === 'no' }">
               <RadioButton v-model="takeAction" name="takeAction" value="no" />
               <label>No</label>
             </div>
@@ -115,12 +115,12 @@ const updateEmitData = () => {
         <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
           <label class="radio-title">{{ $t('solved') }}</label>
           <div class="radio-answers">
-            <div class="answer radio-selection" :class="{ selected: solved === 'yes' }">
+            <div class="radio-selection" :class="{ selected: solved === 'yes' }">
               <RadioButton v-model="solved" name="solved" value="yes" />
               <label>Yes</label>
             </div>
 
-            <div class="answer radio-selection" :class="{ selected: solved === 'no' }">
+            <div class="radio-selection" :class="{ selected: solved === 'no' }">
               <RadioButton v-model="solved" name="solved" value="no" />
               <label>No</label>
             </div>
