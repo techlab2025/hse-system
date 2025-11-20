@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import AllObservation from '@/features/setting/Observation/Presentation/components/allObservation.vue'
+import AllObservation from '@/features/setting/Observation/Presentation/components/AllObservation.vue';
+
 </script>
+
 
 <template>
   <AllObservation />

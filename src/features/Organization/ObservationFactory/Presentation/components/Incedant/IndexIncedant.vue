@@ -21,61 +21,70 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardType from '@/assets/images/HazardType.jpg'
 
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import IndexIncedantController from '../controllers/indexIncedantController'
-import DeleteIncedantParams from '../../Core/params/deleteIncedantParams'
-import DeleteIncedantController from '../controllers/deleteIncedantController'
-import IndexIncedantParams from '../../Core/params/indexIncedantParams'
-import IndexFilter from './HazardUtils/IndexFilter.vue'
-import IndexIncedantHeader from './HazardUtils/IndexIncedantHeader.vue'
+
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
+import IndexHazardController from '../../controllers/indexHazardController'
+import IndexHazardParams from '../../../Core/params/indexHazardParams'
+import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
+import DeleteHazardController from '../../controllers/deleteHazardController'
+import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
+import IndexFilter from './IncedantUtils/IndexFilter.vue'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const { t } = useI18n()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexIncedantController = IndexIncedantController.getInstance()
-const state = ref(indexIncedantController.state.value)
+const indexHazardController = IndexHazardController.getInstance()
+const state = ref(indexHazardController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 
-const fetchIncedant = async (
+const fetchHazard = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteIncedantParams = new IndexIncedantParams(query, pageNumber, perPage, withPage, id)
-  await indexIncedantController.getData(deleteIncedantParams)
+  const deleteHazardParams = new IndexHazardParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    Observation.AccidentsType,
+    37,
+  )
+  await indexHazardController.getData(deleteHazardParams)
 }
 
 onMounted(() => {
-  fetchIncedant()
+  fetchHazard()
 })
 
-const searchIncedant = debounce(() => {
-  fetchIncedant(word.value)
+const searchHazard = debounce(() => {
+  fetchHazard(word.value)
 })
 
-const deleteIncedant = async (id: number) => {
-  const deleteIncedantParams = new DeleteIncedantParams(id)
-  await DeleteIncedantController.getInstance().deleteIncedant(deleteIncedantParams)
-  await fetchIncedant()
+const deleteHazard = async (id: number) => {
+  const deleteHazardParams = new DeleteHazardParams(id)
+  await DeleteHazardController.getInstance().deleteHazard(deleteHazardParams)
+  await fetchHazard()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchIncedant('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchIncedant('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexIncedantController.state.value,
+  () => indexHazardController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -89,7 +98,7 @@ watch(
 
 const { user } = useUserStore()
 
-const actionList = (id: number, deleteIncedant: (id: number) => void) => [
+const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
@@ -101,29 +110,29 @@ const actionList = (id: number, deleteIncedant: (id: number) => void) => [
     ],
   },
   // {
-  //   text: t('add_sub_Incedant_type'),
+  //   text: t('add_sub_Hazard_type'),
   //   icon: IconEdit,
-  //   link: `/admin/Incedant-type/add/${id}`,
+  //   link: `/admin/Hazard-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.Incedant_TYPE_UPDATE,
+  //     PermissionsEnum.Hazard_TYPE_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.Incedant_TYPE_ALL,
+  //     PermissionsEnum.Hazard_TYPE_ALL,
   //   ],
   // },
   // {
-  //   text: t('sub_Incedant_types'),
+  //   text: t('sub_Hazard_types'),
   //   icon: IconEdit,
-  //   link: `/admin/Incedant-types/${id}`,
+  //   link: `/admin/Hazard-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.Incedant_TYPE_UPDATE,
+  //     PermissionsEnum.Hazard_TYPE_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.Incedant_TYPE_ALL,
+  //     PermissionsEnum.Hazard_TYPE_ALL,
   //   ],
   // },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteIncedant(id),
+    action: () => deleteHazard(id),
     permission: [
       PermissionsEnum.ORG_INCEDANT_DELETE,
       PermissionsEnum.ADMIN,
@@ -132,61 +141,6 @@ const actionList = (id: number, deleteIncedant: (id: number) => void) => [
     ],
   },
 ]
-
-const IncedantData = ref([
-  {
-    serial: 'OBS-2025-0112',
-    DateTime: '2025-11-05, 10:45 AM',
-    employee: 'Ahmed Hassan',
-    employeeType: '( observer )',
-    subtitle:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-    zone: 'Nasr City',
-    machine: 'Shale Shaker Area',
-    description:
-      'The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.',
-    IncedantImg: HazardType,
-  },
-  {
-    serial: 'OBS-2025-0112',
-    DateTime: '2025-11-05, 10:45 AM',
-    employee: 'Ahmed Hassan',
-    employeeType: '( observer )',
-    subtitle:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-    zone: 'Nasr City',
-    machine: 'Shale Shaker Area',
-    description:
-      'The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.',
-    IncedantImg: HazardType,
-  },
-  {
-    serial: 'OBS-2025-0112',
-    DateTime: '2025-11-05, 10:45 AM',
-    employee: 'Ahmed Hassan',
-    employeeType: '( observer )',
-    subtitle:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-    zone: 'Nasr City',
-    machine: 'Shale Shaker Area',
-    description:
-      'The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.',
-    IncedantImg: HazardType,
-  },
-  {
-    serial: 'OBS-2025-0112',
-    DateTime: '2025-11-05, 10:45 AM',
-    employee: 'Ahmed Hassan',
-    employeeType: '( observer )',
-    subtitle:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-    zone: 'Nasr City',
-    machine: 'Shale Shaker Area',
-    description:
-      'The worker operating the shale shaker was not wearing safety goggles while cleaning the mud screen. Mud splashes could potentially cause eye injury.',
-    IncedantImg: HazardType,
-  },
-])
 
 const categories = ref([
   'Sustainability-oriented Names',
@@ -211,10 +165,10 @@ const ShowDetails = ref<number[]>([])
 <template>
   <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchIncedant())">
+      <span class="icon-remove" @click="((word = ''), searchHazard())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchIncedant" />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazard" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
@@ -222,12 +176,12 @@ const ShowDetails = ref<number[]>([])
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.Incedant_TYPE_CREATE,
-        PermissionsEnum.ORG_Incedant_TYPE_CREATE,
+        PermissionsEnum.Hazard_TYPE_CREATE,
+        PermissionsEnum.ORG_Hazard_TYPE_CREATE,
       ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Incedant-type/add`"
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-type/add`"
           class="btn btn-primary">
-          {{ $t('Add_Incedant') }}
+          {{ $t('Add_Hazard') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -247,10 +201,10 @@ const ShowDetails = ref<number[]>([])
     <!-- <DataStatus :controller="state">
       <template #success> -->
     <div class="table-responsive">
-      <IndexIncedantHeader :title="`Incedant`" :length="120" :categories="categories" />
+      <IndexHazardHeader :title="`Incedant`" :length="120" :categories="categories" />
       <IndexFilter :filters="Filters" @update:data="console.log($event)" />
       <div class="index-table-card-container">
-        <div class="index-table-card" v-for="(item, index) in IncedantData" :key="index">
+        <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
           <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
             <div class="header-container">
               <div class="card-content">
@@ -259,20 +213,18 @@ const ShowDetails = ref<number[]>([])
                     Serial : <span>{{ item.serial }}</span>
                   </p>
                   <p class="label-item-secondary">
-                    Date & Time : <span>{{ item.DateTime }}</span>
+                    Date & Time : <span>{{ item.date }}</span>
                   </p>
                 </div>
                 <div class="card-details">
-                  <p class="title">
-                    {{ item.employee }} <span>{{ item.employeeType }}</span>
-                  </p>
-                  <p class="subtitle">{{ item.subtitle }}</p>
+                  <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                  <p class="subtitle">{{ item.description }}</p>
                   <div class="project-details">
                     <p class="label-item-primary">
-                      Zone : <span>{{ item.zone }}</span>
+                      Zone : <span>{{ item.zoon?.title }}</span>
                     </p>
                     <p class="label-item-primary">
-                      Machine : <span>{{ item.machine }}</span>
+                      Machine : <span>{{ item.equipment?.title }}</span>
                     </p>
                   </div>
                 </div>
@@ -280,7 +232,7 @@ const ShowDetails = ref<number[]>([])
               <div class="card-info">
                 <p class="title">Incedant</p>
                 <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                <Image :src="item.IncedantImg" alt="Image" preview>
+                <Image :src="item.image" alt="Image" preview>
                   <template #previewicon>
                     <div class="perview">
                       <span>view</span>
