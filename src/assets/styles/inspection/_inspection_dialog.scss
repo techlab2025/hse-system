@@ -1,0 +1,132 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.inspection-template-dialog-container {
+  margin-block: $XlSize;
+  width: 100%;
+  .title {
+    @include flex(row, nowrap, flex-start, flex-start);
+    gap: $XsSize2;
+    width: 100%;
+    span {
+      font-size: $MdSize;
+      color: #202020;
+      font-weight: $BaseFontSemiBoldWeight;
+      text-transform: capitalize;
+      white-space: nowrap;
+      text-align: start;
+      // font-family: 'Regular', sans-serif;
+      font-family: 'Light';
+    }
+  }
+  .inspection-template-button {
+    color: $SubtitleColor;
+    font-weight: $BaseFontWeightBold;
+    border: 1px dashed $MainBorder;
+    border-radius: $XlSize2;
+    margin-top: $XsSize;
+    padding: $XsSize $SmSize;
+    text-align: center;
+    font-size: $MdSize;
+  }
+}
+
+.inspection-template-dialog-header {
+}
+
+.inspection-template-dialog {
+  .inspection-template-dialog-data {
+    .inspection-template-dialog-divider {
+      width: 100%;
+      border: none;
+      background-color: #f1f3f5;
+      height: 1px;
+      margin-bottom: $MdSize;
+    }
+    .my-template-selection {
+      @include flex(row, nowrap, space-between, center);
+      .selected-template-number {
+        font-weight: $BaseFontWeightBold;
+        span {
+          font-size: $SmSize;
+          color: $SubtitleColor;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+      .title {
+        @include flex(row, nowrap, flex-start, center);
+        gap: $XsSize3;
+        span {
+          font-size: $MdSize;
+          color: $PrimaryColor;
+          font-weight: $BaseFontWeightBold;
+          text-transform: capitalize;
+        }
+      }
+    }
+    .inspection-templates-items {
+      @include flex(column, nowrap, flex-start, flex-start);
+      gap: $MdSize;
+      width: 100%;
+      margin-top: $XsSize;
+      padding: 0 $XsSize3;
+      height: 700px;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $IconBg;
+        border-radius: $BorderRadiusSm;
+      }
+
+      .item {
+        padding: $XsSize3;
+        background-color: #fafafa66;
+        border-radius: $BorderRadiusMd;
+        border: 0.5px solid #e6e8ea;
+        height: 700px;
+        width: 100%;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: $IconBg;
+          border-radius: $BorderRadiusSm;
+        }
+
+        .item-header {
+          @include flex(row, nowrap, space-between, center);
+          padding: $XsSize2 $XsSize3;
+          border-bottom: 1px dashed $MainBorder;
+          position: sticky;
+          top: 0;
+          z-index: 55555555;
+          background-color: $White;
+          //   margin-bottom: $XsSize;
+
+          .select-input {
+            label {
+              color: $PrimaryColor;
+              font-weight: $BaseFontWeightBold;
+              text-transform: capitalize;
+            }
+          }
+
+          .item-header-title {
+            @include flex(row, nowrap, flex-start, center);
+            gap: $XsSize2;
+            span {
+              font-size: $MdSize;
+              color: #000;
+              font-weight: $BaseFontWeightBold;
+              text-transform: capitalize;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -22,6 +22,8 @@ import IndexInspectionController from '../controllers/indexInspectionController'
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import TaskAssignTo from './InspectionUtils/TaskAssignTo.vue'
 import InspectionEmployeeForm from './InspectionForms/InspectionEmployeeForm.vue'
+import EmployeeIconCard from '@/shared/icons/employeeIconCard.vue'
+import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -35,29 +37,29 @@ const image = ref<string>('')
 const updateData = () => {
   const params = props.data?.id
     ? new EditInspectionParams(
-      props.data?.id! ?? 0,
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
-    )
+        props.data?.id! ?? 0,
+        text.value,
+        date.value,
+        ZoneIds.value,
+        InspectionType.value.map((h) => h.id),
+        SelectedMachine.value.map((el) => el.id),
+        image.value,
+        descripe.value,
+      )
     : new AddInspectionParams(
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
-    )
+        text.value,
+        date.value,
+        ZoneIds.value,
+        InspectionType.value.map((h) => h.id),
+        SelectedMachine.value.map((el) => el.id),
+        image.value,
+        descripe.value,
+      )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 const indexInspectionTypeParams = new IndexInspectionParams('', 1, 10, 1)
 const indexInspectionTypeController = IndexInspectionController.getInstance()
@@ -97,18 +99,23 @@ const GetSelectedAssigned = (data) => {
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <PagesHeader :title="'Task Assignment Center'"
-      :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'" />
+    <PagesHeader
+      :title="'Task Assignment Center'"
+      :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'"
+    />
   </div>
   <div class="col-span-6 md:col-span-6">
-    <TaskAssignTo :title="`Assign task to`" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
+    <TaskAssignTo
+      :title="`Assign task to`"
+      :options="AssignToOptions"
+      @update:data="GetSelectedAssigned"
+    />
   </div>
-  <div class="inspection-form col-span-6 md:col-span-6">
+  <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <div class="inspection-details">
       <InspectionEmployeeForm />
     </div>
-    <div class="inspection-show">
-    </div>
+    <!--Employee Tasks-->
+    <EmployeeTasksCard />
   </div>
-
 </template>
