@@ -9,6 +9,8 @@ import TaskAssignTo from './InspectionUtils/TaskAssignTo.vue'
 import InspectionEmployeeForm from './InspectionForms/InspectionEmployeeForm.vue'
 import { AssignToTypeEnum } from '../../Core/Enum/AssignToTypesEnum'
 import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
+import EmployeeIconCard from '@/shared/icons/employeeIconCard.vue'
+import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -74,13 +76,12 @@ const UpdateFormData = (data) => {
   <div class="col-span-6 md:col-span-6">
     <TaskAssignTo :title="`Assign task to`" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
   </div>
-  <div class="inspection-form col-span-6 md:col-span-6">
+  <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <div class="inspection-details">
       <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" @update:data="UpdateFormData" />
       <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
     </div>
-    <div class="inspection-show">
-    </div>
+    <!--Employee Tasks-->
+    <EmployeeTasksCard />
   </div>
-
 </template>

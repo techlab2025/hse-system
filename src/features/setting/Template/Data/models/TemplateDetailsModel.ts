@@ -18,6 +18,7 @@ export default class TemplateDetailsModel {
   public templateItems: TemplateItemDetailsModel[]
   public requireImage: number
   public action: TitleInterface | null
+  public title: string | null = null
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -32,6 +33,7 @@ export default class TemplateDetailsModel {
     templateItems: TemplateItemDetailsModel[] = [],
     requireImage: number = 0,
     action: TitleInterface | null = null,
+    title: string | null = null,
   ) {
     this.id = id
     this.name = name
@@ -44,6 +46,7 @@ export default class TemplateDetailsModel {
     this.templateItems = templateItems
     this.requireImage = requireImage
     this.action = action
+    this.title = title
   }
 
   static fromMap(data: any): TemplateDetailsModel {
@@ -61,6 +64,7 @@ export default class TemplateDetailsModel {
       data.template_items?.length > 0 ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item)) : [],
       data.require_image,
       this.getTemplateItemsAction(data.action),
+      data.title,
     )
   }
 

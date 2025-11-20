@@ -19,9 +19,13 @@
           left: -2rem;
           width: 70px;
           height: 20px;
-          background: linear-gradient(180.31deg, #1092cf -10.32%, #c7c9d6 68.63%);
+          background: linear-gradient(
+            180deg,
+            rgba(16, 146, 207, 0.8) -9.32%,
+            rgba(199, 201, 214, 0.8) 68.63%
+          );
           z-index: 1;
-          filter: blur(16px);
+          filter: blur(30px);
           opacity: 1;
         }
 
