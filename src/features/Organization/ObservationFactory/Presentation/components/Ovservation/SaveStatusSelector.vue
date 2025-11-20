@@ -2,7 +2,8 @@
 import { ref, watch } from 'vue'
 import Check from '@/assets/images/check.png'
 import alert from '@/assets/images/alert-sign.png'
-import { SaveStatusEnum } from '../../Core/Enums/save_status_enum'
+import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum';
+// import { SaveStatusEnum } from '../../Core/Enums/save_status_enum'
 
 const props = defineProps<{
   modelValue?: SaveStatusEnum | null

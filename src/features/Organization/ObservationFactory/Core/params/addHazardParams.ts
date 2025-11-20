@@ -78,7 +78,7 @@ export default class AddHazardParams implements Params {
     if (this.typeId) data['type_id'] = this.typeId
     if (this.type) data['type'] = this.type
     if (this.equipmentId) data['equipment_id'] = this.equipmentId
-    if (this.zoonId) data['zoon_id'] = Number(this.zoonId)
+    if (this.zoonId) data['project_zoon_id'] = Number(this.zoonId)
     if (this.projectId) data['project_id'] = this.projectId
     if (this.isResult) data['is_result'] = this.isResult
     if (this.riskLevel) data['risk_level'] = this.riskLevel

@@ -2,19 +2,19 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import ObservationForm from '@/features/setting/Observation/Presentation/components/ObservationForm.vue'
-import AddObservationController from '@/features/setting/Observation/Presentation/controllers/addObservationController.ts'
-import AddObservationParams from '@/features/setting/Observation/Core/params/addObservationParams.ts'
 import type Params from '@/base/core/params/params'
+import AddHazardController from '../../controllers/addHazardController'
+import type AddHazardParams from '../../../Core/params/addHazardParams'
+import ObservationForm from './ObservationForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
-const addObservationController = AddObservationController.getInstance()
+const addObservationController = AddHazardController.getInstance()
 
 const addObservation = async () => {
   console.log(params.value, 'params')
-  await addObservationController.addObservation(params.value as AddObservationParams, router)
+  await addObservationController.addHazard(params.value as AddHazardParams, router)
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -24,7 +24,6 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols- md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 " @submit.prevent="addObservation">
-
     <ObservationForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">

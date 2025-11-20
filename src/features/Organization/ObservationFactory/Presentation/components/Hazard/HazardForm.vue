@@ -19,11 +19,11 @@ import IndexHazardTypeController from '@/features/setting/HazardType/Presentatio
 import EditHazardParams from '../../../Core/params/editHazardParams'
 import AddHazardParams from '../../../Core/params/addHazardParams'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
-import ObservationLevel from '@/features/setting/Observation/Presentation/components/ObservationLevel.vue'
-import type { RiskLevelEnum } from '@/features/setting/Observation/Core/Enums/risk_level_enum'
-import HazerdType from '@/features/setting/Observation/Presentation/components/HazerdType.vue'
-import { TypesEnum } from '@/features/setting/Observation/Core/Enums/types_enum'
-import { SaveStatusEnum } from '@/features/setting/Observation/Core/Enums/save_status_enum'
+import type { RiskLevelEnum } from '@/features/Organization/ObservationFactory/Core/Enums/risk_level_enum'
+import { TypesEnum } from '@/features/Organization/ObservationFactory/Core/Enums/types_enum'
+import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
+import ObservationLevel from '../Ovservation/ObservationLevel.vue'
+import HazerdType from '../Ovservation/HazerdType.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{

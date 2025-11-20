@@ -13,7 +13,8 @@ const indexEmployeeParams = new IndexEmployeeParams('', 1, 10, 1)
 
 const UpdateData = () => {
   emit('update:data', {
-    employee: SelectedEmployee.value
+    employee: SelectedEmployee.value,
+    inspectionType: SelectedInspectionType.value
   })
 }
 const setEmployee = (data: TitleInterface) => {
@@ -25,6 +26,11 @@ const inspectionType = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'day' }),
   new TitleInterface({ id: 2, title: 'period' }),
 ])
+const SelectedInspectionType = ref()
+const GetInspectionType = (data: numbre) => {
+  SelectedInspectionType.value = data
+  UpdateData()
+}
 </script>
 <template>
 
@@ -33,7 +39,10 @@ const inspectionType = ref<TitleInterface[]>([
       :params="indexEmployeeParams" label="Employee" id="employee" placeholder="select your employee"
       @update:modelValue="setEmployee" />
     <!-- Dialog -->
+    <InspectionTypeSelection :options="inspectionType" :title="`inspect type`" @update:data="GetInspectionType" />
+    <div class="select-time">
 
-    <InspectionTypeSelection :options="inspectionType" :title="`inspect type`" />
+    </div>
+
   </div>
 </template>
