@@ -103,7 +103,7 @@ const updateData = () => {
   const commonData = {
     title: title.value,
     description: description.value,
-    type: TypesEnum.ObservationType,
+    type: type.value,
     image: image.value,
     type_id: type_id.value || undefined,
     equipment_id: equipmentId.value || undefined,
@@ -157,6 +157,7 @@ watch(
     isResult.value = newData.is_result
     isAction.value = newData.is_action
     actionText.value = newData.action
+    type.value = newData.is_near_miss === 1 ? TypesEnum.HazardType : TypesEnum.ObservationType
   },
   { immediate: true },
 )
@@ -164,6 +165,9 @@ watch(
 const handleObservationLevel = (data: any) => {
   riskLevel.value = data.level
   isNearMiss.value = data.is_near_miss
+
+  type.value = data.is_near_miss === 1 ? TypesEnum.HazardType : TypesEnum.ObservationType
+
   updateData()
 }
 
@@ -255,6 +259,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       :modelTakeAction="isAction ? 'yes' : 'no'"
       :modelSolved="isResult ? 'yes' : 'no'"
       :modelAction="actionText"
+      :modelHazerdType="props.data?.type_model ? markRaw(props.data.type_model) : null"
       @update:data="handleHazardData"
     />
   </div>

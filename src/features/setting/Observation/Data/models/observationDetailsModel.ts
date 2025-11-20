@@ -17,9 +17,10 @@ export default class ObservationDetailsModel {
   public is_action: boolean
   public is_result: boolean
   public action: string
+  public type_model: TitleInterface
 
   constructor(id: number, title: string, date: string, equipment: TitleInterface, image: string, save_status: number, risk_level: number, is_near_miss: number, is_action: boolean,
-    is_result: boolean, action: string = ''
+    is_result: boolean, action: string = '',type_model: TitleInterface
 
   ) {
     this.id = id
@@ -33,36 +34,43 @@ export default class ObservationDetailsModel {
     this.is_action = is_action
     this.is_result = is_result
     this.action = action
+    this.type_model = type_model
+
 
   }
 
-  static fromMap(data: any): ObservationDetailsModel {
+static fromMap(data: any): ObservationDetailsModel {
 
-    const currentLocale = localStorage.getItem("locale") || "en"
-    const title = typeof data.title === "object" ? data.title[currentLocale] : data.title
 
-    return new ObservationDetailsModel(
-      data.id,
-      title,
-      data.date,
-      this.getTitle(data.equipment),
-      data.image,
-      data.save_status,
-      data.risk_level,
-      data.is_near_miss,
-      data.is_action,
-      data.is_result,
-      data.action
-
-    )
-  }
-  static getTitle(data: any): TitleInterface {
-    const savedLocale = localStorage.getItem('lang')
-
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
-  }
+  return new ObservationDetailsModel(
+    data.id,
+    data.title,
+    data.date,
+    this.getTitle(data.equipment),
+    data.image,
+    data.save_status,
+    data.risk_level,
+    data.is_near_miss,
+    data.is_action,
+    data.is_result,
+    data.action,
+    this.getTitle(data.type_model)
+  );
 }
+
+static getTitle(data: any): TitleInterface | null {
+  if (!data) return null;
+
+  const savedLocale = localStorage.getItem('lang')
+
+  return new TitleInterface({
+    id: data.id,
+    title: data.titles?.find((title: any) => title.locale === savedLocale)?.title ?? '',
+  })
+}
+
+}
+
+
+
 
