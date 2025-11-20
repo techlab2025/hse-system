@@ -135,7 +135,6 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
     action: () => deleteHazard(id),
     permission: [
       PermissionsEnum.ORG_INCEDANT_DELETE,
-      PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_ALL,
     ],
@@ -189,7 +188,6 @@ const ShowDetails = ref<number[]>([])
   <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.ORG_INCEDANT_ALL,
       PermissionsEnum?.ORG_INCEDANT_CREATE,
       PermissionsEnum?.ORG_INCEDANT_UPDATE,
