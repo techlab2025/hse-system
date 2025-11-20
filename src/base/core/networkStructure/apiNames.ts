@@ -1170,6 +1170,9 @@ class ApiNames {
   public get DeleteHazard() {
     return this.prefix + 'delete_observation'
   }
+  public get FetchProjectZones() {
+    return this.prefix + 'fetch_project_zoons'
+  }
 }
 
 export { ApiNames }

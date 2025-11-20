@@ -2,48 +2,52 @@
 @import '../mixins/flex';
 @import '../mixins/grid';
 
-.inspection-type-container {
+.period-type-container {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $MdSize;
   font-family: 'Light';
   width: 100%;
+  background-color: #fbfbfb;
   border-radius: calc($MdSize2 + 1px);
   padding: $XsSize $SmSize;
-  padding-left: 0;
-  .inspection-header {
+  .period-header {
     width: 100%;
-    @include flex-row(nowrap, flex-start, center);
+    @include flex-row(nowrap, center, center);
     gap: $XsSize2;
     width: 100%;
+    border-bottom: 1px solid #d9dbe9;
+    padding-bottom: 12px;
     .title-container {
       width: 100%;
-      @include flex-row(nowrap, flex-start, center);
+      @include flex-row(nowrap, center, center);
       gap: $XsSize4;
       .title {
-        color: #121212;
-        font-size: $MdSize;
-        font-weight: $BaseFontWeightBold;
+        font-family: 'Regular';
+        color: #170f49;
+        font-size: $MdSize2;
+        font-weight: $BaseFontSemiBoldWeight;
       }
     }
   }
 
-  .inspection-type-contect {
+  .period-type-contect {
     @include flex-row(nowrap, center, center);
     gap: $XsSize3;
     width: 100%;
+
     .option {
       width: 100%;
       padding: $XsSize;
       text-align: center;
       border-radius: calc($XlSize + 2px);
       transition: 0.2s all linear;
-      border: 1px solid #d9dbe9;
       cursor: pointer;
+      border: 1px solid #D9DBE9;
       &.active {
-        background-color: #1f41bb08;
+        background-color: $PrimaryColor;
         border: 1px solid $PrimaryColor;
         label {
-          color: $PrimaryColor;
+          color: white;
         }
       }
       label {

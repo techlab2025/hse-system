@@ -16,14 +16,13 @@ const UpdatData = (data) => {
 }
 </script>
 <template>
-  <div class="inspection-type-container">
-    <div class="inspection-header">
+  <div class="period-type-container">
+    <div class="period-header">
       <div class="title-container">
         <p class="title">{{ title }}</p>
-        <ImportantIcon />
       </div>
     </div>
-    <div class="inspection-type-contect">
+    <div class="period-type-contect">
       <div class="option" v-for="(option, index) in options" :key="index"
         :class="SelectedOption == option?.id ? 'active' : ''">
         <label :for="`${option.title}-${option.id}`">{{ option.title }}</label>
