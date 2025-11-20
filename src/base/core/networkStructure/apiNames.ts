@@ -1173,6 +1173,23 @@ class ApiNames {
   public get FetchProjectZones() {
     return this.prefix + 'fetch_project_zoons'
   }
+
+  // healthconditions
+  public get CreateHealthCondition() {
+    return this.prefix + 'create_health_condition'
+  }
+  public get IndexHealthCondition() {
+    return this.prefix + 'fetch_health_conditions'
+  }
+  public get ShowHealthCondition() {
+    return this.prefix + 'fetch_health_condition_details'
+  }
+  public get EditHealthCondition() {
+    return this.prefix + 'update_health_condition'
+  }
+  public get DeleteHealthCondition() {
+    return this.prefix + 'delete_health_condition'
+  }
 }
 
 export { ApiNames }
