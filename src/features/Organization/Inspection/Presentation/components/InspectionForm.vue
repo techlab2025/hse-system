@@ -19,6 +19,9 @@ import EditInspectionParams from '../../Core/params/editInspectionParams'
 import AddInspectionParams from '../../Core/params/addInspectionParams'
 import IndexInspectionParams from '../../Core/params/indexInspectionParams'
 import IndexInspectionController from '../controllers/indexInspectionController'
+import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
+import TaskAssignTo from './InspectionUtils/TaskAssignTo.vue'
+import InspectionEmployeeForm from './InspectionForms/InspectionEmployeeForm.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -32,29 +35,29 @@ const image = ref<string>('')
 const updateData = () => {
   const params = props.data?.id
     ? new EditInspectionParams(
-        props.data?.id! ?? 0,
-        text.value,
-        date.value,
-        ZoneIds.value,
-        InspectionType.value.map((h) => h.id),
-        SelectedMachine.value.map((el) => el.id),
-        image.value,
-        descripe.value,
-      )
+      props.data?.id! ?? 0,
+      text.value,
+      date.value,
+      ZoneIds.value,
+      InspectionType.value.map((h) => h.id),
+      SelectedMachine.value.map((el) => el.id),
+      image.value,
+      descripe.value,
+    )
     : new AddInspectionParams(
-        text.value,
-        date.value,
-        ZoneIds.value,
-        InspectionType.value.map((h) => h.id),
-        SelectedMachine.value.map((el) => el.id),
-        image.value,
-        descripe.value,
-      )
+      text.value,
+      date.value,
+      ZoneIds.value,
+      InspectionType.value.map((h) => h.id),
+      SelectedMachine.value.map((el) => el.id),
+      image.value,
+      descripe.value,
+    )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => {}, { immediate: true })
+watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 const indexInspectionTypeParams = new IndexInspectionParams('', 1, 10, 1)
 const indexInspectionTypeController = IndexInspectionController.getInstance()
@@ -80,54 +83,32 @@ const GetZones = (data: number[]) => {
   ZoneIds.value = data
   updateData()
 }
+
+const AssignToOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: 'Employee' }),
+  new TitleInterface({ id: 2, title: 'Zone' }),
+])
+
+const SelectedAssigned = ref()
+const GetSelectedAssigned = (data) => {
+  SelectedAssigned.value = data
+}
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage
-      :title="'create Inspection'"
-      :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="InspectionImage"
-    />
+    <PagesHeader :title="'Task Assignment Center'"
+      :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'" />
   </div>
-
   <div class="col-span-6 md:col-span-6">
-    <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
+    <TaskAssignTo :title="`Assign task to`" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
   </div>
-  <div class="Inspection-form col-span-6 md:col-span-6">
-    <div class="Inspection-form-header">
-      <InspectionIcon class="icon" />
-      <p class="title">Hazerd form <span>( #001 )</span></p>
+  <div class="inspection-form col-span-6 md:col-span-6">
+    <div class="inspection-details">
+      <InspectionEmployeeForm />
+    </div>
+    <div class="inspection-show">
     </div>
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper">
-    <label for="text">Text</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
-  </div>
-  <div class="col-span-6 md:col-span-3 input-wrapper">
-    <label for="date">Date</label>
-    <DatePicker v-model="date" placeholder="Add your date" />
-  </div>
 
-  <div class="col-span-6 md:col-span-3 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="select machine (optional)"
-      id="machine"
-      placeholder="select your machine"
-      :type="2"
-      @update:modelValue="setMachine"
-    />
-  </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="">upload image</label>
-    <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" />
-  </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="descripe">descripe <span class="optional">(optional)</span></label>
-    <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
-  </div>
 </template>

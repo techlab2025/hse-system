@@ -1,0 +1,16 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+
+.inspection-form{
+  @include grid(2 , 10px ,(
+    1000px:1
+  ));
+  .inspection-details{
+
+  }
+  .inspection-show{
+
+  }
+}
