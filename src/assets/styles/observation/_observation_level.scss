@@ -4,6 +4,7 @@
 
 .observation-level {
   margin-top: 3rem;
+
   .select-container {
     font-family: 'Regular';
     border-radius: 20px;
@@ -13,6 +14,7 @@
 
     &.low-selected {
       border: 2px solid $LowColor;
+      background-color: rgba($LowColor, 0.05); // باكجراوند خفيف للـ Low
       .circle {
         background-color: $LowColor;
       }
@@ -26,6 +28,7 @@
 
     &.medium-selected {
       border: 2px solid $MediumColor;
+      background-color: rgba($MediumColor, 0.05); // باكجراوند خفيف للـ Medium
       .circle {
         background-color: $MediumColor;
       }
@@ -39,6 +42,7 @@
 
     &.high-selected {
       border: 2px solid $HighColor;
+      background-color: rgba($HighColor, 0.05); // باكجراوند خفيف للـ High
       .circle {
         background-color: $HighColor;
       }
@@ -56,12 +60,62 @@
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       color: #9ca3af;
-      background-color: #f8f9fa99;
+      background-color: transparent;
       padding: 20px 16px;
       border-radius: 10px;
       cursor: pointer;
       border: none;
       outline: none;
+    }
+
+    &.low-selected {
+      label{
+        color: $LowColor;
+      }
+      border: 2px solid $LowColor;
+      // background-color: rgba(255, 191, 82, 0.1);
+      .circle {
+        background-color: $LowColor;
+      }
+      .details-box {
+        border-color: rgba($LowColor, 0.4);
+        .status-value {
+          color: $LowColor;
+        }
+      }
+    }
+    &.medium-selected {
+      label{
+        color: $MediumColor;
+      }
+      border: 2px solid $MediumColor;
+      // background-color: rgba(255, 191, 82, 0.1);
+      .circle {
+        background-color: $MediumColor;
+      }
+      .details-box {
+        border-color: rgba($MediumColor, 0.4);
+        .status-value {
+          color: $MediumColor;
+        }
+      }
+    }
+
+    &.high-selected {
+      label{
+        color: $HighColor;
+      }
+      border: 2px solid $HighColor;
+      // background-color: rgba(255, 191, 82, 0.1);
+      .circle {
+        background-color: $HighColor;
+      }
+      .details-box {
+        border-color: rgba($HighColor, 0.4);
+        .status-value {
+          color: $HighColor;
+        }
+      }
     }
 
     input {
@@ -93,67 +147,60 @@
 
       .status-label {
         font-size: $SmSize;
-        color: #777;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: #9da4b2;
       }
+
       .status-container {
         @include flex-row(nowrap, flex-start, space-between);
         gap: 10px;
 
-        .status-value {
-          font-size: $MdSize;
-          margin-top: 4px;
-          font-weight: $BaseFontSemiBoldWeight;
-          color: #9ca3af;
-        }
-        .status-values {
-          font-size: $MdSize;
-          margin-top: 4px;
-          font-weight: $BaseFontSemiBoldWeight;
-          color: #9da4b2;
+        .status-option {
+          @include flex-row(wrap, flex-start, center);
+          gap: 5px;
+          cursor: pointer;
+          background: none !important;
+          padding: 0 !important;
+          border-radius: 0 !important;
+
+          input {
+            display: none;
+            background-color: unset;
+          }
+
+          .status-value,
+          .status-values {
+            background: none !important;
+            font-size: $MdSize;
+            margin-top: 4px;
+            font-weight: $BaseFontMediumWeight;
+            color: #9da4b2;
+            padding: 5px 10px;
+            border-radius: 0;
+            transition: all 0.2s;
+          }
+
+          input:checked + .status-value,
+          input:checked + .status-values {
+            color: $MediumColor;
+            text-decoration: underline;
+          }
         }
       }
     }
+
     .circle {
       width: 20px;
       height: 20px;
-      background-color: #ffbf52;
       border-radius: 50%;
       position: absolute;
       top: 15px;
       right: 15px;
     }
   }
+
   .status-container {
     @include flex-row(nowrap, flex-start, space-between);
     gap: 10px;
-
-    .status-option {
-      @include flex-row(wrap, flex-start, center);
-      gap: 5px;
-      cursor: pointer;
-
-      input {
-        display: none;
-        background-color: unset;
-      }
-
-      .status-value,
-      .status-values {
-        font-size: $MdSize;
-        margin-top: 4px;
-        font-weight: $BaseFontSemiBoldWeight;
-        padding: 5px 10px;
-        border-radius: 5px;
-        transition: all 0.2s;
-      }
-
-      input:checked + .status-value {
-        color: $MediumColor;
-      }
-
-      input:checked + .status-values {
-        color: $MediumColor;
-      }
-    }
   }
 }
