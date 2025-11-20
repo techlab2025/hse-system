@@ -42,9 +42,7 @@ export default class AddHazardController extends ControllerInterface<HazardModel
         const { user } = useUserStore()
 
         if (!draft)
-          await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`,
-          )
+          await router.go(-1)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

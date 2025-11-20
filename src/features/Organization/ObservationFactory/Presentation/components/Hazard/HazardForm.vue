@@ -19,6 +19,11 @@ import IndexHazardTypeController from '@/features/setting/HazardType/Presentatio
 import EditHazardParams from '../../../Core/params/editHazardParams'
 import AddHazardParams from '../../../Core/params/addHazardParams'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import ObservationLevel from '@/features/setting/Observation/Presentation/components/ObservationLevel.vue'
+import type { RiskLevelEnum } from '@/features/setting/Observation/Core/Enums/risk_level_enum'
+import HazerdType from '@/features/setting/Observation/Presentation/components/HazerdType.vue'
+import { TypesEnum } from '@/features/setting/Observation/Core/Enums/types_enum'
+import { SaveStatusEnum } from '@/features/setting/Observation/Core/Enums/save_status_enum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -30,7 +35,7 @@ const descripe = ref<string>('')
 const image = ref<string>('')
 
 const updateData = () => {
-  console.log(ZoneIds.value, "ZoneIds.value");
+  // console.log(ZoneIds.value, "ZoneIds.value");
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -54,30 +59,24 @@ const updateData = () => {
     )
     : new AddHazardParams(
       text.value,
-      descripe.value,
+      actionText.value,
       image.value?.file,
-      HazardType.value.id,
+      HazardType.value?.id,
       Observation.HazardType,
-      SelectedMachine.value.id,
+      SelectedMachine.value?.id,
       ZoneIds.value,
       37,
-      null,
-      null,
-      null,
+      isResult.value ? 1 : 0,
+      riskLevel.value,
+      SaveStatusEnum.NotSaved,
       null,
       null,
       null,
       date.value,
       null,
-      null
+      isAction.value ? 1 : 0
     )
-  //  text.value,
-  //   date.value,
-  //   ZoneIds.value,
-  //   HazardType.value.map((h) => h.id),
-  //   SelectedMachine.value.map((el) => el.id),
-  //   image.value,
-  //   descripe.value,
+
 
   emit('update:data', params)
 }
@@ -108,6 +107,36 @@ const GetZones = (data: number[]) => {
   ZoneIds.value = data
   updateData()
 }
+const riskLevel = ref<RiskLevelEnum | null>(null)
+const isNearMiss = ref<boolean | number>(0)
+const handleObservationLevel = (data: any) => {
+  console.log(data, "data");
+  riskLevel.value = data.level
+  isNearMiss.value = data.is_near_miss
+  updateData()
+}
+watch([riskLevel], () => {
+  updateData()
+})
+
+const title = ref<string>('')
+const isResult = ref<boolean>(false)
+const isAction = ref<boolean>()
+const saveStatus = ref<SaveStatusEnum | null>(null)
+const actionText = ref<string>('')
+const type_id = ref<number | null>(null)
+
+const handleHazardData = (data: any) => {
+  type_id.value = data.type_id
+  isAction.value = data.take_action === 'yes'
+  isResult.value = data.solved === 'yes'
+  actionText.value = data.action
+  updateData()
+}
+
+watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
+  updateData()
+})
 </script>
 
 <template>
@@ -146,8 +175,14 @@ const GetZones = (data: number[]) => {
     <label for="">upload image</label>
     <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" />
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
+    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" :isHazard="true"
+      @update:data="handleObservationLevel" />
+    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText" @update:data="handleHazardData" />
+  </div>
+  <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
     <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
-  </div>
+  </div> -->
 </template>
