@@ -188,7 +188,6 @@ const ShowDetails = ref<number[]>([])
   <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.ORG_INCEDANT_ALL,
       PermissionsEnum?.ORG_INCEDANT_CREATE,
       PermissionsEnum?.ORG_INCEDANT_UPDATE,
