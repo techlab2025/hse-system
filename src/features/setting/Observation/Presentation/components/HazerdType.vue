@@ -13,14 +13,18 @@ const props = defineProps<{
   modelTakeAction?: 'yes' | 'no' | null
   modelSolved?: 'yes' | 'no' | null
   modelAction?: string
+  modelHazerdType?: TitleInterface | null
 }>()
 
 const emit = defineEmits(['update:data'])
+
 const takeAction = ref<'yes' | 'no' | null>(props.modelTakeAction ?? null)
 const solved = ref<'yes' | 'no' | null>(props.modelSolved ?? null)
 const description = ref<string>(props.modelAction ?? '')
 
-const hazerd = ref<TitleInterface | null>(null)
+const hazerd = ref<TitleInterface | null>(props.modelHazerdType ?? null)
+const hazardTypeId = ref<number | null>(props.modelHazerdType?.id ?? null)
+
 const indexHazardController = IndexHazardTypeController.getInstance()
 const hazerdParams = new IndexHazardTypeParams('', 1, 10, 1)
 
@@ -44,24 +48,31 @@ const showRadioButtons = computed(() => {
   )
 })
 
-const showSolvedAndDescription = computed(() => {
-  return takeAction.value === 'yes'
-})
+const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 
-// Watchers
+// Sync when parent updates (important for edit mode)
+watch(
+  () => props.modelHazerdType,
+  (val) => {
+    hazerd.value = val ?? null
+  },
+  { immediate: true }
+)
+
+// Emit updated data
 watch([takeAction, solved, description], () => {
   updateEmitData()
 })
 
 const setHazerd = (data: TitleInterface) => {
   hazerd.value = data
+  hazardTypeId.value = data.id
   updateEmitData()
 }
-
 const updateEmitData = () => {
   emit('update:data', {
     hazerd: hazerd.value ? [hazerd.value] : [],
-    type_id: hazerd.value?.id ?? null,
+    type_id: hazardTypeId.value ?? null,
     take_action: takeAction.value,
     solved: solved.value,
     action: description.value,
@@ -69,6 +80,7 @@ const updateEmitData = () => {
 }
 
 </script>
+
 
 <template>
   <div class="hazard-type-container grid grid-cols-12 gap-4" v-if="showRadioAndDescription">
