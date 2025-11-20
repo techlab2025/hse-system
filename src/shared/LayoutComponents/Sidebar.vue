@@ -188,6 +188,25 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
+                    <!-- healthconditions -->
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.HEALTH_CONDITION_ALL,
+                        PermissionsEnum.HEALTH_CONDITION_CREATE,
+                        PermissionsEnum.HEALTH_CONDITION_DELETE,
+                        PermissionsEnum.HEALTH_CONDITION_FETCH,
+                        PermissionsEnum.HEALTH_CONDITION_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/health-conditions">
+                          <SidebarVector />
+                          <span>{{ $t('Health Conditions') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
                     <!-- Observation -->
                     <PermissionBuilder
                       :code="[
@@ -1154,6 +1173,24 @@ const user = useUserStore()
                       <router-link to="/organization/observation-types">
                         <SidebarVector />
                         <span>{{ $t('Observation Types') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <!-- healthconditions -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/health-conditions">
+                        <SidebarVector />
+                        <span>{{ $t('Health Conditions') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>

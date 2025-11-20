@@ -104,7 +104,7 @@ const updateEmitData = () => {
               <label>Yes</label>
             </div>
 
-            <div class=" radio-selection" :class="{ selected: takeAction === 'no' }">
+            <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
               <RadioButton v-model="takeAction" name="takeAction" value="no" />
               <label>No</label>
             </div>
