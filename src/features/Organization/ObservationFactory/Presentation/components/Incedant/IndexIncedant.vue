@@ -135,7 +135,6 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
     action: () => deleteHazard(id),
     permission: [
       PermissionsEnum.ORG_INCEDANT_DELETE,
-      PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_ALL,
     ],
