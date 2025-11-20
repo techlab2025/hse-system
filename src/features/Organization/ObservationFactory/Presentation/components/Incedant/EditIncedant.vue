@@ -5,9 +5,9 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 
 import type Params from '@/base/core/params/params'
-import ShowIncedantController from '../controllers/showIncedantController'
-import ShowIncedantParams from '../../Core/params/showIncedantParams'
-import EditIncedantController from '../controllers/editIncedantController'
+import ShowHazardController from '../../controllers/showHazardController'
+import ShowHazardParams from '../../../Core/params/showHazardParams'
+import EditHazardController from '../../controllers/editHazardController'
 import IncedantForm from './IncedantForm.vue'
 
 const route = useRoute()
@@ -15,28 +15,28 @@ const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showIncedantController = ShowIncedantController.getInstance()
-const state = ref(showIncedantController.state.value)
-const fetchIncedantDetails = async () => {
-  const IncedantParams = new ShowIncedantParams(Number(id))
+const showHazardController = ShowHazardController.getInstance()
+const state = ref(showHazardController.state.value)
+const fetchHazardDetails = async () => {
+  const HazardParams = new ShowHazardParams(Number(id))
 
-  await showIncedantController.showIncedant(IncedantParams)
+  await showHazardController.showHazard(HazardParams)
 }
 
 onMounted(() => {
-  fetchIncedantDetails()
+  fetchHazardDetails()
 })
 
-const EditIncedant = async (draft: boolean) => {
+const EditHazard = async (draft: boolean) => {
   if (draft) {
-    await EditIncedantController.getInstance().editIncedant(params.value!, router)
+    await EditHazardController.getInstance().editHazard(params.value!, router)
   } else {
-    await EditIncedantController.getInstance().editIncedant(params.value!, router)
+    await EditHazardController.getInstance().editHazard(params.value!, router)
   }
 }
 
 watch(
-  () => showIncedantController.state.value,
+  () => showHazardController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -57,7 +57,7 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditIncedant">
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHazard">
         <IncedantForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
