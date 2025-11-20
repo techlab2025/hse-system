@@ -3,11 +3,11 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import HazardForm from '@/features/setting/Hazard/Presentation/components/HazardForm.vue'
 import type Params from '@/base/core/params/params'
 import ShowHazardController from '../../controllers/showHazardController'
 import ShowHazardParams from '../../../Core/params/showHazardParams'
 import EditHazardController from '../../controllers/editHazardController'
+import HazardForm from './HazardForm.vue'
 
 
 const route = useRoute()

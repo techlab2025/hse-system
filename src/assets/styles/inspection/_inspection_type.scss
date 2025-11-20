@@ -1,0 +1,62 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.inspection-type-container {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $MdSize;
+  font-family: 'Light';
+  width: 100%;
+  border-radius: calc($MdSize2 + 1px);
+  padding: $XsSize $SmSize;
+  .inspection-header {
+    width: 100%;
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize2;
+    width: 100%;
+    .title-container {
+      width: 100%;
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize4;
+      .title {
+        color: #121212;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+  }
+
+  .inspection-type-contect {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize3;
+    width: 100%;
+    .option {
+      width: 100%;
+      padding: $XsSize2 $XlSize3;
+      text-align: center;
+      border-radius: calc($XsSize + 1px);
+      transition: 0.2s all linear;
+      cursor: pointer;
+      &.active {
+        background-color: #1f41bb08;
+        border: 1px solid $PrimaryColor;
+        label {
+          color: $PrimaryColor;
+        }
+      }
+      label {
+        width: 100%;
+        text-align: center;
+        color: #9ca3af;
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        transition: 0.2s all linear;
+        display: block;
+        cursor: pointer;
+      }
+      input {
+        display: none;
+      }
+    }
+  }
+}
