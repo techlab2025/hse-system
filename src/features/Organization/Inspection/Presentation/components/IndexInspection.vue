@@ -31,6 +31,7 @@ import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
+import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
 
 const { t } = useI18n()
 
@@ -50,7 +51,7 @@ const fetchInspection = async (
 ) => {
   const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage)
   const res = await indexInspectionController.getData(deleteInspectionParams)
-  console.log(res, "res");
+  console.log(res, 'res')
 }
 
 onMounted(() => {
@@ -247,7 +248,9 @@ const ShowDetails = ref<number[]>([])
                       <span>{{ item.date }}</span>
                     </div>
                   </div>
-                  <div class="card-info-status" v-if="item.status == InspectionStatus.NOT_FINISHED">Start</div>
+                  <!-- <div class="card-info-status" >Start</div> -->
+                  <InspectionStartTemplate v-if="item.status == InspectionStatus.NOT_FINISHED"
+                    :templateId="item.template.id" />
                   <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
                     <span> show inspection details </span>
                     <ArrowDetails />
