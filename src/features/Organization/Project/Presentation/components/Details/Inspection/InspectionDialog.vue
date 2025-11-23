@@ -63,8 +63,8 @@ const { showHeader, showArrowLink } = defineProps<{
           <div class="inspections">
             <div class="inspections-cards" v-show="activeInspection == 1">
               <InspectionsCard
-                :showArrowLink="showArrowLink"
-                :showHeader="showHeader"
+                :showArrowLink="false"
+                :showHeader="false"
                 :isAssign="true"
                 v-for="i in 6"
                 :key="i"
