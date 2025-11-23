@@ -36,11 +36,12 @@ const { showHeader, showArrowLink, isAssign } = defineProps<{
           <p>Abdallah Mohamed</p>
         </div>
       </div>
+
       <InspectionDialog
         v-if="showArrowLink"
-        :showArrowLink="false"
-        :showHeader="false"
-        :isAssign="true"
+        :showArrowLink="showArrowLink"
+        :showHeader="showHeader"
+        :isAssign="isAssign"
       />
     </div>
   </div>
