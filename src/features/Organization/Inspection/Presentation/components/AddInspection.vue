@@ -12,7 +12,6 @@ const params = ref<Params | null>(null)
 const addInspectionController = AddInspectionController.getInstance()
 
 const addInspection = async () => {
-  console.log(params.value, 'params')
   await addInspectionController.addInspection(params.value as AddInspectionParams, router)
 }
 const setParams = (data: Params) => {
