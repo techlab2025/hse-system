@@ -33,7 +33,7 @@ import InspectionsCard from './InspectionsCard.vue'
             :isAssign="false"
             v-for="i in 6"
             :key="i"
-            class="!mb-4"
+            class="!mb-2"
           />
         </AccordionContent>
       </AccordionPanel>
