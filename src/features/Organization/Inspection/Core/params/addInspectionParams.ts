@@ -1,47 +1,54 @@
 import type Params from '@/base/core/params/params'
+import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum.ts'
+import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 
 export default class AddInspectionParams implements Params {
-  text: string | null = null
-  date: string | null = null
-  zoonIds: number[] | null = null
-  machineId: number | null = null
-  image: string | null = null
-  desciption: string | null = null
+  public morphType : AssignToTypeEnum
+  public morphId : number
+  public templateId : number[]
+  public periodType : number
+  public periodSubType : number
+  public projectId : number
+  public taskPeriods : TaskPeriodParams[]
 
   constructor(
-    text: string | null = null,
-    date: string | null = null,
-    zoonIds: number[] | null = null,
-    machineId: number | null = null,
-    image: string | null = null,
-    desciption: string | null = null,
+    morphType:AssignToTypeEnum,
+    morphId:number,
+    templateId:number[],
+    periodType:number,
+    periodSubType:number,
+    projectId:number,
+    taskPeriods:TaskPeriodParams[]
   ) {
-    this.text = text
-    this.date = date
-    this.zoonIds = zoonIds
-    this.machineId = machineId
-    this.image = image
-    this.desciption = desciption
+    this.morphType = morphType
+    this.morphId = morphId
+    this.templateId = templateId
+    this.periodType = periodType
+    this.periodSubType = periodSubType
+    this.projectId = projectId
+    this.taskPeriods = taskPeriods
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    number | string | number[] | Record<string, string | any | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
       | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
+      | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
 
-    if (this.text != null) data['text'] = this.text
-    if (this.date != null) data['date'] = this.date
-    if (this.zoonIds) data['zoon_ids'] = this.zoonIds
-    if (this.machineId) data['machine_id'] = this.machineId
-    if (this.image) data['image'] = this.image
-    if (this.desciption) data['desciption'] = this.desciption
+    if (this.morphType != null) data['morph_type'] = this.morphType
+    if (this.morphId != null) data['morph_id'] = this.morphId
+    if (this.templateId) data['template_id'] = this.templateId
+    if (this.periodType) data['period_type'] = this.periodType
+    if (this.periodSubType) data['period_sub_type'] = this.periodSubType
+    if (this.projectId) data['project_id'] = this.projectId
+    if (this.taskPeriods) data['task_periods'] = this.taskPeriods
+
 
     return data
   }
