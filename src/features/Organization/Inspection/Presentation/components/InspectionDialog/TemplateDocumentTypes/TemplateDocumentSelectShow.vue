@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import UploadImage from '@/shared/icons/UploadImage.vue'
+// import UploadImage from '@/shared/icons/UploadImage.vue'
 import { ref } from 'vue'
-import UploadImages from '../uploadImages.vue'
+// import UploadImages from '../uploadImages.vue'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 const props = defineProps<{
   title: string
