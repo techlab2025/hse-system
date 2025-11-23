@@ -11,6 +11,7 @@ import { AssignToTypeEnum } from '../../Core/Enum/AssignToTypesEnum'
 import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
 import EmployeeIconCard from '@/shared/icons/employeeIconCard.vue'
 import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
+import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -22,26 +23,31 @@ const descripe = ref<string>('')
 const image = ref<string>('')
 
 const updateData = () => {
-  console.log(DataParams, "DataParams");
+  console.log(DataParams.value, "DataParams.value");
+
+  const PeriodDetailsParams  = ref<TaskPeriodParams[]>()
+
   const params = props.data?.id
     ? new EditInspectionParams(
-      props.data?.id! ?? 0,
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
+      props.data?.id ?? 0,
+      SelectedAssigned.value,
+      DataParams.value.morph.id,
+      DataParams.value.TempalteIds,
+      DataParams.value.inspectionType,
+      DataParams.value.periodType,
+      37,
+      []
     )
     : new AddInspectionParams(
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
+      SelectedAssigned.value,
+      DataParams.value.morph.id,
+      DataParams.value.TempalteIds,
+      DataParams.value.data.inspectionType,
+      DataParams.value.data.periodType,
+      37,
+      []
+
+
     )
 
   emit('update:data', params)
@@ -57,11 +63,12 @@ const AssignToOptions = ref<TitleInterface[]>([
 const SelectedAssigned = ref<TitleInterface>()
 const GetSelectedAssigned = (data: TitleInterface) => {
   SelectedAssigned.value = data
+
   updateData()
 }
 const DataParams = ref()
 const UpdateFormData = (data) => {
-  console.log(data, "data");
+
   DataParams.value = data
   updateData()
 }

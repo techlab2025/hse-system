@@ -1,32 +1,34 @@
 import type Params from '@/base/core/params/params.ts'
+import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum.ts'
+import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 
 export default class EditInspectionParams implements Params {
   id: number
-  text: string | null = null
-  date: string | null = null
-  zoonIds: number[] | null = null
-  inspectionId: number | null = null
-  machineId: number | null = null
-  image: string | null = null
-  desciption: string | null = null
+  public morphType : AssignToTypeEnum
+  public morphId : number
+  public templateId : number[]
+  public periodType : number
+  public periodSubType : number
+  public projectId : number
+  public taskPeriods : TaskPeriodParams[]
   constructor(
     id: number,
-    text: string | null = null,
-    date: string | null = null,
-    zoonIds: number[] | null = null,
-    inspectionId: number | null = null,
-    machineId: number | null = null,
-    image: string | null = null,
-    desciption: string | null = null,
+    morphType:AssignToTypeEnum,
+    morphId:number,
+    templateId:number[],
+    periodType:number,
+    periodSubType:number,
+    projectId:number,
+    taskPeriods:TaskPeriodParams[]
   ) {
     this.id = id
-    this.text = text
-    this.date = date
-    this.zoonIds = zoonIds
-    this.inspectionId = inspectionId
-    this.machineId = machineId
-    this.image = image
-    this.desciption = desciption
+    this.morphType = morphType
+    this.morphId = morphId
+    this.templateId = templateId
+    this.periodType = periodType
+    this.periodSubType = periodSubType
+    this.projectId = projectId
+    this.taskPeriods = taskPeriods
   }
 
   toMap(): Record<
@@ -36,13 +38,13 @@ export default class EditInspectionParams implements Params {
     const data: Record<string, any> = {}
 
     data['hazard_id'] = this.id
-    if (this.text != null) data['text'] = this.text
-    if (this.date != null) data['date'] = this.date
-    if (this.zoonIds) data['zoon_ids'] = this.zoonIds
-    if (this.inspectionId) data['hazard_id'] = this.inspectionId
-    if (this.machineId) data['machine_id'] = this.machineId
-    if (this.image) data['image'] = this.image
-    if (this.desciption) data['desciption'] = this.desciption
+    if (this.morphType != null) data['morph_type'] = this.morphType
+    if (this.morphId != null) data['morph_id'] = this.morphId
+    if (this.templateId) data['template_id'] = this.templateId
+    if (this.periodType) data['period_type'] = this.periodType
+    if (this.periodSubType) data['period_sub_type'] = this.periodSubType
+    if (this.projectId) data['project_id'] = this.projectId
+    if (this.taskPeriods) data['task_periods'] = this.taskPeriods
 
     return data
   }
