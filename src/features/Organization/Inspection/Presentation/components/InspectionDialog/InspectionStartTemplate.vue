@@ -6,14 +6,20 @@ import Dialog from 'primevue/dialog'
 import { watch } from 'vue'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import TemplateDocument from './TemplateDocument.vue'
 import { useI18n } from 'vue-i18n'
+import CreateTaskAnswerController from '../../controllers/CreateTaskAnswerController'
+import CreateTaskResultParams from '../../../Core/params/CreateTaskResultParams'
 
 const visible = ref(false)
 
-const { templateId } = defineProps<{ templateId: number }>()
+const { templateId, taskId } = defineProps<{
+  templateId: number,
+  taskId: number
+}>()
 
+const router = useRouter()
 const route = useRoute()
 const id = route.params.parent_id
 const AllDocument = ref<TemplateDetailsModel>()
@@ -46,20 +52,24 @@ const { locale } = useI18n()
 const getTitle = () => {
   return state.value.data?.titles?.find((item) => item.locale === locale.value)?.title
 }
+
+const TaskAnswer = ref()
+
+const CreateAnswer = async () => {
+  const createTaskResultParams = new CreateTaskResultParams(taskId, templateId, TaskAnswer.value);
+  const createTaskAnswerController = CreateTaskAnswerController.getInstance()
+  await createTaskAnswerController.CreateTaskAnswer(createTaskResultParams, router, true)
+}
 </script>
 
 <template>
   <div class="card flex justify-center">
     <button class="card-info-status" @click="visible = true">Start</button>
-    <Dialog
-      v-model:visible="visible"
-      modal
-      :header="getTitle ? getTitle() : ''"
-      :style="{ width: '60vw' }"
-    >
+    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :header="getTitle ? getTitle() : ''"
+      :style="{ width: '60vw' }">
       <TemplateDocument :allData="state.data" />
 
-      <button class="btn btn-primary w-full">
+      <button class="btn btn-primary w-full" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
     </Dialog>
