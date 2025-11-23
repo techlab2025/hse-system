@@ -37,8 +37,8 @@ const { showHeader, showArrowLink } = defineProps<{
       v-model:visible="visible"
       dismissableMask
       modal
-      :style="{ width: '50vw' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      :style="{ width: '36vw' }"
+      
       class="inspection-dialog"
     >
       <template #container="{ closeCallback }">
