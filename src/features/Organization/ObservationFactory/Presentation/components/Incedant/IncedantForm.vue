@@ -7,7 +7,6 @@ import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import DatePicker from 'primevue/datepicker'
 import HazardImage from '@/assets/images/alert 2.png'
 
-import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
@@ -19,6 +18,7 @@ import AddHazardParams from '../../../Core/params/addHazardParams'
 import IndexHazardParams from '../../../Core/params/indexHazardParams'
 import IndexHazardController from '../../controllers/indexHazardController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -76,8 +76,8 @@ const updateData = () => {
 
 watch([() => props.data], ([newData]) => {}, { immediate: true })
 
-const indexHazardTypeParams = new IndexHazardParams('', 1, 10, 1)
-const indexHazardTypeController = IndexHazardController.getInstance()
+// const indexHazardTypeParams = new IndexHazardParams('', 1, 10, 1)
+// const indexHazardTypeController = IndexHazardController.getInstance()
 const HazardType = ref<TitleInterface[]>([])
 const setHazardType = (data: TitleInterface[]) => {
   HazardType.value = data

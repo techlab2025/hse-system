@@ -16,5 +16,6 @@ import PinIcons from '@/shared/icons/PinIcons.vue'
         </span>
       </div>
     </div>
+    <hr class="divider" />
   </div>
 </template>
