@@ -30,6 +30,7 @@ import DeleteInspectionController from '../controllers/deleteInspectionControlle
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
 
 const { t } = useI18n()
 
@@ -49,7 +50,7 @@ const fetchInspection = async (
 ) => {
   const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage)
   const res = await indexInspectionController.getData(deleteInspectionParams)
-  console.log(res, "res");
+  console.log(res, 'res')
 }
 
 onMounted(() => {
@@ -212,23 +213,33 @@ const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum?.ORG_INSPECTION_ALL,
-    PermissionsEnum?.ORG_INSPECTION_CREATE,
-    PermissionsEnum?.ORG_INSPECTION_UPDATE,
-    PermissionsEnum?.ORG_INSPECTION_DETAILS,
-    PermissionsEnum?.ORG_INSPECTION_DELETE,
-    PermissionsEnum?.ORG_INSPECTION_FETCH,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ORG_INSPECTION_ALL,
+      PermissionsEnum?.ORG_INSPECTION_CREATE,
+      PermissionsEnum?.ORG_INSPECTION_UPDATE,
+      PermissionsEnum?.ORG_INSPECTION_DETAILS,
+      PermissionsEnum?.ORG_INSPECTION_DELETE,
+      PermissionsEnum?.ORG_INSPECTION_FETCH,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <!-- <pre>{{ state.data }}</pre> -->
         <div class="table-responsive">
-          <IndexInspectionHeader :title="`Inspection`" :length="state.data?.length" :categories="categories" />
-          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/inspection/add'"
-            :linkTitle="'Create Inspection'" />
+          <IndexInspectionHeader
+            :title="`Inspection`"
+            :length="state.data?.length"
+            :categories="categories"
+          />
+          <IndexFilter
+            :filters="Filters"
+            @update:data="console.log($event)"
+            :link="'/organization/inspection/add'"
+            :linkTitle="'Create Inspection'"
+          />
           <div class="index-table-card-container-inspection">
             <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
               <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -246,7 +257,8 @@ const ShowDetails = ref<number[]>([])
                       <span>{{ item.date }}</span>
                     </div>
                   </div>
-                  <div class="card-info-status">Start</div>
+
+                  <InspectionStartTemplate :templateId="item.template.id" />
 
                   <button class="show-details">
                     <span> show inspection details </span>
@@ -264,7 +276,11 @@ const ShowDetails = ref<number[]>([])
             </div>
           </div>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -273,20 +289,28 @@ const ShowDetails = ref<number[]>([])
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/inspection/add`" addText="Add Inspection"
+        <DataEmpty
+          :link="`/organization/inspection/add`"
+          addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Inspection" />
+          title="..ops! You have No Inspection"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/inspection/add`" addText="Add Inspection"
+        <DataFailed
+          :link="`/organization/inspection/add`"
+          addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Inspection" />
+          title="..ops! You have No Inspection"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>
