@@ -68,7 +68,7 @@ const UpdateDate = (date) => {
 const SelectedWithDateDays = ref<TitleInterface[]>([])
 const WithDateDayesSelection = ref<TitleInterface[]>(
   Array.from({ length: 31 }, (_, i) => new TitleInterface({
-    id: i + 1,
+    id: `${i + 1}`,
     title: String(i + 1)
   }))
 );

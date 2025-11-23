@@ -51,6 +51,7 @@ watch(
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
+
       <div
         class="template-document-content"
         v-for="(item, index) in allData?.templateItems"

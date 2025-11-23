@@ -30,6 +30,7 @@ import DeleteInspectionController from '../controllers/deleteInspectionControlle
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
 import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
 
 const { t } = useI18n()
@@ -213,33 +214,23 @@ const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ORG_INSPECTION_ALL,
-      PermissionsEnum?.ORG_INSPECTION_CREATE,
-      PermissionsEnum?.ORG_INSPECTION_UPDATE,
-      PermissionsEnum?.ORG_INSPECTION_DETAILS,
-      PermissionsEnum?.ORG_INSPECTION_DELETE,
-      PermissionsEnum?.ORG_INSPECTION_FETCH,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum?.ORG_INSPECTION_ALL,
+    PermissionsEnum?.ORG_INSPECTION_CREATE,
+    PermissionsEnum?.ORG_INSPECTION_UPDATE,
+    PermissionsEnum?.ORG_INSPECTION_DETAILS,
+    PermissionsEnum?.ORG_INSPECTION_DELETE,
+    PermissionsEnum?.ORG_INSPECTION_FETCH,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <!-- <pre>{{ state.data }}</pre> -->
         <div class="table-responsive">
-          <IndexInspectionHeader
-            :title="`Inspection`"
-            :length="state.data?.length"
-            :categories="categories"
-          />
-          <IndexFilter
-            :filters="Filters"
-            @update:data="console.log($event)"
-            :link="'/organization/inspection/add'"
-            :linkTitle="'Create Inspection'"
-          />
+          <IndexInspectionHeader :title="`Inspection`" :length="state.data?.length" :categories="categories" />
+          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/inspection/add'"
+            :linkTitle="'Create Inspection'" />
           <div class="index-table-card-container-inspection">
             <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
               <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -247,40 +238,37 @@ const ShowDetails = ref<number[]>([])
                   <div class="card-content">
                     <div class="card-header">
                       <p class="label-item-primary">
-                        Assigned to : <span>{{ item.morph || `mohab` }}</span>
+                        Assigned to : <span>{{ item.morph.name }}</span>
                       </p>
                     </div>
                     <div class="card-details">
                       <p class="title">
-                        {{ item.morph || `mohab` }}
+                        {{ item.morph.name }}
                       </p>
                       <span>{{ item.date }}</span>
                     </div>
                   </div>
+                  <!-- <div class="card-info-status" >Start</div> -->
+                  <InspectionStartTemplate v-if="item.status == InspectionStatus.NOT_FINISHED"
+                    :templateId="item.template.id" :taskId="item.id" />
 
-                  <InspectionStartTemplate :templateId="item.template.id" />
-
-                  <button class="show-details">
+                  <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
                     <span> show inspection details </span>
                     <ArrowDetails />
                   </button>
                 </div>
               </div>
 
-              <div v-if="ShowDetails[index]" class="card-description">
+              <!-- <div v-if="ShowDetails[index]" class="card-description">
                 <p class="title">Description</p>
                 <p class="description">
                   {{ item.description || '__' }}
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -289,28 +277,20 @@ const ShowDetails = ref<number[]>([])
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/inspection/add`"
-          addText="Add Inspection"
+        <DataEmpty :link="`/organization/inspection/add`" addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Inspection"
-        />
+          title="..ops! You have No Inspection" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/inspection/add`"
-          addText="Add Inspection"
+        <DataFailed :link="`/organization/inspection/add`" addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Inspection"
-        />
+          title="..ops! You have No Inspection" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
