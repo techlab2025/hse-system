@@ -1,21 +1,14 @@
 import type Params from '@/base/core/params/params'
 
 export default class TaskPeriodParams implements Params {
-  public type : number
-  public day : number
-  public date : string
+  public type: number | null
+  public day: number | null
+  public date: string | null
 
-
-  constructor(
-    type:number,
-    day:number,
-    date:string,
-
-  ) {
+  constructor(type: number | null, day: number | null, date: string | null) {
     this.type = type
     this.day = day
     this.date = date
-
   }
 
   toMap(): Record<
@@ -30,11 +23,9 @@ export default class TaskPeriodParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    if (this.type != null) data['type'] = this.type
-    if (this.day != null) data['day'] = this.day
-    if (this.date) data['date'] = this.date
-
-
+    if (this.type !== null) data.type = this.type
+    if (this.day !== null) data.day = this.day
+    if (this.date !== null) data.date = this.date
 
     return data
   }

@@ -1,4 +1,5 @@
 export enum AssignToTypeEnum {
-  EMPLOYEE = 1,
-  ZONE = 2,
+  ZONE = 1,
+  MACHINE = 2,
+  EMPLOYEE = 3,
 }

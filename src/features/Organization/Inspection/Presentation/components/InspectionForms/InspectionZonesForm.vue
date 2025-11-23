@@ -18,7 +18,7 @@ const UpdateData = () => {
   emit('update:data', {
     morph: SelectedZones.value,
     data: Data.value,
-    TempalteIds:TempalteIds.value
+    TempalteIds: TempalteIds.value
   })
 }
 const setZones = (data: TitleInterface) => {
@@ -32,7 +32,7 @@ const GetGeneralData = (data) => {
   UpdateData();
 }
 const TempalteIds = ref<number[]>()
-const GetTemplateId = (data:number[])=>{
+const GetTemplateId = (data: number[]) => {
   TempalteIds.value = data
   UpdateData()
 }
@@ -43,8 +43,8 @@ const GetTemplateId = (data:number[])=>{
     <CustomSelectInput :modelValue="SelectedZones" class="input" :controller="fetchProjectZoneController"
       :params="fetchProjectZonesParams" :label="$t('Zone')" id="employee" placeholder="select your employee"
       @update:modelValue="setZones" />
-  <!-- Dialog -->
-  <InspectionTemplateDialog @update:data="GetTemplateId" />
+    <!-- Dialog -->
+    <InspectionTemplateDialog @update:data="GetTemplateId" />
   </div>
 
   <InspectionGeneralForm @update:data="GetGeneralData" />

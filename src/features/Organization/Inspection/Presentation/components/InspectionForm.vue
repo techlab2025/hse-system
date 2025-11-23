@@ -9,45 +9,67 @@ import TaskAssignTo from './InspectionUtils/TaskAssignTo.vue'
 import InspectionEmployeeForm from './InspectionForms/InspectionEmployeeForm.vue'
 import { AssignToTypeEnum } from '../../Core/Enum/AssignToTypesEnum'
 import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
-import EmployeeIconCard from '@/shared/icons/employeeIconCard.vue'
 import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
+import type { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
+import { PeriodTypeEnum } from '../../Core/Enum/PeriodTypeEnum'
 
+interface DataFormDetails {
+  inspectionType: InspectionTypeEnum,
+  onceday: string,
+  periodType: TitleInterface,
+  periodByday: TitleInterface,
+  PeridWithDate: TitleInterface[],
+}
+interface InspectionForm {
+  morph: TitleInterface,
+  data: DataFormDetails,
+  TempalteIds: number[]
+}
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: InspectionDetailsModel
 }>()
-const text = ref<string>('')
-const date = ref<Date>()
-const descripe = ref<string>('')
-const image = ref<string>('')
 
 const updateData = () => {
-  console.log(DataParams.value, "DataParams.value");
-
-  const PeriodDetailsParams  = ref<TaskPeriodParams[]>()
-
+  if (DataParams.value?.data?.periodType === PeriodTypeEnum.BYDAY) {
+    DataParams.value.data.PeridWithDate = []
+  }
+  if (DataParams.value?.data?.periodType === PeriodTypeEnum.WHITDATE) {
+    DataParams.value.data.periodByday = []
+  }
+  const PeriodTasks = ref<TaskPeriodParams[]>([])
+  if (DataParams.value?.data?.periodType !== PeriodTypeEnum.DAILY) {
+    DataParams.value?.data?.periodByday?.forEach((item) => {
+      PeriodTasks.value.push(
+        new TaskPeriodParams(null, item.id, null)
+      )
+    })
+    DataParams.value?.data?.PeridWithDate?.forEach((item) => {
+      PeriodTasks.value.push(
+        new TaskPeriodParams(null, null, item.id)
+      )
+    })
+  }
   const params = props.data?.id
     ? new EditInspectionParams(
       props.data?.id ?? 0,
       SelectedAssigned.value,
-      DataParams.value.morph.id,
-      DataParams.value.TempalteIds,
-      DataParams.value.inspectionType,
-      DataParams.value.periodType,
+      DataParams.value?.morph?.id,
+      DataParams.value?.TempalteIds,
+      DataParams.value?.data?.inspectionType,
+      DataParams.value?.data?.periodType,
       37,
-      []
+      PeriodTasks.value
     )
     : new AddInspectionParams(
       SelectedAssigned.value,
-      DataParams.value.morph.id,
-      DataParams.value.TempalteIds,
-      DataParams.value.data.inspectionType,
-      DataParams.value.data.periodType,
+      DataParams.value?.morph?.id,
+      DataParams.value?.TempalteIds[0],
+      DataParams.value?.data?.inspectionType,
+      DataParams.value?.data?.periodType,
       37,
-      []
-
-
+      PeriodTasks.value || []
     )
 
   emit('update:data', params)
@@ -56,8 +78,8 @@ const updateData = () => {
 watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 const AssignToOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Employee' }),
-  new TitleInterface({ id: 2, title: 'Zone' }),
+  new TitleInterface({ id: 1, title: 'Zone' }),
+  new TitleInterface({ id: 3, title: 'Employee' }),
 ])
 
 const SelectedAssigned = ref<TitleInterface>()
@@ -66,9 +88,8 @@ const GetSelectedAssigned = (data: TitleInterface) => {
 
   updateData()
 }
-const DataParams = ref()
-const UpdateFormData = (data) => {
-
+const DataParams = ref<InspectionForm>()
+const UpdateFormData = (data: InspectionForm) => {
   DataParams.value = data
   updateData()
 }
@@ -84,11 +105,11 @@ const UpdateFormData = (data) => {
     <TaskAssignTo :title="`Assign task to`" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
   </div>
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
-    <div class="inspection-details">
+    <div class="inspection-details " :class="SelectedAssigned == AssignToTypeEnum.ZONE ? 'full-width' : ''">
       <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" @update:data="UpdateFormData" />
       <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
     </div>
     <!--Employee Tasks-->
-    <EmployeeTasksCard />
+    <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" />
   </div>
 </template>
