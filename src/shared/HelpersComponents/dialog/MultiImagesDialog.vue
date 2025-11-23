@@ -45,7 +45,11 @@ const responsiveOptions = ref([
         :showIndicators="true"
       >
         <template #item="slotProps">
-          <img :src="slotProps.item" :alt="'image'" style="width: 100%; height: 40rem" />
+          <img
+            :src="slotProps.item"
+            :alt="'image'"
+            style="width: 100%; height: 40rem; object-fit: contain"
+          />
         </template>
         <template #thumbnail="slotProps">
           <img :src="slotProps.item" :alt="'image'" style="display: block" />
