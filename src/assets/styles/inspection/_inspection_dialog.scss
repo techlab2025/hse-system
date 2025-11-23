@@ -109,6 +109,7 @@
           //   margin-bottom: $XsSize;
 
           .select-input {
+            gap: $XsSize4;
             label {
               color: $PrimaryColor;
               font-weight: $BaseFontWeightBold;

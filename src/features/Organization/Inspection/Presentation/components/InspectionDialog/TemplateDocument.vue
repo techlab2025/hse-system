@@ -51,15 +51,40 @@ watch(
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
-        <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" />
-        <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" />
-        <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :options="item.options" :require_image="item.requiredImage" />
-        <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
-          :require_image="item.requiredImage" />
+
+      <div
+        class="template-document-content"
+        v-for="(item, index) in allData?.templateItems"
+        :key="index"
+      >
+        <TemplateDocumentCheckboxShow
+          v-if="item?.action == ActionsEnum.CHECKBOX"
+          :key="index"
+          :title="item.name"
+          :options="item.options"
+          :require_image="item.requiredImage"
+          @update:images="console.log($event)"
+        />
+        <TemplateDocumentRadioButtonShow
+          v-if="item?.action == ActionsEnum.RADIOBUTTON"
+          :title="item.name"
+          :options="item.options"
+          :require_image="item.requiredImage"
+          @update:images="console.log($event)"
+        />
+        <TemplateDocumentSelectShow
+          v-if="item?.action == ActionsEnum.DROPDOWN"
+          :title="item.name"
+          :key="index"
+          :options="item.options"
+          :require_image="item.requiredImage"
+          @update:images="console.log($event)"
+        />
+        <TemplateDocumentTextAreaShow
+          v-if="item?.action == ActionsEnum.TEXTAREA"
+          :title="item.name"
+          :require_image="item.requiredImage"
+        />
       </div>
     </div>
   </div>
