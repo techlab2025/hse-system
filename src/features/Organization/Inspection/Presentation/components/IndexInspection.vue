@@ -30,6 +30,7 @@ import DeleteInspectionController from '../controllers/deleteInspectionControlle
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
 
 const { t } = useI18n()
 
@@ -236,31 +237,30 @@ const ShowDetails = ref<number[]>([])
                   <div class="card-content">
                     <div class="card-header">
                       <p class="label-item-primary">
-                        Assigned to : <span>{{ item.morph || `mohab` }}</span>
+                        Assigned to : <span>{{ item.morph.name }}</span>
                       </p>
                     </div>
                     <div class="card-details">
                       <p class="title">
-                        {{ item.morph || `mohab` }}
+                        {{ item.morph.name }}
                       </p>
                       <span>{{ item.date }}</span>
                     </div>
                   </div>
-                  <div class="card-info-status">Start</div>
-
-                  <button class="show-details">
+                  <div class="card-info-status" v-if="item.status == InspectionStatus.NOT_FINISHED">Start</div>
+                  <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
                     <span> show inspection details </span>
                     <ArrowDetails />
                   </button>
                 </div>
               </div>
 
-              <div v-if="ShowDetails[index]" class="card-description">
+              <!-- <div v-if="ShowDetails[index]" class="card-description">
                 <p class="title">Description</p>
                 <p class="description">
                   {{ item.description || '__' }}
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
