@@ -1,38 +1,36 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
-import TitleModel from '@/base/Data/Models/title_model'
+import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 
 export default class InspectionModel {
   public id: number
-  public text: string
+  public template: TemplateDetailsModel
   public date: string
-  public machineType: TitleInterface
-  public image: string
-  public description: string
+  public status: number
+  public periodType: number
+  public periodSubType: number
   constructor(
     id: number,
-    text: string,
+    template: TemplateDetailsModel,
     date: string,
-    machineType: TitleInterface,
-    image: string,
-    description: string,
+    status: number,
+    periodType: number,
+    periodSubType: number,
   ) {
     this.id = id
-    this.text = text
+    this.template = template
     this.date = date
-    this.machineType = machineType
-    this.image = image
-    this.description = description
+    this.status = status
+    this.periodType = periodType
+    this.periodSubType = periodSubType
   }
 
   static fromMap(data: any): InspectionModel {
     return new InspectionModel(
       data.id,
-      data.text,
-
-      data.date,
-      TitleModel.fromMap(data.machine_type),
-      data.image,
-      data.description,
+      data.template,
+      data.zone,
+      data.status,
+      data.period_type,
+      data.period_sub_type,
     )
   }
 }
