@@ -26,7 +26,7 @@
             .card-header-title {
               @include flex-row(nowrap, flex-start, center);
               .title {
-                font-size: $MdSize2;
+                font-size: $XlSize;
                 font-weight: $BaseFontSemiBoldWeight;
                 color: var(--second-dark-color);
               }
@@ -40,6 +40,12 @@
               }
             }
           }
+          .divider {
+            width: 100%;
+            background-color: #f1f3f5;
+            height: 2px;
+            margin-block: $MdSize;
+          }
         }
       }
     }
@@ -49,7 +55,6 @@
       border: none;
       background-color: #f1f3f5;
       height: 2px;
-      margin-block: $MdSize;
     }
   }
 }

@@ -26,8 +26,8 @@ import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useI18n } from 'vue-i18n'
-import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
+import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
 
 const { deviceData } = defineProps<{ deviceData?: EquipmentDetailsModel }>()
 const emit = defineEmits(['update:data'])

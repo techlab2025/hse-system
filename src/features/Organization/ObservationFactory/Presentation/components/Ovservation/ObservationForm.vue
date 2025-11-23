@@ -21,7 +21,6 @@ import SaveStatusSelector from './SaveStatusSelector.vue'
 import ObservationLevel from './ObservationLevel.vue'
 import HazerdType from './HazerdType.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
-import IndexEquipmentController from '@/features/setting/equipment/Presentation/controllers/indexEquipmentController.ts'
 // import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
 // import { SaveStatusEnum } from '../../Core/Enums/save_status_enum'
 // import { TypesEnum } from '../../Core/Enums/types_enum'
@@ -31,6 +30,7 @@ import type { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import type { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
