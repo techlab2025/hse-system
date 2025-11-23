@@ -38,7 +38,6 @@ const { showHeader, showArrowLink } = defineProps<{
       dismissableMask
       modal
       :style="{ width: '36vw' }"
-      
       class="inspection-dialog"
     >
       <template #container="{ closeCallback }">
