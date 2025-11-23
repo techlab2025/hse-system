@@ -45,8 +45,8 @@ const { showHeader, showArrowLink } = defineProps<{
         <div class="!px-5 !mt-5">
           <HeaderSection
             :img="InspectionTemplateImage"
-            title="inspection template"
-            subtitle="Select from the available templates."
+            title="Inspection Tasks"
+            subtitle="Track and manage all inspection assignments"
           />
 
           <button class="btn btn-primary w-full !mt-3">{{ $t('add_task') }}</button>
