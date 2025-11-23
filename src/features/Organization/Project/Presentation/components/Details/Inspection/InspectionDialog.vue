@@ -22,10 +22,6 @@ const GetSelectedAssigned = (data: number) => {
   activeInspection.value = data
 }
 
-const { showHeader, showArrowLink } = defineProps<{
-  showHeader?: boolean
-  showArrowLink?: boolean
-}>()
 </script>
 
 <template>
