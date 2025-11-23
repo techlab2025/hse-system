@@ -56,6 +56,7 @@ const { showHeader, showArrowLink } = defineProps<{
           :options="AssignToOptions"
           @update:data="GetSelectedAssigned"
           :showHeader="false"
+          class="!mt-5"
         />
 
         <div class="inspections-sections">
