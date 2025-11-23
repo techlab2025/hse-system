@@ -27,7 +27,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useI18n } from 'vue-i18n'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
-import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
+import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 const { deviceData } = defineProps<{ deviceData?: EquipmentDetailsModel }>()
 const emit = defineEmits(['update:data'])

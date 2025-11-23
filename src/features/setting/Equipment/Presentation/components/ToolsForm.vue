@@ -34,7 +34,7 @@ import { LangsMap } from '@/constant/langs'
 import { useI18n } from 'vue-i18n'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
-import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
+import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 const { t } = useI18n()
 

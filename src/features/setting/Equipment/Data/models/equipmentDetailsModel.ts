@@ -3,7 +3,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import type EquipmentTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
-import type { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
+import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 export default class EquipmentDetailsModel {
   public id: number
