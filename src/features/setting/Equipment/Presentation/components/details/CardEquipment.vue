@@ -15,7 +15,7 @@ import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
-import { EquipmentStatus } from '../../../Core/enum/EquipmentStatus'
+import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 
 const { t } = useI18n()
 

@@ -36,7 +36,7 @@ import { useI18n } from 'vue-i18n'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
-import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
+import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 const emit = defineEmits(['update:data'])
 
