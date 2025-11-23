@@ -22,7 +22,7 @@ const props = defineProps<{
       <UploadMultiImage
         class="image-upload"
         v-if="require_image"
-        @update:images="console.log($event)"
+        @update:images="$emit('update:images', $event)"
       />
     </div>
   </div>

@@ -62,12 +62,14 @@ watch(
           :title="item.name"
           :options="item.options"
           :require_image="item.requiredImage"
+          @update:images="console.log($event)"
         />
         <TemplateDocumentRadioButtonShow
           v-if="item?.action == ActionsEnum.RADIOBUTTON"
           :title="item.name"
           :options="item.options"
           :require_image="item.requiredImage"
+          @update:images="console.log($event)"
         />
         <TemplateDocumentSelectShow
           v-if="item?.action == ActionsEnum.DROPDOWN"
@@ -75,6 +77,7 @@ watch(
           :key="index"
           :options="item.options"
           :require_image="item.requiredImage"
+          @update:images="console.log($event)"
         />
         <TemplateDocumentTextAreaShow
           v-if="item?.action == ActionsEnum.TEXTAREA"
