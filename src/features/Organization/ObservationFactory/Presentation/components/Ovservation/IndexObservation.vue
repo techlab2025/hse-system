@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IndexObservationController from '@/features/setting/Observation/Presentation/controllers/indexObservationController'
-
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -12,8 +10,6 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteObservationController from '@/features/setting/Observation/Presentation/controllers/deleteObservationController'
-import DeleteObservationParams from '@/features/setting/Observation/Core/params/deleteObservationParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,6 +25,9 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
+import DeleteObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/deleteObserverationTypeParams'
+import DeleteObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/deleteObserverationTypeController'
+import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
 
 const { t } = useI18n()
 
@@ -38,7 +37,7 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexObservationController = IndexObservationController.getInstance()
+const indexObservationController = IndexObserverationTypeController.getInstance()
 const state = ref(indexObservationController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
@@ -69,8 +68,8 @@ const searchObservation = debounce(() => {
 })
 
 const deleteObservation = async (id: number) => {
-  const deleteObservationParams = new DeleteObservationParams(id)
-  await DeleteObservationController.getInstance().deleteObservation(deleteObservationParams)
+  const deleteObservationParams = new DeleteObserverationTypeParams(id)
+  await DeleteObserverationTypeController.getInstance().deleteObservation(deleteObservationParams)
   await fetchObservation()
 }
 

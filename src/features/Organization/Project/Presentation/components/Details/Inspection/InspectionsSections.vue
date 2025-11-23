@@ -18,7 +18,7 @@ const { inspectionsImage, inspectionHeaderTitle, inspectionHeaderSubtitle } = de
     />
 
     <div class="inspections-cards">
-      <InspectionsCard />
+      <InspectionsCard v-for="i in 5" :key="i" />
     </div>
   </div>
 </template>
