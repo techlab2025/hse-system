@@ -52,12 +52,18 @@ watch(
             :inspectionsImage="zoneInspectionTasks"
             :inspectionHeaderTitle="'zone Inspection Tasks'"
             :inspectionHeaderSubtitle="'Track and manage all inspection assignments by zone.'"
+            :showHeader="true"
+            :showArrowLink="true"
+            :isAssign="false"
           />
           <hr class="divider" />
           <InspectionsSections
             :inspectionsImage="EmployeeInspectionTasks"
             :inspectionHeaderTitle="'employee Inspection Tasks'"
             :inspectionHeaderSubtitle="'Track and manage all inspection assignments for employee'"
+            :showHeader="false"
+            :showArrowLink="false"
+            :isAssign="false"
           />
         </div>
 
