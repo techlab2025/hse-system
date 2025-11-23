@@ -20,15 +20,15 @@ import { useUserStore } from '@/stores/user'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardType from '@/assets/images/HazardType.jpg'
 
-// import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-// import ViewIcon from '@/shared/icons/ViewIcon.vue'
+import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
+import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import IndexInspectionController from '../controllers/indexInspectionController'
 import IndexInspectionParams from '../../Core/params/indexInspectionParams'
 import DeleteInspectionParams from '../../Core/params/deleteInspectionParams'
 import DeleteInspectionController from '../controllers/deleteInspectionController'
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
-import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import ArrowDetails from '@/shared/icons/arrowDetails.vue'
 
 const { t } = useI18n()
 
@@ -226,12 +226,7 @@ const ShowDetails = ref<number[]>([])
       <template #success> -->
     <div class="table-responsive">
       <IndexInspectionHeader :title="`Inspection`" :length="120" :categories="categories" />
-      <IndexFilter
-        :filters="Filters"
-        @update:data="console.log($event)"
-        :link="'/organization/inspection/add'"
-        :linkTitle="'Create Inspection'"
-      />
+      <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/inspection/add'" :linkTitle="'Create Inspection'" />
       <div class="index-table-card-container-inspection">
         <div class="index-table-card" v-for="(item, index) in InspectionData" :key="index">
           <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
