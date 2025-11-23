@@ -2,10 +2,20 @@
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import InspectionsCard from './InspectionsCard.vue'
 
-const { inspectionsImage, inspectionHeaderTitle, inspectionHeaderSubtitle } = defineProps<{
+const {
+  inspectionsImage,
+  inspectionHeaderTitle,
+  inspectionHeaderSubtitle,
+  showHeader,
+  showArrowLink,
+  isAssign,
+} = defineProps<{
   inspectionsImage: string
   inspectionHeaderTitle: string
   inspectionHeaderSubtitle: string
+  showHeader?: boolean
+  showArrowLink?: boolean
+  isAssign: boolean
 }>()
 </script>
 
@@ -18,7 +28,13 @@ const { inspectionsImage, inspectionHeaderTitle, inspectionHeaderSubtitle } = de
     />
 
     <div class="inspections-cards">
-      <InspectionsCard v-for="i in 5" :key="i" />
+      <InspectionsCard
+        :showHeader="showHeader"
+        :showArrowLink="showArrowLink"
+        :isAssign="isAssign"
+        v-for="i in 6"
+        :key="i"
+      />
     </div>
   </div>
 </template>

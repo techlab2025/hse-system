@@ -22,32 +22,32 @@ const descripe = ref<string>('')
 const image = ref<string>('')
 
 const updateData = () => {
-  console.log(DataParams, "DataParams");
+  console.log(DataParams, 'DataParams')
   const params = props.data?.id
     ? new EditInspectionParams(
-      props.data?.id! ?? 0,
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
-    )
+        props.data?.id! ?? 0,
+        text.value,
+        date.value,
+        ZoneIds.value,
+        InspectionType.value.map((h) => h.id),
+        SelectedMachine.value.map((el) => el.id),
+        image.value,
+        descripe.value,
+      )
     : new AddInspectionParams(
-      text.value,
-      date.value,
-      ZoneIds.value,
-      InspectionType.value.map((h) => h.id),
-      SelectedMachine.value.map((el) => el.id),
-      image.value,
-      descripe.value,
-    )
+        text.value,
+        date.value,
+        ZoneIds.value,
+        InspectionType.value.map((h) => h.id),
+        SelectedMachine.value.map((el) => el.id),
+        image.value,
+        descripe.value,
+      )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 const AssignToOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'Employee' }),
@@ -61,25 +61,37 @@ const GetSelectedAssigned = (data: TitleInterface) => {
 }
 const DataParams = ref()
 const UpdateFormData = (data) => {
-  console.log(data, "data");
+  console.log(data, 'data')
   DataParams.value = data
   updateData()
 }
-
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <PagesHeader :title="'Task Assignment Center'"
-      :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'" />
+    <PagesHeader
+      :title="'Task Assignment Center'"
+      :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'"
+    />
   </div>
   <div class="col-span-6 md:col-span-6">
-    <TaskAssignTo :title="`Assign task to`" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
+    <TaskAssignTo
+      :title="`Assign task to`"
+      :options="AssignToOptions"
+      @update:data="GetSelectedAssigned"
+      :showHeader="true"
+    />
   </div>
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <div class="inspection-details">
-      <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" @update:data="UpdateFormData" />
-      <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
+      <InspectionEmployeeForm
+        v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE"
+        @update:data="UpdateFormData"
+      />
+      <InspectionZonesForm
+        v-if="SelectedAssigned == AssignToTypeEnum.ZONE"
+        @update:data="UpdateFormData"
+      />
     </div>
     <!--Employee Tasks-->
     <EmployeeTasksCard />

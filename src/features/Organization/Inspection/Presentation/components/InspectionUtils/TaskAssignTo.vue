@@ -7,17 +7,18 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   title: string
   options: TitleInterface[]
+  showHeader:boolean
 }>()
 
-const SelectedOption = ref()
+const SelectedOption = ref(1)
 const UpdatData = (data) => {
   emit('update:data', SelectedOption.value)
 }
 </script>
 <template>
   <div class="assign-to-container">
-    <div class="assign-to-header">
-      <img :src="AssignTo" alt="assign to" class="img">
+    <div class="assign-to-header" v-if="showHeader">
+      <img :src="AssignTo"  alt="assign to" class="img">
       <div class="title-container">
         <p class="title">{{ title }}</p>
         <ImportantIcon />
