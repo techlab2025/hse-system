@@ -2,6 +2,7 @@
 import Checkbox from 'primevue/checkbox'
 import UploadImage from '@/shared/icons/UploadImage.vue'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
+import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 const { title, options } = defineProps<{
   title: string
   options: ItemModel[]
@@ -18,7 +19,11 @@ const { title, options } = defineProps<{
           <Checkbox binary :inputId="`checkbox-${index}-${title}`" type="checkbox" class="input" />
         </div>
       </div>
-      <UploadImage class="image-upload" v-if="require_image" />
+      <UploadMultiImage
+        class="image-upload"
+        v-if="require_image"
+        @update:images="console.log($event)"
+      />
     </div>
   </div>
 </template>

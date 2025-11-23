@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import UploadImage from '@/shared/icons/UploadImage.vue'
+import MultiImagesDialog from './dialog/MultiImagesDialog.vue'
 
 const images = ref<string[]>([])
+
+const emit = defineEmits(['update:images'])
 
 const handleUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -17,10 +20,8 @@ const handleUpload = (event: Event) => {
     }
     reader.readAsDataURL(file)
   })
-}
 
-const handleOverlayClick = () => {
-  console.log('Overlay clicked!')
+  emit('update:images', images.value)
 }
 </script>
 
@@ -30,29 +31,34 @@ const handleOverlayClick = () => {
       <UploadImage class="image-upload" />
       <input type="file" multiple accept="image/*" class="hidden" @change="handleUpload" />
     </label>
-
-    <div v-if="images.length" class="grid grid-cols-2 gap-1 w-20">
-      <div
-        v-for="(img, i) in images.slice(0, 3)"
-        :key="i"
-        class="w-full h-full rounded-md overflow-hidden"
-      >
-        <img :src="img" class="w-full h-full object-cover" />
-      </div>
-
-      <div
-        v-if="images.length >= 4"
-        class="w-full h-full rounded-md overflow-hidden relative cursor-pointer"
-        @click="handleOverlayClick"
-      >
-        <img :src="images[3]" class="w-full h-full object-cover" />
+    <MultiImagesDialog :images="images">
+      <div v-if="images.length > 1" class="grid grid-cols-2 gap-1 w-15">
+        <div
+          v-for="(img, i) in images.slice(0, 3)"
+          :key="i"
+          class="w-full h-full rounded-md overflow-hidden"
+        >
+          <img :src="img" class="w-15 h-full object-cover" />
+        </div>
 
         <div
-          class="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl font-semibold"
+          v-if="images.length >= 4"
+          class="w-full h-full rounded-md overflow-hidden relative cursor-pointer"
         >
-          +{{ images.length - 3 }}
+          <img :src="images[3]" class="w-15 h-full object-cover" />
+
+          <div
+            class="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl font-semibold"
+          >
+            +{{ images.length - 3 }}
+          </div>
         </div>
       </div>
-    </div>
+      <div v-else class="grid grid-cols-1 w-15">
+        <div v-for="(img, i) in images" :key="i" class="w-full h-full rounded-md overflow-hidden">
+          <img :src="img" class="w-15 h-full object-cover" />
+        </div>
+      </div>
+    </MultiImagesDialog>
   </div>
 </template>

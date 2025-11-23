@@ -8,8 +8,11 @@ import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import TemplateDocument from './TemplateDocument.vue'
+import { useI18n } from 'vue-i18n'
 
 const visible = ref(false)
+
+const { templateId } = defineProps<{ templateId: number }>()
 
 const route = useRoute()
 const id = route.params.parent_id
@@ -18,7 +21,7 @@ const showTemplateController = ShowTemplateController.getInstance()
 const state = ref(showTemplateController.state.value)
 
 const FetchTemplateDocument = async () => {
-  const showTemplateParams = new ShowTemplateParams(26)
+  const showTemplateParams = new ShowTemplateParams(templateId)
   const Response = await showTemplateController.showTemplate(showTemplateParams)
   if (Response.value.data) {
     AllDocument.value = Response.value.data
@@ -38,6 +41,11 @@ watch(
     deep: true,
   },
 )
+
+const { locale } = useI18n()
+const getTitle = () => {
+  return state.value.data?.titles?.find((item) => item.locale === locale.value)?.title
+}
 </script>
 
 <template>
@@ -46,9 +54,8 @@ watch(
     <Dialog
       v-model:visible="visible"
       modal
-      header="Header"
-      :style="{ width: '50vw' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      :header="getTitle ? getTitle() : ''"
+      :style="{ width: '60vw' }"
     >
       <TemplateDocument :allData="state.data" />
     </Dialog>

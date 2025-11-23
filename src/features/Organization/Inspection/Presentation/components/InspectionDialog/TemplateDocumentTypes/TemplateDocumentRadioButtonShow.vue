@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
+import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import UploadImage from '@/shared/icons/UploadImage.vue'
 import RadioButton from 'primevue/radiobutton'
 const props = defineProps<{
@@ -18,7 +19,11 @@ const props = defineProps<{
           <RadioButton binary class="input" :inputId="`radio-${index}-${title}`" type="radio" />
         </div>
       </div>
-      <UploadImage class="image-upload" v-if="require_image" />
+      <UploadMultiImage
+        class="image-upload"
+        v-if="require_image"
+        @update:images="console.log($event)"
+      />
     </div>
   </div>
 </template>

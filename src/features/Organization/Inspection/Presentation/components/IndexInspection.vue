@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -20,15 +21,16 @@ import { useUserStore } from '@/stores/user'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardType from '@/assets/images/HazardType.jpg'
 
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import ViewIcon from '@/shared/icons/ViewIcon.vue'
+// import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
+// import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import IndexInspectionController from '../controllers/indexInspectionController'
 import IndexInspectionParams from '../../Core/params/indexInspectionParams'
 import DeleteInspectionParams from '../../Core/params/deleteInspectionParams'
 import DeleteInspectionController from '../controllers/deleteInspectionController'
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
-import ArrowDetails from '@/shared/icons/arrowDetails.vue'
+import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
 
 const { t } = useI18n()
 
@@ -46,8 +48,9 @@ const fetchInspection = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage, id)
-  await indexInspectionController.getData(deleteInspectionParams)
+  const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage)
+  const res = await indexInspectionController.getData(deleteInspectionParams)
+  console.log(res, 'res')
 }
 
 onMounted(() => {
@@ -222,75 +225,86 @@ const ShowDetails = ref<number[]>([])
       PermissionsEnum?.ORG_INSPECTION_FETCH,
     ]"
   >
-    <!-- <DataStatus :controller="state">
-      <template #success> -->
-    <div class="table-responsive">
-      <IndexInspectionHeader :title="`Inspection`" :length="120" :categories="categories" />
-      <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/inspection/add'" :linkTitle="'Create Inspection'" />
-      <div class="index-table-card-container-inspection">
-        <div class="index-table-card" v-for="(item, index) in InspectionData" :key="index">
-          <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-            <div class="header-container">
-              <div class="card-content">
-                <div class="card-header">
-                  <p class="label-item-primary">
-                    Assigned to : <span>{{ item.serial }}</span>
-                  </p>
-                </div>
-                <div class="card-details">
-                  <p class="title">
-                    {{ item.employee }}
-                  </p>
-                  <span>{{ item.DateTime }}</span>
+    <DataStatus :controller="state">
+      <template #success>
+        <!-- <pre>{{ state.data }}</pre> -->
+        <div class="table-responsive">
+          <IndexInspectionHeader
+            :title="`Inspection`"
+            :length="state.data?.length"
+            :categories="categories"
+          />
+          <IndexFilter
+            :filters="Filters"
+            @update:data="console.log($event)"
+            :link="'/organization/inspection/add'"
+            :linkTitle="'Create Inspection'"
+          />
+          <div class="index-table-card-container-inspection">
+            <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
+              <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+                <div class="header-container">
+                  <div class="card-content">
+                    <div class="card-header">
+                      <p class="label-item-primary">
+                        Assigned to : <span>{{ item.morph || `mohab` }}</span>
+                      </p>
+                    </div>
+                    <div class="card-details">
+                      <p class="title">
+                        {{ item.morph || `mohab` }}
+                      </p>
+                      <span>{{ item.date }}</span>
+                    </div>
+                  </div>
+
+                  <InspectionStartTemplate :templateId="item.template.id" />
+
+                  <button class="show-details">
+                    <span> show inspection details </span>
+                    <ArrowDetails />
+                  </button>
                 </div>
               </div>
-              <div class="card-info-status">Start</div>
 
-              <button class="show-details">
-                <span> show inspection details </span>
-                <ArrowDetails />
-              </button>
+              <div v-if="ShowDetails[index]" class="card-description">
+                <p class="title">Description</p>
+                <p class="description">
+                  {{ item.description || '__' }}
+                </p>
+              </div>
             </div>
           </div>
-
-          <div v-if="ShowDetails[index]" class="card-description">
-            <p class="title">Description</p>
-            <p class="description">
-              {{ item.description }}
-            </p>
-          </div>
         </div>
-      </div>
-    </div>
-    <Pagination
-      :pagination="state.pagination"
-      @changePage="handleChangePage"
-      @countPerPage="handleCountPerPage"
-    />
-    <!-- </template> -->
-    <template #loader>
-      <TableLoader :cols="3" :rows="10" />
-    </template>
-    <template #initial>
-      <TableLoader :cols="3" :rows="10" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/organization/inspection/add`"
-        addText="Add Inspection"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Inspection"
-      />
-    </template>
-    <template #failed>
-      <DataFailed
-        :link="`/organization/inspection/add`"
-        addText="Add Inspection"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Inspection"
-      />
-    </template>
-    <!-- </DataStatus> -->
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
+      </template>
+      <template #loader>
+        <TableLoader :cols="3" :rows="10" />
+      </template>
+      <template #initial>
+        <TableLoader :cols="3" :rows="10" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/organization/inspection/add`"
+          addText="Add Inspection"
+          description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No Inspection"
+        />
+      </template>
+      <template #failed>
+        <DataFailed
+          :link="`/organization/inspection/add`"
+          addText="Add Inspection"
+          description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No Inspection"
+        />
+      </template>
+    </DataStatus>
 
     <template #notPermitted>
       <DataFailed

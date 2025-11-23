@@ -183,3 +183,28 @@ body {
   cursor: pointer;
   color: black;
 }
+
+
+
+// for garrery 
+.p-galleria-indicator-list {
+  .p-galleria-indicator {
+    button {
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
+
+.p-galleria {
+  border: none !important;
+  outline: none !important;
+}
+
+.p-galleria-indicator-active {
+  button {
+    background-color: $PrimaryColor !important;
+    width: 30px !important;
+    height: 8px !important;
+    border-radius: 50px !important;
+  }
+}

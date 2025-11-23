@@ -3,7 +3,8 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import UploadImage from '@/shared/icons/UploadImage.vue'
 import { ref } from 'vue'
-import UploadImages from '../uploadImages.vue';
+import UploadImages from '../uploadImages.vue'
+import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 const props = defineProps<{
   title: string
   options: TitleInterface[]
@@ -24,7 +25,11 @@ const Selected = ref()
           />
         </div>
       </div>
-      <UploadImages  v-if="require_image" />
+      <UploadMultiImage
+        class="image-upload"
+        v-if="require_image"
+        @update:images="console.log($event)"
+      />
     </div>
   </div>
 </template>
