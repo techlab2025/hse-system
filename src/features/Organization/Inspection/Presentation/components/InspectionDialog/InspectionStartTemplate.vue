@@ -58,6 +58,10 @@ const getTitle = () => {
       :style="{ width: '60vw' }"
     >
       <TemplateDocument :allData="state.data" />
+
+      <button class="btn btn-primary w-full">
+        {{ $t('confirm') }}
+      </button>
     </Dialog>
   </div>
 </template>
