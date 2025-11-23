@@ -1,18 +1,47 @@
 @import '../../variables';
 @import '../../mixins/flex';
+@import '../../mixins/grid';
 
 .project-details-section {
   .inspections-sections {
+    width: 100%;
     background: rgba(250, 250, 250, 0.8);
     border-radius: $BorderRadiusLg;
     padding: $MdSize2;
     margin-block: $MdSize;
     .inspections {
-        .inspections-cards{
-            .inspections-card{
-                
+      width: 100%;
+      .inspections-cards {
+        margin-top: $XlSize;
+        width: 100%;
+        @include grid(3, $MdSize2);
+
+        .inspections-card {
+          background-color: $White;
+          width: 100%;
+          border-radius: $BorderRadiusLg;
+          padding: $MdSize;
+          .card-header {
+            @include flex-row(wrap, space-between, center);
+            .card-header-title {
+              @include flex-row(nowrap, flex-start, center);
+              .title {
+                font-size: $MdSize2;
+                font-weight: $BaseFontSemiBoldWeight;
+                color: var(--second-dark-color);
+              }
             }
+            .tasks-num {
+              font-weight: $BaseFontMediumWeight;
+              color: var(--second-dark-color);
+              span {
+                color: $SubtitleColor;
+                font-weight: $BaseFontWeight;
+              }
+            }
+          }
         }
+      }
     }
 
     .divider {

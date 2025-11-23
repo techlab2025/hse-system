@@ -10,12 +10,12 @@ import IconEye from '@/shared/icons/IconEye.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsModel'
-import { EquipmentStatus } from '../../../Core/enum/EquipmentStatus'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
+import { EquipmentStatus } from '../../../Core/enum/EquipmentStatus'
 
 const { t } = useI18n()
 
