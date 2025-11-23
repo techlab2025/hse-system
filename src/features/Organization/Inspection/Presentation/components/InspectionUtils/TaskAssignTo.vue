@@ -25,7 +25,7 @@ const UpdatData = (data) => {
       </div>
     </div>
     <div class="assign-to-contect">
-      <div class="option" v-for="(option, index) in options" :key="index"
+      <div class="option" v-for="(option, index) in options" :key="option.id"
         :class="SelectedOption == option?.id ? 'active' : ''">
         <label :for="`${option.title}-${option.id}`">{{ option.title }}</label>
         <input type="radio" v-model="SelectedOption" :value="option.id" :id="`${option.title}-${option.id}`"

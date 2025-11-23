@@ -28,7 +28,7 @@ const GetInspectionType = (data: InspectionTypeEnum) => {
   UpdateData()
 }
 
-const SelectedDay = ref<TitleInterface>()
+const SelectedDay = ref<TitleInterface[]>()
 const DayesSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'Saturday' }),
   new TitleInterface({ id: 2, title: 'Sunday' }),
@@ -40,7 +40,7 @@ const DayesSelection = ref<TitleInterface[]>([
 ])
 
 
-const setDay = (data: TitleInterface) => {
+const setDay = (data: TitleInterface[]) => {
   SelectedDay.value = data
   UpdateData()
 }
@@ -93,10 +93,10 @@ const setWithDateDayes = (data: TitleInterface[]) => {
     <PeriodTypeSelect :options="PeriodTypeSelection" :title="`select period type`"
       @update:data="GetSelectedPeridType" />
     <CustomSelectInput v-if="SelectedPeriodType == PeriodTypeEnum.BYDAY" :modelValue="SelectedDay" class="input"
-      :static-options="DayesSelection" :label="$t('Start_day')" id="Day" placeholder="select your Day"
+      :static-options="DayesSelection" :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
       @update:modelValue="setDay" />
     <CustomSelectInput v-if="SelectedPeriodType == PeriodTypeEnum.WHITDATE" :modelValue="SelectedWithDateDays"
       class="input" :static-options="WithDateDayesSelection" :type="2" :label="$t('Start_day')" id="Day"
-      placeholder="select your Day" @update:modelValue="setWithDateDayes" />
+      :placeholder="$t('select_your_Day')" @update:modelValue="setWithDateDayes" />
   </div>
 </template>

@@ -3,22 +3,22 @@ import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/A
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 
 export default class AddInspectionParams implements Params {
-  public morphType : AssignToTypeEnum
-  public morphId : number
-  public templateId : number[]
-  public periodType : number
-  public periodSubType : number
-  public projectId : number
-  public taskPeriods : TaskPeriodParams[]
+  public morphType: AssignToTypeEnum
+  public morphId: number
+  public templateId: number
+  public periodType: number
+  public periodSubType: number
+  public projectId: number
+  public taskPeriods: TaskPeriodParams[]
 
   constructor(
-    morphType:AssignToTypeEnum,
-    morphId:number,
-    templateId:number[],
-    periodType:number,
-    periodSubType:number,
-    projectId:number,
-    taskPeriods:TaskPeriodParams[]
+    morphType: AssignToTypeEnum,
+    morphId: number,
+    templateId: number,
+    periodType: number,
+    periodSubType: number,
+    projectId: number,
+    taskPeriods: TaskPeriodParams[],
   ) {
     this.morphType = morphType
     this.morphId = morphId
@@ -31,7 +31,10 @@ export default class AddInspectionParams implements Params {
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | any | number[] | number | Record<string, string>>
+    | number
+    | string
+    | number[]
+    | Record<string, string | any | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
@@ -47,8 +50,7 @@ export default class AddInspectionParams implements Params {
     if (this.periodType) data['period_type'] = this.periodType
     if (this.periodSubType) data['period_sub_type'] = this.periodSubType
     if (this.projectId) data['project_id'] = this.projectId
-    if (this.taskPeriods) data['task_periods'] = this.taskPeriods
-
+    if (this.taskPeriods.length > 0) data['task_periods'] = this.taskPeriods
 
     return data
   }
