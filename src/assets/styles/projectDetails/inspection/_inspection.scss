@@ -15,6 +15,14 @@
       width: 100%;
       @include grid(3, $MdSize2);
 
+      @media screen and (max-width: 900px) {
+        @include grid(2, $MdSize2);
+      }
+
+      @media screen and (max-width: 768px) {
+        @include grid(1, $MdSize2);
+      }
+
       .inspections-card {
         background-color: $White;
         width: 100%;
