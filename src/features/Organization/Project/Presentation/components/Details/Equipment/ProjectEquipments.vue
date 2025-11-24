@@ -19,7 +19,7 @@ const state = ref(projectCustomLocationController.state.value)
 
 const GetProjectLocationsEqipments = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.ZOON, ProjectCustomLocationEnum.ZOON_EQUIPMENT])
-  const response = await projectCustomLocationController.FetchProjecuCustomLocation(projectCustomLocationParams)
+  const response = await projectCustomLocationController.getDate(projectCustomLocationParams)
 }
 
 onMounted(() => {

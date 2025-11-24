@@ -1,70 +1,89 @@
 <script setup lang="ts">
 import type Params from '@/base/core/params/params'
-import type { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import { ref, watch, onMounted } from 'vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
+import { ref, onMounted, watch } from 'vue'
 
+// Props
 const props = defineProps<{
-  pramsData: Params
-  controllerData: ControllerInterface<any>
+  pramsData?: Params
+  staticOptions?: TitleInterface[]
+  controllerData?: SelectControllerInterface<any>
   filterTitle: string
 }>()
 
+// Reactive state
+const dynamicOptions = ref<any[]>([])
+const selectedFilter = ref<Set<number>>(new Set())
+const loading = ref(false)
+const message = ref('Loading...')
 const emit = defineEmits(['update:data'])
 
-const SelectedFilter = ref<Set<number>>(new Set())
-const dynamicOptions = ref<any[]>([])
-const loading = ref(false)
-const message = ref('')
+watch(selectedFilter, () => {
+  emit('update:data', [...selectedFilter.value])
+})
 
-// Fetch options when props change
-const fetchOptions = async () => {
-  if (!props.controllerData || !props.pramsData) return
+watch(
+  () => props.pramsData,
+  () => {
+    fetchControllerData()
+  },
+)
+
+// Fetch data from controller
+const fetchControllerData = async () => {
+  loading.value = true
   try {
-    loading.value = true
-    message.value = 'Loading...'
+    if (props.controllerData && props.pramsData) {
+      const data = await props.controllerData.fetch(props.pramsData)
+      console.log(data)
 
-    const response = await props.controllerData.state.value.data
-    console.log(response, 'sdadas')
-    dynamicOptions.value = response
-    updateControllerState()
+      dynamicOptions.value = data ?? []
+    }
+
+    if (props.staticOptions) {
+      dynamicOptions.value = props.staticOptions
+    }
+
+    message.value = dynamicOptions.value.length === 0 ? 'No data available' : ''
   } catch (error) {
-    message.value = 'Error loading data'
+    message.value = 'Failed to load data'
+    console.error(error)
   } finally {
     loading.value = false
   }
 }
 
-const updateControllerState = () => {
-  if (props.controllerData.isDataFailed()) {
-    message.value = 'An Error Occurred'
-  } else if (props.controllerData.isDataSuccess() && dynamicOptions.value.length === 0) {
-    message.value = 'No Data Found'
+// Handle filter click
+const updateData = (id: number) => {
+  if (selectedFilter.value.has(id)) {
+    selectedFilter.value.delete(id)
+  } else {
+    selectedFilter.value.add(id)
   }
+
+  emit('update:data', [...selectedFilter.value])
 }
 
-// Emit selected filters
-const UpdateData = (id: number) => {
-  SelectedFilter.value.has(id) ? SelectedFilter.value.delete(id) : SelectedFilter.value.add(id)
-  emit('update:data', [...SelectedFilter.value])
-}
-
-watch([() => props.pramsData, () => props.controllerData], fetchOptions, { immediate: true })
-onMounted(fetchOptions)
+// On mount, fetch options
+onMounted(() => {
+  fetchControllerData()
+})
 </script>
 
 <template>
-  <div class="idnex-filter">
-    <h5>{{ props.filterTitle }}</h5>
+  <div class="idnex-filter !flex-col !items-start !p-0 !justify-start">
+    <h5 class="!font-bold !text-sm">{{ props.filterTitle }}</h5>
 
     <div class="filter-container">
       <p
         v-for="zone in dynamicOptions"
         :key="zone.id"
-        class="filter"
-        :class="{ active: SelectedFilter.has(zone.id) }"
-        @click="UpdateData(zone.id)"
+        class="filter !text-sm !font-normal !px-6"
+        :class="{ active: selectedFilter.has(zone.id) }"
+        @click="updateData(zone.id)"
       >
-        {{ zone.id }}
+        {{ zone.title }}
       </p>
     </div>
 
