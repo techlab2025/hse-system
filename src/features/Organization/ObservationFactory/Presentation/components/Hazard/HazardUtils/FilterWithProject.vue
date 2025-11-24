@@ -53,18 +53,18 @@ onMounted(fetchOptions)
 </script>
 
 <template>
-  <div class="index-filter">
+  <div class="idnex-filter">
     <h5>{{ props.filterTitle }}</h5>
 
     <div class="filter-container">
       <p
         v-for="zone in dynamicOptions"
-        :key="zone.zoonId"
+        :key="zone.id"
         class="filter"
-        :class="{ active: SelectedFilter.has(zone.zoonId) }"
-        @click="UpdateData(zone.zoonId)"
+        :class="{ active: SelectedFilter.has(zone.id) }"
+        @click="UpdateData(zone.id)"
       >
-        {{ zone.zoonTitle }}
+        {{ zone.id }}
       </p>
     </div>
 
