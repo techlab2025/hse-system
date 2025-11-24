@@ -11,6 +11,7 @@ export default class IndexHazardParams implements Params {
   public type: Observation
   public projectId: number | null = null
   // public code?: LangEnum
+  public projectZoonIds?: number[]
 
   constructor(
     word: string,
@@ -18,7 +19,8 @@ export default class IndexHazardParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     type: Observation,
-    projectId: number | null = null
+    projectId: number | null = null,
+    projectZoonIds?: number[],
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +29,7 @@ export default class IndexHazardParams implements Params {
     this.perPage = perPage
     this.type = type
     this.projectId = projectId
+    this.projectZoonIds = projectZoonIds
     // this.code = code
   }
 
@@ -36,8 +39,9 @@ export default class IndexHazardParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    if (this.type) data['type'] = this.type
+    if (this.type) data['type'] = [this.type]
     if (this.projectId) data['project_id'] = this.projectId
+    if (this.projectZoonIds) data['zoon_ids'] = this.projectZoonIds
     // if (this.code) data['code'] = this.code
     return data
   }

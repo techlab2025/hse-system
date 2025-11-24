@@ -10,6 +10,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import AddHazardUseCase from '../../Domain/useCase/addHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
+import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 
 export default class AddHazardController extends ControllerInterface<HazardModel> {
   private static instance: AddHazardController
@@ -28,7 +29,7 @@ export default class AddHazardController extends ControllerInterface<HazardModel
   async addHazard(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      console.log('Ssssssss')
+      // console.log('Ssssssss')
       const dataState: DataState<HazardModel> = await this.AddHazardUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -41,8 +42,15 @@ export default class AddHazardController extends ControllerInterface<HazardModel
 
         const { user } = useUserStore()
 
-        if (!draft)
-          await router.go(-1)
+        if (params.type == Observation.HazardType) {
+          await router.push(`/organization/hazard`)
+        }
+        else if (params.type == Observation.ObservationType) {
+          await router.push(`/organization/observation`)
+        }
+        else if (params.type == Observation.AccidentsType) {
+          await router.push(`/organization/incedant`)
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

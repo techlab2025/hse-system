@@ -12,32 +12,15 @@
   background-color: #fcfcfc;
   width: 100%;
 
-  .btns {
-    @include flex-row(wrap, flex-end, center);
-    gap: 6px;
-
-    .btn-filter {
-      @include flex-center();
-      color: $PrimaryColor;
-      background-color: #1f41bb0a;
-      border: 1px solid #5571b927;
-      border-radius: calc($XlSize3 + 10px);
-      transition: 0.3s all linear;
-      &:hover {
-        background-color: white;
-      }
-    }
-  }
-
   .filter-container {
     @include flex-row(wrap, flex-start, center);
     gap: $MdSize;
     max-width: 100%;
-    scroll-snap-align: start;
+    // scroll-snap-align: start;
     overflow-x: auto;
     &::-webkit-scrollbar {
       height: 4px;
-      }
+    }
     &::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.2);
       border-radius: 4px;
@@ -60,6 +43,23 @@
         color: $PrimaryColor;
         border: 1px solid $PrimaryColor;
       }
+    }
+  }
+}
+.btns-filter {
+  @include flex-row(nowrap, flex-end, center);
+  gap: $XsSize3;
+  width: 100%;
+
+  .btn-filter {
+    @include flex-center();
+    color: $PrimaryColor;
+    background-color: #1f41bb0a;
+    border: 1px solid #5571b927;
+    border-radius: calc($XlSize3 + 10px);
+    transition: 0.3s all linear;
+    &:hover {
+      background-color: white;
     }
   }
 }
