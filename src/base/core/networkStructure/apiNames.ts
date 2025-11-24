@@ -1190,7 +1190,10 @@ class ApiNames {
   public get DeleteHealthCondition() {
     return this.prefix + 'delete_health_condition'
   }
+  public get DisHealthConditions() {
+    return this.prefix + 'disable_health_condition'
 
+  }
   // Create Task Answer
   public get CreateTaskAnswer() {
     return this.prefix + 'create_task_result'

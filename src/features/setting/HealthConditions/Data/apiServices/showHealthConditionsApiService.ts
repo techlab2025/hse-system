@@ -20,7 +20,7 @@ class ShowHealthConditionsApiService extends ServicesInterface {
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.ShowHealthConditions,
+      url: ApiNames.instance.ShowHealthCondition,
       type: CrudType.FormData,
       auth: true,
       params: params,

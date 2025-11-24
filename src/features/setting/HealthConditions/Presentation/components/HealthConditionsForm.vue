@@ -161,7 +161,7 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries! ?? false
+      allIndustries.value = !!newData?.allIndustries
       industry.value = newData?.industries!
     }
   },
@@ -189,17 +189,17 @@ watch(
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
-
-      @change="updateData"
-    />
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

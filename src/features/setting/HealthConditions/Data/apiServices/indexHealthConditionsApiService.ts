@@ -21,7 +21,7 @@ class IndexHealthConditionsApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.IndexHealthConditions,
+      url: ApiNames.instance.IndexHealthCondition,
       type: CrudType.POST,
       auth: true,
       params: params,
