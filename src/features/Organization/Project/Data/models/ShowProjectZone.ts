@@ -2,6 +2,7 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import ProjectLocationEquipmentModel from './CustomLocation/ProjectLocationEquipmentModel'
 import TitleModel from '@/base/core/Models/title_model'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params'
+import projectLocationZoonsModel from './projectLocationZoons'
 
 export default class SohwProjectZoonModel {
   public projectZoonId: number
@@ -10,7 +11,7 @@ export default class SohwProjectZoonModel {
   public projectZoonEquipments: ProjectLocationEquipmentModel[]
   public location: TitleInterface
   public projectLocationId: number
-  public zoons?: TitleModel[]
+  public projectLocationZoons?: projectLocationZoonsModel[]
   public titles: TitleLocale[]
 
   constructor(
@@ -20,7 +21,7 @@ export default class SohwProjectZoonModel {
     projectZoonEquipments: ProjectLocationEquipmentModel[],
     location: TitleInterface,
     projectLocationId: number,
-    zoons?: TitleModel[] = [],
+    projectLocationZoons: projectLocationZoonsModel[] = [],
     titles: TitleLocale[] = [],
   ) {
     this.projectZoonId = projectZoonId
@@ -29,7 +30,7 @@ export default class SohwProjectZoonModel {
     this.projectZoonEquipments = projectZoonEquipments
     this.location = location
     this.projectLocationId = projectLocationId
-    this.zoons = zoons
+    this.projectLocationZoons = projectLocationZoons
     this.titles = titles
   }
 
@@ -41,7 +42,7 @@ export default class SohwProjectZoonModel {
       data.project_zoon_equipments?.map((item: any) => ProjectLocationEquipmentModel.fromMap(item)),
       data.location,
       data.projectLocationId,
-      data.zoons?.map((z: any) => TitleModel.fromMap(z)),
+      data.project_location_zoons?.map((z: any) => projectLocationZoonsModel.fromMap(z)),
       TranslationsParams.fromMap(data.zoon_titles).titles,
     )
   }

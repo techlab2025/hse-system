@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface';
-import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue';
-import { ref } from 'vue';
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
+import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
+import { computed, onMounted, ref, watch } from 'vue'
+
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
@@ -10,32 +14,50 @@ const props = defineProps<{
   linkText: string
 }>()
 
-const SelectedFilter = ref<number[]>([])
+const SelectedFilter = ref<Set<number>>(new Set())
 
-const UpdateData = (data: number, index: number) => {
-  if (SelectedFilter.value.includes(data)) {
-    SelectedFilter.value.splice(index, 1)
-    return
-  }
-  SelectedFilter.value[index] = data
-  emit("update:data", SelectedFilter.value)
+const controller = ProjectCustomLocationController.getInstance()
+const state = ref(controller.state.value)
+
+const loadProjectLocations = async () => {
+  const params = new ProjectCustomLocationParams(37, [ProjectCustomLocationEnum.ZOON], [])
+
+  await controller.FetchProjecuCustomLocation(params)
+}
+
+onMounted(loadProjectLocations)
+
+watch(
+  () => controller.state.value,
+  (newState) => {
+    state.value = newState
+  },
+)
+
+const allZones = computed(() => {
+  if (!state.value?.data) return []
+  return state.value.data.flatMap((item) => item.locationZones || [])
+})
+
+const UpdateData = (id: number) => {
+  SelectedFilter.value.has(id) ? SelectedFilter.value.delete(id) : SelectedFilter.value.add(id)
+
+  emit('update:data', [...SelectedFilter.value])
 }
 </script>
+
 <template>
   <div class="idnex-filter">
     <div class="filter-container">
-      <p class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="(item, index) in filters"
-        :key="index" @click="UpdateData(item.id, index)">{{ item.title
-        }}</p>
-    </div>
-    <div class="btns">
-      <button class="btn btn-filter">
-        <span>Filter</span>
-        <IndexFilterIcon />
-      </button>
-      <router-link :to="link">
-        <button class="btn btn-primary">{{ linkText }}</button>
-      </router-link>
+      <p
+        v-for="zone in allZones"
+        :key="zone.zoonId"
+        class="filter"
+        :class="{ active: SelectedFilter.has(zone.zoonId) }"
+        @click="UpdateData(zone.zoonId)"
+      >
+        {{ zone.zoonTitle }}
+      </p>
     </div>
   </div>
 </template>
