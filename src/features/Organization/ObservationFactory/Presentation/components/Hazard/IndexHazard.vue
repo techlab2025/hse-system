@@ -55,6 +55,8 @@ const fetchHazard = async (
   perPage = 10,
   withPage = 1,
   projectZoneLozationId?: number[],
+  projectLocationIds?: number[],
+  zoonIds?: number[],
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -64,6 +66,8 @@ const fetchHazard = async (
     Observation.HazardType,
     37,
     projectZoneLozationId,
+    projectLocationIds,
+    zoonIds,
   )
   await indexHazardController.getData(params)
 }
@@ -148,6 +152,22 @@ const Filters = ref<TitleInterface[]>([
 
 // on mounted
 onMounted(() => fetchHazard())
+
+const confirmFilters = (
+  date: string,
+  locationIds?: number[],
+  zoneIds?: number[],
+  machineIds?: number[],
+  machineTypeIds?: number[],
+  machineSubTypeIds?: number[],
+  caseIds?: number[],
+  statusIds?: number[],
+) => {
+  fetchHazard('', 1, 10, 1, [], locationIds, zoneIds)
+
+  console.log(zoneIds, 'zoneIds')
+  console.log(locationIds, 'locationIds')
+}
 </script>
 
 <template>
@@ -164,7 +184,7 @@ onMounted(() => fetchHazard())
         />
 
         <div class="btns-filter">
-          <FilterDialog />
+          <FilterDialog @confirmFilters="confirmFilters" />
 
           <router-link :to="`/organization/hazard/add`">
             <button class="btn btn-primary">{{ $t('Create Hazard') }}</button>
@@ -183,7 +203,6 @@ onMounted(() => fetchHazard())
           PermissionsEnum.ORG_HAZARD_UPDATE,
           PermissionsEnum.ORG_HAZARD_CREATE,
         ]"
-        
       >
         <DataStatus :controller="state">
           <template #success>

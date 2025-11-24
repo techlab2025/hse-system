@@ -184,8 +184,6 @@ body {
   color: black;
 }
 
-
-
 // for garrery
 .p-galleria-indicator-list {
   .p-galleria-indicator {
@@ -206,5 +204,11 @@ body {
     width: 30px !important;
     height: 8px !important;
     border-radius: 50px !important;
+  }
+}
+
+.p-dialog-content {
+  &::webkit-scrollbar {
+    display: none !important;
   }
 }

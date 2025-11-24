@@ -22,7 +22,7 @@ const state = ref(controller.state.value)
 const loadProjectLocations = async () => {
   const params = new ProjectCustomLocationParams(37, [ProjectCustomLocationEnum.ZOON], [])
 
-  await controller.FetchProjecuCustomLocation(params)
+  await controller.getData(params)
 }
 
 onMounted(loadProjectLocations)

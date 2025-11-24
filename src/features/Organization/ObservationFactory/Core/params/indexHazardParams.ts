@@ -12,6 +12,8 @@ export default class IndexHazardParams implements Params {
   public projectId: number | null = null
   // public code?: LangEnum
   public projectZoonIds?: number[]
+  public projectLocationIds?: number[]
+  public zoonIds?: number[] = []
 
   constructor(
     word: string,
@@ -21,6 +23,9 @@ export default class IndexHazardParams implements Params {
     type: Observation,
     projectId: number | null = null,
     projectZoonIds?: number[],
+    projectLocationIds?: number[],
+    zoonIds?: number[]
+
     // code?: LangEnum,
   ) {
     this.word = word
@@ -30,6 +35,8 @@ export default class IndexHazardParams implements Params {
     this.type = type
     this.projectId = projectId
     this.projectZoonIds = projectZoonIds
+    this.projectLocationIds = projectLocationIds
+    this.zoonIds = zoonIds
     // this.code = code
   }
 
@@ -42,6 +49,8 @@ export default class IndexHazardParams implements Params {
     if (this.type) data['type'] = [this.type]
     if (this.projectId) data['project_id'] = this.projectId
     if (this.projectZoonIds) data['zoon_ids'] = this.projectZoonIds
+    if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
+    if (this.zoonIds) data['zoon_ids'] = this.zoonIds
     // if (this.code) data['code'] = this.code
     return data
   }

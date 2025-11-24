@@ -3,8 +3,9 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import ProjectCustomLocationUseCase from '../../Domain/useCase/ProjectCusomLocationUsecase'
 import type ProjectCustomLocationModel from '../../Data/models/CustomLocation/ProjectCustomLocationModel'
+import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 
-export default class ProjectCustomLocationController extends ControllerInterface<
+export default class ProjectCustomLocationController extends SelectControllerInterface<
   ProjectCustomLocationModel[]
 > {
   private static instance: ProjectCustomLocationController
@@ -22,7 +23,7 @@ export default class ProjectCustomLocationController extends ControllerInterface
     return this.instance
   }
 
-  async FetchProjecuCustomLocation(params: Params) {
+  async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
