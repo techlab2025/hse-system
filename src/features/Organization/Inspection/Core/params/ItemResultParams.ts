@@ -4,18 +4,18 @@ export default class ItemResultParams implements Params {
   public result: string
   public template_item_id: string
   public item_image: string[]
-  public item_answers: number[]
+  public task_result_item_options: number[]
 
   constructor(
     result: string,
     template_item_id: string,
     item_image: string[],
-    item_answers: number[],
+    task_result_item_options: number[],
   ) {
     this.result = result
     this.template_item_id = template_item_id
     this.item_image = item_image
-    this.item_answers = item_answers
+    this.task_result_item_options = task_result_item_options
   }
 
   toMap(): Record<
@@ -26,7 +26,7 @@ export default class ItemResultParams implements Params {
     data['result'] = this.result
     data['template_item_id'] = this.template_item_id
     data['item_image'] = this.item_image
-    data['item_answers'] = this.item_answers
+    data['task_result_item_options'] = this.task_result_item_options
 
     return data
   }

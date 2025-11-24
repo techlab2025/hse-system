@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import EditHazardUseCase from '../../Domain/useCase/editHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
+import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 
 export default class EditHazardController extends ControllerInterface<HazardModel> {
   private static instance: EditHazardController
@@ -42,8 +43,15 @@ export default class EditHazardController extends ControllerInterface<HazardMode
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`)
-        // console.log(this.state.value.data)
+        if (params.type == Observation.HazardType) {
+          await router.push(`/organization/hazard`)
+        }
+        else if (params.type == Observation.ObservationType) {
+          await router.push(`/organization/observation`)
+        }
+        else if (params.type == Observation.AccidentsType) {
+          await router.push(`/organization/incedant`)
+        }        // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface';
-import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue';
-import { ref } from 'vue';
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
+import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
@@ -16,15 +16,21 @@ const UpdateData = (data: number, index: number) => {
     return
   }
   SelectedFilter.value[index] = data
-  emit("update:data", SelectedFilter.value)
+  emit('update:data', SelectedFilter.value)
 }
 </script>
 <template>
   <div class="idnex-filter">
     <div class="filter-container">
-      <p class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="(item, index) in filters"
-        :key="index" @click="UpdateData(item.id, index)">{{ item.title
-        }}</p>
+      <p
+        class="filter"
+        :class="SelectedFilter.includes(item.id) ? 'active' : ''"
+        v-for="(item, index) in filters"
+        :key="index"
+        @click="UpdateData(item.id, index)"
+      >
+        {{ item.title }}
+      </p>
     </div>
     <div class="btns">
       <button class="btn btn-filter">

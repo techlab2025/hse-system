@@ -2,36 +2,35 @@
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import Image from 'primevue/image'
+// import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Image from 'primevue/image'
-
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-
 import { useUserStore } from '@/stores/user'
-
+// import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardType from '@/assets/images/HazardType.jpg'
-
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
+
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import IndexHazardController from '../../controllers/indexHazardController'
 import IndexHazardParams from '../../../Core/params/indexHazardParams'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
 import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
-import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
-
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 const { t } = useI18n()
+
+// import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
+// const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
@@ -40,12 +39,14 @@ const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
+// const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
 const fetchHazard = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  projectZoneLozationId?: number[],
 ) => {
   const deleteHazardParams = new IndexHazardParams(
     query,
@@ -54,6 +55,7 @@ const fetchHazard = async (
     withPage,
     Observation.AccidentsType,
     37,
+    projectZoneLozationId,
   )
   await indexHazardController.getData(deleteHazardParams)
 }
@@ -110,23 +112,23 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
     ],
   },
   // {
-  //   text: t('add_sub_Hazard_type'),
+  //   text: t('add_sub_INCEDANT'),
   //   icon: IconEdit,
   //   link: `/admin/Hazard-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.Hazard_TYPE_UPDATE,
+  //     PermissionsEnum.INCEDANT_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.Hazard_TYPE_ALL,
+  //     PermissionsEnum.INCEDANT_ALL,
   //   ],
   // },
   // {
-  //   text: t('sub_Hazard_types'),
+  //   text: t('sub_INCEDANTs'),
   //   icon: IconEdit,
   //   link: `/admin/Hazard-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.Hazard_TYPE_UPDATE,
+  //     PermissionsEnum.INCEDANT_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.Hazard_TYPE_ALL,
+  //     PermissionsEnum.INCEDANT_ALL,
   //   ],
   // },
   {
@@ -162,134 +164,115 @@ const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchHazard())">
-        <Search />
-      </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazard" />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
-      <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.Hazard_TYPE_CREATE,
-        PermissionsEnum.ORG_Hazard_TYPE_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-type/add`"
-          class="btn btn-primary">
-          {{ $t('Add_Hazard') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div> -->
   <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ORG_INCEDANT_ALL,
-      PermissionsEnum?.ORG_INCEDANT_CREATE,
-      PermissionsEnum?.ORG_INCEDANT_UPDATE,
-      PermissionsEnum?.ORG_INCEDANT_DETAILS,
-      PermissionsEnum?.ORG_INCEDANT_DELETE,
-      PermissionsEnum?.ORG_INCEDANT_FETCH,
+
+      PermissionsEnum.ORG_INCEDANT_ALL,
+      PermissionsEnum.ORG_INCEDANT_DELETE,
+      PermissionsEnum.ORG_INCEDANT_FETCH,
+      PermissionsEnum.ORG_INCEDANT_UPDATE,
+      PermissionsEnum.ORG_INCEDANT_CREATE,
     ]"
   >
-    <!-- <DataStatus :controller="state">
-      <template #success> -->
-    <div class="table-responsive">
-      <IndexHazardHeader :title="`Incedant`" :length="120" :categories="categories" />
-      <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/incedant/add'" :linkText="'Create Incedant'" />
-      <div class="index-table-card-container">
-        <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-          <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-            <div class="header-container">
-              <div class="card-content">
-                <div class="card-header">
-                  <p class="label-item-primary">
-                    Serial : <span>{{ item.serial }}</span>
-                  </p>
-                  <p class="label-item-secondary">
-                    Date & Time : <span>{{ item.date }}</span>
-                  </p>
-                </div>
-                <div class="card-details">
-                  <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
-                  <p class="subtitle">{{ item.description }}</p>
-                  <div class="project-details">
-                    <p class="label-item-primary">
-                      Zone : <span>{{ item.zoon?.title }}</span>
-                    </p>
-                    <p class="label-item-primary">
-                      Machine : <span>{{ item.equipment?.title }}</span>
-                    </p>
+    <IndexHazardHeader :title="`incedant`" :length="120" :categories="categories" />
+    <IndexFilter
+      :filters="Filters"
+      @update:data="fetchHazard('', 1, 10, 1, $event)"
+      :link="'/organization/incedant/add'"
+      :linkText="'Create incedant'"
+    />
+
+    <DataStatus :controller="state">
+      <template #success>
+        <div class="table-responsive">
+          <div class="index-table-card-container">
+            <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
+              <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+                <div class="header-container">
+                  <div class="card-content">
+                    <div class="card-header">
+                      <p class="label-item-primary">
+                        Serial : <span>{{ item.serial }}</span>
+                      </p>
+                      <p class="label-item-secondary">
+                        Date & Time : <span>{{ item.date }}</span>
+                      </p>
+                    </div>
+                    <div class="card-details">
+                      <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                      <p class="subtitle">{{ item.description }}</p>
+                      <div class="project-details">
+                        <p class="label-item-primary">
+                          Zone : <span>{{ item.zoon?.title }}</span>
+                        </p>
+                        <p class="label-item-primary">
+                          Machine : <span>{{ item.equipment?.title }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-info">
+                    <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
+                    <Image :src="item.image" alt="Image" preview>
+                      <template #previewicon>
+                        <div class="perview">
+                          <span>view</span>
+                          <ViewIcon />
+                        </div>
+                      </template>
+                    </Image>
                   </div>
                 </div>
+                <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                  <span v-if="ShowDetails[index]">Show Less</span>
+                  <span v-else>Show More</span>
+                  <ShowMoreIcon />
+                </p>
               </div>
-              <div class="card-info">
-                <p class="title">Incedant</p>
-                <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                <Image :src="item.image" alt="Image" preview>
-                  <template #previewicon>
-                    <div class="perview">
-                      <span>view</span>
-                      <ViewIcon />
-                    </div>
-                  </template>
-                </Image>
+
+              <div v-if="ShowDetails[index]" class="card-description">
+                <p class="title">Description</p>
+                <p class="description">
+                  {{ item.description }}
+                </p>
               </div>
             </div>
-            <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-              <span v-if="ShowDetails[index]">Show Less</span>
-              <span v-else>Show More</span>
-              <ShowMoreIcon />
-            </p>
-          </div>
-
-          <div v-if="ShowDetails[index]" class="card-description">
-            <p class="title">Description</p>
-            <p class="description">
-              {{ item.description }}
-            </p>
           </div>
         </div>
-      </div>
-    </div>
-    <Pagination
-      :pagination="state.pagination"
-      @changePage="handleChangePage"
-      @countPerPage="handleCountPerPage"
-    />
-    <!-- </template> -->
-    <template #loader>
-      <TableLoader :cols="3" :rows="10" />
-    </template>
-    <template #initial>
-      <TableLoader :cols="3" :rows="10" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/organization/incedant/add`"
-        addText="Add Incedant"
-        description="Sorry .. You have no Incedant .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Incedant"
-      />
-    </template>
-    <template #failed>
-      <DataFailed
-        :link="`/organization/incedant/add`"
-        addText="Add Incedant"
-        description="Sorry .. You have no Incedant .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Incedant"
-      />
-    </template>
-    <!-- </DataStatus> -->
-
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
+      </template>
+      <template #loader>
+        <TableLoader :cols="3" :rows="10" />
+      </template>
+      <template #initial>
+        <TableLoader :cols="3" :rows="10" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/organization/incedant/add`"
+          addText="Add incedant"
+          description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No incedant"
+        />
+      </template>
+      <template #failed>
+        <DataFailed
+          :link="`/organization/incedant/add`"
+          addText="Add incedant"
+          description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No incedant"
+        />
+      </template>
+    </DataStatus>
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Incedant .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

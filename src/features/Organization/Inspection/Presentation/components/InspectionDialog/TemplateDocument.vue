@@ -15,7 +15,7 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   allData: TemplateDetailsModel
 }>()
-
+// const TemplateFormDetails = ref<TemplateDetailsModel>()
 watch(
   () => props.allData,
   (newState) => {
@@ -73,14 +73,16 @@ const UpdateData = () => {
     select: SelectedSelects.value,
     textarea: SelectedTextAreas.value,
   })
-
 }
+
+
+
 </script>
 <template>
   <div class="template-document-container">
     <div class="template-document-header">
       <div class="template-header">
-        <p class="header-title" v-if="allData.titles && allData?.titles.length > 0">
+        <p class="header-title" v-if="allData?.titles && allData?.titles?.length > 0">
           {{
             allData?.titles
               ?.filter((item) => item.locale === 'en')

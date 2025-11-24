@@ -28,11 +28,12 @@ const FetchTemplateDocument = async () => {
   const showTemplateParams = new ShowTemplateParams(templateId)
   const Response = await showTemplateController.showTemplate(showTemplateParams)
   if (Response.value.data) {
+    console.log(Response.value.data, "Response.value.data");
     AllDocument.value = Response.value.data
   }
 }
 
-onMounted(() => FetchTemplateDocument())
+// onMounted(() => FetchTemplateDocument())
 
 watch(
   () => showTemplateController.state.value,
@@ -43,8 +44,9 @@ watch(
 )
 
 const { locale } = useI18n()
+const title = ref('')
 const getTitle = () => {
-  return state.value.data?.titles?.find(item => item.locale === locale.value)?.title
+  title.value = state.value?.data?.titles?.find(item => item?.locale === locale?.value)?.title
 }
 
 const TaskAnswer = ref({
@@ -61,37 +63,50 @@ const UpdateData = (data) => {
 const formatTaskAnswer = () => {
   const answer = TaskAnswer.value
 
-  const tempMap = new Map() // key: template_item_id
+  const tempMap = new Map()
 
-  // Helper function to add item
   const addToMap = (id, text, answers, imgs) => {
     if (!tempMap.has(id)) {
       tempMap.set(id, {
         template_item_id: id,
         result: null,
-        item_answers: [], // [{id: X}]
-        image_key: []     // ['img1', 'img2']
+        item_answers: [],
+        image_key: []
       })
     }
 
     const entry = tempMap.get(id)
 
-    // result (textarea only)
     if (text) entry.result = text
 
-    // answers → convert to { id: number }
     if (answers !== null && answers !== undefined) {
       const arr = Array.isArray(answers) ? answers : [answers]
 
       arr.forEach(val => {
-        // check duplicate
-        if (!entry.item_answers.some(a => a.id === val)) {
-          entry.item_answers.push({ id: val })
+        if (typeof val === "string") {
+          const exists = entry.item_answers.some(a => a.answer === val)
+
+          if (!exists) {
+            entry.item_answers.push({
+              answer: val,
+              template_item_option_id: null
+            })
+          }
+        }
+
+        else {
+          const exists = entry.item_answers.some(a => a.template_item_option_id === val)
+
+          if (!exists) {
+            entry.item_answers.push({
+              answer: null,
+              template_item_option_id: val
+            })
+          }
         }
       })
     }
 
-    // images → prevent duplicates
     if (imgs && imgs.length) {
       imgs.forEach(img => {
         if (!entry.image_key.includes(img)) {
@@ -101,10 +116,9 @@ const formatTaskAnswer = () => {
     }
   }
 
-
   // textarea
   answer.textarea?.forEach(item => {
-    addToMap(item.itemid, item.value, null, item.img || [])
+    addToMap(item.itemid, null, item.value, item.img || [])
   })
 
   // select
@@ -130,10 +144,6 @@ const formatTaskAnswer = () => {
 }
 
 
-
-
-
-
 const CreateAnswer = async () => {
   const formatted = formatTaskAnswer()
   const UpdatedFormat = formatted.map(item => {
@@ -149,13 +159,22 @@ const CreateAnswer = async () => {
 
   visible.value = false
 }
+
+
+const GetData = async () => {
+  visible.value = true
+  await FetchTemplateDocument();
+  getTitle()
+}
 </script>
 
 <template>
   <div class="card flex justify-center">
-    <button class="card-info-status" @click="visible = true">Start</button>
+    <button class="card-info-status" @click="GetData">Start</button>
+    <!-- <pre>{{ state.data }}</pre> -->
 
-    <Dialog v-model:visible="visible" modal :header="getTitle()" :style="{ width: '60vw' }">
+    <!-- :header="state?.data?.title" -->
+    <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
       <TemplateDocument :allData="state.data" @update:data="UpdateData" />
 
       <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">

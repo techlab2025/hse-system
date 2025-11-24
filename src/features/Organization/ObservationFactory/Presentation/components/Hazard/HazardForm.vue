@@ -103,12 +103,13 @@ const setImage = async (data: File) => {
 const ZoneIds = ref<number[]>()
 const GetZones = (data: number[]) => {
   ZoneIds.value = data
+  // console.log(ZoneIds.value, 'ZoneIds.value')
   updateData()
 }
 const riskLevel = ref<RiskLevelEnum | null>(null)
 const isNearMiss = ref<boolean | number>(0)
 const handleObservationLevel = (data: any) => {
-  console.log(data, 'data')
+  // console.log(data, 'data')
   riskLevel.value = data.level
   isNearMiss.value = data.is_near_miss
   updateData()

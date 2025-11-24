@@ -1,15 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
-import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice'
-
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import Image from 'primevue/image'
+// import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
-import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -17,75 +12,81 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
-import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
-import DeleteObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/deleteObserverationTypeParams'
-import DeleteObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/deleteObserverationTypeController'
-import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
+import ViewIcon from '@/shared/icons/ViewIcon.vue'
 
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import IndexHazardController from '../../controllers/indexHazardController'
+import IndexHazardParams from '../../../Core/params/indexHazardParams'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
+import DeleteHazardController from '../../controllers/deleteHazardController'
+import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
+import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 const { t } = useI18n()
 
-// import DialogChangeStatusObservation from "@/features/setting/Observation/Presentation/components/Observation/DialogChangeStatusObservation.vue";
+// import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexObservationController = IndexObserverationTypeController.getInstance()
-const state = ref(indexObservationController.state.value)
+const indexHazardController = IndexHazardController.getInstance()
+const state = ref(indexHazardController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<ObservationStatusEnum>(ObservationStatusEnum[route.params.type as keyof typeof ObservationStatusEnum])
+// const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
-const fetchObservation = async (
+const fetchHazard = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  projectZoneLozationId?: number[],
 ) => {
-  const deleteObservationParams = new IndexObserverationTypeParams(
+  const deleteHazardParams = new IndexHazardParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id,
+    Observation.ObservationType,
+    37,
+    projectZoneLozationId,
   )
-  await indexObservationController.getData(deleteObservationParams)
+  await indexHazardController.getData(deleteHazardParams)
 }
 
 onMounted(() => {
-  fetchObservation()
+  fetchHazard()
 })
 
-const searchObservation = debounce(() => {
-  fetchObservation(word.value)
+const searchHazard = debounce(() => {
+  fetchHazard(word.value)
 })
 
-const deleteObservation = async (id: number) => {
-  const deleteObservationParams = new DeleteObserverationTypeParams(id)
-  await DeleteObserverationTypeController.getInstance().deleteObservation(deleteObservationParams)
-  await fetchObservation()
+const deleteHazard = async (id: number) => {
+  const deleteHazardParams = new DeleteHazardParams(id)
+  await DeleteHazardController.getInstance().deleteHazard(deleteHazardParams)
+  await fetchHazard()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchObservation('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchObservation('', currentPage.value, countPerPage.value)
+  fetchHazard('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexObservationController.state.value,
+  () => indexHazardController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -99,158 +100,144 @@ watch(
 
 const { user } = useUserStore()
 
-const actionList = (id: number, deleteObservation: (id: number) => void) => [
+const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/${id}`,
+    link: `/organization/observation/${id}`,
     permission: [
-      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORG_OBSERVATION_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.OBSERVATION_TYPE_ALL,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
     ],
   },
   // {
-  //   text: t('add_sub_OBSERVATION_type'),
+  //   text: t('add_sub_OBSERVATION'),
   //   icon: IconEdit,
   //   link: `/admin/Hazard-type/add/${id}`,
   //   permission: [
-  //     PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+  //     PermissionsEnum.OBSERVATION_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.OBSERVATION_TYPE_ALL,
+  //     PermissionsEnum.OBSERVATION_ALL,
   //   ],
   // },
   // {
-  //   text: t('sub_OBSERVATION_types'),
+  //   text: t('sub_OBSERVATIONs'),
   //   icon: IconEdit,
   //   link: `/admin/Hazard-types/${id}`,
   //   permission: [
-  //     PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+  //     PermissionsEnum.OBSERVATION_UPDATE,
   //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.OBSERVATION_TYPE_ALL,
+  //     PermissionsEnum.OBSERVATION_ALL,
   //   ],
   // },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteObservation(id),
+    action: () => deleteHazard(id),
     permission: [
-      PermissionsEnum.OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORG_OBSERVATION_DELETE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.OBSERVATION_TYPE_ALL,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
     ],
   },
 ]
+
+const categories = ref([
+  'Sustainability-oriented Names',
+  'Eco-friendly',
+  'oriented Names',
+  'Eco-friendly',
+])
+const Filters = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: 'Cairo' }),
+  new TitleInterface({ id: 2, title: 'Alexandria' }),
+  new TitleInterface({ id: 3, title: 'Giza' }),
+  new TitleInterface({ id: 4, title: 'Cairo' }),
+  new TitleInterface({ id: 5, title: 'Alexandria' }),
+  new TitleInterface({ id: 6, title: 'Giza' }),
+  new TitleInterface({ id: 7, title: 'Cairo' }),
+  new TitleInterface({ id: 8, title: 'Alexandria' }),
+  new TitleInterface({ id: 9, title: 'Giza' }),
+])
+const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchObservation())">
-        <Search />
-      </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchObservation"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
-      <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.OBSERVATION_TYPE_CREATE,
-          PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-        ]"
-      >
-        <router-link :to="`/organization/observation/add`" class="btn btn-primary">
-          {{ $t('Add_Observation') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div>
-
   <PermissionBuilder
     :code="[
-      PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.OBSERVATION_TYPE_ALL,
-      PermissionsEnum.OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.OBSERVATION_TYPE_FETCH,
-      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.OBSERVATION_TYPE_CREATE,
-
-      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+      PermissionsEnum.ORG_OBSERVATION_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+      PermissionsEnum.ORG_OBSERVATION_CREATE,
     ]"
   >
+    <IndexHazardHeader :title="`observation`" :length="120" :categories="categories" />
+    <IndexFilter
+      :filters="Filters"
+      @update:data="fetchHazard('', 1, 10, 1, $event)"
+      :link="'/organization/observation/add'"
+      :linkText="'Create Observation'"
+    />
+
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+          <div class="index-table-card-container">
+            <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
+              <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+                <div class="header-container">
+                  <div class="card-content">
+                    <div class="card-header">
+                      <p class="label-item-primary">
+                        Serial : <span>{{ item.serial }}</span>
+                      </p>
+                      <p class="label-item-secondary">
+                        Date & Time : <span>{{ item.date }}</span>
+                      </p>
+                    </div>
+                    <div class="card-details">
+                      <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                      <p class="subtitle">{{ item.description }}</p>
+                      <div class="project-details">
+                        <p class="label-item-primary">
+                          Zone : <span>{{ item.zoon?.title }}</span>
+                        </p>
+                        <p class="label-item-primary">
+                          Machine : <span>{{ item.equipment?.title }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-info">
+                    <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
+                    <Image :src="item.image" alt="Image" preview>
+                      <template #previewicon>
+                        <div class="perview">
+                          <span>view</span>
+                          <ViewIcon />
+                        </div>
+                      </template>
+                    </Image>
+                  </div>
+                </div>
+                <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                  <span v-if="ShowDetails[index]">Show Less</span>
+                  <span v-else>Show More</span>
+                  <ShowMoreIcon />
+                </p>
+              </div>
 
-                <th scope="col">{{ $t('actions') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
-                <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
-
-                <td data-label="Actions">
-                  <!--                <DialogChangeStatusObservation-->
-                  <!--                  v-if="item.ObservationStatus === ObservationStatusEnum.Draft"-->
-                  <!--                  :ObservationId="item.id"-->
-                  <!--                  @ObservationChangeStatus="fetchObservation"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteObservation)"
-                    @delete="deleteObservation(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <div v-if="ShowDetails[index]" class="card-description">
+                <p class="title">Description</p>
+                <p class="description">
+                  {{ item.description }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
         <Pagination
           :pagination="state.pagination"
@@ -266,7 +253,7 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
+          :link="`/organization/observation/add`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Observation"
@@ -274,14 +261,13 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
+          :link="`/organization/observation/add`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Observation"
         />
       </template>
     </DataStatus>
-
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
