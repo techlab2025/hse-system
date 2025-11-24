@@ -50,6 +50,13 @@
         white-space: initial;
         text-wrap: wrap;
       }
+
+      .custom-select {
+        width: 100%;
+        border: 1px solid #ebebeb;
+        padding: 10px;
+        border-radius: 12px;
+      }
     }
     .image-upload {
       width: 50px;
