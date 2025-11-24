@@ -1,12 +1,11 @@
-export default class ItemModel {
-  public id: number
-  public title: string
-  public isDanger: number
+import TitleInterface from '@/base/Data/Models/title_interface'
+
+export default class ItemModel extends TitleInterface {
+  // public isDanger: number
 
   constructor(id: number, title: string, isDanger: number) {
-    this.id = id
-    this.title = title
-    this.isDanger = isDanger
+    super({ id: id, title: title, subtitle: isDanger })
+    // this.isDanger = isDanger
   }
 
   static fromMap(data: any): ItemModel {
