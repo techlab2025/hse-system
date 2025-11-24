@@ -1,0 +1,287 @@
+<script lang="ts" setup>
+import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { debounce } from '@/base/Presentation/utils/debouced'
+
+import Pagination from '@/shared/HelpersComponents/Pagination.vue'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import IconEdit from '@/shared/icons/IconEdit.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
+import ViewIcon from '@/shared/icons/ViewIcon.vue'
+import Image from 'primevue/image'
+
+import IndexInvestigatingHeader from './InvestigatingUtils/IndexInvestigatingHeader.vue'
+import IndexFilter from './InvestigatingUtils/IndexFilter.vue'
+
+import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
+import IndexInvestigatingParams from '../../../Core/params/indexInvestigatingParams'
+import DeleteInvestigatingParams from '../../../Core/params/deleteInvestigatingParams'
+import DeleteInvestigatingController from '../../controllers/deleteInvestigatingController'
+
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import FilterDialog from './InvestigatingUtils/filterDialog.vue'
+
+// i18n
+const { t } = useI18n()
+
+// route & user
+const route = useRoute()
+const { user } = useUserStore()
+
+// reactive state
+const word = ref('')
+const currentPage = ref(1)
+const countPerPage = ref(10)
+const ShowDetails = ref<number[]>([])
+
+const indexInvestigatingController = IndexInvestigatingController.getInstance()
+const state = ref(indexInvestigatingController.state.value)
+
+// fetch data
+const fetchInvestigating = async (
+  query = '',
+  pageNumber = 1,
+  perPage = 10,
+  withPage = 1,
+  projectZoneLozationId?: number[],
+) => {
+  const params = new IndexInvestigatingParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    Observation.InvestigatingType,
+    37,
+    projectZoneLozationId,
+  )
+  await indexInvestigatingController.getData(params)
+}
+
+// delete hazard
+const deleteInvestigating = async (id: number) => {
+  const params = new DeleteInvestigatingParams(id)
+  await DeleteInvestigatingController.getInstance().deleteInvestigating(params)
+  await fetchInvestigating('', currentPage.value, countPerPage.value)
+}
+
+// pagination
+const handleChangePage = (page: number) => {
+  currentPage.value = page
+  fetchInvestigating('', currentPage.value, countPerPage.value)
+}
+
+const handleCountPerPage = (count: number) => {
+  countPerPage.value = count
+  fetchInvestigating('', currentPage.value, countPerPage.value)
+}
+
+// search debounce
+const searchInvestigating = debounce(() => fetchInvestigating(word.value))
+
+// watch controller state
+watch(
+  () => indexInvestigatingController.state.value,
+  (newState) => {
+    if (newState) state.value = newState
+  },
+  { deep: true },
+)
+
+// action list
+const actionList = (id: number) => [
+  {
+    text: t('edit'),
+    icon: IconEdit,
+    link: `/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_ALL,
+    ],
+  },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteInvestigating(id),
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_DELETE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_ALL,
+    ],
+  },
+]
+
+// sample categories & filters
+const categories = ref([
+  'Sustainability-oriented Names',
+  'Eco-friendly',
+  'Oriented Names',
+  'Eco-friendly',
+])
+
+const Filters = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: 'Cairo' }),
+  new TitleInterface({ id: 2, title: 'Alexandria' }),
+  new TitleInterface({ id: 3, title: 'Giza' }),
+  new TitleInterface({ id: 4, title: 'Cairo' }),
+  new TitleInterface({ id: 5, title: 'Alexandria' }),
+  new TitleInterface({ id: 6, title: 'Giza' }),
+  new TitleInterface({ id: 7, title: 'Cairo' }),
+  new TitleInterface({ id: 8, title: 'Alexandria' }),
+  new TitleInterface({ id: 9, title: 'Giza' }),
+])
+
+// on mounted
+onMounted(() => fetchInvestigating())
+</script>
+
+<template>
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-12">
+      <IndexInvestigatingHeader :title="'Investigating'" :length="120" :categories="categories" />
+
+      <div class="flex items-center justify-between">
+        <IndexFilter
+          :filters="Filters"
+          @update:data="fetchInvestigating('', 1, 10, 1, $event)"
+          :link="'/organization/hazard/add'"
+          :linkText="'Create Investigating'"
+        />
+
+        <div class="btns-filter">
+          <FilterDialog />
+
+          <router-link :to="`/organization/hazard/add`">
+            <button class="btn btn-primary">{{ $t('Create Investigating') }}</button>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-12">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_HAZARD_ALL,
+          PermissionsEnum.ORG_HAZARD_DELETE,
+          PermissionsEnum.ORG_HAZARD_FETCH,
+          PermissionsEnum.ORG_HAZARD_UPDATE,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+        ]"
+      >
+        <DataStatus :controller="state">
+          <template #success>
+            <div class="table-responsive">
+              <div class="index-table-card-container">
+                <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
+                  <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+                    <div class="header-container">
+                      <div class="card-content">
+                        <div class="card-header">
+                          <p class="label-item-primary">
+                            Serial: <span>{{ item.serial }}</span>
+                          </p>
+                          <p class="label-item-secondary">
+                            Date & Time: <span>{{ item.date }}</span>
+                          </p>
+                        </div>
+                        <div class="card-details">
+                          <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                          <p class="subtitle">{{ item.description }}</p>
+                          <div class="project-details">
+                            <p class="label-item-primary">
+                              Zone: <span>{{ item.zoon?.title }}</span>
+                            </p>
+                            <p class="label-item-primary">
+                              Machine: <span>{{ item.equipment?.title }}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-info">
+                        <p class="title">Investigating Type</p>
+                        <Image :src="item.image" alt="Image" preview>
+                          <template #previewicon>
+                            <div class="perview">
+                              <span>view</span>
+                              <ViewIcon />
+                            </div>
+                          </template>
+                        </Image>
+                      </div>
+                    </div>
+
+                    <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                      <span v-if="ShowDetails[index]">Show Less</span>
+                      <span v-else>Show More</span>
+                      <ShowMoreIcon />
+                    </p>
+                  </div>
+
+                  <div v-if="ShowDetails[index]" class="card-description">
+                    <p class="title">Description</p>
+                    <p class="description">{{ item.description }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
+          </template>
+
+          <template #loader>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
+
+          <template #initial>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
+
+          <template #empty>
+            <DataEmpty
+              :link="`/organization/hazard/add`"
+              addText="Add Investigating"
+              description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Investigating"
+            />
+          </template>
+
+          <template #failed>
+            <DataFailed
+              :link="`/organization/hazard/add`"
+              addText="Add Investigating"
+              description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Investigating"
+            />
+          </template>
+        </DataStatus>
+
+        <template #notPermitted>
+          <DataFailed
+            addText="Have not Permission"
+            description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data"
+          />
+        </template>
+      </PermissionBuilder>
+    </div>
+  </div>
+</template>
