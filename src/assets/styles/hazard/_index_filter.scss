@@ -11,7 +11,10 @@
   padding: $MdSize;
   background-color: #fcfcfc;
   width: 100%;
-
+  .btns {
+    @include flex-row(nowrap, flex-end, center);
+    gap: 5px;
+  }
   .filter-container {
     @include flex-row(wrap, flex-start, center);
     gap: $MdSize;

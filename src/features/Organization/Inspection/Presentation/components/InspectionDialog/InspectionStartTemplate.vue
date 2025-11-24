@@ -3,14 +3,13 @@ import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemp
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
-import { watch } from 'vue'
-import { onMounted } from 'vue'
-import { ref } from 'vue'
+import { watch, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TemplateDocument from './TemplateDocument.vue'
 import { useI18n } from 'vue-i18n'
 import CreateTaskAnswerController from '../../controllers/CreateTaskAnswerController'
 import CreateTaskResultParams from '../../../Core/params/CreateTaskResultParams'
+import ItemResultParams from '../../../Core/params/ItemResultParams'
 
 const visible = ref(false)
 
@@ -21,7 +20,6 @@ const { templateId, taskId } = defineProps<{
 
 const router = useRouter()
 const route = useRoute()
-const id = route.params.parent_id
 const AllDocument = ref<TemplateDetailsModel>()
 const showTemplateController = ShowTemplateController.getInstance()
 const state = ref(showTemplateController.state.value)
@@ -30,46 +28,156 @@ const FetchTemplateDocument = async () => {
   const showTemplateParams = new ShowTemplateParams(templateId)
   const Response = await showTemplateController.showTemplate(showTemplateParams)
   if (Response.value.data) {
+    console.log(Response.value.data, "Response.value.data");
     AllDocument.value = Response.value.data
   }
 }
-onMounted(() => {
-  FetchTemplateDocument()
-})
+
+// onMounted(() => FetchTemplateDocument())
+
 watch(
   () => showTemplateController.state.value,
-  (newState) => {
-    if (newState) {
-      state.value = newState
-    }
+  newState => {
+    if (newState) state.value = newState
   },
-  {
-    deep: true,
-  },
+  { deep: true }
 )
 
 const { locale } = useI18n()
+const title = ref('')
 const getTitle = () => {
-  return state.value.data?.titles?.find((item) => item.locale === locale.value)?.title
+  title.value = state.value?.data?.titles?.find(item => item?.locale === locale?.value)?.title
 }
 
-const TaskAnswer = ref()
+const TaskAnswer = ref({
+  check: [],
+  radio: [],
+  select: [],
+  textarea: []
+})
+
+const UpdateData = (data) => {
+  TaskAnswer.value = data
+}
+
+const formatTaskAnswer = () => {
+  const answer = TaskAnswer.value
+
+  const tempMap = new Map()
+
+  const addToMap = (id, text, answers, imgs) => {
+    if (!tempMap.has(id)) {
+      tempMap.set(id, {
+        template_item_id: id,
+        result: null,
+        item_answers: [],
+        image_key: []
+      })
+    }
+
+    const entry = tempMap.get(id)
+
+    if (text) entry.result = text
+
+    if (answers !== null && answers !== undefined) {
+      const arr = Array.isArray(answers) ? answers : [answers]
+
+      arr.forEach(val => {
+        if (typeof val === "string") {
+          const exists = entry.item_answers.some(a => a.answer === val)
+
+          if (!exists) {
+            entry.item_answers.push({
+              answer: val,
+              template_item_option_id: null
+            })
+          }
+        }
+
+        else {
+          const exists = entry.item_answers.some(a => a.template_item_option_id === val)
+
+          if (!exists) {
+            entry.item_answers.push({
+              answer: null,
+              template_item_option_id: val
+            })
+          }
+        }
+      })
+    }
+
+    if (imgs && imgs.length) {
+      imgs.forEach(img => {
+        if (!entry.image_key.includes(img)) {
+          entry.image_key.push(img)
+        }
+      })
+    }
+  }
+
+  // textarea
+  answer.textarea?.forEach(item => {
+    addToMap(item.itemid, null, item.value, item.img || [])
+  })
+
+  // select
+  answer.select?.forEach(item => {
+    addToMap(item.itemId, null, item.selected, item.img || [])
+  })
+
+  // check
+  answer.check?.forEach(group => {
+    group.selected.forEach(val => {
+      addToMap(group.itemid, null, val, group.img || [])
+    })
+  })
+
+  // radio
+  answer.radio?.forEach(item => {
+    if (item.value && item.value !== 0) {
+      addToMap(item.itemid, null, item.value, item.img || [])
+    }
+  })
+
+  return Array.from(tempMap.values())
+}
+
 
 const CreateAnswer = async () => {
-  const createTaskResultParams = new CreateTaskResultParams(taskId, templateId, TaskAnswer.value);
+  const formatted = formatTaskAnswer()
+  const UpdatedFormat = formatted.map(item => {
+    return new ItemResultParams(item.result, item.template_item_id, item.image_key, item.item_answers)
+  })
+  const createTaskResultParams = new CreateTaskResultParams(
+    taskId,
+    templateId,
+    UpdatedFormat
+  )
   const createTaskAnswerController = CreateTaskAnswerController.getInstance()
-  await createTaskAnswerController.CreateTaskAnswer(createTaskResultParams, router, true)
+  const state = await createTaskAnswerController.CreateTaskAnswer(createTaskResultParams, router, true)
+
+  visible.value = false
+}
+
+
+const GetData = async () => {
+  visible.value = true
+  await FetchTemplateDocument();
+  getTitle()
 }
 </script>
 
 <template>
   <div class="card flex justify-center">
-    <button class="card-info-status" @click="visible = true">Start</button>
-    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :header="getTitle ? getTitle() : ''"
-      :style="{ width: '60vw' }">
-      <TemplateDocument :allData="state.data" />
+    <button class="card-info-status" @click="GetData">Start</button>
+    <!-- <pre>{{ state.data }}</pre> -->
 
-      <button class="btn btn-primary w-full" @click="CreateAnswer">
+    <!-- :header="state?.data?.title" -->
+    <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
+      <TemplateDocument :allData="state.data" @update:data="UpdateData" />
+
+      <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
     </Dialog>

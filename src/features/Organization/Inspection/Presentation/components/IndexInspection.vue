@@ -249,6 +249,7 @@ const ShowDetails = ref<number[]>([])
                     </div>
                   </div>
                   <!-- <div class="card-info-status" >Start</div> -->
+                 
                   <InspectionStartTemplate v-if="item.status == InspectionStatus.NOT_FINISHED"
                     :templateId="item.template.id" :taskId="item.id" />
 

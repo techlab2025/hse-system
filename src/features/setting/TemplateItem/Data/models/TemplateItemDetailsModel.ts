@@ -1,4 +1,4 @@
-import type ItemModel from './ItemMode'
+import ItemModel from './ItemMode'
 
 export default class TemplateItemDetailsModel {
   public id: number
@@ -37,7 +37,7 @@ export default class TemplateItemDetailsModel {
       data.industries ?? [],
       data.action ?? 0,
       data.require_image,
-      data.options,
+      data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
     )
   }
 }
