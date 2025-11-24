@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import IndexObservationParams from '@/features/setting/Observation/Core/params/indexObservationParams'
-import IndexObservationController from '@/features/setting/Observation/Presentation/controllers/indexObservationController'
-
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -13,8 +10,6 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteObservationController from '@/features/setting/Observation/Presentation/controllers/deleteObservationController'
-import DeleteObservationParams from '@/features/setting/Observation/Core/params/deleteObservationParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,6 +24,10 @@ import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
+import DeleteObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/deleteObserverationTypeParams'
+import DeleteObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/deleteObserverationTypeController'
+import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
 
 const { t } = useI18n()
 
@@ -38,7 +37,7 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexObservationController = IndexObservationController.getInstance()
+const indexObservationController = IndexObserverationTypeController.getInstance()
 const state = ref(indexObservationController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
@@ -50,7 +49,13 @@ const fetchObservation = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteObservationParams = new IndexObservationParams(query, pageNumber, perPage, withPage, id)
+  const deleteObservationParams = new IndexObserverationTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexObservationController.getData(deleteObservationParams)
 }
 
@@ -63,8 +68,8 @@ const searchObservation = debounce(() => {
 })
 
 const deleteObservation = async (id: number) => {
-  const deleteObservationParams = new DeleteObservationParams(id)
-  await DeleteObservationController.getInstance().deleteObservation(deleteObservationParams)
+  const deleteObservationParams = new DeleteObserverationTypeParams(id)
+  await DeleteObserverationTypeController.getInstance().deleteObservation(deleteObservationParams)
   await fetchObservation()
 }
 
@@ -151,17 +156,25 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchObservation())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchObservation" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchObservation"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.OBSERVATION_TYPE_CREATE,
-        PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.OBSERVATION_TYPE_CREATE,
+          PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+        ]"
+      >
         <router-link :to="`/organization/observation/add`" class="btn btn-primary">
           {{ $t('Add_Observation') }}
         </router-link>
@@ -169,21 +182,23 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.OBSERVATION_TYPE_ALL,
-    PermissionsEnum.OBSERVATION_TYPE_DELETE,
-    PermissionsEnum.OBSERVATION_TYPE_FETCH,
-    PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-    PermissionsEnum.OBSERVATION_TYPE_CREATE,
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBSERVATION_TYPE_ALL,
+      PermissionsEnum.OBSERVATION_TYPE_DELETE,
+      PermissionsEnum.OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.OBSERVATION_TYPE_CREATE,
 
-    PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-  ]">
+      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -204,8 +219,8 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/${item.id}`">{{
-                    index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -228,13 +243,20 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
                   <!--                  @ObservationChangeStatus="fetchObservation"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteObservation)" @delete="deleteObservation(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteObservation)"
+                    @delete="deleteObservation(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -243,22 +265,28 @@ const actionList = (id: number, deleteObservation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
+        <DataEmpty
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Observation" />
+          title="..ops! You have No Observation"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
+        <DataFailed
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/Observation`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Observation" />
+          title="..ops! You have No Observation"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

@@ -80,19 +80,19 @@ class ApiNames {
 
   // Inspection
   public get CreateInspection() {
-    return this.prefix + 'create_inspection'
+    return this.prefix + 'create_task'
   }
   public get IndexInspection() {
-    return this.prefix + 'fetch_inspection'
+    return this.prefix + 'fetch_tasks'
   }
   public get ShowInspection() {
-    return this.prefix + 'fetch_inspection_details'
+    return this.prefix + 'fetch_task_details'
   }
   public get EditInspection() {
-    return this.prefix + 'update_inspection'
+    return this.prefix + 'update_task'
   }
   public get DeleteInspection() {
-    return this.prefix + 'delete_inspection'
+    return this.prefix + 'delete_task'
   }
 
   // location hierarchy
@@ -1192,6 +1192,11 @@ class ApiNames {
   }
   public get DisHealthConditions() {
     return this.prefix + 'disable_health_condition'
+
+  }
+  // Create Task Answer
+  public get CreateTaskAnswer() {
+    return this.prefix + 'create_task_result'
   }
 }
 

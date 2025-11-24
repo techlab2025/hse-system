@@ -57,20 +57,12 @@ const sendTemplatesId = () => {
       </button>
     </div>
 
-    <Dialog
-      v-model:visible="visible"
-      modal
-      :style="{ width: '50vw' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-      class="inspection-template-dialog"
-    >
+    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
+      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
       <template #header>
         <div class="add-equipment-header">
-          <HeaderSection
-            :img="InspectionTemplateImage"
-            title="inspection template"
-            subtitle="Select from the available templates."
-          />
+          <HeaderSection :img="InspectionTemplateImage" title="inspection template"
+            subtitle="Select from the available templates." />
         </div>
       </template>
 
@@ -97,13 +89,8 @@ const sendTemplatesId = () => {
               </div>
 
               <div class="select-input input-wrapper check-box">
-                <input
-                  type="checkbox"
-                  :id="`template-${template.id}`"
-                  class="input"
-                  :value="template.id"
-                  v-model="selectedTemplates"
-                />
+                <input type="checkbox" :id="`template-${template.id}`" class="input" :value="template.id"
+                  v-model="selectedTemplates" />
 
                 <label :for="`template-${template.id}`">
                   {{ $t('select') }}

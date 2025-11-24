@@ -5,6 +5,8 @@ import { ref } from 'vue';
 import FetchProjectZoneController from '../../controllers/FetchProjectZoneController';
 import FetchProjectZonesParams from '../../../Core/params/FetchProjectZonesParams';
 import InspectionGeneralForm from './InspectionGeneralForm.vue';
+import InspectionTemplateDialog
+  from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionTemplateDialog.vue'
 
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
@@ -14,8 +16,9 @@ const fetchProjectZonesParams = new FetchProjectZonesParams(37)
 
 const UpdateData = () => {
   emit('update:data', {
-    zones: SelectedZones.value,
-    data: Data.value
+    morph: SelectedZones.value,
+    data: Data.value,
+    TempalteIds: TempalteIds.value
   })
 }
 const setZones = (data: TitleInterface) => {
@@ -28,9 +31,11 @@ const GetGeneralData = (data) => {
   Data.value = data
   UpdateData();
 }
-
-
-
+const TempalteIds = ref<number[]>()
+const GetTemplateId = (data: number[]) => {
+  TempalteIds.value = data
+  UpdateData()
+}
 </script>
 <template>
 
@@ -38,8 +43,9 @@ const GetGeneralData = (data) => {
     <CustomSelectInput :modelValue="SelectedZones" class="input" :controller="fetchProjectZoneController"
       :params="fetchProjectZonesParams" :label="$t('Zone')" id="employee" placeholder="select your employee"
       @update:modelValue="setZones" />
+    <!-- Dialog -->
+    <InspectionTemplateDialog @update:data="GetTemplateId" />
   </div>
-  <!-- Dialog -->
 
   <InspectionGeneralForm @update:data="GetGeneralData" />
 

@@ -30,11 +30,11 @@ import EditEquipmentController from '../controllers/editEquipmentController'
 
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { LangsMap } from '@/constant/langs'
-import type EquipmentModel from '../../Data/models/equipmentModel'
+// import type EquipmentModel from '../../Data/models/equipmentModel'
 import { useI18n } from 'vue-i18n'
-import { EquipmentStatus } from '../../Core/enum/EquipmentStatus'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
+import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 const { t } = useI18n()
 

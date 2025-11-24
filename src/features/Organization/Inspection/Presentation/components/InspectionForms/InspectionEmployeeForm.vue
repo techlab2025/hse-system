@@ -19,8 +19,9 @@ const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 
 const UpdateData = () => {
   emit('update:data', {
-    employee: SelectedEmployee.value,
-    data: Data.value
+    morph: SelectedEmployee.value,
+    data: Data.value,
+    TempalteIds:TempalteIds.value
   })
 }
 const setEmployee = (data: TitleInterface) => {
@@ -33,7 +34,11 @@ const GetGeneralData = (data) => {
   Data.value = data
   UpdateData()
 }
-
+const TempalteIds = ref<number[]>()
+const GetTemplateId = (data:number[])=>{
+  TempalteIds.value = data
+  UpdateData()
+}
 </script>
 
 <template>
@@ -42,7 +47,7 @@ const GetGeneralData = (data) => {
       :params="indexEmployeeParams" label="Employee" id="employee" placeholder="select your employee"
       @update:modelValue="setEmployee" />
     <!-- Dialog -->
-    <InspectionTemplateDialog @update:data="UpdateData" />
+    <InspectionTemplateDialog @update:data="GetTemplateId" />
   </div>
   <InspectionGeneralForm @update:data="GetGeneralData" />
 </template>
