@@ -1159,6 +1159,25 @@ const user = useUserStore()
                     </li>
                   </PermissionBuilder>
 
+                  <!-- Investigating -->
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_INVESTIGATING_ALL,
+                      PermissionsEnum.ORG_INVESTIGATING_CREATE,
+                      PermissionsEnum.ORG_INVESTIGATING_DELETE,
+                      PermissionsEnum.ORG_INVESTIGATING_FETCH,
+                      PermissionsEnum.ORG_INVESTIGATING_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/investigating">
+                        <SidebarVector />
+                        <span>{{ $t('Investigating') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
