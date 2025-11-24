@@ -183,6 +183,7 @@ onMounted(() => fetchHazard())
           PermissionsEnum.ORG_HAZARD_UPDATE,
           PermissionsEnum.ORG_HAZARD_CREATE,
         ]"
+        
       >
         <DataStatus :controller="state">
           <template #success>
