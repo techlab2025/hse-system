@@ -8,7 +8,7 @@ export default class DeleteHealthConditionsParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["health_conditions_id"] = this.id;
+    data["health_condition_id"] = this.id;
     return data;
   }
 }

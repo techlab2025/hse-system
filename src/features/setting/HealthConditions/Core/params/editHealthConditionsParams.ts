@@ -25,7 +25,7 @@ export default class EditHealthConditionsParams implements Params {
   > {
     const data: Record<string, any> = {}
 
-    data['health_conditions_id'] = this.id
+    data['health_condition_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
