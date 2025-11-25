@@ -10,7 +10,7 @@ import DatePicker from 'primevue/datepicker'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import hazardImage from '@/assets/images/alert 1.png'
+import detectiveImage from '@/assets/images/detective.png'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 // import IndexInvestigatingTypeParams from '@/features/setting/InvestigatingType/Core/params/indexInvestigatingTypeParams'
 // import IndexInvestigatingTypeController from '@/features/setting/InvestigatingType/Presentation/controllers/indexInvestigatingTypeController'
@@ -20,8 +20,8 @@ import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import type { RiskLevelEnum } from '@/features/Organization/ObservationFactory/Core/Enums/risk_level_enum'
 import { TypesEnum } from '@/features/Organization/ObservationFactory/Core/Enums/types_enum'
 import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
-// import ObservationLevel from '../Ovservation/ObservationLevel.vue'
-// import HazerdType from '../Ovservation/HazerdType.vue'
+import ObservationLevel from '../../../../ObservationFactory/Presentation/components/Ovservation/ObservationLevel.vue'
+import HazerdType from '../../../../ObservationFactory/Presentation/components/Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 
 const emit = defineEmits(['update:data'])
@@ -141,9 +141,9 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage
-      :title="'create Hazerd'"
-      :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="hazardImage"
+      :title="'create Investigating'"
+      :subtitle="'Document what you observe to improve workplace safety'"
+      :img="detectiveImage"
     />
   </div>
   <div class="col-span-6 md:col-span-6">
@@ -151,13 +151,24 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   </div>
   <div class="investigating-form col-span-6 md:col-span-6">
     <div class="investigating-form-header">
-      <InvestigatingIcon class="icon" />
-      <p class="title">Hazerd form <span>( #001 )</span></p>
+      <p class="title">Investigating form <span>( #001 )</span></p>
     </div>
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper">
+  <div class="col-span-6 md:col-span-4 input-wrapper">
     <label for="text">Text</label>
     <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
+  </div>
+  <div class="col-span-6 md:col-span-2 input-wrapper">
+    <CustomSelectInput
+      :modelValue="SelectedMachine"
+      class="input"
+      :controller="indexEquipmentController"
+      :params="indexEquipmentParams"
+      label="select machine (optional)"
+      id="machine"
+      placeholder="select your machine"
+      @update:modelValue="setMachine"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="date">Date</label>
@@ -187,10 +198,33 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       @update:modelValue="setMachine"
     />
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="">upload image</label>
-    <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" />
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full factor-item">
+    <label class="factot-title">Factors & Items</label>
+    <div class="radio-grid">
+      <div class="radio-column">
+        <div class="radio-item">
+          <input type="radio" name="factor1" id="factor1" />
+          <label class="radio-label" for="factor1">Lorem Ipsum 1</label>
+        </div>
+        <div class="radio-item">
+          <input type="radio" name="factor2" id="factor2" />
+          <label class="radio-label" for="factor2">Lorem Ipsum 2</label>
+        </div>
+      </div>
+
+      <div class="radio-column">
+        <div class="radio-item">
+          <input type="radio" name="item1" id="item1" />
+          <label class="radio-label" for="item1">Lorem Ipsum 3</label>
+        </div>
+        <div class="radio-item">
+          <input type="radio" name="item2" id="item2" />
+          <label class="radio-label" for="item2">Lorem Ipsum 4</label>
+        </div>
+      </div>
+    </div>
   </div>
+
   <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
     <ObservationLevel
       :modelRiskLevel="riskLevel"

@@ -7,37 +7,57 @@ import Image from 'primevue/image'
 import IndexFilter from './InvestigatingUtils/IndexFilter.vue'
 import FilterDialog from './InvestigatingUtils/FilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import InvestigatingSidebar from './InvestigatingSidebar.vue'
 
-const InvestigatingList = ref([
+// بيانات ثابتة للكروت
+const InvestigatingData = [
   {
-    serial: 'INV-001',
+    serial:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
     date: '2025-01-05 10:00 AM',
     observer: { name: 'Ahmed Ali' },
     description: 'Oil leakage detected near the main engine.',
     zoon: { title: 'Zone A' },
     equipment: { title: 'Excavator CAT 320' },
+    status: { title: 'unsolve' },
     image: 'https://picsum.photos/220/150',
   },
   {
-    serial: 'INV-002',
-    date: '2025-01-08 01:15 PM',
-    observer: { name: 'Mohamed Hassan' },
-    description: 'High noise level coming from compressor.',
-    zoon: { title: 'Zone C' },
-    equipment: { title: 'Air Compressor X10' },
-    image: 'https://picsum.photos/220/150',
-  },
-  {
-    serial: 'INV-003',
-    date: '2025-01-15 03:40 PM',
-    observer: { name: 'Sara Youssef' },
-    description: 'Broken cable found near hazardous area.',
+    serial: 'Another dummy text for testing card 2',
+    date: '2025-02-10 11:30 AM',
+    observer: { name: 'Sara Mohamed' },
+    description: 'Hydraulic failure detected.',
     zoon: { title: 'Zone B' },
-    equipment: { title: 'Generator G5' },
-    image: 'https://picsum.photos/220/150',
+    equipment: { title: 'Bulldozer CAT D6' },
+    status: { title: 'in_progress' },
+    image: 'https://picsum.photos/221/150',
   },
-])
+  {
+    serial: 'Third card dummy text',
+    date: '2025-03-15 09:45 AM',
+    observer: { name: 'Khaled Samir' },
+    description: 'Electrical issue near main control panel.',
+    zoon: { title: 'Zone C' },
+    equipment: { title: 'Crane Liebherr' },
+    status: { title: 'solved' },
+    image: 'https://picsum.photos/222/150',
+  },
+  {
+    serial: 'Fourth card dummy text',
+    date: '2025-04-20 02:15 PM',
+    observer: { name: 'Mona Hassan' },
+    description: 'Fuel leakage reported.',
+    zoon: { title: 'Zone D' },
+    equipment: { title: 'Loader CAT 950' },
+    status: { title: 'unsolve' },
+    image: 'https://picsum.photos/223/150',
+  },
+]
 
+// إنشاء reactive list من البيانات
+const InvestigatingList = ref(InvestigatingData)
+
+// للتحكم في عرض التفاصيل لكل كارد
 const ShowDetails = ref<boolean[]>([])
 
 onMounted(() => {
@@ -47,19 +67,23 @@ onMounted(() => {
 
 <template>
   <div class="grid grid-cols-12 gap-4 index-investigating">
-    <!-- Header -->
-    <div class="col-span-12">
-      <div class="flex items-center justify-between">
+    <!-- Sidebar -->
+    <InvestigatingSidebar />
+
+    <!-- Main content (Cards) -->
+    <div class="col-span-9">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
         <IndexFilter :filters="Filters" />
         <div class="btns-filter">
           <FilterDialog />
-          <button class="btn btn-primary">Create Investigating</button>
+          <router-link :to="`/organization/investigating/add`">
+            <button class="btn btn-primary">Create Investigating</button>
+          </router-link>
         </div>
       </div>
-    </div>
 
-    <!-- CARDS — ALWAYS DISPLAY -->
-    <div class="col-span-12">
+      <!-- CARDS -->
       <div class="table-responsive">
         <div class="index-table-card-container">
           <div class="index-table-card" v-for="(item, index) in InvestigatingList" :key="index">
@@ -69,18 +93,17 @@ onMounted(() => {
                   <div class="first-card-header">
                     <div class="header">
                       <p class="first-label-item-primary">Incedant <span>_OBS-2025-0112</span></p>
-                      <P>New</P>
+                      <p class="new">New</p>
                     </div>
-                    <p class="label-item-secondary">
-                      Date & Time: <span>{{ item.date }}</span>
-                    </p>
-                  </div>
-
-                  <div class="card-details">
-                    <p class="title">
-                      {{ item.observer.name }}
-                      <span>(observer)</span>
-                    </p>
+                    <div class="first-card-details">
+                      <p class="label-item-secondary">
+                        Date & Time: <span>{{ item.date }}</span>
+                      </p>
+                      <p class="title">
+                        {{ item.observer.name }}
+                        <span>(observer)</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -89,59 +112,34 @@ onMounted(() => {
               <div class="header-container">
                 <div class="card-content">
                   <div class="card-header">
-                    <p class="label-item-primary">
-                      Serial: <span>{{ item.serial }}</span>
-                    </p>
-
-                    <p class="label-item-secondary">
-                      Date & Time: <span>{{ item.date }}</span>
-                    </p>
+                    <p class="label-item-secondary">{{ item.serial }}</p>
                   </div>
 
                   <div class="card-details">
-                    <p class="title">
-                      {{ item.observer.name }}
-                      <span>(observer)</span>
-                    </p>
-
-                    <p class="subtitle">{{ item.description }}</p>
-
                     <div class="project-details">
                       <p class="label-item-primary">
                         Zone: <span>{{ item.zoon.title }}</span>
                       </p>
-
                       <p class="label-item-primary">
                         Machine: <span>{{ item.equipment.title }}</span>
                       </p>
+                      <p class="label-item-primary">
+                        Status: <span>{{ item.status.title }}</span>
+                      </p>
                     </div>
                   </div>
-                </div>
 
-                <div class="card-info">
-                  <p class="title">Investigating Type</p>
+                  <div class="btns-container">
+                    <button class="btn first-btn">
+                      <span>{{ $t('show details') }}</span>
+                    </button>
 
-                  <Image :src="item.image" alt="Image" preview>
-                    <template #previewicon>
-                      <div class="perview">
-                        <span>view</span>
-                        <ViewIcon />
-                      </div>
-                    </template>
-                  </Image>
+                    <button class="btn second-btn">
+                      <span>{{ $t('assign investigation team') }}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                <span v-if="ShowDetails[index]">Show Less</span>
-                <span v-else>Show More</span>
-                <ShowMoreIcon />
-              </p>
-            </div>
-
-            <div v-if="ShowDetails[index]" class="card-description">
-              <p class="title">Description</p>
-              <p class="description">{{ item.description }}</p>
             </div>
           </div>
         </div>

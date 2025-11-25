@@ -5,11 +5,15 @@
 .index-investigating {
   // second card
   .index-table-card-container {
+    grid-template-columns: repeat(3, 1fr);
+
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $SmSize;
     width: 100%;
     // first card
-
+    .first-card {
+      width: 100%;
+    }
     .first-container {
       @include flex-row(nowrap, space-between, center);
       width: 100%;
@@ -17,12 +21,13 @@
       font-family: 'Regular';
       background-color: rgba(251, 251, 251, 1);
       padding: $XsSize;
+      border-radius: 20px;
     }
 
     .header {
       @include flex-row(nowrap, space-between, center);
+      padding: unset !important;
       background-color: rgba(251, 251, 251, 1);
-
       .first-label-item-primary {
         color: $PrimaryColor;
         font-size: $MdSize2;
@@ -33,6 +38,32 @@
           font-weight: $BaseFontMediumWeight;
         }
       }
+      .new {
+        font-weight: $BaseFontMediumWeight;
+        color: rgba(76, 175, 80, 1);
+        font-size: $MdSize;
+      }
+    }
+
+    .header p:last-child {
+      position: relative;
+      padding-left: 12px;
+    }
+
+    .header p:last-child::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: rgba(76, 175, 80, 1);
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .first-card-details {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize4;
     }
 
     // second card
@@ -56,6 +87,7 @@
           width: 100%;
           gap: $XsSize4;
           font-family: 'Regular';
+          padding: $XsSize 0;
 
           .card-content {
             @include flex-column(nowrap, flex-start, flex-start);
@@ -167,11 +199,12 @@
   }
 
   .label-item-primary {
-    color: #aeaeb2;
-    font-size: $SmSize;
+    color: rgba(76, 83, 95, 1);
+    font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
     span {
-      color: $PrimaryColor;
+      color: rgba(32, 32, 32, 1);
+      font-weight: $BaseFontMediumWeight;
     }
   }
 
@@ -181,6 +214,37 @@
     font-weight: $BaseFontMediumWeight;
     span {
       color: #000000;
+    }
+  }
+
+  .btns-container {
+    @include flex-row(wrap, space-between, center);
+    gap: $XsSize4;
+
+    .first-btn {
+      width: 225px;
+      height: 48px;
+      gap: 10px;
+      opacity: 1;
+      border-radius: 23px;
+      border-width: 0.5px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      border-style: dashed;
+      color: rgba(29, 78, 216, 1);
+      padding: 1.7rem 0;
+    }
+
+    .second-btn {
+      width: 553px;
+      height: 48px;
+      gap: $XsSize4;
+      opacity: 1;
+      border-radius: 23px;
+      border-width: 0.5px;
+      padding: 1.7rem 0;
+      background-color: rgba(4, 25, 83, 0.2);
+      color: rgba(4, 25, 83, 1);
     }
   }
 }
