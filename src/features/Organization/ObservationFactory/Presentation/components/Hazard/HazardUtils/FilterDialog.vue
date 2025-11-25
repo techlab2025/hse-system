@@ -27,37 +27,37 @@ import IndexProjectZoneParams from '@/features/Organization/ProjectZone/Core/par
 import { useI18n } from 'vue-i18n'
 
 const visible = ref(false)
+
 const date = ref(null)
 const { t } = useI18n()
 
-const caseOptions = [
+const caseOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: SaveStatusEnum.Saved, title: t('Positive') }),
   new TitleInterface({ id: SaveStatusEnum.NotSaved, title: t('Negative') }),
-]
+])
 
-const staticOptions = [
+const staticOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: RiskLevelEnum.High, title: t('High') }),
   new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low') }),
   new TitleInterface({ id: RiskLevelEnum.Medium, title: t('Medium') }),
-]
+])
 
 const locationController = IndexLocationController.getInstance()
-const locationParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA)
+const locationParams = ref(new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA))
 
 const machineController = IndexEquipmentController.getInstance()
-const machineParams = new IndexEquipmentParams('', 0, 0, 0)
+const machineParams = ref(new IndexEquipmentParams('', 0, 0, 0))
 
-const machineTypeOptions = [
+const machineTypeOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: t('Device') }),
   new TitleInterface({ id: EquipmentTypesEnum.EQUIPMENT, title: t('Equipment') }),
   new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: t('TOOL') }),
-]
-
+])
 const machineTypeController = IndexEquipmentTypeController.getInstance()
-const machineTypeParams = new IndexEquipmentTypeParams('', 0, 0, 0, 0)
+const machineTypeParams = ref(new IndexEquipmentTypeParams('', 0, 0, 0, 0))
 
 const projectZoneController = IndexProjectZoneController.getInstance()
-const projectZoneParams = new IndexProjectZoneParams('', 0, 0, 0, [])
+const projectZoneParams = ref(new IndexProjectZoneParams('', 0, 0, 0, []))
 
 const selectedLocation = ref([])
 const selectedZone = ref([])
@@ -70,9 +70,6 @@ const selectedStatus = ref([])
 const emit = defineEmits(['confirmFilters'])
 
 const confirmFilters = () => {
-  console.log(selectedZone.value)
-  console.log(selectedLocation.value)
-
   emit(
     'confirmFilters',
     date.value,
@@ -114,7 +111,7 @@ const confirmFilters = () => {
         :filterTitle="$t('location')"
         :controllerData="locationController"
         :pramsData="locationParams"
-        @update:data="selectedLocation = $event"
+        v-model="selectedLocation"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -123,7 +120,7 @@ const confirmFilters = () => {
         :filterTitle="$t('Zone')"
         :controllerData="projectZoneController"
         :pramsData="projectZoneParams"
-        @update:data="selectedZone = $event"
+        v-model="selectedZone"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -132,7 +129,7 @@ const confirmFilters = () => {
         :filterTitle="$t('Machine')"
         :controllerData="machineController"
         :pramsData="machineParams"
-        @update:data="selectedMachine = $event"
+        v-model="selectedMachine"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -140,7 +137,7 @@ const confirmFilters = () => {
       <FilterWithProject
         :filterTitle="$t('Machine type')"
         :staticOptions="machineTypeOptions"
-        @update:data="selectedMachineType = $event"
+        v-model="selectedMachineType"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -149,7 +146,7 @@ const confirmFilters = () => {
         :filterTitle="$t('machine sub-type')"
         :controllerData="machineTypeController"
         :pramsData="machineTypeParams"
-        @update:data="selectedMachineSubType = $event"
+        v-model="selectedMachineSubType"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -157,7 +154,7 @@ const confirmFilters = () => {
       <FilterWithProject
         :filterTitle="$t('case')"
         :staticOptions="caseOptions"
-        @update:data="selectedCase = $event"
+        v-model="selectedCase"
       />
 
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
@@ -165,7 +162,7 @@ const confirmFilters = () => {
       <FilterWithProject
         :filterTitle="$t('status')"
         :staticOptions="staticOptions"
-        @update:data="selectedStatus = $event"
+        v-model="selectedStatus"
       />
 
       <button class="btn btn-primary w-full !mt-4" @click="confirmFilters">

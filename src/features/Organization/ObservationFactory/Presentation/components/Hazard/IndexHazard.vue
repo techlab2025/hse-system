@@ -57,6 +57,12 @@ const fetchHazard = async (
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],
+  equipmentIds?: number[],
+  riskLevel?: number[],
+  saveStatus?: number[],
+  date?: string,
+  equipmentTypeIds?: number[],
+  equipmentSubTypeIds?: number[],
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -68,8 +74,41 @@ const fetchHazard = async (
     projectZoneLozationId,
     projectLocationIds,
     zoonIds,
+    equipmentIds,
+    riskLevel,
+    saveStatus,
+    date,
+    equipmentTypeIds,
+    equipmentSubTypeIds,
   )
   await indexHazardController.getData(params)
+}
+
+const confirmFilters = (
+  date: string,
+  locationIds?: number[],
+  zoneIds?: number[],
+  machineIds?: number[],
+  machineTypeIds?: number[],
+  machineSubTypeIds?: number[],
+  caseIds?: number[],
+  statusIds?: number[],
+) => {
+  fetchHazard(
+    '',
+    1,
+    10,
+    1,
+    [],
+    locationIds,
+    zoneIds,
+    machineIds,
+    statusIds,
+    caseIds,
+    date,
+    machineSubTypeIds,
+    machineTypeIds,
+  )
 }
 
 // delete hazard
@@ -152,22 +191,6 @@ const Filters = ref<TitleInterface[]>([
 
 // on mounted
 onMounted(() => fetchHazard())
-
-const confirmFilters = (
-  date: string,
-  locationIds?: number[],
-  zoneIds?: number[],
-  machineIds?: number[],
-  machineTypeIds?: number[],
-  machineSubTypeIds?: number[],
-  caseIds?: number[],
-  statusIds?: number[],
-) => {
-  fetchHazard('', 1, 10, 1, [], locationIds, zoneIds)
-
-  console.log(zoneIds, 'zoneIds')
-  console.log(locationIds, 'locationIds')
-}
 </script>
 
 <template>

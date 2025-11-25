@@ -27,6 +27,7 @@ import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -42,13 +43,21 @@ const id = route.params.parent_id
 // const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
 const fetchHazard = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 1,
+  query = '',
+  pageNumber = 1,
+  perPage = 10,
+  withPage = 1,
   projectZoneLozationId?: number[],
+  projectLocationIds?: number[],
+  zoonIds?: number[],
+  equipmentIds?: number[],
+  riskLevel?: number[],
+  saveStatus?: number[],
+  date?: string,
+  equipmentTypeIds?: number[],
+  equipmentSubTypeIds?: number[],
 ) => {
-  const deleteHazardParams = new IndexHazardParams(
+  const params = new IndexHazardParams(
     query,
     pageNumber,
     perPage,
@@ -56,8 +65,43 @@ const fetchHazard = async (
     Observation.AccidentsType,
     37,
     projectZoneLozationId,
+    projectLocationIds,
+    zoonIds,
+    equipmentIds,
+    riskLevel,
+    saveStatus,
+    date,
+    equipmentTypeIds,
+    equipmentSubTypeIds,
   )
-  await indexHazardController.getData(deleteHazardParams)
+  await indexHazardController.getData(params)
+}
+
+const confirmFilters = (
+  date: string,
+  locationIds?: number[],
+  zoneIds?: number[],
+  machineIds?: number[],
+  machineTypeIds?: number[],
+  machineSubTypeIds?: number[],
+  caseIds?: number[],
+  statusIds?: number[],
+) => {
+  fetchHazard(
+    '',
+    1,
+    10,
+    1,
+    [],
+    locationIds,
+    zoneIds,
+    machineIds,
+    statusIds,
+    caseIds,
+    date,
+    machineSubTypeIds,
+    machineTypeIds,
+  )
 }
 
 onMounted(() => {
@@ -176,12 +220,22 @@ const ShowDetails = ref<number[]>([])
     ]"
   >
     <IndexHazardHeader :title="`incedant`" :length="120" :categories="categories" />
-    <IndexFilter
-      :filters="Filters"
-      @update:data="fetchHazard('', 1, 10, 1, $event)"
-      :link="'/organization/incedant/add'"
-      :linkText="'Create incedant'"
-    />
+    <div class="flex items-center justify-between">
+      <IndexFilter
+        :filters="Filters"
+        @update:data="fetchHazard('', 1, 10, 1, $event)"
+        :link="'/organization/incedant/add'"
+        :linkText="'Create Incedant'"
+      />
+
+      <div class="btns-filter">
+        <FilterDialog @confirmFilters="confirmFilters" />
+
+        <router-link :to="`/organization/incedant/add`">
+          <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
+        </router-link>
+      </div>
+    </div>
 
     <DataStatus :controller="state">
       <template #success>
