@@ -68,6 +68,8 @@ onMounted(fetchControllerData)
 
 <template>
   <div class="idnex-filter !flex-col !items-start !p-0 !justify-start">
+    <div class="h-1 !mt-3 w-full bg-slate-100 rounded-lg"></div>
+
     <h5 class="!font-bold !text-sm">{{ filterTitle }}</h5>
 
     <div class="filter-container">

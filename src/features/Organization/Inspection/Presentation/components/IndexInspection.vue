@@ -238,12 +238,12 @@ const ShowDetails = ref<number[]>([])
                   <div class="card-content">
                     <div class="card-header">
                       <p class="label-item-primary">
-                        Assigned to : <span>{{ item.morph.name }}</span>
+                        Assigned to : <span>{{ item?.morph?.name }}</span>
                       </p>
                     </div>
                     <div class="card-details">
                       <p class="title">
-                        {{ item.morph.name }}
+                        {{ item?.morph?.name }}
                       </p>
                       <span>{{ item.date }}</span>
                     </div>
