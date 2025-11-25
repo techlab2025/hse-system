@@ -149,8 +149,8 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
   </div>
-  <div class="hazard-form col-span-6 md:col-span-6">
-    <div class="hazard-form-header">
+  <div class="investigating-form col-span-6 md:col-span-6">
+    <div class="investigating-form-header">
       <InvestigatingIcon class="icon" />
       <p class="title">Hazerd form <span>( #001 )</span></p>
     </div>
