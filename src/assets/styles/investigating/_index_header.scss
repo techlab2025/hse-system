@@ -1,0 +1,56 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.idnex-header {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize;
+  font-family: 'Regular';
+  border: 3px solid #5571b927;
+  border-radius: calc($XlSize + 2px);
+  padding: $MdSize;
+  background-color: #fcfcfc;
+
+  .title {
+    color: #170f49;
+    font-size: calc($XlSize + 2px);
+    font-weight: $BaseFontWeightBold;
+  }
+  .index-length {
+    color: #c0c0c5;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: $PrimaryColor;
+    }
+  }
+  .categories-container {
+    @include flex-row(wrap, flex-start, center);
+    gap: $XsSize3;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    .category {
+      color: #b7beca;
+      border: 1px solid #f3f3f3;
+      border-radius: $MdSize2;
+      padding: $XsSize2 calc($XlSize3 + 4px);
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      transition: 0.3s all linear;
+      cursor: pointer;
+      &.active {
+        color: white;
+        background-color: $PrimaryColor;
+      }
+    }
+  }
+}
