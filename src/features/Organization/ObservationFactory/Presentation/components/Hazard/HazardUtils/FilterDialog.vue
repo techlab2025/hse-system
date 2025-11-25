@@ -70,9 +70,6 @@ const selectedStatus = ref([])
 const emit = defineEmits(['confirmFilters'])
 
 const confirmFilters = () => {
-  console.log(selectedZone.value)
-  console.log(selectedLocation.value)
-
   emit(
     'confirmFilters',
     date.value,
@@ -138,7 +135,7 @@ const confirmFilters = () => {
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
-        :filterTitle="$t('Machine type')"
+        :filterTitle="$t('machine sub-type')"
         :staticOptions="machineTypeOptions"
         @update:data="selectedMachineType = $event"
       />
@@ -146,7 +143,7 @@ const confirmFilters = () => {
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
-        :filterTitle="$t('machine sub-type')"
+        :filterTitle="$t('Machine type')"
         :controllerData="machineTypeController"
         :pramsData="machineTypeParams"
         @update:data="selectedMachineSubType = $event"
