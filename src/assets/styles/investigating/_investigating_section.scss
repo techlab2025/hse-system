@@ -33,3 +33,35 @@
   font-size: $MdSize;
   font-weight: $BaseFontMediumWeight;
 }
+.factor-item {
+  opacity: 1;
+  border-radius: 20px;
+  background-color: rgba(249, 249, 249, 1);
+  padding: $XsSize;
+  .factot-title {
+    font-weight: $BaseFontWeightBold;
+    color: #000;
+    font-style: Bold !important;
+  }
+  .radio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .radio-column {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 12px;
+  }
+
+  .radio-item {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 8px;
+
+    .radio-label {
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      color: rgba(158, 158, 158, 1);
+    }
+  }
+}
