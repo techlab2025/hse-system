@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type { Observation } from '../Enums/ObservationTypeEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -14,6 +15,11 @@ export default class IndexHazardParams implements Params {
   public projectZoonIds?: number[]
   public projectLocationIds?: number[]
   public zoonIds?: number[] = []
+  public equipmentIds?: number[] = []
+  public riskLevel?: number[] = []
+  public saveStatus?: number[] = []
+  public date?: string = ''
+
 
   constructor(
     word: string,
@@ -24,7 +30,11 @@ export default class IndexHazardParams implements Params {
     projectId: number | null = null,
     projectZoonIds?: number[],
     projectLocationIds?: number[],
-    zoonIds?: number[]
+    zoonIds?: number[],
+    equipmentIds?: number[],
+    riskLevel?: number[],
+    saveStatus?: number[],
+    date?: string
 
     // code?: LangEnum,
   ) {
@@ -37,6 +47,10 @@ export default class IndexHazardParams implements Params {
     this.projectZoonIds = projectZoonIds
     this.projectLocationIds = projectLocationIds
     this.zoonIds = zoonIds
+    this.equipmentIds = equipmentIds
+    this.riskLevel = riskLevel
+    this.saveStatus = saveStatus
+    this.date = date
     // this.code = code
   }
 
@@ -51,6 +65,10 @@ export default class IndexHazardParams implements Params {
     if (this.projectZoonIds) data['zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
+    if (this.equipmentIds) data['equipment_ids'] = this.equipmentIds
+    if (this.riskLevel) data['risk_level'] = this.riskLevel
+    if (this.saveStatus) data['save_status'] = this.saveStatus
+    if (this.date) data['date'] = formatJoinDate(this.date)
     // if (this.code) data['code'] = this.code
     return data
   }
