@@ -105,16 +105,12 @@ const confirmFilters = () => {
         <DatePicker v-model="date" :placeholder="$t('today')" />
       </div>
 
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
-
       <FilterWithProject
         :filterTitle="$t('location')"
         :controllerData="locationController"
         :pramsData="locationParams"
         v-model="selectedLocation"
       />
-
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
         :filterTitle="$t('Zone')"
@@ -123,8 +119,6 @@ const confirmFilters = () => {
         v-model="selectedZone"
       />
 
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
-
       <FilterWithProject
         :filterTitle="$t('Machine')"
         :controllerData="machineController"
@@ -132,15 +126,11 @@ const confirmFilters = () => {
         v-model="selectedMachine"
       />
 
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
-
       <FilterWithProject
         :filterTitle="$t('Machine type')"
         :staticOptions="machineTypeOptions"
         v-model="selectedMachineType"
       />
-
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
         :filterTitle="$t('machine sub-type')"
@@ -149,15 +139,11 @@ const confirmFilters = () => {
         v-model="selectedMachineSubType"
       />
 
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
-
       <FilterWithProject
         :filterTitle="$t('case')"
         :staticOptions="caseOptions"
         v-model="selectedCase"
       />
-
-      <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
         :filterTitle="$t('status')"
