@@ -61,6 +61,8 @@ const fetchHazard = async (
   riskLevel?: number[],
   saveStatus?: number[],
   date?: string,
+  equipmentTypeIds?: number[],
+  equipmentSubTypeIds?: number[],
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -76,6 +78,8 @@ const fetchHazard = async (
     riskLevel,
     saveStatus,
     date,
+    equipmentTypeIds,
+    equipmentSubTypeIds,
   )
   await indexHazardController.getData(params)
 }
@@ -90,7 +94,21 @@ const confirmFilters = (
   caseIds?: number[],
   statusIds?: number[],
 ) => {
-  fetchHazard('', 1, 10, 1, [], locationIds, zoneIds, machineIds, statusIds, caseIds, date)
+  fetchHazard(
+    '',
+    1,
+    10,
+    1,
+    [],
+    locationIds,
+    zoneIds,
+    machineIds,
+    statusIds,
+    caseIds,
+    date,
+    machineSubTypeIds,
+    machineTypeIds,
+  )
 }
 
 // delete hazard

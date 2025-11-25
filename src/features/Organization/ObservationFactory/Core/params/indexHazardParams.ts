@@ -19,6 +19,9 @@ export default class IndexHazardParams implements Params {
   public riskLevel?: number[] = []
   public saveStatus?: number[] = []
   public date?: string = ''
+  public equipmentTypeIds?: number[] = []
+  public equipmentSubTypeIds?: number[] = []
+
 
 
   constructor(
@@ -34,7 +37,9 @@ export default class IndexHazardParams implements Params {
     equipmentIds?: number[],
     riskLevel?: number[],
     saveStatus?: number[],
-    date?: string
+    date?: string,
+    equipmentTypeIds?: number[],
+    equipmentSubTypeIds?: number[],
 
     // code?: LangEnum,
   ) {
@@ -51,6 +56,8 @@ export default class IndexHazardParams implements Params {
     this.riskLevel = riskLevel
     this.saveStatus = saveStatus
     this.date = date
+    this.equipmentTypeIds = equipmentTypeIds
+    this.equipmentSubTypeIds = equipmentSubTypeIds
     // this.code = code
   }
 
@@ -69,6 +76,8 @@ export default class IndexHazardParams implements Params {
     if (this.riskLevel) data['risk_level'] = this.riskLevel
     if (this.saveStatus) data['save_status'] = this.saveStatus
     if (this.date) data['date'] = formatJoinDate(this.date)
+    if (this.equipmentTypeIds) data['equipment_type_ids'] = this.equipmentTypeIds
+    if (this.equipmentSubTypeIds) data['equipment_sub_type_ids'] = this.equipmentSubTypeIds
     // if (this.code) data['code'] = this.code
     return data
   }

@@ -135,7 +135,7 @@ const confirmFilters = () => {
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
-        :filterTitle="$t('machine sub-type')"
+        :filterTitle="$t('Machine type')"
         :staticOptions="machineTypeOptions"
         @update:data="selectedMachineType = $event"
       />
@@ -143,7 +143,7 @@ const confirmFilters = () => {
       <div class="h-1 !my-3 w-full bg-slate-100 rounded-lg"></div>
 
       <FilterWithProject
-        :filterTitle="$t('Machine type')"
+        :filterTitle="$t('machine sub-type')"
         :controllerData="machineTypeController"
         :pramsData="machineTypeParams"
         @update:data="selectedMachineSubType = $event"
