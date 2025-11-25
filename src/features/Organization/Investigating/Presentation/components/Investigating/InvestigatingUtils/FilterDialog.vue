@@ -6,6 +6,7 @@ import FilterWithProject from './FilterWithProject.vue'
 import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
+import Filter from '@/assets/images/filter.png'
 
 const visible = ref(false)
 const date = ref(null)
@@ -18,7 +19,7 @@ const controller = ProjectCustomLocationController.getInstance()
   <div class="card flex justify-center">
     <button class="btn btn-filter" @click="visible = true">
       <span>{{ $t('Filter') }}</span>
-      <!-- Add your icon here -->
+      <img :src="Filter" alt="Filter" />
     </button>
 
     <Dialog
