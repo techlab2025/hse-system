@@ -30,7 +30,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import FilterDialog from './HazardUtils/filterDialog.vue'
+import FilterDialog from './HazardUtils/FilterDialog.vue'
+// import FilterDialog from './HazardUtils/filterDialog.vue'
 
 // i18n
 const { t } = useI18n()
@@ -72,14 +73,14 @@ const fetchHazard = async (
     Observation.HazardType,
     37,
     projectZoneLozationId,
-    projectLocationIds,
-    zoonIds,
-    equipmentIds,
-    riskLevel,
-    saveStatus,
-    date,
-    equipmentTypeIds,
-    equipmentSubTypeIds,
+    // projectLocationIds,
+    // zoonIds,
+    // equipmentIds,
+    // riskLevel,
+    // saveStatus,
+    // date,
+    // equipmentTypeIds,
+    // equipmentSubTypeIds,
   )
   await indexHazardController.getData(params)
 }

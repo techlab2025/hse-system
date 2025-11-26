@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum.ts'
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 
@@ -10,7 +11,7 @@ export default class AddInspectionParams implements Params {
   public periodSubType: number
   public projectId: number
   public taskPeriods: TaskPeriodParams[]
-
+  public date :string
   constructor(
     morphType: AssignToTypeEnum,
     morphId: number,
@@ -19,6 +20,7 @@ export default class AddInspectionParams implements Params {
     periodSubType: number,
     projectId: number,
     taskPeriods: TaskPeriodParams[],
+    date: string
   ) {
     this.morphType = morphType
     this.morphId = morphId
@@ -27,6 +29,7 @@ export default class AddInspectionParams implements Params {
     this.periodSubType = periodSubType
     this.projectId = projectId
     this.taskPeriods = taskPeriods
+    this.date = date
   }
 
   toMap(): Record<
@@ -51,6 +54,7 @@ export default class AddInspectionParams implements Params {
     if (this.periodSubType) data['period_sub_type'] = this.periodSubType
     if (this.projectId) data['project_id'] = this.projectId
     if (this.taskPeriods.length > 0) data['task_periods'] = this.taskPeriods
+    if (this.date) data['date'] = formatJoinDate(this.date)
 
     return data
   }
