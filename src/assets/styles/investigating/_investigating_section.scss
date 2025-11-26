@@ -45,7 +45,8 @@
   }
   .radio-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
     gap: 20px;
   }
 
@@ -59,6 +60,33 @@
     gap: 8px;
 
     .radio-label {
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      color: rgba(158, 158, 158, 1);
+    }
+  }
+  .p-radiobutton-checked .p-radiobutton-box {
+    background-color: $PrimaryColor !important;
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    background-color: $PrimaryColor !important;
+  }
+  .p-radiobutton.p-radiobutton-checked + .radio-label {
+    color: rgba(31, 65, 187, 1) !important;
+    font-weight: $BaseFontSemiBoldWeight;
+    font-size: $MdSize;
+  }
+  .sub-radio-group {
+    margin-left: 1.3rem;
+    @include flex-column(nowrap, flex-start, center);
+    gap: 8px;
+  }
+
+  .sub-radio-item {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 8px;
+    .sub-radio-label {
       font-weight: $BaseFontSemiBoldWeight;
       font-size: $MdSize;
       color: rgba(158, 158, 158, 1);

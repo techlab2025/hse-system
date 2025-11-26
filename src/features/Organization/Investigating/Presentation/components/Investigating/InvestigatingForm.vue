@@ -23,6 +23,7 @@ import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/
 import ObservationLevel from '../../../../ObservationFactory/Presentation/components/Ovservation/ObservationLevel.vue'
 import HazerdType from '../../../../ObservationFactory/Presentation/components/Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import FactorInvestigating from './FactorInvestigating.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -198,32 +199,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       @update:modelValue="setMachine"
     />
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full factor-item">
-    <label class="factot-title">Factors & Items</label>
-    <div class="radio-grid">
-      <div class="radio-column">
-        <div class="radio-item">
-          <input type="radio" name="factor1" id="factor1" />
-          <label class="radio-label" for="factor1">Lorem Ipsum 1</label>
-        </div>
-        <div class="radio-item">
-          <input type="radio" name="factor2" id="factor2" />
-          <label class="radio-label" for="factor2">Lorem Ipsum 2</label>
-        </div>
-      </div>
-
-      <div class="radio-column">
-        <div class="radio-item">
-          <input type="radio" name="item1" id="item1" />
-          <label class="radio-label" for="item1">Lorem Ipsum 3</label>
-        </div>
-        <div class="radio-item">
-          <input type="radio" name="item2" id="item2" />
-          <label class="radio-label" for="item2">Lorem Ipsum 4</label>
-        </div>
-      </div>
-    </div>
-  </div>
+  <FactorInvestigating />
 
   <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
     <ObservationLevel

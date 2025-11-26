@@ -9,9 +9,9 @@ import FilterDialog from './InvestigatingUtils/FilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestigatingSidebar from './InvestigatingSidebar.vue'
 
-// بيانات ثابتة للكروت
 const InvestigatingData = [
   {
+    title: 'Incedant',
     serial:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
     date: '2025-01-05 10:00 AM',
@@ -23,6 +23,7 @@ const InvestigatingData = [
     image: 'https://picsum.photos/220/150',
   },
   {
+    title: 'High observation',
     serial: 'Another dummy text for testing card 2',
     date: '2025-02-10 11:30 AM',
     observer: { name: 'Sara Mohamed' },
@@ -33,6 +34,7 @@ const InvestigatingData = [
     image: 'https://picsum.photos/221/150',
   },
   {
+    title: 'Medium observation',
     serial: 'Third card dummy text',
     date: '2025-03-15 09:45 AM',
     observer: { name: 'Khaled Samir' },
@@ -42,22 +44,10 @@ const InvestigatingData = [
     status: { title: 'solved' },
     image: 'https://picsum.photos/222/150',
   },
-  {
-    serial: 'Fourth card dummy text',
-    date: '2025-04-20 02:15 PM',
-    observer: { name: 'Mona Hassan' },
-    description: 'Fuel leakage reported.',
-    zoon: { title: 'Zone D' },
-    equipment: { title: 'Loader CAT 950' },
-    status: { title: 'unsolve' },
-    image: 'https://picsum.photos/223/150',
-  },
 ]
 
-// إنشاء reactive list من البيانات
 const InvestigatingList = ref(InvestigatingData)
 
-// للتحكم في عرض التفاصيل لكل كارد
 const ShowDetails = ref<boolean[]>([])
 
 onMounted(() => {
@@ -92,7 +82,15 @@ onMounted(() => {
                 <div class="first-card">
                   <div class="first-card-header">
                     <div class="header">
-                      <p class="first-label-item-primary">Incedant <span>_OBS-2025-0112</span></p>
+                      <p
+                        class="first-label-item-primary"
+                        :class="{
+                          'high-observation': item.title === 'High observation',
+                          'medium-observation': item.title === 'Medium observation',
+                        }"
+                      >
+                        {{ item.title }} <span>_OBS-2025-0112</span>
+                      </p>
                       <p class="new">New</p>
                     </div>
                     <div class="first-card-details">
