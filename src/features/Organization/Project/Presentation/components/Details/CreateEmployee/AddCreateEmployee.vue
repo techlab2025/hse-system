@@ -45,7 +45,7 @@ watch(
 
 const GetProjectLocationsHierarchiesEmployes = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE, ProjectCustomLocationEnum.HIERARCHY])
-  const response = await projectCustomLocationController.getDate(projectCustomLocationParams)
+  const response = await projectCustomLocationController.getData(projectCustomLocationParams)
   console.log(response.value.data, "response.va");
 }
 onMounted(GetProjectLocationsHierarchiesEmployes)

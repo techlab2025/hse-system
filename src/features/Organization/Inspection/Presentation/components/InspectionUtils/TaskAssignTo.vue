@@ -10,7 +10,7 @@ const props = defineProps<{
   showHeader:boolean
 }>()
 
-const SelectedOption = ref(1)
+const SelectedOption = ref(0)
 const UpdatData = (data) => {
   emit('update:data', SelectedOption.value)
 }
