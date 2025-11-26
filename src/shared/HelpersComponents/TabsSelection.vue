@@ -31,7 +31,7 @@ const GetProjectLocationsEmployes = async () => {
     [ProjectCustomLocationEnum.ZOON],
     [63],
   )
-  const response = await projectCustomLocationController.getDate(
+  const response = await projectCustomLocationController.getData(
     projectCustomLocationParams,
   )
   // console.log(response.value.data, 'response.va')

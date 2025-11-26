@@ -23,7 +23,7 @@ const GetProjectLocationsEmployes = async () => {
     ProjectCustomLocationEnum.TEAM_EMPLOYEE,
     ProjectCustomLocationEnum.EMPLOYEE,
   ])
-  const response = await projectCustomLocationController.getDate(
+  const response = await projectCustomLocationController.getData(
     projectCustomLocationParams,
   )
   console.log(response.value.data, 'response.va')

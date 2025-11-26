@@ -11,7 +11,7 @@ import { AssignToTypeEnum } from '../../Core/Enum/AssignToTypesEnum'
 import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
 import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
-import type { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
+import { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
 import { PeriodTypeEnum } from '../../Core/Enum/PeriodTypeEnum'
 
 interface DataFormDetails {
@@ -51,6 +51,9 @@ const updateData = () => {
       )
     })
   }
+  // if (DataParams.value?.data?.inspectionType == InspectionTypeEnum.DAY) {
+  //   PeriodTasks.value.push(new TaskPeriodParams(null, null, ))
+  // }
   const params = props.data?.id
     ? new EditInspectionParams(
       props.data?.id ?? 0,
@@ -69,7 +72,8 @@ const updateData = () => {
       DataParams.value?.data?.inspectionType,
       DataParams.value?.data?.periodType,
       37,
-      PeriodTasks.value || []
+      PeriodTasks.value || [],
+      DataParams.value?.data?.onceday
     )
 
   emit('update:data', params)

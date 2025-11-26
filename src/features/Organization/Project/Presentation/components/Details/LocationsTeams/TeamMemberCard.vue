@@ -4,6 +4,7 @@ import type ProjectLocationEmployeeModel from '@/features/Organization/Project/D
 import MemberDeleteIcon from '@/shared/icons/MemberDeleteIcon.vue';
 import person from "@/assets/images/person.png"
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image';
+import wordSlice from '@/base/Presentation/utils/word_slice';
 
 const emit = defineEmits(['update:data'])
 
@@ -20,7 +21,7 @@ const UpdateData = () => {
     <MemberDeleteIcon class="card-delete" @click="UpdateData" />
     <img class="member-img" :src="member?.image || person" @error="setDefaultImage" :alt="member.name">
     <div class="member-data">
-      <p class="name">{{ member?.name }}</p>
+      <p class="name">{{ wordSlice(member?.name , 18) }}</p>
       <!-- <p class="position">{{ member. }}</p> -->
     </div>
   </div>

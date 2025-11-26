@@ -11,11 +11,11 @@ const emit = defineEmits(['update:data'])
 
 const UpdateData = () => {
   emit('update:data', {
-    inspectionType: SelectedInspectionType.value,
-    onceday: SelectedData.value,
-    periodType: SelectedPeriodType.value,
-    periodByday: SelectedDay.value,
-    PeridWithDate: SelectedWithDateDays.value,
+    inspectionType: SelectedInspectionType.value, // once or period
+    onceday: SelectedData.value, // date if once
+    periodType: SelectedPeriodType.value, // if period type of period
+    periodByday: SelectedDay.value, // date if type of period day
+    PeridWithDate: SelectedWithDateDays.value, // date if type of period with date
   })
 }
 const inspectionType = ref<TitleInterface[]>([

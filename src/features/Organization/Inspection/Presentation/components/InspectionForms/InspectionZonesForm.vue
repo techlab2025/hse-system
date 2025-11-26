@@ -17,7 +17,7 @@ const fetchProjectZonesParams = new FetchProjectZonesParams(37)
 const UpdateData = () => {
   emit('update:data', {
     morph: SelectedZones.value,
-    data: Data.value,
+    data: date.value,
     TempalteIds: TempalteIds.value
   })
 }
@@ -26,9 +26,9 @@ const setZones = (data: TitleInterface) => {
   UpdateData()
 }
 
-const Data = ref()
+const date = ref()
 const GetGeneralData = (data) => {
-  Data.value = data
+  date.value = data
   UpdateData();
 }
 const TempalteIds = ref<number[]>()

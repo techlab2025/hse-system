@@ -32,7 +32,7 @@ const hierarchies = ref<Record<number, TitleInterface[]>>({})
 
 const GetProjectLocationsHirarchy = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY])
-  const response = await projectCustomLocationController.getDate(projectCustomLocationParams)
+  const response = await projectCustomLocationController.getData(projectCustomLocationParams)
 }
 
 onMounted(

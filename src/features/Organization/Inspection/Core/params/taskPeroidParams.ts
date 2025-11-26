@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class TaskPeriodParams implements Params {
   public type: number | null
@@ -25,7 +26,7 @@ export default class TaskPeriodParams implements Params {
 
     if (this.type !== null) data.type = this.type
     if (this.day !== null) data.day = this.day
-    if (this.date !== null) data.date = this.date
+    if (this.date !== null) data.date = formatJoinDate(this.date)
 
     return data
   }

@@ -5,6 +5,7 @@
 .emoloyees-details {
   background-color: #fcfcfc;
   padding: $SmSize;
+  margin-block:30px ;
   .card-header {
     @include flex-row(nowrap, space-between, center);
 
