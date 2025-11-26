@@ -29,7 +29,7 @@ watch(
   <div class="template-document-container">
     <div class="template-document-header">
       <div class="template-header">
-        <p class="header-title" v-if="allData.titles && allData?.titles.length > 0">
+        <p class="header-title" v-if="allData.titles && allData?.titles?.length > 0">
           {{
             allData?.titles
               ?.filter((item) => item.locale === 'en')

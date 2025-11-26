@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 // import TitleInterface from '@/base/Data/Models/title_interface'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import TemplateDocumentCheckboxShow from './TemplateDocumentTypes/TemplateDocumentCheckboxShow.vue'
 import TemplateDocumentRadioButtonShow from './TemplateDocumentTypes/TemplateDocumentRadioButtonShow.vue'
 import TemplateDocumentSelectShow from './TemplateDocumentTypes/TemplateDocumentSelectShow.vue'
 import TemplateDocumentTextAreaShow from './TemplateDocumentTypes/TemplateDocumentTextAreaShow.vue'
 import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
-import CreateTaskAnswerController from '../../controllers/CreateTaskAnswerController'
-import CreateTaskResultParams from '../../../Core/params/CreateTaskResultParams'
+import type TaskResultModel from '../../../Data/models/FetchTaskResultModels/TasksResultModel'
+
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   allData: TemplateDetailsModel
+  task_results: TaskResultModel
 }>()
+
 // const TemplateFormDetails = ref<TemplateDetailsModel>()
+
 watch(
   () => props.allData,
   (newState) => {
@@ -75,7 +78,24 @@ const UpdateData = () => {
   })
 }
 
+const TaskAnswer = ref({
+  check: [],
+  radio: [],
+  select: [],
+  textarea: []
+})
 
+watch(() => props.task_results, (newState) => {
+  if (newState) {
+    // console.log(newState, "newStatenewState")
+    TaskAnswer.value = {
+      check: newState.taskResultItems.filter((item) => item.templateItemAction === ActionsEnum.CHECKBOX),
+      radio: newState.taskResultItems.filter((item) => item.templateItemAction === ActionsEnum.RADIOBUTTON),
+      select: newState.taskResultItems.filter((item) => item.templateItemAction === ActionsEnum.DROPDOWN),
+      textarea: newState.taskResultItems.filter((item) => item.templateItemAction === ActionsEnum.TEXTAREA),
+    }
+  }
+})
 
 </script>
 <template>
@@ -106,15 +126,16 @@ const UpdateData = () => {
     <div class="template-document-content-container">
       <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :item_id="item.id" :options="item.options" :require_image="item.requiredImage"
-          @update:data="UpdateCheckBoxs" />
+          :item_id="item.id" :options="item.options" :require_image="item.requiredImage" @update:data="UpdateCheckBoxs"
+          :selected_data="TaskAnswer.check" />
         <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
           :item_id="item.id" :options="item.options" :require_image="item.requiredImage"
-          @update:data="UpdateRadioButtons" />
+          @update:data="UpdateRadioButtons" :selected_data="TaskAnswer.radio" />
         <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :item_id="item.id" :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects" />
+          :item_id="item.id" :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects"
+          :selected_data="TaskAnswer.select" />
         <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name" :item_id="item.id"
-          :require_image="item.requiredImage" @update:data="UpdateTextAreas" />
+          :require_image="item.requiredImage" @update:data="UpdateTextAreas" :selected_data="TaskAnswer.textarea" />
       </div>
     </div>
   </div>

@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -746,7 +746,6 @@ class ApiNames {
     return this.prefix + 'disable_hazard_type'
   }
 
-
   // Incedant
   public get CreateIncedant() {
     return this.prefix + 'create_incedant'
@@ -766,7 +765,6 @@ class ApiNames {
   public get DisIncedant() {
     return this.prefix + 'disable_incedant'
   }
-
 
   // ObserverationType
   public get CreateObserverationType() {
@@ -1192,11 +1190,13 @@ class ApiNames {
   }
   public get DisHealthConditions() {
     return this.prefix + 'disable_health_condition'
-
   }
   // Create Task Answer
   public get CreateTaskAnswer() {
     return this.prefix + 'create_task_result'
+  }
+  public get FetchTaskResult() {
+    return this.prefix + 'fetch_task_details'
   }
 }
 

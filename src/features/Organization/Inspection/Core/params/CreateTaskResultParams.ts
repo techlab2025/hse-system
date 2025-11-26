@@ -19,7 +19,7 @@ export default class CreateTaskResultParams implements Params {
     const data: Record<string, any> = {}
     data['task_id'] = this.taskId
     data['template_id'] = this.templateId
-    data['task_result_item'] = this.taskResultItems
+    data['task_result_items'] = this.taskResultItems
 
     return data
   }
