@@ -77,7 +77,7 @@ watch(
             :member="member"
           />
         </div>
-        <div>
+        <div class="project-teams-cards">
           <TeamCard
             class="employee-card"
             v-for="(team, index) in locationTeam.locationTeams"

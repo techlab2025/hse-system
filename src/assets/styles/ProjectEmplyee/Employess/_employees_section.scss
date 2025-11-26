@@ -5,7 +5,7 @@
 .emoloyees-details {
   background-color: #fcfcfc;
   padding: $SmSize;
-  margin-block:30px ;
+  margin-block: 30px;
   .card-header {
     @include flex-row(nowrap, space-between, center);
 
@@ -93,5 +93,10 @@
     // &::-webkit-scrollbar-track {
     //   background-color: transparent;
     // }
+  }
+  .project-teams-cards {
+    padding-top: 10px;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $MdSize2;
   }
 }
