@@ -47,7 +47,7 @@ watch(
       <div class="project-details-section">
         <MainObjectivesSection :description="state.data?.description" />
 
-        <div class="inspections-sections">
+        <!-- <div class="inspections-sections">
           <InspectionsSections
             :inspectionsImage="zoneInspectionTasks"
             :inspectionHeaderTitle="'zone Inspection Tasks'"
@@ -65,7 +65,7 @@ watch(
             :showArrowLink="false"
             :isAssign="false"
           />
-        </div>
+        </div> -->
 
         <ProjectSiteSection :locations="state.data?.locations" />
         <LocationsTeamsSection :teamLocations="state.data?.TeamLocations" />
@@ -79,20 +79,14 @@ watch(
       <TableLoader :cols="8" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty
-        :link="`/organization/project/add`"
-        addText="Add Project"
+      <DataEmpty :link="`/organization/project/add`" addText="Add Project"
         description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project"
-      />
+        title="..ops! You have No Project" />
     </template>
     <template #failed>
-      <DataFailed
-        :link="`/organization/project/add`"
-        addText="Add Project"
+      <DataFailed :link="`/organization/project/add`" addText="Add Project"
         description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project"
-      />
+        title="..ops! You have No Project" />
     </template>
   </DataStatus>
 </template>
