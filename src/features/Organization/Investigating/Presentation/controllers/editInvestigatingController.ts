@@ -6,9 +6,10 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import EditHazardUseCase from '../../Domain/useCase/editHazardUseCase'
+// import EditHazardUseCase from '../../Domain/useCase/editHazardUseCase'
 import type HazardModel from '../../Data/models/investigatingModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
+import EditHazardUseCase from '@/features/Organization/ObservationFactory/Domain/useCase/editHazardUseCase'
 
 export default class EditHazardController extends ControllerInterface<HazardModel> {
   private static instance: EditHazardController

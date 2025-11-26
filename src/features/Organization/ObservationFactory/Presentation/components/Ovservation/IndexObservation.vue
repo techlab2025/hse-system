@@ -27,7 +27,8 @@ import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
+import FilterDialog from '../Hazard/HazardUtils/FilterDialog.vue'
+// import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -65,14 +66,14 @@ const fetchHazard = async (
     Observation.ObservationType,
     37,
     projectZoneLozationId,
-    projectLocationIds,
-    zoonIds,
-    equipmentIds,
-    riskLevel,
-    saveStatus,
-    date,
-    equipmentTypeIds,
-    equipmentSubTypeIds,
+    // projectLocationIds,
+    // zoonIds,
+    // equipmentIds,
+    // riskLevel,
+    // saveStatus,
+    // date,
+    // equipmentTypeIds,
+    // equipmentSubTypeIds,
   )
   await indexHazardController.getData(params)
 }

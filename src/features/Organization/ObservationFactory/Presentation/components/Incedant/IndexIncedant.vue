@@ -27,7 +27,8 @@ import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
+import FilterDialog from '../Hazard/HazardUtils/FilterDialog.vue'
+// import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
@@ -65,14 +66,14 @@ const fetchHazard = async (
     Observation.AccidentsType,
     37,
     projectZoneLozationId,
-    projectLocationIds,
-    zoonIds,
-    equipmentIds,
-    riskLevel,
-    saveStatus,
-    date,
-    equipmentTypeIds,
-    equipmentSubTypeIds,
+    // projectLocationIds,
+    // zoonIds,
+    // equipmentIds,
+    // riskLevel,
+    // saveStatus,
+    // date,
+    // equipmentTypeIds,
+    // equipmentSubTypeIds,
   )
   await indexHazardController.getData(params)
 }
@@ -208,25 +209,19 @@ const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  <PermissionBuilder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
 
-      PermissionsEnum.ORG_INCEDANT_ALL,
-      PermissionsEnum.ORG_INCEDANT_DELETE,
-      PermissionsEnum.ORG_INCEDANT_FETCH,
-      PermissionsEnum.ORG_INCEDANT_UPDATE,
-      PermissionsEnum.ORG_INCEDANT_CREATE,
-    ]"
-  >
+    PermissionsEnum.ORG_INCEDANT_ALL,
+    PermissionsEnum.ORG_INCEDANT_DELETE,
+    PermissionsEnum.ORG_INCEDANT_FETCH,
+    PermissionsEnum.ORG_INCEDANT_UPDATE,
+    PermissionsEnum.ORG_INCEDANT_CREATE,
+  ]">
     <IndexHazardHeader :title="`incedant`" :length="120" :categories="categories" />
     <div class="flex items-center justify-between">
-      <IndexFilter
-        :filters="Filters"
-        @update:data="fetchHazard('', 1, 10, 1, $event)"
-        :link="'/organization/incedant/add'"
-        :linkText="'Create Incedant'"
-      />
+      <IndexFilter :filters="Filters" @update:data="fetchHazard('', 1, 10, 1, $event)"
+        :link="'/organization/incedant/add'" :linkText="'Create Incedant'" />
 
       <div class="btns-filter">
         <FilterDialog @confirmFilters="confirmFilters" />
@@ -294,11 +289,7 @@ const ShowDetails = ref<number[]>([])
             </div>
           </div>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -307,27 +298,19 @@ const ShowDetails = ref<number[]>([])
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/incedant/add`"
-          addText="Add incedant"
+        <DataEmpty :link="`/organization/incedant/add`" addText="Add incedant"
           description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No incedant"
-        />
+          title="..ops! You have No incedant" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/incedant/add`"
-          addText="Add incedant"
+        <DataFailed :link="`/organization/incedant/add`" addText="Add incedant"
           description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No incedant"
-        />
+          title="..ops! You have No incedant" />
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
