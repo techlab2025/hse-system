@@ -10,6 +10,8 @@ import { useUserStore } from '@/stores/user'
 
 import CreateTaskResultUseCase from '../../Domain/useCase/CreateTaskResultUseCase'
 import type CreateTaskAmswerModel from '../../Data/models/CreateTaskResultModel'
+import IndexInspectionController from './indexInspectionController'
+import IndexInspectionParams from '../../Core/params/indexInspectionParams'
 
 export default class CreateTaskAnswerController extends ControllerInterface<CreateTaskAmswerModel> {
   private static instance: CreateTaskAnswerController
@@ -40,6 +42,10 @@ export default class CreateTaskAnswerController extends ControllerInterface<Crea
         })
 
         const { user } = useUserStore()
+
+        await IndexInspectionController.getInstance().getData(
+          new IndexInspectionParams('', 1, 10, 1),
+        )
 
         // if (!draft) await router.push(`/organization/inspection`)
 

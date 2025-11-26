@@ -10,12 +10,18 @@ import { useI18n } from 'vue-i18n'
 import CreateTaskAnswerController from '../../controllers/CreateTaskAnswerController'
 import CreateTaskResultParams from '../../../Core/params/CreateTaskResultParams'
 import ItemResultParams from '../../../Core/params/ItemResultParams'
+import FetchTaskResultParams from '../../../Core/params/FetchTaskResultParams'
+import FetchTaskResultController from '../../controllers/FetchTaskResultController'
+import type TaskFullResponseModel from '../../../Data/models/FetchTaskResultModels/FullTaskResultModel'
+import { InspectionStatus } from '../../../Core/Enum/InspectionStatusEnum'
+import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 
 const visible = ref(false)
 
 const { templateId, taskId } = defineProps<{
   templateId: number,
-  taskId: number
+  taskId: number,
+  status: number
 }>()
 
 const router = useRouter()
@@ -71,7 +77,7 @@ const formatTaskAnswer = () => {
         template_item_id: id,
         result: null,
         item_answers: [],
-        image_key: []
+        files: []
       })
     }
 
@@ -109,8 +115,8 @@ const formatTaskAnswer = () => {
 
     if (imgs && imgs.length) {
       imgs.forEach(img => {
-        if (!entry.image_key.includes(img)) {
-          entry.image_key.push(img)
+        if (!entry.files.includes(img)) {
+          entry.files.push(img)
         }
       })
     }
@@ -147,7 +153,7 @@ const formatTaskAnswer = () => {
 const CreateAnswer = async () => {
   const formatted = formatTaskAnswer()
   const UpdatedFormat = formatted.map(item => {
-    return new ItemResultParams(item.result, item.template_item_id, item.image_key, item.item_answers)
+    return new ItemResultParams(item.result, item.template_item_id, item.files, item.item_answers)
   })
   const createTaskResultParams = new CreateTaskResultParams(
     taskId,
@@ -163,20 +169,49 @@ const CreateAnswer = async () => {
 
 const GetData = async () => {
   visible.value = true
-  await FetchTemplateDocument();
+  // await FetchTemplateDocument();
+  await GetTaskDetails();
   getTitle()
 }
+
+const TaskResults = ref<TaskFullResponseModel>()
+const fetchTaskResultController = FetchTaskResultController.getInstance()
+
+const GetTaskDetails = async () => {
+  const fetchTaskResultParams = new FetchTaskResultParams(taskId)
+  const result = await fetchTaskResultController.getData(fetchTaskResultParams)
+  if (result.value.data) {
+    TaskResults.value = result.value.data
+    AllDocument.value = result.value.data.template
+
+  }
+}
+
+watch(() => fetchTaskResultController.state.value, (newState) => {
+  if (newState) {
+    TaskResults.value = newState
+  }
+})
+
+watch(() => showTemplateController.state.value, (newState) => {
+  if (newState) {
+    AllDocument.value = newState
+  }
+})
+
+
 </script>
 
 <template>
   <div class="card flex justify-center">
-    <button class="card-info-status" @click="GetData">Start</button>
-    <!-- <pre>{{ state.data }}</pre> -->
-
-    <!-- :header="state?.data?.title" -->
+    <button class="card-info-status" @click="GetData" v-if="status == InspectionStatus.NOT_FINISHED">Start</button>
+    <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
+      <span> show inspection details </span>
+      <ArrowDetails />
+    </button>
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
-      <TemplateDocument :allData="state.data" @update:data="UpdateData" />
-
+      <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
+        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
       <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
