@@ -47,7 +47,7 @@ export default class CreateProjectZoneEquipmentsController extends ControllerInt
           messageContent: null,
         })
         // if (!draft) await router.push(`/organization/project-equipment/project/${router.currentRoute.value.params.id}`)
-        ProjectCustomLocationController.getInstance().FetchProjecuCustomLocation(
+        ProjectCustomLocationController.getInstance().getData(
           new ProjectCustomLocationParams(projectId, [
             ProjectCustomLocationEnum.ZOON,
             ProjectCustomLocationEnum.ZOON_EQUIPMENT,
@@ -55,7 +55,7 @@ export default class CreateProjectZoneEquipmentsController extends ControllerInt
         )
 
         console.log('detaile start')
-        console.log(projectId )
+        console.log(projectId)
         ShowProjectDetailsController.getInstance().showProjectDetails(
           new ShowProjectDetailsParams(projectId),
         )

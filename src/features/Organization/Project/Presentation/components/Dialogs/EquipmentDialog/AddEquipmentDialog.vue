@@ -18,7 +18,7 @@ const UpdateData = () => {
 
 <template>
   <AddTollIcon @click="visible = true" class="cursor-pointer" />
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '30%' }">
+  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '40%' }">
     <template #header>
       <div class="add-equipment-header">
         <HeaderSection :img="EquipmentImg" title="Equipment , Devices & Tools"
