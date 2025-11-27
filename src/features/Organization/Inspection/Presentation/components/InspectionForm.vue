@@ -126,6 +126,8 @@ const UpdateFormData = (data: InspectionForm) => {
       <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
     </div>
     <!--Employee Tasks-->
-    <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" />
+    <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" :employee_id="DataParams?.morph?.id"
+      :employee_name="DataParams?.morph?.title" />
+    <!-- :emplyee_hirarchy="data?." -->
   </div>
 </template>
