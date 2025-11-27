@@ -31,8 +31,8 @@ const GetGeneralData = (data) => {
   date.value = data
   UpdateData();
 }
-const TempalteIds = ref<number[]>()
-const GetTemplateId = (data: number[]) => {
+const TempalteIds = ref<number>()
+const GetTemplateId = (data: number) => {
   TempalteIds.value = data
   UpdateData()
 }

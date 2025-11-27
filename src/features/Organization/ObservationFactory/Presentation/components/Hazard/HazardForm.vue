@@ -23,6 +23,7 @@ import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/
 import ObservationLevel from '../Ovservation/ObservationLevel.vue'
 import HazerdType from '../Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -31,55 +32,55 @@ const props = defineProps<{
 const text = ref<string>('')
 const date = ref<Date>()
 const descripe = ref<string>('')
-const image = ref<string>('')
+const image = ref([])
 
 const updateData = () => {
   // console.log(ZoneIds.value, "ZoneIds.value");
   const params = props.data?.id
     ? new EditHazardParams(
-        props.data?.id! ?? 0,
-        text.value,
-        descripe.value,
-        image.value,
-        HazardType.value.id,
-        2,
-        SelectedMachine.value.id,
-        ZoneIds.value,
-        22,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        date.value,
-        null,
-        null,
-      )
+      props.data?.id! ?? 0,
+      text.value,
+      descripe.value,
+      image.value?.map((el) => el.file),
+      HazardType.value.id,
+      2,
+      SelectedMachine.value.id,
+      ZoneIds.value,
+      22,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      date.value,
+      null,
+      null,
+    )
     : new AddHazardParams(
-        text.value,
-        actionText.value,
-        image.value?.file,
-        HazardType.value?.id,
-        Observation.HazardType,
-        SelectedMachine.value?.id,
-        ZoneIds.value,
-        37,
-        isResult.value ? 1 : 0,
-        riskLevel.value,
-        SaveStatusEnum.NotSaved,
-        null,
-        null,
-        null,
-        date.value,
-        null,
-        isAction.value ? 1 : 0,
-      )
+      text.value,
+      actionText.value,
+      image.value?.map((el) => el.file),
+      HazardType.value?.id,
+      Observation.HazardType,
+      SelectedMachine.value?.id,
+      ZoneIds.value,
+      37,
+      isResult.value ? 1 : 0,
+      riskLevel.value,
+      SaveStatusEnum.NotSaved,
+      null,
+      null,
+      null,
+      date.value,
+      null,
+      isAction.value ? 1 : 0,
+    )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => {}, { immediate: true })
+watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 1)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
@@ -96,10 +97,7 @@ const setMachine = (data: TitleInterface) => {
   updateData()
 }
 
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
+
 const ZoneIds = ref<number[]>()
 const GetZones = (data: number[]) => {
   ZoneIds.value = data
@@ -136,15 +134,18 @@ const handleHazardData = (data: any) => {
 watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
+
+
+const setImages = async (data: string[]) => {
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage
-      :title="'create Hazerd'"
-      :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="hazardImage"
-    />
+    <HeaderPage :title="'create Hazerd'" :subtitle="'Identify and report potential hazards before they cause harm'"
+      :img="hazardImage" />
   </div>
   <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
@@ -164,48 +165,27 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="HazardType"
-      class="input"
-      :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams"
-      label="HazardType"
-      id="HazardType"
-      placeholder="Select Hazard Type"
-      @update:modelValue="setHazardType"
-    />
+    <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
+      :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
+      @update:modelValue="setHazardType" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="select machine (optional)"
-      id="machine"
-      placeholder="select your machine"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
+      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
+      @update:modelValue="setMachine" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
-    <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" />
+    <!-- <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" /> -->
+    <MultiImagesInput :initialImages="image" @update:images="setImages" />
+
+
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
-    <ObservationLevel
-      :modelRiskLevel="riskLevel"
-      :modelIsNearMiss="isNearMiss"
-      :isHazard="true"
-      @update:data="handleObservationLevel"
-    />
-    <HazerdType
-      :riskLevel="riskLevel"
-      :is_near_miss="isNearMiss"
-      :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'"
-      :modelAction="actionText"
-      @update:data="handleHazardData"
-    />
+    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" :isHazard="true"
+      @update:data="handleObservationLevel" />
+    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText" @update:data="handleHazardData" />
   </div>
   <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>

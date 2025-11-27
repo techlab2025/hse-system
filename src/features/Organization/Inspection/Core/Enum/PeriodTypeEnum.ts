@@ -1,6 +1,6 @@
 export enum PeriodTypeEnum {
   DAILY = 1,
-  BYDAY = 2,
-  WHITDATE = 3,
-  BYPERIOD,
+  WHITDATE = 2,
+  BYDAY = 3,
+  BYDATE = 4,
 }

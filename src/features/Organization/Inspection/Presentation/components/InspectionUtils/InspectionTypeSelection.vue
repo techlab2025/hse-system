@@ -8,9 +8,10 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   title: string
   options: TitleInterface[]
+  selectedtype: InspectionTypeEnum
 }>()
 
-const SelectedOption = ref<InspectionTypeEnum >()
+const SelectedOption = ref<InspectionTypeEnum>(props.selectedtype)
 const UpdatData = (data) => {
   emit('update:data', SelectedOption.value)
 }

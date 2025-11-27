@@ -19,6 +19,7 @@ import IndexHazardParams from '../../../Core/params/indexHazardParams'
 import IndexHazardController from '../../controllers/indexHazardController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -32,49 +33,50 @@ const image = ref<string>('')
 const updateData = () => {
   const params = props.data?.id
     ? new EditHazardParams(
-        props.data?.id! ?? 0,
-        text.value,
-        descripe.value,
-        image.value?.file,
-        0,
-        Observation.AccidentsType,
-        SelectedMachine.value?.id ?? null,
-        ZoneIds.value ?? 0,
-        37,
-        0,
-        0,
-        0,
-        '',
-        0,
-        0,
-        date.value ?? '',
-        [],
-        0,
-      )
+      props.data?.id! ?? 0,
+      text.value,
+      descripe.value,
+      image.value?.map((el) => el.file),
+
+      0,
+      Observation.AccidentsType,
+      SelectedMachine.value?.id ?? null,
+      ZoneIds.value ?? 0,
+      37,
+      0,
+      0,
+      0,
+      '',
+      0,
+      0,
+      date.value ?? '',
+      [],
+      0,
+    )
     : new AddHazardParams(
-        text.value,
-        descripe.value,
-        image.value?.file,
-        0,
-        Observation.AccidentsType,
-        SelectedMachine.value?.id ?? null,
-        ZoneIds.value ?? 0,
-        37,
-        0,
-        0,
-        0,
-        '',
-        0,
-        0,
-        date.value ?? '',
-        [],
-        0,
-      )
+      text.value,
+      descripe.value,
+      image.value?.map((el) => el.file),
+      0,
+      Observation.AccidentsType,
+      SelectedMachine.value?.id ?? null,
+      ZoneIds.value ?? 0,
+      37,
+      0,
+      0,
+      0,
+      '',
+      0,
+      0,
+      date.value ?? '',
+      [],
+      0,
+    )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => {}, { immediate: true })
+watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 // const indexHazardTypeParams = new IndexHazardParams('', 1, 10, 1)
 // const indexHazardTypeController = IndexHazardController.getInstance()
@@ -91,24 +93,26 @@ const setMachine = (data: TitleInterface | null) => {
   updateData()
 }
 
-const setImage = async (data: File) => {
-  image.value = await filesToBase64(data)
-  updateData()
-}
+// const setImage = async (data: File) => {
+//   image.value = await filesToBase64(data)
+//   updateData()
+// }
 const ZoneIds = ref<number>()
 const GetZones = (data: number) => {
   ZoneIds.value = data
+  updateData()
+}
+
+const setImages = async (data: string[]) => {
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage
-      :title="'create Incedant'"
-      :subtitle="'Identify and report potential Incedants before they cause harm'"
-      :img="HazardImage"
-    />
+    <HeaderPage :title="'create Incedant'" :subtitle="'Identify and report potential Incedants before they cause harm'"
+      :img="HazardImage" />
   </div>
 
   <div class="col-span-6 md:col-span-6">
@@ -130,20 +134,15 @@ const GetZones = (data: number) => {
   </div>
 
   <div class="col-span-6 md:col-span-3 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="select machine (optional)"
-      id="machine"
-      placeholder="select your machine"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
+      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
+      @update:modelValue="setMachine" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
-    <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" />
+    <!-- <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" /> -->
+    <MultiImagesInput :initialImages="image" @update:images="setImages" />
+
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
