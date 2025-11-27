@@ -1,3 +1,4 @@
+z
 <script setup lang="ts">
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
@@ -10,13 +11,16 @@ import ArrowLeftCurved from '@/shared/icons/arrowLeftCurved.vue'
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
+import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
+
+
 
 const visible = ref(false)
 
 const indexTemplateController = IndexTemplateController.getInstance()
 const state = ref(indexTemplateController.state.value)
 
-const selectedTemplates = ref<string[]>([])
+const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async () => {
   const deleteTemplateItemTypeParams = new IndexTemplateParams('', 0, 0, 0, 0)
@@ -41,6 +45,12 @@ const emit = defineEmits(['update:data'])
 const sendTemplatesId = () => {
   emit('update:data', selectedTemplates.value)
   visible.value = false
+}
+
+const GetTemplateId = (data: number) => {
+  selectedTemplates.value = data
+  emit('update:data', selectedTemplates.value)
+  // visible.value = false
 }
 </script>
 
@@ -74,15 +84,16 @@ const sendTemplatesId = () => {
             <span>{{ $t('my templates') }}</span>
           </div>
 
-          <p class="selected-template-number">
-            {{ selectedTemplates.length }}
+          <!-- <p class="selected-template-number">
+            {{ selectedTemplates?.length }}
             <span>{{ $t('select') }}</span>
-          </p>
+          </p> -->
         </div>
 
         <div class="inspection-templates-items">
-          <div class="item" v-for="template in state.data" :key="template.id">
-            <div class="item-header">
+          <TemplateSelector :data="state.data" @update:data="GetTemplateId" />
+          <!-- <div class="item" v-for="template in state.data" :key="template.id"> -->
+          <!-- <div class="item-header">
               <div class="item-header-title">
                 <ArrowLeftCurved />
                 <span>{{ template.title }}</span>
@@ -96,12 +107,12 @@ const sendTemplatesId = () => {
                   {{ $t('select') }}
                 </label>
               </div>
-            </div>
+            </div> -->
 
-            <!-- template preview component -->
-            <TemplateDocument :allData="template" />
-          </div>
+          <!-- template preview component -->
+          <!-- <TemplateDocument :allData="template" /> -->
         </div>
+        <!-- </div> -->
 
         <button class="btn btn-primary w-full !mt-4" @click="sendTemplatesId">
           {{ $t('confirm') }}

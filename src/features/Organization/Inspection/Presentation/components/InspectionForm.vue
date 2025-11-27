@@ -13,6 +13,7 @@ import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 import { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
 import { PeriodTypeEnum } from '../../Core/Enum/PeriodTypeEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 interface DataFormDetails {
   inspectionType: InspectionTypeEnum,
@@ -20,6 +21,9 @@ interface DataFormDetails {
   periodType: TitleInterface,
   periodByday: TitleInterface,
   PeridWithDate: TitleInterface[],
+  bydates: Date[],
+  fromDate: string,
+  toDate: string
 }
 interface InspectionForm {
   morph: TitleInterface,
@@ -50,6 +54,12 @@ const updateData = () => {
         new TaskPeriodParams(null, null, item.id)
       )
     })
+    DataParams.value?.data?.bydates?.forEach((item) => {
+      // console.log(, "item");
+      PeriodTasks.value.push(
+        new TaskPeriodParams(null, null, formatJoinDate(item))
+      )
+    })
   }
   // if (DataParams.value?.data?.inspectionType == InspectionTypeEnum.DAY) {
   //   PeriodTasks.value.push(new TaskPeriodParams(null, null, ))
@@ -68,12 +78,14 @@ const updateData = () => {
     : new AddInspectionParams(
       SelectedAssigned.value,
       DataParams.value?.morph?.id,
-      DataParams.value?.TempalteIds[0],
+      DataParams.value?.TempalteIds,
       DataParams.value?.data?.inspectionType,
       DataParams.value?.data?.periodType,
       37,
       PeriodTasks.value || [],
-      DataParams.value?.data?.onceday
+      DataParams.value?.data?.onceday,
+      DataParams.value?.data?.fromDate,
+      null
     )
 
   emit('update:data', params)

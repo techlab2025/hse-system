@@ -30,7 +30,7 @@ const toggle = (event: MouseEvent) => {
       {{ locationTitles.length - 1 }}
     </span>
     <span class="tag tag-blue">
-      {{ wordSlice(locationTitles.join(', '), 25) }}
+      {{ wordSlice(locationTitles.join(', '), 10) }}
     </span>
     <DropIcon class="drop-icon" />
   </div>

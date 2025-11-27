@@ -26,11 +26,13 @@ import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 // import { TypesEnum } from '../../Core/Enums/types_enum'
 import AddHazardParams from '../../../Core/params/addHazardParams'
 import EditHazardParams from '../../../Core/params/editHazardParams'
-import type { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
-import type { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -58,20 +60,20 @@ const user = useUserStore()
 
 const title = ref<string>('')
 const description = ref<string>('')
-const image = ref<string | null>(null)
+const image = ref<string[] | null>(null)
 const date = ref<Date | null>(null)
 const equipmentId = ref<number | null>(null)
 
 const hazardTypeId = ref<number | null>(null)
-const riskLevel = ref<RiskLevelEnum | null>(null)
-const takeAction = ref<'yes' | 'no' | null>(null)
+const riskLevel = ref<RiskLevelEnum | null>(RiskLevelEnum.Low)
+const takeAction = ref<'yes' | 'no' | null>('no')
 const solved = ref<'yes' | 'no' | null>(null)
 const preventiveAction = ref<string>('')
 const isNearMiss = ref<boolean | number>(0)
 const isResult = ref<boolean>(false)
 const capaStatus = ref<boolean>(false)
 const isAction = ref<boolean>()
-const saveStatus = ref<SaveStatusEnum | null>(null)
+const saveStatus = ref<SaveStatusEnum | null>(SaveStatusEnum.NotSaved)
 const actionText = ref<string>('')
 const zoneId = ref<number | null>(null)
 const LocationIds = ref<number[]>([])
@@ -130,44 +132,44 @@ const updateData = () => {
 
   const params: AddHazardParams | EditHazardParams = props.data?.id
     ? new EditHazardParams(
-        props.data.id,
-        title.value,
-        description.value,
-        image.value,
-        type_id.value,
-        type.value,
-        equipmentId.value,
-        zoneId.value,
-        37,
-        isResult.value,
-        riskLevel.value,
-        saveStatus.value,
-        preventiveAction.value,
-        isNearMiss.value,
-        null,
-        date.value,
-        null,
-        isAction.value,
-      )
+      props.data.id,
+      title.value,
+      description.value,
+      image.value.map((el) => el.file),
+      type_id.value,
+      type.value,
+      equipmentId.value,
+      zoneId.value,
+      37,
+      isResult.value,
+      riskLevel.value,
+      saveStatus.value,
+      preventiveAction.value,
+      isNearMiss.value,
+      null,
+      date.value,
+      null,
+      isAction.value,
+    )
     : new AddHazardParams(
-        title.value,
-        description.value,
-        image.value,
-        type_id.value,
-        type.value,
-        equipmentId.value,
-        zoneId.value,
-        37,
-        isResult.value ? 1 : 0,
-        riskLevel.value,
-        saveStatus.value,
-        preventiveAction.value,
-        isNearMiss.value,
-        null,
-        date.value,
-        null,
-        isAction.value ? 1 : 0,
-      )
+      title.value,
+      description.value,
+      image.value.map((el) => el.file),
+      type_id.value,
+      type.value,
+      equipmentId.value,
+      zoneId.value,
+      37,
+      isResult.value ? 1 : 0,
+      riskLevel.value,
+      saveStatus.value,
+      preventiveAction.value,
+      isNearMiss.value,
+      null,
+      date.value,
+      null,
+      isAction.value ? 1 : 0,
+    )
   emit('update:data', params)
 }
 
@@ -218,15 +220,19 @@ const handleHazardData = (data: any) => {
 watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
+
+
+const setImages = async (data: string[]) => {
+  image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  console.log(image.value, "image.value");
+  updateData()
+}
 </script>
 
 <template>
   <div class="observation-form">
-    <HeaderPage
-      :title="$t('create Observations')"
-      subtitle="Document what you observe to improve workplace safety"
-      :img="ToDoList"
-    />
+    <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
+      :img="ToDoList" />
 
     <TabsSelection :LocationIds="[137]" @update:data="zoneId = $event" />
 
@@ -239,63 +245,44 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
     <div class="first-section lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
       <div class="input-wrapper col-span-12">
         <label for="text">{{ $t('Text') }}</label>
-        <input
-          class="input"
-          :placeholder="$t('add your title')"
-          type="text"
-          id="title"
-          v-model="title"
-        />
+        <input class="input" :placeholder="$t('add your title')" type="text" id="title" v-model="title" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-6 md:grid-cols-12">
         <label for="date">
           {{ $t('date') }}
+          <span class="text-red-500">*</span>
         </label>
         <DatePicker v-model="date" id="date" />
       </div>
 
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput
-          :modelValue="equipment"
-          :controller="equipmentController"
-          :params="equipmentParams"
-          label="Equipment"
-          id="Equipment"
-          placeholder="Select Equipment"
-          @update:modelValue="setEquipment"
-        />
+        <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
+          :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
+          @update:modelValue="setEquipment" />
       </div>
 
       <div class="col-span-12">
         <div class="flex flex-col gap-2 input-wrapper">
           <label>{{ $t('upload image') }}</label>
-          <SingleFileUpload
+          <!-- <SingleFileUpload
             v-model="image"
             @update:modelValue="setImage"
             label="Image"
             id="image"
             placeholder="upload image"
-          />
+          /> -->
+
+          <MultiImagesInput :initialImages="image" @update:images="setImages" />
         </div>
       </div>
     </div>
-
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
-    <ObservationLevel
-      :modelRiskLevel="riskLevel"
-      :modelIsNearMiss="isNearMiss"
-      @update:data="handleObservationLevel"
-    />
-    <HazerdType
-      :riskLevel="riskLevel"
-      :is_near_miss="isNearMiss"
-      :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'"
-      :modelAction="actionText"
+    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" @update:data="handleObservationLevel" />
+    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText"
       :modelHazerdType="props.data?.type_model ? markRaw(props.data.type_model) : null"
-      @update:data="handleHazardData"
-    />
+      @update:data="handleHazardData" />
   </div>
 </template>

@@ -250,7 +250,7 @@ const ShowDetails = ref<number[]>([])
                   </div>
                   <!-- <div class="card-info-status" >Start</div> -->
 
-                  <InspectionStartTemplate :templateId="item.template.id" :taskId="item.id" :status="item.status" />
+                  <InspectionStartTemplate :templateId="item?.template?.id" :taskId="item?.id" :status="item?.status" />
 
                   <!-- <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
                     <span> show inspection details </span>

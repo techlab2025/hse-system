@@ -1,0 +1,33 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.template-selector {
+  width: 100%;
+  .p-accordion.p-component {
+    width: 100%;
+  }
+  .p-icon.p-accordionheader-toggle-icon {
+    display: none !important;
+  }
+
+  .template-document-container {
+    &.active {
+      border: 2px solid $PrimaryColor;
+    }
+    .header-select {
+      @include flex-column(nowrap, flex-end, flex-end);
+      .template-checkbox {
+        @include flex-row(nowrap, center, center);
+        gap: 5px;
+      }
+      .p-radiobutton-checked .p-radiobutton-box {
+        border-color: $PrimaryColor !important;
+        background-color: $PrimaryColor !important;
+      }
+      .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+        border-color: $PrimaryColor !important;
+        background-color: $PrimaryColor !important;
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ import { watch } from 'vue'
 
 const props = defineProps<{
   allData: TemplateDetailsModel
+  headerDisplay: boolean | true
 }>()
 
 watch(
@@ -27,7 +28,7 @@ watch(
 </script>
 <template>
   <div class="template-document-container">
-    <div class="template-document-header">
+    <div class="template-document-header" v-if="headerDisplay">
       <div class="template-header">
         <p class="header-title" v-if="allData.titles && allData?.titles?.length > 0">
           {{
@@ -51,36 +52,15 @@ watch(
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div
-        class="template-document-content"
-        v-for="(item, index) in allData?.templateItems"
-        :key="index"
-      >
-        <TemplateDocumentCheckboxShow
-          v-if="item?.action == ActionsEnum.CHECKBOX"
-          :key="index"
-          :title="item.name"
-          :options="item.options"
-          :require_image="item.requiredImage"
-        />
-        <TemplateDocumentRadioButtonShow
-          v-if="item?.action == ActionsEnum.RADIOBUTTON"
-          :title="item.name"
-          :options="item.options"
-          :require_image="item.requiredImage"
-        />
-        <TemplateDocumentSelectShow
-          v-if="item?.action == ActionsEnum.DROPDOWN"
-          :title="item.name"
-          :key="index"
-          :options="item.options"
-          :require_image="item.requiredImage"
-        />
-        <TemplateDocumentTextAreaShow
-          v-if="item?.action == ActionsEnum.TEXTAREA"
-          :title="item.name"
-          :require_image="item.requiredImage"
-        />
+      <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
+        <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
+          :options="item.options" :require_image="item.requiredImage" />
+        <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
+          :require_image="item.requiredImage" />
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ import type { Observation } from '../Enums/ObservationTypeEnum'
 export default class AddHazardParams implements Params {
   public title: string | null
   public description: string | null
-  public image: string | null
+  public image: string[] | null
   public typeId: number | null
   public type: Observation | null
   public equipmentId: number | null
@@ -25,7 +25,7 @@ export default class AddHazardParams implements Params {
   constructor(
     title: string | null,
     description: string | null,
-    image: string | null,
+    image: string[] | null,
     typeId: number | null,
     type: Observation | null,
     equipmentId: number | null,
@@ -74,7 +74,7 @@ export default class AddHazardParams implements Params {
 
     if (this.title) data['title'] = this.title
     if (this.description) data['description'] = this.description
-    if (this.image) data['image'] = this.image
+    if (this.image) data['files'] = this.image
     if (this.typeId) data['type_id'] = this.typeId
     if (this.type) data['type'] = this.type
     if (this.equipmentId) data['equipment_id'] = this.equipmentId
