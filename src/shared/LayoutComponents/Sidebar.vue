@@ -1338,11 +1338,11 @@ const user = useUserStore()
                   <!-- Contractor -->
                   <PermissionBuilder
                     :code="[
-                      PermissionsEnum.CONTRACTOR_All,
-                      PermissionsEnum.CONTRACTOR_CREATE,
-                      PermissionsEnum.CONTRACTOR_DELETE,
-                      PermissionsEnum.CONTRACTOR_FETCH,
-                      PermissionsEnum.CONTRACTOR_UPDATE,
+                      PermissionsEnum.ORG_CONTRACTOR_ALL,
+                      PermissionsEnum.ORG_CONTRACTOR_CREATE,
+                      PermissionsEnum.ORG_CONTRACTOR_DELETE,
+                      PermissionsEnum.ORG_CONTRACTOR_FETCH,
+                      PermissionsEnum.ORG_CONTRACTOR_UPDATE,
                     ]"
                   >
                     <li>

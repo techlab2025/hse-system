@@ -1,4 +1,5 @@
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
+import MorphModel from './MorphModel'
 
 export default class InspectionModel {
   public id: number
@@ -7,7 +8,7 @@ export default class InspectionModel {
   public status: number
   public periodType: number
   public periodSubType: number
-  public morph: Morph
+  public morph: MorphModel
   constructor(
     id: number,
     template: TemplateDetailsModel,
@@ -15,7 +16,7 @@ export default class InspectionModel {
     status: number,
     periodType: number,
     periodSubType: number,
-    morph: Morph,
+    morph: MorphModel,
   ) {
     this.id = id
     this.template = template
@@ -34,12 +35,7 @@ export default class InspectionModel {
       data.status,
       data.period_type,
       data.period_sub_type,
-      data.morph,
+      MorphModel.fromMap(data.morph),
     )
   }
-}
-
-interface Morph {
-  id: number
-  name: string
 }
