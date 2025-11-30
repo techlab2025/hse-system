@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params.ts'
+import type HirarachyEmployeeParams from './HirarchyParams'
 
 export default class EditOrganizatoinEmployeeParams implements Params {
   id: number
@@ -6,7 +7,8 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   phone: string
   email: string
   password: string
-  // heriarachyId: number
+  hierarchies: HirarachyEmployeeParams[]
+
   // certificateId: number[]
 
   constructor(
@@ -15,7 +17,8 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     phone: string,
     email: string,
     password: string,
-    // heriarachyId: number,
+    hierarchies: HirarachyEmployeeParams[],
+
     // certificateId: number[],
   ) {
     this.id = id
@@ -23,7 +26,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.phone = phone
     this.email = email
     this.password = password
-    // this.heriarachyId = heriarachyId
+    this.hierarchies = hierarchies
     // this.certificateId = certificateId
   }
 
@@ -38,7 +41,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['phone'] = this.phone
     data['email'] = this.email
     data['password'] = this.password
-    // data['heriarachy_id'] = this.heriarachyId
+    data['hierarchies'] = this.hierarchies
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

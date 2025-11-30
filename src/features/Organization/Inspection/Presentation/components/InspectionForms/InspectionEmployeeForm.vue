@@ -5,9 +5,7 @@ import IndexOrganizatoinEmployeeParams from '@/features/Organization/Organizatio
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController';
 import InspectionGeneralForm from './InspectionGeneralForm.vue';
 import TitleInterface from '@/base/Data/Models/title_interface'
-import IndexEmployeeParams from '@/features/employee/Core/params/indexEmployeeParams'
-import IndexEmployeeController from '@/features/employee/Presentation/controllers/indexEmployeeController'
-import InspectionTypeSelection from '../InspectionUtils/InspectionTypeSelection.vue'
+// import IndexEmployeeParams from '@/features/employee/Core
 import InspectionTemplateDialog from '../InspectionDialog/InspectionTemplateDialog.vue'
 
 const emit = defineEmits(['update:data'])
@@ -21,7 +19,7 @@ const UpdateData = () => {
   emit('update:data', {
     morph: SelectedEmployee.value,
     data: Data.value,
-    TempalteIds:TempalteIds.value
+    TempalteIds: TempalteIds.value
   })
 }
 const setEmployee = (data: TitleInterface) => {
@@ -34,8 +32,8 @@ const GetGeneralData = (data) => {
   Data.value = data
   UpdateData()
 }
-const TempalteIds = ref<number[]>()
-const GetTemplateId = (data:number[])=>{
+const TempalteIds = ref<number>()
+const GetTemplateId = (data: number) => {
   TempalteIds.value = data
   UpdateData()
 }

@@ -34,3 +34,8 @@ const setParams = (data: Params) => {
 </template>
 
 <style scoped></style>
+
+
+
+
+
