@@ -6,11 +6,12 @@ import { organizationEmployeeRoutes } from '@/router/routes/organization/organiz
 import { organizationLocationRoutes } from '@/router/routes/organization/organizationLocation.ts'
 import { herikalyRoutes } from '@/router/routes/organization/herikaly.ts'
 import { objectivesRoutes } from './objectives'
-import { IncedantRoutes } from './Incedant'
-import { InspectionRoutes } from './inspection'
-import { hazardRoutes } from './hazard'
-import { observationRoutes } from './observation'
+// import { IncedantRoutes } from './Incedant'
+// import { InspectionRoutes } from './inspection'
+// import { hazardRoutes } from './hazard'
+// import { observationRoutes } from './observation'
 import { InvestigatingRoutes } from './investigating'
+import { EquipmentMangementRoutes } from './eqipmentMangement'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -25,11 +26,13 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...organizationLocationRoutes,
   ...herikalyRoutes,
   ...objectivesRoutes,
-  ...IncedantRoutes,
-  ...InspectionRoutes,
-  ...hazardRoutes,
-  ...observationRoutes,
+  // ...IncedantRoutes,
+  // ...InspectionRoutes,
+  // ...hazardRoutes,
+  // ...observationRoutes,
   ...InvestigatingRoutes,
+  ...EquipmentMangementRoutes,
+
   {
     path: 'permission/:id',
     name: 'Permission Organization',

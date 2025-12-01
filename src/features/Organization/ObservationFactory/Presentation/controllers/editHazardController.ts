@@ -44,14 +44,12 @@ export default class EditHazardController extends ControllerInterface<HazardMode
         const { user } = useUserStore()
 
         if (params.type == Observation.HazardType) {
-          await router.push(`/organization/hazard`)
-        }
-        else if (params.type == Observation.ObservationType) {
-          await router.push(`/organization/observation`)
-        }
-        else if (params.type == Observation.AccidentsType) {
-          await router.push(`/organization/incedant`)
-        }        // console.log(this.state.value.data)
+          await router.push(`/organization/equipment/hazard`)
+        } else if (params.type == Observation.ObservationType) {
+          await router.push(`/organization/equipment/observation`)
+        } else if (params.type == Observation.AccidentsType) {
+          await router.push(`/organization/equipment/incedant`)
+        } // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

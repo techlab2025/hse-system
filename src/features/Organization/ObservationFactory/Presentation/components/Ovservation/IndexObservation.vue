@@ -149,7 +149,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/observation/${id}`,
+    link: `/organization/equipment/observation/${id}`,
     permission: [
       PermissionsEnum.ORG_OBSERVATION_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -225,14 +225,14 @@ const ShowDetails = ref<number[]>([])
       <IndexFilter
         :filters="Filters"
         @update:data="fetchHazard('', 1, 10, 1, $event)"
-        :link="'/organization/observation/add'"
+        :link="'/organization/equipment/observation/add'"
         :linkText="'Create Observation'"
       />
 
       <div class="btns-filter">
         <FilterDialog @confirmFilters="confirmFilters" />
 
-        <router-link :to="`/organization/observation/add`">
+        <router-link :to="`/organization/equipment/observation/add`">
           <button class="btn btn-primary">{{ $t('Create observation') }}</button>
         </router-link>
       </div>
@@ -309,7 +309,7 @@ const ShowDetails = ref<number[]>([])
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/organization/observation/add`"
+          :link="`/organization/equipment/observation/add`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Observation"
@@ -317,7 +317,7 @@ const ShowDetails = ref<number[]>([])
       </template>
       <template #failed>
         <DataFailed
-          :link="`/organization/observation/add`"
+          :link="`/organization/equipment/observation/add`"
           addText="Add Observation"
           description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Observation"

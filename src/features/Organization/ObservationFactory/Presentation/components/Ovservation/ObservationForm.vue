@@ -235,6 +235,7 @@ const UpdateSelectedZone = (data) => {
 </script>
 
 <template>
+  <!-- <pre>{{ data }}</pre> -->
   <div class="observation-form">
     <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList" />

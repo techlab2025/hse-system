@@ -42,7 +42,7 @@ export default class EditInspectionController extends ControllerInterface<Inspec
 
         const { user } = useUserStore()
 
-        await router.push(`/organization/inspection`)
+        await router.push(`/organization/equipment/inspection`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

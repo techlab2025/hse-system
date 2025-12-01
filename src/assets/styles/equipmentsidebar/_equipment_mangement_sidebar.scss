@@ -1,0 +1,13 @@
+@import "../variables";
+@import "../mixins/flex";
+@import "../mixins/grid";
+
+
+.equipment-sidebar{
+  ul{
+    li{
+      color: #A8A8A8;
+      padding: 12px;
+    }
+  }
+}

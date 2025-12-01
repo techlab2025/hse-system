@@ -4,10 +4,11 @@
 
 .observation-form {
   .first-section-par {
+
     padding: 25px 5px;
     @include flex-row(wrap, flex-start, center);
     gap: 4px;
-    font-family: var(--font-family);
+    font-family: "Regular";
     font-weight: $BaseFontWeightBold;
     font-size: $XlSize;
     color: $ThirdColor;
@@ -17,7 +18,7 @@
       font-size: $MdSize;
     }
   }
-  .select-container { 
+  .select-container {
     font-family: 'Regular';
     border-radius: 20px;
     transition: all 0.1s linear;

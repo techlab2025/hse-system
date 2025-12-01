@@ -149,7 +149,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/incedant/${id}`,
+    link: `/organization/equipment/incedant/${id}`,
     permission: [
       PermissionsEnum.ORG_INCEDANT_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -221,12 +221,12 @@ const ShowDetails = ref<number[]>([])
     <IndexHazardHeader :title="`incedant`" :length="120" :categories="categories" />
     <div class="flex items-center justify-between">
       <IndexFilter :filters="Filters" @update:data="fetchHazard('', 1, 10, 1, $event)"
-        :link="'/organization/incedant/add'" :linkText="'Create Incedant'" />
+        :link="'/organization/equipment/incedant/add'" :linkText="'Create Incedant'" />
 
       <div class="btns-filter">
         <FilterDialog @confirmFilters="confirmFilters" />
 
-        <router-link :to="`/organization/incedant/add`">
+        <router-link :to="`/organization/equipment/incedant/add`">
           <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
         </router-link>
       </div>

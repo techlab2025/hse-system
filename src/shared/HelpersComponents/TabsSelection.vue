@@ -12,6 +12,7 @@ import { watch } from 'vue'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import { useRouter } from 'vue-router'
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 
 const emit = defineEmits(['update:data'])
 const SelectedLocation = ref(1)
@@ -24,7 +25,7 @@ const updateData = (data) => {
   emit('update:data', data.target.value)
 }
 
-const AllZones = ref<SohwProjectZoonModel[]>([])
+// const AllZones = ref<MyZonesModel[]>([])
 // const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const state = ref(fetchMyZonesController.state.value)
@@ -70,15 +71,16 @@ watch(
       </div> -->
       <div class="tabs-selction-content">
         <div class="select-container">
-          <div class="select-item" v-for="zoon in state.data" :key="zoon.id"
-            :class="SelectedLocation === zoon.id ? 'active' : ''">
+          <div class="select-item" v-for="zoon in state.data" :key="zoon.projectZoonId"
+            :class="SelectedLocation === zoon.projectZoonId ? 'active' : ''">
             <div class="left-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="left-yellow" :src="yelloecircle" alt="yellow" />
             </div>
-            <input type="radio" :id="`radio-${zoon.id}`" name="radio" :value="zoon.id" @change="updateData" />
-            <label class="item" @click="SelectedLocation = zoon.id" :for="`radio-${zoon.id}`">{{
-              zoon.title }}</label>
+            <input type="radio" :id="`radio-${zoon.projectZoonId}`" name="radio" :value="zoon.projectZoonId"
+              @change="updateData" />
+            <label class="item" @click="SelectedLocation = zoon.projectZoonId" :for="`radio-${zoon.projectZoonId}`">{{
+              zoon.zoonTitle || `--` }}</label>
             <div class="right-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="right-yellow" :src="yelloecircle" alt="blue" />
