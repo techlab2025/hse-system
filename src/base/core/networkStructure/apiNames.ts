@@ -1201,6 +1201,9 @@ class ApiNames {
   public get FetchMyZones() {
     return this.prefix + 'fetch_my_zoons'
   }
+  public get FetchMyProjects() {
+    return this.prefix + 'fetch_my_projects'
+  }
 }
 
 export { ApiNames }
