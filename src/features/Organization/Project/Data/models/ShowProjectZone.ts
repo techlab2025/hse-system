@@ -13,6 +13,7 @@ export default class SohwProjectZoonModel {
   public projectLocationId: number
   public projectLocationZoons?: projectLocationZoonsModel[]
   public titles: TitleLocale[]
+  public zoons: TitleModel[]
 
   constructor(
     projectZoonId: number,
@@ -23,6 +24,7 @@ export default class SohwProjectZoonModel {
     projectLocationId: number,
     projectLocationZoons: projectLocationZoonsModel[] = [],
     titles: TitleLocale[] = [],
+    zoons: TitleModel[] = [],
   ) {
     this.projectZoonId = projectZoonId
     this.zoonId = zoonId
@@ -32,6 +34,7 @@ export default class SohwProjectZoonModel {
     this.projectLocationId = projectLocationId
     this.projectLocationZoons = projectLocationZoons
     this.titles = titles
+    this.zoons = zoons
   }
 
   static fromMap(data: any): SohwProjectZoonModel {
@@ -44,6 +47,7 @@ export default class SohwProjectZoonModel {
       data.projectLocationId,
       data.project_location_zoons?.map((z: any) => projectLocationZoonsModel.fromMap(z)),
       TranslationsParams.fromMap(data.zoon_titles).titles,
+      data.zoons?.map((z: any) => TitleModel.fromMap(z)),
     )
   }
 }

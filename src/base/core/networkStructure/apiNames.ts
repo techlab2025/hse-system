@@ -1198,6 +1198,9 @@ class ApiNames {
   public get FetchTaskResult() {
     return this.prefix + 'fetch_task_details'
   }
+  public get FetchMyZones() {
+    return this.prefix + 'fetch_my_zoons'
+  }
 }
 
 export { ApiNames }

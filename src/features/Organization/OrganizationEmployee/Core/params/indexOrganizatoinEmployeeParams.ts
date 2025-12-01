@@ -7,6 +7,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
+  public heirarchyId?: number
   // public code?: LangEnum
 
   constructor(
@@ -14,12 +15,14 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
+    heirarchyId?: number,
     // code?: LangEnum,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.heirarchyId = heirarchyId
     // this.code = code
   }
 
@@ -29,6 +32,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
+    if (this.heirarchyId) data['heirarchy_id'] = this.heirarchyId
     // if (this.code) data['code'] = this.code
     return data
   }
