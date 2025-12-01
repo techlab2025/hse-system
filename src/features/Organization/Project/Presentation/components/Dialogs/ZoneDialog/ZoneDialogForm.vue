@@ -84,8 +84,9 @@ const UpdateData = () => {
       </div>
 
       <div class="zone-content-container">
-        <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2" class="zone-content"
-          :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
+        <!-- <pre>{{ location }}</pre> -->
+        <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2"
+          class="zone-content" :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
 
           <label :for="`${location.zoonTitle}-${zone.title}-${zone.id}`" class="zone-title">
             {{ zone.title }}

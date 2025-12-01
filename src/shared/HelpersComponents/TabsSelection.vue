@@ -9,79 +9,76 @@ import ProjectCustomLocationParams from '@/features/Organization/Project/Core/pa
 import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import { watch } from 'vue'
+import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
+import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+import { useRouter } from 'vue-router'
 
 const emit = defineEmits(['update:data'])
 const SelectedLocation = ref(1)
+const router = useRouter()
 const props = defineProps<{
   LocationIds: number[]
 }>()
 const updateData = (data) => {
-  console.log(data)
+  console.log(data.target.value, "data.target.value")
   emit('update:data', data.target.value)
 }
 
 const AllZones = ref<SohwProjectZoonModel[]>([])
-const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+// const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const fetchMyZonesController = FetchMyZonesController.getInstance()
+const state = ref(fetchMyZonesController.state.value)
 
-const state = ref(projectCustomLocationController.state.value)
+// const GetProjectLocationsEmployes = async () => {
+//   const projectCustomLocationParams = new ProjectCustomLocationParams(
+//     37,
+//     [ProjectCustomLocationEnum.ZOON],
+//     [63],
+//   )
+//   const response = await projectCustomLocationController.getData(
+//     projectCustomLocationParams,
+//   )
+//   // console.log(response.value.data, 'response.va')
+// }
 
-const GetProjectLocationsEmployes = async () => {
-  const projectCustomLocationParams = new ProjectCustomLocationParams(
-    37,
-    [ProjectCustomLocationEnum.ZOON],
-    [63],
-  )
-  const response = await projectCustomLocationController.getData(
-    projectCustomLocationParams,
-  )
-  // console.log(response.value.data, 'response.va')
+const FetchMyZones = async () => {
+  const fetchMyZonesParams = new FetchMyZonesParams()
+  const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
 }
-
 onMounted(() => {
-  GetProjectLocationsEmployes()
+  // GetProjectLocationsEmployes()
+  FetchMyZones()
 })
 
 watch(
-  () => projectCustomLocationController.state.value,
+  () => fetchMyZonesController.state.value,
   (newState) => {
     state.value = newState
   },
 )
 </script>
 <template>
+  <!-- <pre>{{ state.data }}</pre> -->
   <div class="w-full">
-    <div class="tabs-selction-container" v-for="(item, index) in state.data" :key="index">
-      <div class="tabs-selction-header">
+
+    <div class="tabs-selction-container">
+      <!-- <div class="tabs-selction-header">
         <p class="title">{{ $t('zones') }}</p>
         <p class="subtitle">
           Main location is : <span> {{ item?.title }}</span>
         </p>
-      </div>
+      </div> -->
       <div class="tabs-selction-content">
         <div class="select-container">
-          <div
-            class="select-item"
-            v-for="zoon in item.locationZones"
-            :key="zoon.projectZoonId"
-            :class="SelectedLocation === zoon.projectZoonId ? 'active' : ''"
-          >
+          <div class="select-item" v-for="zoon in state.data" :key="zoon.id"
+            :class="SelectedLocation === zoon.id ? 'active' : ''">
             <div class="left-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="left-yellow" :src="yelloecircle" alt="yellow" />
             </div>
-            <input
-              type="radio"
-              :id="`radio-${zoon.projectZoonId}`"
-              name="radio"
-              :value="zoon.projectZoonId"
-              @change="updateData"
-            />
-            <label
-              class="item"
-              @click="SelectedLocation = zoon.projectZoonId"
-              :for="`radio-${zoon.projectZoonId}`"
-              >{{ zoon.zoonTitle }}</label
-            >
+            <input type="radio" :id="`radio-${zoon.id}`" name="radio" :value="zoon.id" @change="updateData" />
+            <label class="item" @click="SelectedLocation = zoon.id" :for="`radio-${zoon.id}`">{{
+              zoon.title }}</label>
             <div class="right-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="right-yellow" :src="yelloecircle" alt="blue" />

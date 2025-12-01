@@ -98,8 +98,8 @@ const setMachine = (data: TitleInterface) => {
 }
 
 
-const ZoneIds = ref<number[]>()
-const GetZones = (data: number[]) => {
+const ZoneIds = ref<number>()
+const GetZones = (data: number) => {
   ZoneIds.value = data
   // console.log(ZoneIds.value, 'ZoneIds.value')
   updateData()

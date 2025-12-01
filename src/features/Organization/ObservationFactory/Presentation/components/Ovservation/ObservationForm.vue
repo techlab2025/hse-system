@@ -132,6 +132,7 @@ const updateData = () => {
 
   const params: AddHazardParams | EditHazardParams = props.data?.id
     ? new EditHazardParams(
+<<<<<<< HEAD
         props.data.id,
         title.value,
         description.value,
@@ -170,6 +171,46 @@ const updateData = () => {
         null,
         isAction.value ? 1 : 0,
       )
+=======
+      props.data.id,
+      title.value,
+      description.value,
+      image.value?.map((el) => el.file),
+      type_id.value,
+      type.value,
+      equipmentId.value,
+      zoneId.value,
+      37,
+      isResult.value,
+      riskLevel.value,
+      saveStatus.value,
+      preventiveAction.value,
+      isNearMiss.value,
+      null,
+      date.value,
+      null,
+      isAction.value,
+    )
+    : new AddHazardParams(
+      title.value,
+      description.value,
+      image.value?.map((el) => el.file),
+      type_id.value,
+      type.value,
+      equipmentId.value,
+      zoneId.value,
+      37,
+      isResult.value ? 1 : 0,
+      riskLevel.value,
+      saveStatus.value,
+      preventiveAction.value,
+      isNearMiss.value,
+      null,
+      date.value,
+      null,
+      isAction.value ? 1 : 0,
+    )
+>>>>>>> 23908d7197d25f8982ebb619a850d8a78ceeede7
   emit('update:data', params)
 }
 
@@ -226,6 +267,11 @@ const setImages = async (data: string[]) => {
   console.log(image.value, 'image.value')
   updateData()
 }
+
+const UpdateSelectedZone = (data) => {
+  zoneId.value = data
+  updateData();
+}
 </script>
 
 <template>
@@ -237,6 +283,10 @@ const setImages = async (data: string[]) => {
     />
 
     <TabsSelection :LocationIds="[137]" @update:data="zoneId = $event" />
+    <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
+      :img="ToDoList" />
+    <!-- zoneId = $event -->
+    <TabsSelection :LocationIds="[137]" @update:data="UpdateSelectedZone" />
 
     <p class="first-section-par">
       <component :is="FormPen" />
