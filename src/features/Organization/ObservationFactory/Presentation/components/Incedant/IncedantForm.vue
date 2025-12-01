@@ -107,6 +107,8 @@ const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
+
+
 </script>
 
 <template>

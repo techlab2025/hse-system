@@ -135,7 +135,7 @@ const updateData = () => {
       props.data.id,
       title.value,
       description.value,
-      image.value.map((el) => el.file),
+      image.value?.map((el) => el.file),
       type_id.value,
       type.value,
       equipmentId.value,
@@ -154,7 +154,7 @@ const updateData = () => {
     : new AddHazardParams(
       title.value,
       description.value,
-      image.value.map((el) => el.file),
+      image.value?.map((el) => el.file),
       type_id.value,
       type.value,
       equipmentId.value,
@@ -227,14 +227,19 @@ const setImages = async (data: string[]) => {
   console.log(image.value, "image.value");
   updateData()
 }
+
+const UpdateSelectedZone = (data) => {
+  zoneId.value = data
+  updateData();
+}
 </script>
 
 <template>
   <div class="observation-form">
     <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList" />
-
-    <TabsSelection :LocationIds="[137]" @update:data="zoneId = $event" />
+    <!-- zoneId = $event -->
+    <TabsSelection :LocationIds="[137]" @update:data="UpdateSelectedZone" />
 
     <p class="first-section-par">
       <component :is="FormPen" />

@@ -97,8 +97,9 @@ const handleAddAllEmployees = async () => {
               <h5>{{ hierarchy?.title }}</h5>
             </div>
             <DashedLine class="dashed-line" />
+
             <CreateEmployeeForm
-              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)" />
+              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)" :heirarchyId="hierarchy.id"/>
           </div>
         </div>
         <div class="submit-btn">

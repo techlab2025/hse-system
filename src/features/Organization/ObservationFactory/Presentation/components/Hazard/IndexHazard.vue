@@ -200,12 +200,8 @@ onMounted(() => fetchHazard())
       <IndexHazardHeader :title="'Hazard'" :length="120" :categories="categories" />
 
       <div class="flex items-center justify-between">
-        <IndexFilter
-          :filters="Filters"
-          @update:data="fetchHazard('', 1, 10, 1, $event)"
-          :link="'/organization/hazard/add'"
-          :linkText="'Create Hazard'"
-        />
+        <IndexFilter :filters="Filters" @update:data="fetchHazard('', 1, 10, 1, $event)"
+          :link="'/organization/hazard/add'" :linkText="'Create Hazard'" />
 
         <div class="btns-filter">
           <FilterDialog @confirmFilters="confirmFilters" />
@@ -218,16 +214,14 @@ onMounted(() => fetchHazard())
     </div>
 
     <div class="col-span-12">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_HAZARD_ALL,
-          PermissionsEnum.ORG_HAZARD_DELETE,
-          PermissionsEnum.ORG_HAZARD_FETCH,
-          PermissionsEnum.ORG_HAZARD_UPDATE,
-          PermissionsEnum.ORG_HAZARD_CREATE,
-        ]"
-      >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_HAZARD_ALL,
+        PermissionsEnum.ORG_HAZARD_DELETE,
+        PermissionsEnum.ORG_HAZARD_FETCH,
+        PermissionsEnum.ORG_HAZARD_UPDATE,
+        PermissionsEnum.ORG_HAZARD_CREATE,
+      ]">
         <DataStatus :controller="state">
           <template #success>
             <div class="table-responsive">
@@ -259,7 +253,8 @@ onMounted(() => fetchHazard())
                       </div>
                       <div class="card-info">
                         <p class="title">Hazard Type</p>
-                        <Image :src="item.image" alt="Image" preview>
+                        <!-- {{ item.media }} -->
+                        <Image :src="item.media[0]" alt="Image" preview>
                           <template #previewicon>
                             <div class="perview">
                               <span>view</span>
@@ -285,11 +280,8 @@ onMounted(() => fetchHazard())
               </div>
             </div>
 
-            <Pagination
-              :pagination="state.pagination"
-              @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage"
-            />
+            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage" />
           </template>
 
           <template #loader>
@@ -301,29 +293,21 @@ onMounted(() => fetchHazard())
           </template>
 
           <template #empty>
-            <DataEmpty
-              :link="`/organization/hazard/add`"
-              addText="Add Hazard"
+            <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Hazard"
-            />
+              title="..ops! You have No Hazard" />
           </template>
 
           <template #failed>
-            <DataFailed
-              :link="`/organization/hazard/add`"
-              addText="Add Hazard"
+            <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Hazard"
-            />
+              title="..ops! You have No Hazard" />
           </template>
         </DataStatus>
 
         <template #notPermitted>
-          <DataFailed
-            addText="Have not Permission"
-            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-          />
+          <DataFailed addText="Have not Permission"
+            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
         </template>
       </PermissionBuilder>
     </div>

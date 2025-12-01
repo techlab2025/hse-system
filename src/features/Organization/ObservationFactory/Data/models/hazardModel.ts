@@ -5,6 +5,7 @@ import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/Sh
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
+import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/filesModel'
 
 export default class HazardModel {
   public id: number
@@ -31,6 +32,7 @@ export default class HazardModel {
   public observer: OvserverModel
   public creator: OvserverModel
   public capa: CapaModel
+  public media: FilesModel[]
 
   constructor(
     id: number,
@@ -57,6 +59,7 @@ export default class HazardModel {
     observer: OvserverModel,
     creator: OvserverModel,
     capa: CapaModel,
+    media: FilesModel[],
   ) {
     this.id = id
     this.title = title
@@ -82,6 +85,7 @@ export default class HazardModel {
     this.observer = observer
     this.creator = creator
     this.capa = capa
+    this.media = media
   }
 
   static fromMap(data: any): HazardModel {
@@ -110,6 +114,7 @@ export default class HazardModel {
       OvserverModel.fromMap(data.observer),
       OvserverModel.fromMap(data.creator),
       data.capa,
+      data.media,
     )
   }
 }
