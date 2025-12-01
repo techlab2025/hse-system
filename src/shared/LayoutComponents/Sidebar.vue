@@ -207,25 +207,6 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
-                    <!-- Observation -->
-                    <PermissionBuilder
-                      :code="[
-                        PermissionsEnum.OBSERVATION_ALL,
-                        PermissionsEnum.OBSERVATION_CREATE,
-                        PermissionsEnum.OBSERVATION_DELETE,
-                        PermissionsEnum.OBSERVATION_FETCH,
-                        PermissionsEnum.OBSERVATION_UPDATE,
-                        PermissionsEnum.ADMIN,
-                      ]"
-                    >
-                      <li>
-                        <router-link to="/admin/observation">
-                          <SidebarVector />
-                          <span>{{ $t('Observation') }}</span>
-                        </router-link>
-                      </li>
-                    </PermissionBuilder>
-
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -1161,7 +1142,7 @@ const user = useUserStore()
 
                   <!-- Investigating -->
 
-                  <PermissionBuilder
+                  <!-- <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_INVESTIGATING_ALL,
                       PermissionsEnum.ORG_INVESTIGATING_CREATE,
@@ -1176,7 +1157,7 @@ const user = useUserStore()
                         <span>{{ $t('Investigating') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
 
                   <PermissionBuilder
                     :code="[
@@ -1215,7 +1196,7 @@ const user = useUserStore()
                   </PermissionBuilder>
 
                   <!-- Observation -->
-                  <PermissionBuilder
+                  <!-- <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_OBSERVATION_ALL,
                       PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -1230,7 +1211,7 @@ const user = useUserStore()
                         <span>{{ $t('Observation') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
 
                   <!-- templates -->
                   <PermissionBuilder
