@@ -132,44 +132,44 @@ const updateData = () => {
 
   const params: AddHazardParams | EditHazardParams = props.data?.id
     ? new EditHazardParams(
-      props.data.id,
-      title.value,
-      description.value,
-      image.value.map((el) => el.file),
-      type_id.value,
-      type.value,
-      equipmentId.value,
-      zoneId.value,
-      37,
-      isResult.value,
-      riskLevel.value,
-      saveStatus.value,
-      preventiveAction.value,
-      isNearMiss.value,
-      null,
-      date.value,
-      null,
-      isAction.value,
-    )
+        props.data.id,
+        title.value,
+        description.value,
+        image.value.map((el) => el.file),
+        type_id.value,
+        type.value,
+        equipmentId.value,
+        zoneId.value,
+        37,
+        isResult.value,
+        riskLevel.value,
+        saveStatus.value,
+        preventiveAction.value,
+        isNearMiss.value,
+        null,
+        date.value,
+        null,
+        isAction.value,
+      )
     : new AddHazardParams(
-      title.value,
-      description.value,
-      image.value.map((el) => el.file),
-      type_id.value,
-      type.value,
-      equipmentId.value,
-      zoneId.value,
-      37,
-      isResult.value ? 1 : 0,
-      riskLevel.value,
-      saveStatus.value,
-      preventiveAction.value,
-      isNearMiss.value,
-      null,
-      date.value,
-      null,
-      isAction.value ? 1 : 0,
-    )
+        title.value,
+        description.value,
+        image.value.map((el) => el.file),
+        type_id.value,
+        type.value,
+        equipmentId.value,
+        zoneId.value,
+        37,
+        isResult.value ? 1 : 0,
+        riskLevel.value,
+        saveStatus.value,
+        preventiveAction.value,
+        isNearMiss.value,
+        null,
+        date.value,
+        null,
+        isAction.value ? 1 : 0,
+      )
   emit('update:data', params)
 }
 
@@ -221,18 +221,20 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
 
-
 const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
-  console.log(image.value, "image.value");
+  console.log(image.value, 'image.value')
   updateData()
 }
 </script>
 
 <template>
   <div class="observation-form">
-    <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
-      :img="ToDoList" />
+    <HeaderPage
+      :title="$t('create Observations')"
+      subtitle="Document what you observe to improve workplace safety"
+      :img="ToDoList"
+    />
 
     <TabsSelection :LocationIds="[137]" @update:data="zoneId = $event" />
 
@@ -245,7 +247,13 @@ const setImages = async (data: string[]) => {
     <div class="first-section lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
       <div class="input-wrapper col-span-12">
         <label for="text">{{ $t('Text') }}</label>
-        <input class="input" :placeholder="$t('add your title')" type="text" id="title" v-model="title" />
+        <input
+          class="input"
+          :placeholder="$t('add your title')"
+          type="text"
+          id="title"
+          v-model="title"
+        />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-6 md:grid-cols-12">
@@ -257,9 +265,16 @@ const setImages = async (data: string[]) => {
       </div>
 
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
-          :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
-          @update:modelValue="setEquipment" />
+        <CustomSelectInput
+          :required="false"
+          :modelValue="equipment"
+          :controller="equipmentController"
+          :params="equipmentParams"
+          label="Equipment"
+          id="Equipment"
+          placeholder="Select Equipment"
+          @update:modelValue="setEquipment"
+        />
       </div>
 
       <div class="col-span-12">
@@ -279,10 +294,19 @@ const setImages = async (data: string[]) => {
     </div>
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
-    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" @update:data="handleObservationLevel" />
-    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText"
+    <ObservationLevel
+      :modelRiskLevel="riskLevel"
+      :modelIsNearMiss="isNearMiss"
+      @update:data="handleObservationLevel"
+    />
+    <HazerdType
+      :riskLevel="riskLevel"
+      :is_near_miss="isNearMiss"
+      :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'"
+      :modelAction="actionText"
       :modelHazerdType="props.data?.type_model ? markRaw(props.data.type_model) : null"
-      @update:data="handleHazardData" />
+      @update:data="handleHazardData"
+    />
   </div>
 </template>
