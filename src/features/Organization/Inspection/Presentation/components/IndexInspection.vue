@@ -9,7 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Image from 'primevue/image'
 
@@ -32,6 +32,12 @@ import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
 import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
+import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
+import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
+import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 
 const { t } = useI18n()
 
@@ -41,6 +47,7 @@ const countPerPage = ref(10)
 const indexInspectionController = IndexInspectionController.getInstance()
 const state = ref(indexInspectionController.state.value)
 const route = useRoute()
+const router = useRouter()
 const id = route.params.parent_id
 
 const fetchInspection = async (
@@ -48,14 +55,18 @@ const fetchInspection = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  employeeId?: number[],
+  zoneId?: number[]
 ) => {
-  const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage)
+  const deleteInspectionParams = new IndexInspectionParams(query, pageNumber, perPage, withPage, employeeId, zoneId)
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
 }
 
 onMounted(() => {
-  fetchInspection()
+  fetchInspection();
+  FetchMyProjects();
+  FetchMyZones();
 })
 
 const searchInspection = debounce(() => {
@@ -193,24 +204,50 @@ const InspectionData = ref([
   },
 ])
 
-const categories = ref([
-  'Sustainability-oriented Names',
-  'Eco-friendly',
-  'oriented Names',
-  'Eco-friendly',
-])
-const Filters = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Cairo' }),
-  new TitleInterface({ id: 2, title: 'Alexandria' }),
-  new TitleInterface({ id: 3, title: 'Giza' }),
-  new TitleInterface({ id: 4, title: 'Cairo' }),
-  new TitleInterface({ id: 5, title: 'Alexandria' }),
-  new TitleInterface({ id: 6, title: 'Giza' }),
-  new TitleInterface({ id: 7, title: 'Cairo' }),
-  new TitleInterface({ id: 8, title: 'Alexandria' }),
-  new TitleInterface({ id: 9, title: 'Giza' }),
-])
+// const categories = ref([
+//   'Sustainability-oriented Names',
+//   'Eco-friendly',
+//   'oriented Names',
+//   'Eco-friendly',
+// ])
+
+const Projects = ref<ProjectModel[]>([])
+const FetchMyProjects = async () => {
+  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+  const res = await fetchMyProjectsController.FetchMyProjects(fetchMyProjectsParams, router, true)
+  if (res.value.data) {
+    Projects.value = res.value.data
+  }
+}
+
+// const Filters = ref<TitleInterface[]>([
+//   new TitleInterface({ id: 1, title: 'Cairo' }),
+//   new TitleInterface({ id: 2, title: 'Alexandria' }),
+//   new TitleInterface({ id: 3, title: 'Giza' }),
+//   new TitleInterface({ id: 4, title: 'Cairo' }),
+//   new TitleInterface({ id: 5, title: 'Alexandria' }),
+//   new TitleInterface({ id: 6, title: 'Giza' }),
+//   new TitleInterface({ id: 7, title: 'Cairo' }),
+//   new TitleInterface({ id: 8, title: 'Alexandria' }),
+//   new TitleInterface({ id: 9, title: 'Giza' }),
+// ])
 const ShowDetails = ref<number[]>([])
+
+const Filters = ref<MyZonesModel[]>()
+const fetchMyZonesController = FetchMyZonesController.getInstance()
+const FetchMyZones = async () => {
+  const fetchMyZonesParams = new FetchMyZonesParams()
+  const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
+  if (response.value.data) {
+    Filters.value = response.value.data
+  }
+}
+
+const ApplayFilter = (data: any) => {
+  // console.log(data, "filters");
+  fetchInspection("", 1, 10, 1, [], data)
+}
 </script>
 
 <template>
@@ -228,8 +265,9 @@ const ShowDetails = ref<number[]>([])
       <template #success>
         <!-- <pre>{{ state.data }}</pre> -->
         <div class="table-responsive">
-          <IndexInspectionHeader :title="`Inspection`" :length="state.data?.length" :categories="categories" />
-          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/equipment/inspection/add'"
+          <IndexInspectionHeader :title="`Inspection`" :length="state.data?.length" :categories="Projects" />
+
+          <IndexFilter :filters="Filters" @update:data="ApplayFilter" :link="'/organization/equipment/inspection/add'"
             :linkTitle="'Create Inspection'" />
           <div class="index-table-card-container-inspection">
             <div class="index-table-card" v-for="(item, index) in state.data" :key="index">

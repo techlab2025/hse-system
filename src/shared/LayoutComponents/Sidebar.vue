@@ -1046,11 +1046,11 @@ const user = useUserStore()
                   <!-- Investigating -->
 
                   <PermissionBuilder :code="[
-                    PermissionsEnum.ORG_INVESTIGATING_ALL,
-                    PermissionsEnum.ORG_INVESTIGATING_CREATE,
-                    PermissionsEnum.ORG_INVESTIGATING_DELETE,
-                    PermissionsEnum.ORG_INVESTIGATING_FETCH,
-                    PermissionsEnum.ORG_INVESTIGATING_UPDATE,
+                    // PermissionsEnum.ORG_INVESTIGATING_ALL,
+                    // PermissionsEnum.ORG_INVESTIGATING_CREATE,
+                    // PermissionsEnum.ORG_INVESTIGATING_DELETE,
+                    // PermissionsEnum.ORG_INVESTIGATING_FETCH,
+                    // PermissionsEnum.ORG_INVESTIGATING_UPDATE,
                   ]">
                     <li>
                       <router-link to="/organization/investigating">

@@ -211,3 +211,10 @@ body {
     border-radius: 50px !important;
   }
 }
+.p-radiobutton-box {
+  border: 1px solid #8c8c8c59 !important;
+}
+
+.factor-item .p-radiobutton-checked .p-radiobutton-box {
+  border: none !important;
+}

@@ -8,6 +8,7 @@ export default class IndexInspectionParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number[]
+  public zoneIds?: number[]
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +17,7 @@ export default class IndexInspectionParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number[],
+    zoneIds?: number[],
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,6 +25,7 @@ export default class IndexInspectionParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.zoneIds = zoneIds
     // this.code = code
   }
 
@@ -33,6 +36,7 @@ export default class IndexInspectionParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['employee_ids'] = this.id
+    if (this.zoneIds) data['zone_ids'] = this.zoneIds
     // if (this.code) data['code'] = this.code
     return data
   }
