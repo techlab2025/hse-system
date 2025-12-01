@@ -206,15 +206,13 @@ const user = useUserStore()
                         </router-link>
                       </li>
                     </PermissionBuilder>
-                    <PermissionBuilder
-                      :code="[
-                        PermissionsEnum.ACCIDENTS_TYPE_ALL,
-                        PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-                        PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-                        PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-                        PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-                      ]"
-                    >
+                    <PermissionBuilder :code="[
+                      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+                      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+                      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+                      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+                      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+                    ]">
                       <li>
                         <router-link to="/admin/accidents-types">
                           <SidebarVector />
@@ -1056,7 +1054,7 @@ const user = useUserStore()
                     // PermissionsEnum.ORG_INVESTIGATING_UPDATE,
                   ]">
 
-                  <!-- <PermissionBuilder
+                    <!-- <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_INVESTIGATING_ALL,
                       PermissionsEnum.ORG_INVESTIGATING_CREATE,
@@ -1070,8 +1068,8 @@ const user = useUserStore()
                         <SidebarVector />
                         <span>{{ $t('Investigating') }}</span>
                       </router-link>
-                    </li>
-                  </PermissionBuilder> -->
+                    </li> -->
+                  </PermissionBuilder>
 
                   <PermissionBuilder :code="[
                     PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
@@ -1114,7 +1112,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_OBSERVATION_FETCH,
                     PermissionsEnum.ORG_OBSERVATION_UPDATE,
                   ]">
-                  <!-- <PermissionBuilder
+                    <!-- <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_OBSERVATION_ALL,
                       PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -1127,8 +1125,8 @@ const user = useUserStore()
                         <SidebarVector />
                         <span>{{ $t('Observation') }}</span>
                       </router-link>
-                    </li>
-                  </PermissionBuilder> -->
+                    </li>-->
+                  </PermissionBuilder>
 
                   <!-- templates -->
                   <PermissionBuilder :code="[
