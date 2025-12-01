@@ -131,6 +131,9 @@
 /*<editor-fold desc="hazard_imports">*/
 @use './hazard/hazard_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="equipment_sidebar">*/
+@use './equipmentsidebar/equipment_mangement_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

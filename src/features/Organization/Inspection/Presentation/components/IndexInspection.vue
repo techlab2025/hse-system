@@ -229,7 +229,7 @@ const ShowDetails = ref<number[]>([])
         <!-- <pre>{{ state.data }}</pre> -->
         <div class="table-responsive">
           <IndexInspectionHeader :title="`Inspection`" :length="state.data?.length" :categories="categories" />
-          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/inspection/add'"
+          <IndexFilter :filters="Filters" @update:data="console.log($event)" :link="'/organization/equipment/inspection/add'"
             :linkTitle="'Create Inspection'" />
           <div class="index-table-card-container-inspection">
             <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
@@ -277,12 +277,12 @@ const ShowDetails = ref<number[]>([])
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/inspection/add`" addText="Add Inspection"
+        <DataEmpty :link="`/organization/equipment/inspection/add`" addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Inspection" />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/inspection/add`" addText="Add Inspection"
+        <DataFailed :link="`/organization/equipment/inspection/add`" addText="Add Inspection"
           description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Inspection" />
       </template>

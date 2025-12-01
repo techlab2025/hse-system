@@ -161,7 +161,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link to="/admin/areas/add" class="btn btn-primary">
-          {{ $t('Add_Location_area') }}
+          {{ $t('Add_Location') }}
         </router-link>
       </PermissionBuilder>
     </div>
