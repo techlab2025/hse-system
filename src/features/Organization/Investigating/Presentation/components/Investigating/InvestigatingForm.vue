@@ -147,9 +147,9 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       :img="detectiveImage"
     />
   </div>
-  <div class="col-span-6 md:col-span-6">
+  <!-- <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
-  </div>
+  </div> -->
   <div class="investigating-form col-span-6 md:col-span-6">
     <div class="investigating-form-header">
       <p class="title">Investigating form <span>( #001 )</span></p>

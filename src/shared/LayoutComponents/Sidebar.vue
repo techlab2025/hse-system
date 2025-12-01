@@ -189,6 +189,7 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
+
                     <!-- Observation -->
                     <PermissionBuilder :code="[
                       PermissionsEnum.OBSERVATION_ALL,
@@ -205,14 +206,15 @@ const user = useUserStore()
                         </router-link>
                       </li>
                     </PermissionBuilder>
-
-                    <PermissionBuilder :code="[
-                      PermissionsEnum.ACCIDENTS_TYPE_ALL,
-                      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-                      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-                      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-                      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-                    ]">
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.ACCIDENTS_TYPE_ALL,
+                        PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+                        PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+                        PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+                        PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+                      ]"
+                    >
                       <li>
                         <router-link to="/admin/accidents-types">
                           <SidebarVector />
@@ -1045,6 +1047,7 @@ const user = useUserStore()
 
                   <!-- Investigating -->
 
+
                   <PermissionBuilder :code="[
                     PermissionsEnum.ORG_INVESTIGATING_ALL,
                     PermissionsEnum.ORG_INVESTIGATING_CREATE,
@@ -1052,13 +1055,23 @@ const user = useUserStore()
                     PermissionsEnum.ORG_INVESTIGATING_FETCH,
                     PermissionsEnum.ORG_INVESTIGATING_UPDATE,
                   ]">
+
+                  <!-- <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_INVESTIGATING_ALL,
+                      PermissionsEnum.ORG_INVESTIGATING_CREATE,
+                      PermissionsEnum.ORG_INVESTIGATING_DELETE,
+                      PermissionsEnum.ORG_INVESTIGATING_FETCH,
+                      PermissionsEnum.ORG_INVESTIGATING_UPDATE,
+                    ]"
+                  >
                     <li>
                       <router-link to="/organization/investigating">
                         <SidebarVector />
                         <span>{{ $t('Investigating') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
 
                   <PermissionBuilder :code="[
                     PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
@@ -1093,6 +1106,7 @@ const user = useUserStore()
                   </PermissionBuilder>
 
                   <!-- Observation -->
+
                   <PermissionBuilder :code="[
                     PermissionsEnum.ORG_OBSERVATION_ALL,
                     PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -1100,13 +1114,21 @@ const user = useUserStore()
                     PermissionsEnum.ORG_OBSERVATION_FETCH,
                     PermissionsEnum.ORG_OBSERVATION_UPDATE,
                   ]">
+                  <!-- <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+                    ]"
                     <li>
                       <router-link to="/organization/equipment/observation">
                         <SidebarVector />
                         <span>{{ $t('Observation') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
 
                   <!-- templates -->
                   <PermissionBuilder :code="[
