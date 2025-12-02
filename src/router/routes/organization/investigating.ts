@@ -16,4 +16,9 @@ export const InvestigatingRoutes: RouteRecordRaw[] = [
     name: 'Edit Investigating ',
     component: () => import('@/views/Organization/Investigating/Investigating/EditInvestigating.vue'),
   },
+  {
+    path: 'Investigating-result/:id',
+    name: 'Investigating Result ',
+    component: () => import('@/views/Organization/Investigating/invetegatingResult/InvestegatingResult.vue'),
+  },
 ]
