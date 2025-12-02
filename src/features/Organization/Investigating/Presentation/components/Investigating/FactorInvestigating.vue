@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import RadioButton from 'primevue/radiobutton'
+import FactorItemIcon from '@/shared/icons/FactorItemIcon.vue'
 
 const selectedFactor = ref('')
 const selectedSubItem = ref('')
@@ -27,7 +28,10 @@ const subItemsMap = {
 
 <template>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full factor-item factor-items">
-    <label class="factot-title">Factors & Items</label>
+    <label class="flex gap-2 factot-title">
+      <FactorItemIcon />
+      <span>Factors & Items</span>
+    </label>
 
     <div class="radio-grid">
       <div class="radio-column">
