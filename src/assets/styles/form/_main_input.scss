@@ -6,7 +6,7 @@
   @include flex-column();
   gap: $XsSize3;
   position: relative;
-  font-family: "Light";
+  font-family: 'Light';
 
   &.check-box {
     @include flex-justify();
@@ -23,8 +23,7 @@
     white-space: nowrap;
     text-align: start;
     // font-family: 'Regular', sans-serif;
-  font-family: "Light";
-
+    font-family: 'Light';
   }
 
   .label-wrapper {
@@ -60,7 +59,7 @@
     font-size: $SmSize;
     color: $Black;
     font-weight: $BaseFontMediumWeight;
-    text-transform: capitalize;
+    // text-transform: capitalize;
     white-space: nowrap;
     text-align: start;
     width: 100%;
