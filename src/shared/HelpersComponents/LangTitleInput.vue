@@ -6,28 +6,28 @@ const props = withDefaults(
   defineProps<{
     langs: { title: string; locale: string; icon?: any }[]
     modelValue?: {
-      locale: string;
-      title?: string;
-      subtitle?: string;
-      description?: string;
-      button_title?: string;
-      answer?: string;
-      question?: string;
-      feature?: string;
-      old?: string;
-      new?: string;
+      locale: string
+      title?: string
+      subtitle?: string
+      description?: string
+      button_title?: string
+      answer?: string
+      question?: string
+      feature?: string
+      old?: string
+      new?: string
     }[]
     defaultLang?: {
-      locale: string;
-      title?: string;
-      subtitle?: string;
-      description?: string;
-      button_title?: string;
-      answer?: string;
-      question?: string;
-      feature?: string;
-      old?: string;
-      new?: string;
+      locale: string
+      title?: string
+      subtitle?: string
+      description?: string
+      button_title?: string
+      answer?: string
+      question?: string
+      feature?: string
+      old?: string
+      new?: string
     }
     label?: string
     type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
@@ -36,7 +36,16 @@ const props = withDefaults(
     maxlength?: number
     required?: boolean
     disabled?: boolean
-    fieldType?: 'title' | 'subtitle' | 'description' | 'button_title' | 'answer' | 'question' | 'old' | 'new' | 'feature'
+    fieldType?:
+      | 'title'
+      | 'subtitle'
+      | 'description'
+      | 'button_title'
+      | 'answer'
+      | 'question'
+      | 'old'
+      | 'new'
+      | 'feature'
   }>(),
   {
     langs: () => [],
@@ -49,28 +58,44 @@ const props = withDefaults(
     maxlength: undefined,
     required: true,
     disabled: false,
-    fieldType: 'title'
+    fieldType: 'title',
   },
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: { locale: string; title?: string; subtitle?: string; description?: string; button_title?: string; answer?: string; question?: string; feature?: string; old?: string; new?: string }[]): void
+  (
+    e: 'update:modelValue',
+    value: {
+      locale: string
+      title?: string
+      subtitle?: string
+      description?: string
+      button_title?: string
+      answer?: string
+      question?: string
+      feature?: string
+      old?: string
+      new?: string
+    }[],
+  ): void
   (e: 'validate', isValid: boolean): void
 }>()
 
 // Build titles for all langs with support for multiple field types
-const titles = ref<{
-  locale: string;
-  title?: string;
-  subtitle?: string;
-  description?: string;
-  button_title?: string;
-  answer?: string;
-  question?: string;
-  feature?: string;
-  old?: string;
-  new?: string;
-}[]>(
+const titles = ref<
+  {
+    locale: string
+    title?: string
+    subtitle?: string
+    description?: string
+    button_title?: string
+    answer?: string
+    question?: string
+    feature?: string
+    old?: string
+    new?: string
+  }[]
+>(
   props.langs.map((l) => {
     const fromModel = props.modelValue?.find((f) => f.locale === l.locale)
     if (fromModel) return { ...fromModel }
@@ -85,7 +110,7 @@ const titles = ref<{
         question: props.defaultLang.question,
         feature: props.defaultLang.feature,
         old: props.defaultLang.old,
-        new: props.defaultLang.new
+        new: props.defaultLang.new,
       }
     }
     return { locale: l.locale }
@@ -95,30 +120,57 @@ const titles = ref<{
 // Get the current field value based on fieldType
 const getFieldValue = (item: any) => {
   switch (props.fieldType) {
-    case 'subtitle': return item.subtitle
-    case 'description': return item.description
-    case 'button_title': return item.button_title
-    case 'answer': return item.answer
-    case 'question': return item.question
-    case 'old': return item.old
-    case 'new': return item.new
-    case 'feature': return item.feature
-    default: return item.title
+    case 'subtitle':
+      return item.subtitle
+    case 'description':
+      return item.description
+    case 'button_title':
+      return item.button_title
+    case 'answer':
+      return item.answer
+    case 'question':
+      return item.question
+    case 'old':
+      return item.old
+    case 'new':
+      return item.new
+    case 'feature':
+      return item.feature
+    default:
+      return item.title
   }
 }
 
 // Set the current field value based on fieldType
 const setFieldValue = (item: any, value: string) => {
   switch (props.fieldType) {
-    case 'subtitle': item.subtitle = value; break
-    case 'description': item.description = value; break
-    case 'button_title': item.button_title = value; break
-    case 'answer': item.answer = value; break
-    case 'question': item.question = value; break
-    case 'old': item.old = value; break
-    case 'new': item.new = value; break
-    case 'feature': item.feature = value; break
-    default: item.title = value; break
+    case 'subtitle':
+      item.subtitle = value
+      break
+    case 'description':
+      item.description = value
+      break
+    case 'button_title':
+      item.button_title = value
+      break
+    case 'answer':
+      item.answer = value
+      break
+    case 'question':
+      item.question = value
+      break
+    case 'old':
+      item.old = value
+      break
+    case 'new':
+      item.new = value
+      break
+    case 'feature':
+      item.feature = value
+      break
+    default:
+      item.title = value
+      break
   }
 }
 
@@ -132,7 +184,7 @@ const getInitialActiveLang = () => {
   if (langWithContent) return langWithContent.locale
 
   // If no content, try to use the default language if it exists in langs
-  if (props.defaultLang && props.langs.some(l => l.locale === props.defaultLang?.locale)) {
+  if (props.defaultLang && props.langs.some((l) => l.locale === props.defaultLang?.locale)) {
     return props.defaultLang.locale
   }
 
@@ -255,12 +307,22 @@ watch(hasAtLeastOneValue, (isValid) => {
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang" :required="props.required" />
+          <input
+            type="radio"
+            :id="`${label}-${l.locale}`"
+            :name="label"
+            :value="l.locale"
+            v-model="lang"
+            :required="props.required"
+          />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->
-            <span v-if="getFieldValue(titles.find((t) => t.locale === l.locale))" class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`">
+            <span
+              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
+              class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`"
+            >
               ✓
             </span>
           </label>
@@ -269,10 +331,22 @@ watch(hasAtLeastOneValue, (isValid) => {
     </div>
 
     <!-- Title Input -->
-    <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
+    <Editor
+      v-if="isTextarea"
+      v-model="fieldValue"
+      :rows="rows"
+      v-bind="inputAttrs"
+      editorStyle="height: 320px"
+    />
 
     <!-- Regular Input -->
-    <input v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" />
+    <input
+      v-else
+      :type="type"
+      v-model="fieldValue"
+      v-bind="inputAttrs"
+      :required="props.required"
+    />
 
     <!-- Selected Language Info -->
     <span class="select-lang">
