@@ -1,15 +1,14 @@
-
 export default class MyZonesModel {
-  public projectZoonId: number
+  public ProjectZoneId: number
   public projectLocationId: number
-  public zoonId: number
-  public zoonTitle: string
+  public id: number
+  public title: string
 
-  constructor(projectZoonId: number, projectLocationId: number, zoonId: number, zoonTitle: string) {
-    this.projectZoonId = projectZoonId
+  constructor(ProjectZoneId: number, projectLocationId: number, id: number, title: string) {
+    this.ProjectZoneId = ProjectZoneId
     this.projectLocationId = projectLocationId
-    this.zoonId = zoonId
-    this.zoonTitle = zoonTitle
+    this.id = id
+    this.title = title
   }
 
   static fromMap(data: any): MyZonesModel {

@@ -35,7 +35,7 @@ export default class InspectionModel {
       data.status,
       data.period_type,
       data.period_sub_type,
-      MorphModel.fromMap(data.morph),
+      data.morph ? MorphModel.fromMap(data.morph) : null,
     )
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
 
@@ -32,6 +32,12 @@ import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import FilterDialog from './HazardUtils/FilterDialog.vue'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
+import type MyZonesModel from '../../../Data/models/MyZonesModel'
+import FetchMyZonesController from '../../controllers/FetchMyZonesController'
+import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
+import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
+import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
+import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
 // import FilterDialog from './HazardUtils/filterDialog.vue'
 
 // i18n
@@ -64,7 +70,7 @@ const fetchHazard = async (
   saveStatus?: number[],
   date?: string,
   equipmentTypeIds?: number[],
-  equipmentSubTypeIds?: number[],
+  equipmentSubTypeIds?: number[]
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -73,9 +79,9 @@ const fetchHazard = async (
     withPage,
     Observation.HazardType,
     37,
-    projectZoneLozationId,
-    // projectLocationIds,
-    // zoonIds,
+    zoonIds,
+    projectLocationIds || null,
+    projectZoneLozationId
     // equipmentIds,
     // riskLevel,
     // saveStatus,
@@ -94,7 +100,7 @@ const confirmFilters = (
   machineTypeIds?: number[],
   machineSubTypeIds?: number[],
   caseIds?: number[],
-  statusIds?: number[],
+  statusIds?: number[]
 ) => {
   fetchHazard(
     '',
@@ -109,7 +115,7 @@ const confirmFilters = (
     caseIds,
     date,
     machineSubTypeIds,
-    machineTypeIds,
+    machineTypeIds
   )
 }
 
@@ -140,7 +146,7 @@ watch(
   (newState) => {
     if (newState) state.value = newState
   },
-  { deep: true },
+  { deep: true }
 )
 
 // action list
@@ -148,7 +154,9 @@ const actionList = (id: number) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/hazard-type/${id}`,
+    link: `/${
+      user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_UPDATE,
@@ -170,42 +178,70 @@ const actionList = (id: number) => [
     ],
   },
 ]
-
+const router = useRouter()
 // sample categories & filters
-const categories = ref([
-  'Sustainability-oriented Names',
-  'Eco-friendly',
-  'Oriented Names',
-  'Eco-friendly',
-])
 
-const Filters = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Cairo' }),
-  new TitleInterface({ id: 2, title: 'Alexandria' }),
-  new TitleInterface({ id: 3, title: 'Giza' }),
-  new TitleInterface({ id: 4, title: 'Cairo' }),
-  new TitleInterface({ id: 5, title: 'Alexandria' }),
-  new TitleInterface({ id: 6, title: 'Giza' }),
-  new TitleInterface({ id: 7, title: 'Cairo' }),
-  new TitleInterface({ id: 8, title: 'Alexandria' }),
-  new TitleInterface({ id: 9, title: 'Giza' }),
-])
+const Projects = ref<MyProjectsModel[]>([])
+const FetchMyProjects = async () => {
+  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
+  if (res.value.data) {
+    Projects.value = res.value.data
+  }
+}
+const selectedProjctesFilters = ref<number>()
+const Filters = ref<MyZonesModel[]>()
+const fetchMyZonesController = FetchMyZonesController.getInstance()
+const FetchMyZones = async () => {
+  console.log(selectedProjctesFilters.value, 'selectedProjctesFilters.value')
+  const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
+  const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
+  if (response.value.data) {
+    Filters.value = response.value.data
+  }
+}
 
-// on mounted
-onMounted(() => fetchHazard())
+const SelectedZonesFilter = ref<number[]>([])
+const ApplayFilter = (data: number[]) => {
+  SelectedZonesFilter.value = data
+  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
+}
+
+const setSelectedProjectFilter = (data) => {
+  console.log(data, 'data')
+  selectedProjctesFilters.value = data
+  console.log(selectedProjctesFilters.value, 'selectedProjctesFilters.value')
+
+  FetchMyZones()
+}
+
+onMounted(async () => {
+  fetchHazard()
+  FetchMyProjects()
+
+})
 </script>
 
 <template>
-  <!-- <div class="equipment-home"> -->
-    <!-- <IndexEquipmentMangement class="col-span-2"/> -->
-     <!-- col-span-10 -->
-    <div class="grid grid-cols-12 gap-4 ">
-      <div class="col-span-12">
-        <IndexHazardHeader :title="'Hazard'" :length="120" :categories="categories" />
+  <div class="grid grid-cols-12 gap-4">
+    <IndexEquipmentMangement class="col-span-2" />
+    <div class="col-span-10">
+      <div class="col-span-10">
+        <IndexHazardHeader
+          :title="'Hazard'"
+          :length="state.data?.length"
+          :projects="Projects"
+          @update:data="setSelectedProjectFilter"
+        />
 
         <div class="flex items-center justify-between">
-          <IndexFilter :filters="Filters" @update:data="fetchHazard('', 1, 10, 1, $event)"
-            :link="'/organization/equipment/hazard/add'" :linkText="'Create Hazard'" />
+          <IndexFilter
+            :filters="Filters"
+            @update:data="ApplayFilter"
+            :link="'/organization/equipment/hazard/add'"
+            :linkText="'Create Hazard'"
+          />
 
           <div class="btns-filter">
             <FilterDialog @confirmFilters="confirmFilters" />
@@ -216,19 +252,23 @@ onMounted(() => fetchHazard())
           </div>
         </div>
       </div>
-
-      <div class="col-span-12">
-        <PermissionBuilder :code="[
+      <PermissionBuilder
+        :code="[
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
           PermissionsEnum.ORG_HAZARD_ALL,
           PermissionsEnum.ORG_HAZARD_DELETE,
           PermissionsEnum.ORG_HAZARD_FETCH,
           PermissionsEnum.ORG_HAZARD_UPDATE,
           PermissionsEnum.ORG_HAZARD_CREATE,
-        ]">
-          <DataStatus :controller="state">
-            <template #success>
-              <div class="table-responsive">
+        ]"
+      >
+        <DataStatus :controller="state">
+          <template #success>
+            <!-- <div class="equipment-home"> -->
+            <!-- <IndexEquipmentMangement class="col-span-2"/> -->
+            <!-- col-span-10 -->
+            <div class="grid grid-cols-12 gap-4">
+              <div class="table-responsive col-span-12">
                 <div class="index-table-card-container">
                   <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -285,37 +325,50 @@ onMounted(() => fetchHazard())
                 </div>
               </div>
 
-              <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-                @countPerPage="handleCountPerPage" />
-            </template>
+              <Pagination
+                :pagination="state.pagination"
+                @changePage="handleChangePage"
+                @countPerPage="handleCountPerPage"
+              />
+            </div>
+          </template>
 
-            <template #loader>
-              <TableLoader :cols="3" :rows="10" />
-            </template>
+          <template #loader>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
 
-            <template #initial>
-              <TableLoader :cols="3" :rows="10" />
-            </template>
+          <template #initial>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
 
-            <template #empty>
-              <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
-                description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Hazard" />
-            </template>
+          <template #empty>
+            <DataEmpty
+              :link="`/organization/hazard/add`"
+              addText="Add Hazard"
+              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Hazard"
+            />
+          </template>
 
-            <template #failed>
-              <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
-                description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Hazard" />
-            </template>
-          </DataStatus>
+          <template #failed>
+            <DataFailed
+              :link="`/organization/hazard/add`"
+              addText="Add Hazard"
+              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Hazard"
+            />
+          </template>
 
           <template #notPermitted>
-            <DataFailed addText="Have not Permission"
-              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+            <DataFailed
+              addText="Have not Permission"
+              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+            />
           </template>
-        </PermissionBuilder>
-      </div>
+        </DataStatus>
+      </PermissionBuilder>
     </div>
+  </div>
+
   <!-- </div> -->
 </template>

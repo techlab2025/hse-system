@@ -1,6 +1,5 @@
-<script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface'
-import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel';
+  <script setup lang="ts">
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
 import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
@@ -13,41 +12,29 @@ const props = defineProps<{
 
 const SelectedFilter = ref<number[]>([])
 
-// const UpdateData = (data: number, index: number) => {
-//   if (SelectedFilter.value.includes(data)) {
-//     SelectedFilter.value.splice(index, 1)
-//     return
-//   }
-//   SelectedFilter.value.push(data)
-//   emit('update:data', SelectedFilter.value)
-// }
 const UpdateData = (data: number) => {
-
+  console.log(data, 'zonw dta')
   if (SelectedFilter.value.includes(data)) {
-    SelectedFilter.value = SelectedFilter.value.filter(i => i !== data)
+    SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
     return
   }
 
   SelectedFilter.value.push(data)
-  console.log(SelectedFilter.value, "SelectedFilter.value");
   emit('update:data', SelectedFilter.value)
 }
-
 </script>
-<template>
+  <template>
   <div class="idnex-filter">
     <div class="filter-container">
-      <!-- <p class="filter" :class="SelectedFilter.includes(item?.projectZoonId) ? 'active' : ''"
-        v-for="(item, index) in filters" :key="index" @click="UpdateData(item?.projectZoonId)">
-        <span v-if="item?.zoonTitle != null">
-          {{ item?.zoonTitle }}
-        </span>
-      </p> -->
-      <p class="filter" :class="SelectedFilter.includes(item.projectZoonId) ? 'active' : ''" v-for="item in filters"
-        :key="item.projectZoonId" @click="UpdateData(item.projectZoonId)">
-
-        <span v-if="item?.zoonTitle != null">
-          {{ item?.zoonTitle }}
+      <p
+        class="filter"
+        :class="SelectedFilter.includes(item.ProjectZoneId) ? 'active' : ''"
+        v-for="item in filters"
+        :key="item.ProjectZoneId"
+        @click="UpdateData(item.ProjectZoneId)"
+      >
+        <span v-if="item?.title != null">
+          {{ item?.title }}
         </span>
       </p>
     </div>

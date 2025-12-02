@@ -1,26 +1,47 @@
 <script setup lang="ts">
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel';
-import { ref } from 'vue'
-
+import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import { onMounted, ref, watch } from 'vue'
+const emit = defineEmits(['update:data'])
 const props = defineProps<{
   title: string
   length: number
-  projects: ProjectModel[]
+  projects: MyProjectsModel[]
 }>()
-const ActiveTap = ref(0)
+const ActiveTap = ref(props.projects?.[0]?.id)
 
+onMounted(() => {
+  emit('update:data', ActiveTap.value)
+})
+const UpdateData = (Id: number) => {
+  ActiveTap.value = Id
+  emit('update:data', ActiveTap.value)
+}
+
+const Projects = ref(props.projects)
+watch(
+  () => props.projects,
+  (newValue) => {
+    Projects.value = newValue
+  }
+)
 </script>
 <template>
-  <div class="idnex-header" v-if="projects && projects.length > 0">
+  <div class="idnex-header">
     <p class="title">{{ title }}</p>
     <p class="index-length">
       Total: <span>{{ length }}</span>
     </p>
-    <div class="categories-container">
-      <p class="category" :class="ActiveTap === item.id ? 'active' : ''" v-for="(item, index) in projects" :key="index"
-        @click="ActiveTap = item.id">
+    <div class="categories-container" v-if="projects && projects.length > 1">
+      <button
+        class="category"
+        :class="ActiveTap === item.id ? 'active' : ''"
+        v-for="(item, index) in projects"
+        :key="index"
+        @click="UpdateData(item.id)"
+      >
         {{ item.title }}
-      </p>
+      </button>
     </div>
   </div>
 </template>

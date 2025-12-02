@@ -1,18 +1,13 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from '@/assets/images/Success.png'
-import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-
-import { Observation } from '../../Core/Enums/ObservationTypeEnum'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
+import type MyProjectsModel from '../../Data/models/MyProjectsModel'
 import FetchMyProjectsUseCase from '../../Domain/useCase/FetchMyProjectsUseCase'
+// import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class FetchMyProjectsController extends ControllerInterface<ProjectModel[]> {
+export default class FetchMyProjectsController extends SelectControllerInterface<
+  MyProjectsModel[]
+> {
   private static instance: FetchMyProjectsController
   private constructor() {
     super()
@@ -26,48 +21,18 @@ export default class FetchMyProjectsController extends ControllerInterface<Proje
     return this.instance
   }
 
-  async FetchMyProjects(params: Params, router: Router, draft: boolean = false) {
+  async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
-    try {
-      // console.log('Ssssssss')
-      const dataState: DataState<ProjectModel[]> = await this.fetchMyProjectsUseCase.call(params)
-      this.setState(dataState)
-      if (this.isDataSuccess()) {
-        // DialogSelector.instance.successDialog.openDialog({
-        //   dialogName: 'dialog',
-        //   titleContent: 'Added was successful',
-        //   imageElement: successImage,
-        //   messageContent: null,
-        // })
+    // console.log(params)
+    // this.setLoading()
+    const dataState: DataState<MyProjectsModel[]> = await this.fetchMyProjectsUseCase.call(params)
 
-        const { user } = useUserStore()
-
-        if (params.type == Observation.HazardType) {
-          await router.push(`/organization/equipment/hazard`)
-        } else if (params.type == Observation.ObservationType) {
-          await router.push(`/organization/equipment/observation`)
-        } else if (params.type == Observation.AccidentsType) {
-          await router.push(`/organization/equipment/incedant`)
-        }
-
-        // useLoaderStore().endLoadingWithDialog();
-      } else {
-        // DialogSelector.instance.failedDialog.openDialog({
-        //   dialogName: 'dialog',
-        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-        //   imageElement: errorImage,
-        //   messageContent: null,
-        // })
-      }
-    } catch (error: unknown) {
-      // DialogSelector.instance.failedDialog.openDialog({
-      //   dialogName: 'dialog',
-      //   titleContent: this.state.value.error?.title ?? (error as string),
-      //   imageElement: errorImage,
-      //   messageContent: null,
-      // })
+    this.setState(dataState)
+    if (this.isDataSuccess()) {
+      // useLoaderStore().endLoadingWithDialog();
+    } else {
+      throw new Error('Error while addServices')
     }
-
     super.handleResponseDialogs()
     return this.state
   }

@@ -20,9 +20,7 @@ class FetchMyProjectsRepo extends RepoInterface<ProjectModel[]> {
     return this.instance
   }
 
-  override get responseType(): ResponseType {
-    return ResponseType.withoutData
-  }
+
   onParse(data: any): ProjectModel[] {
     return data.map((item: any) => ProjectModel.fromMap(item))
   }

@@ -1,62 +1,42 @@
-<script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface'
-import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
-import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
-import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
+  <script setup lang="ts">
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-
+import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  filters: TitleInterface[]
+  filters: MyZonesModel[]
   link: string
-  linkText: string
+  linkTitle: string
 }>()
 
-const SelectedFilter = ref<Set<number>>(new Set())
+const SelectedFilter = ref<number[]>([])
 
-const controller = ProjectCustomLocationController.getInstance()
-const state = ref(controller.state.value)
+const UpdateData = (data: number) => {
+  console.log(data, 'zonw dta')
+  if (SelectedFilter.value.includes(data)) {
+    SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
+    emit('update:data', SelectedFilter.value)
+    return
+  }
 
-const loadProjectLocations = async () => {
-  const params = new ProjectCustomLocationParams(37, [ProjectCustomLocationEnum.ZOON], [])
-
-  await controller.getData(params)
-}
-
-onMounted(loadProjectLocations)
-
-watch(
-  () => controller.state.value,
-  (newState) => {
-    state.value = newState
-  },
-)
-
-const allZones = computed(() => {
-  if (!state.value?.data) return []
-  return state.value.data.flatMap((item) => item.locationZones || [])
-})
-
-const UpdateData = (id: number) => {
-  SelectedFilter.value.has(id) ? SelectedFilter.value.delete(id) : SelectedFilter.value.add(id)
-
-  emit('update:data', [...SelectedFilter.value])
+  SelectedFilter.value.push(data)
+  emit('update:data', SelectedFilter.value)
 }
 </script>
-
-<template>
+  <template>
   <div class="idnex-filter">
     <div class="filter-container">
       <p
-        v-for="zone in allZones"
-        :key="zone.zoonId"
         class="filter"
-        :class="{ active: SelectedFilter.has(zone.zoonId) }"
-        @click="UpdateData(zone.zoonId)"
+        :class="SelectedFilter.includes(item.ProjectZoneId) ? 'active' : ''"
+        v-for="item in filters"
+        :key="item.ProjectZoneId"
+        @click="UpdateData(item.ProjectZoneId)"
       >
-        {{ zone.zoonTitle }}
+        <span v-if="item?.title != null">
+          {{ item?.title }}
+        </span>
       </p>
     </div>
   </div>
