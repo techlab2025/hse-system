@@ -1,0 +1,30 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.investigation-result {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize;
+  width: 100%;
+
+  .investigation-title {
+    @include flex-row(nowrap, flex-start, center);
+    width: 100%;
+    gap: $XsSize4;
+    background-color: #f8f9fb;
+    padding: $MdSize;
+    p {
+      font-size: calc($XlSize + 3px);
+      font-weight: $BaseFontWeightBold;
+      color: #05276c;
+    }
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .title-header {
+    background-color: white;
+  }
+
+}

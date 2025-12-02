@@ -1,0 +1,10 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+
+.cause-of-accidant {
+  width: 100%;
+  .input-wrapper {
+    width: 100%;
+  }
+}
