@@ -12,6 +12,7 @@ import { objectivesRoutes } from './objectives'
 // import { observationRoutes } from './observation'
 import { InvestigatingRoutes } from './investigating'
 import { EquipmentMangementRoutes } from './eqipmentMangement'
+import { InvestigationMeetingRoutes } from './investigationmeeting'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -32,6 +33,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   // ...observationRoutes,
   ...InvestigatingRoutes,
   ...EquipmentMangementRoutes,
+  ...InvestigationMeetingRoutes,
 
   {
     path: 'permission/:id',

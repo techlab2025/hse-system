@@ -4,45 +4,49 @@ import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import Image from 'primevue/image'
 
-import IndexFilter from './InvestigatingUtils/IndexFilter.vue'
-import FilterDialog from './InvestigatingUtils/FilterDialog.vue'
+import IndexFilter from './InvestigationMeetingUtils/IndexFilter.vue'
+import FilterDialog from './InvestigationMeetingUtils/FilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import InvestigatingSidebar from './InvestigatingSidebar.vue'
-
+import InvestigatingSidebar from '../Investigating/InvestigatingSidebar.vue'
+import google from '../../../../../../assets/images/google-meet.png'
+import link from '../../../../../../assets/images/link.png'
+import live from '../../../../../../assets/images/live.png'
 const InvestigatingData = [
   {
     title: 'Incedant',
-    serial:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+    serial: 'Investigation Meeting',
     date: '2025-01-05 10:00 AM',
     observer: { name: 'Ahmed Ali' },
     description: 'Oil leakage detected near the main engine.',
-    zoon: { title: 'Zone A' },
-    equipment: { title: 'Excavator CAT 320' },
-    status: { title: 'unsolve' },
-    image: 'https://picsum.photos/220/150',
+    zoon: { title: '2025-01-05 10:00 AM' },
+    equipment: { title: 'Elsayed hassan ' },
+    status: { title: '12' },
+    image: google,
+    google: 'Google Meet',
   },
   {
     title: 'High observation',
-    serial: 'Another dummy text for testing card 2',
+    serial: 'Investigation Meeting',
     date: '2025-02-10 11:30 AM',
     observer: { name: 'Sara Mohamed' },
     description: 'Hydraulic failure detected.',
-    zoon: { title: 'Zone B' },
-    equipment: { title: 'Bulldozer CAT D6' },
-    status: { title: 'in_progress' },
-    image: 'https://picsum.photos/221/150',
+    zoon: { title: '2025-01-05 10:00 AM' },
+    equipment: { title: 'Elsayed hassan ' },
+    status: { title: '12' },
+    image: google,
+    google: 'Google Meet',
   },
   {
     title: 'Medium observation',
-    serial: 'Third card dummy text',
+    serial: 'Investigation Meeting',
     date: '2025-03-15 09:45 AM',
     observer: { name: 'Khaled Samir' },
     description: 'Electrical issue near main control panel.',
-    zoon: { title: 'Zone C' },
-    equipment: { title: 'Crane Liebherr' },
-    status: { title: 'solved' },
-    image: 'https://picsum.photos/222/150',
+    zoon: { title: '2025-01-05 10:00 AM' },
+    equipment: { title: 'Elsayed hassan ' },
+    status: { title: '12' },
+    image: google,
+    google: 'Google Meet',
   },
 ]
 
@@ -56,7 +60,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4 index-investigating">
+  <div class="grid grid-cols-12 gap-4 index-investigationMeeting">
     <!-- Sidebar -->
     <InvestigatingSidebar />
 
@@ -67,7 +71,7 @@ onMounted(() => {
         <IndexFilter :filters="Filters" />
         <div class="btns-filter">
           <FilterDialog />
-          <!-- <router-link :to="`/organization/investigating/add`">
+          <!-- <router-link :to="`/organization/investigationMeeting/add`">
             <button class="btn btn-primary">Create Investigating</button>
           </router-link> -->
         </div>
@@ -76,7 +80,11 @@ onMounted(() => {
       <!-- CARDS -->
       <div class="table-responsive">
         <div class="index-table-card-container">
-          <div class="index-table-card" v-for="(item, index) in InvestigatingList" :key="index">
+          <div
+            class="index-table-card"
+            v-for="(item, index) in InvestigatingList"
+            :key="index"
+          >
             <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
               <div class="first-container">
                 <div class="first-card">
@@ -94,13 +102,13 @@ onMounted(() => {
                       <p class="new">New</p>
                     </div>
                     <div class="first-card-details">
-                      <p class="label-item-secondary">
+                      <p class="label-item">
                         Date & Time: <span>{{ item.date }}</span>
                       </p>
-                      <p class="title">
-                        {{ item.observer.name }}
-                        <span>(observer)</span>
+                      <p class="label-item">
+                        The victim: <span>{{ item.observer.name }}</span>
                       </p>
+                      <p class="show-details">show details</p>
                     </div>
                   </div>
                 </div>
@@ -110,35 +118,37 @@ onMounted(() => {
               <div class="header-container">
                 <div class="card-content">
                   <div class="card-header">
-                    <p class="label-item-secondary">{{ item.serial }}</p>
+                    <p class="label-item-secondary">
+                      {{ item.serial }}
+                    </p>
+                    <p class="google-icon">
+                      <img :src="item.image" alt="meeting" />
+                      {{ item.google }}
+                    </p>
                   </div>
-
                   <div class="card-details">
                     <div class="project-details">
                       <p class="label-item-primary">
-                        Zone: <span>{{ item.zoon.title }}</span>
+                        Date & Time : <span class="date-color">{{ item.zoon.title }}</span>
                       </p>
                       <p class="label-item-primary">
-                        Machine: <span>{{ item.equipment.title }}</span>
+                        Investigation team leader : <span>{{ item.equipment.title }}</span>
                       </p>
                       <p class="label-item-primary">
-                        Status: <span>{{ item.status.title }}</span>
+                        Num Of Team: <span>{{ item.status.title }}</span>
                       </p>
                     </div>
                   </div>
-
-                  <div class="btns-container">
-                    <button class="btn first-btn">
-                      <span>{{ $t('show details') }}</span>
-                    </button>
-
-                    <router-link :to="`/organization/investigating/add`">
-                      <button class="btn second-btn">
-                        <span>{{ $t('assign investigation team') }}</span>
-                      </button>
-                    </router-link>
-                  </div>
                 </div>
+              </div>
+
+              <div class="card-footer">
+                <img :src="link" alt="link" />
+                <p class="link-text">Https://meet.google.com/abc-defg-hij</p>
+                <p class="join-now">
+                  join now
+                  <img :src="live" alt="live" />
+                </p>
               </div>
             </div>
           </div>
