@@ -93,3 +93,18 @@
     }
   }
 }
+.meeting-investigation {
+  @include flex-row(nowrap, center, center);
+  background: rgba(247, 249, 252, 1);
+  padding: 1.5rem;
+  gap: 10px;
+  p{
+    font-weight: $BaseFontWeightBold;
+    font-size: $MdSize2;
+
+  }
+  .meeting-icon{
+    width: 32px;
+    height: 26px;
+  }
+}

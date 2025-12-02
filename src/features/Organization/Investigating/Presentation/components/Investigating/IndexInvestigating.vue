@@ -67,9 +67,9 @@ onMounted(() => {
         <IndexFilter :filters="Filters" />
         <div class="btns-filter">
           <FilterDialog />
-          <router-link :to="`/organization/investigating/add`">
+          <!-- <router-link :to="`/organization/investigating/add`">
             <button class="btn btn-primary">Create Investigating</button>
-          </router-link>
+          </router-link> -->
         </div>
       </div>
 
@@ -132,9 +132,11 @@ onMounted(() => {
                       <span>{{ $t('show details') }}</span>
                     </button>
 
-                    <button class="btn second-btn">
-                      <span>{{ $t('assign investigation team') }}</span>
-                    </button>
+                    <router-link :to="`/organization/investigating/add`">
+                      <button class="btn second-btn">
+                        <span>{{ $t('assign investigation team') }}</span>
+                      </button>
+                    </router-link>
                   </div>
                 </div>
               </div>

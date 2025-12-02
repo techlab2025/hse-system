@@ -24,6 +24,7 @@ import ObservationLevel from '../../../../ObservationFactory/Presentation/compon
 import HazerdType from '../../../../ObservationFactory/Presentation/components/Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import FactorInvestigating from './FactorInvestigating.vue'
+import meetingImage from '../../../../../../assets/images/meeting.png'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -125,6 +126,7 @@ const isAction = ref<boolean>()
 const saveStatus = ref<SaveStatusEnum | null>(null)
 const actionText = ref<string>('')
 const type_id = ref<number | null>(null)
+const time = ref()
 
 const handleInvestigatingData = (data: any) => {
   type_id.value = data.type_id
@@ -155,9 +157,18 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       <p class="title">Investigating form <span>( #001 )</span></p>
     </div>
   </div>
+
   <div class="col-span-6 md:col-span-4 input-wrapper">
-    <label for="text">Text</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
+    <CustomSelectInput
+      :modelValue="SelectedMachine"
+      class="input"
+      :controller="indexEquipmentController"
+      :params="indexEquipmentParams"
+      label="Investigation team"
+      id="machine"
+      placeholder="select your machine"
+      @update:modelValue="setMachine"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput
@@ -165,60 +176,39 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="select machine (optional)"
+      label="assign leader "
       id="machine"
       placeholder="select your machine"
       @update:modelValue="setMachine"
     />
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+
+  <div class="meeting-investigation col-span-6 md:col-span-6">
+    <img :src="meetingImage" alt="" class="meeting-icon" />
+
+    <p>Investigation Meeting</p>
+  </div>
+
+  <div class="col-span-6 md:col-span-3 input-wrapper">
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="InvestigatingType"
-      class="input"
-      :controller="indexInvestigatingTypeController"
-      :params="indexInvestigatingTypeParams"
-      label="InvestigatingType"
-      id="InvestigatingType"
-      placeholder="Select Investigating Type"
-      @update:modelValue="setInvestigatingType"
-    />
+  <div class="col-span-6 md:col-span-3 input-wrapper">
+    <label for="time">Time</label>
+    <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" />
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+
+  <!-- <FactorInvestigating /> -->
+  <div class="col-span-6 md:col-span-6 input-wrapper">
     <CustomSelectInput
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="select machine (optional)"
+      label="meeting platform "
       id="machine"
-      placeholder="select your machine"
+      placeholder="select meeting platform"
       @update:modelValue="setMachine"
     />
   </div>
-  <FactorInvestigating />
-
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
-    <ObservationLevel
-      :modelRiskLevel="riskLevel"
-      :modelIsNearMiss="isNearMiss"
-      :isInvestigating="true"
-      @update:data="handleObservationLevel"
-    />
-    <HazerdType
-      :riskLevel="riskLevel"
-      :is_near_miss="isNearMiss"
-      :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'"
-      :modelAction="actionText"
-      @update:data="handleInvestigatingData"
-    />
-  </div>
-  <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="descripe">descripe <span class="optional">(optional)</span></label>
-    <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
-  </div> -->
 </template>
