@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
 import type ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
-import type ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
+import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
 import type ContractorModel from '@/features/setting/contractor/Data/models/ContractorModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
@@ -15,7 +15,7 @@ export default class ProjectModel extends TitleInterface {
   public zoons: ProjectZoneDetailsModel
   public start_date: string
   public serial_number: string
-  public contractor: ContractorDetailsModel
+  public contractor: ContractorDetailsModel[]
 
   constructor(
     id: number,
@@ -26,7 +26,7 @@ export default class ProjectModel extends TitleInterface {
     zoons: ProjectZoneDetailsModel,
     start_date: string,
     serial_number: string,
-    contractor: ContractorDetailsModel,
+    contractor: ContractorDetailsModel[],
   ) {
     super({ id, title })
     this.id = id
@@ -41,6 +41,7 @@ export default class ProjectModel extends TitleInterface {
   }
 
   static fromMap(data: any): ProjectModel {
+    // console.log('ProjectModel data:', data)
     return new ProjectModel(
       data.id,
       data.title,
@@ -50,7 +51,8 @@ export default class ProjectModel extends TitleInterface {
       data.zoons,
       data.start_date,
       data.serial_number,
-      data.contractor,
+      // ContractorDetailsModel.fromMap(data.contractor),
+      data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)) || [],
     )
   }
 }

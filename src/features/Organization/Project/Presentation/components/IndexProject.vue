@@ -26,12 +26,12 @@ import IndexProjectParams from '../../Core/params/indexProjectParams'
 import DeleteProjectParams from '../../Core/params/deleteProjectParams'
 import DeleteProjectController from '../controllers/deleteProjectController'
 import DropIcon from '@/shared/icons/DropIcon.vue'
-import Popover from 'primevue/popover';
+import Popover from 'primevue/popover'
 import TablePopover from '@/shared/FormInputs/TablePopover.vue'
 import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 
-const op = ref();
+const op = ref()
 // const members = ref([
 //     { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
 //     { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
@@ -39,7 +39,7 @@ const op = ref();
 // ]);
 
 const toggle = (event) => {
-  op.value.toggle(event);
+  op.value.toggle(event)
 }
 const { t } = useI18n()
 
@@ -54,14 +54,9 @@ const fetchProject = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1,
+  withPage: number = 1
 ) => {
-  const deleteProjectParams = new IndexProjectParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-  )
+  const deleteProjectParams = new IndexProjectParams(query, pageNumber, perPage, withPage)
   await indexProjectController.getData(deleteProjectParams)
 }
 
@@ -99,7 +94,7 @@ watch(
   },
   {
     deep: true,
-  },
+  }
 )
 
 const actionList = (id: number, deleteProject: (id: number) => void) => [
@@ -139,7 +134,7 @@ watch(
   () => route?.params?.id,
   (Newvalue) => {
     fetchProject()
-  },
+  }
 )
 
 // const Data = ref([
@@ -218,21 +213,28 @@ watch(
 //     ],
 //   },
 // ])
-
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchProject())">
+      <span class="icon-remove" @click=";(word = ''), searchProject()">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchProject" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchProject"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]">
+      <PermissionBuilder
+        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
+      >
         <router-link to="/organization/project/add" class="btn btn-primary">
           {{ $t('Add_Project') }}
         </router-link>
@@ -240,14 +242,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.PROJECT_ALL,
-    PermissionsEnum.PROJECT_DELETE,
-    PermissionsEnum.PROJECT_FETCH,
-    PermissionsEnum.PROJECT_UPDATE,
-    PermissionsEnum.PROJECT_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PROJECT_ALL,
+      PermissionsEnum.PROJECT_DELETE,
+      PermissionsEnum.PROJECT_FETCH,
+      PermissionsEnum.PROJECT_UPDATE,
+      PermissionsEnum.PROJECT_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="modern-table-responsive">
@@ -283,11 +287,10 @@ watch(
                   </div>
                 </td>
                 <td data-label="Contractors">
-                  <!-- <div class="tag-container">
-                    <TablePopover :data="item.partner" />
-                  </div> -->
+                  <div class="tag-container">
+                    <TablePopover :data="item.contractor" />
+                  </div>
                   <!-- {{ item.partner?.title }} -->
-                  {{ item.contractor }}
                 </td>
                 <td data-label="Locations">
                   <div class="tag-container">
@@ -305,13 +308,20 @@ watch(
                   </div> -->
                 <!-- </td> -->
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteProject)"
+                    @delete="deleteProject(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="8" :rows="10" />
@@ -320,20 +330,28 @@ watch(
         <TableLoader :cols="8" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/project/add`" addText="Add Project"
+        <DataEmpty
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/project/add`" addText="Add Project"
+        <DataFailed
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not Permission"
-        description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not Permission"
+        description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

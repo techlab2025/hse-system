@@ -10,8 +10,9 @@ import { useUserStore } from '@/stores/user'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import type MyZonesModel from '../../Data/models/MyZonesModel'
 import FetchMyZonesUseCase from '../../Domain/useCase/fetchMyZonesUseCase'
+import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 
-export default class FetchMyZonesController extends ControllerInterface<MyZonesModel[]> {
+export default class FetchMyZonesController extends SelectControllerInterface<MyZonesModel[]> {
   private static instance: FetchMyZonesController
   private constructor() {
     super()
@@ -23,6 +24,22 @@ export default class FetchMyZonesController extends ControllerInterface<MyZonesM
       this.instance = new FetchMyZonesController()
     }
     return this.instance
+  }
+
+  async getData(params: Params) {
+    // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
+    // this.setLoading()
+    const dataState: DataState<MyZonesModel[]> = await this.fetchMyZonesUseCase.call(params)
+
+    this.setState(dataState)
+    if (this.isDataSuccess()) {
+      // useLoaderStore().endLoadingWithDialog();
+    } else {
+      throw new Error('Error while addServices')
+    }
+    super.handleResponseDialogs()
+    return this.state
   }
 
   async FetchMyZones(params: Params, router: Router, draft: boolean = false) {
