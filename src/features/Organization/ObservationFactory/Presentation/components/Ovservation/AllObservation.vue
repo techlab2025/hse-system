@@ -9,28 +9,28 @@ const items = [
     title: 'Observation',
     addRoute: 'equipment/observation/add',
     image: '/src/assets/images/thinking.png',
-    indexRoute: 'equipment/observation',
+    indexRoute: '/organization/equipment/observation',
     description: 'You can Show all observations here'
   },
   {
     title: 'Hazard',
     addRoute: 'equipment/hazard/add',
     image: '/src/assets/images/hazard-sign.png',
-    indexRoute: 'equipment/hazard',
+    indexRoute: '/organization/equipment/hazard',
     description: 'You can Show all hazards here'
   },
   {
     title: 'Incident',
     addRoute: 'equipment/incedant/add',
     image: '/src/assets/images/risk-assessment-document.png',
-    indexRoute: 'equipment/incedant',
+    indexRoute: '/organization/equipment/incedant',
     description: 'You can Show all incidents here'
   },
   {
     title: 'Inspection',
     addRoute: 'equipment/inspection/add',
     image: '/src/assets/images/inspection.png',
-    indexRoute: 'equipment/inspection',
+    indexRoute: '/organization/equipment/inspection',
     description: 'You can Show all inspections here'
   }
 ]
