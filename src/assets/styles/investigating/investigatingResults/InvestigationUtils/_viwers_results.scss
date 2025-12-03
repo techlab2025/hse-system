@@ -1,0 +1,110 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+
+.viwers-result {
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+
+  .template-container {
+    background-color: #fcfcfc;
+    padding: $XlSize;
+    border-radius: $XlSize2;
+    position: relative;
+    .tree-marker {
+      position: absolute;
+      left: 10px;
+      top: 100%;
+      .add-text {
+        color: $PrimaryColor;
+        padding-top: $XsSize4;
+        font-size: calc($MdSize + 1px);
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+
+    .tree-dot {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tree-dot-inner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      box-shadow: 0 4px 12px rgba(30, 58, 142, 0.3);
+      z-index: 2;
+      position: relative;
+    }
+
+    .tree-item.active .tree-dot-inner {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(30, 58, 142, 0.3);
+      }
+
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(30, 58, 142, 0.5);
+      }
+    }
+
+    // .tree-icon-container {
+    // @include flex-row(nowrap,flex-start , flex-start);
+    .tree-icon {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      transform: translate(0%, -50%);
+      width: 30px;
+      height: 30px;
+      background: #f1f3f5;
+      border: 1px solid #9ca3af66;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      z-index: 3;
+    }
+    // }
+    .tree-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .tree-item.active .tree-pulse {
+      animation: pulseRing 2s infinite;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+      }
+    }
+  }
+}

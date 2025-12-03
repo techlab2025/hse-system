@@ -1,0 +1,66 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+
+.rate-of-actions {
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+
+  .rate-of-actions-content {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $SmSize;
+    width: 100%;
+    .actions-selections {
+      @include flex-row(nowrap, space-between, center);
+      width: 100%;
+      gap: $XsSize3;
+
+      .select-type {
+        @include flex-row(nowrap, center, center);
+        width: 100%;
+        gap: $XsSize3;
+        border-radius: $MdSize2;
+        border: 1px solid #d9dbe999;
+        transition: 0.3s all linear;
+        padding: $XsSize;
+        cursor: pointer;
+
+        &.active {
+          background-color: #d9dbe999;
+          label {
+            span {
+              color: #202020;
+              font-size: $MdSize2;
+              font-weight: $BaseFontWeightBold;
+            }
+          }
+        }
+        label {
+          @include flex-row(nowrap, center, center);
+          gap: $XsSize4;
+          transition: 0.3s all linear;
+          width: 100%;
+          cursor: pointer;
+
+          span {
+            color: #9ca3af;
+            font-size: $MdSize2;
+            font-weight: $BaseFontMediumWeight;
+            transition: 0.3s all linear;
+          }
+          img {
+            width: 25px;
+            height: 25px;
+          }
+        }
+        input {
+          display: none;
+        }
+      }
+    }
+
+    .input-wrapper {
+      width: 100%;
+    }
+  }
+}

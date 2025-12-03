@@ -48,7 +48,7 @@ const fetchFactory = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1,
+  withPage: number = 1
 ) => {
   const deleteFactoryParams = new IndexFactoryItemParams(query, pageNumber, perPage, withPage, id)
   await indexFactoryController.getData(deleteFactoryParams)
@@ -89,7 +89,7 @@ watch(
   },
   {
     deep: true,
-  },
+  }
 )
 
 const { user } = useUserStore()
@@ -98,7 +98,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/factory-item/${id}`,
     permission: [
       PermissionsEnum.FACTORY_ITEM_UPDATE,
       PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
@@ -148,7 +150,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchFactory())">
+      <span class="icon-remove" @click=";(word = ''), searchFactory()">
         <Search />
       </span>
       <input
@@ -171,7 +173,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         ]"
       >
         <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/add`"
+          :to="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/factory-item/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_Factory') }}
@@ -205,8 +209,12 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <th scope="col">{{ $t('factory') }}</th>
                 <!--                <th scope="col">{{ $t('image') }}</th>-->
 
@@ -217,13 +225,17 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                    :to="`/${
+                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/hazard-type/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -232,7 +244,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 </td>
                 <td data-label="factory">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory-item/${item.id}`"
+                    :to="`/${
+                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/factory-item/${item.id}`"
                     >{{ item.factory.title }}</router-link
                   >
                 </td>
@@ -270,7 +284,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"
@@ -278,7 +294,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"

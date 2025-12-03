@@ -3,8 +3,12 @@ import { ref } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 import investigationImg from '@/assets/images/investigationImg.png'
-import CauseOfAccidant from './InvestigatingResultsUtils/CauseOfAccidant.vue'
-import InvestigationTasks from './InvestigatingResultsUtils/InvestigationTasks.vue'
+import CauseOfAccidant from './InvestegationResultParts/CauseOfAccidant.vue'
+import InvestigationTasks from './InvestegationResultParts/InvestigationTasks.vue'
+import RateActions from './InvestegationResultParts/RateActions.vue'
+import InvestegationAttachment from './InvestegationResultParts/InvestegationAttachment.vue'
+import ViewersResults from './InvestegationResultParts/ViewersResults.vue'
+import AnotherMeeting from './InvestegationResultParts/AnotherMeeting.vue'
 
 const Details = ref({
   id: 3,
@@ -31,14 +35,19 @@ const Details = ref({
       :TeamLeader="Details.observer?.name"
       :TeamNumbers="12"
     />
-
     <div class="investigation-title">
-      <img :src="investigationImg" alt="">
+      <img :src="investigationImg" alt="" />
       <p>Investigation Meeting result</p>
     </div>
-
-    <CauseOfAccidant />
-    <InvestigationTasks />
-
+    <CauseOfAccidant @update:data="console.log($event , 'CauseOfAccidant');" />
+    <InvestigationTasks @update:data="console.log($event , 'InvestigationTasks');" />
+    <RateActions @update:data="console.log($event , 'RateActions');" />
+    <InvestegationAttachment @update:data="console.log($event , 'InvestegationAttachment');" />
+    <ViewersResults @update:data="console.log($event , 'ViewersResults');" />
+    <AnotherMeeting @update:data="console.log($event , 'AnotherMeeting');" />
+    <div class="btns">
+      <button class="btn btn-cancel">{{ $t('cancel') }}</button>
+      <button class="btn btn-primary">{{ $t('confirm') }}</button>
+    </div>
   </div>
 </template>
