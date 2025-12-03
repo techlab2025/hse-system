@@ -14,7 +14,12 @@ import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/tas
 import { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
 import { PeriodTypeEnum } from '../../Core/Enum/PeriodTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { useRoute } from 'vue-router'
+import InspectionGeneralForm from './InspectionForms/InspectionGeneralForm.vue'
+import InspectionTemplateDialog from './InspectionDialog/InspectionTemplateDialog.vue'
 
+const route = useRoute()
+const id = route.params?.equipment_id
 interface DataFormDetails {
   inspectionType: InspectionTypeEnum
   onceday: string
@@ -36,21 +41,31 @@ const props = defineProps<{
 }>()
 
 const updateData = () => {
-  if (DataParams.value?.data?.periodType === PeriodTypeEnum.BYDAY) {
+  if (
+    DataParams.value?.data?.periodType === PeriodTypeEnum.BYDAY ||
+    date?.value?.periodType === PeriodTypeEnum.BYDAY
+  ) {
     DataParams.value.data.PeridWithDate = []
   }
-  if (DataParams.value?.data?.periodType === PeriodTypeEnum.WHITDATE) {
+  if (
+    DataParams.value?.data?.periodType === PeriodTypeEnum.WHITDATE ||
+    date?.value?.periodType === PeriodTypeEnum.WHITDATE
+  ) {
     DataParams.value.data.periodByday = []
   }
   const PeriodTasks = ref<TaskPeriodParams[]>([])
-  if (DataParams.value?.data?.periodType !== PeriodTypeEnum.DAILY) {
-    DataParams.value?.data?.periodByday?.forEach((item) => {
+  const Data = DataParams.value?.data || date?.value
+  if (
+    DataParams.value?.data?.periodType !== PeriodTypeEnum.DAILY ||
+    date?.value?.periodType !== PeriodTypeEnum.DAILY
+  ) {
+    Data?.periodByday?.forEach((item) => {
       PeriodTasks.value.push(new TaskPeriodParams(null, item.id, null))
     })
-    DataParams.value?.data?.PeridWithDate?.forEach((item) => {
+    Data?.PeridWithDate?.forEach((item) => {
       PeriodTasks.value.push(new TaskPeriodParams(null, null, item.id))
     })
-    DataParams.value?.data?.bydates?.forEach((item) => {
+    Data?.bydates?.forEach((item) => {
       // console.log(, "item");
       PeriodTasks.value.push(new TaskPeriodParams(null, null, formatJoinDate(item)))
     })
@@ -70,15 +85,15 @@ const updateData = () => {
         PeriodTasks.value
       )
     : new AddInspectionParams(
-        SelectedAssigned.value,
-        DataParams.value?.morph?.id,
-        DataParams.value?.TempalteIds,
-        DataParams.value?.data?.inspectionType,
-        DataParams.value?.data?.periodType,
+        SelectedAssigned.value || AssignToTypeEnum.MACHINE,
+        DataParams.value?.morph?.id || id,
+        DataParams.value?.TempalteIds || TempalteIds.value,
+        DataParams.value?.data?.inspectionType || date?.value?.inspectionType,
+        DataParams.value?.data?.periodType || date?.value?.periodType,
         37,
         PeriodTasks.value || [],
-        DataParams.value?.data?.onceday,
-        DataParams.value?.data?.fromDate,
+        DataParams.value?.data?.onceday || date?.value?.onceday,
+        DataParams.value?.data?.fromDate || date?.value?.fromDate,
         null
       )
 
@@ -103,6 +118,18 @@ const UpdateFormData = (data: InspectionForm) => {
   DataParams.value = data
   updateData()
 }
+
+const date = ref()
+const GetGeneralData = (data) => {
+  date.value = data
+  updateData()
+}
+
+const TempalteIds = ref<number>()
+const GetTemplateId = (data: number) => {
+  TempalteIds.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -112,7 +139,7 @@ const UpdateFormData = (data: InspectionForm) => {
       :subtitle="'Distribute responsibilities across users and zones to streamline project workflows'"
     />
   </div>
-  <div class="col-span-6 md:col-span-6">
+  <div class="col-span-6 md:col-span-6" v-if="!id">
     <TaskAssignTo
       :title="`Assign task to`"
       :options="AssignToOptions"
@@ -122,7 +149,7 @@ const UpdateFormData = (data: InspectionForm) => {
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <div
       class="inspection-details"
-      :class="SelectedAssigned == AssignToTypeEnum.ZONE ? 'full-width' : ''"
+      :class="SelectedAssigned == AssignToTypeEnum.ZONE || id ? 'full-width' : ''"
     >
       <InspectionEmployeeForm
         v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE"
@@ -132,6 +159,10 @@ const UpdateFormData = (data: InspectionForm) => {
         v-if="SelectedAssigned == AssignToTypeEnum.ZONE"
         @update:data="UpdateFormData"
       />
+      <!-- <div class="machine-inspection"> -->
+      <InspectionTemplateDialog v-if="id" @update:data="GetTemplateId" />
+      <InspectionGeneralForm v-if="id" @update:data="GetGeneralData" />
+      <!-- </div> -->
     </div>
     <!--Employee Tasks-->
     <EmployeeTasksCard

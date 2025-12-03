@@ -24,6 +24,14 @@ const subItemsMap = {
     { label: 'Lorem Ipsum is simply dummy text', value: 'sub42' },
   ],
 }
+
+const emit = defineEmits(['update:data'])
+const UpdateData = () => {
+  emit('update:data', {
+    selectedFactor: selectedFactor.value,
+    selectedSubItem: selectedSubItem.value,
+  })
+}
 </script>
 
 <template>
@@ -37,7 +45,13 @@ const subItemsMap = {
       <div class="radio-column">
         <!-- Radio 1 -->
         <div class="radio-item">
-          <RadioButton v-model="selectedFactor" inputId="factor1" name="factors" value="factor1" />
+          <RadioButton
+            v-model="selectedFactor"
+            inputId="factor1"
+            name="factors"
+            value="factor1"
+            @update:modelValue="UpdateData"
+          />
           <label class="radio-label" for="factor1">Lorem Ipsum 1</label>
         </div>
 
@@ -49,6 +63,7 @@ const subItemsMap = {
               :inputId="sub.value"
               name="sub-items"
               :value="sub.value"
+              @update:modelValue="UpdateData"
             />
             <label :for="sub.value" class="sub-radio-label">{{ sub.label }}</label>
           </div>
@@ -56,7 +71,13 @@ const subItemsMap = {
 
         <!-- Radio 2 -->
         <div class="radio-item">
-          <RadioButton v-model="selectedFactor" inputId="factor2" name="factors" value="factor2" />
+          <RadioButton
+            v-model="selectedFactor"
+            inputId="factor2"
+            name="factors"
+            value="factor2"
+            @update:modelValue="UpdateData"
+          />
           <label class="radio-label" for="factor2">Lorem Ipsum 2</label>
         </div>
 

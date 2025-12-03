@@ -149,12 +149,14 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     ],
   },
   {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteEquipment(id),
+    text: t('add_inspection'),
+    icon: IconEdit,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment/inspection/add/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
@@ -170,6 +172,19 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     permission: [
       PermissionsEnum.EQUIPMENT_DETAILS,
       PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+    ],
+  },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteEquipment(id),
+    permission: [
+      PermissionsEnum.EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.EQUIPMENT_ALL,
@@ -250,7 +265,9 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
@@ -270,7 +287,9 @@ watch(
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
                 <td data-label="industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0

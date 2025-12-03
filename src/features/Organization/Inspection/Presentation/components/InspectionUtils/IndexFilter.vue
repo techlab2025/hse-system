@@ -28,10 +28,10 @@ const UpdateData = (data: number) => {
     <div class="filter-container">
       <p
         class="filter"
-        :class="SelectedFilter.includes(item.ProjectZoneId) ? 'active' : ''"
+        :class="SelectedFilter.includes(item.id) ? 'active' : ''"
         v-for="item in filters"
-        :key="item.ProjectZoneId"
-        @click="UpdateData(item.ProjectZoneId)"
+        :key="item.id"
+        @click="UpdateData(item.id)"
       >
         <span v-if="item?.title != null">
           {{ item?.title }}
