@@ -1366,6 +1366,23 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  <!-- Equipment Mangment -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
+                      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
+                      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
+                      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
+                      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/equipment/observation">
+                        <SidebarVector />
+                        <span>{{ $t('equipment_management') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
 
                   <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
                     <Accordion value="1">
