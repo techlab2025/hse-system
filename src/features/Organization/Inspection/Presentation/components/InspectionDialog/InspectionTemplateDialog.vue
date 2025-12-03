@@ -69,6 +69,7 @@ const GetTemplateId = (data: number) => {
 
     <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
+
       <template #header>
         <div class="add-equipment-header">
           <HeaderSection :img="InspectionTemplateImage" title="inspection template"

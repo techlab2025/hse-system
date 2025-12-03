@@ -1,5 +1,6 @@
+import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import TitleModel from '@/base/Data/Models/title_model.ts'
+import EquipmentTypeDetailsModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeDetailsModel'
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
@@ -7,11 +8,12 @@ export default class EquipmentModel extends TitleInterface {
   public id: number
   public hasCertificate: number
   public allIndustries: number
-  public industries: TitleModel<string>[]
+  public industries: TitleModel
   public parentId: number
   public image: string
   public titles: string
-  public equipmentType: TitleModel<string> | null
+  public equipmentType: TitleModel
+  // public equipmentType?: EquipmentTypeDetailsModel
 
   constructor(
     id: number,
@@ -19,11 +21,11 @@ export default class EquipmentModel extends TitleInterface {
     subtitle: string,
     hasCertificate: number,
     allIndustries: number,
-    industries: TitleModel<string>[] = [],
+    industries: TitleModel,
     parentId: number,
     image: string,
     titles: string,
-    equipmentType: TitleModel<string> | null
+    equipmentType: TitleModel,
   ) {
     super({ id, title, subtitle })
 
@@ -50,7 +52,8 @@ export default class EquipmentModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
-      data.equipmentType ? TitleModel.fromMap(data.equipmentType) : null,
+      data.equipment_type_id ? TitleModel.fromMap(data.equipment_type_id) : null,
+      // data.equipment_type_id
     )
   }
 }

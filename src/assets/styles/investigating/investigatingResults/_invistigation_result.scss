@@ -26,5 +26,17 @@
   .title-header {
     background-color: white;
   }
-
+  .btns {
+    @include flex-row(nowrap, center, center);
+    gap: $SmSize;
+    width: 100%;
+    button {
+      &.btn-primary {
+        width: 80%;
+      }
+      &.btn-cancel {
+        width: 20%;
+      }
+    }
+  }
 }

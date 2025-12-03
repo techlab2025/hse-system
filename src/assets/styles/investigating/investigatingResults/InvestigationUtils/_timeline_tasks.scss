@@ -1,0 +1,32 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+.template-container {
+  width: 100%;
+  .timeline-container {
+    width: 100%;
+    .input-wrapper{
+      width: 100%;
+
+    }
+    .timeline-content {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize;
+      width: 100%;
+      background-color: #fcfcfc;
+      padding: $MdSize;
+      border-radius: $XlSize2;
+      .timeline-content-text {
+        width: 100%;
+      }
+      .timeline-contect-select {
+        @include flex-row(nowrap, space-between, center);
+        width: 100%;
+        gap: $XsSize;
+        .date-picker {
+          margin-top: $XsSize4;
+        }
+      }
+    }
+  }
+}

@@ -50,14 +50,14 @@ const fetchEquipmentType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1,
+  withPage: number = 1
 ) => {
   const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id.value ?? '',
+    id.value ?? ''
   )
   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
@@ -97,7 +97,7 @@ watch(
   },
   {
     deep: true,
-  },
+  }
 )
 
 const { user } = useUserStore()
@@ -106,7 +106,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-type/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
@@ -119,7 +121,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('add_sub_equipment_type'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-type/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
@@ -132,7 +136,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('sub_equipment_types'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-types/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
@@ -162,7 +168,7 @@ watch(
   (Newvalue) => {
     // id = Newvalue
     fetchEquipmentType()
-  },
+  }
 )
 </script>
 
@@ -170,7 +176,7 @@ watch(
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchEquipmentType())">
+      <span class="icon-remove" @click=";(word = ''), searchEquipmentType()">
         <Search />
       </span>
       <input
@@ -194,7 +200,9 @@ watch(
         ]"
       >
         <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add`"
+          :to="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/equipment-type/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_EquipmentType') }}
@@ -228,8 +236,10 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <th scope="col">{{ $t('has_certificate') }}</th>
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <th scope="col">{{ $t('image') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -242,8 +252,8 @@ watch(
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -284,7 +294,9 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EquipmentTypes"
@@ -292,7 +304,9 @@ watch(
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EquipmentTypes"
