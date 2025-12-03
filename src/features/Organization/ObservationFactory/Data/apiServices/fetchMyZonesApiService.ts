@@ -24,7 +24,7 @@ class FetchMyZonesApiService extends ServicesInterface {
       type: CrudType.POST,
       auth: true,
       params: params,
-      showLoadingDialog: true,
+      // showLoadingDialog: true,
     })
   }
 }

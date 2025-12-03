@@ -232,7 +232,7 @@ const ShowDetails = ref<number[]>([])
         <div>
           <IndexHazardHeader
             :title="'incedant'"
-            :length="state.data?.length || 0"
+            :length="state?.pagination?.total || 0"
             :projects="Projects"
             @update:data="setSelectedProjectFilter"
           />
@@ -284,7 +284,7 @@ const ShowDetails = ref<number[]>([])
                       </div>
                       <div class="card-info">
                         <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                        <Image :src="item.image" alt="Image" preview>
+                        <Image v-if="item.image" :src="item.image" alt="Image" preview>
                           <template #previewicon>
                             <div class="perview">
                               <span>view</span>
@@ -292,6 +292,7 @@ const ShowDetails = ref<number[]>([])
                             </div>
                           </template>
                         </Image>
+                        <img v-else src="@/assets/images/logo.svg" alt="">
                       </div>
                     </div>
                     <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">

@@ -1,5 +1,6 @@
-import FilesModel from './filesModel'
+// import FilesModel from './filesModel'
 import TaskResultItemAnswerModel from './TaskResultItemAnswerModel'
+import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel.ts'
 
 export default class TaskResultItemModel {
   public id: number

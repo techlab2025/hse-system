@@ -195,7 +195,7 @@ const setSelectedProjectFilter = (data) => {
         <div>
           <IndexInspectionHeader
             :title="`Inspection`"
-            :length="state.data?.length"
+            :length="state?.pagination?.total||0"
             :projects="Projects"
             @update:data="setSelectedProjectFilter"
           />

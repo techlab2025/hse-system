@@ -38,6 +38,7 @@ import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 // import FilterDialog from './HazardUtils/filterDialog.vue'
 
 // i18n
@@ -230,7 +231,7 @@ onMounted(async () => {
       <div class="col-span-10">
         <IndexHazardHeader
           :title="'Hazard'"
-          :length="state.data?.length"
+          :length="state?.pagination?.total||0"
           :projects="Projects"
           @update:data="setSelectedProjectFilter"
         />
@@ -299,7 +300,7 @@ onMounted(async () => {
                           <p class="title">Hazard Type</p>
                           <!-- {{ item.media[0].url }} -->
 
-                          <Image :src="item.media?.[0]?.url" alt="Image" preview>
+                          <Image v-if="item.media?.[0]?.url" :src="item.media?.[0]?.url" alt="Image" preview>
                             <template #previewicon>
                               <div class="perview">
                                 <span>view</span>
@@ -307,6 +308,7 @@ onMounted(async () => {
                               </div>
                             </template>
                           </Image>
+                          <img v-else src="@/assets/images/logo.svg" alt="">
                         </div>
                       </div>
 
@@ -324,13 +326,12 @@ onMounted(async () => {
                   </div>
                 </div>
               </div>
-
-              <Pagination
-                :pagination="state.pagination"
-                @changePage="handleChangePage"
-                @countPerPage="handleCountPerPage"
-              />
             </div>
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
 
           <template #loader>

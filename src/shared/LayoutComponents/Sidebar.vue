@@ -1366,6 +1366,13 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  <!-- ALL -->
+                  <li>
+                    <router-link to="/organization/equipment/all-observatin">
+                      <SidebarVector />
+                      <span>{{ $t('management') }}</span>
+                    </router-link>
+                  </li>
                   <!-- Equipment Mangment -->
                   <PermissionBuilder
                     :code="[
