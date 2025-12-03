@@ -256,7 +256,7 @@ const addEquipment = async () => {
         />
       </div>
 
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <label for="inspection duration">
           {{ $t('inspection duration') }}
         </label>
@@ -266,15 +266,15 @@ const addEquipment = async () => {
           id="inspection duration"
           :placeholder="$t('inspection duration')"
         />
-      </div>
+      </div> -->
 
       <div>
-        <CustomSelectInput
+        <!-- <CustomSelectInput
           :staticOptions="[]"
           label="inspection template"
           id="inspection template"
           placeholder="inspection template"
-        />
+        /> -->
       </div>
 
       <div v-if="user.user?.type !== OrganizationTypeEnum.ORGANIZATION" class=""></div>

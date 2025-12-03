@@ -55,7 +55,7 @@ const GetTemplateId = (data: number) => {
 </script>
 
 <template>
-  <div class="inspection-template-dialog-container">
+  <div class="inspection-template-dialog-container ">
     <div class="flex flex-col gap-1">
       <div class="title">
         <span>{{ $t('inspection template') }}</span>

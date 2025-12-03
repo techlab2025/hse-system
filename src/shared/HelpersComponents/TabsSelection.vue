@@ -71,16 +71,16 @@ watch(
       </div> -->
       <div class="tabs-selction-content">
         <div class="select-container">
-          <div class="select-item" v-for="zoon in state.data" :key="zoon.projectZoonId"
-            :class="SelectedLocation === zoon.projectZoonId ? 'active' : ''">
+          <div class="select-item" v-for="zoon in state.data" :key="zoon.ProjectZoneId"
+            :class="SelectedLocation === zoon.ProjectZoneId ? 'active' : ''">
             <div class="left-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="left-yellow" :src="yelloecircle" alt="yellow" />
             </div>
-            <input type="radio" :id="`radio-${zoon.projectZoonId}`" name="radio" :value="zoon.projectZoonId"
+            <input type="radio" :id="`radio-${zoon.ProjectZoneId}`" name="radio" :value="zoon.ProjectZoneId"
               @change="updateData" />
-            <label class="item" @click="SelectedLocation = zoon.projectZoonId" :for="`radio-${zoon.projectZoonId}`">{{
-              zoon.zoonTitle || `--` }}</label>
+            <label class="item" @click="SelectedLocation = zoon.ProjectZoneId" :for="`radio-${zoon.ProjectZoneId}`">{{
+              zoon.title || `--` }}</label>
             <div class="right-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="right-yellow" :src="yelloecircle" alt="blue" />
