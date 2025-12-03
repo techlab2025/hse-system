@@ -7,7 +7,7 @@ export const InspectionRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Inspection/IndexInspection.vue'),
   },
   {
-    path: 'inspection/add/:equipment_id',
+    path: 'inspection/add/:equipment_id?',
     name: 'Add Inspection',
     component: () => import('@/views/Organization/Inspection/AddInspection.vue'),
   },
