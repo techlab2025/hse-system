@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones';
+// import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones';
+import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone';
 
 const props = defineProps<{
   title: string,
-  zone: ProjectLocationZonesModel[],
+  zone: SohwProjectZoonModel[],
   zoons: string[]
 }>()
 

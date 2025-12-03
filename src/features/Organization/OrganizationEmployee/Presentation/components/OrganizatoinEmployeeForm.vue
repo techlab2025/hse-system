@@ -9,7 +9,16 @@ import EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEm
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 import { useUserStore } from '@/stores/user'
+import { useToast } from 'primevue/usetoast';
+import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
+import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
+import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
 
+const toast = useToast();
 const Name = ref('')
 const Phone = ref('')
 const Email = ref('')
@@ -21,8 +30,15 @@ const props = defineProps<{
   data?: OrganizatoinEmployeeDetailsModel
 }>()
 
+const indexHerikalyController = IndexHerikalyController.getInstance()
+const HerikalyParams = new IndexHerikalyParams("", 0, 0, 0)
+
+const indexCertificateController = IndexCertificateController.getInstance()
+const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
+
+
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-const user  = useUserStore();
+const user = useUserStore();
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
@@ -30,7 +46,7 @@ const fetchLang = async (
   withPage: number = 0,
 ) => {
 
-    if (user?.user?.languages.length) {
+  if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
@@ -73,15 +89,27 @@ onMounted(async () => {
 })
 
 const updateData = () => {
+
+  const HeirarchyIds = Heirarchy.value?.map((item) => new HirarachyEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
-        props?.data?.id,
-        Name.value,
-        Phone.value,
-        Email.value,
-        Password.value,
-      )
-    : new AddOrganizatoinEmployeeParams(Name.value, Phone.value, Email.value, Password.value)
+      props?.data?.id,
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+      HeirarchyIds
+      // Certificates.value.map((item) => item.id)
+    )
+    : new AddOrganizatoinEmployeeParams(
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+      HeirarchyIds
+      // Certificates.value.map((item) => item.id)
+
+    )
   emit('update:data', params)
 }
 
@@ -113,23 +141,45 @@ const UpdatePassword = (data) => {
   Password.value = data.target.value
   updateData()
 }
+
+const Heirarchy = ref<TitleInterface[]>()
+const setHeirarchy = (data: TitleInterface[]) => {
+  Heirarchy.value = data
+  updateData()
+}
+
+const Certificates = ref<TitleInterface[]>()
+const setCertificates = (data: TitleInterface[]) => {
+  Certificates.value = data
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input id="name" type="text" v-model="Name" @change="UpdateName" />
+    <input id="name" type="text" v-model="Name" @change="UpdateName" :placeholder="$t('enter your name')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>
-    <input id="phone" type="tel" v-model="Phone" @change="UpdatePhone" />
+    <input id="phone" type="tel" v-model="Phone" @change="UpdatePhone" :placeholder="$t('enter your phone')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">{{ $t('Email') }}</label>
-    <input id="email" type="email" v-model="Email" @change="UpdateEmail" />
+    <input id="email" type="email" v-model="Email" @change="UpdateEmail" :placeholder="$t('enter your email')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input id="password" type="text" v-model="Password" @change="UpdatePassword" />
+    <input id="password" type="text" min="8" v-model="Password" @change="UpdatePassword"
+      :placeholder="$t('enter your password')" />
   </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
+      :params="HerikalyParams" :label="$t('Herikaly')" :type="2" :placeholder="$t('Select Heirarchy')" />
+  </div>
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
+      :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
+      :placeholder="$t('Select Certificates')" />
+  </div> -->
 </template>

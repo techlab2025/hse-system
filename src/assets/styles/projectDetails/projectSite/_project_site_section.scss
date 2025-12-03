@@ -1,5 +1,6 @@
 @import '../../variables';
 @import '../../mixins/flex';
+@import '../../mixins/grid';
 
 .project-location {
   background-color: #fafafacc;
@@ -11,7 +12,15 @@
   width: 100%;
 
   .card-section {
-    @include flex-row(nowrap, space-between, center);
+    // @include flex-row(nowrap, space-between, center);
+    @include grid(
+      2,
+      10px,
+      (
+        1440: 2,
+        1000: 1,
+      )
+    );
     gap: $XsSize3;
     width: 100%;
   }

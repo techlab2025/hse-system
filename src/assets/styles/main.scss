@@ -11,11 +11,24 @@
 @use './utils/input_serach';
 @use './utils/data_empty';
 @use './utils/popover';
+@use './utils/btn_add';
+@use './utils/btn_cancel';
+@use './utils/breadCrumb';
+@use './utils/tabs_selections';
 //@use "./utils/_explore_btn";
 @use './normalize';
 @use './permission';
-
 @use './crop';
+
+@use './equipment/imports_equipment';
+@use './observation/imports_observation';
+
+@use './equipment/details/imports_details';
+
+@use './inspection/imports_inspection';
+
+@use './investigating/investigating_imports';
+@use'./investigationMeeting/investigation_meeting_imports';
 
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
@@ -110,6 +123,18 @@
 /*<editor-fold desc="ModernTable">*/
 @use './ModernTable/table_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="TreeTable">*/
+@use './TreeTable/tree_table';
+/*</editor-fold>*/
+/*<editor-fold desc="_template_imports">*/
+@use './TemplateItem/template_imports';
+/*</editor-fold>*/
+/*<editor-fold desc="hazard_imports">*/
+@use './hazard/hazard_imports';
+/*</editor-fold>*/
+/*<editor-fold desc="equipment_sidebar">*/
+@use './equipmentsidebar/equipment_mangement_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;
@@ -125,7 +150,7 @@ html {
 }
 
 body {
-  font-family: var(--font-family), sans-serif;
+  font-family: 'Regular', sans-serif;
   color: black;
   overflow-x: hidden;
 }
@@ -163,4 +188,34 @@ body {
   justify-content: center;
   cursor: pointer;
   color: black;
+}
+
+// for garrery
+.p-galleria-indicator-list {
+  .p-galleria-indicator {
+    button {
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
+
+.p-galleria {
+  border: none !important;
+  outline: none !important;
+}
+
+.p-galleria-indicator-active {
+  button {
+    background-color: $PrimaryColor !important;
+    width: 30px !important;
+    height: 8px !important;
+    border-radius: 50px !important;
+  }
+}
+.p-radiobutton-box {
+  border: 1px solid #8c8c8c59 !important;
+}
+
+.factor-item .p-radiobutton-checked .p-radiobutton-box {
+  border: none !important;
 }

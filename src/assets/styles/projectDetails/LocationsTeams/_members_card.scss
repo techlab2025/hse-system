@@ -23,13 +23,14 @@
   }
 
   .member-img {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   .card-delete {
     position: absolute;
     top: 0;
     right: 10px;
+    cursor: pointer;
   }
 
   .member-data {

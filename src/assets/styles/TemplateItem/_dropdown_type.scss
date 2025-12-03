@@ -1,0 +1,39 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.template-container {
+  .dropdwon-title {
+    @include flex-column(nowrap, flex-start, flex-start);
+    margin-top: $XlSize;
+    gap: 3px;
+    font-family: 'Light';
+    padding-left: calc($XlSize2 + 1px);
+    .title {
+      color: #202020;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .subtitle {
+      color: #9ca3af;
+      font-size: $XsSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+
+    .alert {
+      font-size: $XsSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: $PrimaryColor;
+    }
+  }
+
+  .heirarchy-info {
+    .dropdown-type {
+      @include flex-row(nowrap, space-between, center);
+      .icon {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+}

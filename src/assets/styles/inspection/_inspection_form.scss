@@ -1,0 +1,138 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.inspection-form {
+  @include grid(
+    2,
+    10px,
+    (
+      1000px: 1,
+    )
+  );
+  .inspection-details {
+    &.full-width {
+      grid-column: span 2;
+    }
+  }
+  .inspection-show {
+    background-color: #fbfbfb;
+    border: 1px solid #eff3fc;
+    border-radius: $XlSize2;
+    padding: $SmSize;
+    .inspection-show-title {
+      @include flex(row, nowrap, center, center);
+      gap: $XsSize;
+
+      h5 {
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+        color: var(--header-page-color);
+        text-transform: capitalize;
+      }
+    }
+    .cards {
+      background-color: $White;
+      border-radius: $XlSize;
+      padding: $SmSize $XlSize;
+      margin-top: $SmSize;
+
+      .employee-card {
+        @include flex(row, wrap, space-between, center);
+        padding-bottom: $SmSize;
+        border-bottom: 1px dashed #e6e8ea;
+
+        .info {
+          @include flex(row, wrap, flex-start, flex-start);
+          gap: $XsSize3;
+
+          img {
+            width: 48px;
+            height: 48px;
+            border-radius: 9px;
+          }
+          .employee-info {
+            @include flex(column, wrap, flex-start, flex-start);
+            gap: $XsSize4;
+            .employee-name {
+              font-size: $MdSize;
+              font-weight: $BaseFontWeightBold;
+              color: var(--header-page-color);
+            }
+            .employee-role {
+              color: $SubtitleColor;
+              font-size: $SmSize;
+            }
+          }
+        }
+        .tasks-num {
+          color: $PrimaryColor;
+          text-decoration: underline;
+          font-weight: $BaseFontWeightBold;
+        }
+      }
+
+      .employee-tasks {
+        margin-top: $MdSize;
+        height: 500px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $IconBg;
+          border-radius: $BorderRadiusSm;
+        }
+        .task-card {
+          padding: $SmSize $MdSize;
+          border: 1px solid #e6e8ea;
+          border-radius: $XlSize;
+          width: 100%;
+          margin-block: $MdSize;
+          position: relative;
+          overflow: hidden;
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -2rem;
+            width: 70px;
+            height: 20px;
+            background: linear-gradient(
+              180deg,
+              rgba(16, 146, 207, 0.8) -9.32%,
+              rgba(199, 201, 214, 0.8) 68.63%
+            );
+            z-index: 1;
+            filter: blur(30px);
+            opacity: 1;
+          }
+
+          h4 {
+            font-size: $XlSize;
+            font-weight: $BaseFontWeightBold;
+            color: var(--second-dark-color);
+          }
+          .date {
+            @include flex(row, nowrap, flex-start, center);
+            gap: $XsSize3;
+            margin-top: $XsSize3;
+            span {
+              color: $SubtitleColor;
+              font-size: $XsSize;
+              font-weight: $BaseFontMediumWeight;
+            }
+            p {
+              color: $PrimaryColor;
+              font-size: $SmSize;
+              font-weight: $BaseFontWeightBold;
+            }
+          }
+        }
+      }
+    }
+  }
+}

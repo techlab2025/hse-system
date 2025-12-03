@@ -1,31 +1,36 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class AddTemplateItemParams implements Params {
-  translation: TranslationsParams
-  require_image: number
-  action: number
-  parentId: number
-  AllIndustries: number
+  id: number
+  title: string
+  type: number
+  answers: items[]
+  isImageRequired: number
+  imageType: number
 
   constructor(
-    translation: TranslationsParams,
-    require_image: number,
-    action: number,
-    parentId: number,
-    AllIndustries: number,
+    id: number,
+    title: string,
+    type: number,
+    answers: items[],
+    isImageRequired: number,
+    imageType: number,
   ) {
-    this.translation = translation
-    this.require_image = require_image
-    this.action = action
-    this.parentId = parentId
-    this.AllIndustries = AllIndustries
-    // this.image = image
+    this.id = id
+    this.title = title
+    this.type = type
+    this.answers = answers
+    this.isImageRequired = isImageRequired
+    this.imageType = imageType
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | number
+    | string
+    | number[]
+    | Record<string, string | number[] | number | Record<string, string>>
+    | Array<Record<string, string | number>>
   > {
     const data: Record<
       string,
@@ -33,13 +38,22 @@ export default class AddTemplateItemParams implements Params {
       | string
       | number[]
       | Record<string, string | number[] | number | Record<string, string>>
+      | Array<Record<string, string | number>>
     > = {}
-
-    data['translations'] = this.translation.toMap() // tranlations:asd
-    if (this.parentId) data['template_id'] = this.parentId
-    data['require_image'] = this.require_image
-    if (this.action) data['action'] = this.action
-    if (this.AllIndustries) data['all_industries'] = this.AllIndustries
+    data['template_id'] = this.id
+    data['name'] = this.title
+    data['action'] = this.type
+    data['options'] = this.answers.map((item) => ({
+      title: item.title,
+      is_danger: item.isDanger ? 1 : 0,
+    }))
+    data['require_image'] = this.isImageRequired || 0
+    data['required_type'] = this.imageType || 0
     return data
   }
+}
+
+interface items {
+  title: string
+  isDanger: boolean
 }

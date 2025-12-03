@@ -1,0 +1,110 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.investigationMeeting-form {
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize2;
+  width: 100%;
+  .investigationMeeting-form-header {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 4px;
+
+    .title {
+      color: #170f49;
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      span {
+        color: #1f41bb;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.optional {
+  color: #c3c6cd;
+  font-size: $MdSize;
+  font-weight: $BaseFontMediumWeight;
+}
+.factor-item {
+  opacity: 1;
+  border-radius: 20px;
+  background-color: rgba(249, 249, 249, 1);
+  padding: $XsSize;
+  .factot-title {
+    font-weight: $BaseFontWeightBold;
+    color: #000;
+    font-style: Bold !important;
+  }
+  .radio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 20px;
+  }
+
+  .radio-column {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 12px;
+  }
+
+  .radio-item {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 8px;
+
+    .radio-label {
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      color: rgba(158, 158, 158, 1);
+    }
+  }
+  .p-radiobutton-checked .p-radiobutton-box {
+    background-color: $PrimaryColor !important;
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    background-color: $PrimaryColor !important;
+  }
+  .p-radiobutton.p-radiobutton-checked + .radio-label {
+    color: rgba(31, 65, 187, 1) !important;
+    font-weight: $BaseFontSemiBoldWeight;
+    font-size: $MdSize;
+  }
+  .sub-radio-group {
+    margin-left: 1.3rem;
+    @include flex-column(nowrap, flex-start, center);
+    gap: 8px;
+  }
+
+  .sub-radio-item {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 8px;
+    .sub-radio-label {
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      color: rgba(158, 158, 158, 1);
+    }
+  }
+}
+.meeting-investigation {
+  @include flex-row(nowrap, center, center);
+  background: rgba(247, 249, 252, 1);
+  padding: 1.5rem;
+  gap: 10px;
+  p{
+    font-weight: $BaseFontWeightBold;
+    font-size: $MdSize2;
+
+  }
+  .meeting-icon{
+    width: 32px;
+    height: 26px;
+  }
+}

@@ -1,0 +1,33 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+
+.add-attachment-btn {
+  @include flex-row(nowrap, center, center);
+  gap: $XsSize3;
+  width: 100%;
+  border: 1px dashed #9ca3af;
+  padding: $XlSize;
+  border-radius: $XlSize;
+  span {
+    // width: 100%;
+    color: #9ca3af;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+  }
+}
+
+.investegation-attachment-dialog-content {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 5px;
+  .attch-hr {
+    border: none;
+    height: 2px;
+    width: 100%;
+    background-color: #9ca3af4b;
+  }
+  .input-wrapper {
+    width: 100%;
+    margin-top: 12px;
+  }
+}

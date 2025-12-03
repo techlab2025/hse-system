@@ -1,0 +1,155 @@
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+
+.show-equipment {
+  .card-equipment {
+    @include flex(row, nowrap, flex-start, center);
+    background-color: #fbfbfb;
+    border-radius: $XsSize;
+    padding: $XsSize;
+    gap: $XsSize2;
+    margin-bottom: $MdSize;
+
+    @media screen and (max-width: 900px) {
+      @include flex(row, wrap, flex-start, center);
+    }
+    .card-body {
+      @include flex(row, nowrap, space-between, end);
+      width: 100%;
+      gap: $XsSize3;
+      @media screen and (max-width: 900px) {
+        @include flex(row, wrap, space-between, end);
+      }
+      .card-body-content-right {
+        @include flex(column, wrap, flex-start, flex-end);
+        gap: $SmSize;
+        width: 200px;
+
+        // @media screen and (max-width: 900px) {
+        //   width: 100%;
+        // }
+
+        .image-content {
+          width: 100%;
+          height: 110px;
+
+          position: relative;
+          overflow: hidden;
+          .texts {
+            position: absolute;
+            left: -14rem;
+            width: 100%;
+            height: 100%;
+            color: $White;
+            border-radius: $SmSize;
+            transition: all 0.5s ease-in-out;
+            padding-inline: $XsSize;
+            font-size: $XsSize;
+            @include flex(column, wrap, center, flex-start);
+            gap: $XsSize2;
+            span {
+              color: var(--Red);
+            }
+          }
+
+          &:hover {
+            .texts {
+              left: 0;
+              background-color: rgba($color: #000000, $alpha: 0.3);
+              backdrop-filter: blur(3px);
+            }
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: $SmSize;
+          }
+        }
+      }
+      .card-body-content-left {
+        width: 100%;
+        @include flex(column, wrap, flex-start, flex-start);
+        gap: $XsSize4;
+
+        .card-body-title {
+          @include flex(row, nowrap, flex-start, center);
+          gap: $XsSize2;
+          .title {
+            font-size: $XlSize2;
+            font-weight: $BaseFontWeightBold;
+            color: var(--header-page-color);
+          }
+        }
+
+        .inspection {
+          @include flex(row, nowrap, flex-start, center);
+          gap: $XsSize4;
+          span {
+            color: var(--subtitle-color);
+            font-weight: $BaseFontMediumWeight;
+          }
+          p {
+            font-weight: $BaseFontSemiBoldWeight;
+            color: #4b5563;
+            span {
+              color: $PrimaryColor;
+            }
+          }
+        }
+
+        .date-of-decommissioning {
+          @include flex(row, nowrap, flex-start, center);
+          gap: $XsSize4;
+
+          span {
+            color: var(--subtitle-color);
+            font-weight: $BaseFontMediumWeight;
+          }
+          p {
+            color: var(--Red);
+            font-weight: $BaseFontWeightBold;
+          }
+        }
+
+        .vehicle {
+          @include flex-row(nowrap, flex-start, center);
+          @media screen and (max-width: 900px) {
+            @include flex(row, wrap, flex-start, center);
+          }
+          gap: $SmSize;
+          background-color: #f1f3f5;
+          padding: $XsSize $SmSize;
+          border-radius: $SmSize;
+          width: 100%;
+          .items {
+            width: 100%;
+            @include flex-row(wrap, flex-start, flex-start);
+            gap: $MdSize;
+            .item {
+              @include flex-row(wrap, flex-start, flex-start);
+              gap: $XsSize3;
+              span {
+                color: var(--subtitle-color);
+                font-weight: $BaseFontMediumWeight;
+              }
+              p {
+                color: #4b5563;
+                font-weight: $BaseFontWeightBold;
+              }
+            }
+          }
+        }
+      }
+    }
+    .img-equipment {
+      width: 175px;
+      height: 175px;
+      border-radius: $SmSize;
+      @media screen and (max-width: 900px) {
+        width: 100%;
+        height: 200px;
+      }
+    }
+  }
+}

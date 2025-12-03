@@ -211,8 +211,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
                 <!--                <th scope="col">{{ $t('image') }}</th>-->
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -227,8 +227,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -269,7 +269,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"
@@ -277,7 +277,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/factory`"
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
           addText="Add Factory"
           description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Factory"

@@ -3,24 +3,30 @@ import { accidentsRoutes } from './accidents'
 import { certificateRoutes } from './certificate'
 import { equipmentRoutes } from './equipment'
 import { factoryRoutes } from './factory'
-import { hazardRoutes } from './hazard'
+import { hazardTypesRoutes } from './hazardtypes'
 import { templateRoutes } from './template'
 import { templateItemRoutes } from './templateItem'
 import { methodsRoutes } from './methods'
 import { teamsRoutes } from './team'
+import { contractorsRoutes } from './contractor'
 import { locationRoutes } from './location'
+import { observerationRoutes } from './observeration'
+// import { hazardRoutes } from './hazard'
+import { healthConditionsRoutes } from './healthconditions'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
   ...certificateRoutes,
   ...equipmentRoutes,
   ...factoryRoutes,
-  ...hazardRoutes,
+  ...hazardTypesRoutes,
+  // ...hazardRoutes,
   ...templateRoutes,
   ...templateItemRoutes,
   ...methodsRoutes,
   ...teamsRoutes,
-  ...locationRoutes
-
-
+  ...contractorsRoutes,
+  ...locationRoutes,
+  ...observerationRoutes,
+  ...healthConditionsRoutes
 ]

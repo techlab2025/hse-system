@@ -1,0 +1,60 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.show-template-container {
+  position: relative;
+  overflow: hidden;
+  // height: 80vh;
+  border-radius: $XlSize;
+  font-family: 'Light';
+  padding: $XlSize3 $XlSize;
+
+  .left-header-background {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    // height: 100%;
+    scale: 1.2;
+    @include flex-center();
+    .left-blue-background {
+      opacity: 0.2;
+    }
+    .left-yellow-background {
+      position: relative;
+      left: -280px;
+      opacity: 0.2;
+    }
+  }
+  .right-header-background {
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+    // height: 100%;
+    scale: 1.2;
+    @include flex-center();
+    .right-yellow-background {
+      position: relative;
+      right: -280px;
+      opacity: 0.2;
+    }
+    .right-blue-background {
+      opacity: 0.2;
+      rotate: 180deg;
+    }
+  }
+
+  .template-title {
+    @include flex-center();
+    @media(max-width:768px){
+      @include flex-column-reverse(nowrap, center, center);
+    }
+    gap: 4px;
+    .title {
+      font-family: 'Regular';
+      color: #041953;
+      font-size: $XlSize2;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+}

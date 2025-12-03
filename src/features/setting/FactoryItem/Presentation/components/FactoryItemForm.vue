@@ -65,7 +65,7 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-    if (user?.user?.languages.length) {
+  if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
@@ -204,17 +204,17 @@ const setFactory = (data: TitleInterface) => {
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
-
-      @change="updateData"
-    />
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries &&user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

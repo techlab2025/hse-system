@@ -183,8 +183,8 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
@@ -199,8 +199,8 @@ watch(
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')

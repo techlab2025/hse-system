@@ -11,7 +11,7 @@ import IconBackStage from '@/shared/icons/IconBackStage.vue'
 export type ComponentType = 'select' | 'multiselect'
 
 interface Props {
-  label: string
+  label?: string
   options?: TitleInterface[]
   staticOptions?: TitleInterface[] | null
   modelValue: TitleInterface | TitleInterface[] | null
@@ -60,15 +60,15 @@ const isMultiselect = computed(() => Number(type.value) === 2)
 const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
 const mergedOptions = computed(() => staticOptions?.value ?? dynamicOptions.value)
 const multiselectProps = computed(() =>
-  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 3 } : {},
+  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
 )
 
 // Value handling
 const normalizedValue = computed({
   get: () => localValue.value,
   set: (newValue) => {
-    // console.log(newValue);
     localValue.value = isMultiselect.value ? ensureArray(newValue) : ensureSingle(newValue)
+    // console.log(localValue.value, 'localValue.value');
     emitUpdate()
   },
 })
@@ -86,7 +86,7 @@ function ensureArray(value: unknown): TitleInterface[] {
 }
 
 function ensureSingle(value: unknown): TitleInterface | null {
-  // console.log(value);
+  // console.log(value , "single");
   return value instanceof TitleInterface ? value : null
 }
 
@@ -157,34 +157,21 @@ async function reloadData(): Promise<void> {
 
 <template>
   <div class="input-label flex justify-between w-full">
-    <span
-      v-if="enableReload"
-      class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-      @click="reloadData"
-    >
+    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+      @click="reloadData">
       <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
       <IconBackStage />
     </span>
     <label :class="{ required: required }" class="input-label">
-      <span class="text-red-500">*</span>
+      <span v-if="required" class="text-red-500">*</span>
 
-      {{ label }}
-
+      {{ $t(label ?? '') }}
     </label>
   </div>
 
-  <component
-    :is="componentType"
-    v-model="normalizedValue"
-    :options="mergedOptions"
-    :placeholder="placeholder"
-    class="input-select w-full"
-    option-label="title"
-    v-bind="multiselectProps"
-    filter
-    :loading="loading"
-    :empty-message="message"
-  />
+  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
+    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
+    :empty-message="message" />
 
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 </template>
@@ -194,10 +181,9 @@ async function reloadData(): Promise<void> {
   width: 100%;
   background-color: transparent;
   border-radius: 24px;
+
   &:focus {
     border: 1px solid #d9dbe9 !important;
   }
 }
-
-
 </style>

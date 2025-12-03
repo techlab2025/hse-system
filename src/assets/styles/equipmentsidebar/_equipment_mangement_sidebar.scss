@@ -1,0 +1,69 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.equipment-sidebar {
+  font-family: 'Regular';
+  ul {
+    a {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      display: block;
+
+      .left-back-img {
+        position: absolute;
+        left: -200px;
+        transition: 0.3s all linear;
+        @include flex-center();
+      }
+      .right-back-img {
+        position: absolute;
+        right: -200px;
+        transition: 0.3s all linear;
+        @include flex-center();
+      }
+      .left-back-img,
+      .right-back-img {
+        display: none;
+      }
+      &.router-link-active {
+        background-color: #fcfcfc;
+        li {
+          color: $PrimaryColor;
+          overflow: hidden;
+        }
+        .left-back-img {
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          opacity: 0.3;
+          .left-yellow {
+            top: -20px;
+            position: relative;
+          }
+        }
+        .right-back-img {
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 100%;
+          rotate: 180deg;
+          opacity: 0.3;
+          .right-yellow {
+            top: -20px;
+            position: relative;
+          }
+        }
+      }
+      li {
+        color: #a8a8a8;
+        padding: 12px;
+        overflow: hidden;
+      }
+    }
+  }
+}

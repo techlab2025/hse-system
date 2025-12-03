@@ -4,7 +4,7 @@
 .zones {
   @include flex-row(nowrap, flex-start, center);
   gap: 6px;
-  padding: $SmSize;
+  padding: calc($XlSize2 + 2px);
   margin-top: $XsSize4;
   border-radius: $XlSize2;
   border: 1px solid #d9dbe9;
@@ -15,6 +15,7 @@
   max-width: 100%;
   white-space: nowrap;
   scrollbar-width: thin;
+  // padding-block:  8px;
 
   &::-webkit-scrollbar {
     height: 6px;

@@ -154,40 +154,6 @@ const user = useUserStore()
 
                     <PermissionBuilder
                       :code="[
-                        PermissionsEnum.METHOD_ALL,
-                        PermissionsEnum.METHOD_CREATE,
-                        PermissionsEnum.METHOD_DELETE,
-                        PermissionsEnum.METHOD_FETCH,
-                        PermissionsEnum.METHOD_UPDATE,
-                      ]"
-                    >
-                      <li>
-                        <router-link to="/admin/methods">
-                          <SidebarVector />
-                          <span>{{ $t('methods') }}</span>
-                        </router-link>
-                      </li>
-                    </PermissionBuilder>
-
-                    <PermissionBuilder
-                      :code="[
-                        PermissionsEnum.TEAM_ALL,
-                        PermissionsEnum.TEAM_CREATE,
-                        PermissionsEnum.TEAM_DELETE,
-                        PermissionsEnum.TEAM_FETCH,
-                        PermissionsEnum.TEAM_UPDATE,
-                      ]"
-                    >
-                      <li>
-                        <router-link to="/admin/teams">
-                          <SidebarVector />
-                          <span>{{ $t('team') }}</span>
-                        </router-link>
-                      </li>
-                    </PermissionBuilder>
-
-                    <PermissionBuilder
-                      :code="[
                         PermissionsEnum.HAZARD_TYPE_ALL,
                         PermissionsEnum.HAZARD_TYPE_CREATE,
                         PermissionsEnum.HAZARD_TYPE_DELETE,
@@ -203,6 +169,62 @@ const user = useUserStore()
                       </li>
                     </PermissionBuilder>
 
+                    <!-- ObserverationType -->
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.OBSERVATION_TYPE_ALL,
+                        PermissionsEnum.OBSERVATION_TYPE_CREATE,
+                        PermissionsEnum.OBSERVATION_TYPE_DELETE,
+                        PermissionsEnum.OBSERVATION_TYPE_FETCH,
+                        PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/observation-types">
+                          <SidebarVector />
+                          <span>{{ $t('Observation Types') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
+                    <!-- healthconditions -->
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.HEALTH_CONDITION_ALL,
+                        PermissionsEnum.HEALTH_CONDITION_CREATE,
+                        PermissionsEnum.HEALTH_CONDITION_DELETE,
+                        PermissionsEnum.HEALTH_CONDITION_FETCH,
+                        PermissionsEnum.HEALTH_CONDITION_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/health-conditions">
+                          <SidebarVector />
+                          <span>{{ $t('Health Conditions') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
+
+                    <!-- Observation -->
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.OBSERVATION_ALL,
+                        PermissionsEnum.OBSERVATION_CREATE,
+                        PermissionsEnum.OBSERVATION_DELETE,
+                        PermissionsEnum.OBSERVATION_FETCH,
+                        PermissionsEnum.OBSERVATION_UPDATE,
+                        PermissionsEnum.ADMIN,
+                      ]"
+                    >
+                      <li>
+                        <router-link to="/admin/observation">
+                          <SidebarVector />
+                          <span>{{ $t('Observation') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -351,8 +373,8 @@ const user = useUserStore()
                     {{ $t('location') }}
                   </div>
                 </AccordionHeader>
-                <AccordionContent
-                  ><ul>
+                <AccordionContent>
+                  <ul>
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum?.ADMIN,
@@ -466,8 +488,8 @@ const user = useUserStore()
                   </div>
                 </AccordionHeader>
 
-                <AccordionContent
-                  ><ul>
+                <AccordionContent>
+                  <ul>
                     <PermissionBuilder
                       :code="[
                         PermissionsEnum?.WEBSITE,
@@ -922,6 +944,45 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+                  <!--
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                      PermissionsEnum?.ORG_INCEDANT_ALL,
+                      PermissionsEnum?.ORG_INCEDANT_CREATE,
+                      PermissionsEnum?.ORG_INCEDANT_UPDATE,
+                      PermissionsEnum?.ORG_INCEDANT_DETAILS,
+                      PermissionsEnum?.ORG_INCEDANT_DELETE,
+                      PermissionsEnum?.ORG_INCEDANT_FETCH,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/incedant">
+                        <SidebarVector />
+                        <span>{{ $t('incedant') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                      PermissionsEnum?.ORG_INSPECTION_ALL,
+                      PermissionsEnum?.ORG_INSPECTION_CREATE,
+                      PermissionsEnum?.ORG_INSPECTION_UPDATE,
+                      PermissionsEnum?.ORG_INSPECTION_DETAILS,
+                      PermissionsEnum?.ORG_INSPECTION_DELETE,
+                      PermissionsEnum?.ORG_INSPECTION_FETCH,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/equipment/inspection">
+                        <SidebarVector />
+                        <span>{{ $t('inspection') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+-->
                   <!-- partners -->
                   <PermissionBuilder
                     :code="[
@@ -941,7 +1002,21 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
-                  <!-- organization-locations 
+                  <!-- <PermissionBuilder :code="[
+                    PermissionsEnum.OBJECTIVE_ORG_ALL,
+                    PermissionsEnum.OBJECTIVE_ORG_CREATE,
+                    PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+                    PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+                    PermissionsEnum.OBJECTIVE_ORG_DELETE,
+                    PermissionsEnum.OBJECTIVE_ORG_FETCH,
+                  ]">
+                    <li>
+                      <router-link to="/organization/objectives">
+                        <SidebarVector />
+                        <span>{{ $t('objectives') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_LOCATION_ALL,
@@ -1079,6 +1154,98 @@ const user = useUserStore()
                       </router-link>
                     </li>
                   </PermissionBuilder>
+
+                  <!-- Investigating -->
+
+                  <PermissionBuilder
+                    :code="[
+                      // PermissionsEnum.ORG_INVESTIGATING_ALL,
+                      // PermissionsEnum.ORG_INVESTIGATING_CREATE,
+                      // PermissionsEnum.ORG_INVESTIGATING_DELETE,
+                      // PermissionsEnum.ORG_INVESTIGATING_FETCH,
+                      // PermissionsEnum.ORG_INVESTIGATING_UPDATE,
+                    ]"
+                  >
+                    <!-- <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_INVESTIGATING_ALL,
+                      PermissionsEnum.ORG_INVESTIGATING_CREATE,
+                      PermissionsEnum.ORG_INVESTIGATING_DELETE,
+                      PermissionsEnum.ORG_INVESTIGATING_FETCH,
+                      PermissionsEnum.ORG_INVESTIGATING_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/investigating">
+                        <SidebarVector />
+                        <span>{{ $t('Investigating') }}</span>
+                      </router-link>
+                    </li> -->
+                  </PermissionBuilder>
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+                      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/observation-types">
+                        <SidebarVector />
+                        <span>{{ $t('Observation Types') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <!-- healthconditions -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
+                      PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/health-conditions">
+                        <SidebarVector />
+                        <span>{{ $t('Health Conditions') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
+                  <!-- Observation -->
+
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+                    ]"
+                  >
+                    <!-- <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_OBSERVATION_ALL,
+                      PermissionsEnum.ORG_OBSERVATION_CREATE,
+                      PermissionsEnum.ORG_OBSERVATION_DELETE,
+                      PermissionsEnum.ORG_OBSERVATION_FETCH,
+                      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+                    ]"
+                    <li>
+                      <router-link to="/organization/equipment/observation">
+                        <SidebarVector />
+                        <span>{{ $t('Observation') }}</span>
+                      </router-link>
+                    </li>-->
+                  </PermissionBuilder>
+
                   <!-- templates -->
                   <PermissionBuilder
                     :code="[
@@ -1127,12 +1294,12 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/herikaly">
                         <SidebarVector />
-                        <span>{{ $t('herikaly') }}</span>
+                        <span>{{ $t('hierarchy') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
                   <!-- project-zone -->
-                  <PermissionBuilder
+                  <!-- <PermissionBuilder
                     :code="[
                       PermissionsEnum.PROJECT_ZONE_ALL,
                       PermissionsEnum.PROJECT_ZONE_CREATE,
@@ -1144,10 +1311,10 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/project-zone">
                         <SidebarVector />
-                        <span>{{ $t('project Zone') }}</span>
+                        <span>{{ $t('Zones') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
                   <PermissionBuilder
                     :code="[
                       PermissionsEnum.ORG_METHOD_ALL,
@@ -1182,6 +1349,24 @@ const user = useUserStore()
                     </li>
                   </PermissionBuilder>
 
+                  <!-- Contractor -->
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.ORG_CONTRACTOR_ALL,
+                      PermissionsEnum.ORG_CONTRACTOR_CREATE,
+                      PermissionsEnum.ORG_CONTRACTOR_DELETE,
+                      PermissionsEnum.ORG_CONTRACTOR_FETCH,
+                      PermissionsEnum.ORG_CONTRACTOR_UPDATE,
+                    ]"
+                  >
+                    <li>
+                      <router-link to="/organization/contractors">
+                        <SidebarVector />
+                        <span>{{ $t('contractors') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
                   <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
                     <Accordion value="1">
                       <AccordionPanel value="1">
@@ -1191,8 +1376,8 @@ const user = useUserStore()
                             {{ $t('location') }}
                           </div>
                         </AccordionHeader>
-                        <AccordionContent
-                          ><ul>
+                        <AccordionContent>
+                          <ul>
                             <PermissionBuilder
                               :code="[
                                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -1258,7 +1443,23 @@ const user = useUserStore()
                               <li>
                                 <router-link to="/organization/areas">
                                   <SidebarVector />
-                                  <span>{{ $t('area') }}</span>
+                                  <span>{{ $t('Location') }}</span>
+                                </router-link>
+                              </li>
+                            </PermissionBuilder>
+                            <PermissionBuilder
+                              :code="[
+                                PermissionsEnum.PROJECT_ZONE_ALL,
+                                PermissionsEnum.PROJECT_ZONE_CREATE,
+                                PermissionsEnum.PROJECT_ZONE_DELETE,
+                                PermissionsEnum.PROJECT_ZONE_FETCH,
+                                PermissionsEnum.PROJECT_ZONE_UPDATE,
+                              ]"
+                            >
+                              <li>
+                                <router-link to="/organization/project-zone">
+                                  <SidebarVector />
+                                  <span>{{ $t('Zones') }}</span>
                                 </router-link>
                               </li>
                             </PermissionBuilder>

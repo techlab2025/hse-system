@@ -1,17 +1,11 @@
-// import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, {
   type DescriptionLocale,
   type TitleLocale,
 } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
-import type PartnerDetailsModel from '@/features/Organization/Partner/Data/models/PartnerDetailsModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import ProjectLocationZonesModel from './ProjectLocationZones'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import SohwProjectZoonModel from './ShowProjectZone'
 
 export default class ProjectDetailsModel {
   public id: number
@@ -25,8 +19,9 @@ export default class ProjectDetailsModel {
   public state: TitleInterface | null
   public city: TitleInterface | null
   public area: TitleInterface | null
-  public Zones: ProjectLocationZonesModel[] | null
+  public Zones: SohwProjectZoonModel[] | null
   public methods: TitleInterface | null
+  public contractors: TitleInterface | null
 
   constructor(
     id: number,
@@ -40,8 +35,9 @@ export default class ProjectDetailsModel {
     state: TitleInterface | null,
     city: TitleInterface | null,
     area: TitleInterface | null,
-    Zones: ProjectLocationZonesModel[] | null,
+    Zones: SohwProjectZoonModel[] | null,
     methods: TitleInterface | null,
+    contractors: TitleInterface | null,
   ) {
     this.id = id
     this.titles = titles
@@ -56,6 +52,7 @@ export default class ProjectDetailsModel {
     this.area = area
     this.Zones = Zones
     this.methods = methods
+    this.contractors = contractors
   }
 
   static fromMap(data: any): ProjectDetailsModel {
@@ -63,7 +60,7 @@ export default class ProjectDetailsModel {
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap([], data.descriptions).descriptions,
-      this.getTitle(data.partner),
+      data.partner,
       data.locations,
       data.serial_number,
       data.start_date,
@@ -71,8 +68,10 @@ export default class ProjectDetailsModel {
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
-      data.locations.map((item: any) => ProjectLocationZonesModel.fromMap(item)),
+      // data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
+      data.locations,
       data.methods.map((item: any) => this.getTitle(item)),
+      data.contractors.map((item: any) => this.getTitle(item)),
     )
   }
 
@@ -83,7 +82,7 @@ export default class ProjectDetailsModel {
 
     return new TitleInterface({
       id: data?.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title || data.name,
     })
   }
 

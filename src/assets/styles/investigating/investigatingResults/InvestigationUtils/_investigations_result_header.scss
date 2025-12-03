@@ -1,0 +1,79 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+@import '../../../mixins/grid';
+
+.investigating-header-container {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $MdSize2;
+  font-family: 'Regular';
+  background-color: #f7f9fc;
+  padding: $MdSize;
+  border-radius: calc($XlSize + 2px);
+  width: 100%;
+
+  .investigating-header {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize4;
+    .title {
+      font-size: $MdSize2;
+      font-weight: $BaseFontWeightBold;
+      color: $PrimaryColor;
+    }
+    span {
+      color: #cacddb;
+      font-size: $XsSize;
+      font-weight: $XsSize;
+    }
+  }
+
+  .investigating-info {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XlSize4;
+    p {
+      color: #aeaeb2;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+      span {
+        color: #202020;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+  }
+  .meeting-info-container {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize3;
+    width: 100%;
+    .metting-info-header-container {
+      @include flex-row(nowrap, flex-start, center);
+      width: 100%;
+      .metting-info-header {
+        color: #202020;
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+      .meeting-hr {
+        flex-grow: 1;
+        border: none;
+        height: 1px;
+        background-color: #f7f9fc;
+        margin-left: $XsSize4;
+      }
+    }
+    .meeting-info {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize4;
+      p {
+        color: #aeaeb2;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          color: #202020;
+          font-weight: $BaseFontWeightBold;
+          &.meet-date {
+            color: #1f41bb;
+          }
+        }
+      }
+    }
+  }
+}

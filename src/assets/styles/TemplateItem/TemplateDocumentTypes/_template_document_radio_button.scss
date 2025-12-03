@@ -1,0 +1,64 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.show-template-document-radio {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize4;
+  font-family: 'Regular';
+  width: 100%;
+  .title {
+    color: #5e5e5e;
+    font-size: calc($MdSize + 1px);
+    font-weight: $BaseFontMediumWeight;
+  }
+  .options-container {
+    width: 100%;
+    @include flex-row(wrap, space-between, center);
+    border-bottom: 1px dashed #ebebeb;
+    width: 100%;
+    padding-bottom: 12px;
+    .options {
+      @include flex-row(wrap, flex-start, center);
+      gap: 20px;
+      .options-box {
+        @include flex-row(nowrap, flex-start, center);
+        gap: 8px;
+        .label {
+          font-family: 'Light';
+
+          color: #9ea5b3;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+
+        &:first-child {
+          label {
+            color: #4caf50;
+          }
+        }
+        &:nth-child(2) {
+          label {
+            color: #e23535;
+          }
+        }
+        &:last-child {
+          label {
+            color: #969eff;
+          }
+        }
+      }
+    }
+    .image-upload {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box {
+    background-color: $PrimaryColor !important;
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    background-color: $PrimaryColor !important;
+  }
+}

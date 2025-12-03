@@ -1,7 +1,7 @@
 export default class TitleInterface {
   id: number;
   title?: string;
-  subtitle?: string;
+  subtitle?: string| number;
   kpi?: string;
   decodedData?: string = "";
 
@@ -14,7 +14,7 @@ export default class TitleInterface {
   }: {
     id: number;
     title?: string;
-    subtitle?: string;
+    subtitle?: string | number;
     kpi?: string;
     decodedData?: string;
   }) {

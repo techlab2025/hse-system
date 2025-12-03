@@ -17,20 +17,25 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeController'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
+
 
 const route = useRoute()
 const router = useRouter()
+const id = route.params.project_id
 
-// const indexHierarchyController = IndexLocationHierarchyController.getInstance()
-const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
-// const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
+
+const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
 
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
-const state = ref(indexHierarchyEmployeeController.state.value)
+
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const state = ref(projectCustomLocationController.state.value)
 
 watch(
-  () => indexHierarchyEmployeeController.state.value,
+  () => projectCustomLocationController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -38,28 +43,15 @@ watch(
   },
 )
 
-// const hierarchyState = computed(() => indexHierarchyController.state.value)
-
-// const fetchHierarchies = async () => {
-//   try {
-//     const params = new IndexLocationHierarchyParams(+route.params.project_id)
-//     await indexHierarchyController.getData(params)
-//   } catch (err) {
-//     console.error('Error fetching hierarchies:', err)
-//   }
-// }
-const fetchHierarchiesEmployees = async () => {
-  try {
-    const params = new IndexLocationHierarchyParams(+route.params.project_id)
-    await indexHierarchyEmployeeController.getData(params)
-  } catch (err) {
-    console.error('Error fetching hierarchies:', err)
-  }
+const GetProjectLocationsHierarchiesEmployes = async () => {
+  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE, ProjectCustomLocationEnum.HIERARCHY])
+  const response = await projectCustomLocationController.getData(projectCustomLocationParams)
+  console.log(response.value.data, "response.va");
 }
-
-onMounted(fetchHierarchiesEmployees)
+onMounted(GetProjectLocationsHierarchiesEmployes)
 
 const handleEmployeesUpdate = (hierarchyId: number, value: TitleInterface[]) => {
+  console.log(value, "hierarchyId");
   employeesByHierarchy.value[hierarchyId] = value || []
 }
 
@@ -85,50 +77,33 @@ const handleAddAllEmployees = async () => {
   <div class="add-employee">
     <Breadcrumbs />
 
-    <HeaderPage
-      title="Assign your employees"
-      subtitle="Select your employees based on each hierarchy in every location"
-      :number="2"
-    />
+    <HeaderPage title="Assign your employees" subtitle="Select your employees based on each hierarchy in every location"
+      :number="2" />
 
     <DataStatus :controller="state">
       <template #success>
-        <div
-          v-for="item in state.data"
-          :key="item?.project_location_hierarchy_employee_id"
-          class="employee-form"
-        >
+        <div v-for="item in state.data" :key="item?.projectLocationId" class="employee-form">
           <div class="type">
             <ArtLine class="art-line" />
             <div class="location">
-              <h5>{{ item?.projectLocation?.locationTitle }}</h5>
-              <sub>{{ item?.projectLocation?.hierarchies?.length }} types</sub>
+              <h5>{{ item?.title }}</h5>
+              <sub>{{ item?.locationHierarchy?.length }} types</sub>
             </div>
           </div>
 
-          <div
-            v-for="hierarchy in item?.projectLocation?.hierarchies"
-            :key="hierarchy.id"
-            class="form-employee-wrapper"
-          >
+          <div v-for="hierarchy in item?.locationHierarchy" :key="hierarchy.id" class="form-employee-wrapper">
             <div class="title">
               <Person />
               <h5>{{ hierarchy?.title }}</h5>
             </div>
-
             <DashedLine class="dashed-line" />
 
             <CreateEmployeeForm
-              @update:employee="(value) => handleEmployeesUpdate(hierarchy.id, value)"
-            />
+              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)" :heirarchyId="hierarchy.id"/>
           </div>
         </div>
-
         <div class="submit-btn">
-          <RouterLink
-            :to="`/organization/employee-details/${route.params.project_id}`"
-            class="btn btn-cancel"
-          >
+          <RouterLink :to="`/organization/employee-details/${route.params.project_id}`" class="btn btn-cancel">
             {{ $t('cancel') }}
           </RouterLink>
 
@@ -144,20 +119,14 @@ const handleAddAllEmployees = async () => {
         <TableLoader :cols="8" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/project/add`"
-          addText="Add Project"
+        <DataEmpty :link="`/organization/project/add`" addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project"
-        />
+          title="..ops! You have No Project" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/project/add`"
-          addText="Add Project"
+        <DataFailed :link="`/organization/project/add`" addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project"
-        />
+          title="..ops! You have No Project" />
       </template>
     </DataStatus>
   </div>

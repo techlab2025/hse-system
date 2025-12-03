@@ -1,0 +1,48 @@
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
+
+.show-equipment {
+  .history-qr {
+    .history-log {
+      width: 100%;
+      border: 1px solid $Gray-4;
+      border-radius: $SmSize;
+      padding: $XlSize $MdSize;
+      .title {
+        @include flex(row, nowrap, start, center);
+        gap: $XsSize2;
+        border-bottom: 1px solid $Gray-4;
+        padding-bottom: $XsSize2;
+
+        h4 {
+          font-size: $XlSize;
+          font-weight: $BaseFontWeightBold;
+          color: var(--header-page-color);
+        }
+      }
+      .filter {
+        @include flex(row, wrap, flex-start, center);
+        gap: $XsSize3;
+        margin-block: $SmSize;
+        .pdf {
+          border: 1px solid $Gray-4;
+
+          span {
+            color: $Red;
+          }
+        }
+        .xls {
+          border: 1px solid $Gray-4;
+          span {
+            color: $Green;
+          }
+        }
+
+        .input-search {
+          width: 58%;
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { DeleteOrganizationApiService } from '@/features/setting/Organization/Data/apiServices/deleteOrganizationApiService';
+// import { DeleteOrganizationApiService } from '@/features/setting/Organization/Data/apiServices/deleteOrganizationApiService';
 import OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel';
+import { DeleteOrganizatoinEmployeeApiService } from '../../Data/apiServices/deleteOrganizatoinEmployeeApiService';
 
 class DeleteOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeModel> {
   private static instance: DeleteOrganizationEmployeeRepo
@@ -27,7 +28,7 @@ class DeleteOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeM
   }
 
   get serviceInstance(): ServicesInterface {
-    return DeleteOrganizationApiService.getInstance()
+    return DeleteOrganizatoinEmployeeApiService.getInstance()
   }
 }
 

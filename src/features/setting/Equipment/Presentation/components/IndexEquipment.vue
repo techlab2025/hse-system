@@ -32,6 +32,7 @@ import DeleteEquipmentParams from '../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../controllers/deleteEquipmentController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IconEye from '@/shared/icons/IconEye.vue'
 
 const { t } = useI18n()
 
@@ -51,14 +52,14 @@ const fetchEquipment = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1,
+  withPage: number = 1
 ) => {
   const deleteEquipmentTypeParams = new IndexEquipmentParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id,
+    id
   )
   await indexEquipmentController.getData(deleteEquipmentTypeParams)
 }
@@ -98,7 +99,7 @@ watch(
   },
   {
     deep: true,
-  },
+  }
 )
 
 const { user } = useUserStore()
@@ -120,7 +121,9 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('add_sub_equipment'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
@@ -133,7 +136,9 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('sub_equipment'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipments/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
@@ -156,6 +161,21 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
+  {
+    text: t('show'),
+    icon: IconEye,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-show/${id}`,
+    permission: [
+      PermissionsEnum.EQUIPMENT_DETAILS,
+      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+    ],
+  },
 ]
 
 watch(
@@ -163,7 +183,7 @@ watch(
   (Newvalue) => {
     id = Newvalue
     fetchEquipment()
-  },
+  }
 )
 </script>
 
@@ -171,7 +191,7 @@ watch(
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchEquipmentType())">
+      <span class="icon-remove" @click=";(word = ''), searchEquipmentType()">
         <Search />
       </span>
       <input
@@ -194,7 +214,9 @@ watch(
         ]"
       >
         <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
+          :to="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/equipment/add`"
           class="btn btn-primary"
         >
           {{ $t('Add_Equipment') }}
@@ -228,8 +250,10 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <th scope="col">{{ $t('EquipmentType') }}</th>
 
                 <th scope="col">Actions</th>
@@ -239,13 +263,15 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
+                    :to="`/${
+                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/equipment/edit/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="industries">
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -286,7 +312,9 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EquipmentTypes"
@@ -294,7 +322,9 @@ watch(
       </template>
       <template #failed>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+          :link="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EquipmentTypes"

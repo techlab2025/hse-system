@@ -1,0 +1,103 @@
+@use '../mixins/grid' as *;
+@use '../mixins/flex' as *;
+@use '../variables' as *;
+
+.all-observation {
+  .cards {
+    @include grid(2, $SmSize);
+    margin-top: $XlSize2;
+    @media screen and (max-width: 800px) {
+      @include grid(1, $SmSize);
+    }
+
+    .card {
+      background-color: $CardObservationBg;
+      padding: $XsSize $XlSize;
+      border-radius: $XlSize2;
+
+      .card-header {
+        @include flex(row, wrap, space-between, center);
+        margin-bottom: $MdSize;
+
+        .info {
+          @include flex-row();
+          gap: $XsSize;
+
+          .image {
+            width: $XlSize3;
+            height: $XlSize3;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+
+          }
+
+        }
+        .card-header-title {
+          font-size: $XlSize2;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: $ThirdColor;
+        }
+        .card-header-item {
+          @include flex(row, wrap, center, center);
+          gap: $XsSize3;
+          color: $PrimaryColor;
+          text-decoration: underline;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+
+          span {
+            font-size: $SmSize;
+            color: $PrimaryColor;
+          }
+
+          p {
+            font-size: $SmSize;
+            font-weight: $BaseFontSemiBoldWeight;
+            color: $PrimaryColor;
+          }
+        }
+      }
+
+
+      .card-body {
+        @include flex(row, wrap);
+        gap: $XsSize4;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .description {
+          font-size: $SmSize;
+          color: $ThirdColor;
+        }
+        .link {
+          @include flex(row, wrap, center, center);
+          gap: $XsSize3;
+          color: $PrimaryColor;
+          text-decoration: underline;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+
+          span {
+            font-size: $SmSize;
+            color: $PrimaryColor;
+          }
+
+          p {
+            font-size: $SmSize;
+            font-weight: $BaseFontSemiBoldWeight;
+            color: $PrimaryColor;
+          }
+
+        }
+
+      }
+    }
+  }
+}

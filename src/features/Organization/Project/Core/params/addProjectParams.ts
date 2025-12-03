@@ -4,7 +4,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class AddProjectParams implements Params {
   translation: TranslationsParams
-  partnerId: number
+  ContractorIds: number[]
   startDate: string
   SerialNumber: string
   locationIds: number[]
@@ -13,7 +13,7 @@ export default class AddProjectParams implements Params {
 
   constructor(
     translation: TranslationsParams,
-    partnerId: number,
+    ContractorIds: number[],
     startDate: string,
     SerialNumber: string,
     locationIds: number[],
@@ -21,7 +21,7 @@ export default class AddProjectParams implements Params {
     methodIds: number[],
   ) {
     this.translation = translation
-    this.partnerId = partnerId
+    this.ContractorIds = ContractorIds
     this.startDate = startDate
     this.SerialNumber = SerialNumber
     this.locationIds = locationIds
@@ -42,7 +42,7 @@ export default class AddProjectParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    if (this.partnerId) data['partner_id'] = this.partnerId
+    data['contractor_ids'] = this.ContractorIds.map((id) => id)
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
     if (this.SerialNumber) data['serial_number'] = this.SerialNumber
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds

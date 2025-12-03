@@ -1,16 +1,17 @@
 <script setup lang="ts">
 const props = defineProps<{
-  img: string
+  img?: string
   title: string
-  subtitle: string
+  subtitle?: string
 }>()
 </script>
 <template>
   <div class="section-header">
-    <img class="section-img" :src="img" alt="objective logo" />
+    <img class="section-img" v-if="img" :src="img" alt="objective logo" />
     <div class="header-text">
-      <p class="title">{{ $t(title) }}</p>
-      <p class="subtitle">{{ $t(subtitle) }}</p>
+      <p class="title" v-if="title">{{ $t(title) }}</p>
+      <p class="subtitle" v-if="subtitle">{{ $t(subtitle) }}</p>
     </div>
   </div>
 </template>
+  

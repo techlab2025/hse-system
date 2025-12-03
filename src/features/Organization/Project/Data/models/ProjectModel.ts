@@ -1,9 +1,10 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
 import type ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
+import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
+import type ContractorModel from '@/features/setting/contractor/Data/models/ContractorModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
-// import ClientProjectModel from "@/features/dashboard/settings/clientProject/Data/models/index_client_Project_model";
 
 export default class ProjectModel extends TitleInterface {
   public id: number
@@ -14,6 +15,7 @@ export default class ProjectModel extends TitleInterface {
   public zoons: ProjectZoneDetailsModel
   public start_date: string
   public serial_number: string
+  public contractor: ContractorDetailsModel[]
 
   constructor(
     id: number,
@@ -24,6 +26,7 @@ export default class ProjectModel extends TitleInterface {
     zoons: ProjectZoneDetailsModel,
     start_date: string,
     serial_number: string,
+    contractor: ContractorDetailsModel[],
   ) {
     super({ id, title })
     this.id = id
@@ -34,9 +37,11 @@ export default class ProjectModel extends TitleInterface {
     this.zoons = zoons
     this.start_date = start_date
     this.serial_number = serial_number
+    this.contractor = contractor
   }
 
   static fromMap(data: any): ProjectModel {
+    // console.log('ProjectModel data:', data)
     return new ProjectModel(
       data.id,
       data.title,
@@ -46,6 +51,8 @@ export default class ProjectModel extends TitleInterface {
       data.zoons,
       data.start_date,
       data.serial_number,
+      // ContractorDetailsModel.fromMap(data.contractor),
+      data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)) || [],
     )
   }
 }

@@ -1,0 +1,63 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.template-upload-img {
+  @include flex-column(nowrap, flex-start, flex-start);
+  margin-top: $XlSize;
+  font-family: 'Light';
+  background-color: #f1f3f566;
+  border-radius: $SmSize;
+  padding: $XsSize;
+
+  .template-upload-header {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize2;
+    .title {
+      color: #6b7280;
+      font-size: $MdSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+  .template-hr {
+    border: none;
+    height: 1px;
+    width: 100%;
+    background-color: #f0f0f0;
+    margin-block: $XsSize2;
+  }
+  .template-image-type-container {
+    @include flex-row(nowrap, center, center);
+    gap: 15px;
+    .template-image-type {
+      @include flex-row(nowrap, center, center);
+      gap: 6px;
+
+      label {
+        color: #3d4c5e;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+  }
+  .p-checkbox-box {
+    border-radius: 5px !important;
+    border: 1px solid #f0f2f4 !important;
+    svg {
+      fill: white !important;
+    }
+  }
+  .p-checkbox-checked .p-checkbox-box svg {
+    fill: white !important;
+    display: block !important;
+  }
+
+  .p-radiobutton-checked .p-radiobutton-box {
+    border-color: $PrimaryColor !important;
+    background-color: $PrimaryColor !important;
+  }
+  .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+    border-color: $PrimaryColor !important;
+    background-color: $PrimaryColor !important;
+  }
+}

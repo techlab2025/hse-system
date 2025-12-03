@@ -1,102 +1,78 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import ZoneDialogForm from './ZoneDialogForm.vue'
 import CloseDelete from '@/shared/icons/CloseDelete.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
-import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones'
-import { useRoute } from 'vue-router'
+import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 
 const visible = ref(false)
-const route = useRoute()
-const id = route.params.id
-
 const emit = defineEmits(['update:data'])
-
 const props = defineProps<{
   locations: TitleInterface[]
-  selectedZones: ProjectLocationZonesModel[]
+  selectedZones: SohwProjectZoonModel[]
 }>()
 
+const Zones = ref<SohwProjectZoonModel[]>(props.selectedZones)
 
-const Zones = ref<ProjectLocationZonesModel[]>(props.selectedZones)
+const ZoonsIds = ref<number[]>([])
+const Zoones = ref<string[]>([])
 
-
-const GetData = (data: ProjectLocationZonesModel[]) => {
-  visible.value = false
-  Zones.value = data
-  emit('update:data', data)
+// function to extract zone ids and names
+const updateLists = (data: SohwProjectZoonModel[]) => {
+  ZoonsIds.value = data.flat().map(el => el.zoons).flat().map(el => el?.id)
+  Zoones.value = data.flat().map(z => z.zoons).flat().map(el => el?.titles).flat().map(el => el?.title)
 }
 
+updateLists(props.selectedZones)
 
-const deleteZone = (locationId: number, zoneId: number) => {
-  const locationObj = Zones.value.find((l) => l.location.id === locationId)
-  if (!locationObj) return
-  locationObj.zoons = locationObj.zoons.filter((z) => z.id !== zoneId)
-  if (locationObj.zoons.length === 0) {
-    Zones.value = Zones.value.filter((l) => l.location.id !== locationId)
+watch(
+  () => props.selectedZones,
+  (newVal) => {
+    Zones.value = newVal
+    updateLists(newVal)
   }
+)
 
-  emit('update:data', Zones.value)
+const GetData = (data: { zoonTitles: string[], zoonIds: number[] }) => {
+  console.log(data, "data");
+  visible.value = false
+  Zoones.value = data.zoonTitles
+  ZoonsIds.value = data.zoonIds
+  emit('update:data', ZoonsIds.value)
 }
 
-
-const formattedZones = computed(() => {
-  if (!Zones.value || Zones.value.length === 0) return []
-
-  return Zones.value.map((item , index) => {
-    // console.log(Zones.value[index].location.title, "Zones.value");
-    // Zones.value[index].location.title
-    const zoneTitles = id ?  item.zoons
-      .map((z) => z.titles?.[0]?.title || 'Untitled')
-      .join(' / ') : item.zoons
-        .map((z) => z.title)
-        .join(' / ')
-
-    return {
-      key: item.location.id,
-      text: zoneTitles,
-      locationId: item.location.id,
-      zoneIds: item.zoons.map((z) => z.id),
-    }
-  })
-})
-
-watch(() => props.selectedZones,
-  () => {
-    Zones.value = props.selectedZones
-    GetData(Zones.value);
-  })
+const deleteZone = (index: number) => {
+  ZoonsIds.value.splice(index, 1)
+  Zoones.value.splice(index, 1)
+  emit('update:data', ZoonsIds.value)
+}
 </script>
 
 <template>
   <div class="input-wrapper">
-    <div class="zones" @click="visible = true">
-      <div class="zone" v-for="zone in formattedZones" :key="zone.key" @click.stop>
-        <span>{{ zone.text }}</span>
-        <CloseDelete class="delete" @click.stop="deleteZone(zone.locationId, zone.zoneIds[0])" />
+    <div class="zones input" @click="visible = true">
+      <div class="zone" v-for="(zone, index) in Zoones" :key="index" @click.stop>
+        {{ zone }}
+        <CloseDelete class="delete" @click.stop="deleteZone(index)" />
       </div>
     </div>
   </div>
 
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '59%' }">
     <template #header>
-      <div class="add-equipment-header">
-        <HeaderSection :img="ZoneDialog" title="Select Zones" subtitle="At least 1 zone required for every location" />
-      </div>
+      <HeaderSection :img="ZoneDialog" title="Select Zones" subtitle="At least 1 zone required for every location" />
     </template>
 
-    <div class="equipment-dialog-data" v-if="locations.length > 0">
+    <div v-if="locations.length > 0" class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
       <ZoneDialogForm :locations="locations" @update:data="GetData" :selectedZones="Zones" />
     </div>
 
-    <div class="empty" v-else>
+    <div v-else class="empty">
       <p>No Selected locations</p>
     </div>
   </Dialog>
 </template>
-
-<style scoped></style>

@@ -3,22 +3,22 @@ import type Params from '@/base/core/params/params'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
 export default class IndexLocationHierarchyEmployeeParams implements Params {
-    public projectId: number = 1
+  public projectId?: number = 1
+  public locationId?: number = 1
+  public hierarchyId?: number = 1
 
+  constructor(projectId: number = 1, locationId: number = 1, hierarchyId: number = 1) {
+    this.projectId = projectId
+    this.locationId = locationId
+    this.hierarchyId = hierarchyId
+  }
 
-    constructor(
+  toMap(): Record<string, string | number | number[] | null> {
+    const data: Record<string, string | number | number[] | null> = {}
+    if (this.projectId) data['project_id'] = this.projectId
+    if (this.locationId) data['location_id'] = this.locationId
+    if (this.hierarchyId) data['hierarchy_id'] = this.hierarchyId
 
-        projectId: number = 1,
-
-    ) {
-        this.projectId = projectId
-
-    }
-
-    toMap(): Record<string, string | number | number[] | null> {
-        const data: Record<string, string | number | number[] | null> = {}
-        data['project_id'] = this.projectId
-
-        return data
-    }
+    return data
+  }
 }

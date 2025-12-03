@@ -41,7 +41,6 @@ const indexBlogController = IndexBlogController.getInstance()
 const state = ref(indexBlogController.state.value)
 const route = useRoute()
 
-
 // const id = ref(route.params.parent_id)
 
 // const type = ref<BlogStatusEnum>(BlogStatusEnum[route.params.type as keyof typeof BlogStatusEnum])
@@ -177,7 +176,7 @@ watch(
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/Blog/${item.id}`">{{ index + 1 }} </router-link>
                 </td>

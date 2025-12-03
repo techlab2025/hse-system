@@ -3,17 +3,17 @@
 @import '../../mixins/grid';
 
 .section-header-page {
-  @include flex-row(nowrap, flex-start, center);
+  @include flex-row(wrap, flex-start, center);
   gap: $SmSize;
   font-family: 'Regular';
   background: #f7f9fc;
   border-radius: calc($XlSize + 3px);
-  padding: $XsSize2 $MdSize;
-  margin-block: $MdSize;
+  padding: $SmSize $MdSize;
+  margin-block: $SmSize;
 
   .section-img-page {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
 
   .section-number-page {

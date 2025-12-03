@@ -1,6 +1,6 @@
-@use "../variables" as *;
-@use "../mixins/flex" as *;
-@use "../mixins/border" as *;
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/border' as *;
 
 .input-append {
   @include flex-align();
@@ -8,6 +8,7 @@
 
   .input-wrapper {
     flex: 1;
+    font-family: 'Light';
   }
 
   .btn-add {
@@ -27,9 +28,7 @@
       }
     }
 
-
     //cursor: pointer;
-
   }
 
   .btn-minus {
@@ -41,25 +40,14 @@
     //cursor: pointer;
   }
 
-
   .file-append {
-
-
-    label, .img-preview {
+    label,
+    .img-preview {
       background-color: $Gray-2;
       @include flex-center();
       width: clamp(calc(56 * 0.8px), calc(56 * 100vw / var(--base-width)), calc(56px * 1.2));
       height: clamp(calc(56 * 0.8px), calc(56 * 100vw / var(--base-width)), calc(56px * 1.2));
-      @include border(
-        $BaseBorderWidth,
-          rgba(217, 219, 233, 1),
-      solid,
-      50%
-
-      )
+      @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, 50%);
     }
-
   }
-
-
 }

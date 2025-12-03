@@ -2,7 +2,7 @@
 import ArrowIcons from '@/shared/icons/ArrowIcons.vue'
 </script>
 <template>
-  <div class="breadcrumbs">
+  <div class="breadcrumbs-project">
     <div class="first-item">
       <div class="small-circle"></div>
       <p>select hierarchy</p>

@@ -1,52 +1,43 @@
-// import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleInterface from '@/base/Data/Models/title_interface'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import ItemModel from './ItemMode'
 
 export default class TemplateItemDetailsModel {
   public id: number
-  public titles: TitleLocale[]
+  public name: string
   public all_industries: number
   public industries: []
   public action: number
   public requiredImage: boolean
+  public options: ItemModel[]
 
   // public descriptions: DescriptionLocale[]
 
   constructor(
     id: number,
-    titles: TitleLocale[],
+    name: string,
     all_industries: number,
     industries: [],
     action: number,
     requiredImage: boolean,
+    options: ItemModel[] = [],
   ) {
     this.id = id
-    this.titles = titles
+    this.name = name
     this.all_industries = all_industries
     this.industries = industries
     this.action = action
     this.requiredImage = requiredImage
+    this.options = options
   }
 
   static fromMap(data: any): TemplateItemDetailsModel {
     return new TemplateItemDetailsModel(
       data.id,
-      data.titles ?? [],
+      data.name,
       data.all_industries ?? 0,
       data.industries ?? [],
       data.action ?? 0,
       data.require_image,
+      data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
     )
-  }
-
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
   }
 }

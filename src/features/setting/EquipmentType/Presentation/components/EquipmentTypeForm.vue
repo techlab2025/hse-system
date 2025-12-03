@@ -22,6 +22,7 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -107,6 +108,7 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
+  console.log(EquipmentType.value.id, 'EquipmentType.value')
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
         props.data?.id! ?? 0,
@@ -116,6 +118,8 @@ const updateData = () => {
         industry.value?.map((item) => item.id),
         +parent_id.value,
         image.value,
+        null,
+        EquipmentType.value.id,
       )
     : new AddEquipmentTypeParams(
         translationsParams,
@@ -124,6 +128,7 @@ const updateData = () => {
         industry.value?.map((item) => item.id),
         +parent_id.value,
         image.value,
+        EquipmentType.value.id,
       )
 
   // console.log(params, 'params')
@@ -171,6 +176,18 @@ watch(
 const setImage = async (data: File | string) => {
   // image.value = await filesToBase64(data)
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
+  updateData()
+}
+
+const EquipmentsTypes = ref([
+  new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: 'Device', subtitle: '' }),
+  new TitleInterface({ id: EquipmentTypesEnum.EQUIPMENT, title: 'Equipment', subtitle: '' }),
+  new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: 'TOOL', subtitle: '' }),
+])
+
+const EquipmentType = ref<TitleInterface | null>(null)
+const setEquipmentType = (data) => {
+  EquipmentType.value = data
   updateData()
 }
 </script>
@@ -235,6 +252,18 @@ const setImage = async (data: File | string) => {
       placeholder="Select industry"
       :type="2"
       @update:modelValue="setIndustry"
+    />
+  </div>
+
+  <!-- Equipment Selection -->
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="industry"
+      :static-options="EquipmentsTypes"
+      label="Type"
+      id="Type"
+      placeholder="Select Type"
+      @update:modelValue="setEquipmentType"
     />
   </div>
 </template>

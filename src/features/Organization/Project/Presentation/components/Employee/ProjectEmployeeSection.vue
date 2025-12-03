@@ -6,105 +6,62 @@ import { onMounted, ref, watch } from 'vue'
 import TeamCard from '../Details/LocationsTeams/TeamCard.vue'
 import AddCreateTeam from '../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import { useRoute } from 'vue-router'
-import FetchProjectLocationsEmployeeController from '../../controllers/FetchProjectLocationsEmployeeController'
-import FetchProjectLocationsEmployee from '../../../Core/params/FetchProjectLocationsEmployeeParams'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from "@/shared/DataStatues/TableLoader.vue";
-import DataEmpty from "@/shared/DataStatues/DataEmpty.vue";
-import FetchProjectLocationsTeamsEmployeeController from '../../controllers/Teams/FetchProjectLocationsTeamsEmployeeController'
-import FetchProjectLocationTeamEmployee from '../../../Core/params/TeamEmployee/FetchProjectLocationTeamEmployeeParams'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
+import ProjectCustomLocationController from '../../controllers/ProjectCustomLocationController'
+import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
 
 const router = useRoute()
 const id = router.params.project_id
-const fetchProjectLocationsTeamsEmployeeController = FetchProjectLocationsTeamsEmployeeController.getInstance()
-const state = ref(fetchProjectLocationsTeamsEmployeeController.state.value)
-interface TeamMemberInterface {
-  img: string
-  name: string
-  poistion: string
-}
-const TeamsMembers = ref<TeamMemberInterface[]>([
-  {
-    img: EmployeeIcon,
-    name: 'mohab',
-    poistion: 'manger',
-  },
-  {
-    img: EmployeeIcon,
-    name: 'mohab',
-    poistion: 'manger',
-  },
-  {
-    img: EmployeeIcon,
-    name: 'mohab',
-    poistion: 'manger',
-  },
-  {
-    img: EmployeeIcon,
-    name: 'mohab',
-    poistion: 'manger',
-  },
-])
-
-interface TeamInterface {
-  members: number
-  teamMembers: {
-    img: string
-    name: string
-    poistion: string
-  }[]
-}
-
-const TeamsData = ref<TeamInterface[]>([
-  {
-    members: 10,
-    teamMembers: [
-      {
-        img: EmployeeIcon,
-        name: 'mohab',
-        poistion: 'manger',
-      },
-      {
-        img: EmployeeIcon,
-        name: 'mohab',
-        poistion: 'manger',
-      },
-      {
-        img: EmployeeIcon,
-        name: 'mohab',
-        poistion: 'manger',
-      },
-    ],
-  },
-])
-
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const state = ref(projectCustomLocationController.state.value)
 
 const GetProjectLocationsEmployes = async () => {
-  const fetchProjectLocationTeamEmployee = new FetchProjectLocationTeamEmployee(id)
-  const response = await fetchProjectLocationsTeamsEmployeeController.FetchProjectLocationsTeamsEmployee(fetchProjectLocationTeamEmployee)
-  console.log(response, "response");
+  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [
+    ProjectCustomLocationEnum.TEAM_EMPLOYEE,
+    ProjectCustomLocationEnum.EMPLOYEE,
+  ])
+  const response = await projectCustomLocationController.getData(
+    projectCustomLocationParams,
+  )
+  console.log(response.value.data, 'response.va')
 }
 
+const DeleteMember = (id: number) => {
+  console.log(id, 'delete')
+}
 onMounted(() => {
-  GetProjectLocationsEmployes();
+  GetProjectLocationsEmployes()
 })
-watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState) => {
-  state.value = newState
-})
-
+watch(
+  () => projectCustomLocationController.state.value,
+  (newState) => {
+    state.value = newState
+  },
+)
 </script>
 <template>
-  <!-- <DataStatus :controller="state"> -->
-    <!-- <template #success> -->
-      <div class="emoloyees-details" v-for="(locationTeam, index) in TeamsData" :key="index">
+  <DataStatus :controller="state">
+    <template #success>
+      <div class="emoloyees-details" v-for="(locationTeam, index) in state.data" :key="index">
         <div class="card-header">
-          <HeaderSection :img="EmployeeIcon" :title="`locationTeam.locationTitle`"
-            :subtitle="`locationTeam.projectLocationEmployees.length`" />
+          <HeaderSection
+            :img="EmployeeIcon"
+            :title="locationTeam?.title"
+            :subtitle="locationTeam?.locationEmplyees?.length"
+          />
+
           <div class="card-actions">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}`" class="edit-btn">
               Edit Hierarchy
             </RouterLink>
-            <AddCreateTeam />
+            <AddCreateTeam
+              :ProjectLocationId="locationTeam.projectLocationId"
+              :LocationId="locationTeam.id"
+              @update:data="GetProjectLocationsEmployes"
+            />
             <RouterLink :to="`/organization/project-employee/project/${id}`" class="add-btn">
               Add employee
             </RouterLink>
@@ -112,13 +69,24 @@ watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState)
         </div>
         <hr class="employee-hr" />
         <div class="employees-section">
-          <TeamMemberCard class="employee-card" v-for="(member, index) in TeamsMembers" :key="index" :member="member" />
+          <TeamMemberCard
+            @update:data="DeleteMember(index)"
+            class="employee-card"
+            v-for="(member, index) in locationTeam.locationEmplyees"
+            :key="index"
+            :member="member"
+          />
         </div>
-        <div>
-          <TeamCard class="employee-card" v-for="(team, index) in TeamsData" :key="index" :team="team" />
+        <div class="project-teams-cards">
+          <TeamCard
+            class="employee-card"
+            v-for="(team, index) in locationTeam.locationTeams"
+            :key="index"
+            :team="team"
+          />
         </div>
       </div>
-    <!-- </template>
+    </template>
     <template #loader>
       <TableLoader :cols="3" :rows="10" />
     </template>
@@ -126,16 +94,15 @@ watch(() => fetchProjectLocationsTeamsEmployeeController.state.value, (newState)
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty :link="`/add-project`"
+      <DataEmpty
+        :link="`/add-project`"
         description="Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Projects" addText="Add Projects" />
+        title="..ops! You have No Projects"
+        addText="Add Projects"
+      />
     </template>
     <template #failed>
       <DataFailed />
     </template>
-  </DataStatus> -->
-
-
-
-
+  </DataStatus>
 </template>

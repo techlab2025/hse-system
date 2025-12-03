@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import Popover from "primevue/popover";
-import DropIcon from "../icons/DropIcon.vue";
-import wordSlice from "@/base/Presentation/utils/word_slice";
-import { setDefaultImage } from "@/base/Presentation/utils/set_default_image.ts";
+import { ref, computed } from 'vue'
+import Popover from 'primevue/popover'
+import DropIcon from '../icons/DropIcon.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
-const op = ref();
+const op = ref()
 
 const props = defineProps<{
-  data?: any[]; // locations array
-  data_img?: { name: string; avatar: string }[];
-}>();
+  data?: any[] // locations array
+  data_img?: { name: string; avatar: string }[]
+}>()
 
 // Only show each location's own title
 const locationTitles = computed(() => {
-  if (!props.data || props.data.length === 0) return [];
-  return props.data.map((loc) => loc.title);
-});
+  if (!props.data || props.data.length === 0) return []
+  return props.data.map((loc) => loc.title || loc.name)
+})
 
 const toggle = (event: MouseEvent) => {
-  op.value.toggle(event);
-};
+  op.value.toggle(event)
+}
 </script>
 
 <template>
@@ -30,18 +30,22 @@ const toggle = (event: MouseEvent) => {
       {{ locationTitles.length - 1 }}
     </span>
     <span class="tag tag-blue">
-      {{ wordSlice(locationTitles.join(', '), 25) }}
+      {{ wordSlice(locationTitles.join(', '), 10) }}
     </span>
     <DropIcon class="drop-icon" />
   </div>
 
   <!-- Image mode -->
   <div @click="toggle" class="popover-button" v-else-if="data_img?.length">
-    <img v-for="(supervisor, idx) in data_img.slice(0, 3)" :key="idx" :src="supervisor.avatar || '/default-avatar.png'"
-      :alt="supervisor.name" class="avatar" @error="setDefaultImage" />
-    <span v-if="data_img.length > 3" class="avatar-more">
-      +{{ data_img.length - 3 }}
-    </span>
+    <img
+      v-for="(supervisor, idx) in data_img.slice(0, 3)"
+      :key="idx"
+      :src="supervisor.avatar || '/default-avatar.png'"
+      :alt="supervisor.name"
+      class="avatar"
+      @error="setDefaultImage"
+    />
+    <span v-if="data_img.length > 3" class="avatar-more"> +{{ data_img.length - 3 }} </span>
   </div>
 
   <!-- Popover -->

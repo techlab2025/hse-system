@@ -1,0 +1,7 @@
+@import "../variables";
+@import "../mixins/flex";
+@import "../mixins/grid";
+
+.equipment-home{
+  @include grid(12 , 10px);
+}

@@ -3,8 +3,15 @@
   --PrimaryColor: #1d4ed8;
   --header-page-color: #041953;
   --second-dark-color: #121212;
+  --primary-dark: #1d4ed880;
+  --Red-opacity: #e2353599;
+  --green: #4aae3a;
+  --green-done: #4caf501a;
+  --card-observation-bg: #f8f9fb;
+  --delay-color: #ffbf521a;
   --BgWhite: rgba(255, 255, 255, 1);
   --Gray-1: rgba(248, 249, 250, 1);
+  --Gray-4: #d9dbe9;
   --Gray-2: rgba(241, 243, 245, 1);
   --Gray-3: rgba(156, 163, 175, 1);
   --GrayText-1: rgba(107, 114, 128, 1);
@@ -20,6 +27,10 @@
   --base-width: 1440;
   --base-height: 900;
   --font-family: 'URW DIN Arabic';
+  --third-color: #170f49;
+  --low-color: #8a38f5;
+  --medium-color: #ffbf52;
+  --high-color: #e23535;
 
   --icon-bg: #f2f4f6;
   --xl-size-3: clamp(calc(50 * 0.8px), calc(50 * 100vw / var(--base-width)), calc(50 * 1.2px));
@@ -54,17 +65,30 @@ $PrimaryColor: var(--PrimaryColor);
 $White: var(--BgWhite);
 $Gray-1: var(--Gray-1);
 $Gray-2: var(--Gray-2);
+$DelayColor: var(--delay-color);
 $Gray-3: var(--Gray-3);
+$Green: var(--green);
+$greenDone: var(--green-done);
 $GrayText-1: var(--GrayText-1);
 $GrayText: var(--GrayText);
+$CardObservationBg: var(--card-observation-bg);
 $DarkGray: var(--DarkGray);
 $LightGray: var(--LightGray);
 $Red: var(--Red);
+$red-opacity: var(--Red-opacity);
 $MainBorder: var(--main-border);
 $Black: var(--Black);
 $CheckboxBg: var(--checkbox-bg);
 $SubtitleColor: var(--subtitle-color);
+$ThirdColor: var(--third-color);
+$FontFamily: var(--font-family);
+$LowColor: var(--low-color);
+$MediumColor: var(--medium-color);
+$HighColor: var(--high-color);
+$IconBg: var(--icon-bg);
 
+$Gray-4: var(--Gray-4);
+$primary-dark: var(--primary-dark);
 /*</editor-fold>*/
 
 /*<editor-fold desc="sizes">*/

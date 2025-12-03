@@ -16,7 +16,7 @@ export default class EditHerikalyParams implements Params {
     const data: Record<string, unknown> = {}
     data['herikaly_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['parent_id'] = this.parentId
+    if(this.parentId) data['parent_id'] = this.parentId
 
     return data
   }

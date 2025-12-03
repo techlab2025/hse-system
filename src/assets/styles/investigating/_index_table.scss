@@ -1,0 +1,287 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.index-investigating {
+  // second card
+  .index-table-card-container {
+    grid-template-columns: repeat(3, 1fr);
+
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $SmSize;
+    width: 100%;
+    // first card
+    .first-card {
+      width: 100%;
+    }
+    .first-container {
+      @include flex-row(nowrap, space-between, center);
+      width: 100%;
+      gap: $XsSize4;
+      font-family: 'Regular';
+      background-color: rgba(251, 251, 251, 1);
+      padding: $XsSize;
+      border-radius: 20px;
+    }
+
+    .header {
+      @include flex-row(nowrap, space-between, center);
+      padding: unset !important;
+      background-color: rgba(251, 251, 251, 1);
+      .first-label-item-primary {
+        color: $PrimaryColor;
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        span {
+          color: rgba(202, 205, 219, 1);
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+      .new {
+        font-weight: $BaseFontMediumWeight;
+        color: rgba(76, 175, 80, 1);
+        font-size: $MdSize;
+      }
+    }
+
+    .header p:last-child {
+      position: relative;
+      padding-left: 12px;
+    }
+
+    .header p:last-child::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: rgba(76, 175, 80, 1);
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .first-card-details {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize4;
+    }
+
+    // second card
+    .index-table-card {
+      @include flex-column(nowrap, flex-start, flex-start);
+      border: 1px solid #f6f6f6;
+      padding: $XsSize;
+      border-radius: $XlSize;
+      width: 100%;
+      .card-header-container {
+        @include flex-column(nowrap, flex-end, flex-end);
+        padding-bottom: $XsSize;
+        border-bottom: 2px dashed #e1e4ed;
+        width: 100%;
+        gap: $XsSize;
+        &.show {
+          border-bottom: none;
+        }
+        .header-container {
+          @include flex-row(nowrap, space-between, center);
+          width: 100%;
+          gap: $XsSize4;
+          font-family: 'Regular';
+          padding: $XsSize 0;
+
+          .card-content {
+            @include flex-column(nowrap, flex-start, flex-start);
+            gap: $XsSize4;
+            width: 100%;
+            .card-header {
+              @include flex-row(nowrap, flex-start, center);
+              gap: $XlSize4;
+            }
+
+            .card-details {
+              @include flex-column(nowrap, flex-start, flex-start);
+              gap: $XsSize4;
+
+              .title {
+                color: #0f1927;
+                font-size: $MdSize;
+                font-weight: $BaseFontSemiBoldWeight;
+                span {
+                  font-family: 'Light';
+                  color: #c7c7cc;
+                  font-size: $SmSize;
+                  font-weight: $BaseFontMediumWeight;
+                }
+              }
+              .subtitle {
+                color: #9ca3af;
+                font-size: $SmSize;
+                font-weight: $BaseFontMediumWeight;
+              }
+              .project-details {
+                @include flex-row(nowrap, flex-start, center);
+                gap: $XlSize4;
+              }
+            }
+          }
+
+          .card-info {
+            @include flex-column(nowrap, flex-start, flex-start);
+            gap: 6px;
+            .title {
+              color: $PrimaryColor;
+              font-size: $SmSize;
+              font-weight: $BaseFontWeightBold;
+            }
+            .p-image {
+              object-fit: cover;
+              width: 100%;
+              height: 70px;
+              border-radius: 12px;
+              .p-image-preview-mask {
+                border-radius: 12px;
+                display: block;
+                opacity: 1;
+                background: #00000069;
+                backdrop-filter: blur(1px);
+              }
+              img {
+                border-radius: 12px;
+              }
+              .perview {
+                @include flex-center();
+                gap: 5px;
+                span {
+                  color: white;
+                  font-size: $SmSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                }
+              }
+            }
+          }
+          .card-info-status {
+            background: $greenDone;
+            color: #4caf50;
+            padding: $XsSize $XlSize3;
+            border-radius: $XlSize2;
+            font-weight: $BaseFontWeightBold;
+            font-size: $MdSize;
+          }
+        }
+        .show-more {
+          @include flex-row(nowrap, center, center);
+          gap: 4px;
+          cursor: pointer;
+          span {
+            color: #9ca3af;
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+          }
+        }
+      }
+
+      .card-description {
+        padding-top: $XsSize2;
+        @include flex-column(nowrap, flex-start, flex-start);
+        // gap: $MdSize;
+        .title {
+          color: #000000;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+        .description {
+          color: #8e8e93;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+
+  .label-item-primary {
+    color: rgba(76, 83, 95, 1);
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: rgba(32, 32, 32, 1);
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+
+  .label-item-secondary {
+    color: #aeaeb2;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: #000000;
+    }
+  }
+
+  .btns-container {
+    @include flex-row(wrap, space-between, center);
+    gap: $XsSize4;
+    width: 100%;
+
+
+    .first-btn {
+      width: 225px;
+      height: 48px;
+      gap: 10px;
+      opacity: 1;
+      border-radius: 23px;
+      border-width: 0.5px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      border-style: dashed;
+      color: rgba(29, 78, 216, 1);
+      padding: 1.7rem 0;
+    }
+
+    .second-btn {
+      width: 553px;
+      height: 48px;
+      gap: $XsSize4;
+      opacity: 1;
+      border-radius: 23px;
+      border-width: 0.5px;
+      padding: 1.7rem 0;
+      background-color: rgba(4, 25, 83, 0.2);
+      color: rgba(4, 25, 83, 1);
+    }
+
+    .btn-inprogress {
+      width: 100%;
+      button {
+        border: none;
+        padding: 15px;
+        @include flex-row(nowrap, space-between, center);
+        width: 100%;
+        background-color: #e235350d;
+        div {
+          @include flex-row(nowrap, center, center);
+          gap: 8px;
+          .live-link {
+            text-decoration: underline;
+          }
+        }
+        img {
+          width: 20px;
+          height: 20px;
+        }
+        .join {
+          color: #e23535;
+        }
+      }
+    }
+    .solved-btn{
+      width: 100%;
+    }
+  }
+  .first-label-item-primary.high-observation {
+    color: rgba(216, 0, 39, 1) !important;
+  }
+
+  .first-label-item-primary.medium-observation {
+    color: rgba(255, 191, 82, 1) !important;
+  }
+}

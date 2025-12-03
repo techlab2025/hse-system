@@ -1,110 +1,102 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, TransitionGroup, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { LangsMap } from '@/constant/langs'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
-import { useRoute } from 'vue-router'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import IndexTemplateItemTypeController from '@/features/setting/TemplateItem/Presentation/controllers/indexTemplateItemController'
-import IndexTemplateItemTypeParams from '@/features/setting/TemplateItem/Core/params/indexTemplateItemParams'
+import { useRoute, useRouter } from 'vue-router'
 import AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 import EditTemplateItemParams from '../../Core/params/editTemplateItemParams'
-import type TemplateItemModel from '../../Data/models/TemplateItemModel'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import ActionsButtons from '@/shared/Actions/ActionsButtons.vue'
-import CheckBoxButton from '@/shared/Checkbox/CheckBoxButton.vue'
-import FormHeaderSection from '@/shared/FormHeader/FormHeaderSection.vue'
 import TemplateItemDetailsModel from '../../Data/models/TemplateItemDetailsModel'
+import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
+import SmartContract from '@/assets/images/SmartContract.png'
+import TemplateTypesSection from './TemplateTypes/TemplateTypesSection.vue'
+import { ActionsEnum } from '../../Core/Enum/ActionsEnum'
+import DropDownType from './TemplateTypes/DropDownType.vue'
+import TemplateImage from './TemplateTypes/TemplateImage.vue'
+import RadioButtonType from './TemplateTypes/RadioButtonType.vue'
+import CheckboxType from './TemplateTypes/CheckboxType.vue'
+import ShowTemplate from './ShowTemplate.vue'
+// import AddTemplateItemController from '../controllers/addTemplateItemController'
+
 
 const emit = defineEmits(['update:data'])
+// const router = useRouter()
 const props = defineProps<{ data?: TemplateItemDetailsModel }>()
-// const { user } = useUserStore()
 const ImageChecked = ref()
 const ActionChecked = ref()
 const route = useRoute()
 const id = Number(route.params.parent_id)
-
-const indexTemplateItemTypeController = IndexTemplateItemTypeController.getInstance()
-const indexTemplateItemTypeParams = new IndexTemplateItemTypeParams('', 1, 10, 1)
-const industryController = IndexIndustryController.getInstance()
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
-const TemplateItem = ref<TitleInterface | null>(null)
+const SelectedComponent = ref<ActionsEnum>(3)
+const TemplateData = ref()
+// const addTemplateItemController = AddTemplateItemController.getInstance()
+const title = ref('')
+// const user = useUserStore()
+// const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
+//   if (user?.user?.languages.length) {
+//     langDefault.value = user?.user?.languages.map((item: any) => ({
+//       locale: item.code,
+//       title: '',
+//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+//     }))
+//     return
+//   }
+//   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
+//   const controller = await IndexLangController.getInstance().getData(params)
+//   const response = controller.value
 
-const user = useUserStore()
-// Fetch available languages and set defaults
-const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
-  if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const controller = await IndexLangController.getInstance().getData(params)
-  const response = controller.value
-
-  if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-  }
-}
-
-onMounted(fetchLang)
+//   if (response?.data?.length) {
+//     langDefault.value = response.data.map((item: any) => ({
+//       locale: item.code,
+//       title: '',
+//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+//     }))
+//   } else {
+//     langDefault.value = [
+//       { locale: 'en', icon: USA, title: '' },
+//       { locale: 'ar', icon: SA, title: '' },
+//     ]
+//   }
+// }
+// onMounted(() => {
+//   fetchLang();
+// })
 
 const updateData = () => {
-  const translationsParams = new TranslationsParams()
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
+  // const translationsParams = new TranslationsParams()
+  // langs.value.forEach((lang) => {
+  //   translationsParams.setTranslation('title', lang.locale, lang.title)
+  // })
   const params = !props.data?.id
     ? new AddTemplateItemParams(
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
       id,
-      1
+      title.value,
+      SelectedComponent.value,
+      TemplateData.value,
+      isUpdloadImage.value,
+      ImageStatus.value,
     )
     : new EditTemplateItemParams(
       props.data.id ?? 0,
-      translationsParams,
-      ImageChecked.value ? 1 : 0,
-      ActionChecked.value ? 1 : 0,
-      props.data.id ?? 0,
+      id,
+      title.value,
+      SelectedComponent.value,
+      TemplateData.value,
+      isUpdloadImage.value,
+      ImageStatus.value,
     )
 
   emit('update:data', params)
 }
 
 
-const setLangs = (data: { locale: string; title: string }[]) => {
-  langs.value = data
-  updateData()
-}
 
-
-// Watch for changes in props.data or langDefault to initialize form values
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -122,40 +114,98 @@ watch(
   { immediate: true },
 )
 
-
-const ActionCheckbox = (data: number) => {
-  // console.log(data , "data");
-  ActionChecked.value = data
-  updateData()
+const GetTemplateType = (data: ActionsEnum) => {
+  SelectedComponent.value = data
 }
-const ImageRequiredCheckbox = (data: number) => {
-  // console.log(data , "data");
-  ImageChecked.value = data
+
+const ComponentsOptions = [
+  { id: ActionsEnum.DROPDOWN, name: 'DropDown', component: DropDownType },
+  { id: ActionsEnum.RADIOBUTTON, name: 'Radio Button', component: RadioButtonType },
+  { id: ActionsEnum.CHECKBOX, name: 'Check Box', component: CheckboxType },
+]
+
+const selectedComponent = computed(() => {
+  return ComponentsOptions.find(Component => Component.id === SelectedComponent.value)
+})
+
+const GetData = (data: any) => {
+  TemplateData.value = data
+
+}
+
+// const AddToTemplate = async () => {
+//   updateData()
+//   const translationsParams = new TranslationsParams()
+//   langs.value.forEach((lang) => {
+//     translationsParams.setTranslation('title', lang.locale, lang.title)
+//   })
+//   const params = !props.data?.id
+//     ? new AddTemplateItemParams(
+//       id,
+//       title.value,
+//       SelectedComponent.value,
+//       TemplateData.value,
+//       isUpdloadImage.value,
+//       ImageStatus.value,
+
+//     )
+//     : new EditTemplateItemParams(
+//       props.data.id ?? 0,
+//       title.value,
+//       ImageChecked.value ? 1 : 0,
+//       ActionChecked.value ? 1 : 0,
+//       props.data.id ?? 0,
+//     )
+//   await addTemplateItemController.addTemplateItem(params as AddTemplateItemParams, router)
+//   // console.log(TemplateData.value, "add to template clicked");
+// }
+
+watch(() => TemplateData.value, () => {
+  updateData()
+})
+watch(() => SelectedComponent.value, () => {
+  updateData()
+})
+
+const isUpdloadImage = ref()
+const ImageStatus = ref();
+const UpdateImageInfo = (data: any) => {
+  isUpdloadImage.value = data.isUpdloadImage
+  ImageStatus.value = data.ImageType
   updateData()
 }
 
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4 form-container ">
-    <FormHeaderSection title="Template Item" subtitle="All industry"
-      :editLink="`/${user?.user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/${props.data?.id}`" />
-
-    <div class="col-span-4 md:col-span-4">
-      <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-    </div>
-    <ActionsButtons @update:action="ActionCheckbox" :checkboxVisable="true" />
-
-    <CheckBoxButton @update:checked="ImageRequiredCheckbox" :checked="ImageChecked"
-      :title="`Does it require uploading an image?`" />
+  <div class="w-full col-span-4">
+    <PagesHeader :img="SmartContract" title="smart create for your inspection templet"
+      subtitle="add your items one by one to the templet and you can see them" />
   </div>
+  <div class="col-span-4 md:col-span-2">
+    <div class="col-span-4 md:col-span-2 input-wrapper">
 
+      <label for="item-title">{{ $t('item_title') }}</label>
+      <input type="text" id="item-title" v-model="title" class="input" placeholder="add your title here.."
+        @input="updateData">
+    </div>
+    <div class="col-span-4 md:col-span-2 form-container">
+      <TemplateTypesSection @update:data="GetTemplateType" />
+      <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
+        v-if="selectedComponent?.component" />
+      <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
+      <button class="btn add-btn w-full">{{ $t('add_to_template') }}</button>
+    </div>
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <ShowTemplate />
+  </div>
 </template>
 
 <style scoped>
 .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  .add-btn {
+    margin-top: 15px;
+  }
 }
 </style>

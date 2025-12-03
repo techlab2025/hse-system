@@ -1,0 +1,109 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.inspections-sections {
+  width: 100%;
+  background: rgba(250, 250, 250, 0.8);
+  border-radius: $BorderRadiusLg;
+  padding: $XlSize;
+  margin-block: $MdSize;
+  .inspections {
+    width: 100%;
+    .inspections-cards {
+      margin-top: $XlSize;
+      width: 100%;
+      @include grid(3, $MdSize2);
+
+      @media screen and (max-width: 900px) {
+        @include grid(2, $MdSize2);
+      }
+
+      @media screen and (max-width: 768px) {
+        @include grid(1, $MdSize2);
+      }
+
+      .inspections-card {
+        background-color: $White;
+        width: 100%;
+        border-radius: $BorderRadiusLg;
+        padding: $MdSize;
+
+        .card-header {
+          @include flex-row(wrap, space-between, center);
+          .card-header-title {
+            @include flex-row(nowrap, flex-start, center);
+            .title {
+              font-size: $XlSize;
+              font-weight: $BaseFontSemiBoldWeight;
+              color: var(--second-dark-color);
+            }
+          }
+          .tasks-num {
+            font-weight: $BaseFontMediumWeight;
+            color: var(--second-dark-color);
+            span {
+              color: $SubtitleColor;
+              font-weight: $BaseFontWeight;
+            }
+          }
+        }
+
+        .card-divider {
+          width: 100%;
+          background-color: #f1f3f5;
+          height: 2px;
+          border: none;
+          margin-block: $XsSize2;
+        }
+
+        .card-body {
+          width: 100%;
+          @include flex(row, wrap, space-between, center);
+          .content-container {
+            .status {
+              color: #8a38f5;
+              font-weight: $BaseFontWeightBold;
+              font-size: $SmSize;
+            }
+            .card-body-content {
+              @include flex(row, wrap, flex-start, center);
+              gap: $XsSize3;
+              .content-title {
+                font-weight: $BaseFontWeightBold;
+                font-size: $MdSize;
+                color: var(--second-dark-color);
+                margin-block: $XsSize3;
+              }
+              .content-date {
+                font-size: $XsSize;
+                color: $SubtitleColor;
+              }
+            }
+            .assign-to {
+              @include flex(row, wrap, flex-start, center);
+              gap: $XsSize3;
+              color: $SubtitleColor;
+              font-size: $SmSize;
+              width: 100%;
+
+              p {
+                color: var(--second-dark-color);
+                font-weight: $BaseFontWeightBold;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .divider {
+    width: 100%;
+    border: none;
+    background-color: #f1f3f5;
+    height: 2px;
+    margin-block: $MdSize;
+  }
+}

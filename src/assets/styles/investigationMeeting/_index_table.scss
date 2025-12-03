@@ -1,0 +1,190 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.index-investigationMeeting {
+  // second card
+  .index-table-card-container {
+    grid-template-columns: repeat(3, 1fr);
+
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $SmSize;
+    width: 100%;
+    // first card
+    .first-card {
+      width: 100%;
+    }
+    .first-container {
+      @include flex-row(nowrap, space-between, center);
+      width: 100%;
+      gap: $XsSize4;
+      font-family: 'Regular';
+      background-color: rgba(251, 251, 251, 1);
+      padding: $XsSize;
+      border-radius: 20px;
+    }
+
+    .header {
+      @include flex-row(nowrap, space-between, center);
+      padding: unset !important;
+      background-color: rgba(251, 251, 251, 1);
+      .first-label-item-primary {
+        color: $PrimaryColor;
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        span {
+          color: rgba(202, 205, 219, 1);
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+      .new {
+        font-weight: $BaseFontMediumWeight;
+        color: rgba(76, 175, 80, 1);
+        font-size: $MdSize;
+      }
+    }
+
+    .header p:last-child {
+      position: relative;
+      padding-left: 12px;
+    }
+
+    .header p:last-child::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: rgba(76, 175, 80, 1);
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .first-card-details {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize4;
+      position: relative;
+      .show-details {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: $SmSize;
+        cursor: pointer;
+        color: $PrimaryColor;
+        font-weight: $BaseFontWeightBold;
+        font-size: $SmSize;
+        text-decoration: underline !important;
+      }
+    }
+
+    // second card
+    .index-table-card {
+      @include flex-column(nowrap, flex-start, flex-start);
+      border: 1px solid #f6f6f6;
+      padding: $XsSize;
+      border-radius: $XlSize;
+      width: 100%;
+      .card-header-container {
+        @include flex-column(nowrap, flex-end, flex-end);
+        padding-bottom: $XsSize;
+        border-bottom: 2px dashed #e1e4ed;
+        width: 100%;
+        gap: $XsSize;
+        &.show {
+          border-bottom: none;
+        }
+        .header-container {
+          @include flex-row(nowrap, space-between, center);
+          width: 100%;
+          gap: $XsSize4;
+          font-family: 'Regular';
+          padding: $XsSize 0;
+
+          .label-item-secondary {
+            color: rgba(32, 32, 32, 1);
+            font-size: $MdSize;
+            font-weight: $BaseFontWeightBold;
+          }
+        }
+      }
+    }
+  }
+
+  .label-item-primary {
+    color: rgba(174, 174, 178, 1);
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: rgba(32, 32, 32, 1);
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+
+  .label-item {
+    color: #aeaeb2;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+
+    span {
+      color: #000000;
+    }
+  }
+  .date-color {
+    color: $PrimaryColor !important;
+  }
+
+  .first-label-item-primary.high-observation {
+    color: rgba(216, 0, 39, 1) !important;
+  }
+
+  .first-label-item-primary.medium-observation {
+    color: rgba(255, 191, 82, 1) !important;
+  }
+  .google-icon {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize4;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 186, 0, 1) 0%,
+      rgba(0, 172, 71, 1) 33.15%,
+      rgba(66, 133, 244, 1) 72%,
+      rgba(234, 68, 53, 1) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: $BaseFontWeightBold;
+    font-size: $MdSize;
+  }
+  .card-footer {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize4;
+    background-color: rgba(226, 53, 53, 0.05);
+    width: 100%;
+    padding: 1rem;
+    border-radius: 23px;
+    position: relative;
+
+    img {
+      height: 24px;
+    }
+
+    p {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      margin: 0;
+    }
+
+    .link-text {
+      flex: 1;
+    }
+
+    .join-now {
+      @include flex-row(nowrap, center, center);
+      gap: $XsSize4;
+      color: rgba(226, 53, 53, 1);
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+}

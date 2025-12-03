@@ -1,0 +1,35 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.hazard-form {
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize2;
+  width: 100%;
+  .hazard-form-header {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 4px;
+
+    .title {
+      color: #170f49;
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      span {
+        color: #1f41bb;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.optional {
+  color: #c3c6cd;
+  font-size: $MdSize;
+  font-weight: $BaseFontMediumWeight;
+}

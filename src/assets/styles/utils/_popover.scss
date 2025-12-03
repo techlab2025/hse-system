@@ -10,7 +10,8 @@
   // gap: 10px;
   border-radius: 12px;
   font-family: 'Regular';
-
+  width: 10rem;
+  text-align: center;
   .img-container {
     width: 100%;
     @include flex-row(nowrap, flex-start, center);

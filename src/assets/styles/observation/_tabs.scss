@@ -1,0 +1,75 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
+
+.observation-form {
+  .tabs-div {
+    .tabs-title {
+      @include flex-row(wrap, space-between, center);
+
+      p {
+        font-family: var(--font-family);
+        font-weight: $BaseFontWeightBold;
+        font-size: $XlSize;
+        color: $ThirdColor;
+      }
+      .line {
+        span {
+          font-weight: $BaseFontMediumWeight;
+          font-size: $MdSize;
+          color: #afb2bb;
+        }
+        p {
+          color: #1f41bb;
+          font-family: var(--font-family);
+          font-weight: $BaseFontWeightBold;
+          font-size: $XlSize;
+        }
+      }
+    }
+  }
+  .tabs-container {
+    @include grid(5, 10px);
+    width: 100%;
+    margin: $XlSize 0 $XlSize 0;
+    padding-inline: $MdSize;
+
+    .tab {
+      text-align: center;
+      width: 100%;
+      background-color: rgba(252, 252, 252, 1);
+      border-radius: $XlSize;
+      color: rgba(156, 163, 175, 1);
+      font-weight: $BaseFontSemiBoldWeight;
+      text-transform: capitalize;
+      cursor: pointer;
+      padding: $MdSize;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .activeTab {
+      background-color: rgba(240, 244, 255, 1);
+      border: 2px rgba(29, 78, 216, 1);
+      color: var(--PrimaryColor);
+    }
+
+    @media (max-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      .tab {
+        width: 100%;
+      }
+    }
+    @media (max-width: 425px) {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 10px;
+
+      .tab {
+        width: 100%;
+      }
+    }
+  }
+}

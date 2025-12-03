@@ -1,0 +1,70 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.index-investigating {
+  .idnex-filter {
+    @include flex-row(wrap, space-between, center);
+    gap: $XsSize;
+    font-family: 'Regular';
+    // border: 3px solid #5571b927;
+    // border-radius: calc($XlSize + 2px);
+    padding: $MdSize;
+    background-color: transparent !important;
+    width: 100%;
+    .btns {
+      @include flex-row(nowrap, flex-end, center);
+      gap: 5px;
+    }
+    .filter-container {
+      @include flex-row(wrap, flex-start, center);
+      gap: $MdSize;
+      max-width: 100%;
+      // scroll-snap-align: start;
+      overflow-x: auto;
+      &::-webkit-scrollbar {
+        height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+
+      .filter {
+        color: #3d4c5e;
+        font-size: $XsSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        border: 1px solid #dde2ed;
+        border-radius: calc($XlSize3 + 5px);
+        padding: $XsSize2 $MdSize;
+        cursor: pointer;
+
+        &.active {
+          background-color: #1f41bb0d;
+          color: $PrimaryColor;
+          border: 1px solid $PrimaryColor;
+        }
+      }
+    }
+  }
+  .btns-filter {
+    @include flex-row(nowrap, flex-end, center);
+    gap: $XsSize3;
+    width: 100%;
+
+    .btn-filter {
+      @include flex-center();
+      color: $PrimaryColor;
+      background-color: #1f41bb0a;
+      border: 1px solid #5571b927;
+      border-radius: calc($XlSize3 + 10px);
+      transition: 0.3s all linear;
+      &:hover {
+        background-color: white;
+      }
+    }
+  }
+}
