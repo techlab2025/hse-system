@@ -52,10 +52,11 @@
         font-weight: $BaseFontSemiBoldWeight;
       }
       .meeting-hr {
-        flex-grow: 1;
+        // flex-grow: 1;
         border: none;
         height: 1px;
-        background-color: #f7f9fc;
+        width: 100%;
+        background-color: #1f41bb33;
         margin-left: $XsSize4;
       }
     }

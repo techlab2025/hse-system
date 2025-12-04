@@ -179,33 +179,23 @@ const setSelectedProjectFilter = (data) => {
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div class="col-span-10">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.ORG_INSPECTION_ALL,
-          PermissionsEnum?.ORG_INSPECTION_CREATE,
-          PermissionsEnum?.ORG_INSPECTION_UPDATE,
-          PermissionsEnum?.ORG_INSPECTION_DETAILS,
-          PermissionsEnum?.ORG_INSPECTION_DELETE,
-          PermissionsEnum?.ORG_INSPECTION_FETCH,
-        ]"
-      >
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
+      <PermissionBuilder :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum?.ORG_INSPECTION_ALL,
+        PermissionsEnum?.ORG_INSPECTION_CREATE,
+        PermissionsEnum?.ORG_INSPECTION_UPDATE,
+        PermissionsEnum?.ORG_INSPECTION_DETAILS,
+        PermissionsEnum?.ORG_INSPECTION_DELETE,
+        PermissionsEnum?.ORG_INSPECTION_FETCH,
+      ]">
         <div>
-          <IndexInspectionHeader
-            :title="`Inspection`"
-            :length="state?.pagination?.total||0"
-            :projects="Projects"
-            @update:data="setSelectedProjectFilter"
-          />
+          <IndexInspectionHeader :title="`Inspection`" :length="state?.pagination?.total || 0" :projects="Projects"
+            @update:data="setSelectedProjectFilter" />
 
-          <IndexFilter
-            :filters="Filters"
-            @update:data="ApplayFilter"
-            :link="'/organization/equipment/inspection/add'"
-            :linkTitle="'Create Inspection'"
-          />
+          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+            :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
         </div>
         <DataStatus :controller="state">
           <template #success>
@@ -230,11 +220,8 @@ const setSelectedProjectFilter = (data) => {
                       </div>
                       <!-- <div class="card-info-status" >Start</div> -->
 
-                      <InspectionStartTemplate
-                        :templateId="item?.template?.id"
-                        :taskId="item?.id"
-                        :status="item?.status"
-                      />
+                      <InspectionStartTemplate :templateId="item?.template?.id" :taskId="item?.id"
+                        :status="item?.status" />
 
                       <!-- <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
                         <span> show inspection details </span>
@@ -252,11 +239,8 @@ const setSelectedProjectFilter = (data) => {
                 </div>
               </div>
             </div>
-            <Pagination
-              :pagination="state.pagination"
-              @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage"
-            />
+            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
@@ -265,28 +249,20 @@ const setSelectedProjectFilter = (data) => {
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty
-              :link="`/organization/equipment/inspection/add`"
-              addText="Add Inspection"
+            <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
               description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection"
-            />
+              title="..ops! You have No Inspection" />
           </template>
           <template #failed>
-            <DataFailed
-              :link="`/organization/equipment/inspection/add`"
-              addText="Add Inspection"
+            <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
               description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection"
-            />
+              title="..ops! You have No Inspection" />
           </template>
         </DataStatus>
 
         <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          />
+          <DataFailed addText="Have not  Permission"
+            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data" />
         </template>
       </PermissionBuilder>
     </div>

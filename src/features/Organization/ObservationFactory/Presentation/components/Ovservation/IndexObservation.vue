@@ -158,7 +158,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/equipment/observation/${id}`,
+    link: `/organization/equipment-mangement/observation/${id}`,
     permission: [
       PermissionsEnum.ORG_OBSERVATION_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -215,37 +215,27 @@ const ShowDetails = ref<number[]>([])
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div class="col-span-10">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_OBSERVATION_ALL,
-          PermissionsEnum.ORG_OBSERVATION_DELETE,
-          PermissionsEnum.ORG_OBSERVATION_FETCH,
-          PermissionsEnum.ORG_OBSERVATION_UPDATE,
-          PermissionsEnum.ORG_OBSERVATION_CREATE,
-        ]"
-      >
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
+      <PermissionBuilder :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_OBSERVATION_ALL,
+        PermissionsEnum.ORG_OBSERVATION_DELETE,
+        PermissionsEnum.ORG_OBSERVATION_FETCH,
+        PermissionsEnum.ORG_OBSERVATION_UPDATE,
+        PermissionsEnum.ORG_OBSERVATION_CREATE,
+      ]">
         <div>
-          <IndexHazardHeader
-            :title="`observation`"
-            :length="state?.pagination?.total||0"
-            :projects="Projects"
-            @update:data="setSelectedProjectFilter"
-          />
+          <IndexHazardHeader :title="`observation`" :length="state?.pagination?.total || 0" :projects="Projects"
+            @update:data="setSelectedProjectFilter" />
 
           <div class="flex items-center justify-between">
-            <IndexFilter
-              :filters="Filters"
-              @update:data="ApplayFilter"
-              :link="'/organization/equipment/observation/add'"
-              :linkText="'Create Observation'"
-            />
+            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+              :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
 
             <div class="btns-filter">
               <FilterDialog @confirmFilters="confirmFilters" />
 
-              <router-link :to="`/organization/equipment/observation/add`">
+              <router-link :to="`/organization/equipment-mangement/observation/add`">
                 <button class="btn btn-primary">{{ $t('Create observation') }}</button>
               </router-link>
             </div>
@@ -309,11 +299,8 @@ const ShowDetails = ref<number[]>([])
                 </div>
               </div>
             </div>
-            <Pagination
-              :pagination="state.pagination"
-              @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage"
-            />
+            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
@@ -322,27 +309,19 @@ const ShowDetails = ref<number[]>([])
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty
-              :link="`/organization/equipment/observation/add`"
-              addText="Add Observation"
+            <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
               description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Observation"
-            />
+              title="..ops! You have No Observation" />
           </template>
           <template #failed>
-            <DataFailed
-              :link="`/organization/equipment/observation/add`"
-              addText="Add Observation"
+            <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
               description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Observation"
-            />
+              title="..ops! You have No Observation" />
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-          />
+          <DataFailed addText="Have not  Permission"
+            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
         </template>
       </PermissionBuilder>
     </div>

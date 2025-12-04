@@ -157,7 +157,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/equipment/incedant/${id}`,
+    link: `/organization/equipment-mangement/incedant/${id}`,
     permission: [
       PermissionsEnum.ORG_INCEDANT_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -217,7 +217,7 @@ const ShowDetails = ref<number[]>([])
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div class="col-span-10">
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
       <PermissionBuilder
         :code="[
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -240,14 +240,14 @@ const ShowDetails = ref<number[]>([])
             <IndexFilter
               :filters="Filters"
               @update:data="ApplayFilter"
-              :link="'/organization/equipment/incedant/add'"
+              :link="'/organization/equipment-mangement/incedant/add'"
               :linkText="'Create incedant'"
             />
 
             <div class="btns-filter">
               <FilterDialog @confirmFilters="confirmFilters" />
 
-              <router-link :to="`/organization/equipment/incedant/add`">
+              <router-link :to="`/organization/equipment-mangement/incedant/add`">
                 <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
               </router-link>
             </div>

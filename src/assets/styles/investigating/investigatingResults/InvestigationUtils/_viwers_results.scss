@@ -11,6 +11,10 @@
     padding: $XlSize;
     border-radius: $XlSize2;
     position: relative;
+
+    .timeline-content-text {
+      margin-top: 20px;
+    }
     .tree-marker {
       position: absolute;
       left: 10px;

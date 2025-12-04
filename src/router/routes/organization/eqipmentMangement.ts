@@ -9,7 +9,7 @@ import { IncedantRoutes } from './Incedant'
 
 export const EquipmentMangementRoutes: RouteRecordRaw[] = [
   {
-    path: 'equipment',
+    path: 'equipment-mangement',
     name: 'Equipment Mangement',
     // component: () => IndexEquipmentMangement,
     children: [

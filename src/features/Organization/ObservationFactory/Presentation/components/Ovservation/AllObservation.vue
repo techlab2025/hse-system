@@ -11,30 +11,31 @@ import inspectionImage  from "@/assets/images/inspection.png"
 const items = [
   {
     title: 'Observation',
-    addRoute: 'equipment/observation/add',
     image: observationImage,
-    indexRoute: '/organization/equipment/observation',
+    addRoute: '/organization/equipment-mangement/observation/add',
+    indexRoute: '/organization/equipment-mangement/observation?isAll=1',
     description: 'You can Show all observations here'
   },
   {
     title: 'Hazard',
-    addRoute: 'equipment/hazard/add',
     image: hazardImage,
-    indexRoute: '/organization/equipment/hazard',
+
+    addRoute: '/organization/equipment-mangement/hazard/add',
+    indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
     description: 'You can Show all hazards here'
   },
   {
     title: 'Incident',
-    addRoute: 'equipment/incedant/add',
     image: incedantImage,
-    indexRoute: '/organization/equipment/incedant',
+    addRoute: '/organization/equipment-mangement/incedant/add',
+    indexRoute: '/organization/equipment-mangement/incedant?isAll=1',
     description: 'You can Show all incidents here'
   },
   {
     title: 'Inspection',
-    addRoute: 'equipment/inspection/add',
     image: inspectionImage,
-    indexRoute: '/organization/equipment/inspection',
+    addRoute: '/organization/equipment-mangement/inspection/add',
+    indexRoute: '/organization/equipment-mangement/inspection?isAll=1',
     description: 'You can Show all inspections here'
   }
 ]
@@ -42,11 +43,7 @@ const items = [
 
 <template>
   <div class="all-observation">
-    <HeaderPage
-      :title="'all you need in one page'"
-      subtitle="select what you want to do"
-      :img="allObservationImage"
-    />
+    <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" />
 
     <div class="cards">
       <ObservationCard v-for="i in items" :key="i" :item="i" />

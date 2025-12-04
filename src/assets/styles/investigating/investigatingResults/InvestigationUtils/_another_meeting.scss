@@ -9,8 +9,39 @@
   padding: $MdSize2 $MdSize;
   border-radius: calc($XlSize + 2px);
   margin-top: $MdSize;
-  .title-header {
-    background-color: #fbfbfb !important;
+  .another-meeting-header {
+    @include flex-row(nowrap, space-between, center);
+    width: 100%;
+    .title-header {
+      background-color: #fbfbfb !important;
+    }
+    .meeting-status {
+      @include flex-row(nowrap, flex-end, center);
+      gap: $XsSize3;
+      button {
+        padding: $SmSize $XlSize;
+        border-radius: $MdSize2;
+        transition: 0.3s all linear;
+      }
+      .meeting-status-yes {
+        background-color: #4caf4f42;
+        color: #4caf50;
+
+        &.active {
+          background-color: #4caf50;
+          color: white;
+        }
+      }
+      .meeting-status-on {
+        background-color: #fcebee;
+        color: #d80027;
+
+        &.active {
+          color: white;
+          background-color: #d80027;
+        }
+      }
+    }
   }
 
   .another-meeting-contect {
