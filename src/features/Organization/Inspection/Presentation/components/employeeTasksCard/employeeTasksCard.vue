@@ -73,7 +73,7 @@ watch(() => props.employee_name, (newValue) => {
           <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" />
           <div class="employee-info">
             <h4 class="employee-name">{{ EmployeeName }}</h4>
-            <h5 class="employee-role">{{state.data?.[0]?.morph?.hierarchy.map((item: any) => item?.title).join('-')}}
+            <h5 class="employee-role">{{state.data?.[0]?.morph?.hierarchy?.map((item: any) => item?.title).join('-')}}
             </h5>
           </div>
         </div>

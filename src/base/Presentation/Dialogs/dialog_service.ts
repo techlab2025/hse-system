@@ -28,7 +28,7 @@ export default class DialogService {
       if (title) title.textContent = titleContent;
       setTimeout(() => {
         dialog.close();
-      }, 3000);
+      }, 1000);
     }
   }
 

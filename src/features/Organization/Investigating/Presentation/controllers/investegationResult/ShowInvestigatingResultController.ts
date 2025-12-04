@@ -6,28 +6,29 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type ProjectModel from '../../Data/models/ProjectModel'
-import AddProjectUseCase from '../../Domain/useCase/addProjectUseCase'
+import ShowInvestigatingResultUseCase from '../../../Domain/useCase/investegationResult/ShowInvestigatingResultUseCase'
+import type InvestegationResultDetailsModel from '../../../Data/models/investigationResult/InvestegationResulDetailsModel'
 
-export default class AddProjectController extends ControllerInterface<ProjectModel> {
-  private static instance: AddProjectController
+export default class ShowInvestigatingResultController extends ControllerInterface<InvestegationResultDetailsModel> {
+  private static instance: ShowInvestigatingResultController
   private constructor() {
     super()
   }
-  private AddProjectUseCase = new AddProjectUseCase()
+  private showInvestigatingResultUseCase = new ShowInvestigatingResultUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddProjectController()
+      this.instance = new ShowInvestigatingResultController()
     }
     return this.instance
   }
 
-  async addProject(params: Params, router: Router, draft: boolean = false) {
+  async ShowInvestigatingResult(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ProjectModel> =
-        await this.AddProjectUseCase.call(params)
+      // console.log('Ssssssss')
+      const dataState: DataState<InvestegationResultDetailsModel> =
+        await this.showInvestigatingResultUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -36,10 +37,6 @@ export default class AddProjectController extends ControllerInterface<ProjectMod
           imageElement: successImage,
           messageContent: null,
         })
-        // if (!draft) await router.push('/organization/project-details')
-        // if (!draft) await router.push('/organization/projects')
-
-        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

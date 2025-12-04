@@ -12,7 +12,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:data'])
 
 const selectedIndustry = ref<RiskLevelEnum | null>(props.modelRiskLevel || null)
-const selectedStatus = ref<number | null>(props.modelIsNearMiss ?? null)
+const selectedStatus = ref<number | null>(props.modelIsNearMiss  || 1)
 
 // Emit on change
 watch([selectedIndustry, selectedStatus], ([newIndustry, newStatus]) => {

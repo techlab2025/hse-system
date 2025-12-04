@@ -13,7 +13,10 @@ const params = ref<Params | null>(null)
 const addProjectController = AddProjectController.getInstance()
 
 const addProject = async () => {
-  await addProjectController.addProject(params.value as AddProjectParams, router)
+  const state = await addProjectController.addProject(params.value as AddProjectParams, router)
+  if (state.value.data) {
+    router.push(`/organization/project-details/${state.value.data.id}`)
+  }
 }
 const setParams = (data: Params) => {
   params.value = data

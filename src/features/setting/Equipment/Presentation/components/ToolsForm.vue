@@ -67,7 +67,7 @@ const setToolStatus = (data: TitleInterface) => {
 }
 
 const image = ref<string | null>(null)
-const decommissioningDate = ref<string | null>(null)
+const decommissioningDate = ref<string | null>(new Date())
 
 const langTitleValid = ref(false)
 const equipmentTypeValid = ref(false)

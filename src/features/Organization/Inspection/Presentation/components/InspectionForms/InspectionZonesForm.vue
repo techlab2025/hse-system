@@ -10,6 +10,7 @@ import FetchMyProjectsController from '@/features/Organization/ObservationFactor
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
@@ -56,27 +57,12 @@ const setProject = (data: TitleInterface) => {
 </script>
 <template>
   <div class="input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedProject"
-      class="input"
-      :controller="fetchMyProjectsController"
-      :params="fetchMyProjectsParams"
-      :label="$t('Projects')"
-      id="employee"
-      placeholder="select your project"
-      @update:modelValue="setProject"
-    />
-    <CustomSelectInput
-      v-if="SelectedProject"
-      :modelValue="SelectedZones"
-      class="input"
-      :controller="fetchMyZonesController"
-      :params="fetchMyZoneaParams"
-      :label="$t('Zone')"
-      id="employee"
-      placeholder="select your Zone"
-      @update:modelValue="setZones"
-    />
+    <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="fetchMyProjectsController"
+      :params="fetchMyProjectsParams" :label="$t('Projects')" id="employee" placeholder="select your project"
+      @update:modelValue="setProject" />
+    <CustomSelectInput v-if="SelectedProject" :modelValue="SelectedZones" class="input"
+      :controller="fetchMyZonesController" :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee"
+      placeholder="select your Zone" @update:modelValue="setZones" />
     <!-- Dialog -->
     <InspectionTemplateDialog @update:data="GetTemplateId" />
   </div>

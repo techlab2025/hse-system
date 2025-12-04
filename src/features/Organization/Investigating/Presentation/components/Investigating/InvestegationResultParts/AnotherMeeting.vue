@@ -8,7 +8,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 
 const emit = defineEmits(['update:data'])
 const time = ref()
-const date = ref()
+const date = ref(new Date())
 const SelectedPlatform = ref<TitleInterface>()
 const Platforms = ref([
   new TitleInterface({ id: 1, title: 'zoom' }),

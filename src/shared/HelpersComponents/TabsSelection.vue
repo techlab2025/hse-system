@@ -79,8 +79,9 @@ watch(
             </div>
             <input type="radio" :id="`radio-${zoon.ProjectZoneId}`" name="radio" :value="zoon.ProjectZoneId"
               @change="updateData" />
-            <label class="item" @click="SelectedLocation = zoon.ProjectZoneId" :for="`radio-${zoon.ProjectZoneId}`">{{
-              zoon.title || `--` }}</label>
+            <label class="item" @click="SelectedLocation = zoon.ProjectZoneId" :for="`radio-${zoon.ProjectZoneId}`"
+              v-if="zoon?.title">{{
+                zoon.title || `--` }}</label>
             <div class="right-back-img">
               <img :src="BlueBack" alt="blue" />
               <img class="right-yellow" :src="yelloecircle" alt="blue" />

@@ -13,7 +13,7 @@ const UpdateData = () => {
   emit('update:data', {
     inspectionType: SelectedInspectionType.value, // once or period
     onceday: SelectedData.value, // date if once
-    periodType: SelectedPeriodType.value, // if period type of period
+    periodType: SelectedPeriodType.value , // if period type of period
     periodByday: SelectedDay.value, // date if type of period day
     PeridWithDate: SelectedWithDateDays.value, // date if type of period with date
     bydates: SelectedbyDays.value, // date if type of period by date
@@ -56,10 +56,9 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
 
 ])
 
-const SelectedPeriodType = ref<TitleInterface>()
+const SelectedPeriodType = ref<TitleInterface>( )
 const GetSelectedPeridType = (data) => {
   SelectedPeriodType.value = data
-
   UpdateData()
 }
 
@@ -94,14 +93,21 @@ const setByDateDayes = (date: Date[]) => {
 </script>
 
 <template>
-  <InspectionTypeSelection :selectedtype="SelectedInspectionType" :options="inspectionType" :title="`inspect type`" @update:data="GetInspectionType" />
+  <InspectionTypeSelection :selectedtype="SelectedInspectionType" :options="inspectionType" :title="`inspect type`"
+    @update:data="GetInspectionType" />
 
   <div class="select-time" v-if="SelectedInspectionType && SelectedInspectionType == InspectionTypeEnum.DAY">
+    <div class="input-wrapper">
+      <label for="from-dete">{{ $t('from_date') }}</label>
+      <DatePicker id="from-dete" class="input" v-model="fromDate" @update:model-value="UpdateFromDate"
+        placeholder="select from date..." />
+    </div>
     <div class="input-wrapper">
       <label for="">{{ $t('select_day') }}</label>
       <DatePicker v-model="SelectedData" class="input" label="select day" id="Day" placeholder="select your Day"
         @update:modelValue="UpdateDate" />
     </div>
+
   </div>
   <div v-else>
     <PeriodTypeSelect :options="PeriodTypeSelection" :title="`select period type`"

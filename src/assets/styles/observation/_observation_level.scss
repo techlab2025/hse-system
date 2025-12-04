@@ -13,7 +13,7 @@
     position: relative;
 
     &.low-selected {
-      border: 2px solid $LowColor;
+      border: 2px solid #00b69b;
       background-color: rgba($LowColor, 0.05); // باكجراوند خفيف للـ Low
       .circle {
         background-color: $LowColor;
@@ -69,40 +69,40 @@
     }
 
     &.low-selected {
-      label{
-        color: $LowColor;
+      label {
+        color: #00b69b;
       }
-      border: 2px solid $LowColor;
+      border: 2px solid #00b69b;
       // background-color: rgba(255, 191, 82, 0.1);
       .circle {
-        background-color: $LowColor;
+        background-color: #00b69b;
       }
       .details-box {
         border-color: rgba($LowColor, 0.4);
         .status-value {
-          color: $LowColor;
+          color: #00b69b;
         }
       }
     }
     &.medium-selected {
-      label{
-        color: $MediumColor;
+      label {
+        color: #dd9230;
       }
-      border: 2px solid $MediumColor;
+      border: 2px solid #dd9230;
       // background-color: rgba(255, 191, 82, 0.1);
       .circle {
-        background-color: $MediumColor;
+        background-color: #dd9230;
       }
       .details-box {
-        border-color: rgba($MediumColor, 0.4);
+        border-color: rgba(#dd9230, 0.4);
         .status-value {
-          color: $MediumColor;
+          color: #dd9230;
         }
       }
     }
 
     &.high-selected {
-      label{
+      label {
         color: $HighColor;
       }
       border: 2px solid $HighColor;

@@ -4,11 +4,10 @@
 
 .observation-form {
   .first-section-par {
-
     padding: 25px 5px;
     @include flex-row(wrap, flex-start, center);
     gap: 4px;
-    font-family: "Regular";
+    font-family: 'Regular';
     font-weight: $BaseFontWeightBold;
     font-size: $XlSize;
     color: $ThirdColor;
@@ -60,4 +59,18 @@
       font-weight: 600;
     }
   }
+  // .date-picker-container {
+  //   position: relative;
+  //   .today {
+  //     position: absolute;
+  //     top: 50%;
+  //     left: 0%;
+  //     transform: translate(-50%, -50%);
+  //     width: 100%;
+  //     height: 100%;
+  //     border-radius: 20px;
+  //     background-color: white;
+  //     color: black;
+  //   }
+  // }
 }
