@@ -7,9 +7,9 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import type InvestigatingModel from '../../../Data/models/investigatingModel'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import AddInvestigatingResultUseCase from '../../../Domain/useCase/investegationResult/addInvestigatingResultUseCase'
+import type InvestigatingModel from '../../../Data/models/investigatingModel'
 
 export default class AddInvestigatingResultController extends ControllerInterface<InvestigatingModel> {
   private static instance: AddInvestigatingResultController
@@ -39,7 +39,6 @@ export default class AddInvestigatingResultController extends ControllerInterfac
           imageElement: successImage,
           messageContent: null,
         })
-
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
