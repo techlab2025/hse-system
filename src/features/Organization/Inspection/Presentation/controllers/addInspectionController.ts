@@ -44,7 +44,7 @@ export default class AddInspectionController extends ControllerInterface<Inspect
 
         if (!draft)
           await router.push(
-            `/organization/equipment/inspection`,
+            `/organization/equipment-mangement/inspection`,
           )
 
         // useLoaderStore().endLoadingWithDialog();

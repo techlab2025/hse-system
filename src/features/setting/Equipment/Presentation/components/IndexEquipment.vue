@@ -133,27 +133,27 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
-  {
-    text: t('sub_equipment'),
-    icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipments/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-    ],
-  },
+  // {
+  //   text: t('sub_equipment'),
+  //   icon: IconEdit,
+  //   link: `/${
+  //     user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+  //   }/equipments/${id}`,
+  //   permission: [
+  //     PermissionsEnum.EQUIPMENT_UPDATE,
+  //     PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.EQUIPMENT_ALL,
+  //     PermissionsEnum.ORG_EQUIPMENT_ALL,
+  //   ],
+  // },
   {
     text: t('add_inspection'),
     icon: IconEdit,
     link: `/${
       user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment/inspection/add/${id}`,
+    }/equipment-mangement/inspection/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,

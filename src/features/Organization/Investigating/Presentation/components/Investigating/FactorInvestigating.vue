@@ -45,51 +45,31 @@ const UpdateData = () => {
       <div class="radio-column">
         <!-- Radio 1 -->
         <div class="radio-item">
-          <RadioButton
-            v-model="selectedFactor"
-            inputId="factor1"
-            name="factors"
-            value="factor1"
-            @update:modelValue="UpdateData"
-          />
+          <RadioButton v-model="selectedFactor" inputId="factor1" name="factors" value="factor1"
+            @update:modelValue="UpdateData" />
           <label class="radio-label" for="factor1">Lorem Ipsum 1</label>
         </div>
 
         <!-- sub items -->
         <div v-if="selectedFactor === 'factor1'" class="sub-radio-group">
           <div class="sub-radio-item" v-for="sub in subItemsMap['factor1']" :key="sub.value">
-            <RadioButton
-              v-model="selectedSubItem"
-              :inputId="sub.value"
-              name="sub-items"
-              :value="sub.value"
-              @update:modelValue="UpdateData"
-            />
+            <RadioButton v-model="selectedSubItem" :inputId="sub.value" name="sub-items" :value="sub.value"
+              @update:modelValue="UpdateData" />
             <label :for="sub.value" class="sub-radio-label">{{ sub.label }}</label>
           </div>
         </div>
 
         <!-- Radio 2 -->
         <div class="radio-item">
-          <RadioButton
-            v-model="selectedFactor"
-            inputId="factor2"
-            name="factors"
-            value="factor2"
-            @update:modelValue="UpdateData"
-          />
+          <RadioButton v-model="selectedFactor" inputId="factor2" name="factors" value="factor2"
+            @update:modelValue="UpdateData" />
           <label class="radio-label" for="factor2">Lorem Ipsum 2</label>
         </div>
 
         <!-- sub items -->
         <div v-if="selectedFactor === 'factor2'" class="sub-radio-group">
           <div class="sub-radio-item" v-for="sub in subItemsMap['factor2']" :key="sub.value">
-            <RadioButton
-              v-model="selectedSubItem"
-              :inputId="sub.value"
-              name="sub-items"
-              :value="sub.value"
-            />
+            <RadioButton v-model="selectedSubItem" :inputId="sub.value" name="sub-items" :value="sub.value" />
             <label :for="sub.value" class="sub-radio-label">{{ sub.label }}</label>
           </div>
         </div>
@@ -104,12 +84,7 @@ const UpdateData = () => {
 
         <div v-if="selectedFactor === 'item1'" class="sub-radio-group">
           <div class="sub-radio-item" v-for="sub in subItemsMap['item1']" :key="sub.value">
-            <RadioButton
-              v-model="selectedSubItem"
-              :inputId="sub.value"
-              name="sub-items"
-              :value="sub.value"
-            />
+            <RadioButton v-model="selectedSubItem" :inputId="sub.value" name="sub-items" :value="sub.value" />
             <label :for="sub.value" class="sub-radio-label">{{ sub.label }}</label>
           </div>
         </div>
@@ -122,12 +97,7 @@ const UpdateData = () => {
 
         <div v-if="selectedFactor === 'item2'" class="sub-radio-group">
           <div class="sub-radio-item" v-for="sub in subItemsMap['item2']" :key="sub.value">
-            <RadioButton
-              v-model="selectedSubItem"
-              :inputId="sub.value"
-              name="sub-items"
-              :value="sub.value"
-            />
+            <RadioButton v-model="selectedSubItem" :inputId="sub.value" name="sub-items" :value="sub.value" />
             <label :for="sub.value" class="sub-radio-label">{{ sub.label }}</label>
           </div>
         </div>

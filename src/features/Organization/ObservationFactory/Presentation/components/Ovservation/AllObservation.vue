@@ -7,30 +7,30 @@ import ObservationCard from './cards/ObservationCard.vue'
 const items = [
   {
     title: 'Observation',
-    addRoute: 'equipment/observation/add',
+    addRoute: '/organization/equipment-mangement/observation/add',
     image: '/src/assets/images/thinking.png',
-    indexRoute: '/organization/equipment/observation',
+    indexRoute: '/organization/equipment-mangement/observation?isAll=1',
     description: 'You can Show all observations here'
   },
   {
     title: 'Hazard',
-    addRoute: 'equipment/hazard/add',
+    addRoute: '/organization/equipment-mangement/hazard/add',
     image: '/src/assets/images/hazard-sign.png',
-    indexRoute: '/organization/equipment/hazard',
+    indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
     description: 'You can Show all hazards here'
   },
   {
     title: 'Incident',
-    addRoute: 'equipment/incedant/add',
+    addRoute: '/organization/equipment-mangement/incedant/add',
     image: '/src/assets/images/risk-assessment-document.png',
-    indexRoute: '/organization/equipment/incedant',
+    indexRoute: '/organization/equipment-mangement/incedant?isAll=1',
     description: 'You can Show all incidents here'
   },
   {
     title: 'Inspection',
-    addRoute: 'equipment/inspection/add',
+    addRoute: '/organization/equipment-mangement/inspection/add',
     image: '/src/assets/images/inspection.png',
-    indexRoute: '/organization/equipment/inspection',
+    indexRoute: '/organization/equipment-mangement/inspection?isAll=1',
     description: 'You can Show all inspections here'
   }
 ]
@@ -38,11 +38,7 @@ const items = [
 
 <template>
   <div class="all-observation">
-    <HeaderPage
-      :title="'all you need in one page'"
-      subtitle="select what you want to do"
-      :img="allObservationImage"
-    />
+    <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" />
 
     <div class="cards">
       <ObservationCard v-for="i in items" :key="i" :item="i" />

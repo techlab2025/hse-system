@@ -155,9 +155,8 @@ const actionList = (id: number) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${
-      user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment/hazard-type/${id}`,
+    link: `/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/equipment-mangement/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_UPDATE,
@@ -227,42 +226,32 @@ onMounted(async () => {
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div class="col-span-10">
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
       <div class="col-span-10">
-        <IndexHazardHeader
-          :title="'Hazard'"
-          :length="state?.pagination?.total||0"
-          :projects="Projects"
-          @update:data="setSelectedProjectFilter"
-        />
+        <IndexHazardHeader :title="'Hazard'" :length="state?.pagination?.total || 0" :projects="Projects"
+          @update:data="setSelectedProjectFilter" />
 
         <div class="flex items-center justify-between">
-          <IndexFilter
-            :filters="Filters"
-            @update:data="ApplayFilter"
-            :link="'/organization/equipment/hazard/add'"
-            :linkText="'Create Hazard'"
-          />
+          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+            :link="'/organization/equipment-mangement/hazard/add'" :linkText="'Create Hazard'" />
 
           <div class="btns-filter">
             <FilterDialog @confirmFilters="confirmFilters" />
 
-            <router-link :to="`/organization/equipment/hazard/add`">
+            <router-link :to="`/organization/equipment-mangement/hazard/add`">
               <button class="btn btn-primary">{{ $t('Create Hazard') }}</button>
             </router-link>
           </div>
         </div>
       </div>
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_HAZARD_ALL,
-          PermissionsEnum.ORG_HAZARD_DELETE,
-          PermissionsEnum.ORG_HAZARD_FETCH,
-          PermissionsEnum.ORG_HAZARD_UPDATE,
-          PermissionsEnum.ORG_HAZARD_CREATE,
-        ]"
-      >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_HAZARD_ALL,
+        PermissionsEnum.ORG_HAZARD_DELETE,
+        PermissionsEnum.ORG_HAZARD_FETCH,
+        PermissionsEnum.ORG_HAZARD_UPDATE,
+        PermissionsEnum.ORG_HAZARD_CREATE,
+      ]">
         <DataStatus :controller="state">
           <template #success>
             <!-- <div class="equipment-home"> -->
@@ -327,11 +316,8 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
-            <Pagination
-              :pagination="state.pagination"
-              @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage"
-            />
+            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage" />
           </template>
 
           <template #loader>
@@ -343,28 +329,20 @@ onMounted(async () => {
           </template>
 
           <template #empty>
-            <DataEmpty
-              :link="`/organization/hazard/add`"
-              addText="Add Hazard"
+            <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Hazard"
-            />
+              title="..ops! You have No Hazard" />
           </template>
 
           <template #failed>
-            <DataFailed
-              :link="`/organization/hazard/add`"
-              addText="Add Hazard"
+            <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Hazard"
-            />
+              title="..ops! You have No Hazard" />
           </template>
 
           <template #notPermitted>
-            <DataFailed
-              addText="Have not Permission"
-              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-            />
+            <DataFailed addText="Have not Permission"
+              description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
           </template>
         </DataStatus>
       </PermissionBuilder>

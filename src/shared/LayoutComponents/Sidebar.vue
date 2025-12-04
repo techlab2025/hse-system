@@ -976,7 +976,7 @@ const user = useUserStore()
                     ]"
                   >
                     <li>
-                      <router-link to="/organization/equipment/inspection">
+                      <router-link to="/organization/equipment-mangement/inspection">
                         <SidebarVector />
                         <span>{{ $t('inspection') }}</span>
                       </router-link>
@@ -1239,7 +1239,7 @@ const user = useUserStore()
                       PermissionsEnum.ORG_OBSERVATION_UPDATE,
                     ]"
                     <li>
-                      <router-link to="/organization/equipment/observation">
+                      <router-link to="/organization/equipment-mangement/observation">
                         <SidebarVector />
                         <span>{{ $t('Observation') }}</span>
                       </router-link>
@@ -1368,7 +1368,7 @@ const user = useUserStore()
                   </PermissionBuilder>
                   <!-- ALL -->
                   <li>
-                    <router-link to="/organization/equipment/all-observatin">
+                    <router-link to="/organization/equipment-mangement/all-observatin">
                       <SidebarVector />
                       <span>{{ $t('management') }}</span>
                     </router-link>
@@ -1384,7 +1384,7 @@ const user = useUserStore()
                     ]"
                   >
                     <li>
-                      <router-link to="/organization/equipment/observation">
+                      <router-link to="/organization/equipment-mangement/observation">
                         <SidebarVector />
                         <span>{{ $t('equipment_management') }}</span>
                       </router-link>

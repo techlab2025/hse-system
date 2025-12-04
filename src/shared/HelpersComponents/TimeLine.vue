@@ -1,14 +1,16 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
-  items: any[]
+  items: T[]
 }>()
 
-const Answers = ref<any[]>(props.items)
+const Answers = ref<T[]>(props.items)
+
+
 
 const addNewAnswer = () => {
   Answers.value.push({
@@ -44,13 +46,8 @@ onMounted(() => {
       <div class="timeline-container">
         <div class="timeline-wrapper">
           <div class="timeline-line"></div>
-          <div
-            class="timeline-item"
-            v-for="(item, index) in items"
-            :key="index"
-            :class="{ active: index === 0 }"
-            :style="{ animationDelay: `${index * 0.15}s` }"
-          >
+          <div class="timeline-item" v-for="(item, index) in items" :key="index" :class="{ active: index === 0 }"
+            :style="{ animationDelay: `${index * 0.15}s` }">
             <div class="timeline-marker">
               <div class="timeline-dot">
                 <div class="timeline-dot-inner"></div>
@@ -58,11 +55,8 @@ onMounted(() => {
               </div>
 
               <div class="timeline-icon">
-                <DeleteItemAction
-                  class="cursor-pointer"
-                  v-if="index >= 0 && index !== Answers.length - 1"
-                  @click="DeleteItem(index)"
-                />
+                <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
+                  @click="DeleteItem(index)" />
                 <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
               </div>
             </div>

@@ -25,47 +25,37 @@ const UpdateData = () => {
 const setPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
 }
+
+const isAnotherMeeting = ref(1)
 </script>
 <template>
   <div class="another-meeting">
-    <HeaderPage
-      :title="`Do you want another meeting?`"
-      :subtitle="`If the first meeting is not sufficient to close the investigation into the case`"
-      :img="AnotherMeeting"
-      class="title-header"
-    />
+    <div class="another-meeting-header">
+      <HeaderPage :title="`Do you want another meeting?`"
+        :subtitle="`If the first meeting is not sufficient to close the investigation into the case`"
+        :img="AnotherMeeting" class="title-header" />
+      <div class="meeting-status">
+        <button class="meeting-status-yes" @click="isAnotherMeeting = 1"
+          :class="isAnotherMeeting == 1 ? 'active' : ''">Yes</button>
+        <button class="meeting-status-on" @click="isAnotherMeeting = 0"
+          :class="isAnotherMeeting == 0 ? 'active' : ''">No</button>
+      </div>
+    </div>
 
-    <div class="another-meeting-contect">
+    <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="flex flex-col gap-2 input-wrapper">
         <label for="time">time</label>
-        <DatePicker
-          v-model="date"
-          class="mt-4 mr-2 input date-picker"
-          placeholder="Select time"
-          @update:model-value="UpdateData"
-          input-id="time"
-          :time-only="true"
-        />
+        <DatePicker v-model="date" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+          @update:model-value="UpdateData" input-id="time" :time-only="true" />
       </div>
       <div class="flex flex-col gap-2 input-wrapper">
         <label for="date">date</label>
-        <DatePicker
-          v-model="date"
-          class="mt-4 mr-2 input date-picker"
-          placeholder="Select Date"
-          @update:model-value="UpdateData"
-          input-id="date"
-        />
+        <DatePicker v-model="date" class="mt-4 mr-2 input date-picker" placeholder="Select Date"
+          @update:model-value="UpdateData" input-id="date" />
       </div>
       <div class="input-wrapper">
-        <CustomSelectInput
-          :static-options="Platforms"
-          v-model="SelectedPlatform"
-          placeholder="Select meeting platform"
-          class="mt-4 mr-2 input"
-          label="meeting platform"
-          @update:model-value="setPlatform"
-        />
+        <CustomSelectInput :static-options="Platforms" v-model="SelectedPlatform" placeholder="Select meeting platform"
+          class="mt-4 mr-2 input" label="meeting platform" @update:model-value="setPlatform" />
       </div>
     </div>
   </div>

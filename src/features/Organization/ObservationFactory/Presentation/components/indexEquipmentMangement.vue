@@ -8,24 +8,25 @@ const route = useRoute()
 const Routes = ref([
   {
     name: 'Observations',
-    route: '/organization/equipment/observation',
+    route: '/organization/equipment-mangement/observation',
   },
   {
     name: 'Hazard',
-    route: '/organization/equipment/hazard',
+    route: '/organization/equipment-mangement/hazard',
   },
   {
     name: 'Incident',
-    route: '/organization/equipment/incedant',
+    route: '/organization/equipment-mangement/incedant',
   },
   {
     name: 'Inspection',
-    route: '/organization/equipment/inspection',
+    route: '/organization/equipment-mangement/inspection',
   },
 ])
 </script>
 <template>
-  <div class="equipment-sidebar">
+  <!-- {{ route.query }} -->
+  <div class="equipment-sidebar" v-if="!route.query?.isAll">
     <ul>
       <router-link v-for="(route, index) in Routes" :key="index" :to="route.route">
         <div class="left-back-img">
