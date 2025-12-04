@@ -1204,6 +1204,17 @@ class ApiNames {
   public get FetchMyProjects() {
     return this.prefix + 'fetch_my_projects'
   }
+
+  // Investigating Result
+  public get CreateInvestigatingResult() {
+    return this.prefix + 'create_full_investigation'
+  }
+  public get IndexInvestigatingResult() {
+    return this.prefix + 'fetch_investigations'
+  }
+  public get ShowInvestigatingResult() {
+    return this.prefix + 'fetch_investigation_details'
+  }
 }
 
 export { ApiNames }

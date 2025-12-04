@@ -43,11 +43,11 @@ export default class AddHazardController extends ControllerInterface<HazardModel
         const { user } = useUserStore()
 
         if (params.type == Observation.HazardType) {
-          await router.push(`/organization/equipment/hazard`)
+          await router.push(`/organization/equipment-mangement/hazard`)
         } else if (params.type == Observation.ObservationType) {
-          await router.push(`/organization/equipment/observation`)
+          await router.push(`/organization/equipment-mangement/observation`)
         } else if (params.type == Observation.AccidentsType) {
-          await router.push(`/organization/equipment/incedant`)
+          await router.push(`/organization/equipment-mangement/incedant`)
         }
 
         // useLoaderStore().endLoadingWithDialog();

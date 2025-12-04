@@ -21,11 +21,8 @@ import TemplateImage from './TemplateTypes/TemplateImage.vue'
 import RadioButtonType from './TemplateTypes/RadioButtonType.vue'
 import CheckboxType from './TemplateTypes/CheckboxType.vue'
 import ShowTemplate from './ShowTemplate.vue'
-// import AddTemplateItemController from '../controllers/addTemplateItemController'
-
 
 const emit = defineEmits(['update:data'])
-// const router = useRouter()
 const props = defineProps<{ data?: TemplateItemDetailsModel }>()
 const ImageChecked = ref()
 const ActionChecked = ref()
@@ -35,44 +32,10 @@ const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 const SelectedComponent = ref<ActionsEnum>(3)
 const TemplateData = ref()
-// const addTemplateItemController = AddTemplateItemController.getInstance()
 const title = ref('')
-// const user = useUserStore()
-// const fetchLang = async (query = '', pageNumber = 1, perPage = 10, withPage = 0) => {
-//   if (user?.user?.languages.length) {
-//     langDefault.value = user?.user?.languages.map((item: any) => ({
-//       locale: item.code,
-//       title: '',
-//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-//     }))
-//     return
-//   }
-//   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-//   const controller = await IndexLangController.getInstance().getData(params)
-//   const response = controller.value
-
-//   if (response?.data?.length) {
-//     langDefault.value = response.data.map((item: any) => ({
-//       locale: item.code,
-//       title: '',
-//       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-//     }))
-//   } else {
-//     langDefault.value = [
-//       { locale: 'en', icon: USA, title: '' },
-//       { locale: 'ar', icon: SA, title: '' },
-//     ]
-//   }
-// }
-// onMounted(() => {
-//   fetchLang();
-// })
 
 const updateData = () => {
-  // const translationsParams = new TranslationsParams()
-  // langs.value.forEach((lang) => {
-  //   translationsParams.setTranslation('title', lang.locale, lang.title)
-  // })
+  // title.value = " "
   const params = !props.data?.id
     ? new AddTemplateItemParams(
       id,
@@ -94,8 +57,6 @@ const updateData = () => {
 
   emit('update:data', params)
 }
-
-
 
 watch(
   [() => props.data, () => langDefault.value],
@@ -132,33 +93,6 @@ const GetData = (data: any) => {
   TemplateData.value = data
 
 }
-
-// const AddToTemplate = async () => {
-//   updateData()
-//   const translationsParams = new TranslationsParams()
-//   langs.value.forEach((lang) => {
-//     translationsParams.setTranslation('title', lang.locale, lang.title)
-//   })
-//   const params = !props.data?.id
-//     ? new AddTemplateItemParams(
-//       id,
-//       title.value,
-//       SelectedComponent.value,
-//       TemplateData.value,
-//       isUpdloadImage.value,
-//       ImageStatus.value,
-
-//     )
-//     : new EditTemplateItemParams(
-//       props.data.id ?? 0,
-//       title.value,
-//       ImageChecked.value ? 1 : 0,
-//       ActionChecked.value ? 1 : 0,
-//       props.data.id ?? 0,
-//     )
-//   await addTemplateItemController.addTemplateItem(params as AddTemplateItemParams, router)
-//   // console.log(TemplateData.value, "add to template clicked");
-// }
 
 watch(() => TemplateData.value, () => {
   updateData()

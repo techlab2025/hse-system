@@ -5,13 +5,12 @@
   width: 100%;
   .timeline-container {
     width: 100%;
-    .input-wrapper{
+    .input-wrapper {
       width: 100%;
-
     }
     .timeline-content {
       @include flex-column(nowrap, flex-start, flex-start);
-      gap: $XsSize;
+      gap: 20px;
       width: 100%;
       background-color: #fcfcfc;
       padding: $MdSize;
@@ -22,7 +21,7 @@
       .timeline-contect-select {
         @include flex-row(nowrap, space-between, center);
         width: 100%;
-        gap: $XsSize;
+        gap: 20px;
         .date-picker {
           margin-top: $XsSize4;
         }
