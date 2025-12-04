@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 
-export default class IndexInvestigationResultParams implements Params {
+export default class ShowInvestigationResultParams implements Params {
   public investigationId: number
 
   constructor(investigationId: number) {

@@ -1,5 +1,4 @@
 export enum PermissionsEnum {
-
   ADMIN = 'A',
   ORGANIZATION_EMPLOYEE = 'O',
   WEBSITE = 'W',
@@ -28,7 +27,6 @@ export enum PermissionsEnum {
   HASHTAG_ORDER = 'H06',
   HASHTAG_CHANGE_STATUS = 'H07',
 
-
   // incedant organization
   ORG_INCEDANT_ALL = 'OI00',
   ORG_INCEDANT_FETCH = 'OI01',
@@ -44,8 +42,6 @@ export enum PermissionsEnum {
   ORG_INSPECTION_CREATE = 'OIS03',
   ORG_INSPECTION_UPDATE = 'OIS04',
   ORG_INSPECTION_DELETE = 'OIS05',
-
-
 
   // objectives Organization
   OBJECTIVE_ORG_ALL = 'OO00',
@@ -84,7 +80,6 @@ export enum PermissionsEnum {
   LOCATION_CREATE = 'L03',
   LOCATION_UPDATE = 'L04',
   LOCATION_DELETE = 'L05',
-
 
   // Location Org
   LOCATION_ORG_ALL = 'LO00',
@@ -182,7 +177,6 @@ export enum PermissionsEnum {
   ORG_HAZARD_TYPE_UPDATE = 'OHT04',
   ORG_HAZARD_TYPE_DELETE = 'OHT05',
 
-
   // ORG HAZARD
   ORG_HAZARD_ALL = 'OH00',
   ORG_HAZARD_FETCH = 'OH01',
@@ -200,12 +194,12 @@ export enum PermissionsEnum {
   ORG_METHOD_DELETE = 'M05',
 
   // methods
-  METHOD_ALL = 'M00',
-  METHOD_FETCH = 'M01',
-  METHOD_DETAILS = 'M02',
-  METHOD_CREATE = 'M03',
-  METHOD_UPDATE = 'M04',
-  METHOD_DELETE = 'M05',
+  METHOD_ALL = 'MM00',
+  METHOD_FETCH = 'MM01',
+  METHOD_DETAILS = 'MM02',
+  METHOD_CREATE = 'MM03',
+  METHOD_UPDATE = 'MM04',
+  METHOD_DELETE = 'MM05',
 
   // ACCIDENTS TYPE
   ACCIDENTS_TYPE_ALL = 'AT00',
@@ -313,24 +307,20 @@ export enum PermissionsEnum {
   PROJECT_ZONE_FETCH_LOCATIONS = 'PZ06',
 
   // org team
-  ORG_TEAM_ALL = 'OT00',
-  ORG_TEAM_FETCH = 'OT01',
-  ORG_TEAM_DETAILS = 'OT02',
-  ORG_TEAM_CREATE = 'OT03',
-  ORG_TEAM_UPDATE = 'OT04',
-  ORG_TEAM_DELETE = 'OT05',
+  ORG_TEAM_ALL = 'OTT00',
+  ORG_TEAM_FETCH = 'OTT01',
+  ORG_TEAM_DETAILS = 'OTT02',
+  ORG_TEAM_CREATE = 'OTT03',
+  ORG_TEAM_UPDATE = 'OTT04',
+  ORG_TEAM_DELETE = 'OTT05',
 
   // team
-  TEAM_ALL = 'T00',
-  TEAM_FETCH = 'T01',
-  TEAM_DETAILS = 'T02',
-  TEAM_CREATE = 'T03',
-  TEAM_UPDATE = 'T04',
-  TEAM_DELETE = 'T05',
-
-
-
-
+  TEAM_ALL = 'TT00',
+  TEAM_FETCH = 'TT01',
+  TEAM_DETAILS = 'TT02',
+  TEAM_CREATE = 'TT03',
+  TEAM_UPDATE = 'TT04',
+  TEAM_DELETE = 'TT05',
 
   // ORGANIZATION EMPLOYEE
   ORG_EMPLOYEE_ALL = 'OE00',
@@ -339,8 +329,6 @@ export enum PermissionsEnum {
   ORG_EMPLOYEE_CREATE = 'OE03',
   ORG_EMPLOYEE_UPDATE = 'OE04',
   ORG_EMPLOYEE_DELETE = 'OE05',
-
-
 
   // HEADER
   HEADER_ALL = 'HD00',
@@ -599,7 +587,6 @@ export enum PermissionsEnum {
   TEMPLATE_ITEM_UPDATE = 'TI04',
   TEMPLATE_ITEM_DELETE = 'TI05',
 
-
   // // contractor  CONTRACTOR_ALL = 'CTR00',
   // CONTRACTOR_All = 'OCTR00',
   // CONTRACTOR_FETCH = 'OCTR01',
@@ -607,7 +594,6 @@ export enum PermissionsEnum {
   // CONTRACTOR_CREATE = 'OCTR03',
   // CONTRACTOR_UPDATE = 'OCTR04',
   // CONTRACTOR_DELETE = 'OCTR05',
-
 
   // observation type
   OBSERVATION_TYPE_ALL = 'OBT00',
@@ -617,7 +603,6 @@ export enum PermissionsEnum {
   OBSERVATION_TYPE_UPDATE = 'OBT04',
   OBSERVATION_TYPE_DELETE = 'OBT05',
 
-
   // observation type
   ORG_OBSERVATION_TYPE_ALL = 'OOBT00',
   ORG_OBSERVATION_TYPE_FETCH = 'OOBT01',
@@ -626,7 +611,6 @@ export enum PermissionsEnum {
   ORG_OBSERVATION_TYPE_UPDATE = 'OOBT04',
   ORG_OBSERVATION_TYPE_DELETE = 'OOBT05',
 
-
   // ORG OBSERVATION
   ORG_OBSERVATION_ALL = 'OOB00',
   ORG_OBSERVATION_FETCH = 'OOB01',
@@ -634,9 +618,6 @@ export enum PermissionsEnum {
   ORG_OBSERVATION_CREATE = 'OOB03',
   ORG_OBSERVATION_UPDATE = 'OOB04',
   ORG_OBSERVATION_DELETE = 'OOB05',
-
-
-
 
   // healthconditions
   HEALTH_CONDITION_ALL = 'OHC00',
@@ -669,8 +650,4 @@ export enum PermissionsEnum {
   ORG_EQUIPMENT_MANGEMENT_CREATE = 'OOEM03',
   ORG_EQUIPMENT_MANGEMENT_UPDATE = 'OOEM04',
   ORG_EQUIPMENT_MANGEMENT_DELETE = 'OOEM05',
-
-
 }
-
-

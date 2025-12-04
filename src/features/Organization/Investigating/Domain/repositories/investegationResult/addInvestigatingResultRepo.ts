@@ -1,9 +1,9 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { AddInvestigatingResultApiService } from '../../../Data/apiServices/investigationResult/addInvestigatingResultApiService'
-import InvestigatingModel from '../../../Data/models/investigatingModel'
+import InvestegationResultModel from '../../../Data/models/investigationResult/InvestegationResulModel'
 
-class AddInvestigatingResultRepo extends RepoInterface<InvestigatingModel> {
+class AddInvestigatingResultRepo extends RepoInterface<InvestegationResultModel> {
   private static instance: AddInvestigatingResultRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -20,8 +20,8 @@ class AddInvestigatingResultRepo extends RepoInterface<InvestigatingModel> {
     return ResponseType.withoutData
   }
 
-  onParse(data: any): InvestigatingModel {
-    return InvestigatingModel.fromMap(data)
+  onParse(data: any): InvestegationResultModel {
+    return InvestegationResultModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {

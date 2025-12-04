@@ -61,7 +61,7 @@ const user = useUserStore()
 const title = ref<string>('')
 const description = ref<string>('')
 const image = ref<string[] | null>(null)
-const date = ref<Date | null>(null)
+const date = ref<Date | null>(new Date())
 const equipmentId = ref<number | null>(null)
 
 const hazardTypeId = ref<number | null>(null)
@@ -254,12 +254,14 @@ const UpdateSelectedZone = (data) => {
         <input class="input" :placeholder="$t('add your title')" type="text" id="title" v-model="title" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper col-span-6 md:grid-cols-12">
+      <div class="date-picker-container flex flex-col gap-2 input-wrapper col-span-6 md:grid-cols-12">
         <label for="date">
           {{ $t('date') }}
           <span class="text-red-500">*</span>
         </label>
         <DatePicker v-model="date" id="date" />
+        <!-- <p class="today">today</p> -->
+
       </div>
 
       <div class="col-span-6 md:grid-cols-12">

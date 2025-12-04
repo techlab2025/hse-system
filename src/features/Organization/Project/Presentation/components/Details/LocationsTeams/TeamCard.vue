@@ -21,7 +21,7 @@ const props = defineProps<{
         </div>
       </div>
       <div class="state">
-        <button>Done</button>
+        <!-- <button>Done</button> -->
       </div>
     </div>
     <div class="members-section">
