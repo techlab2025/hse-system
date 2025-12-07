@@ -34,9 +34,16 @@ const router = useRouter()
 // const userStore = useUserStore();
 
 const logout = () => {
-  localStorage.removeItem('user')
-  localStorage.removeItem('token')
-  window.location.href = '/login'
+  if (user?.type == OrganizationTypeEnum.ADMIN) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    window.location.href = '/login/admin'
+  }
+  else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    window.location.href = '/login/organization'
+  }
   // router.push("/login");
 }
 
