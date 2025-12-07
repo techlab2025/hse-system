@@ -80,7 +80,7 @@ const setWithDateDayes = (data: TitleInterface[]) => {
   SelectedWithDateDays.value = data
   UpdateData()
 }
-const fromDate = ref()
+const fromDate = ref(new Date())
 const UpdateFromDate = (date: Date) => {
   fromDate.value = date
 }

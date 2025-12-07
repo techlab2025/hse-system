@@ -48,7 +48,8 @@ const allIndustries = ref(0)
 // const hasCertificate = ref(0)
 
 const image = ref<string | null>(null)
-const decommissioningDate = ref<string | null>(null)
+// string | null
+const decommissioningDate = ref(new Date())
 
 const langTitleValid = ref(false)
 

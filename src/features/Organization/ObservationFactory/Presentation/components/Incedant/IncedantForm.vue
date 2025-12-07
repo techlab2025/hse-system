@@ -26,7 +26,7 @@ const props = defineProps<{
   data?: HazardDetailsModel
 }>()
 const text = ref<string>('')
-const date = ref<string>()
+const date = ref<string>(new Date())
 const descripe = ref<string>('')
 const image = ref<string>('')
 

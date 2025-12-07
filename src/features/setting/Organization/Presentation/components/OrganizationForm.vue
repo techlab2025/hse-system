@@ -22,7 +22,9 @@ import IndexLocationParams from '@/features/setting/Location/Core/params/indexLo
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 
 const emit = defineEmits(['update:data'])
+const route = useRoute()
 
+const id = route.params?.id
 const props = defineProps<{
   data?: OrganizationDetailsModel
 }>()
@@ -68,6 +70,7 @@ const fetchLang = async (
 }
 
 onMounted(async () => {
+
   await fetchLang()
 })
 
@@ -85,24 +88,23 @@ const lang = ref<TitleInterface[] | null>([]) // selected language
 // HELPERS
 // ----------------------------
 
-const route = useRoute()
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const params = props.data?.id
+  const params = id
     ? new EditOrganizationParams(
-      +route.params.id,
+      String(id),
       name.value,
       Phone.value,
       email.value,
       image.value,
       Url.value,
       industry.value?.id,
-      lang.value?.map((l) => l.id), // selected language id
-      SelectedCountry.value.map((l) => l.id),
+      lang.value?.map((l) => l.id),
+      SelectedCountry.value?.map((l) => l.id),
 
     )
     : new AddOrganizationParams(
@@ -142,7 +144,6 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      console.log(newData, 'newData')
       Url.value = newData?.website_link
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industry
@@ -187,17 +188,17 @@ const setCountry = (data: TitleInterface[]) => {
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">Name</label>
-    <input type="text" @change="updateData" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
+    <input type="text" @input="updateData" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">Email</label>
-    <input type="email" id="email" @change="updateData" v-model="email" class="input" placeholder="Enter Your Email" />
+    <input type="email" id="email" @input="updateData" v-model="email" class="input" placeholder="Enter Your Email" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Phone">Phone</label>
-    <input type="phone" id="Phone" @change="updateData" v-model="Phone" class="input" placeholder="Enter Your Phone" />
+    <input type="phone" id="Phone" @input="updateData" v-model="Phone" class="input" placeholder="Enter Your Phone" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
@@ -224,7 +225,7 @@ const setCountry = (data: TitleInterface[]) => {
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+    <SingleFileUpload :modelValue="image" @update:modelValue="setImage" label="Image" id="image"
       placeholder="Select image" />
   </div>
 </template>

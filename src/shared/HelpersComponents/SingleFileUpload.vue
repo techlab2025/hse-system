@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, watch } from 'vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 
@@ -120,24 +120,22 @@ const removeImage = () => {
   emit('remove', props.index)
   imageSrc.value = null
 }
+onMounted(() => {
+  emit('update:modelValue', props.modelValue)
+})
+
+watch(() => props.modelValue, (val) => {
+  emit('update:modelValue', val)
+})
 </script>
 
 <template>
   <div class="file-append">
-    <input
-      type="file"
-      hidden
-      :id="`file-${props.index}`"
-      accept="image/*"
-      @change="handleFileChange"
-    />
+    <input type="file" hidden :id="`file-${props.index}`" accept="image/*" @change="handleFileChange" />
 
     <!-- Upload area -->
-    <label
-      :for="`file-${props.index}`"
-      v-if="!modelValue"
-      class="flex justify-center gap-4 file-label items-center cursor-pointer"
-    >
+    <label :for="`file-${props.index}`" v-if="!modelValue"
+      class="flex justify-center gap-4 file-label items-center cursor-pointer">
       <UploadAppend />
       <p class="text-gray-500">Attach an image no larger than {{ props.maxSize }}MB.</p>
     </label>
@@ -149,28 +147,13 @@ const removeImage = () => {
         <RemoveImageIcon @click="removeImage" class="cursor-pointer close-icon" />
       </div>
 
-      <img
-        v-if="typeof modelValue === 'string'"
-        :src="modelValue"
-        alt="Preview"
-        class="mt-2 max-h-48 rounded"
-      />
-      <img
-        v-else-if="modelValue instanceof File"
-        :src="URL.createObjectURL(modelValue)"
-        alt="Preview"
-        class="mt-2 max-h-48 rounded"
-      />
+      <img v-if="typeof modelValue === 'string'" :src="modelValue" alt="Preview" class="mt-2 max-h-48 rounded" />
+      <img v-else-if="modelValue instanceof File" :src="URL.createObjectURL(modelValue)" alt="Preview"
+        class="mt-2 max-h-48 rounded" />
     </div>
 
     <!-- Dialog for crop -->
-    <Dialog
-      v-if="props.isCrop"
-      v-model:visible="visible"
-      dismissableMask
-      modal
-      :style="{ width: '40rem' }"
-    >
+    <Dialog v-if="props.isCrop" v-model:visible="visible" dismissableMask modal :style="{ width: '40rem' }">
       <div>
         <img :id="`cropper-image-${props.index}`" :src="imageSrc" alt="Cropper" class="w-full" />
         <button @click="cropImage" class="btn btn-primary mt-4">Crop</button>

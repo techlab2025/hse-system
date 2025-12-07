@@ -31,7 +31,7 @@ const props = defineProps<{
   data?: ShowInvestigatingTypeModel
 }>()
 const text = ref<string>('')
-const date = ref<Date>()
+const date = ref<Date>(new Date())
 const descripe = ref<string>('')
 const image = ref<string>('')
 
