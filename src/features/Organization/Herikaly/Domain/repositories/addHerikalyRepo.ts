@@ -4,7 +4,6 @@ import type ServicesInterface from '@/base/Data/ApiService/api_service_interface
 import HerikalyModel from '../../Data/models/HerikalyModel'
 import { AddHerikalyApiService } from '../../Data/apiServices/addHerikalyApiService'
 
-
 class AddHerikalyRepo extends RepoInterface<HerikalyModel> {
   private static instance: AddHerikalyRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function

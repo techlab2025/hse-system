@@ -41,4 +41,11 @@ export default class AddTemplateParams implements Params {
     }
     return data
   }
+  //   validate() {
+  //   return AddTemplateParams.validation.validate(this)
+  // }
+
+  // validateOrThrow() {
+  //   return AddTemplateParams.validation.validateOrThrow(this)
+  // }
 }

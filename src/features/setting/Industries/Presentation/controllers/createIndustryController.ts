@@ -2,10 +2,11 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/error.png";
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/error.png'
 import CraeteIndustryUseCase from '../../Domain/useCase/createIndustryUseCase'
 import type IndustryModel from '../../Data/Models/IndustryModel'
+import type CreateIndustryParams from '../../Core/Params/createIndustryParams'
 
 export default class CreateIndustryController extends ControllerInterface<IndustryModel> {
   private static instance: CreateIndustryController
@@ -21,9 +22,15 @@ export default class CreateIndustryController extends ControllerInterface<Indust
     return this.instance
   }
 
-  async CreateIndustry(params: Params, router: any, draft: boolean = false) {
+  async CreateIndustry(params: CreateIndustryParams, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<IndustryModel> = await this.craeteIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

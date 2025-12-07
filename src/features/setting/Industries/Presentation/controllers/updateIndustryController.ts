@@ -6,6 +6,7 @@ import successImage from "@/assets/images/Success.png";
 import errorImage from "@/assets/images/error.png";
 import type IndustryModel from '../../Data/Models/IndustryModel'
 import UpdateIndustryUseCase from '../../Domain/useCase/updateIndustryUseCase'
+import type UpdateIndustryParams from '../../Core/Params/updateIndustryParams';
 
 export default class UpdateIndustryController extends ControllerInterface<IndustryModel> {
   private static instance: UpdateIndustryController
@@ -21,9 +22,15 @@ export default class UpdateIndustryController extends ControllerInterface<Indust
     return this.instance
   }
 
-  async UpdateIndustry(params: Params, router: any, draft: boolean = false) {
+  async UpdateIndustry(params: UpdateIndustryParams, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+            params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<IndustryModel> = await this.updateIndustryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

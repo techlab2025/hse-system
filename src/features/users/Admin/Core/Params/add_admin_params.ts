@@ -1,32 +1,24 @@
-import type Params from "@/base/core/params/params";
+import type Params from '@/base/core/params/params'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddAdminParams implements Params {
-  public name: string;
-  public email: string;
-  public password: string;
-  public phone: string;
+  public name: string
+  public email: string
+  public password: string
+  public phone: string
 
+  public static readonly validation = new ClassValidation().setRules({
+    name: { required: true, minLength: 2, maxLength: 100 },
+    phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
+    email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+    password: { required: true, minLength: 6, maxLength: 100 },
+  })
 
-  // Array of objects for required fields and their messages
-  requiredFields = [
-    { field: "name", message: "name is required." },
-    { field: "email", message: "email is required." },
-    { field: "phone", message: "phone is required." },
-    { field: "password", message: "password is required." },
-  ];
-
-  constructor(data: {
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-
-  }) {
-    this.name = data.name;
-    this.email = data.email;
-    this.password = data.password;
-    this.phone = data.phone;
-
+  constructor(data: { name: string; email: string; password: string; phone: string }) {
+    this.name = data.name
+    this.email = data.email
+    this.password = data.password
+    this.phone = data.phone
   }
 
   toMap(): { [key: string]: any } {
@@ -35,8 +27,14 @@ export default class AddAdminParams implements Params {
       email: this.email,
       password: this.password,
       phone: this.phone,
+    }
+  }
 
+  validate() {
+    return AddAdminParams.validation.validate(this)
+  }
 
-    };
+  validateOrThrow() {
+    return AddAdminParams.validation.validateOrThrow(this)
   }
 }

@@ -8,6 +8,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type EditEquipmentTypeParams from '../../Core/params/editEquipmentTypeParams'
 
 export default class EditEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: EditEquipmentTypeController
@@ -25,11 +26,18 @@ export default class EditEquipmentTypeController extends ControllerInterface<Equ
     return this.instance
   }
 
-  async editEquipmentType(params: Params, router: any) {
+  async editEquipmentType(params: EditEquipmentTypeParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<EquipmentTypeModel> = await this.EditEquipmentTypeUseCase.call(params)
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<EquipmentTypeModel> =
+        await this.EditEquipmentTypeUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -41,7 +49,9 @@ export default class EditEquipmentTypeController extends ControllerInterface<Equ
         })
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

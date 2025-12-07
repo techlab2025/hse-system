@@ -6,6 +6,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type AdminModel from '../../Data/models/index_admin_model'
 import AddAdminUseCase from '../../Domain/useCase/add_admin_use_case'
+import type AddAdminParams from '../../Core/Params/add_admin_params'
 
 export default class AddAdminController extends ControllerInterface<AdminModel> {
   private static instance: AddAdminController
@@ -21,9 +22,15 @@ export default class AddAdminController extends ControllerInterface<AdminModel> 
     return this.instance
   }
 
-  async addAdmin(params: Params, router: any, draft: boolean = false) {
+  async addAdmin(params: AddAdminParams, router: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<AdminModel> = await this.AddAdminUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

@@ -3,4 +3,5 @@ export enum PeriodTypeEnum {
   WHITDATE = 2,
   BYDAY = 3,
   BYDATE = 4,
+  WITHDAY = 5,
 }

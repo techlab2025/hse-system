@@ -29,6 +29,7 @@ interface DataFormDetails {
   bydates: Date[]
   fromDate: string
   toDate: string
+  WithDays: number
 }
 interface InspectionForm {
   morph: TitleInterface
@@ -82,7 +83,9 @@ const updateData = () => {
       DataParams.value?.data?.inspectionType,
       DataParams.value?.data?.periodType,
       37,
-      PeriodTasks.value
+      PeriodTasks.value,
+      // DataParams.value?.data?.WithDays || date?.value?.fromDate,
+
     )
     : new AddInspectionParams(
       SelectedAssigned.value || AssignToTypeEnum.MACHINE,
@@ -94,7 +97,8 @@ const updateData = () => {
       PeriodTasks.value || [],
       DataParams.value?.data?.onceday || date?.value?.onceday,
       DataParams.value?.data?.fromDate || date?.value?.fromDate,
-      null
+      null,
+      // DataParams.value?.data?.WithDays || date?.value?.fromDate,
     )
 
   emit('update:data', params)

@@ -61,7 +61,7 @@ export default {
 .dialog-message {
   margin-bottom: 20px;
   font-size: 16px;
-  color: #333;
+  color: black !important;
 }
 
 .dialog-close-btn {

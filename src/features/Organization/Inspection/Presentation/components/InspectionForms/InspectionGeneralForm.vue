@@ -13,12 +13,13 @@ const UpdateData = () => {
   emit('update:data', {
     inspectionType: SelectedInspectionType.value, // once or period
     onceday: SelectedData.value, // date if once
-    periodType: SelectedPeriodType.value , // if period type of period
+    periodType: SelectedPeriodType.value, // if period type of period
     periodByday: SelectedDay.value, // date if type of period day
     PeridWithDate: SelectedWithDateDays.value, // date if type of period with date
     bydates: SelectedbyDays.value, // date if type of period by date
     fromDate: fromDate.value,
     toDate: null,
+    WithDays: WithDays.value
   })
 }
 const inspectionType = ref<TitleInterface[]>([
@@ -53,10 +54,11 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: 2, title: 'by day' }),
   new TitleInterface({ id: 3, title: 'with date' }),
   new TitleInterface({ id: 4, title: 'by date' }),
+  // new TitleInterface({ id: 5, title: 'with day' }),
 
 ])
 
-const SelectedPeriodType = ref<TitleInterface>( )
+const SelectedPeriodType = ref<TitleInterface>()
 const GetSelectedPeridType = (data) => {
   SelectedPeriodType.value = data
   UpdateData()
@@ -90,6 +92,12 @@ const setByDateDayes = (date: Date[]) => {
   SelectedbyDays.value = date
   UpdateData()
 }
+
+const WithDays = ref<number>()
+const setWithDays = (data: number) => {
+  WithDays.value = data
+  UpdateData()
+}
 </script>
 
 <template>
@@ -115,20 +123,26 @@ const setByDateDayes = (date: Date[]) => {
 
     <div class="input-wrapper">
       <label for="from-dete">{{ $t('from_date') }}</label>
-      <DatePicker id="from-dete" class="input" v-if="inspectionType != InspectionTypeEnum.DAY" v-model="fromDate"
+      <DatePicker id="from-dete" class="input" v-if="inspectionType !== InspectionTypeEnum.DAY" v-model="fromDate"
         @update:model-value="UpdateFromDate" placeholder="select from date..." />
     </div>
-    <CustomSelectInput v-if="SelectedPeriodType == PeriodTypeEnum.BYDAY" :modelValue="SelectedDay" class="input"
+    <CustomSelectInput v-if="SelectedPeriodType === PeriodTypeEnum.BYDAY" :modelValue="SelectedDay" class="input"
       :static-options="DayesSelection" :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
       @update:modelValue="setDay" />
-    <CustomSelectInput v-if="SelectedPeriodType == PeriodTypeEnum.WHITDATE" :modelValue="SelectedWithDateDays"
+    <CustomSelectInput v-if="SelectedPeriodType === PeriodTypeEnum.WHITDATE" :modelValue="SelectedWithDateDays"
       class="input" :static-options="WithDateDayesSelection" :type="2" :label="$t('Start_day')" id="Day"
       :placeholder="$t('select_your_Day')" @update:modelValue="setWithDateDayes" />
 
-    <div class="input-wrapper" v-if="SelectedPeriodType == PeriodTypeEnum.BYDATE">
+    <div class="input-wrapper" v-if="SelectedPeriodType === PeriodTypeEnum.BYDATE">
       <label for="by-dete">{{ $t('by_date') }}</label>
       <DatePicker :v-model="SelectedbyDays" class="input" :label="$t('Start_day')" id="by-dete"
         :placeholder="$t('select_your_Days')" @update:modelValue="setByDateDayes" selectionMode="multiple" />
+    </div>
+    <div class="input-wrapper" v-if="SelectedPeriodType === PeriodTypeEnum.WITHDAY">
+      <label for="with-day">{{ $t('with days') }}</label>
+      <input type="number" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
+        @change="setWithDays" />
+
     </div>
 
   </div>

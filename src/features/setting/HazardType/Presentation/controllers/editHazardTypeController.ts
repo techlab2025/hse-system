@@ -8,6 +8,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type EditHazardTypeParams from '../../Core/params/editHazardTypeParams'
 
 export default class EditHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: EditHazardTypeController
@@ -25,10 +26,16 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
     return this.instance
   }
 
-  async editHazardType(params: Params, router: any) {
+  async editHazardType(params: EditHazardTypeParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<HazardTypeModel> = await this.EditHazardTypeUseCase.call(params)
 
       this.setState(dataState)
@@ -42,7 +49,9 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

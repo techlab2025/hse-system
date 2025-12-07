@@ -16,6 +16,7 @@ export default class AddEquipmentParams implements Params {
   allIndustries: number | null
   industries: number[]
   parentId: number
+  contructorId: number
 
   // hasCertificate: number
 
@@ -32,6 +33,7 @@ export default class AddEquipmentParams implements Params {
     allIndustries: number | null,
     industries: number[],
     parentId: number,
+    contructorId: number,
     // hasCertificate: number,
   ) {
     this.translation = translation
@@ -46,6 +48,7 @@ export default class AddEquipmentParams implements Params {
     this.allIndustries = allIndustries
     this.industries = industries
     this.parentId = parentId
+    this.contructorId = contructorId
     // this.hasCertificate = hasCertificate
   }
 
@@ -65,18 +68,15 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentTypeId != null) data['equipment_type_id'] = this.equipmentTypeId
     if (this.date != null) data['date'] = formatJoinDate(this.date)
     if (this.status != null) data['status'] = this.status
-    if (this.inspectionDuration != null)
-      data['inspection_duration'] = this.inspectionDuration
+    if (this.inspectionDuration != null) data['inspection_duration'] = this.inspectionDuration
     if (this.licenseNumber != null) data['license_number'] = this.licenseNumber
-    if (this.licensePlateNumber != null)
-      data['license_plate_number'] = this.licensePlateNumber
+    if (this.licensePlateNumber != null) data['license_plate_number'] = this.licensePlateNumber
     if (this.image != null) data['image'] = this.image
-    if (this.certificateImage != null)
-      data['certificate_image'] = this.certificateImage
+    if (this.certificateImage != null) data['certificate_image'] = this.certificateImage
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (this.industries.length > 0) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
-
+    if (this.contructorId) data['contructor_id'] = this.contructorId
 
     return data
   }

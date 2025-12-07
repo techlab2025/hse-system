@@ -10,6 +10,7 @@ import type { Router } from 'vue-router'
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import type AddEquipmentTypeParams from '../../Core/params/addEquipmentTypeParams'
 
 export default class AddEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: AddEquipmentTypeController
@@ -25,9 +26,15 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
     return this.instance
   }
 
-  async addEquipmentType(params: Params, router: Router, draft: boolean = false) {
+  async addEquipmentType(params: AddEquipmentTypeParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<EquipmentTypeModel> =
         await this.AddEquipmentTypeUseCase.call(params)
       this.setState(dataState)
@@ -41,8 +48,10 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
 
         const { user } = useUserStore()
 
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

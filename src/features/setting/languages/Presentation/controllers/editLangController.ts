@@ -6,6 +6,7 @@ import EditLangUseCase from '@/features/setting/languages/Domain/useCase/editLan
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+import type EditLangParams from '../../Core/params/editLangParams'
 
 export default class EditLangController extends ControllerInterface<LangModel> {
   private static instance: EditLangController
@@ -23,10 +24,15 @@ export default class EditLangController extends ControllerInterface<LangModel> {
     return this.instance
   }
 
-  async editLang(params: Params, router: any) {
+  async editLang(params: EditLangParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<LangModel> = await this.EditLangUseCase.call(params)
 
       this.setState(dataState)

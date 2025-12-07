@@ -12,6 +12,7 @@ import TemplateDocument from '@/features/setting/TemplateItem/Presentation/compo
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
 import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
+import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 
 
 
@@ -64,7 +65,7 @@ const GetTemplateId = (data: number) => {
         <ImportantIcon />
       </div>
 
-      <button v-if="!selectedTemplates" type="button" @click="visible = true" class="inspection-template-button">
+      <button type="button" @click="visible = true" class="inspection-template-button">
         {{ $t('select inspection template') }}
       </button>
 
@@ -76,8 +77,12 @@ const GetTemplateId = (data: number) => {
             selectedTemplateHeader?.title
           }}
         </p>
+        <img :src="DocumnetHeader" alt="header" />
+
       </div>
     </div>
+
+
 
     <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
@@ -96,36 +101,11 @@ const GetTemplateId = (data: number) => {
             <ArrowsLeft />
             <span>{{ $t('my templates') }}</span>
           </div>
-
-          <!-- <p class="selected-template-number">
-            {{ selectedTemplates?.length }}
-            <span>{{ $t('select') }}</span>
-          </p> -->
         </div>
 
         <div class="inspection-templates-items">
-          <TemplateSelector :data="state.data" @update:data="GetTemplateId" />
-          <!-- <div class="item" v-for="template in state.data" :key="template.id"> -->
-          <!-- <div class="item-header">
-              <div class="item-header-title">
-                <ArrowLeftCurved />
-                <span>{{ template.title }}</span>
-              </div>
-
-              <div class="select-input input-wrapper check-box">
-                <input type="checkbox" :id="`template-${template.id}`" class="input" :value="template.id"
-                  v-model="selectedTemplates" />
-
-                <label :for="`template-${template.id}`">
-                  {{ $t('select') }}
-                </label>
-              </div>
-            </div> -->
-
-          <!-- template preview component -->
-          <!-- <TemplateDocument :allData="template" /> -->
+          <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
         </div>
-        <!-- </div> -->
 
         <button class="btn btn-primary w-full !mt-4" @click="sendTemplatesId">
           {{ $t('confirm') }}

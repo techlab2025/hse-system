@@ -1,15 +1,19 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import type AddTemplateParams from './addTemplateParams'
+// import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditTemplateParams implements Params {
   id: number
   translation: TranslationsParams
-  allIndustries: boolean  | null
+  public allIndustries: boolean | null
   industries: number[]
   image: string
   items: AddTemplateParams[]
 
+  // public static readonly validation = new ClassValidation().setRules({
+  //   industries: { required: true, custom: () => this.allIndustries != null },
+  // })
 
   constructor(
     id: number,
@@ -17,8 +21,7 @@ export default class EditTemplateParams implements Params {
     allIndustries: boolean | null,
     industries: number[],
     image: string,
-    items: AddTemplateParams[]
-
+    items: AddTemplateParams[],
   ) {
     this.id = id
     this.translation = translation
@@ -36,7 +39,7 @@ export default class EditTemplateParams implements Params {
 
     data['template_id'] = this.id
     data['translations'] = this.translation.toMap()
-    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     data['image'] = this.image
@@ -47,5 +50,11 @@ export default class EditTemplateParams implements Params {
 
     return data
   }
-}
+  // validate() {
+  //   return EditTemplateParams.validation.validate(this)
+  // }
 
+  // validateOrThrow() {
+  //   return EditTemplateParams.validation.validateOrThrow(this)
+  // }
+}
