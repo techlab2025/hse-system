@@ -1,5 +1,4 @@
 import type Params from '@/base/core/params/params.ts'
-import TranslationsParams from '@/base/core/params/translations_params.ts'
 
 export default class EditOrganizationParams implements Params {
   id: number
@@ -30,7 +29,7 @@ export default class EditOrganizationParams implements Params {
     this.website_link = website_link
     this.industry_id = industry_id
     this.language_ids = language_ids
-    this.location_ids = location_ids  
+    this.location_ids = location_ids
   }
 
   toMap(): Record<
@@ -38,7 +37,6 @@ export default class EditOrganizationParams implements Params {
     number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<string, any> = {}
-
     data['organization_id'] = this.id
     data['name'] = this.name
     data['phone'] = this.phone
@@ -48,6 +46,7 @@ export default class EditOrganizationParams implements Params {
     data['industry_id'] = this.industry_id
     data['language_ids'] = this.language_ids
     data['location_ids'] = this.location_ids
+    console.log(data, 'data params')
 
     return data
   }

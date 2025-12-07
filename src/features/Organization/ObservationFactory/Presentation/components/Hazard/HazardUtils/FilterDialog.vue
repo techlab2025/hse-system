@@ -28,7 +28,7 @@ import { useI18n } from 'vue-i18n'
 
 const visible = ref(false)
 
-const date = ref(null)
+const date = ref(new Date())
 const { t } = useI18n()
 
 const caseOptions = ref<TitleInterface[]>([

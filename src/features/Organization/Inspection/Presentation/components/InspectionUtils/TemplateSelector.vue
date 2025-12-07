@@ -51,12 +51,8 @@ const SetSelectedTemplate = (id: number) => {
               </div>
               <div class="header-select">
                 <div class="template-checkbox">
-                  <!-- <RadioButton :id="`${template.id}`" type="radio" name="template"
-                    @change="SetSelectedTemplate(template.id)" :value="template.id"> -->
-                  <!-- -->
                   <RadioButton @change="SetSelectedTemplate(template.id)" :inputId="`${template.id}`" name="template"
                     v-model="SelectedTemplate" :value="template.id" />
-
                   <label :for="`${template.id}`">Select</label>
                 </div>
                 <img :src="DocumnetHeader" alt="header" />

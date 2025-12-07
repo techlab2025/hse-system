@@ -165,7 +165,7 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-const date = ref()
+const date = ref(new Date())
 // ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()

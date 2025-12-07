@@ -9,7 +9,7 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 import Filter from '@/assets/images/filter.png'
 
 const visible = ref(false)
-const date = ref(null)
+const date = ref(new Date())
 
 const params = new ProjectCustomLocationParams(37, [ProjectCustomLocationEnum.ZOON], [])
 const controller = ProjectCustomLocationController.getInstance()

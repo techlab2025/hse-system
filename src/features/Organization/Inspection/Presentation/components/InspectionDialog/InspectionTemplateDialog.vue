@@ -47,8 +47,10 @@ const sendTemplatesId = () => {
   visible.value = false
 }
 
+const selectedTemplateHeader = ref()
 const GetTemplateId = (data: number) => {
   selectedTemplates.value = data
+  selectedTemplateHeader.value = state.value.data?.find((item) => item.id === data)
   emit('update:data', selectedTemplates.value)
   // visible.value = false
 }
@@ -62,9 +64,19 @@ const GetTemplateId = (data: number) => {
         <ImportantIcon />
       </div>
 
-      <button type="button" @click="visible = true" class="inspection-template-button">
+      <button v-if="!selectedTemplates" type="button" @click="visible = true" class="inspection-template-button">
         {{ $t('select inspection template') }}
       </button>
+
+
+
+      <div class="template-header" v-if="selectedTemplates">
+        <p class="header-title">
+          {{
+            selectedTemplateHeader?.title
+          }}
+        </p>
+      </div>
     </div>
 
     <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
