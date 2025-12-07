@@ -28,6 +28,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useI18n } from 'vue-i18n'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
+import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 
 const { deviceData } = defineProps<{ deviceData?: EquipmentDetailsModel }>()
 const emit = defineEmits(['update:data'])
@@ -93,14 +95,14 @@ const fetchLang = async () => {
   const response = controller.value
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code]?.icon),
+    }))
     : [
-        { locale: 'en', icon: markRaw(LangsMap.en.icon), title: '' },
-        { locale: 'ar', icon: markRaw(LangsMap.ar.icon), title: '' },
-      ]
+      { locale: 'en', icon: markRaw(LangsMap.en.icon), title: '' },
+      { locale: 'ar', icon: markRaw(LangsMap.ar.icon), title: '' },
+    ]
 }
 
 onMounted(fetchLang)
@@ -162,34 +164,37 @@ const addEquipment = async () => {
 
   const params = route.params.id
     ? new EditEquipmentParams(
-        +route.params.id,
-        translations,
-        null,
-        decommissioningDate.value,
-        deviceStatus.value?.id,
-        inspectionDuration.value,
-        '',
-        '',
-        image.value,
-        certificateImage.value,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        +route.params.parent_id,
-      )
+      +route.params.id,
+      translations,
+      null,
+      decommissioningDate.value,
+      deviceStatus.value?.id,
+      inspectionDuration.value,
+      '',
+      '',
+      image.value,
+      certificateImage.value,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      +route.params.parent_id,
+      SelectedContractor.value?.id
+    )
     : new AddEquipmentParams(
-        translations,
-        null,
-        decommissioningDate.value,
-        deviceStatus.value?.id,
-        inspectionDuration.value,
-        '',
-        '',
-        image.value,
-        certificateImage.value,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        +route.params.parent_id,
-      )
+      translations,
+      null,
+      decommissioningDate.value,
+      deviceStatus.value?.id,
+      inspectionDuration.value,
+      '',
+      '',
+      image.value,
+      certificateImage.value,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      +route.params.parent_id,
+      SelectedContractor.value?.id
+
+    )
 
   try {
     if (route.params.id) {
@@ -200,6 +205,15 @@ const addEquipment = async () => {
   } catch (error) {
     console.error('Error adding equipment:', error)
   }
+}
+
+const indexContractorController = IndexContractorController.getInstance()
+const indexContractorTypeParams = new IndexContractorParams("", 1, 10, 1
+)
+
+const SelectedContractor = ref<TitleInterface>()
+const setContructor = (data: TitleInterface) => {
+  SelectedContractor.value = data
 }
 </script>
 
@@ -212,14 +226,8 @@ const addEquipment = async () => {
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('upload image') }}</label>
-        <SingleFileUpload
-          v-model="image"
-          @update:modelValue="setImage"
-          label="Image"
-          id="image"
-          index="0"
-          placeholder="upload image"
-        />
+        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="0"
+          placeholder="upload image" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
@@ -227,58 +235,28 @@ const addEquipment = async () => {
           <p>{{ $t('Certification upload') }}</p>
           <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
         </label>
-        <SingleFileUpload
-          v-model="certificateImage"
-          @update:modelValue="setCertificateImage"
-          label="Certification upload"
-          id="Certification upload"
-          index="1"
-          placeholder="Certification upload"
-        />
+        <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
+          label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
       </div>
 
       <div>
-        <CustomSelectInput
-          :modelValue="deviceStatus"
-          :staticOptions="deviceStatusOptions"
-          label="Device status"
-          id="Device status"
-          placeholder="Device status"
-          @update:modelValue="setDeviceStatus"
-        />
+        <CustomSelectInput :modelValue="deviceStatus" :staticOptions="deviceStatusOptions" label="Device status"
+          id="Device status" placeholder="Device status" @update:modelValue="setDeviceStatus" />
+      </div>
+      <div>
+        <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
+          :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
+          @update:modelValue="setContructor" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('Date of Decommissioning') }}</label>
-        <DatePicker
-          v-model="decommissioningDate"
-          id="Date of Decommissioning"
-          :placeholder="`Date of Decommissioning`"
-        />
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
+          :placeholder="`Date of Decommissioning`" />
       </div>
 
-      <!-- <div class="input-wrapper">
-        <label for="inspection duration">
-          {{ $t('inspection duration') }}
-        </label>
-        <input
-          type="text"
-          v-model="inspectionDuration"
-          id="inspection duration"
-          :placeholder="$t('inspection duration')"
-        />
-      </div> -->
 
-      <div>
-        <!-- <CustomSelectInput
-          :staticOptions="[]"
-          label="inspection template"
-          id="inspection template"
-          placeholder="inspection template"
-        /> -->
-      </div>
-
-      <div v-if="user.user?.type !== OrganizationTypeEnum.ORGANIZATION" class=""></div>
+      <!-- <div v-if="user.user?.type !== OrganizationTypeEnum.ORGANIZATION" class=""></div> -->
 
       <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
@@ -286,28 +264,16 @@ const addEquipment = async () => {
       </div>
 
       <div v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-        <CustomSelectInput
-          :modelValue="industry"
-          :controller="industryController"
-          :params="industryParams"
-          label="Industry"
-          id="EquipmentType"
-          placeholder="Select industry"
-          :type="2"
-          @update:modelValue="setIndustry"
-        />
+        <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+          label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+          @update:modelValue="setIndustry" />
       </div>
 
       <div class="" v-else></div>
 
-      <DemoCard
-        :isBreadCramp="false"
-        :equipmentName="equipmentName"
-        :inspectionDuration="inspectionDuration || $t('Determined')"
-        :image="image || ''"
-        :decommissioningDate="decommissioningDate || ''"
-        :certificateImage="certificateImage || ''"
-      />
+      <DemoCard :isBreadCramp="false" :equipmentName="equipmentName"
+        :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
+        :decommissioningDate="decommissioningDate || ''" :certificateImage="certificateImage || ''" />
 
       <QrCard />
     </div>

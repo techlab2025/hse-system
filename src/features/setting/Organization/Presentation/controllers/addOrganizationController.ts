@@ -8,9 +8,10 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type OrganizationModel from '../../Data/models/OrganizationModel'
 import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type AddOrganizationParams from '../../Core/params/addOrganizationParams'
 
 export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {
-
   private static instance: AddOrganizationController
   private constructor() {
     super()
@@ -24,11 +25,17 @@ export default class AddOrganizationController extends ControllerInterface<Organ
     return this.instance
   }
 
-  async addOrganization(params: Params, router: Router, draft: boolean = false) {
+  async addOrganization(params: AddOrganizationParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+
     try {
-      const dataState: DataState<OrganizationModel> =
-        await this.addOrganizationUseCase.call(params)
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<OrganizationModel> = await this.addOrganizationUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -38,7 +45,6 @@ export default class AddOrganizationController extends ControllerInterface<Organ
           messageContent: null,
         })
         if (!draft) await router.push('/admin/organization')
-
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

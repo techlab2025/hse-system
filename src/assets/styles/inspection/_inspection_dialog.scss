@@ -30,6 +30,42 @@
     text-align: center;
     font-size: $MdSize;
   }
+
+  .template-header {
+    background-color: #f8f8f8;
+    border-top-left-radius: $XlSize;
+    border-top-right-radius: $XlSize;
+    width: 100%;
+    position: relative;
+    // z-index: 10;
+    padding: $MdSize;
+    @include flex-row(wrap, space-between ,center);
+    gap: $XsSize2;
+    img{
+      width: 100px;
+      height: 100px
+    }
+    .header-title {
+      font-family: 'Regular';
+      color: #041953;
+      font-size: calc($XlSize + 2px);
+      font-weight: $BaseFontWeightBold;
+    }
+    .template-details {
+      @include flex-row(wrap, flex-start, center);
+      font-family: 'Regular';
+      gap: $XlSize;
+
+      p {
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+        color: #6b7280;
+        span {
+          color: #121212;
+        }
+      }
+    }
+  }
 }
 
 .inspection-template-dialog-header {

@@ -6,19 +6,23 @@ import AccordionContent from 'primevue/accordioncontent';
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel';
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import RadioButton from 'primevue/radiobutton'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data: TemplateModel[]
+  selectedTemplates?: number
 }>()
 
-const SelectedTemplate = ref<number>()
+const SelectedTemplate = ref<number>(props.selectedTemplates)
 const SetSelectedTemplate = (id: number) => {
   SelectedTemplate.value = id
   emit('update:data', id)
 }
+watch(() => props.selectedTemplates, (newVal) => {
+  SelectedTemplate.value = newVal
+})
 </script>
 
 <template>

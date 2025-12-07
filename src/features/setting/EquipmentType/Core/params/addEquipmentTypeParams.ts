@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddEquipmentTypeParams implements Params {
   translation: TranslationsParams
@@ -9,7 +10,10 @@ export default class AddEquipmentTypeParams implements Params {
   parentId: number
   image: string
   type: number
-
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true},
+    type: { required: true },
+  })
   constructor(
     translation: TranslationsParams,
     hasCertificate: number,
@@ -50,5 +54,13 @@ export default class AddEquipmentTypeParams implements Params {
     if (this.type) data['type'] = this.type
 
     return data
+  }
+
+  validate() {
+    return AddEquipmentTypeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddEquipmentTypeParams.validation.validateOrThrow(this)
   }
 }

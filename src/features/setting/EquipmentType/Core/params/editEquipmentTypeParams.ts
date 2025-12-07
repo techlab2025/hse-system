@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 // import AttentionParams from "@/features/users/clients/Core/params/attention_params";
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditEquipmentTypeParams implements Params {
   id: number
@@ -13,7 +14,10 @@ export default class EditEquipmentTypeParams implements Params {
   image: string
   imageId?: number
   type?: number
-
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true },
+    type: { required: true },
+  })
   constructor(
     id: number,
     translation: TranslationsParams,
@@ -59,5 +63,13 @@ export default class EditEquipmentTypeParams implements Params {
     if (this.type) data['type'] = this.type
 
     return data
+  }
+
+  validate() {
+    return EditEquipmentTypeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return EditEquipmentTypeParams.validation.validateOrThrow(this)
   }
 }

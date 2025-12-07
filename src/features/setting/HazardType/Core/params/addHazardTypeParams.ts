@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddHazardTypeParams implements Params {
   translation: TranslationsParams
@@ -8,17 +9,17 @@ export default class AddHazardTypeParams implements Params {
   industries: number[]
   // parentId: number
   // image: string
-
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true },
+  })
   constructor(
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
-
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
-
   }
 
   toMap(): Record<
@@ -38,5 +39,12 @@ export default class AddHazardTypeParams implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
+  }
+  validate() {
+    return AddHazardTypeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddHazardTypeParams.validation.validateOrThrow(this)
   }
 }

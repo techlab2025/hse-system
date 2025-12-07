@@ -10,6 +10,7 @@ import type TemplateModel from '../../Data/models/TemplateModel'
 import AddTemplateUseCase from '../../Domain/useCase/addTemplateUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import type AddTemplateParams from '../../Core/params/addTemplateParams'
 
 export default class AddTemplateController extends ControllerInterface<TemplateModel> {
   private static instance: AddTemplateController
@@ -25,9 +26,15 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
     return this.instance
   }
 
-  async addTemplate(params: Params, router: Router, draft: boolean = false) {
+  async addTemplate(params: AddTemplateParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      //      params.validate()
+
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<TemplateModel> = await this.AddTemplateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

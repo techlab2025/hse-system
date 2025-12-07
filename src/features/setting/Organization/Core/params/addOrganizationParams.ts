@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddOrganizationParams implements Params {
   name: string
@@ -10,6 +11,23 @@ export default class AddOrganizationParams implements Params {
   language_ids: number[]
   location_ids: number[]
 
+  public static readonly validation = new ClassValidation().setRules({
+    name: { required: true, minLength: 2, maxLength: 100 },
+    phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
+    email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+    image: { required: false },
+    website_link: {
+      required: false,
+      pattern: /^.+\..+$/,
+    },
+    industry_id: {
+      required: false,
+    },
+    language_ids: { required: false },
+    location_ids: {
+      required: false,
+    },
+  })
 
   constructor(
     name: string,
@@ -19,7 +37,7 @@ export default class AddOrganizationParams implements Params {
     website_link: string,
     industry_id: number[],
     language_ids: number[],
-    location_ids: number[]
+    location_ids: number[],
   ) {
     this.name = name
     this.phone = phone
@@ -52,5 +70,13 @@ export default class AddOrganizationParams implements Params {
     data['language_ids'] = this.language_ids
     data['location_ids'] = this.location_ids
     return data
+  }
+
+  validate() {
+    return AddOrganizationParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddOrganizationParams.validation.validateOrThrow(this)
   }
 }

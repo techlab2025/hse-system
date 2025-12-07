@@ -8,6 +8,7 @@ import type TemplateModel from '../../Data/models/TemplateModel'
 import EditTemplateUseCase from '../../Domain/useCase/editTemplateUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type EditTemplateParams from '../../Core/params/editTemplateParams'
 
 export default class EditTemplateController extends ControllerInterface<TemplateModel> {
   private static instance: EditTemplateController
@@ -25,10 +26,16 @@ export default class EditTemplateController extends ControllerInterface<Template
     return this.instance
   }
 
-  async editTemplate(params: Params, router: any) {
+  async editTemplate(params: EditTemplateParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      // params.validate()
+
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<TemplateModel> = await this.EditTemplateUseCase.call(params)
 
       this.setState(dataState)
@@ -40,7 +47,9 @@ export default class EditTemplateController extends ControllerInterface<Template
           messageContent: null,
         })
         const { user } = useUserStore()
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

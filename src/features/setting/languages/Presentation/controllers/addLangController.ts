@@ -4,9 +4,10 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import AddLangUseCase from '@/features/setting/languages/Domain/useCase/addLangUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from "@/assets/images/Success.png";
-import errorImage from "@/assets/images/error.png";
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
+import type AddLangParams from '../../Core/params/addLangParams'
 
 export default class AddLangController extends ControllerInterface<LangModel> {
   private static instance: AddLangController
@@ -22,9 +23,14 @@ export default class AddLangController extends ControllerInterface<LangModel> {
     return this.instance
   }
 
-  async addLang(params: Params, router: Router, draft: boolean = false) {
+  async addLang(params: AddLangParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<LangModel> = await this.AddLangUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

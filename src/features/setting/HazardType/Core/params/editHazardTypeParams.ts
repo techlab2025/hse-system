@@ -1,12 +1,15 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditHazardTypeParams implements Params {
   id: number
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
-
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true },
+  })
   constructor(
     id: number,
     translation: TranslationsParams,
@@ -31,5 +34,12 @@ export default class EditHazardTypeParams implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
+  }
+  validate() {
+    return EditHazardTypeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return EditHazardTypeParams.validation.validateOrThrow(this)
   }
 }

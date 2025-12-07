@@ -115,7 +115,7 @@ const updateData = () => {
       Url.value,
       industry.value?.id,
       lang.value?.map((l) => l.id),
-      SelectedCountry.value.map((l) => l.id),
+      SelectedCountry.value?.map((l) => l.id),
     )
 
   emit('update:data', params)

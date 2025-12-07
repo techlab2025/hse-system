@@ -34,6 +34,16 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
+const getLangTitleList = (): TitleInterface[] => {
+  return Object.values(LangsMap).map((lang, index) => {
+    return new TitleInterface({
+      id: index + 1,
+      title: lang.name,
+      subtitle: lang.code,
+    })
+  })
+}
+const langsList = getLangTitleList()
 // selected base language
 const lang = ref<TitleInterface | null>(null)
 
@@ -79,16 +89,7 @@ onMounted(async () => {
   await fetchLang()
 })
 
-const getLangTitleList = (): TitleInterface[] => {
-  return Object.values(LangsMap).map((lang, index) => {
-    return new TitleInterface({
-      id: index + 1,
-      title: lang.name,
-      subtitle: lang.code,
-    })
-  })
-}
-const langsList = getLangTitleList()
+
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -146,14 +147,7 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="lang"
-      :staticOptions="langsList"
-      label="Language"
-      id="lang"
-      placeholder="Select Language"
-      @update:modelValue="setLang"
-      :required="true"
-    />
+    <CustomSelectInput :modelValue="lang" :staticOptions="langsList" label="Language" id="lang"
+      placeholder="Select Language" @update:modelValue="setLang" :required="true" />
   </div>
 </template>

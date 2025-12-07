@@ -16,14 +16,6 @@ const params = ref<Params | null>(null)
 const addAdminController = AddAdminController.getInstance()
 
 const addAdmin = async () => {
-  const missingFields = validateRequiredFields(params.value)
-
-  if (Object.keys(missingFields).length > 0) {
-    const validationMode = validationEnum.BOTH // Choose your mode: "dialog", "inline", or "both"
-    validationDialogService.validate(missingFields, validationMode)
-    return
-  }
-
   await addAdminController.addAdmin(params.value as AddAdminParams, router)
 }
 const setParams = (data: Params) => {

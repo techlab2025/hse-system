@@ -199,7 +199,7 @@ watch(
       @change="updateData"
     />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"

@@ -10,6 +10,7 @@ import type { Router } from 'vue-router'
 import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type AddHazardTypeParams from '../../Core/params/addHazardTypeParams'
 
 export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: AddHazardTypeController
@@ -25,13 +26,16 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
     return this.instance
   }
 
-  async addHazardType(params: Params, router: Router, draft: boolean = false) {
+  async addHazardType(params: AddHazardTypeParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
 
-      console.log("Ssssssss")
-      const dataState: DataState<HazardTypeModel> =
-        await this.AddHazardTypeUseCase.call(params)
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<HazardTypeModel> = await this.AddHazardTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -43,8 +47,10 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const { user } = useUserStore()
 
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
