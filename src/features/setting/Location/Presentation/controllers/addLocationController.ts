@@ -10,6 +10,7 @@ import type LocationModel from '../../Data/models/LocationModel'
 import AddLocationUseCase from '../../Domain/useCase/addLocationUseCase'
 import LocationRouterHandler from '../routeHandler/RoutHandler'
 import type AddLocationParams from '../../Core/params/addLocationParams'
+import { useUserStore } from '@/stores/user'
 
 export default class AddLocationController extends ControllerInterface<LocationModel> {
   private static instance: AddLocationController
@@ -44,8 +45,8 @@ export default class AddLocationController extends ControllerInterface<LocationM
         })
         // if (!draft) await router.push('/admin/locations_country')
 
-        console.log('Path Params', params.type)
-        await router.push(LocationRouterHandler.LocationRouter(params.type))
+        const { user } = useUserStore()
+        await router.push(LocationRouterHandler.LocationRouter(params.type, user))
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -4,6 +4,13 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexProjectLocationZonesController from '../../../controllers/fetchLocationZonesController'
 import IndexProjectLocationZonesParams from '@/features/Organization/Project/Core/params/fetchProjectLocationsZonesParams'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+
+
+const controller = IndexProjectLocationZonesController.getInstance()
+const state = ref(controller?.state?.value)
 
 const props = defineProps<{
   locations: TitleInterface[]
@@ -21,7 +28,6 @@ const SelectedZones = ref<{ locationId: number; ZoneIds: number[] }[]>(props.sel
 
 const GetZones = async () => {
   const params = new IndexProjectLocationZonesParams('', 1, 10, 1, AllLocations.value.map(l => l.id))
-  const controller = IndexProjectLocationZonesController.getInstance()
   const response = await controller.getData(params)
 
   if (response.value.data) {
@@ -70,38 +76,48 @@ const UpdateData = () => {
   })
 }
 
+watch(() => controller.state.value, (newState) => {
+  state.value = newState
+})
+
 
 
 </script>
 
 <template>
-  <div class="zone-form">
-    <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
-      <div class="location-header">
-        <h2 class="title">
-          Location: <span>{{ location.zoonTitle }}</span>
-        </h2>
-      </div>
+  <DataStatus :controller="state">
+    <template #success>
+      <div class="zone-form">
+        <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
+          <div class="location-header">
+            <h2 class="title">
+              Location: <span>{{ location.zoonTitle }}</span>
+            </h2>
+          </div>
 
-      <div class="zone-content-container">
-        <!-- <pre>{{ location }}</pre> -->
-        <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2"
-          class="zone-content" :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
+          <div class="zone-content-container">
+            <!-- <pre>{{ location }}</pre> -->
+            <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2"
+              class="zone-content" :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
 
-          <label :for="`${location.zoonTitle}-${zone.title}-${zone.id}`" class="zone-title">
-            {{ zone.title }}
-          </label>
-          <input type="checkbox" :id="`${location.zoonTitle}-${zone.title}-${zone.id}`"
-            :checked="isZoneSelected(location.zoonId, zone.id)"
-            @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)" />
+              <label :for="`${location.zoonTitle}-${zone.title}-${zone.id}`" class="zone-title">
+                {{ zone.title }}
+              </label>
+              <input type="checkbox" :id="`${location.zoonTitle}-${zone.title}-${zone.id}`"
+                :checked="isZoneSelected(location.zoonId, zone.id)"
+                @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)" />
 
+            </div>
+            <div v-else class="empty-zone"> No Available Zones</div>
+
+          </div>
         </div>
-        <div v-else class="empty-zone"> No Available Zones</div>
-
+        <button class="confirm-btn btn btn-primary" @click="UpdateData">
+          <span>Confirm</span>
+        </button>
       </div>
-    </div>
-    <button class="confirm-btn btn btn-primary" @click="UpdateData">
-      <span>Confirm</span>
-    </button>
-  </div>
+    </template>
+
+  </DataStatus>
+
 </template>

@@ -1,19 +1,22 @@
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { LocationEnum } from '../../Core/Enum/LocationEnum'
 
 export default class LocationRouterHandler {
-  public static LocationRouter(location: LocationEnum) {
+  public static LocationRouter(location: LocationEnum, user) {
     switch (location) {
       case LocationEnum.COUNTRY:
-        return '/admin/countries'
+        return user?.type == OrganizationTypeEnum.ADMIN
+          ? '/admin/countries'
+          : '/organization/countries'
         break
       case LocationEnum.CITY:
-        return '/admin/cities'
+        return user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities' : '/organization/cities'
         break
       case LocationEnum.STATE:
-        return '/admin/states'
+        return user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states' : '/organization/states'
         break
       case LocationEnum.AREA:
-        return '/admin/areas'
+        return user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas' : '/organization/areas'
         break
       default:
         return '/admin/countries'
