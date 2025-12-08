@@ -27,6 +27,8 @@ import IndexLocationParams from '../../../Core/params/indexLocationParams'
 import DeleteLocationParams from '../../../Core/params/deleteLocationParams'
 import DeleteLocationController from '../../controllers/deleteLocationController'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 const { t } = useI18n()
 
@@ -97,11 +99,12 @@ watch(
   },
 )
 
+const { user } = useUserStore()
 const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/admin/cities/${id}`,
+    link: user?.type == OrganizationTypeEnum.ADMIN ? `/admin/cities/${id}` : `/organization/cities/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -111,7 +114,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('add_sub_areas_type'),
     icon: IconEdit,
-    link: `/admin/areas/add/${id}`,
+    link: user?.type == OrganizationTypeEnum.ADMIN ? `/admin/areas/add/${id}` : `/organization/areas/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -154,7 +157,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <ExportExcel :data="state.data" />
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
-        <router-link to="/admin/cities/add" class="btn btn-primary">
+        <router-link :to="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"
+          class="btn btn-primary">
           {{ $t('Add_Location_city') }}
         </router-link>
       </PermissionBuilder>
