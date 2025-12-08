@@ -8,6 +8,7 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddOrganizatoinEmployeeUseCase from '../../Domain/useCase/addOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
+import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 
 export default class AddOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
   private static instance: AddOrganizatoinEmployeeController
@@ -23,9 +24,18 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(params: Params, router: Router, draft: boolean = false) {
+  async addOrganizatoinEmployee(
+    params: AddOrganizatoinEmployeeParams,
+    router: Router,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<OrganizatoinEmployeeModel> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)

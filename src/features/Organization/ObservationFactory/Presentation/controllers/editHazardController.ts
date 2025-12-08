@@ -9,6 +9,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import EditHazardUseCase from '../../Domain/useCase/editHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
+import type EditHazardParams from '../../Core/params/editHazardParams'
 
 export default class EditHazardController extends ControllerInterface<HazardModel> {
   private static instance: EditHazardController
@@ -26,10 +27,16 @@ export default class EditHazardController extends ControllerInterface<HazardMode
     return this.instance
   }
 
-  async editHazard(params: Params, router: any) {
+  async editHazard(params: EditHazardParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<HazardModel> = await this.EditHazardUseCase.call(params)
 
       this.setState(dataState)

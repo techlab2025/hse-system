@@ -11,6 +11,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import AddHazardUseCase from '../../Domain/useCase/addHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
+import type AddHazardParams from '../../Core/params/addHazardParams'
 
 export default class AddHazardController extends ControllerInterface<HazardModel> {
   private static instance: AddHazardController
@@ -26,9 +27,14 @@ export default class AddHazardController extends ControllerInterface<HazardModel
     return this.instance
   }
 
-  async addHazard(params: Params, router: Router, draft: boolean = false) {
+  async addHazard(params: AddHazardParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       // console.log('Ssssssss')
       const dataState: DataState<HazardModel> = await this.AddHazardUseCase.call(params)
       this.setState(dataState)

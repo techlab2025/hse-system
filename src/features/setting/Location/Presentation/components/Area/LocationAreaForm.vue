@@ -131,7 +131,7 @@ watch(
 
       industry.value = newData?.industries!
 
-      SelectedCountry.value = newData?.country
+      SelectedCountry.value = [newData?.country]
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -142,7 +142,7 @@ watch(
         newData?.country?.id,
       )
 
-      SelectedState.value = newData?.state
+      SelectedState.value = [newData?.state]
 
       indexLocationAreasParams.value = new IndexLocationParams(
         '',
@@ -153,7 +153,7 @@ watch(
         newData?.state?.id,
       )
 
-      SelectedCity.value = newData?.city
+      SelectedCity.value = [newData?.city]
     }
   },
   { immediate: true },
@@ -229,12 +229,12 @@ const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
       :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
       @update:modelValue="SetStateSelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedState">
     <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationAreasController"
       :params="indexLocationAreasParams" label="City" id="City" placeholder="Select City"
       @update:modelValue="SetCitySelection" />

@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import type CapaParams from './CapaParam'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type { Observation } from '../Enums/ObservationTypeEnum'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -21,6 +22,10 @@ export default class AddHazardParams implements Params {
   public date: string | null
   public capa: CapaParams[] | null
   public isAction: number | null
+
+    public static readonly validation = new ClassValidation().setRules({
+      title: { required: true, minLength: 2, maxLength: 100 },
+    })
 
   constructor(
     title: string | null,
@@ -91,6 +96,14 @@ export default class AddHazardParams implements Params {
     if (this.isAction) data['is_action'] = this.isAction
 
     return data
+  }
+
+    validate() {
+    return AddHazardParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddHazardParams.validation.validateOrThrow(this)
   }
 }
 

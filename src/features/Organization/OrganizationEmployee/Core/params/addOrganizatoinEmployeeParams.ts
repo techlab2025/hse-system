@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type HirarachyEmployeeParams from './HirarchyParams'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
@@ -8,6 +9,13 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   password: string
   hierarchies: HirarachyEmployeeParams[]
   // certificateId: number[]
+
+  public static readonly validation = new ClassValidation().setRules({
+    name: { required: true, minLength: 2, maxLength: 100 },
+    phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
+    email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+    password: { required: true, minLength: 2, maxLength: 100 },
+  })
 
   constructor(
     name: string,
@@ -48,5 +56,12 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data
+  }
+  validate() {
+    return AddOrganizatoinEmployeeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddOrganizatoinEmployeeParams.validation.validateOrThrow(this)
   }
 }

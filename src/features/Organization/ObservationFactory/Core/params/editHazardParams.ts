@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params.ts'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import type CapaParams from './CapaParam'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditHazardParams implements Params {
   public id: number
@@ -21,6 +22,11 @@ export default class EditHazardParams implements Params {
   public date: string | null
   public capa: CapaParams[] | null
   public isAction: number | null
+
+  public static readonly validation = new ClassValidation().setRules({
+    title: { required: true, minLength: 2, maxLength: 100 },
+  })
+
   constructor(
     id: number,
     title: string | null,
@@ -86,5 +92,13 @@ export default class EditHazardParams implements Params {
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
     return data
+  }
+
+  validate() {
+    return EditHazardParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return EditHazardParams.validation.validateOrThrow(this)
   }
 }
