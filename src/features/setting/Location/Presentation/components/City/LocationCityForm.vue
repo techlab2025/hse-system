@@ -128,8 +128,11 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedCountry.value = newData?.country
+      // SelectedCountry.value = newData?.country
       // console.log(newData?.country, "newData?.country");
+      SelectedCountry.value = newData?.country
+        ? [newData.country]
+        : []
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -137,10 +140,14 @@ watch(
         0,
         0,
         LocationEnum.STATE,
-        newData?.country?.id,
+        [newData?.country?.id] || [],
       )
 
+      // SelectedState.value = newData?.state
       SelectedState.value = newData?.state
+        // ? [newData?.state]
+        // : []
+      console.log(newData?.state, "newData?.state");
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }

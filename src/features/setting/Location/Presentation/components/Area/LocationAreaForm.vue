@@ -131,7 +131,10 @@ watch(
 
       industry.value = newData?.industries!
 
+      // SelectedCountry.value = newData?.country
       SelectedCountry.value = newData?.country
+        ? [newData.country]
+        : []
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -139,10 +142,13 @@ watch(
         0,
         0,
         LocationEnum.STATE,
-        newData?.country?.id,
+        [newData?.country?.id],
       )
 
+      // SelectedState.value = newData?.state
       SelectedState.value = newData?.state
+        ? [newData.state]
+        : []
 
       indexLocationAreasParams.value = new IndexLocationParams(
         '',
@@ -150,7 +156,7 @@ watch(
         0,
         0,
         LocationEnum.CITY,
-        newData?.state?.id,
+        [newData?.state?.id],
       )
 
       SelectedCity.value = newData?.city
