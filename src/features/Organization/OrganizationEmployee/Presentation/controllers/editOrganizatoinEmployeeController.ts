@@ -6,6 +6,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import EditOrganizatoinEmployeeUseCase from '../../Domain/useCase/editOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
+import type EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEmployeeParams'
 
 export default class EditOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
   private static instance: EditOrganizatoinEmployeeController
@@ -23,11 +24,17 @@ export default class EditOrganizatoinEmployeeController extends ControllerInterf
     return this.instance
   }
 
-  async editOrganizatoinEmployee(params: Params, router: any) {
+  async editOrganizatoinEmployee(params: EditOrganizatoinEmployeeParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<OrganizatoinEmployeeModel> = await this.EditOrganizatoinEmployeeUseCase.call(params)
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<OrganizatoinEmployeeModel> =
+        await this.EditOrganizatoinEmployeeUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

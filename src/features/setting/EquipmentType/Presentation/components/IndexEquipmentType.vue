@@ -133,21 +133,21 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
     ],
   },
-  {
-    text: t('sub_equipment_types'),
-    icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment-types/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-    ],
-  },
+  // {
+  //   text: t('sub_equipment_types'),
+  //   icon: IconEdit,
+  //   link: `/${
+  //     user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+  //   }/equipment-types/${id}`,
+  //   permission: [
+  //     PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.EQUIPMENT_TYPE_ALL,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+  //   ],
+  // },
   {
     text: t('delete'),
     icon: IconDelete,

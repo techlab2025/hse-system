@@ -186,20 +186,20 @@ const SetAreaSelection = (data: TitleInterface) => {
       @update:modelValue="SetCountrySelection" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+    <CustomSelectInput :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
       @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
+    <CustomSelectInput :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
       :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
       @update:modelValue="SetCitySelection" />
   </div>
 
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedArea" :controller="indexLocationAreasController"
+    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity" :controller="indexLocationAreasController"
       :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
       @update:modelValue="SetAreaSelection" />
   </div>

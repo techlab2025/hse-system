@@ -28,6 +28,11 @@ export default class AddLocationController extends ControllerInterface<LocationM
   async addLocation(params: AddLocationParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

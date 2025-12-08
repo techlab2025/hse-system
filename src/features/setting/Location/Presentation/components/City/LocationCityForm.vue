@@ -119,6 +119,7 @@ watch(
   ([newData, newDefault]) => {
     if (newDefault.length) {
       if (newData?.titles?.length) {
+
         langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
@@ -127,7 +128,8 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedCountry.value = newData?.country
+      SelectedCountry.value = [newData?.country]
+      // console.log(newData?.country, "newData?.country");
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -139,7 +141,6 @@ watch(
       )
 
       SelectedState.value = newData?.state
-
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
@@ -213,7 +214,7 @@ watch(
       :params="indexLocationCountriesParams" label="Country" id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
       @update:modelValue="SetStateSelection" />

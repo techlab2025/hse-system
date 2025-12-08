@@ -12,6 +12,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
+import type AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 
 export default class AddTemplateItemController extends ControllerInterface<TemplateItemModel> {
   private static instance: AddTemplateItemController
@@ -27,9 +28,19 @@ export default class AddTemplateItemController extends ControllerInterface<Templ
     return this.instance
   }
 
-  async addTemplateItem(params: Params, router: Router, draft: boolean = false, id: number) {
+  async addTemplateItem(
+    params: AddTemplateItemParams,
+    router: Router,
+    draft: boolean = false,
+    id: number,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<TemplateItemModel> = await this.addTemplateItemUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

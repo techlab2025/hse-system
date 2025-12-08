@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddTemplateItemParams implements Params {
   id: number
@@ -7,7 +8,9 @@ export default class AddTemplateItemParams implements Params {
   answers: items[]
   isImageRequired: number
   imageType: number
-
+  public static readonly validation = new ClassValidation().setRules({
+    title: { required: true, minLength: 2, maxLength: 100 },
+  })
   constructor(
     id: number,
     title: string,
@@ -50,6 +53,14 @@ export default class AddTemplateItemParams implements Params {
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = this.imageType || 0
     return data
+  }
+
+  validate() {
+    return AddTemplateItemParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddTemplateItemParams.validation.validateOrThrow(this)
   }
 }
 
