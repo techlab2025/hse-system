@@ -8,6 +8,7 @@ import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/fa
 import EditFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/editFactoryItemUseCase.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type EditFactoryItemParams from '../../Core/params/editFactoryItemParams'
 
 export default class EditFactoryItemController extends ControllerInterface<FactoryItemModel> {
   private static instance: EditFactoryItemController
@@ -25,10 +26,15 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
     return this.instance
   }
 
-  async editFactory(params: Params, router: any) {
+  async editFactory(params: EditFactoryItemParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<FactoryItemModel> = await this.EditFactoryUseCase.call(params)
 
       this.setState(dataState)
@@ -42,7 +48,9 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

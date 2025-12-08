@@ -23,6 +23,7 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -202,6 +203,15 @@ const setEquipmentType = (data) => {
     <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate == 1" @change="updateData"
       id="has_certificate" />
   </div>
+  <!-- <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`has_certificate`" @update:checked="hasCertificate = $event" />
+  </div> -->
+
+  <!-- Equipment Selection -->
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="industry" :static-options="EquipmentsTypes" label="Type" id="Type"
+      placeholder="Select Type" @update:modelValue="setEquipmentType" />
+  </div>
 
   <!-- all_industries -->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
@@ -210,12 +220,10 @@ const setEquipmentType = (data) => {
       id="all_industries" />
   </div>
 
-  <!-- image -->
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="image">Image</label>
-    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
-      placeholder="Select image" />
-  </div>
+  <!-- <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+  </div> -->
+
 
   <!--industry  -->
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
@@ -224,9 +232,13 @@ const setEquipmentType = (data) => {
       @update:modelValue="setIndustry" />
   </div>
 
-  <!-- Equipment Selection -->
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="industry" :static-options="EquipmentsTypes" label="Type" id="Type"
-      placeholder="Select Type" @update:modelValue="setEquipmentType" />
+
+
+  <!-- image -->
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <label for="image">Image</label>
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+      placeholder="Select image" />
   </div>
+
 </template>

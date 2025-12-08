@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
-// import { HazardTypesMap } from '@/constant/HazardTypes'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 import USA from '@/shared/icons/USA.vue'
@@ -16,13 +14,17 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-// import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-// import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import IndexFactoryController from '@/features/setting/Factory/Presentation/controllers/indexFactoryController'
+import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFactoryParams'
+import HazardFactorParams from '../../Core/params/FactorParams'
 
 const emit = defineEmits(['update:data'])
+const indexFactoryController = IndexFactoryController.getInstance()
+const indexFactoryParams = new IndexFactoryParams("", 1, 10, 1)
+
 
 const props = defineProps<{
   data?: ShowHazardTypeModel
@@ -112,20 +114,21 @@ const updateData = () => {
 
   // console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+  const HazaradFactor = Factor.value?.map((item) => new HazardFactorParams(item.id))
 
   const params = props.data?.id
     ? new EditHazardTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id) ?? [],
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],
+    )
     : new AddHazardTypeParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        // id,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      HazaradFactor
+    )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -159,19 +162,18 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
+
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
   },
   { immediate: true },
 )
-
-// const setImage = async (data: File) => {
-//   image.value = await filesToBase64(data)
-//   updateData()
-// }
+const Factor = ref<TitleInterface[]>([])
+const setFactor = (data: TitleInterface[]) => {
+  Factor.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -179,46 +181,18 @@ watch(
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
-  <!--    <label>{{ $t('has_certificate') }}</label>-->
-  <!--    <input-->
-  <!--      type="checkbox"-->
-  <!--      :value="1"-->
-  <!--      v-model="hasCertificate"-->
-  <!--      :checked="hasCertificate == 1"-->
-  <!--      @change="updateData"-->
-  <!--    />-->
-  <!--  </div>-->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="HazardType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  </div>
 
-      @change="updateData"
-    />
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="Factor" :controller="indexFactoryController" :params="indexFactoryParams"
+      label="Factor" id="factor" placeholder="Select Factor" :type="2" @update:modelValue="setFactor" />
   </div>
-    <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="HazardType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
-  </div>
-  <!--  <div class="col-span-4 md:col-span-4">-->
-  <!--    <FileUpload-->
-  <!--      :initialFileData="image"-->
-  <!--      @update:fileData="setImage"-->
-  <!--      label="Image"-->
-  <!--      id="image"-->
-  <!--      placeholder="Select image"-->
-  <!--      :multiple="false"-->
-  <!--    />-->
-  <!--  </div>-->
+
 </template>

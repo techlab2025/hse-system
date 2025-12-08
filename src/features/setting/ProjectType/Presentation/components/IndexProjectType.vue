@@ -181,7 +181,7 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col">{{ $t('all_industries') }}</th>
                 <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -200,9 +200,9 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                       : '---'
                   }}
                 </td>
-                <td data-label="all_industries">
+                <!-- <td data-label="all_industries">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+                </td> -->
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusProjectType-->

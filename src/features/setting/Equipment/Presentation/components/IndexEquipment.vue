@@ -121,9 +121,8 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('add_sub_equipment'),
     icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment/add/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/equipment/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
@@ -133,27 +132,12 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
-  // {
-  //   text: t('sub_equipment'),
-  //   icon: IconEdit,
-  //   link: `/${
-  //     user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-  //   }/equipments/${id}`,
-  //   permission: [
-  //     PermissionsEnum.EQUIPMENT_UPDATE,
-  //     PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  //     PermissionsEnum.EQUIPMENT_ALL,
-  //     PermissionsEnum.ORG_EQUIPMENT_ALL,
-  //   ],
-  // },
+
   {
     text: t('add_inspection'),
     icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment-mangement/inspection/add/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/equipment-mangement/inspection/add/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
@@ -166,9 +150,8 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('show'),
     icon: IconEye,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/equipment-show/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/equipment-show/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_DETAILS,
       PermissionsEnum.ORG_EQUIPMENT_DETAILS,
@@ -206,56 +189,42 @@ watch(
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click=";(word = ''), searchEquipmentType()">
+      <span class="icon-remove" @click="; (word = ''), searchEquipmentType()">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchEquipmentType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEquipmentType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment/add`"
-          class="btn btn-primary"
-        >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.EQUIPMENT_CREATE,
+        PermissionsEnum.ORG_EQUIPMENT_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/equipment/add`" class="btn btn-primary">
           {{ $t('Add_Equipment') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.EQUIPMENT_DELETE,
-      PermissionsEnum.EQUIPMENT_FETCH,
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.EQUIPMENT_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.EQUIPMENT_ALL,
+    PermissionsEnum.EQUIPMENT_DELETE,
+    PermissionsEnum.EQUIPMENT_FETCH,
+    PermissionsEnum.EQUIPMENT_UPDATE,
+    PermissionsEnum.EQUIPMENT_CREATE,
+    PermissionsEnum.ORG_EQUIPMENT_ALL,
+    PermissionsEnum.ORG_EQUIPMENT_DELETE,
+    PermissionsEnum.ORG_EQUIPMENT_FETCH,
+    PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+    PermissionsEnum.ORG_EQUIPMENT_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -279,11 +248,8 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
-                    :to="`/${
-                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                    }/equipment/edit/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/equipment/edit/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -298,30 +264,17 @@ watch(
                   }}
                 </td>
                 <td data-label="EquipmentType">
-                  {{ item.equipmentType?.title }}
+                  {{ item.equipmentType?.title || "--" }}
                 </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusEquipmentType-->
-                  <!--                  v-if="item.EquipmentTypeStatus === EquipmentTypeStatusEnum.Draft"-->
-                  <!--                  :EquipmentTypeId="item.id"-->
-                  <!--                  @EquipmentTypeChangeStatus="fetchEquipmentType"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteEquipment)"
-                    @delete="deleteEquipment(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteEquipment)" @delete="deleteEquipment(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -330,32 +283,22 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/EquipmentType`"
-          addText="Add EquipmentType"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`" addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
-        />
+          title="..ops! You have No EquipmentTypes" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/EquipmentType`"
-          addText="Add EquipmentType"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/add/EquipmentType`" addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
-        />
+          title="..ops! You have No EquipmentTypes" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

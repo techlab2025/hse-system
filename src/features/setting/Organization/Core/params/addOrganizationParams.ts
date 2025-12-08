@@ -27,6 +27,7 @@ export default class AddOrganizationParams implements Params {
     location_ids: {
       required: false,
     },
+    link:{required:false , }
   })
 
   constructor(

@@ -17,6 +17,7 @@ export default class AddEquipmentParams implements Params {
   industries: number[]
   parentId: number
   contructorId: number
+  description: string
 
   // hasCertificate: number
 
@@ -34,6 +35,7 @@ export default class AddEquipmentParams implements Params {
     industries: number[],
     parentId: number,
     contructorId: number,
+    description: string,
     // hasCertificate: number,
   ) {
     this.translation = translation
@@ -49,6 +51,7 @@ export default class AddEquipmentParams implements Params {
     this.industries = industries
     this.parentId = parentId
     this.contructorId = contructorId
+    this.description = description
     // this.hasCertificate = hasCertificate
   }
 
@@ -77,6 +80,7 @@ export default class AddEquipmentParams implements Params {
     if (this.industries.length > 0) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.contructorId) data['contructor_id'] = this.contructorId
+    if (this.description) data['description'] = this.description
 
     return data
   }

@@ -1,15 +1,20 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddAccidentsTypeParams implements Params {
   translation: TranslationsParams
-  // hasCertificate: number
   allIndustries: boolean | null
   industries: number[]
-  // parentId: number
-  // image: string
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true },
+  })
 
-  constructor(translation: TranslationsParams, allIndustries: boolean | null, industries: number[]) {
+  constructor(
+    translation: TranslationsParams,
+    allIndustries: boolean | null,
+    industries: number[],
+  ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
@@ -28,9 +33,16 @@ export default class AddAccidentsTypeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
+  }
+  validate() {
+    return AddAccidentsTypeParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddAccidentsTypeParams.validation.validateOrThrow(this)
   }
 }

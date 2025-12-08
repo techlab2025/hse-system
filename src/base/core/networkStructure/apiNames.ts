@@ -1215,6 +1215,24 @@ class ApiNames {
   public get ShowInvestigatingResult() {
     return this.prefix + 'fetch_investigation_details'
   }
+
+
+  // Role
+  public get CreateRole() {
+    return this.prefix + 'create_role'
+  }
+  public get IndexRole() {
+    return this.prefix + 'fetch_role'
+  }
+  public get ShowRole() {
+    return this.prefix + 'fetch_role_details'
+  }
+  public get EditRole() {
+    return this.prefix + 'update_role'
+  }
+  public get DeleteRole() {
+    return this.prefix + 'delete_role'
+  }
 }
 
 export { ApiNames }

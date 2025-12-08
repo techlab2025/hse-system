@@ -1,27 +1,27 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddFactoryItemParams implements Params {
   translation: TranslationsParams
-  // hasCertificate: number
   allIndustries: boolean | null
   industries: number[]
   factoryId: number
-  // parentId: number
-  // image: string
 
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true, minLength: 2, maxLength: 100 },
+    factoryId: { required: true },
+  })
   constructor(
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
     factoryId: number,
-
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
     this.factoryId = factoryId
-
   }
 
   toMap(): Record<
@@ -42,5 +42,15 @@ export default class AddFactoryItemParams implements Params {
     data['factory_id'] = this.factoryId
 
     return data
+  }
+
+  validate() {
+    console.log(AddFactoryItemParams.validation.validate(this) , "validate")
+    return AddFactoryItemParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    console.log('validateOrThrow')
+    return AddFactoryItemParams.validation.validateOrThrow(this)
   }
 }
