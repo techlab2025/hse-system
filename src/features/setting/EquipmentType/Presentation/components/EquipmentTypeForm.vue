@@ -198,14 +198,14 @@ const setEquipmentType = (data) => {
   </div>
 
   <!-- Has Certificate -->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label for="has_certificate">{{ $t('has_certificate') }}</label>
     <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate == 1" @change="updateData"
       id="has_certificate" />
-  </div>
-  <!-- <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`has_certificate`" @update:checked="hasCertificate = $event" />
   </div> -->
+  <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`has_certificate`" @update:checked="hasCertificate = $event" />
+  </div>
 
   <!-- Equipment Selection -->
   <div class="col-span-4 md:col-span-2">
@@ -214,15 +214,15 @@ const setEquipmentType = (data) => {
   </div>
 
   <!-- all_industries -->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="all_industries">{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" @change="updateData"
       id="all_industries" />
-  </div>
-
-  <!-- <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div> -->
+
+  <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+  </div>
 
 
   <!--industry  -->
