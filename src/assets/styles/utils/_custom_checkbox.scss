@@ -4,20 +4,21 @@
   align-items: center;
   width: 100%;
   gap: 1rem;
-  padding: 1.25rem;
+  padding: 0.5rem;
+  margin-top: 25px;
   // background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 2px solid #e2e8f0;
-  border-radius: 16px;
+  border-radius: 25px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
-.checkbox-toggle-wrapper:hover {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-}
+// .checkbox-toggle-wrapper:hover {
+//   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+//   border-color: #cbd5e1;
+//   transform: translateY(-2px);
+//   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+// }
 
 .checkbox-checkbox {
   position: absolute;

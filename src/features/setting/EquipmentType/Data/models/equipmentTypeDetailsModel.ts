@@ -13,6 +13,7 @@ export default class EquipmentTypeDetailsModel {
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
+  public type: number
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -23,6 +24,7 @@ export default class EquipmentTypeDetailsModel {
     industries: TitleModel<string>[] = [],
     parentId: number,
     image: string,
+    type: number,
   ) {
     this.id = id
     this.titles = titles
@@ -31,6 +33,7 @@ export default class EquipmentTypeDetailsModel {
     this.industries = industries
     this.parentId = parentId
     this.image = image
+    this.type = type
   }
 
   static fromMap(data: any): EquipmentTypeDetailsModel {
@@ -44,6 +47,7 @@ export default class EquipmentTypeDetailsModel {
         : [],
       data.parent_id,
       data.image,
+      data.type,
     )
   }
 
