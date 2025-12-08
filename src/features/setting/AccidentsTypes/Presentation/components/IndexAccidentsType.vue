@@ -208,7 +208,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
                 <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
@@ -228,7 +228,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type == OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0

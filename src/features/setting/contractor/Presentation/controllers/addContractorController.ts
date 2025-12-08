@@ -10,6 +10,7 @@ import AddContractorUseCase from '../../Domain/useCase/addContractorUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type ContractorModel from '../../Data/models/ContractorModel'
+import type AddContractorParams from '../../Core/params/addContractorParams'
 
 export default class AddContractorController extends ControllerInterface<ContractorModel> {
   private static instance: AddContractorController
@@ -25,9 +26,14 @@ export default class AddContractorController extends ControllerInterface<Contrac
     return this.instance
   }
 
-  async addContractor(params: Params, router: Router, draft: boolean = false) {
+  async addContractor(params: AddContractorParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+        params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<ContractorModel> =
         await this.addContractorUseCase.call(params)
       this.setState(dataState)

@@ -10,6 +10,7 @@ import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import AddAccidentsTypeUseCase from '../../Domain/useCase/addAccidentsTypeUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import type AddAccidentsTypeParams from '../../Core/params/addAccidentsTypeParams'
 
 export default class AddAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: AddAccidentsTypeController
@@ -25,9 +26,15 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
     return this.instance
   }
 
-  async addAccidentsType(params: Params, router: Router, draft: boolean = false) {
+  async addAccidentsType(params: AddAccidentsTypeParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<AccidentsTypeModel> =
         await this.addAccidentsTypeUseCase.call(params)
       this.setState(dataState)
@@ -41,7 +48,10 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const organizationEmployeeRoutes: RouteRecordRaw[] = [
   {
-    path: 'organization-employee/:parent_id?',
+    path: 'organization-employee',
     name: 'Organization Employee',
     component: () => import('@/views/Organization/OrganizationEmployee/IndexOrganization.vue'),
   },

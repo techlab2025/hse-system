@@ -30,7 +30,6 @@ export default class AddOrganizationController extends ControllerInterface<Organ
 
     try {
       params.validate()
-
       if (!params.validate().isValid) {
         params.validateOrThrow()
         return

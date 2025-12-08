@@ -178,7 +178,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
           }/factory-item/add`"
           class="btn btn-primary"
         >
-          {{ $t('Add_Factory') }}
+          {{ $t('Add_Factor_item') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -215,7 +215,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('factory') }}</th>
+                <th scope="col">{{ $t('factor') }}</th>
                 <!--                <th scope="col">{{ $t('image') }}</th>-->
 
                 <th scope="col">{{ $t('actions') }}</th>

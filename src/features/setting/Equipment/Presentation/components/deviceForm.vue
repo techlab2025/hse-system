@@ -177,7 +177,9 @@ const addEquipment = async () => {
       AllIndustry,
       industry.value?.map((item) => item.id),
       +route.params.parent_id,
-      SelectedContractor.value?.id
+      SelectedContractor.value?.id,
+      descripe.value
+
     )
     : new AddEquipmentParams(
       translations,
@@ -192,8 +194,8 @@ const addEquipment = async () => {
       AllIndustry,
       industry.value?.map((item) => item.id),
       +route.params.parent_id,
-      SelectedContractor.value?.id
-
+      SelectedContractor.value?.id,
+      descripe.value
     )
 
   try {
@@ -215,6 +217,8 @@ const SelectedContractor = ref<TitleInterface>()
 const setContructor = (data: TitleInterface) => {
   SelectedContractor.value = data
 }
+
+const descripe = ref<string>()
 </script>
 
 <template>
@@ -243,7 +247,7 @@ const setContructor = (data: TitleInterface) => {
         <CustomSelectInput :modelValue="deviceStatus" :staticOptions="deviceStatusOptions" label="Device status"
           id="Device status" placeholder="Device status" @update:modelValue="setDeviceStatus" />
       </div>
-      <div>
+      <div v-if="deviceStatus?.id == EquipmentStatus.RENT">
         <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
           @update:modelValue="setContructor" />
@@ -263,19 +267,24 @@ const setContructor = (data: TitleInterface) => {
         <input type="checkbox" :value="1" v-model="allIndustries" />
       </div>
 
-      <div v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+      <div class="input-wrapper" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
           label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
           @update:modelValue="setIndustry" />
       </div>
 
-      <div class="" v-else></div>
-
+      <!-- <div class="" v-else></div> -->
+      <div class="input-wrapper col-span-2">
+        <label for="description">Description</label>
+        <textarea id="description" class="input" placeholder="add your descripe" v-model="descripe"></textarea>
+      </div>
       <DemoCard :isBreadCramp="false" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
         :decommissioningDate="decommissioningDate || ''" :certificateImage="certificateImage || ''" />
 
       <QrCard />
+
+
     </div>
 
     <div class="flex items-center gap-2 !mt-4">

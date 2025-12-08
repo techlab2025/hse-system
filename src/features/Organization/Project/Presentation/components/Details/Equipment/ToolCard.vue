@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
   <div class="tool-card">
     <div class="tool-card-header">
-      <img :src="tool?.img || '/default.png'" alt="tool" @error="setDefaultImage">
+      <img :src="tool?.img || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
       <div class="tool-card-header-text">
         <!--  > <span class="subtype">{{
           tool.subtype }}</span> -->

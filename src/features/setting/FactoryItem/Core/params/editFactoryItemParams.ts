@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditFactoryItemParams implements Params {
   id: number
@@ -8,6 +9,10 @@ export default class EditFactoryItemParams implements Params {
   industries: number[]
   factoryId: number
 
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true, minLength: 2, maxLength: 100 },
+    factoryId: { required: true },
+  })
   constructor(
     id: number,
     translation: TranslationsParams,
@@ -30,11 +35,17 @@ export default class EditFactoryItemParams implements Params {
 
     data['factory_item_id'] = this.id
     data['translations'] = this.translation.toMap()
-    if(this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['factory_id'] = this.factoryId
 
     return data
   }
-}
+  validate() {
+    return EditFactoryItemParams.validation.validate(this)
+  }
 
+  validateOrThrow() {
+    return EditFactoryItemParams.validation.validateOrThrow(this)
+  }
+}

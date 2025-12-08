@@ -10,6 +10,7 @@ import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/fa
 import AddFactoryItemUseCase from '@/features/setting/FactoryItem/Domain/useCase/addFactoryItemUseCase.ts'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import type AddFactoryItemParams from '../../Core/params/addFactoryItemParams'
 
 export default class AddFactoryItemController extends ControllerInterface<FactoryItemModel> {
   private static instance: AddFactoryItemController
@@ -25,11 +26,16 @@ export default class AddFactoryItemController extends ControllerInterface<Factor
     return this.instance
   }
 
-  async addFactory(params: Params, router: Router, draft: boolean = false) {
+  async addFactory(params: AddFactoryItemParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<FactoryItemModel> =
-        await this.AddFactoryUseCase.call(params)
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        console.log("aaaaaaaaa");
+        return
+      }
+      const dataState: DataState<FactoryItemModel> = await this.AddFactoryUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -41,7 +47,10 @@ export default class AddFactoryItemController extends ControllerInterface<Factor
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

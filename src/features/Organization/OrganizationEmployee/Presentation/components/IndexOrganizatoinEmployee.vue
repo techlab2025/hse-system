@@ -36,7 +36,9 @@ const countPerPage = ref(10)
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const state = ref(indexOrganizatoinEmployeeController.state.value)
 const route = useRoute()
-const id = route.params.parent_id
+// const id = route.params.parent_id
+const id = route?.query?.parent_id
+
 // const type = ref<OrganizatoinEmployeeStatusEnum>(OrganizatoinEmployeeStatusEnum[route.params.type as keyof typeof OrganizatoinEmployeeStatusEnum])
 
 const fetchOrganizatoinEmployee = async (
@@ -50,6 +52,7 @@ const fetchOrganizatoinEmployee = async (
     pageNumber,
     perPage,
     withPage,
+    id,
   )
   await indexOrganizatoinEmployeeController.getData(deleteOrganizatoinEmployeeParams)
 }
@@ -153,13 +156,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
       <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchOrganizatoinEmployee"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
@@ -172,16 +169,14 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORG_EMPLOYEE_ALL,
-      PermissionsEnum.ORG_EMPLOYEE_DELETE,
-      PermissionsEnum.ORG_EMPLOYEE_FETCH,
-      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-      PermissionsEnum.ORG_EMPLOYEE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_EMPLOYEE_ALL,
+    PermissionsEnum.ORG_EMPLOYEE_DELETE,
+    PermissionsEnum.ORG_EMPLOYEE_FETCH,
+    PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+    PermissionsEnum.ORG_EMPLOYEE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -197,30 +192,23 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/organization-employee/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/organization/organization-employee/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
                 <td data-label="images">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
+                  <img :src="item.image || '/src/assets/images/logo.svg'" @error="setDefaultImage($event)" alt="" />
                 </td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
-                    @delete="deleteOrganizatoinEmployee(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
+                    @delete="deleteOrganizatoinEmployee(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -229,28 +217,20 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/add/OrganizatoinEmployee`"
-          addText="Add OrganizatoinEmployee"
+        <DataEmpty :link="`/add/OrganizatoinEmployee`" addText="Add OrganizatoinEmployee"
           description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No OrganizatoinEmployeeuages"
-        />
+          title="..ops! You have No OrganizatoinEmployeeuages" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/add/OrganizatoinEmployee`"
-          addText="Add OrganizatoinEmployee"
+        <DataFailed :link="`/add/OrganizatoinEmployee`" addText="Add OrganizatoinEmployee"
           description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No OrganizatoinEmployeeuages"
-        />
+          title="..ops! You have No OrganizatoinEmployeeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

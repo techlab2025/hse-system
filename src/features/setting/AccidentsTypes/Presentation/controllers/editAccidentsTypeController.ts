@@ -8,6 +8,7 @@ import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import EditAccidentsTypeUseCase from '../../Domain/useCase/editAccidentsTypeUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import type EditAccidentsTypeParams from '../../Core/params/editAccidentsTypeParams'
 
 export default class EditAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: EditAccidentsTypeController
@@ -25,11 +26,18 @@ export default class EditAccidentsTypeController extends ControllerInterface<Acc
     return this.instance
   }
 
-  async editAccidentsType(params: Params, router: any) {
+  async editAccidentsType(params: EditAccidentsTypeParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<AccidentsTypeModel> = await this.editAccidentsTypeUseCase.call(params)
+      params.validate()
+
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<AccidentsTypeModel> =
+        await this.editAccidentsTypeUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -40,10 +48,11 @@ export default class EditAccidentsTypeController extends ControllerInterface<Acc
           messageContent: null,
         })
 
-
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

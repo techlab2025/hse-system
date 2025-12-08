@@ -8,6 +8,7 @@ import EditContractorUseCase from '../../Domain/useCase/editContractorUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type ContractorModel from '../../Data/models/ContractorModel'
+import type EditContractorParams from '../../Core/params/editContractorParams'
 
 export default class EditContractorController extends ControllerInterface<ContractorModel> {
   private static instance: EditContractorController
@@ -25,10 +26,15 @@ export default class EditContractorController extends ControllerInterface<Contra
     return this.instance
   }
 
-  async editContractor(params: Params, router: any) {
+  async editContractor(params: EditContractorParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<ContractorModel> = await this.editContractorUseCase.call(params)
 
       this.setState(dataState)
@@ -42,7 +48,9 @@ export default class EditContractorController extends ControllerInterface<Contra
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractors`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractors`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

@@ -1010,7 +1010,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/factories">
                         <SidebarVector />
-                        <span>{{ $t('Factories') }}</span>
+                        <span>{{ $t('Factors') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1025,7 +1025,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/factories-items">
                         <SidebarVector />
-                        <span>{{ $t('Factories Item') }}</span>
+                        <span>{{ $t('Factor Item') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>
@@ -1244,7 +1244,7 @@ const user = useUserStore()
                     </router-link>
                   </li>
                   <!-- Equipment Mangment -->
-                  <PermissionBuilder :code="[
+                  <!-- <PermissionBuilder :code="[
                     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
                     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
                     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
@@ -1257,7 +1257,7 @@ const user = useUserStore()
                         <span>{{ $t('equipment_management') }}</span>
                       </router-link>
                     </li>
-                  </PermissionBuilder>
+                  </PermissionBuilder> -->
 
                   <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
                     <Accordion value="1">

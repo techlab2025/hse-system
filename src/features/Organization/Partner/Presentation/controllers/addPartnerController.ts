@@ -8,6 +8,7 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type PartnerModel from '../../Data/models/PartnerModel'
 import AddPartnerteUseCase from '../../Domain/useCase/addPartnerUseCase'
+import type AddPartnerParams from '../../Core/params/addPartnerParams'
 
 export default class AddPartnerController extends ControllerInterface<PartnerModel> {
   private static instance: AddPartnerController
@@ -23,11 +24,15 @@ export default class AddPartnerController extends ControllerInterface<PartnerMod
     return this.instance
   }
 
-  async addPartner(params: Params, router: Router, draft: boolean = false) {
+  async addPartner(params: AddPartnerParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<PartnerModel> =
-        await this.AddPartnerUseCase.call(params)
+      params.validate()
+      if (!params.validate()?.isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<PartnerModel> = await this.AddPartnerUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({

@@ -123,17 +123,17 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   const params = props.data?.id
     ? new EditAccidentsTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id) ?? [],
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],
+    )
     : new AddAccidentsTypeParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        // id,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      // id,
+    )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -145,15 +145,12 @@ const setIndustry = (data: TitleInterface[]) => {
   updateData()
 }
 
-// when child emits modelValue (updated translations)
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
 
-  // console.log(langs.value, 'langs')
   updateData()
 }
 
-// init AccidentsTypes either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -167,8 +164,6 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
@@ -176,10 +171,6 @@ watch(
   { immediate: true },
 )
 
-// const setImage = async (data: File) => {
-//   image.value = await filesToBase64(data)
-//   updateData()
-// }
 </script>
 
 <template>
@@ -187,52 +178,13 @@ watch(
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
-  <!--    <label>{{ $t('has_certificate') }}</label>-->
-  <!--    <input-->
-  <!--      type="checkbox"-->
-  <!--      :value="1"-->
-  <!--      v-model="hasCertificate"-->
-  <!--      :checked="hasCertificate == 1"-->
-  <!--      @change="updateData"-->
-  <!--    />-->
-  <!--  </div>-->
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  </div>
 
-      @change="updateData"
-    />
-  </div>
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="AccidentsType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
-  </div>
-  <!--  <div class="col-span-4 md:col-span-4">-->
-  <!--    <FileUpload-->
-  <!--      :initialFileData="image"-->
-  <!--      @update:fileData="setImage"-->
-  <!--      label="Image"-->
-  <!--      id="image"-->
-  <!--      placeholder="Select image"-->
-  <!--      :multiple="false"-->
-  <!--    />-->
-  <!--  </div>-->
 </template>

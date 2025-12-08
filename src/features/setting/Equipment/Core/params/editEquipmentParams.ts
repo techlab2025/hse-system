@@ -19,9 +19,8 @@ export default class implements Params {
   allIndustries: number | null
   industries: number[]
   parentId: number
-
-
-
+  description: string
+  contructorId: number
   // hasCertificate: number
 
   constructor(
@@ -38,7 +37,8 @@ export default class implements Params {
     allIndustries: number | null,
     industries: number[],
     parentId: number,
-
+    description: string,
+    contructorId: number,
 
     // hasCertificate: number,
   ) {
@@ -55,6 +55,8 @@ export default class implements Params {
     this.allIndustries = allIndustries
     this.industries = industries
     this.parentId = parentId
+    this.description = description
+    this.contructorId = contructorId
 
     // this.hasCertificate = hasCertificate
   }
@@ -75,20 +77,20 @@ export default class implements Params {
     data['translations'] = this.translation.toMap()
     if (this.date != null) data['date'] = formatJoinDate(this.date)
     if (this.status != null) data['status'] = this.status
-    if (this.inspectionDuration != null)
-      data['inspection_duration'] = this.inspectionDuration
+    if (this.inspectionDuration != null) data['inspection_duration'] = this.inspectionDuration
     if (this.licenseNumber != null) data['license_number'] = this.licenseNumber
-    if (this.licensePlateNumber != null)
-      data['license_plate_number'] = this.licensePlateNumber
+    if (this.licensePlateNumber != null) data['license_plate_number'] = this.licensePlateNumber
     if (this.image != null && this.image.startsWith('data:image')) data['image'] = this.image
     if (this.certificateImage != null)
-      if (this.certificateImage && this.certificateImage.startsWith('data:image')) data['certificate_image'] = this.certificateImage
-
+      if (this.certificateImage && this.certificateImage.startsWith('data:image'))
+        data['certificate_image'] = this.certificateImage
 
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (this.industries.length > 0) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
+    if (this.contructorId) data['contructor_id'] = this.contructorId
 
+    if (this.description) data['description'] = this.description
 
     return data
   }

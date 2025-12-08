@@ -151,52 +151,40 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHazardType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
-          class="btn btn-primary"
-        >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.HAZARD_TYPE_CREATE,
+        PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+          class="btn btn-primary">
           {{ $t('Add_HazardType') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.HAZARD_TYPE_FETCH,
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-      PermissionsEnum.HAZARD_TYPE_CREATE,
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.HAZARD_TYPE_ALL,
+    PermissionsEnum.HAZARD_TYPE_DELETE,
+    PermissionsEnum.HAZARD_TYPE_FETCH,
+    PermissionsEnum.HAZARD_TYPE_UPDATE,
+    PermissionsEnum.HAZARD_TYPE_CREATE,
 
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-    ]"
-  >
+    PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+    PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+    PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+    PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+    PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -208,7 +196,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -217,12 +205,13 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`">{{
+                    index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
+                  ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
@@ -230,9 +219,9 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                       : '---'
                   }}
                 </td>
-                <td data-label="all_industries">
+                <!-- <td data-label="all_industries">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td>
+                </td> -->
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusHazardType-->
@@ -241,20 +230,13 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                   <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteHazardType)" @delete="deleteHazardType(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -263,28 +245,22 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
           addText="Add HazardType"
           description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType"
-        />
+          title="..ops! You have No HazardType" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
           addText="Add HazardType"
           description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType"
-        />
+          title="..ops! You have No HazardType" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
