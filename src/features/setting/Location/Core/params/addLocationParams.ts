@@ -10,7 +10,7 @@ export default class AddLocationParams implements Params {
 
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
-    code: { required: true, minLength: 1, maxLength: 5 },
+    // code: { required: true, minLength: 1, maxLength: 5 },
   })
 
   constructor(title: TranslationsParams, code: string, type: number, ParentId?: number) {
