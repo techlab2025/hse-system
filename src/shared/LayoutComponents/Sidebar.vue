@@ -400,7 +400,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/areas">
                           <SidebarVector />
-                          <span>{{ $t('area') }}</span>
+                          <span>{{ $t('Location') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder>
