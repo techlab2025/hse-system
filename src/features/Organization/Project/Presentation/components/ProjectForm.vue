@@ -430,12 +430,12 @@ watch(() => langsDescription.value,
     <label for="">Zones</label>
     <AddZoneDialog class="input" :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
   </div>
-  <div class="col-span-4 md:col-span-4 input-wrapper">
+  <!-- <div class="col-span-4 md:col-span-4 input-wrapper">
     <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
       :controller="indexMethodsController" :params="indexMethodsParams"
       :label="$t('the method of evaluating employee performance')" :type="2"
       :placeholder="$t('choose your method of evaluating employee performance')" />
-  </div>
+  </div> -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput :label="$t('project objectives')" :langs="langDefault" :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
