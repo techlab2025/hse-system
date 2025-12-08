@@ -30,6 +30,7 @@ import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const { deviceData } = defineProps<{ deviceData?: EquipmentDetailsModel }>()
 const emit = defineEmits(['update:data'])
@@ -262,9 +263,14 @@ const descripe = ref<string>()
 
       <!-- <div v-if="user.user?.type !== OrganizationTypeEnum.ORGANIZATION" class=""></div> -->
 
-      <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+      <!-- <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
         <input type="checkbox" :value="1" v-model="allIndustries" />
+      </div> -->
+
+
+      <div class="input-wrapper " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
       </div>
 
       <div class="input-wrapper" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">

@@ -24,6 +24,7 @@ import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFact
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -204,9 +205,12 @@ const setFactory = (data: TitleInterface) => {
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
+  </div> -->
+  <div class="input-wrapper col-span-4 md:col-span-2 " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"

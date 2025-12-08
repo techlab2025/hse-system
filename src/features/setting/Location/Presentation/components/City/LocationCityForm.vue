@@ -128,7 +128,7 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      SelectedCountry.value = [newData?.country]
+      SelectedCountry.value = newData?.country
       // console.log(newData?.country, "newData?.country");
 
       indexLocationStatesParams.value = new IndexLocationParams(

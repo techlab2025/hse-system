@@ -131,7 +131,7 @@ watch(
 
       industry.value = newData?.industries!
 
-      SelectedCountry.value = [newData?.country]
+      SelectedCountry.value = newData?.country
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -142,7 +142,7 @@ watch(
         newData?.country?.id,
       )
 
-      SelectedState.value = [newData?.state]
+      SelectedState.value = newData?.state
 
       indexLocationAreasParams.value = new IndexLocationParams(
         '',
@@ -153,7 +153,7 @@ watch(
         newData?.state?.id,
       )
 
-      SelectedCity.value = [newData?.city]
+      SelectedCity.value = newData?.city
     }
   },
   { immediate: true },

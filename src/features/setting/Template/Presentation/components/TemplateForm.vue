@@ -14,19 +14,13 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import type TemplateDetailsModel from '../../Data/models/TemplateDetailsModel'
 import EditTemplateParams from '../../Core/params/editTemplateParams'
 import AddTemplateParams from '../../Core/params/addTemplateParams'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import IconMinus from '@/shared/icons/IconMinus.vue'
-import IconAdd from '@/shared/icons/IconAdd.vue'
 import { ActionsEnum } from '../../Core/Enum/ActionType'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { EquipmentTypesEnum } from '../../Core/Enum/EquipmentsTypeEnum'
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import Setting from '@/assets/images/Setting.png'
 import Geer from '@/assets/images/Geer.png'
 import hand from '@/assets/images/hand.png'
-import Select from 'primevue/select';
 import MultiSelect from 'primevue/multiselect';
 
 
@@ -127,7 +121,6 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? IndustrySelectOption.value == 1 ? true : false : null
   const industries = user.user?.type == OrganizationTypeEnum?.ADMIN ? IndustrySelectOption.value == 2 ? industry.value?.map((i) => i.id) : null : null
 
@@ -156,8 +149,6 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
-
-
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
@@ -170,21 +161,10 @@ watch(
       })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-    // allIndustries.value = newData?.allIndustries == 1 ? true : false
+    IndustrySelectOption.value = newData?.allIndustries == 1 ? true : false
 
-    // industry.value = newData?.industries ?? []
+    industry.value = newData?.industries ?? []
 
-    // image.value = newData?.image ?? ''
-
-    // items.value = newData?.templateItems?.length
-    //   ? newData.templateItems.map((it: any) => ({
-    //     langs: it.titles ?? newDefault.map((l: any) => ({ locale: l.locale, title: '' })),
-    //     allIndustries: it.allIndustries == 1 ? true : false,
-    //     industry: it.industries ?? [],
-    //     requireImage: it.requireImage ?? '',
-    //     action: it.action ?? null,
-    //   }))
-    //   : [createNewItem()]
   },
   { immediate: true },
 )

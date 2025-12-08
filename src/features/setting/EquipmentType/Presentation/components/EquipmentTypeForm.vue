@@ -53,7 +53,7 @@ const hasCertificate = ref<number>(0)
 const image = ref<string>('')
 
 // industry
-const industry = ref<TitleInterface[]>([])
+const industry = ref<TitleInterface>()
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
@@ -135,7 +135,7 @@ const updateData = () => {
   emit('update:data', params)
 }
 
-const setIndustry = (data: TitleInterface[]) => {
+const setIndustry = (data: TitleInterface) => {
   // console.log(data, 'data')
   industry.value = data
   updateData()
@@ -166,7 +166,9 @@ watch(
       // langs.value = newData?.code
       hasCertificate.value = newData?.hasCertificate
       allIndustries.value = newData?.allIndustries
-      industry.value = newData?.industries
+      EquipmentType.value = EquipmentsTypes.value.find(
+        (item) => item.id === newData?.type
+      ) || null
       image.value = newData?.image
     }
   },
@@ -209,7 +211,7 @@ const setEquipmentType = (data) => {
 
   <!-- Equipment Selection -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="industry" :static-options="EquipmentsTypes" label="Type" id="Type"
+    <CustomSelectInput :modelValue="EquipmentType" :static-options="EquipmentsTypes" label="Type" id="Type"
       placeholder="Select Type" @update:modelValue="setEquipmentType" />
   </div>
 
@@ -220,7 +222,7 @@ const setEquipmentType = (data) => {
       id="all_industries" />
   </div> -->
 
-  <div class="input-wrapper col-span-2">
+  <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
 
