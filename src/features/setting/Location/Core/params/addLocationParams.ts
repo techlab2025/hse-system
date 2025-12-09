@@ -5,11 +5,12 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddLocationParams implements Params {
   title: TranslationsParams
   code: string
-  type: number
+  public type: number
   ParentId?: number
 
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
+    type: { required: true },
     // code: { required: true, minLength: 1, maxLength: 5 },
   })
 
@@ -46,4 +47,51 @@ export default class AddLocationParams implements Params {
   validateOrThrow() {
     return AddLocationParams.validation.validateOrThrow(this)
   }
+  // validate() {
+  //   // Use dynamic validation based on type
+  //   const validation = new ClassValidation().setRules({
+  //     title: { required: true, minLength: 2, maxLength: 100 },
+  //     ParentId: {
+  //       // required: [2, 3, 4].includes(this.type),
+  //       custom: (value: any) => {
+  //         if ([2].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'Country ID is required for this location type'
+  //         }
+  //         if ([3].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'State is required for this location type'
+  //         }
+  //         if ([4].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'Location is required for this location type'
+  //         }
+  //         return true
+  //       },
+  //     },
+  //   })
+
+  //   return validation.validate(this)
+  // }
+
+  // validateOrThrow() {
+  //   // Use dynamic validation based on type
+  //   const validation = new ClassValidation().setRules({
+  //     title: { required: true, minLength: 2, maxLength: 100 },
+  //     ParentId: {
+  //       // required: [2, 3, 4].includes(this.type),
+  //       custom: (value: any) => {
+  //         if ([2].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'Country ID is required for this location type'
+  //         }
+  //         if ([3].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'State is required for this location type'
+  //         }
+  //         if ([4].includes(this.type) && (value === null || value === undefined)) {
+  //           return 'Location is required for this location type'
+  //         }
+  //         return true
+  //       },
+  //     },
+  //   })
+
+  //   return validation.validateOrThrow(this)
+  // }
 }

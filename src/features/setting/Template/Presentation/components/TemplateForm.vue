@@ -42,8 +42,9 @@ const industry = ref<TitleInterface[]>([])
 const selectedIndustry = ref<TitleInterface[]>([]);
 const Industries = ref<TitleInterface[]>([]);
 const industryController = IndexIndustryController.getInstance()
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
+
 const FetchIndustries = async () => {
-  const industryParams = new IndexIndustryParams('', 0, 10, 1)
   const res = await industryController.getData(industryParams)
   if (res.value.data) {
     Industries.value = res.value.data;
@@ -121,6 +122,8 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+
+
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? IndustrySelectOption.value == 1 ? true : false : null
   const industries = user.user?.type == OrganizationTypeEnum?.ADMIN ? IndustrySelectOption.value == 2 ? industry.value?.map((i) => i.id) : null : null
 
@@ -164,6 +167,7 @@ watch(
     IndustrySelectOption.value = newData?.allIndustries == 1 ? true : false
 
     industry.value = newData?.industries ?? []
+    console.log(industry.value, "industry.value");
 
   },
   { immediate: true },
@@ -175,6 +179,15 @@ const setIndustry = (data: TitleInterface[]) => {
   console.log(industry.value, "industry.value");
   updateData()
 }
+
+
+
+watch(()=>IndustrySelectOption.value,(newValue)=>{
+  if(newValue == 1){
+    industry.value = []
+    updateData()
+  }
+})
 
 </script>
 
@@ -192,16 +205,22 @@ const setIndustry = (data: TitleInterface[]) => {
       <span>All industries</span>
       <img :src="Geer" alt="all industries" />
     </label>
-    <input type="radio" id="all-industry" name="industry" value="1" v-model="IndustrySelectOption" @change="updateData">
+    <input type="radio" id="all-industry" name="industry" value="1" v-model="IndustrySelectOption"
+      @change="updateData">
   </div>
 
   <div class="col-span-4 md:col-span-2 select-container" :class="IndustrySelectOption == 2 ? 'selected' : ''"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <label for="select-industry">
-      <MultiSelect :modelValue="industry" :options="Industries" optionLabel="title" placeholder="select single industry"
-        :multiple="true" class=" w-full md:w-56 select-container-multi" @update:modelValue="setIndustry" />
+    <label for="select-industry" class="select-industry">
+      <!-- <MultiSelect :modelValue="industry" :options="Industries" optionLabel="title" placeholder="select single industry"
+        :multiple="true" class=" w-full md:w-56 select-container-multi" @update:modelValue="setIndustry" /> -->
+
+      <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+        label="Industry" id="Industry" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+
       <img :src="hand" alt="single industry" />
     </label>
+
     <input type="radio" id="select-industry" value="2" name="industry" v-model="IndustrySelectOption">
   </div>
 

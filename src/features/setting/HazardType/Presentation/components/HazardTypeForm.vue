@@ -164,8 +164,10 @@ watch(
       }
 
 
-      allIndustries.value = newData?.allIndustries! ?? false
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       industry.value = newData?.industries!
+      Factor.value = newData?.factories
+      console.log(allIndustries.value, " allIndustries.value ");
     }
   },
   { immediate: true },
@@ -187,7 +189,7 @@ const setFactor = (data: TitleInterface[]) => {
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
   <div class="input-wrapper col-span-4 md:col-span-2 " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
     <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"

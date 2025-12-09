@@ -7,6 +7,9 @@ import errorImage from '@/assets/images/error.png'
 import EditLocationUseCase from '../../Domain/useCase/editLocationUseCase'
 import type LocationModel from '../../Data/models/LocationModel'
 import LocationRouterHandler from '../routeHandler/RoutHandler'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import type EditLocationParams from '../../Core/params/editLocationParams'
+import { LocationEnum } from '../../Core/Enum/LocationEnum'
 
 export default class EditLocationController extends ControllerInterface<LocationModel> {
   private static instance: EditLocationController
@@ -24,10 +27,19 @@ export default class EditLocationController extends ControllerInterface<Location
     return this.instance
   }
 
-  async editLocation(params: Params, router: any) {
+  async editLocation(params: EditLocationParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
-    console.log(params , "country param")
     try {
+      if (!params?.ParentId && params?.type === LocationEnum.AREA) {
+        new OpenWarningDilaog('Please Select City').openDialog()
+        return
+      } else if (!params?.ParentId && params?.type === LocationEnum.STATE) {
+        new OpenWarningDilaog('Please Select Country').openDialog()
+        return
+      } else if (!params?.ParentId && params?.type === LocationEnum.CITY) {
+        new OpenWarningDilaog('Please Select State').openDialog()
+        return
+      }
       const dataState: DataState<LocationModel> = await this.editLocationUseCase.call(params)
 
       this.setState(dataState)

@@ -61,7 +61,9 @@ export default class TemplateDetailsModel {
         : [],
       data.parent_id,
       data.image,
-      data.template_items?.length > 0 ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item)) : [],
+      data.template_items?.length > 0
+        ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item))
+        : [],
       data.require_image,
       this.getTemplateItemsAction(data.action),
       data.title,

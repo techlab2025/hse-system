@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import type { EquipmentStatus } from '../enum/EquipmentStatus'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddEquipmentParams implements Params {
   translation: TranslationsParams
@@ -16,10 +17,17 @@ export default class AddEquipmentParams implements Params {
   allIndustries: number | null
   industries: number[]
   parentId: number
-  contructorId: number
-  description: string
+  contructorId?: number
+  description?: string
 
   // hasCertificate: number
+
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true, minLength: 2, maxLength: 100 },
+    // equipmentTypeId: { required: true },
+    // date: { required: true },
+    // image: { required: false },
+  })
 
   constructor(
     translation: TranslationsParams,
@@ -34,8 +42,8 @@ export default class AddEquipmentParams implements Params {
     allIndustries: number | null,
     industries: number[],
     parentId: number,
-    contructorId: number,
-    description: string,
+    contructorId?: number,
+    description?: string,
     // hasCertificate: number,
   ) {
     this.translation = translation
@@ -83,5 +91,13 @@ export default class AddEquipmentParams implements Params {
     if (this.description) data['description'] = this.description
 
     return data
+  }
+
+  validate() {
+    return AddEquipmentParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddEquipmentParams.validation.validateOrThrow(this)
   }
 }

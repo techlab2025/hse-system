@@ -164,8 +164,8 @@ watch(
       }
 
       // langs.value = newData?.code
-      hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries
+      hasCertificate.value = newData?.hasCertificate == 1 ? true : false
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       EquipmentType.value = EquipmentsTypes.value.find(
         (item) => item.id === newData?.type
       ) || null
@@ -206,7 +206,7 @@ const setEquipmentType = (data) => {
       id="has_certificate" />
   </div> -->
   <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`has_certificate`" @update:checked="hasCertificate = $event" />
+    <CustomCheckbox :title="`has_certificate`" :checked="hasCertificate" @update:checked="hasCertificate = $event" />
   </div>
 
   <!-- Equipment Selection -->
@@ -223,7 +223,7 @@ const setEquipmentType = (data) => {
   </div> -->
 
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
   </div>
 
 

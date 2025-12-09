@@ -6,6 +6,7 @@ import type Params from '@/base/core/params/params'
 import type AddLocationParams from '../../../Core/params/addLocationParams'
 import AddLocationController from '../../controllers/addLocationController'
 import LocationAreaForm from './LocationAreaForm.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -13,9 +14,10 @@ const params = ref<Params | null>(null)
 const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
-  console.log('addLocationArea', params.value)
   await addLocationController.addLocation(params.value as AddLocationParams, router)
 }
+
+
 const setParams = (data: Params) => {
   params.value = data
 }

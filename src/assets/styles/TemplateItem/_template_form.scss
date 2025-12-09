@@ -1,0 +1,9 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.select-industry{
+  .input-label{
+    display: none !important;
+  }
+}

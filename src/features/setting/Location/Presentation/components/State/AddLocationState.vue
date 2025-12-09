@@ -16,6 +16,7 @@ const addLocationController = AddLocationController.getInstance()
 const addLocation = async () => {
   await addLocationController.addLocation(params.value as AddLocationParams, router)
 }
+
 const setParams = (data: Params) => {
   params.value = data
 }

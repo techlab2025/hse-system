@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params.ts'
 import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 
 export default class EditOrganizatoinEmployeeParams implements Params {
   id: number
@@ -9,6 +10,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   email: string
   password: string
   hierarchies: HirarachyEmployeeParams[]
+  roles: RolesOrganizationEmployeeParams[]
 
   // certificateId: number[]
   public static readonly validation = new ClassValidation().setRules({
@@ -24,6 +26,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     email: string,
     password: string,
     hierarchies: HirarachyEmployeeParams[],
+    roles: RolesOrganizationEmployeeParams[],
 
     // certificateId: number[],
   ) {
@@ -33,6 +36,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.email = email
     this.password = password
     this.hierarchies = hierarchies
+    this.roles = roles
     // this.certificateId = certificateId
   }
 
@@ -48,6 +52,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['email'] = this.email
     data['password'] = this.password
     data['hierarchies'] = this.hierarchies
+    data['roles'] = this.roles
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

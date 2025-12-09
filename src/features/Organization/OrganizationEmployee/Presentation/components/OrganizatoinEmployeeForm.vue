@@ -17,6 +17,9 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
+import IndexRoleController from '@/features/Organization/Role/Presentation/controllers/indexRoleController'
+import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleParams'
+import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
 
 const toast = useToast();
 const Name = ref('')
@@ -35,6 +38,9 @@ const HerikalyParams = new IndexHerikalyParams("", 0, 0, 0)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
+
+const indexRoleController = IndexRoleController.getInstance()
+const indexRoleParams = new IndexRoleParams("", 0, 0, 0)
 
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
@@ -91,6 +97,7 @@ onMounted(async () => {
 const updateData = () => {
 
   const HeirarchyIds = Heirarchy.value?.map((item) => new HirarachyEmployeeParams(item.id))
+  const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
       props?.data?.id,
@@ -98,7 +105,8 @@ const updateData = () => {
       Phone.value,
       Email.value,
       Password.value,
-      HeirarchyIds
+      HeirarchyIds,
+      RoleIds
       // Certificates.value.map((item) => item.id)
     )
     : new AddOrganizatoinEmployeeParams(
@@ -106,7 +114,8 @@ const updateData = () => {
       Phone.value,
       Email.value,
       Password.value,
-      HeirarchyIds
+      HeirarchyIds,
+      RoleIds
       // Certificates.value.map((item) => item.id)
 
     )
@@ -148,9 +157,9 @@ const setHeirarchy = (data: TitleInterface[]) => {
   updateData()
 }
 
-const Certificates = ref<TitleInterface[]>()
-const setCertificates = (data: TitleInterface[]) => {
-  Certificates.value = data
+const role = ref<TitleInterface[]>()
+const setRole = (data: TitleInterface[]) => {
+  role.value = data
   updateData()
 }
 </script>
@@ -176,6 +185,10 @@ const setCertificates = (data: TitleInterface[]) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
       :params="HerikalyParams" :label="$t('Herikaly')" :type="2" :placeholder="$t('Select Heirarchy')" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
+      :params="indexRoleParams" :label="$t('Role')" :type="2" :placeholder="$t('Select Role')" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

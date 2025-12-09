@@ -11,6 +11,8 @@ import AddLocationUseCase from '../../Domain/useCase/addLocationUseCase'
 import LocationRouterHandler from '../routeHandler/RoutHandler'
 import type AddLocationParams from '../../Core/params/addLocationParams'
 import { useUserStore } from '@/stores/user'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { LocationEnum } from '../../Core/Enum/LocationEnum'
 
 export default class AddLocationController extends ControllerInterface<LocationModel> {
   private static instance: AddLocationController
@@ -32,6 +34,16 @@ export default class AddLocationController extends ControllerInterface<LocationM
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
+        return
+      }
+      if (!params?.ParentId && params?.type === LocationEnum.AREA) {
+        new OpenWarningDilaog('Please Select City').openDialog()
+        return
+      } else if (!params?.ParentId && params?.type === LocationEnum.STATE) {
+        new OpenWarningDilaog('Please Select Country').openDialog()
+        return
+      } else if (!params?.ParentId && params?.type === LocationEnum.CITY) {
+        new OpenWarningDilaog('Please Select State').openDialog()
         return
       }
       const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)

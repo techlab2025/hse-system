@@ -131,10 +131,17 @@ watch(
       return existing ? { ...l, title: existing.title } : l
     })
 
+
     if (route.params.id) {
+      // if (newData?.titles?.length) {
+      //   langs.value = newDefault.map((l) => {
+      //     const existing = newData.titles.find((t) => t.locale === l.locale)
+      //     return existing ? existing : { locale: l.locale, title: '' }
+      //   })
+      // }
       industry.value = newData?.industries ?? []
       // equipmentType.value = newData?.equipmentTypeId ?? null
-      allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       inspectionDuration.value = newData?.inspectionDuration || null
       // licenseNumber.value = newData?.licenseNumber || null
       // licensePlateNumber.value = newData?.licensePlateNumber || null
@@ -229,13 +236,13 @@ const descripe = ref<string>()
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label>{{ $t('upload image') }}</label>
         <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="0"
           placeholder="upload image" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification upload') }}</p>
           <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
@@ -244,17 +251,17 @@ const descripe = ref<string>()
           label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
       </div>
 
-      <div>
+      <div v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <CustomSelectInput :modelValue="deviceStatus" :staticOptions="deviceStatusOptions" label="Device status"
           id="Device status" placeholder="Device status" @update:modelValue="setDeviceStatus" />
       </div>
-      <div v-if="deviceStatus?.id == EquipmentStatus.RENT">
+      <div v-if="deviceStatus?.id == EquipmentStatus.RENT && user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
           @update:modelValue="setContructor" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label>{{ $t('Date of Decommissioning') }}</label>
         <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
           :placeholder="`Date of Decommissioning`" />
@@ -270,7 +277,7 @@ const descripe = ref<string>()
 
 
       <div class="input-wrapper " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-        <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+        <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
       </div>
 
       <div class="input-wrapper" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
@@ -280,15 +287,15 @@ const descripe = ref<string>()
       </div>
 
       <!-- <div class="" v-else></div> -->
-      <div class="input-wrapper col-span-2">
+      <div class="input-wrapper col-span-2" v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label for="description">Description</label>
         <textarea id="description" class="input" placeholder="add your descripe" v-model="descripe"></textarea>
       </div>
-      <DemoCard :isBreadCramp="false" :equipmentName="equipmentName"
+      <!-- <DemoCard :isBreadCramp="false" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
-        :decommissioningDate="decommissioningDate || ''" :certificateImage="certificateImage || ''" />
+        :decommissioningDate="decommissioningDate || ''" :certificateImage="certificateImage || ''" /> -->
 
-      <QrCard />
+      <QrCard v-if="user?.user?.type === OrganizationTypeEnum.ORGANIZATION" />
 
 
     </div>

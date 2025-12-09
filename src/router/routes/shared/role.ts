@@ -17,3 +17,4 @@ export const RoleRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Role/AddRole.vue'),
   },
 ]
+  

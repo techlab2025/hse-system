@@ -6,7 +6,7 @@ import DeviceForm from './deviceForm.vue'
 import ToolsForm from './ToolsForm.vue'
 
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import FormLoader from '@/shared/DataStatues/FormLoader.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -14,10 +14,10 @@ import { useRoute } from 'vue-router'
 import ShowEquipmentParams from '../../Core/params/showEquipmentParams'
 import ShowEquipmentController from '../controllers/showEquipmentController'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 
 const route = useRoute()
 const controller = ShowEquipmentController.getInstance()
-
 const state = ref(controller.state.value)
 
 const fetchEquipmentDetails = async () => {
@@ -59,20 +59,21 @@ watch(
   },
   { immediate: true },
 )
+
 </script>
 
 <template>
   <HeaderPage :title="route.params.id ? $t('Edit & Manage Assets') : $t('Add & Manage Assets')" />
   <Tabs @update:activeTab="activeTab = $event" :activeTabData="activeTab" />
 
-  <DataStatus :controller="state">
-    <template #success>
-      <EquipmentForm v-if="activeTab === 'equipment'" :equipmentData="state.data!" />
-      <DeviceForm v-if="activeTab === 'devices'" :deviceData="state.data!" />
-      <ToolsForm v-if="activeTab === 'tools'" :toolData="state.data!" />
-    </template>
+  <!-- <DataStatus :controller="state">
+    <template #success> -->
+  <EquipmentForm v-if="activeTab === 'equipment'" :equipmentData="state.data!" />
+  <DeviceForm v-if="activeTab === 'devices'" :deviceData="state.data!" />
+  <ToolsForm v-if="activeTab === 'tools'" :toolData="state.data!" />
+  <!-- </template> -->
 
-    <template #initial>
+  <!-- <template #initial>
       <EquipmentForm v-if="activeTab === 'equipment'" />
       <DeviceForm v-if="activeTab === 'devices'" />
       <ToolsForm v-if="activeTab === 'tools'" />
@@ -85,5 +86,5 @@ watch(
     <template #empty>
       <div class="empty-state">{{ $t('No Equipment Data Found') }}</div>
     </template>
-  </DataStatus>
+  </DataStatus> -->
 </template>

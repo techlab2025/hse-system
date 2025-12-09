@@ -1,6 +1,5 @@
 import type Params from '@/base/core/params/params'
 
-
 export default class EditRoleParams implements Params {
   id: number
   role: string
@@ -43,7 +42,7 @@ export default class EditRoleParams implements Params {
     data['role_id'] = this.id
     data['name'] = this.role
     data['display_name'] = this.roleName
-    if (this.permission) data['permission'] = this.permission
+    if (this.permission) data['permissions'] = this.permission
     data['allow_for_organizations'] = this.allowForOrganizations
 
     return data
