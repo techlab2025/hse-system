@@ -35,6 +35,7 @@ import { useI18n } from 'vue-i18n'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const { t } = useI18n()
 
@@ -112,14 +113,14 @@ const fetchLang = async () => {
 
   langDefault.value = list.length
     ? list.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
     : [
-        { locale: 'en', icon: LangsMap.en.icon, title: '' },
-        { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
-      ]
+      { locale: 'en', icon: LangsMap.en.icon, title: '' },
+      { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
+    ]
 }
 
 onMounted(fetchLang)
@@ -155,7 +156,7 @@ watch(
     if (route.params.id) {
       industry.value = newData?.industries ?? []
       equipmentType.value = newData?.equipmentTypeId ?? null
-      allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       inspectionDuration.value = newData?.inspectionDuration || null
       // licenseNumber.value = newData?.licenseNumber || null
       // licensePlateNumber.value = newData?.licensePlateNumber || null
@@ -186,34 +187,34 @@ const addEquipment = async () => {
 
   const params = route.params.id
     ? new EditEquipmentParams(
-        +route.params.id,
-        translations,
-        equipmentType.value?.id,
-        decommissioningDate.value,
-        toolStatus.value?.id,
-        inspectionDuration.value,
-        '',
-        '',
-        image.value,
-        certificateImage.value,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        +route.params.parent_id,
-      )
+      +route.params.id,
+      translations,
+      equipmentType.value?.id,
+      decommissioningDate.value,
+      toolStatus.value?.id,
+      inspectionDuration.value,
+      '',
+      '',
+      image.value,
+      certificateImage.value,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      +route.params.parent_id,
+    )
     : new AddEquipmentParams(
-        translations,
-        equipmentType.value?.id,
-        decommissioningDate.value,
-        toolStatus.value?.id,
-        inspectionDuration.value,
-        '',
-        '',
-        image.value,
-        certificateImage.value,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        +route.params.parent_id,
-      )
+      translations,
+      equipmentType.value?.id,
+      decommissioningDate.value,
+      toolStatus.value?.id,
+      inspectionDuration.value,
+      '',
+      '',
+      image.value,
+      certificateImage.value,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      +route.params.parent_id,
+    )
 
   try {
     if (route.params.id) {
@@ -245,116 +246,71 @@ const breadcrumbs = [
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
-      <div>
-        <CustomSelectInput
-          :modelValue="equipmentType"
-          :controller="indexEquipmentTypeController"
-          :params="indexEquipmentTypeParams"
-          label="tool type"
-          id="tool type"
-          placeholder="tool type"
-          @update:modelValue="setEquipmentType"
-        />
+      <div >
+        <CustomSelectInput :modelValue="equipmentType" :controller="indexEquipmentTypeController"
+          :params="indexEquipmentTypeParams" label="tool type" id="tool type" placeholder="tool type"
+          @update:modelValue="setEquipmentType" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION">
         <label>{{ $t('upload image') }}</label>
-        <SingleFileUpload
-          v-model="image"
-          @update:modelValue="setImage"
-          label="Image"
-          id="image"
-          index="0"
-          placeholder="upload image"
-        />
+        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="0"
+          placeholder="upload image" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification upload') }}</p>
           <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
         </label>
-        <SingleFileUpload
-          v-model="certificateImage"
-          @update:modelValue="setCertificateImage"
-          label="Certification upload"
-          id="Certification upload"
-          index="1"
-          placeholder="Certification upload"
-        />
+        <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
+          label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION">
         <label>{{ $t('Date of Decommissioning') }}</label>
-        <DatePicker
-          v-model="decommissioningDate"
-          id="Date of Decommissioning"
-          :placeholder="`Date of Decommissioning`"
-        />
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
+          :placeholder="`Date of Decommissioning`" />
       </div>
 
-      <div>
-        <CustomSelectInput
-          :modelValue="toolStatus"
-          :staticOptions="toolStatusOptions"
-          label="tool status"
-          id="tool status"
-          placeholder="tool status"
-          @update:modelValue="setToolStatus"
-        />
+      <div v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION">
+        <CustomSelectInput :modelValue="toolStatus" :staticOptions="toolStatusOptions" label="tool status"
+          id="tool status" placeholder="tool status" @update:modelValue="setToolStatus" />
       </div>
 
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <label for="inspection duration">
           {{ $t('inspection duration') }}
         </label>
-        <input
-          type="text"
-          v-model="inspectionDuration"
-          id="inspection duration"
-          :placeholder="$t('inspection duration')"
-        />
-      </div>
+        <input type="text" v-model="inspectionDuration" id="inspection duration"
+          :placeholder="$t('inspection duration')" />
+      </div> -->
 
-      <div>
-        <CustomSelectInput
-          :staticOptions="[]"
-          label="inspection template"
-          id="inspection template"
-          placeholder="inspection template"
-        />
-      </div>
+      <!-- <div>
+        <CustomSelectInput :staticOptions="[]" label="inspection template" id="inspection template"
+          placeholder="inspection template" />
+      </div> -->
 
-      <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+      <!-- <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
         <input type="checkbox" :value="1" v-model="allIndustries" />
+      </div> -->
+      <div class="input-wrapper " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
       </div>
 
       <div v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-        <CustomSelectInput
-          :modelValue="industry"
-          :controller="industryController"
-          :params="industryParams"
-          label="Industry"
-          id="EquipmentType"
-          placeholder="Select industry"
-          :type="2"
-          @update:modelValue="setIndustry"
-        />
+        <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+          label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+          @update:modelValue="setIndustry" />
       </div>
 
 
-      <DemoCard
-        :equipmentName="equipmentName"
-        :inspectionDuration="inspectionDuration || $t('Determined')"
-        :image="image || ''"
-        :decommissioningDate="decommissioningDate || ''"
-        :isBreadCramp="true"
-        :certificateImage="certificateImage || ''"
-        :BreadCramps="breadcrumbs || []"
-      />
+      <DemoCard v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION" :equipmentName="equipmentName" :inspectionDuration="inspectionDuration || $t('Determined')"
+        :image="image || ''" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
+        :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []" />
 
-      <QrCard />
+      <QrCard v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION" />
     </div>
 
     <div class="flex items-center gap-2 !mt-4">

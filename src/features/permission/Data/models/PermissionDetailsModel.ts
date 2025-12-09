@@ -1,6 +1,6 @@
 
 
-export default class PermissionDetailsModel {
+export default class  PermissionDetailsModel {
   public permission: { id: number, permission: string }[]
 
   constructor(

@@ -37,7 +37,7 @@ export default class EditRoleController extends ControllerInterface<RoleModel> {
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/Roles')
+        await router.push('/organization/role')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

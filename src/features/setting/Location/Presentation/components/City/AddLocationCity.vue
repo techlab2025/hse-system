@@ -7,6 +7,7 @@ import LocationCountryForm from './LocationCityForm.vue'
 import type AddLocationParams from '../../../Core/params/addLocationParams'
 import AddLocationController from '../../controllers/addLocationController'
 import LocationCityForm from './LocationCityForm.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -15,6 +16,7 @@ const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
   await addLocationController.addLocation(params.value as AddLocationParams, router)
+
 }
 const setParams = (data: Params) => {
   params.value = data

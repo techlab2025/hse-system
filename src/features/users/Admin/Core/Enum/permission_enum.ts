@@ -658,4 +658,12 @@ export enum PermissionsEnum {
   ORG_ROLE_CREATE = 'OR03',
   ORG_ROLE_UPDATE = 'OR04',
   ORG_ROLE_DELETE = 'OR05',
+  
+  // Admin Role
+  ROLE_ALL = 'R00',
+  ROLE_FETCH = 'R01',
+  ROLE_DETAILS = 'R02',
+  ROLE_CREATE = 'R03',
+  ROLE_UPDATE = 'R04',
+  ROLE_DELETE = 'R05',
 }

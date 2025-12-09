@@ -37,6 +37,9 @@ import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/Equipm
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
+import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 
 const emit = defineEmits(['update:data'])
 
@@ -46,7 +49,7 @@ const id = Number(route.params.id)
 
 const { equipmentData } = defineProps<{ equipmentData?: EquipmentDetailsModel }>()
 
-const user = useUserStore()
+const { user } = useUserStore()
 
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
@@ -93,8 +96,8 @@ const industryController = IndexIndustryController.getInstance()
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 
 const fetchLang = async () => {
-  if (user?.user?.languages?.length) {
-    langDefault.value = user.user.languages.map((item: any) => ({
+  if (user?.languages?.length) {
+    langDefault.value = user.languages.map((item: any) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code]?.icon),
@@ -109,14 +112,14 @@ const fetchLang = async () => {
 
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code]?.icon),
+    }))
     : [
-        { locale: 'en', icon: LangsMap.en.icon, title: '' },
-        { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
-      ]
+      { locale: 'en', icon: LangsMap.en.icon, title: '' },
+      { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
+    ]
 }
 
 onMounted(fetchLang)
@@ -155,7 +158,7 @@ watch(
     if (route.params.id) {
       industry.value = newData?.industries ?? []
       equipmentType.value = newData?.equipmentTypeId ?? null
-      allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
@@ -182,7 +185,7 @@ const addEquipment = async () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
 
-  const AllIndustry = user.user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
+  const AllIndustry = user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
 
   try {
     if (!route.params.id) {
@@ -238,6 +241,27 @@ const breadcrumbs = [
     link: '',
   },
 ]
+
+const indexContractorController = IndexContractorController.getInstance()
+const indexContractorTypeParams = new IndexContractorParams("", 1, 10, 1
+)
+const SelectedContractor = ref<TitleInterface>()
+const setContructor = (data: TitleInterface) => {
+  SelectedContractor.value = data
+}
+
+
+const deviceStatus = ref<TitleInterface | null>(null)
+
+
+const deviceStatusOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Own') }),
+])
+
+const setDeviceStatus = (data: TitleInterface) => {
+  deviceStatus.value = data
+}
 </script>
 
 <template>
@@ -259,65 +283,47 @@ const breadcrumbs = [
       </div>
 
       <div>
-        <CustomSelectInput
-          :modelValue="equipmentType"
-          :controller="indexEquipmentTypeController"
-          :params="indexEquipmentTypeParams"
-          label="Equipment Type"
-          id="Equipment Type"
-          placeholder="Select EquipmentType"
-          @update:modelValue="setEquipmentType"
-        />
+        <CustomSelectInput :modelValue="equipmentType" :controller="indexEquipmentTypeController"
+          :params="indexEquipmentTypeParams" label="Equipment Type" id="Equipment Type"
+          placeholder="Select EquipmentType" @update:modelValue="setEquipmentType" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label>{{ $t('upload image') }}</label>
-        <SingleFileUpload
-          v-model="image"
-          @update:modelValue="setImage"
-          label="Image"
-          id="image"
-          index="0"
-          placeholder="upload image"
-        />
+        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="0"
+          placeholder="upload image" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification upload') }}</p>
           <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
         </label>
-        <SingleFileUpload
-          v-model="certificateImage"
-          @update:modelValue="setCertificateImage"
-          label="Certification upload"
-          id="Certification upload"
-          index="1"
-          placeholder="Certification upload"
-        />
+        <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
+          label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label>{{ $t('Date of Decommissioning') }}</label>
-        <DatePicker
-          v-model="decommissioningDate"
-          id="Date of Decommissioning"
-          :placeholder="`Date of Decommissioning`"
-        />
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
+          :placeholder="`Date of Decommissioning`" />
       </div>
 
-      <div>
-        <CustomSelectInput
-          :modelValue="equipmentStatus"
-          :staticOptions="equipmentStatusOptions"
-          label="Equipment status"
-          id="Equipment status"
-          placeholder="Equipment status"
-          @update:modelValue="setEquipmentStatus"
-        />
+      <!-- <div>
+        <CustomSelectInput :modelValue="deviceStatus" :staticOptions="equipmentStatusOptions" label="Equipment status"
+          id="Equipment status" placeholder="Equipment status" @update:modelValue="setEquipmentStatus" />
+      </div> -->
+      <div v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <CustomSelectInput :modelValue="deviceStatus" :staticOptions="deviceStatusOptions" label="Device status"
+          id="Device status" placeholder="Device status" @update:modelValue="setDeviceStatus" />
+      </div>
+      <div v-if="deviceStatus?.id == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
+          :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
+          @update:modelValue="setContructor" />
       </div>
 
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <label for="inspection duration">
           {{ $t('inspection duration') }}
         </label>
@@ -327,71 +333,53 @@ const breadcrumbs = [
           v-model="inspectionDuration"
           :placeholder="$t('inspection duration')"
         />
-      </div>
+      </div> -->
 
-      <div>
+      <!-- <div>
         <CustomSelectInput
           :staticOptions="[]"
           label="inspection template"
           id="inspection template"
           placeholder="inspection template"
         />
-      </div>
+      </div> -->
 
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label for="License number">
           {{ $t('License number') }}
         </label>
-        <input
-          type="text"
-          id="License number"
-          v-model="licenseNumber"
-          :placeholder="$t('License number')"
-        />
+        <input type="text" id="License number" v-model="licenseNumber" :placeholder="$t('License number')" />
       </div>
 
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <label for="License Plate Number">
           {{ $t('License Plate Number') }}
         </label>
-        <input
-          type="text"
-          id="License Plate Number"
-          v-model="licensePlateNumber"
-          :placeholder="$t('License Plate Number')"
-        />
+        <input type="text" id="License Plate Number" v-model="licensePlateNumber"
+          :placeholder="$t('License Plate Number')" />
       </div>
 
-      <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+      <!-- <div class="input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
         <label>{{ $t('all_industries') }}</label>
         <input type="checkbox" :value="1" v-model="allIndustries" />
+      </div> -->
+      <div class="input-wrapper " v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
       </div>
 
-      <div v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-        <CustomSelectInput
-          :modelValue="industry"
-          :controller="industryController"
-          :params="industryParams"
-          label="Industry"
-          id="EquipmentType"
-          placeholder="Select industry"
-          :type="2"
-          @update:modelValue="setIndustry"
-        />
+      <div v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+          label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+          @update:modelValue="setIndustry" />
       </div>
 
 
-      <DemoCard
-        :equipmentName="equipmentName"
-        :inspectionDuration="inspectionDuration || $t('Determined')"
-        :image="image || ''"
-        :decommissioningDate="decommissioningDate || ''"
-        :isBreadCramp="true"
-        :certificateImage="certificateImage || ''"
-        :BreadCramps="breadcrumbs || []"
-      />
+      <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
+        :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
+        :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :certificateImage="certificateImage || ''"
+        :BreadCramps="breadcrumbs || []" />
 
-      <QrCard />
+      <QrCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" />
     </div>
 
     <div class="flex items-center gap-2 !mt-4">

@@ -149,6 +149,7 @@ watch(
       industry.value = newData?.industry
       lang.value = newData?.languages
       image.value = newData?.image
+      SelectedCountry.value = newData?.locations
     }
   },
   { immediate: true },

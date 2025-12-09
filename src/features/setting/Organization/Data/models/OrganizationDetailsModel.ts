@@ -9,6 +9,7 @@ export default class OrganizationDetailsModel {
   public website_link: string
   public industry: TitleInterface
   public languages: TitleInterface[]
+  public locations: TitleInterface
 
   constructor(
     id: number,
@@ -19,6 +20,7 @@ export default class OrganizationDetailsModel {
     website_link: string,
     industry: TitleInterface,
     languages: TitleInterface[],
+    locations: TitleInterface,
   ) {
     this.id = id
     this.name = name
@@ -28,6 +30,7 @@ export default class OrganizationDetailsModel {
     this.website_link = website_link
     this.industry = industry
     this.languages = languages
+    this.locations = locations
   }
 
   static fromMap(data: any): OrganizationDetailsModel {
@@ -41,6 +44,7 @@ export default class OrganizationDetailsModel {
       // data.industry
       this.getTitle(data.industry),
       data.languages.length > 0 ? data.languages?.map((language) => this.getTitle(language)) : [],
+      data.locations.length > 0 ? data.locations?.map((location) => this.getTitle(location)) : [],
     )
   }
 

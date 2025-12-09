@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
   title: string,
@@ -10,6 +10,9 @@ const CheckboxValue = ref(props.checked);
 const updateData = () => {
   emit('update:checked', CheckboxValue.value)
 }
+watch(()=>props.checked,(val)=>{
+  CheckboxValue.value = val
+})
 </script>
 <template>
   <div class="checkbox-toggle-wrapper">

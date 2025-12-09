@@ -19,8 +19,8 @@ export default class implements Params {
   allIndustries: number | null
   industries: number[]
   parentId: number
-  description: string
-  contructorId: number
+  description?: string
+  contructorId?: number
   // hasCertificate: number
 
   constructor(
@@ -37,8 +37,8 @@ export default class implements Params {
     allIndustries: number | null,
     industries: number[],
     parentId: number,
-    description: string,
-    contructorId: number,
+    description?: string,
+    contructorId?: number,
 
     // hasCertificate: number,
   ) {

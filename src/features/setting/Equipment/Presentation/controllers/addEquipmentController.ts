@@ -10,6 +10,7 @@ import type EquipmentModel from '@/features/setting/Equipment/Data/models/equipm
 import AddEquipmentUseCase from '../../Domain/useCase/addEquipmentUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
 
 export default class AddEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: AddEquipmentController
@@ -25,11 +26,15 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
     return this.instance
   }
 
-  async addEquipment(params: Params, router: Router, draft: boolean = false) {
+  async addEquipment(params: AddEquipmentParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<EquipmentModel> =
-        await this.addEquipmentUseCase.call(params)
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<EquipmentModel> = await this.addEquipmentUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -41,7 +46,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

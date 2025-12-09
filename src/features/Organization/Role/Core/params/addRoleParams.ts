@@ -40,8 +40,7 @@ export default class AddRoleParams implements Params {
 
     data['name'] = this.role
     data['display_name'] = this.roleName
-    if (this.permission)
-      data['permission'] = this.permission ? this.permission : []
+    if (this.permission) data['permissions'] = this.permission ? this.permission : []
     data['allow_for_organizations'] = this.allowForOrganizations
     return data
   }

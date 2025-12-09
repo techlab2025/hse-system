@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type RoleModel from '../../Data/models/RoleModel'
 import AddRoleteUseCase from '../../Domain/useCase/addRoleUseCase'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class AddRoleController extends ControllerInterface<RoleModel> {
   private static instance: AddRoleController
@@ -26,8 +28,7 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
   async addRole(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<RoleModel> =
-        await this.AddRoleUseCase.call(params)
+      const dataState: DataState<RoleModel> = await this.AddRoleUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -36,7 +37,13 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/Roles')
+
+        const { user } = useUserStore()
+        if (user?.type === OrganizationTypeEnum.ADMIN) {
+          router.push('/admin/role')
+        } else {
+          router.push('/organization/role')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

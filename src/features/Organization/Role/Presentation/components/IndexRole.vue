@@ -21,6 +21,8 @@ import IndexRoleController from '../controllers/indexRoleController'
 import IndexRoleParams from '../../Core/params/indexRoleParams'
 import DeleteRoleParams from '../../Core/params/deleteRoleParams'
 import DeleteRoleController from '../controllers/deleteRoleController'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 
 const { t } = useI18n()
@@ -70,7 +72,6 @@ watch(
   () => indexRoleController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
       state.value = newState
     }
   },
@@ -78,12 +79,13 @@ watch(
     deep: true,
   },
 )
+const { user } = useUserStore()
 
 const actionList = (id: number, deleteRole: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/Role/${id}`,
+    link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Role/${id}` : `/organization/Role/${id}`,
     permission: [
       PermissionsEnum.ORG_ROLE_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -125,7 +127,8 @@ watch(
       <ExportExcel :data="state.data" />
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]">
-        <router-link to="/organization/Role/add" class="btn btn-primary">
+        <router-link :to="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/Role/add' : '/organization/Role/add'"
+          class="btn btn-primary">
           {{ $t('Add_Role') }}
         </router-link>
       </PermissionBuilder>
@@ -147,8 +150,7 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('phone') }}</th>
+                <th scope="col">{{ $t('role') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>

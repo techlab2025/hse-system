@@ -145,8 +145,8 @@ watch(
 
       // SelectedState.value = newData?.state
       SelectedState.value = newData?.state
-        // ? [newData?.state]
-        // : []
+      // ? [newData?.state]
+      // : []
       console.log(newData?.state, "newData?.state");
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
@@ -221,7 +221,8 @@ watch(
       :params="indexLocationCountriesParams" label="Country" id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry">
+
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
       @update:modelValue="SetStateSelection" />

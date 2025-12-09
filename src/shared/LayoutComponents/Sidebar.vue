@@ -327,6 +327,20 @@ const user = useUserStore()
                         </router-link>
                       </li>
                     </PermissionBuilder>
+                    <PermissionBuilder :code="[
+                      PermissionsEnum.ROLE_ALL,
+                      PermissionsEnum.ROLE_CREATE,
+                      PermissionsEnum.ROLE_DELETE,
+                      PermissionsEnum.ROLE_FETCH,
+                      PermissionsEnum.ROLE_UPDATE,
+                    ]">
+                      <li>
+                        <router-link to="/admin/role">
+                          <SidebarVector />
+                          <span>{{ $t('Roles') }}</span>
+                        </router-link>
+                      </li>
+                    </PermissionBuilder>
                   </ul>
                 </AccordionContent>
               </AccordionPanel>
@@ -1243,6 +1257,20 @@ const user = useUserStore()
                       <span>{{ $t('management') }}</span>
                     </router-link>
                   </li>
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.ORG_ROLE_ALL,
+                    PermissionsEnum.ORG_ROLE_CREATE,
+                    PermissionsEnum.ORG_ROLE_DELETE,
+                    PermissionsEnum.ORG_ROLE_FETCH,
+                    PermissionsEnum.ORG_ROLE_UPDATE,
+                  ]">
+                    <li>
+                      <router-link to="/organization/role">
+                        <SidebarVector />
+                        <span>{{ $t('Roles') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
                   <!-- Equipment Mangment -->
                   <!-- <PermissionBuilder :code="[
                     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,

@@ -1,29 +1,37 @@
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-import TitleInterface from '@/base/Data/Models/title_interface.ts'
-export default class RoleDetailsModel {
-  public id: number
-  public titles: TitleLocale[]
-  public permissions: string[]
+import RolePermissionModel from './RolePermissionModel'
 
-  constructor(id: number, titles: TitleLocale[], permissions: string[]) {
+export default class RoleDetailsModel {
+  id: number
+  permissions: RolePermissionModel[]
+  role: string
+  roleId: number
+  displayName: string
+  allowForOrganizations: boolean
+
+  constructor(
+    id: number,
+    permissions: RolePermissionModel[],
+    role: string,
+    roleId: number,
+    displayName: string,
+    allowForOrganizations: boolean,
+  ) {
     this.id = id
-    this.titles = titles
     this.permissions = permissions
+    this.role = role
+    this.roleId = roleId
+    this.displayName = displayName
+    this.allowForOrganizations = allowForOrganizations
   }
 
   static fromMap(data: any): RoleDetailsModel {
     return new RoleDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      data.permissions,
+      data.permissions.map((item: any) => RolePermissionModel.fromMap(item)),
+      data.role,
+      data.role_id,
+      data.display_name,
+      data.allow_for_organizations ,
     )
-  }
-
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
   }
 }

@@ -1222,7 +1222,7 @@ class ApiNames {
     return this.prefix + 'create_role'
   }
   public get IndexRole() {
-    return this.prefix + 'fetch_role'
+    return this.prefix + 'fetch_roles'
   }
   public get ShowRole() {
     return this.prefix + 'fetch_role_details'

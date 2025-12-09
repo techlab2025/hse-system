@@ -235,12 +235,12 @@ const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
       :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
       @update:modelValue="SetStateSelection" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedState">
+  <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedState?.length != 0">
     <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationAreasController"
       :params="indexLocationAreasParams" label="City" id="City" placeholder="Select City"
       @update:modelValue="SetCitySelection" />
