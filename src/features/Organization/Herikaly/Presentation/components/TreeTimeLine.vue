@@ -84,7 +84,7 @@ const DeleteHierarchy = async (Id: number) => {
 
                 <div class="actions">
                   <router-link class="btn edit-btn flex "
-                    :to="`/organization/organization-employee?parent_id=${item.id}`">
+                    :to="`/organization/organization-employee?heirarchy_id=${item.id}`">
                     <span>Employees</span>
                     <EmployeeLinkIcon class="w-[15px] h-[15px]" />
                   </router-link>

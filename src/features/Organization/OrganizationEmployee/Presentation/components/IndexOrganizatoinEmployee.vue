@@ -37,7 +37,7 @@ const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.
 const state = ref(indexOrganizatoinEmployeeController.state.value)
 const route = useRoute()
 // const id = route.params.parent_id
-const id = route?.query?.parent_id
+const id = route?.query?.heirarchy_id
 
 // const type = ref<OrganizatoinEmployeeStatusEnum>(OrganizatoinEmployeeStatusEnum[route.params.type as keyof typeof OrganizatoinEmployeeStatusEnum])
 
@@ -147,6 +147,11 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     ],
   },
 ]
+
+watch(() => route.params.heirarchy_id, (newId) => {
+  id = newId
+  fetchOrganizatoinEmployee()
+})
 </script>
 
 <template>

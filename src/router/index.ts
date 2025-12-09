@@ -34,5 +34,23 @@ const router = createRouter({
   ],
 })
 
+// router.beforeEach((to, from, next) => {
+//   console.log(to.path, 'to')
+
+//   if (to.path === '/' || to.path === '/login') {
+//     next({ path: '/login/organization' })
+//   }
+
+//   // return authGuard(to, from, next)
+// })
+
+// // router.beforeEach((to, from, next) => {
+// //   console.log(to, 'to')
+// //   if (to.path === '/' || to.path === '/login') {
+// //     next({ path: '/login/organization' })
+// //   } else {
+// //     next()
+// //   }
+// // })
 router.beforeEach(authGuard)
 export default router
