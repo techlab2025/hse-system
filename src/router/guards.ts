@@ -1,8 +1,10 @@
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import { ref } from 'vue'
 
 export function authGuard(to, from, next) {
   const userData = useUserStore()
+  const Path = ref<boolean>(to.path == '' || to.path == '/' || to.path == '/login')
 
   const loginPages = ['Login', 'Organization Login']
 
@@ -27,8 +29,11 @@ export function authGuard(to, from, next) {
     return next({ path: '/login/organization' })
   }
 
+  if (Path?.value) {
+    next({ path: '/login/organization' })
+  }
   // AUTHENTICATED
-  if (loginPages.includes(to.name)) {
+  if (loginPages.includes(to.name) && Path?.value) {
     const redirectPath =
       userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization'
 

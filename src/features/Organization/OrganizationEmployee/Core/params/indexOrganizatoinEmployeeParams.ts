@@ -32,7 +32,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    if (this.heirarchyId) data['heirarchy_id'] = this.heirarchyId
+    if (this.heirarchyId) data['heirarchy_id'] = Number(this.heirarchyId)
     // if (this.code) data['code'] = this.code
     return data
   }
