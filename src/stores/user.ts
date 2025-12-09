@@ -9,7 +9,6 @@ export const useUserStore = defineStore("user", () => {
   const expiresAt = ref<number | null>(null);
 
   function setUser(newUser: UserModel) {
-    console.log('setUser', newUser);
     user.value = newUser;
     isAuth.value = true;
     expiresAt.value = Date.now() + 24 * 60 * 60 * 1000; // 24h

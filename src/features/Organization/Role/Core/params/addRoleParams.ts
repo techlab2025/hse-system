@@ -1,13 +1,22 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import type PermissionRolrParamsParams from './PermissionRoleParams'
 
 export default class AddRoleParams implements Params {
-  translation: TranslationsParams
-  permission: string[]
+  role: string
+  roleName: string
+  permission: PermissionRolrParamsParams[]
+  allowForOrganizations: boolean
 
-  constructor(translation: TranslationsParams, permission: string[]) {
-    this.translation = translation
+  constructor(
+    role: string,
+    roleName: string,
+    permission: PermissionRolrParamsParams[],
+    allowForOrganizations: boolean,
+  ) {
+    this.role = role
+    this.roleName = roleName
     this.permission = permission
+    this.allowForOrganizations = allowForOrganizations
   }
 
   toMap(): Record<
@@ -16,19 +25,24 @@ export default class AddRoleParams implements Params {
     | string
     | string[]
     | number[]
-    | Record<string, string | number[] | string[] | number | Record<string, string>>
+    | any
+    | Record<string, string | number[] | string[] | number | any | Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
+      | any
       | number[]
       | string[]
-      | Record<string, string | number[] | number | string[] | Record<string, string>>
+      | Record<string, string | number[] | number | string[] | any | Record<string, string>>
     > = {}
 
-    data['translations'] = this.translation.toMap()
-    if (this.permission) data['permission'] = this.permission
+    data['name'] = this.role
+    data['display_name'] = this.roleName
+    if (this.permission)
+      data['permission'] = this.permission ? this.permission : []
+    data['allow_for_organizations'] = this.allowForOrganizations
     return data
   }
 }

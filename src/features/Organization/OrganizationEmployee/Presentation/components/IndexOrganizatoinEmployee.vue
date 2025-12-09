@@ -148,8 +148,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   },
 ]
 
-watch(() => route.params.heirarchy_id, (newId) => {
-  id = newId
+watch(() => route?.params?.heirarchy_id, (newId) => {
   fetchOrganizatoinEmployee()
 })
 </script>
