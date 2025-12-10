@@ -4,21 +4,33 @@ export const InvestigatingRoutes: RouteRecordRaw[] = [
   {
     path: 'Investigating',
     name: 'Investigating ',
-    component: () => import('@/views/Organization/Investigating/Investigating/IndexInvestigating.vue'),
+    component: () =>
+      import('@/views/Organization/Investigating/Investigating/IndexInvestigating.vue'),
   },
   {
     path: 'Investigating/add',
     name: 'Add Investigating ',
-    component: () => import('@/views/Organization/Investigating/Investigating/AddInvestigating.vue'),
+    component: () =>
+      import('@/views/Organization/Investigating/Investigating/AddInvestigating.vue'),
   },
   {
     path: 'Investigating/:id',
     name: 'Edit Investigating ',
-    component: () => import('@/views/Organization/Investigating/Investigating/EditInvestigating.vue'),
+    component: () =>
+      import('@/views/Organization/Investigating/Investigating/EditInvestigating.vue'),
   },
   {
     path: 'Investigating-result/:id',
     name: 'Investigating Result ',
-    component: () => import('@/views/Organization/Investigating/invetegatingResult/InvestegatingResult.vue'),
+    component: () =>
+      import('@/views/Organization/Investigating/invetegatingResult/InvestegatingResult.vue'),
+  },
+  {
+    path: 'Investigating-result-answer/:id',
+    name: 'Investigating Result Answer',
+    component: () =>
+      import(
+        '@/views/Organization/Investigating/InvestegaionResultAnswer/IndexInvestegationResultAnswer.vue'
+      ),
   },
 ]

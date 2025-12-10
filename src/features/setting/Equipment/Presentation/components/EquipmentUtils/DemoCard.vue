@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
-import CertificateImageDialog from './certificateImageDialog.vue'
+import CertificateImageDialog from '../certificateImageDialog.vue'
 
 const props = withDefaults(
   defineProps<{

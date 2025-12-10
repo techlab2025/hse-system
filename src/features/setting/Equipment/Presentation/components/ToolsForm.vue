@@ -9,8 +9,8 @@ import TranslationsParams from '@/base/core/params/translations_params'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import QrCard from './QrCard.vue'
-import DemoCard from './DemoCard.vue'
+import QrCard from './EquipmentUtils/QrCard.vue'
+import DemoCard from './EquipmentUtils/DemoCard.vue'
 
 import DatePicker from 'primevue/datepicker'
 
@@ -246,7 +246,7 @@ const breadcrumbs = [
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
-      <div >
+      <div>
         <CustomSelectInput :modelValue="equipmentType" :controller="indexEquipmentTypeController"
           :params="indexEquipmentTypeParams" label="tool type" id="tool type" placeholder="tool type"
           @update:modelValue="setEquipmentType" />
@@ -306,9 +306,10 @@ const breadcrumbs = [
       </div>
 
 
-      <DemoCard v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION" :equipmentName="equipmentName" :inspectionDuration="inspectionDuration || $t('Determined')"
-        :image="image || ''" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
-        :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []" />
+      <DemoCard v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION" :equipmentName="equipmentName"
+        :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
+        :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :certificateImage="certificateImage || ''"
+        :BreadCramps="breadcrumbs || []" />
 
       <QrCard v-if="user.user?.type == OrganizationTypeEnum?.ORGANIZATION" />
     </div>

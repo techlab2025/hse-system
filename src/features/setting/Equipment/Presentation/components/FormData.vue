@@ -66,14 +66,14 @@ watch(
   <HeaderPage :title="route.params.id ? $t('Edit & Manage Assets') : $t('Add & Manage Assets')" />
   <Tabs @update:activeTab="activeTab = $event" :activeTabData="activeTab" />
 
-  <!-- <DataStatus :controller="state">
-    <template #success> -->
-  <EquipmentForm v-if="activeTab === 'equipment'" :equipmentData="state.data!" />
-  <DeviceForm v-if="activeTab === 'devices'" :deviceData="state.data!" />
-  <ToolsForm v-if="activeTab === 'tools'" :toolData="state.data!" />
-  <!-- </template> -->
+  <DataStatus :controller="state">
+    <template #success>
+      <EquipmentForm v-if="activeTab === 'equipment'" :equipmentData="state.data!" />
+      <DeviceForm v-if="activeTab === 'devices'" :deviceData="state.data!" />
+      <ToolsForm v-if="activeTab === 'tools'" :toolData="state.data!" />
+    </template>
 
-  <!-- <template #initial>
+    <template #initial>
       <EquipmentForm v-if="activeTab === 'equipment'" />
       <DeviceForm v-if="activeTab === 'devices'" />
       <ToolsForm v-if="activeTab === 'tools'" />
@@ -86,5 +86,5 @@ watch(
     <template #empty>
       <div class="empty-state">{{ $t('No Equipment Data Found') }}</div>
     </template>
-  </DataStatus> -->
+  </DataStatus>
 </template>

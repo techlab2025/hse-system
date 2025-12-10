@@ -34,6 +34,7 @@ export default class ShowEquipmentController extends ControllerInterface<Equipme
       throw new Error('Error while addServices')
     }
     super.handleResponseDialogs()
+    console.log(this.state, 'this.state')
     return this.state
   }
 }

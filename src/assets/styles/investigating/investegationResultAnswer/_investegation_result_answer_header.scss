@@ -1,0 +1,126 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.investigating-answer-header-container {
+  width: 100%;
+  @include flex-row(nowrap, space-between, center);
+  background-color: #fbfbfb;
+  font-family: 'Regular';
+
+  .investigating-answer-data {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $MdSize2;
+    font-family: 'Regular';
+    background-color: #fbfbfb;
+    padding: $MdSize;
+    border-radius: calc($XlSize + 2px);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .left-header-background {
+      position: absolute;
+      left: 0px;
+      top: 0;
+      height: 100%;
+      scale: 1.5;
+      @include flex-column(nowrap, flex-start, flex-start);
+      .left-blue-background {
+        height: 30%;
+        opacity: 0.2;
+        top: 40px;
+        left: 20px;
+        position: relative;
+      }
+      .left-yellow-background {
+        height: 50%;
+        position: relative;
+        // left: -280px;
+        width: 60%;
+        opacity: 0.2;
+      }
+    }
+
+    .investigating-header {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize4;
+      .title {
+        font-size: calc($XlSize2 + 2px);
+        font-weight: $BaseFontWeightBold;
+        color: #121212;
+      }
+      span {
+        color: #cacddb;
+        font-size: $XsSize;
+        font-weight: $XsSize;
+      }
+    }
+
+    .investigating-info {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize4;
+      p {
+        color: #aeaeb2;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          color: #202020;
+          font-weight: $BaseFontWeightBold;
+          &.victim {
+            color: $PrimaryColor;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    .meeting-info-container {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize3;
+      width: 100%;
+      .meeting-info {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XlSize4;
+        p {
+          @include flex-column(nowrap, flex-start, flex-start);
+          color: #1f41bb4d;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+          background-color: #f0f0f088;
+          backdrop-filter: blur(25px);
+          padding: $XsSize2 $XsSize2;
+          border-radius: $XsSize2;
+
+          span {
+            color: #1f41bb;
+            font-weight: $BaseFontWeightBold;
+            &.meet-date {
+              color: #1f41bb;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .investigating-answer-complete-task {
+    @include flex-column(nowrap, flex-start, center);
+    gap: $XsSize4;
+    width: 20%;
+    span {
+      font-size: $XlSize3;
+      font-weight: $BaseFontWeightBold;
+      text-align: center;
+      background: linear-gradient(90deg, #55b97e, #3262ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+
+      &.total {
+        color: #e9ebed;
+        -webkit-text-fill-color: #e9ebed;
+      }
+    }
+  }
+}

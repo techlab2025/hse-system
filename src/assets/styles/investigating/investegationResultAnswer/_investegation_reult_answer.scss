@@ -1,0 +1,6 @@
+@import '../../variables';
+@import '../../mixins/flex';
+.investegation-result-answer-container {
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+}

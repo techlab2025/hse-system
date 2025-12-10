@@ -6,8 +6,8 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import DatePicker from 'primevue/datepicker'
-import DemoCard from './DemoCard.vue'
-import QrCard from './QrCard.vue'
+import DemoCard from './EquipmentUtils/DemoCard.vue'
+import QrCard from './EquipmentUtils/QrCard.vue'
 
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TranslationsParams from '@/base/core/params/translations_params'
@@ -31,6 +31,7 @@ import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const { deviceData } = defineProps<{ deviceData?: EquipmentDetailsModel }>()
 const emit = defineEmits(['update:data'])
@@ -174,7 +175,7 @@ const addEquipment = async () => {
     ? new EditEquipmentParams(
       +route.params.id,
       translations,
-      null,
+      EquipmentTypesEnum.DEVICE,
       decommissioningDate.value,
       deviceStatus.value?.id,
       inspectionDuration.value,
@@ -191,7 +192,7 @@ const addEquipment = async () => {
     )
     : new AddEquipmentParams(
       translations,
-      null,
+      EquipmentTypesEnum.DEVICE,
       decommissioningDate.value,
       deviceStatus.value?.id,
       inspectionDuration.value,
