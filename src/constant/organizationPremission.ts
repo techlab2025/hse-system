@@ -759,6 +759,39 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // Roles
+        {
+          key: PermissionsEnum.ORG_ROLE_ALL,
+          code: PermissionsEnum.ORG_ROLE_ALL,
+          label: 'Role',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_ROLE_ALL,
+              code: PermissionsEnum.ORG_ROLE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_ROLE_FETCH,
+              code: PermissionsEnum.ORG_ROLE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_ROLE_DETAILS,
+              code: PermissionsEnum.ORG_ROLE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_ROLE_DELETE,
+              code: PermissionsEnum.ORG_ROLE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ORG_ROLE_UPDATE,
+              code: PermissionsEnum.ORG_ROLE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

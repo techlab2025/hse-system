@@ -1,16 +1,18 @@
 import TitleModel from '@/base/core/Models/title_model'
+import type { TitleLocale } from '@/base/core/params/translations_params'
+import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class EquipmentModel extends TitleInterface {
+export default class EquipmentTypeDetailsModel extends TitleInterface {
   public id: number
   public hasCertificate: number
   public allIndustries: number
   public industries: TitleModel
   public parentId: number
   public image: string
-  public titles: string
-  // public equipmentType: TitleModel
-  // public equipmentType?: EquipmentTypeDetailsModel
+  public titles: TitleLocale[]
+  public type: number
+  public organization_id?: number
 
   constructor(
     id: number,
@@ -21,8 +23,9 @@ export default class EquipmentModel extends TitleInterface {
     industries: TitleModel,
     parentId: number,
     image: string,
-    titles: string,
-    // equipmentType: TitleModel,
+    titles: TitleLocale[],
+    type: number,
+    organization_id: number,
   ) {
     super({ id, title, subtitle })
 
@@ -33,12 +36,13 @@ export default class EquipmentModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
-    // this.equipmentType = equipmentType
+    this.type = type
+    this.organization_id = organization_id
   }
 
-  static fromMap(data: any): EquipmentModel {
-    return new EquipmentModel(
-      data?.id,
+  static fromMap(data: any): EquipmentTypeDetailsModel {
+    return new EquipmentTypeDetailsModel(
+      data.id,
       data.title,
       data.subtitle,
       data.has_certificate,
@@ -48,9 +52,18 @@ export default class EquipmentModel extends TitleInterface {
         : [],
       data.parent_id,
       data.image,
-      data.titles,
-      // data.equipment_type_id ? TitleModel.fromMap(data.equipment_type_id) : null,
-      // data.equipment_type_id
+      TranslationsParams.fromMap(data.titles).titles,
+      data.type,
+      data.organization_id,
     )
+  }
+
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
+
+    return new TitleInterface({
+      id: data?.id,
+      title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
   }
 }

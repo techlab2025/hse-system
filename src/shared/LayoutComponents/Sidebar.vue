@@ -1251,12 +1251,21 @@ const user = useUserStore()
                     </li>
                   </PermissionBuilder>
                   <!-- ALL -->
-                  <li>
-                    <router-link to="/organization/equipment-mangement/all-observatin">
-                      <SidebarVector />
-                      <span>{{ $t('management') }}</span>
-                    </router-link>
-                  </li>
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
+                    PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
+                    PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
+                    PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
+                    PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
+                  ]">
+                    <li>
+                      <router-link to="/organization/equipment-mangement/all-observatin">
+                        <SidebarVector />
+                        <span>{{ $t('management') }}</span>
+                      </router-link>
+                    </li>
+                  </PermissionBuilder>
+
                   <PermissionBuilder :code="[
                     PermissionsEnum.ORG_ROLE_ALL,
                     PermissionsEnum.ORG_ROLE_CREATE,
