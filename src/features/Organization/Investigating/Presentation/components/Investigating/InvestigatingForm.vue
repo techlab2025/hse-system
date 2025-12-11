@@ -25,6 +25,10 @@ import HazerdType from '../../../../ObservationFactory/Presentation/components/O
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import FactorInvestigating from './FactorInvestigating.vue'
 import meetingImage from '../../../../../../assets/images/meeting.png'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import { useRoute } from 'vue-router'
+import MeetingParams from '../../../Core/params/MeetingParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -34,54 +38,51 @@ const text = ref<string>('')
 const date = ref<Date>(new Date())
 const descripe = ref<string>('')
 const image = ref<string>('')
+const route = useRoute()
+const id = route.query?.id
 
+const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 1)
+
+
+const Employees = ref<{ employeeId: number; isLeader: boolean }[]>([])
+const meetings = ref<MeetingParams[]>([])
 const updateData = () => {
   // console.log(ZoneIds.value, "ZoneIds.value");
+  const meeting = new MeetingParams(date.value, time.value, SelectedPlatform.value.id)
+  console.log(meeting, "meeting");
   const params = props.data?.id
     ? new EditInvestigatingParams(
-        props.data?.id! ?? 0,
-        text.value,
-        descripe.value,
-        image.value,
-        InvestigatingType.value.id,
-        2,
-        SelectedMachine.value.id,
-        ZoneIds.value,
-        22,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        date.value,
-        null,
-        null,
-      )
+      props.data?.id! ?? 0,
+      text.value,
+      descripe.value,
+      image.value,
+      InvestigatingType.value.id,
+      2,
+      SelectedMachine.value.id,
+      ZoneIds.value,
+      22,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      date.value,
+      null,
+      null,
+    )
     : new AddInvestigatingParams(
-        text.value,
-        actionText.value,
-        image.value?.file,
-        InvestigatingType.value?.id,
-        Observation.InvestigatingType,
-        SelectedMachine.value?.id,
-        ZoneIds.value,
-        37,
-        isResult.value ? 1 : 0,
-        riskLevel.value,
-        SaveStatusEnum.NotSaved,
-        null,
-        null,
-        null,
-        date.value,
-        null,
-        isAction.value ? 1 : 0,
-      )
+      id,
+      Employees.value,
+      meeting,
+
+    )
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => {}, { immediate: true })
+watch([() => props.data], ([newData]) => { }, { immediate: true })
 
 // const indexInvestigatingTypeParams = new IndexInvestigatingTypeParams('', 1, 10, 1)
 // const indexInvestigatingTypeController = IndexInvestigatingTypeController.getInstance()
@@ -139,15 +140,39 @@ const handleInvestigatingData = (data: any) => {
 watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
+
+const SelectedTeam = ref<TitleInterface[]>([])
+const setTeams = (data: TitleInterface[]) => {
+  SelectedTeam.value = data
+  Employees.value = data.map(el => ({ employeeId: el.id, isLeader: false }))
+  updateData()
+}
+
+const SelectedTeamLeader = ref<TitleInterface>(null)
+const setTeamLeader = (data: TitleInterface) => {
+  SelectedTeamLeader.value = data
+  Employees.value = Employees.value.map(el => el.employeeId === data.id ? { ...el, isLeader: true } : el)
+  updateData()
+}
+
+const MeetingPlatforms = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: 'zoom' }),
+  new TitleInterface({ id: 2, title: 'teams' }),
+  new TitleInterface({ id: 3, title: 'skype' }),
+  new TitleInterface({ id: 4, title: 'google meet' }),
+  new TitleInterface({ id: 5, title: 'other' }),
+])
+const SelectedPlatform = ref<TitleInterface>(null)
+const setSelectedPlatform = (data: TitleInterface) => {
+  SelectedPlatform.value = data
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage
-      :title="'create Investigating'"
-      :subtitle="'Document what you observe to improve workplace safety'"
-      :img="detectiveImage"
-    />
+    <HeaderPage :title="'create Investigating'" :subtitle="'Document what you observe to improve workplace safety'"
+      :img="detectiveImage" />
   </div>
   <!-- <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
@@ -159,28 +184,13 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   </div>
 
   <div class="col-span-6 md:col-span-4 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="Investigation team"
-      id="machine"
-      placeholder="select your machine"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedTeam" class="input" :controller="indexOrganizatoinEmployeeController"
+      :params="indexOrganizatoinEmployeeParams" label="Investigation team" :type="2" id="machine"
+      placeholder="select your team" @update:modelValue="setTeams" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="assign leader "
-      id="machine"
-      placeholder="select your machine"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedTeamLeader" class="input" :staticOptions="SelectedTeam"
+      label="assign leader " id="leader" placeholder="select your leader" @update:modelValue="setTeamLeader" />
   </div>
 
   <div class="meeting-investigation col-span-6 md:col-span-6">
@@ -200,15 +210,8 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
 
   <!-- <FactorInvestigating /> -->
   <div class="col-span-6 md:col-span-6 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedMachine"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="meeting platform "
-      id="machine"
-      placeholder="select meeting platform"
-      @update:modelValue="setMachine"
-    />
+    <CustomSelectInput :modelValue="SelectedPlatform" class="input" :staticOptions="MeetingPlatforms"
+      label="meeting platform " id="machine" placeholder="select meeting platform"
+      @update:modelValue="setSelectedPlatform" />
   </div>
 </template>

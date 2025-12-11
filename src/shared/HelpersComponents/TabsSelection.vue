@@ -2,52 +2,29 @@
 import BlueBack from '@/assets/images/BgGroup.png'
 import yelloecircle from '@/assets/images/yelloecircle.png'
 import { onMounted, ref } from 'vue'
-import IndexProjectLocationZonesController from '@/features/Organization/Project/Presentation/controllers/fetchLocationZonesController'
-import IndexProjectLocationZonesParams from '@/features/Organization/Project/Core/params/fetchProjectLocationsZonesParams'
-import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
-import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
-import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
-import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import { watch } from 'vue'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import { useRouter } from 'vue-router'
-import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 
 const emit = defineEmits(['update:data'])
-const SelectedLocation = ref(1)
 const router = useRouter()
 const props = defineProps<{
-  LocationIds: number[]
+  ProjectId: number
 }>()
 const updateData = (data) => {
   console.log(data.target.value, "data.target.value")
   emit('update:data', data.target.value)
 }
-
-// const AllZones = ref<MyZonesModel[]>([])
-// const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const state = ref(fetchMyZonesController.state.value)
-
-// const GetProjectLocationsEmployes = async () => {
-//   const projectCustomLocationParams = new ProjectCustomLocationParams(
-//     37,
-//     [ProjectCustomLocationEnum.ZOON],
-//     [63],
-//   )
-//   const response = await projectCustomLocationController.getData(
-//     projectCustomLocationParams,
-//   )
-//   // console.log(response.value.data, 'response.va')
-// }
+const SelectedLocation = ref(state.value.data?.[0]?.ProjectZoneId)
 
 const FetchMyZones = async () => {
-  const fetchMyZonesParams = new FetchMyZonesParams()
+  const fetchMyZonesParams = new FetchMyZonesParams(props.ProjectId)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
 }
 onMounted(() => {
-  // GetProjectLocationsEmployes()
   FetchMyZones()
 })
 
@@ -57,18 +34,25 @@ watch(
     state.value = newState
   },
 )
+
+watch(() => props.ProjectId, () => {
+  FetchMyZones()
+})
+watch(
+  () => state.value.data,
+  (zones) => {
+    if (zones && zones.length > 0) {
+      SelectedLocation.value = zones[0].ProjectZoneId
+      emit('update:data', SelectedLocation.value)
+    }
+  },
+  { immediate: true }
+)
+
 </script>
 <template>
-  <!-- <pre>{{ state.data }}</pre> -->
   <div class="w-full">
-
     <div class="tabs-selction-container">
-      <!-- <div class="tabs-selction-header">
-        <p class="title">{{ $t('zones') }}</p>
-        <p class="subtitle">
-          Main location is : <span> {{ item?.title }}</span>
-        </p>
-      </div> -->
       <div class="tabs-selction-content">
         <div class="select-container">
           <div class="select-item" v-for="zoon in state.data" :key="zoon.ProjectZoneId"

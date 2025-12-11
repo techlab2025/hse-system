@@ -45,7 +45,7 @@
   }
   .radio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
 
     gap: 20px;
   }
@@ -98,12 +98,11 @@
   background: rgba(247, 249, 252, 1);
   padding: 1.5rem;
   gap: 10px;
-  p{
+  p {
     font-weight: $BaseFontWeightBold;
     font-size: $MdSize2;
-
   }
-  .meeting-icon{
+  .meeting-icon {
     width: 32px;
     height: 26px;
   }

@@ -115,8 +115,8 @@ watch(
 </script>
 
 <template>
-  <DataStatus :controller="state">
-    <template #success>
+  <!-- <DataStatus :controller="state"> -->
+    <!-- <template #success> -->
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
         <InvestigatingSidebar />
@@ -137,7 +137,8 @@ watch(
           <!-- CARDS -->
           <div class="table-responsive">
             <div class="index-table-card-container">
-              <div class="index-table-card" v-for="(item, index) in InvestigatingList" :key="index">
+              <!--  InvestigatingList-->
+              <div class="index-table-card" v-for="(item, index) in InvestigatingData" :key="index">
                 <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                   <div class="first-container">
                     <div class="first-card">
@@ -191,7 +192,7 @@ watch(
                             <span>{{ $t('show details') }}</span>
                           </button>
 
-                          <router-link :to="`/organization/investigating/add`">
+                          <router-link :to="`/organization/investigating/add?id=${item?.id}`">
                             <button class="btn second-btn">
                               <span>{{ $t('assign investigation team') }}</span>
                             </button>
@@ -229,8 +230,8 @@ watch(
           </div>
         </div>
       </div>
-    </template>
-    <template #loader>
+    <!-- </template> -->
+    <!-- <template #loader>
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #initial>
@@ -250,6 +251,6 @@ watch(
     <template #notPermitted>
       <DataFailed addText="Have not Permission"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
-    </template>
-  </DataStatus>
+    </template> -->
+  <!-- </DataStatus> -->
 </template>

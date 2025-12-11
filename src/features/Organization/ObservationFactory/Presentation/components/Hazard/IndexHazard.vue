@@ -205,15 +205,12 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
+  fetchHazard('', 1, 10, 1, null, null,SelectedZonesFilter.value)
 }
 
 const setSelectedProjectFilter = (data) => {
-  console.log(data, 'data')
   selectedProjctesFilters.value = data
-  console.log(selectedProjctesFilters.value, 'selectedProjctesFilters.value')
-
-  FetchMyZones()
+  FetchMyZones(selectedProjctesFilters)
 }
 
 onMounted(async () => {

@@ -221,7 +221,11 @@
     @include flex-row(wrap, space-between, center);
     gap: $XsSize4;
     width: 100%;
-
+    .unsolved-btns {
+      @include flex-row(wrap, space-between, center);
+      width: 100%;
+      margin-top: 10px;
+    }
 
     .first-btn {
       width: 225px;
@@ -273,7 +277,7 @@
         }
       }
     }
-    .solved-btn{
+    .solved-btn {
       width: 100%;
     }
   }

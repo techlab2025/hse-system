@@ -232,6 +232,8 @@ watch(
         }))
       }
 
+      console.log(newData, "newDatanewDatanewDatanewDatanewData");
+      console.log(langs.value, "langs");
       SerialNumber.value = newData?.SerialNumber;
       date.value = newData?.startDate;
       // ContractorIds.value = newData?.partner;
@@ -245,7 +247,7 @@ watch(
         0,
         LocationEnum.STATE,
         null,
-        SelectedCountry.value.map((c) => c.id),
+        SelectedCountry.value?.map((c) => c?.id),
       )
       SelectedState.value = newData?.state ?? [];
       indexLocationCityParams.value = new IndexLocationParams(
@@ -255,7 +257,7 @@ watch(
         0,
         LocationEnum.CITY,
         null,
-        SelectedState.value.map((c) => c.id),
+        SelectedState.value?.map((c) => c?.id),
       )
       SelectedCity.value = newData?.city ?? [];
       indexLocationAreasParams.value = new IndexLocationParams(

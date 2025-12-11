@@ -2,50 +2,57 @@
 @import '../../mixins/flex';
 @import '../../mixins/grid';
 
-.section-header-page {
-  @include flex-row(wrap, flex-start, center);
-  gap: $SmSize;
-  font-family: 'Regular';
-  background: #f7f9fc;
-  border-radius: calc($XlSize + 3px);
-  padding: $SmSize $MdSize;
-  margin-block: $SmSize;
+.section-header-page-container {
   width: 100%;
+  background: #f7f9fc;
+  padding: $SmSize $MdSize;
+  border-radius: calc($XlSize + 3px);
+  font-family: 'Regular';
+  // margin-block: $SmSize;
 
-  .section-img-page {
-    width: 50px;
-    height: 50px;
-  }
-
-  .section-number-page {
-    border-radius: 11px;
-    border: 2px solid #fff;
+  .section-header-page {
+    @include flex-row(wrap, flex-start, center);
+    gap: $SmSize;
     background: #f7f9fc;
-    @include flex(row, nowrap, center, center);
+    width: 100%;
+    padding: $SmSize $MdSize;
+    border-radius: calc($XlSize + 3px);
 
-    width: 45px;
-    height: 45px;
-    padding: $XsSize;
-    span {
-      color: var(--PrimaryColor);
-      font-family: 'Bold';
-      font-size: $XlSize;
-    }
-  }
-
-  .header-text-page {
-    @include flex-column(nowrap, flex-start, flex-start);
-
-    .title-page {
-      font-weight: $BaseFontWeightBold;
-      font-size: calc($XlSize + 2px);
-      color: var(--header-page-color);
+    .section-img-page {
+      width: 50px;
+      height: 50px;
     }
 
-    .subtitle-page {
-      color: $SubtitleColor;
-      font-weight: $BaseFontMediumWeight;
-      font-size: $SmSize;
+    .section-number-page {
+      border-radius: 11px;
+      border: 2px solid #fff;
+      background: #f7f9fc;
+      @include flex(row, nowrap, center, center);
+
+      width: 45px;
+      height: 45px;
+      padding: $XsSize;
+      span {
+        color: var(--PrimaryColor);
+        font-family: 'Bold';
+        font-size: $XlSize;
+      }
+    }
+
+    .header-text-page {
+      @include flex-column(nowrap, flex-start, flex-start);
+
+      .title-page {
+        font-weight: $BaseFontWeightBold;
+        font-size: calc($XlSize + 2px);
+        color: var(--header-page-color);
+      }
+
+      .subtitle-page {
+        color: $SubtitleColor;
+        font-weight: $BaseFontMediumWeight;
+        font-size: $SmSize;
+      }
     }
   }
 }

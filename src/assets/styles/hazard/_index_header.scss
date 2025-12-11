@@ -11,6 +11,13 @@
   padding: $MdSize;
   background-color: #fcfcfc;
 
+  &.colored {
+    background-color: #f7f9fc;
+    border: none;
+    border-radius: 0;
+    transform: translateY(-10px);
+  }
+
   .title {
     color: #170f49;
     font-size: calc($XlSize + 2px);

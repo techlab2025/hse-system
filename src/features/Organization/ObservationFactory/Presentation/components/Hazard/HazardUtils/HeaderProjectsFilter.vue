@@ -1,0 +1,43 @@
+<script setup lang="ts">
+import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import { onMounted, watch } from 'vue';
+import { ref } from 'vue'
+const emit = defineEmits(['update:data'])
+const props = defineProps<{
+  projects: MyProjectsModel[]
+}>()
+const ActiveTap = ref(props.projects?.[0]?.id)
+const AllProjects = ref(props.projects)
+
+const UpdateData = (Id: number) => {
+  ActiveTap.value = Id
+  emit('update:data', ActiveTap.value)
+}
+watch(
+  () => props.projects,
+  (newVal) => {
+    if (newVal && newVal.length > 0) {
+      ActiveTap.value = newVal[0].id
+      emit('update:data', ActiveTap.value)
+    }
+  },
+  { immediate: true }
+)
+
+watch(() => props.projects, (newVal) => {
+  AllProjects.value = newVal
+})
+onMounted(() => {
+  
+})
+</script>
+<template>
+  <div class="idnex-header">
+    <div class="categories-container" v-if="AllProjects && AllProjects.length > 1">
+      <button class="category" :class="ActiveTap === item.id ? 'active' : ''" v-for="(item, index) in AllProjects"
+        :key="index" @click.prevent="UpdateData(item.id)">
+        {{ item.title }}
+      </button>
+    </div>
+  </div>
+</template>
