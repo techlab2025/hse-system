@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -20,6 +20,10 @@ import IndexHazardController from '../../controllers/indexHazardController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
+import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue'
+import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
+import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
+import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -28,7 +32,7 @@ const props = defineProps<{
 const text = ref<string>('')
 const date = ref<string>(new Date())
 const descripe = ref<string>('')
-const image = ref<string>('')
+const image = ref([])
 
 const updateData = () => {
   const params = props.data?.id
@@ -36,13 +40,13 @@ const updateData = () => {
       props.data?.id! ?? 0,
       text.value,
       descripe.value,
-      image.value?.map((el) => el.file),
+      image.value?.map((el) => el?.file),
 
       0,
       Observation.AccidentsType,
       SelectedMachine.value?.id ?? null,
       ZoneIds.value ?? 0,
-      37,
+      SelectedProjectId.value,
       0,
       0,
       0,
@@ -56,12 +60,12 @@ const updateData = () => {
     : new AddHazardParams(
       text.value,
       descripe.value,
-      image.value?.map((el) => el.file),
+      image.value?.map((el) => el?.file) || [],
       0,
       Observation.AccidentsType,
       SelectedMachine.value?.id ?? null,
       ZoneIds.value ?? 0,
-      37,
+      SelectedProjectId.value,
       0,
       0,
       0,
@@ -109,16 +113,36 @@ const setImages = async (data: string[]) => {
 }
 
 
+const Projects = ref<MyProjectsModel[]>([])
+const FetchMyProjects = async () => {
+  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
+  if (res.value.data) {
+    Projects.value = res.value.data
+  }
+}
+onMounted(() => {
+  FetchMyProjects()
+})
+
+const SelectedProjectId = ref<number>()
+const GetProjectId = (id: number) => {
+  SelectedProjectId.value = id
+  updateData();
+}
+
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage :title="'create Incedant'" :subtitle="'Identify and report potential Incedants before they cause harm'"
       :img="HazardImage" />
+    <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />
   </div>
 
   <div class="col-span-6 md:col-span-6">
-    <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
+    <TabsSelection :ProjectId="SelectedProjectId" @update:data="GetZones" />
   </div>
   <div class="Hazard-form col-span-6 md:col-span-6">
     <div class="Hazard-form-header">

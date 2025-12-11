@@ -8,6 +8,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   phone: string
   email: string
   password: string
+  passwordConfirmation: string
   hierarchies: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
   // certificateId: number[]
@@ -17,6 +18,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
     password: { required: true, minLength: 2, maxLength: 100 },
+    passwordConfirmation: { required: true, minLength: 2, maxLength: 100 },
   })
 
   constructor(
@@ -24,6 +26,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     phone: string,
     email: string,
     password: string,
+    passwordConfirmation: string,
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     // certificateId: number[],
@@ -32,6 +35,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.phone = phone
     this.email = email
     this.password = password
+    this.passwordConfirmation = passwordConfirmation
     this.hierarchies = hierarchies
     this.roles = roles
     // this.certificateId = certificateId
@@ -56,6 +60,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['phone'] = this.phone
     data['email'] = this.email
     data['password'] = this.password
+    data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
     // data['certificate_id'] = this.certificateId.map((id) => id)

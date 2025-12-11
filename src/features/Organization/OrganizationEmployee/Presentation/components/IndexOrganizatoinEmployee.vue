@@ -189,7 +189,7 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('name') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -200,9 +200,9 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
-                <td data-label="images">
+                <!-- <td data-label="images">
                   <img :src="item.image || '/src/assets/images/logo.svg'" @error="setDefaultImage($event)" alt="" />
-                </td>
+                </td> -->
 
                 <td data-label="Actions">
                   <DropList :actionList="actionList(item.id, deleteOrganizatoinEmployee)"

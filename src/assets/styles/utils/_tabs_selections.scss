@@ -30,7 +30,7 @@
   }
   .tabs-selction-content {
     .select-container {
-      @include flex-row(nowrap, flex-start, center);
+      @include flex-row(wrap, flex-start, center);
       gap: $XlSize;
       .select-item {
         border-radius: $XlSize;

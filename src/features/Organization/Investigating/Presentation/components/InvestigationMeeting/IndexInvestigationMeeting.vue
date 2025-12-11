@@ -80,23 +80,16 @@ onMounted(() => {
       <!-- CARDS -->
       <div class="table-responsive">
         <div class="index-table-card-container">
-          <div
-            class="index-table-card"
-            v-for="(item, index) in InvestigatingList"
-            :key="index"
-          >
+          <div class="index-table-card" v-for="(item, index) in InvestigatingList" :key="index">
             <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
               <div class="first-container">
                 <div class="first-card">
                   <div class="first-card-header">
                     <div class="header">
-                      <p
-                        class="first-label-item-primary"
-                        :class="{
-                          'high-observation': item.title === 'High observation',
-                          'medium-observation': item.title === 'Medium observation',
-                        }"
-                      >
+                      <p class="first-label-item-primary" :class="{
+                        'high-observation': item.title === 'High observation',
+                        'medium-observation': item.title === 'Medium observation',
+                      }">
                         {{ item.title }} <span>_OBS-2025-0112</span>
                       </p>
                       <p class="new">New</p>

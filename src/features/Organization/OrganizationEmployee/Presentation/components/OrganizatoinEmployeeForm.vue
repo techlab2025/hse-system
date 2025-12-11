@@ -105,6 +105,7 @@ const updateData = () => {
       Phone.value,
       Email.value,
       Password.value,
+      ConfirmPassword.value,
       HeirarchyIds,
       RoleIds
       // Certificates.value.map((item) => item.id)
@@ -114,6 +115,7 @@ const updateData = () => {
       Phone.value,
       Email.value,
       Password.value,
+      ConfirmPassword.value,
       HeirarchyIds,
       RoleIds
       // Certificates.value.map((item) => item.id)
@@ -162,6 +164,12 @@ const setRole = (data: TitleInterface[]) => {
   role.value = data
   updateData()
 }
+
+const ConfirmPassword = ref<string>()
+const UpdateConfirmPassword = (data) => {
+  ConfirmPassword.value = data.target.value
+  updateData()
+}
 </script>
 
 <template>
@@ -181,6 +189,11 @@ const setRole = (data: TitleInterface[]) => {
     <label for="password">{{ $t('Password') }}</label>
     <input id="password" type="text" min="8" v-model="Password" @change="UpdatePassword"
       :placeholder="$t('enter your password')" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="password_confirmation">{{ $t('confirm_password') }}</label>
+    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @change="UpdateConfirmPassword"
+      :placeholder="$t('enter your confirm password')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"

@@ -1233,6 +1233,10 @@ class ApiNames {
   public get DeleteRole() {
     return this.prefix + 'delete_role'
   }
+
+  public get CreateInvestegation() {
+    return this.prefix + 'create_full_investigation'
+  }
 }
 
 export { ApiNames }

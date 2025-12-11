@@ -1,47 +1,26 @@
   <script setup lang="ts">
-import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
-import { onMounted, ref, watch } from 'vue'
-const emit = defineEmits(['update:data'])
-const props = defineProps<{
-  title: string
-  length: number
-  projects: MyProjectsModel[]
-}>()
+  import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+  import { ref } from 'vue'
+  import HeaderProjectsFilter from './HeaderProjectsFilter.vue';
+  const emit = defineEmits(['update:data'])
+  const props = defineProps<{
+    title: string
+    length: number
+    projects: MyProjectsModel[]
+  }>()
+  const ActiveTap = ref(props.projects?.[0]?.id)
+  const UpdateData = (Id: number) => {
+    ActiveTap.value = Id
+    emit('update:data', ActiveTap.value)
+  }
 
-const ActiveTap = ref(props.projects?.[0]?.id)
-
-const UpdateData = (Id: number) => {
-  ActiveTap.value = Id
-  emit('update:data', ActiveTap.value)
-}
-watch(
-  () => props.projects,
-  (newVal) => {
-    if (newVal && newVal.length > 0) {
-      ActiveTap.value = newVal[0].id
-      emit('update:data', ActiveTap.value)
-    }
-  },
-  { immediate: true }
-)
 </script>
   <template>
-  <div class="idnex-header">
-    <p class="title">{{ title }}</p>
-    <p class="index-length">
-      Total: <span>{{ length }}</span>
-    </p>
-    <div class="categories-container" v-if="projects && projects.length > 1">
-      <button
-        class="category"
-        :class="ActiveTap === item.id ? 'active' : ''"
-        v-for="(item, index) in projects"
-        :key="index"
-        @click="UpdateData(item.id)"
-      >
-        {{ item.title }}
-      </button>
+    <div class="idnex-header">
+      <p class="title">{{ title }}</p>
+      <p class="index-length">
+        Total: <span>{{ length }}</span>
+      </p>
+      <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="UpdateData" />
     </div>
-  </div>
-</template>
+  </template>

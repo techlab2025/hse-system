@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import InvestigatingResultAnswerHedaer from './InvestegationResultAnswerUtils/InvestigatingResultAnswerHedaer.vue';
+import InvestigatingResultAnswerHedaer from './InvestegationResultAnswerParts/InvestigatingResultAnswerHedaer.vue';
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum';
-import CauseOfAccidantAnswer from './InvestegationResultAnswerUtils/CauseOfAccidantAnswer.vue';
+import CauseOfAccidantAnswer from './InvestegationResultAnswerParts/CauseOfAccidantAnswer.vue';
+import MeetingOverviewAnswer from './InvestegationResultAnswerParts/MeetingOverviewAnswer.vue';
 
 const Details = ref({
   id: 3,
@@ -32,7 +33,8 @@ const Factors = ref([
       {
         factor: "Lorem Ipsum is simply dumm"
       },
-    ]
+    ],
+    correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
   },
   {
     mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
@@ -46,7 +48,8 @@ const Factors = ref([
       {
         factor: "Lorem Ipsum is simply dumm"
       },
-    ]
+    ],
+    correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
   },
 ])
 </script>
@@ -57,6 +60,7 @@ const Factors = ref([
       :TeamLeader="Details.observer?.name" :createdAt="Details.createdAt" :TeamNumbers="12" :solvedTasks="8"
       :ToltalTasks="18" />
     <CauseOfAccidantAnswer class="w-full" @update:data="console.log($event, 'CauseOfAccidant')" :Factors="Factors" />
+    <MeetingOverviewAnswer />
   </div>
 
 </template>

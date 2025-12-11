@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -24,6 +24,10 @@ import ObservationLevel from '../Ovservation/ObservationLevel.vue'
 import HazerdType from '../Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
+import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
+import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
+import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import HeaderProjectsFilter from './HazardUtils/HeaderProjectsFilter.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -46,7 +50,7 @@ const updateData = () => {
       2,
       SelectedMachine.value.id,
       ZoneIds.value,
-      22,
+      SelectedProjectId.value,
       null,
       null,
       null,
@@ -65,7 +69,7 @@ const updateData = () => {
       Observation.HazardType,
       SelectedMachine.value?.id,
       ZoneIds.value,
-      37,
+      SelectedProjectId.value,
       isResult.value ? 1 : 0,
       riskLevel.value,
       SaveStatusEnum.NotSaved,
@@ -140,15 +144,36 @@ const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
+
+const Projects = ref<MyProjectsModel[]>([])
+const FetchMyProjects = async () => {
+  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
+  if (res.value.data) {
+    Projects.value = res.value.data
+  }
+}
+onMounted(() => {
+  FetchMyProjects()
+})
+
+const SelectedProjectId = ref<number>()
+const GetProjectId = (id: number) => {
+  SelectedProjectId.value = id
+  updateData();
+}
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage :title="'create Hazerd'" :subtitle="'Identify and report potential hazards before they cause harm'"
       :img="hazardImage" />
+    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
+
   </div>
   <div class="col-span-6 md:col-span-6">
-    <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
+    <TabsSelection :ProjectId="SelectedProjectId" @update:data="GetZones" />
   </div>
   <div class="hazard-form col-span-6 md:col-span-6">
     <div class="hazard-form-header">

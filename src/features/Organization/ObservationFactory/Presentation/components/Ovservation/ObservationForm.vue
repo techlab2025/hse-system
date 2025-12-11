@@ -33,6 +33,10 @@ import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/index
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
+import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
+import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -60,7 +64,7 @@ const user = useUserStore()
 
 const title = ref<string>('')
 const description = ref<string>('')
-const image = ref<string[] | null>(null)
+const image = ref([])
 const date = ref<Date | null>(new Date())
 const equipmentId = ref<number | null>(null)
 
@@ -232,15 +236,36 @@ const UpdateSelectedZone = (data) => {
   zoneId.value = data
   updateData();
 }
+
+const Projects = ref<MyProjectsModel[]>([])
+const FetchMyProjects = async () => {
+  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
+  if (res.value.data) {
+    Projects.value = res.value.data
+  }
+}
+onMounted(() => {
+  FetchMyProjects()
+})
+
+const SelectedProjectId = ref<number>()
+const GetProjectId = (id: number) => {
+  SelectedProjectId.value = id
+  updateData();
+}
 </script>
 
 <template>
   <!-- <pre>{{ data }}</pre> -->
-  <div class="observation-form">
+  <div class="observation-form col-span-6 md:col-span-6">
     <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList" />
+    <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />
+
     <!-- zoneId = $event -->
-    <TabsSelection :LocationIds="[137]" @update:data="UpdateSelectedZone" />
+    <TabsSelection :ProjectId="SelectedProjectId" @update:data="UpdateSelectedZone" />
 
     <p class="first-section-par">
       <component :is="FormPen" />

@@ -4,8 +4,13 @@
 .cause-of-accidant {
   font-family: 'Regular';
   .accident-answer {
+    width: 100%;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize2;
     .accident-answer-factors-container {
-      // @include flex-row(nowrap, space-between, center);
+      @include flex-row(nowrap, space-between, center);
+      width: 100%;
+
       .accident-answer-factors {
         padding-left: 14px;
         // border-left: 1px solid #bdcbda;
@@ -46,6 +51,32 @@
           span {
             color: #6a717d;
           }
+        }
+      }
+      .corrective-action {
+        @include flex-column(nowrap, flex-start, flex-start);
+        background-color: #fbfbfb;
+        padding: $XsSize2 $MdSize;
+        border-radius: $XlSize;
+        max-width: 60%;
+        .corrective-action-header {
+          @include flex-row(nowrap, flex-start, center);
+          width: 100%;
+          .corrective-action-title {
+            color: #4caf50;
+          }
+          hr {
+            width: 80%;
+
+            border: none;
+            height: 2px;
+            background-color: #4CAF501A;
+          }
+        }
+
+        .corrective-action-content {
+          color: #9299a5;
+          max-width: 100%;
         }
       }
     }

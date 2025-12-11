@@ -21,8 +21,8 @@ class AddInvestigatingApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.CreateInvestigating,
-      type: CrudType.FormData,
+      url: ApiNames.instance.CreateInvestegation,
+      type: CrudType.POST,
       auth: true,
       params: params,
       showLoadingDialog: true,

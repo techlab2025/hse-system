@@ -6,10 +6,23 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize;
   font-family: 'Regular';
-  border: 3px solid #5571b927;
+  // border: 3px solid #5571b927;
   border-radius: calc($XlSize + 2px);
   padding: $MdSize;
   background-color: #fcfcfc;
+  width: 100%;
+
+  &.colored {
+    background-color: #f7f9fc;
+    border: none;
+    border-radius: 0;
+    transform: translateY(-10px);
+  }
+  &.noborder {
+    width: 100%;
+    border: none;
+    background-color: #fcfcfc;
+  }
 
   .title {
     color: #170f49;
