@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue';
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { onMounted, ref, watch } from 'vue'
 const emit = defineEmits(['update:data'])
@@ -25,6 +26,12 @@ watch(
     Projects.value = newValue
   }
 )
+
+const SelectedProjectId = ref<number>()
+const GetProjectId = (id: number) => {
+  SelectedProjectId.value = id
+  UpdateData(id);
+}
 </script>
 <template>
   <div class="idnex-header">
@@ -32,7 +39,7 @@ watch(
     <p class="index-length">
       Total: <span>{{ length }}</span>
     </p>
-    <div class="categories-container" v-if="projects && projects.length > 1">
+    <!-- <div class="categories-container" v-if="projects && projects.length > 1">
       <button
         class="category"
         :class="ActiveTap === item.id ? 'active' : ''"
@@ -42,6 +49,7 @@ watch(
       >
         {{ item.title }}
       </button>
-    </div>
+    </div> -->
+    <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="GetProjectId" />
   </div>
 </template>

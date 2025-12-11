@@ -259,7 +259,7 @@ const GetProjectId = (id: number) => {
 
 <template>
   <!-- <pre>{{ data }}</pre> -->
-  <div class="observation-form">
+  <div class="observation-form col-span-6 md:col-span-6">
     <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList" />
     <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />

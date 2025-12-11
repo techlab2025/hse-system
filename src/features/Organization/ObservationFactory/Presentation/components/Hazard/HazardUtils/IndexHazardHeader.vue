@@ -21,6 +21,6 @@
       <p class="index-length">
         Total: <span>{{ length }}</span>
       </p>
-      <HeaderProjectsFilter :projects="projects" @update:data="UpdateData" />
+      <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="UpdateData" />
     </div>
   </template>
