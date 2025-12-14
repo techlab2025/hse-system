@@ -211,7 +211,7 @@ const setSelectedProjectFilter = (data) => {
                       <div class="card-content">
                         <div class="card-header">
                           <p class="label-item-primary">
-                            Assigned to : <span>{{ item?.morph?.title }}</span>
+                            {{ $t('assigned_to') }} : <span>{{ item?.morph?.title }}</span>
                           </p>
                         </div>
                         <div class="card-details">

@@ -18,8 +18,8 @@ const props = defineProps<{
 <template>
   <div class="locations-teams">
     <div class="locations-teams-header">
-      <HeaderSection :img="LoactionTeams" title="Teams by Operational location"
-        subtitle="View all working teams assigned to each operational zone" />
+      <HeaderSection :img="LoactionTeams" title="teams_by_operational_location"
+        subtitle="view_all_working_teams_assigned_to_each_operational_zone" />
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
     <div class="locations-sections" v-if="teamLocations?.length > 0">

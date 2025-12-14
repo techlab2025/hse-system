@@ -786,5 +786,19 @@
   "project_objectives": "Project Objectives",
   "Title": "Title",
   "auto":"Auto",
-  "project_info":"Project Info"
+  "project_info":"Project Info",
+  "add_sub_heirarchy":"Add Sub Heirarchy",
+  "add_new_heirarchy":"Add New Heirarchy",
+  "functional_hierarchy":"Functional Hierarchy",
+  "define_the_hierarchy_and_assign_roles_for_your_project_team":"Define the hierarchy and assign roles for your project team",
+  "assigned_to":"Assigned To",
+  "main_objectives":"Main Objectives",
+  "defining_the_main_objectives_and_expected_outcomes_of_the_project":"Defining The Main Objectives And Expected Outcomes Of The Project",
+  "project_site_&_location_overview":"Project Site & Location Overview",
+  "mapping_each_main_site_with_its_associated_working_areas" : "Mapping Each Main Site With Its Associated Working Areas",
+  "teams_by_operational_location":"Teams By Operational Location",
+  "view_all_working_teams_assigned_to_each_operational_zone":"View all working teams assigned to each operational zone",
+  "Equipment_tools_&_devices_by_zone":"Equipment , tools & Devices by Zone",
+  "view_and_manage_all_equipment_assigned_to_each_operational_zone":"View and manage all equipment assigned to each operational zone"
+
 }

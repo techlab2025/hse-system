@@ -33,8 +33,8 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
 
   <DataStatus :controller="state">
     <template #success>
-      <PagesHeader title="Equipment , tools & Devices by Zone"
-        subtitle="View and manage all equipment assigned to each operational zone" />
+      <PagesHeader title="Equipment_tools_&_devices_by_zone"
+        subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone" />
       <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
         <div v-for="(zone, index) in zones.locationZones" :key="index">
 
