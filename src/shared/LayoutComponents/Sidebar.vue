@@ -1169,7 +1169,7 @@ const user = useUserStore()
                     <li>
                       <router-link to="/organization/organization-employee">
                         <SidebarVector />
-                        <span>{{ $t('Organization Employee') }}</span>
+                        <span>{{ $t('employees') }}</span>
                       </router-link>
                     </li>
                   </PermissionBuilder>

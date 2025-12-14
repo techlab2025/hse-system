@@ -26,8 +26,7 @@ export default class AddPermissionController extends ControllerInterface<Permiss
   async addPermission(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<PermissionModel> =
-        await this.AddPermissionUseCase.call(params)
+      const dataState: DataState<PermissionModel> = await this.AddPermissionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -37,6 +36,7 @@ export default class AddPermissionController extends ControllerInterface<Permiss
           messageContent: null,
         })
         // if (!draft) await router.push('/organization/permission')
+        await router.push('/organization/organization-employee')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
