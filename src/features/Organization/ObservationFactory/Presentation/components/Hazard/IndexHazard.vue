@@ -230,7 +230,7 @@ onMounted(async () => {
           @update:data="setSelectedProjectFilter" />
 
         <div class="flex items-center justify-between">
-          <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
+          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
             :link="'/organization/equipment-mangement/hazard/add'" :linkText="'Create Hazard'" />
 
           <div class="btns-filter">
