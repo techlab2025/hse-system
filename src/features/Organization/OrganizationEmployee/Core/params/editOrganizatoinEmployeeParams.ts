@@ -9,6 +9,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   phone: string
   email: string
   password: string
+  passwordConfirmation: string
   hierarchies: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
 
@@ -25,6 +26,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     phone: string,
     email: string,
     password: string,
+    passwordConfirmation: string,
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
 
@@ -35,6 +37,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.phone = phone
     this.email = email
     this.password = password
+    this.passwordConfirmation = passwordConfirmation
     this.hierarchies = hierarchies
     this.roles = roles
     // this.certificateId = certificateId
@@ -51,8 +54,9 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['phone'] = this.phone
     data['email'] = this.email
     data['password'] = this.password
+    data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
-    data['roles'] = this.roles
+    data['roles'] = this.roles.map((item) => item.toMap())
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data
