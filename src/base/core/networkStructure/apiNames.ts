@@ -83,7 +83,7 @@ class ApiNames {
     return this.prefix + 'create_task'
   }
   public get IndexInspection() {
-    return this.prefix + 'fetch_tasks'
+    return this.prefix + 'fetch_my_tasks'
   }
   public get ShowInspection() {
     return this.prefix + 'fetch_task_details'

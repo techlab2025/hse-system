@@ -172,7 +172,9 @@ const ApplayFilter = (data: number[]) => {
 const setSelectedProjectFilter = (data) => {
   // console.log(data, 'selected project filter')
   selectedProjctesFilters.value = data
-  FetchMyZones()
+  if (data) {
+    FetchMyZones()
+  }
 }
 </script>
 

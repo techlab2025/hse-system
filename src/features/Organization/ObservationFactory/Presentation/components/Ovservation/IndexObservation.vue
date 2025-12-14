@@ -206,7 +206,9 @@ const ApplayFilter = (data: number[]) => {
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
-  FetchMyZones()
+    if (data) {
+    FetchMyZones()
+  }
 }
 
 const ShowDetails = ref<number[]>([])
