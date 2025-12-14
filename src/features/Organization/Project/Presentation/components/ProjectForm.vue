@@ -393,7 +393,7 @@ watch(() => langsDescription.value,
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
-      {{ $t('Start Date') }}
+      {{ $t('start_date') }}
     </label>
     <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>

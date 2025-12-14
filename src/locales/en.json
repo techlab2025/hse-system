@@ -772,5 +772,14 @@
   "add_widget": "Add Widget",
   "you_can_add_one_from_the_available_to_the_project_and_control_it_easily": "You can add one from the available to the project and control it easily",
   "add_and_update_your_widget": "Add And Update Your Widget",
-  "main_color": "Main Color"
+  "main_color": "Main Color",
+  "factors": "Factors",
+  "factor_item": "Factor Item",
+  "observation_types": "Types of Observations",
+  "health_conditions": "Health Conditions",
+  "methods": "Methods",
+  "team": "Team",
+  "contractors": "Contractors",
+  "roles": "Roles",
+  "zones": "Zones"
 }
