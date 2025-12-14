@@ -232,7 +232,7 @@ const ShowDetails = ref<number[]>([])
           <IndexHazardHeader :title="'incedant'" :length="state?.pagination?.total || 0" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
           <div class="flex items-center justify-between">
-            <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
+            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
               :link="'/organization/equipment-mangement/incedant/add'" :linkText="'Create incedant'" />
 
             <div class="btns-filter">
