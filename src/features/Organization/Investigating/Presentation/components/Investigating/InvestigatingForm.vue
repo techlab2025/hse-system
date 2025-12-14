@@ -29,6 +29,9 @@ import IndexOrganizatoinEmployeeParams from '@/features/Organization/Organizatio
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import { useRoute } from 'vue-router'
 import MeetingParams from '../../../Core/params/MeetingParams'
+import InvestigatingEmployeeParams from '../../../Core/params/InvestegationEmployeeParams'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { formatTime } from '@/base/Presentation/utils/time_format'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -45,38 +48,25 @@ const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.
 const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 1)
 
 
-const Employees = ref<{ employeeId: number; isLeader: boolean }[]>([])
+const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
 const updateData = () => {
-  // console.log(ZoneIds.value, "ZoneIds.value");
-  const meeting = new MeetingParams(date.value, time.value, SelectedPlatform.value.id)
-  console.log(meeting, "meeting");
+  const meeting = new MeetingParams(formatJoinDate(date?.value), formatTime(time?.value), SelectedPlatform?.value?.id)
   const params = props.data?.id
     ? new EditInvestigatingParams(
-      props.data?.id! ?? 0,
-      text.value,
-      descripe.value,
-      image.value,
-      InvestigatingType.value.id,
-      2,
-      SelectedMachine.value.id,
-      ZoneIds.value,
-      22,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      date.value,
-      null,
-      null,
+      {
+        id: props.data?.id,
+        observationId: id as number,
+        employees: Employees.value,
+        meetings: meeting,
+      }
     )
     : new AddInvestigatingParams(
-      id,
-      Employees.value,
-      meeting,
-
+      {
+        observationId: id as number,
+        employees: Employees.value,
+        meetings: meeting,
+      }
     )
 
   emit('update:data', params)
@@ -144,14 +134,14 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
 const SelectedTeam = ref<TitleInterface[]>([])
 const setTeams = (data: TitleInterface[]) => {
   SelectedTeam.value = data
-  Employees.value = data.map(el => ({ employeeId: el.id, isLeader: false }))
+  Employees.value = data.map(el => (new InvestigatingEmployeeParams(el.id!, false)))
   updateData()
 }
 
 const SelectedTeamLeader = ref<TitleInterface>(null)
 const setTeamLeader = (data: TitleInterface) => {
   SelectedTeamLeader.value = data
-  Employees.value = Employees.value.map(el => el.employeeId === data.id ? { ...el, isLeader: true } : el)
+  Employees.value = Employees.value.map(el => el.organization_employee_id === data.id ? { ...el, is_leader: true } : el)
   updateData()
 }
 

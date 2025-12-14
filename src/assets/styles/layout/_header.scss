@@ -23,9 +23,9 @@
     gap: $XlSize;
 
     .countery-icon {
-      width: 50px;
-      height: 50px;
-      padding: $XsSize2;
+      width: 60px;
+      height: 60px;
+      padding: 10px;
       border-radius: 50%;
       background-color: #f8f9fb;
       cursor: pointer;
@@ -136,9 +136,8 @@
   .menu {
     @include flex-row(nowrap, center, center);
 
-    .header-link{
+    .header-link {
       @include flex-row(wrap, flex-start, center);
-
     }
     h1 {
       font-size: $MdSize;
