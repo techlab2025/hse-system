@@ -8,7 +8,6 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -17,11 +16,8 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexAccidentsTypeParams from '../../Core/params/indexAccidentsTypeParams'
 import IndexAccidentsTypeController from '../controllers/indexAccidentsTypeController'
 import DeleteAccidentsTypeParams from '../../Core/params/deleteAccidentsTypeParams'
@@ -32,10 +28,6 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 const { t } = useI18n()
 
 const { user } = useUserStore()
-
-// import DialogChangeStatusAccidentType from "@/features/setting/AccidentType/Presentation/components/AccidentType/DialogChangeStatusAccidentType.vue";
-// const route = useRoute()
-
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -43,7 +35,6 @@ const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
 const state = ref(indexAccidentsTypeController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
-// const type = ref<AccidentTypeStatusEnum>(AccidentTypeStatusEnum[route.params.type as keyof typeof AccidentTypeStatusEnum])
 
 const fetchAccidentsType = async (
   query: string = '',
@@ -115,26 +106,6 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
       PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
     ],
   },
-  // {
-  //   text: t('add_sub_HAZARD_type'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-type/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
-  // {
-  //   text: t('sub_HAZARD_types'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-types/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
   {
     text: t('delete'),
     icon: IconDelete,
@@ -154,7 +125,6 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click=";(word = ''), searchAccidentType()">
         <Search />
       </span>
@@ -207,13 +177,12 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
                 <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
-
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -228,7 +197,9 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type == OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
                 <td data-label="all_industries" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
@@ -236,17 +207,8 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
                       : '---'
                   }}
                 </td>
-                <!-- <td data-label="all_industries">
-                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />
-                </td> -->
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusAccidentType-->
-                  <!--                  v-if="item.AccidentTypeStatus === AccidentTypeStatusEnum.Draft"-->
-                  <!--                  :AccidentTypeId="item.id"-->
-                  <!--                  @AccidentTypeChangeStatus="fetchAccidentType"-->
-                  <!--                />-->
-
                   <DropList
                     :actionList="actionList(item.id, deleteAccidentsType)"
                     @delete="deleteAccidentsType(item.id)"

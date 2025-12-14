@@ -82,7 +82,7 @@ export default class ProjectDetailsModel {
 
     return new TitleInterface({
       id: data?.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title || data.name,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title || data.name || data.location_title,
     })
   }
 

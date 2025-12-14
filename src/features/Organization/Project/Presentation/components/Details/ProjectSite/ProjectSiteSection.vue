@@ -38,8 +38,8 @@ const props = defineProps<{ locations: LocationDetailsModel[] }>()
 
 <template>
   <div class="project-location">
-    <HeaderSection :img="Location" :title="`Project Site & Location Overview`"
-      :subtitle="`Mapping each main site with its associated working areas`" />
+    <HeaderSection :img="Location" :title="`project_site_&_location_overview`"
+      :subtitle="`mapping_each_main_site_with_its_associated_working_areas`" />
 
     <div class="card-section">
       <LocationCard v-for="(card, index) in locations" :key="index" :title="card.title" :zone="card.zoons.length"

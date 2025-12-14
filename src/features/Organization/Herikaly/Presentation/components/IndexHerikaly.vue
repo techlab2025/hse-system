@@ -37,8 +37,6 @@ import TreeTimeLine from './TreeTimeLine.vue'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusHerikaly from "@/features/setting/Herikalyuages/Presentation/components/Herikaly/DialogChangeStatusHerikaly.vue";
-// const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
@@ -46,7 +44,6 @@ const countPerPage = ref(10)
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const state = ref(indexHerikalyController.state.value)
 const route = useRoute()
-// const type = ref<HerikalyStatusEnum>(HerikalyStatusEnum[route.params.type as keyof typeof HerikalyStatusEnum])
 
 const fetchHerikaly = async (
   query: string = '',
@@ -115,7 +112,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     ],
   },
   {
-    text: t('add_sub_herikaly'),
+    text: t('add_sub_heirarchy'),
     icon: IconEdit,
     link: `/organization/herikaly/add/${id}`,
     permission: [
@@ -141,8 +138,8 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 </script>
 
 <template>
-  <PagesHeader :title="$t('functional Hierarchy')"
-    :subtitle="`Define the hierarchy and assign roles for your project team`" :img="Heirarchy" />
+  <PagesHeader :title="$t('functional_hierarchy')"
+    :subtitle="$t(`define_the_hierarchy_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
 
 
   <PermissionBuilder :code="[

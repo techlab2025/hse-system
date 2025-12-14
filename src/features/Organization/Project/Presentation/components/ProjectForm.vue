@@ -243,6 +243,7 @@ watch(
         null
         // SelectedCity.value.map((c) => c.id),
       )
+      console.log(newData.area , "newwww");
       location.value = newData?.area ?? [];
       EvaluatingMethod.value = newData?.methods ?? [];
       ContractorIds.value = newData?.contractors ?? [];

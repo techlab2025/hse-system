@@ -26,7 +26,7 @@ const setParams = (data: Params) => {
     <AccidentsTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>
