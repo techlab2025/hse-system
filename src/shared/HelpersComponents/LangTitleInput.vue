@@ -37,15 +37,15 @@ const props = withDefaults(
     required?: boolean
     disabled?: boolean
     fieldType?:
-      | 'title'
-      | 'subtitle'
-      | 'description'
-      | 'button_title'
-      | 'answer'
-      | 'question'
-      | 'old'
-      | 'new'
-      | 'feature'
+    | 'title'
+    | 'subtitle'
+    | 'description'
+    | 'button_title'
+    | 'answer'
+    | 'question'
+    | 'old'
+    | 'new'
+    | 'feature'
   }>(),
   {
     langs: () => [],
@@ -300,29 +300,20 @@ watch(hasAtLeastOneValue, (isValid) => {
   <div class="input-wrapper">
     <div class="label-wrapper">
       <label>
-        {{ label }}
+        {{ $t(label) }}
         <span class="text-red-500" v-if="required">*</span>
       </label>
 
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input
-            type="radio"
-            :id="`${label}-${l.locale}`"
-            :name="label"
-            :value="l.locale"
-            v-model="lang"
-            :required="props.required"
-          />
+          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang"
+            :required="props.required" />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->
-            <span
-              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
-              class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`"
-            >
+            <span v-if="getFieldValue(titles.find((t) => t.locale === l.locale))" class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`">
               ✓
             </span>
           </label>
@@ -331,22 +322,10 @@ watch(hasAtLeastOneValue, (isValid) => {
     </div>
 
     <!-- Title Input -->
-    <Editor
-      v-if="isTextarea"
-      v-model="fieldValue"
-      :rows="rows"
-      v-bind="inputAttrs"
-      editorStyle="height: 320px"
-    />
+    <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
 
     <!-- Regular Input -->
-    <input
-      v-else
-      :type="type"
-      v-model="fieldValue"
-      v-bind="inputAttrs"
-      :required="props.required"
-    />
+    <input v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" :required="props.required" />
 
     <!-- Selected Language Info -->
     <span class="select-lang">

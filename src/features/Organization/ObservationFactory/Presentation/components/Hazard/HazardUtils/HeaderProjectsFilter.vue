@@ -28,8 +28,10 @@ watch(() => props.projects, (newVal) => {
   AllProjects.value = newVal
 })
 onMounted(() => {
-  
+
 })
+
+
 </script>
 <template>
   <div class="idnex-header">

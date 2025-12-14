@@ -85,11 +85,11 @@ const DeleteHierarchy = async (Id: number) => {
                 <div class="actions">
                   <router-link class="btn edit-btn flex "
                     :to="`/organization/organization-employee?heirarchy_id=${item.id}`">
-                    <span>Employees</span>
+                    <span>{{ $t('employees') }}</span>
                     <EmployeeLinkIcon class="w-[15px] h-[15px]" />
                   </router-link>
-                  <!-- <button class="btn add-btn">Certificates</button> -->
-                  <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> Delete </button>
+                  <router-link :to="`/organization/herikaly/${item.id}`" class="btn add-btn">{{ $t('edit') }}</router-link>
+                  <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> {{ $t('delete') }} </button>
                 </div>
               </div>
             </div>

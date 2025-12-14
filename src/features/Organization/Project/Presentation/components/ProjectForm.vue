@@ -17,19 +17,12 @@ import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
 import EditProjectParams from '../../Core/params/editProjectParams'
 import AddProjectParams from '../../Core/params/addProjectParams'
-import IndexPartnerController from '@/features/Organization/Partner/Presentation/controllers/indexPartnerController'
-import IndexPartnerParams from '@/features/Organization/Partner/Core/params/indexPartnerParams'
-import IndexOrganizationLocationController from '@/features/Organization/OrganizationLocation/Presentation/controllers/indexOrganizationLocationController'
-import IndexOrganizationLocationParams from '@/features/Organization/OrganizationLocation/Core/params/indexOrganizationLocationParams'
 import PagesHeader from '../../../../../shared/HelpersComponents/PagesHeader.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import AddZoneDialog from './Dialogs/ZoneDialog/AddZoneDialog.vue'
-import IndexMethodsController from '@/features/setting/Methods/Presentation/controllers/indexMethodsController'
-import IndexMethodsParams from '@/features/setting/Methods/Core/params/indexMethodsParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-// import type ProjectLocationZonesModel from '../../Data/models/ProjectLocationZones'
 import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
@@ -47,27 +40,9 @@ const setContractorIds = (data: TitleInterface[]) => {
   ContractorIds.value = data
   updateData()
 }
-const indexPartnerController = IndexPartnerController.getInstance()
-const indexLocationController = IndexLocationController.getInstance()
-const indexLocationParams = new IndexLocationParams("", 0, 0, 0,)
 
 const indexContractorController = IndexContractorController.getInstance()
 const indexContractorTypeParams = new IndexContractorParams("", 0, 0, 0)
-
-const indexMethodsController = IndexMethodsController.getInstance()
-const indexMethodsParams = new IndexMethodsParams("", 0, 0, 0,)
-
-
-
-const indexPartnerParams = new IndexPartnerParams(
-  '',
-  0,
-  0,
-  0,
-  // id.value?? '',
-)
-
-
 
 const route = useRoute()
 const id = route.params.parent_id
@@ -232,8 +207,6 @@ watch(
         }))
       }
 
-      console.log(newData, "newDatanewDatanewDatanewDatanewData");
-      console.log(langs.value, "langs");
       SerialNumber.value = newData?.SerialNumber;
       date.value = newData?.startDate;
       // ContractorIds.value = newData?.partner;
@@ -282,17 +255,10 @@ watch(
 const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'Serial Number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
 ])
 
-const setLocations = (data: TitleInterface[]) => {
-  location.value = data
-  updateData()
-}
-const setEvaluatingMethod = (data: TitleInterface[]) => {
-  EvaluatingMethod.value = data
-  updateData()
-}
+
 
 const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
@@ -383,13 +349,13 @@ watch(() => langsDescription.value,
 
 <template>
   <div class="col-span-4">
-    <PagesHeader :title="`project info`" />
+    <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <SwitchInput :fields="fields" :switch_title="'Auto'" :switch_reverse="true" @update:value="UpdateSerial" />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
@@ -397,49 +363,25 @@ watch(() => langsDescription.value,
     </label>
     <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>
-  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="partner_id" @update:modelValue="setPartnerId" :controller="indexPartnerController"
-      :params="indexPartnerParams" :label="$t('contractor')" :placeholder="$t('contractor')" />
-  </div> -->
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
-      :controller="indexContractorController" :params="indexContractorTypeParams" :label="$t('contractor')"
-      :placeholder="$t('contractor')" />
+      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
+      placeholder="contractors" />
   </div>
-  <!-- <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
-      @update:modelValue="SetCountrySelection" />
-  </div>
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
-      @update:modelValue="SetStateSelection" />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationCityController"
-      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City" :type="2"
-      @update:modelValue="SetCitySelection" />
-  </div> -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('location')"
-      :placeholder="$t('location')" :type="2" />
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
+      placeholder="location" :type="2" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="">Zones</label>
-    <AddZoneDialog class="input" :locations="location" @update:data="UpdateZones" :selectedZones="SelectedZones" />
+    <label for="zone">{{ $t("zones") }}</label>
+    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
+      :selectedZones="SelectedZones" />
   </div>
-  <!-- <div class="col-span-4 md:col-span-4 input-wrapper">
-    <CustomSelectInput :modelValue="EvaluatingMethod" @update:modelValue="setEvaluatingMethod"
-      :controller="indexMethodsController" :params="indexMethodsParams"
-      :label="$t('the method of evaluating employee performance')" :type="2"
-      :placeholder="$t('choose your method of evaluating employee performance')" />
-  </div> -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput :label="$t('project objectives')" :langs="langDefault" :modelValue="langsDescription"
+    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
       :placeholder="`What are the project objectives?`" />
   </div>

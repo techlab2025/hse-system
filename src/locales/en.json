@@ -781,5 +781,10 @@
   "team": "Team",
   "contractors": "Contractors",
   "roles": "Roles",
-  "zones": "Zones"
+  "zones": "Zones",
+  "serial_number": "Serial Number",
+  "project_objectives": "Project Objectives",
+  "Title": "Title",
+  "auto":"Auto",
+  "project_info":"Project Info"
 }

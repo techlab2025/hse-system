@@ -262,5 +262,4 @@ watch(
     </template>
   </PermissionBuilder>
 </template>
-
 <style scoped></style>

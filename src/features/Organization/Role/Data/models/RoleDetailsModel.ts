@@ -3,7 +3,7 @@ import RolePermissionModel from './RolePermissionModel'
 export default class RoleDetailsModel {
   id: number
   permissions: RolePermissionModel[]
-  role: string
+  title: string
   roleId: number
   displayName: string
   allowForOrganizations: boolean
@@ -11,14 +11,14 @@ export default class RoleDetailsModel {
   constructor(
     id: number,
     permissions: RolePermissionModel[],
-    role: string,
+    title: string,
     roleId: number,
     displayName: string,
     allowForOrganizations: boolean,
   ) {
     this.id = id
     this.permissions = permissions
-    this.role = role
+    this.title = title
     this.roleId = roleId
     this.displayName = displayName
     this.allowForOrganizations = allowForOrganizations

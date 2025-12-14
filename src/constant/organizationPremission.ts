@@ -792,6 +792,139 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+
+        // Inspection
+        {
+          key: PermissionsEnum.ORG_INSPECTION_ALL,
+          code: PermissionsEnum.ORG_INSPECTION_ALL,
+          label: 'Inspection',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_INSPECTION_ALL,
+              code: PermissionsEnum.ORG_INSPECTION_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_INSPECTION_FETCH,
+              code: PermissionsEnum.ORG_INSPECTION_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_INSPECTION_DETAILS,
+              code: PermissionsEnum.ORG_INSPECTION_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_INSPECTION_DELETE,
+              code: PermissionsEnum.ORG_INSPECTION_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ORG_INSPECTION_UPDATE,
+              code: PermissionsEnum.ORG_INSPECTION_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Hazard
+        {
+          key: PermissionsEnum.ORG_HAZARD_ALL,
+          code: PermissionsEnum.ORG_HAZARD_ALL,
+          label: 'Hazard',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_HAZARD_ALL,
+              code: PermissionsEnum.ORG_HAZARD_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_HAZARD_FETCH,
+              code: PermissionsEnum.ORG_HAZARD_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_HAZARD_DETAILS,
+              code: PermissionsEnum.ORG_HAZARD_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_HAZARD_DELETE,
+              code: PermissionsEnum.ORG_HAZARD_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ORG_HAZARD_UPDATE,
+              code: PermissionsEnum.ORG_HAZARD_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // INCEDANT
+        {
+          key: PermissionsEnum.ORG_INCEDANT_ALL,
+          code: PermissionsEnum.ORG_INCEDANT_ALL,
+          label: 'Incident',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_INCEDANT_ALL,
+              code: PermissionsEnum.ORG_INCEDANT_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_INCEDANT_FETCH,
+              code: PermissionsEnum.ORG_INCEDANT_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_INCEDANT_DETAILS,
+              code: PermissionsEnum.ORG_INCEDANT_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_INCEDANT_DELETE,
+              code: PermissionsEnum.ORG_INCEDANT_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ORG_INCEDANT_UPDATE,
+              code: PermissionsEnum.ORG_INCEDANT_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Observation
+        {
+          key: PermissionsEnum.ORG_OBSERVATION_ALL,
+          code: PermissionsEnum.ORG_OBSERVATION_ALL,
+          label: 'Observation',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_ALL,
+              code: PermissionsEnum.ORG_OBSERVATION_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_FETCH,
+              code: PermissionsEnum.ORG_OBSERVATION_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_DETAILS,
+              code: PermissionsEnum.ORG_OBSERVATION_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_DELETE,
+              code: PermissionsEnum.ORG_OBSERVATION_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_UPDATE,
+              code: PermissionsEnum.ORG_OBSERVATION_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

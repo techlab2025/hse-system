@@ -31,7 +31,7 @@ watch(props.fields, (newVal) => {
   <div class="zone-data-container">
     <div v-for="(field, index) in fields" :key="field.key" class="input-wrapper">
       <div class="input-title">
-        <label class="title" :for="field.key">{{ field.label }}</label>
+        <label class="title" :for="field.key">{{ $t(field.label) }}</label>
         <div class="switch-btn">
           <p class="title">{{ switch_title }}</p>
           <ToggleSwitch v-model="field.enabled" />
