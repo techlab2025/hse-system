@@ -14,6 +14,7 @@ const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getI
 
 const addOrganizatoinEmployee = async () => {
   if (params.value) {
+    console.log(params.value, 'params value');
     await addOrganizatoinEmployeeController.addOrganizatoinEmployee(params.value as AddOrganizatoinEmployeeParams, router)
   }
 }
@@ -34,8 +35,3 @@ const setParams = (data: Params) => {
 </template>
 
 <style scoped></style>
-
-
-
-
-

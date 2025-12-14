@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type PermissionModel from '../../Data/models/PermissionModel'
 import EditPermissionUseCase from '../../Domain/useCase/editPermissionUseCase'
 
-
 export default class EditPermissionController extends ControllerInterface<PermissionModel> {
   private static instance: EditPermissionController
 
@@ -38,7 +37,7 @@ export default class EditPermissionController extends ControllerInterface<Permis
           imageElement: successImage,
           messageContent: null,
         })
-        // await router.push('/organization/permission')
+        await router.push('/organization/organization-employee')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

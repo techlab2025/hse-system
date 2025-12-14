@@ -123,6 +123,7 @@ const updateData = () => {
       // Certificates.value.map((item) => item.id)
 
     )
+  // console.log(params, "params");
   emit('update:data', params)
 }
 
