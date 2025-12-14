@@ -221,12 +221,12 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/add/OrganizatoinEmployee`" addText="Add OrganizatoinEmployee"
+        <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
           description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No OrganizatoinEmployeeuages" />
       </template>
       <template #failed>
-        <DataFailed :link="`/add/OrganizatoinEmployee`" addText="Add OrganizatoinEmployee"
+        <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
           description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No OrganizatoinEmployeeuages" />
       </template>

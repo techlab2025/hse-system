@@ -46,7 +46,7 @@ const setPermission = (val) => {
   updateData()
 }
 
-const role = ref<string>(props?.data?.role || '')
+const role = ref<string>(props?.data?.title || '')
 const roleName = ref<string>(props?.data?.displayName || '')
 const AllowOrganization = ref<boolean>(props.data?.allowForOrganizations === 1 ? true : false)
 

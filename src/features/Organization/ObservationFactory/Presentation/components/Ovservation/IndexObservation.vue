@@ -229,7 +229,7 @@ const ShowDetails = ref<number[]>([])
             @update:data="setSelectedProjectFilter" />
 
           <div class="flex items-center justify-between">
-            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+            <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
               :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
 
             <div class="btns-filter">

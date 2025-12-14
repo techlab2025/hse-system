@@ -215,8 +215,7 @@ const setSelectedProjectFilter = (data) => {
 
 onMounted(async () => {
   fetchHazard()
-  FetchMyProjects()
-
+  await FetchMyProjects()
 })
 </script>
 
@@ -229,7 +228,7 @@ onMounted(async () => {
           @update:data="setSelectedProjectFilter" />
 
         <div class="flex items-center justify-between">
-          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+          <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
             :link="'/organization/equipment-mangement/hazard/add'" :linkText="'Create Hazard'" />
 
           <div class="btns-filter">
@@ -326,13 +325,13 @@ onMounted(async () => {
           </template>
 
           <template #empty>
-            <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
+            <DataEmpty :link="`/organization/equipment-mangement/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Hazard" />
           </template>
 
           <template #failed>
-            <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
+            <DataFailed :link="`/organization/equipment-mangement/hazard/add`" addText="Add Hazard"
               description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Hazard" />
           </template>

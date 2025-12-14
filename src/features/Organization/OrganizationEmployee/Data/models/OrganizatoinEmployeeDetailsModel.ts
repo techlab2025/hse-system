@@ -1,4 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
+import HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
+import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
 
 export default class OrganizatoinEmployeeDetailsModel {
   public id: number
@@ -7,8 +9,8 @@ export default class OrganizatoinEmployeeDetailsModel {
   public email: string
   public is_master: number
   public image: null
-  // public heriarachy: number
-  // public certificates: number
+  public hierarchy: TitleInterface[]
+  public roles: RoleDetailsModel[]
 
   constructor(
     id: number,
@@ -17,8 +19,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     email: string,
     is_master: number,
     image: null,
-    // heriarachy: number,
-    // certificates: number
+    hierarchy: TitleInterface[],
+    roles: RoleDetailsModel[],
   ) {
     this.id = id
     this.name = name
@@ -26,8 +28,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.email = email
     this.is_master = is_master
     this.image = image
-    // this.heriarachy = heriarachy
-    // this.certificates = certificates
+    this.hierarchy = hierarchy
+    this.roles = roles
   }
 
   static fromMap(data: any): OrganizatoinEmployeeDetailsModel {
@@ -38,8 +40,18 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.email,
       data.is_master,
       data.image,
-      // data.heriarachy,
-      // data.certificates
+      data.hierarchy?.map((item: any) => this.getTitle(item)) || [],
+      // data.hierarchy?.map((item: any) => HierarchyEmployeeModel.fromMap(item)),
+      data.roles?.map((roleData: any) => RoleDetailsModel.fromMap(roleData)),
     )
+  }
+
+  static getTitle(data: any) {
+    const savedLocale = localStorage.getItem('lang')
+
+    return new TitleInterface({
+      id: data.id,
+      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+    })
   }
 }

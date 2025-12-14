@@ -12,6 +12,37 @@
   background-color: #fcfcfc;
   width: 100%;
 
+  // @include flex-column(nowrap, flex-start, center);
+  gap: $XsSize3;
+
+  overflow-x: scroll;
+  // overflow-y: hidden;
+  scroll-behavior: smooth;
+  // -webkit-overflow-scrolling: touch;
+
+  padding-bottom: 6px;
+
+  /* snap scrolling */
+  scroll-snap-type: x mandatory;
+
+  /* scrollbar */
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
   &.colored {
     background-color: #f7f9fc;
     border: none;
@@ -37,29 +68,87 @@
       color: $PrimaryColor;
     }
   }
+  // .categories-container {
+  //   @include flex-row(nowrap, flex-start, center);
+  //   gap: $XsSize3;
+  //   overflow-x: auto;
+  //   &::-webkit-scrollbar {
+  //     height: 4px;
+  //   }
+  //   &::-webkit-scrollbar-thumb {
+  //     background-color: rgba(0, 0, 0, 0.2);
+  //     border-radius: 4px;
+  //   }
+  //   &::-webkit-scrollbar-track {
+  //     background-color: transparent;
+  //   }
+  //   .category {
+  //     color: #b7beca;
+  //     border: 1px solid #f3f3f3;
+  //     border-radius: $MdSize2;
+  //     padding: $XsSize2 calc($XlSize3 + 4px);
+  //     font-size: $MdSize;
+  //     font-weight: $BaseFontWeightBold;
+  //     transition: 0.3s all linear;
+  //     cursor: pointer;
+  //     &.active {
+  //       color: white;
+  //       background-color: $PrimaryColor;
+  //     }
+  //   }
+  // }
   .categories-container {
-    @include flex-row(wrap, flex-start, center);
+    @include flex-row(nowrap, flex-start, center);
     gap: $XsSize3;
-    overflow-x: auto;
+
+    overflow-x: scroll;
+    // overflow-y: hidden;
+    scroll-behavior: smooth;
+    // -webkit-overflow-scrolling: touch;
+
+    padding-bottom: 6px;
+
+    /* snap scrolling */
+    scroll-snap-type: x mandatory;
+
+    /* scrollbar */
     &::-webkit-scrollbar {
       height: 4px;
     }
+
     &::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.2);
       border-radius: 4px;
     }
+
     &::-webkit-scrollbar-track {
       background-color: transparent;
     }
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
     .category {
+      flex: 0 0 auto; // مهم جدًا عشان مايكسرش
+      scroll-snap-align: start;
+
       color: #b7beca;
       border: 1px solid #f3f3f3;
       border-radius: $MdSize2;
       padding: $XsSize2 calc($XlSize3 + 4px);
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
-      transition: 0.3s all linear;
+      white-space: nowrap;
+
+      transition: 0.3s all ease;
       cursor: pointer;
+
+      &:hover {
+        // color: white;
+        background-color: rgba($PrimaryColor, 0.8);
+      }
+
       &.active {
         color: white;
         background-color: $PrimaryColor;

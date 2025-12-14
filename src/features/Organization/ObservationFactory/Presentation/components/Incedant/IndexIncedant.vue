@@ -112,7 +112,7 @@ const confirmFilters = (
   )
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchHazard()
   FetchMyProjects()
 })
@@ -202,7 +202,6 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  console.log(SelectedZonesFilter.value, 'SelectedZonesFilter.value')
   fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
 }
 
@@ -218,31 +217,21 @@ const ShowDetails = ref<number[]>([])
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      <PermissionBuilder :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
 
-          PermissionsEnum.ORG_INCEDANT_ALL,
-          PermissionsEnum.ORG_INCEDANT_DELETE,
-          PermissionsEnum.ORG_INCEDANT_FETCH,
-          PermissionsEnum.ORG_INCEDANT_UPDATE,
-          PermissionsEnum.ORG_INCEDANT_CREATE,
-        ]"
-      >
+        PermissionsEnum.ORG_INCEDANT_ALL,
+        PermissionsEnum.ORG_INCEDANT_DELETE,
+        PermissionsEnum.ORG_INCEDANT_FETCH,
+        PermissionsEnum.ORG_INCEDANT_UPDATE,
+        PermissionsEnum.ORG_INCEDANT_CREATE,
+      ]">
         <div>
-          <IndexHazardHeader
-            :title="'incedant'"
-            :length="state?.pagination?.total || 0"
-            :projects="Projects"
-            @update:data="setSelectedProjectFilter"
-          />
+          <IndexHazardHeader :title="'incedant'" :length="state?.pagination?.total || 0" :projects="Projects"
+            @update:data="setSelectedProjectFilter" />
           <div class="flex items-center justify-between">
-            <IndexFilter
-              :filters="Filters"
-              @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/incedant/add'"
-              :linkText="'Create incedant'"
-            />
+            <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
+              :link="'/organization/equipment-mangement/incedant/add'" :linkText="'Create incedant'" />
 
             <div class="btns-filter">
               <FilterDialog @confirmFilters="confirmFilters" />
@@ -311,11 +300,8 @@ const ShowDetails = ref<number[]>([])
                 </div>
               </div>
             </div>
-            <Pagination
-              :pagination="state.pagination"
-              @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage"
-            />
+            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
@@ -324,27 +310,19 @@ const ShowDetails = ref<number[]>([])
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty
-              :link="`/organization/incedant/add`"
-              addText="Add incedant"
+            <DataEmpty :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
               description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No incedant"
-            />
+              title="..ops! You have No incedant" />
           </template>
           <template #failed>
-            <DataFailed
-              :link="`/organization/incedant/add`"
-              addText="Add incedant"
+            <DataFailed :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
               description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No incedant"
-            />
+              title="..ops! You have No incedant" />
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-          />
+          <DataFailed addText="Have not  Permission"
+            description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data" />
         </template>
       </PermissionBuilder>
     </div>

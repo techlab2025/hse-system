@@ -22,13 +22,13 @@
     SelectedFilter.value.push(data)
     emit('update:data', SelectedFilter.value)
   }
+
 </script>
   <template>
     <div class="idnex-filter">
       <div class="filter-container">
         <p class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="item in filters"
           :key="item.id" @click="UpdateData(item.id)">
-
           <span v-if="item?.title != null">
             {{ item?.title }}
           </span>

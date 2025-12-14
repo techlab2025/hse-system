@@ -29,7 +29,7 @@ const setParams = (data: Params) => {
     <AdminForm @update:updateData="setParams" />
 
     <div class="button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

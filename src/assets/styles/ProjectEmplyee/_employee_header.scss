@@ -46,6 +46,46 @@
     }
   }
 
+  html[dir='rtl'] & {
+    .left-header-background {
+      position: absolute;
+      right: 0px;
+      top: 0;
+      height: 100%;
+      scale: 1.2;
+
+      @include flex-center();
+      .left-blue-background {
+        opacity: 0.2;
+      }
+      .left-yellow-background {
+        position: relative;
+        left: -280px;
+        opacity: 0.2;
+      }
+    }
+
+    .right-header-background {
+      position: absolute;
+      left: 0px;
+      top: 0;
+      height: 100%;
+      scale: 1.2;
+      @include flex-center();
+      .right-yellow-background {
+        position: relative;
+        right: -280px;
+        opacity: 0.2;
+      }
+      .right-blue-background {
+        position: relative;
+        opacity: 0.2;
+        rotate: 270deg;
+        left: -280px;
+      }
+    }
+  }
+
   .employee-header-text {
     @include flex-row(nowrap, flex-start, center);
     gap: 6px;

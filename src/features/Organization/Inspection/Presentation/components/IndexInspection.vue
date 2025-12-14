@@ -194,7 +194,7 @@ const setSelectedProjectFilter = (data) => {
           <IndexInspectionHeader :title="`Inspection`" :length="state?.pagination?.total || 0" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
 
-          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+          <IndexFilter v-if="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
             :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
         </div>
         <DataStatus :controller="state">

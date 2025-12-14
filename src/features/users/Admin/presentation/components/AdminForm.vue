@@ -68,7 +68,7 @@ const updateTeamMember = () => {
 
 <template>
   <div class="input-wrapper">
-    <label  for="name">name        <span class="text-red-500" >*</span>
+    <label  for="name">{{ $t('name') }}<span class="text-red-500" >*</span>
     </label>
     <input
       id="name"
@@ -80,7 +80,7 @@ const updateTeamMember = () => {
     />
   </div>
   <div class="input-wrapper">
-    <label  for="phone">phone <span class="text-red-500" >*</span></label>
+    <label  for="phone">{{ $t('phone') }} <span class="text-red-500" >*</span></label>
     <input
       id="phone"
       v-model="phone"
@@ -92,7 +92,7 @@ const updateTeamMember = () => {
   </div>
 
   <div class="input-wrapper">
-    <label  for="name">Email <span class="text-red-500" >*</span></label>
+    <label  for="name">{{ $t('email') }} <span class="text-red-500" >*</span></label>
     <input
       id="email"
       v-model="email"
@@ -103,7 +103,7 @@ const updateTeamMember = () => {
     />
   </div>
   <div class="input-wrapper">
-    <label  for="password">Password <span class="text-red-500" >*</span></label>
+    <label  for="password">{{ $t('password') }} <span class="text-red-500" >*</span></label>
     <input
       id="password"
       v-model="password"

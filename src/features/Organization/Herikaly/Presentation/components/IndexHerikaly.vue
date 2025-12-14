@@ -137,101 +137,33 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   },
 ]
 
-const Hierarchies = ref([
-  {
-    title: 'Hierarchy 1',
-    children: [
-      {
-        title: 'Level 2-A',
-        children: [
-          {
-            title: 'Level 3-A',
-            children: [{ title: 'Level 4-A' }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: 'Hierarchy 2',
-    children: [
-      {
-        title: 'Level 2-B',
-        children: [
-          {
-            title: 'Level 3-B',
-            children: [{ title: 'Level 4-B' }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: 'Hierarchy 3',
-    children: [
-      {
-        title: 'Level 3-C',
-        children: [
-          {
-            title: 'Level 3-C',
-            children: [{ title: 'Level 4-C' }],
-          },
-        ],
-      },
-    ],
-  },
-])
+
 </script>
 
 <template>
-  <PagesHeader
-    :title="$t('functional Hierarchy')"
-    :subtitle="`Define the hierarchy and assign roles for your project team`"
-    :img="Heirarchy"
-  />
-  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchHerikaly())">
-        <Search />
-      </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHerikaly" />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel />
-      <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_CREATE]">
-        <router-link to="/organization/herikaly/add" class="btn btn-primary">
-          {{ $t('Add_kerikaly') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div> -->
+  <PagesHeader :title="$t('functional Hierarchy')"
+    :subtitle="`Define the hierarchy and assign roles for your project team`" :img="Heirarchy" />
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HERIKALY_ALL,
-      PermissionsEnum.HERIKALY_DELETE,
-      PermissionsEnum.HERIKALY_FETCH,
-      PermissionsEnum.HERIKALY_UPDATE,
-      PermissionsEnum.HERIKALY_CREATE,
-    ]"
-  >
+
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.HERIKALY_ALL,
+    PermissionsEnum.HERIKALY_DELETE,
+    PermissionsEnum.HERIKALY_FETCH,
+    PermissionsEnum.HERIKALY_UPDATE,
+    PermissionsEnum.HERIKALY_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <!-- :Hierarchies="" -->
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <div class="btn-container">
-          <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn">
+          <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn ">
             {{ $t('add_new_heirarchy') }}
           </router-link>
-          <button class="btn btn-secondary edit-btn">edit</button>
+          <!-- <button class="btn btn-secondary edit-btn">edit</button> -->
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -240,28 +172,20 @@ const Hierarchies = ref([
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/herikaly/add`"
-          addText="Add Herikaly"
+        <DataEmpty :link="`/organization/herikaly/add`" addText="Add Herikaly"
           description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Herikaly"
-        />
+          title="..ops! You have No Herikaly" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/herikaly/add`"
-          addText="Add Herikaly"
+        <DataFailed :link="`/organization/herikaly/add`" addText="Add Herikaly"
           description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Herikaly"
-        />
+          title="..ops! You have No Herikaly" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

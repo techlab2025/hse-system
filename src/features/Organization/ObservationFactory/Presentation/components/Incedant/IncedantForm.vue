@@ -142,7 +142,7 @@ const GetProjectId = (id: number) => {
   </div>
 
   <div class="col-span-6 md:col-span-6">
-    <TabsSelection :ProjectId="SelectedProjectId" @update:data="GetZones" />
+    <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
   </div>
   <div class="Hazard-form col-span-6 md:col-span-6">
     <div class="Hazard-form-header">

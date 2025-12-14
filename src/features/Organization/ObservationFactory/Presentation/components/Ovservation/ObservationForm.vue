@@ -265,7 +265,7 @@ const GetProjectId = (id: number) => {
     <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />
 
     <!-- zoneId = $event -->
-    <TabsSelection :ProjectId="SelectedProjectId" @update:data="UpdateSelectedZone" />
+    <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="UpdateSelectedZone" />
 
     <p class="first-section-par">
       <component :is="FormPen" />

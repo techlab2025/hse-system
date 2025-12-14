@@ -758,5 +758,20 @@
   "contractors": "مقاولون",
   "management": "إدارة",
   "roles": "الأدوار",
-  "zones": "المناطق"
+  "project_objectives": "أهداف المشروع",
+  "serial_number": "الرقم التسلسلي",
+  "Title": "العنوان",
+  "zones": "المناطق",
+  "auto": "تلقائي",
+  "project_info": "معلومات المشروع",
+  "project_name": "اسم المشروع",
+  "project_name_ar": "اسم المشروع باللغة العربية",
+  "project_name_en": "اسم المشروع باللغة الانجليزية",
+  "project_description": "وصف المشروع",
+  "project_description_ar": "وصف المشروع باللغة العربية",
+  "project_description_en": "وصف المشروع باللغة الانجليزية",
+  "project_start_date": "تاريخ بدء المشروع",
+  "accidents_types": "أنواع الحوادث",
+  "factor_items": "عناصر العوامل",
+  "locations": "المواقع"
 }

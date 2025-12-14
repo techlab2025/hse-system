@@ -13,7 +13,7 @@ import { useToast } from 'primevue/usetoast';
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
@@ -93,6 +93,8 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
+const Heirarchy = ref<TitleInterface[]>()
+const role = ref<TitleInterface[]>()
 
 const updateData = () => {
 
@@ -128,9 +130,14 @@ watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
+      console.log("roles", newData?.roles);
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
+      Heirarchy.value = newData.hierarchy
+      role.value = newData.roles.map((el) => {
+        return new TitleInterface({ id: el.id, title: el.title })
+      })
     }
   },
   { immediate: true },
@@ -153,13 +160,11 @@ const UpdatePassword = (data) => {
   updateData()
 }
 
-const Heirarchy = ref<TitleInterface[]>()
 const setHeirarchy = (data: TitleInterface[]) => {
   Heirarchy.value = data
   updateData()
 }
 
-const role = ref<TitleInterface[]>()
 const setRole = (data: TitleInterface[]) => {
   role.value = data
   updateData()
