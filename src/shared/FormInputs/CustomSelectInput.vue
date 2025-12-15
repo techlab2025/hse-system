@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs } from 'vue'
+import { computed, ref, watch, toRefs, type Component, useSlots } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type Params from '@/base/core/Params/params'
@@ -24,9 +24,10 @@ interface Props {
   autoFill?: boolean
   reload?: boolean
   optional?: boolean
+  component?: Component
 }
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update:slot'])
 const props = withDefaults(defineProps<Props>(), {
   type: 1,
   required: false,
@@ -153,27 +154,40 @@ async function reloadData(): Promise<void> {
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null
 }
+
+
+const updateSlot = (data: any) => {
+  console.log(data, "data");
+  emit('update:slot', data)
+}
+
 </script>
 
 <template>
   <div class="input-label flex justify-between w-full">
     <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
       @click="reloadData">
+
+      <span>
+        <component @update:data="updateSlot" v-if="component" :is="component" />
+      </span>
       <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
       <IconBackStage />
+
     </span>
     <label :class="{ required: required }" class="input-label">
       <span v-if="required" class="text-red-500">*</span>
-
       {{ $t(label ?? '') }}
     </label>
   </div>
-
   <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
     class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
     :empty-message="message" />
-
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+
+  <!-- <template v-else>
+    <slot :onUpdate="updateSlot" />
+  </template> -->
 </template>
 
 <style scoped lang="scss">
