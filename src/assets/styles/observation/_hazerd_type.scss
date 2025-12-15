@@ -4,9 +4,18 @@
 
 .hazard-type-container {
   margin-top: 3rem;
+  &.incedant {
+    margin-top: 0px;
+  }
 
   .radio-container {
     margin-top: 1.5rem;
+    &.incedant {
+      margin-top: 0;
+      width: 100%;
+      @include flex-row(nowrap , flex-start , center);
+      gap: 12px;
+    }
   }
 
   label.radio-title {

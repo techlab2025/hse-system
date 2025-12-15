@@ -26,6 +26,7 @@ import FetchMyProjectsController from '../../controllers/FetchMyProjectsControll
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 import FactoryAccidents from '../FactoryUtils/FactoryAccidents.vue'
 import Factorywitnesses from '../FactoryUtils/Factorywitnesses.vue'
+import FactoryFatalities from '../FactoryUtils/FactoryFatalities.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -168,20 +169,21 @@ const GetProjectId = (id: number) => {
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
-    <!-- <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" /> -->
     <MultiImagesInput :initialImages="image" @update:images="setImages" />
-
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
     <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
   </div>
 
-  <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <FactoryAccidents class="not-colored" @update:data="console.log($event)" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <Factorywitnesses class="not-colored" @update:data="console.log($event)" />
-  </div> -->
+  </div>
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <FactoryFatalities class="not-colored" @update:data="console.log($event)" />
+  </div>
 
 </template>

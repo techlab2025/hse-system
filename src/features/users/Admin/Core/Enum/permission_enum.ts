@@ -851,4 +851,13 @@ export enum PermissionsEnum {
   // CAPA
   CAPA_SET_RESULT = 'CAPA01',
   CAPA_CHANGE_STATUS = 'CAPA02',
+
+  // Injury
+  INJURY_ALL = 'IN00',
+  INJURY_FETCH = 'IN01',
+  INJURY_DETAILS = 'IN02',
+  INJURY_CREATE = 'IN03',
+  INJURY_UPDATE = 'IN04',
+  INJURY_DELETE = 'IN05',
+
 }

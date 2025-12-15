@@ -1237,6 +1237,22 @@ class ApiNames {
   public get CreateInvestegation() {
     return this.prefix + 'create_full_investigation'
   }
+  // Injury
+  public get CreateInjury() {
+    return this.prefix + 'create_injury_type'
+  }
+  public get IndexInjury() {
+    return this.prefix + 'fetch_injury_types'
+  }
+  public get ShowInjury() {
+    return this.prefix + 'fetch_injury_type_details'
+  }
+  public get EditInjury() {
+    return this.prefix + 'update_injury_type'
+  }
+  public get DeleteInjury() {
+    return this.prefix + 'delete_injury_type'
+  }
 }
 
 export { ApiNames }
