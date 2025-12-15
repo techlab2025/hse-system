@@ -52,7 +52,7 @@ watch(
   (val) => {
     hazerd.value = val ?? null
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 // Emit updated data
