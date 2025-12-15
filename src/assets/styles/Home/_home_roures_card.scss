@@ -1,0 +1,36 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.home-routes-card {
+  @include flex-row(nowrap, flex-start, center);
+  gap: $XsSize;
+  font-family: 'Regular';
+  background-color: #FCFCFC;
+  padding: $SmSize;
+  border-radius:$MdSize ;
+  width: 100%;
+  .card-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .card-content {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize4;
+    .title {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: #000039;
+    }
+    .description {
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: #cbcbcb;
+    }
+  }
+}

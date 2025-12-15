@@ -15,7 +15,7 @@ const addInspection = async () => {
   await addInspectionController.addInspection(params.value as AddInspectionParams, router)
 }
 const setParams = (data: Params) => {
-  // console.log(data, 'data')
+  console.log(data as AddInspectionParams, 'data Params')
   params.value = data
 }
 </script>

@@ -136,6 +136,9 @@
 /*<editor-fold desc="equipment_sidebar">*/
 @use './equipmentsidebar/equipment_mangement_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="home">*/
+@use './Home/home_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

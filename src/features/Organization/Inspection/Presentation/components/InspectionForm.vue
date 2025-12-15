@@ -35,6 +35,8 @@ interface InspectionForm {
   morph: TitleInterface
   data: DataFormDetails
   TempalteIds: number[]
+  ProjectZoneId: number
+  ProjectId: number
 }
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -93,14 +95,16 @@ const updateData = () => {
       DataParams.value?.TempalteIds || TempalteIds.value,
       DataParams.value?.data?.inspectionType || date?.value?.inspectionType,
       DataParams.value?.data?.periodType || date?.value?.periodType,
-      37,
+      DataParams.value?.ProjectId,
       PeriodTasks.value || [],
       DataParams.value?.data?.onceday || date?.value?.onceday,
       DataParams.value?.data?.fromDate || date?.value?.fromDate,
       null,
+      DataParams.value?.ProjectZoneId,
       // DataParams.value?.data?.WithDays || date?.value?.fromDate,
     )
 
+  console.log(params, "params");
   emit('update:data', params)
 }
 
@@ -111,7 +115,7 @@ const AssignToOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: 3, title: 'Employee' }),
 ])
 
-const SelectedAssigned = ref<TitleInterface>()
+const SelectedAssigned = ref<TitleInterface>(3)
 const GetSelectedAssigned = (data: TitleInterface) => {
   SelectedAssigned.value = data
   updateData()
@@ -119,6 +123,7 @@ const GetSelectedAssigned = (data: TitleInterface) => {
 const DataParams = ref<InspectionForm>()
 const UpdateFormData = (data: InspectionForm) => {
   DataParams.value = data
+  console.log(DataParams.value, "DataParams.value");
   updateData()
 }
 
@@ -148,14 +153,10 @@ const GetTemplateId = (data: number) => {
       <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE && !id"
         @update:data="UpdateFormData" />
       <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE && !id" @update:data="UpdateFormData" />
-      <!-- <div class="machine-inspection"> -->
       <InspectionTemplateDialog v-if="id" @update:data="GetTemplateId" />
       <InspectionGeneralForm v-if="id" @update:data="GetGeneralData" />
-      <!-- </div> -->
     </div>
-    <!--Employee Tasks-->
     <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE && !id" :employee_id="DataParams?.morph?.id"
       :employee_name="DataParams?.morph?.title" />
-    <!-- :emplyee_hirarchy="data?." -->
   </div>
 </template>

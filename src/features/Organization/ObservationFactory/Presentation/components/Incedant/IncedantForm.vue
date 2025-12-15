@@ -177,11 +177,11 @@ const GetProjectId = (id: number) => {
     <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
   </div>
 
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+  <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <FactoryAccidents class="not-colored" @update:data="console.log($event)" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <Factorywitnesses class="not-colored" @update:data="console.log($event)" />
-  </div>
+  </div> -->
 
 </template>

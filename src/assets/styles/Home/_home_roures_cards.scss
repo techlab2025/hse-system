@@ -1,0 +1,19 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.home-routes-cards {
+  @include grid(
+    4,
+    $XsSize2,
+    (
+      1400px: 3,
+      992px: 2,
+      768px: 1,
+    )
+  );
+  gap: $XsSize2;
+  a {
+    width: fit-content;
+  }
+}
