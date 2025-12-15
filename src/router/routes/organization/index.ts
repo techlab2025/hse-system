@@ -15,7 +15,7 @@ import { EquipmentMangementRoutes } from './eqipmentMangement'
 import { InvestigationMeetingRoutes } from './investigationmeeting'
 export const organizationRoutes: RouteRecordRaw[] = [
   {
-    path: 'organization',
+    path: '',
     name: 'Organization',
     component: () => import('@/views/AppHome.vue'),
   },

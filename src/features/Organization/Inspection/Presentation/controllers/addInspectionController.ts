@@ -11,7 +11,6 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type InspectionModel from '../../Data/models/InspectionModel'
 import AddInspectionUseCase from '../../Domain/useCase/addInspectionUseCase'
 
-
 export default class AddInspectionController extends ControllerInterface<InspectionModel> {
   private static instance: AddInspectionController
   private constructor() {
@@ -28,8 +27,9 @@ export default class AddInspectionController extends ControllerInterface<Inspect
 
   async addInspection(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    try {
+    console.log(params, 'params')
 
+    try {
       const dataState: DataState<InspectionModel> = await this.AddInspectionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -42,10 +42,7 @@ export default class AddInspectionController extends ControllerInterface<Inspect
 
         const { user } = useUserStore()
 
-        if (!draft)
-          await router.push(
-            `/organization/equipment-mangement/inspection`,
-          )
+        if (!draft) await router.push(`/organization/equipment-mangement/inspection`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
