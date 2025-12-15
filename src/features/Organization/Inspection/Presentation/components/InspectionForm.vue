@@ -111,7 +111,7 @@ const AssignToOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: 3, title: 'Employee' }),
 ])
 
-const SelectedAssigned = ref<TitleInterface>(AssignToTypeEnum.EMPLOYEE)
+const SelectedAssigned = ref<TitleInterface>()
 const GetSelectedAssigned = (data: TitleInterface) => {
   SelectedAssigned.value = data
   updateData()
