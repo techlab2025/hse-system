@@ -7,6 +7,7 @@
   gap: $XlSize;
   width: 100%;
   .input-image {
+    @include flex-row(nowrap, center, center);
     width: 100%;
     border: 1px solid #d9dbe9;
     border-radius: $XlSize2;
@@ -17,7 +18,8 @@
     .input-label-images {
       cursor: pointer;
 
-      @include flex-column(nowrap, center, center);
+      @include flex-row(nowrap, center, center);
+      gap: 10px;
       span {
         color: $Gray-3;
         font-size: $SmSize;
@@ -53,7 +55,6 @@
         border-radius: $XsSize;
         cursor: pointer;
       }
-
 
       .overlay {
         transform: translateY(100%);

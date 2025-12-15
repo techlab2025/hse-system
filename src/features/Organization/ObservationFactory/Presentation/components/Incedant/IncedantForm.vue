@@ -24,6 +24,8 @@ import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import FactoryAccidents from '../FactoryUtils/FactoryAccidents.vue'
+import Factorywitnesses from '../FactoryUtils/Factorywitnesses.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -138,7 +140,7 @@ const GetProjectId = (id: number) => {
   <div class="col-span-6 md:col-span-6">
     <HeaderPage :title="'create Incedant'" :subtitle="'Identify and report potential Incedants before they cause harm'"
       :img="HazardImage" />
-    <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />
+    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
   </div>
 
   <div class="col-span-6 md:col-span-6">
@@ -174,4 +176,12 @@ const GetProjectId = (id: number) => {
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
     <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
   </div>
+
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <FactoryAccidents class="not-colored" @update:data="console.log($event)" />
+  </div>
+  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <Factorywitnesses class="not-colored" @update:data="console.log($event)" />
+  </div>
+
 </template>

@@ -1,0 +1,26 @@
+@import '../variables';
+@import '../mixins/flex';
+.employee-select-container {
+  @include flex-row(nowrap, flex-end, center);
+  gap: $XsSize4;
+  font-family: 'Regular';
+  margin-right: $XsSize2;
+  .employee-select {
+    transition: 0.3s all linear;
+    &.selected {
+      label {
+        color: $PrimaryColor;
+        text-decoration: underline;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+    label {
+      color: #bfc3d0;
+      font-size: $MdSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+    input {
+      display: none;
+    }
+  }
+}

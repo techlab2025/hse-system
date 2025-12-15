@@ -145,15 +145,16 @@ const GetTemplateId = (data: number) => {
   </div>
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <div class="inspection-details" :class="SelectedAssigned == AssignToTypeEnum.ZONE || id ? 'full-width' : ''">
-      <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" @update:data="UpdateFormData" />
-      <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE" @update:data="UpdateFormData" />
+      <InspectionEmployeeForm v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE && !id"
+        @update:data="UpdateFormData" />
+      <InspectionZonesForm v-if="SelectedAssigned == AssignToTypeEnum.ZONE && !id" @update:data="UpdateFormData" />
       <!-- <div class="machine-inspection"> -->
       <InspectionTemplateDialog v-if="id" @update:data="GetTemplateId" />
       <InspectionGeneralForm v-if="id" @update:data="GetGeneralData" />
       <!-- </div> -->
     </div>
     <!--Employee Tasks-->
-    <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE" :employee_id="DataParams?.morph?.id"
+    <EmployeeTasksCard v-if="SelectedAssigned == AssignToTypeEnum.EMPLOYEE && !id" :employee_id="DataParams?.morph?.id"
       :employee_name="DataParams?.morph?.title" />
     <!-- :emplyee_hirarchy="data?." -->
   </div>

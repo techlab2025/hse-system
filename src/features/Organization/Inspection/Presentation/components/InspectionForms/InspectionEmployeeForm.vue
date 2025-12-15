@@ -10,9 +10,7 @@ import InspectionTemplateDialog from '../InspectionDialog/InspectionTemplateDial
 
 const emit = defineEmits(['update:data'])
 const SelectedEmployee = ref<TitleInterface>()
-
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-
 const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 
 const UpdateData = () => {

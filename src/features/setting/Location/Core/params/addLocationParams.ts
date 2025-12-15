@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddLocationParams implements Params {
   title: TranslationsParams
-  code: string
+  code?: string
   public type: number
   ParentId?: number
 
@@ -34,7 +34,7 @@ export default class AddLocationParams implements Params {
     > = {}
 
     data['translations'] = this.title.toMap()
-    data['code'] = this.code
+    if (this.code) data['code'] = this.code
     data['type'] = this.type
     if (this.ParentId) data['parent_id'] = this.ParentId
     return data
