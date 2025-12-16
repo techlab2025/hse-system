@@ -3,6 +3,9 @@ import type CapaParams from './CapaParam'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import InjuryParams from './InjuriesParams'
+import type DethParams from './DethParams'
+import type WitnessParams from './WitnessesParams'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -22,10 +25,16 @@ export default class AddHazardParams implements Params {
   public date: string | null
   public capa: CapaParams[] | null
   public isAction: number | null
+  public isThereInjuries?: boolean | null
+  public isThereDeath?: boolean | null
+  public isThereWitnessStatement?: boolean | null
+  public Injury?: InjuryParams[]
+  public deaths?: DethParams[]
+  public witnesses?: WitnessParams[]
 
-    public static readonly validation = new ClassValidation().setRules({
-      title: { required: true, minLength: 2, maxLength: 100 },
-    })
+  public static readonly validation = new ClassValidation().setRules({
+    title: { required: true, minLength: 2, maxLength: 100 },
+  })
 
   constructor(
     title: string | null,
@@ -45,6 +54,12 @@ export default class AddHazardParams implements Params {
     date: string | null,
     capa: CapaParams[] | null,
     isAction: number | null,
+    isThereInjuries?: boolean | null,
+    isThereDeath?: boolean | null,
+    isThereWitnessStatement?: boolean | null,
+    Injury?: InjuryParams[],
+    deaths?: DethParams[],
+    witnesses?: WitnessParams[],
   ) {
     this.title = title
     this.description = description
@@ -63,17 +78,28 @@ export default class AddHazardParams implements Params {
     this.date = date
     this.capa = capa
     this.isAction = isAction
+    this.isThereInjuries = isThereInjuries
+    this.isThereDeath = isThereDeath
+    this.isThereWitnessStatement = isThereWitnessStatement
+    this.Injury = Injury
+    this.deaths = deaths
+    this.witnesses = witnesses
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | number
+    | boolean
+    | string
+    | number[]
+    | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
       | number[]
+      | boolean
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
 
@@ -94,11 +120,22 @@ export default class AddHazardParams implements Params {
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
-
+    if (this.isThereInjuries) data['is_there_injuries'] = this.isThereInjuries
+    if (this.isThereDeath) data['is_there_death'] = this.isThereDeath
+    if (this.isThereWitnessStatement)
+      data['is_there_witness_statement'] = this.isThereWitnessStatement
+    if (this.Injury)
+      data['injuries'] = this.Injury ? this.Injury?.map((item: InjuryParams) => item.toMap()) : []
+    if (this.deaths)
+      data['deaths'] = this.deaths ? this.deaths?.map((item: DethParams) => item.toMap()) : []
+    if (this.witnesses)
+      data['witness_statements'] = this.witnesses
+        ? this.witnesses?.map((item: WitnessParams) => item.toMap())
+        : []
     return data
   }
 
-    validate() {
+  validate() {
     return AddHazardParams.validation.validate(this)
   }
 
@@ -106,4 +143,3 @@ export default class AddHazardParams implements Params {
     return AddHazardParams.validation.validateOrThrow(this)
   }
 }
-

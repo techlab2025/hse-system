@@ -5,9 +5,9 @@
   @include flex-row(nowrap, flex-start, center);
   gap: $XsSize;
   font-family: 'Regular';
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
   padding: $SmSize;
-  border-radius:$MdSize ;
+  border-radius: $MdSize;
   width: 100%;
   .card-img {
     width: 60px;

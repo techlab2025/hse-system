@@ -90,12 +90,12 @@ const updateData = () => {
 
     )
     : new AddInspectionParams(
-      SelectedAssigned.value || AssignToTypeEnum.MACHINE,
+      id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
       DataParams.value?.morph?.id || id,
       DataParams.value?.TempalteIds || TempalteIds.value,
       DataParams.value?.data?.inspectionType || date?.value?.inspectionType,
       DataParams.value?.data?.periodType || date?.value?.periodType,
-      DataParams.value?.ProjectId,
+      DataParams.value?.ProjectId || null,
       PeriodTasks.value || [],
       DataParams.value?.data?.onceday || date?.value?.onceday,
       DataParams.value?.data?.fromDate || date?.value?.fromDate,

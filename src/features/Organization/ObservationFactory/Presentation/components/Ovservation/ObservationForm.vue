@@ -163,7 +163,7 @@ const updateData = () => {
       type.value,
       equipmentId.value,
       zoneId.value,
-      37,
+      SelectedProjectId.value,
       isResult.value ? 1 : 0,
       riskLevel.value,
       saveStatus.value,
@@ -174,6 +174,7 @@ const updateData = () => {
       null,
       isAction.value ? 1 : 0,
     )
+    console.log(params , "paramsparams");
   emit('update:data', params)
 }
 

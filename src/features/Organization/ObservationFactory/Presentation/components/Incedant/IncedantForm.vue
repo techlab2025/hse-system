@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -27,6 +27,10 @@ import type MyProjectsModel from '@/features/Organization/ObservationFactory/Dat
 import FactoryAccidents from '../FactoryUtils/FactoryAccidents.vue'
 import Factorywitnesses from '../FactoryUtils/Factorywitnesses.vue'
 import FactoryFatalities from '../FactoryUtils/FactoryFatalities.vue'
+import InjuryParams from '../../../Core/params/InjuriesParams'
+import DethParams from '../../../Core/params/DethParams'
+import WitnessParams from '../../../Core/params/WitnessesParams'
+import RadioButton from 'primevue/radiobutton'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -70,15 +74,43 @@ const updateData = () => {
       ZoneIds.value ?? 0,
       SelectedProjectId.value,
       0,
-      0,
-      0,
-      '',
+      takeAction.value == "yes" ? 1 : 0,
+      solved.value == "yes" ? 1 : 0,
+      preventive_action.value,
       0,
       0,
       date.value ?? '',
       [],
       0,
+      Accidents?.value?.isAnotherMeeting,
+      Fatalities?.value?.isAnotherMeeting,
+      witnesses?.value?.isAnotherMeeting,
+      Accidents?.value?.isAnotherMeeting ? [new InjuryParams(
+        Accidents?.value?.employeeId || [],
+        Accidents?.value?.employeeName || '',
+        Accidents?.value?.text || null,
+        Accidents?.value?.infectionTypeId || 0,
+      )] : [],
+      Fatalities?.value?.isAnotherMeeting ? [new DethParams(
+        Fatalities?.value?.text || '',
+        Fatalities?.value?.SelectedEmployee || 0,
+        Fatalities?.value?.img || []
+      )] : [],
+      witnesses?.value?.isAnotherMeeting ? witnesses?.value?.AllWitnessesData?.map(
+        (witnesses: any) => new WitnessParams(
+          witnesses?.text || [],
+          witnesses?.employee?.id || '',
+          null,
+        ),
+      ) : []
+      // new WitnessParams(
+      //   witnesses?.value?.AllWitnessesData?.text || [],
+      //   witnesses?.value?.AllWitnessesData?.employee?.id || '',
+      //   null,
+      // )
     )
+  //   takeAction:takeAction.value,
+  // solved:solved.value,
 
   emit('update:data', params)
 }
@@ -135,6 +167,28 @@ const GetProjectId = (id: number) => {
   updateData();
 }
 
+const Accidents = ref()
+const UpdateAccidents = (data: any) => {
+  Accidents.value = data
+  updateData()
+}
+const witnesses = ref()
+const Updatewitnesses = (data: any) => {
+  witnesses.value = data
+  console.log(witnesses.value, "witnesses.value");
+  updateData()
+}
+const Fatalities = ref()
+const UpdateFatalities = (data: any) => {
+  Fatalities.value = data
+  console.log(Fatalities.value, "Fatalities.value");
+  updateData()
+}
+const takeAction = ref<'yes' | 'no' | null>()
+const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
+const solved = ref<'yes' | 'no' | null>()
+const preventive_action = ref<string>()
+
 </script>
 
 <template>
@@ -155,7 +209,7 @@ const GetProjectId = (id: number) => {
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper">
     <label for="text">Text</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
+    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
   </div>
   <div class="col-span-6 md:col-span-3 input-wrapper">
     <label for="date">Date</label>
@@ -171,19 +225,59 @@ const GetProjectId = (id: number) => {
     <label for="">upload image</label>
     <MultiImagesInput :initialImages="image" @update:images="setImages" />
   </div>
+
+  <div class="hazard-type-container incedant col-span-6 md:col-span-6">
+    <div class="input-wrapper radio-container incedant col-span-6 md:col-span-6">
+      <div class="col-span-12 md:col-span-6">
+        <label class="radio-title">{{ $t('take action') }}</label>
+        <div class="radio-answers flex">
+          <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
+            <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
+            <label>Yes</label>
+          </div>
+
+          <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
+            <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
+            <label>No</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
+        <label class="radio-title">{{ $t('solved') }}</label>
+        <div class="radio-answers flex">
+          <div class="radio-selection" :class="{ selected: solved === 'yes' }">
+            <RadioButton v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
+            <label>Yes</label>
+          </div>
+
+          <div class="radio-selection" :class="{ selected: solved === 'no' }">
+            <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
+            <label>No</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
+    <label for="action">{{ $t('preventive_action') }}</label>
+    <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
+      placeholder="add your descripe"></textarea>
+  </div>
+
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
     <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
   </div>
 
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <FactoryAccidents class="not-colored" @update:data="console.log($event)" />
+    <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <Factorywitnesses class="not-colored" @update:data="console.log($event)" />
+    <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <FactoryFatalities class="not-colored" @update:data="console.log($event)" />
+    <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
   </div>
 
 </template>

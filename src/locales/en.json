@@ -799,6 +799,9 @@
   "teams_by_operational_location":"Teams By Operational Location",
   "view_all_working_teams_assigned_to_each_operational_zone":"View all working teams assigned to each operational zone",
   "Equipment_tools_&_devices_by_zone":"Equipment , tools & Devices by Zone",
-  "view_and_manage_all_equipment_assigned_to_each_operational_zone":"View and manage all equipment assigned to each operational zone"
-
+  "view_and_manage_all_equipment_assigned_to_each_operational_zone":"View and manage all equipment assigned to each operational zone",
+  "organization_setting":"Organization Setting",
+  "add_country":"Add Country",
+  "edit_country":"Edit Country",
+  "add_state":"Add State"
 }

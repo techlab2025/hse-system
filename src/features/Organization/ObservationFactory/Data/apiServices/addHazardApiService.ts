@@ -22,7 +22,7 @@ class AddHazardApiService extends ServicesInterface {
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
       url: ApiNames.instance.CreateHazard,
-      type: CrudType.FormData,
+      type: CrudType.POST,
       auth: true,
       params: params,
       showLoadingDialog: true,
