@@ -132,17 +132,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
     ],
   },
-  {
-    link: '/organization/health-conditions',
-    name: 'health_conditions',
-    permissions: [
-      PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
-      PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
-      PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
-      PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
-      PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/health-conditions',
+  //   name: 'health_conditions',
+  //   permissions: [
+  //     PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
+  //     PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
+  //     PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
+  //     PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
+  //     PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/templates',
     name: 'Templates',
@@ -177,17 +177,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.HERIKALY_UPDATE,
     ],
   },
-  {
-    link: '/organization/methods',
-    name: 'methods',
-    permissions: [
-      PermissionsEnum.ORG_METHOD_ALL,
-      PermissionsEnum.ORG_METHOD_CREATE,
-      PermissionsEnum.ORG_METHOD_DELETE,
-      PermissionsEnum.ORG_METHOD_FETCH,
-      PermissionsEnum.ORG_METHOD_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/methods',
+  //   name: 'methods',
+  //   permissions: [
+  //     PermissionsEnum.ORG_METHOD_ALL,
+  //     PermissionsEnum.ORG_METHOD_CREATE,
+  //     PermissionsEnum.ORG_METHOD_DELETE,
+  //     PermissionsEnum.ORG_METHOD_FETCH,
+  //     PermissionsEnum.ORG_METHOD_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/teams',
     name: 'team',
