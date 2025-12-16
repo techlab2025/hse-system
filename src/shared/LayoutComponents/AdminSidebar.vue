@@ -103,18 +103,18 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.ADMIN,
     ],
   },
-  {
-    link: '/admin/health-conditions',
-    name: 'health_conditions',
-    permissions: [
-      PermissionsEnum.HEALTH_CONDITION_ALL,
-      PermissionsEnum.HEALTH_CONDITION_CREATE,
-      PermissionsEnum.HEALTH_CONDITION_DELETE,
-      PermissionsEnum.HEALTH_CONDITION_FETCH,
-      PermissionsEnum.HEALTH_CONDITION_UPDATE,
-      PermissionsEnum.ADMIN,
-    ],
-  },
+  // {
+  //   link: '/admin/health-conditions',
+  //   name: 'health_conditions',
+  //   permissions: [
+  //     PermissionsEnum.HEALTH_CONDITION_ALL,
+  //     PermissionsEnum.HEALTH_CONDITION_CREATE,
+  //     PermissionsEnum.HEALTH_CONDITION_DELETE,
+  //     PermissionsEnum.HEALTH_CONDITION_FETCH,
+  //     PermissionsEnum.HEALTH_CONDITION_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //   ],
+  // },
   {
     link: '/admin/accidents-types',
     name: 'accidents_types',
