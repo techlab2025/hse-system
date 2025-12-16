@@ -803,5 +803,8 @@
   "organization_setting":"Organization Setting",
   "add_country":"Add Country",
   "edit_country":"Edit Country",
-  "add_state":"Add State"
+  "add_state":"Add State",
+  "accidents_types":"Accidents Types",
+  "factor_items":"Factor Items",
+  "locations":"Locations"
 }

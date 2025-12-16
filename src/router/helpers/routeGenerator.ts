@@ -3,11 +3,7 @@ import type { RouteRecordRaw, WebsiteModule } from '../types'
 /**
  * Generate CRUD routes for a resource
  */
-export function createCrudRoutes(
-  path: string,
-  name: string,
-  basePath: string
-): RouteRecordRaw[] {
+export function createCrudRoutes(path: string, name: string, basePath: string): RouteRecordRaw[] {
   return [
     {
       path,
@@ -30,10 +26,7 @@ export function createCrudRoutes(
 /**
  * Generate location routes with parent support
  */
-export function createLocationRoutes(
-  path: string,
-  name: string
-): RouteRecordRaw[] {
+export function createLocationRoutes(path: string, name: string): RouteRecordRaw[] {
   return [
     {
       path: `${path}/:parent_id?`,
@@ -56,9 +49,7 @@ export function createLocationRoutes(
 /**
  * Generate website module routes
  */
-export function createWebsiteModuleRoutes(
-  modules: WebsiteModule[]
-): RouteRecordRaw[] {
+export function createWebsiteModuleRoutes(modules: WebsiteModule[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
 
   modules.forEach((module: WebsiteModule) => {
@@ -80,7 +71,7 @@ export function createWebsiteModuleRoutes(
         path: `${singular}/:id`,
         name: `Edit ${displayName}`,
         component: () => import(`@/views/Admin/Website/${module.name}/Edit${module.name}.vue`),
-      }
+      },
     )
   })
 
@@ -90,12 +81,9 @@ export function createWebsiteModuleRoutes(
 /**
  * Add suffix to route names
  */
-export function addSuffix(
-  routes: RouteRecordRaw[],
-  suffix: string
-): RouteRecordRaw[] {
+export function addSuffix(routes: RouteRecordRaw[], suffix: string): RouteRecordRaw[] {
   return routes.map((route: RouteRecordRaw) => ({
     ...route,
-    name:  route.name,
+    name: route.name ? `${String(route.name)} ${suffix}` : route.name,
   }))
 }
