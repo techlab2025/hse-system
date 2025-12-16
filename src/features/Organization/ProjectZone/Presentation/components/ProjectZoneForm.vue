@@ -200,7 +200,7 @@ const SetAreaSelection = (data: TitleInterface) => {
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity" :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams" label="Area" id="Area" placeholder="Select City"
+      :params="indexLocationAreasParams" label="Location" id="Area" placeholder="Select Location"
       @update:modelValue="SetAreaSelection" />
   </div>
 

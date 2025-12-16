@@ -159,7 +159,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
         <router-link :to="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"
           class="btn btn-primary">
-          {{ $t('Add_Location_city') }}
+          {{ $t('add_city') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -213,20 +213,20 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/add/HazardType`" addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages" />
+        <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'" addText="Add HazardType"
+          description="Sorry .. You have no cities .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No cities" />
       </template>
       <template #failed>
-        <DataFailed :link="`/add/HazardType`" addText="Add HazardType"
-          description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardTypeuages" />
+        <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"addText="Add HazardType"
+          description="Sorry .. You have no cities .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No cities" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no cities .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

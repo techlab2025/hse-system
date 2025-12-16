@@ -148,7 +148,7 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_ZONE_CREATE]">
         <router-link to="/organization/project-zone/add" class="btn btn-primary">
-          {{ $t('Add_Porject_Zone') }}
+          {{ $t('add_zone') }}
         </router-link>
       </PermissionBuilder>
     </div>

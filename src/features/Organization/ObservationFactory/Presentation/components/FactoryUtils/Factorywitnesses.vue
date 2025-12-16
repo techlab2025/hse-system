@@ -3,17 +3,15 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import { computed, ref } from 'vue'
 import WitnessesTimeLine from './WitnessesTimeLine.vue'
 import people from '@/assets/images/people.png'
-import RadioButton from 'primevue/radiobutton'
 
 const emit = defineEmits(['update:data'])
 
 const isAnotherMeeting = ref(1)
 const updateData = () => {
   emit('update:data', {
+    isAnotherMeeting:isAnotherMeeting.value,
     AllWitnessesData: AllWitnessesData.value,
-    preventive_action: preventive_action.value,
-    takeAction:takeAction.value,
-    solved:solved.value,
+
   })
 }
 
@@ -22,10 +20,7 @@ const UpdateWitnessesData = (data: any) => {
   AllWitnessesData.value = data
   updateData()
 }
-const preventive_action = ref<string>()
-const takeAction = ref<'yes' | 'no' | null>()
-const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
-const solved = ref<'yes' | 'no' | null>()
+
 
 </script>
 <template>
@@ -57,49 +52,6 @@ const solved = ref<'yes' | 'no' | null>()
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <WitnessesTimeLine @update:data="UpdateWitnessesData" />
-      <div class="hazard-type-container incedant col-span-6 md:col-span-6">
-        <div class="input-wrapper radio-container incedant col-span-6 md:col-span-6">
-          <div class="col-span-12 md:col-span-6">
-            <label class="radio-title">{{ $t('take action') }}</label>
-            <div class="radio-answers flex">
-              <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
-                <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
-                <label>Yes</label>
-              </div>
-
-              <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
-                <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
-                <label>No</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
-            <label class="radio-title">{{ $t('solved') }}</label>
-            <div class="radio-answers flex">
-              <div class="radio-selection" :class="{ selected: solved === 'yes' }">
-                <RadioButton v-model="solved" name="solved" value="yes"  @update:model-value="updateData"/>
-                <label>Yes</label>
-              </div>
-
-              <div class="radio-selection" :class="{ selected: solved === 'no' }">
-                <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
-                <label>No</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="input-wrapper col-span-6 md:col-span-6">
-        <label for="action">{{ $t('preventive_action') }}</label>
-        <textarea
-          id="action"
-          class="input"
-          v-model="preventive_action"
-          @input="updateData"
-          placeholder="add your descripe"
-        ></textarea>
-      </div>
     </div>
   </div>
 </template>

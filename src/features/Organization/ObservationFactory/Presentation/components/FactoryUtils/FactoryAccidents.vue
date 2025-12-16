@@ -11,6 +11,8 @@ import IndexOrganizatoinEmployeeParams from '@/features/Organization/Organizatio
 import EquipmentForm from '@/features/_templateFeature/Presentation/components/EquipmentForm.vue'
 import EmployeeTypeSelect from './EmployeeTypeSelect.vue'
 import { EmployeeNameStatus } from '../../../Core/Enums/EmplyeeNameStatus'
+import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
+import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
 
 const emit = defineEmits(['update:data'])
 const time = ref()
@@ -36,6 +38,7 @@ const isAnotherMeeting = ref(1)
 const image = ref([])
 const updateData = () => {
   emit('update:data', {
+    isAnotherMeeting: isAnotherMeeting.value,
     accidentsImages: image.value?.map((el) => el?.file),
     descripe: descripe.value,
     text: text.value,
@@ -72,6 +75,9 @@ const updateEmployeeState = (data: any) => {
   console.log(emplyeeType.value);
   // updateData()
 }
+
+const indexInjuryController  = IndexInjuryController.getInstance()
+const indexInjuryParams  =  new  IndexInjuryParams('',1,10,1)
 </script>
 <template>
   <div class="another-meeting">
@@ -110,17 +116,8 @@ const updateEmployeeState = (data: any) => {
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
         <CustomSelectInput :modelValue="SelectedInfection" class="input"
-          :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams" label="Infection Type"
-          id="employee" placeholder="select your infection" @update:modelValue="setInfection" />
-      </div>
-
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="">upload image</label>
-        <MultiImagesInput :initialImages="image" @update:images="setImages" :index="1" />
-      </div>
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="descripe">descripe <span class="optional">(optional)</span></label>
-        <textarea v-model="descripe" id="descripe" placeholder="add your descripe" @input="updateData"></textarea>
+          :controller="indexInjuryController" :params="indexInjuryParams" label="Infection Type"
+          id="infection" placeholder="select your infection" @update:modelValue="setInfection" />
       </div>
     </div>
   </div>

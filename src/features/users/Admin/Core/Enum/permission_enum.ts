@@ -4,6 +4,8 @@ export enum PermissionsEnum {
   WEBSITE = 'W',
   SETTING = 'S',
 
+  CREATE_PERMISSION = 'C00',
+
   // ADMIN
   ADMIN_ALL = 'A00',
   ADMIN_LOGIN = 'A01',

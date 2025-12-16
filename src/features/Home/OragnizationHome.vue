@@ -6,6 +6,7 @@ import Operation from '@/assets/images/Operation.png';
 import DetectiveLogo from '@/assets/images/DetectiveLogo.png';
 import EquipmentBag from '@/assets/images/EquipmentBag.png';
 import TeamLogo from '@/assets/images/TeamLogo.png';
+import HomeSetting from '@/assets/images/HomeSetting.png';
 
 </script>
 <template>
@@ -84,8 +85,9 @@ import TeamLogo from '@/assets/images/TeamLogo.png';
       PermissionsEnum.ORG_EMPLOYEE_UPDATE,
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
-      <router-link to="/organization?setting=1">
-        <HomeRoutesCard :img-src="TeamLogo" :title="`setting`" :description="`hierarchy . theme . charts`" />
+    <!-- /organization?setting=1 -->
+      <router-link to="/organization/accidents-types?setting=1">
+        <HomeRoutesCard :img-src="HomeSetting" :title="`setting`" :description="`hierarchy . theme . charts`" />
       </router-link>
     </PermissionBuilder>
 

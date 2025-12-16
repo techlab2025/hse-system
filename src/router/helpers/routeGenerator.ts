@@ -37,17 +37,17 @@ export function createLocationRoutes(
   return [
     {
       path: `${path}/:parent_id?`,
-      name: `locations ${name}`,
+      name: ` ${name}`,
       component: () => import(`@/views/Admin/Location/${name}/Index${name}.vue`),
     },
     {
       path: `${path}/add/:parent_id?`,
-      name: `Add Location ${name}`,
+      name: `Add  ${name}`,
       component: () => import(`@/views/Admin/Location/${name}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
-      name: `Edit Location ${name}`,
+      name: `Edit  ${name}`,
       component: () => import(`@/views/Admin/Location/${name}/Edit${name}.vue`),
     },
   ]
@@ -96,6 +96,6 @@ export function addSuffix(
 ): RouteRecordRaw[] {
   return routes.map((route: RouteRecordRaw) => ({
     ...route,
-    name: route.name ? `${String(route.name)} ${suffix}` : route.name,
+    name:  route.name,
   }))
 }

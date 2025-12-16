@@ -34,6 +34,7 @@ const user = useUserStore()
         <CloseSidebar />
       </button>
 
+
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
           <PermissionBuilder :code="[
