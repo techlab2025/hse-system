@@ -5,6 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import OrganizationSidebar from './OrganizationSidebar.vue'
 import AdminSidebar from './AdminSidebar.vue'
 import BackIcon from '../icons/BackIcon.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const isOpen = ref(true)
 
@@ -14,19 +15,18 @@ const toggleSidebar = () => {
 
 const active = ref('0')
 const user = useUserStore()
+
+const router = useRouter()
+const RouterBack = () => {
+  router.back()
+}
 </script>
 
 <template>
   <aside :class="['sidebar', isOpen ? 'open' : 'close']">
     <div class="sidebar-wrapper">
-      <!-- <div class="logo">
-        <img src="@/assets/images/logo.svg" alt="logo" />
-        <h2>HSE.Cloud.Ai</h2>
-      </div>
-      <button class="close-sidebar" @click="toggleSidebar">
-        <CloseSidebar />
-      </button> -->
-      <button class="sidebar-back">
+
+      <button class="sidebar-back" @click="RouterBack">
         <BackIcon class="icon" />
         <span>back</span>
       </button>
