@@ -12,10 +12,10 @@ const props = defineProps<{
   item_id: number
   options: TitleInterface[]
   require_image: boolean
-  selected_data?: TaskResultItemModel[]
+  selected_data?: TaskResultItemModel // Changed from array to single item
 }>()
-const Options = ref(props.options)
 
+const Options = ref(props.options)
 
 const Img = ref()
 const UpdateImg = (data: string) => {
@@ -23,23 +23,25 @@ const UpdateImg = (data: string) => {
   UpdateData()
 }
 
+const SelectedOption = ref<TitleInterface>(
+  new TitleInterface({
+    id: 0,
+    title: ''
+  })
+)
 
-
-const SelectedOption = ref<TitleInterface>(new TitleInterface({ id: props.selected_data?.[0]?.answers[0]?.templateItemOption?.id || 0, title: props.selected_data?.[0]?.answers[0]?.templateItemOption?.title }))
 const SetSelectedOption = (data: TitleInterface) => {
   if (data) {
     SelectedOption.value = data
-    UpdateData();
+    UpdateData()
   }
 }
-
 
 watch(() => props.options, (newValue) => {
   Options.value = newValue
 })
 
 const UpdateData = () => {
-
   emit('update:data', {
     itemId: props.item_id,
     selected: SelectedOption.value?.id,
@@ -47,27 +49,42 @@ const UpdateData = () => {
   })
 }
 
-watch(() => props.selected_data, (newValue) => {
-  if (newValue && newValue.length) {
-    SelectedOption.value = new TitleInterface({ id: newValue?.[0]?.answers[0]?.templateItemOption?.id || 0, title: newValue?.[0]?.answers[0]?.templateItemOption?.title })
-  }
-})
+watch(
+  () => props.selected_data,
+  (newValue) => {
+    if (newValue?.answers?.[0]?.templateItemOption) {
+      SelectedOption.value = new TitleInterface({
+        id: newValue.answers[0].templateItemOption.id || 0,
+        title: newValue.answers[0].templateItemOption.title || ''
+      })
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-
   <div class="show-template-document-select not-disabled">
     <div class="options-container">
       <div class="input-wrapper">
         <label>{{ title }}</label>
         <div class="col-span-4 md:col-span-2 input-wrapper">
-          <CustomSelectInput :label="''" :static-options="Options" @update:modelValue="SetSelectedOption"
-            :modelValue="SelectedOption" id="option" />
+          <CustomSelectInput
+            :label="''"
+            :static-options="Options"
+            @update:modelValue="SetSelectedOption"
+            :modelValue="SelectedOption"
+            id="option"
+          />
         </div>
       </div>
 
-      <UploadMultiImage v-if="require_image" class="image-upload" @update:images="UpdateImg"
-        :initialImages="selected_data?.[0]?.files.map((el) => el.url)" />
+      <UploadMultiImage
+        v-if="require_image"
+        class="image-upload"
+        @update:images="UpdateImg"
+        :initialImages="selected_data?.files?.map((el) => el.url) || []"
+      />
     </div>
   </div>
 </template>
