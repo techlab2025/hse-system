@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const certificateRoutes: RouteRecordRaw[] = [
   {
-    path: 'certificates',
+    path: 'certificate',
     name: 'Certificates',
     component: () => import('@/views/Admin/Certificate/IndexCertificate.vue'),
   },

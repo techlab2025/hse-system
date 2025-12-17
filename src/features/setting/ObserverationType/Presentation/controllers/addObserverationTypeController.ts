@@ -44,7 +44,7 @@ export default class AddObserverationTypeController extends ControllerInterface<
         const { user } = useUserStore()
 
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-types`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

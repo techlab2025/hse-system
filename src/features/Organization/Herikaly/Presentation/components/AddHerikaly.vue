@@ -5,6 +5,7 @@ import type Params from '@/base/core/params/params'
 import AddHerikalyController from '../controllers/addHerikalyController'
 import type AddHerikalyParams from '../../Core/params/addHerikalyParams'
 import HerikalyForm from './HerikalyForm.vue'
+const emit = defineEmits(['update:data'])
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -26,7 +27,7 @@ const setParams = (data: Params) => {
     <HerikalyForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary" @click="$emit('update:data')">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

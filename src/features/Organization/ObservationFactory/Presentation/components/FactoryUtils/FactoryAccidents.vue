@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import acc from '@/assets/images/acc.png'
@@ -37,6 +37,7 @@ const setPlatform = (data: TitleInterface) => {
 const isAnotherMeeting = ref(1)
 const image = ref([])
 const updateData = () => {
+  console.log(isAnotherMeeting.value, " isAnotherMeeting.value");
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,
     accidentsImages: image.value?.map((el) => el?.file),
@@ -76,8 +77,11 @@ const updateEmployeeState = (data: any) => {
   // updateData()
 }
 
-const indexInjuryController  = IndexInjuryController.getInstance()
-const indexInjuryParams  =  new  IndexInjuryParams('',1,10,1)
+const indexInjuryController = IndexInjuryController.getInstance()
+const indexInjuryParams = new IndexInjuryParams('', 1, 10, 1)
+watch(() => isAnotherMeeting.value, () => {
+  updateData()
+})
 </script>
 <template>
   <div class="another-meeting">
@@ -115,9 +119,9 @@ const indexInjuryParams  =  new  IndexInjuryParams('',1,10,1)
 
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
-        <CustomSelectInput :modelValue="SelectedInfection" class="input"
-          :controller="indexInjuryController" :params="indexInjuryParams" label="Infection Type"
-          id="infection" placeholder="select your infection" @update:modelValue="setInfection" />
+        <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
+          :params="indexInjuryParams" label="Infection Type" id="infection" placeholder="select your infection"
+          @update:modelValue="setInfection" />
       </div>
     </div>
   </div>

@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const observerationRoutes: RouteRecordRaw[] = [
   {
-    path: 'observation-types',
+    path: 'observation-type',
     name: 'Observeration Type',
     component: () => import('@/views/Admin/ObserverationType/IndexObserverationType.vue'),
   },

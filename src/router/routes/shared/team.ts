@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const teamsRoutes: RouteRecordRaw[] = [
     {
-        path: 'teams',
+        path: 'team',
         name: 'Teams',
         component: () => import('@/views/Admin/Teams/IndexTeams.vue'),
     },

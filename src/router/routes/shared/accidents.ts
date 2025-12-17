@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const accidentsRoutes: RouteRecordRaw[] = [
   {
-    path: 'accidents-types',
+    path: 'accidents-type',
     name: 'Accidents Type',
     component: () => import('@/views/Admin/Accidents/IndexAccidentsType.vue'),
   },

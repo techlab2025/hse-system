@@ -81,7 +81,7 @@ const SettingsRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/admin/hazard-types',
+    link: '/admin/hazard-type',
     name: 'Hazard Types',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
@@ -92,7 +92,7 @@ const SettingsRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/admin/observation-types',
+    link: '/admin/observation-type',
     name: 'observation_types',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
@@ -116,7 +116,7 @@ const SettingsRoutes = ref<Routes[]>([
   //   ],
   // },
   {
-    link: '/admin/accidents-types',
+    link: '/admin/accidents-type',
     name: 'accidents_types',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -138,7 +138,7 @@ const SettingsRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/admin/factories',
+    link: '/admin/factory',
     name: 'factors',
     permissions: [
       PermissionsEnum.FACTORY_ALL,
@@ -149,7 +149,7 @@ const SettingsRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/admin/templates',
+    link: '/admin/template',
     name: 'Templates',
     permissions: [
       PermissionsEnum.TEMPLATE_ALL,

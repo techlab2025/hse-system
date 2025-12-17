@@ -7,6 +7,7 @@ import AddOrganizatoinEmployeeController from '../controllers/addOrganizatoinEmp
 import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import OrganizatoinEmployeeForm from './OrganizatoinEmployeeForm.vue'
 
+const emit = defineEmits(['update:data'])
 const router = useRouter()
 const params = ref<Params | null>(null)
 
@@ -27,9 +28,8 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizatoinEmployee">
 
     <OrganizatoinEmployeeForm @update:data="setParams" />
-
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

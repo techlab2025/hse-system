@@ -48,7 +48,7 @@ export default class EditTemplateController extends ControllerInterface<Template
         })
         const { user } = useUserStore()
         await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`,
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template`,
         )
         // console.log(this.state.value.data)
       } else {

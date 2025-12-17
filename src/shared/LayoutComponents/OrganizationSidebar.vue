@@ -17,7 +17,7 @@ interface Routes {
 }
 const OrganizationRoutes = ref<Routes[]>([
   {
-    link: '/organization/accidents-types',
+    link: '/organization/accidents-type',
     name: 'Accidents Types',
     permissions: [
       PermissionsEnum.WEBSITE,
@@ -30,7 +30,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/partners',
+    link: '/organization/partner',
     name: 'partners',
     permissions: [
       PermissionsEnum.WEBSITE,
@@ -54,7 +54,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/certificates',
+    link: '/organization/certificate',
     name: 'certificates',
     permissions: [
       PermissionsEnum.CERTIFICATE_ALL,
@@ -88,7 +88,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/factories',
+    link: '/organization/factory',
     name: 'factors',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
@@ -110,7 +110,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/hazard-types',
+    link: '/organization/hazard-type',
     name: 'Hazard Types',
     permissions: [
       PermissionsEnum.ORG_HAZARD_TYPE_ALL,
@@ -121,7 +121,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/observation-types',
+    link: '/organization/observation-type',
     name: 'observation_types',
     permissions: [
       PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
@@ -144,7 +144,7 @@ const OrganizationRoutes = ref<Routes[]>([
   //   ],
   // },
   {
-    link: '/organization/templates',
+    link: '/organization/template',
     name: 'Templates',
     permissions: [
       PermissionsEnum.ORG_TEMPLATE_ALL,
@@ -189,7 +189,7 @@ const OrganizationRoutes = ref<Routes[]>([
   //   ],
   // },
   {
-    link: '/organization/teams',
+    link: '/organization/team',
     name: 'team',
     permissions: [
       PermissionsEnum.ORG_TEAM_ALL,
@@ -200,7 +200,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/contractors',
+    link: '/organization/contractor',
     name: 'contractors',
     permissions: [
       PermissionsEnum.ORG_CONTRACTOR_ALL,

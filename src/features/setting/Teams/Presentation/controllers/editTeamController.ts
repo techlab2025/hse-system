@@ -42,7 +42,7 @@ export default class EditTeamController extends ControllerInterface<TeamModel> {
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/teams`)
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

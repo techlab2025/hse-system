@@ -5,12 +5,14 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
+import { useRoute, type Router } from 'vue-router'
 import AddContractorUseCase from '../../Domain/useCase/addContractorUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type ContractorModel from '../../Data/models/ContractorModel'
 import type AddContractorParams from '../../Core/params/addContractorParams'
+import IndexContractorController from './indexContractorController'
+import IndexContractorParams from '../../Core/params/indexContractorParams'
 
 export default class AddContractorController extends ControllerInterface<ContractorModel> {
   private static instance: AddContractorController
@@ -29,13 +31,12 @@ export default class AddContractorController extends ControllerInterface<Contrac
   async addContractor(params: AddContractorParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-        params.validate()
+      params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<ContractorModel> =
-        await this.addContractorUseCase.call(params)
+      const dataState: DataState<ContractorModel> = await this.addContractorUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -46,8 +47,15 @@ export default class AddContractorController extends ControllerInterface<Contrac
         })
 
         const { user } = useUserStore()
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractors`)
+        if (router.currentRoute.value.fullPath.includes('contractors')) {
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor`,
+            )
+        } else {
+          console.log('index')
+          IndexContractorController.getInstance().getData(new IndexContractorParams('', 1, 10, 1))
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

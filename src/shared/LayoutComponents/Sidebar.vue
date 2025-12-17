@@ -149,7 +149,7 @@ const user = useUserStore()
                       PermissionsEnum.HAZARD_TYPE_UPDATE,
                     ]">
                       <li>
-                        <router-link to="/admin/hazard-types">
+                        <router-link to="/admin/hazard-type">
                           <SidebarVector />
                           <span>{{ $t('Hazard Types') }}</span>
                         </router-link>
@@ -166,7 +166,7 @@ const user = useUserStore()
                       PermissionsEnum.ADMIN,
                     ]">
                       <li>
-                        <router-link to="/admin/observation-types">
+                        <router-link to="/admin/observation-type">
                           <SidebarVector />
                           <span>{{ $t('observation_types') }}</span>
                         </router-link>
@@ -216,7 +216,7 @@ const user = useUserStore()
                       PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
                     ]">
                       <li>
-                        <router-link to="/admin/accidents-types">
+                        <router-link to="/admin/accidents-type">
                           <SidebarVector />
                           <span>{{ $t('accidents_types') }}</span>
                         </router-link>
@@ -246,7 +246,7 @@ const user = useUserStore()
                       PermissionsEnum.FACTORY_UPDATE,
                     ]">
                       <li>
-                        <router-link to="/admin/factories">
+                        <router-link to="/admin/factory">
                           <SidebarVector />
                           <span>{{ $t('factors') }}</span>
                         </router-link>
@@ -261,7 +261,7 @@ const user = useUserStore()
                       PermissionsEnum.TEMPLATE_UPDATE,
                     ]">
                       <li>
-                        <router-link to="/admin/templates">
+                        <router-link to="/admin/template">
                           <SidebarVector />
                           <span>{{ $t('Templates') }}</span>
                         </router-link>
@@ -292,7 +292,7 @@ const user = useUserStore()
                       ]"
                     >
                       <li>
-                        <router-link to="/admin/certificates">
+                        <router-link to="/admin/certificate">
                           <SidebarVector />
                           <span>{{ $t('Certificates') }}</span>
                         </router-link>
@@ -859,7 +859,7 @@ const user = useUserStore()
                     PermissionsEnum?.ORG_ACCIDENTS_TYPE_FETCH,
                   ]">
                     <li>
-                      <router-link to="/organization/accidents-types">
+                      <router-link to="/organization/accidents-type">
                         <SidebarVector />
                         <span>{{ $t('Accidents Types') }}</span>
                       </router-link>
@@ -915,7 +915,7 @@ const user = useUserStore()
                     PermissionsEnum.PARTNER_FETCH,
                   ]">
                     <li>
-                      <router-link to="/organization/partners">
+                      <router-link to="/organization/partner">
                         <SidebarVector />
                         <span>{{ $t('partners') }}</span>
                       </router-link>
@@ -977,7 +977,7 @@ const user = useUserStore()
                     PermissionsEnum.CERTIFICATE_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/certificates">
+                      <router-link to="/organization/certificate">
                         <SidebarVector />
                         <span>{{ $t('certificates') }}</span>
                       </router-link>
@@ -1023,7 +1023,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_FACTORY_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/factories">
+                      <router-link to="/organization/factory">
                         <SidebarVector />
                         <span>{{ $t('factors') }}</span>
                       </router-link>
@@ -1053,7 +1053,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/hazard-types">
+                      <router-link to="/organization/hazard-type">
                         <SidebarVector />
                         <span>{{ $t('Hazard Types') }}</span>
                       </router-link>
@@ -1095,7 +1095,7 @@ const user = useUserStore()
                     PermissionsEnum.ORGANIZATION_EMPLOYEE,
                   ]">
                     <li>
-                      <router-link to="/organization/observation-types">
+                      <router-link to="/organization/observation-type">
                         <SidebarVector />
                         <span>{{ $t('observation_types') }}</span>
                       </router-link>
@@ -1152,7 +1152,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_TEMPLATE_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/templates">
+                      <router-link to="/organization/template">
                         <SidebarVector />
                         <span>{{ $t('Templates') }}</span>
                       </router-link>
@@ -1229,7 +1229,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_TEAM_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/teams">
+                      <router-link to="/organization/team">
                         <SidebarVector />
                         <span>{{ $t('team') }}</span>
                       </router-link>
@@ -1245,7 +1245,7 @@ const user = useUserStore()
                     PermissionsEnum.ORG_CONTRACTOR_UPDATE,
                   ]">
                     <li>
-                      <router-link to="/organization/contractors">
+                      <router-link to="/organization/contractor">
                         <SidebarVector />
                         <span>{{ $t('contractors') }}</span>
                       </router-link>

@@ -10,6 +10,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const emit = defineEmits(['update:data'])
 
 const addLocationController = AddLocationController.getInstance()
 
@@ -28,7 +29,7 @@ const setParams = (data: Params) => {
     <LocationAreaForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">Add</button>
     </div>
   </form>
 </template>

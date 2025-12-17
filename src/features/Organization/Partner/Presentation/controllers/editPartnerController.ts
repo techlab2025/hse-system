@@ -37,7 +37,7 @@ export default class EditPartnerController extends ControllerInterface<PartnerMo
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/partners')
+        await router.push('/organization/partner')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

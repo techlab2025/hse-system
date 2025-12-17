@@ -49,7 +49,7 @@ export default class EditContractorController extends ControllerInterface<Contra
         const { user } = useUserStore()
 
         await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractors`,
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor`,
         )
         // console.log(this.state.value.data)
       } else {

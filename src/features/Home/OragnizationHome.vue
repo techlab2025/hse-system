@@ -86,7 +86,7 @@ import HomeSetting from '@/assets/images/HomeSetting.png';
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
     <!-- /organization?setting=1 -->
-      <router-link to="/organization/accidents-types?setting=1">
+      <router-link to="/organization/accidents-type?setting=1">
         <HomeRoutesCard :img-src="HomeSetting" :title="`setting`" :description="`hierarchy . theme . charts`" />
       </router-link>
     </PermissionBuilder>

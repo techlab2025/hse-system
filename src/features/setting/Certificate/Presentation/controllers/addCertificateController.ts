@@ -41,7 +41,7 @@ export default class AddCertificateController extends ControllerInterface<Certif
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificates`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

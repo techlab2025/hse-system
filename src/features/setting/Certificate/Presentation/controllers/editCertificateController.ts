@@ -37,7 +37,7 @@ export default class EditCertificateController extends ControllerInterface<Certi
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/certificates')
+        await router.push('/admin/certificate')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

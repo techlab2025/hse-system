@@ -51,7 +51,7 @@ export default class EditAccidentsTypeController extends ControllerInterface<Acc
         const { user } = useUserStore()
 
         await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-types`,
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type`,
         )
         // console.log(this.state.value.data)
       } else {

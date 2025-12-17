@@ -5,6 +5,7 @@ import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/in
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationHierarchyModel'
+import HeirarchySelectDialog from '../../SelectDialogs/HeirarchySelectDialog.vue'
 
 
 const props = defineProps<{
@@ -34,6 +35,11 @@ const updateHerikaly = (value: TitleInterface[]) => {
   herikaly.value = value || []
   emit('update:herikaly', herikaly.value)
 }
+
+const HeirarchyVisable = ref<boolean>()
+const ShowHeirarchyDialog = () => {
+  HeirarchyVisable.value = true
+}
 </script>
 
 <template>
@@ -43,9 +49,11 @@ const updateHerikaly = (value: TitleInterface[]) => {
         <div class="input-wrapper">
           <CustomSelectInput :modelValue="herikaly" :params="HerikalyParams" :controller="indexHerikalyController"
             class="input" :label="$t('functional Hierarchy')" id="herikaly" :type="2"
-            :placeholder="$t('functional Hierarchy')" @update:modelValue="updateHerikaly" />
+            :placeholder="$t('functional Hierarchy')" @update:modelValue="updateHerikaly"
+            :onclick="ShowHeirarchyDialog" />
         </div>
       </div>
+      <HeirarchySelectDialog v-model:visible="HeirarchyVisable" />
     </form>
   </div>
 </template>
