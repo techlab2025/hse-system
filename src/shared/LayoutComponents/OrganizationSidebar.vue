@@ -304,7 +304,6 @@ const LocationRoutes = ref<Routes[]>([
 
 const SelectedOrgRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
-
 watch(
   () => route.path,
   (newPath) => {
@@ -321,7 +320,6 @@ watch(orgAccordion, (val) => {
   orgAccordion.value = val
 })
 watch(locationAccordion, (val) => {
-  console.log(val);
   locationAccordion.value = val
 })
 </script>

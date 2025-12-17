@@ -108,6 +108,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_ORG_UPDATE,
+      PermissionsEnum.LOCATION_ORG_ALL,
     ],
   },
   // {
@@ -138,6 +140,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       PermissionsEnum.LOCATION_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_ORG_DELETE,
+      PermissionsEnum.LOCATION_ORG_ALL,
     ],
   },
 ]
@@ -155,7 +159,12 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.LOCATION_CREATE,
+        PermissionsEnum.ORG_LOCATION_CREATE,
+        PermissionsEnum.LOCATION_ORG_CREATE,
+      ]">
         <router-link :to="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
           class="btn btn-primary">
           {{ $t('add_location') }}
@@ -171,6 +180,12 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     PermissionsEnum.LOCATION_FETCH,
     PermissionsEnum.LOCATION_UPDATE,
     PermissionsEnum.LOCATION_CREATE,
+    PermissionsEnum.LOCATION_ORG_CREATE,
+    PermissionsEnum.LOCATION_ORG_ALL,
+    PermissionsEnum.LOCATION_ORG_FETCH,
+    PermissionsEnum.LOCATION_ORG_UPDATE,
+    PermissionsEnum.LOCATION_ORG_DELETE,
+
   ]">
     <DataStatus :controller="state">
       <template #success>

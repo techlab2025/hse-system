@@ -6,6 +6,7 @@ import Sidebar from '@/shared/LayoutComponents/Sidebar.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import NewSidebar from '../LayoutComponents/NewSidebar.vue'
+import BreadCrumb from '../LayoutComponents/BreadCrumb.vue'
 
 const { user } = useUserStore()
 const route = useRoute()
@@ -33,8 +34,10 @@ const showSidebar = computed(() => {
     <NewSidebar v-if="showSidebar" />
     <!-- </div> -->
     <section class="content-wrapper">
+
       <Header />
       <div class="main-content">
+        <BreadCrumb />
         <slot />
       </div>
     </section>

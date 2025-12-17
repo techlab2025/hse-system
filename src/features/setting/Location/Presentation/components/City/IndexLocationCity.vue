@@ -109,6 +109,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_ORG_UPDATE,
+      PermissionsEnum.LOCATION_ORG_ALL,
     ],
   },
   {
@@ -119,6 +121,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_ORG_UPDATE,
+      PermissionsEnum.LOCATION_ORG_ALL,
+
     ],
   },
   // {
@@ -139,6 +144,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       PermissionsEnum.LOCATION_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_ORG_DELETE,
+      PermissionsEnum.LOCATION_ORG_ALL,
     ],
   },
 ]
@@ -156,7 +163,12 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.LOCATION_CREATE]">
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.LOCATION_CREATE,
+        PermissionsEnum.ORG_LOCATION_CREATE,
+        PermissionsEnum.LOCATION_ORG_CREATE,
+      ]">
         <router-link :to="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"
           class="btn btn-primary">
           {{ $t('add_city') }}
@@ -172,6 +184,11 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
     PermissionsEnum.LOCATION_FETCH,
     PermissionsEnum.LOCATION_UPDATE,
     PermissionsEnum.LOCATION_CREATE,
+    PermissionsEnum.LOCATION_ORG_CREATE,
+    PermissionsEnum.LOCATION_ORG_ALL,
+    PermissionsEnum.LOCATION_ORG_FETCH,
+    PermissionsEnum.LOCATION_ORG_UPDATE,
+    PermissionsEnum.LOCATION_ORG_DELETE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -213,12 +230,14 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'" addText="Add HazardType"
+        <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"
+          addText="Add HazardType"
           description="Sorry .. You have no cities .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No cities" />
       </template>
       <template #failed>
-        <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"addText="Add HazardType"
+        <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/cities/add' : '/organization/cities/add'"
+          addText="Add HazardType"
           description="Sorry .. You have no cities .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No cities" />
       </template>

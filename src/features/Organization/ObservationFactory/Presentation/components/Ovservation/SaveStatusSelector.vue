@@ -16,8 +16,8 @@ const selectedSaveStatus = ref<SaveStatusEnum | null>(props.modelValue || null)
 watch(selectedSaveStatus, (val) => emit('update:saveStatus', val))
 
 const options = [
-  { value: SaveStatusEnum.NotSaved, label: 'Negative', icon: Check },
-  { value: SaveStatusEnum.Saved, label: 'Positive', icon: alert }
+  { value: SaveStatusEnum.NotSaved, label: 'Negative', icon: alert },
+  { value: SaveStatusEnum.Saved, label: 'Positive', icon: Check }
 ]
 
 // إذا تغير modelValue من الخارج، حدّث selectedSaveStatus
