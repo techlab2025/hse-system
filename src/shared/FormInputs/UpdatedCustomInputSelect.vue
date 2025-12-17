@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs, type Component, useSlots } from 'vue'
+import { computed, ref, watch, toRefs, type Component, useSlots, onMounted } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type Params from '@/base/core/Params/params'
@@ -25,8 +25,7 @@ interface Props {
   autoFill?: boolean
   reload?: boolean
   optional?: boolean
-  Headercomponent?: Component
-  Contentcomponent?: Component
+  hascontent?: boolean
   onclick?: () => void
 }
 
@@ -64,7 +63,7 @@ const isMultiselect = computed(() => Number(type.value) === 2)
 const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
 const mergedOptions = computed(() => staticOptions?.value ?? dynamicOptions.value)
 const multiselectProps = computed(() =>
-  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
+  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {}
 )
 
 // Value handling
@@ -157,46 +156,49 @@ async function reloadData(): Promise<void> {
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null
 }
-
-
-const updateSlot = (data: any) => {
-  emit('update:slot', data)
-}
-
 </script>
 
 <template>
   <div class="input-label flex justify-between w-full">
-    <div class="flex items-center">
-      <!-- <span v-if="onclick" @click="onclick" class="add-dialog">
-        <PlusIcon />
-      </span> -->
-      <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-        @click="reloadData">
-        <span>
-          <component @click="onclick" v-if="Headercomponent && onclick" :is="Headercomponent" />
+    <slot>
+      <div class="flex items-center">
+        <slot name="reloadHeader"></slot>
+        <span
+          v-if="enableReload"
+          class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+          @click="reloadData"
+        >
+          <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
+          <IconBackStage />
         </span>
-        <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
-        <IconBackStage />
-      </span>
+      </div>
 
-    </div>
-
-    <label :class="{ required: required }" class="input-label">
-      <span v-if="required" class="text-red-500">*</span>
-      {{ $t(label ?? '') }}
-    </label>
+      <div class="flex items-center gap-2">
+        <label :class="{ required: required }" class="input-label">ب
+          <span v-if="required" class="text-red-500">*</span>
+          {{ $t(label ?? '') }}
+        </label>
+        <slot name="LabelHeader"></slot>
+      </div>
+    </slot>
   </div>
-  <template v-if="!Contentcomponent">
-    <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-      class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-      :empty-message="message" />
-    <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
-  </template>
 
-  <template v-else>
-    <component :is="Contentcomponent" @update:data="updateSlot" />
-  </template>
+  <slot v-if="!hascontent">
+    <component
+      :is="componentType"
+      v-model="normalizedValue"
+      :options="mergedOptions"
+      :placeholder="placeholder"
+      class="input-select w-full"
+      option-label="title"
+      v-bind="multiselectProps"
+      filter
+      :loading="loading"
+      :empty-message="message"
+    />
+    <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+  </slot>
+  <slot v-else name="content"> </slot>
 </template>
 
 <style scoped lang="scss">
@@ -209,7 +211,6 @@ const updateSlot = (data: any) => {
   svg {
     width: 18px;
     height: 18px;
-
   }
 }
 
