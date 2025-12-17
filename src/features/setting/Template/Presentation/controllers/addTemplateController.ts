@@ -48,7 +48,7 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
         const { user } = useUserStore()
         if (!draft)
           await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/templates`,
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template`,
           )
 
         // useLoaderStore().endLoadingWithDialog();

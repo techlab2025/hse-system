@@ -120,15 +120,14 @@ export default class AddHazardParams implements Params {
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
-    if (this.isThereInjuries) data['is_there_injuries'] = this.isThereInjuries
-    if (this.isThereDeath) data['is_there_death'] = this.isThereDeath
-    if (this.isThereWitnessStatement)
-      data['is_there_witness_statement'] = this.isThereWitnessStatement
-    if (this.Injury)
+    data['is_there_injuries'] = this.isThereInjuries
+    data['is_there_death'] = this.isThereDeath
+    data['is_there_witness_statement'] = this.isThereWitnessStatement
+    if (this.Injury?.length > 0)
       data['injuries'] = this.Injury ? this.Injury?.map((item: InjuryParams) => item.toMap()) : []
-    if (this.deaths)
+    if (this.deaths?.length > 0)
       data['deaths'] = this.deaths ? this.deaths?.map((item: DethParams) => item.toMap()) : []
-    if (this.witnesses)
+    if (this.witnesses?.length > 0)
       data['witness_statements'] = this.witnesses
         ? this.witnesses?.map((item: WitnessParams) => item.toMap())
         : []

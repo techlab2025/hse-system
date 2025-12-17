@@ -51,9 +51,7 @@ watch(
   () => props.selected_data,
   (newVal) => {
     if (newVal && newVal.length) {
-      const optId =
-        newVal[0]?.answers?.[0]?.templateItemOption?.id || 0
-
+      const optId = newVal[0]?.answers?.[0]?.templateItemOption?.id || 0
       SelectedOptions.value.value = optId
     }
   },
@@ -63,30 +61,21 @@ watch(
 </script>
 
 <template>
-  <!-- <pre>
-    {{ selected_data?.[0]?.files }}
-  </pre> -->
+  <pre>
+  </pre>
   <div class="show-template-document-radio">
     <p class="title">{{ title }}</p>
-
     <div class="options-container">
       <div class="options">
         <div class="options-box" v-for="(option, index) in options" :key="index">
-
           <label :for="`radio-${index}-${title}-${option.id}`" class="label">
             {{ option.title }}
           </label>
-
           <RadioButton class="input" :value="option.id" :modelValue="SelectedOptions.value"
             @update:modelValue="UpdateOptions" :inputId="`radio-${index}-${title}-${option.id}`"
             :name="`radio-${props.item_id}`" />
-          <!-- <RadioButton class="input" :value="option.id" :modelValue="SelectedOptions.value.value"
-            @update:modelValue="UpdateOptions" :inputId="`radio-${index}-${title}-${option.id}`"
-            :name="`radio-${props.item_id}`" /> -->
-
         </div>
       </div>
-
       <UploadMultiImage v-if="require_image" @update:images="UpdateImg" class="image-upload"
         :initialImages="selected_data?.[0]?.files.map((el) => el.url)" />
     </div>

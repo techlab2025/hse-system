@@ -4,6 +4,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import EmployeeSelectDialog from '../../SelectDialogs/EmployeeSelectDialog.vue'
 
 const props = defineProps<{
   heirarchyId?: number
@@ -19,6 +20,11 @@ const updateEmployee = (value: TitleInterface[] | []) => {
   employees.value = value
   emit('update:employee', value)
 }
+
+const EmployeeVisable = ref<boolean>()
+const ShowEmployeeDialog = () => {
+  EmployeeVisable.value = true
+}
 </script>
 
 <template>
@@ -28,9 +34,10 @@ const updateEmployee = (value: TitleInterface[] | []) => {
         <div class="input-wrapper">
           <CustomSelectInput :modelValue="employees" :params="indexEmployeeTypeParams"
             :controller="indexEmployeeTypeController" class="input" :label="$t('employee')" :type="2" id="employee"
-            :placeholder="$t('employee')" @update:modelValue="updateEmployee" />
+            :placeholder="$t('employee')" @update:modelValue="updateEmployee" :onclick="ShowEmployeeDialog" />
         </div>
       </div>
+      <EmployeeSelectDialog v-model:visible="EmployeeVisable" />
     </form>
   </div>
 </template>

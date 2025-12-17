@@ -41,7 +41,7 @@ export default class AddFactoryController extends ControllerInterface<FactoryMod
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

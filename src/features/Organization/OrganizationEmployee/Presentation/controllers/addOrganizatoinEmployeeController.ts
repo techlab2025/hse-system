@@ -47,7 +47,9 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/organization-employee')
+        if(router.currentRoute.value.fullPath.includes('organization-employee')){
+          if (!draft) await router.push('/organization/organization-employee')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

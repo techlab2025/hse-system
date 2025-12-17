@@ -26,6 +26,9 @@ import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum
 import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
+import ContructorSelectDialog from './SelectDialogs/ContructorSelectDialog.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -243,7 +246,6 @@ watch(
         null
         // SelectedCity.value.map((c) => c.id),
       )
-      console.log(newData.area , "newwww");
       location.value = newData?.area ?? [];
       EvaluatingMethod.value = newData?.methods ?? [];
       ContractorIds.value = newData?.contractors ?? [];
@@ -345,6 +347,15 @@ watch(() => langsDescription.value,
     updateData()
   })
 
+const ContructorVisible = ref(false)
+
+const ShowContructorDialog = () => {
+  ContructorVisible.value = true
+}
+const LocationVisible = ref(false)
+const ShowLocationDialog = () => {
+  LocationVisible.value = true
+}
 
 </script>
 
@@ -368,12 +379,14 @@ watch(() => langsDescription.value,
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
       :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
-      placeholder="contractors" />
+      placeholder="contractors" :onclick="ShowContructorDialog" />
+
   </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
-      placeholder="location" :type="2" />
+      placeholder="location" :type="2" :onclick="ShowLocationDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -386,5 +399,7 @@ watch(() => langsDescription.value,
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
       :placeholder="`What are the project objectives?`" />
   </div>
+  <ContructorSelectDialog v-model:visible="ContructorVisible" />
+  <LocationSelectDialog v-model:visible="LocationVisible" />
 
 </template>

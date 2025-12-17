@@ -1,8 +1,10 @@
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { LocationEnum } from '../../Core/Enum/LocationEnum'
+import { useRouter } from 'vue-router'
 
 export default class LocationRouterHandler {
   public static LocationRouter(location: LocationEnum, user) {
+    const router = useRouter()
     switch (location) {
       case LocationEnum.COUNTRY:
         return user?.type == OrganizationTypeEnum.ADMIN
@@ -16,7 +18,11 @@ export default class LocationRouterHandler {
         return user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states' : '/organization/states'
         break
       case LocationEnum.AREA:
-        return user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas' : '/organization/areas'
+        return router?.currentRoute?.value.fullPath.includes('areas')
+          ? user?.type == OrganizationTypeEnum.ADMIN
+            ? '/admin/areas'
+            : '/organization/areas'
+          : ''
         break
       default:
         return '/admin/countries'

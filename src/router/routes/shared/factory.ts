@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const factoryRoutes: RouteRecordRaw[] = [
   {
-    path: 'factories',
+    path: 'factory',
     name: 'Factories',
     component: () => import('@/views/Admin/Factory/IndexFactory.vue'),
   },

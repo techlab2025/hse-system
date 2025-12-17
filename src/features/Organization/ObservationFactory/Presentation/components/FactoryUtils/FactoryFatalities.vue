@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import RIP from '@/assets/images/RIP.png'
@@ -37,6 +37,10 @@ const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
+
+watch(() => isAnotherMeeting.value, () => {
+  updateData()
+})
 </script>
 <template>
   <div class="another-meeting">

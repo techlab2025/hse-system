@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const templateRoutes: RouteRecordRaw[] = [
   {
-    path: 'templates',
+    path: 'template',
     name: 'Templates',
     component: () => import('@/views/Admin/Template/IndexTemplate.vue'),
   },

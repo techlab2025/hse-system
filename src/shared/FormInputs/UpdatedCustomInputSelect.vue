@@ -25,7 +25,8 @@ interface Props {
   autoFill?: boolean
   reload?: boolean
   optional?: boolean
-  component?: Component
+  Headercomponent?: Component
+  Contentcomponent?: Component
   onclick?: () => void
 }
 
@@ -159,7 +160,6 @@ async function reloadData(): Promise<void> {
 
 
 const updateSlot = (data: any) => {
-  console.log(data, "data");
   emit('update:slot', data)
 }
 
@@ -167,36 +167,36 @@ const updateSlot = (data: any) => {
 
 <template>
   <div class="input-label flex justify-between w-full">
-
-    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-      @click="reloadData">
-      <span>
-        <component @update:data="updateSlot" v-if="component" :is="component" />
+    <div class="flex items-center">
+      <!-- <span v-if="onclick" @click="onclick" class="add-dialog">
+        <PlusIcon />
+      </span> -->
+      <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+        @click="reloadData">
+        <span>
+          <component @click="onclick" v-if="Headercomponent && onclick" :is="Headercomponent" />
+        </span>
+        <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
+        <IconBackStage />
       </span>
-      <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
-      <IconBackStage />
-    </span>
 
-    <div class="flex items-center gap-2">
-
-      <label :class="{ required: required }" class="input-label">
-        <span v-if="required" class="text-red-500">*</span>
-        {{ $t(label ?? '') }}
-      </label>
-
-      <span v-if="onclick" @click="onclick" class="add-dialog">
-        {{ $t('new') }}
-      </span>
     </div>
-  </div>
-  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-    :empty-message="message" />
-  <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 
-  <!-- <template v-else>
-    <slot :onUpdate="updateSlot" />
-  </template> -->
+    <label :class="{ required: required }" class="input-label">
+      <span v-if="required" class="text-red-500">*</span>
+      {{ $t(label ?? '') }}
+    </label>
+  </div>
+  <template v-if="!Contentcomponent">
+    <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
+      class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
+      :empty-message="message" />
+    <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+  </template>
+
+  <template v-else>
+    <component :is="Contentcomponent" @update:data="updateSlot" />
+  </template>
 </template>
 
 <style scoped lang="scss">
@@ -205,9 +205,6 @@ const updateSlot = (data: any) => {
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
-  text-decoration: underline;
-  font-family: "Regular";
 
   svg {
     width: 18px;

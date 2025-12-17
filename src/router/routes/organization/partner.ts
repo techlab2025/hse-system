@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const partnerRoutes: RouteRecordRaw[] = [
   {
-    path: 'partners',
+    path: 'partner',
     name: 'Partners Organization',
     component: () => import('@/views/Organization/Partener/IndexPartener.vue'),
   },

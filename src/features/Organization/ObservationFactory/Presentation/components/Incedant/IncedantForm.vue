@@ -82,21 +82,21 @@ const updateData = () => {
       date.value ?? '',
       [],
       0,
-      Accidents?.value?.isAnotherMeeting,
-      Fatalities?.value?.isAnotherMeeting,
-      witnesses?.value?.isAnotherMeeting,
-      Accidents?.value?.isAnotherMeeting ? [new InjuryParams(
+      Accidents?.value?.isAnotherMeeting == 1 ? true : false,
+      Fatalities?.value?.isAnotherMeeting == 1 ? true : false,
+      witnesses?.value?.isAnotherMeeting == 1 ? true : false,
+      Accidents?.value?.isAnotherMeeting == 1 ? [new InjuryParams(
         Accidents?.value?.employeeId || [],
         Accidents?.value?.employeeName || '',
         Accidents?.value?.text || null,
         Accidents?.value?.infectionTypeId || 0,
       )] : [],
-      Fatalities?.value?.isAnotherMeeting ? [new DethParams(
+      Fatalities?.value?.isAnotherMeeting == 1 ? [new DethParams(
         Fatalities?.value?.text || '',
         Fatalities?.value?.SelectedEmployee || 0,
         Fatalities?.value?.img || []
       )] : [],
-      witnesses?.value?.isAnotherMeeting ? witnesses?.value?.AllWitnessesData?.map(
+      witnesses?.value?.isAnotherMeeting == 1 ? witnesses?.value?.AllWitnessesData?.map(
         (witnesses: any) => new WitnessParams(
           witnesses?.text || [],
           witnesses?.employee?.id || '',
@@ -111,7 +111,11 @@ const updateData = () => {
     )
   //   takeAction:takeAction.value,
   // solved:solved.value,
-
+  console.log({
+    "Accidents?.value?.isAnotherMeeting": Accidents?.value?.isAnotherMeeting,
+    "Fatalities?.value?.isAnotherMeeting": Fatalities?.value?.isAnotherMeeting,
+    "witnesses?.value?.isAnotherMeeting": witnesses?.value?.isAnotherMeeting
+  });
   emit('update:data', params)
 }
 

@@ -49,7 +49,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         if (!draft)
           await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-types`,
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
           )
 
         // useLoaderStore().endLoadingWithDialog();

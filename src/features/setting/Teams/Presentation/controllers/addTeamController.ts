@@ -41,7 +41,7 @@ export default class AddTeamController extends ControllerInterface<TeamModel> {
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/teams`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

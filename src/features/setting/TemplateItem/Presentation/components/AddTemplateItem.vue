@@ -28,7 +28,7 @@ const setParams = (data: Params) => {
     <TemplateItemForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-cancel w-full">cancel</button>
-      <router-link to="/organization/templates" type="submit" class="btn btn-primary w-full">confirm</router-link>
+      <router-link to="/organization/template" type="submit" class="btn btn-primary w-full">confirm</router-link>
     </div>
   </form>
 </template>

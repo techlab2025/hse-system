@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import WitnessesTimeLine from './WitnessesTimeLine.vue'
 import people from '@/assets/images/people.png'
 
@@ -9,7 +9,7 @@ const emit = defineEmits(['update:data'])
 const isAnotherMeeting = ref(1)
 const updateData = () => {
   emit('update:data', {
-    isAnotherMeeting:isAnotherMeeting.value,
+    isAnotherMeeting: isAnotherMeeting.value,
     AllWitnessesData: AllWitnessesData.value,
 
   })
@@ -21,30 +21,22 @@ const UpdateWitnessesData = (data: any) => {
   updateData()
 }
 
-
+watch(() => isAnotherMeeting.value, () => {
+  updateData()
+})
 </script>
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage
-        :title="`Are there witnesses?`"
-        :subtitle="`Were there any witnesses present at this incident?`"
-        :img="people"
-        class="title-header"
-      />
+      <HeaderPage :title="`Are there witnesses?`" :subtitle="`Were there any witnesses present at this incident?`"
+        :img="people" class="title-header" />
       <div class="meeting-status">
-        <button
-          class="meeting-status-yes"
-          @click.prevent="isAnotherMeeting = 1"
-          :class="isAnotherMeeting == 1 ? 'active' : ''"
-        >
+        <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
+          :class="isAnotherMeeting == 1 ? 'active' : ''">
           Yes
         </button>
-        <button
-          class="meeting-status-on"
-          @click.prevent="isAnotherMeeting = 0"
-          :class="isAnotherMeeting == 0 ? 'active' : ''"
-        >
+        <button class="meeting-status-on" @click.prevent="isAnotherMeeting = 0"
+          :class="isAnotherMeeting == 0 ? 'active' : ''">
           No
         </button>
       </div>

@@ -7,6 +7,7 @@ import ContractorForm from './ContractorForm.vue'
 import AddContractorController from '../controllers/addContractorController'
 import type AddContractorParams from '../../Core/params/addContractorParams'
 
+const emit = defineEmits(['update:data'])
 const router = useRouter()
 const params = ref<Params | null>(null)
 
@@ -26,7 +27,7 @@ const setParams = (data: Params) => {
     <ContractorForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">Add</button>
     </div>
   </form>
 </template>
