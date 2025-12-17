@@ -19,23 +19,23 @@ const { item } = defineProps<{
       <div class="info">
         <div class="image">
           <img :src="item.image" alt="">
-
         </div>
-        <h4 class="card-header-title">{{ item.title }}</h4>
-
-
       </div>
-
-      <RouterLink :to="item.addRoute" class="card-header-item">
-        <span>{{ $t('add') }}</span>
-<!--        <p>120</p>-->
-      </RouterLink>
     </div>
-    <div class="card-body">
+    <div class="card-content">
+      <h4 class="card-header-title">{{ item.title }}</h4>
       <p class="description">{{ item.description }}</p>
-      <RouterLink :to="item.indexRoute" class="link">
-        <span>{{ $t('show_all') }}</span>
-      </RouterLink>
+    </div>
+    <div class="card-options">
+      <RouterLink :to="item.addRoute" class="btn btn-primary">{{ $t('add') }}</RouterLink>
+      <RouterLink :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
     </div>
   </div>
 </template>
+<!-- <RouterLink :to="item.addRoute" class="card-header-item">
+        <span>{{ $t('add') }}</span>
+      </RouterLink> --> <!-- <RouterLink :to="item.indexRoute" class="link">
+        <span>{{ $t('show_all') }}</span>
+      </RouterLink> -->
+<!-- </div> -->
+<!-- <div class="card-body"> -->

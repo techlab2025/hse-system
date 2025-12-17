@@ -139,6 +139,9 @@
 /*<editor-fold desc="home">*/
 @use './Home/home_imports';
 /*</editor-fold>*/
+/*<editor-fold desc="home breadcrump">*/
+@use './HomeBreadCrump/breadcrump';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

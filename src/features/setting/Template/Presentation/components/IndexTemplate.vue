@@ -203,11 +203,12 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
                 <td data-label="#">
                   <router-link
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${item.id}`">{{
-                    index + 1 }}
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
+                  ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
@@ -238,13 +239,13 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Template" />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/template`"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
           addText="Add Template"
           description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Template" />

@@ -4,16 +4,41 @@
 
 .all-observation {
   .cards {
-    @include grid(2, $SmSize);
+    @include grid(4, $SmSize);
     margin-top: $XlSize2;
     @media screen and (max-width: 800px) {
       @include grid(1, $SmSize);
     }
 
     .card {
-      background-color: $CardObservationBg;
+      background-color: #fafafacc;
       padding: $XsSize $XlSize;
       border-radius: $XlSize2;
+      overflow: hidden;
+      @include flex(row, wrap, flex-start, center);
+      gap: 12px;
+      position: relative;
+      &:hover {
+        .card-options {
+          right: 0;
+        }
+      }
+
+      .card-options {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize3;
+        width: 100%;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        right: -100%;
+        background-color: #fafafa;
+        transition: 0.3s all linear;
+        a {
+          width: 50%;
+        }
+      }
 
       .card-header {
         @include flex(row, wrap, space-between, center);
@@ -25,22 +50,20 @@
 
           .image {
             width: $XlSize3;
-            height: $XlSize3;
+            height: $XlSize4;
 
             img {
+              padding-top: 10px;
               width: 100%;
               height: 100%;
               object-fit: cover;
             }
-
           }
+        }
+        .card-content {
+          @include flex-column(nowrap, flex-start, flex-start);
+        }
 
-        }
-        .card-header-title {
-          font-size: $XlSize2;
-          font-weight: $BaseFontSemiBoldWeight;
-          color: $ThirdColor;
-        }
         .card-header-item {
           @include flex(row, wrap, center, center);
           gap: $XsSize3;
@@ -62,7 +85,6 @@
         }
       }
 
-
       .card-body {
         @include flex(row, wrap);
         gap: $XsSize4;
@@ -73,8 +95,9 @@
         }
 
         .description {
-          font-size: $SmSize;
-          color: $ThirdColor;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: #cbcbcb;
         }
         .link {
           @include flex(row, wrap, center, center);
@@ -94,10 +117,18 @@
             font-weight: $BaseFontSemiBoldWeight;
             color: $PrimaryColor;
           }
-
         }
-
       }
     }
+  }
+  .description {
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    color: #cbcbcb;
+  }
+  .card-header-title {
+    font-size: $XlSize2;
+    font-weight: $BaseFontSemiBoldWeight;
+    color: #000000;
   }
 }
