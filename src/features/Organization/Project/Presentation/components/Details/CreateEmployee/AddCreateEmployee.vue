@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Breadcrumbs from '../DetailsHeader/Breadcrumbs.vue'
 import HeaderPage from '../DetailsHeader/HeaderPage.vue'
@@ -7,69 +7,86 @@ import CreateEmployeeForm from './CreateEmployeeForm.vue'
 import DashedLine from '@/shared/icons/dashedLine.vue'
 import Person from '@/shared/icons/person.vue'
 import ArtLine from '@/shared/icons/artLine.vue'
-import IndexLocationHierarchyParams from '@/features/Organization/Project/Core/params/Hierarchy/LocationHierarchy/indexLocationHierarchiesParams'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+
 import AddHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/addHierarchyEmployeeParams'
 import LocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/locationHierarchyEmployeeParams'
-import type TitleInterface from '@/base/Data/Models/title_interface'
-import IndexLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController'
 import AddHierarchyEmployeeController from '../../../controllers/Hierarchy/HierarchyEmployee/addHierarchyEmployeeUserController'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 
+// ================== ROUTE ==================
 const route = useRoute()
 const router = useRouter()
-const id = route.params.project_id
-const LocatioId = route.query?.locationId
 
+const projectId = +route.params.project_id
+const locationId = route.query?.locationId
 
-const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
+// ================== CONTROLLERS ==================
+const addHierarchyEmployeeController =
+  AddHierarchyEmployeeController.getInstance()
 
+const projectCustomLocationController =
+  ProjectCustomLocationController.getInstance()
+
+// ================== STATE ==================
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
 
-const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const state = ref(projectCustomLocationController.state.value)
 
 watch(
   () => projectCustomLocationController.state.value,
   (newState) => {
-    if (newState) {
-      state.value = newState
-    }
-  },
+    if (newState) state.value = newState
+  }
 )
 
-const GetProjectLocationsHierarchiesEmployes = async () => {
-  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE, ProjectCustomLocationEnum.HIERARCHY])
-  const response = await projectCustomLocationController.getData(projectCustomLocationParams)
-  console.log(response.value.data, "response.va");
-}
-onMounted(GetProjectLocationsHierarchiesEmployes)
+// ================== FETCH DATA ==================
+const getProjectLocationsHierarchiesEmployees = async () => {
+  const params = new ProjectCustomLocationParams(projectId, [
+    ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
+    ProjectCustomLocationEnum.HIERARCHY,
+  ])
 
-const handleEmployeesUpdate = (hierarchyId: number, value: TitleInterface[]) => {
-  console.log(value, "hierarchyId");
-  employeesByHierarchy.value[hierarchyId] = value || []
+  await projectCustomLocationController.getData(params)
 }
 
+onMounted(getProjectLocationsHierarchiesEmployees)
+
+// ================== HANDLERS ==================
+const handleEmployeesUpdate = (
+  hierarchyId: number,
+  employees: TitleInterface[]
+) => {
+  employeesByHierarchy.value[hierarchyId] = employees || []
+}
+
+// ================== SUBMIT ==================
 const handleAddAllEmployees = async () => {
   try {
-    const hierarchies = Object.entries(employeesByHierarchy.value).map(
-      ([hierarchyId, employees]) =>
+    const hierarchies = Object.entries(employeesByHierarchy.value)
+      .filter(([_, employees]) => employees && employees.length > 0)
+      .map(([hierarchyId, employees]) =>
         new LocationHierarchyEmployeeParams(
           +hierarchyId,
-          employees.map((e) => e.id),
-        ),
-    )
+          employees.map(e => e.id)
+        )
+      )
 
-    const params = new AddHierarchyEmployeeParams(+route.params.project_id, hierarchies)
+    // 🚫 لا تبعت أي request لو مفيش حاجة
+    if (hierarchies.length === 0) return
+
+    const params = new AddHierarchyEmployeeParams(projectId, hierarchies)
     await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
-  } catch (err) {
-    console.error('Error adding employees:', err)
+  } catch (error) {
+    console.error('Error adding employees:', error)
   }
 }
 </script>
@@ -82,31 +99,37 @@ const handleAddAllEmployees = async () => {
       :number="2" />
 
     <DataStatus :controller="state">
+      <!-- SUCCESS -->
       <template #success>
-        <div v-for="item in state.data" :key="item?.projectLocationId" class="employee-form">
-          <div class="type" v-if="item?.id == LocatioId">
+        <div v-for="item in state.data" :key="item.projectLocationId" class="employee-form">
+          <div v-if="item.id == locationId" class="type">
             <ArtLine class="art-line" />
             <div class="location">
-              <h5>{{ item?.title }}</h5>
-              <sub>{{ item?.locationHierarchy?.length }} types</sub>
+              <h5>{{ item.title }}</h5>
+              <sub>{{ item.locationHierarchy?.length }} types</sub>
             </div>
           </div>
 
-          <div v-if="item?.id == LocatioId" v-for="hierarchy in item?.locationHierarchy" :key="hierarchy.id"
+          <div v-if="item.id == locationId" v-for="hierarchy in item.locationHierarchy" :key="hierarchy.id"
             class="form-employee-wrapper">
             <div class="title">
               <Person />
-              <h5>{{ hierarchy?.title }}</h5>
+              <h5>{{ hierarchy.title }}</h5>
             </div>
+
             <DashedLine class="dashed-line" />
 
-            <CreateEmployeeForm
-              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)"
-              :heirarchyId="hierarchy.id" :employess="hierarchy?.Employees" />
+            <CreateEmployeeForm :heirarchyId="hierarchy.id" :employess="hierarchy.Employees" @update:employee="value =>
+              handleEmployeesUpdate(
+                hierarchy.projectLocationHierarchyId,
+                value
+              )
+            " />
           </div>
         </div>
+
         <div class="submit-btn">
-          <RouterLink :to="`/organization/employee-details/${route.params.project_id}`" class="btn btn-cancel">
+          <RouterLink :to="`/organization/employee-details/${projectId}`" class="btn btn-cancel">
             {{ $t('cancel') }}
           </RouterLink>
 
@@ -115,17 +138,24 @@ const handleAddAllEmployees = async () => {
           </button>
         </div>
       </template>
+
+      <!-- LOADER -->
       <template #loader>
         <TableLoader :cols="8" :rows="10" />
       </template>
+
       <template #initial>
         <TableLoader :cols="8" :rows="10" />
       </template>
+
+      <!-- EMPTY -->
       <template #empty>
         <DataEmpty :link="`/organization/project/add`" addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No Project" />
       </template>
+
+      <!-- FAILED -->
       <template #failed>
         <DataFailed :link="`/organization/project/add`" addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
