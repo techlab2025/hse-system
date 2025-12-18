@@ -120,6 +120,10 @@ export default abstract class ServicesInterface {
           case 404:
             console.error(`NotFoundException >> ${statusCode}`)
             throw new NotFoundException(error.response?.data.message ?? 'Not found')
+          case 401:
+            console.error(`NotFoundException >> ${statusCode}`)
+            throw new BadRequestException(error.response?.data.message)
+  
           case 405:
             console.error(`MethodNotAllowedException >> ${statusCode}`)
             throw new MethodNotAllowedException(

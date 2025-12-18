@@ -380,6 +380,24 @@ const ShowLocationDialog = () => {
     <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
       :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
       placeholder="contractors" :onclick="ShowContructorDialog" />
+    <!-- <UpdatedCustomInputSelect :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
+      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
+      placeholder="contractors" :onclick="ShowContructorDialog" :hascontent="true" :hasHeader="false">
+      <template #LabelHeader>
+        {{ $t('new') }}
+      </template>
+<template #reloadHeader>
+        {{ $t('new') }}
+      </template>
+<template #Header>
+        aaaaaaaa
+      </template>
+
+<template #content>
+        asdasd
+      </template>
+
+</UpdatedCustomInputSelect> -->
 
   </div>
 
@@ -387,6 +405,8 @@ const ShowLocationDialog = () => {
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
       placeholder="location" :type="2" :onclick="ShowLocationDialog" />
+
+
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
