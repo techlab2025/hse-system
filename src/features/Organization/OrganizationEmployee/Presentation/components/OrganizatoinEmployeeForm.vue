@@ -34,7 +34,7 @@ const props = defineProps<{
 }>()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams("", 0, 0, 0)
+const HerikalyParams = new IndexHerikalyParams("", 1, 10, 1, false)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
@@ -179,6 +179,7 @@ const UpdateConfirmPassword = (data) => {
 </script>
 
 <template>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
     <input id="name" type="text" v-model="Name" @change="UpdateName" :placeholder="$t('enter your name')" />

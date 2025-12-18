@@ -51,7 +51,7 @@ const fetchHerikaly = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage)
+  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true)
   await indexHerikalyController.getData(HerikalyParams)
 }
 

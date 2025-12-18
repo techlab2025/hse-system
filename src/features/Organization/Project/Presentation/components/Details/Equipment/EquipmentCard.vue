@@ -23,7 +23,7 @@ watch(() => props.zones, (newValue) => {
 </script>
 
 <template>
-  <div class="equipment-card" >
+  <div class="equipment-card" v-if="Zones?.projectZoonEquipments?.length > 0">
     <div class="equipment-card-header-container">
       <div class="equipment-card-header">
         <img :src="LocationPin" alt="equipment logo">

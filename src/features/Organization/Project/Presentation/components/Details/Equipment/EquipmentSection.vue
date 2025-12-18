@@ -7,6 +7,7 @@ import EquipmentCard from "./EquipmentCard.vue";
 import type SohwProjectZoonModel from "@/features/Organization/Project/Data/models/ShowProjectZone";
 import { useRoute } from "vue-router";
 import { computed, ref, watch } from "vue";
+import AddEquipmentDialog from "../../Dialogs/AddEquipmentDialog.vue";
 
 const route = useRoute()
 const id = route.params.id
@@ -40,10 +41,12 @@ const CheckEquipemtnsEmpty = computed(() => props.project_zoons?.map((p) => p?.p
     </div>
 
     <div class="empty-teams" v-else>
-      <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
+      <!-- <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
         subtitle="You haven’t added any equipment to this project. Start building your crew now!"
-        :link="`/organization/project-equipment/project/${id}`" linkText=" Start building your crew now!" />
+        linkText=" Start building your crew now!" /> -->
+      <AddEquipmentDialog :project_zoons="ProjectZones" />
     </div>
+    <!-- :link="`/organization/project-equipment/project/${id}`" -->
 
 
   </div>

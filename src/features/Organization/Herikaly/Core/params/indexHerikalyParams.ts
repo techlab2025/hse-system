@@ -7,6 +7,8 @@ export default class IndexHerikalyParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
+  public parentOnly: boolean
+
   // public id?: number
   // public code?: LangEnum
 
@@ -15,6 +17,7 @@ export default class IndexHerikalyParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
+    parentOnly: boolean,
     // id?: number,
     // code?: LangEnum,
   ) {
@@ -22,16 +25,18 @@ export default class IndexHerikalyParams implements Params {
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.parentOnly = parentOnly
     // this.id = id
     // this.code = code
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null> = {}
+  toMap(): Record<string, string | number | number[] | null | any> {
+    const data: Record<string, string | number | number[] | null | any> = {}
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
+     data['return_patent_only'] = this.parentOnly
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
     return data

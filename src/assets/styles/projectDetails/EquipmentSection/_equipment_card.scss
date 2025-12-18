@@ -9,6 +9,8 @@
   background-color: white;
   border-radius: $XlSize;
   padding: $XsSize;
+  border: 1px solid #F4F4F4;
+  margin-block: 12px;
 
   .equipment-card-header-container {
     @include flex-row(nowrap, space-between, center);
