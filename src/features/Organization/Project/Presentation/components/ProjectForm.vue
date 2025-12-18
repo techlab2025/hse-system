@@ -144,6 +144,7 @@ onMounted(async () => {
   await fetchLang()
 })
 const date = ref(new Date())
+
 // ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -211,7 +212,7 @@ watch(
       }
 
       SerialNumber.value = newData?.SerialNumber;
-      date.value = newData?.startDate;
+      date.value = newData?.startDate || new Date();
       // ContractorIds.value = newData?.partner;
       fields.value[0].value = SerialNumber.value
       fields.value[0].enabled = props?.data?.id ? false : true
@@ -277,7 +278,7 @@ const UpdateSerial = (data) => {
   updateData()
 }
 const UpdateDate = (date) => {
-  date.value = date
+  date.value = date || new Date()
   updateData()
 }
 
@@ -405,8 +406,6 @@ const ShowLocationDialog = () => {
     <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
       placeholder="location" :type="2" :onclick="ShowLocationDialog" />
-
-
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -417,7 +416,7 @@ const ShowLocationDialog = () => {
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`What are the project objectives?`" />
+      :placeholder="`What are the project objectives?`" :required="false" />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />

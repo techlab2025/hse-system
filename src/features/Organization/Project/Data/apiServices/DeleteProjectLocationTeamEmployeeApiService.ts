@@ -20,7 +20,7 @@ class DeleteProjectLocationTeamEmployeeApiService extends ServicesInterface {
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
       url: ApiNames.instance.DeleteProjectLocationTeamEmployee,
-      type: CrudType.FormData,
+      type: CrudType.POST,
       auth: true,
       params: params,
       showLoadingDialog: true,

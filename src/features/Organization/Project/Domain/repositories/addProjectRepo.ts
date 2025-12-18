@@ -17,9 +17,9 @@ class AddProjectRepo extends RepoInterface<ProjectModel> {
     return this.instance
   }
 
-  // override get responseType(): ResponseType {
-  //   return ResponseType.withoutData
-  // }
+  override get responseType(): ResponseType {
+    return ResponseType.withoutData
+  }
 
   onParse(data: any): ProjectModel {
     return ProjectModel.fromMap(data)

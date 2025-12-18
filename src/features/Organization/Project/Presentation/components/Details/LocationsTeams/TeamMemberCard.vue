@@ -11,17 +11,19 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   member: ProjectLocationEmployeeModel
 }>()
-const UpdateData = () => {
-  emit('update:data')
+const UpdateData = (id: number) => {
+  emit('update:data', id)
 }
+
+
 </script>
 <template>
   <!-- {{ member }} -->
   <div class="member-card">
-    <MemberDeleteIcon class="card-delete" @click="UpdateData" />
+    <MemberDeleteIcon class="card-delete" @click="UpdateData(member?.employeeId)" />
     <img class="member-img" :src="member?.image || person" @error="setDefaultImage" :alt="member.name">
     <div class="member-data">
-      <p class="name">{{ wordSlice(member?.name , 18) }}</p>
+      <p class="name">{{ wordSlice(member?.name, 18) }}</p>
       <!-- <p class="position">{{ member. }}</p> -->
     </div>
   </div>

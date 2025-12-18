@@ -2,11 +2,20 @@
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue';
 import TeamMemberCard from './TeamMemberCard.vue';
 import type ProjectLocationTeamModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationTeamModel';
+import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationTeamEmployeeParams';
+import DeleteProjectLocationTeamEmployeeController from '../../../controllers/DeleteProjectLocationTeamEmployeeController';
 
 
 const props = defineProps<{
   team: ProjectLocationTeamModel
 }>()
+
+const DeleteTeamMember = async (id: number) => {
+  const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
+  const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
+  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams)
+}
+
 </script>
 
 <template>
@@ -25,7 +34,8 @@ const props = defineProps<{
       </div>
     </div>
     <div class="members-section">
-      <TeamMemberCard v-for="(member, index) in team.Employees" :key="index" :member="member" />
+      <TeamMemberCard v-for="(member, index) in team.Employees" :key="index" :member="member"
+        @update:data="DeleteTeamMember" />
     </div>
   </div>
 </template>
