@@ -1,5 +1,6 @@
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
 
 export default class EquipmentModel extends TitleInterface {
   public id: number
@@ -10,7 +11,7 @@ export default class EquipmentModel extends TitleInterface {
   public image: string
   public titles: string
   // public equipmentType: TitleModel
-  // public equipmentType?: EquipmentTypeDetailsModel
+  public equipmentType?: EquipmentTypeDetailsModel
 
   constructor(
     id: number,
@@ -22,7 +23,7 @@ export default class EquipmentModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
-    // equipmentType: TitleModel,
+    equipmentType: EquipmentTypeDetailsModel,
   ) {
     super({ id, title, subtitle })
 
@@ -33,7 +34,7 @@ export default class EquipmentModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
-    // this.equipmentType = equipmentType
+    this.equipmentType = equipmentType
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -49,7 +50,7 @@ export default class EquipmentModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
-      // data.equipment_type_id ? TitleModel.fromMap(data.equipment_type_id) : null,
+      data.equipment_type,
       // data.equipment_type_id
     )
   }

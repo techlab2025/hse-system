@@ -47,8 +47,8 @@ export default class EquipmentTypeDetailsModel extends TitleInterface {
       data.subtitle,
       data.has_certificate,
       data.all_industries,
-      data.industries.length > 0
-        ? data.industries.map((industry) => TitleModel.fromMap(industry))
+      data?.industries?.length > 0
+        ? data?.industries?.map((industry) => TitleModel.fromMap(industry))
         : [],
       data.parent_id,
       data.image,

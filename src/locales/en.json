@@ -807,5 +807,6 @@
   "accidents_types": "Accidents Types",
   "factor_items": "Factor Items",
   "locations": "Locations",
-  "new": "New"
+  "new": "New",
+  "project_name":"Project Name"
 }

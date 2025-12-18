@@ -1,4 +1,3 @@
-
 export default class ProjectLocationEmployeeModel {
   public projectLocationHierarchyEmployeeId: number
   public projectLocationId: number
@@ -6,6 +5,7 @@ export default class ProjectLocationEmployeeModel {
   public name: string
   public email: string
   public image: string
+  public projectLocationTeamEmployeeId: number
   constructor(
     projectLocationHierarchyEmployeeId: number,
     projectLocationId: number,
@@ -13,6 +13,7 @@ export default class ProjectLocationEmployeeModel {
     name: string,
     email: string,
     image: string,
+    projectLocationTeamEmployeeId: number,
   ) {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationId = projectLocationId
@@ -20,6 +21,7 @@ export default class ProjectLocationEmployeeModel {
     this.name = name
     this.email = email
     this.image = image
+    this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
   }
 
   static fromMap(data: any): ProjectLocationEmployeeModel {
@@ -30,6 +32,7 @@ export default class ProjectLocationEmployeeModel {
       data.name,
       data.email,
       data.image,
+      data.project_location_team_employee_id,
     )
   }
 }

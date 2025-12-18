@@ -3,13 +3,14 @@ import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue';
 import EquipmentCard from './EquipmentCard.vue';
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
+import EmptyEquimentsProjectZones from '../PorjectUtils/EmptyEquimentsProjectZones.vue';
 
 const route = useRoute()
 const id = route.params.project_id
@@ -25,16 +26,21 @@ const GetProjectLocationsEqipments = async () => {
 onMounted(() => {
   GetProjectLocationsEqipments()
 })
+
+const EmptyZones = computed(() => state.value.data?.map((el) => el.locationZones?.filter((el) => !(el.projectZoonEquipments.length > 0)))?.flat())
+
 watch(() => projectCustomLocationController.state.value, (newState) => {
   state.value = newState
 })
 </script>
 <template>
+
   <DataStatus :controller="state">
     <template #success>
       <PagesHeader title="Equipment_tools_&_devices_by_zone"
         subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone" />
       <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
+        <EmptyEquimentsProjectZones :zonesNumber="EmptyZones?.length" :zones="EmptyZones" />
         <div v-for="(zone, index) in zones.locationZones" :key="index">
           <EquipmentCard :zones="zone" />
         </div>

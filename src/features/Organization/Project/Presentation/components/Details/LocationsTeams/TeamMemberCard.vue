@@ -12,6 +12,7 @@ const props = defineProps<{
   member: ProjectLocationEmployeeModel
 }>()
 const UpdateData = (id: number) => {
+  console.log(id, "idididididdidiiddididi");
   emit('update:data', id)
 }
 
@@ -20,7 +21,8 @@ const UpdateData = (id: number) => {
 <template>
   <!-- {{ member }} -->
   <div class="member-card">
-    <MemberDeleteIcon class="card-delete" @click="UpdateData(member?.employeeId)" />
+    <MemberDeleteIcon class="card-delete"
+      @click="UpdateData(member?.projectLocationHierarchyEmployeeId || member?.projectLocationTeamEmployeeId)" />
     <img class="member-img" :src="member?.image || person" @error="setDefaultImage" :alt="member.name">
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>
