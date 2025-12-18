@@ -25,6 +25,7 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 const route = useRoute()
 const router = useRouter()
 const id = route.params.project_id
+const LocatioId = route.query?.locationId
 
 
 const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
@@ -83,7 +84,7 @@ const handleAddAllEmployees = async () => {
     <DataStatus :controller="state">
       <template #success>
         <div v-for="item in state.data" :key="item?.projectLocationId" class="employee-form">
-          <div class="type">
+          <div class="type" v-if="item?.id == LocatioId">
             <ArtLine class="art-line" />
             <div class="location">
               <h5>{{ item?.title }}</h5>
@@ -91,7 +92,8 @@ const handleAddAllEmployees = async () => {
             </div>
           </div>
 
-          <div v-for="hierarchy in item?.locationHierarchy" :key="hierarchy.id" class="form-employee-wrapper">
+          <div v-if="item?.id == LocatioId" v-for="hierarchy in item?.locationHierarchy" :key="hierarchy.id"
+            class="form-employee-wrapper">
             <div class="title">
               <Person />
               <h5>{{ hierarchy?.title }}</h5>
@@ -99,7 +101,8 @@ const handleAddAllEmployees = async () => {
             <DashedLine class="dashed-line" />
 
             <CreateEmployeeForm
-              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)" :heirarchyId="hierarchy.id"/>
+              @update:employee="(value) => handleEmployeesUpdate(hierarchy?.projectLocationHierarchyId, value)"
+              :heirarchyId="hierarchy.id" :employess="hierarchy?.Employees" />
           </div>
         </div>
         <div class="submit-btn">

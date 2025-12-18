@@ -13,7 +13,9 @@
   width: 50%;
 
   &.employee-card {
+    background-color: white;
     width: 25%;
+    padding: 10px;
     @media(max-width:1000px){
       width: 50%;
     }

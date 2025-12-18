@@ -20,6 +20,7 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 const route = useRoute()
 const router = useRouter()
 const id = route.params.project_id
+const LocatioId = route.query?.locationId
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 
@@ -42,6 +43,7 @@ onMounted(
 )
 
 const handleHierarchyUpdate = (projectLocationId: number, value: TitleInterface[]) => {
+  console.log({ projectLocationId: projectLocationId, value: value });
   hierarchies.value[projectLocationId] = value || []
 }
 
@@ -56,7 +58,7 @@ const handleAddAllHierarchies = async () => {
     )
 
     const params = new AddLocationHierarchyParams(+route.params.project_id, hierarchyList)
-     await addHierarchyController.addLocationHierarchy(params, router ,id )
+    await addHierarchyController.addLocationHierarchy(params, router, id, LocatioId)
 
   } catch (error) {
     console.error('Error adding hierarchies:', error)
@@ -70,6 +72,7 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
 </script>
 
 <template>
+  <!-- <pre>{{ state.data }}</pre> -->
   <div class="add-hierarchy">
     <Breadcrumbs />
     <HeaderPage title="Add your hierarchy" subtitle="Select your hierarchy for each location from your main hierarchy"
@@ -77,11 +80,12 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
     <DataStatus :controller="state">
       <template #success>
         <div v-for="(item, index) in state.data" :key="index" class="hierarchy-form">
-          <div class="title">
+          <div class="title" v-if="item.id == LocatioId">
             <LocationColor />
             <h5>{{ item.title }}</h5>
           </div>
-          <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)" :selectedHirarchy="item.locationHierarchy" />
+          <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)"
+            :selectedHirarchy="item.locationHierarchy" v-if="item.id == LocatioId" />
         </div>
 
         <div class="submit-btn">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
@@ -12,24 +12,12 @@ const props = defineProps<{
   selectedHirarchy: TitleInterface[]
 }>()
 
-// const ConvertselectedHirarchyToTitleinterface = computed((): TitleInterface[] => {
-//   return props.selectedHirarchy.map((item: ProjectLocationHierarchyModel) => {
-//     return {
-//       id: item.id,
-//       title: item.title,
-//       subtitle: "",
-//       kpi: "",
-//       decodedData: "",
-//     }
-//   })
-// })
-
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams('', 0, 0, 0)
 
 const emit = defineEmits(['update:herikaly'])
 
-const herikaly = ref([])
+const herikaly = ref<TitleInterface[]>(props.selectedHirarchy?.map((item) => new TitleInterface({ id: item?.id, title: item?.title })) || [])
 
 const updateHerikaly = (value: TitleInterface[]) => {
   herikaly.value = value || []
@@ -40,6 +28,14 @@ const HeirarchyVisable = ref<boolean>()
 const ShowHeirarchyDialog = () => {
   HeirarchyVisable.value = true
 }
+
+onMounted(() => {
+  updateHerikaly(herikaly.value)
+})
+watch(() => props.selectedHirarchy, (newvalue) => {
+  herikaly.value = newvalue || []
+  // updateHerikaly(herikaly.value)
+})
 </script>
 
 <template>
