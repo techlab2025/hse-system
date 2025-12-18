@@ -59,19 +59,21 @@ watch(
             :subtitle="locationTeam?.locationEmplyees?.length" />
 
           <div class="card-actions">
-            <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`" class="edit-btn">
+            <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
+              class="edit-btn">
               Edit Hierarchy
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="locationTeam.projectLocationId" :LocationId="locationTeam.id"
               @update:data="GetProjectLocationsEmployes" />
-            <RouterLink :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`" class="add-btn">
+            <RouterLink :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
+              class="add-btn">
               Add employee
             </RouterLink>
           </div>
         </div>
         <hr class="employee-hr" />
         <div class="employees-section">
-          <TeamMemberCard @update:data="DeleteMember(index)" class="employee-card"
+          <TeamMemberCard @update:data="DeleteMember" class="employee-card"
             v-for="(member, index) in locationTeam.locationEmplyees" :key="index" :member="member" />
         </div>
         <div class="project-teams-cards">

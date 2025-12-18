@@ -208,7 +208,7 @@ const UpdateConfirmPassword = (data) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
-      :params="indexRoleParams" :label="$t('Role')" :type="2" :placeholder="$t('Select Role')" />
+      :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

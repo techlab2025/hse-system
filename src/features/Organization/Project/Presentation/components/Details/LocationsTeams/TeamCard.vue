@@ -4,23 +4,41 @@ import TeamMemberCard from './TeamMemberCard.vue';
 import type ProjectLocationTeamModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationTeamModel';
 import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationTeamEmployeeParams';
 import DeleteProjectLocationTeamEmployeeController from '../../../controllers/DeleteProjectLocationTeamEmployeeController';
+import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController';
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
+import { useRoute } from 'vue-router';
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
 
 
 const props = defineProps<{
   team: ProjectLocationTeamModel
 }>()
 
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+
+const route = useRoute();
+const GetProjectLocationsEmployes = async () => {
+  const projectCustomLocationParams = new ProjectCustomLocationParams(route?.params?.project_id, [
+    ProjectCustomLocationEnum.TEAM_EMPLOYEE,
+    ProjectCustomLocationEnum.EMPLOYEE,
+  ])
+  const response = await projectCustomLocationController.getData(
+    projectCustomLocationParams,
+  )
+}
+
 const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
   await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams)
+  GetProjectLocationsEmployes()
 }
 
 </script>
 
 <template>
 
-  <div class="team-card">
+  <div class="team-card" v-if="team.Employees?.length > 0">
     <div class="team-card-header">
       <div class="team-card-header-content">
         <TeamsIcon class="team-icon" />
@@ -34,6 +52,7 @@ const DeleteTeamMember = async (id: number) => {
       </div>
     </div>
     <div class="members-section">
+
       <TeamMemberCard v-for="(member, index) in team.Employees" :key="index" :member="member"
         @update:data="DeleteTeamMember" />
     </div>

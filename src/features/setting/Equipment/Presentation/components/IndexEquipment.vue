@@ -258,11 +258,12 @@ watch(
                 </td>
                 <td data-label="industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
-                    item.industries.length > 0
+                    item?.industries?.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
                       : $t('no')
                   }}
                 </td>
+                <!-- {{ item }} -->
                 <td data-label="EquipmentType">
                   {{ item.equipmentType?.title || "--" }}
                 </td>
