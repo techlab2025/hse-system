@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams('', 0, 0, 0)
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 1, true)
 
 const emit = defineEmits(['update:herikaly'])
 

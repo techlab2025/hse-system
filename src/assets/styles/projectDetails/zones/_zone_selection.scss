@@ -1,0 +1,15 @@
+@import '../../variables';
+@import '../../mixins/flex';
+.zone-selection {
+  margin-block: 10px;
+  padding-top: 20px;
+  border-top: 1px dashed #d9dbe9;
+}
+
+.equipment-selection {
+  margin-top: 20px;
+
+  .submit-btn {
+    margin-top: 20px;
+  }
+}
