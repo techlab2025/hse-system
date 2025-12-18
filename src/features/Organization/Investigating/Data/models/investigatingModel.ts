@@ -1,10 +1,9 @@
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
-import TitleInterface from '@/base/Data/Models/title_interface'
-// import OvservationEquipmentModel from './OvservationEquipmentModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
-// import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
+import type OvservationEquipmentModel from '@/features/Organization/ObservationFactory/Data/models/OvservationEquipmentModel'
+import OvserverModel from '@/features/Organization/ObservationFactory/Data/models/OvserverModel'
 
 export default class InvestigatingModel {
   public id: number

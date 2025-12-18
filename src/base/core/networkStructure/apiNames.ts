@@ -1216,6 +1216,17 @@ class ApiNames {
     return this.prefix + 'fetch_investigation_details'
   }
 
+  // Investigating
+  public get CreateInvestigating() {
+    return this.prefix + 'create_full_investigation'
+  }
+  public get IndexInvestigating() {
+    return this.prefix + 'fetch_investigations'
+  }
+  public get ShowInvestigating() {
+    return this.prefix + 'fetch_investigation_details'
+  }
+
 
   // Role
   public get CreateRole() {
@@ -1252,6 +1263,12 @@ class ApiNames {
   }
   public get DeleteInjury() {
     return this.prefix + 'delete_injury_type'
+  }
+  public get DeleteProjectLocationHeirarchyEmployee() {
+    return this.prefix + 'delete_project_location_hierarchy_employee'
+  }
+  public get DeleteProjectLocationTeamEmployee() {
+    return this.prefix + 'delete_project_location_team_employee'
   }
 }
 

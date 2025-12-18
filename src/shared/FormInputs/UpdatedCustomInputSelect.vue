@@ -26,6 +26,7 @@ interface Props {
   reload?: boolean
   optional?: boolean
   hascontent?: boolean
+  hasHeader?: boolean
   onclick?: () => void
 }
 
@@ -160,42 +161,31 @@ async function reloadData(): Promise<void> {
 
 <template>
   <div class="input-label flex justify-between w-full">
-    <slot>
+    <slot v-if="!hasHeader">
       <div class="flex items-center">
         <slot name="reloadHeader"></slot>
-        <span
-          v-if="enableReload"
-          class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-          @click="reloadData"
-        >
+        <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+          @click="reloadData">
           <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
           <IconBackStage />
         </span>
       </div>
 
       <div class="flex items-center gap-2">
-        <label :class="{ required: required }" class="input-label">ب
+        <label :class="{ required: required }" class="input-label">
           <span v-if="required" class="text-red-500">*</span>
           {{ $t(label ?? '') }}
         </label>
         <slot name="LabelHeader"></slot>
       </div>
     </slot>
+    <slot v-else name="Header"></slot>
   </div>
 
   <slot v-if="!hascontent">
-    <component
-      :is="componentType"
-      v-model="normalizedValue"
-      :options="mergedOptions"
-      :placeholder="placeholder"
-      class="input-select w-full"
-      option-label="title"
-      v-bind="multiselectProps"
-      filter
-      :loading="loading"
-      :empty-message="message"
-    />
+    <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
+      class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
+      :empty-message="message" />
     <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
   </slot>
   <slot v-else name="content"> </slot>

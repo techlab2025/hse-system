@@ -19,54 +19,55 @@ import IndexInvestigationResultParams from '../../../Core/params/investegationRe
 import IndexInvestigatingResultController from '../../controllers/investegationResult/IndexInvestigatingResultController'
 import { useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 
-const InvestigatingData = [
-  {
-    id: 1,
-    title: 'Incedant',
-    serial:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-    date: '2025-01-05 10:00 AM',
-    observer: { name: 'Ahmed Ali' },
-    description: 'Oil leakage detected near the main engine.',
-    zoon: { title: 'Zone A' },
-    equipment: { title: 'Excavator CAT 320' },
-    status: InvestegationStatusEnum.UNSOLVED,
-    image: 'https://picsum.photos/220/150',
-    link: '',
-  },
-  {
-    id: 2,
+// const InvestigatingData = [
+//   {
+//     id: 1,
+//     title: 'Incedant',
+//     serial:
+//       'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+//     date: '2025-01-05 10:00 AM',
+//     observer: { name: 'Ahmed Ali' },
+//     description: 'Oil leakage detected near the main engine.',
+//     zoon: { title: 'Zone A' },
+//     equipment: { title: 'Excavator CAT 320' },
+//     status: InvestegationStatusEnum.UNSOLVED,
+//     image: 'https://picsum.photos/220/150',
+//     link: '',
+//   },
+//   {
+//     id: 2,
 
-    title: 'High observation',
-    serial: 'Another dummy text for testing card 2',
-    date: '2025-02-10 11:30 AM',
-    observer: { name: 'Sara Mohamed' },
-    description: 'Hydraulic failure detected.',
-    zoon: { title: 'Zone B' },
-    equipment: { title: 'Bulldozer CAT D6' },
-    status: InvestegationStatusEnum.INPROGRESS,
-    image: 'https://picsum.photos/221/150',
-    link: 'https://meet.google.com/abc-defg-hij',
-  },
-  {
-    id: 3,
-    title: 'Medium observation',
-    serial: 'Third card dummy text',
-    date: '2025-03-15 09:45 AM',
-    observer: { name: 'Khaled Samir' },
-    description: 'Electrical issue near main control panel.',
-    zoon: { title: 'Zone C' },
-    equipment: { title: 'Crane Liebherr' },
-    status: InvestegationStatusEnum.SOLVED,
-    image: 'https://picsum.photos/222/150',
-    link: '',
-  },
-]
+//     title: 'High observation',
+//     serial: 'Another dummy text for testing card 2',
+//     date: '2025-02-10 11:30 AM',
+//     observer: { name: 'Sara Mohamed' },
+//     description: 'Hydraulic failure detected.',
+//     zoon: { title: 'Zone B' },
+//     equipment: { title: 'Bulldozer CAT D6' },
+//     status: InvestegationStatusEnum.INPROGRESS,
+//     image: 'https://picsum.photos/221/150',
+//     link: 'https://meet.google.com/abc-defg-hij',
+//   },
+//   {
+//     id: 3,
+//     title: 'Medium observation',
+//     serial: 'Third card dummy text',
+//     date: '2025-03-15 09:45 AM',
+//     observer: { name: 'Khaled Samir' },
+//     description: 'Electrical issue near main control panel.',
+//     zoon: { title: 'Zone C' },
+//     equipment: { title: 'Crane Liebherr' },
+//     status: InvestegationStatusEnum.SOLVED,
+//     image: 'https://picsum.photos/222/150',
+//     link: '',
+//   },
+// ]
 
-const indexInvestigatingResultController = IndexInvestigatingResultController.getInstance()
-const state = ref(indexInvestigatingResultController.state.value)
-const InvestigatingList = ref(InvestigatingData)
+const indexInvestigatingController = IndexInvestigatingController.getInstance()
+const state = ref(indexInvestigatingController.state.value)
+// const InvestigatingList = ref(InvestigatingData)
 const router = useRouter()
 const ShowDetails = ref<boolean[]>([])
 
@@ -83,12 +84,12 @@ const GetInvsetegationResult = async (
     withPage
   );
 
-  await indexInvestigatingResultController.IndexInvestigatingResult(indexInvestigationResultParams, router);
+  await indexInvestigatingController.getData(indexInvestigationResultParams);
 
 }
 
 onMounted(() => {
-  ShowDetails.value = InvestigatingList.value.map(() => false)
+  // ShowDetails.value = InvestigatingList.value.map(() => false)
   GetInvsetegationResult();
 })
 
@@ -106,7 +107,7 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
 }
 
 watch(
-  () => indexInvestigatingResultController.state.value,
+  () => indexInvestigatingController.state.value,
   (newState) => {
     if (newState) state.value = newState
   },
@@ -115,8 +116,8 @@ watch(
 </script>
 
 <template>
-  <!-- <DataStatus :controller="state"> -->
-    <!-- <template #success> -->
+  <DataStatus :controller="state">
+    <template #success>
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
         <InvestigatingSidebar />
@@ -125,7 +126,7 @@ watch(
         <div class="col-span-9">
           <!-- Header -->
           <div class="flex items-center justify-between mb-4">
-            <IndexFilter :filters="Filters" />
+            <!-- <IndexFilter :filters="Filters" /> -->
             <div class="btns-filter">
               <FilterDialog />
               <!-- <router-link :to="`/organization/investigating/add`">
@@ -138,7 +139,7 @@ watch(
           <div class="table-responsive">
             <div class="index-table-card-container">
               <!--  InvestigatingList-->
-              <div class="index-table-card" v-for="(item, index) in InvestigatingData" :key="index">
+              <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
                 <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                   <div class="first-container">
                     <div class="first-card">
@@ -230,8 +231,8 @@ watch(
           </div>
         </div>
       </div>
-    <!-- </template> -->
-    <!-- <template #loader>
+    </template>
+    <template #loader>
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #initial>
@@ -251,6 +252,6 @@ watch(
     <template #notPermitted>
       <DataFailed addText="Have not Permission"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
-    </template> -->
-  <!-- </DataStatus> -->
+    </template>
+  </DataStatus>
 </template>
