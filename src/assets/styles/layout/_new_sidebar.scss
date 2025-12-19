@@ -148,11 +148,24 @@
       @include flex-align();
       gap: $XsSize4;
       color: #000057 !important;
+      a {
+        width: 100%;
+        span {
+          width: 100%;
+        }
+      }
     }
-
 
     .p-accordioncontent-content {
       padding-bottom: 0 !important;
+      li{
+        a{
+          width: 100%;
+          span{
+            width: 100%;
+          }
+        }
+      }
     }
     .p-accordionheader {
       background-color: #f8f9fb !important;
@@ -179,7 +192,7 @@
       font-size: $SmSize;
       padding-left: 25px;
       transition: all 0.3s ease-in-out;
-      span{
+      span {
         padding-left: 20px;
       }
 
