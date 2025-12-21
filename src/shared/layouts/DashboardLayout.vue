@@ -31,7 +31,7 @@ const showSidebar = computed(() => {
     <!--  -->
     <!-- <Sidebar  /> -->
     <!-- <div class="sidebar"> -->
-    <!-- <NewSidebar v-if="showSidebar" /> -->
+    <NewSidebar v-if="user?.type === OrganizationTypeEnum.ADMIN" />
     <!-- </div> -->
     <section class="content-wrapper">
 
