@@ -19,8 +19,8 @@ export default class EquipmentDetailsModel {
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
-  public equipmentTypeId: EquipmentTypeDetailsModel
-  // public type: EquipmentTypesEnum
+  public equipmentTypeId: number
+  public equipment_type: EquipmentTypeDetailsModel
 
   constructor(
     id: number,
@@ -36,8 +36,8 @@ export default class EquipmentDetailsModel {
     parentId: number,
     image: string,
     industries: TitleModel<string>[],
-    equipmentTypeId: EquipmentTypeDetailsModel,
-    // type?: EquipmentTypesEnum,
+    equipmentTypeId: number,
+    equipment_type: EquipmentTypeDetailsModel,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -53,6 +53,7 @@ export default class EquipmentDetailsModel {
     this.image = image
     this.industries = industries
     this.equipmentTypeId = equipmentTypeId
+    this.equipment_type = equipment_type
     // this.type = type
   }
 
@@ -72,8 +73,8 @@ export default class EquipmentDetailsModel {
       0,
       data.image,
       data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
-      data.equipment_type_id ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type_id) : {},
-      // data?.equipment_type_id?.type,
+      data.equipment_type_id,
+      data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,
     )
   }
 
@@ -85,13 +86,4 @@ export default class EquipmentDetailsModel {
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
-
-  // static getStatus(status: number): EquipmentStatus {
-  //   const statusMap: Record<number, TitleInterface> = {
-  //     [EquipmentStatus.RENT]: new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent' }),
-  //     [EquipmentStatus.OWN]: new TitleInterface({ id: EquipmentStatus.OWN, title: 'Own' }),
-  //   }
-
-  //   return statusMap[status] || new TitleInterface({ id: 0, title: 'Inactive' })
-  // }
 }

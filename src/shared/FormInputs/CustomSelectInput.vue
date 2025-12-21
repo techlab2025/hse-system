@@ -29,7 +29,7 @@ interface Props {
   onclick?: () => void
 }
 
-const emit = defineEmits(['update:modelValue', 'update:slot'])
+const emit = defineEmits(['update:modelValue', 'update:slot', 'update:reload'])
 const props = withDefaults(defineProps<Props>(), {
   type: 1,
   required: false,
@@ -152,6 +152,7 @@ function handleFetchError(error: unknown): void {
 }
 
 async function reloadData(): Promise<void> {
+  emit("update:reload")
   if (loading.value) return
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null

@@ -68,14 +68,14 @@ const certificateImage = ref<string | null>(null)
 const langTitleValid = ref(false)
 
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
-const indexEquipmentTypeParams = new IndexEquipmentTypeParams(
+const indexEquipmentTypeParams = ref(new IndexEquipmentTypeParams(
   '',
   1,
   10,
   1,
   0,
   Number(activeTab.value) || EquipmentTypesEnum.EQUIPMENT
-)
+))
 const EquipmentTypeState = ref(indexEquipmentTypeController.state.value)
 
 const industryController = IndexIndustryController.getInstance()
@@ -193,18 +193,22 @@ const updateData = () => {
     null
   )
     : new AddEquipmentParams(
-      translationsParams,
-      equipmentType.value?.id,
-      decommissioningDate.value,
-      equipmentStatus.value?.id,
-      inspectionDuration.value,
-      licenseNumber.value,
-      licensePlateNumber.value,
-      image.value,
-      certificateImage.value,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      +route.params.parent_id,
+      {
+        translation: translationsParams,
+        equipmentTypeId: equipmentType.value?.id,
+        date: decommissioningDate.value,
+        status: deviceStatus.value?.id,
+        inspectionDuration: inspectionDuration.value,
+        licenseNumber: licenseNumber.value,
+        licensePlateNumber: licensePlateNumber.value,
+        image: image.value,
+        certificateImage: certificateImage.value,
+        AllIndustry: AllIndustry,
+        industry: industry.value?.map((item) => item.id),
+        parentId: +route.params.parent_id,
+        contructorId: deviceStatus.value?.id == EquipmentStatus.RENT ? SelectedContractor.value?.id : null,
+
+      }
     )
 
   emit('update:data', params)
@@ -232,8 +236,6 @@ const setContructor = (data: TitleInterface) => {
 
 
 const deviceStatus = ref<TitleInterface | null>(null)
-
-
 const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Own') }),
@@ -245,7 +247,17 @@ const setDeviceStatus = (data: TitleInterface) => {
 }
 
 
+const getLocalizedTitleInterface = (titles: any[]) => {
+  const locale = localStorage.getItem('lang') || 'en'
 
+  const found = titles?.find((t) => t.locale === locale)
+    || titles?.[0]
+
+  return new TitleInterface({
+    id: found?.id ?? null,
+    title: found?.title ?? '',
+  })
+}
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, defaults]) => {
@@ -256,45 +268,45 @@ watch(
       return existing ? { ...l, title: existing.title } : { ...l }
     })
 
-    if (route.params.id) {
-      console.log(newData, " newData ");
 
+
+
+    if (route.params.id) {
       industry.value = newData?.industries ?? []
-      equipmentType.value = newData?.equipmentTypeId as TitleInterface ?? null
+      // equipmentType.value = new TitleInterface({ id: newData?.equipment_type?.id, title: newData?.equipment_type?.titles?.find((t) => t.locale === defaults[0].locale)?.title })
+
+      const selectedEquipmentType = new TitleInterface({
+        id: newData?.equipment_type?.id,
+        title: getLocalizedTitleInterface(newData?.equipment_type?.titles).title,
+      })
+      console.log(selectedEquipmentType, " selectedEquipmentType ");
+      equipmentType.value = selectedEquipmentType
       allIndustries.value = newData?.allIndustries == 1 ? true : false
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
-      equipmentStatus.value = newData?.status || null
+      deviceStatus.value = new TitleInterface({ id: newData?.status, title: newData?.status == EquipmentStatus.RENT ? t('Rent') : t('Own') }) || null
       image.value = newData?.image || null
       decommissioningDate.value = newData?.date || null
       certificateImage.value = newData?.certificateImage || null
 
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
-      console.log(equipmentType.value, "  equipmentType.value ");
+      activeTab.value = newData?.equipment_type?.type
+      console.log(newData, "  equipmentType.value ");
+      indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", 1, 10, 1, null, activeTab.value)
 
     }
   },
   { immediate: true },
 )
 
-watch(() => activeTab.value, () => {
-  // indexEquipmentTypeParams = new IndexEquipmentTypeParams(
-  //   '',
-  //   1,
-  //   10,
-  //   1,
-  //   0,
-  //   Number(activeTab.value),
-  // )
-  GetEquipmentType()
+watch(() => activeTab.value, (Newvalue) => {
+  // GetEquipmentType()
+  indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", 1, 10, 1, null, Newvalue)
+
 })
 
-// watch(() => indexEquipmentTypeController.state.value, (newVal) => {
-//   if (newVal) {
-//     // AllEquipmentTypes.value = newVal
-//   }
-// })
+
 </script>
 
 <template>
@@ -318,12 +330,14 @@ watch(() => activeTab.value, () => {
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
-      <!-- v-if="" -->
-      <!-- {{ AllEquipmentTypes }} -->
-      <!-- v-if="EquipmentTypeState?.data?.length > 0" -->
-      <!-- :staticOptions="AllEquipmentTypes" -->
+      <!-- <div>
+        <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
+          :staticOptions="AllEquipmentTypes" :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
+          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType" />
+      </div> -->
       <div>
-        <CustomSelectInput :modelValue="equipmentType" :staticOptions="AllEquipmentTypes"
+        <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
+          :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
           :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
           :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType" />
       </div>
