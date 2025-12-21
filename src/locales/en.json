@@ -817,5 +817,6 @@
   "company_website": "Company Website",
   "contact_person_email": "Contact Person Email",
   "contact_person_phone": "Contact Person Phone",
-  "expiry_date": "Expiry Date"
+  "contract_expiry_date": "Contract Expiry Date",
+  "contact_person": "Contact Person"
 }

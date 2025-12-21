@@ -57,7 +57,16 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       {
         route: "/organization/role",
         Name: "roles",
-      }
+      },
+      {
+        route: '/organization/accidents-type',
+        Name: 'Accidents Types',
+      },
+      {
+        route: '/organization/equipment-types',
+        Name: 'Equipment Types',
+      },
+
 
     ],
 

@@ -11,7 +11,7 @@ export default class EquipmentModel extends TitleInterface {
   public image: string
   public titles: string
   // public equipmentType: TitleModel
-  public equipmentType?: EquipmentTypeDetailsModel
+  public equipmentType?: {}
 
   constructor(
     id: number,
@@ -23,7 +23,7 @@ export default class EquipmentModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
-    equipmentType: EquipmentTypeDetailsModel,
+    equipmentType: {},
   ) {
     super({ id, title, subtitle })
 
