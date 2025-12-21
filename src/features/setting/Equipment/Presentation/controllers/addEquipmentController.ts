@@ -28,6 +28,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
   async addEquipment(params: AddEquipmentParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+    console.log(params, 'params')
     try {
       params.validate()
       if (!params.validate().isValid) {
