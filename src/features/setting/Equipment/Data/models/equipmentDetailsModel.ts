@@ -72,7 +72,7 @@ export default class EquipmentDetailsModel {
       0,
       data.image,
       data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
-      EquipmentTypeDetailsModel.fromMap(data.equipment_type_id),
+      data.equipment_type_id ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type_id) : {},
       // data?.equipment_type_id?.type,
     )
   }

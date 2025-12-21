@@ -41,7 +41,7 @@ export default class AddPartnerController extends ControllerInterface<PartnerMod
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organizations/partner')
+        if (!draft) await router.push('/organization/partner')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

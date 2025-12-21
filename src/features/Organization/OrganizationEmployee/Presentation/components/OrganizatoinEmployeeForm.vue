@@ -42,7 +42,6 @@ const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
 const indexRoleController = IndexRoleController.getInstance()
 const indexRoleParams = new IndexRoleParams("", 0, 0, 0)
 
-
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 const user = useUserStore();
 const fetchLang = async (

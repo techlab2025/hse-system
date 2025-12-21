@@ -174,7 +174,7 @@ const setStatus = (data: TitleInterface) => {
       id="Status" placeholder="Select Status" @update:modelValue="setStatus" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <label for="expiry_date">{{ $t('expiry_date') }}</label>
+    <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
     <DatePicker :modelValue="date" class="input" label="Date" id="expiry_date" placeholder="Contruct Expiry Date"
       @update:modelValue="setExpiryDate" />
   </div>
