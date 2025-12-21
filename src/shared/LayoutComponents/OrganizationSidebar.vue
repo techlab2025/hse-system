@@ -232,6 +232,28 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_ROLE_UPDATE,
     ],
   },
+  {
+    link: '/organization/injury',
+    name: 'injury',
+    permissions: [
+      PermissionsEnum.INJURY_ALL,
+      PermissionsEnum.INJURY_CREATE,
+      PermissionsEnum.INJURY_DELETE,
+      PermissionsEnum.INJURY_FETCH,
+      PermissionsEnum.INJURY_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/scope',
+    name: 'Scope',
+    permissions: [
+      PermissionsEnum.SCOPE_ALL,
+      PermissionsEnum.SCOPE_CREATE,
+      PermissionsEnum.SCOPE_DELETE,
+      PermissionsEnum.SCOPE_FETCH,
+      PermissionsEnum.SCOPE_UPDATE,
+    ],
+  },
 
 ])
 
@@ -299,6 +321,7 @@ const LocationRoutes = ref<Routes[]>([
       PermissionsEnum.PROJECT_ZONE_UPDATE,
     ],
   },
+
 
 ])
 

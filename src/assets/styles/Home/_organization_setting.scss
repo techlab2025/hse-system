@@ -1,0 +1,80 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.organization-setting {
+  @include flex-column(nowrap, center, center);
+  font-family: 'Regular';
+  width: 100%;
+
+  .organization-setting-container {
+    @include grid(
+      2,
+      $XsSize3,
+      (
+        768px: 1,
+      )
+    );
+
+    margin-top: 12px;
+    font-family: 'Regular';
+    .organization-setting-card {
+      cursor: pointer;
+      width: 100%;
+      background-color: #fcfcfc;
+      padding: $SmSize;
+      border-radius: calc($SmSize + 1px);
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize2;
+      &:not(.active) {
+        opacity: 0.4;
+      }
+      .card-content {
+        @include flex-column(nowrap, flex-start, flex-start);
+        .title {
+          color: #000039;
+          font-size: $MdSize2;
+          font-weight: $BaseFontWeightBold;
+        }
+        .description {
+          color: #cbcbcb;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  }
+
+  .routers {
+    @include grid(
+      5,
+      $XsSize3,
+      (
+        1440px: 4,
+        1024px: 3,
+        768px: 2,
+        425px: 1,
+      )
+    );
+    width: 100%;
+    margin-top: $XlSize;
+    .btn-route {
+      text-align: center;
+      width: 100%;
+      background-color: #fcfcfc;
+      color: $PrimaryColor;
+      border-radius: calc($SmSize + 1px);
+      padding: $SmSize;
+      transition: 0.3s all linear;
+      &:hover {
+        background-color: $PrimaryColor;
+        color: white;
+      }
+    }
+  }
+}

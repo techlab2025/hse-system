@@ -808,5 +808,14 @@
   "factor_items": "Factor Items",
   "locations": "Locations",
   "new": "New",
-  "project_name":"Project Name"
+  "project_name": "Project Name",
+  "company_number": "Company Number",
+  "company_name": "Company Name",
+  "company_email": "Company Email",
+  "company_phone": "Company Phone",
+  "company_address": "Company Address",
+  "company_website": "Company Website",
+  "contact_person_email": "Contact Person Email",
+  "contact_person_phone": "Contact Person Phone",
+  "expiry_date": "Expiry Date"
 }

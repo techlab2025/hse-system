@@ -1227,7 +1227,6 @@ class ApiNames {
     return this.prefix + 'fetch_investigation_details'
   }
 
-
   // Role
   public get CreateRole() {
     return this.prefix + 'create_role'
@@ -1269,6 +1268,23 @@ class ApiNames {
   }
   public get DeleteProjectLocationTeamEmployee() {
     return this.prefix + 'delete_project_location_team_employee'
+  }
+
+  // Scope
+  public get CreateScope() {
+    return this.prefix + 'create_scope'
+  }
+  public get IndexScope() {
+    return this.prefix + 'fetch_scopes'
+  }
+  public get ShowScope() {
+    return this.prefix + 'fetch_scope_details'
+  }
+  public get EditScope() {
+    return this.prefix + 'update_scope'
+  }
+  public get DeleteScope() {
+    return this.prefix + 'delete_scope'
   }
 }
 

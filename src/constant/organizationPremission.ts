@@ -925,6 +925,39 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // Scope
+        {
+          key: PermissionsEnum.SCOPE_ALL,
+          code: PermissionsEnum.SCOPE_ALL,
+          label: 'Scope',
+          permissions: [
+            {
+              key: PermissionsEnum.SCOPE_ALL,
+              code: PermissionsEnum.SCOPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.SCOPE_FETCH,
+              code: PermissionsEnum.SCOPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.SCOPE_DETAILS,
+              code: PermissionsEnum.SCOPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.SCOPE_DELETE,
+              code: PermissionsEnum.SCOPE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.SCOPE_UPDATE,
+              code: PermissionsEnum.SCOPE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

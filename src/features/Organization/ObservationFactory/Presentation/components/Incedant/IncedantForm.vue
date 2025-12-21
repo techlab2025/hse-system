@@ -64,58 +64,63 @@ const updateData = () => {
       [],
       0,
     )
-    : new AddHazardParams(
-      text.value,
-      descripe.value,
-      image.value?.map((el) => el?.file) || [],
-      0,
-      Observation.AccidentsType,
-      SelectedMachine.value?.id ?? null,
-      ZoneIds.value ?? 0,
-      SelectedProjectId.value,
-      0,
-      takeAction.value == "yes" ? 1 : 0,
-      solved.value == "yes" ? 1 : 0,
-      preventive_action.value,
-      0,
-      0,
-      date.value ?? '',
-      [],
-      0,
-      Accidents?.value?.isAnotherMeeting == 1 ? true : false,
-      Fatalities?.value?.isAnotherMeeting == 1 ? true : false,
-      witnesses?.value?.isAnotherMeeting == 1 ? true : false,
-      Accidents?.value?.isAnotherMeeting == 1 ? [new InjuryParams(
-        Accidents?.value?.employeeId || [],
-        Accidents?.value?.employeeName || '',
-        Accidents?.value?.text || null,
-        Accidents?.value?.infectionTypeId || 0,
-      )] : [],
-      Fatalities?.value?.isAnotherMeeting == 1 ? [new DethParams(
-        Fatalities?.value?.text || '',
-        Fatalities?.value?.SelectedEmployee || 0,
-        Fatalities?.value?.img || []
-      )] : [],
-      witnesses?.value?.isAnotherMeeting == 1 ? witnesses?.value?.AllWitnessesData?.map(
-        (witnesses: any) => new WitnessParams(
-          witnesses?.text || [],
-          witnesses?.employee?.id || '',
-          null,
-        ),
-      ) : []
-      // new WitnessParams(
-      //   witnesses?.value?.AllWitnessesData?.text || [],
-      //   witnesses?.value?.AllWitnessesData?.employee?.id || '',
-      //   null,
-      // )
-    )
-  //   takeAction:takeAction.value,
-  // solved:solved.value,
-  console.log({
-    "Accidents?.value?.isAnotherMeeting": Accidents?.value?.isAnotherMeeting,
-    "Fatalities?.value?.isAnotherMeeting": Fatalities?.value?.isAnotherMeeting,
-    "witnesses?.value?.isAnotherMeeting": witnesses?.value?.isAnotherMeeting
-  });
+    : new AddHazardParams({
+      title: text.value ?? null,
+      description: descripe.value ?? null,
+      image: image.value?.map(el => el?.file) ?? null,
+      typeId: 0,
+      type: Observation.AccidentsType ?? null,
+      equipmentId: SelectedMachine.value?.id ?? null,
+      zoonId: ZoneIds.value ?? null,
+      projectId: SelectedProjectId.value ?? null,
+      isResult: 0,
+      riskLevel: 0,
+      saveStatus: 0,
+      action: preventive_action.value ?? null,
+      isNearMiss: 0,
+      capaStatus: 0,
+      date: date.value ?? null,
+      capa: [],
+      isAction: takeAction.value === "yes" ? 1 : 0,
+      isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
+      isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
+      isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
+      Injury:
+        Accidents?.value?.isAnotherMeeting === 1
+          ? [
+            new InjuryParams(
+              Accidents?.value?.employeeId || [],
+              Accidents?.value?.employeeName || '',
+              Accidents?.value?.text || null,
+              Accidents?.value?.infectionTypeId || 0
+            )
+          ]
+          : [],
+      deaths:
+        Fatalities?.value?.isAnotherMeeting === 1
+          ? [
+            new DethParams(
+              Fatalities?.value?.text || '',
+              Fatalities?.value?.SelectedEmployee || 0,
+              Fatalities?.value?.img || []
+            )
+          ]
+          : [],
+      witnesses:
+        witnesses?.value?.isAnotherMeeting === 1
+          ? witnesses?.value?.AllWitnessesData?.map(
+            (w: any) =>
+              new WitnessParams(
+                w?.text || [],
+                w?.employee?.id || '',
+                null
+              )
+          )
+          : [],
+
+      severity: 0,
+      Likelihood: 0
+    })
   emit('update:data', params)
 }
 
