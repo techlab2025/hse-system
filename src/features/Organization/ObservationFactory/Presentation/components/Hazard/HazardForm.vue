@@ -28,6 +28,8 @@ import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 import HeaderProjectsFilter from './HazardUtils/HeaderProjectsFilter.vue'
+import { SeverityEnum } from '../../../Core/Enums/SeverityEnum'
+import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -62,23 +64,30 @@ const updateData = () => {
       null,
     )
     : new AddHazardParams(
-      text.value,
-      actionText.value,
-      image.value?.map((el) => el.file),
-      HazardType.value?.id,
-      Observation.HazardType,
-      SelectedMachine.value?.id,
-      ZoneIds.value,
-      SelectedProjectId.value,
-      isResult.value ? 1 : 0,
-      riskLevel.value,
-      SaveStatusEnum.NotSaved,
-      null,
-      null,
-      null,
-      date.value,
-      null,
-      isAction.value ? 1 : 0,
+      {
+        title: text.value,
+        description: descripe.value,
+        image: image.value?.map((el) => el.file),
+        typeId: HazardType?.value?.id,
+        type: Observation.HazardType,
+        equipmentId: SelectedMachine.value?.id,
+        zoonId: ZoneIds.value,
+        projectId: SelectedProjectId.value,
+        isResult: null,
+        riskLevel: riskLevel.value,
+        saveStatus: null,
+        action: null,
+        isNearMiss: isNearMiss.value,
+        capaStatus: null,
+        date: date.value,
+        capa: null,
+        isAction: null,
+        isThereInjuries: null,
+        isThereDeath: null,
+        isThereWitnessStatement: null,
+        severity: SelectedSeverity.value?.id,
+        Likelihood: SelectedLikelihood.value?.id
+      }
     )
 
   emit('update:data', params)
@@ -163,6 +172,32 @@ const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
   updateData();
 }
+
+const SelectedSeverity = ref<TitleInterface>()
+const SeverityList = ref<TitleInterface[]>([
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'Minor' }),
+  new TitleInterface({ id: SeverityEnum.Moderate, title: 'Moderate' }),
+  new TitleInterface({ id: SeverityEnum.Serious, title: 'Serious' }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'Major' }),
+  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'Catastrophic' }),
+])
+const SelectedLikelihood = ref<TitleInterface>()
+const LikelihoodList = ref<TitleInterface[]>([
+  new TitleInterface({ id: LikelihoodEnum.Almostcertain, title: 'Almostcertain' }),
+  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'Likely' }),
+  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'Possible' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'Rare' }),
+  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'Unlikely' }),
+])
+
+const setSeverity = (data: TitleInterface) => {
+  SelectedSeverity.value = data
+  updateData()
+}
+const setLikelihood = (data: TitleInterface) => {
+  SelectedLikelihood.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -198,6 +233,15 @@ const GetProjectId = (id: number) => {
     <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
       :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
       @update:modelValue="setMachine" />
+  </div>
+
+  <div class="col-span-6 md:grid-cols-12">
+    <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" label="Severity"
+      id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+  </div>
+  <div class="col-span-6 md:grid-cols-12">
+    <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
+      label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>

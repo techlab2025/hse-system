@@ -47,7 +47,7 @@ export default class AddContractorController extends ControllerInterface<Contrac
         })
 
         const { user } = useUserStore()
-        if (router.currentRoute.value.fullPath.includes('contractors')) {
+        if (router.currentRoute.value.fullPath.includes('contractor')) {
           if (!draft)
             await router.push(
               `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor`,

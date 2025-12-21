@@ -76,7 +76,7 @@ const DeleteHierarchy = async (Id: number) => {
                       <p class="heirarchy-title">{{ item.title }}</p>
                     </div>
                     <div class="heirarchy-details">
-                      <p>Employees: <span>{{ item.employees || 100 }}</span></p>
+                      <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
                       <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
                     </div>
                   </div>

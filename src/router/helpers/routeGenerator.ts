@@ -26,7 +26,7 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
 /**
  * Generate location routes with parent support
  */
-export function createLocationRoutes(path: string, name: string): RouteRecordRaw[] {
+export function   createLocationRoutes(path: string, name: string): RouteRecordRaw[] {
   return [
     {
       path: `${path}/:parent_id?`,

@@ -37,6 +37,9 @@ import type MyProjectsModel from '@/features/Organization/ObservationFactory/Dat
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
 import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue'
+import { Severity, SeverityEnum } from '../../../Core/Enums/SeverityEnum'
+import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -99,9 +102,7 @@ const updateData = () => {
   })
 
   const AllIndustry = user.user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
-
   const industryIds = industry.value.map((i) => i.id)
-
   const commonData = {
     title: title.value,
     description: description.value,
@@ -156,25 +157,35 @@ const updateData = () => {
       isAction.value,
     )
     : new AddHazardParams(
-      title.value,
-      description.value,
-      image.value?.map((el) => el.file),
-      type_id.value,
-      type.value,
-      equipmentId.value,
-      zoneId.value,
-      SelectedProjectId.value,
-      isResult.value ? 1 : 0,
-      riskLevel.value,
-      saveStatus.value,
-      preventiveAction.value,
-      isNearMiss.value,
-      null,
-      date.value,
-      null,
-      isAction.value ? 1 : 0,
+      {
+        title: title.value,
+        description: description.value,
+        image: image.value?.map((el) => el.file),
+        typeId: type_id.value,
+        type: Observation.ObservationType,
+        equipmentId: equipmentId.value,
+        zoonId: zoneId.value,
+        projectId: SelectedProjectId.value,
+        isResult: isResult.value ? 1 : 0,
+        riskLevel: riskLevel.value,
+        saveStatus: saveStatus.value,
+        action: preventiveAction.value,
+        isNearMiss: isNearMiss.value == true ? 1 : 0,
+        capaStatus: null,
+        date: date.value,
+        capa: null,
+        isAction: isAction.value ? 1 : 0,
+        isThereInjuries: null,
+        isThereDeath: null,
+        isThereWitnessStatement: null,
+        Injury: null,
+        deaths: null,
+        witnesses: null,
+        severity: SelectedSeverity.value?.id,
+        Likelihood: SelectedLikelihood?.value?.id
+      }
     )
-    console.log(params , "paramsparams");
+  console.log(params, "paramsparams");
   emit('update:data', params)
 }
 
@@ -256,6 +267,33 @@ const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
   updateData();
 }
+
+const SelectedSeverity = ref<TitleInterface>()
+const SeverityList = ref<TitleInterface[]>([
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'Minor' }),
+  new TitleInterface({ id: SeverityEnum.Moderate, title: 'Moderate' }),
+  new TitleInterface({ id: SeverityEnum.Serious, title: 'Serious' }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'Major' }),
+  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'Catastrophic' }),
+])
+const SelectedLikelihood = ref<TitleInterface>()
+const LikelihoodList = ref<TitleInterface[]>([
+  new TitleInterface({ id: LikelihoodEnum.Almostcertain, title: 'Almostcertain' }),
+  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'Likely' }),
+  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'Possible' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'Rare' }),
+  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'Unlikely' }),
+])
+
+const setSeverity = (data: TitleInterface) => {
+  SelectedSeverity.value = data
+  updateData()
+}
+const setLikelihood = (data: TitleInterface) => {
+  SelectedLikelihood.value = data
+  updateData()
+}
+
 </script>
 
 <template>
@@ -263,7 +301,7 @@ const GetProjectId = (id: number) => {
   <div class="observation-form col-span-6 md:col-span-6">
     <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList" />
-    <HeaderProjectsFilter class="colored"  :projects="Projects" @update:data="GetProjectId" />
+    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
 
     <!-- zoneId = $event -->
     <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="UpdateSelectedZone" />
@@ -295,17 +333,19 @@ const GetProjectId = (id: number) => {
           :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
           @update:modelValue="setEquipment" />
       </div>
+      <div class="col-span-6 md:grid-cols-12">
+        <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
+          label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+      </div>
+      <div class="col-span-6 md:grid-cols-12">
+        <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
+          label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+      </div>
 
       <div class="col-span-12">
         <div class="flex flex-col gap-2 input-wrapper">
           <label>{{ $t('upload image') }}</label>
-          <!-- <SingleFileUpload
-            v-model="image"
-            @update:modelValue="setImage"
-            label="Image"
-            id="image"
-            placeholder="upload image"
-          /> -->
+
 
           <MultiImagesInput :initialImages="image" @update:images="setImages" />
         </div>

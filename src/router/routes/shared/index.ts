@@ -14,6 +14,7 @@ import { observerationRoutes } from './observeration'
 // import { hazardRoutes } from './hazard'
 import { healthConditionsRoutes } from './healthconditions'
 import { RoleRoutes } from './role'
+import { ScopeRoutes } from './scope'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -31,4 +32,5 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...observerationRoutes,
   ...healthConditionsRoutes,
   ...RoleRoutes,
+  ...ScopeRoutes,
 ]

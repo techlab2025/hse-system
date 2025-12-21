@@ -1,6 +1,27 @@
 @import '../variables';
 @import '../mixins/flex';
 
-.fast-route-container{
-  
+.fast-route-container {
+  font-family: 'Regular';
+  .fast-route {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize2;
+    padding-block: 12px;
+    .route {
+      background-color: #fcfcfc;
+      color: #14146b;
+      padding: $XsSize2;
+      border-radius: $XlSize2;
+      cursor: pointer;
+      transition: 0.3s all linear;
+      &:hover {
+        background-color: #14146b;
+        color: #fcfcfc;
+      }
+
+      &.active {
+        opacity: 0.6;
+      }
+    }
+  }
 }

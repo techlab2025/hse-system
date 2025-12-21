@@ -31,59 +31,65 @@ export default class AddHazardParams implements Params {
   public Injury?: InjuryParams[]
   public deaths?: DethParams[]
   public witnesses?: WitnessParams[]
+  public severity?: number
+  public Likelihood?: number
 
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
   })
 
-  constructor(
-    title: string | null,
-    description: string | null,
-    image: string[] | null,
-    typeId: number | null,
-    type: Observation | null,
-    equipmentId: number | null,
-    zoonId: number | null,
-    projectId: number | null,
-    isResult: number | null,
-    riskLevel: number | null,
-    saveStatus: number | null,
-    action: string | null,
-    isNearMiss: number | null,
-    capaStatus: number | null,
-    date: string | null,
-    capa: CapaParams[] | null,
-    isAction: number | null,
-    isThereInjuries?: boolean | null,
-    isThereDeath?: boolean | null,
-    isThereWitnessStatement?: boolean | null,
-    Injury?: InjuryParams[],
-    deaths?: DethParams[],
-    witnesses?: WitnessParams[],
-  ) {
-    this.title = title
-    this.description = description
-    this.image = image
-    this.typeId = typeId
-    this.type = type
-    this.equipmentId = equipmentId
-    this.zoonId = zoonId
-    this.projectId = projectId
-    this.isResult = isResult
-    this.riskLevel = riskLevel
-    this.saveStatus = saveStatus
-    this.action = action
-    this.isNearMiss = isNearMiss
-    this.capaStatus = capaStatus
-    this.date = date
-    this.capa = capa
-    this.isAction = isAction
-    this.isThereInjuries = isThereInjuries
-    this.isThereDeath = isThereDeath
-    this.isThereWitnessStatement = isThereWitnessStatement
-    this.Injury = Injury
-    this.deaths = deaths
-    this.witnesses = witnesses
+  constructor(data: {
+    title: string | null
+    description: string | null
+    image: string[] | null
+    typeId: number | null
+    type: Observation | null
+    equipmentId: number | null
+    zoonId: number | null
+    projectId: number | null
+    isResult: number | null
+    riskLevel: number | null
+    saveStatus: number | null
+    action: string | null
+    isNearMiss: number | null
+    capaStatus: number | null
+    date: string | null
+    capa: CapaParams[] | null
+    isAction: number | null
+    isThereInjuries?: boolean | null
+    isThereDeath?: boolean | null
+    isThereWitnessStatement?: boolean | null
+    Injury?: InjuryParams[]
+    deaths?: DethParams[]
+    witnesses?: WitnessParams[]
+    severity?: number
+    Likelihood?: number
+  }) {
+    this.title = data.title
+    this.description = data.description
+    this.image = data.image
+    this.typeId = data.typeId
+    this.type = data.type
+    this.equipmentId = data.equipmentId
+    this.zoonId = data.zoonId
+    this.projectId = data.projectId
+    this.isResult = data.isResult
+    this.riskLevel = data.riskLevel
+    this.saveStatus = data.saveStatus
+    this.action = data.action
+    this.isNearMiss = data.isNearMiss
+    this.capaStatus = data.capaStatus
+    this.date = data.date
+    this.capa = data.capa
+    this.isAction = data.isAction
+    this.isThereInjuries = data.isThereInjuries
+    this.isThereDeath = data.isThereDeath
+    this.isThereWitnessStatement = data.isThereWitnessStatement
+    this.Injury = data.Injury
+    this.deaths = data.deaths
+    this.witnesses = data.witnesses
+    this.severity = data.severity
+    this.Likelihood = data.Likelihood
   }
 
   toMap(): Record<
@@ -120,9 +126,9 @@ export default class AddHazardParams implements Params {
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
-    data['is_there_injuries'] = this.isThereInjuries
-    data['is_there_death'] = this.isThereDeath
-    data['is_there_witness_statement'] = this.isThereWitnessStatement
+    if (this.isThereInjuries != null) data['is_there_injuries'] = this.isThereInjuries
+    if (this.isThereDeath != null) data['is_there_death'] = this.isThereDeath
+    if (this.isThereWitnessStatement != null) data['is_there_witness_statement'] = this.isThereWitnessStatement
     if (this.Injury?.length > 0)
       data['injuries'] = this.Injury ? this.Injury?.map((item: InjuryParams) => item.toMap()) : []
     if (this.deaths?.length > 0)
@@ -131,6 +137,8 @@ export default class AddHazardParams implements Params {
       data['witness_statements'] = this.witnesses
         ? this.witnesses?.map((item: WitnessParams) => item.toMap())
         : []
+    if (this.severity) data['severity'] = this.severity
+    if (this.Likelihood) data['likeli_hood'] = this.Likelihood
     return data
   }
 

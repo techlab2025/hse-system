@@ -1,5 +1,8 @@
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params.ts'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+} from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -40,6 +43,4 @@ export default class PartnerDetailsModel {
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
-
-
 }

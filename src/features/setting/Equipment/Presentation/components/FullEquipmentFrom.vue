@@ -323,7 +323,8 @@ watch(() => activeTab.value, () => {
       <!-- v-if="EquipmentTypeState?.data?.length > 0" -->
       <!-- :staticOptions="AllEquipmentTypes" -->
       <div>
-        <CustomSelectInput :modelValue="equipmentType" :staticOptions="AllEquipmentTypes" :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
+        <CustomSelectInput :modelValue="equipmentType" :staticOptions="AllEquipmentTypes"
+          :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
           :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType" />
       </div>
 
@@ -358,16 +359,16 @@ watch(() => activeTab.value, () => {
           @update:modelValue="setContructor" />
       </div>
 
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <label for="License number">
           {{ $t('License number') }}
         </label>
         <input type="text" id="License number" v-model="licenseNumber" @input="updateData"
           :placeholder="$t('License number')" />
-      </div>
+      </div> -->
       <div class="input-wrapper">
         <label for="License Plate Number">
-          {{ $t('License Plate Number') }}
+          {{ $t('License Plate No.') }}
         </label>
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />

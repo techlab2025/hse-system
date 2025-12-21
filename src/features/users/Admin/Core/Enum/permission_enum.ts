@@ -861,5 +861,12 @@ export enum PermissionsEnum {
   INJURY_CREATE = 'IN03',
   INJURY_UPDATE = 'IN04',
   INJURY_DELETE = 'IN05',
+  // Scope
+  SCOPE_ALL = 'SC00',
+  SCOPE_FETCH = 'SC01',
+  SCOPE_DETAILS = 'SC02',
+  SCOPE_CREATE = 'SC03',
+  SCOPE_UPDATE = 'SC04',
+  SCOPE_DELETE = 'SC05',
 
 }
