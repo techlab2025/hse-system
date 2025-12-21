@@ -33,10 +33,10 @@ export default class IndexHerikalyParams implements Params {
   toMap(): Record<string, string | number | number[] | null | any> {
     const data: Record<string, string | number | number[] | null | any> = {}
     if (this.word) data['word'] = this.word
-    data['paginate'] = this.withPage
-    data['page'] = this.pageNumber
-    data['limit'] = this.perPage
-     data['return_patent_only'] = this.parentOnly
+    if (this.parentOnly) data['paginate'] = this.withPage
+    if (this.parentOnly) data['page'] = this.pageNumber
+    if (this.parentOnly) data['limit'] = this.perPage
+    if (this.parentOnly) data['return_patent_only'] = this.parentOnly
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
     return data
