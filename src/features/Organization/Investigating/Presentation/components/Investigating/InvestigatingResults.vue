@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 import investigationImg from '@/assets/images/investigationImg.png'
@@ -12,7 +12,19 @@ import AnotherMeeting from './InvestegationResultParts/AnotherMeeting.vue'
 import TimeLine from '@/shared/HelpersComponents/TimeLine.vue'
 import AddInvestigatingResultController from '../../controllers/investegationResult/addInvestigatingResultController'
 import AddInvestigationResultParams from '../../../Core/params/investegationResult/addInvestigationResultParams'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
+import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import type InvestegationTasksParams from '../../../Core/params/investegationResult/InvestegationTasksParams'
+
+const route = useRoute()
+const id = route.params.id
+const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
+const state = ref(showInvestigationResultController.state.value)
 
 interface items {
   title: string
@@ -22,6 +34,7 @@ const item = ref<items[]>([{
   title: 'High observation',
   isDanger: true
 }])
+
 const Details = ref({
   id: 3,
   title: 'Medium observation',
@@ -31,39 +44,121 @@ const Details = ref({
   description: 'Electrical issue near main control panel.',
   zoon: { title: 'Zone C' },
   equipment: { title: 'Crane Liebherr' },
-  status: InvestegationStatusEnum.SOLVED,
+  status: InvestegationStatusEnum.CLOSED,
   image: 'https://picsum.photos/222/150',
   link: '',
 })
 
+const ShoeInvestegationResultDetails = () => {
+  const showInvestigationResultParams = new ShowInvestigationResultParams(id)
+  showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, useRouter())
+}
 
 const AddEnvestigatingResult = async () => {
-  const addInvestigationResultParams = new AddInvestigationResultParams();
+  console.log(investigationAttachments.value, "investigationAttachments.value");
+  const addInvestigationResultParams = new AddInvestigationResultParams({
+    documentation: investigationAttachments.value,
+    explainWhyText: rateActions.value?.notes,
+    factors: CauseOfAction.value,
+    investigationMeetingId: id,
+    isActionCorrect: rateActions.value?.actionRate,
+    isInvestigationClosed: anotherMeeting?.value?.isAnother,
+    tasks: investigationTasks.value,
+    witnesses: viewersResults.value,
+    meeting: anotherMeeting?.value?.meetings
+  });
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, useRouter())
 }
+onMounted(() => {
+  ShoeInvestegationResultDetails()
+})
+watch(() => showInvestigationResultController.state.value, (newState) => {
+  if (newState) state.value = newState
+})
+
+const CauseOfAction = ref()
+const setCauseOfAction = (data) => {
+  CauseOfAction.value = data
+}
+
+const investigationTasks = ref()
+const setInvestigationTasks = (data) => {
+  console.log(data, "investigationTasks");
+  investigationTasks.value = data
+}
+
+const rateActions = ref()
+const setRateAction = (data) => {
+  rateActions.value = data
+  console.log(rateActions.value, "rateActions");
+}
+
+const investigationAttachments = ref()
+const setInvestigationAttachments = (data) => {
+  investigationAttachments.value = data
+
+}
+
+const viewersResults = ref()
+const setViewersResults = (data) => {
+  console.log(data, "viwer");
+  viewersResults.value = data
+}
+
+const anotherMeeting = ref()
+const setAnotherMeeting = (data) => {
+  anotherMeeting.value = data
+  console.log(data);
+}
+
 </script>
 <template>
-  <div class="investigation-result">
-    <InvestigatingHedaer :title="Details?.title" :serial="Details?.serial" :victim="Details?.observer?.name"
-      :date="Details?.date" :meetingDate="Details?.date" :TeamLeader="Details.observer?.name" :TeamNumbers="12" />
-    <div class="investigation-title">
-      <img :src="investigationImg" alt="" />
-      <p>Investigation Meeting result</p>
-    </div>
-    <CauseOfAccidant @update:data="console.log($event, 'CauseOfAccidant');" />
-    <InvestigationTasks @update:data="console.log($event, 'InvestigationTasks');" />
-    <RateActions @update:data="console.log($event, 'RateActions');" />
-    <InvestegationAttachment @update:data="console.log($event, 'InvestegationAttachment');" />
-    <ViewersResults @update:data="console.log($event, 'ViewersResults');" />
-    <AnotherMeeting @update:data="console.log($event, 'AnotherMeeting');" />
+  <DataStatus :controller="state">
+    <template #success>
+      <div class="investigation-result">
+        <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.title"
+          :victim="Details?.observer?.name" :date="state?.data?.date" :meetingDate="Details?.date"
+          :TeamLeader="Details.observer?.name" :TeamNumbers="12" />
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Investigation Meeting result</p>
+        </div>
+        <CauseOfAccidant @update:data="setCauseOfAction" />
+        <InvestigationTasks @update:data="setInvestigationTasks" />
+        <RateActions @update:data="setRateAction" />
+        <InvestegationAttachment @update:data="setInvestigationAttachments" />
+        <ViewersResults @update:data="setViewersResults" />
+        <AnotherMeeting @update:data="setAnotherMeeting" />
+        <!-- <TimeLine :items="item" /> -->
+        <div class="btns">
+          <button class="btn btn-cancel">{{ $t('cancel') }}</button>
+          <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
+        </div>
+      </div>
+    </template>
+    <template #loader>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #initial>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #empty>
+      <DataEmpty :link="`/organization/Investigating-result/add`" addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+    <template #failed>
+      <DataFailed :link="`/organization/Investigating-result/add`" addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+
+    <template #notPermitted>
+      <DataFailed addText="Have not Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+    </template>
+  </DataStatus>
 
 
-
-    <!-- <TimeLine :items="item" /> -->
-    <div class="btns">
-      <button class="btn btn-cancel">{{ $t('cancel') }}</button>
-      <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
-    </div>
-  </div>
 </template>

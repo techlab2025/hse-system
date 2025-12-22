@@ -1,5 +1,8 @@
-export enum InvestegationStatusEnum{
-  UNSOLVED = 0 ,
-  INPROGRESS = 1 ,
-  SOLVED = 2
+export enum InvestegationStatusEnum {
+  OPEN = 0,
+  NEW = 1,
+  IN_PROGRESS = 2,
+  HOLD = 3,
+  CLOSED = 4,
+  COMPLETED = 5,
 }

@@ -235,7 +235,7 @@ const ShowDetails = ref<number[]>([])
               :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
 
             <div class="btns-filter">
-              <FilterDialog @confirmFilters="confirmFilters" />
+              <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
               <router-link :to="`/organization/equipment-mangement/observation/add`">
                 <button class="btn btn-primary">{{ $t('Create observation') }}</button>

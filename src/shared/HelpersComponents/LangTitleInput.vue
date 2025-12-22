@@ -325,7 +325,7 @@ watch(hasAtLeastOneValue, (isValid) => {
     <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
 
     <!-- Regular Input -->
-    <input v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" :required="props.required" />
+    <input class="lang-input" v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" :required="props.required" />
 
     <!-- Selected Language Info -->
     <span class="select-lang">
@@ -340,6 +340,10 @@ watch(hasAtLeastOneValue, (isValid) => {
 </template>
 
 <style scoped>
+html[lang='ar'] .lang-input {
+  text-align: end !important;
+}
+
 .lang-indicator {
   position: absolute;
   top: -2px;

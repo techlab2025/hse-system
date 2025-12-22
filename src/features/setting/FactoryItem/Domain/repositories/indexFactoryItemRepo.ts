@@ -24,7 +24,7 @@ class IndexFactoryItemRepo extends RepoInterface<FactoryItemModel[]> {
   }
 
   onParse(data: any): FactoryItemModel[] {
-    return data.map((item: any) => FactoryItemModel.fromMap(item))
+    return data?.map((item: any) => FactoryItemModel?.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {

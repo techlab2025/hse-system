@@ -10,9 +10,9 @@ const CheckboxValue = ref(props.checked);
 const updateData = () => {
   emit('update:checked', CheckboxValue.value)
 }
-watch(()=>props.checked,(val)=>{
+watch(() => props.checked, (val) => {
   CheckboxValue.value = val
-})
+}, { immediate: true })
 </script>
 <template>
   <div class="checkbox-toggle-wrapper">

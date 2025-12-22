@@ -2,31 +2,19 @@
 import { ref, watch } from 'vue'
 import Checkbox from 'primevue/checkbox'
 import FactorItemIcon from '@/shared/icons/FactorItemIcon.vue'
+import type FactoryModel from '@/features/setting/Factory/Data/models/FactoryModel';
+import type FactoryItemModel from '@/features/setting/FactoryItem/Data/models/factoryItemModel';
+
+const props = defineProps<{
+  factors: FactoryModel[]
+  subfactors: FactoryItemModel[]
+}>()
 
 const selectedFactors = ref<string[]>([])
 const selectedSubs = ref<Record<string, string[]>>({})
 
-// كلهم Factors
-const factorsMap = {
-  factor1: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub11' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub12' },
-  ],
-  factor2: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub21' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub22' },
-  ],
-  factor3: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub31' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub32' },
-  ],
-  factor4: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub41' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub42' },
-  ],
-}
 
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'update:sub-factors'])
 
 watch([selectedFactors, selectedSubs], () => {
   const result = selectedFactors.value.map(factor => ({
@@ -36,6 +24,7 @@ watch([selectedFactors, selectedSubs], () => {
 
   emit('update:data', result)
 }, { deep: true })
+
 </script>
 
 <template>
@@ -45,17 +34,21 @@ watch([selectedFactors, selectedSubs], () => {
       <span>Factors</span>
     </label>
     <div class="radio-grid">
-      <div class="radio-column" v-for="(subs, factor) in factorsMap" :key="factor">
-        <div class="radio-item">
-          <Checkbox v-model="selectedFactors" :inputId="factor" :value="factor" name="factors" />
-          <label class="radio-label" :for="factor">{{ factor }}</label>
+      <div class="radio-column" v-for="(Factors, index) in factors" :key="index">
+        <div class="radio-item" @click="$emit('update:sub-factors', Factors?.id)">
+          <Checkbox v-model="selectedFactors" :inputId="`${Factors.title}-${Factors.id}`" :value="Factors.id"
+            name="factors" />
+          <label class="radio-label" :for="`${Factors.title}-${Factors.id}`">{{ Factors.title }}</label>
         </div>
-        <div v-if="selectedFactors.includes(factor)" class="sub-radio-group">
-          <div class="sub-radio-item" v-for="s in subs" :key="s.value">
-            <Checkbox v-model="selectedSubs[factor]" :value="s.value" :inputId="s.value" name="sub-factors" />
-            <label :for="s.value" class="sub-radio-label">{{ s.label }}</label>
+        <di v-if="selectedFactors.some((factor) => factor === Factors?.id) && (Factors?.id)" class="sub-radio-group">
+          <div class="sub-radio-item"
+            v-for="(subfactor, subindex) in subfactors?.filter((sub) => sub.factory?.id === Factors?.id)"
+            :key="subindex">
+            <Checkbox v-model="selectedSubs[Factors.id]" :value="subfactor?.id"
+              :inputId="`${subfactor.id}-${subfactor.id}`" name="sub-factors" />
+            <label :for="`${subfactor.id}-${subfactor.id}`" class="sub-radio-label">{{ subfactor.title }}</label>
           </div>
-        </div>
+        </di>
       </div>
     </div>
   </div>

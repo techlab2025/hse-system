@@ -20,50 +20,8 @@ import IndexInvestigatingResultController from '../../controllers/investegationR
 import { useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
-// const InvestigatingData = [
-//   {
-//     id: 1,
-//     title: 'Incedant',
-//     serial:
-//       'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-//     date: '2025-01-05 10:00 AM',
-//     observer: { name: 'Ahmed Ali' },
-//     description: 'Oil leakage detected near the main engine.',
-//     zoon: { title: 'Zone A' },
-//     equipment: { title: 'Excavator CAT 320' },
-//     status: InvestegationStatusEnum.UNSOLVED,
-//     image: 'https://picsum.photos/220/150',
-//     link: '',
-//   },
-//   {
-//     id: 2,
-
-//     title: 'High observation',
-//     serial: 'Another dummy text for testing card 2',
-//     date: '2025-02-10 11:30 AM',
-//     observer: { name: 'Sara Mohamed' },
-//     description: 'Hydraulic failure detected.',
-//     zoon: { title: 'Zone B' },
-//     equipment: { title: 'Bulldozer CAT D6' },
-//     status: InvestegationStatusEnum.INPROGRESS,
-//     image: 'https://picsum.photos/221/150',
-//     link: 'https://meet.google.com/abc-defg-hij',
-//   },
-//   {
-//     id: 3,
-//     title: 'Medium observation',
-//     serial: 'Third card dummy text',
-//     date: '2025-03-15 09:45 AM',
-//     observer: { name: 'Khaled Samir' },
-//     description: 'Electrical issue near main control panel.',
-//     zoon: { title: 'Zone C' },
-//     equipment: { title: 'Crane Liebherr' },
-//     status: InvestegationStatusEnum.SOLVED,
-//     image: 'https://picsum.photos/222/150',
-//     link: '',
-//   },
-// ]
 
 const indexInvestigatingController = IndexInvestigatingController.getInstance()
 const state = ref(indexInvestigatingController.state.value)
@@ -95,12 +53,18 @@ onMounted(() => {
 
 const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
   switch (status) {
-    case InvestegationStatusEnum.UNSOLVED:
-      return 'Unsolved'
-    case InvestegationStatusEnum.INPROGRESS:
+    case InvestegationStatusEnum.NEW:
+      return 'New'
+    case InvestegationStatusEnum.IN_PROGRESS:
       return 'In Progress'
-    case InvestegationStatusEnum.SOLVED:
-      return 'Solved'
+    case InvestegationStatusEnum.CLOSED:
+      return 'Closed'
+    case InvestegationStatusEnum.COMPLETED:
+      return 'Completed'
+    case InvestegationStatusEnum.HOLD:
+      return 'Hold'
+    case InvestegationStatusEnum.OPEN:
+      return 'Open'
     default:
       return 'Unknown'
   }
@@ -113,6 +77,10 @@ watch(
   },
   { deep: true }
 )
+
+const GetInvestigationType = (type: number) => {
+  return Observation[type]
+}
 </script>
 
 <template>
@@ -149,16 +117,16 @@ watch(
                             'high-observation': item.title === 'High observation',
                             'medium-observation': item.title === 'Medium observation',
                           }">
-                            {{ item.title }} <span>_OBS-2025-0112</span>
+                            {{ GetInvestigationType(item?.observation?.type) }} <span>_OBS-2025-0112</span>
                           </p>
-                          <p class="new">New</p>
+                          <p class="new">{{ ReturnStatusTitle(item?.status) }}</p>
                         </div>
                         <div class="first-card-details">
                           <p class="label-item-secondary">
-                            Date & Time: <span>{{ item.date }}</span>
+                            Date & Time: <span>{{ item?.date }}</span>
                           </p>
-                          <p class="title">
-                            {{ item.observer.name }}
+                          <p class="title label-item-secondary">
+                            the victim : <span>{{ item?.observer?.name }}</span>
                             <span>(observer)</span>
                           </p>
                         </div>
@@ -170,16 +138,16 @@ watch(
                   <div class="header-container">
                     <div class="card-content">
                       <div class="card-header">
-                        <p class="label-item-secondary">{{ item.serial }}</p>
+                        <p class="label-item-secondary">{{ item?.serial }}</p>
                       </div>
 
                       <div class="card-details">
                         <div class="project-details">
-                          <p class="label-item-primary">
-                            Zone: <span>{{ item.zoon.title }}</span>
+                          <p class="label-item-primary" v-if="item?.zoon">
+                            Zone: <span>{{ item?.zoon?.title }}</span>
                           </p>
-                          <p class="label-item-primary">
-                            Machine: <span>{{ item.equipment.title }}</span>
+                          <p class="label-item-primary" v-if="item?.equipment">
+                            Machine: <span>{{ item?.equipment?.title }}</span>
                           </p>
                           <p class="label-item-primary">
                             Status: <span>{{ ReturnStatusTitle(item?.status) }}</span>
@@ -188,7 +156,7 @@ watch(
                       </div>
 
                       <div class="btns-container">
-                        <div class="unsolved-btns" v-if="item?.status == InvestegationStatusEnum.UNSOLVED">
+                        <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
                           <button class="btn first-btn">
                             <span>{{ $t('show details') }}</span>
                           </button>
@@ -200,7 +168,7 @@ watch(
                           </router-link>
                         </div>
 
-                        <div class="btn-inprogress" v-if="item?.status === InvestegationStatusEnum.INPROGRESS">
+                        <div class="btn-inprogress" v-if="item?.status === InvestegationStatusEnum.COMPLETED">
                           <router-link :to="`/organization/investigating/view`">
                             <button class="btn view-btn">
                               <div>
@@ -215,7 +183,7 @@ watch(
                           </router-link>
                         </div>
 
-                        <div class="solved-btn" v-if="item?.status === InvestegationStatusEnum.SOLVED">
+                        <div class="solved-btn" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
                           <router-link :to="`/organization/Investigating-result/${item?.id}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>

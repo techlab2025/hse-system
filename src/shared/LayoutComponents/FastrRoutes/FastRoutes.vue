@@ -7,7 +7,7 @@ import { RouterEnum } from "@/features/Home/SettingEnum/SettingEnum";
 import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+import PermissionBuilder from "@/components/DataStatus/PermissionBuilder.vue";
 
 const route = useRoute();
 
@@ -16,7 +16,7 @@ interface OrganizationSettingItem {
   title: string;
   icon: string;
   description: string;
-  routes: { route: string, Name: string, permissions: string[] }[];
+  routes: { route: string, Name: string, permissions: PermissionsEnum[] }[];
 
 }
 
@@ -341,14 +341,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
   <div class="fast-route-container">
     <div class="fast-route"
       v-for="(item, index) in OrganizationSetting.filter(item => item.id == Number(route.query.type))" :key="index">
-      <div class="route" :class="route.path.includes(routeItem.route) ? 'active' : ''"
-        v-for="(routeItem, routeIndex) in item.routes" :key="routeIndex">
-        <PermissionBuilder class="w-full" :code="routeItem?.permissions">
+
+      <PermissionBuilder class="w-full" :code="routeItem?.permissions" v-for="(routeItem, routeIndex) in item.routes"
+        :key="routeIndex">
+        <div class="route" :class="route.path.includes(routeItem.route) ? 'active' : ''">
           <router-link :to="`${routeItem.route}?type=${route?.query?.type}`" class="w-full">
             {{ routeItem.Name }}
           </router-link>
-        </PermissionBuilder>
-      </div>
+        </div>
+      </PermissionBuilder>
+
+
     </div>
   </div>
 </template>

@@ -16,7 +16,7 @@ interface OrganizationSettingItem {
   title: string;
   icon: string;
   description: string;
-  routes: { route: string, Name: string, permissions: string[] }[];
+  routes: { route: string, Name: string, permissions: PermissionsEnum[] }[];
 
 }
 const router = useRouter();

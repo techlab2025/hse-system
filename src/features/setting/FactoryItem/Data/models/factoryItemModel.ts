@@ -1,16 +1,17 @@
+import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import TitleModel from '@/base/Data/Models/title_model.ts'
+// import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
 export default class FactoryItemModel extends TitleInterface {
   public id: number
   // public hasCertificate: number
   public allIndustries: number
-  public industries: TitleModel<string>[]
+  public industries: TitleModel[]
   public parentId: number
   public image: string
   public titles: string
-  public factory: TitleModel<string>
+  public factory: TitleModel
 
   constructor(
     id: number,
@@ -18,11 +19,11 @@ export default class FactoryItemModel extends TitleInterface {
     subtitle: string,
     // hasCertificate: number,
     allIndustries: number,
-    industries: TitleModel<string>[] = [],
+    industries: TitleModel[] = [],
     parentId: number,
     image: string,
     titles: string,
-    factory: TitleModel<string>,
+    factory: TitleModel,
   ) {
     super({ id, title, subtitle })
 
@@ -38,7 +39,7 @@ export default class FactoryItemModel extends TitleInterface {
 
   static fromMap(data: any): FactoryItemModel {
     return new FactoryItemModel(
-      data.id,
+      data?.id,
       data.title,
       data.subtitle,
       // data.has_certificate,
