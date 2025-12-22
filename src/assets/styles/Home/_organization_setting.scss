@@ -63,6 +63,12 @@
     );
     width: 100%;
     margin-top: $XlSize;
+    & > :first-child {
+      width: 100%;
+    }
+    a {
+      width: 100%;
+    }
     .btn-route {
       text-align: center;
       width: 100%;

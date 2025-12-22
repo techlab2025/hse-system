@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Breadcrumb from 'primevue/breadcrumb'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BackIcon from '../icons/BackIcon.vue'
 import FastRoutes from './FastrRoutes/FastRoutes.vue'
@@ -148,12 +148,15 @@ const RouterBack = () => {
   }
   router.back()
 }
+
+const IsHome = computed(() => route.path === '/organization' || route.path === '/admin')
+
 </script>
 
 <template>
   <div class="breadcrump-container">
     <div class="breadcrump">
-      <button class="sidebar-back" @click="RouterBack">
+      <button class="sidebar-back" @click="RouterBack" v-if="!IsHome">
         <BackIcon class="icon" />
         <span>back</span>
       </button>
