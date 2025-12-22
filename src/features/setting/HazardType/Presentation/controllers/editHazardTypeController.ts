@@ -50,7 +50,7 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
         const { user } = useUserStore()
 
         await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`,
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
         )
         // console.log(this.state.value.data)
       } else {

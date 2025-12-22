@@ -4,6 +4,7 @@ import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models
 import type CapaModel from './CapaModel'
 import type OvservationEquipmentModel from '@/features/Organization/ObservationFactory/Data/models/OvservationEquipmentModel'
 import OvserverModel from '@/features/Organization/ObservationFactory/Data/models/OvserverModel'
+import InvestegationObservationModel from './InvestigationHelperModels/InvestegationObservationModel'
 
 export default class InvestigatingModel {
   public id: number
@@ -30,6 +31,8 @@ export default class InvestigatingModel {
   public observer: OvserverModel
   public creator: OvserverModel
   public capa: CapaModel
+  public status: number
+  public observation: InvestegationObservationModel
 
   constructor(
     id: number,
@@ -56,6 +59,8 @@ export default class InvestigatingModel {
     observer: OvserverModel,
     creator: OvserverModel,
     capa: CapaModel,
+    status: number,
+    observation: InvestegationObservationModel,
   ) {
     this.id = id
     this.title = title
@@ -81,6 +86,8 @@ export default class InvestigatingModel {
     this.observer = observer
     this.creator = creator
     this.capa = capa
+    this.status = status
+    this.observation = observation
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -106,9 +113,13 @@ export default class InvestigatingModel {
       data.capa_status,
       data.date,
       data.serial,
-      OvserverModel.fromMap(data.observer),
-      OvserverModel.fromMap(data.creator),
+      // OvserverModel.fromMap(data.observer),
+      // OvserverModel.fromMap(data.creator),
+      data.observer,
+      data.creator,
       data.capa,
+      data.status,
+      InvestegationObservationModel.fromMap(data.observation),
     )
   }
 }

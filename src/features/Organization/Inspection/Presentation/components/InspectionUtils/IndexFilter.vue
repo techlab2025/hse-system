@@ -35,10 +35,10 @@
         </p>
       </div>
       <div class="btns">
-        <button class="btn btn-filter">
+        <!-- <button class="btn btn-filter">
           <span>Filter</span>
           <IndexFilterIcon />
-        </button>
+        </button> -->
         <router-link :to="link">
           <button class="btn btn-primary">{{ linkTitle }}</button>
         </router-link>

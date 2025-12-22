@@ -31,27 +31,27 @@ export default class ShowInvestigatingResultController extends ControllerInterfa
         await this.showInvestigatingResultUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: 'Added was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
       }
     } catch (error: unknown) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? (error as string),
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog',
+      //   titleContent: this.state.value.error?.title ?? (error as string),
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
 
     super.handleResponseDialogs()

@@ -164,6 +164,7 @@ watch(
       }
 
       // langs.value = newData?.code
+      console.log(newData, "newData");
       hasCertificate.value = newData?.hasCertificate == 1 ? true : false
       allIndustries.value = newData?.allIndustries == 1 ? true : false
       EquipmentType.value = EquipmentsTypes.value.find(

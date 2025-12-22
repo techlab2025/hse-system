@@ -9,7 +9,7 @@
   .cause-of-accidant-content {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $SmSize;
-
+    padding-inline: 12px;
     width: 100%;
     .input-wrapper {
       width: 100%;

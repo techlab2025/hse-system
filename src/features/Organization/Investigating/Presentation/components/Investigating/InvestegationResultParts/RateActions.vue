@@ -18,12 +18,8 @@ const UpdateData = (data) => {
 </script>
 <template>
   <div class="rate-of-actions">
-    <HeaderPage
-      :title="`rate the taken action`"
-      :subtitle="`add your rate and notes to the already taken action`"
-      :img="checkActions"
-      class="title-header"
-    />
+    <HeaderPage :title="`rate the taken action`" :subtitle="`add your rate and notes to the already taken action`"
+      :img="checkActions" class="title-header" />
 
     <div class="rate-of-actions-content">
       <div class="actions-selections">
@@ -45,13 +41,8 @@ const UpdateData = (data) => {
 
       <div class="input-wrapper">
         <label for="notes">{{ $t('notes') }}</label>
-        <textarea
-          id="notes"
-          class="input"
-          placeholder="add your notes on the taken action"
-          v-model="notes"
-          @input="UpdateData"
-        ></textarea>
+        <textarea id="notes" class="input" placeholder="add your notes on the taken action" v-model="notes"
+          @input="UpdateData"></textarea>
       </div>
     </div>
   </div>

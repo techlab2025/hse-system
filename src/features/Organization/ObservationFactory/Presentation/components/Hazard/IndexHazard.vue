@@ -234,7 +234,7 @@ onMounted(async () => {
             :link="'/organization/equipment-mangement/hazard/add'" :linkText="'Create Hazard'" />
 
           <div class="btns-filter">
-            <FilterDialog @confirmFilters="confirmFilters" />
+            <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
             <router-link :to="`/organization/equipment-mangement/hazard/add`">
               <button class="btn btn-primary">{{ $t('Create Hazard') }}</button>

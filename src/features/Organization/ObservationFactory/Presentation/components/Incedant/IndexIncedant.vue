@@ -236,7 +236,7 @@ const ShowDetails = ref<number[]>([])
               :link="'/organization/equipment-mangement/incedant/add'" :linkText="'Create incedant'" />
 
             <div class="btns-filter">
-              <FilterDialog @confirmFilters="confirmFilters" />
+              <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
               <router-link :to="`/organization/equipment-mangement/incedant/add`">
                 <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
