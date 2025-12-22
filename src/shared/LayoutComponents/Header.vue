@@ -14,6 +14,7 @@ import Notification from '../icons/Notification.vue'
 import SearchIcon from '../icons/SearchIcon.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import defaultLogo from '@/assets/images/logo.svg'
 
 const route = useRoute()
 // console.log(route.name)
@@ -68,12 +69,17 @@ const { user } = useUserStore()
         <!-- <span  class="cursor-pointer" @click="toggleSidebar">
           <IconMenu />
         </span> -->
-        <div class="header-link flex gap-sm items-center">
+        <!-- <div class="header-link flex gap-sm items-center">
           <h1>
             <router-link to="/">{{ $t('home') }} </router-link>
           </h1>
           <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
-        </div>
+        </div> -->
+        <router-link class="flex items-center gap-2"
+          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'">
+          <img :src="defaultLogo" alt="logo-img">
+          <p class="logo">HSE.Cloud.Ai </p>
+        </router-link>
       </div>
 
       <div class="search">
