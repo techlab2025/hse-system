@@ -55,7 +55,7 @@ const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
 
 const equipmentStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Own') }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
 
 const setEquipmentStatus = (data: TitleInterface) => {
@@ -178,22 +178,28 @@ const updateData = () => {
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
   const AllIndustry = user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
 
-  console.log(VehicleKm.value, "VehicleKm.value")
+  console.log(certificateImage.value, "certificateImage.value")
   const params = props.data?.id ? new EditEquipmentParams(
-    +route.params.id,
-    translationsParams,
-    equipmentType.value?.id,
-    decommissioningDate.value,
-    equipmentStatus.value?.id,
-    inspectionDuration.value,
-    licenseNumber.value,
-    licensePlateNumber.value,
-    image.value,
-    certificateImage.value,
-    AllIndustry,
-    industry.value?.map((item) => item.id),
-    null,
-    null
+    {
+      id: +route.params.id,
+      translation: translationsParams,
+      equipmentTypeId: equipmentType.value?.id,
+      date: decommissioningDate.value,
+      status: deviceStatus.value,
+      inspectionDuration: inspectionDuration.value,
+      licenseNumber: licenseNumber.value,
+      licensePlateNumber: licensePlateNumber.value,
+      image: image.value,
+      certificateImage: certificateImage.value,
+      AllIndustry: AllIndustry,
+      industry: industry.value?.map((item) => item.id),
+      parentId: +route.params.parent_id,
+      constructorId: SelectedContractor.value?.id,
+      equipmentRentType: SelectedRentType?.value?.id,
+      equipmentRentTime: Rent.value,
+      equipmentRentStartDate: StartDate.value,
+      VehicleKm: VehicleKm.value
+    }
   )
     : new AddEquipmentParams(
       {
@@ -285,13 +291,10 @@ watch(
 
     if (route.params.id) {
       industry.value = newData?.industries ?? []
-      // equipmentType.value = new TitleInterface({ id: newData?.equipment_type?.id, title: newData?.equipment_type?.titles?.find((t) => t.locale === defaults[0].locale)?.title })
-
       const selectedEquipmentType = new TitleInterface({
         id: newData?.equipment_type?.id,
         title: getLocalizedTitleInterface(newData?.equipment_type?.titles).title,
       })
-      console.log(selectedEquipmentType, " selectedEquipmentType ");
       equipmentType.value = selectedEquipmentType
       allIndustries.value = newData?.allIndustries == 1 ? true : false
       inspectionDuration.value = newData?.inspectionDuration || null
@@ -304,11 +307,12 @@ watch(
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
       indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", 1, 10, 1, null, activeTab.value)
-      // SelectedContractor.value = newData?.constructor
-      // SelectedRentType.value = RentTypes.value.find((item) => item.id === newData?.equipmentRentType)
-      // Rent.value = newData?.equipmentRentTime
-      // StartDate.value = newData?.equipmentRentStartDate
-      // VehicleKm.value = newData?.VehicleKm
+      SelectedContractor.value = newData?.constructor
+      SelectedRentType.value = RentTypes.value.find((item) => item.id === newData?.RentType)
+      Rent.value = newData?.RentTime
+      StartDate.value = newData?.checkinDate
+      VehicleKm.value = newData?.kilometer
+      isVehicle.value = newData?.kilometer ? true : false
     }
   },
   { immediate: true },
@@ -467,8 +471,7 @@ const isVehicle = ref(false)
           label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
           @update:modelValue="setIndustry" />
       </div>
-      <div class="flex flex-col gap-2 input-wrapper"
-        v-if="deviceStatus !== EquipmentStatus.RENT && user?.type == OrganizationTypeEnum.ORGANIZATION">
+      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
       </div>
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"

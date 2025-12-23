@@ -177,7 +177,8 @@ const updateData = () => {
       SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
       ZoneIds.value.map((z) => z),
-      EvaluatingMethod.value?.map((p) => p.id)
+      EvaluatingMethod.value?.map((p) => p.id),
+
     )
   emit('update:data', params)
 }
@@ -261,8 +262,6 @@ const SerialNumber = ref()
 const fields = ref([
   { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
 ])
-
-
 
 const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])

@@ -1207,7 +1207,7 @@ class ApiNames {
 
   // Investigating Result
   public get CreateInvestigatingResult() {
-    return this.prefix + 'create_full_investigation'
+    return this.prefix + 'create_full_investigation_meeting_result'
   }
   public get IndexInvestigatingResult() {
     return this.prefix + 'fetch_investigations'

@@ -14,7 +14,7 @@ const Details = ref({
   description: 'Electrical issue near main control panel.',
   zoon: { title: 'Zone C' },
   equipment: { title: 'Crane Liebherr' },
-  status: InvestegationStatusEnum.SOLVED,
+  status: InvestegationStatusEnum.CLOSED,
   image: 'https://picsum.photos/222/150',
   link: '',
   createdAt: "20 july"

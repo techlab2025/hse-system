@@ -161,7 +161,7 @@ const GetInvestigationType = (type: number) => {
                             <span>{{ $t('show details') }}</span>
                           </button>
 
-                          <router-link :to="`/organization/investigating/add?id=${item?.id}`">
+                          <router-link :to="`/organization/investigating/add?id=${item?.Investegationid}`">
                             <button class="btn second-btn">
                               <span>{{ $t('assign investigation team') }}</span>
                             </button>
@@ -184,7 +184,7 @@ const GetInvestigationType = (type: number) => {
                         </div>
 
                         <div class="solved-btn" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
-                          <router-link :to="`/organization/Investigating-result/${item?.id}`">
+                          <router-link :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>
                             </button>

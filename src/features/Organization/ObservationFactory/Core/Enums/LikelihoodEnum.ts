@@ -3,5 +3,5 @@ export enum LikelihoodEnum {
   Unlikely = 1,
   Possible = 2,
   Likely = 3,
-  Almostcertain,
+  AlmostCertain,
 }

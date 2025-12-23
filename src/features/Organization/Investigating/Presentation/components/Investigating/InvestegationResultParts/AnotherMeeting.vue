@@ -59,7 +59,7 @@ watch(() => isAnotherMeeting.value, () => {
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="flex flex-col gap-2 input-wrapper col-span-2">
         <label for="time">time</label>
-        <DatePicker v-model="date" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+        <DatePicker v-model="time" class="mt-4 mr-2 input date-picker" placeholder="Select time"
           @update:model-value="UpdateData" input-id="time" :time-only="true" />
       </div>
       <div class="flex flex-col gap-2 input-wrapper col-span-2">

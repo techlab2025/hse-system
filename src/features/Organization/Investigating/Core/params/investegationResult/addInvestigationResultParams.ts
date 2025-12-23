@@ -58,7 +58,7 @@ export default class AddInvestigationResultParams implements Params {
     data['observation_id'] = this.observationId
     // data['date'] = this.date
     // data['has_employee'] = this.hasEmployee
-    if (this.tasks?.length > 0) data['tasks'] = this.tasks?.map((item) => item.toMap())
+    if (this.tasks) data['tasks'] = this.tasks
     if (this.factors) data['factors'] = this.factors
     if (this.documentation) data['documentation'] = [this.documentation]
     if (this.witnesses?.length > 0) data['witness_statements'] = this.witnesses?.map((item) => item.toMap())

@@ -3,10 +3,17 @@
 
 .cause-of-accidant {
   font-family: 'Regular';
+  .answer-header {
+    background-color: white !important;
+    .section-header-page {
+      background-color: white !important;
+    }
+  }
   .accident-answer {
     width: 100%;
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize2;
+    padding: 12px;
     .accident-answer-factors-container {
       @include flex-row(nowrap, space-between, center);
       width: 100%;
@@ -70,7 +77,7 @@
 
             border: none;
             height: 2px;
-            background-color: #4CAF501A;
+            background-color: #4caf501a;
           }
         }
 

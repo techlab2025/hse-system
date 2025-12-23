@@ -23,6 +23,7 @@ import type InvestegationTasksParams from '../../../Core/params/investegationRes
 
 const route = useRoute()
 const id = route.params.id
+const investigatingId = route.query.investigating_id
 const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
 const state = ref(showInvestigationResultController.state.value)
 
@@ -50,19 +51,19 @@ const Details = ref({
 })
 
 const ShoeInvestegationResultDetails = () => {
-  const showInvestigationResultParams = new ShowInvestigationResultParams(id)
+  const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
   showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, useRouter())
 }
 
 const AddEnvestigatingResult = async () => {
-  console.log(investigationAttachments.value, "investigationAttachments.value");
+  console.log(anotherMeeting?.value?.isAnother, "investigationAttachments.value");
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
     factors: CauseOfAction.value?.factors,
     investigationMeetingId: id,
     isActionCorrect: rateActions.value?.actionRate,
-    isInvestigationClosed: anotherMeeting?.value?.isAnother,
+    isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
     tasks: investigationTasks.value,
     witnesses: viewersResults.value,
     meeting: anotherMeeting?.value?.meetings,
@@ -145,14 +146,14 @@ const setAnotherMeeting = (data) => {
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty :link="`/organization/Investigating-result/add`" addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+      <DataEmpty
+        description="Sorry .. You have no Investegation Result .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Investegation Result" />
     </template>
     <template #failed>
-      <DataFailed :link="`/organization/Investigating-result/add`" addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+      <DataFailed
+        description="Sorry .. You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Investegation Result Data" />
     </template>
 
     <template #notPermitted>

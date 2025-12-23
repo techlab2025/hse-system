@@ -13,9 +13,9 @@ const UpdateData = (data) => {
 
   data.forEach((item) => {
     const itemEmployees = new InvestigationTaskEmployees(
-      item.employee?.id || null, 
+      item.employee?.id || null,
       null,
-      null
+      item?.ResponablePerson?.id
     )
 
     SelectedTasks.value.push(
@@ -23,10 +23,10 @@ const UpdateData = (data) => {
         item.text,
         item.date,
         [itemEmployees]
-      )
+      ).toMap()
     )
   })
-
+  console.log(SelectedTasks.value, "SelectedTasks.value");
   emit('update:data', SelectedTasks.value)
 }
 

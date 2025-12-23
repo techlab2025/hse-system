@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type';
+import { useUserStore } from '@/stores/user';
+
 const {
   title,
   description,
@@ -10,6 +13,8 @@ const {
   link?: string
   addText?: string
 }>()
+
+const { user } = useUserStore()
 </script>
 
 <template>
@@ -17,7 +22,8 @@ const {
     <img alt="imageFailed" class="data-empty-image" src="@/assets/images/DataFailed.gif" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
-    <router-link :to="link || `/`" class="btn btn-primary">
+    <router-link :to="link || user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
+      class="btn btn-primary">
       {{ addText }}
     </router-link>
   </div>

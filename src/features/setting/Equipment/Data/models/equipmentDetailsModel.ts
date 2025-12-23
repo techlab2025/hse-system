@@ -21,6 +21,10 @@ export default class EquipmentDetailsModel {
   public industries: TitleModel<string>[]
   public equipmentTypeId: number
   public equipment_type: EquipmentTypeDetailsModel
+  public kilometer: string
+  public checkinDate: string
+  public RentType: string
+  public RentTime: string
 
   constructor(
     id: number,
@@ -38,6 +42,10 @@ export default class EquipmentDetailsModel {
     industries: TitleModel<string>[],
     equipmentTypeId: number,
     equipment_type: EquipmentTypeDetailsModel,
+    kilometer: string,
+    checkinDate: string,
+    RentType: string,
+    RentTime: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -54,6 +62,11 @@ export default class EquipmentDetailsModel {
     this.industries = industries
     this.equipmentTypeId = equipmentTypeId
     this.equipment_type = equipment_type
+    this.kilometer = kilometer
+    this.checkinDate = checkinDate
+    this.RentType = RentType
+    this.RentTime = RentTime
+
     // this.type = type
   }
 
@@ -75,6 +88,10 @@ export default class EquipmentDetailsModel {
       data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
       data.equipment_type_id,
       data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,
+      data.kilometer,
+      data.checkin_date,
+      data.period_type,
+      data.period,
     )
   }
 

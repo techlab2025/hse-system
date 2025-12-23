@@ -11,6 +11,7 @@ export default class AddProjectParams implements Params {
   zoonIds: number[]
   methodIds: number[]
 
+
   constructor(
     translation: TranslationsParams,
     ContractorIds: number[],

@@ -7,7 +7,7 @@ import OvserverModel from '@/features/Organization/ObservationFactory/Data/model
 import InvestegationObservationModel from './InvestigationHelperModels/InvestegationObservationModel'
 
 export default class InvestigatingModel {
-  public id: number
+  public Investegationid: number
   public title: string
   public description: string
   public image: string
@@ -33,9 +33,10 @@ export default class InvestigatingModel {
   public capa: CapaModel
   public status: number
   public observation: InvestegationObservationModel
+  public LatestInvestigatingMeetingId: number
 
   constructor(
-    id: number,
+    Investegationid: number,
     title: string,
     description: string,
     image: string,
@@ -61,8 +62,9 @@ export default class InvestigatingModel {
     capa: CapaModel,
     status: number,
     observation: InvestegationObservationModel,
+    LatestInvestigatingMeetingId: number,
   ) {
-    this.id = id
+    this.Investegationid = Investegationid
     this.title = title
     this.description = description
     this.image = image
@@ -88,6 +90,7 @@ export default class InvestigatingModel {
     this.capa = capa
     this.status = status
     this.observation = observation
+    this.LatestInvestigatingMeetingId = LatestInvestigatingMeetingId
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -120,6 +123,7 @@ export default class InvestigatingModel {
       data.capa,
       data.status,
       InvestegationObservationModel.fromMap(data.observation),
+      data.latest_investigation_meeting_id,
     )
   }
 }
