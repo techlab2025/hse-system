@@ -1,36 +1,45 @@
 <script lang="ts" setup>
-import FilesOrganization from "@/assets/images/FilesOrganization.png";
-import OrganizationSettingIcon from "@/assets/images/OrganizationSettingIcon.png";
-import PersonalData from "@/assets/images/PersonalData.png";
-import SettingLocation from "@/assets/images/SettingLocation.png";
-import { RouterEnum } from "@/features/Home/SettingEnum/SettingEnum";
-import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
-import { computed, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import PermissionBuilder from "@/components/DataStatus/PermissionBuilder.vue";
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const route = useRoute();
+import FilesOrganization from '@/assets/images/FilesOrganization.png'
+import OrganizationSettingIcon from '@/assets/images/OrganizationSettingIcon.png'
+import PersonalData from '@/assets/images/PersonalData.png'
+import SettingLocation from '@/assets/images/SettingLocation.png'
+
+import { RouterEnum } from '@/features/Home/SettingEnum/SettingEnum'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+
+const route = useRoute()
+const router = useRouter()
 
 interface OrganizationSettingItem {
-  id: RouterEnum;
-  title: string;
-  icon: string;
-  description: string;
-  routes: { route: string, Name: string, permissions: PermissionsEnum[] }[];
-
+  id: RouterEnum
+  title: string
+  icon: string
+  description: string
+  routes: {
+    route: string
+    Name: string
+    permissions: PermissionsEnum[]
+  }[]
 }
 
+/* =========================
+   🔹 FAST ROUTES CONFIG (SOURCE OF TRUTH)
+   ========================= */
 const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.ORGANIZATION,
-    title: "organization setting",
+    title: 'organization setting',
     icon: FilesOrganization,
     description:
-      "partners . projects . certifications . templet . methods . contractors . management . roles",
+      'partners . projects . certifications . template . contractors . management . roles',
     routes: [
       {
-        route: "/organization/partner",
-        Name: "partners",
+        route: '/organization/partner',
+        Name: 'partners',
         permissions: [
           PermissionsEnum.WEBSITE,
           PermissionsEnum.PARTNER_ALL,
@@ -42,8 +51,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/projects",
-        Name: "projects",
+        route: '/organization/projects',
+        Name: 'projects',
         permissions: [
           PermissionsEnum.PROJECT_ALL,
           PermissionsEnum.PROJECT_CREATE,
@@ -53,8 +62,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/certificate",
-        Name: "certifications",
+        route: '/organization/certificate',
+        Name: 'certifications',
         permissions: [
           PermissionsEnum.CERTIFICATE_ALL,
           PermissionsEnum.CERTIFICATE_CREATE,
@@ -64,8 +73,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/template",
-        Name: "templates",
+        route: '/organization/template',
+        Name: 'templates',
         permissions: [
           PermissionsEnum.ORG_TEMPLATE_ALL,
           PermissionsEnum.ORG_TEMPLATE_CREATE,
@@ -74,13 +83,9 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_TEMPLATE_UPDATE,
         ],
       },
-      // {
-      //   route: "/organization/methods",
-      //   Name: "methods",
-      // },
       {
-        route: "/organization/contractor",
-        Name: "contractors",
+        route: '/organization/contractor',
+        Name: 'contractors',
         permissions: [
           PermissionsEnum.ORG_CONTRACTOR_ALL,
           PermissionsEnum.ORG_CONTRACTOR_CREATE,
@@ -90,8 +95,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/equipment-mangement/all-observatin",
-        Name: "management",
+        route: '/organization/equipment-mangement/all-observatin',
+        Name: 'management',
         permissions: [
           PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
           PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
@@ -101,14 +106,36 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/role",
-        Name: "roles",
+        route: '/organization/role',
+        Name: 'roles',
         permissions: [
           PermissionsEnum.ORG_ROLE_ALL,
           PermissionsEnum.ORG_ROLE_CREATE,
           PermissionsEnum.ORG_ROLE_DELETE,
           PermissionsEnum.ORG_ROLE_FETCH,
           PermissionsEnum.ORG_ROLE_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/injury',
+        Name: 'injury',
+        permissions: [
+          PermissionsEnum.INJURY_ALL,
+          PermissionsEnum.INJURY_CREATE,
+          PermissionsEnum.INJURY_DELETE,
+          PermissionsEnum.INJURY_FETCH,
+          PermissionsEnum.INJURY_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/scope',
+        Name: 'Scope',
+        permissions: [
+          PermissionsEnum.SCOPE_ALL,
+          PermissionsEnum.SCOPE_CREATE,
+          PermissionsEnum.SCOPE_DELETE,
+          PermissionsEnum.SCOPE_FETCH,
+          PermissionsEnum.SCOPE_UPDATE,
         ],
       },
       {
@@ -124,44 +151,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
         ],
       },
-      {
-        route: '/organization/equipment-types',
-        Name: 'Equipment Types',
-        permissions: [
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-        ],
-      },
-      {
-        route: '/organization/scope',
-        Name: 'Scope',
-        permissions: [
-          PermissionsEnum.SCOPE_ALL,
-          PermissionsEnum.SCOPE_CREATE,
-          PermissionsEnum.SCOPE_DELETE,
-          PermissionsEnum.SCOPE_FETCH,
-          PermissionsEnum.SCOPE_UPDATE,
-        ],
-      }
-
-
     ],
-
   },
   {
     id: RouterEnum.OPERATION,
-    title: "operation setting",
+    title: 'operation setting',
     icon: OrganizationSettingIcon,
-    description:
-      "hazard type . types of observation . hazard . factor . factors item",
+    description: 'hazard type . observation . hazard . factor . factor items',
     routes: [
       {
-        route: "/organization/hazard-type",
-        Name: "hazard-type",
+        route: '/organization/hazard-type',
+        Name: 'hazard-type',
         permissions: [
           PermissionsEnum.ORG_HAZARD_TYPE_ALL,
           PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
@@ -171,8 +171,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/equipment-mangement/observation",
-        Name: "observation",
+        route: '/organization/equipment-mangement/observation',
+        Name: 'observation',
         permissions: [
           PermissionsEnum.ORG_OBSERVATION_ALL,
           PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -182,8 +182,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/equipment-mangement/hazard",
-        Name: "hazard",
+        route: '/organization/equipment-mangement/hazard',
+        Name: 'hazard',
         permissions: [
           PermissionsEnum.ORG_HAZARD_ALL,
           PermissionsEnum.ORG_HAZARD_CREATE,
@@ -193,8 +193,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/factory",
-        Name: "factor",
+        route: '/organization/factory',
+        Name: 'factor',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ALL,
           PermissionsEnum.ORG_FACTORY_CREATE,
@@ -204,8 +204,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/factories-items",
-        Name: "factor-item",
+        route: '/organization/factories-items',
+        Name: 'factor-item',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ITEM_ALL,
           PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
@@ -214,19 +214,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
         ],
       },
-
     ],
-
   },
   {
     id: RouterEnum.EMPLOYEES,
-    title: "employees",
+    title: 'employees',
     icon: PersonalData,
-    description: "organization employee . hierarchy . team",
+    description: 'organization employee . hierarchy . team',
     routes: [
       {
-        route: "/organization/organization-employee",
-        Name: "employees",
+        route: '/organization/organization-employee',
+        Name: 'employees',
         permissions: [
           PermissionsEnum.ORG_EMPLOYEE_ALL,
           PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -237,8 +235,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/herikaly",
-        Name: "hierarchy",
+        route: '/organization/herikaly',
+        Name: 'hierarchy',
         permissions: [
           PermissionsEnum.HERIKALY_ALL,
           PermissionsEnum.HERIKALY_CREATE,
@@ -248,8 +246,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/team",
-        Name: "team",
+        route: '/organization/team',
+        Name: 'team',
         permissions: [
           PermissionsEnum.ORG_TEAM_ALL,
           PermissionsEnum.ORG_TEAM_CREATE,
@@ -257,21 +255,20 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_TEAM_FETCH,
           PermissionsEnum.ORG_TEAM_UPDATE,
         ],
-      }
+      },
     ],
   },
   {
     id: RouterEnum.LOCATION,
-    title: "location setting",
+    title: 'location setting',
     icon: SettingLocation,
-    description: "state . country . city . location . zones",
+    description: 'state . country . city . location . zones',
     routes: [
       {
-        route: "/organization/countries",
-        Name: "countries",
+        route: '/organization/countries',
+        Name: 'countries',
         permissions: [
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.LOCATION_ORG_ALL,
+          PermissionsEnum.LOCATION_ORG_ALL,
           PermissionsEnum.LOCATION_ORG_CREATE,
           PermissionsEnum.LOCATION_ORG_UPDATE,
           PermissionsEnum.LOCATION_ORG_DETAILS,
@@ -280,25 +277,10 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/states",
-        Name: "states",
+        route: '/organization/states',
+        Name: 'states',
         permissions: [
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.LOCATION_ORG_ALL,
-          PermissionsEnum.LOCATION_ORG_CREATE,
-          PermissionsEnum.LOCATION_ORG_UPDATE,
-          PermissionsEnum.LOCATION_ORG_DETAILS,
-          PermissionsEnum.LOCATION_ORG_DELETE,
-          PermissionsEnum.LOCATION_ORG_FETCH,
-        ],
-      },
-
-      {
-        route: "/organization/cities",
-        Name: "cities",
-        permissions: [
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.LOCATION_ORG_ALL,
+          PermissionsEnum.LOCATION_ORG_ALL,
           PermissionsEnum.LOCATION_ORG_CREATE,
           PermissionsEnum.LOCATION_ORG_UPDATE,
           PermissionsEnum.LOCATION_ORG_DETAILS,
@@ -307,11 +289,10 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/areas",
-        Name: "locations",
+        route: '/organization/cities',
+        Name: 'cities',
         permissions: [
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.LOCATION_ORG_ALL,
+          PermissionsEnum.LOCATION_ORG_ALL,
           PermissionsEnum.LOCATION_ORG_CREATE,
           PermissionsEnum.LOCATION_ORG_UPDATE,
           PermissionsEnum.LOCATION_ORG_DETAILS,
@@ -320,8 +301,20 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/project-zone",
-        Name: "zones",
+        route: '/organization/areas',
+        Name: 'locations',
+        permissions: [
+          PermissionsEnum.LOCATION_ORG_ALL,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+          PermissionsEnum.LOCATION_ORG_UPDATE,
+          PermissionsEnum.LOCATION_ORG_DETAILS,
+          PermissionsEnum.LOCATION_ORG_DELETE,
+          PermissionsEnum.LOCATION_ORG_FETCH,
+        ],
+      },
+      {
+        route: '/organization/project-zone',
+        Name: 'zones',
         permissions: [
           PermissionsEnum.PROJECT_ZONE_ALL,
           PermissionsEnum.PROJECT_ZONE_CREATE,
@@ -332,27 +325,73 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
     ],
   },
-]);
+])
 
+/* =========================
+   🔹 RESOLVE TYPE FROM FAST ROUTES
+   ========================= */
+const resolveTypeFromPath = (path: string): RouterEnum | null => {
+  for (const section of OrganizationSetting.value) {
+    for (const r of section.routes) {
+      if (path.startsWith(r.route)) {
+        return section.id
+      }
+    }
+  }
+  return null
+}
 
+/* =========================
+   🔹 AUTO ADD type QUERY
+   ========================= */
+watch(
+  () => route.fullPath,
+  () => {
+    // exclusions
+    if (route.path === '/organization' || route.path === '/organization/setting') {
+      return
+    }
 
+    if (route.query.type) return
 
+    const resolvedType = resolveTypeFromPath(route.path)
+
+    if (resolvedType !== null) {
+      router.replace({
+        path: route.path,
+        query: {
+          ...route.query,
+          type: resolvedType,
+        },
+      })
+    }
+  },
+  { immediate: true },
+)
 </script>
+
 <template>
   <div class="fast-route-container">
-    <div class="fast-route"
-      v-for="(item, index) in OrganizationSetting.filter(item => item.id == Number(route.query.type))" :key="index">
-
-      <PermissionBuilder class="w-full" :code="routeItem?.permissions" v-for="(routeItem, routeIndex) in item.routes"
-        :key="routeIndex">
-        <div class="route" :class="route.path.includes(routeItem.route) ? 'active' : ''">
-          <router-link :to="`${routeItem.route}?type=${route?.query?.type}`" class="w-full">
+    <div
+      class="fast-route"
+      v-for="item in OrganizationSetting.filter((item) => item.id === Number(route.query.type))"
+      :key="item.id"
+    >
+      <PermissionBuilder
+        v-for="routeItem in item.routes"
+        :key="routeItem.route"
+        class="w-full"
+        :code="routeItem.permissions"
+      >
+        <div class="route" :class="route.path.startsWith(routeItem.route) ? 'active' : ''">
+          <router-link
+            class="w-full"
+            :to="{ path: routeItem.route, query: { type: route.query.type } }"
+          >
             {{ routeItem.Name }}
           </router-link>
         </div>
       </PermissionBuilder>
-
-
     </div>
   </div>
 </template>
