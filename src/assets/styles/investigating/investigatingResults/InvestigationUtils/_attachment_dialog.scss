@@ -6,7 +6,7 @@
   @include flex-row(nowrap, center, center);
   gap: $XsSize3;
   width: 100%;
-  border: 1px dashed #9ca3af;
+  border: 1px dashed #f1f3f5;
   padding: $XlSize;
   border-radius: $XlSize;
   span {
@@ -24,10 +24,17 @@
     border: none;
     height: 2px;
     width: 100%;
-    background-color: #9ca3af4b;
+    background-color: #f1f3f5;
   }
   .input-wrapper {
     width: 100%;
     margin-top: 12px;
+  }
+
+  .file-upload {
+    .input-image {
+      border: 1px dashed #9ca3af9c;
+    }
+    margin-block: 12px;
   }
 }

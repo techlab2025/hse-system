@@ -20,7 +20,9 @@ export default class InvestegationTasksParams implements Params {
     const data: Record<string, number | string | any> = {}
     data['title'] = this.title
     data['due_date'] = formatJoinDate(this.dueDate)
-    data['investigation_task_employees'] = this.investigationTaskEmployees
+    data['investigation_task_employees'] = this.investigationTaskEmployees.map((item) =>
+      item.toMap(),
+    )
 
     return data
   }

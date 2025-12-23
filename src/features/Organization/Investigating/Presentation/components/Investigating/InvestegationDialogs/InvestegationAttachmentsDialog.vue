@@ -11,6 +11,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
+
 const emit = defineEmits(['update:data'])
 const visible = ref(false)
 const title = ref()
@@ -102,10 +103,12 @@ const SendData = () => {
 }
 </script>
 <template>
+
   <button class="add-attachment-btn" @click="visible = true">
     <span>Attach file no larger than 3.5MB.</span>
     <img :src="AddAttach" alt="" />
   </button>
+
   <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
@@ -116,17 +119,15 @@ const SendData = () => {
     <div class="investegation-attachment-dialog-content">
       <hr class="attch-hr" />
 
-      <!--<div class="input-wrapper">
-        <label for="title">title</label>
-        <input @input="UpdateData" type="text" class="input" v-model="title" placeholder="enter title" />
-      </div>-->
 
       <div class="input-wrapper">
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
       </div>
 
-      <FileUpload @update:fileData="setFiles" label="Image" id="image" placeholder="Select image" :multiple="false" />
+      <FileUpload class="file-upload" @update:fileData="setFiles" label="Image" id="image" placeholder="Select image"
+        :multiple="false" />
     </div>
     <button class="btn btn-primary w-full" @click="SendData">Add</button>
   </Dialog>
+
 </template>
