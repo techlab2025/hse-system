@@ -19,6 +19,10 @@ export default class AddEquipmentParams implements Params {
   parentId!: number
   constructorId?: number
   description?: string
+  equipmentRentType: number
+  equipmentRentTime: string
+  equipmentRentStartDate: string
+  VehicleKm: string
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -40,8 +44,29 @@ export default class AddEquipmentParams implements Params {
     parentId: number
     constructorId?: number
     description?: string
+    equipmentRentType: number
+    equipmentRentTime: string
+    equipmentRentStartDate: string
+    VehicleKm: string
   }) {
     Object.assign(this, data)
+    // this.translation = data.translation
+    // this.equipmentTypeId = data.equipmentTypeId
+    // this.date = data.date
+    // this.status = data.status
+    // this.inspectionDuration = data.inspectionDuration
+    // this.licenseNumber = data.licenseNumber
+    // this.licensePlateNumber = data.licensePlateNumber
+    // this.image = data.image
+    // this.certificateImage = data.certificateImage
+    // this.allIndustries = data.allIndustries
+    // this.industries = data.industries
+    // this.parentId = data.parentId
+    // this.constructorId = data.constructorId
+    // this.description = data.description
+    // this.equipmentRentType = data.equipmentRentType
+    // this.equipmentRentTime = data.equipmentRentTime
+    // this.equipmentRentStartDate = data.equipmentRentStartDate
   }
 
   toMap(): Record<string, any> {
@@ -74,6 +99,11 @@ export default class AddEquipmentParams implements Params {
     if (this.constructorId != null) data['constructor_id'] = this.constructorId
 
     if (this.description) data['description'] = this.description
+    if (this.equipmentRentType) data['period_type'] = this.equipmentRentType
+    if (this.equipmentRentTime) data['period'] = this.equipmentRentTime
+    if (this.equipmentRentStartDate)
+      data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
+    if (this.VehicleKm) data['kilometer'] = this.VehicleKm
 
     return data
   }

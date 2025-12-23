@@ -27,6 +27,7 @@ onMounted(() => {
 })
 
 const EditOrganizatoinEmployee = async (draft: boolean) => {
+  console.log(params.value , "parsmsmsmasmdasda");
   if (draft) {
     await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(params.value!, router)
   } else {

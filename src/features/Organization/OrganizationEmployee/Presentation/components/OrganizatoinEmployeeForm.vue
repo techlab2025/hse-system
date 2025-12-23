@@ -22,16 +22,18 @@ import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleP
 import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
 
 const toast = useToast();
-const Name = ref('')
-const Phone = ref('')
-const Email = ref('')
-const Password = ref('')
+
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: OrganizatoinEmployeeDetailsModel
 }>()
+const Name = ref(props.data?.name)
+const Phone = ref(props.data?.phone)
+const Email = ref(props.data?.email)
+const Password = ref('')
+const ConfirmPassword = ref<string>()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams("", 1, 10, 1, false)
@@ -130,7 +132,6 @@ watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
-      console.log("roles", newData?.roles);
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
@@ -138,6 +139,7 @@ watch(
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
+      updateData()
     }
   },
   { immediate: true },
@@ -170,7 +172,6 @@ const setRole = (data: TitleInterface[]) => {
   updateData()
 }
 
-const ConfirmPassword = ref<string>()
 const UpdateConfirmPassword = (data) => {
   ConfirmPassword.value = data.target.value
   updateData()
@@ -181,24 +182,24 @@ const UpdateConfirmPassword = (data) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input id="name" type="text" v-model="Name" @change="UpdateName" :placeholder="$t('enter your name')" />
+    <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>
-    <input id="phone" type="tel" v-model="Phone" @change="UpdatePhone" :placeholder="$t('enter your phone')" />
+    <input id="phone" type="tel" v-model="Phone" @input="UpdatePhone" :placeholder="$t('enter your phone')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">{{ $t('Email') }}</label>
-    <input id="email" type="email" v-model="Email" @change="UpdateEmail" :placeholder="$t('enter your email')" />
+    <input id="email" type="email" v-model="Email" @input="UpdateEmail" :placeholder="$t('enter your email')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input id="password" type="text" min="8" v-model="Password" @change="UpdatePassword"
+    <input id="password" type="text" min="8" v-model="Password" @input="UpdatePassword"
       :placeholder="$t('enter your password')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password_confirmation">{{ $t('confirm_password') }}</label>
-    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @change="UpdateConfirmPassword"
+    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
       :placeholder="$t('enter your confirm password')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

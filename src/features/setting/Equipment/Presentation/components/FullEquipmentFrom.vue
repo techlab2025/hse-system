@@ -30,6 +30,8 @@ import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
+import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -70,10 +72,10 @@ const langTitleValid = ref(false)
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const indexEquipmentTypeParams = ref(new IndexEquipmentTypeParams(
   '',
-  1,
-  10,
-  1,
-  0,
+  null,
+  null,
+  null,
+  null,
   Number(activeTab.value) || EquipmentTypesEnum.EQUIPMENT
 ))
 const EquipmentTypeState = ref(indexEquipmentTypeController.state.value)
@@ -112,10 +114,10 @@ const AllEquipmentTypes = ref<EquipmentTypeModel[]>()
 const GetEquipmentType = async () => {
   const indexEquipmentTypeParams = new IndexEquipmentTypeParams(
     '',
-    1,
-    10,
-    1,
-    0,
+    null,
+    null,
+    null,
+    null,
     Number(activeTab.value) || EquipmentTypesEnum.EQUIPMENT
   )
   const response = await indexEquipmentTypeController.getData(
@@ -176,6 +178,7 @@ const updateData = () => {
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
   const AllIndustry = user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
 
+  console.log(VehicleKm.value, "VehicleKm.value")
   const params = props.data?.id ? new EditEquipmentParams(
     +route.params.id,
     translationsParams,
@@ -197,7 +200,7 @@ const updateData = () => {
         translation: translationsParams,
         equipmentTypeId: equipmentType.value?.id,
         date: decommissioningDate.value,
-        status: deviceStatus.value?.id,
+        status: deviceStatus.value,
         inspectionDuration: inspectionDuration.value,
         licenseNumber: licenseNumber.value,
         licensePlateNumber: licensePlateNumber.value,
@@ -206,11 +209,15 @@ const updateData = () => {
         AllIndustry: AllIndustry,
         industry: industry.value?.map((item) => item.id),
         parentId: +route.params.parent_id,
-        contructorId: deviceStatus.value?.id == EquipmentStatus.RENT ? SelectedContractor.value?.id : null,
-
+        constructorId: SelectedContractor.value?.id,
+        equipmentRentType: SelectedRentType?.value?.id,
+        equipmentRentTime: Rent.value,
+        equipmentRentStartDate: StartDate.value,
+        VehicleKm: VehicleKm.value
       }
     )
 
+  console.log(params, "params");
   emit('update:data', params)
 }
 
@@ -235,17 +242,22 @@ const setContructor = (data: TitleInterface) => {
 }
 
 
-const deviceStatus = ref<TitleInterface | null>(null)
+const deviceStatus = ref<number>(null)
 const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Own') }),
 ])
 
-const setDeviceStatus = (data: TitleInterface) => {
-  deviceStatus.value = data
+// const setDeviceStatus = (data: TitleInterface) => {
+//   deviceStatus.value = data
+//   updateData();
+// }
+
+const UpdateDeviceStatus = (data) => {
+  // console.log(data.target.value , "data");
+  deviceStatus.value = data.target.value
   updateData();
 }
-
 
 const getLocalizedTitleInterface = (titles: any[]) => {
   const locale = localStorage.getItem('lang') || 'en'
@@ -285,16 +297,18 @@ watch(
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
-      deviceStatus.value = new TitleInterface({ id: newData?.status, title: newData?.status == EquipmentStatus.RENT ? t('Rent') : t('Own') }) || null
+      deviceStatus.value = newData?.status
       image.value = newData?.image || null
       decommissioningDate.value = newData?.date || null
       certificateImage.value = newData?.certificateImage || null
-
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
-      console.log(newData, "  equipmentType.value ");
       indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", 1, 10, 1, null, activeTab.value)
-
+      // SelectedContractor.value = newData?.constructor
+      // SelectedRentType.value = RentTypes.value.find((item) => item.id === newData?.equipmentRentType)
+      // Rent.value = newData?.equipmentRentTime
+      // StartDate.value = newData?.equipmentRentStartDate
+      // VehicleKm.value = newData?.VehicleKm
     }
   },
   { immediate: true },
@@ -302,11 +316,48 @@ watch(
 
 watch(() => activeTab.value, (Newvalue) => {
   // GetEquipmentType()
-  indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", 1, 10, 1, null, Newvalue)
+  indexEquipmentTypeParams.value = new IndexEquipmentTypeParams("", null, null, null, null, Newvalue)
 
 })
 
 
+const RentTypes = ref<TitleInterface[]>([
+  new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
+  new TitleInterface({ id: RentTypeEnum.DAY, title: 'Day' }),
+  new TitleInterface({ id: RentTypeEnum.MONTH, title: 'Month' }),
+  new TitleInterface({ id: RentTypeEnum.YEAR, title: 'Year' }),
+])
+
+const SelectedRentType = ref<TitleInterface>()
+const setRentType = (data: TitleInterface) => {
+  SelectedRentType.value = data
+  updateData()
+}
+
+const Rent = ref<string>()
+const setRentTime = (time: string) => {
+  Rent.value = time.target.value
+  updateData()
+}
+
+
+const setDecoDate = (date) => {
+  decommissioningDate.value = formatJoinDate(date)
+  updateData()
+}
+
+const StartDate = ref()
+const setStartDate = (date) => {
+  StartDate.value = formatJoinDate(date)
+  updateData()
+}
+
+const VehicleKm = ref()
+const setVehicleKm = (data) => {
+  VehicleKm.value = data.target.value
+  updateData()
+}
+const isVehicle = ref(false)
 </script>
 
 <template>
@@ -314,14 +365,20 @@ watch(() => activeTab.value, (Newvalue) => {
 
     <Tabs @update:activeTab="activeTab = $event" :activeTabData="activeTab" />
 
-    <div class="vehicle w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
-      <Car />
+    <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
+      <div class="flex gap-2 w-full col-span-6">
+        <Car />
+        <div class="input-wrapper check-box">
+          <label for="vehicle">
+            <p>Mark if this equipment is a <b>vehicle</b></p>
+          </label>
+          <input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
+        </div>
+      </div>
 
-      <div class="input-wrapper check-box">
-        <label for="vehicle">
-          <p>Mark if this equipment is a <b>vehicle</b></p>
-        </label>
-        <input type="checkbox" id="vehicle" />
+      <div class="input-wrapper w-1/2" v-if="isVehicle">
+        <input class="input" placeholder="Enter Vehicle Km" type="text" id="inspection_duration" v-model="VehicleKm"
+          @input="setVehicleKm">
       </div>
     </div>
 
@@ -330,11 +387,7 @@ watch(() => activeTab.value, (Newvalue) => {
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
-      <!-- <div>
-        <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
-          :staticOptions="AllEquipmentTypes" :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
-          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType" />
-      </div> -->
+
       <div>
         <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
@@ -359,30 +412,47 @@ watch(() => activeTab.value, (Newvalue) => {
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('Date of Decommissioning') }}</label>
-        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
-          :placeholder="`Date of Decommissioning`" />
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" :placeholder="`Date of Decommissioning`"
+          @update:modelValue="setDecoDate" />
       </div>
 
-      <div v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
-        <CustomSelectInput :modelValue="deviceStatus" :staticOptions="deviceStatusOptions" label="Device status"
-          id="Device status" placeholder="Device status" @update:modelValue="setDeviceStatus" />
+      <div class="flex item-center justify-start gap-4" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <div class="radio-wrapper gap-2" :class="deviceStatus == option?.id ? 'active' : ''"
+          v-for="(option, index) in deviceStatusOptions" :key="index">
+          <label :for="`${option?.id}-${option?.title}`">{{ option?.title }}</label>
+          <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="deviceStatus" :value="option?.id"
+            name="radio" @change="UpdateDeviceStatus">
+        </div>
       </div>
-      <div v-if="deviceStatus?.id == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+
+      <div v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
         <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
           @update:modelValue="setContructor" />
       </div>
 
-      <!-- <div class="input-wrapper">
-        <label for="License number">
-          {{ $t('License number') }}
-        </label>
-        <input type="text" id="License number" v-model="licenseNumber" @input="updateData"
-          :placeholder="$t('License number')" />
-      </div> -->
+
+      <div v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
+          placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
+      </div>
+      <div class="input-wrapper"
+        v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <label for="rent-time">Rent Time</label>
+        <input class="input" placeholder="Enter Rent Time" type="text" if="rent-time" v-model="Rent"
+          @input="setRentTime">
+      </div>
+
+
+      <div class="flex flex-col gap-2 input-wrapper"
+        v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <label>{{ $t('start_date') }}</label>
+        <DatePicker v-model="StartDate" id="start_date" :placeholder="`Enter Start Date`"
+          @update:modelValue="setStartDate" />
+      </div>
       <div class="input-wrapper">
         <label for="License Plate Number">
-          {{ $t('License Plate No.') }}
+          {{ $t('Plate No.') }}
         </label>
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />
@@ -397,7 +467,9 @@ watch(() => activeTab.value, (Newvalue) => {
           label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
           @update:modelValue="setIndustry" />
       </div>
-
+      <div class="flex flex-col gap-2 input-wrapper"
+        v-if="deviceStatus !== EquipmentStatus.RENT && user?.type == OrganizationTypeEnum.ORGANIZATION">
+      </div>
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
         :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :certificateImage="certificateImage || ''"

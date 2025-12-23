@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import AnotherMeeting from '@/assets/images/AnotherMeeting.png'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -32,9 +32,15 @@ const UpdateData = () => {
 
 const setPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
+  UpdateData()
+
 }
 
 const isAnotherMeeting = ref(1)
+
+watch(() => isAnotherMeeting.value, () => {
+  UpdateData()
+}, { immediate: true })
 </script>
 <template>
   <div class="another-meeting col-span-6">

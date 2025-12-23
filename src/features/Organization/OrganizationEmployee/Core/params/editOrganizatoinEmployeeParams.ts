@@ -18,7 +18,6 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
-    password: { required: true, minLength: 2, maxLength: 100 },
   })
   constructor(
     id: number,
@@ -53,7 +52,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['name'] = this.name
     data['phone'] = this.phone
     data['email'] = this.email
-    data['password'] = this.password
+    if (this.password?.length > 0) data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())

@@ -19,6 +19,7 @@ export default class AddInvestigationResultParams implements Params {
   public isActionCorrect?: number
   public explainWhyText?: string
   public meeting?: InvestegationAnotherMeetingParams
+  public corrective?: string
 
   constructor(data: {
     investigationMeetingId: number
@@ -33,6 +34,7 @@ export default class AddInvestigationResultParams implements Params {
     isActionCorrect?: number
     explainWhyText?: string
     meeting?: InvestegationAnotherMeetingParams
+    corrective?: string
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -46,6 +48,7 @@ export default class AddInvestigationResultParams implements Params {
     this.isActionCorrect = data.isActionCorrect
     this.explainWhyText = data.explainWhyText
     this.meeting = data.meeting
+    this.corrective = data.corrective
   }
 
   toMap(): Record<string, number | string | any> {
@@ -57,12 +60,12 @@ export default class AddInvestigationResultParams implements Params {
     // data['has_employee'] = this.hasEmployee
     if (this.tasks?.length > 0) data['tasks'] = this.tasks?.map((item) => item.toMap())
     if (this.factors) data['factors'] = this.factors
-    if (this.documentation) data['documentation'] = this.documentation
-    if (this.witnesses?.length > 0) data['witnesses'] = this.witnesses?.map((item) => item.toMap())
+    if (this.documentation) data['documentation'] = [this.documentation]
+    if (this.witnesses?.length > 0) data['witness_statements'] = this.witnesses?.map((item) => item.toMap())
     if (this.isActionCorrect) data['is_action_correct'] = this.isActionCorrect
     if (this.explainWhyText) data['explain_why_text'] = this.explainWhyText
     if (this.meeting) data['meeting'] = this.meeting
-    console.log(data, 'params data')
+    if (this.corrective) data['corrective'] = this.corrective
     return data
   }
 }

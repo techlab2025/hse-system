@@ -1,14 +1,77 @@
 <script lang="ts" setup>
 import Dialog from 'primevue/dialog'
 import AddAttach from '@/assets/images/AddAttach.png'
-import { ref } from 'vue'
+import { markRaw, onMounted, ref } from 'vue'
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+import { LangsMap } from '@/constant/langs'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
+import { useUserStore } from '@/stores/user'
+import TranslationsParams from '@/base/core/params/translations_params'
 const emit = defineEmits(['update:data'])
 const visible = ref(false)
 const title = ref()
 const Files = ref()
+
+
+const langs = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+
+const langDefault = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+
+const user = useUserStore()
+const fetchLang = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 0,
+) => {
+  // console.log(user.user, 'user')
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
+  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
+  const indexPartnerController = await IndexLangController.getInstance().getData(params)
+
+  const response = indexPartnerController.value
+
+  if (response?.data?.length) {
+    langDefault.value = response.data.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+  } else {
+    langDefault.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
+  }
+}
+
+
+onMounted(async () => {
+  await fetchLang()
+})
 
 const UpdateData = () => {
   emit('update:data', {
@@ -24,8 +87,15 @@ const setFiles = async (files) => {
 }
 
 const SendData = () => {
+
+  const translationsParams = new TranslationsParams()
+
+  // titles
+  langs.value.forEach((lang) => {
+    translationsParams.setTranslation('title', lang.locale, lang.title)
+  })
   emit('update:data', {
-    title: title.value,
+    title: translationsParams,
     files: Files.value || [],
   })
   visible.value = false
@@ -45,9 +115,14 @@ const SendData = () => {
     </template>
     <div class="investegation-attachment-dialog-content">
       <hr class="attch-hr" />
-      <div class="input-wrapper">
+
+      <!--<div class="input-wrapper">
         <label for="title">title</label>
         <input @input="UpdateData" type="text" class="input" v-model="title" placeholder="enter title" />
+      </div>-->
+
+      <div class="input-wrapper">
+        <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
       </div>
 
       <FileUpload @update:fileData="setFiles" label="Image" id="image" placeholder="Select image" :multiple="false" />

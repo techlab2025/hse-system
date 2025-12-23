@@ -59,13 +59,14 @@ const AddEnvestigatingResult = async () => {
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
-    factors: CauseOfAction.value,
+    factors: CauseOfAction.value?.factors,
     investigationMeetingId: id,
     isActionCorrect: rateActions.value?.actionRate,
     isInvestigationClosed: anotherMeeting?.value?.isAnother,
     tasks: investigationTasks.value,
     witnesses: viewersResults.value,
-    meeting: anotherMeeting?.value?.meetings
+    meeting: anotherMeeting?.value?.meetings,
+    corrective: CauseOfAction.value?.description
   });
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, useRouter())

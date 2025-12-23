@@ -26,7 +26,7 @@ const updateData = () => {
       props.data?.id! ?? 0,
       Name.value,
       phoneNumber.value,
-      Scope.value?.id,
+      Scope.value?.map((item) => item.id),
       CompanyEmail.value,
       CompanyAddress.value,
       contactPerson.value,
@@ -37,7 +37,7 @@ const updateData = () => {
     : new AddContractorParams(
       Name.value,
       phoneNumber.value,
-      Scope.value?.id,
+      Scope.value.map((item) => item.id),
       CompanyEmail.value,
       CompanyAddress.value,
       contactPerson.value,
@@ -79,8 +79,8 @@ const setName = (data) => {
   updateData()
 }
 
-const Scope = ref<TitleInterface>()
-const setScope = (data: TitleInterface) => {
+const Scope = ref<TitleInterface[]>()
+const setScope = (data: TitleInterface[]) => {
   Scope.value = data
   updateData()
 }
@@ -119,8 +119,8 @@ const setExpiryDate = (data: Date) => {
 }
 
 const StatusList = ref<TitleInterface[]>([
-  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Active' }),
-  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InActive' }),
+  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Valid' }),
+  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
 ])
 
 const SelectedStatus = ref<TitleInterface>()
@@ -136,19 +136,19 @@ const setStatus = (data: TitleInterface) => {
     <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
-    <label for="company_number">{{ $t('company_number') }}</label>
+    <label for="company_number">{{ $t('contractor_number') }}</label>
     <input type="text" id="company_number" class="input" v-model="phoneNumber" @input="setPhoneNumber"
-      placeholder="Enter Phone Number " />
+      placeholder="Enter contractor Number " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_email">{{ $t('company_email') }}</label>
+    <label for="company_email">{{ $t('contractor_email') }}</label>
     <input type="text" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
-      placeholder="Enter Company Email " />
+      placeholder="Enter contractor Email " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_address">{{ $t('company_address') }}</label>
+    <label for="company_address">{{ $t('contractor_address') }}</label>
     <input type="text" id="company_address" class="input" v-model="CompanyAddress" @input="setCompanyAddress"
-      placeholder="Enter Company Adress " />
+      placeholder="Enter contractor Adress " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person">{{ $t('contact_person') }}</label>
@@ -167,7 +167,7 @@ const setStatus = (data: TitleInterface) => {
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Scope" class="input" :controller="indexScopeController" :params="indexScopeParams"
-      label="Scope" id="Scope" placeholder="Select Scope" @update:modelValue="setScope" />
+      label="Scope" id="Scope" placeholder="Select Scope" @update:modelValue="setScope" :type="2" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList" label="Status"
