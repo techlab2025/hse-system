@@ -3,10 +3,12 @@
 
 .fast-route-container {
   font-family: 'Regular';
+
   .fast-route {
     @include flex-row(nowrap, center, center);
     gap: $XsSize2;
     padding-block: 12px;
+
     .route {
       background-color: #fcfcfc;
       color: #14146b;
@@ -14,6 +16,8 @@
       border-radius: $XlSize2;
       cursor: pointer;
       transition: 0.3s all linear;
+      text-transform: capitalize;
+
       &:hover {
         background-color: #14146b;
         color: #fcfcfc;
