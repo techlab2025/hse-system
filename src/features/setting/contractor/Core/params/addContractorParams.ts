@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddContractorParams implements Params {
   Name: string
   CompanyNumber: string
-  Scope?: number
+  Scope?: number[]
   CompanyEmail?: string
   CompanyAddress?: string
   contactPerson?: string
@@ -26,7 +26,7 @@ export default class AddContractorParams implements Params {
   constructor(
     Name: string,
     CompanyNumber: string,
-    Scope?: number,
+    Scope?: number[],
     CompanyEmail?: string,
     CompanyAddress?: string,
     contactPerson?: string,

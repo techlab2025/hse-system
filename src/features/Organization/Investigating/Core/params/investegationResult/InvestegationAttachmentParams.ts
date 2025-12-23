@@ -1,16 +1,17 @@
 import type Params from '@/base/core/params/params'
+import type TranslationsParams from '@/base/core/params/translations_params'
 
 export default class InvestigationAttachmentsParams implements Params {
-  public title: string
+  public translations: TranslationsParams
   public files: string[]
-  constructor(title: string, files: string[]) {
-    this.title = title
+  constructor(translations: TranslationsParams, files: string[]) {
+    this.translations = translations
     this.files = files
   }
 
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
-    data['title'] = this.title
+    data['translations'] = this.translations.toMap() // tranlations:asd
     data['files'] = this.files
     return data
   }

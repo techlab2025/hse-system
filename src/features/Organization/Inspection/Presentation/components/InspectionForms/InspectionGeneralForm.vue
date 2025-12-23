@@ -50,10 +50,10 @@ const setDay = (data: TitleInterface[]) => {
 }
 
 const PeriodTypeSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'daily' }),
-  new TitleInterface({ id: 2, title: 'by day' }),
-  new TitleInterface({ id: 3, title: 'with date' }),
-  new TitleInterface({ id: 4, title: 'by date' }),
+  new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }),
+  new TitleInterface({ id: PeriodTypeEnum.BYDAY, title: 'by day' }),
+  new TitleInterface({ id: PeriodTypeEnum.WHITDATE, title: 'with date' }),
+  new TitleInterface({ id: PeriodTypeEnum.BYDATE, title: 'by date' }),
   // new TitleInterface({ id: 5, title: 'with day' }),
 
 ])
@@ -105,11 +105,11 @@ const setWithDays = (data: number) => {
     @update:data="GetInspectionType" />
 
   <div class="select-time" v-if="SelectedInspectionType && SelectedInspectionType == InspectionTypeEnum.DAY">
-    <div class="input-wrapper">
+    <!-- <div class="input-wrapper">
       <label for="from-dete">{{ $t('from_date') }}</label>
       <DatePicker id="from-dete" class="input" v-model="fromDate" @update:model-value="UpdateFromDate"
         placeholder="select from date..." />
-    </div>
+    </div> -->
     <div class="input-wrapper">
       <label for="">{{ $t('select_day') }}</label>
       <DatePicker v-model="SelectedData" class="input" label="select day" id="Day" placeholder="select your Day"
@@ -126,6 +126,7 @@ const setWithDays = (data: number) => {
       <DatePicker id="from-dete" class="input" v-if="inspectionType !== InspectionTypeEnum.DAY" v-model="fromDate"
         @update:model-value="UpdateFromDate" placeholder="select from date..." />
     </div>
+
     <CustomSelectInput v-if="SelectedPeriodType === PeriodTypeEnum.BYDAY" :modelValue="SelectedDay" class="input"
       :static-options="DayesSelection" :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
       @update:modelValue="setDay" />

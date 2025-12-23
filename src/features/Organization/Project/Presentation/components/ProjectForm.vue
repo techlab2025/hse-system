@@ -313,7 +313,6 @@ const SetCountrySelection = (data: TitleInterface[]) => {
   )
   updateData()
 }
-
 const SelectedState = ref<TitleInterface[]>()
 const SetStateSelection = (data: TitleInterface[]) => {
   SelectedState.value = data
@@ -334,10 +333,6 @@ const SetAreaSelection = (data: TitleInterface[]) => {
   location.value = data
   updateData()
 }
-
-
-// Location Handel End
-
 
 watch(() => langs.value,
   () => {
@@ -381,24 +376,6 @@ const ShowLocationDialog = () => {
     <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
       :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
       placeholder="contractors" :onclick="ShowContructorDialog" />
-    <!-- <UpdatedCustomInputSelect :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
-      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
-      placeholder="contractors" :onclick="ShowContructorDialog" :hascontent="true" :hasHeader="false">
-      <template #LabelHeader>
-        {{ $t('new') }}
-      </template>
-<template #reloadHeader>
-        {{ $t('new') }}
-      </template>
-<template #Header>
-        aaaaaaaa
-      </template>
-
-<template #content>
-        asdasd
-      </template>
-
-</UpdatedCustomInputSelect> -->
 
   </div>
 

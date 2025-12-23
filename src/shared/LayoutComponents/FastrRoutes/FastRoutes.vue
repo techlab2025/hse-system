@@ -267,19 +267,6 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
     description: "state . country . city . location . zones",
     routes: [
       {
-        route: "/organization/states",
-        Name: "states",
-        permissions: [
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.LOCATION_ORG_ALL,
-          PermissionsEnum.LOCATION_ORG_CREATE,
-          PermissionsEnum.LOCATION_ORG_UPDATE,
-          PermissionsEnum.LOCATION_ORG_DETAILS,
-          PermissionsEnum.LOCATION_ORG_DELETE,
-          PermissionsEnum.LOCATION_ORG_FETCH,
-        ],
-      },
-      {
         route: "/organization/countries",
         Name: "countries",
         permissions: [
@@ -292,6 +279,20 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.LOCATION_ORG_FETCH,
         ],
       },
+      {
+        route: "/organization/states",
+        Name: "states",
+        permissions: [
+          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum?.LOCATION_ORG_ALL,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+          PermissionsEnum.LOCATION_ORG_UPDATE,
+          PermissionsEnum.LOCATION_ORG_DETAILS,
+          PermissionsEnum.LOCATION_ORG_DELETE,
+          PermissionsEnum.LOCATION_ORG_FETCH,
+        ],
+      },
+
       {
         route: "/organization/cities",
         Name: "cities",

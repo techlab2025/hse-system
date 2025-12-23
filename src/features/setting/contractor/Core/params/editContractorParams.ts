@@ -5,7 +5,7 @@ export default class EditContractorParams implements Params {
   id: number
   Name: string
   phoneNumber: string
-  Scope?: number
+  Scope?: number[]
   CompanyEmail?: string
   CompanyAddress?: string
   contactPerson?: string
@@ -21,7 +21,7 @@ export default class EditContractorParams implements Params {
     id: number,
     Name: string,
     phoneNumber: string,
-    Scope?: number,
+    Scope?: number[],
     CompanyEmail?: string,
     CompanyAddress?: string,
     contactPerson?: string,

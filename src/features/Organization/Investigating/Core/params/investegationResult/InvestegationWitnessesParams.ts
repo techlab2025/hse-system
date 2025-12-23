@@ -17,7 +17,7 @@ export default class InvestegationWitnessesParams implements Params {
 
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
-    data['witnesses_statements'] = this.witnessesStatements
+    data['note'] = this.witnessesStatements
     data['organization_employee_id'] = this.organizationEmployeeId
     data['employee_name'] = this.employeeName
 

@@ -17,7 +17,7 @@ const {
     <img alt="imageFailed" class="data-empty-image" src="@/assets/images/DataFailed.gif" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
-    <router-link :to="link" class="btn btn-primary">
+    <router-link :to="link || `/`" class="btn btn-primary">
       {{ addText }}
     </router-link>
   </div>

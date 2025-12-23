@@ -90,4 +90,27 @@
       background-color: $PrimaryColor;
     }
   }
+  .radio-wrapper {
+    @include flex-row(nowrap, center, center);
+    gap: 10px;
+    width: 50%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s all linear;
+    border: 1px solid #f1f3f5b2;
+    color: #04195393;
+
+    &.active {
+      background-color: #0419531a;
+      color: $PrimaryColor;
+    }
+    label {
+      width: 100%;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      display: none;
+    }
+  }
 }

@@ -8,7 +8,7 @@ const emit = defineEmits(['update:data'])
 
 const UpdateData = (data) => {
   const attachment = new InvestigationAttachmentsParams(
-    data.title,
+    data.title?.translations,
     [data.files.file]
   )
   emit('update:data', attachment)

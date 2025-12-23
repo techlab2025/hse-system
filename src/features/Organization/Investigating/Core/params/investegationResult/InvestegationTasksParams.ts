@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type InvestigationTaskEmployees from './InvestigationTaskEmployeesParams'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class InvestegationTasksParams implements Params {
   public title: string
@@ -18,7 +19,7 @@ export default class InvestegationTasksParams implements Params {
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
     data['title'] = this.title
-    data['due_date'] = this.dueDate
+    data['due_date'] = formatJoinDate(this.dueDate)
     data['investigation_task_employees'] = this.investigationTaskEmployees
 
     return data

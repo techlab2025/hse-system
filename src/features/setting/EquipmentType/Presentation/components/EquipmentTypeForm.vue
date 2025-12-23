@@ -131,7 +131,7 @@ const updateData = () => {
       EquipmentType.value?.id,
     )
 
-  // console.log(params, 'params')
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -193,6 +193,11 @@ const setEquipmentType = (data) => {
   EquipmentType.value = data
   updateData()
 }
+
+const UpdateHasCertificate = (data) => {
+  hasCertificate.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -206,13 +211,13 @@ const setEquipmentType = (data) => {
     <input type="checkbox" :value="1" v-model="hasCertificate" :checked="hasCertificate == 1" @change="updateData"
       id="has_certificate" />
   </div> -->
-  <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`has_certificate`" :checked="hasCertificate" @update:checked="hasCertificate = $event" />
-  </div>
+  <!-- <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`has_certificate`" :checked="hasCertificate" @update:checked="UpdateHasCertificate" />
+  </div> -->
 
   <!-- Equipment Selection -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="EquipmentType" :static-options="EquipmentsTypes" label="Type" id="Type"
+    <CustomSelectInput :modelValue="EquipmentType" :static-options="EquipmentsTypes" label="Category" id="Type"
       placeholder="Select Type" @update:modelValue="setEquipmentType" />
   </div>
 

@@ -33,7 +33,7 @@ export default class AddInvestigatingParams implements Params {
 
     if (this.observationId) data['investigation_id'] = this.observationId
     if (this.employees) data['employees'] = this.employees
-    if (this.meetings) data['meetings'] = this.meetings
+    if (this.meetings) data['meeting'] = this.meetings
 
     return data
   }

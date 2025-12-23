@@ -104,7 +104,6 @@ const updateData = () => {
       // DataParams.value?.data?.WithDays || date?.value?.fromDate,
     )
 
-  console.log(params, "params");
   emit('update:data', params)
 }
 
