@@ -213,7 +213,9 @@ const preventive_action = ref<string>()
   <div class="Hazard-form col-span-6 md:col-span-6">
     <div class="Hazard-form-header">
       <HazardIcon class="icon" />
-      <p class="title">Incedant form <span>( #001 )</span></p>
+      <p class="title">Incedant form
+        <!-- <span>( #001 )</span> -->
+      </p>
     </div>
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper">

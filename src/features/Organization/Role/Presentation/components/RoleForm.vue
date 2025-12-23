@@ -63,18 +63,18 @@ watch(() => props.data, (newVal) => {
     updateData()
   }
 })
-const {user} = useUserStore()
+const { user } = useUserStore()
 </script>
 
 <template>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="role">{{ $t('role') }}</label>
-    <input type="text" id="role" v-model="role" class="input">
+    <input type="text" id="role" v-model="role" class="input" @input="updateData">
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="roleName">{{ $t('role_name') }}</label>
-    <input type="text" id="roleName" v-model="roleName" class="input">
+    <input type="text" id="roleName" v-model="roleName" class="input" @input="updateData">
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox :title="`Allow For Organization`" :checked="AllowOrganization"

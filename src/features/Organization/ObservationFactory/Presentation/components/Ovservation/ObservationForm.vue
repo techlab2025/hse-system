@@ -308,7 +308,8 @@ const setLikelihood = (data: TitleInterface) => {
 
     <p class="first-section-par">
       <component :is="FormPen" />
-      {{ $t('Observation ') }}<span>(#001)</span>
+      {{ $t('Observation ') }}
+      <!-- <span>(#001)</span> -->
     </p>
 
     <!-- first section -->
