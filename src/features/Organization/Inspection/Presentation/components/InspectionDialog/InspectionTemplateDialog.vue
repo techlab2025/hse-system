@@ -55,6 +55,12 @@ const GetTemplateId = (data: number) => {
   emit('update:data', selectedTemplates.value)
   // visible.value = false
 }
+
+const clearSelectedTemplate = () => {
+  selectedTemplates.value = undefined
+  emit('update:data', selectedTemplates.value)
+  visible.value = false
+}
 </script>
 
 <template>
@@ -72,6 +78,7 @@ const GetTemplateId = (data: number) => {
 
 
       <div class="template-header" v-if="selectedTemplates">
+        <button class="delete" @click="clearSelectedTemplate">delete</button>
         <p class="header-title">
           {{
             selectedTemplateHeader?.title

@@ -41,6 +41,15 @@
     padding: $MdSize;
     @include flex-row(wrap, space-between ,center);
     gap: $XsSize2;
+
+    .delete{
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: red;
+      padding: 5px;
+
+    }
     img{
       width: 100px;
       height: 100px
@@ -50,6 +59,7 @@
       color: #041953;
       font-size: calc($XlSize + 2px);
       font-weight: $BaseFontWeightBold;
+      padding-top: 12px;
     }
     .template-details {
       @include flex-row(wrap, flex-start, center);

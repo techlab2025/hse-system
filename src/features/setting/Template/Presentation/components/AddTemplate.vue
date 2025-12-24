@@ -6,15 +6,23 @@ import TemplateForm from '@/features/setting/Template/Presentation/components/Te
 import type Params from '@/base/core/params/params'
 import AddTemplateController from '../controllers/addTemplateController'
 import type AddTemplateParams from '../../Core/params/addTemplateParams'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
 
 const addTemplateController = AddTemplateController.getInstance()
 
+const { user } = useUserStore()
+
 const addTemplate = async () => {
   console.log(params.value, 'Add params')
-  await addTemplateController.addTemplate(params.value as AddTemplateParams, router)
+  const state = await addTemplateController.addTemplate(params.value as AddTemplateParams, router)
+  if (state.value?.data) {
+    // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add/${state.value.data?.id}`)
+  }
 }
 const setParams = (data: Params) => {
   params.value = data
