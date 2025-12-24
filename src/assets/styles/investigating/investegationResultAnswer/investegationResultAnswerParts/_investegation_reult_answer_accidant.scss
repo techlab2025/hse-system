@@ -28,6 +28,7 @@
       .accident-answer-factors {
         padding-left: 14px;
         padding-inline: 40px;
+        width: 50%;
 
         // border-left: 1px solid #bdcbda;
         .main-factor {
@@ -75,14 +76,16 @@
         padding: $XsSize2 $MdSize;
         border-radius: $XlSize;
         max-width: 60%;
+        width: 50%;
         .corrective-action-header {
           @include flex-row(nowrap, flex-start, center);
           width: 100%;
           .corrective-action-title {
             color: #4caf50;
+            width: 50%;
           }
           hr {
-            width: 80%;
+            width: 70%;
 
             border: none;
             height: 2px;

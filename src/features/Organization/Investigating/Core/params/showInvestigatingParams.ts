@@ -9,7 +9,7 @@ export default class ShowInvestigatingParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['observation_id'] = this.id
+    data['investigation_id'] = this.id
     return data
   }
 }

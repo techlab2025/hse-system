@@ -1,24 +1,13 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import factor from '@/assets/images/factor.png'
-import { ref } from 'vue'
-import SidebarVector from '@/shared/icons/SidebarVector.vue'
 import CauseOfActionFactors from '../InvestegationResultAnswerUtils/CauseOfActionFactors.vue'
-
-const descripe = ref<string>('')
-
-const emit = defineEmits(['update:data'])
-
-
-const UpdateData = (data) => {
-  emit('update:data', {
-    description: descripe.value,
-  })
-}
+import type InvestegationFactorModel from '@/features/Organization/Investigating/Data/models/InvestigationFactorsModel';
 
 const props = defineProps<{
-  Factors: any[]
+  Factors: InvestegationFactorModel[]
 }>()
+
 </script>
 <template>
   <div class="cause-of-accidant">
@@ -34,7 +23,7 @@ const props = defineProps<{
             <p class="corrective-action-title">Corrective Action</p>
             <hr>
           </div>
-          <p class="corrective-action-content">{{ factor.correctiveAnswer }}</p>
+          <p class="corrective-action-content">{{ factor.corrective_action }}</p>
         </div>
       </div>
     </div>

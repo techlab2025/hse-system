@@ -1,9 +1,10 @@
 import type ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
-import { LocationModel } from '@/features/setting/Location/Data/models/LocationModel'
+// import { LocationModel } from '@/features/setting/Location/Data/models/LocationModel'
 import type OvservationEquipmentModel from './OvservationEquipmentModel'
 import type OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
+import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 
 export default class HazardDetailsModel {
   public id: number
@@ -16,7 +17,7 @@ export default class HazardDetailsModel {
   public typeId: number
   public typeModel: number
   public equipment: OvservationEquipmentModel[]
-  public location: LocationModel
+  public location: LocationDetailsModel
   public zoon: SohwProjectZoonModel
   public project: ShowProjectDetailsModel
   public isResult: number
@@ -42,7 +43,7 @@ export default class HazardDetailsModel {
     typeId: number,
     typeModel: number,
     equipment: OvservationEquipmentModel[],
-    location: LocationModel,
+    location: LocationDetailsModel,
     zoon: SohwProjectZoonModel,
     project: ShowProjectDetailsModel,
     isResult: number,
