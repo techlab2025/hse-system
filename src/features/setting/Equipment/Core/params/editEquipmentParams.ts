@@ -26,6 +26,7 @@ export default class EditEquipmentParams implements Params {
   equipmentRentTime: string
   equipmentRentStartDate: string
   VehicleKm: string
+  serialNumber: string
 
   // hasCertificate: number
   public static readonly validation = new ClassValidation().setRules({
@@ -53,6 +54,7 @@ export default class EditEquipmentParams implements Params {
     equipmentRentTime: string
     equipmentRentStartDate: string
     VehicleKm: string
+    serialNumber: string
   }) {
     Object.assign(this, data)
 
@@ -121,6 +123,7 @@ export default class EditEquipmentParams implements Params {
     if (this.equipmentRentStartDate)
       data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
+    if (this.serialNumber) data['serial_number'] = this.serialNumber
 
     return data
   }

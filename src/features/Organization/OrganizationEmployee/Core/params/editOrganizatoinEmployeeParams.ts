@@ -12,6 +12,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   passwordConfirmation: string
   hierarchies: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
+  serialNumber: string
 
   // certificateId: number[]
   public static readonly validation = new ClassValidation().setRules({
@@ -28,6 +29,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     passwordConfirmation: string,
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
+    serialNumber: string,
 
     // certificateId: number[],
   ) {
@@ -39,6 +41,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.passwordConfirmation = passwordConfirmation
     this.hierarchies = hierarchies
     this.roles = roles
+    this.serialNumber = serialNumber
     // this.certificateId = certificateId
   }
 
@@ -56,6 +59,8 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
+    data['serial_number'] = this.serialNumber
+
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

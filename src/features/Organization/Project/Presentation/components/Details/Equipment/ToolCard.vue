@@ -16,9 +16,9 @@ const props = defineProps<{
       <div class="tool-card-header-text">
         <!--  > <span class="subtype">{{
           tool.subtype }}</span> -->
-        <p class="type"><span class="main-type">{{ tool.equipmenType?.title }}</span>
+        <p class="title">{{ tool.equipmenType?.title }}
         </p>
-        <p class="title">{{ tool.title }}</p>
+        <p class="type"><span class="main-type">{{ tool.title }}</span></p>
         <!-- <p class="inspection">inspection date : <span class="date">{{ tool.date }}</span> <span class="per">( per week
             )</span></p> -->
       </div>

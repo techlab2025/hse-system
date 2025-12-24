@@ -18,7 +18,7 @@ const UpdateData = () => {
 
 <template>
   <!-- <AddTollIcon @click="visible = true" class="cursor-pointer" /> -->
-  <span @click="visible = true" class="add-asset cursor-pointer underline">{{ $t('add_asset') }}</span>
+  <span @click="visible = true" class="add-asset cursor-pointer underline">{{ $t('add_equipment') }}</span>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '40%' }">
     <template #header>
       <div class="add-equipment-header">

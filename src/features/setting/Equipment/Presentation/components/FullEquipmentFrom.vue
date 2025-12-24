@@ -32,6 +32,7 @@ import IndexContractorParams from '@/features/setting/contractor/Core/params/ind
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -52,6 +53,7 @@ const licensePlateNumber = ref<string | null>(null)
 const equipmentStatus = ref<TitleInterface | null>(null)
 const { t } = useI18n()
 const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
+const SerialNumber = ref()
 
 const equipmentStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
@@ -198,7 +200,8 @@ const updateData = () => {
       equipmentRentType: SelectedRentType?.value?.id,
       equipmentRentTime: Rent.value,
       equipmentRentStartDate: StartDate.value,
-      VehicleKm: VehicleKm.value
+      VehicleKm: VehicleKm.value,
+      serialNumber: SerialNumber.value?.SerialNumber,
     }
   )
     : new AddEquipmentParams(
@@ -219,7 +222,9 @@ const updateData = () => {
         equipmentRentType: SelectedRentType?.value?.id,
         equipmentRentTime: Rent.value,
         equipmentRentStartDate: StartDate.value,
-        VehicleKm: VehicleKm.value
+        VehicleKm: VehicleKm.value,
+        serialNumber: SerialNumber.value?.SerialNumber,
+
       }
     )
 
@@ -362,6 +367,15 @@ const setVehicleKm = (data) => {
   updateData()
 }
 const isVehicle = ref(false)
+
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+])
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -391,6 +405,9 @@ const isVehicle = ref(false)
         <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
       </div>
 
+      <div class="flex flex-col gap-2 input-wrapper" v-if="!(data?.id)">
+        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+      </div>
 
       <div>
         <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
@@ -415,8 +432,8 @@ const isVehicle = ref(false)
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
-        <label>{{ $t('Date of Decommissioning') }}</label>
-        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" :placeholder="`Date of Decommissioning`"
+        <label>{{ $t('certification expiry date') }}</label>
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" :placeholder="`certification expiry date`"
           @update:modelValue="setDecoDate" />
       </div>
 
@@ -456,7 +473,7 @@ const isVehicle = ref(false)
       </div>
       <div class="input-wrapper">
         <label for="License Plate Number">
-          {{ $t('Plate No.') }}
+          {{ $t('License Plate No.') }}
         </label>
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />
@@ -471,8 +488,8 @@ const isVehicle = ref(false)
           label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
           @update:modelValue="setIndustry" />
       </div>
-      <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
-      </div>
+      <!-- <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
+      </div> -->
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
         :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :certificateImage="certificateImage || ''"

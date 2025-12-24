@@ -35,6 +35,7 @@ const Phone = ref(props.data?.phone)
 const Email = ref(props.data?.email)
 const Password = ref('')
 const ConfirmPassword = ref<string>()
+const SerialNumber = ref()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams("", 1, 10, 1, false)
@@ -111,7 +112,9 @@ const updateData = () => {
       Password.value,
       ConfirmPassword.value,
       HeirarchyIds,
-      RoleIds
+      RoleIds,
+      SerialNumber.value?.SerialNumber,
+
       // Certificates.value.map((item) => item.id)
     )
     : new AddOrganizatoinEmployeeParams(
@@ -121,7 +124,9 @@ const updateData = () => {
       Password.value,
       ConfirmPassword.value,
       HeirarchyIds,
-      RoleIds
+      RoleIds,
+      SerialNumber.value?.SerialNumber,
+
       // Certificates.value.map((item) => item.id)
 
     )
@@ -178,11 +183,14 @@ const UpdateConfirmPassword = (data) => {
   updateData()
 }
 
-const SerialNumber = ref()
 
 const fields = ref([
   { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
 ])
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
 </script>
 
 <template>
