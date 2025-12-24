@@ -20,6 +20,7 @@ import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
 import IndexRoleController from '@/features/Organization/Role/Presentation/controllers/indexRoleController'
 import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleParams'
 import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const toast = useToast();
 
@@ -176,6 +177,12 @@ const UpdateConfirmPassword = (data) => {
   ConfirmPassword.value = data.target.value
   updateData()
 }
+
+const SerialNumber = ref()
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+])
 </script>
 
 <template>
@@ -183,6 +190,9 @@ const UpdateConfirmPassword = (data) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
     <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>

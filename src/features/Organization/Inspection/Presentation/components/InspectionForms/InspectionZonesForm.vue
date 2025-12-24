@@ -54,6 +54,12 @@ const setProject = (data: TitleInterface) => {
   fetchMyZoneaParams.value = new FetchMyZonesParams(SelectedProject.value?.id || null)
   UpdateData()
 }
+
+const ClearDate = () => {
+  // date.value = null
+  
+}
+
 </script>
 <template>
   <div class="input-wrapper">
@@ -67,5 +73,5 @@ const setProject = (data: TitleInterface) => {
     <InspectionTemplateDialog @update:data="GetTemplateId" />
   </div>
 
-  <InspectionGeneralForm @update:data="GetGeneralData" />
+  <InspectionGeneralForm @change:btn="ClearDate" @update:data="GetGeneralData" />
 </template>
