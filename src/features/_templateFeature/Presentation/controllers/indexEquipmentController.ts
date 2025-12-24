@@ -4,6 +4,7 @@ import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type EquipmentModel from '../../Data/models/equipmentModel'
 import IndexEquipmentUseCase from '../../Domain/useCase/indexEquipmentUseCase'
+import TitleInterface from '@/base/Data/Models/title_interface'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class IndexEquipmentController extends SelectControllerInterface<EquipmentModel[]> {
@@ -34,5 +35,25 @@ export default class IndexEquipmentController extends SelectControllerInterface<
     }
     super.handleResponseDialogs()
     return this.state
+  }
+
+  async fetch(params: Params) {
+    const data = await this.getData(params)
+    const adaptData: any[] = []
+    if (this.isDataSuccess()) {
+      ;(data.value.data ?? []).map((el: any) => {
+        adaptData.push(
+          new TitleInterface({
+            id: el?.id,
+            title: el?.equipmentType?.title
+              ? `${el?.equipmentType?.title ?? ''} - ${el?.title ?? ''} `
+              : el?.title || '',
+            subtitle: el?.subtitle || '',
+          }),
+        )
+      })
+    }
+
+    return adaptData
   }
 }

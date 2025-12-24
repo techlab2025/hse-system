@@ -23,6 +23,7 @@ export default class AddEquipmentParams implements Params {
   equipmentRentTime: string
   equipmentRentStartDate: string
   VehicleKm: string
+  serialNumber: string
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -48,6 +49,7 @@ export default class AddEquipmentParams implements Params {
     equipmentRentTime: string
     equipmentRentStartDate: string
     VehicleKm: string
+    serialNumber: string
   }) {
     Object.assign(this, data)
     // this.translation = data.translation
@@ -104,6 +106,7 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentRentStartDate)
       data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
+    if (this.serialNumber) data['serial_number'] = this.serialNumber
 
     return data
   }
