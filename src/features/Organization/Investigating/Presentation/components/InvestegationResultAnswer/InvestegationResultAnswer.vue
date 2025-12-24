@@ -1,27 +1,33 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import InvestigatingResultAnswerHedaer from './InvestegationResultAnswerParts/InvestigatingResultAnswerHedaer.vue';
-import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum';
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+// import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum';
 import CauseOfAccidantAnswer from './InvestegationResultAnswerParts/CauseOfAccidantAnswer.vue';
 import MeetingOverviewAnswer from './InvestegationResultAnswerParts/MeetingOverviewAnswer.vue';
 import InvestegationResultTasksAnswer from './InvestegationResultAnswerParts/InvestegationResultTasksAnswer.vue';
 import InvestegationResultTakeActionAnswer from './InvestegationResultAnswerParts/InvestegationResultTakeActionAnswer.vue';
 import InvestegationResultAttachmentAnswer from './InvestegationResultAnswerParts/InvestegationResultAttachmentAnswer.vue';
 import InvestegationResultViewersAnswer from "./InvestegationResultAnswerParts/InvestegationResultViewersAnswer.vue"
-const Details = ref({
-  id: 3,
-  title: 'Medium observation',
-  meetingsNumber: 12,
-  date: '2025-03-15 09:45 AM',
-  observer: { name: 'Mohab Mohamed' },
-  description: 'Electrical issue near main control panel.',
-  zoon: { title: 'Zone C' },
-  equipment: { title: 'Crane Liebherr' },
-  status: InvestegationStatusEnum.CLOSED,
-  image: 'https://picsum.photos/222/150',
-  link: '',
-  createdAt: "20 july"
-})
+import ShowInvestigatingController from '../../controllers/showInvestigatingController';
+import ShowInvestigatingParams from '../../../Core/params/showInvestigatingParams';
+// const Details = ref({
+//   id: 3,
+//   title: 'Medium observation',
+//   meetingsNumber: 12,
+//   date: '2025-03-15 09:45 AM',
+//   observer: { name: 'Mohab Mohamed' },
+//   description: 'Electrical issue near main control panel.',
+//   zoon: { title: 'Zone C' },
+//   equipment: { title: 'Crane Liebherr' },
+//   status: InvestegationStatusEnum.CLOSED,
+//   image: 'https://picsum.photos/222/150',
+//   link: '',
+//   createdAt: "20 july",
+//   investegationType: 1
+// })
 
 const Factors = ref([
   {
@@ -56,20 +62,66 @@ const Factors = ref([
   },
 ])
 
+const showInvestigatingController = ShowInvestigatingController.getInstance()
+const state = ref(showInvestigatingController.state.value)
+
+
+const GetInvestegationDetails = async () => {
+  const showInvestigatingParams = new ShowInvestigatingParams(23)
+  const response = await showInvestigatingController.showInvestigating(showInvestigatingParams)
+  console.log(response.value.data, 'response')
+}
+onMounted(() => {
+  GetInvestegationDetails()
+})
+
+watch(() => showInvestigatingController.state.value, (newVal) => {
+  state.value = newVal
+}
+)
 
 </script>
 <template>
-  <div class="investegation-result-answer-container">
-    <InvestigatingResultAnswerHedaer :title="Details?.title" :meetingsNumber="Details?.meetingsNumber"
-      :victim="Details?.observer?.name" :date="Details?.date" :meetingDate="Details?.date"
-      :TeamLeader="Details.observer?.name" :createdAt="Details.createdAt" :TeamNumbers="12" :solvedTasks="8"
-      :ToltalTasks="18" />
-    <CauseOfAccidantAnswer class="w-full" @update:data="console.log($event, 'CauseOfAccidant')" :Factors="Factors" />
-    <MeetingOverviewAnswer />
-    <InvestegationResultTasksAnswer />
-    <InvestegationResultTakeActionAnswer />
-    <InvestegationResultAttachmentAnswer />
-    <InvestegationResultViewersAnswer />
-  </div>
+  <DataStatus :controller="state">
+    <template #success>
+      <div class="investegation-result-answer-container">
+        <InvestigatingResultAnswerHedaer :meetingsNumber="state.data?.investigationMeetings?.length"
+          :victim="state.data?.investigationTeamLeader?.Name" :date="state.data?.date"
+          :meetingDate="state?.data?.investigationMeetings[state?.data?.investigationMeetings?.length - 1].date"
+          :TeamLeader="state.data?.investigationTeamLeader?.Name" :createdAt="state.data?.date"
+          :TeamNumbers="state.data?.investigationEmployees?.length"
+          :solvedTasks="state.data?.investigationTasks?.filter((task: any) => task.status === 1)?.length"
+          :ToltalTasks="state.data?.investigationTasks?.length" :investegationType="state.data?.observation?.type" />
+
+        <CauseOfAccidantAnswer class="w-full" :Factors="state.data?.investigationFactors" />
+        <MeetingOverviewAnswer />
+        <InvestegationResultTasksAnswer />
+        <InvestegationResultTakeActionAnswer />
+        <InvestegationResultAttachmentAnswer />
+        <InvestegationResultViewersAnswer />
+      </div>
+    </template>
+    <template #loader>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #initial>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #empty>
+      <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+    <template #failed>
+      <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Hazard" />
+    </template>
+
+    <template #notPermitted>
+      <DataFailed addText="Have not Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+    </template>
+  </DataStatus>
 
 </template>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import EmployeeBg from '@/assets/images/EmployeeBg.png'
 import Yellowback from '@/assets/images/Yellowback.png'
+import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum';
 const props = defineProps<{
   title?: string
   meetingsNumber?: number
@@ -12,7 +13,13 @@ const props = defineProps<{
   createdAt?: string
   solvedTasks?: number
   ToltalTasks?: number
+  investegationType?: number
 }>()
+
+const GetInvestigationType = (type: number) => {
+  return Observation[type]
+}
+
 </script>
 <template>
   <div class="investigating-answer-header-container">
@@ -22,7 +29,7 @@ const props = defineProps<{
         <img class="left-yellow-background" :src="Yellowback" alt="bg">
       </div>
       <div class="investigating-header">
-        <p class="title">{{ `investigation / incedant` }}</p>
+        <p class="title">{{ `investigation / ${GetInvestigationType(props?.investegationType)}` }}</p>
       </div>
       <div class="investigating-info">
         <p>
