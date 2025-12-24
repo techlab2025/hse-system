@@ -17,9 +17,9 @@ class AddTemplateRepo extends RepoInterface<TemplateModel> {
     return this.instance
   }
 
-  override get responseType(): ResponseType {
-    return ResponseType.withoutData
-  }
+  // override get responseType(): ResponseType {
+  //   return ResponseType.withoutData
+  // }
 
   onParse(data: any): TemplateModel {
     return TemplateModel.fromMap(data)

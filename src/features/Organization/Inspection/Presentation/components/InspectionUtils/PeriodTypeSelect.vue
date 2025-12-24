@@ -4,13 +4,15 @@ import AssignTo from "@/assets/images/AssignTo.png";
 import type TitleInterface from '@/base/Data/Models/title_interface';
 import { ref } from 'vue';
 import type { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum';
+import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum';
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   title: string
+  selctedOption: PeriodTypeEnum
   options: TitleInterface[]
 }>()
 
-const SelectedOption = ref<InspectionTypeEnum >()
+const SelectedOption = ref<InspectionTypeEnum | PeriodTypeEnum>(PeriodTypeEnum.DAILY)
 const UpdatData = (data) => {
   emit('update:data', SelectedOption.value)
 }

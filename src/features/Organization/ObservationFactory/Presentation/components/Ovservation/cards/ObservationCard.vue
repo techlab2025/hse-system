@@ -27,7 +27,7 @@ const { item } = defineProps<{
       <p class="description">{{ item.description }}</p>
     </div>
     <div class="card-options">
-      <RouterLink :to="item.addRoute" class="btn btn-primary">{{ $t('add') }}</RouterLink>
+      <RouterLink :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
       <RouterLink :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
     </div>
   </div>

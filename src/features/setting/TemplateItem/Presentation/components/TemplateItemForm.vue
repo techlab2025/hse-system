@@ -109,6 +109,10 @@ const UpdateImageInfo = (data: any) => {
   updateData()
 }
 
+const ClearTitle = () => {
+  updateData()
+  title.value = ''
+}
 </script>
 
 <template>
@@ -118,7 +122,6 @@ const UpdateImageInfo = (data: any) => {
   </div>
   <div class="col-span-4 md:col-span-2">
     <div class="col-span-4 md:col-span-2 input-wrapper">
-
       <label for="item-title">{{ $t('item_title') }}</label>
       <input type="text" id="item-title" v-model="title" class="input" placeholder="add your title here.."
         @input="updateData">
@@ -128,7 +131,7 @@ const UpdateImageInfo = (data: any) => {
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
       <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
-      <button class="btn add-btn w-full">{{ $t('add_to_template') }}</button>
+      <button class="btn add-btn w-full" @click="ClearTitle">{{ $t('add_to_template') }}</button>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2">

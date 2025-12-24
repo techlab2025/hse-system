@@ -60,15 +60,15 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
 
 ])
 
-const SelectedPeriodType = ref<TitleInterface>()
+const SelectedPeriodType = ref<TitleInterface>(new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }))
 const GetSelectedPeridType = (data) => {
   SelectedPeriodType.value = data
 
-  emit('change:btn')
+  // emit('change:btn')
   UpdateData()
 }
 
-const SelectedData = ref()
+const SelectedData = ref(new Date())
 const UpdateDate = (date) => {
   SelectedData.value = date
   UpdateData()
@@ -137,7 +137,7 @@ watch(SelectedPeriodType, () => {
 </script>
 
 <template>
-  <InspectionTypeSelection :selectedtype="SelectedInspectionType" :options="inspectionType" :title="`inspect type`"
+  <InspectionTypeSelection :selectedtype="SelectedInspectionType" :options="inspectionType" :title="`inspect Period`"
     @update:data="GetInspectionType" />
 
   <div class="select-time" v-if="SelectedInspectionType && SelectedInspectionType == InspectionTypeEnum.DAY">
@@ -154,14 +154,10 @@ watch(SelectedPeriodType, () => {
 
   </div>
   <div v-else>
-    <PeriodTypeSelect :options="PeriodTypeSelection" :title="`select period type`"
+    <PeriodTypeSelect :selctedOption="PeriodTypeSelect" :options="PeriodTypeSelection" :title="`select period type`"
       @update:data="GetSelectedPeridType" />
 
-    <div class="input-wrapper">
-      <label for="from-dete">{{ $t('from_date') }}</label>
-      <DatePicker id="from-dete" class="input" v-if="inspectionType !== InspectionTypeEnum.DAY" v-model="fromDate"
-        @update:model-value="UpdateFromDate" placeholder="select from date..." />
-    </div>
+
 
     <CustomSelectInput v-if="SelectedPeriodType === PeriodTypeEnum.BYDAY" :modelValue="SelectedDay" class="input"
       :static-options="DayesSelection" :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
@@ -180,6 +176,13 @@ watch(SelectedPeriodType, () => {
       <input type="number" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
         @change="setWithDays" />
 
+
+
+    </div>
+    <div class="input-wrapper mt-4">
+      <label for="from-dete">{{ $t('from_date') }}</label>
+      <DatePicker id="from-dete" class="input" v-if="inspectionType !== InspectionTypeEnum.DAY" v-model="fromDate"
+        @update:model-value="UpdateFromDate" placeholder="select from date..." />
     </div>
 
   </div>
