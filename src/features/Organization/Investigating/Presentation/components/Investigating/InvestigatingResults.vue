@@ -20,6 +20,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import type InvestegationTasksParams from '../../../Core/params/investegationResult/InvestegationTasksParams'
+import InvestigationAttachmentsParams from '../../../Core/params/investegationResult/InvestegationAttachmentParams'
 
 const route = useRoute()
 const id = route.params.id
@@ -56,7 +57,8 @@ const ShoeInvestegationResultDetails = () => {
 }
 
 const AddEnvestigatingResult = async () => {
-  console.log(anotherMeeting?.value?.isAnother, "investigationAttachments.value");
+
+
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,

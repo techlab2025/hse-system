@@ -4,9 +4,16 @@
 .cause-of-accidant {
   font-family: 'Regular';
   .answer-header {
+    padding: 0;
     background-color: white !important;
     .section-header-page {
       background-color: white !important;
+    }
+    &.border-top {
+      padding-top: 20px;
+      border-top: 5px solid #f8f9fb;
+      margin-top: 12px;
+      border-radius: 0;
     }
   }
   .accident-answer {
@@ -20,6 +27,8 @@
 
       .accident-answer-factors {
         padding-left: 14px;
+        padding-inline: 40px;
+
         // border-left: 1px solid #bdcbda;
         .main-factor {
           color: #bdcbda;

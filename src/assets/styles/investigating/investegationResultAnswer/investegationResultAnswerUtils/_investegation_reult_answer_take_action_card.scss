@@ -1,0 +1,23 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+
+.investegaion-take-action-card {
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize4;
+  background-color: #ffffffcc;
+  padding: $XsSize2;
+  border-radius: $XsSize;
+  border: 1px solid #edeff5;
+
+  .corrective-action {
+    color: #00ac47;
+    font-size: $MdSize;
+    font-weight: $BaseFontWeightBold;
+  }
+  .description {
+    color: #9299a5;
+    font-size: $SmSize;
+    font-size: $BaseFontMediumWeight;
+  }
+}

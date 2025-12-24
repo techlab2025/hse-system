@@ -1,0 +1,44 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+
+.take-action-answer {
+  font-family: 'Regular';
+  padding-top: 25px;
+  .header {
+    @include flex-row(nowrap, space-between, center);
+    width: 100%;
+    // padding-top: 20px;
+    border-top: 5px solid #f8f9fb;
+    .answer-header {
+      padding: 0;
+      background-color: white !important;
+      .section-header-page {
+        background-color: white !important;
+      }
+      &.border-top {
+        // margin-top: 12px;
+        border-radius: 0;
+      }
+    }
+
+    .show-all-btn {
+      padding-top: $SmSize;
+      color: #9d9d9d;
+      font-weight: $BaseFontWeightBold;
+      font-size: $MdSize;
+    }
+  }
+  .content {
+    width: 100%;
+    @include grid(
+      1,
+      10px,
+      (
+        1400px: 3,
+        1024px: 2,
+        768px: 1,
+      )
+    );
+    padding-inline: 20px;
+  }
+}

@@ -1,0 +1,29 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+
+.investegaion-attachment-card {
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, center);
+  gap: $SmSize;
+  background-color: #fbfbfb;
+  padding: $XsSize2;
+  border-radius: $XsSize;
+  border: 1px solid #edeff5;
+
+  .title {
+    color: #121212;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+  }
+
+  .investegaion-attachment-card-media {
+    @include flex-row(wrap, flex-start, center);
+    gap: $XsSize2;
+    img {
+      width: 80px;
+      height: 80px;
+      border: 1px solid #f4f4f4;
+      border-radius: $XsSize;
+    }
+  }
+}

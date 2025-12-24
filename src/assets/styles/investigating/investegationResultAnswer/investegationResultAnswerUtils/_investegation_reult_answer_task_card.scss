@@ -1,0 +1,124 @@
+@import '../../../variables';
+@import '../../../mixins/flex';
+
+.investegaion-task-card {
+  font-family: 'Regular';
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize4;
+  background-color: #fdfdfd;
+  padding: $XsSize2;
+  border-radius: $XsSize;
+  border: 1px solid #f6f6f6;
+
+  &.new {
+    background-color: #fcfcfc;
+    .task-status-title {
+      color: #4f8cd3;
+    }
+  }
+
+  &.working {
+    background-color: #523cd905;
+    border: 1px solid #523cd933;
+    .task-status-title {
+      color: #523cd9;
+    }
+  }
+
+  &.completed {
+    background-color: #25a42e05;
+    border: 1px solid #25a42e33;
+
+    .task-status-title {
+      color: #1ea127;
+    }
+  }
+
+  .card-header {
+    @include flex-row(nowrap, space-between, center);
+    width: 100%;
+
+    .task-status {
+      @include flex-row(nowrap, flex-start, center);
+      gap: 4px;
+    }
+  }
+
+  .card-content {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 10px;
+    .task-description {
+      color: #202020;
+      font-weight: $BaseFontWeightBold;
+      font-size: calc($MdSize + 1px);
+    }
+    .info {
+      @include flex-row(wrap, space-between, center);
+      width: 100%;
+      .date {
+        color: #989fab;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          color: $PrimaryColor;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+
+      .responsable {
+        color: #989fab;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          color: $PrimaryColor;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+    }
+
+    .assigned-to-container {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      border-top: 1px solid #1f41bb1a;
+      padding-top: $XsSize2;
+      .assigned-to {
+        @include flex-row(nowrap, flex-start, center);
+        gap: 5px;
+        .icon {
+          width: 25px;
+          height: 25px;
+        }
+        .assigned-to-info {
+          @include flex-column(nowrap, flex-start, flex-start);
+          .assign {
+            color: #acaeb4;
+            font-size: $XsSize;
+            font-weight: $BaseFontMediumWeight;
+          }
+          .person {
+            color: $PrimaryColor;
+            font-size: $MdSize;
+            font-weight: $BaseFontWeightBold;
+          }
+        }
+      }
+
+      button {
+        font-size: $SmSize;
+        font-size: $BaseFontWeightBold;
+        padding: $XsSize3 $SmSize;
+        border-radius: $MdSize;
+      }
+      .working,
+      .new {
+        color: white;
+        background-color: #4caf50;
+      }
+      .completed {
+        color: #1f41bbcc;
+        background-color: #1f41bb12;
+        border: 1px solid #1f41bb99;
+      }
+    }
+  }
+}

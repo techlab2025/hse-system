@@ -1,2 +1,12 @@
-@import "./investegation_result_answer_header";
-@import "./investegationResultAnswerUtils/investegation_reult_answer_accidant";
+@import './investegationResultAnswerUtils/investegation_result_answer_header';
+@import './investegationResultAnswerUtils/investegation_reult_answer_task_card';
+@import './investegationResultAnswerUtils/investegation_reult_answer_meeting_meeting_card';
+@import './investegationResultAnswerUtils/investegation_reult_answer_take_action_card';
+@import './investegationResultAnswerUtils/investegation_reult_answer_attachment_card';
+@import './investegationResultAnswerUtils/investegation_reult_answer_viewers_card';
+@import './investegationResultAnswerParts/investegation_reult_answer_meeting_overview';
+@import './investegationResultAnswerParts/investegation_reult_answer_accidant';
+@import './investegationResultAnswerParts/investegation_reult_answer_tasks';
+@import './investegationResultAnswerParts/investegation_reult_answer_take_action';
+@import './investegationResultAnswerParts/investegation_reult_attachment_tasks';
+@import './investegationResultAnswerParts/investegation_reult_answer_viewers';

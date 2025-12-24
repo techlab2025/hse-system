@@ -23,10 +23,7 @@ const UpdateData = () => {
 
   emit('update:data', {
     isAnother: isAnotherMeeting.value,
-    // platform: SelectedPlatform.value?.id,
-    // date: date.value,
-    // time: time.value,
-    meetings: Meeting
+    meetings: isAnotherMeeting.value == 1 ? Meeting : null
   })
 }
 

@@ -3,12 +3,14 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import Investegationattachment from '@/assets/images/Investegationattachment.png'
 import InvestegationAttachmentsDialog from '../InvestegationDialogs/InvestegationAttachmentsDialog.vue'
 import InvestigationAttachmentsParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationAttachmentParams'
+import TranslationsParams from '@/base/core/params/translations_params'
 
 const emit = defineEmits(['update:data'])
 
 const UpdateData = (data) => {
+
   const attachment = new InvestigationAttachmentsParams(
-    data.title?.translations,
+    data.title?.translation,
     [data.files.file]
   )
   emit('update:data', attachment)
