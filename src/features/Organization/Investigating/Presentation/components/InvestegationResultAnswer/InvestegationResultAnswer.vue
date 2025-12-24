@@ -4,7 +4,10 @@ import InvestigatingResultAnswerHedaer from './InvestegationResultAnswerParts/In
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum';
 import CauseOfAccidantAnswer from './InvestegationResultAnswerParts/CauseOfAccidantAnswer.vue';
 import MeetingOverviewAnswer from './InvestegationResultAnswerParts/MeetingOverviewAnswer.vue';
-
+import InvestegationResultTasksAnswer from './InvestegationResultAnswerParts/InvestegationResultTasksAnswer.vue';
+import InvestegationResultTakeActionAnswer from './InvestegationResultAnswerParts/InvestegationResultTakeActionAnswer.vue';
+import InvestegationResultAttachmentAnswer from './InvestegationResultAnswerParts/InvestegationResultAttachmentAnswer.vue';
+import InvestegationResultViewersAnswer from "./InvestegationResultAnswerParts/InvestegationResultViewersAnswer.vue"
 const Details = ref({
   id: 3,
   title: 'Medium observation',
@@ -52,6 +55,8 @@ const Factors = ref([
     correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
   },
 ])
+
+
 </script>
 <template>
   <div class="investegation-result-answer-container">
@@ -61,6 +66,10 @@ const Factors = ref([
       :ToltalTasks="18" />
     <CauseOfAccidantAnswer class="w-full" @update:data="console.log($event, 'CauseOfAccidant')" :Factors="Factors" />
     <MeetingOverviewAnswer />
+    <InvestegationResultTasksAnswer />
+    <InvestegationResultTakeActionAnswer />
+    <InvestegationResultAttachmentAnswer />
+    <InvestegationResultViewersAnswer />
   </div>
 
 </template>
