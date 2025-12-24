@@ -92,6 +92,22 @@ const GetProjectZones = async (projectId: number) => {
     })
   }
 }
+const ClearDate = () => {
+  Data.value = {
+    PeridWithDate: [],
+    bydates: [],
+    fromDate: null,
+    toDate: null,
+    inspectionType: null,
+    WithDays: null,
+    onceday: null,
+    periodByday: null,
+    periodType: null,
+  }
+
+  UpdateData()
+}
+
 
 </script>
 
@@ -112,5 +128,5 @@ const GetProjectZones = async (projectId: number) => {
     <InspectionTemplateDialog @update:data="GetTemplateId" />
 
   </div>
-  <InspectionGeneralForm @update:data="GetGeneralData" />
+  <InspectionGeneralForm @change:btn="ClearDate" @update:data="GetGeneralData" />
 </template>

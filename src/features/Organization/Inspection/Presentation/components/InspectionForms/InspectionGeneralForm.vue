@@ -7,7 +7,9 @@ import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum';
 import TitleInterface from '@/base/Data/Models/title_interface';
 import { ref } from 'vue';
 import DatePicker from 'primevue/datepicker';
-const emit = defineEmits(['update:data'])
+import { watch } from 'vue'
+
+const emit = defineEmits(['update:data', 'change:btn'])
 
 const UpdateData = () => {
   emit('update:data', {
@@ -61,6 +63,8 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
 const SelectedPeriodType = ref<TitleInterface>()
 const GetSelectedPeridType = (data) => {
   SelectedPeriodType.value = data
+
+  emit('change:btn')
   UpdateData()
 }
 
@@ -98,6 +102,38 @@ const setWithDays = (data: number) => {
   WithDays.value = data
   UpdateData()
 }
+
+
+const resetAll = () => {
+  SelectedPeriodType.value = undefined
+  SelectedDay.value = []
+  SelectedWithDateDays.value = []
+  SelectedbyDays.value = []
+  WithDays.value = undefined
+  fromDate.value = new Date()
+  UpdateData()
+
+}
+
+const resetPeriodFields = () => {
+  SelectedDay.value = []
+  SelectedWithDateDays.value = []
+  SelectedbyDays.value = []
+  WithDays.value = undefined
+  UpdateData()
+}
+
+/* ----------------------------------
+ * watchers
+ * ---------------------------------- */
+watch(SelectedInspectionType, () => {
+  resetAll()
+})
+
+watch(SelectedPeriodType, () => {
+  resetPeriodFields()
+})
+
 </script>
 
 <template>

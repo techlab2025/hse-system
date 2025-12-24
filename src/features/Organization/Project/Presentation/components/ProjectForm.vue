@@ -167,7 +167,7 @@ const updateData = () => {
       date.value,
       SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
-      ZoneIds.value.map((z) => z),
+      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
       EvaluatingMethod.value?.map((p) => p.id)
     )
     : new AddProjectParams(
@@ -176,7 +176,7 @@ const updateData = () => {
       date.value,
       SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
-      ZoneIds.value.map((z) => z),
+      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
       EvaluatingMethod.value?.map((p) => p.id),
 
     )
