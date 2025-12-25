@@ -150,8 +150,8 @@ const updateData = () => {
       id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
       DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
       DataParams.value?.TempalteIds || TempalteIds.value,
-      data.inspectionType,
-      data.periodType,
+      data.inspectionType ,
+      data.periodType|| PeriodTypeEnum?.DAILY,
       DataParams.value?.ProjectId || null,
       periodTasks,
       data.onceday,
@@ -191,9 +191,7 @@ const setEquipment = (data: TitleInterface) => {
   updateData()
 }
 
-/* =========================
- * Watchers
- * ========================= */
+
 watch(
   () => props.data,
   () => { },
@@ -215,27 +213,37 @@ watch(
 
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <!-- Main Inspection Details -->
-    <div class="inspection-details" :class="SelectedAssigned === AssignToTypeEnum.ZONE || id || SelectedAssigned === AssignToTypeEnum.MACHINE
+    <div class="inspection-details grid grid-cols-6 gap-4" :class="SelectedAssigned === AssignToTypeEnum.ZONE || id || SelectedAssigned === AssignToTypeEnum.MACHINE
       ? 'full-width'
       : ''">
       <!-- Machine Selection -->
-      <CustomSelectInput v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
-        :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
-        :label="$t('Equipment')" placeholder="select your Machine" @update:modelValue="setEquipment" />
+      <div class="input-wrapper col-span-6 pt-15 md:col-span-3">
+        <CustomSelectInput v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
+          :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
+          :label="$t('Equipment')" placeholder="select your Machine" @update:modelValue="setEquipment" />
+      </div>
 
       <!-- Employee Form -->
-      <InspectionEmployeeForm v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id"
-        @update:data="UpdateFormData" />
+      <div class="input-wrapper col-span-6 md:col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id">
+        <InspectionEmployeeForm @update:data="UpdateFormData" />
+      </div>
 
       <!-- Zones Form -->
-      <InspectionZonesForm v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id" @update:data="UpdateFormData" />
+
+      <div class="input-wrapper col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id">
+        <InspectionZonesForm @update:data="UpdateFormData" />
+      </div>
 
       <!-- Templates -->
-      <InspectionTemplateDialog v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
-        @update:data="GetTemplateId" />
+      <div class="input-wrapper col-span-6 md:col-span-3" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
+        <InspectionTemplateDialog @update:data="GetTemplateId" />
+      </div>
 
       <!-- General Inspection Data -->
-      <InspectionGeneralForm v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE" @update:data="GetGeneralData" />
+      <div class="input-wrapper col-span-6" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
+        <InspectionGeneralForm @update:data="GetGeneralData" />
+      </div>
+
     </div>
 
     <!-- Employee Tasks Preview -->

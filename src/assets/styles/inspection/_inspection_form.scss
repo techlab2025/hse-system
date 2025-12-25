@@ -3,13 +3,13 @@
 @use '../mixins/grid' as *;
 
 .inspection-form {
-  @include grid(
-    2,
-    10px,
-    (
-      1000px: 1,
-    )
-  );
+      @include grid(
+        2,
+        10px,
+        (
+          1000px: 1,
+        )
+      );
   .inspection-details {
     &.full-width {
       grid-column: span 2;

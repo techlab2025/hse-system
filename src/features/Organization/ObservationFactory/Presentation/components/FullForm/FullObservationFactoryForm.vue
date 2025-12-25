@@ -331,7 +331,7 @@ const setAccidentsType = (data: TitleInterface) => {
 
   <!-- Place -->
   <div class="input-wrapper col-span-3 md:grid-cols-12">
-    <label for="time">Placa</label>
+    <label for="time">Place</label>
     <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
   </div>
 
@@ -406,16 +406,16 @@ const setAccidentsType = (data: TitleInterface) => {
       </div>
 
       <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
-        <label class="radio-title">{{ $t('solved') }}</label>
+        <label class="radio-title">{{ $t('Status') }}</label>
         <div class="radio-answers flex">
           <div class="radio-selection" :class="{ selected: solved === 'yes' }">
             <RadioButton v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
-            <label>Yes</label>
+            <label>Closed</label>
           </div>
 
           <div class="radio-selection" :class="{ selected: solved === 'no' }">
             <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
-            <label>No</label>
+            <label>Open</label>
           </div>
         </div>
       </div>
