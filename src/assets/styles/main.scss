@@ -29,7 +29,7 @@
 @use './inspection/imports_inspection';
 
 @use './investigating/investigating_imports';
-@use'./investigationMeeting/investigation_meeting_imports';
+@use './investigationMeeting/investigation_meeting_imports';
 
 //@use "./utils/_section_title";
 //@use "./utils/_fonts";
@@ -163,6 +163,11 @@ body {
   font-family: 'Regular', sans-serif;
   color: black;
   overflow-x: hidden;
+  p,
+  span,
+  div {
+    text-transform: capitalize;
+  }
 }
 
 .p-accordionheader {

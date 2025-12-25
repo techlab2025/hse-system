@@ -7,6 +7,12 @@
   padding: $XsSize;
   border-radius: $SmSize;
   font-family: 'Regular';
+  img {
+    width: 70px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
 
   .tool-card-header {
     @include flex-row(nowrap, flex-start, center);
@@ -15,25 +21,36 @@
 
     .tool-card-header-text {
       @include flex-column(nowrap, flex-start, flex-start);
-      gap: 6px;
+      gap: 3px;
 
-      .type {
-        color: #9ca3af;
-        .main-type {
-          color: $PrimaryColor;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $SmSize;
-        }
+      .card-type {
+      }
 
-        .subtype {
+      color: #9ca3af;
+      // @include flex-row(nowrap, flex-start, center);
+      .main-type {
+        color: $PrimaryColor;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $SmSize;
+      }
+
+      .subtype {
+        // color: #9ca3af;
+        font-weight: $BaseFontWeightBold;
+        font-size: $MdSize2;
+        @include flex-row(nowrap, flex-start, center);
+        gap: 6px;
+        color: #0F1927;
+        padding-top: 3px;
+        .arrow {
           color: #9ca3af;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $SmSize;
+          font-size: 14px;
+          font-weight: 600;
         }
       }
 
       .title {
-        color: #0f1927;
+        color: #9CA3AF;
         font-weight: $BaseFontWeightBold;
         font-size: $MdSize;
       }

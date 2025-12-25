@@ -14,7 +14,6 @@
     &.full-width {
       grid-column: span 2;
     }
-
   }
   .inspection-show {
     background-color: #fbfbfb;
@@ -135,5 +134,9 @@
         }
       }
     }
+  }
+
+  .general-form-container {
+    margin-top: 12px;
   }
 }

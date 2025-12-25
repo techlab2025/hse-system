@@ -52,23 +52,7 @@ export default class AddEquipmentParams implements Params {
     serialNumber: string
   }) {
     Object.assign(this, data)
-    // this.translation = data.translation
-    // this.equipmentTypeId = data.equipmentTypeId
-    // this.date = data.date
-    // this.status = data.status
-    // this.inspectionDuration = data.inspectionDuration
-    // this.licenseNumber = data.licenseNumber
-    // this.licensePlateNumber = data.licensePlateNumber
-    // this.image = data.image
-    // this.certificateImage = data.certificateImage
-    // this.allIndustries = data.allIndustries
-    // this.industries = data.industries
-    // this.parentId = data.parentId
-    // this.constructorId = data.constructorId
-    // this.description = data.description
-    // this.equipmentRentType = data.equipmentRentType
-    // this.equipmentRentTime = data.equipmentRentTime
-    // this.equipmentRentStartDate = data.equipmentRentStartDate
+
   }
 
   toMap(): Record<string, any> {

@@ -11,7 +11,7 @@ const props = defineProps<{
   showHeader: boolean
 }>()
 
-const SelectedOption = ref(AssignToTypeEnum.EMPLOYEE)
+const SelectedOption = ref(AssignToTypeEnum.MACHINE)
 const UpdatData = (data) => {
   emit('update:data', SelectedOption.value)
 }
