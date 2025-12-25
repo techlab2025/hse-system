@@ -6,20 +6,20 @@ export default class TaskPeriodParams implements Params {
   public day: number | null
   public date: string | null
   public counter?: string | null
-  public counterType?: string | null
+  public counter_type?: string | null
 
   constructor(
     type: number | null,
     day: number | null,
     date: string | null,
     counter?: string | null,
-    counterType?: string | null,
+    counter_type?: string | null,
   ) {
     this.type = type
     this.day = day
     this.date = date
     this.counter = counter
-    this.counterType = counterType
+    this.counter_type = counter_type
   }
 
   toMap(): Record<

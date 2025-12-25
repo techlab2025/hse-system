@@ -57,20 +57,28 @@ const setProject = (data: TitleInterface) => {
 
 const ClearDate = () => {
   // date.value = null
-  
+
 }
 
 </script>
 <template>
-  <div class="input-wrapper">
-    <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="fetchMyProjectsController"
-      :params="fetchMyProjectsParams" :label="$t('Projects')" id="employee" placeholder="select your project"
-      @update:modelValue="setProject" />
-    <CustomSelectInput v-if="SelectedProject" :modelValue="SelectedZones" class="input"
-      :controller="fetchMyZonesController" :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee"
-      placeholder="select your Zone" @update:modelValue="setZones" />
+  <div class="grid grid-cols-4 gap-2">
+
+    <div class="input-wrapper col-span-2 pt-15">
+      <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="fetchMyProjectsController"
+        :params="fetchMyProjectsParams" :label="$t('Projects')" id="employee" placeholder="select your project"
+        @update:modelValue="setProject" />
+    </div>
+
+    <div class="input-wrapper col-span-2" v-if="SelectedProject">
+      <CustomSelectInput :modelValue="SelectedZones" class="input" :controller="fetchMyZonesController"
+        :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" placeholder="select your Zone"
+        @update:modelValue="setZones" />
+    </div>
     <!-- Dialog -->
-    <InspectionTemplateDialog @update:data="GetTemplateId" />
+    <div class="input-wrapper col-span-2">
+      <InspectionTemplateDialog @update:data="GetTemplateId" />
+    </div>
   </div>
 
   <InspectionGeneralForm @change:btn="ClearDate" @update:data="GetGeneralData" />
