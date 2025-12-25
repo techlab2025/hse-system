@@ -88,7 +88,7 @@ const TempalteIds = ref<number>()
 // Equipment
 const SelectedEquipment = ref<TitleInterface>()
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
+const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1 , null , false)
 
 /* =========================
  * Core Logic
