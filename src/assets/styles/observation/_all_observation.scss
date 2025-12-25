@@ -11,15 +11,43 @@
     }
 
     .card {
-      background-color: #fafafacc;
+      // background-color: #fafafacc;
+      // padding: $XsSize $XlSize;
+      // border-radius: $XlSize2;
+      // overflow: hidden;
+      // @include flex(column, wrap, center, center);
+      // gap: 3px;
+      // position: relative;
+      // box-shadow: 5px 4px 3px 3px rgba(0, 0, 0, 0.055);
+
       padding: $XsSize $XlSize;
       border-radius: $XlSize2;
       overflow: hidden;
       @include flex(column, wrap, center, center);
       gap: 3px;
       position: relative;
+      background: #fff;
+
+      // Creative layered shadow
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.04),
+        0 10px 20px rgba(0, 0, 0, 0.06),
+        0 20px 40px rgba(0, 0, 0, 0.03);
+
+      transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
       &:hover {
         .card-options {
+          transform: translateY(-6px);
+
+          box-shadow:
+            0 6px 10px rgba(0, 0, 0, 0.06),
+            0 16px 30px rgba(0, 0, 0, 0.1),
+            0 30px 60px rgba(0, 0, 0, 0.06);
+          padding-inline: 12px;
+          // box-shadow: 5px 4px 3px 3px rgba(0, 0, 0, 0.192);
+
           right: 0;
         }
       }
