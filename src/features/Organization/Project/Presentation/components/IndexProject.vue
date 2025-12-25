@@ -230,8 +230,8 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
-      <ExportPdf />
+      <!-- <ExportExcel :data="state.data" />
+      <ExportPdf /> -->
       <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
       >
@@ -261,7 +261,7 @@ watch(
                 <th scope="col" class="w-20">
                   <input type="checkbox" class="checkbox-input" />
                 </th>
-                <th scope="col">{{ $t('serial') }}</th>
+                <th scope="col">{{ $t('project_number') }}</th>
                 <th scope="col">{{ $t('project_name') }}</th>
                 <th scope="col">{{ $t('contractors') }}</th>
                 <th scope="col">{{ $t('locations') }}</th>
@@ -277,7 +277,7 @@ watch(
                 </td>
                 <td data-label="Serial">
                   <router-link :to="`/organization/project/${item.id}`" class="serial-number">
-                    #{{ index + 1 }}
+                    #{{ item?.serial_number }}
                   </router-link>
                 </td>
                 <td data-label="Project Name">

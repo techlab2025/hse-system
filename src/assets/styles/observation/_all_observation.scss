@@ -4,7 +4,7 @@
 
 .all-observation {
   .cards {
-    @include grid(4, $SmSize);
+    @include grid(2, $SmSize);
     margin-top: $XlSize2;
     @media screen and (max-width: 800px) {
       @include grid(1, $SmSize);
@@ -15,8 +15,8 @@
       padding: $XsSize $XlSize;
       border-radius: $XlSize2;
       overflow: hidden;
-      @include flex(row, wrap, flex-start, center);
-      gap: 12px;
+      @include flex(column, wrap, center, center);
+      gap: 3px;
       position: relative;
       &:hover {
         .card-options {
@@ -25,7 +25,7 @@
       }
 
       .card-options {
-        @include flex-row(nowrap, flex-start, center);
+        @include flex-row(nowrap, center, center);
         gap: $XsSize3;
         width: 100%;
         position: absolute;
@@ -61,7 +61,7 @@
           }
         }
         .card-content {
-          @include flex-column(nowrap, flex-start, flex-start);
+          @include flex-column(nowrap, center, center);
         }
 
         .card-header-item {
@@ -87,7 +87,7 @@
 
       .card-body {
         @include flex(row, wrap);
-        gap: $XsSize4;
+        gap: 6px;
         img {
           width: 100%;
           height: 100%;
@@ -98,6 +98,8 @@
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
           color: #cbcbcb;
+          text-align: center;
+          width: 100%;
         }
         .link {
           @include flex(row, wrap, center, center);
@@ -125,6 +127,7 @@
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     color: #cbcbcb;
+    text-align: center;
   }
   .card-header-title {
     font-size: $XlSize2;
