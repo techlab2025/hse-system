@@ -5,6 +5,7 @@ import type Params from '@/base/core/params/params'
 import AddHazardController from '../../controllers/addHazardController'
 import type AddHazardParams from '../../../Core/params/addHazardParams'
 import IncedantForm from './IncedantForm.vue'
+import FullObservationFactoryForm from '../FullForm/FullObservationFactoryForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -23,7 +24,8 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addHazard">
-    <IncedantForm @update:data="setParams" />
+    <!-- <IncedantForm @update:data="setParams" /> -->
+    <FullObservationFactoryForm @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper">
       <button type="submit" class="btn btn-primary w-full">Add</button>

@@ -191,7 +191,6 @@ const updateData = () => {
         place: PlaceText.value
       }
     )
-  console.log(params, "paramsparams");
   emit('update:data', params)
 }
 
@@ -276,20 +275,21 @@ const GetProjectId = (id: number) => {
 
 const SelectedSeverity = ref<TitleInterface>()
 const SeverityList = ref<TitleInterface[]>([
-  new TitleInterface({ id: SeverityEnum.Minor, title: 'Minor' }),
-  new TitleInterface({ id: SeverityEnum.Moderate, title: 'Moderate' }),
-  new TitleInterface({ id: SeverityEnum.Serious, title: 'Serious' }),
-  new TitleInterface({ id: SeverityEnum.Major, title: 'Major' }),
-  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'Catastrophic' }),
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'S1 - Minor' }),
+  new TitleInterface({ id: SeverityEnum.Moderate, title: 'S2 - Moderate' }),
+  new TitleInterface({ id: SeverityEnum.Serious, title: 'S2 - Serious' }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'S3 - Major' }),
+  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'S4 - Catastrophic' }),
 ])
 const SelectedLikelihood = ref<TitleInterface>()
 const LikelihoodList = ref<TitleInterface[]>([
-  new TitleInterface({ id: LikelihoodEnum.Almostcertain, title: 'Almostcertain' }),
-  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'Likely' }),
-  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'Possible' }),
-  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'Rare' }),
-  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'Unlikely' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'L1 - Rare' }),
+  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'L2 - Unlikely' }),
+  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'L3 - Possible' }),
+  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'L4 - Likely' }),
+  new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: 'L5 - Almost Certain' }),
 ])
+
 
 const setSeverity = (data: TitleInterface) => {
   SelectedSeverity.value = data

@@ -6,6 +6,7 @@ import type Params from '@/base/core/params/params'
 import AddHazardController from '../../controllers/addHazardController'
 import type AddHazardParams from '../../../Core/params/addHazardParams'
 import ObservationForm from './ObservationForm.vue'
+import FullObservationFactoryForm from '../FullForm/FullObservationFactoryForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -23,8 +24,9 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols- md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 " @submit.prevent="addObservation">
-    <ObservationForm @update:data="setParams" />
+  <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addObservation">
+    <!-- <ObservationForm @update:data="setParams" /> -->
+    <FullObservationFactoryForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">Add</button>

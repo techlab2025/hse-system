@@ -149,9 +149,9 @@ export default class AddHazardParams implements Params {
         ? this.witnesses?.map((item: WitnessParams) => item.toMap())
         : []
     if (this.severity) data['severity'] = this.severity
-    if (this.Likelihood) data['likeli_hood'] = this.Likelihood
+    if (this.Likelihood) data['like_lihood'] = this.Likelihood
     if (this.time) data['time'] = formatTime(this.time)
-    if (this.code) data['code'] = this.code
+    if (this.code) data['serial_number'] = this.code
     if (this.place) data['place'] = this.place
     return data
   }
