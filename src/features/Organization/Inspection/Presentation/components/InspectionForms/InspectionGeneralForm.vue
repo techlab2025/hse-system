@@ -60,6 +60,7 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: PeriodTypeEnum.WITHDAY, title: 'with day' }),
 
 ])
+const SelectedWithDaysType = ref<TitleInterface>()
 
 const SelectedPeriodType = ref<TitleInterface>(new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }))
 const GetSelectedPeridType = (data) => {
@@ -129,14 +130,13 @@ const resetPeriodFields = () => {
  * ---------------------------------- */
 watch(SelectedInspectionType, () => {
   resetAll()
-})
+}, { immediate: true })
 
 watch(SelectedPeriodType, () => {
   resetPeriodFields()
-})
+}, { immediate: true })
 
 
-const SelectedWithDaysType = ref<TitleInterface>()
 const WithDaysType = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'Day' }),
   new TitleInterface({ id: 2, title: 'Week' }),
