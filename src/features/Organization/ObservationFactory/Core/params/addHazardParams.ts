@@ -6,6 +6,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import InjuryParams from './InjuriesParams'
 import type DethParams from './DethParams'
 import type WitnessParams from './WitnessesParams'
+import { formatTime } from '@/base/Presentation/utils/time_format'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -33,9 +34,12 @@ export default class AddHazardParams implements Params {
   public witnesses?: WitnessParams[]
   public severity?: number
   public Likelihood?: number
+  public time: string
+  public code: string
+  public place: string
 
   public static readonly validation = new ClassValidation().setRules({
-    title: { required: true, minLength: 2, maxLength: 100 },
+    // title: { required: true, minLength: 2, maxLength: 100 },
   })
 
   constructor(data: {
@@ -64,6 +68,9 @@ export default class AddHazardParams implements Params {
     witnesses?: WitnessParams[]
     severity?: number
     Likelihood?: number
+    time: string
+    code: string
+    place: string
   }) {
     this.title = data.title
     this.description = data.description
@@ -90,6 +97,9 @@ export default class AddHazardParams implements Params {
     this.witnesses = data.witnesses
     this.severity = data.severity
     this.Likelihood = data.Likelihood
+    this.time = data.time
+    this.code = data.code
+    this.place = data.place
   }
 
   toMap(): Record<
@@ -128,7 +138,8 @@ export default class AddHazardParams implements Params {
     if (this.isAction) data['is_action'] = this.isAction
     if (this.isThereInjuries != null) data['is_there_injuries'] = this.isThereInjuries
     if (this.isThereDeath != null) data['is_there_death'] = this.isThereDeath
-    if (this.isThereWitnessStatement != null) data['is_there_witness_statement'] = this.isThereWitnessStatement
+    if (this.isThereWitnessStatement != null)
+      data['is_there_witness_statement'] = this.isThereWitnessStatement
     if (this.Injury?.length > 0)
       data['injuries'] = this.Injury ? this.Injury?.map((item: InjuryParams) => item.toMap()) : []
     if (this.deaths?.length > 0)
@@ -139,6 +150,9 @@ export default class AddHazardParams implements Params {
         : []
     if (this.severity) data['severity'] = this.severity
     if (this.Likelihood) data['likeli_hood'] = this.Likelihood
+    if (this.time) data['time'] = formatTime(this.time)
+    if (this.code) data['code'] = this.code
+    if (this.place) data['place'] = this.place
     return data
   }
 

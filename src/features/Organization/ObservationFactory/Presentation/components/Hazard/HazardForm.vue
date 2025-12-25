@@ -30,6 +30,7 @@ import type MyProjectsModel from '@/features/Organization/ObservationFactory/Dat
 import HeaderProjectsFilter from './HazardUtils/HeaderProjectsFilter.vue'
 import { SeverityEnum } from '../../../Core/Enums/SeverityEnum'
 import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -86,10 +87,14 @@ const updateData = () => {
         isThereDeath: null,
         isThereWitnessStatement: null,
         severity: SelectedSeverity.value?.id,
-        Likelihood: SelectedLikelihood.value?.id
+        Likelihood: SelectedLikelihood.value?.id,
+        time: SelctedTime.value,
+        code: SerialNumber.value?.SerialNumber,
+        place: PlaceText.value
       }
     )
 
+  console.log(SerialNumber.value, "SerialNumber");
   emit('update:data', params)
 }
 
@@ -198,6 +203,20 @@ const setLikelihood = (data: TitleInterface) => {
   SelectedLikelihood.value = data
   updateData()
 }
+
+
+const SelctedTime = ref<Date>(new Date())
+const PlaceText = ref<string>()
+const SerialNumber = ref()
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+])
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -219,14 +238,39 @@ const setLikelihood = (data: TitleInterface) => {
 
     </div>
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper">
-    <label for="text">Text</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" />
-  </div>
+
+  <!-- Date -->
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
+
+  <!-- Time -->
+  <div class="input-wrapper col-span-2 md:grid-cols-12">
+    <label for="time">time</label>
+    <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+      @update:model-value="updateData" input-id="time" :time-only="true" />
+  </div>
+
+  <!-- Serial -->
+  <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+  </div>
+
+  <!-- Description -->
+  <div class="col-span-6 md:col-span-6 input-wrapper">
+    <label for="text">{{ $t('description') }}</label>
+    <input placeholder="Add your description" type="text" class="input" id="text" v-model="text" />
+  </div>
+
+  <!-- Place -->
+  <div class="input-wrapper col-span-2 md:grid-cols-12">
+    <label for="time">Placa</label>
+    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+  </div>
+
+
+
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
       :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
@@ -238,11 +282,11 @@ const setLikelihood = (data: TitleInterface) => {
       @update:modelValue="setMachine" />
   </div>
 
-  <div class="col-span-6 md:grid-cols-12">
+  <div class="col-span-3 md:grid-cols-12">
     <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" label="Severity"
       id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
   </div>
-  <div class="col-span-6 md:grid-cols-12">
+  <div class="col-span-3 md:grid-cols-12">
     <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
       label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
   </div>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import  { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
 // import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
 
 const props = defineProps<{
@@ -12,7 +12,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:data'])
 
 const selectedIndustry = ref<RiskLevelEnum | null>(props.modelRiskLevel || null)
-const selectedStatus = ref<number | null>(props.modelIsNearMiss  || 1)
+const selectedStatus = ref<number | null>(props.modelIsNearMiss || 1)
 
 // Emit on change
 watch([selectedIndustry, selectedStatus], ([newIndustry, newStatus]) => {

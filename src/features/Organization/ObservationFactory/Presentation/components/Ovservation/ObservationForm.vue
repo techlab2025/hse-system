@@ -40,6 +40,9 @@ import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue
 import { Severity, SeverityEnum } from '../../../Core/Enums/SeverityEnum'
 import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
+import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
 
@@ -182,7 +185,10 @@ const updateData = () => {
         deaths: null,
         witnesses: null,
         severity: SelectedSeverity.value?.id,
-        Likelihood: SelectedLikelihood?.value?.id
+        Likelihood: SelectedLikelihood?.value?.id,
+        time: SelctedTime.value,
+        code: SerialNumber.value?.SerialNumber,
+        place: PlaceText.value
       }
     )
   console.log(params, "paramsparams");
@@ -294,6 +300,26 @@ const setLikelihood = (data: TitleInterface) => {
   updateData()
 }
 
+const SelctedTime = ref<Date>(new Date())
+const PlaceText = ref<string>()
+const SerialNumber = ref()
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+])
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const indexObservatioTyepController = IndexObserverationTypeController.getInstance()
+const indexObservationTypeParams = new IndexObserverationTypeParams("", 1, 10, 1)
+const SelectedObservationType = ref<TitleInterface>()
+const setSelectedObservationType = (data: TitleInterface) => {
+  SelectedObservationType.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -314,35 +340,68 @@ const setLikelihood = (data: TitleInterface) => {
 
     <!-- first section -->
     <div class="first-section lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
-      <div class="input-wrapper col-span-12">
-        <label for="text">{{ $t('Text') }}</label>
-        <input class="input" :placeholder="$t('add your title')" type="text" id="title" v-model="title" />
-      </div>
-
-      <div class="date-picker-container flex flex-col gap-2 input-wrapper col-span-6 md:grid-cols-12">
+      <!-- Date -->
+      <div class="date-picker-container flex flex-col gap-2 input-wrapper col-span-4 md:grid-cols-12">
         <label for="date">
           {{ $t('date') }}
           <span class="text-red-500">*</span>
         </label>
         <DatePicker v-model="date" id="date" />
-        <!-- <p class="today">today</p> -->
-
       </div>
 
+      <!-- Time -->
+      <div class="input-wrapper col-span-4 md:grid-cols-12">
+        <label for="time">time</label>
+        <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+          @update:model-value="updateData" input-id="time" :time-only="true" />
+      </div>
+
+
+      <!-- Serial -->
+      <div class="col-span-4 md:grid-cols-12" v-if="!(data?.id)">
+        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+      </div>
+
+      <!-- Place -->
+      <div class="input-wrapper col-span-6 md:grid-cols-12">
+        <label for="time">Placa</label>
+        <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+      </div>
+
+
+      <!-- Observation Type -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
-          :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
-          @update:modelValue="setEquipment" />
+        <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
+          :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
+          id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
       </div>
+
+      <!-- Description -->
+      <div class="input-wrapper col-span-12 md:grid-cols-12">
+        <label for="text">{{ $t('description') }}</label>
+        <input class="input" :placeholder="$t('add your description')" type="text" id="title" v-model="title" />
+      </div>
+
+      <!-- Sevarity -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
           label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
       </div>
+
+      <!-- Likelihood -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
           label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
       </div>
 
+      <!-- Equipemt -->
+      <div class="col-span-6 md:grid-cols-12">
+        <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
+          :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
+          @update:modelValue="setEquipment" />
+      </div>
+
+      <!-- Image -->
       <div class="col-span-12">
         <div class="flex flex-col gap-2 input-wrapper">
           <label>{{ $t('upload image') }}</label>
@@ -351,6 +410,8 @@ const setLikelihood = (data: TitleInterface) => {
           <MultiImagesInput :initialImages="image" @update:images="setImages" />
         </div>
       </div>
+
+
     </div>
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
