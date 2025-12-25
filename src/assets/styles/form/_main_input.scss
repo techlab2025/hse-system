@@ -64,7 +64,7 @@
     text-align: start;
     width: 100%;
     outline: none;
-    border-radius: $XlSize3;
+    border-radius: calc($XlSize + 2px);
     transition: all 0.3s ease-in-out;
     background-color: transparent;
 
@@ -106,4 +106,3 @@
     text-transform: capitalize;
   }
 }
-

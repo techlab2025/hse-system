@@ -31,6 +31,9 @@ import InjuryParams from '../../../Core/params/InjuriesParams'
 import DethParams from '../../../Core/params/DethParams'
 import WitnessParams from '../../../Core/params/WitnessesParams'
 import RadioButton from 'primevue/radiobutton'
+import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
+import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -119,7 +122,11 @@ const updateData = () => {
           : [],
 
       severity: 0,
-      Likelihood: 0
+      Likelihood: 0,
+      time: SelctedTime.value,
+      code: SerialNumber.value?.SerialNumber,
+      place: PlaceText.value
+
     })
   emit('update:data', params)
 }
@@ -198,6 +205,20 @@ const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 const solved = ref<'yes' | 'no' | null>()
 const preventive_action = ref<string>()
 
+
+const SelctedTime = ref<Date>(new Date())
+const PlaceText = ref<string>()
+const SerialNumber = ref()
+
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+])
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
 </script>
 
 <template>
@@ -218,20 +239,45 @@ const preventive_action = ref<string>()
       </p>
     </div>
   </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper">
-    <label for="text">Text</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
-  </div>
-  <div class="col-span-6 md:col-span-3 input-wrapper">
+
+  <!-- Date -->
+  <div class="col-span-2 md:col-span-2 input-wrapper">
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
 
-  <div class="col-span-6 md:col-span-3 input-wrapper">
+  <!-- Time -->
+  <div class="input-wrapper col-span-2 md:grid-cols-12">
+    <label for="time">time</label>
+    <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+      @update:model-value="updateData" input-id="time" :time-only="true" />
+  </div>
+
+  <!-- Serial -->
+  <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+  </div>
+
+  <!-- Place -->
+  <div class="input-wrapper col-span-3 md:grid-cols-12">
+    <label for="time">Placa</label>
+    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+  </div>
+
+  <!-- description -->
+  <div class="col-span-3 md:col-span-3 input-wrapper">
+    <label for="text">{{ $t('description') }}</label>
+    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
+  </div>
+
+  <!-- Machine -->
+  <div class="col-span-3 md:col-span-3 input-wrapper">
     <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
       :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
       @update:modelValue="setMachine" />
   </div>
+
+  <!-- Image -->
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
     <MultiImagesInput :initialImages="image" @update:images="setImages" />
@@ -270,6 +316,8 @@ const preventive_action = ref<string>()
       </div>
     </div>
   </div>
+
+
   <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
     <label for="action">{{ $t('preventive_action') }}</label>
     <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
