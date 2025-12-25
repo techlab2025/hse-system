@@ -33,7 +33,6 @@ export default class ShowProjectDetailsModel {
     projectZoons: SohwProjectZoonModel[],
     SerialNumber: string,
     startDate: string,
-
     country: TitleInterface | null,
     state: TitleInterface | null,
     city: TitleInterface | null,
@@ -50,7 +49,6 @@ export default class ShowProjectDetailsModel {
     this.methods = methods
     this.SerialNumber = SerialNumber
     this.startDate = startDate
-
     this.country = country
     this.state = state
     this.city = city

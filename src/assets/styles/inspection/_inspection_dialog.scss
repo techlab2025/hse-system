@@ -39,20 +39,26 @@
     position: relative;
     // z-index: 10;
     padding: $MdSize;
-    @include flex-row(wrap, space-between ,center);
+    @include flex-row(wrap, space-between, center);
     gap: $XsSize2;
 
-    .delete{
+    .delete {
       position: absolute;
       top: 0;
       right: 0;
       color: red;
       padding: 5px;
-
+      .delete-icon {
+        padding: 2px;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+      }
     }
-    img{
+    img {
       width: 100px;
-      height: 100px
+      height: 100px;
     }
     .header-title {
       font-family: 'Regular';
@@ -83,6 +89,8 @@
 
 .inspection-template-dialog {
   .inspection-template-dialog-data {
+    height: 60vh;
+    overflow-y: scroll;
     .inspection-template-dialog-divider {
       width: 100%;
       border: none;

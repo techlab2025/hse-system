@@ -19,7 +19,7 @@ const UpdateData = () => {
 <template>
   <!-- <AddTollIcon @click="visible = true" class="cursor-pointer" /> -->
   <span @click="visible = true" class="add-asset cursor-pointer underline">{{ $t('add_equipment') }}</span>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '40%' }">
+  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', minHeight: '35vh' }">
     <template #header>
       <div class="add-equipment-header">
         <HeaderSection :img="EquipmentImg" title="Equipment , Devices & Tools"

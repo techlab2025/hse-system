@@ -13,6 +13,7 @@ import IndexTemplateController from '@/features/setting/Template/Presentation/co
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
 import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
+import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
 
 
 
@@ -78,7 +79,9 @@ const clearSelectedTemplate = () => {
 
 
       <div class="template-header" v-if="selectedTemplates">
-        <button class="delete" @click="clearSelectedTemplate">delete</button>
+        <button class="delete" @click="clearSelectedTemplate">
+          <DeleteTemplateIcon class="delete-icon" />
+        </button>
         <p class="header-title">
           {{
             selectedTemplateHeader?.title
@@ -91,7 +94,7 @@ const clearSelectedTemplate = () => {
 
 
 
-    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw' }"
+    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw', height: '80vh' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
 
       <template #header>
@@ -114,10 +117,11 @@ const clearSelectedTemplate = () => {
           <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
         </div>
 
-        <button class="btn btn-primary w-full !mt-4" @click="sendTemplatesId">
-          {{ $t('confirm') }}
-        </button>
+
       </div>
+      <button class="btn btn-primary w-full !mt-4" @click="sendTemplatesId">
+        {{ $t('confirm') }}
+      </button>
     </Dialog>
   </div>
 </template>

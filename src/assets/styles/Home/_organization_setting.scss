@@ -3,9 +3,10 @@
 @import '../mixins/grid';
 
 .organization-setting {
-  @include flex-column(nowrap, center, center);
+  @include flex-column(nowrap, flex-start, flex-start);
   font-family: 'Regular';
   width: 100%;
+  // height: 100vh;
 
   .organization-setting-container {
     @include grid(
