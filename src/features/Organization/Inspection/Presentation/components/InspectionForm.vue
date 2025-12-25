@@ -150,7 +150,7 @@ const updateData = () => {
       id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
       DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
       DataParams.value?.TempalteIds || TempalteIds.value,
-      data.inspectionType ,
+      data.inspectionType || InspectionTypeEnum?.DAY ,
       data.periodType|| PeriodTypeEnum?.DAILY,
       DataParams.value?.ProjectId || null,
       periodTasks,
@@ -160,6 +160,7 @@ const updateData = () => {
       DataParams.value?.ProjectZoneId
     )
 
+    console.log(data.inspectionType , "data.inspectionType");
   emit('update:data', params)
 }
 
