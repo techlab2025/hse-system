@@ -7,6 +7,7 @@ import DetectiveLogo from '@/assets/images/DetectiveLogo.png';
 import EquipmentBag from '@/assets/images/EquipmentBag.png';
 import TeamLogo from '@/assets/images/TeamLogo.png';
 import HomeSetting from '@/assets/images/HomeSetting.png';
+import { RouterEnum } from './SettingEnum/SettingEnum';
 
 </script>
 <template>
@@ -34,7 +35,7 @@ import HomeSetting from '@/assets/images/HomeSetting.png';
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
     ]">
-      <router-link to="/organization/equipment-mangement/all-observatin">
+      <router-link :to="`/organization/equipment-mangement/all-observatin?type=${RouterEnum?.OPERATION}`">
         <HomeRoutesCard :img-src="Operation" :title="`operation`"
           :description="`inspection . Observations . hazerd . incedant`" />
       </router-link>
@@ -72,7 +73,7 @@ import HomeSetting from '@/assets/images/HomeSetting.png';
       PermissionsEnum.ORG_EMPLOYEE_UPDATE,
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
-      <router-link to="/organization/organization-employee">
+      <router-link :to="`/organization/organization-employee?type=${RouterEnum?.EMPLOYEES}`">
         <HomeRoutesCard :img-src="TeamLogo" :title="`employee`" :description="`add . show . edit . assign to`" />
       </router-link>
     </PermissionBuilder>
@@ -86,7 +87,7 @@ import HomeSetting from '@/assets/images/HomeSetting.png';
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <!-- /organization?setting=1 -->
-      <router-link to="/organization/setting">
+      <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
         <HomeRoutesCard :img-src="HomeSetting" :title="`setting`" :description="`hierarchy . theme . charts`" />
       </router-link>
     </PermissionBuilder>
