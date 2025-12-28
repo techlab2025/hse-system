@@ -40,7 +40,7 @@ export default class AddWhereHouseController extends ControllerInterface<WhereHo
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/where-house-type')
+        if (!draft) await router.push('/organization/where-house')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -27,7 +27,7 @@ export default class EditWhereHouseParams implements Params {
     data['warehouse_id'] = this.warehouseId
     data['warehouse_type_id'] = this.warehouseTypeId
     data['name'] = this.name
-    data['serial_number'] = this.serialNumber
+    data['serial_number'] = Number(this.serialNumber)
     return data
   }
 }

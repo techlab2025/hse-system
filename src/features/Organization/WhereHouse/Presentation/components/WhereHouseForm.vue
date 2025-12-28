@@ -1,21 +1,14 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import USA from '@/shared/icons/USA.vue'
-import SA from '@/shared/icons/SA.vue'
-import TranslationsParams from '@/base/core/params/translations_params.ts'
-import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
-import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
-import { LangsMap } from '@/constant/langs.ts'
-import { useRoute } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { ref, watch } from 'vue'
 import EditWhereHouseParams from '../../Core/params/editWhereHouseParams'
 import AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 import type WhereHouseDetailsModel from '../../Data/models/WhereHouseDetailsModel'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type TitleInterface from '@/base/Data/Models/title_interface'
-import IndexWhereHouseController from '../controllers/indexWhereHouseController'
-import IndexWhereHouseParams from '../../Core/params/indexWhereHouseParams'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import { useRoute } from 'vue-router'
+import IndexWhereHouseTypeController from '@/features/Organization/WhereHouseType/Presentation/controllers/indexWhereHouseTypeController'
+import IndexWhereHouseTypeParams from '@/features/Organization/WhereHouseType/Core/params/indexWhereHouseTypeParams'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -25,133 +18,71 @@ const props = defineProps<{
 
 const route = useRoute()
 const id = route.params.parent_id
-
-// ---------- State ----------
-const langs = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-// default available langs from backend
-const langDefault = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-const user = useUserStore()
-
-// ---------- Fetch available languages ----------
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0
-) => {
-  // console.log(user.user, 'user')
-  if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexWhereHouseController = await IndexLangController.getInstance().getData(params)
-
-  const response = indexWhereHouseController.value
-
-  if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-  }
-}
+const Name = ref<string>()
 
 
-onMounted(async () => {
-  await fetchLang()
-})
 
-// ---------- Emit update ----------
+
 const updateData = () => {
-  const translationsParams = new TranslationsParams()
-
-  // titles
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
-
-  console.log(translationsParams, "langs");
   const params = props.data?.id
-    ? new EditWhereHouseParams(props.data.id, translationsParams, SelectedWhereHouseType.value?.id)
-    : new AddWhereHouseParams(translationsParams, SelectedWhereHouseType?.value?.id)
+    ? new EditWhereHouseParams(props.data.id, SelectedWhereHouseType?.value?.id, Name.value, SerialNumber.value?.SerialNumber)
+    : new AddWhereHouseParams(SelectedWhereHouseType?.value?.id, Name.value, SerialNumber.value?.SerialNumber)
 
-  // console.log(params, 'params')
-
+  console.log(SerialNumber, "SerialNumber");
   emit('update:data', params)
 }
 
-// ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
-watch(
-  [() => props.data, () => langDefault.value],
-  ([newData, newDefault]) => {
-    if (newDefault.length) {
-      // titles
-      console.log(newData, "newData");
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+const SerialNumber = ref()
 
-      updateData()
-    }
+const fields = ref([
+  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.SerialNumber ? false : true },
+])
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+watch(
+  [() => props.data],
+  ([newData]) => {
+    console.log(newData , "newData");
+    Name.value = newData.name
+    // SelectedWhereHouseType.value = new TitleInterface({id:newData})
   },
   { immediate: true }
 )
-watch(
-  langs,
-  () => {
-    updateData()
-  },
-  { deep: true }
-)
+
 
 const SelectedWhereHouseType = ref<TitleInterface>()
 
-const indexWhereHouseTypeController = IndexWhereHouseController.getInstance()
-const indexWhereHouseTypeParams = new IndexWhereHouseParams('', 1, 10, 1, false)
+const indexWhereHouseTypeController = IndexWhereHouseTypeController.getInstance()
+const indexWhereHouseTypeParams = new IndexWhereHouseTypeParams('', 1, 10, 1, false)
+
 const setSelectedWhereHouseType = (data: TitleInterface) => {
   SelectedWhereHouseType.value = data
+  updateData()
+}
+
+
+const setName = (data) => {
+  Name.value = data.target.value
   updateData()
 }
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="name">{{ $t('name') }}</label>
+    <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
   </div>
+
+  <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+  </div>
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" label="Observation Type "
-      id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedWhereHouseType" />
+      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" label="Where House Type "
+      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" />
   </div>
 </template>

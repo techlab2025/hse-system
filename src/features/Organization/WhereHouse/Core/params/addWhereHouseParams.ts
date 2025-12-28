@@ -7,7 +7,7 @@ export default class AddWhereHouseParams implements Params {
   serialNumber: number
 
   public static readonly validation = new ClassValidation().setRules({
-    translation: { required: true, minLength: 2, maxLength: 100 },
+    name: { required: true, minLength: 2, maxLength: 100 },
   })
 
   constructor(warehouseTypeId: number, name: string, serialNumber: number) {
@@ -30,7 +30,7 @@ export default class AddWhereHouseParams implements Params {
 
     data['warehouse_type_id'] = this.warehouseTypeId
     data['name'] = this.name
-    data['serial_number'] = this.serialNumber
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }
