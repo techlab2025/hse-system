@@ -10,6 +10,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DatePicker from 'primevue/datepicker'
 import { ContractorStatusEnum } from '../../Core/Enum/ContractorStatusEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 const emit = defineEmits(['update:data'])
 
 const indexScopeController = IndexScopeController.getInstance()
@@ -32,7 +33,8 @@ const updateData = () => {
       contactPerson.value,
       contactPersonEmail.value,
       contactPersonPhone.value,
-      date.value
+      null,
+      formatJoinDate(date.value)
     )
     : new AddContractorParams(
       Name.value,
@@ -44,7 +46,7 @@ const updateData = () => {
       contactPersonEmail.value ? contactPersonEmail.value : " ",
       contactPersonPhone.value ? contactPersonPhone.value : " ",
       SelectedStatus.value ? SelectedStatus.value?.id : 0,
-      date.value
+      formatJoinDate(date.value)
 
 
     )
