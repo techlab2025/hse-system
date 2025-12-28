@@ -21,6 +21,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <!-- form where houes -->
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addWhereHouse">
     <WhereHouseForm @update:data="setParams" />
 
