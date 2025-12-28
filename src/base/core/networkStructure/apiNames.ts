@@ -1309,7 +1309,7 @@ class ApiNames {
     return this.prefix + 'create_warehouse'
   }
   public get IndexWhereHouse() {
-    return this.prefix + 'fetch_warehouse'
+    return this.prefix + 'fetch_warehouses'
   }
   public get ShowWhereHouse() {
     return this.prefix + 'fetch_warehouse_details'

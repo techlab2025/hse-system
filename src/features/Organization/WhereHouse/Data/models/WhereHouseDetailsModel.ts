@@ -1,30 +1,17 @@
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-import TitleInterface from '@/base/Data/Models/title_interface.ts'
-
 export default class WhereHouseDetailsModel {
   public id: number
-  public titles: TitleLocale[]
+  public name: string
+  public SerialNumber: string
 
-  constructor(id: number, titles: TitleLocale[]) {
+  constructor(id: number, name: string, SerialNumber: string) {
     this.id = id
-    this.titles = titles
+    this.name = name
+    this.SerialNumber = SerialNumber
   }
 
   static fromMap(data: any): WhereHouseDetailsModel {
-    console.log(data, 'inside model')
-    return new WhereHouseDetailsModel(data.id, TranslationsParams.fromMap(data.titles).titles)
+    return new WhereHouseDetailsModel(data.id, data.name, data.serial_number)
   }
 
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
-  }
-
-  static example: WhereHouseDetailsModel = new WhereHouseDetailsModel(1, [
-    { title: 'title', locale: 'en' },
-  ])
+  static example: WhereHouseDetailsModel = new WhereHouseDetailsModel(1, 'test', 'test')
 }

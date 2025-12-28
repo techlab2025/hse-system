@@ -84,7 +84,7 @@ const actionList = (id: number, deleteWhereHouse: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/where-house-type/${id}`,
+    link: `/organization/where-house/${id}`,
     permission: [
       PermissionsEnum.WHIERE_HOUSE_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -125,9 +125,9 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
-        <router-link to="/organization/where-house-type/add" class="btn btn-primary">
-          {{ $t('add_where_house_type') }}
+      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
+        <router-link to="/organization/where-house/add" class="btn btn-primary">
+          {{ $t('add_where_house') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -135,11 +135,11 @@ watch(
 
   <PermissionBuilder :code="[
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+    PermissionsEnum.WHIERE_HOUSE_ALL,
+    PermissionsEnum.WHIERE_HOUSE_DELETE,
+    PermissionsEnum.WHIERE_HOUSE_FETCH,
+    PermissionsEnum.WHIERE_HOUSE_UPDATE,
+    PermissionsEnum.WHIERE_HOUSE_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -155,13 +155,12 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/where-house-type/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/where-house/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Name">{{ wordSlice(item.name) }}</td>
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteWhereHouse)"
-                    @delete="deleteWhereHouse(item.id)" />
+                  <DropList :actionList="actionList(item.id, deleteWhereHouse)" @delete="deleteWhereHouse(item.id)" />
                 </td>
               </tr>
             </tbody>
@@ -176,12 +175,12 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/where-house-type/add`" addText="Add WhereHouse"
+        <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
           description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No WhereHouse" />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/where-house-type/add`" addText="Add WhereHouse"
+        <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
           description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No WhereHouse" />
       </template>

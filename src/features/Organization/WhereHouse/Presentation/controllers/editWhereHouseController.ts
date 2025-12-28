@@ -38,7 +38,7 @@ export default class EditWhereHouseController extends ControllerInterface<WhereH
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/where-house-type')
+        await router.push('/organization/where-house')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
