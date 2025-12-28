@@ -416,6 +416,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
     <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" @update:data="handleObservationLevel" />
+    
     <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
       :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText"
       :modelHazerdType="props.data?.type_model ? markRaw(props.data.type_model) : null"

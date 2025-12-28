@@ -1,7 +1,7 @@
 export enum SeverityEnum {
-  Minor = 0,
-  Moderate = 1,
-  Serious = 2,
-  Major = 3,
+  Minor = 1,
+  Moderate = 2,
+  Serious = 3,
+  Major = 4,
   Catastrophic,
 }
