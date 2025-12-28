@@ -1,4 +1,4 @@
-// import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
+  // import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import EquipmentModel from '../../Data/models/equipmentModel'

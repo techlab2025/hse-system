@@ -42,6 +42,13 @@ import IndexHazardTypeController from '@/features/setting/HazardType/Presentatio
 import IndexAccidentsTypeController from '@/features/setting/AccidentsTypes/Presentation/controllers/indexAccidentsTypeController'
 import IndexAccidentsTypeParams from '@/features/setting/AccidentsTypes/Core/params/indexAccidentsTypeParams'
 import Checkbox from 'primevue/checkbox'
+import SaveStatusSelector from '../Ovservation/SaveStatusSelector.vue'
+import ObservationLevel from '../Ovservation/ObservationLevel.vue'
+import HazerdType from '../Ovservation/HazerdType.vue'
+import { markRaw } from 'vue'
+import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import { TypesEnum } from '../../../Core/Enums/types_enum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -53,6 +60,10 @@ const descripe = ref<string>('')
 const image = ref([])
 const route = useRoute()
 const ObservationFactoryType = ref(route?.path?.includes('incedant') ? Observation.AccidentsType : route?.path?.includes('hazard') ? Observation.HazardType : Observation.ObservationType)
+const saveStatus = ref<SaveStatusEnum | null>(SaveStatusEnum.NotSaved)
+const riskLevel = ref<RiskLevelEnum | null>(RiskLevelEnum.Low)
+const isNearMiss = ref<boolean | number>(0)
+const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
   const params = props.data?.id
@@ -86,10 +97,10 @@ const updateData = () => {
       zoonId: ZoneIds.value ?? null,
       projectId: SelectedProjectId.value ?? null,
       isResult: 0,
-      riskLevel: 0,
-      saveStatus: 0,
+      riskLevel: riskLevel.value,
+      saveStatus: saveStatus.value,
       action: preventive_action.value ?? null,
-      isNearMiss: 0,
+      isNearMiss: isNearMiss.value,
       capaStatus: 0,
       date: date.value ?? null,
       capa: [],
@@ -105,7 +116,7 @@ const updateData = () => {
               Accidents?.value?.employeeName || '',
               Accidents?.value?.text || null,
               Accidents?.value?.infectionTypeId || 0,
-              Accidents?.value?.isWorkStopped
+              Accidents?.value?.isWorkStopped == 1 ? 0 : 1
             )
           ]
           : [],
@@ -136,21 +147,15 @@ const updateData = () => {
       time: SelctedTime.value,
       code: SerialNumber.value?.SerialNumber,
       place: PlaceText.value,
-      isWorkStopped:isWorkStopped.value ? 1 : 0
+      isWorkStopped: isWorkStopped.value ? 1 : 0
 
     })
+  console.log(isWorkStopped.value, "isWorkStopped.value");
   emit('update:data', params)
 }
 
 watch([() => props.data], ([newData]) => { }, { immediate: true })
 
-// const indexHazardTypeParams = new IndexHazardParams('', 1, 10, 1)
-// const indexHazardTypeController = IndexHazardController.getInstance()
-// const HazardType = ref<TitleInterface[]>([])
-// const setHazardType = (data: TitleInterface[]) => {
-//   HazardType.value = data
-//   updateData()
-// }
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const SelectedMachine = ref<TitleInterface | null>(null)
@@ -159,10 +164,7 @@ const setMachine = (data: TitleInterface | null) => {
   updateData()
 }
 
-// const setImage = async (data: File) => {
-//   image.value = await filesToBase64(data)
-//   updateData()
-// }
+
 const ZoneIds = ref<number>()
 const GetZones = (data: number) => {
   ZoneIds.value = data
@@ -252,10 +254,32 @@ const LikelihoodList = ref<TitleInterface[]>([
 const setSeverity = (data: TitleInterface) => {
   SelectedSeverity.value = data
   updateData()
+  CalcObservationLevel()
 }
 const setLikelihood = (data: TitleInterface) => {
   SelectedLikelihood.value = data
   updateData()
+  CalcObservationLevel()
+}
+
+
+const ObservationLevelValue = ref<number>()
+const CalcObservationLevel = () => {
+  ObservationLevelValue.value = Number(Number(SelectedSeverity.value?.id) * Number(SelectedLikelihood.value?.id))
+
+  if (ObservationLevelValue.value > 1 && ObservationLevelValue.value < 5) {
+    riskLevel.value = RiskLevelEnum.Low
+  }
+  else if (ObservationLevelValue.value > 4 && ObservationLevelValue.value < 10) {
+    riskLevel.value = RiskLevelEnum.Medium
+  }
+  else if (ObservationLevelValue.value > 9 && ObservationLevelValue.value < 16) {
+    riskLevel.value = RiskLevelEnum.High
+  }
+  else if (ObservationLevelValue.value > 15 && ObservationLevelValue.value < 25) {
+    riskLevel.value = RiskLevelEnum.High
+  }
+
 }
 
 watch(() => route.path, (newVal) => {
@@ -298,6 +322,17 @@ const UpdateWorkStatus = (data) => {
   isWorkStopped.value = data?.target?.checked
   updateData()
 }
+
+
+
+const handleObservationLevel = (data: any) => {
+  riskLevel.value = data.level
+  isNearMiss.value = data.is_near_miss
+  type.value = data.is_near_miss === 1 ? TypesEnum.HazardType : TypesEnum.ObservationType
+  updateData()
+}
+
+
 </script>
 
 <template>
@@ -391,7 +426,6 @@ const UpdateWorkStatus = (data) => {
         label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
     </div>
 
-
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <label for="">upload image</label>
@@ -399,7 +433,8 @@ const UpdateWorkStatus = (data) => {
     </div>
 
     <!-- IsWorkStopped -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped" @click="isWorkStopped=!isWorkStopped">
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
+      @click="isWorkStopped = !isWorkStopped; updateData()">
       <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
       <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
     </div>
@@ -439,7 +474,6 @@ const UpdateWorkStatus = (data) => {
       </div>
     </div>
 
-
     <!-- Action Description -->
     <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
       <label for="action">{{ $t('preventive_action') }}</label>
@@ -451,6 +485,17 @@ const UpdateWorkStatus = (data) => {
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <label for="descripe">descripe <span class="optional">(optional)</span></label>
       <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
+    </div>
+
+    <!-- Save Status Positive or Negative -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+      <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
+    </div>
+
+    <!-- Observation Level -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+      <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss"
+        @update:data="handleObservationLevel" />
     </div>
 
     <!-- FactoryAccidents -->

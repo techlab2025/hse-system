@@ -1286,6 +1286,40 @@ class ApiNames {
   public get DeleteScope() {
     return this.prefix + 'delete_scope'
   }
+
+  // WhereHosue Type
+  public get CreateWhereHouseType() {
+    return this.prefix + 'create_warehouse_type'
+  }
+  public get IndexWhereHouseType() {
+    return this.prefix + 'fetch_warehouse_types'
+  }
+  public get ShowWhereHouseType() {
+    return this.prefix + 'fetch_warehouse_type_details'
+  }
+  public get EditWhereHouseType() {
+    return this.prefix + 'update_warehouse_type'
+  }
+  public get DeleteWhereHouseType() {
+    return this.prefix + 'delete_warehouse_type'
+  }
+
+  // WhereHosue
+  public get CreateWhereHouse() {
+    return this.prefix + 'create_warehouse'
+  }
+  public get IndexWhereHouse() {
+    return this.prefix + 'fetch_warehouse'
+  }
+  public get ShowWhereHouse() {
+    return this.prefix + 'fetch_warehouse_details'
+  }
+  public get EditWhereHouse() {
+    return this.prefix + 'update_warehouse'
+  }
+  public get DeleteWhereHouse() {
+    return this.prefix + 'delete_warehouse'
+  }
 }
 
 export { ApiNames }

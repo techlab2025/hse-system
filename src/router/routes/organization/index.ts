@@ -14,6 +14,8 @@ import { InvestigatingRoutes } from './investigating'
 import { EquipmentMangementRoutes } from './eqipmentMangement'
 import { InvestigationMeetingRoutes } from './investigationmeeting'
 import { InjuryRoutes } from './Injury'
+import { WhereHouseTypeRoutes } from './whereHouseType'
+import { WhereHouseRoutes } from './whereHouse'
 import { SettingRoutes } from './setting'
 
 export const organizationRoutes: RouteRecordRaw[] = [
@@ -38,6 +40,8 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...InvestigationMeetingRoutes,
   ...InjuryRoutes,
   ...SettingRoutes,
+  ...WhereHouseTypeRoutes,
+  ...WhereHouseRoutes,
 
   {
     path: 'permission/:id',
