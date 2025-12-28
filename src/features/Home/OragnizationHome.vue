@@ -22,7 +22,8 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
       PermissionsEnum.PROJECT_DETAILS,
     ]">
       <router-link to="/organization/projects">
-        <HomeRoutesCard :img-src="CardProjectLogo" :title="`project`" :description="`plan . tasks . hierarchy`" />
+        <HomeRoutesCard :img-src="CardProjectLogo" :title="`${$t('project')}`"
+          :description="`${$t('plan')} . ${$t('tasks ')} . ${$t('hierarchy')}`" />
       </router-link>
     </PermissionBuilder>
 
@@ -36,8 +37,8 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
     ]">
       <router-link :to="`/organization/equipment-mangement/all-observatin?type=${RouterEnum?.OPERATION}`">
-        <HomeRoutesCard :img-src="Operation" :title="`operation`"
-          :description="`inspection . Observations . hazerd . incedant`" />
+        <HomeRoutesCard :img-src="Operation" :title="`${$t('operations')}`"
+          :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `" />
       </router-link>
     </PermissionBuilder>
     <!-- <PermissionBuilder :code="[
@@ -61,7 +62,8 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
     ]">
       <router-link to="/organization/equipments">
-        <HomeRoutesCard :img-src="EquipmentBag" :title="`equipment`" :description="`add . assign insepction . show`" />
+        <HomeRoutesCard :img-src="EquipmentBag" :title="`${$t('equipment')}`"
+          :description="`${$t('add')} . ${$t('assign_insepction ')} . ${$t('show')}  `" />
       </router-link>
     </PermissionBuilder>
 
@@ -74,7 +76,8 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <router-link :to="`/organization/organization-employee?type=${RouterEnum?.EMPLOYEES}`">
-        <HomeRoutesCard :img-src="TeamLogo" :title="`employee`" :description="`add . show . edit . assign to`" />
+        <HomeRoutesCard :img-src="TeamLogo" :title="`${$t('employee')}`"
+          :description="`${$t('add')} . ${$t('show')} . ${$t('edit')} . ${$t('assign_to')}`" />
       </router-link>
     </PermissionBuilder>
 
@@ -88,7 +91,8 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
     ]">
       <!-- /organization?setting=1 -->
       <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
-        <HomeRoutesCard :img-src="HomeSetting" :title="`setting`" :description="`hierarchy . theme . charts`" />
+        <HomeRoutesCard :img-src="HomeSetting" :title="`${$t('setting')}`"
+          :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
     </PermissionBuilder>
 

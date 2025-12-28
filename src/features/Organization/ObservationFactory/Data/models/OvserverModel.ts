@@ -1,4 +1,5 @@
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import acc from '@/assets/images/acc.png'
 
 export default class OvserverModel {
   public id: number
@@ -45,4 +46,15 @@ export default class OvserverModel {
       data.permissions,
     )
   }
+  static example :OvserverModel = new OvserverModel(
+    1,
+    'Ahmed Hassan',
+    '01007599123',
+    'mohab@gmail.com',
+    1,
+    acc,
+    1,
+    [],
+    [],
+  )
 }

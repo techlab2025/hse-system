@@ -13,6 +13,7 @@ import EmployeeTypeSelect from './EmployeeTypeSelect.vue'
 import { EmployeeNameStatus } from '../../../Core/Enums/EmplyeeNameStatus'
 import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
 import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
+import Checkbox from 'primevue/checkbox'
 
 const emit = defineEmits(['update:data'])
 const time = ref()
@@ -34,7 +35,7 @@ const setPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
 }
 
-const isAnotherMeeting = ref(1)
+const isAnotherMeeting = ref(0)
 const image = ref([])
 const updateData = () => {
   console.log(isAnotherMeeting.value, " isAnotherMeeting.value");
@@ -46,6 +47,7 @@ const updateData = () => {
     employeeId: SelectedEmployee.value?.id,
     infectionTypeId: SelectedInfection.value?.id,
     employeeName: EmployeeName.value,
+    isWorkStopped: isWorkStopped.value ? 1 : 0
   })
 }
 const setImages = async (data: string[]) => {
@@ -82,6 +84,12 @@ const indexInjuryParams = new IndexInjuryParams('', 1, 10, 1)
 watch(() => isAnotherMeeting.value, () => {
   updateData()
 })
+
+const isWorkStopped = ref()
+const UpdateWorkStatus = (data) => {
+  isWorkStopped.value = data?.target?.checked
+  updateData()
+}
 </script>
 <template>
   <div class="another-meeting">
@@ -122,6 +130,14 @@ watch(() => isAnotherMeeting.value, () => {
         <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
           :params="indexInjuryParams" label="Infection Type" id="infection" placeholder="select your infection"
           @update:modelValue="setInfection" />
+      </div>
+
+      <!-- IsWorkStopped -->
+      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white"
+        @click="isWorkStopped = !isWorkStopped">
+        <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
+        <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
+          :name="`is_stoped`" />
       </div>
     </div>
   </div>

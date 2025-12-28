@@ -21,7 +21,7 @@ import { useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
-
+import mark from "@/assets/images/mark.png"
 
 const indexInvestigatingController = IndexInvestigatingController.getInstance()
 const state = ref(indexInvestigatingController.state.value)
@@ -86,6 +86,7 @@ const GetInvestigationType = (type: number) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
+      {{ console.log(state.data, "state") }}
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
         <InvestigatingSidebar />
@@ -117,7 +118,10 @@ const GetInvestigationType = (type: number) => {
                             'high-observation': item.title === 'High observation',
                             'medium-observation': item.title === 'Medium observation',
                           }">
-                            {{ GetInvestigationType(item?.observation?.type) }} <span>_OBS-2025-0112</span>
+                            {{ GetInvestigationType(item?.observation?.type) }} <span v-if="item?.serial">{{
+                              item?.serial ||
+                              '_OBS-2025-0112'
+                              }}</span>
                           </p>
                           <p class="new">{{ ReturnStatusTitle(item?.status) }}</p>
                         </div>
@@ -125,7 +129,7 @@ const GetInvestigationType = (type: number) => {
                           <p class="label-item-secondary">
                             Date & Time: <span>{{ item?.date }}</span>
                           </p>
-                          <p class="title label-item-secondary">
+                          <p class="title label-item-secondary" v-if="item?.observer?.name">
                             the victim : <span>{{ item?.observer?.name }}</span>
                             <span>(observer)</span>
                           </p>
@@ -137,20 +141,24 @@ const GetInvestigationType = (type: number) => {
                   <!-- second container -->
                   <div class="header-container">
                     <div class="card-content">
-                      <div class="card-header">
-                        <p class="label-item-secondary">{{ item?.serial }}</p>
+                      <div class="card-header" v-if="item?.description">
+                        <p class="label-item-secondary">{{ item?.description }}</p>
                       </div>
 
                       <div class="card-details">
                         <div class="project-details">
-                          <p class="label-item-primary" v-if="item?.zoon">
-                            Zone: <span>{{ item?.zoon?.title }}</span>
+                          <p class="label-item-primary flex" v-if="item?.zoon">
+                            <img :src="mark" alt="zone">
+                            Zone: <span>{{ item?.zoon?.zoonTitle }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.equipment">
                             Machine: <span>{{ item?.equipment?.title }}</span>
                           </p>
                           <p class="label-item-primary">
                             Status: <span>{{ ReturnStatusTitle(item?.status) }}</span>
+                          </p>
+                          <p class="label-item-primary" v-if="item?.saveStatus">
+                            take action: <span>{{ item?.saveStatus == 1 ? "true" : "false" }}</span>
                           </p>
                         </div>
                       </div>
@@ -184,7 +192,8 @@ const GetInvestigationType = (type: number) => {
                         </div>
 
                         <div class="solved-btn" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
-                          <router-link :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
+                          <router-link
+                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>
                             </button>

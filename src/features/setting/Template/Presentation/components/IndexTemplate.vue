@@ -151,9 +151,9 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
       </span>
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTemplate" />
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
-      <ExportPdf />
+    <div class="col-span-2 flex justify-end gap-2  ">
+      <!-- <ExportExcel :data="state.data" /> -->
+      <!-- <ExportPdf /> -->
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.TEMPLATE_CREATE,
@@ -161,7 +161,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
-          class="btn btn-primary">
+          class="btn btn-primary ">
           {{ $t('Add_Template') }}
         </router-link>
       </PermissionBuilder>

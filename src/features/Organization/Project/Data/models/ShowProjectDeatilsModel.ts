@@ -113,6 +113,24 @@ export default class ShowProjectDetailsModel {
     }
     return this.getTitle(current)
   }
+
+  static example: ShowProjectDetailsModel = new ShowProjectDetailsModel(
+    1,
+    'title',
+    'description',
+    { id: 1, title: 'title' },
+    [],
+    [],
+    [],
+    [],
+    '',
+    '',
+    { id: 1, title: 'title' },
+    { id: 1, title: 'title' },
+    { id: 1, title: 'title' },
+    { id: 1, title: 'title' },
+    null,
+  )
 }
 
 type LocationData = {

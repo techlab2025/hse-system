@@ -6,15 +6,22 @@ import {
 } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import InvestigatingDetailsModel from '../../Data/models/investigatingDetailsModel'
 import { ShowInvestigatingRepo } from '../repositories/showInvestigatingRepo'
+import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
 
 export default class ShowInvestigatingUseCase
   implements UseCase<InvestigatingDetailsModel, Params>
 {
-  public isExample: boolean = true
-
   async call(params: Params): Promise<DataState<InvestigatingDetailsModel>> {
-    return this.isExample
-      ? new DataSuccess({ data: InvestigatingDetailsModel.example })
-      : ShowInvestigatingRepo.getInstance().call(params)
+    return UseCaseHandler.instance().handle({
+      onTest: () => {
+        return new DataSuccess({ data: InvestigatingDetailsModel.example })
+      },
+      onDev: () => {
+        return ShowInvestigatingRepo.getInstance().call(params)
+      },
+      onProduction: () => {
+        return ShowInvestigatingRepo.getInstance().call(params)
+      },
+    })
   }
 }

@@ -41,6 +41,7 @@ import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/ind
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 import IndexAccidentsTypeController from '@/features/setting/AccidentsTypes/Presentation/controllers/indexAccidentsTypeController'
 import IndexAccidentsTypeParams from '@/features/setting/AccidentsTypes/Core/params/indexAccidentsTypeParams'
+import Checkbox from 'primevue/checkbox'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -103,7 +104,8 @@ const updateData = () => {
               Accidents?.value?.employeeId || [],
               Accidents?.value?.employeeName || '',
               Accidents?.value?.text || null,
-              Accidents?.value?.infectionTypeId || 0
+              Accidents?.value?.infectionTypeId || 0,
+              Accidents?.value?.isWorkStopped
             )
           ]
           : [],
@@ -133,7 +135,8 @@ const updateData = () => {
       Likelihood: 0,
       time: SelctedTime.value,
       code: SerialNumber.value?.SerialNumber,
-      place: PlaceText.value
+      place: PlaceText.value,
+      isWorkStopped:isWorkStopped.value ? 1 : 0
 
     })
   emit('update:data', params)
@@ -208,7 +211,7 @@ const UpdateFatalities = (data: any) => {
   console.log(Fatalities.value, "Fatalities.value");
   updateData()
 }
-const takeAction = ref<'yes' | 'no' | null>()
+const takeAction = ref<'yes' | 'no' | null>("no")
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 const solved = ref<'yes' | 'no' | null>()
 const preventive_action = ref<string>()
@@ -289,162 +292,187 @@ const setAccidentsType = (data: TitleInterface) => {
   AccidentsType.value = data
   updateData()
 }
+
+const isWorkStopped = ref()
+const UpdateWorkStatus = (data) => {
+  isWorkStopped.value = data?.target?.checked
+  updateData()
+}
 </script>
 
 <template>
-  <div class="col-span-6 md:col-span-6">
-    <HeaderPage :title="'create Incedant'" :subtitle="'Identify and report potential Incedants before they cause harm'"
-      :img="HazardImage" />
-    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
-  </div>
-
-  <div class="col-span-6 md:col-span-6">
-    <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
-  </div>
-
-  <div class="Hazard-form col-span-6 md:col-span-6">
-    <div class="Hazard-form-header">
-      <HazardIcon class="icon" />
-      <p class="title">{{ GetObservationType(ObservationFactoryType) }} form
-        <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
-      </p>
+  <div class="full-observation-form col-span-6 grid grid-cols-1 md:grid-cols-6 gap-4">
+    <div class="col-span-6 md:col-span-6">
+      <HeaderPage :title="'create Incedant'"
+        :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
+      <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
     </div>
-  </div>
 
-  <!-- Date -->
-  <div class="col-span-2 md:col-span-2 input-wrapper">
-    <label for="date">Date</label>
-    <DatePicker v-model="date" placeholder="Add your date" />
-  </div>
+    <div class="col-span-6 md:col-span-6">
+      <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
+    </div>
 
-  <!-- Time -->
-  <div class="input-wrapper col-span-2 md:grid-cols-12">
-    <label for="time">time</label>
-    <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
-      @update:model-value="updateData" input-id="time" :time-only="true" />
-  </div>
+    <div class="Hazard-form col-span-6 md:col-span-6">
+      <div class="Hazard-form-header">
+        <HazardIcon class="icon" />
+        <p class="title">{{ GetObservationType(ObservationFactoryType) }} form
+          <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
+        </p>
+      </div>
+    </div>
 
-  <!-- Serial -->
-  <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
-  </div>
+    <!-- Date -->
+    <div class="col-span-2 md:col-span-2 input-wrapper">
+      <label for="date">Date</label>
+      <DatePicker v-model="date" placeholder="Add your date" />
+    </div>
 
-  <!-- Place -->
-  <div class="input-wrapper col-span-3 md:grid-cols-12">
-    <label for="time">Place</label>
-    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
-  </div>
+    <!-- Time -->
+    <div class="input-wrapper col-span-2 md:grid-cols-12">
+      <label for="time">time</label>
+      <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+        @update:model-value="updateData" input-id="time" :time-only="true" />
+    </div>
 
-  <!-- Observation Type -->
-  <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.ObservationType">
-    <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
-      :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
-      id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
-  </div>
+    <!-- Serial -->
+    <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
+      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+    </div>
 
-  <!-- Hazard Type -->
-  <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.HazardType">
-    <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
-      @update:modelValue="setHazardType" />
-  </div>
+    <!-- Place -->
+    <div class="input-wrapper col-span-3 md:grid-cols-12">
+      <label for="time">Place</label>
+      <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+    </div>
 
-  <!-- Incedant Type -->
-  <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
-    <CustomSelectInput :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-      :params="indexAccidentsTypeParams" label="Incedant Type" id="incedant" placeholder="Select Incedant Type"
-      @update:modelValue="setAccidentsType" />
-  </div>
+    <!-- Observation Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.ObservationType">
+      <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
+        :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
+        id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
+    </div>
 
-  <!-- Machine -->
-  <div class="col-span-3 md:col-span-3 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
-      @update:modelValue="setMachine" />
-  </div>
+    <!-- Hazard Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.HazardType">
+      <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
+        :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
+        @update:modelValue="setHazardType" />
+    </div>
 
-  <!-- description -->
-  <div class="col-span-6 md:col-span-6 input-wrapper">
-    <label for="text">{{ $t('description') }}</label>
-    <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
-  </div>
+    <!-- Incedant Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
+      <CustomSelectInput :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
+        :params="indexAccidentsTypeParams" label="Incedant Type" id="incedant" placeholder="Select Incedant Type"
+        @update:modelValue="setAccidentsType" />
+    </div>
 
-  <!-- Sevarity -->
-  <div class="col-span-3 md:col-span-3">
-    <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" label="Severity"
-      id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
-  </div>
+    <!-- Machine -->
+    <div class="col-span-3 md:col-span-3 input-wrapper">
+      <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
+        :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
+        @update:modelValue="setMachine" />
+    </div>
 
-  <!-- Likelihood -->
-  <div class="col-span-3 md:col-span-3">
-    <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-      label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
-  </div>
+    <!-- description -->
+    <div class="col-span-6 md:col-span-6 input-wrapper">
+      <label for="text">{{ $t('description') }}</label>
+      <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
+    </div>
+
+    <!-- Sevarity -->
+    <div class="col-span-3 md:col-span-3">
+      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
+        label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+    </div>
+
+    <!-- Likelihood -->
+    <div class="col-span-3 md:col-span-3">
+      <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
+        label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+    </div>
 
 
-  <!-- Image -->
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="">upload image</label>
-    <MultiImagesInput :initialImages="image" @update:images="setImages" />
-  </div>
+    <!-- Image -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+      <label for="">upload image</label>
+      <MultiImagesInput :initialImages="image" @update:images="setImages" />
+    </div>
 
-  <div class="hazard-type-container incedant col-span-6 md:col-span-6">
-    <div class="input-wrapper radio-container incedant col-span-6 md:col-span-6">
-      <div class="col-span-12 md:col-span-6">
-        <label class="radio-title">{{ $t('take action') }}</label>
-        <div class="radio-answers flex">
-          <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
-            <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
-            <label>Yes</label>
+    <!-- IsWorkStopped -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped" @click="isWorkStopped=!isWorkStopped">
+      <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
+      <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
+    </div>
+
+    <!-- Take Action -->
+    <div class="hazard-type-container incedant col-span-6 md:col-span-6">
+      <div class="input-wrapper radio-container incedant  col-span-12 md:col-span-12">
+        <div class="col-span-12 md:col-span-12">
+          <label class="radio-title">{{ $t('take action') }}</label>
+          <div class="radio-answers flex">
+            <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
+              <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
+              <label>Yes</label>
+            </div>
+
+            <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
+              <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
+              <label>No</label>
+            </div>
           </div>
+        </div>
 
-          <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
-            <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
-            <label>No</label>
+        <div class="col-span-12 md:col-span-12" v-show="showSolvedAndDescription">
+          <label class="radio-title">{{ $t('Status') }}</label>
+          <div class="radio-answers flex">
+            <div class="radio-selection" :class="{ selected: solved === 'yes' }">
+              <RadioButton v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
+              <label>Closed</label>
+            </div>
+
+            <div class="radio-selection" :class="{ selected: solved === 'no' }">
+              <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
+              <label>Open</label>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="col-span-12 md:col-span-6" v-show="showSolvedAndDescription">
-        <label class="radio-title">{{ $t('Status') }}</label>
-        <div class="radio-answers flex">
-          <div class="radio-selection" :class="{ selected: solved === 'yes' }">
-            <RadioButton v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
-            <label>Closed</label>
-          </div>
-
-          <div class="radio-selection" :class="{ selected: solved === 'no' }">
-            <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
-            <label>Open</label>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
 
-  <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
-    <label for="action">{{ $t('preventive_action') }}</label>
-    <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
-      placeholder="add your descripe"></textarea>
-  </div>
+    <!-- Action Description -->
+    <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
+      <label for="action">{{ $t('preventive_action') }}</label>
+      <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
+        placeholder="add your descripe"></textarea>
+    </div>
 
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="descripe">descripe <span class="optional">(optional)</span></label>
-    <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
-  </div>
+    <!-- Description -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+      <label for="descripe">descripe <span class="optional">(optional)</span></label>
+      <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
+    </div>
 
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-    v-if="ObservationFactoryType != Observation?.ObservationType">
-    <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
-  </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-    v-if="ObservationFactoryType != Observation?.ObservationType">
-    <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
-  </div>
-  <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-    v-if="ObservationFactoryType != Observation?.ObservationType">
-    <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
+    <!-- FactoryAccidents -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType">
+      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
+    </div>
+
+    <!-- Factorywitnesses -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType">
+      <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
+    </div>
+
+    <!-- FactoryFatalities -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType">
+      <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
+    </div>
+
+
+
   </div>
 
 </template>

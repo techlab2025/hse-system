@@ -818,5 +818,17 @@
   "contact_person_email": "Contact Person Email",
   "contact_person_phone": "Contact Person Phone",
   "contract_expiry_date": "Contract Expiry Date",
-  "contact_person": "Contact Person"
+  "contact_person": "Contact Person",
+  "plan": "Plan",
+  "tasks": "Tasks",
+  "operations": "Operations",
+  "inspection": "Inspection",
+  "Observations": "Observations",
+  "hazerd": "Hazerd",
+  "incedant": "Incedant",
+  "assign_insepction": "Assign Insepction",
+  "assign_to": "Assign To",
+  "theme": "Theme",
+  "charts": "Charts",
+  "is_work_stopped": "Is Work Stopped"
 }

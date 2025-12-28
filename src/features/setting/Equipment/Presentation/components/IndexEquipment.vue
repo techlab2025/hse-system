@@ -33,6 +33,8 @@ import DeleteEquipmentController from '../controllers/deleteEquipmentController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IconEye from '@/shared/icons/IconEye.vue'
+import EquipmentCard from './EquipmentUtils/EquipmentCard.vue'
+import ToolCard from '@/features/Organization/Project/Presentation/components/Details/Equipment/ToolCard.vue'
 
 const { t } = useI18n()
 
@@ -227,53 +229,9 @@ watch(
   ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
-                <th scope="col">{{ $t('EquipmentType') }}</th>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <EquipmentCard v-for="(tool, index) in state.data" :key="index" :tool="tool" />
 
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                    }/equipment/edit/${item.id}`">{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td data-label="industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{
-                    item?.industries?.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
-                <!-- {{ item }} -->
-                <td data-label="EquipmentType">
-                  {{ item.equipmentType?.title || "--" }}
-                </td>
-
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteEquipment)" @delete="deleteEquipment(item.id)" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>

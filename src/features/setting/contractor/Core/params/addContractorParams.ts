@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class AddContractorParams implements Params {
   Name: string
@@ -68,7 +69,7 @@ export default class AddContractorParams implements Params {
     if (this.contactPersonEmail) data['contact_person_email'] = this.contactPersonEmail
     if (this.contactPersonPhone) data['contact_person_phone'] = this.contactPersonPhone
     if (this.SelectedStatus || this.SelectedStatus === 0) data['status'] = this.SelectedStatus
-    if (this.date) data['expiry_date'] = this.date
+    if (this.date) data['expiry_date'] = formatJoinDate(this.date)
 
     return data
   }

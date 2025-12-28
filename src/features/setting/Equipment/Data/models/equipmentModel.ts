@@ -1,6 +1,9 @@
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
+import acc from '@/assets/images/acc.png'
+import EquipmentImg from '@/assets/images/EquipmentImg.jpg'
+import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 
 export default class EquipmentModel extends TitleInterface {
   public id: number
@@ -10,8 +13,13 @@ export default class EquipmentModel extends TitleInterface {
   public parentId: number
   public image: string
   public titles: string
+  public status: EquipmentStatus
+
   // public equipmentType: TitleModel
-  public equipmentType?: {}
+  public equipmentType?: EquipmentTypeDetailsModel
+  public project: TitleInterface
+  public projectZoon: TitleInterface
+  public certificateImage: string
 
   constructor(
     id: number,
@@ -23,7 +31,11 @@ export default class EquipmentModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
-    equipmentType: {},
+    status: EquipmentStatus,
+    equipmentType: EquipmentTypeDetailsModel,
+    project: TitleInterface,
+    projectZoon: TitleInterface,
+    certificateImage: string,
   ) {
     super({ id, title, subtitle })
 
@@ -34,7 +46,11 @@ export default class EquipmentModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
+    this.status = status
     this.equipmentType = equipmentType
+    this.project = project
+    this.projectZoon = projectZoon
+    this.certificateImage = certificateImage
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -50,8 +66,99 @@ export default class EquipmentModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
-      data.equipment_type,
+      data.status,
+      data.equipment_type ? EquipmentTypeDetailsModel.fromMap(data.equipment_type) : null,
       // data.equipment_type_id
+      data.project ? TitleModel.fromMap(data.project) : null,
+      data.project_zoon ? TitleModel.fromMap(data.project_zoon) : null,
+      data.certificate_image,
     )
   }
+
+  static example: EquipmentModel[] = [
+    new EquipmentModel(
+      10,
+      'Drilling Rig',
+      'New Equipment Subtitle 1',
+      1,
+      0,
+      { id: 1, title: 'New Industry 1' },
+      0,
+      EquipmentImg,
+      [],
+      1,
+      new EquipmentTypeDetailsModel(
+        10,
+        'hand tool',
+        'New Equipment Type Subtitle 1',
+        1,
+        0,
+        [],
+        0,
+        EquipmentImg,
+        [],
+        3,
+        1,
+      ),
+      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+      new TitleInterface({ id: 1, title: 'Obour City' }),
+      acc,
+    ),
+    new EquipmentModel(
+      20,
+      'Drilling Rig',
+      'New Equipment Subtitle 2',
+      1,
+      0,
+      { id: 1, title: 'New Industry 2' },
+      0,
+      EquipmentImg,
+      [],
+      2,
+      new EquipmentTypeDetailsModel(
+        10,
+        'hand tool',
+        'New Equipment Type Subtitle 1',
+        1,
+        0,
+        [],
+        0,
+        EquipmentImg,
+        [],
+        1,
+        1,
+      ),
+      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+      new TitleInterface({ id: 1, title: 'Obour City' }),
+      acc,
+    ),
+    new EquipmentModel(
+      30,
+      'Drilling Rig',
+      'New Equipment Subtitle 3',
+      1,
+      0,
+      { id: 1, title: 'New Industry 3' },
+      0,
+      EquipmentImg,
+      [],
+      1,
+      new EquipmentTypeDetailsModel(
+        10,
+        'hand tool',
+        'New Equipment Type Subtitle 1',
+        1,
+        0,
+        [],
+        0,
+        EquipmentImg,
+        [],
+        2,
+        1,
+      ),
+      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+      new TitleInterface({ id: 1, title: 'Obour City' }),
+      acc,
+    ),
+  ]
 }

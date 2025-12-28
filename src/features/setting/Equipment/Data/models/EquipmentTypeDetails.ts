@@ -42,14 +42,12 @@ export default class EquipmentTypeDetailsModel extends TitleInterface {
 
   static fromMap(data: any): EquipmentTypeDetailsModel {
     return new EquipmentTypeDetailsModel(
-      data.id,
-      data.title,
+      data?.id,
+      data?.title,
       data.subtitle,
       data.has_certificate,
       data.all_industries,
-      data?.industries?.length > 0
-        ? data?.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
+      data?.industries,
       data.parent_id,
       data.image,
       TranslationsParams.fromMap(data.titles).titles,
@@ -60,7 +58,6 @@ export default class EquipmentTypeDetailsModel extends TitleInterface {
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
-
     return new TitleInterface({
       id: data?.id,
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,

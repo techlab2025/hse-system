@@ -6,7 +6,7 @@
   // second card
   .index-table-card-container {
     grid-template-columns: repeat(3, 1fr);
-
+    font-family: 'Regular';
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $SmSize;
     width: 100%;
@@ -101,6 +101,7 @@
             .card-details {
               @include flex-column(nowrap, flex-start, flex-start);
               gap: $XsSize4;
+              margin-top: 12px;
 
               .title {
                 color: #0f1927;
@@ -110,13 +111,13 @@
                   font-family: 'Light';
                   color: #c7c7cc;
                   font-size: $SmSize;
-                  font-weight: $BaseFontMediumWeight;
+                  font-weight: $BaseFontSemiBoldWeight;
                 }
               }
               .subtitle {
                 color: #9ca3af;
                 font-size: $SmSize;
-                font-weight: $BaseFontMediumWeight;
+                font-weight: $BaseFontSemiBoldWeight;
               }
               .project-details {
                 @include flex-row(nowrap, flex-start, center);
@@ -199,11 +200,16 @@
   }
 
   .label-item-primary {
-    color: rgba(76, 83, 95, 1);
+    color: #4c535f;
     font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
+    img {
+      width: 20px;
+      height: 20px;
+      rotate: -20deg;
+    }
     span {
-      color: rgba(32, 32, 32, 1);
+      color: #202020;
       font-weight: $BaseFontMediumWeight;
     }
   }
@@ -225,11 +231,18 @@
       @include flex-row(nowrap, space-between, center);
       width: 100%;
       margin-top: 10px;
+      .first-btn {
+        width: 30%;
+        background-color: #1D4ED808;
+      }
+      .second-btn {
+        width: 100%;
+      }
       button {
         width: 100%;
       }
       a {
-        width: 100%;
+        width: 70%;
       }
     }
 
