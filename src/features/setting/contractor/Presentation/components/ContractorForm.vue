@@ -37,13 +37,13 @@ const updateData = () => {
     : new AddContractorParams(
       Name.value,
       phoneNumber.value,
-      Scope.value.map((item) => item.id),
-      CompanyEmail.value,
-      CompanyAddress.value,
-      contactPerson.value,
-      contactPersonEmail.value,
-      contactPersonPhone.value,
-      SelectedStatus.value?.id,
+      Scope.value ? Scope.value.map((item) => item.id) : [],
+      CompanyEmail.value ? CompanyEmail.value  :" ",
+      CompanyAddress.value ? CompanyAddress.value  : "",
+      contactPerson.value ?  contactPerson.value : " ",
+      contactPersonEmail.value ?  contactPersonEmail.value : " ",
+      contactPersonPhone.value ? contactPersonPhone.value  :" ",
+      SelectedStatus.value ? SelectedStatus.value?.id : 0,
       date.value
 
 
