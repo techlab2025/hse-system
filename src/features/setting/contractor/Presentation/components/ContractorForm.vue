@@ -47,10 +47,9 @@ const updateData = () => {
       contactPersonPhone.value ? contactPersonPhone.value : " ",
       SelectedStatus.value ? SelectedStatus.value?.id : 0,
       formatJoinDate(date.value)
-
-
     )
 
+    console.log(params , "params");
   emit('update:data', params)
 }
 
