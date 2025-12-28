@@ -46,9 +46,8 @@ export default class SohwProjectZoonModel {
       data.zoon_id || data.id,
       data.zoon_title || data.title,
       data.project_zoon_equipments?.map(
-        (item: any) =>
-          ProjectLocationEquipmentModel?.fromMap(item),
-          // ProjectLocationEquipmentModel?.example,
+        (item: any) => ProjectLocationEquipmentModel?.fromMap(item),
+        // ProjectLocationEquipmentModel?.example,
       ),
       data.location,
       data.projectLocationId,
@@ -58,4 +57,17 @@ export default class SohwProjectZoonModel {
       data.project_id,
     )
   }
+
+  static example: SohwProjectZoonModel = new SohwProjectZoonModel(
+    1,
+    10,
+    'zoon',
+    [],
+    { id: 1, title: 'location' },
+    1,
+    [],
+    [],
+    [],
+    1,
+  )
 }

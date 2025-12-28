@@ -10,4 +10,9 @@ export default class CapaModel {
   static fromMap(data: any): CapaModel {
     return new CapaModel(data.preventive, data.corrective)
   }
+
+  static example : CapaModel = new CapaModel(
+    'preventive',
+    'corrective',
+  )
 }

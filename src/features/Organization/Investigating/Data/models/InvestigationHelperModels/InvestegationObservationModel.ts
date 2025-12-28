@@ -1,3 +1,5 @@
+import acc from '@/assets/images/acc.png'
+
 export default class InvestegationObservationModel {
   id: number
   description: string
@@ -36,4 +38,14 @@ export default class InvestegationObservationModel {
       data.type_id,
     )
   }
+
+  static example: InvestegationObservationModel = new InvestegationObservationModel(
+    1,
+    'description',
+    acc,
+    true,
+    'title',
+    '1',
+    1,
+  )
 }

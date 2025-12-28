@@ -1,3 +1,5 @@
+import acc from '@/assets/images/acc.png'
+
 export default class OvservationEquipmentModel {
   public id: number
   public title: string
@@ -60,4 +62,20 @@ export default class OvservationEquipmentModel {
       data.license_plate_number,
     )
   }
+
+  static example: OvservationEquipmentModel = new OvservationEquipmentModel(
+    1,
+    'equipment',
+    'new equipment',
+    1,
+    12,
+    [],
+    acc,
+    acc,
+    '10-12-2025',
+    1,
+    10,
+    123,
+    123,
+  )
 }

@@ -12,7 +12,7 @@ import people from '@/assets/images/people.png'
 
 const emit = defineEmits(['update:data'])
 
-const isAnotherMeeting = ref(1)
+const isAnotherMeeting = ref(0)
 const updateData = () => {
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,

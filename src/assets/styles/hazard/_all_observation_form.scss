@@ -1,0 +1,28 @@
+@import '../variables';
+@import '../mixins/flex';
+.full-observation-form {
+  .is-stopped {
+    @include flex-row(nowrap, space-between, center);
+    gap: 4px;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.is-stopped-white {
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+  }
+  .p-checkbox-box {
+    border-radius: 5px !important;
+    border: 1px solid #f0f2f4 !important;
+    svg {
+      fill: white !important;
+    }
+  }
+  .p-checkbox-checked .p-checkbox-box svg {
+    fill: white !important;
+    display: block !important;
+  }
+}

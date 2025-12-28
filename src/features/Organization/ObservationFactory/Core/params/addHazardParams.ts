@@ -37,6 +37,7 @@ export default class AddHazardParams implements Params {
   public time: string
   public code: string
   public place: string
+  public isWorkStopped: number
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -71,6 +72,7 @@ export default class AddHazardParams implements Params {
     time: string
     code: string
     place: string
+    isWorkStopped: number
   }) {
     this.title = data.title
     this.description = data.description
@@ -100,6 +102,7 @@ export default class AddHazardParams implements Params {
     this.time = data.time
     this.code = data.code
     this.place = data.place
+    this.isWorkStopped = data.isWorkStopped
   }
 
   toMap(): Record<
@@ -153,6 +156,7 @@ export default class AddHazardParams implements Params {
     if (this.time) data['time'] = formatTime(this.time)
     if (this.code) data['serial_number'] = this.code
     if (this.place) data['place'] = this.place
+    if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
     return data
   }
 
