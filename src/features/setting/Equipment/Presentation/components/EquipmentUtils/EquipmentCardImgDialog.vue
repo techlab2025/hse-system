@@ -1,18 +1,20 @@
 <script setup lang=ts>
 import Dialog from 'primevue/dialog';
-import { ref } from "vue";
-const visible = ref(false);
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   img: string
+  Visable: boolean
 }>()
+
+const DialogVisable = ref(props.Visable);
+watch(() => props.Visable, () => DialogVisable.value = props.Visable)
 
 </script>
 
 <template>
   <div class="card flex justify-center">
-    <button class="underline certificat-btn" @click="visible = true">Certification</button>
-    <Dialog v-model:visible="visible" modal :dismissable-mask="true" :header="`Certificate Image `"
+    <Dialog v-model:visible="DialogVisable" modal :dismissable-mask="true" :header="`Certificate Image `"
       :style="{ width: '40rem' }">
       <img class="img" :src="img" alt="img">
     </Dialog>

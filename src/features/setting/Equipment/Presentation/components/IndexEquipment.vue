@@ -120,21 +120,6 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
-  // {
-  //   text: t('add_sub_equipment'),
-  //   icon: IconEdit,
-  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-  //     }/equipment/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.EQUIPMENT_UPDATE,
-  //     PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  //     PermissionsEnum.EQUIPMENT_ALL,
-  //     PermissionsEnum.ORG_EQUIPMENT_ALL,
-  //   ],
-  // },
-
   {
     text: t('add_inspection'),
     icon: IconEdit,
@@ -230,13 +215,7 @@ watch(
     <DataStatus :controller="state">
       <template #success>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <router-link
-          v-for="(tool, index) in state.data" :key="index"
-            :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${tool.id}`"
-            >
-            <EquipmentCard :tool="tool" />
-          </router-link>
-
+          <EquipmentCard @delete:data="deleteEquipment" v-for="(tool, index) in state.data" :key="index" :tool="tool" />
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>

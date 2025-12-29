@@ -35,6 +35,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -160,13 +161,14 @@ const setEquipmentType = (data: TitleInterface) => {
 
 }
 
-const setImage = (value: string) => {
-  image.value = value
+const setImage = async (value: string) => {
+  image.value = typeof value === 'string' ? value : await filesToBase64(value)
   updateData()
 }
 
-const setCertificateImage = (value: string) => {
-  certificateImage.value = value
+const setCertificateImage = async (value: string) => {
+  // image.value =
+  certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
   updateData()
 }
 
@@ -193,8 +195,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: image.value,
-      certificateImage: certificateImage.value,
+      image: typeof image.value === 'string' ? image.value : "",
+      certificateImage: typeof certificateImage.value === 'string' ? certificateImage.value : "",
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
