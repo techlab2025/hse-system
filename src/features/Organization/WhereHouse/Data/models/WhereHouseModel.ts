@@ -1,12 +1,10 @@
+import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class WhereHouseModel {
-  public id: number
-  public name: string
+export default class WhereHouseModel extends TitleInterface {
   public SerialNumber: string
 
   constructor(id: number, name: string, SerialNumber: string) {
-    this.id = id
-    this.name = name
+    super({ id: id, title: name })
     this.SerialNumber = SerialNumber
   }
 
@@ -15,10 +13,10 @@ export default class WhereHouseModel {
   }
 
   static example: WhereHouseModel[] = [
-    new WhereHouseModel(10, 'New House 1', "10"),
-    new WhereHouseModel(10, 'New House 2', "10"),
-    new WhereHouseModel(10, 'New House 3', "10"),
-    new WhereHouseModel(10, 'New House 4', "10"),
-    new WhereHouseModel(10, 'New House 5', "10"),
+    new WhereHouseModel(10, 'New House 1', '10'),
+    new WhereHouseModel(10, 'New House 2', '10'),
+    new WhereHouseModel(10, 'New House 3', '10'),
+    new WhereHouseModel(10, 'New House 4', '10'),
+    new WhereHouseModel(10, 'New House 5', '10'),
   ]
 }

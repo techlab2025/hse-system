@@ -16,9 +16,9 @@ class AddInvestigatingResultRepo extends RepoInterface<InvestegationResultModel>
     return this.instance
   }
 
-  override get responseType(): ResponseType {
-    return ResponseType.withoutData
-  }
+  // override get responseType(): ResponseType {
+  //   return ResponseType.withoutData
+  // }
 
   onParse(data: any): InvestegationResultModel {
     return InvestegationResultModel.fromMap(data)

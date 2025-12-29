@@ -49,18 +49,37 @@ const updateData = () => {
       formatJoinDate(date.value)
     )
 
-    console.log(params , "params");
   emit('update:data', params)
 }
-
+const Scope = ref<TitleInterface[]>()
+const date = ref(new Date())
+const contactPersonPhone = ref<string>()
+const contactPersonEmail = ref<string>()
+const contactPerson = ref<string>()
+const CompanyAddress = ref<string>('')
+const CompanyEmail = ref<string>('')
+const SelectedStatus = ref<TitleInterface>()
+const StatusList = ref<TitleInterface[]>([
+  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Valid' }),
+  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
+])
 
 
 watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
+      console.log(newData, "newData");
       Name.value = newData.name
       phoneNumber.value = newData.phone
+      Scope.value = newData.scope
+      CompanyEmail.value = newData.companyEmail
+      CompanyAddress.value = newData.CompanyAddress
+      contactPerson.value = newData.contactPerson
+      contactPersonEmail.value = newData.contactPersonEmail
+      contactPersonPhone.value = newData.contactPersonPhone
+      SelectedStatus.value = StatusList.value.find((item) => item?.id == newData.SelectedStatus)
+      date.value = newData.date
     }
 
   },
@@ -80,51 +99,44 @@ const setName = (data) => {
   updateData()
 }
 
-const Scope = ref<TitleInterface[]>()
 const setScope = (data: TitleInterface[]) => {
   Scope.value = data
   updateData()
 }
-const CompanyEmail = ref<string>('')
 const setCompanyEmail = (data: string) => {
   CompanyEmail.value = data.target.value
   updateData()
 }
 
-const CompanyAddress = ref<string>('')
+
 const setCompanyAddress = (data: string) => {
   CompanyAddress.value = data.target.value
   updateData()
 }
 
-const contactPerson = ref<string>()
+
 const setcontactPerson = (data: string) => {
   contactPerson.value = data.target.value
   updateData()
 }
-const contactPersonEmail = ref<string>()
+
 const setcontactPersonEmail = (data: string) => {
   contactPersonEmail.value = data.target.value
   updateData()
 }
-const contactPersonPhone = ref<string>()
+
 const setcontactPersonPhone = (data: string) => {
   contactPersonPhone.value = data.target.value
   updateData()
 }
 
-const date = ref(new Date())
+
 const setExpiryDate = (data: Date) => {
   date.value = data
   updateData()
 }
 
-const StatusList = ref<TitleInterface[]>([
-  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Valid' }),
-  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
-])
 
-const SelectedStatus = ref<TitleInterface>()
 const setStatus = (data: TitleInterface) => {
   SelectedStatus.value = data
   updateData()

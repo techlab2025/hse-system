@@ -57,8 +57,6 @@ const ShoeInvestegationResultDetails = () => {
 }
 
 const AddEnvestigatingResult = async () => {
-
-
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,

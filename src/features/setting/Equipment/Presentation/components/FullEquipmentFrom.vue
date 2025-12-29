@@ -33,6 +33,8 @@ import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/model
 import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
+import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -202,6 +204,7 @@ const updateData = () => {
       equipmentRentStartDate: StartDate.value,
       VehicleKm: VehicleKm.value,
       serialNumber: SerialNumber.value?.SerialNumber,
+      SelectedWhereHosue: SelectedWhereHosue.value?.id
     }
   )
     : new AddEquipmentParams(
@@ -224,6 +227,7 @@ const updateData = () => {
         equipmentRentStartDate: StartDate.value,
         VehicleKm: VehicleKm.value,
         serialNumber: SerialNumber.value?.SerialNumber,
+        SelectedWhereHosue: SelectedWhereHosue.value?.id
 
       }
     )
@@ -318,6 +322,7 @@ watch(
       StartDate.value = newData?.checkinDate
       VehicleKm.value = newData?.kilometer
       isVehicle.value = newData?.kilometer ? true : false
+      SelectedWhereHosue.value = newData?.wareHouse
     }
   },
   { immediate: true },
@@ -374,6 +379,15 @@ const fields = ref([
 ])
 const UpdateSerial = (data) => {
   SerialNumber.value = data
+  updateData()
+}
+
+
+const indexWhereHouseController = IndexWhereHouseController.getInstance()
+const indexWhereHouseParams = new IndexWhereHouseParams("", 1, 10, 1, false)
+const SelectedWhereHosue = ref<TitleInterface>()
+const setSelectedWhereHouse = (data: TitleInterface) => {
+  SelectedWhereHosue.value = data
   updateData()
 }
 </script>
@@ -433,8 +447,14 @@ const UpdateSerial = (data) => {
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('certification expiry date') }}</label>
-        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" :placeholder="`certification expiry date`"
-          @update:modelValue="setDecoDate" />
+        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
+          :placeholder="`certification expiry date`" @update:modelValue="setDecoDate" />
+      </div>
+
+      <div class="flex flex-col gap-2 input-wrapper">
+        <CustomSelectInput :modelValue="SelectedWhereHosue" :controller="indexWhereHouseController"
+          :params="indexWhereHouseParams" label="Where House" id="wherehouse" placeholder="Selected WhereHouse.."
+          @update:modelValue="setSelectedWhereHouse" />
       </div>
 
       <div class="flex item-center justify-start gap-4" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
@@ -478,6 +498,7 @@ const UpdateSerial = (data) => {
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />
       </div>
+      <div class="flex flex-col gap-2 input-wrapper"></div>
 
       <div class="input-wrapper " v-if="user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
