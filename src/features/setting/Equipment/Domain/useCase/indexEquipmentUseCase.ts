@@ -11,19 +11,16 @@ import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
 
 export default class IndexEquipmentUseCase implements UseCase<EquipmentModel[], Params> {
   async call(params: Params): Promise<DataState<EquipmentModel[]>> {
-    return UseCaseHandler.instance().handle(
-      {
-        onTest: () => {
-          return new DataSuccess({ data: EquipmentModel.example });
-        },
-        onDev: () => {
-          return IndexEquipmentRepo.getInstance().call(params)
-        },
-        onProduction: () => {
-          return IndexEquipmentRepo.getInstance().call(params)
-        }
-      }
-    );
-    
-}
+    return UseCaseHandler.instance().handle({
+      onTest: () => {
+        return new DataSuccess({ data: EquipmentModel.example })
+      },
+      onDev: () => {
+        return IndexEquipmentRepo.getInstance().call(params)
+      },
+      onProduction: () => {
+        return IndexEquipmentRepo.getInstance().call(params)
+      },
+    })
+  }
 }
