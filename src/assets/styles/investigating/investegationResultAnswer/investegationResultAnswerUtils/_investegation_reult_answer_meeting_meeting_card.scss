@@ -9,6 +9,12 @@
   padding: $XsSize2;
   border-radius: $XsSize;
   border: 1px solid #f6f6f6;
+  margin-block: 6px;
+
+  &.active {
+    background-color: #1f41bb05;
+    border: 1px solid #1f41bb33;
+  }
 
   .card-header {
     @include flex-row(nowrap, space-between, center);

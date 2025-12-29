@@ -3,50 +3,53 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import AttachmentAnswer from '@/assets/images/AttachmentAnswer.png'
 import { ref } from 'vue';
 import InvestegaionResultAttachmentCard from '../InvestegationResultAnswerUtils/InvestegaionResultAttachmentCard.vue';
+import type InvestigatingDocumentModel from '@/features/Organization/Investigating/Data/models/InvestegationDocumentModel';
 
+const props =defineProps<{
+  attachments: InvestigatingDocumentModel[]
+}>()
+// const attachments = ref([
+//   {
+//     id: 1,
+//     title: "Analysis",
+//     images: [
+//       AttachmentAnswer,
+//       AttachmentAnswer,
+//       AttachmentAnswer
+//     ]
+//   },
+//   {
+//     id: 2,
+//     title: "Analysis",
+//     images: [
+//       AttachmentAnswer,
+//       AttachmentAnswer,
+//       AttachmentAnswer
+//     ]
 
-const attachments = ref([
-  {
-    id: 1,
-    title: "Analysis",
-    images: [
-      AttachmentAnswer,
-      AttachmentAnswer,
-      AttachmentAnswer
-    ]
-  },
-  {
-    id: 2,
-    title: "Analysis",
-    images: [
-      AttachmentAnswer,
-      AttachmentAnswer,
-      AttachmentAnswer
-    ]
+//   },
+//   {
+//     id: 3,
+//     title: "Analysis",
+//     images: [
+//       AttachmentAnswer,
+//       AttachmentAnswer,
+//       AttachmentAnswer
+//     ]
 
-  },
-  {
-    id: 3,
-    title: "Analysis",
-    images: [
-      AttachmentAnswer,
-      AttachmentAnswer,
-      AttachmentAnswer
-    ]
+//   },
+//   {
+//     id: 2,
+//     title: "Analysis",
+//     images: [
+//       AttachmentAnswer,
+//       AttachmentAnswer,
+//       AttachmentAnswer
+//     ]
 
-  },
-  {
-    id: 2,
-    title: "Analysis",
-    images: [
-      AttachmentAnswer,
-      AttachmentAnswer,
-      AttachmentAnswer
-    ]
+//   },
 
-  },
-
-])
+// ])
 
 
 </script>

@@ -165,7 +165,7 @@ export default class InvestigatingDetailsModel {
       ),
       new InvestegationFactorModel(
         10,
-        new TitleInterface({ id: 1, title: 'factor2' }),
+        InvestegationFactorModel.example.factory,
         1,
         '',
         ['factor item', 'factor item', 'factor item', 'factor item', 'factor item'],
@@ -173,7 +173,8 @@ export default class InvestigatingDetailsModel {
       ),
       new InvestegationFactorModel(
         10,
-        new TitleInterface({ id: 1, title: 'factor3' }),
+        InvestegationFactorModel.example.factory,
+
         1,
         '',
         ['factor item', 'factor item', 'factor item', 'factor item', 'factor item'],
@@ -181,7 +182,8 @@ export default class InvestigatingDetailsModel {
       ),
       new InvestegationFactorModel(
         10,
-        new TitleInterface({ id: 1, title: 'factor4' }),
+        InvestegationFactorModel.example.factory,
+
         1,
         'title',
         ['factor item', 'factor item', 'factor item', 'factor item', 'factor item'],

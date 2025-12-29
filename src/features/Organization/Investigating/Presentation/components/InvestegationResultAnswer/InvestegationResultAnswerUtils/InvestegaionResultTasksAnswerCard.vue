@@ -7,9 +7,10 @@ import TasksComplated from '@/shared/icons/TasksComplated.vue';
 import AssignedToicon from '@/shared/icons/AssignedToicon.vue';
 import TasksWorking from '@/shared/icons/TasksWorking.vue';
 import { ref, watch } from 'vue';
+import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
 
 const props = defineProps<{
-  task: any
+  task: InvestegationTasksModel
 }>()
 
 const TasksStatus = ref([
