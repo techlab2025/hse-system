@@ -150,7 +150,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house-type',
-        Name: 'Where House Type',
+        Name: 'WareHouse Type',
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
           PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
@@ -161,7 +161,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house',
-        Name: 'Where House',
+        Name: 'WareHouse',
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_ALL,
           PermissionsEnum.WHIERE_HOUSE_CREATE,
@@ -235,6 +235,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
           PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
           PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/observation-type',
+        Name: 'Observation Type',
+        permissions: [
+          PermissionsEnum.OBSERVATION_TYPE_ALL,
+          PermissionsEnum.OBSERVATION_TYPE_CREATE,
+          PermissionsEnum.OBSERVATION_TYPE_DELETE,
+          PermissionsEnum.OBSERVATION_TYPE_FETCH,
+          PermissionsEnum.OBSERVATION_TYPE_UPDATE,
         ],
       },
 

@@ -28,7 +28,7 @@ const CheckEquipemtnsEmpty = computed(() => props.project_zoons?.map((p) => p?.p
 <template>
   <div class="equipment-section">
     <div class="equipment-section-header">
-      <HeaderSection :img="Equipment" title="Equipment , tools & Devices by Zone"
+      <HeaderSection :img="Equipment" title="Equipment , tools & Devices by Site "
         subtitle="View and manage all equipment assigned to each operational zone" />
       <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">Show all</router-link>
     </div>

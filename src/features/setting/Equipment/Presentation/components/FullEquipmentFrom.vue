@@ -10,6 +10,7 @@ import QrCard from './EquipmentUtils/QrCard.vue'
 import DemoCard from './EquipmentUtils/DemoCard.vue'
 import Car from '@/shared/icons/car.vue'
 import Tabs from './tabs.vue'
+import Dialog from 'primevue/dialog';
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -36,6 +37,8 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -262,7 +265,7 @@ const setContructor = (data: TitleInterface) => {
 const deviceStatus = ref<number>(null)
 const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Own') }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
 
 // const setDeviceStatus = (data: TitleInterface) => {
@@ -344,7 +347,7 @@ const RentTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: RentTypeEnum.YEAR, title: 'Year' }),
 ])
 
-const SelectedRentType = ref<TitleInterface>()
+const SelectedRentType = ref<TitleInterface>(new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }))
 const setRentType = (data: TitleInterface) => {
   SelectedRentType.value = data
   updateData()
@@ -392,6 +395,13 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
   SelectedWhereHosue.value = data
   updateData()
 }
+
+const EndDate = ref()
+const setEndDate = (data) => {
+  EndDate.value = data
+  updateData()
+}
+const visable = ref()
 </script>
 
 <template>
@@ -418,19 +428,34 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
 
     <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-6 mt-8">
       <div class="">
-        <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+        <LangTitleInput :label="`${EquipmentTypesEnum[activeTab]} Name`" :langs="langDefault" :modelValue="langs"
+          @update:modelValue="setLangs" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper" v-if="!(data?.id)">
-        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+        <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="false"
+          @update:value="UpdateSerial" />
       </div>
 
-      <div>
+      <!-- <div>
         <CustomSelectInput @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
           :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
           :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType" />
+      </div> -->
+      <div>
+        <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
+          :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
+          :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
+          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType">
+          <!-- <template #LabelHeader>
+            <button class="add-dialog" @click.prevent="visable = true">New</button>
+          </template> -->
+
+        </UpdatedCustomInputSelect>
       </div>
+
+
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('upload image') }}</label>
@@ -440,24 +465,23 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label class="flex justify-between flex-wrap">
-          <p>{{ $t('Certification upload') }}</p>
-          <span class="text-slate-300">{{ $t('Expiry date detected automatically') }}</span>
+          <p>{{ $t('Certification / Inspection Image upload') }}</p>
         </label>
         <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
           label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
-        <label>{{ $t('certification expiry date') }}</label>
+        <label>{{ $t('certification / Inspection expiry date') }}</label>
         <DatePicker v-model="decommissioningDate" id="Date of Decommissioning"
           :placeholder="`certification expiry date`" @update:modelValue="setDecoDate" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <!-- <div class="flex flex-col gap-2 input-wrapper">
         <CustomSelectInput :modelValue="SelectedWhereHosue" :controller="indexWhereHouseController"
           :params="indexWhereHouseParams" label="Where House" id="wherehouse" placeholder="Selected WhereHouse.."
           @update:modelValue="setSelectedWhereHouse" />
-      </div>
+      </div> -->
 
       <div class="flex item-center justify-start gap-4" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <div class="radio-wrapper gap-2" :class="deviceStatus == option?.id ? 'active' : ''"
@@ -479,9 +503,11 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
         <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
           placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
       </div>
+
+
       <div class="input-wrapper"
         v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
-        <label for="rent-time">Rent Time</label>
+        <label for="rent-time">Rent {{RentTypes.find((el) => el.id == SelectedRentType?.id)?.title}}</label>
         <input class="input" placeholder="Enter Rent Time" type="text" if="rent-time" v-model="Rent"
           @input="setRentTime">
       </div>
@@ -493,6 +519,11 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
         <DatePicker v-model="StartDate" id="start_date" :placeholder="`Enter Start Date`"
           @update:modelValue="setStartDate" />
       </div>
+      <!-- <div class="flex flex-col gap-2 input-wrapper"
+        v-if="deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION">
+        <label>{{ $t('end_date') }}</label>
+        <DatePicker v-model="EndDate" id="end_date" :placeholder="`Enter End Date`" @update:modelValue="setEndDate" />
+      </div> -->
       <div class="input-wrapper">
         <label for="License Plate Number">
           {{ $t('License Plate No.') }}
@@ -500,7 +531,7 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />
       </div>
-      <div class="flex flex-col gap-2 input-wrapper"></div>
+      <!-- <div class="flex flex-col gap-2 input-wrapper"></div> -->
 
       <div class="input-wrapper " v-if="user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
@@ -514,9 +545,10 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
       <!-- <div class="flex flex-col gap-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
       </div> -->
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
-        :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
-        :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :certificateImage="certificateImage || ''"
-        :BreadCramps="breadcrumbs || []" />
+        :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''" :selctedequipment="langs"
+        :selectedequipmentType="equipmentType" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
+        :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []"
+        :cardType="EquipmentTypesEnum[activeTab]" />
 
       <QrCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" />
 
@@ -525,4 +557,25 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
 
   </div>
 
+  <!-- <Dialog v-model:visible="visable" modal :dismissable-mask="true" :style="{ width: '40rem' }">
+    <EquipmentTypeForm @close:data="visable = false" />
+  </Dialog> -->
 </template>
+
+<style scoped>
+.add-dialog {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  cursor: pointer;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-family: "Regular";
+
+  svg {
+    width: 18px;
+    height: 18px;
+
+  }
+}
+</style>

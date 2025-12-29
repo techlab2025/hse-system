@@ -6,27 +6,31 @@ export default class InjuryParams implements Params {
   public note: string
   public injuryTypeId: number
   public isWorkStopped: number
+  public images: string[]
   constructor(
-    organizationEmployeeId: number, 
-    employeeName: string, 
-    note: string, 
+    organizationEmployeeId: number,
+    employeeName: string,
+    note: string,
     injuryTypeId: number,
-    isWorkStopped: number
+    isWorkStopped: number,
+    images: string[],
   ) {
     this.employeeName = employeeName
     this.organizationEmployeeId = organizationEmployeeId
     this.note = note
     this.injuryTypeId = injuryTypeId
     this.isWorkStopped = isWorkStopped
+    this.images = images
   }
 
-  toMap(): Record<string, number | string> {
-    const data: Record<string, number | string> = {}
+  toMap(): Record<string, number | string | string[]> {
+    const data: Record<string, number | string | string[]> = {}
     if (this.employeeName) data['employee_name'] = this.employeeName
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
     data['note'] = this.note
     data['injury_type_id'] = this.injuryTypeId
     data['is_work_stopped'] = this.isWorkStopped
+    data['image'] = this.images
     return data
   }
 }

@@ -12,7 +12,7 @@ export default class InvestegationTasksModel {
     id: number,
     title: string,
     status: number,
-    Date: string,
+    due_date: string,
     ResponsablePerson: string,
     assignedTo: string,
     investigation_meeting_id: number,

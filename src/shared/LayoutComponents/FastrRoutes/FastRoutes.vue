@@ -236,6 +236,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
         ],
       },
+      {
+        route: '/organization/observation-type',
+        Name: 'Observation Type',
+        permissions: [
+          PermissionsEnum.OBSERVATION_TYPE_ALL,
+          PermissionsEnum.OBSERVATION_TYPE_CREATE,
+          PermissionsEnum.OBSERVATION_TYPE_DELETE,
+          PermissionsEnum.OBSERVATION_TYPE_FETCH,
+          PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+        ],
+      },
     ],
   },
   {

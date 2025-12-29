@@ -200,7 +200,8 @@ const UpdateSerial = (data) => {
     <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="false"
+      @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>
@@ -222,7 +223,7 @@ const UpdateSerial = (data) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-      :params="HerikalyParams" :label="$t('Herikaly')" :type="2" :placeholder="$t('Select Heirarchy')" />
+      :params="HerikalyParams" :label="$t('Job Description')" :type="2" :placeholder="$t('Select Heirarchy')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"

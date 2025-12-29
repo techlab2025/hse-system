@@ -90,11 +90,14 @@ const UpdateWorkStatus = (data) => {
   isWorkStopped.value = data?.target?.checked
   updateData()
 }
+
+
+
 </script>
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage :title="`Are there accidents?`" :subtitle="`Did this incident result in any accidents`" :img="acc"
+      <HeaderPage :title="`Are there Injuries?`" :subtitle="`Did this incident result in any accidents`" :img="acc"
         class="title-header" />
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
@@ -132,10 +135,15 @@ const UpdateWorkStatus = (data) => {
           @update:modelValue="setInfection" />
       </div>
 
+      <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+        <label for="">upload image</label>
+        <MultiImagesInput :initialImages="image" @update:images="setImages" :index="2" />
+      </div>
+
       <!-- IsWorkStopped -->
       <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white"
         @click="isWorkStopped = !isWorkStopped">
-        <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
+        <label for="is_stoped">{{ $t('is_there_work_days_lost') }}</label>
         <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
           :name="`is_stoped`" />
       </div>

@@ -26,8 +26,8 @@ const UpdateData = () => {
   })
 }
 const inspectionType = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Once' }),
-  new TitleInterface({ id: 2, title: 'period' }),
+  new TitleInterface({ id: 1, title: 'AD-HOC' }),
+  new TitleInterface({ id: 2, title: 'Periodic' }),
 ])
 const SelectedInspectionType = ref<InspectionTypeEnum>(InspectionTypeEnum.DAY)
 const GetInspectionType = (data: InspectionTypeEnum) => {
@@ -54,10 +54,10 @@ const setDay = (data: TitleInterface[]) => {
 
 const PeriodTypeSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }),
-  new TitleInterface({ id: PeriodTypeEnum.BYDAY, title: 'by day' }),
-  new TitleInterface({ id: PeriodTypeEnum.WHITDATE, title: 'with date' }),
-  new TitleInterface({ id: PeriodTypeEnum.BYDATE, title: 'by date' }),
-  new TitleInterface({ id: PeriodTypeEnum.WITHDAY, title: 'with day' }),
+  new TitleInterface({ id: PeriodTypeEnum.BYDAY, title: 'Choose day' }),
+  new TitleInterface({ id: PeriodTypeEnum.WHITDATE, title: 'Choose date' }),
+  new TitleInterface({ id: PeriodTypeEnum.BYDATE, title: 'Custom date' }),
+  new TitleInterface({ id: PeriodTypeEnum.WITHDAY, title: 'Set Period' }),
 
 ])
 const SelectedWithDaysType = ref<TitleInterface>()
@@ -170,13 +170,13 @@ const setWithDayesType = (data: TitleInterface) => {
     <div class="grid grid-cols-2 gap-2 general-form-container">
       <div class="input-wrapper " v-if="SelectedPeriodType === PeriodTypeEnum.BYDAY">
         <CustomSelectInput :modelValue="SelectedDay" class="input" :static-options="DayesSelection"
-          :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
+          :label="$t('select_days')" id="Day" :placeholder="$t('select_your_Day')" :type="2"
           @update:modelValue="setDay" />
       </div>
 
       <div class="input-wrapper " v-if="SelectedPeriodType === PeriodTypeEnum.WHITDATE">
         <CustomSelectInput :modelValue="SelectedWithDateDays" class="input" :static-options="WithDateDayesSelection"
-          :type="2" :label="$t('Start_day')" id="Day" :placeholder="$t('select_your_Day')"
+          :type="2" :label="$t('select_days')" id="Day" :placeholder="$t('select_your_Day')"
           @update:modelValue="setWithDateDayes" />
       </div>
 

@@ -7,6 +7,7 @@ const props = defineProps<{
   fields: { key: string, label: string, placeholder: string, value: string, enabled: boolean }[]
   switch_title?: string
   switch_reverse?: boolean
+  isAuto?: boolean | true
 }>()
 
 
@@ -32,7 +33,7 @@ watch(props.fields, (newVal) => {
     <div v-for="(field, index) in fields" :key="field.key" class="input-wrapper">
       <div class="input-title">
         <label class="title" :for="field.key">{{ $t(field.label) }}</label>
-        <div class="switch-btn">
+        <div class="switch-btn" v-if="isAuto">
           <p class="title">{{ switch_title }}</p>
           <ToggleSwitch v-model="field.enabled" />
         </div>

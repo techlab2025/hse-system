@@ -1,17 +1,23 @@
 <script setup lang="ts">
+import type TitleInterface from '@/base/Data/Models/title_interface';
 import ArrowIcons from '../icons/ArrowIcons.vue'
 
-const { BreadCramps } = defineProps<{
+const props = defineProps<{
   BreadCramps: { title: string; link: string }[]
+  cardType: string
+  equipmentType: string
+  selctedequipment:TitleInterface
 }>()
 </script>
 
 <template>
   <div class="breadcrumbs">
     <ul>
-      <li v-for="(item, index) in BreadCramps" :key="index">
-        <span>{{ item.title }}</span> <ArrowIcons v-if="index < BreadCramps.length - 1" />
+      <li>
+        <span>{{ cardType }}</span>
+        <ArrowIcons />
       </li>
+      <p>{{ equipmentType?.title }}</p>
     </ul>
   </div>
 </template>
