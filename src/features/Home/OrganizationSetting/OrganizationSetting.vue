@@ -147,7 +147,29 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.SCOPE_FETCH,
           PermissionsEnum.SCOPE_UPDATE,
         ],
-      }
+      },
+      {
+        route: '/organization/where-house-type',
+        Name: 'Where House Type',
+        permissions: [
+          PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/where-house',
+        Name: 'Where House',
+        permissions: [
+          PermissionsEnum.WHIERE_HOUSE_ALL,
+          PermissionsEnum.WHIERE_HOUSE_CREATE,
+          PermissionsEnum.WHIERE_HOUSE_DELETE,
+          PermissionsEnum.WHIERE_HOUSE_FETCH,
+          PermissionsEnum.WHIERE_HOUSE_UPDATE,
+        ],
+      },
 
 
     ],

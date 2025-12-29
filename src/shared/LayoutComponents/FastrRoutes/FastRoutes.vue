@@ -151,6 +151,28 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
         ],
       },
+      {
+        route: '/organization/where-house-type',
+        Name: 'Where House Type',
+        permissions: [
+          PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+          PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/where-house',
+        Name: 'Where House',
+        permissions: [
+          PermissionsEnum.WHIERE_HOUSE_ALL,
+          PermissionsEnum.WHIERE_HOUSE_CREATE,
+          PermissionsEnum.WHIERE_HOUSE_DELETE,
+          PermissionsEnum.WHIERE_HOUSE_FETCH,
+          PermissionsEnum.WHIERE_HOUSE_UPDATE,
+        ],
+      },
     ],
   },
   {
@@ -372,22 +394,12 @@ watch(
 
 <template>
   <div class="fast-route-container">
-    <div
-      class="fast-route"
-      v-for="item in OrganizationSetting.filter((item) => item.id === Number(route.query.type))"
-      :key="item.id"
-    >
-      <PermissionBuilder
-        v-for="routeItem in item.routes"
-        :key="routeItem.route"
-        class="w-full"
-        :code="routeItem.permissions"
-      >
+    <div class="fast-route" v-for="item in OrganizationSetting.filter((item) => item.id === Number(route.query.type))"
+      :key="item.id">
+      <PermissionBuilder v-for="routeItem in item.routes" :key="routeItem.route" class="w-full"
+        :code="routeItem.permissions">
         <div class="route" :class="route.path.startsWith(routeItem.route) ? 'active' : ''">
-          <router-link
-            class="w-full"
-            :to="{ path: routeItem.route, query: { type: route.query.type } }"
-          >
+          <router-link class="w-full" :to="{ path: routeItem.route, query: { type: route.query.type } }">
             {{ routeItem.Name }}
           </router-link>
         </div>

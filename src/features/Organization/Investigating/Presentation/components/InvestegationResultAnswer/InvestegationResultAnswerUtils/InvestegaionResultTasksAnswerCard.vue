@@ -8,9 +8,10 @@ import AssignedToicon from '@/shared/icons/AssignedToicon.vue';
 import TasksWorking from '@/shared/icons/TasksWorking.vue';
 import { ref, watch } from 'vue';
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
+import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel';
 
 const props = defineProps<{
-  task: InvestegationTasksModel
+  task: TasksModel
 }>()
 
 const TasksStatus = ref([
@@ -47,6 +48,7 @@ watch(() => props.task, (newVal) => {
 
 </script>
 <template>
+  <!-- <pre>{{ task }}</pre> -->
   <div class="investegaion-task-card" :class="GetTaskStatus(task.status)">
     <div class="card-header">
       <div class="task-status">
@@ -56,12 +58,12 @@ watch(() => props.task, (newVal) => {
     </div>
 
     <div class="card-content">
-      <p class="task-description">
+      <!-- <p class="task-description">
         {{ task?.description }}
-      </p>
+      </p> -->
       <div class="info ">
-        <span class="date">due date :<span>{{ task?.due_date }}</span></span>
-        <span class="responsable">Responsible: <span>{{ task?.ResponsablePerson }}</span> </span>
+        <span class="date">due date :<span>{{ task?.date }}</span></span>
+        <!-- <span class="responsable">Responsible: <span>{{ task?.ResponsablePerson }}</span> </span> -->
       </div>
 
       <div class="assigned-to-container">
@@ -69,7 +71,7 @@ watch(() => props.task, (newVal) => {
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
             <p class="assign">assigned to :</p>
-            <p class="person">{{ task?.assignedTo }}</p>
+            <!-- <p class="person">{{ task?.assignedTo }}</p> -->
           </div>
         </div>
         <button :class="GetTaskStatus(task?.status)">
