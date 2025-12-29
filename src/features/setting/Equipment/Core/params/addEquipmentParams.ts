@@ -22,6 +22,7 @@ export default class AddEquipmentParams implements Params {
   equipmentRentType: number
   equipmentRentTime: string
   equipmentRentStartDate: string
+  equipmentRentEndDate: string
   VehicleKm: string
   serialNumber: string
   SelectedWhereHosue: number
@@ -49,6 +50,7 @@ export default class AddEquipmentParams implements Params {
     equipmentRentType: number
     equipmentRentTime: string
     equipmentRentStartDate: string
+    equipmentRentEndDate: string
     VehicleKm: string
     serialNumber: string
     SelectedWhereHosue: number
@@ -88,8 +90,8 @@ export default class AddEquipmentParams implements Params {
     if (this.description) data['description'] = this.description
     if (this.equipmentRentType) data['period_type'] = this.equipmentRentType
     if (this.equipmentRentTime) data['period'] = this.equipmentRentTime
-    if (this.equipmentRentStartDate)
-      data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
+    if (this.equipmentRentStartDate) data['checkin_date'] = this.equipmentRentStartDate
+    if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
     if (this.serialNumber) data['serial_number'] = this.serialNumber
     if (this.SelectedWhereHosue) data['warehouse'] = this.SelectedWhereHosue
