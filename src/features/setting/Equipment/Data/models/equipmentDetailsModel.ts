@@ -25,6 +25,7 @@ export default class EquipmentDetailsModel {
   public checkinDate: string
   public RentType: string
   public RentTime: string
+  public wareHouse: number
 
   constructor(
     id: number,
@@ -46,6 +47,7 @@ export default class EquipmentDetailsModel {
     checkinDate: string,
     RentType: string,
     RentTime: string,
+    wareHouse: number,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -66,6 +68,7 @@ export default class EquipmentDetailsModel {
     this.checkinDate = checkinDate
     this.RentType = RentType
     this.RentTime = RentTime
+    this.wareHouse = wareHouse
 
     // this.type = type
   }
@@ -92,6 +95,7 @@ export default class EquipmentDetailsModel {
       data.checkin_date,
       data.period_type,
       data.period,
+      data.wareHouse,
     )
   }
 

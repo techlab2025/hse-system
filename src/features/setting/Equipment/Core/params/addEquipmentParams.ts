@@ -24,6 +24,7 @@ export default class AddEquipmentParams implements Params {
   equipmentRentStartDate: string
   VehicleKm: string
   serialNumber: string
+  SelectedWhereHosue: number
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -50,9 +51,9 @@ export default class AddEquipmentParams implements Params {
     equipmentRentStartDate: string
     VehicleKm: string
     serialNumber: string
+    SelectedWhereHosue: number
   }) {
     Object.assign(this, data)
-
   }
 
   toMap(): Record<string, any> {
@@ -91,6 +92,7 @@ export default class AddEquipmentParams implements Params {
       data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
     if (this.serialNumber) data['serial_number'] = this.serialNumber
+    if (this.SelectedWhereHosue) data['warehouse'] = this.SelectedWhereHosue
 
     return data
   }

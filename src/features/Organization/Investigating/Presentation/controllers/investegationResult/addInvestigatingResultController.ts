@@ -6,12 +6,10 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import AddInvestigatingResultUseCase from '../../../Domain/useCase/investegationResult/addInvestigatingResultUseCase'
-import type InvestigatingModel from '../../../Data/models/investigatingModel'
+import type InvestegationResultModel from '../../../Data/models/investigationResult/InvestegationResulModel'
 
-export default class AddInvestigatingResultController extends ControllerInterface<InvestigatingModel> {
+export default class AddInvestigatingResultController extends ControllerInterface<InvestegationResultModel> {
   private static instance: AddInvestigatingResultController
   private constructor() {
     super()
@@ -29,7 +27,7 @@ export default class AddInvestigatingResultController extends ControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     try {
       // console.log('Ssssssss')
-      const dataState: DataState<InvestigatingModel> =
+      const dataState: DataState<InvestegationResultModel> =
         await this.addInvestigatingResultUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

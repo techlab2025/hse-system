@@ -19,7 +19,6 @@ const state = ref(showContractorController.state.value)
 
 const fetchContractorDetails = async () => {
   const ContractorParams = new ShowContractorParams(Number(id))
-
   await showContractorController.showContractorType(ContractorParams)
 }
 

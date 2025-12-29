@@ -230,7 +230,12 @@ watch(
     <DataStatus :controller="state">
       <template #success>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <EquipmentCard v-for="(tool, index) in state.data" :key="index" :tool="tool" />
+          <router-link
+          v-for="(tool, index) in state.data" :key="index"
+            :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${tool.id}`"
+            >
+            <EquipmentCard :tool="tool" />
+          </router-link>
 
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
