@@ -14,6 +14,7 @@ const props = defineProps<{
     <HeaderPage :title="`Causes of the accident`"
       :subtitle="`Choose the reasons for the incident and write how to prevent it from happening again`" :img="factor"
       class="title-header answer-header" />
+      
     <div class="accident-answer">
       <div class="accident-answer-factors-container" v-for="(factor, index) in Factors" :key="index">
         <CauseOfActionFactors :factor="factor" />

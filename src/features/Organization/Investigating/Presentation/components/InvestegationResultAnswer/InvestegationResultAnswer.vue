@@ -13,21 +13,7 @@ import InvestegationResultAttachmentAnswer from './InvestegationResultAnswerPart
 import InvestegationResultViewersAnswer from "./InvestegationResultAnswerParts/InvestegationResultViewersAnswer.vue"
 import ShowInvestigatingController from '../../controllers/showInvestigatingController';
 import ShowInvestigatingParams from '../../../Core/params/showInvestigatingParams';
-// const Details = ref({
-//   id: 3,
-//   title: 'Medium observation',
-//   meetingsNumber: 12,
-//   date: '2025-03-15 09:45 AM',
-//   observer: { name: 'Mohab Mohamed' },
-//   description: 'Electrical issue near main control panel.',
-//   zoon: { title: 'Zone C' },
-//   equipment: { title: 'Crane Liebherr' },
-//   status: InvestegationStatusEnum.CLOSED,
-//   image: 'https://picsum.photos/222/150',
-//   link: '',
-//   createdAt: "20 july",
-//   investegationType: 1
-// })
+
 
 const Factors = ref([
   {
@@ -94,11 +80,11 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
           :ToltalTasks="state.data?.investigationTasks?.length" :investegationType="state.data?.observation?.type" />
 
         <CauseOfAccidantAnswer class="w-full" :Factors="state.data?.investigationFactors" />
-        <MeetingOverviewAnswer />
-        <InvestegationResultTasksAnswer />
-        <InvestegationResultTakeActionAnswer />
-        <InvestegationResultAttachmentAnswer />
-        <InvestegationResultViewersAnswer />
+        <MeetingOverviewAnswer :meetings="state.data?.investigationMeetings" />
+        <InvestegationResultTasksAnswer :tasks="state.data?.investigationTasks" />
+        <InvestegationResultTakeActionAnswer :actions="state.data" />
+        <InvestegationResultAttachmentAnswer :attachments="state.data?.investigationDocumentations" />
+        <InvestegationResultViewersAnswer  />
       </div>
     </template>
     <template #loader>

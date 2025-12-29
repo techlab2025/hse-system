@@ -1320,6 +1320,20 @@ class ApiNames {
   public get DeleteWhereHouse() {
     return this.prefix + 'delete_warehouse'
   }
+
+  public get AddMeetings() {
+    return this.prefix + 'create_investigation_meeting'
+  }
+  public get IndexMeeting() {
+    return this.prefix + 'fetch_investigation_meetings'
+  }
+
+  public get AddTasks() {
+    return this.prefix + 'create_investigation_tasks'
+  }
+  public get IndexTasks() {
+    return this.prefix + 'fetch_investigation_tasks'
+  }
 }
 
 export { ApiNames }

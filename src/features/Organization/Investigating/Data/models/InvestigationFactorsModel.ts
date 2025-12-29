@@ -1,8 +1,9 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
+import FactoryModel from '@/features/setting/Factory/Data/models/FactoryModel'
 
 export default class InvestegationFactorModel {
   public id: number
-  public factory: TitleInterface
+  public factory: FactoryModel
   public status: number
   public title: string
   public investigation_factor_items: string[]
@@ -10,7 +11,7 @@ export default class InvestegationFactorModel {
 
   constructor(
     id: number,
-    factory: TitleInterface,
+    factory: FactoryModel,
     status: number,
     title: string,
     investigation_factor_items: string[],
@@ -35,12 +36,29 @@ export default class InvestegationFactorModel {
     )
   }
 
+  static factoryExample: FactoryModel = {
+    id: 162,
+    titles: [
+      { locale: 'en', title: 'Human Error' },
+      { locale: 'ar', title: 'خطأ بشري' },
+    ] as TitleLocale[],
+    all_industries: 1,
+    industries: [],
+  }
+
   static example: InvestegationFactorModel = new InvestegationFactorModel(
-    1,
-    new TitleInterface({ id: 1, title: 'Mohab' }),
+    10,
+    this.factoryExample,
     1,
     '',
-    ['factor item', 'factor item', 'factor item', 'factor item', 'factor item'],
-    'corrective action',
+    ['Lack of training', 'Poor supervision', 'Incorrect procedure followed'],
+    'Provide proper training and update procedures',
   )
+}
+
+export interface FactoryModel {
+  id: number
+  titles: TitleLocale[]
+  all_industries: number
+  industries: any[]
 }

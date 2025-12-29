@@ -3,51 +3,55 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import Task from '@/assets/images/Task.png'
 import { ref } from 'vue';
 import InvestegaionResultTasksAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue';
+import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
 
+const props = defineProps<{
+  tasks: InvestegationTasksModel[]
+}>()
 
-const Tasks = ref([
-  {
-    id: 1,
-    title: "asdasdasd",
-    status: 1,
-    due_date: "2025-12-23",
-    ResponsablePerson: "Mohab",
-    assignedTo: "Mohab",
-    investigation_meeting_id: 12,
-    description: "Thickening the electrical wires and reinforcing them with an insulating material"
-  },
-  {
-    id: 2,
-    title: "asdasdasd",
-    status: 2,
-    due_date: "2025-12-23",
-    ResponsablePerson: "Mohab",
-    assignedTo: "Mohab",
-    investigation_meeting_id: 12,
-    description: "Thickening the electrical wires and reinforcing them with an insulating material"
-  },
-  {
-    id: 3,
-    title: "asdasdasd",
-    status: 3,
-    due_date: "2025-12-23",
-    ResponsablePerson: "Mohab",
-    assignedTo: "Mohab",
-    investigation_meeting_id: 12,
-    description: "Thickening the electrical wires and reinforcing them with an insulating material"
-  },
-  {
-    id: 2,
-    title: "asdasdasd",
-    status: 2,
-    due_date: "2025-12-23",
-    ResponsablePerson: "Mohab",
-    assignedTo: "Mohab",
-    investigation_meeting_id: 12,
-    description: "Thickening the electrical wires and reinforcing them with an insulating material"
-  },
+// const Tasks = ref([
+//   {
+//     id: 1,
+//     title: "asdasdasd",
+//     status: 1,
+//     due_date: "2025-12-23",
+//     ResponsablePerson: "Mohab",
+//     assignedTo: "Mohab",
+//     investigation_meeting_id: 12,
+//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
+//   },
+//   {
+//     id: 2,
+//     title: "asdasdasd",
+//     status: 2,
+//     due_date: "2025-12-23",
+//     ResponsablePerson: "Mohab",
+//     assignedTo: "Mohab",
+//     investigation_meeting_id: 12,
+//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
+//   },
+//   {
+//     id: 3,
+//     title: "asdasdasd",
+//     status: 3,
+//     due_date: "2025-12-23",
+//     ResponsablePerson: "Mohab",
+//     assignedTo: "Mohab",
+//     investigation_meeting_id: 12,
+//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
+//   },
+//   {
+//     id: 2,
+//     title: "asdasdasd",
+//     status: 2,
+//     due_date: "2025-12-23",
+//     ResponsablePerson: "Mohab",
+//     assignedTo: "Mohab",
+//     investigation_meeting_id: 12,
+//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
+//   },
 
-])
+// ])
 
 
 </script>
@@ -61,7 +65,7 @@ const Tasks = ref([
     </div>
 
     <div class="content">
-      <InvestegaionResultTasksAnswerCard v-for="(task, index) in Tasks" :key="index" :task="task" />
+      <InvestegaionResultTasksAnswerCard v-for="(task, index) in tasks" :key="index" :task="task" />
     </div>
   </div>
 </template>

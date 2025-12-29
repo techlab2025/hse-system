@@ -9,6 +9,7 @@
   padding: $XsSize2;
   border-radius: $XsSize;
   border: 1px solid #f6f6f6;
+  width: 100%;
 
   &.new {
     background-color: #fcfcfc;
@@ -47,6 +48,7 @@
   .card-content {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 10px;
+    width: 100%;
     .task-description {
       color: #202020;
       font-weight: $BaseFontWeightBold;

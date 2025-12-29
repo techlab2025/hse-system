@@ -31,14 +31,15 @@
   .content {
     width: 100%;
     @include grid(
-      1,
-      10px,
-      (
-        1400px: 3,
-        1024px: 2,
-        768px: 1,
+        1,
+        10px,
+        (
+          1400px: 3,
+          1024px: 2,
+          768px: 1,
+        )
       )
-    );
+      ;
     padding-inline: 20px;
   }
 }
