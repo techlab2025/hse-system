@@ -5,7 +5,7 @@ import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/Sh
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
-import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/filesModel'
+import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 
 export default class HazardModel {
   public id: number
