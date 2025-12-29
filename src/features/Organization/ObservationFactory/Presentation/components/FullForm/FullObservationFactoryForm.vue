@@ -116,7 +116,8 @@ const updateData = () => {
               Accidents?.value?.employeeName || '',
               Accidents?.value?.text || null,
               Accidents?.value?.infectionTypeId || 0,
-              Accidents?.value?.isWorkStopped == 1 ? 0 : 1
+              Accidents?.value?.isWorkStopped == 1 ? 0 : 1,
+              Accidents?.value?.accidentsImages || []
             )
           ]
           : [],
@@ -236,11 +237,11 @@ const UpdateSerial = (data) => {
 
 const SelectedSeverity = ref<TitleInterface>()
 const SeverityList = ref<TitleInterface[]>([
-  new TitleInterface({ id: SeverityEnum.Minor, title: 'S1 - Minor' }),
-  new TitleInterface({ id: SeverityEnum.Moderate, title: 'S2 - Moderate' }),
-  new TitleInterface({ id: SeverityEnum.Serious, title: 'S2 - Serious' }),
-  new TitleInterface({ id: SeverityEnum.Major, title: 'S3 - Major' }),
-  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'S4 - Catastrophic' }),
+  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'b - Major' }),
+  new TitleInterface({ id: SeverityEnum.Serious, title: 'c - Serious' }),
+  new TitleInterface({ id: SeverityEnum.Moderate, title: 'd - Moderate' }),
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'e - Minor' }),
 ])
 const SelectedLikelihood = ref<TitleInterface>()
 const LikelihoodList = ref<TitleInterface[]>([
@@ -332,13 +333,15 @@ const handleObservationLevel = (data: any) => {
   updateData()
 }
 
-
+const GetHeader = (value: number) => {
+  return Observation[value] == "ObservationType" ? "Observation" : Observation[value] == "HazardType" ? "Hazard" : "Accidents"
+}
 </script>
 
 <template>
   <div class="full-observation-form col-span-6 grid grid-cols-1 md:grid-cols-6 gap-4">
     <div class="col-span-6 md:col-span-6">
-      <HeaderPage :title="'create Incedant'"
+      <HeaderPage :title="`create ${GetHeader(ObservationFactoryType)}`"
         :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
       <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
     </div>
@@ -350,7 +353,7 @@ const handleObservationLevel = (data: any) => {
     <div class="Hazard-form col-span-6 md:col-span-6">
       <div class="Hazard-form-header">
         <HazardIcon class="icon" />
-        <p class="title">{{ GetObservationType(ObservationFactoryType) }} form
+        <p class="title">{{ GetHeader(ObservationFactoryType) }} form
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
@@ -397,7 +400,7 @@ const handleObservationLevel = (data: any) => {
     <!-- Incedant Type -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
       <CustomSelectInput :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-        :params="indexAccidentsTypeParams" label="Incedant Type" id="incedant" placeholder="Select Incedant Type"
+        :params="indexAccidentsTypeParams" label="Incidant Type" id="incedant" placeholder="Select Incedant Type"
         @update:modelValue="setAccidentsType" />
     </div>
 
@@ -476,16 +479,16 @@ const handleObservationLevel = (data: any) => {
 
     <!-- Action Description -->
     <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
-      <label for="action">{{ $t('preventive_action') }}</label>
+      <label for="action">{{ $t('action') }}</label>
       <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
         placeholder="add your descripe"></textarea>
     </div>
 
     <!-- Description -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <label for="descripe">descripe <span class="optional">(optional)</span></label>
       <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
-    </div>
+    </div> -->
 
     <!-- Save Status Positive or Negative -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
@@ -498,16 +501,17 @@ const handleObservationLevel = (data: any) => {
         @update:data="handleObservationLevel" />
     </div>
 
-    <!-- FactoryAccidents -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-      v-if="ObservationFactoryType != Observation?.ObservationType">
-      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
-    </div>
 
     <!-- Factorywitnesses -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full"
       v-if="ObservationFactoryType != Observation?.ObservationType">
       <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
+    </div>
+
+    <!-- FactoryAccidents -->
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType">
+      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
     </div>
 
     <!-- FactoryFatalities -->

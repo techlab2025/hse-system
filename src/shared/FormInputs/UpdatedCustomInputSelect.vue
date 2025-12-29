@@ -8,6 +8,7 @@ import type Params from '@/base/core/Params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 import PlusIcon from '../icons/PlusIcon.vue'
+import Dialog from 'primevue/dialog';
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -27,6 +28,7 @@ interface Props {
   optional?: boolean
   hascontent?: boolean
   hasHeader?: boolean
+  isDialog?: boolean
   onclick?: () => void
 }
 
@@ -157,6 +159,8 @@ async function reloadData(): Promise<void> {
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null
 }
+
+const visable = ref(false)
 </script>
 
 <template>
@@ -189,6 +193,7 @@ async function reloadData(): Promise<void> {
     <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
   </slot>
   <slot v-else name="content"> </slot>
+
 </template>
 
 <style scoped lang="scss">

@@ -25,7 +25,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'close:data'])
 
 const props = defineProps<{
   data?: ShowEquipmentTypeModel
@@ -249,4 +249,5 @@ const UpdateHasCertificate = (data) => {
       placeholder="Select image" />
   </div>
 
+  <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button>
 </template>

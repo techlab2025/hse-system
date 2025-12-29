@@ -88,7 +88,7 @@ const TempalteIds = ref<number>()
 // Equipment
 const SelectedEquipment = ref<TitleInterface>()
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1 , null , false)
+const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1, null, false)
 
 /* =========================
  * Core Logic
@@ -150,8 +150,8 @@ const updateData = () => {
       id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
       DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
       DataParams.value?.TempalteIds || TempalteIds.value,
-      data.inspectionType || InspectionTypeEnum?.DAY ,
-      data.periodType|| PeriodTypeEnum?.DAILY,
+      data.inspectionType || InspectionTypeEnum?.DAY,
+      data.periodType || PeriodTypeEnum?.DAILY,
       DataParams.value?.ProjectId || null,
       periodTasks,
       data.onceday,
@@ -160,7 +160,7 @@ const updateData = () => {
       DataParams.value?.ProjectZoneId
     )
 
-    console.log(data.inspectionType , "data.inspectionType");
+  console.log(data.inspectionType, "data.inspectionType");
   emit('update:data', params)
 }
 
@@ -218,7 +218,7 @@ watch(
       ? 'full-width'
       : ''">
       <!-- Machine Selection -->
-      <div class="input-wrapper col-span-6 pt-15 md:col-span-3">
+      <div class="input-wrapper col-span-6 pt-15 md:col-span-3" v-if="!id">
         <CustomSelectInput v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
           :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
           :label="$t('Equipment')" placeholder="select your Machine" @update:modelValue="setEquipment" />

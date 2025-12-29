@@ -343,7 +343,6 @@ watch(() => langsDescription.value,
   })
 
 const ContructorVisible = ref(false)
-
 const ShowContructorDialog = () => {
   ContructorVisible.value = true
 }
@@ -359,7 +358,7 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
     <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />

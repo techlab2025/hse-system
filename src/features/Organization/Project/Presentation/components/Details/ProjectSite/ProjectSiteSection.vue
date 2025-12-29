@@ -38,7 +38,7 @@ const props = defineProps<{ locations: LocationDetailsModel[] }>()
 
 <template>
   <div class="project-location">
-    <HeaderSection :img="Location" :title="`project_site_&_location_overview`"
+    <HeaderSection :img="Location" :title="`project_location_&_site_overview`"
       :subtitle="`mapping_each_main_site_with_its_associated_working_areas`" />
 
     <div class="card-section">

@@ -17,7 +17,7 @@ const props = defineProps<{
     <div class="card-header">
       <div class="location-header">
         <p class="title">{{ title }}</p>
-        <p class="zone"><span>{{ zone }}</span> {{ $t('zone') }}</p>
+        <p class="zone"><span>{{ zone }}</span> {{ $t('site') }}</p>
       </div>
       <!-- <p class="location">{{ location }}</p> -->
     </div>
