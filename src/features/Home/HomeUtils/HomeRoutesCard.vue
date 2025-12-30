@@ -15,7 +15,7 @@ const props = defineProps<{
     </div>
     <div class="card-content">
       <h3 class="title">{{ props.title }}</h3>
-      <p class="description">{{ wordSlice(props.description , 30) }}</p>
+      <p class="description">{{ wordSlice(props.description, 30) }}</p>
     </div>
   </div>
 </template>
