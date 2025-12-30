@@ -15,46 +15,98 @@ const props = defineProps<{
   selectedZones: SohwProjectZoonModel[]
 }>()
 
-const Zones = ref<SohwProjectZoonModel[]>(props.selectedZones)
+// Merge existing selections with new ones
+const mergedSelectedZones = ref<SohwProjectZoonModel[]>([])
+const currentZoneTitles = ref<string[]>([])
 
-const ZoonsIds = ref<number[]>([])
-const Zoones = ref<string[]>([])
+const initializeFromProps = () => {
+  mergedSelectedZones.value = [...props.selectedZones]
+  currentZoneTitles.value = []
 
-// function to extract zone ids and names
-const updateLists = (data: SohwProjectZoonModel[]) => {
-  ZoonsIds.value = data.flat().map(el => el.zoons).flat().map(el => el?.id)
-  Zoones.value = data.flat().map(z => z.zoons).flat().map(el => el?.titles).flat().map(el => el?.title)
+  props.selectedZones.forEach(location => {
+    if (location.zoons && location.zoons.length > 0) {
+      location.zoons.forEach(zone => {
+        const title = zone.title || zone.titles?.[0]?.title || 'Unknown'
+        currentZoneTitles.value.push(title)
+      })
+    }
+  })
+
+  console.log('AddZoneDialog - Initialized:', { mergedSelectedZones: mergedSelectedZones.value, currentZoneTitles: currentZoneTitles.value })
 }
 
-updateLists(props.selectedZones)
+initializeFromProps()
 
 watch(
   () => props.selectedZones,
   (newVal) => {
-    Zones.value = newVal
-    updateLists(newVal)
-  }
+    console.log('AddZoneDialog - Props selectedZones changed:', newVal)
+    initializeFromProps()
+  },
+  { deep: true }
 )
 
-const GetData = (data: { zoonTitles: string[], zoonIds: number[] }) => {
-  console.log(data, "data");
+const GetData = (data: {
+  zoonTitles: string[],
+  zoonIds: { locationId: number; ZoneIds: number[] }[],
+  fullZoneData?: SohwProjectZoonModel[]
+}) => {
+  console.log('AddZoneDialog - Received data from form:', data)
+
+  currentZoneTitles.value = data.zoonTitles
+
+  // Update merged selections with the full structure if provided
+  if (data.fullZoneData) {
+    mergedSelectedZones.value = data.fullZoneData
+  }
+
   visible.value = false
-  Zoones.value = data.zoonTitles
-  ZoonsIds.value = data.zoonIds
-  emit('update:data', ZoonsIds.value)
+
+  // Emit the structured data
+  emit('update:data', data.zoonIds)
+
+  console.log('AddZoneDialog - Emitted to parent:', data.zoonIds)
 }
 
 const deleteZone = (index: number) => {
-  ZoonsIds.value.splice(index, 1)
-  Zoones.value.splice(index, 1)
-  emit('update:data', ZoonsIds.value)
+  const titleToDelete = currentZoneTitles.value[index]
+  console.log('AddZoneDialog - Deleting zone at index:', index, 'Title:', titleToDelete)
+
+  currentZoneTitles.value.splice(index, 1)
+
+  // Remove from merged selections
+  let globalIndex = 0
+  for (let i = 0; i < mergedSelectedZones.value.length; i++) {
+    const location = mergedSelectedZones.value[i]
+    if (!location.zoons) continue
+
+    for (let j = 0; j < location.zoons.length; j++) {
+      if (globalIndex === index) {
+        location.zoons.splice(j, 1)
+        if (location.zoons.length === 0) {
+          mergedSelectedZones.value.splice(i, 1)
+        }
+
+        // Convert back to the format expected by parent
+        const dataToEmit = mergedSelectedZones.value.map(loc => ({
+          locationId: loc.zoonId,
+          ZoneIds: loc.zoons?.map(z => z.id) || []
+        }))
+
+        console.log('AddZoneDialog - After delete, emitting:', dataToEmit)
+        emit('update:data', dataToEmit)
+        return
+      }
+      globalIndex++
+    }
+  }
 }
 </script>
 
 <template>
   <div class="input-wrapper">
     <div class="zones input" @click="visible = true">
-      <div class="zone" v-for="(zone, index) in Zoones" :key="index" @click.stop>
+      <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop>
         {{ zone }}
         <CloseDelete class="delete" @click.stop="deleteZone(index)" />
       </div>
@@ -68,7 +120,11 @@ const deleteZone = (index: number) => {
 
     <div v-if="locations.length > 0" class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-      <ZoneDialogForm :locations="locations" @update:data="GetData" :selectedZones="Zones" />
+      <ZoneDialogForm
+        :locations="locations"
+        @update:data="GetData"
+        :selectedZones="mergedSelectedZones"
+      />
     </div>
 
     <div v-else class="empty">

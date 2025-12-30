@@ -8,12 +8,14 @@ import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params
 import type Params from '@/base/core/params/params'
 
 const router = useRouter()
+const emit = defineEmits(['close:data'])
 const params = ref<Params | null>(null)
 
 const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
 
 const addEquipmentType = async () => {
   await addEquipmentTypeController.addEquipmentType(params.value as AddEquipmentTypeParams, router)
+  emit('close:data')
 }
 const setParams = (data: Params) => {
   params.value = data
