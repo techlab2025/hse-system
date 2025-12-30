@@ -32,11 +32,7 @@ import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 
 const op = ref()
-// const members = ref([
-//     { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
-//     { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
-//     { name: 'Ioni Bowcher', image: 'ionibowcher.png', email: 'ioni@email.com', role: 'Viewer' }
-// ]);
+
 
 const toggle = (event) => {
   op.value.toggle(event)
@@ -137,82 +133,7 @@ watch(
   }
 )
 
-// const Data = ref([
-//   {
-//     id: 1,
-//     title: 'Smart City Project',
-//     created_at: '2025-11-01',
-//     contractors: [
-//       { name: 'BuildCorp' },
-//       { name: 'TechInfra' },
-//       { name: 'GreenSpace' },
-//       { name: 'SkyBuild' },
-//     ],
-//     locations: [
-//       { name: 'Downtown' },
-//       { name: 'North Zone' },
-//       { name: 'Industrial Area' },
-//     ],
-//     supervisors: [
-//       { name: 'Ali Hassan', avatar: '/avatars/ali.png' },
-//       { name: 'Sara Mahmoud', avatar: '/avatars/sara.png' },
-//       { name: 'Omar Khaled', avatar: '/avatars/omar.png' },
-//       { name: 'Nour Ibrahim', avatar: '/avatars/nour.png' },
-//     ],
-//     teams: [
-//       { name: 'Electrical Team' },
-//       { name: 'Civil Team' },
-//       { name: 'Safety Team' },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     title: 'Metro Line Extension',
-//     created_at: '2025-10-22',
-//     contractors: [
-//       { name: 'MegaBuild' },
-//       { name: 'CityWorks' },
-//     ],
-//     locations: [
-//       { name: 'South District' },
-//       { name: 'Tunnel Area' },
-//     ],
-//     supervisors: [
-//       { name: 'Mohamed Salah', avatar: '/avatars/mohamed.png' },
-//       { name: 'Laila Ahmed', avatar: '/avatars/laila.png' },
-//     ],
-//     teams: [
-//       { name: 'Drilling Team' },
-//       { name: 'Inspection Team' },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     title: 'Airport Renovation',
-//     created_at: '2025-09-10',
-//     contractors: [
-//       { name: 'AeroBuild' },
-//     ],
-//     locations: [
-//       { name: 'Terminal 1' },
-//       { name: 'Runway Section' },
-//       { name: 'Cargo Zone' },
-//       { name: 'Parking Area' },
-//     ],
-//     supervisors: [
-//       { name: 'Rana Saeed', avatar: '/avatars/rana.png' },
-//       { name: 'Youssef Adel', avatar: '/avatars/youssef.png' },
-//       { name: 'Tarek Hassan', avatar: '/avatars/tarek.png' },
-//       { name: 'Aya Nabil', avatar: '/avatars/aya.png' },
-//       { name: 'Ahmed Fathy', avatar: '/avatars/ahmed.png' },
-//     ],
-//     teams: [
-//       { name: 'Maintenance Team' },
-//       { name: 'Security Team' },
-//       { name: 'Lighting Team' },
-//     ],
-//   },
-// ])
+
 </script>
 
 <template>
@@ -292,11 +213,11 @@ watch(
                     <TablePopover :data_img="item." />
                   </div> -->
                 <!-- </td> -->
-                <!-- <td data-label="Teams"> -->
-                <!-- <div class="tag-container">
-                    <TablePopover :data="item.teams" />
-                  </div> -->
-                <!-- </td> -->
+                <!-- <td data-label="Teams">
+                <div class="tag-container">
+                    <TablePopover :data="item." />
+                  </div>
+                </td> -->
                 <td data-label="Actions">
                   <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
                 </td>

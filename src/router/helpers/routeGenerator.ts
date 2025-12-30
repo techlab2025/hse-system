@@ -7,17 +7,17 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
   return [
     {
       path,
-      name,
+      name: name == 'Areas' ? 'Location' : name,
       component: () => import(`@/views/${basePath}/Index${name}.vue`),
     },
     {
       path: `${path}/add`,
-      name: `Add ${name}`,
+      name: `Add ${name == 'Areas' ? 'Location' : name}`,
       component: () => import(`@/views/${basePath}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
-      name: `Edit ${name}`,
+      name: `Edit ${name == 'Areas' ? 'Location' : name}`,
       component: () => import(`@/views/${basePath}/Edit${name}.vue`),
     },
   ]
@@ -30,17 +30,17 @@ export function createLocationRoutes(path: string, name: string): RouteRecordRaw
   return [
     {
       path: `${path}/:parent_id?`,
-      name: ` ${name == 'Area' ? 'Location' : name}`,
+      name: ` ${name == 'Areas' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Index${name}.vue`),
     },
     {
       path: `${path}/add/:parent_id?`,
-      name: `Add  ${name == 'Area' ? 'Location' : name}`,
+      name: `Add  ${name == 'Areas' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
-      name: `Edit  ${name == 'Area' ? 'Location' : name}`,
+      name: `Edit  ${name == 'Areas' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Edit${name}.vue`),
     },
   ]

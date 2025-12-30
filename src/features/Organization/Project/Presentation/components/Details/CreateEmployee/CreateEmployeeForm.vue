@@ -20,14 +20,13 @@ const employees = ref<TitleInterface[] | []>(props.employess?.map((item) => new 
 
 const updateEmployee = (value: TitleInterface[] | []) => {
   employees.value = value
-  console.log(employees.value, "employees.value")
-  emit('update:employee', value)
+  // console.log(employees.value, "employees.value")
+  emit('update:employee', employees.value.length > 0 ? employees.value : [])
 }
 
 const EmployeeVisable = ref<boolean>()
 const ShowEmployeeDialog = () => {
   EmployeeVisable.value = true
-
 }
 
 onMounted(() => {

@@ -1,17 +1,15 @@
-@use "../variables" as *;
-@use "../mixins/flex" as *;
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 
 body {
-  background-color: #F8F9FB;
+  background-color: #f8f9fb;
   color: $Black;
- 
 }
 
 .content {
   @include flex(row, flex-start, stretch);
   gap: $XlSize3;
   //padding: $MdSize;
-
 
   .content-wrapper {
     flex: 1;
@@ -23,7 +21,6 @@ body {
     background-color: $White;
     padding: $MdSize;
     border-radius: $XlSize;
+    // min-height: 100vh;
   }
-
-
 }
