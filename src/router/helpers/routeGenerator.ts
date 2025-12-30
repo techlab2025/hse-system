@@ -26,21 +26,21 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
 /**
  * Generate location routes with parent support
  */
-export function   createLocationRoutes(path: string, name: string): RouteRecordRaw[] {
+export function createLocationRoutes(path: string, name: string): RouteRecordRaw[] {
   return [
     {
       path: `${path}/:parent_id?`,
-      name: ` ${name}`,
+      name: ` ${name == 'Area' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Index${name}.vue`),
     },
     {
       path: `${path}/add/:parent_id?`,
-      name: `Add  ${name}`,
+      name: `Add  ${name == 'Area' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Add${name}.vue`),
     },
     {
       path: `${path}/:id`,
-      name: `Edit  ${name}`,
+      name: `Edit  ${name == 'Area' ? 'Location' : name}`,
       component: () => import(`@/views/Admin/Location/${name}/Edit${name}.vue`),
     },
   ]

@@ -153,7 +153,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house-type',
-        Name: 'Where House Type',
+        Name: 'Warehouse Type',
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
           PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
@@ -164,7 +164,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house',
-        Name: 'Where House',
+        Name: 'Warehouse',
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_ALL,
           PermissionsEnum.WHIERE_HOUSE_CREATE,
@@ -401,6 +401,11 @@ watch(
   },
   { immediate: true },
 )
+
+const isActiveRoute = (menuRoute: string) => {
+  const current = route.path
+  return current === menuRoute || current.startsWith(menuRoute + '/')
+}
 </script>
 
 <template>
@@ -409,7 +414,7 @@ watch(
       :key="item.id">
       <PermissionBuilder v-for="routeItem in item.routes" :key="routeItem.route" class="w-full"
         :code="routeItem.permissions">
-        <div class="route" :class="route.path.startsWith(routeItem.route) ? 'active' : ''">
+        <div class="route" :class="isActiveRoute(routeItem.route) ? 'active' : ''">
           <router-link class="w-full" :to="{ path: routeItem.route, query: { type: route.query.type } }">
             {{ routeItem.Name }}
           </router-link>

@@ -49,9 +49,12 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
         const { user } = useUserStore()
 
         if (!draft)
-          await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`,
-          )
+          if (router.currentRoute?.value.fullPath.includes('equipment-type')) {
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`,
+            )
+          } else {
+          }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

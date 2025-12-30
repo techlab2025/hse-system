@@ -249,5 +249,5 @@ const UpdateHasCertificate = (data) => {
       placeholder="Select image" />
   </div>
 
-  <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button>
+  <!-- <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button> -->
 </template>

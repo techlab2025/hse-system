@@ -29,7 +29,8 @@ export default class EditObserverationTypeController extends ControllerInterface
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<ObserverationTypeModel> = await this.EditObserverationTypeUseCase.call(params)
+      const dataState: DataState<ObserverationTypeModel> =
+        await this.EditObserverationTypeUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -42,7 +43,9 @@ export default class EditObserverationTypeController extends ControllerInterface
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/Hazard-types`)
+        await router.push(  
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

@@ -214,7 +214,6 @@ watch(
 
       SerialNumber.value = newData?.SerialNumber;
       date.value = newData?.startDate || new Date();
-      // ContractorIds.value = newData?.partner;
       fields.value[0].value = SerialNumber.value
       fields.value[0].enabled = props?.data?.id ? false : true
       SelectedCountry.value = newData?.country ?? [];
@@ -246,7 +245,6 @@ watch(
         LocationEnum.AREA,
         null,
         null
-        // SelectedCity.value.map((c) => c.id),
       )
       location.value = newData?.area ?? [];
       EvaluatingMethod.value = newData?.methods ?? [];
@@ -265,12 +263,41 @@ const fields = ref([
 
 const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
-const UpdateZones = (data) => {
-  ZoneIds.value = []
-  ZoneIds.value = data.flatMap(item => item.ZoneIds || item)
+
+const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
+  console.log('Grandparent - UpdateZones received:', data)
+
+  // Extract flat zone IDs for the params
+  ZoneIds.value = data.flatMap(item => item.ZoneIds || [])
+
+  console.log('Grandparent - Updated ZoneIds:', ZoneIds.value)
+
   updateData()
 }
 
+// Watch to maintain SelectedZones when data comes from backend
+watch(
+  () => props.data?.Zones,
+  (newZones) => {
+    if (newZones) {
+      console.log('Grandparent - Props.data.Zones changed:', newZones)
+      SelectedZones.value = newZones
+
+      // Also update ZoneIds from the zones
+      const zoneIdsFromProps: number[] = []
+      newZones.forEach(location => {
+        if (location.zoons) {
+          location.zoons.forEach(zone => {
+            zoneIdsFromProps.push(zone.id)
+          })
+        }
+      })
+      ZoneIds.value = zoneIdsFromProps
+      console.log('Grandparent - Initialized ZoneIds from props:', ZoneIds.value)
+    }
+  },
+  { deep: true, immediate: true }
+)
 
 const UpdateSerial = (data) => {
   SerialNumber.value = data
@@ -358,7 +385,8 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
     <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
@@ -385,8 +413,13 @@ const ShowLocationDialog = () => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="zone">{{ $t("zones") }}</label>
-    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
-      :selectedZones="SelectedZones" />
+    <AddZoneDialog
+      id="zone"
+      class="input"
+      :locations="location"
+      @update:data="UpdateZones"
+      :selectedZones="SelectedZones"
+    />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"

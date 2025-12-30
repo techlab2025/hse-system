@@ -29,6 +29,7 @@ interface Props {
   hascontent?: boolean
   hasHeader?: boolean
   isDialog?: boolean
+  dialogVisible?: boolean
   onclick?: () => void
 }
 
@@ -160,7 +161,14 @@ async function reloadData(): Promise<void> {
   normalizedValue.value = isMultiselect.value ? [] : null
 }
 
-const visable = ref(false)
+
+const DialogVisable = ref(props.dialogVisible)
+watch(() => props.dialogVisible, (newVal) => {
+  DialogVisable.value = newVal
+  if (!newVal) {
+    reloadData()
+  }
+})
 </script>
 
 <template>
@@ -180,6 +188,7 @@ const visable = ref(false)
           <span v-if="required" class="text-red-500">*</span>
           {{ $t(label ?? '') }}
         </label>
+
         <slot name="LabelHeader"></slot>
       </div>
     </slot>
@@ -193,6 +202,12 @@ const visable = ref(false)
     <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
   </slot>
   <slot v-else name="content"> </slot>
+  <div v-if="isDialog">
+    <Dialog v-model:visible="DialogVisable" modal :dismissable-mask="true" :style="{ width: '50rem' }">
+      <slot name="Dialog"></slot>
+    </Dialog>
+  </div>
+
 
 </template>
 

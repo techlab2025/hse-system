@@ -40,6 +40,8 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
+import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: EquipmentDetailsModel }>()
@@ -254,7 +256,7 @@ const breadcrumbs = [
 ]
 
 const indexContractorController = IndexContractorController.getInstance()
-const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 1)
+const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 1, false)
 const SelectedContractor = ref<TitleInterface>()
 
 const setContructor = (data: TitleInterface) => {
@@ -442,6 +444,9 @@ const calculateEndDate = () => {
 watch([Rent, SelectedRentType, () => StartDate.value], () => {
   calculateEndDate()
 })
+
+const EquipmentTypeDialog = ref(false)
+const ContractorDialog = ref(false)
 </script>
 
 <template>
@@ -479,13 +484,20 @@ watch([Rent, SelectedRentType, () => StartDate.value], () => {
         <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
           :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
-          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType">
+          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType"
+          :isDialog="true" :dialogVisible="EquipmentTypeDialog">
+          <template #LabelHeader>
+            <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>
+          </template>
+          <template #Dialog>
+            <AddEquipmentType @close:data="EquipmentTypeDialog = false" />
+          </template>
         </UpdatedCustomInputSelect>
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('upload image') }}</label>
-        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="0"
+        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="1"
           placeholder="upload image" />
       </div>
 
@@ -494,7 +506,7 @@ watch([Rent, SelectedRentType, () => StartDate.value], () => {
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
         </label>
         <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
-          label="Certification upload" id="Certification upload" index="1" placeholder="Certification upload" />
+          label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
@@ -515,9 +527,19 @@ watch([Rent, SelectedRentType, () => StartDate.value], () => {
       <div v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
-        <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
+        <!-- <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
-          @update:modelValue="setContructor" />
+          @update:modelValue="setContructor" /> -->
+        <UpdatedCustomInputSelect :modelValue="SelectedContractor" :controller="indexContractorController"
+          :params="indexContractorTypeParams" :label="`Contructor`" id="Contructor" :placeholder="`Select Contructor`"
+          @update:modelValue="setContructor" :isDialog="true" :dialogVisible="ContractorDialog">
+          <template #LabelHeader>
+            <span class="add-dialog" @click="ContractorDialog = true">New</span>
+          </template>
+          <template #Dialog>
+            <AddContractor @update:data="ContractorDialog = false" />
+          </template>
+        </UpdatedCustomInputSelect>
       </div>
 
       <div v-if="
