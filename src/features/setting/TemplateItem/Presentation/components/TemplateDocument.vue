@@ -7,24 +7,37 @@ import TemplateDocumentTextAreaShow from './TemplateDocumentTypes/TemplateDocume
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import { ActionsEnum } from '../../Core/Enum/ActionsEnum'
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
+import DeleteTemplateItemController from '../controllers/deleteTemplateItemController'
+import DeleteTemplateItemParams from '../../Core/params/deleteTemplateItemParams'
 
 const props = defineProps<{
   allData: TemplateDetailsModel
   headerDisplay: boolean | true
 }>()
+const emit = defineEmits(['update:data'])
+
+const AllData = ref(props.allData)
 
 watch(
   () => props.allData,
   (newState) => {
     if (newState) {
-      console.log(newState)
+      AllData.value = newState
+      // console.log(newState)
     }
   },
   {
     deep: true,
   },
 )
+
+const DeleteTemplateItem = async (id: number) => {
+  const deleteTemplateItemController = DeleteTemplateItemController.getInstance()
+  const deleteTemplateItemParams = new DeleteTemplateItemParams(id)
+  await deleteTemplateItemController.deleteTemplateItem(deleteTemplateItemParams)
+  emit("update:data")
+}
 </script>
 <template>
   <div class="template-document-container">
@@ -53,7 +66,9 @@ watch(
     </div>
     <div class="template-document-content-container">
       <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
-        <!-- a -->
+
+        <button class="delete-btn" @click.prevent="DeleteTemplateItem(item?.id)">delete</button>
+
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
           :options="item.options" :require_image="item.requiredImage" />
         <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"

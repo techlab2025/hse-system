@@ -218,8 +218,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) ? image.value : '',
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
+      image: isBase64(image.value) ? image.value : null,
+      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : null,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -325,9 +325,9 @@ watch(
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
       deviceStatus.value = newData?.status
-      image.value = newData?.image || null
+      image.value = newData?.image
       decommissioningDate.value = newData?.date || null
-      certificateImage.value = newData?.certificateImage || null
+      certificateImage.value = newData?.certificateImage
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
       indexEquipmentTypeParams.value = new IndexEquipmentTypeParams('', 1, 10, 1, null, activeTab.value)

@@ -20,9 +20,8 @@
     padding: $MdSize;
 
     @include flex-row(nowrap, space-between, center);
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
       @include flex-column-reverse(nowrap, flex-start, flex-start);
-
     }
     .template-header {
       @include flex-column(wrap, flex-start, flex-start);
@@ -52,7 +51,7 @@
       max-width: 80px;
     }
   }
-  .template-document-content-container{
+  .template-document-content-container {
     width: 100%;
     .template-document-content {
       width: 100%;
@@ -64,6 +63,15 @@
       z-index: 999;
       position: relative;
       border-radius: 0 0 15px 15px;
+    }
+
+    .delete-btn {
+     font-family: "Regular";
+     padding: 5px ;
+      margin-left: auto;
+      background-color: red;
+      color: white;
+      border-radius: 12px;
     }
   }
 }

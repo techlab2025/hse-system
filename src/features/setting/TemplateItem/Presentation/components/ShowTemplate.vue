@@ -50,7 +50,7 @@ watch(
           <ShowTemplateIcon />
         </div>
         <div class="template-document">
-          <TemplateDocument :allData="state.data" />
+          <TemplateDocument @update:data="FetchTemplateDocument" :allData="state.data" />
         </div>
 
         <div class="right-header-background">
