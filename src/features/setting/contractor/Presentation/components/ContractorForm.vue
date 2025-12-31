@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import type ContractorDetailsModel from '../../Data/models/ContractorDetailsModel'
 import editContractorParams from '../../Core/params/editContractorParams'
@@ -11,6 +11,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import DatePicker from 'primevue/datepicker'
 import { ContractorStatusEnum } from '../../Core/Enum/ContractorStatusEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import ScopeIdParams from '../../Core/params/AddscopesParams'
 const emit = defineEmits(['update:data'])
 
 const indexScopeController = IndexScopeController.getInstance()
@@ -22,12 +23,15 @@ const props = defineProps<{
 const phoneNumber = ref<string>('')
 const Name = ref<string>('')
 const updateData = () => {
+  const Scopes = Scope.value?.map((item) => new ScopeIdParams(item.id))
+  // ScopeIdParams
+
   const params = props.data?.id
     ? new editContractorParams(
       props.data?.id! ?? 0,
       Name.value,
       phoneNumber.value,
-      Scope.value?.map((item) => item.id),
+      Scopes,
       CompanyEmail.value,
       CompanyAddress.value,
       contactPerson.value,
@@ -39,9 +43,9 @@ const updateData = () => {
     : new AddContractorParams(
       Name.value,
       phoneNumber.value,
-      Scope.value ? Scope.value.map((item) => item.id) : [],
+      Scopes,
       CompanyEmail.value ? CompanyEmail.value : " ",
-      CompanyAddress.value ? CompanyAddress.value : "",
+      CompanyAddress.value ? CompanyAddress.value : " ",
       contactPerson.value ? contactPerson.value : " ",
       contactPersonEmail.value ? contactPersonEmail.value : " ",
       contactPersonPhone.value ? contactPersonPhone.value : " ",
@@ -49,6 +53,7 @@ const updateData = () => {
       formatJoinDate(date.value)
     )
 
+  console.log("params", params);
   emit('update:data', params)
 }
 const Scope = ref<TitleInterface[]>()
@@ -69,10 +74,10 @@ watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
-      console.log(newData, "newData");
+      console.log(newData.scopes , "newData.scopes");
       Name.value = newData.name
       phoneNumber.value = newData.phone
-      Scope.value = newData.scope
+      Scope.value = newData.scopes
       CompanyEmail.value = newData.companyEmail
       CompanyAddress.value = newData.CompanyAddress
       contactPerson.value = newData.contactPerson
@@ -141,6 +146,10 @@ const setStatus = (data: TitleInterface) => {
   SelectedStatus.value = data
   updateData()
 }
+
+onMounted(() => {
+  updateData()
+})
 </script>
 
 <template>

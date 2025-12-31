@@ -10,7 +10,7 @@ export default class EditCertificateParams implements Params {
   allIndustries: number | null
   industries: number[]
   // parentId: number
-  image: string
+  image: string| null
   imageId?: number
 
   constructor(
@@ -20,7 +20,7 @@ export default class EditCertificateParams implements Params {
     allIndustries: number | null,
     industries: number[],
     // parentId: number,
-    image: string,
+    image: string | null,
     imageId?: number,
   ) {
     this.id = id
@@ -51,7 +51,7 @@ export default class EditCertificateParams implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
-    data['image'] = this.image
+    if (this.image != null) data['image'] = this.image
     if (this.imageId) data['image_id'] = this.imageId
 
     return data

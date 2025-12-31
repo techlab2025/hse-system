@@ -1,8 +1,10 @@
+import ContractorScopeModel from './ContractorScopeMode'
+
 export default class ContractorDetailsModel {
   public id: number
   public name: string
   public phone: string
-  public scope: number
+  public scopes: ContractorScopeModel[]
   public companyEmail: string
   public CompanyAddress: string
   public contactPerson: string
@@ -15,7 +17,7 @@ export default class ContractorDetailsModel {
     id: number,
     name: string,
     phone: string,
-    scope: number,
+    scopes: ContractorScopeModel[],
     companyEmail: string,
     CompanyAddress: string,
     contactPerson: string,
@@ -27,7 +29,7 @@ export default class ContractorDetailsModel {
     this.id = id
     this.name = name
     this.phone = phone
-    this.scope = scope
+    this.scopes = scopes
     this.companyEmail = companyEmail
     this.CompanyAddress = CompanyAddress
     this.contactPerson = contactPerson
@@ -42,7 +44,7 @@ export default class ContractorDetailsModel {
       data.id,
       data.name,
       data.phone,
-      data.scope,
+      (data.scopes ?? []).map((scope: any) => ContractorScopeModel.fromMap(scope)),
       data.company_email,
       data.company_address,
       data.contact_person,
@@ -53,3 +55,4 @@ export default class ContractorDetailsModel {
     )
   }
 }
+

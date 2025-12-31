@@ -1,11 +1,12 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import type ScopeIdParams from './AddscopesParams'
 
 export default class AddContractorParams implements Params {
   Name: string
   ContractorNumber: string
-  Scope?: number[]
+  Scope?: ScopeIdParams[]
   CompanyEmail?: string
   CompanyAddress?: string
   contactPerson?: string
@@ -27,7 +28,7 @@ export default class AddContractorParams implements Params {
   constructor(
     Name: string,
     ContractorNumber: string,
-    Scope?: number[],
+    Scope?: ScopeIdParams[],
     CompanyEmail?: string,
     CompanyAddress?: string,
     contactPerson?: string,
@@ -50,19 +51,20 @@ export default class AddContractorParams implements Params {
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    number | string | number[] | Record<string, string | number[] | number |any| Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
       | number[]
+      | any
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
     data['name'] = this.Name
     data['phone'] = this.ContractorNumber
-    if (this.Scope) data['scope_id'] = this.Scope
+    if (this.Scope) data['scopes'] = this.Scope.map((scope) => scope.toMap())
     if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
     if (this.CompanyAddress) data['company_address'] = this.CompanyAddress
     if (this.contactPerson) data['contact_person'] = this.contactPerson
