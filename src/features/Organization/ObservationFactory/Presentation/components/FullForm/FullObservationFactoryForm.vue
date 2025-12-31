@@ -374,7 +374,7 @@ const GetHeader = (value: number) => {
 
     <!-- Serial -->
     <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
-      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="false" @update:value="UpdateSerial" />
     </div>
 
     <!-- Place -->

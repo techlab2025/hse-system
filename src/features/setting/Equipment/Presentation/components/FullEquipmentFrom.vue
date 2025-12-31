@@ -214,7 +214,7 @@ const updateData = () => {
       VehicleKm: VehicleKm.value,
       serialNumber: SerialNumber.value?.SerialNumber,
       SelectedWhereHosue: SelectedWhereHosue.value?.id,
-      equipmentRentEndDate: EndDateFormat,
+      equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
     })
     : new AddEquipmentParams({
       translation: translationsParams,
@@ -232,11 +232,12 @@ const updateData = () => {
       constructorId: SelectedContractor.value?.id,
       equipmentRentType: SelectedRentType?.value?.id,
       equipmentRentTime: Rent.value,
-      equipmentRentStartDate: StartDateFormat,
+      equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
       VehicleKm: VehicleKm.value,
       serialNumber: SerialNumber.value?.SerialNumber,
       SelectedWhereHosue: SelectedWhereHosue.value?.id,
-      equipmentRentEndDate: EndDateFormat,
+      equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+
     })
 
   console.log(StartDateFormat, "date")

@@ -275,7 +275,7 @@ const ShowDetails = ref<number[]>([])
                       </div>
                       <div class="card-info">
                         <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                        <Image v-if="item.image" :src="item.image" alt="Image" preview>
+                        <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
                           <template #previewicon>
                             <div class="perview">
                               <span>view</span>

@@ -284,6 +284,7 @@ const ShowDetails = ref<number[]>([])
                         </Image>
                         <img v-else src="@/assets/images/logo.svg" alt="">
                       </div>
+
                     </div>
                     <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                       <span v-if="ShowDetails[index]">Show Less</span>

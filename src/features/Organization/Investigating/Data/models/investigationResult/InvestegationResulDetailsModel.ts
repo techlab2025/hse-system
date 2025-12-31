@@ -1,4 +1,6 @@
+import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
+import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 
 export default class InvestegationResultDetailsModel {
   public id: number
@@ -8,6 +10,8 @@ export default class InvestegationResultDetailsModel {
   public type: number
   public title: string
   public serialNumber: string
+  public investigationTeamLeader: TitleInterface
+  public investigationEmployees: InvestegationEmployeeModel[]
 
   constructor(
     id: number,
@@ -17,6 +21,8 @@ export default class InvestegationResultDetailsModel {
     observation: HazardModel,
     status: number,
     type: number,
+    investigationTeamLeader: TitleInterface,
+    investigationEmployees: InvestegationEmployeeModel[],
   ) {
     this.id = id
     this.title = title
@@ -25,6 +31,8 @@ export default class InvestegationResultDetailsModel {
     this.observation = observation
     this.status = status
     this.type = type
+    this.investigationTeamLeader = investigationTeamLeader
+    this.investigationEmployees = investigationEmployees
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -36,6 +44,8 @@ export default class InvestegationResultDetailsModel {
       data.observation,
       data.status,
       data.type,
+      data.investigation_team_leader,
+      data.investigation_employees?.map((i: any) => InvestegationEmployeeModel.fromMap(i)) ?? [],
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
@@ -46,5 +56,11 @@ export default class InvestegationResultDetailsModel {
     HazardModel.example,
     1,
     2,
+    new TitleInterface({id:1 , title: 'Mohab Mohamed'}),
+    [
+      InvestegationEmployeeModel.example,
+      InvestegationEmployeeModel.example,
+      InvestegationEmployeeModel.example,
+    ],
   )
 }
