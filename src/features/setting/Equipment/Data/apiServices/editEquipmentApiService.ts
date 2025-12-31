@@ -24,6 +24,7 @@ class EditEquipmentApiService extends ServicesInterface {
       type: CrudType.POST,
       auth: true,
       params: params,
+      showLoadingDialog: true,
     })
   }
 }

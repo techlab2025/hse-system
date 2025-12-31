@@ -11,7 +11,7 @@ import TemplateItemForm from './TemplateItemForm.vue'
 
 const route = useRoute()
 const router = useRouter()
-const id = route.params.id
+const id = route.params.parent_id
 const params = ref<Params | null>(null)
 
 const showTemplateItemController = ShowTemplateItemController.getInstance()
@@ -60,7 +60,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTemplateItem">
         <TemplateItemForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary w-full">Edit</button>
         </div>
       </form>
     </template>

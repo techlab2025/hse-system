@@ -66,7 +66,7 @@ const { user } = useUserStore()
 
 
         <h3 class="demo-title">
-          {{ wordSlice(selctedequipment[1]?.title  || $t('equipment name'), 40) }}
+          {{ wordSlice(selctedequipment[1]?.title  , 40) }}
         </h3>
 
         <div class="inspection">

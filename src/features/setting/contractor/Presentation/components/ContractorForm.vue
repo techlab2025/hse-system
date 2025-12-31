@@ -74,10 +74,18 @@ watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
-      console.log(newData.scopes , "newData.scopes");
+      console.log(newData.scopes, "newData.scopes");
+      Scope.value = newData.scopes.map(
+        (item) =>
+          new TitleInterface({
+            id: item.id,
+            title: item.titles?.[0]?.title,
+          })
+      )
+
       Name.value = newData.name
       phoneNumber.value = newData.phone
-      Scope.value = newData.scopes
+      // Scope.value = newData.scopes
       CompanyEmail.value = newData.companyEmail
       CompanyAddress.value = newData.CompanyAddress
       contactPerson.value = newData.contactPerson

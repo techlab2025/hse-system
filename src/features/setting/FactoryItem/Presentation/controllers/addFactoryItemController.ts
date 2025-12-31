@@ -29,10 +29,11 @@ export default class AddFactoryItemController extends ControllerInterface<Factor
   async addFactory(params: AddFactoryItemParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
-        console.log("aaaaaaaaa");
+        console.log('aaaaaaaaa')
         return
       }
       const dataState: DataState<FactoryItemModel> = await this.AddFactoryUseCase.call(params)

@@ -38,6 +38,7 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
       const dataState: DataState<FactoryItemModel> = await this.EditFactoryUseCase.call(params)
 
       this.setState(dataState)
+
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
@@ -47,7 +48,6 @@ export default class EditFactoryItemController extends ControllerInterface<Facto
         })
 
         const { user } = useUserStore()
-
         await router.push(
           `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factories-items`,
         )

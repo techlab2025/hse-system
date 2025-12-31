@@ -10,12 +10,26 @@ import { ActionsEnum } from '../../Core/Enum/ActionsEnum'
 import { ref, watch } from 'vue'
 import DeleteTemplateItemController from '../controllers/deleteTemplateItemController'
 import DeleteTemplateItemParams from '../../Core/params/deleteTemplateItemParams'
+import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
+import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
+import DeleteItemDialog from '@/shared/HelpersComponents/dialog/DeleteItemDialog.vue'
+import DropList from '@/shared/HelpersComponents/DropList.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import IconEdit from '@/shared/icons/IconEdit.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+
 
 const props = defineProps<{
   allData: TemplateDetailsModel
   headerDisplay: boolean | true
 }>()
 const emit = defineEmits(['update:data'])
+const { t } = useI18n()
+const route = useRoute()
+const TemplateId = route.params.parent_id
 
 const AllData = ref(props.allData)
 
@@ -31,6 +45,29 @@ watch(
     deep: true,
   },
 )
+
+const actionList = (id: number, DeleteTemplateItem: (id: number) => void) => [
+  // {
+  //   text: t('edit'),
+  //   icon: IconEdit,
+  //   link: `/organization/template-item/${TemplateId}/${id}`,
+  //   permission: [
+  //     PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.TEMPLATE_ITEM_ALL,
+  //   ],
+  // },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => DeleteTemplateItem(id),
+    permission: [
+      PermissionsEnum.TEMPLATE_ITEM_DELETE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.TEMPLATE_ITEM_ALL,
+    ],
+  },
+]
 
 const DeleteTemplateItem = async (id: number) => {
   const deleteTemplateItemController = DeleteTemplateItemController.getInstance()
@@ -67,7 +104,11 @@ const DeleteTemplateItem = async (id: number) => {
     <div class="template-document-content-container">
       <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
 
-        <button class="delete-btn" @click.prevent="DeleteTemplateItem(item?.id)">delete</button>
+        <div class="actions">
+
+          <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
+        </div>
+
 
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
           :options="item.options" :require_image="item.requiredImage" />
@@ -79,5 +120,7 @@ const DeleteTemplateItem = async (id: number) => {
           :require_image="item.requiredImage" />
       </div>
     </div>
+    <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->
+
   </div>
 </template>
