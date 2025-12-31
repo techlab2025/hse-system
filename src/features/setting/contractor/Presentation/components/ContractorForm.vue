@@ -155,7 +155,7 @@ const setStatus = (data: TitleInterface) => {
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
-    <input type="text" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
+    <input type="email" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
       placeholder="Enter contractor Email " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

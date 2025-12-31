@@ -82,10 +82,10 @@ const { user } = useUserStore()
         </router-link>
       </div>
 
-      <div class="search">
+      <!-- <div class="search">
         <SearchIcon />
         <input type="serach" placeholder="Search What You Want" />
-      </div>
+      </div> -->
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />

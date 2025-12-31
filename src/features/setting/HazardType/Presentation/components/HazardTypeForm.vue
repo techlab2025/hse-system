@@ -123,6 +123,8 @@ const updateData = () => {
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id) ?? [],
+      HazaradFactor
+
     )
     : new AddHazardTypeParams(
       translationsParams,

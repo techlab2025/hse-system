@@ -58,12 +58,12 @@ watch(() => props.task, (newVal) => {
     </div>
 
     <div class="card-content">
-      <!-- <p class="task-description">
+      <p class="task-description">
         {{ task?.description }}
-      </p> -->
+      </p>
       <div class="info ">
         <span class="date">due date :<span>{{ task?.date }}</span></span>
-        <!-- <span class="responsable">Responsible: <span>{{ task?.ResponsablePerson }}</span> </span> -->
+        <span class="responsable">Responsible: <span>{{ task?.responablePerson }}</span> </span>
       </div>
 
       <div class="assigned-to-container">
@@ -71,7 +71,7 @@ watch(() => props.task, (newVal) => {
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
             <p class="assign">assigned to :</p>
-            <!-- <p class="person">{{ task?.assignedTo }}</p> -->
+            <p class="person">{{ task?.assignedTo }}</p>
           </div>
         </div>
         <button :class="GetTaskStatus(task?.status)">

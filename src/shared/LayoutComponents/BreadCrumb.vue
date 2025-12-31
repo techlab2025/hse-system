@@ -89,6 +89,10 @@ const RouterBack = () => {
 const IsHome = computed(
   () => route.path === '/organization' || route.path === '/admin'
 )
+const IsHomeSetting = computed(
+  () => route.path === '/organization/setting' || route.path === '/admin' || route.path === '/organization'
+)
+
 </script>
 
 <template>
@@ -102,6 +106,6 @@ const IsHome = computed(
       <Breadcrumb :model="items" />
     </div>
 
-    <FastRoutes />
+    <FastRoutes v-if="!IsHomeSetting" />
   </div>
 </template>

@@ -45,8 +45,8 @@ const UpdateSerial = (data) => {
 watch(
   [() => props.data],
   ([newData]) => {
-    console.log(newData , "newData");
-    Name.value = newData.name
+    console.log(newData, "newData");
+    Name.value = newData?.name
     // SelectedWhereHouseType.value = new TitleInterface({id:newData})
   },
   { immediate: true }
@@ -77,7 +77,7 @@ const setName = (data) => {
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="false" @update:value="UpdateSerial" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
