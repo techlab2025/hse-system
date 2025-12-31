@@ -48,7 +48,7 @@ export default class OvserverModel {
   }
   static example :OvserverModel = new OvserverModel(
     1,
-    'Ahmed Hassan',
+    'Mohab Mohamed',
     '01007599123',
     'mohab@gmail.com',
     1,

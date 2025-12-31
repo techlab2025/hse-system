@@ -119,9 +119,15 @@ const setAnotherMeeting = (data) => {
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.title"
-          :victim="Details?.observer?.name" :date="state?.data?.date" :meetingDate="Details?.date"
-          :TeamLeader="Details.observer?.name" :TeamNumbers="12" />
+        <!-- <pre>
+          {{ state.data }}
+        </pre> -->
+
+        <!-- {{ state?.data?.observation?.serial }} -->
+        <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
+          :victim="state?.data?.observation?.observer?.name" :date="state?.data?.date" :meetingDate="state?.data?.date"
+          :TeamLeader="state?.data?.observation?.observer?.name" :TeamNumbers="12" />
+
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>

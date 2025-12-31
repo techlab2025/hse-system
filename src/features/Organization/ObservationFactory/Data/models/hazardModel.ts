@@ -6,6 +6,7 @@ import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models
 import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
+import acc from '@/assets/images/acc.png'
 
 export default class HazardModel {
   public id: number
@@ -117,4 +118,32 @@ export default class HazardModel {
       data.media.map((item: any) => FilesModel.fromMap(item)),
     )
   }
+
+  static example: HazardModel = new HazardModel(
+    1,
+    'New Observation',
+    'New Observation Details Description',
+    acc,
+    1,
+    1,
+    1,
+    1,
+    1,
+    OvservationEquipmentModel.example,
+    LocationModel.example,
+    SohwProjectZoonModel.example,
+    ShowProjectDetailsModel.example,
+    1,
+    1,
+    1,
+    'New Action',
+    'yes',
+    'capa',
+    '10-12-2000',
+    "_0b5512547_5432",
+    OvserverModel.example,
+    OvserverModel.example,
+    null,
+    [],
+  )
 }
