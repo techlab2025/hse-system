@@ -27,9 +27,9 @@ const setParams = (data: Params) => {
 
     <div class="col-span-4 button-wrapper">
       <div class="flex items-center gap-2 !mt-4">
-        <button type="submit" class="btn btn-danger w-30">
+        <router-link to="/organization/equipments" @click.prevent="" class="btn btn-danger w-30">
           <span>Cancel</span>
-        </button>
+        </router-link>
 
         <button type="submit" class="btn btn-primary w-full">
           <span>Add Equipment</span>
