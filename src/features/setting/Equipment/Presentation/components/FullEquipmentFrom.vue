@@ -609,7 +609,7 @@ const ContractorDialog = ref(false)
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''" :selctedequipment="langs"
         :selectedequipmentType="equipmentType" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
-        :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []"
+        :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []" :langDefault="langDefault"
         :cardType="EquipmentTypesEnum[activeTab]" />
 
       <QrCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" />

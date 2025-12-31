@@ -19,7 +19,8 @@ const GetEquipmentType = (type: number) => {
 
   <div class="tool-card">
     <div class="tool-card-header">
-      <img :src="tool?.equipment?.[0]?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
+      <!-- <pre>{{ tool?.equipment?.image }}</pre> -->
+      <img :src="tool?.equipment?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
       <div class="tool-card-header-text">
 
         <div class="flex gap-2 items-center card-type">

@@ -61,7 +61,8 @@ const fetchEquipment = async (
     pageNumber,
     perPage,
     withPage,
-    id
+    id,
+    true
   )
   await indexEquipmentController.getData(deleteEquipmentTypeParams)
 }

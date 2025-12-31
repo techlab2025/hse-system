@@ -87,7 +87,7 @@ export default class EquipmentDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       data.has_certificate,
       0,
-      data.image,
+      data.image  ,
       data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
       data.equipment_type_id,
       data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,

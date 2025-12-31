@@ -28,6 +28,7 @@ const ImageChecked = ref()
 const ActionChecked = ref()
 const route = useRoute()
 const id = Number(route.params.parent_id)
+const templateid = Number(route.params)
 const langs = ref<{ locale: string; icon?: any; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 const SelectedComponent = ref<ActionsEnum>(3)
@@ -36,6 +37,7 @@ const title = ref('')
 
 const updateData = () => {
   // title.value = " "
+  console.log(id , "ididid");
   const params = !props.data?.id
     ? new AddTemplateItemParams(
       id,
@@ -70,6 +72,8 @@ watch(
     if (newData) {
       ImageChecked.value = newData.requiredImage ? true : false
       ActionChecked.value = newData.action == 1 ? true : false
+      SelectedComponent.value = newData.action
+      title.value = newData.name
     }
   },
   { immediate: true },
@@ -131,10 +135,10 @@ const ClearTitle = () => {
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
       <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
-      <button class="btn add-btn w-full" @click="ClearTitle">{{ $t('add_to_template') }}</button>
+      <button class="btn add-btn w-full" @click="ClearTitle" >{{ $t('add_to_template') }}</button>
     </div>
   </div>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2" >
     <ShowTemplate />
   </div>
 </template>
