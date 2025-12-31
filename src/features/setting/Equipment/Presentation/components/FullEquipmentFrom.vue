@@ -182,6 +182,22 @@ const equipmentName = computed(() => {
   return lang?.title || ''
 })
 
+
+function isBase64(str: any): boolean {
+  if (typeof str !== 'string') return false
+
+  // remove base64 prefix if exists
+  const base64 = str.includes('base64,')
+    ? str.split('base64,')[1]
+    : str
+
+  const base64Regex =
+    /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+
+  return base64Regex.test(base64)
+}
+
+
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) =>
@@ -202,8 +218,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: typeof image.value === 'string' ? image.value : '',
-      certificateImage: typeof certificateImage.value === 'string' ? certificateImage.value : '',
+      image: isBase64(image.value) ? image.value : '',
+      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -224,8 +240,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: image.value,
-      certificateImage: certificateImage.value,
+      image: isBase64(image.value) ? image.value : '',
+      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -240,8 +256,7 @@ const updateData = () => {
 
     })
 
-  console.log(StartDateFormat, "date")
-  console.log(EndDateFormat, "time")
+
   emit('update:data', params)
 }
 
@@ -498,15 +513,15 @@ const ContractorDialog = ref(false)
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label>{{ $t('upload image') }}</label>
-        <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" index="1"
-          placeholder="upload image" />
+        <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
+          index="1" placeholder="upload image" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
         </label>
-        <SingleFileUpload v-model="certificateImage" @update:modelValue="setCertificateImage"
+        <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
           label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
       </div>
 

@@ -6,6 +6,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type CertificateModel from '../../Data/models/CertificateModel'
 import EditCertificateUseCase from '../../Domain/useCase/editCertificateUseCase'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditCertificateController extends ControllerInterface<CertificateModel> {
   private static instance: EditCertificateController
@@ -37,7 +39,11 @@ export default class EditCertificateController extends ControllerInterface<Certi
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/admin/certificate')
+        const { user } = useUserStore()
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate`,
+        )
+
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

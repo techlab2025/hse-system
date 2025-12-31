@@ -20,6 +20,7 @@ import EditCertificateParams from '../../Core/params/editCertificateParams'
 import AddCertificateParams from '../../Core/params/addCertificateParams'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { isNull } from 'util'
 
 const emit = defineEmits(['update:data'])
 
@@ -31,7 +32,19 @@ const route = useRoute()
 const id = route.params.parent_id
 
 type ImageValue = string | { file?: File; id?: number }
+function isBase64(str: any): boolean {
+  if (typeof str !== 'string') return false
 
+  // remove base64 prefix if exists
+  const base64 = str.includes('base64,')
+    ? str.split('base64,')[1]
+    : str
+
+  const base64Regex =
+    /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+
+  return base64Regex.test(base64)
+}
 // ---------- State ----------
 const langs = ref<
   {
@@ -41,17 +54,21 @@ const langs = ref<
   }[]
 >([])
 
-const langsDescription = ref<{ locale: string; description: string }[]>([])
+const langsDescription = ref<{
+  locale: string;
+  icon?: any;
+  description: string
+}[]>([])
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
-const image = ref<ImageValue>('')
+const image = ref<string>('')
 
 // industry controller
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available langs from backend 
+// default available langs from backend
 const langDefault = ref<
   {
     locale: string
@@ -77,6 +94,12 @@ const fetchLang = async (
 ) => {
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -132,21 +155,20 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
-  console.log(translationsParams, 'translationsParams')
+  console.log(isBase64(image.value), "isBase64(image.value)");
   const params = props.data?.id
     ? new EditCertificateParams(
       props.data.id,
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      typeof image.value === 'string' ? image.value : '',
+      isBase64(image.value) ? image.value : null,
     )
     : new AddCertificateParams(
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      typeof image.value === 'string' ? image.value : '',
-
+      isBase64(image.value) ? image.value : '',
     )
 
   // console.log(params, 'params')
@@ -181,7 +203,7 @@ watch(
 
       allIndustries.value = newData?.allIndustries ?? 0
       industry.value = newData?.industries ?? []
-      image.value = typeof newData?.image === 'string' ? newData?.image : ''
+      image.value = newData?.image ? newData?.image : ''
     }
   },
   { immediate: true },
@@ -198,8 +220,8 @@ watch(
 
 // ---------- Helpers ----------
 const setImage = async (data: File | string) => {
-  // image.value = await filesToBase64(data)
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
+
   updateData()
 }
 </script>
@@ -212,7 +234,7 @@ const setImage = async (data: File | string) => {
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)" type="textarea" />
+      field-type="description" @update:modelValue="(val) => (langsDescription = val)" type="textarea" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
@@ -227,7 +249,8 @@ const setImage = async (data: File | string) => {
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+    <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
       placeholder="Select image" />
+
   </div>
 </template>
