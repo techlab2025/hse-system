@@ -4,7 +4,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class AddContractorParams implements Params {
   Name: string
-  CompanyNumber: string
+  ContractorNumber: string
   Scope?: number[]
   CompanyEmail?: string
   CompanyAddress?: string
@@ -16,7 +16,7 @@ export default class AddContractorParams implements Params {
 
   public static readonly validation = new ClassValidation().setRules({
     Name: { required: true, minLength: 2, maxLength: 100 },
-    CompanyNumber: {
+    ContractorNumber: {
       required: true,
       minLength: 11,
       maxLength: 20,
@@ -26,7 +26,7 @@ export default class AddContractorParams implements Params {
 
   constructor(
     Name: string,
-    CompanyNumber: string,
+    ContractorNumber: string,
     Scope?: number[],
     CompanyEmail?: string,
     CompanyAddress?: string,
@@ -37,7 +37,7 @@ export default class AddContractorParams implements Params {
     date?: string,
   ) {
     this.Name = Name
-    this.CompanyNumber = CompanyNumber
+    this.ContractorNumber = ContractorNumber
     this.Scope = Scope
     this.CompanyEmail = CompanyEmail
     this.CompanyAddress = CompanyAddress
@@ -61,7 +61,7 @@ export default class AddContractorParams implements Params {
     > = {}
 
     data['name'] = this.Name
-    data['phone'] = this.CompanyNumber
+    data['phone'] = this.ContractorNumber
     if (this.Scope) data['scope_id'] = this.Scope
     if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
     if (this.CompanyAddress) data['company_address'] = this.CompanyAddress

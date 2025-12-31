@@ -51,7 +51,7 @@ const image = ref<ImageValue>('')
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-// default available langs from backend
+// default available langs from backend 
 const langDefault = ref<
   {
     locale: string
@@ -132,20 +132,22 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
+  console.log(translationsParams, 'translationsParams')
   const params = props.data?.id
     ? new EditCertificateParams(
-        props.data.id,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        image.value,
-      )
+      props.data.id,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      typeof image.value === 'string' ? image.value : '',
+    )
     : new AddCertificateParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        image.value,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      typeof image.value === 'string' ? image.value : '',
+
+    )
 
   // console.log(params, 'params')
 
@@ -164,22 +166,22 @@ watch(
 
       langs.value = newData?.titles?.length
         ? newDefault.map((l) => {
-            const existing = newData.titles.find((t) => t.locale === l.locale)
-            return existing ?? { locale: l.locale, title: '' }
-          })
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       // descriptions
       langsDescription.value = newData?.descriptions?.length
         ? newDefault.map((l) => {
-            const existing = newData.descriptions.find((t) => t.locale === l.locale)
-            return existing ?? { locale: l.locale, title: '' }
-          })
+          const existing = newData.descriptions.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       allIndustries.value = newData?.allIndustries ?? 0
       industry.value = newData?.industries ?? []
-      image.value = newData?.image ?? ''
+      image.value = typeof newData?.image === 'string' ? newData?.image : ''
     }
   },
   { immediate: true },
@@ -204,55 +206,28 @@ const setImage = async (data: File | string) => {
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-      :required="true"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)"
+      :required="true" />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput
-      :label="$t('description')"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      type="textarea"
-    />
+    <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" type="textarea" />
   </div>
 
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
   </div>
 
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      :label="$t('all_industries')"
-      id="all_industries"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="(val) => (industry = val)"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+      :label="$t('all_industries')" id="all_industries" placeholder="Select industry" :type="2"
+      @update:modelValue="(val) => (industry = val)" />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+      placeholder="Select image" />
   </div>
 </template>

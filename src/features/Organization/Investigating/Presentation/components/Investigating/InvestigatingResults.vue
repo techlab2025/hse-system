@@ -126,7 +126,7 @@ const setAnotherMeeting = (data) => {
         <!-- {{ state?.data?.observation?.serial }} -->
         <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
           :victim="state?.data?.observation?.observer?.name" :date="state?.data?.date" :meetingDate="state?.data?.date"
-          :TeamLeader="state?.data?.observation?.observer?.name" :TeamNumbers="12" />
+          :TeamLeader="state?.data?.investigationTeamLeader?.title" :TeamNumbers="state.data?.investigationEmployees?.length" />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />

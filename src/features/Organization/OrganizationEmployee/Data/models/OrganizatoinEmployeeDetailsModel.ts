@@ -1,6 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
+import acc from '@/assets/images/acc.png'
 
 export default class OrganizatoinEmployeeDetailsModel {
   public id: number
@@ -54,4 +55,20 @@ export default class OrganizatoinEmployeeDetailsModel {
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+
+  static example: OrganizatoinEmployeeDetailsModel = new OrganizatoinEmployeeDetailsModel(
+    10,
+    'Mohab',
+    '01007599132',
+    'Mohab@gmail.com',
+    1,
+    acc,
+    [
+      {
+        id: 1,
+        title: 'Egypt',
+      },
+    ],
+    [],
+  )
 }

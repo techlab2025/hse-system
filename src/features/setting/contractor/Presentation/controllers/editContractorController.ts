@@ -9,6 +9,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import type ContractorModel from '../../Data/models/ContractorModel'
 import type EditContractorParams from '../../Core/params/editContractorParams'
+import IndexContractorController from './indexContractorController'
+import IndexContractorParams from '../../Core/params/indexContractorParams'
 
 export default class EditContractorController extends ControllerInterface<ContractorModel> {
   private static instance: EditContractorController
@@ -48,9 +50,14 @@ export default class EditContractorController extends ControllerInterface<Contra
 
         const { user } = useUserStore()
 
-        await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor`,
-        )
+        if (router.currentRoute.value.fullPath.includes('contractor')) {
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor`,
+          )
+        } else {
+          console.log('index')
+          IndexContractorController.getInstance().getData(new IndexContractorParams('', 1, 10, 1))
+        }
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
