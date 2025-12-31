@@ -21,7 +21,7 @@ const SelectedProjectZone = ref<TitleInterface>()
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const indexEmployeeParams = ref<IndexOrganizatoinEmployeeParams | null>(null);
 watch(SelectedProjectZone, (newVal) => {
-  indexEmployeeParams.value = new IndexOrganizatoinEmployeeParams('', 1, 10, 1, null, newVal?.id);
+  indexEmployeeParams.value = new IndexOrganizatoinEmployeeParams('', 1, 1, 0, null, newVal?.id, false);
 });
 
 const indexProjectController = IndexProjectController.getInstance()
