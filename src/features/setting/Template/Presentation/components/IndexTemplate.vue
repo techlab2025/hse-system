@@ -50,7 +50,7 @@ const fetchTemplate = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteTemplateParams = new IndexTemplateParams(query, pageNumber, perPage, withPage, id)
+  const deleteTemplateParams = new IndexTemplateParams(query, pageNumber, perPage, withPage, id ,true)
   await indexTemplateController.getData(deleteTemplateParams)
 }
 
