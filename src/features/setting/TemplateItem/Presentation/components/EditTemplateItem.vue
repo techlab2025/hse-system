@@ -11,6 +11,8 @@ import TemplateItemForm from './TemplateItemForm.vue'
 
 const route = useRoute()
 const router = useRouter()
+//id =  template_id / parent_id =tempalte_item_id
+
 const id = route.params.parent_id
 const params = ref<Params | null>(null)
 

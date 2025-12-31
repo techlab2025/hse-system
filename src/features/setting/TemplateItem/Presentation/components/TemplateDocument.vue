@@ -50,6 +50,7 @@ const actionList = (id: number, DeleteTemplateItem: (id: number) => void) => [
   // {
   //   text: t('edit'),
   //   icon: IconEdit,
+  //   //id =  template_id / parent_id =tempalte_item_id
   //   link: `/organization/template-item/${TemplateId}/${id}`,
   //   permission: [
   //     PermissionsEnum.TEMPLATE_ITEM_UPDATE,

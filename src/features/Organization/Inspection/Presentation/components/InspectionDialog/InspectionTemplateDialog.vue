@@ -25,7 +25,7 @@ const state = ref(indexTemplateController.state.value)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async () => {
-  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 0, 0, 0, 0)
+  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 0, 0, 0, 0 , false)
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
