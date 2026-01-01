@@ -135,20 +135,20 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
-  {
-    text: t('show'),
-    icon: IconEye,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/equipment-show/${id}`,
-    permission: [
-      PermissionsEnum.EQUIPMENT_DETAILS,
-      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-    ],
-  },
+  // {
+  //   text: t('show'),
+  //   icon: IconEye,
+  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+  //     }/equipment-show/${id}`,
+  //   permission: [
+  //     PermissionsEnum.EQUIPMENT_DETAILS,
+  //     PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+  //     PermissionsEnum.ADMIN,
+  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  //     PermissionsEnum.EQUIPMENT_ALL,
+  //     PermissionsEnum.ORG_EQUIPMENT_ALL,
+  //   ],
+  // },
   {
     text: t('delete'),
     icon: IconDelete,

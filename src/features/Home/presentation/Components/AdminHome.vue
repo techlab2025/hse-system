@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { PermissionsEnum } from '../users/Admin/Core/Enum/permission_enum';
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+
 
 </script>
 <template>

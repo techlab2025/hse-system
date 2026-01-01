@@ -16,4 +16,9 @@ export const InspectionRoutes: RouteRecordRaw[] = [
     name: 'Edit Inspection',
     component: () => import('@/views/Organization/Inspection/EditInspection.vue'),
   },
+  {
+    path: 'inspection/overdue',
+    name: 'Overdue Inspection',
+    component: () => import('@/views/Organization/Inspection/OverdueInspection.vue'),
+  },
 ]

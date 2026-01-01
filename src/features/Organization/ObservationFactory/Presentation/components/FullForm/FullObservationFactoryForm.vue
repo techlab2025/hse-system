@@ -245,11 +245,11 @@ const SeverityList = ref<TitleInterface[]>([
 ])
 const SelectedLikelihood = ref<TitleInterface>()
 const LikelihoodList = ref<TitleInterface[]>([
-  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'L1 - Rare' }),
-  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'L2 - Unlikely' }),
-  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'L3 - Possible' }),
-  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'L4 - Likely' }),
-  new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: 'L5 - Almost Certain' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
+  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: '2 - Unlikely' }),
+  new TitleInterface({ id: LikelihoodEnum.Possible, title: '3 - Possible' }),
+  new TitleInterface({ id: LikelihoodEnum.Likely, title: '4 - Likely' }),
+  new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: '5 - Almost Certain' }),
 ])
 
 const setSeverity = (data: TitleInterface) => {

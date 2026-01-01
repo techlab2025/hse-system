@@ -831,5 +831,6 @@
   "theme": "Theme",
   "charts": "Charts",
   "is_work_stopped": "Is Work Stopped",
-  "project_location_&_site_overview": "Project Location & Site Overview"
+  "project_location_&_site_overview": "Project Location & Site Overview",
+  "all_projects": "All Projects"
 }

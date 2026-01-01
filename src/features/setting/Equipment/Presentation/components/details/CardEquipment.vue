@@ -92,19 +92,19 @@ const deleteEquipment = async (id: number) => {
         </div>
         <div class="date-of-decommissioning">
           <span>{{ $t('Date of Decommissioning') }} :</span>
-          <p>{{ new Date(equipmentData.date).toLocaleDateString() }}</p>
+          <p>{{ new Date(equipmentData.checkinDate).toLocaleDateString() }}</p>
         </div>
         <div class="vehicle">
           <Car />
 
           <div class="items">
-            <div class="item">
+            <!-- <div class="item">
               <span>{{ $t('License number') }} : </span>
               <p>{{ equipmentData?.licenseNumber }}</p>
-            </div>
-            <div class="item">
+            </div> -->
+            <div class="item" v-if="equipmentData?.kilometer">
               <span>{{ $t('Vehicle License No') }} : </span>
-              <p>2359874</p>
+              <p>{{ equipmentData?.kilometer }}</p>
             </div>
           </div>
         </div>
@@ -119,27 +119,16 @@ const deleteEquipment = async (id: number) => {
             <div class="flex flex-col gap-4">
               <div>
                 <ul class="list-none !px-3 !py-1 flex-col m-0 flex gap-3">
-                  <li
-                    v-for="action in actions"
-                    :key="action.id"
-                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
-                  >
-                    <RouterLink
-                      :to="action.link"
-                      class="flex items-center gap-3"
-                      v-if="action.id == 1"
-                    >
+                  <li v-for="action in actions" :key="action.id"
+                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border">
+                    <RouterLink :to="action.link" class="flex items-center gap-3" v-if="action.id == 1">
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
                     </RouterLink>
 
-                    <button
-                      v-else-if="action.id == 2"
-                      @click="deleteEquipment"
-                      class="flex items-center gap-3 w-full"
-                    >
+                    <button v-else-if="action.id == 2" @click="deleteEquipment" class="flex items-center gap-3 w-full">
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}

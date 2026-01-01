@@ -7,7 +7,7 @@ import OrganizationSettingIcon from "@/assets/images/OrganizationSettingIcon.png
 import PersonalData from "@/assets/images/PersonalData.png";
 import SettingLocation from "@/assets/images/SettingLocation.png";
 
-import { RouterEnum } from "../SettingEnum/SettingEnum";
+import { RouterEnum } from "../core/enums/SettingEnum/SettingEnum";
 import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
 import PermissionBuilder from "@/components/DataStatus/PermissionBuilder.vue";
 

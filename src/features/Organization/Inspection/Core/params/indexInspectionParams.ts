@@ -9,6 +9,7 @@ export default class IndexInspectionParams implements Params {
   public pageNumber: number = 10
   public id?: number[]
   public zoneIds?: number[]
+  public isOverDue?: boolean
   // public code?: LangEnum
 
   constructor(
@@ -18,6 +19,7 @@ export default class IndexInspectionParams implements Params {
     withPage: number = 1,
     id?: number[],
     zoneIds?: number[],
+    isOverDue?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -26,17 +28,19 @@ export default class IndexInspectionParams implements Params {
     this.perPage = perPage
     this.id = id
     this.zoneIds = zoneIds
+    this.isOverDue = isOverDue
     // this.code = code
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null> = {}
+  toMap(): Record<string, string | number | number[] | null | any> {
+    const data: Record<string, string | number | number[] | null | any> = {}
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['employee_ids'] = this.id
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
+    if (this.isOverDue) data['is_over_due'] = this.isOverDue
     // if (this.code) data['code'] = this.code
     return data
   }

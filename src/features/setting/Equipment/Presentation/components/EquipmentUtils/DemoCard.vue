@@ -66,18 +66,18 @@ const { user } = useUserStore()
 
 
         <h3 class="demo-title">
-          {{ wordSlice(selctedequipment[1]?.title  , 40) }}
+          {{ wordSlice(selctedequipment[1]?.title, 40) }}
         </h3>
 
-        <div class="inspection">
+        <!-- <div class="inspection">
           <span>{{ $t('inspection date') }}:</span>
           <p class="font-semibold text-[#4B5563]">
             {{ wordSlice(props.inspectionDuration, 20) }}
           </p>
-        </div>
+        </div> -->
 
         <div class="date">
-          {{ $t('Date of Decommissioning') }}:
+          {{ $t(' Inspection expiry date') }}:
           <span>
             {{
               props.decommissioningDate

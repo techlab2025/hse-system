@@ -1,14 +1,34 @@
 <script lang="ts" setup>
-import { PermissionsEnum } from '../users/Admin/Core/Enum/permission_enum';
-import HomeRoutesCard from './HomeUtils/HomeRoutesCard.vue';
 import CardProjectLogo from '@/assets/images/CardProjectLogo.png';
 import Operation from '@/assets/images/Operation.png';
 import DetectiveLogo from '@/assets/images/DetectiveLogo.png';
 import EquipmentBag from '@/assets/images/EquipmentBag.png';
 import TeamLogo from '@/assets/images/TeamLogo.png';
 import HomeSetting from '@/assets/images/HomeSetting.png';
-import { RouterEnum } from './SettingEnum/SettingEnum';
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+import HomeRoutesCard from './HomeUtils/HomeRoutesCard.vue';
+import { RouterEnum } from '../../core/enums/SettingEnum/SettingEnum';
+import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue';
+import FetchProjectStatisticsParams from '../../core/params/FetchProjectStatisticsParams';
+import FetchPorjectStatisticsController from '../Controllers/FetchProjectStatisticsController';
+import { onMounted, ref, watch } from 'vue';
 
+const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
+const state = ref(fetchPorjectStatisticsController.state.value)
+
+
+const GetProjectStatistics = async () => {
+  const fetchPorjectStatisticsParams = new FetchProjectStatisticsParams("", 1, 10, 1)
+  await fetchPorjectStatisticsController.getData(fetchPorjectStatisticsParams)
+}
+
+onMounted(() => {
+  GetProjectStatistics()
+})
+
+watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
+  state.value = newState
+})
 </script>
 <template>
   <div class="home-routes-cards">
@@ -96,5 +116,9 @@ import { RouterEnum } from './SettingEnum/SettingEnum';
       </router-link>
     </PermissionBuilder>
 
+  </div>
+
+  <div class="home-statistics">
+    <!-- <ProjectsStatistics :projectStatistics="state?.data" /> -->
   </div>
 </template>
