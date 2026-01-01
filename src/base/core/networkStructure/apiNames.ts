@@ -1334,6 +1334,9 @@ class ApiNames {
   public get IndexTasks() {
     return this.prefix + 'fetch_investigation_tasks'
   }
+  public get FetchProjectStatistics() {
+    return this.prefix + 'fetch_project_statistics'
+  }
 }
 
 export { ApiNames }

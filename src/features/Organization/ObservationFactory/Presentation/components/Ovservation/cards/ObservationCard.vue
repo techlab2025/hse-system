@@ -5,6 +5,7 @@ interface Item {
   addRoute: string;
   image: string;
   indexRoute: string;
+  overdueRoute: string;
   description: string;
 }
 const { item } = defineProps<{
@@ -29,6 +30,7 @@ const { item } = defineProps<{
     <div class="card-options">
       <RouterLink :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
       <RouterLink :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
+      <RouterLink :to="item.overdueRoute" class="btn btn-secondary">{{ $t('over_due') }}</RouterLink>
     </div>
   </div>
 </template>

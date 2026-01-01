@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import AdminHome from './AdminHome.vue';
-import OragnizationHome from './OragnizationHome.vue';
 import { useUserStore } from '@/stores/user';
-import { OrganizationTypeEnum } from '../auth/Core/Enum/organization_type';
+import OragnizationHome from './OragnizationHome.vue';
+import AdminHome from './AdminHome.vue';
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type';
 const { user } = useUserStore();
 </script>
 <template>

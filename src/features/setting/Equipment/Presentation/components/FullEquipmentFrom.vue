@@ -531,7 +531,10 @@ const ContractorDialog = ref(false)
           @update:modelValue="setDecoDate" />
       </div>
 
-      <div class="flex item-center justify-start gap-4" v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
+
+
+      <div class="col-span-2 flex item-center justify-start gap-4"
+        v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <div class="radio-wrapper gap-2" :class="deviceStatus == option?.id ? 'active' : ''"
           v-for="(option, index) in deviceStatusOptions" :key="index">
           <label :for="`${option?.id}-${option?.title}`">{{ option?.title }}</label>
@@ -540,12 +543,11 @@ const ContractorDialog = ref(false)
         </div>
       </div>
 
+
       <div v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
-        <!-- <CustomSelectInput :modelValue="SelectedContractor" :controller="indexContractorController"
-          :params="indexContractorTypeParams" label="Contructor" id="contructor" placeholder="Selected Contructor.."
-          @update:modelValue="setContructor" /> -->
+
         <UpdatedCustomInputSelect :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" :label="`Contructor`" id="Contructor" :placeholder="`Select Contructor`"
           @update:modelValue="setContructor" :isDialog="true" :dialogVisible="ContractorDialog">
@@ -563,6 +565,11 @@ const ContractorDialog = ref(false)
       ">
         <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
           placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
+      </div>
+      <div>
+        <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
+          :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
+          @update:modelValue="setSelectedWhereHouse" />
       </div>
 
       <div class="input-wrapper" v-if="
@@ -598,6 +605,8 @@ const ContractorDialog = ref(false)
 
       <div class="input-wrapper" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomCheckbox :title="'all_industries'" :checked="allIndustries" @update:checked="allIndustries = $event" />
+      </div>
+      <div class="input-wrapper" v-if="deviceStatus == EquipmentStatus.RENT">
       </div>
 
       <div v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN">

@@ -99,10 +99,13 @@
     transition: 0.3s all linear;
     border: 1px solid #f1f3f5b2;
     color: #04195393;
+    padding: 22px;
+    border: 1px solid #D9D9E8;
 
     &.active {
-      background-color: #0419531a;
+      // background-color: #0419531a;
       color: $PrimaryColor;
+      background: radial-gradient(white 40% , #cce1f544 );
     }
     label {
       width: 100%;

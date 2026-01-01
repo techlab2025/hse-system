@@ -146,6 +146,9 @@
 /*<editor-fold desc="fast routes">*/
 @use './HomeBreadCrump/fast_routes';
 /*</editor-fold>*/
+/*<editor-fold desc="Home Statistics">*/
+@use './HomeStatistics/home_statistics_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;

@@ -40,11 +40,11 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="show-equipment">
-        <CardEquipment  :equipmentData="state.data!" />
+        <CardEquipment :equipmentData="state.data!" />
         <div class="history-qr">
           <HistoryLog />
           <QrCode />
-        </div>
+      </div>
       </div>
     </template>
 

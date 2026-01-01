@@ -13,6 +13,7 @@ const items = [
     image: ToDoLogo,
     addRoute: '/organization/equipment-mangement/inspection/add',
     indexRoute: '/organization/equipment-mangement/inspection?isAll=1',
+    overdueRoute: '/organization/equipment-mangement/inspection/overdue?isAll=1',
     description: 'Add . show'
   },
   {

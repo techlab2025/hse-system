@@ -1,0 +1,12 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.project-statistics-card {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 4px;
+
+  .project-statistics-card-info {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 4px;
+  }
+}

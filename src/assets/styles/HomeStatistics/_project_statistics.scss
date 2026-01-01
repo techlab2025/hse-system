@@ -1,0 +1,54 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.project-statistics {
+  grid-column: span 12;
+  @include flex-column(nowrap, flex-start, center);
+  width: 100%;
+  border: 1px solid #5571b948;
+  border-radius: $XlSize2;
+  padding: $SmSize;
+  .header {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    gap: $XsSize;
+    .header-container {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize;
+
+      .header-img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .title-content {
+        @include flex-column(nowrap, flex-start, flex-start);
+        .content-info {
+          @include flex-row(nowrap, flex-start, center);
+          gap: $XsSize3;
+
+          .title {
+            color: #170f49;
+            font-size: $XlSize2;
+            font-weight: $BaseFontWeightBold;
+          }
+
+          .count {
+            color: #c0c0c5;
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+            .counter {
+              color: $PrimaryColor;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
+        }
+        .description {
+          color: #c0c0c5;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+}
