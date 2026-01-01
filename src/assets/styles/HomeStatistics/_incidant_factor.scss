@@ -1,0 +1,64 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.incidant-factor-container {
+  margin-top: 12px;
+  width: 100%;
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 12px;
+  height: 100%;
+  .incidant-factor-header-container {
+    @include flex-row(nowrap, space-between, center);
+    padding-right: 80px;
+    width: 100%;
+    // height: 50%;
+
+    .incidant-factor-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 4px;
+      padding-left: 25px;
+
+      .static {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontWeightBold;
+      }
+
+      .static-title {
+        color: #0c2058;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+        span {
+          color: #bcbcbc;
+          font-size: $XsSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+
+  .static-data {
+    width: 100%;
+    padding-left: 12px;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 8px;
+    height: 70%;
+
+    p {
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+      background-color: #fcfcfc;
+      padding: $XsSize3;
+      width: 100%;
+      border-radius: 12px;
+      span {
+        padding-inline: 4px;
+        color: $PrimaryColor;
+        font-size: calc($XlSize + 2px);
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+  }
+}

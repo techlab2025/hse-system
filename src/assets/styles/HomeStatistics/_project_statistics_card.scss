@@ -4,9 +4,58 @@
 .project-statistics-card {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: 4px;
+  min-width: 550px;
+  border: 1px solid #1f41bb0a;
+  padding: 10px 12px;
+  border-radius: 12px;
 
   .project-statistics-card-info {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
+    .status-InActive {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: #f4971e;
+    }
+    .status-Active {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: #4caf50;
+    }
+    .status-Complate {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: #4caf50;
+    }
+
+    .project-name {
+      color: #121212;
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+  .project-statistics-card-info-counters {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 10px;
+    .counter {
+      @include flex-column(nowrap, flex-start, flex-start);
+      .static-info {
+        color: #b7beca;
+        font-size: $MdSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+      .total {
+        color: black;
+      }
+      .complated {
+        color: #00ac47;
+      }
+      .inprogress {
+        color: #6563ff;
+      }
+      .hold {
+        color: #ffbf52;
+      }
+    }
   }
 }
