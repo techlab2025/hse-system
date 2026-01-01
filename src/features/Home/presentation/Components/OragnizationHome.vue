@@ -12,6 +12,9 @@ import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue';
 import FetchProjectStatisticsParams from '../../core/params/FetchProjectStatisticsParams';
 import FetchPorjectStatisticsController from '../Controllers/FetchProjectStatisticsController';
 import { onMounted, ref, watch } from 'vue';
+import TopTeams from './HomeStatistics/TopTeams.vue';
+import TotalMachines from './HomeStatistics/TotalMachines.vue';
+import MostIncidantFactor from './HomeStatistics/MostIncidantFactor.vue';
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -118,7 +121,10 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 
   </div>
 
-  <div class="home-statistics">
-    <!-- <ProjectsStatistics :projectStatistics="state?.data" /> -->
-  </div>
+  <!-- <div class="home-statistics">
+    <ProjectsStatistics :projectStatistics="state?.data" />
+    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+    <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" />
+  </div> -->
 </template>

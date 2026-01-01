@@ -8,6 +8,7 @@
   border: 1px solid #5571b948;
   border-radius: $XlSize2;
   padding: $SmSize;
+  margin-bottom: $XlSize2;
   .header {
     width: 100%;
     @include flex-row(nowrap, space-between, center);
@@ -50,5 +51,12 @@
         }
       }
     }
+  }
+
+  .statistics-content{
+    width: 100%;
+    @include flex-row(nowrap,flex-start , flex-start);
+    gap: 15px;
+    overflow-x: scroll;
   }
 }

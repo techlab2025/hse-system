@@ -1,0 +1,110 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.top-teams-container {
+  margin-top: 12px;
+  height: 180px;
+  .top-teams-header {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 4px;
+    padding-left: 25px;
+
+    .static {
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontWeightBold;
+    }
+
+    .static-title {
+      color: #0c2058;
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      span {
+        color: #bcbcbc;
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+
+  .top-teams-container {
+    position: relative;
+    .first {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    .second {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-55%, -38%);
+      z-index: 1;
+    }
+    .third {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-60%, -20%);
+      z-index: 1;
+    }
+    .first {
+      canvas {
+        height: 250px !important;
+      }
+    }
+    .second {
+      canvas {
+        height: 170px !important;
+      }
+    }
+    .third {
+      canvas {
+        height: 100px !important;
+      }
+    }
+  }
+
+  .top-teams-names {
+    @include flex-row(nowrap, center, center);
+    gap: $XlSize4;
+    // padding-left: 25px;
+
+    p {
+      font-size: $XsSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -13px;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      &:first-child {
+        color: #1d4ed8;
+        &::before {
+          background-color: #1d4ed8;
+        }
+      }
+      &:nth-child(2) {
+        color: #8bbefb;
+        &::before {
+          background-color: #8bbefb;
+        }
+      }
+      &:last-child {
+        color: #4e9fff;
+        &::before {
+          background-color: #4e9fff;
+        }
+      }
+    }
+  }
+}

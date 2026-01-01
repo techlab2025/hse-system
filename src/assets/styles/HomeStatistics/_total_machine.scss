@@ -1,0 +1,85 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.total-machines-container {
+  margin-top: 12px;
+  @media(max-width:768px){
+    margin-top: 80px;
+
+  }
+  .total-machines-header-container {
+    @include flex-row(nowrap, space-between, center);
+    // padding-right: 80px;
+    .total-machines-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 4px;
+      padding-left: 25px;
+
+      .static {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontWeightBold;
+      }
+
+      .static-title {
+        color: #0c2058;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+        span {
+          color: #bcbcbc;
+          font-size: $XsSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+
+    .static-data {
+      @include flex-row(nowrap, flex-end, center);
+      gap: $XsSize3;
+
+      p {
+        background-color: #f8faff80;
+        border: 1px solid #f1f3f7d1;
+        padding: $XsSize3;
+        padding-inline: 18px;
+        border-radius: $XsSize;
+        color: #19213d;
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 5px;
+          transform: translateY(-50%);
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+        }
+
+        &:first-child {
+          &::before {
+            background-color: #1d4ed8;
+          }
+        }
+        &:nth-child(2) {
+          &::before {
+            background-color: #8bbefb;
+          }
+        }
+        &:last-child {
+          &::before {
+            background-color: #4e9fff;
+          }
+        }
+      }
+    }
+  }
+  canvas {
+    margin-top: 20px;
+    height: 210px !important;
+    width: 850px !important;
+  }
+}
