@@ -25,8 +25,10 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addInvestigating">
     <InvestigatingForm @update:data="setParams" />
 
-    <div class="col-span-6 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">Add</button>
+    <div class="col-span-6 button-wrapper flex gap-2">
+      <router-link to="/organization/investigating" type="submit" class="btn btn-cancel "
+        style="width:30%  ">Cancel</router-link>
+      <button type="submit" class="btn btn-primary " style="width: 70%;">Add</button>
     </div>
   </form>
 </template>

@@ -29,14 +29,12 @@ const router = useRouter()
 const projectId = +route.params.project_id
 const locationId = route.query?.locationId
 
-// ================== CONTROLLERS ==================
 const addHierarchyEmployeeController =
   AddHierarchyEmployeeController.getInstance()
 
 const projectCustomLocationController =
   ProjectCustomLocationController.getInstance()
 
-// ================== STATE ==================
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
 
 const state = ref(projectCustomLocationController.state.value)
@@ -48,7 +46,6 @@ watch(
   }
 )
 
-// ================== FETCH DATA ==================
 const getProjectLocationsHierarchiesEmployees = async () => {
   const params = new ProjectCustomLocationParams(projectId, [
     ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
@@ -60,7 +57,6 @@ const getProjectLocationsHierarchiesEmployees = async () => {
 
 onMounted(getProjectLocationsHierarchiesEmployees)
 
-// ================== HANDLERS ==================
 const handleEmployeesUpdate = (
   hierarchyId: number,
   employees: TitleInterface[]
@@ -68,19 +64,17 @@ const handleEmployeesUpdate = (
   employeesByHierarchy.value[hierarchyId] = employees || []
 }
 
-// ================== SUBMIT ==================
 const handleAddAllEmployees = async () => {
   try {
-    const hierarchies = Object.entries(employeesByHierarchy.value)
-      .filter(([_, employees]) => employees && employees.length > 0)
-      .map(([hierarchyId, employees]) =>
+    const hierarchies = Object.entries(employeesByHierarchy.value).map(
+      ([hierarchyId, employees]) =>
         new LocationHierarchyEmployeeParams(
           +hierarchyId,
-          employees.map(e => e.id)
+          employees?.length ? employees.map(e => e.id) : []
         )
-      )
+    )
 
-    // 🚫 لا تبعت أي request لو مفيش حاجة
+    // لو مفيش أي hierarchies خالص
     if (hierarchies.length === 0) return
 
     const params = new AddHierarchyEmployeeParams(projectId, hierarchies)
@@ -89,6 +83,7 @@ const handleAddAllEmployees = async () => {
     console.error('Error adding employees:', error)
   }
 }
+
 </script>
 
 <template>

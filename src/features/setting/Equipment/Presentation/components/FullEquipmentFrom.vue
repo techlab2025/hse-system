@@ -274,7 +274,6 @@ const breadcrumbs = [
 const indexContractorController = IndexContractorController.getInstance()
 const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 1, false)
 const SelectedContractor = ref<TitleInterface>()
-
 const setContructor = (data: TitleInterface) => {
   SelectedContractor.value = data
   updateData()
@@ -331,13 +330,13 @@ watch(
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
       indexEquipmentTypeParams.value = new IndexEquipmentTypeParams('', 1, 10, 1, null, activeTab.value)
-      SelectedContractor.value = newData?.constructor
+      SelectedContractor.value = new TitleInterface({ id: newData?.contractor?.id, title: newData?.contractor?.name })
       SelectedRentType.value = RentTypes.value.find((item) => item.id === newData?.RentType)
       Rent.value = newData?.RentTime
       StartDate.value = newData?.checkinDate ? new Date(newData.checkinDate) : null
       VehicleKm.value = newData?.kilometer
       isVehicle.value = newData?.kilometer ? true : false
-      SelectedWhereHosue.value = newData?.wareHouse
+      SelectedWhereHosue.value = new TitleInterface({ id: newData?.warehouse?.id, title: newData?.warehouse?.name })
       EndDate.value = newData?.RentEndDate ? new Date(newData.RentEndDate) : null
     }
   },

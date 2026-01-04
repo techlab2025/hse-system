@@ -10,9 +10,7 @@ const router = useRouter()
 
 const items = ref<{ label: string; url?: string }[]>([])
 
-/* =========================
-   Helpers
-========================= */
+
 
 // get section after /organization/
 const getSection = (path: string) => {
@@ -24,6 +22,10 @@ const getSection = (path: string) => {
 const isEditRoute = (name?: string) =>
   name?.toLowerCase().includes('edit')
 
+// is add page
+const isAddRoute = (name?: string) =>
+  name?.toLowerCase().includes('add')
+
 // remove ONLY edit breadcrumb
 const removeEdit = () => {
   items.value = items.value.filter(
@@ -31,9 +33,14 @@ const removeEdit = () => {
   )
 }
 
-/* =========================
-   Build Breadcrumb
-========================= */
+// remove ONLY add breadcrumb
+const removeAdd = () => {
+  items.value = items.value.filter(
+    i => !i.label.toLowerCase().includes('add')
+  )
+}
+
+
 
 const buildBreadcrumb = () => {
   items.value = []
@@ -66,11 +73,18 @@ const buildBreadcrumb = () => {
       url: undefined,
     })
   }
+
+  // If Add page
+  if (isAddRoute(currentLabel)) {
+    removeAdd()
+
+    items.value.push({
+      label: currentLabel,
+      url: undefined,
+    })
+  }
 }
 
-/* =========================
-   Watch route
-========================= */
 
 watch(
   () => route.fullPath,
@@ -78,9 +92,7 @@ watch(
   { immediate: true }
 )
 
-/* =========================
-   Back
-========================= */
+
 
 const RouterBack = () => {
   router.back()

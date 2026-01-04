@@ -12,7 +12,7 @@ export default class AddHierarchyEmployeeParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-    if (this.locations != null) data['project_id'] = this.projectId
+    if (this.projectId != null) data['project_id'] = this.projectId
     if (this.locations != null) data['locations'] = this.locations
     return data
   }

@@ -7,6 +7,7 @@ import OvserverModel from '@/features/Organization/ObservationFactory/Data/model
 import InvestegationObservationModel from './InvestigationHelperModels/InvestegationObservationModel'
 import acc from '@/assets/images/acc.png'
 import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnum'
+import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string
@@ -33,7 +34,7 @@ export default class InvestigatingModel {
   public creator: OvserverModel
   public capa: CapaModel
   public status: number
-  public observation: InvestegationObservationModel
+  public observation: HazardDetailsModel
   public LatestInvestigatingMeetingId: number
 
   constructor(
@@ -62,7 +63,7 @@ export default class InvestigatingModel {
     creator: OvserverModel,
     capa: CapaModel,
     status: number,
-    observation: InvestegationObservationModel,
+    observation: HazardDetailsModel,
     LatestInvestigatingMeetingId: number,
   ) {
     this.Investegationid = Investegationid
@@ -123,7 +124,7 @@ export default class InvestigatingModel {
       data.creator,
       data.capa,
       data.status,
-      InvestegationObservationModel.fromMap(data.observation),
+      HazardDetailsModel.fromMap(data.observation),
       data.latest_investigation_meeting_id,
     )
   }

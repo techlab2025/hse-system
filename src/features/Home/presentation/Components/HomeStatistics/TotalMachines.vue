@@ -118,7 +118,13 @@ const chartData = [
         <span class="static">static</span>
         <p class="static-title">most used incident factors </p>
       </div>
+      <div class="static-data">
+        <p>tool</p>
+        <p>equipment</p>
+        <p>device</p>
+      </div>
     </div>
+
     <div class="chart-container flex items-end gap-4 p-8 bg-white rounded-xl font-sans">
       <div v-for="month in chartData" :key="month.name" class="month flex flex-col items-center gap-2">
         <div class="flex flex-col-reverse gap-1 w-12 h-48">

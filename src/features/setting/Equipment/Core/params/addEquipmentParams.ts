@@ -85,7 +85,7 @@ export default class AddEquipmentParams implements Params {
 
     if (this.parentId != null) data['parent_id'] = this.parentId
 
-    if (this.constructorId != null) data['constructor_id'] = this.constructorId
+    if (this.constructorId != null) data['contractor_id'] = this.constructorId
 
     if (this.description) data['description'] = this.description
     if (this.equipmentRentType) data['period_type'] = this.equipmentRentType
@@ -94,7 +94,7 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
     if (this.serialNumber) data['serial'] = this.serialNumber
-    if (this.SelectedWhereHosue) data['warehouse'] = this.SelectedWhereHosue
+    if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
 
     return data
   }

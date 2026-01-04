@@ -1,0 +1,38 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.total-observation-container {
+  margin-top: 12px;
+  width: 100%;
+  @media (max-width: 768px) {
+    margin-top: 80px;
+  }
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 12px;
+  .total-observation-header-container {
+    @include flex-row(nowrap, space-between, center);
+    padding-right: 30px;
+    width: 100%;
+    .total-observation-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 4px;
+      transform: translateY(20px);
+      .static-title {
+        color: #0c2058;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+        span {
+          color: #bcbcbc;
+          font-size: $XsSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+  }
+  canvas {
+    margin-top: 20px;
+    height: 210px !important;
+    width: 850px !important;
+  }
+}

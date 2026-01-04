@@ -22,26 +22,34 @@ import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/dat
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import mark from "@/assets/images/mark.png"
+import Pagination from '@/shared/HelpersComponents/Pagination.vue'
+import type { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 
+
+const word = ref('')
+const currentPage = ref(1)
+const countPerPage = ref(10)
 const indexInvestigatingController = IndexInvestigatingController.getInstance()
 const state = ref(indexInvestigatingController.state.value)
 // const InvestigatingList = ref(InvestigatingData)
 const router = useRouter()
 const ShowDetails = ref<boolean[]>([])
+const observationRiskLevel = ref<RiskLevelEnum | null>(null)
 
 const GetInvsetegationResult = async (
   query = '',
   pageNumber = 1,
-  perPage = 1000,
+  perPage = 10,
   withPage = 1,
+  observationRiskLevel?: RiskLevelEnum
 ) => {
   const indexInvestigationResultParams = new IndexInvestigationResultParams(
     query,
     pageNumber,
     perPage,
-    withPage
+    withPage,
+    observationRiskLevel
   );
-
   await indexInvestigatingController.getData(indexInvestigationResultParams);
 
 }
@@ -56,7 +64,7 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
     case InvestegationStatusEnum.NEW:
       return 'New'
     case InvestegationStatusEnum.IN_PROGRESS:
-      return 'In Progress'
+      return 'InProgress'
     case InvestegationStatusEnum.CLOSED:
       return 'Closed'
     case InvestegationStatusEnum.COMPLETED:
@@ -81,6 +89,28 @@ watch(
 const GetInvestigationType = (type: number) => {
   return Observation[type]
 }
+
+
+
+const handleChangePage = (page: number) => {
+  currentPage.value = page
+  GetInvsetegationResult('', page, countPerPage.value)
+}
+
+// Handle count per page change
+const handleCountPerPage = (count: number) => {
+  countPerPage.value = count
+  GetInvsetegationResult('', currentPage.value, countPerPage.value)
+}
+
+const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
+  observationRiskLevel.value = riskLevel
+  if (riskLevel == null) {
+    GetInvsetegationResult('', currentPage.value, countPerPage.value)
+  } else {
+    GetInvsetegationResult('', currentPage.value, countPerPage.value, 1, observationRiskLevel.value)
+  }
+}
 </script>
 
 <template>
@@ -89,7 +119,8 @@ const GetInvestigationType = (type: number) => {
       {{ console.log(state.data, "state") }}
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
-        <InvestigatingSidebar />
+        <InvestigatingSidebar :selectedRiskLevel="observationRiskLevel" :highObservationCount="5"
+          :mediumObservationCount="5" @update:data="GetRiskLevel" />
 
         <!-- Main content (Cards) -->
         <div class="col-span-9">
@@ -118,12 +149,14 @@ const GetInvestigationType = (type: number) => {
                             'high-observation': item.title === 'High observation',
                             'medium-observation': item.title === 'Medium observation',
                           }">
-                            {{ GetInvestigationType(item?.observation?.type) }} <span v-if="item?.serial">{{
-                              item?.serial ||
-                              '_OBS-2025-0112'
+                            {{ GetInvestigationType(item?.observation?.type) }} <span
+                              v-if="item?.observation?.serialNumber">{{
+                                item?.observation?.serialNumber ||
+                                '_OBS-2025-0112'
                               }}</span>
                           </p>
-                          <p class="new">{{ ReturnStatusTitle(item?.status) }}</p>
+                          <p :class="`status ${ReturnStatusTitle(item?.status)}`">{{ ReturnStatusTitle(item?.status) }}
+                          </p>
                         </div>
                         <div class="first-card-details">
                           <p class="label-item-secondary">
@@ -147,23 +180,25 @@ const GetInvestigationType = (type: number) => {
 
                       <div class="card-details">
                         <div class="project-details">
-                          <p class="label-item-primary flex" v-if="item?.zoon">
+                          <!-- <pre>{{ item?.observation }}</pre> -->
+                          <p class="label-item-primary flex" v-if="item?.observation?.zoon">
                             <img :src="mark" alt="zone">
-                            Zone: <span>{{ item?.zoon?.zoonTitle }}</span>
+                            Zone: <span>{{ item?.observation?.zoon?.title }}</span>
                           </p>
-                          <p class="label-item-primary" v-if="item?.equipment">
-                            Machine: <span>{{ item?.equipment?.title }}</span>
+                          <p class="label-item-primary" v-if="item?.observation?.equipment">
+                            Machine: <span>{{ item?.observation?.equipment?.title }}</span>
                           </p>
                           <p class="label-item-primary">
-                            Status: <span>{{ ReturnStatusTitle(item?.status) }}</span>
+                            Status: <span>{{ item?.observation?.saveStatus == 1 ? "Solved" : "Unsolved" }}</span>
                           </p>
-                          <p class="label-item-primary" v-if="item?.saveStatus">
-                            take action: <span>{{ item?.saveStatus == 1 ? "true" : "false" }}</span>
+                          <p class="label-item-primary" v-if="item?.observation?.isAction">
+                            take action: <span>{{ item?.observation?.isAction == 1 ? "true" : "false" }}</span>
                           </p>
                         </div>
                       </div>
 
-                      <div class="btns-container">
+                      <div class="btns-container" v-if="item?.status != InvestegationStatusEnum.CLOSED"
+                        style="margin-top: 20px;">
                         <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
                           <button class="btn first-btn">
                             <span>{{ $t('show details') }}</span>
@@ -208,6 +243,8 @@ const GetInvestigationType = (type: number) => {
           </div>
         </div>
       </div>
+      <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+
     </template>
     <template #loader>
       <TableLoader :cols="3" :rows="10" />
