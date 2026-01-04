@@ -121,10 +121,10 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 
   </div>
 
-  <!-- <div class="home-statistics">
+  <div class="home-statistics">
     <ProjectsStatistics :projectStatistics="state?.data" />
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
     <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" />
-  </div> -->
+  </div>
 </template>
