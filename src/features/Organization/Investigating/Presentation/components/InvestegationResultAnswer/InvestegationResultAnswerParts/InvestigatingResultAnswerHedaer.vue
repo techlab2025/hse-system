@@ -38,7 +38,7 @@ const GetInvestigationType = (type: number) => {
         <p>
           created in : <span>{{ createdAt }}</span>
         </p>
-        <p>
+        <p v-if="victim">
           The victim : <span class="victim">{{ victim }}</span>
         </p>
       </div>
@@ -47,7 +47,7 @@ const GetInvestigationType = (type: number) => {
         <div class="meeting-info">
 
           <p>
-            Investigation team leader : <span class="team-leader">{{ TeamLeader }}</span>
+            Investigation team leader : <span class="team-leader">{{ TeamLeader?.name }}</span>
           </p>
           <p>
             Num of team : <span class="team-number">{{ TeamNumbers }}</span>

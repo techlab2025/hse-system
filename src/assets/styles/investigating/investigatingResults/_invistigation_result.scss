@@ -23,6 +23,21 @@
       height: 40px;
     }
   }
+  .attachments-show {
+    @include flex-column(nowrap, center, center);
+    gap: $XsSize;
+    width: 100%;
+    background-color: #f8f9fb;
+    .title {
+      padding: $MdSize;
+      padding-inline: 30px;
+      border-radius: 12px;
+      color: $PrimaryColor;
+    }
+    p {
+      font-size: $MdSize;
+    }
+  }
   .title-header {
     background-color: white;
   }

@@ -21,8 +21,12 @@ const UpdateWitnessesData = (data: any) => {
   updateData()
 }
 
-watch(() => isAnotherMeeting.value, () => {
-  updateData()
+watch(() => isAnotherMeeting.value, (newVal) => {
+  if (newVal == 1) {
+    updateData()
+  } else {
+    AllWitnessesData.value = []
+  }
 })
 </script>
 <template>

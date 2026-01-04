@@ -21,7 +21,7 @@ export default class AddHazardParams implements Params {
   public riskLevel: number | null
   public saveStatus: number | null
   public action: string | null
-  public isNearMiss: number | null
+  public isNearMiss: number | null | boolean
   public capaStatus: number | null
   public date: string | null
   public capa: CapaParams[] | null
@@ -56,7 +56,7 @@ export default class AddHazardParams implements Params {
     riskLevel: number | null
     saveStatus: number | null
     action: string | null
-    isNearMiss: number | null
+    isNearMiss: number | null | boolean
     capaStatus: number | null
     date: string | null
     capa: CapaParams[] | null

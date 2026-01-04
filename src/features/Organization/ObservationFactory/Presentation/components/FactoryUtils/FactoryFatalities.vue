@@ -38,15 +38,21 @@ const setImages = async (data: string[]) => {
   updateData()
 }
 
-watch(() => isAnotherMeeting.value, () => {
-  updateData()
+watch(() => isAnotherMeeting.value, (newVal) => {
+  if (newVal == 1) {
+    updateData()
+  } else {
+    image.value = []
+    text.value = ''
+    SelectedEmployee.value = undefined
+  }
 })
 </script>
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage :title="`is there any fatalities`"
-        :subtitle="`Add any fatalities from the accident.`" :img="RIP" class="title-header" />
+      <HeaderPage :title="`is there any fatalities`" :subtitle="`Add any fatalities from the accident.`" :img="RIP"
+        class="title-header" />
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
           :class="isAnotherMeeting == 1 ? 'active' : ''">

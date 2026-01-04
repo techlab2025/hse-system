@@ -8,11 +8,6 @@ import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { LangsMap } from '@/constant/langs'
-
-import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
-import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
-import TranslationsParams from '@/base/core/params/translations_params'
 
 import { useUserStore } from '@/stores/user'
 
@@ -21,73 +16,30 @@ const emit = defineEmits<{
 }>()
 
 const visible = ref(false)
+const title = ref("")
 const Files = ref<any[]>([])
-const langs = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
 
-const langDefault = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
 
 const user = useUserStore()
 
-const fetchLang = async (
-  query = '',
-  pageNumber = 1,
-  perPage = 10,
-  withPage = 0,
-) => {
-  if (user?.user?.languages?.length) {
-    langDefault.value = user.user.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
-
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const controller = await IndexLangController.getInstance().getData(params)
-  const response = controller.value
-
-  if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  }
-}
 
 const setFiles = async (files: File[]) => {
   Files.value = await filesToBase64(files)
 }
 
 const SendData = () => {
-  const translationsParams = new TranslationsParams()
 
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
 
   emit('update:data', {
-    title: translationsParams,
+    title: title.value,
     files: Files.value,
   })
 
   visible.value = false
 }
-
-onMounted(fetchLang)
+const updateTilte = (data: string) => {
+  title.value = data.target.value
+}
 </script>
 
 <template>
@@ -106,7 +58,7 @@ onMounted(fetchLang)
       <hr class="attch-hr" />
 
       <div class="input-wrapper">
-        <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs.value = val)" />
+        <input type="text" v-model="title" class="input" @input="updateTilte" />
       </div>
 
       <FileUpload class="file-upload" label="Image" id="image" placeholder="Select image" :multiple="false"

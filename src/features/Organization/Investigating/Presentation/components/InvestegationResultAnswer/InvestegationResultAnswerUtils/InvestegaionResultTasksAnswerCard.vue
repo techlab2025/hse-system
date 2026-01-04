@@ -59,7 +59,7 @@ watch(() => props.task, (newVal) => {
 
     <div class="card-content">
       <p class="task-description">
-        {{ task?.description }}
+        {{ task?.description || task?.title }}
       </p>
       <div class="info ">
         <span class="date">due date :<span>{{ task?.date }}</span></span>

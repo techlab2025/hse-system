@@ -3,10 +3,38 @@
 @use '../../mixins/grid' as *;
 
 .show-equipment {
+  .inspection-btn {
+    @include flex(row, nowrap, center, center);
+    gap: $XsSize2;
+    width: 100%;
+    margin-block: 12px;
+    button {
+      width: 50%;
+      padding: $XsSize calc($XlSize3 + 2px);
+      border-radius: $SmSize;
+      position: relative;
+      border-radius: $SmSize;
+      background-color: #fafbfc;
+      overflow: hidden;
+      &.active {
+        color: $PrimaryColor;
+      }
+      .down-bg {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+      }
+      .top-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
   .history-qr {
     .history-log {
       .history-card {
-        border: 1px solid $Gray-4;
+        // border: 1px solid $Gray-4;
         border-radius: $SmSize;
         padding: $MdSize;
         position: relative;
@@ -195,6 +223,54 @@
                 width: 100%;
               }
             }
+          }
+        }
+      }
+      .inspection-history {
+        padding: 10px 16px;
+        width: 100%;
+
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: 5px;
+        .bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .inspection-header {
+          @include flex-row(nowrap, flex-start, center);
+          gap: 6px;
+          .warn {
+            rotate: -20deg;
+          }
+          .title-container {
+            width: 100%;
+            @include flex-row(nowrap, flex-start, center);
+            gap: 6px;
+            .title {
+              color: #121212;
+              font-size: 18px;
+              font-weight: 700;
+              border: none;
+            }
+            .date {
+              color: #6b7280;
+              font-size: 12px;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .view-inspection-container {
+          @include flex-row(nowrap, flex-start, center);
+          gap: 3px;
+          .view-inspection {
+            color: #041953;
+            font-size: 16px;
+            font-weight: 600;
           }
         }
       }

@@ -13,6 +13,7 @@
     @media screen and (max-width: 900px) {
       @include flex(row, wrap, flex-start, center);
     }
+   
     .card-body {
       @include flex(row, nowrap, space-between, end);
       width: 100%;

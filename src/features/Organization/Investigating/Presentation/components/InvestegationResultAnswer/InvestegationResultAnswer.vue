@@ -13,6 +13,7 @@ import InvestegationResultAttachmentAnswer from './InvestegationResultAnswerPart
 import InvestegationResultViewersAnswer from "./InvestegationResultAnswerParts/InvestegationResultViewersAnswer.vue"
 import ShowInvestigatingController from '../../controllers/showInvestigatingController';
 import ShowInvestigatingParams from '../../../Core/params/showInvestigatingParams';
+import { useRoute } from 'vue-router';
 
 
 const Factors = ref([
@@ -48,12 +49,14 @@ const Factors = ref([
   },
 ])
 
+const route = useRoute()
+const id = route.params.id
 const showInvestigatingController = ShowInvestigatingController.getInstance()
 const state = ref(showInvestigatingController.state.value)
 
 
 const GetInvestegationDetails = async () => {
-  const showInvestigatingParams = new ShowInvestigatingParams(23)
+  const showInvestigatingParams = new ShowInvestigatingParams(Number(id))
   const response = await showInvestigatingController.showInvestigating(showInvestigatingParams)
   console.log(response.value.data, 'response')
 }
@@ -74,7 +77,7 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
         <InvestigatingResultAnswerHedaer :meetingsNumber="state.data?.investigationMeetings?.length"
           :victim="state.data?.investigationTeamLeader?.Name" :date="state.data?.date"
           :meetingDate="state?.data?.investigationMeetings[state?.data?.investigationMeetings?.length - 1].date"
-          :TeamLeader="state.data?.investigationTeamLeader?.Name" :createdAt="state.data?.date"
+          :TeamLeader="state.data?.investigationTeamLeader" :createdAt="state.data?.date"
           :TeamNumbers="state.data?.investigationEmployees?.length"
           :solvedTasks="state.data?.investigationTasks?.filter((task: any) => task.status === 1)?.length"
           :ToltalTasks="state.data?.investigationTasks?.length" :investegationType="state.data?.observation?.type" />
@@ -84,7 +87,7 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
         <InvestegationResultTasksAnswer :tasks="state.data?.investigationTasks" />
         <InvestegationResultTakeActionAnswer :actions="state.data" />
         <InvestegationResultAttachmentAnswer :attachments="state.data?.investigationDocumentations" />
-        <InvestegationResultViewersAnswer  />
+        <InvestegationResultViewersAnswer />
       </div>
     </template>
     <template #loader>

@@ -6,7 +6,8 @@ const props = defineProps<{
   BreadCramps: { title: string; link: string }[]
   cardType: string
   equipmentType: string
-  selctedequipment:TitleInterface
+  equipment: string
+  selctedequipment: TitleInterface
 }>()
 </script>
 
@@ -14,10 +15,10 @@ const props = defineProps<{
   <div class="breadcrumbs">
     <ul>
       <li>
-        <span>{{ cardType }}</span>
+        <span>{{ equipment }}</span>
         <ArrowIcons />
       </li>
-      <p>{{ equipmentType?.title }}</p>
+      <p>{{ equipmentType }}</p>
     </ul>
   </div>
 </template>

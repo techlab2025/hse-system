@@ -9,49 +9,7 @@ const props = defineProps<{
   tasks: InvestegationTasksModel[]
 }>()
 
-// const Tasks = ref([
-//   {
-//     id: 1,
-//     title: "asdasdasd",
-//     status: 1,
-//     due_date: "2025-12-23",
-//     ResponsablePerson: "Mohab",
-//     assignedTo: "Mohab",
-//     investigation_meeting_id: 12,
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 2,
-//     title: "asdasdasd",
-//     status: 2,
-//     due_date: "2025-12-23",
-//     ResponsablePerson: "Mohab",
-//     assignedTo: "Mohab",
-//     investigation_meeting_id: 12,
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 3,
-//     title: "asdasdasd",
-//     status: 3,
-//     due_date: "2025-12-23",
-//     ResponsablePerson: "Mohab",
-//     assignedTo: "Mohab",
-//     investigation_meeting_id: 12,
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 2,
-//     title: "asdasdasd",
-//     status: 2,
-//     due_date: "2025-12-23",
-//     ResponsablePerson: "Mohab",
-//     assignedTo: "Mohab",
-//     investigation_meeting_id: 12,
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-
-// ])
+//
 
 
 </script>
