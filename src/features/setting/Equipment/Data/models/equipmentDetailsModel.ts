@@ -4,6 +4,8 @@ import EquipmentTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
+import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
+import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -26,6 +28,8 @@ export default class EquipmentDetailsModel {
   public RentType: string
   public RentTime: string
   public wareHouse: number
+  public contractor: ContractorDetailsModel
+  public warehouse: WhereHouseDetailsModel
 
   constructor(
     id: number,
@@ -48,6 +52,8 @@ export default class EquipmentDetailsModel {
     RentType: string,
     RentTime: string,
     wareHouse: number,
+    contractor: ContractorDetailsModel,
+    warehouse: WhereHouseDetailsModel,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -69,6 +75,8 @@ export default class EquipmentDetailsModel {
     this.RentType = RentType
     this.RentTime = RentTime
     this.wareHouse = wareHouse
+    this.contractor = contractor
+    this.warehouse = warehouse
 
     // this.type = type
   }
@@ -87,7 +95,7 @@ export default class EquipmentDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       data.has_certificate,
       0,
-      data.image  ,
+      data.image,
       data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
       data.equipment_type_id,
       data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,
@@ -96,6 +104,8 @@ export default class EquipmentDetailsModel {
       data.period_type,
       data.period,
       data.wareHouse,
+      data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
+      data.warehouse ? WhereHouseDetailsModel?.fromMap(data.warehouse) : null,
     )
   }
 

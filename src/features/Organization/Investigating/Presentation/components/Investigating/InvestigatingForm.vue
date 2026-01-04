@@ -161,7 +161,7 @@ const setSelectedPlatform = (data: TitleInterface) => {
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage :title="'create Investigating'" :subtitle="'Document what you observe to improve workplace safety'"
+    <HeaderPage :title="'start investigating'" :subtitle="'Document what you observe to improve workplace safety'"
       :img="detectiveImage" />
   </div>
   <!-- <div class="col-span-6 md:col-span-6">

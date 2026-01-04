@@ -31,6 +31,7 @@ export default class HazardDetailsModel {
   public observer: OvserverModel
   public creator: OvserverModel
   public capa: CapaModel
+  public serialNumber: number
 
   constructor(
     id: number,
@@ -57,6 +58,7 @@ export default class HazardDetailsModel {
     observer: OvserverModel,
     creator: OvserverModel,
     capa: CapaModel,
+    serialNumber: number,
   ) {
     this.id = id
     this.title = title
@@ -82,6 +84,7 @@ export default class HazardDetailsModel {
     this.observer = observer
     this.creator = creator
     this.capa = capa
+    this.serialNumber = serialNumber
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -110,6 +113,7 @@ export default class HazardDetailsModel {
       data.observer,
       data.creator,
       data.capa,
+      data.serial_number,
     )
   }
 }

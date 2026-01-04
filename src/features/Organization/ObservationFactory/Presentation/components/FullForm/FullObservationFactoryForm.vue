@@ -100,7 +100,7 @@ const updateData = () => {
       riskLevel: riskLevel.value,
       saveStatus: saveStatus.value,
       action: preventive_action.value ?? null,
-      isNearMiss: isNearMiss.value,
+      isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? isNearMiss.value : 0,
       capaStatus: 0,
       date: date.value ?? null,
       capa: [],
