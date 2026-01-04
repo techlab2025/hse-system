@@ -27,7 +27,7 @@ const id = route.params.id
 const investigatingId = route.query.investigating_id
 const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
 const state = ref(showInvestigationResultController.state.value)
-
+const router = useRouter()
 interface items {
   title: string
   isDanger: boolean
@@ -53,7 +53,7 @@ const Details = ref({
 
 const ShoeInvestegationResultDetails = () => {
   const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
-  showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, useRouter())
+  showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, router)
 }
 
 const AddEnvestigatingResult = async () => {
@@ -70,7 +70,7 @@ const AddEnvestigatingResult = async () => {
     corrective: CauseOfAction.value?.description
   });
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
-  const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, useRouter())
+  const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, router)
 }
 onMounted(() => {
   ShoeInvestegationResultDetails()

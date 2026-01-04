@@ -1,139 +1,153 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
-import {
-  Chart,
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-} from 'chart.js'
 import type StatisticsMachineModel from '@/features/Home/data/Model/StatisticsMachineModel';
-
-Chart.register(
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip
-)
 
 const props = defineProps<{
   totalMachines: StatisticsMachineModel[]
 }>()
 
-
-import { shallowRef } from 'vue'
-
-const chartInstance = shallowRef<Chart | null>(null)
-const chartRef = ref<HTMLCanvasElement | null>(null)
-// const chartInstance = ref<Chart | null>(null)
-let isUpdating = false
-const buildMonthlyData = (type: number) => {
-  const months = Array(12).fill(0)
-
-  const machine = props.totalMachines?.find(m => m.type === type)
-  if (!machine) return months
-
-  machine.months.forEach(m => {
-    months[m.month - 1] = m.number
-  })
-
-  return months
-}
-const toolData = ref(buildMonthlyData(3))
-const EquipmentTypeData = ref(buildMonthlyData(1))
-const DeviceTypeData = ref(buildMonthlyData(2))
-
-onMounted(() => {
-  chartInstance.value = new Chart(chartRef.value!, {
-    type: 'bar',
-    data: {
-      labels: [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      datasets: [
-        {
-          data: Array(12).fill(0),
-          backgroundColor: '#BEE8FF',
-          borderRadius: 20,
-          stack: 'stack1',
-        },
-        {
-          data: Array(12).fill(0),
-          backgroundColor: '#6BB6FF',
-          borderRadius: { bottomLeft: 20, bottomRight: 20 },
-          stack: 'stack1',
-        },
-        {
-          data: Array(12).fill(0),
-          backgroundColor: '#2F6BFF',
-          borderRadius: 7,
-          stack: 'stack1',
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      animation: false, // 👈 مهم
-      scales: {
-        x: {
-          stacked: true,
-          grid: { display: false },
-          ticks: {
-            font: {
-              size: 8, 
-              weight: '500', 
-              family: 'Light', 
-            },
-            color: '#333', 
-          },
-
-        },
-        y: { stacked: true, display: false },
-      },
-      plugins: { legend: { display: false } },
-      barThickness: 20,
-    },
-  })
-})
-
-
-watch(
-  () => props.totalMachines,
-  () => {
-    if (!chartInstance.value) return
-
-    chartInstance.value.data.datasets[0].data = buildMonthlyData(1)
-    chartInstance.value.data.datasets[1].data = buildMonthlyData(2)
-    chartInstance.value.data.datasets[2].data = buildMonthlyData(3)
-
-    chartInstance.value.update('none')
+const chartData = [
+  {
+    name: 'Jan',
+    segments: [
+      { value: 10, color: '#3b82f6' },
+      { value: 30, color: '#60a5fa' },
+      { value: 50, color: '#93c5fd' },
+    ]
   },
-  { immediate: true }
-)
-onBeforeUnmount(() => {
-  chartInstance.value?.destroy()
-})
+  {
+    name: 'Feb',
+    segments: [
+      { value: 40, color: '#2563eb' },
+      { value: 30, color: '#60a5fa' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Mar',
+    segments: [
+      { value: 70, color: '#2563eb' },
+      { value: 25, color: '#60a5fa' },
+      { value: 25, color: '#bfdbfe' },
+
+
+    ]
+  },
+  {
+    name: 'Apr',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+
+
+    ]
+  },
+  {
+    name: 'May',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Jun',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Jul',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Aug',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Sep',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Oct',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Nov',
+    segments: [
+      { value: 75, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  },
+  {
+    name: 'Dec',
+    segments: [
+      { value: 100, color: '#60a5fa' },
+      { value: 20, color: '#bfdbfe' },
+      { value: 25, color: '#bfdbfe' },
+    ]
+  }
+];
+
 
 </script>
 <template>
-  <div class="total-machines-container">
+
+  <div class="total-machines-container ">
     <div class="total-machines-header-container">
       <div class="total-machines-header">
         <span class="static">static</span>
-        <p class="static-title">total machines </p>
+        <p class="static-title">most used incident factors </p>
       </div>
-
-      <div class="static-data">
-        <p>tool</p>
-        <p>equipment</p>
-        <p>device</p>
-      </div>
-
     </div>
+    <div class="chart-container flex items-end gap-4 p-8 bg-white rounded-xl font-sans">
+      <div v-for="month in chartData" :key="month.name" class="month flex flex-col items-center gap-2">
+        <div class="flex flex-col-reverse gap-1 w-12 h-48">
+          <div v-for="(segment, index) in month.segments" :key="index" :style="{
+            height: segment.value + '%',
+            background: segment.color,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+          }" class="w-full rounded-md transition-all duration-500 hover:opacity-80"></div>
+        </div>
 
-    <div style="width:100%;">
-      <canvas ref="chartRef"></canvas>
+
+        <span class="text-slate-500 text-sm font-medium mt-2">
+          {{ month.name }}
+        </span>
+      </div>
     </div>
   </div>
+
 </template>
+
+
+
+
+<style scoped>
+.chart-container {
+  max-width: 100%;
+
+  .month {
+    max-width: 45px;
+  }
+}
+</style>
