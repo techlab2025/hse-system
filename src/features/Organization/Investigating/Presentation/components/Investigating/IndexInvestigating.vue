@@ -197,8 +197,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                         </div>
                       </div>
 
-                      <div class="btns-container" v-if="item?.status != InvestegationStatusEnum.CLOSED"
-                        style="margin-top: 20px;">
+                      <div class="btns-container" style="margin-top: 20px;">
                         <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
                           <button class="btn first-btn">
                             <span>{{ $t('show details') }}</span>
@@ -226,11 +225,24 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </router-link>
                         </div>
 
-                        <div class="solved-btn" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
-                          <router-link
+                        <div class="solved-btn flex gap-2" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
+                          <router-link style="width: 50%;"
                             :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>
+                            </button>
+                          </router-link>
+                          <router-link style="width: 50%;"
+                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
+                            <button class="btn btn-primary w-full">
+                              <span>{{ $t('view_results') }}</span>
+                            </button>
+                          </router-link>
+                        </div>
+                        <div class="solved-btn" v-if="item?.status == InvestegationStatusEnum.CLOSED">
+                          <router-link :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
+                            <button class="btn btn-primary w-full">
+                              <span>{{ $t('view_results') }}</span>
                             </button>
                           </router-link>
                         </div>

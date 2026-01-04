@@ -35,7 +35,7 @@ export default class OvserverModel {
 
   static fromMap(data: any): OvserverModel {
     return new OvserverModel(
-      data.id,
+      data?.id,
       data.name,
       data.phone,
       data.email,

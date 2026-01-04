@@ -34,7 +34,7 @@ const UpdateData = () => {
 const AllFactors = ref<FactoryModel[]>([])
 const SelectedFactor = ref<number>()
 const GetAllFators = async () => {
-  const indexFactorParams = new IndexFactoryParams("", 1, 10, 1)
+  const indexFactorParams = new IndexFactoryParams("", 1, 10, 0)
   const indexFactorController = IndexFactoryController.getInstance()
   const state = await indexFactorController.getData(indexFactorParams)
   if (state.value?.data) {

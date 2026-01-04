@@ -124,10 +124,10 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
   </div>
 
   <div class="home-statistics gap-2">
-    <!-- <ProjectsStatistics :projectStatistics="state?.data" /> -->
-    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" /> -->
-    <!-- <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" /> -->
-    <!-- <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" /> -->
+    <!-- <ProjectsStatistics :projectStatistics="state?.data" />
+    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+    <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" /> -->
     <!-- <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-9" /> -->
     <!-- <InvestegationStatics class="col-span-12 md:col-span-3" /> -->
 

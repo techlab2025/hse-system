@@ -2,10 +2,15 @@ import TranslationsParams, { type TitleLocale } from '@/base/core/params/transla
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import EquipmentTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
 import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
+import acc from '@/assets/images/acc.png'
+import TaskResultModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/TasksResultModel'
+import InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
+import TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
+import TemplateItemModel from '@/features/setting/TemplateItem/Data/models/TemplateItemModel'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -30,6 +35,8 @@ export default class EquipmentDetailsModel {
   public wareHouse: number
   public contractor: ContractorDetailsModel
   public warehouse: WhereHouseDetailsModel
+  public lastInspectoinDate: string
+  public tasks: InspectionModel[]
 
   constructor(
     id: number,
@@ -54,6 +61,8 @@ export default class EquipmentDetailsModel {
     wareHouse: number,
     contractor: ContractorDetailsModel,
     warehouse: WhereHouseDetailsModel,
+    lastInspectoinDate: string,
+    tasks: InspectionModel[],
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -77,6 +86,8 @@ export default class EquipmentDetailsModel {
     this.wareHouse = wareHouse
     this.contractor = contractor
     this.warehouse = warehouse
+    this.lastInspectoinDate = lastInspectoinDate
+    this.tasks = tasks
 
     // this.type = type
   }
@@ -106,6 +117,8 @@ export default class EquipmentDetailsModel {
       data.wareHouse,
       data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
       data.warehouse ? WhereHouseDetailsModel?.fromMap(data.warehouse) : null,
+      data.last_inspection_date,
+      data.tasks.length > 0 ? data.tasks.map((task) => InspectionModel?.fromMap(task)) : [],
     )
   }
 
@@ -117,4 +130,134 @@ export default class EquipmentDetailsModel {
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+  static example: EquipmentDetailsModel = new EquipmentDetailsModel(
+    1,
+    1,
+    acc,
+    '10-20-2001',
+    '20',
+    '20',
+    '20',
+    EquipmentStatus.RENT,
+    [{ locale: 'en', title: 'text' }],
+    1,
+    '',
+    acc,
+    [],
+    12,
+    new EquipmentTypeDetailsModel(
+      10,
+      'new Equipment Type',
+      'Subtitle ',
+      1,
+      1,
+      null,
+      10,
+      acc,
+      [{ title: 'text', locale: 'en' }],
+      1,
+      20,
+    ),
+    '12000',
+    '1-9-2201',
+    '1',
+    '2',
+    10,
+    12,
+    new WhereHouseDetailsModel(1, 'warehouse test', '10'),
+    '20-2-2000',
+    [
+      new InspectionModel(
+        1,
+        new TemplateDetailsModel(
+          1,
+          'Test',
+          [{ title: 'test', locale: 'en' }],
+          1,
+          null,
+          10,
+          acc,
+          [
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+          ],
+          1,
+          null,
+          10,
+          acc,
+          'new',
+          null,
+        ),
+        '55-9-2000',
+
+        null,
+        10,
+        acc,
+        'new',
+        null,
+      ),
+      new InspectionModel(
+        1,
+        new TemplateDetailsModel(
+          1,
+          'Test',
+          [{ title: 'test', locale: 'en' }],
+          1,
+          null,
+          10,
+          acc,
+          [
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+          ],
+          1,
+          null,
+          10,
+          acc,
+          'new',
+          null,
+        ),
+        '1-9-2001',
+        null,
+        10,
+        acc,
+        'new',
+        null,
+      ),
+      new InspectionModel(
+        1,
+        new TemplateDetailsModel(
+          1,
+          'Test',
+          [{ title: 'test', locale: 'en' }],
+          1,
+          null,
+          10,
+          acc,
+          [
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+            new TemplateItemModel(10, 'new ', 'subtitle', 1, 1, null, 10, acc, 'new', null),
+          ],
+          1,
+          null,
+          10,
+          acc,
+          'new',
+          null,
+        ),
+        '2-9-2001',
+        null,
+        10,
+        acc,
+        'new',
+        null,
+      ),
+    ],
+  )
 }

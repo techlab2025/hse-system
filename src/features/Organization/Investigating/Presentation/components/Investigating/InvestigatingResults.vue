@@ -126,7 +126,8 @@ const setAnotherMeeting = (data) => {
         <!-- {{ state?.data?.observation?.serial }} -->
         <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
           :victim="state?.data?.observation?.observer?.name" :date="state?.data?.date" :meetingDate="state?.data?.date"
-          :TeamLeader="state?.data?.investigationTeamLeader?.title" :TeamNumbers="state.data?.investigationEmployees?.length" />
+          :TeamLeader="state?.data?.investigationTeamLeader?.title"
+          :TeamNumbers="state.data?.investigationEmployees?.length" />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
@@ -136,11 +137,16 @@ const setAnotherMeeting = (data) => {
         <InvestigationTasks @update:data="setInvestigationTasks" />
         <RateActions @update:data="setRateAction" />
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
+        <div class="attachments-show">
+          <p class="title">{{ investigationAttachments?.title }}</p>
+          <img :src="investigationAttachments?.files?.[0]" alt="attachment" width="150">
+        </div>
+
         <ViewersResults @update:data="setViewersResults" />
         <AnotherMeeting @update:data="setAnotherMeeting" />
         <!-- <TimeLine :items="item" /> -->
         <div class="btns">
-          <button class="btn btn-cancel">{{ $t('cancel') }}</button>
+          <router-link to="/organization/investigating" class="btn btn-cancel ">{{ $t('cancel') }}</router-link>
           <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
         </div>
       </div>

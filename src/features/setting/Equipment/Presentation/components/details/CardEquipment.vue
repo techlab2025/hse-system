@@ -16,6 +16,8 @@ import { useUserStore } from '@/stores/user'
 import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const { t } = useI18n()
 
@@ -72,14 +74,22 @@ const deleteEquipment = async (id: number) => {
   const deleteEquipmentParams = new DeleteEquipmentParams(+route.params.id!)
   await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
 }
+
+
+const GetEquipmentType = (type: number) => {
+  return EquipmentTypesEnum[type]
+}
 </script>
 
 <template>
   <div class="card-equipment">
-    <img :src="equipmentData.image" alt="" class="img-equipment" />
+    <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
+      class="img-equipment" />
     <div class="card-body">
       <div class="card-body-content-left">
-        <BreadCrumb :BreadCramps="breadcrumbs" />
+        <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
+        <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
+          :equipmentType="equipmentData?.equipment_type?.title" />
         <div class="card-body-title">
           <h3 class="title">{{ tTitle }}</h3>
           <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
@@ -87,7 +97,7 @@ const deleteEquipment = async (id: number) => {
         <div class="inspection">
           <span>{{ $t('inspection date') }} :</span>
           <p>
-            {{ equipmentData.inspectionDuration }} <span>({{ $t('per_week') }})</span>
+            {{ equipmentData.lastInspectoinDate }} <span>({{ $t('per_week') }})</span>
           </p>
         </div>
         <div class="date-of-decommissioning">
@@ -98,10 +108,10 @@ const deleteEquipment = async (id: number) => {
           <Car />
 
           <div class="items">
-            <!-- <div class="item">
+            <div class="item">
               <span>{{ $t('License number') }} : </span>
-              <p>{{ equipmentData?.licenseNumber }}</p>
-            </div> -->
+              <p>{{ equipmentData?.licensePlateNumber }}</p>
+            </div>
             <div class="item" v-if="equipmentData?.kilometer">
               <span>{{ $t('Vehicle License No') }} : </span>
               <p>{{ equipmentData?.kilometer }}</p>

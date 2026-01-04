@@ -81,8 +81,18 @@ const updateEmployeeState = (data: any) => {
 
 const indexInjuryController = IndexInjuryController.getInstance()
 const indexInjuryParams = new IndexInjuryParams('', 1, 10, 1)
-watch(() => isAnotherMeeting.value, () => {
-  updateData()
+watch(() => isAnotherMeeting.value, (newVal) => {
+  if (newVal == 1) {
+    updateData()
+  } else {
+    image.value = []
+    text.value = ''
+    SelectedEmployee.value = undefined
+    descripe.value = ''
+    SelectedInfection.value = undefined
+    emplyeeType.value = EmployeeNameStatus.Select
+    EmployeeName.value = ''
+  }
 })
 
 const isWorkStopped = ref()

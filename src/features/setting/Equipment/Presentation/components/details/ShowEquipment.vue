@@ -11,6 +11,12 @@ import { useRoute } from 'vue-router'
 import ShowEquipmentController from '../../controllers/showEquipmentController'
 import ShowEquipmentParams from '../../../Core/params/showEquipmentParams'
 
+import InspectioBtn from "@/assets/images/InspectioBtn.png"
+import InspectionTopBtn from "@/assets/images/InspectionTopBtn.png"
+import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum'
+
+
+
 const route = useRoute()
 const controller = ShowEquipmentController.getInstance()
 
@@ -34,6 +40,8 @@ watch(
     state.value = newState
   },
 )
+
+const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
 </script>
 
 <template>
@@ -41,10 +49,28 @@ watch(
     <template #success>
       <div class="show-equipment">
         <CardEquipment :equipmentData="state.data!" />
+        <div class="inspection-btn w-full flex">
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
+            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectioBtn" alt="bg"
+              class="down-bg">
+            <span>Insepection</span>
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectionTopBtn" alt="bg"
+              class="top-bg">
+          </button>
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Results"
+            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectioBtn" alt="bg"
+              class="down-bg">
+            <span>Results</span>
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectionTopBtn" alt="bg"
+              class="top-bg">
+          </button>
+        </div>
         <div class="history-qr">
-          <HistoryLog />
+          <HistoryLog :tasks="state.data?.tasks" />
           <QrCode />
-      </div>
+        </div>
       </div>
     </template>
 
