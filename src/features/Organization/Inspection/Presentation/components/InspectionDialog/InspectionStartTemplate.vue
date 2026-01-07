@@ -25,6 +25,7 @@ const { templateId, taskId } = defineProps<{
   taskId: number,
   status: number,
   lastinspection?: boolean,
+  showResult?: boolean
 }>()
 
 const router = useRouter()
@@ -216,11 +217,23 @@ watch(() => showTemplateController.state.value, (newState) => {
   <div class="inspection-start card w-full flex justify-center">
 
     <button class="btn btn-primary w-full" style="z-index: 999;" @click="GetData"
-      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection">Start</button>
+      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection && !showResult">Start</button>
+
+
     <button class="show-result-btn flex  gap-1" v-if="lastinspection" style="z-index: 999;" @click="GetData">
       <span>show Result</span>
       <ShowResultIcon />
     </button>
+
+    <button class="show-result-btn flex w-full  items-center gap-1" v-if="showResult" style="z-index: 999;"
+      @click="GetData">
+      <span>show Result</span>
+      <ShowResultIcon />
+    </button>
+
+
+
+    <!-- <button v-if="showResult">show Result</button> -->
     <!-- <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
       <span> show inspection details </span>
       <ArrowDetails />

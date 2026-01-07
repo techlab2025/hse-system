@@ -31,6 +31,7 @@ const UpdateData = () => {
     morph: SelectedZones.value,
     data: date.value,
     TempalteIds: TempalteIds.value,
+    ProjectId: SelectedProject.value?.id,
   })
 }
 const setZones = (data: TitleInterface) => {

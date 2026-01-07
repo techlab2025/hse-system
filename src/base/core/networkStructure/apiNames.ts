@@ -1346,6 +1346,9 @@ class ApiNames {
   public get FetchTaskResultDetails() {
     return this.prefix + 'fetch_task_inspection_details'
   }
+  public get FetchInspectionsResults() {
+    return this.prefix + 'fetch_inspections_results'
+  }
 }
 
 export { ApiNames }

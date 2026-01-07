@@ -8,6 +8,7 @@ interface Item {
   overdueRoute: string;
   inspectionFormRoute: string;
   dragInspectionRoute: string;
+  resultInspectionRoute: string;
   description: string;
 }
 const { item } = defineProps<{
@@ -39,6 +40,9 @@ const { item } = defineProps<{
       </RouterLink>
       <RouterLink v-if="item.dragInspectionRoute" :to="item.dragInspectionRoute" class="btn btn-secondary">{{
         $t('drag_inspection') }}
+      </RouterLink>
+      <RouterLink v-if="item.resultInspectionRoute" :to="item.resultInspectionRoute" class="btn btn-secondary">{{
+        $t('inspections_results') }}
       </RouterLink>
     </div>
   </div>

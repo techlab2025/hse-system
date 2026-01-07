@@ -208,6 +208,7 @@ const updateData = () => {
   const StartDateFormat = formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
+  console.log(activeTab.value, "activeTab.value ")
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
@@ -219,7 +220,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) ? image.value : null,
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : "*",
+      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : "",
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -227,7 +228,7 @@ const updateData = () => {
       equipmentRentType: SelectedRentType?.value?.id,
       equipmentRentTime: Rent.value,
       equipmentRentStartDate: StartDateFormat,
-      VehicleKm: VehicleKm.value,
+      VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT ? VehicleKm.value : null,
       serialNumber: SerialNumber.value?.SerialNumber,
       SelectedWhereHosue: SelectedWhereHosue.value?.id,
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
@@ -241,7 +242,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) ? image.value : '*',
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '*',
+      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -249,7 +250,7 @@ const updateData = () => {
       equipmentRentType: SelectedRentType?.value?.id,
       equipmentRentTime: Rent.value,
       equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
-      VehicleKm: VehicleKm.value,
+      VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT ? VehicleKm.value : null,
       serialNumber: SerialNumber.value?.SerialNumber,
       SelectedWhereHosue: SelectedWhereHosue.value?.id,
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
@@ -460,13 +461,23 @@ watch([Rent, SelectedRentType, () => StartDate.value], () => {
   calculateEndDate()
 })
 
+watch(() => activeTab.value, (newVal) => {
+  if (newVal != EquipmentTypesEnum.EQUIPMENT) {
+    VehicleKm.value = "";
+  }
+})
+
 const EquipmentTypeDialog = ref(false)
 const ContractorDialog = ref(false)
+const UpdateActiveTap = (data) => {
+  activeTab.value = data
+  updateData()
+}
 </script>
 
 <template>
   <div class="w-full col-span-6 equipment-form">
-    <Tabs @update:activeTab="activeTab = $event" :activeTabData="activeTab" />
+    <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
     <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
       <div class="flex gap-2 w-full col-span-6">

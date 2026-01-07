@@ -2,7 +2,6 @@
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -11,30 +10,19 @@ import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Image from 'primevue/image'
 
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-
 import { useUserStore } from '@/stores/user'
-
-import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardType from '@/assets/images/HazardType.jpg'
-
-// import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-// import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import IndexInspectionController from '../controllers/indexInspectionController'
 import IndexInspectionParams from '../../Core/params/indexInspectionParams'
 import DeleteInspectionParams from '../../Core/params/deleteInspectionParams'
 import DeleteInspectionController from '../controllers/deleteInspectionController'
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
-import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
-import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
-import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
+
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
@@ -46,6 +34,9 @@ import { InspectionPageType } from '@/features/Organization/ObservationFactory/C
 import InspectionDragPage from './InspectionPages/InspectionDragPage.vue'
 import FetchAllTasksController from '../controllers/FetchAllTasksController'
 import FetchAllTasksParams from '../../Core/params/FetchAllTasksParams'
+import FetchInspectionsResultsController from '../controllers/FetchInspectionsResultsController'
+import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsResultsParams'
+import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
 
 const { t } = useI18n()
 
@@ -57,6 +48,10 @@ const state = ref(indexInspectionController.state.value)
 
 const fetchAllTasksController = FetchAllTasksController.getInstance()
 const AllTasksState = ref(fetchAllTasksController.state.value)
+
+const fetchInspectionsResultsController = FetchInspectionsResultsController.getInstance()
+const InspectionsResultsState = ref(fetchInspectionsResultsController.state.value)
+
 const route = useRoute()
 const router = useRouter()
 const id = route.params.parent_id
@@ -81,7 +76,7 @@ const fetchInspection = async (
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
 }
-const fetchAllTasks = async (
+const InspectionFormTasks = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
@@ -95,18 +90,34 @@ const fetchAllTasks = async (
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
+const InspectionsResultsTasks = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 1,
+) => {
+  const fetchInspectionsResultsParams = new FetchInspectionsResultsParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+
+  )
+  const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
+}
 
 onMounted(() => {
   if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
     fetchInspection()
   }
+  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    InspectionFormTasks()
+  }
   else {
-    fetchAllTasks()
+    InspectionsResultsTasks()
   }
   FetchMyProjects()
-  // if (selectedProjctesFilters.value == null || selectedProjctesFilters.value == undefined) {
-  // FetchMyZones()
-  // }
+
 })
 
 const searchInspection = debounce(() => {
@@ -119,29 +130,38 @@ const deleteInspection = async (id: number) => {
   await fetchInspection()
 }
 
-const handleChangePage = (page: number) => {
+// Inspection Form
+const handleInspectionFormChangePage = (page: number) => {
+  currentPage.value = page
+  InspectionFormTasks('', currentPage.value, countPerPage.value)
+}
+const handleInspectionFormCountPerPage = (count: number) => {
+  countPerPage.value = count
+  InspectionFormTasks('', currentPage.value, countPerPage.value)
+}
+
+
+// Drag Inspection Form
+const handleDragInspectionChangePage = (page: number) => {
   currentPage.value = page
   fetchInspection('', currentPage.value, countPerPage.value)
 }
-
-// Handle count per page change
-const handleCountPerPage = (count: number) => {
+const handleDragInspectionCountPerPage = (count: number) => {
   countPerPage.value = count
   fetchInspection('', currentPage.value, countPerPage.value)
 }
 
-watch(
-  () => indexInspectionController.state.value,
-  (newState) => {
-    if (newState) {
-      console.log(newState)
-      state.value = newState
-    }
-  },
-  {
-    deep: true,
-  }
-)
+// Inspection Results Form
+const handleInspectionResultsChangePage = (page: number) => {
+  currentPage.value = page
+  fetchInspection('', currentPage.value, countPerPage.value)
+}
+const handleInspectionResultsCountPerPage = (count: number) => {
+  countPerPage.value = count
+  fetchInspection('', currentPage.value, countPerPage.value)
+}
+
+
 
 const { user } = useUserStore()
 
@@ -214,14 +234,32 @@ watch(() => fetchAllTasksController.state.value, (newState) => {
   }
 })
 
-// const SelectedState = ref()
-const SelectedController = () => {
-  console.log(String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection) ? fetchAllTasksController.state.value : indexInspectionController.state.value)
-  return String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection) ? fetchAllTasksController.state.value : indexInspectionController.state.value
-}
-// onMounted(() => {
-//   SelectedState.value = SelectedController()
-// })
+
+watch(
+  () => indexInspectionController.state.value,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+      state.value = newState
+    }
+  },
+  {
+    deep: true,
+  }
+)
+
+watch(
+  () => fetchInspectionsResultsController.state.value,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+      InspectionsResultsState.value = newState
+    }
+  },
+  {
+    deep: true,
+  }
+)
 
 
 </script>
@@ -251,55 +289,16 @@ const SelectedController = () => {
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
           :controller="AllTasksState">
           <template #success>
-            <!-- <pre>{{ state.data }}</pre> -->
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
-                <!-- <div class="index-table-card"
-                  v-for="(item, index) in String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection) ? AllTasksState.data : state?.data"
-                  :key="index"> -->
-                <!-- <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'"> -->
                 <div class="header-container w-full">
-                  <!-- <div class="card-content">
-                        <div class="card-header">
-                          <p class="label-item-primary">
-                            {{ $t('assigned_to') }} : <span>{{ item?.morph?.title }}</span>
-                          </p>
-                        </div>
-                        <div class="card-details">
-                          <p class="title">
-                            {{ item?.template?.title }}
-                          </p>
-                          <span>{{ item.date }}</span>
-                        </div>
-                      </div> -->
-                  <!-- <div class="card-info-status" >Start</div> -->
-
-                  <!-- <InspectionStartTemplate :templateId="item?.template?.id" :taskId="item?.id"
-                        :status="item?.status" /> -->
-
                   <InspectionFormPage v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
                     class="w-full" :data="AllTasksState?.data" />
-
-
-
-                  <!-- <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
-                        <span> show inspection details </span>
-                        <ArrowDetails />
-                      </button> -->
-                  <!-- </div> -->
                 </div>
-
-                <!-- <div v-if="ShowDetails[index]" class="card-description">
-                    <p class="title">Description</p>
-                    <p class="description">
-                      {{ item.description || '__' }}
-                    </p>
-                  </div> -->
-                <!-- </div> -->
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination :pagination="AllTasksState.pagination" @changePage="handleInspectionFormChangePage"
+              @countPerPage="handleInspectionFormCountPerPage" />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
@@ -321,55 +320,50 @@ const SelectedController = () => {
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
           :controller="state">
           <template #success>
-            <!-- <pre>{{ state.data }}</pre> -->
+
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
-                <!-- <div class="index-table-card"
-                  v-for="(item, index) in String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection) ? AllTasksState.data : state?.data"
-                  :key="index"> -->
-                <!-- <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'"> -->
                 <div class="header-container w-full">
-                  <!-- <div class="card-content">
-                        <div class="card-header">
-                          <p class="label-item-primary">
-                            {{ $t('assigned_to') }} : <span>{{ item?.morph?.title }}</span>
-                          </p>
-                        </div>
-                        <div class="card-details">
-                          <p class="title">
-                            {{ item?.template?.title }}
-                          </p>
-                          <span>{{ item.date }}</span>
-                        </div>
-                      </div> -->
-                  <!-- <div class="card-info-status" >Start</div> -->
-
-                  <!-- <InspectionStartTemplate :templateId="item?.template?.id" :taskId="item?.id"
-                        :status="item?.status" /> -->
-
-
-
                   <InspectionDragPage v-if="String(inspectionType) == String(InspectionPageType.DragInspection)"
                     class="w-full" :data="state?.data" />
-
-                  <!-- <button class="show-details" v-if="item.status == InspectionStatus.FINISHED">
-                        <span> show inspection details </span>
-                        <ArrowDetails />
-                      </button> -->
-                  <!-- </div> -->
                 </div>
 
-                <!-- <div v-if="ShowDetails[index]" class="card-description">
-                    <p class="title">Description</p>
-                    <p class="description">
-                      {{ item.description || '__' }}
-                    </p>
-                  </div> -->
-                <!-- </div> -->
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination :pagination="state.pagination" @changePage="handleDragInspectionChangePage"
+              @countPerPage="handleDragInspectionCountPerPage" />
+          </template>
+          <template #loader>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
+          <template #initial>
+            <TableLoader :cols="3" :rows="10" />
+          </template>
+          <template #empty>
+            <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Inspection" />
+          </template>
+          <template #failed>
+            <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+              title="..ops! You have No Inspection" />
+          </template>
+        </DataStatus>
+        <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.Result)"
+          :controller="InspectionsResultsState">
+          <template #success>
+            <div class="table-responsive">
+              <div class="index-table-card-container-inspection">
+                <div class="header-container w-full">
+                  <InspectionsResultsPage v-if="String(inspectionType) == String(InspectionPageType.Result)"
+                    class="w-full" :data="InspectionsResultsState?.data" />
+                </div>
+
+              </div>
+            </div>
+            <Pagination :pagination="InspectionsResultsState?.pagination"
+              @changePage="handleInspectionResultsChangePage" @countPerPage="handleInspectionResultsCountPerPage" />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
