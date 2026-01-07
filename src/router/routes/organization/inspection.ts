@@ -21,4 +21,9 @@ export const InspectionRoutes: RouteRecordRaw[] = [
     name: 'Overdue Inspection',
     component: () => import('@/views/Organization/Inspection/OverdueInspection.vue'),
   },
+  {
+    path: 'inspection/result/:id',
+    name: 'Inspection Result',
+    component: () => import('@/views/Organization/Inspection/InspectionResultPage.vue'),
+  },
 ]

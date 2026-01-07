@@ -22,6 +22,7 @@ import Setting from '@/assets/images/Setting.png'
 import Geer from '@/assets/images/Geer.png'
 import hand from '@/assets/images/hand.png'
 import MultiSelect from 'primevue/multiselect';
+import { TemplateType } from '../../Core/Enum/TemplateTypeEnum'
 
 
 const emit = defineEmits(['update:data'])
@@ -135,6 +136,8 @@ const updateData = () => {
       industries ?? [],
       image.value || null,
       [],
+      SelectedTemplateType?.value?.id
+
     )
     : new AddTemplateParams(
       translationsParams,
@@ -143,6 +146,7 @@ const updateData = () => {
       image.value || null,
       null,
       [],
+      SelectedTemplateType?.value?.id
     )
   emit('update:data', params)
 }
@@ -182,12 +186,24 @@ const setIndustry = (data: TitleInterface[]) => {
 
 
 
-watch(()=>IndustrySelectOption.value,(newValue)=>{
-  if(newValue == 1){
+watch(() => IndustrySelectOption.value, (newValue) => {
+  if (newValue == 1) {
     industry.value = []
     updateData()
   }
 })
+
+const SelectedTemplateType = ref<TitleInterface | null>(null)
+const TemplateTypes = ref<TitleInterface[]>([
+  new TitleInterface({ id: TemplateType.Equipment, title: 'Equipment', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
+])
+
+const setTemplateType = (data: TitleInterface) => {
+  SelectedTemplateType.value = data
+  updateData()
+}
 
 </script>
 
@@ -199,32 +215,30 @@ watch(()=>IndustrySelectOption.value,(newValue)=>{
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
+  <div class="col-span-4 md:col-span-4">
+    <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+      label="Template Type " id="TemplateType" placeholder="Select Template Type"
+      @update:modelValue="setTemplateType" />
+  </div>
   <div class="col-span-4 md:col-span-2 select-container" :class="IndustrySelectOption == 1 ? 'selected' : ''"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="all-industry">
       <span>All industries</span>
       <img :src="Geer" alt="all industries" />
     </label>
-    <input type="radio" id="all-industry" name="industry" value="1" v-model="IndustrySelectOption"
-      @change="updateData">
+    <input type="radio" id="all-industry" name="industry" value="1" v-model="IndustrySelectOption" @change="updateData">
   </div>
-
   <div class="col-span-4 md:col-span-2 select-container" :class="IndustrySelectOption == 2 ? 'selected' : ''"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="select-industry" class="select-industry">
       <!-- <MultiSelect :modelValue="industry" :options="Industries" optionLabel="title" placeholder="select single industry"
         :multiple="true" class=" w-full md:w-56 select-container-multi" @update:modelValue="setIndustry" /> -->
-
       <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
         label="Industry" id="Industry" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
-
       <img :src="hand" alt="single industry" />
     </label>
 
+
     <input type="radio" id="select-industry" value="2" name="industry" v-model="IndustrySelectOption">
   </div>
-
-
-
-
 </template>

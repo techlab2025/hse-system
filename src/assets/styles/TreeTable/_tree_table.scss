@@ -395,6 +395,13 @@
   .timeline-content {
     padding: 14px;
     border: 1px solid #f1f3f5 !important;
+
+    label {
+      &.disabled {
+        color: #202020;
+        opacity: 0.5;
+      }
+    }
   }
 
   .timeline-card {

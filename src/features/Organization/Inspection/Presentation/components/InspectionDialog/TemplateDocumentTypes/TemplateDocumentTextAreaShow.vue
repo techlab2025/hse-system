@@ -12,6 +12,7 @@ const props = defineProps<{
 
 const TextValue = ref('')
 
+
 const UpdateData = () => {
   emit('update:data', {
     itemid: props.item_id,
@@ -35,13 +36,7 @@ watch(
     <div class="options-container">
       <div class="input-wrapper">
         <label for="">{{ title }}</label>
-        <textarea
-          id="selec"
-          v-model="TextValue"
-          :label="title"
-          class="input"
-          @change="UpdateData"
-        ></textarea>
+        <textarea id="selec" v-model="TextValue" :label="title" class="input" @change="UpdateData"></textarea>
       </div>
     </div>
   </div>

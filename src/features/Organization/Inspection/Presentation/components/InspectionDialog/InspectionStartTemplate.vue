@@ -71,7 +71,9 @@ const formatTaskAnswer = () => {
 
   const tempMap = new Map()
 
-  const addToMap = (id, text, answers, imgs) => {
+  const addToMap = (id, text, answers, imgs, answerValue?: string) => {
+    const AswerValue = ref(answerValue)
+
     if (!tempMap.has(id)) {
       tempMap.set(id, {
         template_item_id: id,
@@ -80,7 +82,6 @@ const formatTaskAnswer = () => {
         files: []
       })
     }
-
     const entry = tempMap.get(id)
 
     if (text) entry.result = text
@@ -101,13 +102,16 @@ const formatTaskAnswer = () => {
         }
 
         else {
-          const exists = entry.item_answers.some(a => a.template_item_option_id === val)
-
+          const exists = entry.item_answers.find(a => a.template_item_option_id === val)
+          // console.log(exists, "existsexistsexists")
+          console.log(AswerValue.value, "answerValueanswerValue")
           if (!exists) {
             entry.item_answers.push({
-              answer: null,
+              answer: AswerValue.value,
               template_item_option_id: val
             })
+          } else {
+            exists.answer = AswerValue.value
           }
         }
       })
@@ -129,20 +133,22 @@ const formatTaskAnswer = () => {
 
   // select
   answer.select?.forEach(item => {
-    addToMap(item.itemId, null, item.selected, item.img || [])
+    // console.log(item.value, "ittttttttttttttttttemmmmmmmmmm")
+    addToMap(item.itemId, null, item.selected, item.img || [], item.value)
   })
 
   // check
   answer.check?.forEach(group => {
     group.selected.forEach(val => {
-      addToMap(group.itemid, null, val, group.img || [])
+      addToMap(group.itemid, null, val, group.img || [], group?.notes)
     })
   })
 
   // radio
   answer.radio?.forEach(item => {
     if (item.value && item.value !== 0) {
-      addToMap(item.itemid, null, item.value, item.img || [])
+      console.log(item, "iteeeeeeeem")
+      addToMap(item.itemid, null, item.value, item.img || [], item?.notes)
     }
   })
 
@@ -203,18 +209,21 @@ watch(() => showTemplateController.state.value, (newState) => {
 </script>
 
 <template>
-  <div class="card flex justify-center">
-    <button class="card-info-status" @click="GetData" v-if="status == InspectionStatus.NOT_FINISHED">Start</button>
-    <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
+  <div class="inspection-start card w-full flex justify-center">
+    <button class="btn btn-primary w-full" style="z-index: 999;" @click="GetData"
+      v-if="status == InspectionStatus.NOT_FINISHED">Start</button>
+    <!-- <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
       <span> show inspection details </span>
       <ArrowDetails />
-    </button>
+    </button> -->
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
-      <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
-        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
-      <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">
+      <!-- <div :class="status == InspectionStatus.FINISHED ? 'overlay' : ''"> -->
+      <TemplateDocument :isOverlay="status == InspectionStatus.FINISHED" :allData="AllDocument"
+        @update:data="UpdateData" :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
+      <button v-if="status == InspectionStatus.NOT_FINISHED" class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
+      <!-- </div> -->
     </Dialog>
   </div>
 </template>

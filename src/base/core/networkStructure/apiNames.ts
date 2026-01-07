@@ -85,6 +85,9 @@ class ApiNames {
   public get IndexInspection() {
     return this.prefix + 'fetch_my_tasks'
   }
+  public get FetchAllTasks() {
+    return this.prefix + 'fetch_tasks'
+  }
   public get ShowInspection() {
     return this.prefix + 'fetch_task_details'
   }
@@ -1336,6 +1339,9 @@ class ApiNames {
   }
   public get FetchProjectStatistics() {
     return this.prefix + 'fetch_project_statistics'
+  }
+  public get FetchTaskResultDetails() {
+    return this.prefix + 'fetch_task_result_details'
   }
 }
 

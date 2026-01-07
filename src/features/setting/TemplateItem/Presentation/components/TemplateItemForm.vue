@@ -132,9 +132,12 @@ const ClearTitle = () => {
         @input="updateData">
     </div>
     <div class="col-span-4 md:col-span-2 form-container">
+      
       <TemplateTypesSection @update:data="GetTemplateType" />
+      
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
+
       <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" />
       <button class="btn add-btn w-full" @click="ClearTitle">{{ $t('add_to_template') }}</button>
     </div>

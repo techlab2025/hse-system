@@ -35,5 +35,11 @@
         height: 60px;
       }
     }
+
+    label {
+      &.disabled {
+        opacity: 0.5;
+      }
+    }
   }
 }

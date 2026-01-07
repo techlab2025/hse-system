@@ -1,0 +1,88 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.inspection-card {
+  width: 100%;
+  .inspection-history-container {
+    width: 100%;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize;
+    .inspection-history {
+      padding: $XsSize2 $MdSize;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border-radius: $XsSize;
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 5px;
+      .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .inspection-header {
+        @include flex-row(nowrap, flex-start, flex-start);
+        gap: $XsSize;
+        width: 100%;
+
+        .warn {
+          rotate: -20deg;
+          // height: 100%;
+        }
+        .inspection-header-content {
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: 0px;
+          width: 100%;
+          .title-container {
+            width: 100%;
+            @include flex-row(nowrap, flex-start, center);
+            gap: $XsSize4;
+            .title {
+              color: #121212;
+              font-size: $MdSize2;
+              font-weight: $BaseFontWeightBold;
+              border: none;
+            }
+            .date {
+              color: #6b7280;
+              font-size: $XsSize;
+              font-weight: $BaseFontMediumWeight;
+            }
+          }
+          .inspection-info {
+            // border-bottom: 1px dashed #6b728048;
+            padding-top: $XsSize3;
+            padding-bottom: $XsSize4;
+            width: 100%;
+            @include flex-row(nowrap, flex-start, flex-start);
+            gap: $MdSize2;
+
+            p {
+              color: #9ca3af;
+              font-size: $SmSize;
+              font-weight: $BaseFontMediumWeight;
+              span {
+                color: #202020;
+                font-size: $SmSize;
+                font-weight: $BaseFontWeightBold;
+                font-family: 'Regular';
+              }
+            }
+          }
+          .view-inspection-container {
+            padding-top: $XsSize3;
+            @include flex-row(nowrap, flex-start, center);
+            gap: 3px;
+            width: 100%;
+
+            .view-inspection {
+              color: #041953;
+              font-size: $MdSize;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
+        }
+      }
+    }
+  }
+}

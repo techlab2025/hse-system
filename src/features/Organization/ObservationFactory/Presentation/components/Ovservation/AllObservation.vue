@@ -5,6 +5,7 @@ import Political from "@/assets/images/Political.png"
 import ALERT from "@/assets/images/ALERT.png"
 import PoliceLine from "@/assets/images/PoliceLine.png"
 import ToDoLogo from "@/assets/images/ToDoLogo.png"
+import { InspectionPageType, InspectionType } from '../../../Core/Enums/InspectionTypeEnum'
 
 
 const items = [
@@ -14,6 +15,8 @@ const items = [
     addRoute: '/organization/equipment-mangement/inspection/add',
     indexRoute: '/organization/equipment-mangement/inspection?isAll=1',
     overdueRoute: '/organization/equipment-mangement/inspection/overdue?isAll=1',
+    inspectionFormRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.InspectionForm}`,
+    dragInspectionRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.DragInspection}`,
     description: 'Add . show'
   },
   {
@@ -30,13 +33,13 @@ const items = [
     indexRoute: '/organization/equipment-mangement/incedant?isAll=1',
     description: 'Add . show'
   },
-  {
-    title: 'Hazard',
-    image: ALERT,
-    addRoute: '/organization/equipment-mangement/hazard/add',
-    indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
-    description: 'Add . show'
-  },
+  // {
+  //   title: 'Hazard',
+  //   image: ALERT,
+  //   addRoute: '/organization/equipment-mangement/hazard/add',
+  //   indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
+  //   description: 'Add . show'
+  // },
 
 
 ]

@@ -9,6 +9,7 @@ import Rent from "@/assets/images/Rent.png";
 import RentIcon from '@/shared/icons/RentIcon.vue';
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus';
 import Helmet from "@/assets/images/Helmet.png";
+import WareHouseIcon from "@/assets/images/WareHouseIcon.png";
 import mark from "@/assets/images/mark.png";
 import EquipmentCardImgDialog from './EquipmentCardImgDialog.vue';
 import { useUserStore } from '@/stores/user';
@@ -112,6 +113,8 @@ const deleteEquipment = async (id: number) => {
 </script>
 
 <template>
+
+
   <div class="tool-card equipment-card ">
     <div class="tool-card-header">
       <img :src="tool?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
@@ -142,6 +145,16 @@ const deleteEquipment = async (id: number) => {
           <div class="project-data">
             <p class="project-name"><span class="project-name-title">{{ tool?.project?.title }}</span></p>
             <div class="project-zone-name">
+              <img :src="mark" alt="">
+              <p> <span class="project-name-title">{{ tool?.projectZoon?.title }}</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="equipment-project-info" v-if="tool?.warehouse">
+          <img :src="WareHouseIcon" alt="helmet">
+          <div class="project-data">
+            <p class="project-name"><span class="project-name-title">{{ tool?.warehouse?.name }}</span></p>
+            <div class="project-zone-name" v-if="tool?.projectZoon?.title">
               <img :src="mark" alt="">
               <p> <span class="project-name-title">{{ tool?.projectZoon?.title }}</span></p>
             </div>

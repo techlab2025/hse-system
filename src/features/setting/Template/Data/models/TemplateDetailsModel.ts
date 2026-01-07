@@ -19,6 +19,7 @@ export default class TemplateDetailsModel {
   public requireImage: number
   public action: TitleInterface | null
   public title: string | null = null
+  
   // public descriptions: DescriptionLocale[]
 
   constructor(
