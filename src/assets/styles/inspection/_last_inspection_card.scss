@@ -49,6 +49,13 @@
           }
         }
       }
+      .show-result-btn {
+        color: $PrimaryColor;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        text-decoration: underline;
+        font-family: 'Regular' !important;
+      }
       .view-inspection-btn {
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;

@@ -30,8 +30,8 @@ const { item } = defineProps<{
       <p class="description">{{ item.description }}</p>
     </div>
     <div class="card-options">
-      <RouterLink :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
-      <RouterLink :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
+      <RouterLink v-if="item.addRoute" :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
+      <RouterLink v-if="item.indexRoute" :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
       <RouterLink v-if="item.overdueRoute" :to="item.overdueRoute" class="btn btn-secondary">{{ $t('over_due') }}
       </RouterLink>
       <RouterLink v-if="item.inspectionFormRoute" :to="item.inspectionFormRoute" class="btn btn-secondary">{{

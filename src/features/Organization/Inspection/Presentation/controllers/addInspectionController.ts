@@ -42,7 +42,8 @@ export default class AddInspectionController extends ControllerInterface<Inspect
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/organization/equipment-mangement/inspection`)
+        // if (!draft) await router.push(`/organization/equipment-mangement/inspection`)
+        await router.push(`/organization/equipment-mangement/inspection?inspectionType=1`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
