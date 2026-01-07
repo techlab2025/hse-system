@@ -66,7 +66,7 @@ watch(() => props.selectedTemplates, (newVal) => {
           </div>
         </AccordionHeader>
         <AccordionContent>
-          <TemplateDocument :allData="template" :headerDisplay="false" />
+          <TemplateDocument :isActions="false" :allData="template" :headerDisplay="false" />
         </AccordionContent>
       </AccordionPanel>
 

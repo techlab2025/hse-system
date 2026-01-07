@@ -25,6 +25,7 @@ import { useRoute } from 'vue-router'
 const props = defineProps<{
   allData: TemplateDetailsModel
   headerDisplay: boolean | true
+  isActions?: boolean | true
 }>()
 const emit = defineEmits(['update:data'])
 const { t } = useI18n()
@@ -105,7 +106,8 @@ const DeleteTemplateItem = async (id: number) => {
     <div class="template-document-content-container">
       <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
 
-        <div class="actions" v-if="!route.path.includes('equipment-show') && !route.path.includes('template-item')">
+        <div class="actions"
+          v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
           <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
         </div>
 
