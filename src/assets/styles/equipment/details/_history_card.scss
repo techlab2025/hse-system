@@ -195,7 +195,7 @@
 
               .done {
                 border: 0.5px solid $greenDone;
-                border-radius: 50px;
+                border-radius: $XlSize4;
                 padding: $XsSize $MdSize;
                 color: #4caf50;
                 background-color: $greenDone;
@@ -205,7 +205,7 @@
 
               .delay {
                 border: 0.5px solid $DelayColor;
-                border-radius: 50px;
+                border-radius: $XlSize4;
                 padding: $XsSize $MdSize;
                 color: #ffbf52;
                 background-color: $DelayColor;
@@ -215,7 +215,7 @@
 
               .inspection-details {
                 border: 0.5px solid #04195380;
-                border-radius: 50px;
+                border-radius: $XlSize4;
                 padding: $XsSize $MdSize;
                 font-weight: $BaseFontWeightBold;
                 color: var(--header-page-color);
@@ -226,51 +226,82 @@
           }
         }
       }
-      .inspection-history {
-        padding: 10px 16px;
+      .inspection-history-container {
         width: 100%;
-
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
         @include flex-column(nowrap, flex-start, flex-start);
-        gap: 5px;
-        .bg {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        .inspection-header {
-          @include flex-row(nowrap, flex-start, center);
-          gap: 6px;
-          .warn {
-            rotate: -20deg;
+        gap: $XsSize;
+        .inspection-history {
+          padding: $XsSize2 $MdSize;
+          width: 100%;
+          position: relative;
+          overflow: hidden;
+          border-radius: $XsSize;
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: 5px;
+          .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
           }
-          .title-container {
+          .inspection-header {
+            @include flex-row(nowrap, flex-start, flex-start);
+            gap: $XsSize;
             width: 100%;
-            @include flex-row(nowrap, flex-start, center);
-            gap: 6px;
-            .title {
-              color: #121212;
-              font-size: 18px;
-              font-weight: 700;
-              border: none;
-            }
-            .date {
-              color: #6b7280;
-              font-size: 12px;
-              font-weight: 500;
-            }
-          }
-        }
 
-        .view-inspection-container {
-          @include flex-row(nowrap, flex-start, center);
-          gap: 3px;
-          .view-inspection {
-            color: #041953;
-            font-size: 16px;
-            font-weight: 600;
+            .warn {
+              rotate: -20deg;
+              // height: 100%;
+            }
+            .inspection-header-content {
+              @include flex-column(nowrap, flex-start, flex-start);
+              gap: 0px;
+              width: 100%;
+              .title-container {
+                width: 100%;
+                @include flex-row(nowrap, flex-start, center);
+                gap: $XsSize4;
+                .title {
+                  color: #121212;
+                  font-size: $MdSize2;
+                  font-weight: $BaseFontWeightBold;
+                  border: none;
+                }
+                .date {
+                  color: #6b7280;
+                  font-size: $XsSize;
+                  font-weight: $BaseFontMediumWeight;
+                }
+              }
+              .inspection-type {
+                border-bottom: 1px dashed #6b728048;
+                padding-bottom: $XsSize4;
+                width: 100%;
+
+                p {
+                  color: #1f41bb;
+                  font-size: $SmSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                  span {
+                    color: #6b7280;
+                    font-size: $SmSize;
+                    font-weight: $BaseFontMediumWeight;
+                    font-family: 'Light';
+                  }
+                }
+              }
+              .view-inspection-container {
+                padding-top: $XsSize3;
+                @include flex-row(nowrap, flex-start, center);
+                gap: 3px;
+                width: 100%;
+
+                .view-inspection {
+                  color: #041953;
+                  font-size: $MdSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                }
+              }
+            }
           }
         }
       }

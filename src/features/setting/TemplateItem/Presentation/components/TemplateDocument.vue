@@ -81,6 +81,7 @@ const DeleteTemplateItem = async (id: number) => {
   <div class="template-document-container">
     <div class="template-document-header" v-if="headerDisplay">
       <div class="template-header">
+
         <p class="header-title" v-if="allData.titles && allData?.titles?.length > 0">
           {{
             allData?.titles
@@ -91,7 +92,6 @@ const DeleteTemplateItem = async (id: number) => {
         </p>
 
         <p class="header-title" v-else>{{ allData?.title }}</p>
-
         <div class="template-details">
           <p>
             Id : <span>{{ allData?.id }}</span>
@@ -105,18 +105,17 @@ const DeleteTemplateItem = async (id: number) => {
     <div class="template-document-content-container">
       <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
 
-        <div class="actions">
-
+        <div class="actions" v-if="!route.path.includes('equipment-show') && !route.path.includes('template-item')">
           <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
         </div>
 
 
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
         <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
         <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :options="item.options" :require_image="item.requiredImage" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
         <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
           :require_image="item.requiredImage" />
       </div>

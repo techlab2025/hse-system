@@ -36,7 +36,8 @@ export default class EquipmentDetailsModel {
   public contractor: ContractorDetailsModel
   public warehouse: WhereHouseDetailsModel
   public lastInspectoinDate: string
-  public tasks: InspectionModel[]
+  public tasks_without_result: InspectionModel[]
+  public tasks_with_result: InspectionModel[]
 
   constructor(
     id: number,
@@ -62,7 +63,8 @@ export default class EquipmentDetailsModel {
     contractor: ContractorDetailsModel,
     warehouse: WhereHouseDetailsModel,
     lastInspectoinDate: string,
-    tasks: InspectionModel[],
+    tasks_without_result: InspectionModel[],
+    tasks_with_result: InspectionModel[],
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -87,7 +89,8 @@ export default class EquipmentDetailsModel {
     this.contractor = contractor
     this.warehouse = warehouse
     this.lastInspectoinDate = lastInspectoinDate
-    this.tasks = tasks
+    this.tasks_without_result = tasks_without_result
+    this.tasks_with_result = tasks_with_result
 
     // this.type = type
   }
@@ -118,7 +121,12 @@ export default class EquipmentDetailsModel {
       data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
       data.warehouse ? WhereHouseDetailsModel?.fromMap(data.warehouse) : null,
       data.last_inspection_date,
-      data.tasks.length > 0 ? data.tasks.map((task) => InspectionModel?.fromMap(task)) : [],
+      data?.tasks_without_result?.length > 0
+        ? data.tasks_without_result.map((task) => InspectionModel?.fromMap(task))
+        : [],
+      data?.tasks_with_result?.length > 0
+        ? data.tasks_with_result.map((task) => InspectionModel?.fromMap(task))
+        : [],
     )
   }
 

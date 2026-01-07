@@ -4,6 +4,7 @@ import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
 import acc from '@/assets/images/acc.png'
 import EquipmentImg from '@/assets/images/EquipmentImg.jpg'
 import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
 
 export default class EquipmentModel extends TitleInterface {
   public id: number
@@ -14,6 +15,7 @@ export default class EquipmentModel extends TitleInterface {
   public image: string
   public titles: string
   public status: EquipmentStatus
+  public warehouse: WhereHouseDetailsModel
 
   // public equipmentType: TitleModel
   public equipmentType?: EquipmentTypeDetailsModel
@@ -36,6 +38,7 @@ export default class EquipmentModel extends TitleInterface {
     project: TitleInterface,
     projectZoon: TitleInterface,
     certificateImage: string,
+    warehouse: WhereHouseDetailsModel,
   ) {
     super({ id, title, subtitle })
 
@@ -51,6 +54,7 @@ export default class EquipmentModel extends TitleInterface {
     this.project = project
     this.projectZoon = projectZoon
     this.certificateImage = certificateImage
+    this.warehouse = warehouse
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -72,6 +76,7 @@ export default class EquipmentModel extends TitleInterface {
       data.project ? TitleModel.fromMap(data.project) : null,
       data.project_zoon ? TitleModel.fromMap(data.project_zoon) : null,
       data.certificate_image,
+      data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
     )
   }
 
@@ -159,6 +164,7 @@ export default class EquipmentModel extends TitleInterface {
       new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
       new TitleInterface({ id: 1, title: 'Obour City' }),
       acc,
+      new WhereHouseDetailsModel(1, 'hand tool', '102030'),
     ),
   ]
 }

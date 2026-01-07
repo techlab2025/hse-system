@@ -44,9 +44,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:data'])
 
-/* =========================
- * Interfaces
- * ========================= */
 interface DataFormDetails {
   inspectionType: InspectionTypeEnum
   onceday: string
@@ -67,9 +64,7 @@ interface InspectionForm {
   ProjectId: number
 }
 
-/* =========================
- * State
- * ========================= */
+
 
 // Assign To (Machine / Employee / Zone)
 const AssignToOptions = ref<TitleInterface[]>([
@@ -90,9 +85,7 @@ const SelectedEquipment = ref<TitleInterface>()
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1, null, false)
 
-/* =========================
- * Core Logic
- * ========================= */
+
 
 /**
  * Build period tasks based on selected period type

@@ -10,6 +10,7 @@ export default class EditTemplateParams implements Params {
   industries: number[]
   image: string
   items: AddTemplateParams[]
+  template_type: number | null
 
   // public static readonly validation = new ClassValidation().setRules({
   //   industries: { required: true, custom: () => this.allIndustries != null },
@@ -22,6 +23,7 @@ export default class EditTemplateParams implements Params {
     industries: number[],
     image: string,
     items: AddTemplateParams[],
+    template_type: number | null,
   ) {
     this.id = id
     this.translation = translation
@@ -29,6 +31,7 @@ export default class EditTemplateParams implements Params {
     this.industries = industries
     this.image = image
     this.items = items
+    this.template_type = template_type
   }
 
   toMap(): Record<
@@ -47,7 +50,7 @@ export default class EditTemplateParams implements Params {
     if (this.items.length > 0) {
       data['items'] = this.items.map((item) => item.toMap())
     }
-
+    if (this.template_type != null) data['type'] = this.template_type
     return data
   }
   // validate() {

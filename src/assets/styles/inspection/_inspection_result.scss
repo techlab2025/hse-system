@@ -1,0 +1,127 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.inspection-result {
+  width: 100%;
+
+  .inspection-result-header {
+    width: 100%;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize3;
+    position: relative;
+    overflow: hidden;
+    padding: $MdSize;
+    border-radius: $XsSize3;
+    .bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .inspection-header-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+    .right-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      rotate: 90deg;
+      scale: 1.4;
+    }
+    .title {
+      color: #121212;
+      font-size: $MdSize2;
+      font-weight: $BaseFontWeightBold;
+    }
+    .card-info {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XlSize3;
+
+      p {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          color: #202020;
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+          font-family: 'Regular';
+        }
+      }
+    }
+  }
+  .inspection-result-body {
+    width: 100%;
+    // @include flex-column(nowrap, flex-start, flex-start);
+    // gap: $XsSize3;
+    .statistics {
+      width: 100%;
+      margin-top: 10px;
+      @include grid(
+        5,
+        $XsSize2,
+        (
+          1400px: 5,
+          1000px: 4,
+          768px: 3,
+          425px: 2,
+        )
+      );
+      .statistic {
+        background-color: #fcfcfc;
+        border-radius: $SmSize;
+        padding: $XsSize2;
+        gap: $XsSize2;
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize2;
+        .card-data {
+          @include flex-row(nowrap, space-between, center);
+          width: 100%;
+          .card-title {
+            color: #a3a6ac;
+            font-size: $SmSize;
+            font-weight: $BaseFontWeightBold;
+          }
+          .card-number {
+            color: #000000;
+            font-size: $SmSize;
+            font-weight: $BaseFontWeightBold;
+          }
+        }
+      }
+    }
+  }
+  .inspection-result-table {
+    width: 100%;
+    font-family: 'Light';
+    margin-top: 12px;
+    table {
+      width: 100%;
+      thead {
+        background-color: #f5f6f7;
+        border-radius: $MdSize2;
+        tr {
+          border-radius: $MdSize2;
+          th {
+            color: #9ca3af;
+            padding: $XsSize;
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            padding-block: 30px;
+            text-align: center;
+            color: #000000;
+            font-family: 'Regular';
+          }
+        }
+      }
+    }
+  }
+}

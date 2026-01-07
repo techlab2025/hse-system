@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { TextAreaStatusEnum } from '../Enum/TextAreaStatusEnum'
 
 export default class AddTemplateItemParams implements Params {
   id: number
@@ -43,12 +44,15 @@ export default class AddTemplateItemParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
       | Array<Record<string, string | number>>
     > = {}
+    console.log(this.answers, "this.answers")
     data['template_id'] = this.id
     data['name'] = this.title
     data['action'] = this.type
     data['options'] = this.answers.map((item) => ({
       title: item.title,
       is_danger: item.isDanger ? 1 : 0,
+      textarea_type: item.textarea_type ? TextAreaStatusEnum.required : item.textarea_type,
+      has_auto_observation: item.has_auto_observation ? 1 : 0,
     }))
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = this.imageType || 0
@@ -67,4 +71,6 @@ export default class AddTemplateItemParams implements Params {
 interface items {
   title: string
   isDanger: boolean
+  textarea_type: number
+  has_auto_observation: boolean
 }

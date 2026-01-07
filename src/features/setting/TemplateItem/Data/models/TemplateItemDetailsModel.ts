@@ -8,6 +8,7 @@ export default class TemplateItemDetailsModel {
   public action: number
   public requiredImage: boolean
   public options: ItemModel[]
+  public has_textarea: number = 0
 
   // public descriptions: DescriptionLocale[]
 
@@ -19,6 +20,7 @@ export default class TemplateItemDetailsModel {
     action: number,
     requiredImage: boolean,
     options: ItemModel[] = [],
+    has_textarea: number = 0,
   ) {
     this.id = id
     this.name = name
@@ -27,6 +29,7 @@ export default class TemplateItemDetailsModel {
     this.action = action
     this.requiredImage = requiredImage
     this.options = options
+    this.has_textarea = has_textarea
   }
 
   static fromMap(data: any): TemplateItemDetailsModel {
@@ -38,6 +41,7 @@ export default class TemplateItemDetailsModel {
       data.action ?? 0,
       data.require_image,
       data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
+      data.has_textarea,
     )
   }
 }

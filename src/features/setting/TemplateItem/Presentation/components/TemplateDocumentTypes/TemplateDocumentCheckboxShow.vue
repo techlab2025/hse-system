@@ -6,6 +6,7 @@ const { title, options } = defineProps<{
   title: string
   options: ItemModel[]
   require_image: boolean
+  has_textarea: number
 }>()
 
 </script>
@@ -21,6 +22,9 @@ const { title, options } = defineProps<{
         </div>
       </div>
       <UploadImage class="image-upload" v-if="require_image" />
+      <div>
+        
+      </div>
     </div>
 
   </div>

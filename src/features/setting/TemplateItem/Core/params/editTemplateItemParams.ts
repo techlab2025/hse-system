@@ -1,5 +1,5 @@
 import type Params from '@/base/core/params/params'
-
+import { TextAreaStatusEnum } from '../Enum/TextAreaStatusEnum'
 
 export default class implements Params {
   public templateItemId: number
@@ -51,6 +51,10 @@ export default class implements Params {
     data['items'] = this.answers.map((item) => ({
       title: item.title,
       is_danger: item.is_danger ? 1 : 0,
+      textarea_type: item.textarea_type
+        ? TextAreaStatusEnum?.required
+        : TextAreaStatusEnum?.optional,
+      has_auto_observation: item.has_auto_observation ? 1 : 0,
     }))
     data['require_image'] = this.isImageRequired
     data['required_type'] = this.imageType
@@ -61,4 +65,6 @@ export default class implements Params {
 interface items {
   title: string
   is_danger: boolean
+  textarea_type: boolean
+  has_auto_observation: boolean
 }

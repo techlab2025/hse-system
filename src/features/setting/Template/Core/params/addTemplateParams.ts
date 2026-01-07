@@ -9,6 +9,7 @@ export default class AddTemplateParams implements Params {
   require_image: number
   action: ActionsEnum | null
   items: AddTemplateParams[] = []
+  template_type: number | null
 
   constructor(
     translation: TranslationsParams,
@@ -17,6 +18,7 @@ export default class AddTemplateParams implements Params {
     require_image: number,
     action: ActionsEnum | null,
     items: AddTemplateParams[] = [],
+    template_type: number | null,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
@@ -24,6 +26,7 @@ export default class AddTemplateParams implements Params {
     this.require_image = require_image
     this.items = items
     this.action = action
+    this.template_type = template_type
   }
 
   toMap(): Record<string, unknown> {
@@ -39,6 +42,7 @@ export default class AddTemplateParams implements Params {
     if (this.items.length > 0) {
       data['items'] = this.items.map((item) => item.toMap())
     }
+    if (this.template_type != null) data['type'] = this.template_type
     return data
   }
   //   validate() {

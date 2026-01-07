@@ -3,21 +3,30 @@ import AddAnswer from '@/shared/icons/AddAnswer.vue';
 import DangerIcon from '@/shared/icons/DangerIcon.vue';
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue';
 import RedDangerIcon from '@/shared/icons/RedDangerIcon.vue';
+import TextAreaRequiredIcon from '@/shared/icons/TextAreaRequiredIcon.vue';
+import TextAreaRequiredSelectedIcon from '@/shared/icons/TextAreaRequiredSelectedIcon.vue';
 import { onMounted, ref } from 'vue';
 
 const emit = defineEmits(['update:data'])
 const Answers = ref([
   {
     title: '',
-    isDanger: false
+    isDanger: false,
+    isTextAreaRequired: false,
+    textarea_type: 0,
+    has_auto_observation: false
   }
 ]);
 
 const addNewAnswer = () => {
   Answers.value.push({
     title: '',
-    isDanger: false
+    isDanger: false,
+    isTextAreaRequired: false,
+    textarea_type: 0,
+    has_auto_observation: false
   });
+  console.log(Answers.value, "Answers.value")
   UpdateData()
 }
 
@@ -63,11 +72,32 @@ onMounted(() => {
 
             <div class="timeline-content">
               <div class="dropdown-type input-wrapper">
-                <input type="text" v-model="item.title" class="input" placeholder="Enter text" @input="UpdateData" />
-                <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
-                  @click="Answers[index].isDanger = true; UpdateData()" />
-                <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].isDanger"
-                  @click="Answers[index].isDanger = false; UpdateData()" />
+                <div class="input-wrapper flex flex-col">
+                  <input type="text" v-model="item.title" class="input" placeholder="Enter text" @input="UpdateData" />
+                  <div class="flex w-full space-between gap-2">
+                    <input :disabled="!item.isTextAreaRequired" type="checkbox" value="1" v-model="item.textarea_type"
+                      @change="UpdateData" :id="`textareaType-${index}`">
+                    <label :class="!item.isTextAreaRequired ? 'disabled' : ''" :for="`textareaType-${index}`">Text
+                      area Required</label>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <div class="flex gap-2">
+                    <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
+                      @click="Answers[index].isDanger = true; UpdateData()" />
+                    <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].isDanger"
+                      @click="Answers[index].isDanger = false; UpdateData()" />
+                    <TextAreaRequiredIcon class="icon cursor-pointer" v-if="!Answers[index].isTextAreaRequired"
+                      @click="Answers[index].isTextAreaRequired = true; Answers[index].textarea_type = 1; UpdateData()" />
+                    <TextAreaRequiredSelectedIcon class="icon cursor-pointer" v-if="Answers[index].isTextAreaRequired"
+                      @click="Answers[index].isTextAreaRequired = false; Answers[index].textarea_type = 0; UpdateData()" />
+                  </div>
+                  <div class="flex w-full space-between gap-2">
+                    <input type="checkbox" v-model="item.has_auto_observation" @change="UpdateData"
+                      :id="`has_auto_observation-${index}`">
+                    <label :for="`has_auto_observation-${index}`">Auto obervation</label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
