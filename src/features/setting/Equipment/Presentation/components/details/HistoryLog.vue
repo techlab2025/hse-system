@@ -64,9 +64,11 @@ const Types = ref(["sunday", "monday", "tuesday",])
               <span class="date">{{ task?.date }}</span>
             </div>
             <div class="inspection-type">
-              <p>
+              <!-- <p>
                 per week : <span v-for="(type, index) in Types" :key="index">{{ type }} | </span>
-              </p>
+              </p> -->
+              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
+
             </div>
             <EquipmentInspectionResultDialog :taskId="task.id" />
           </div>

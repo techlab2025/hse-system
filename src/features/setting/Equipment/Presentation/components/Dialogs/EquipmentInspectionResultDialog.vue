@@ -13,8 +13,8 @@ import type TaskFullResponseModel from '@/features/Organization/Inspection/Data/
 import FetchTaskResultParams from '@/features/Organization/Inspection/Core/params/FetchTaskResultParams'
 import { InspectionStatus } from '@/features/Organization/Inspection/Core/Enum/InspectionStatusEnum'
 import ViewInspectionArrow from '@/shared/icons/ViewInspectionArrow.vue'
-import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
+import TemplateDocument from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocument.vue'
 
 const visible = ref(false)
 
@@ -29,8 +29,6 @@ const router = useRouter()
 const AllDocument = ref<TemplateDetailsModel>()
 const showTemplateController = ShowTemplateController.getInstance()
 const state = ref(showTemplateController.state.value)
-
-
 
 watch(
   () => showTemplateController.state.value,
@@ -184,8 +182,6 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
 })
 
 
-
-
 </script>
 
 <template>
@@ -199,7 +195,7 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
     </button>
 
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
-      <div class="template-document-container">
+      <!-- <div class="template-document-container">
         <div class="template-document-header">
           <div class="template-header">
             <p class="header-title" v-if="AllDocument?.titles && AllDocument?.titles?.length > 0">
@@ -216,11 +212,19 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
           </div>
           <img :src="DocumnetHeader" alt="header" />
         </div>
-      </div>
+      </div> -->
 
 
+
+      <!-- Without Result -->
+      <!-- <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
+        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" /> -->
+
+      <!-- With Result -->
       <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
-        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
+        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" :isOverlay="true" />
+
+
       <!-- <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button> -->

@@ -112,6 +112,7 @@ const getAnswerForItem = (templateItemId: number) => {
 }
 </script>
 <template>
+  <!-- <pre>{{ task_results }}</pre> -->
   <div class="template-document-container">
     <div class="template-document-header">
       <div class="template-header">

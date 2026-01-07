@@ -94,7 +94,7 @@ const GetEquipmentType = (type: number) => {
           <h3 class="title">{{ tTitle }}</h3>
           <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
         </div>
-        <div class="inspection">
+        <div class="inspection" v-if="equipmentData.lastInspectoinDate">
           <span>{{ $t('inspection date') }} :</span>
           <p>
             {{ equipmentData.lastInspectoinDate }} <span>({{ $t('per_week') }})</span>
