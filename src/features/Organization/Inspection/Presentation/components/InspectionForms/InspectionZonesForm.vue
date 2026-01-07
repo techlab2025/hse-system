@@ -50,6 +50,7 @@ const GetTemplateId = (data: number) => {
 }
 
 const setProject = (data: TitleInterface) => {
+  SelectedZones.value = null
   SelectedProject.value = data
   fetchMyZoneaParams.value = new FetchMyZonesParams(SelectedProject.value?.id || null)
   UpdateData()

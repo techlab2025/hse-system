@@ -97,6 +97,9 @@ class ApiNames {
   public get DeleteInspection() {
     return this.prefix + 'delete_task'
   }
+  public get FetchInspectionResult() {
+    return this.prefix + 'fetch_task_results'
+  }
 
   // location hierarchy
   public get CreateLocationHierarchy() {
@@ -1341,7 +1344,7 @@ class ApiNames {
     return this.prefix + 'fetch_project_statistics'
   }
   public get FetchTaskResultDetails() {
-    return this.prefix + 'fetch_task_result_details'
+    return this.prefix + 'fetch_task_inspection_details'
   }
 }
 

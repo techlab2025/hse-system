@@ -39,7 +39,7 @@ const getInspectionType = (type: number) => {
             <div class="inspection-info">
               <p>Inspection Type: <span>{{ getInspectionType(task?.morphType) }}</span></p>
               <p>Assigned by : <span>{{ task?.createdBy?.name }}</span></p>
-              <p>Number of result: <span>{{ task?.numberOfResults }}</span></p>
+              <p v-if="!isDrag">Number of result: <span>{{ task?.numberOfResults }}</span></p>
               <p>Date&Time : <span>{{ task?.date }}</span></p>
             </div>
           </div>

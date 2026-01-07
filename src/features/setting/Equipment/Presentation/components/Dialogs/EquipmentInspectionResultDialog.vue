@@ -2,7 +2,7 @@
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
-import { watch, onMounted, ref } from 'vue'
+import { watch, onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ItemResultParams from '@/features/Organization/Inspection/Core/params/ItemResultParams'
@@ -15,6 +15,7 @@ import { InspectionStatus } from '@/features/Organization/Inspection/Core/Enum/I
 import ViewInspectionArrow from '@/shared/icons/ViewInspectionArrow.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import TemplateDocument from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocument.vue'
+import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 
 const visible = ref(false)
 
@@ -26,9 +27,11 @@ const { templateId, taskId } = defineProps<{
 }>()
 
 const router = useRouter()
+const route = useRoute()
 const AllDocument = ref<TemplateDetailsModel>()
 const showTemplateController = ShowTemplateController.getInstance()
 const state = ref(showTemplateController.state.value)
+const Actionbtn = computed(() => route.path.includes("inspection/result"))
 
 watch(
   () => showTemplateController.state.value,
@@ -187,11 +190,16 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
 <template>
   <div class="card flex justify-center">
     <!-- v-if="status == InspectionStatus.NOT_FINISHED" -->
-    <button class="card-info-status" @click="GetData">
+    <button v-if="!Actionbtn" class="card-info-status" @click="GetData">
       <div class="view-inspection-container">
         <p class="view-inspection">view inspection details</p>
         <ViewInspectionArrow />
       </div>
+    </button>
+
+    <button v-if="Actionbtn" @click="GetData">
+      <ActionsIcon />
+
     </button>
 
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">

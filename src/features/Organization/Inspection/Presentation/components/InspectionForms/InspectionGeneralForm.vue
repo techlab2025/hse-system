@@ -193,7 +193,7 @@ const setWithDayesType = (data: TitleInterface) => {
       </div>
       <div class="input-wrapper" v-if="SelectedPeriodType === PeriodTypeEnum.WITHDAY">
         <label for="with-day">{{ $t('with days') }}</label>
-        <input type="number" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
+        <input type="number" min="1" max="31" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
           @change="setWithDays" />
       </div>
 

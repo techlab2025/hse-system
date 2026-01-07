@@ -7,6 +7,7 @@ export default class TaskResultModel {
   public status: number
   public employee: OrganizatoinEmployeeModel
   public taskResultItems: TaskResultItemModel[]
+  public time: string
 
   constructor(
     id: number,
@@ -14,12 +15,14 @@ export default class TaskResultModel {
     status: number,
     employee: OrganizatoinEmployeeModel,
     taskResultItems: TaskResultItemModel[],
+    time: string,
   ) {
     this.id = id
     this.date = date
     this.status = status
     this.employee = employee
     this.taskResultItems = taskResultItems
+    this.time = time
   }
 
   static fromMap(data: any): TaskResultModel {
@@ -29,6 +32,12 @@ export default class TaskResultModel {
       data.status,
       OrganizatoinEmployeeModel.fromMap(data.employee),
       data.task_result_items?.map((i: any) => TaskResultItemModel.fromMap(i)) ?? [],
+      data.time,
     )
   }
+  static example: TaskResultModel[] = [
+    new TaskResultModel(1, '2026-01-01', 1, OrganizatoinEmployeeModel.example, [
+      TaskResultItemModel.example,
+    ]),
+  ]
 }
