@@ -132,9 +132,9 @@ const ClearTitle = () => {
         @input="updateData">
     </div>
     <div class="col-span-4 md:col-span-2 form-container">
-      
+
       <TemplateTypesSection @update:data="GetTemplateType" />
-      
+
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
 

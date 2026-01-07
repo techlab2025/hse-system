@@ -44,14 +44,18 @@ export default class AddTemplateItemParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
       | Array<Record<string, string | number>>
     > = {}
-    console.log(this.answers, "this.answers")
+    console.log(this.answers, 'this.answers')
     data['template_id'] = this.id
     data['name'] = this.title
     data['action'] = this.type
     data['options'] = this.answers.map((item) => ({
       title: item.title,
       is_danger: item.isDanger ? 1 : 0,
-      textarea_type: item.textarea_type ? TextAreaStatusEnum.required : item.textarea_type,
+      textarea_type: item?.isTextAreaRequired
+        ? item.textarea_type
+          ? TextAreaStatusEnum.required
+          : TextAreaStatusEnum.optional
+        : 0,
       has_auto_observation: item.has_auto_observation ? 1 : 0,
     }))
     data['require_image'] = this.isImageRequired || 0
@@ -71,6 +75,7 @@ export default class AddTemplateItemParams implements Params {
 interface items {
   title: string
   isDanger: boolean
+  isTextAreaRequired: boolean
   textarea_type: number
   has_auto_observation: boolean
 }

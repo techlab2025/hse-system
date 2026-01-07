@@ -16,6 +16,7 @@ import type TaskFullResponseModel from '../../../Data/models/FetchTaskResultMode
 import { InspectionStatus } from '../../../Core/Enum/InspectionStatusEnum'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
+import ShowResultIcon from '@/shared/icons/ShowResultIcon.vue'
 
 const visible = ref(false)
 
@@ -213,9 +214,13 @@ watch(() => showTemplateController.state.value, (newState) => {
 
 <template>
   <div class="inspection-start card w-full flex justify-center">
+
     <button class="btn btn-primary w-full" style="z-index: 999;" @click="GetData"
       v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection">Start</button>
-    <button v-if="lastinspection" style="z-index: 999;" @click="GetData">show Result</button>
+    <button class="show-result-btn flex  gap-1" v-if="lastinspection" style="z-index: 999;" @click="GetData">
+      <span>show Result</span>
+      <ShowResultIcon />
+    </button>
     <!-- <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
       <span> show inspection details </span>
       <ArrowDetails />
