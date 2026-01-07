@@ -20,6 +20,9 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { AssignToTypeEnum } from "../../../Core/Enum/AssignToTypesEnum";
+import FetchInspectionResultController from "../../controllers/FetchInspectionResultController";
+import FetchInspectionResultParams from "../../../Core/params/FetchInspectionResultParams";
+import EquipmentInspectionResultDialog from "@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionResultDialog.vue";
 
 const route = useRoute()
 const id = route.params?.id
@@ -75,17 +78,31 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
   // },
 ]
 const fetchTaskResultDetailsController = FetchTaskResultDetailsController.getInstance()
-const state = ref(fetchTaskResultDetailsController.state.value)
+const staticstate = ref(fetchTaskResultDetailsController.state.value)
+
+
+const fetchInspectionResultController = FetchInspectionResultController.getInstance()
+const state = ref(fetchInspectionResultController.state.value)
 
 const GetInspectionDetails = () => {
   const fetchTaskResultDetailsParams = new FetchTaskResultDetailsParams(id)
   fetchTaskResultDetailsController.getData(fetchTaskResultDetailsParams)
 }
+
+
+const GetInspectionResult = () => {
+  const fetchInspectionResultParams = new FetchInspectionResultParams(id)
+  fetchInspectionResultController.getData(fetchInspectionResultParams)
+}
 onMounted(() => {
   GetInspectionDetails()
+  GetInspectionResult()
 })
 
 watch(() => fetchTaskResultDetailsController?.state.value, (newVal) => {
+  staticstate.value = newVal
+})
+watch(() => fetchInspectionResultController?.state.value, (newVal) => {
   state.value = newVal
 })
 
@@ -103,9 +120,9 @@ const getInspectionType = (type: number) => {
           <img class="right-bg" :src="InspectionTaskbg" alt="">
           <p class="title">inspection</p>
           <div class="card-info">
-            <p>Inspection Type: <span>{{ getInspectionType(state?.data?.morphType) }}</span></p>
-            <p>Assigned by : <span>{{ state?.data?.createdBy?.name }}</span></p>
-            <p>Date&Time : <span>22 july,10 : 30 AM</span></p>
+            <p>Inspection Type: <span>{{ getInspectionType(staticstate?.data?.morphType) }}</span></p>
+            <p>Assigned by : <span>{{ staticstate?.data?.createdBy?.name }}</span></p>
+            <p>Date&Time : <span>{{ staticstate?.data?.createdAt }}</span></p>
           </div>
         </div>
         <div class="inspection-result-body">
@@ -114,35 +131,35 @@ const getInspectionType = (type: number) => {
               <component :is="Statistics[0]?.icon" />
               <div class="card-data">
                 <p class="card-title">All Results</p>
-                <p class="card-number">{{ state?.data?.statistics?.all_result }}</p>
+                <p class="card-number">{{ staticstate?.data?.allResult }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[1]?.icon" />
               <div class="card-data">
                 <p class="card-title">Results received today</p>
-                <p class="card-number">{{ state?.data?.statistics?.results_received_today }}</p>
+                <p class="card-number">{{ staticstate?.data?.resultsReceivedToday }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[2]?.icon" />
               <div class="card-data">
                 <p class="card-title">Results completed</p>
-                <p class="card-number">{{ state?.data?.statistics?.results_completed }}</p>
+                <p class="card-number">{{ staticstate?.data?.resultsCompleted }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[3]?.icon" />
               <div class="card-data">
                 <p class="card-title">Results not yet completed</p>
-                <p class="card-number">{{ state?.data?.statistics?.results_not_yet_completed }}</p>
+                <p class="card-number">{{ staticstate?.data?.resultsNotYetCompleted }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[4]?.icon" />
               <div class="card-data">
                 <p class="card-title">Delayed results</p>
-                <p class="card-number">{{ state?.data?.statistics?.delayed_results }}</p>
+                <p class="card-number">{{ staticstate?.data?.delayedResults }}</p>
               </div>
             </div>
           </div>
@@ -159,13 +176,15 @@ const getInspectionType = (type: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(info, index) in state.data?.inspectionInfo" :key="index">
-                <td>{{ info.serial }}</td>
+              <tr v-for="(info, index) in state.data" :key="index">
+                <td>{{ info.id + 1 }}</td>
                 <td>{{ info.employee.name }}</td>
                 <td>{{ info.date }}</td>
                 <td>{{ info.time }}</td>
                 <td>
                   <!-- <DropList :actionList="actionList(i, i)" /> -->
+                  <EquipmentInspectionResultDialog :taskId="id"  />
+
                 </td>
               </tr>
             </tbody>

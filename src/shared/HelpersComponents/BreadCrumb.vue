@@ -15,10 +15,11 @@ const props = defineProps<{
   <div class="breadcrumbs">
     <ul>
       <li>
+
         <span>{{ equipment }}</span>
         <ArrowIcons />
       </li>
-      <p>{{ equipmentType }}</p>
+      <p>{{ equipmentType?.title }}</p>
     </ul>
   </div>
 </template>
