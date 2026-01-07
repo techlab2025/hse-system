@@ -66,7 +66,6 @@ watch(
         SelectedOption.value = answer.templateItemOption
       }
 
-      console.log(answer, "answer")
       if (answer) {
         textArea.value = answer?.answer
       }
@@ -78,7 +77,6 @@ watch(
 
 const showTextArea = () => {
   const status = Number(SelectedOption.value?.kpi)
-  console.log(status, "status")
   return (SelectedOption.value?.kpi != 0) && (String(status) === String(TextAreaStatusEnum.required) ||
     String(status) === String(TextAreaStatusEnum.optional))
 }

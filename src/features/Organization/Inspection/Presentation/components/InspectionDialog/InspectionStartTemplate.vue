@@ -15,13 +15,15 @@ import FetchTaskResultController from '../../controllers/FetchTaskResultControll
 import type TaskFullResponseModel from '../../../Data/models/FetchTaskResultModels/FullTaskResultModel'
 import { InspectionStatus } from '../../../Core/Enum/InspectionStatusEnum'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
+import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
 
 const visible = ref(false)
 
 const { templateId, taskId } = defineProps<{
   templateId: number,
   taskId: number,
-  status: number
+  status: number,
+  lastinspection?: boolean,
 }>()
 
 const router = useRouter()
@@ -206,21 +208,29 @@ watch(() => showTemplateController.state.value, (newState) => {
 })
 
 
+
 </script>
 
 <template>
   <div class="inspection-start card w-full flex justify-center">
     <button class="btn btn-primary w-full" style="z-index: 999;" @click="GetData"
-      v-if="status == InspectionStatus.NOT_FINISHED">Start</button>
+      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection">Start</button>
+    <button v-if="lastinspection" style="z-index: 999;" @click="GetData">show Result</button>
     <!-- <button class="show-details" @click="GetData" v-if="status == InspectionStatus.FINISHED">
       <span> show inspection details </span>
       <ArrowDetails />
     </button> -->
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
       <!-- <div :class="status == InspectionStatus.FINISHED ? 'overlay' : ''"> -->
+
+      <!-- {{ console.log(TaskResults?.taskResults[TaskResults?.taskResults], "resullllttt") }} -->
+      <!-- {{ console.log(TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1], "resullllttt") }} -->
       <TemplateDocument :isOverlay="status == InspectionStatus.FINISHED" :allData="AllDocument"
         @update:data="UpdateData" :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
-      <button v-if="status == InspectionStatus.NOT_FINISHED" class="btn btn-primary w-full mt-4" @click="CreateAnswer">
+
+      <button
+        v-if="status == InspectionStatus.NOT_FINISHED && route?.query?.inspectionType != InspectionPageType.InspectionForm"
+        class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
       <!-- </div> -->
