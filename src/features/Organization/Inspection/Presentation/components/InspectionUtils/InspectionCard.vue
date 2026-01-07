@@ -12,6 +12,7 @@ import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate
 const props = defineProps<{
   tasks: InspectionModel[]
   isDrag?: boolean
+  showresult?: boolean
 }>()
 
 const GetInspectionTitle = (task: InspectionModel) => {
@@ -44,18 +45,24 @@ const getInspectionType = (type: number) => {
             </div>
           </div>
         </div>
-        <LastInspectionCard class="mt" v-if="!isDrag" :task="task?.lastInspectionResult" :fulltask="task" />
+        <!-- <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult" -->
+        <!-- <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult" :fulltask="task" /> -->
 
 
         <!-- <ShowInspectionDialog class="mt" v-if="isDrag" :taskId="task.id" /> -->
 
 
         <div class="mt w-full" v-if="isDrag">
-          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.id" :status="task?.status" />
+          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.id" :status="task?.status"
+            :showResult="false" />
+        </div>
+        <div class="mt w-full" v-if="showresult">
+          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.id" :status="task?.status"
+            :showResult="true" />
         </div>
 
 
-        <router-link v-if="!isDrag" class="btn btn-primary w-full"
+        <router-link v-if="!isDrag && !showresult" class="btn btn-primary w-full"
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
           <span>show</span>
         </router-link>

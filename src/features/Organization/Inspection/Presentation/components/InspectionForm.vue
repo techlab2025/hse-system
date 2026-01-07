@@ -150,7 +150,7 @@ const updateData = () => {
       data.onceday,
       data.fromDate,
       null,
-      DataParams.value?.ProjectZoneId
+      DataParams.value?.ProjectZoneId,
     )
 
   console.log(data.inspectionType, "data.inspectionType");
