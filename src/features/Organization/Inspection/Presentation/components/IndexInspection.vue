@@ -319,7 +319,7 @@ const SelectedController = () => {
           </template>
         </DataStatus>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
-          :controller="AllTasksState">
+          :controller="state">
           <template #success>
             <!-- <pre>{{ state.data }}</pre> -->
             <div class="table-responsive">

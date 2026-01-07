@@ -44,7 +44,7 @@ const getInspectionType = (type: number) => {
             </div>
           </div>
         </div>
-        <LastInspectionCard class="mt" v-if="!isDrag" :task="task?.lastInspectionResult" />
+        <LastInspectionCard class="mt" v-if="!isDrag" :task="task?.lastInspectionResult" :fulltask="task" />
 
 
         <!-- <ShowInspectionDialog class="mt" v-if="isDrag" :taskId="task.id" /> -->
