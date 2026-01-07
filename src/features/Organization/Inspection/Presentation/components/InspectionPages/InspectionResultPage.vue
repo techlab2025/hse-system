@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InspectionTaskbg from "@/assets/images/InspectionTaskbg.png"
 import InspectionHeader from "@/assets/images/InspectionHeader.png"
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import AllResultIcon from "@/shared/icons/AllResultIcon.vue";
 import ResulReceiveIcon from "@/shared/icons/ResulReceiveIcon.vue";
 import ResultComlated from "@/shared/icons/ResultComlated.vue";
@@ -12,7 +12,17 @@ import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enu
 import IconDelete from "@/shared/icons/IconDelete.vue";
 import IconEdit from "@/shared/icons/IconEdit.vue";
 import { useI18n } from "vue-i18n";
+import FetchTaskResultDetailsController from "../../controllers/FetchTaskResultDetailsController";
+import FetchTaskResultDetailsParams from "../../../Core/params/FetchTaskResultDetailsParams";
+import { useRoute } from "vue-router";
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import { AssignToTypeEnum } from "../../../Core/Enum/AssignToTypesEnum";
 
+const route = useRoute()
+const id = route.params?.id
 const Statistics = ref([
   {
     text: "all Result",
@@ -64,54 +74,120 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
   //   ],
   // },
 ]
+const fetchTaskResultDetailsController = FetchTaskResultDetailsController.getInstance()
+const state = ref(fetchTaskResultDetailsController.state.value)
+
+const GetInspectionDetails = () => {
+  const fetchTaskResultDetailsParams = new FetchTaskResultDetailsParams(id)
+  fetchTaskResultDetailsController.getData(fetchTaskResultDetailsParams)
+}
+onMounted(() => {
+  GetInspectionDetails()
+})
+
+watch(() => fetchTaskResultDetailsController?.state.value, (newVal) => {
+  state.value = newVal
+})
+
+const getInspectionType = (type: number) => {
+  return AssignToTypeEnum[type]
+}
 </script>
 <template>
-  <div class="inspection-result">
-    <div class="inspection-result-header">
-      <img class="bg" :src="InspectionTaskbg" alt="">
-      <img class="inspection-header-bg" :src="InspectionHeader" alt="">
-      <img class="right-bg" :src="InspectionTaskbg" alt="">
-      <p class="title">inspection</p>
-      <div class="card-info">
-        <p>Inspection Type: <span>Emp</span></p>
-        <p>Assigned by : <span>Ahmed hawam</span></p>
-        <p>Date&Time : <span>22 july,10 : 30 AM</span></p>
-      </div>
-    </div>
-    <div class="inspection-result-body">
-      <div class="statistics">
-        <div v-for="(statistic, index) in Statistics" :key="index" class="statistic">
-          <component :is="statistic.icon" />
-          <div class="card-data">
-            <p class="card-title">{{ statistic.text }}</p>
-            <p class="card-number">{{ statistic.number }}</p>
+  <DataStatus :controller="state">
+    <template #success>
+      <div class="inspection-result">
+        <div class="inspection-result-header">
+          <img class="bg" :src="InspectionTaskbg" alt="">
+          <img class="inspection-header-bg" :src="InspectionHeader" alt="">
+          <img class="right-bg" :src="InspectionTaskbg" alt="">
+          <p class="title">inspection</p>
+          <div class="card-info">
+            <p>Inspection Type: <span>{{ getInspectionType(state?.data?.morphType) }}</span></p>
+            <p>Assigned by : <span>{{ state?.data?.createdBy?.name }}</span></p>
+            <p>Date&Time : <span>22 july,10 : 30 AM</span></p>
           </div>
         </div>
+        <div class="inspection-result-body">
+          <div class="statistics">
+            <div class="statistic">
+              <component :is="Statistics[0]?.icon" />
+              <div class="card-data">
+                <p class="card-title">All Results</p>
+                <p class="card-number">{{ state?.data?.statistics?.all_result }}</p>
+              </div>
+            </div>
+            <div class="statistic">
+              <component :is="Statistics[1]?.icon" />
+              <div class="card-data">
+                <p class="card-title">Results received today</p>
+                <p class="card-number">{{ state?.data?.statistics?.results_received_today }}</p>
+              </div>
+            </div>
+            <div class="statistic">
+              <component :is="Statistics[2]?.icon" />
+              <div class="card-data">
+                <p class="card-title">Results completed</p>
+                <p class="card-number">{{ state?.data?.statistics?.results_completed }}</p>
+              </div>
+            </div>
+            <div class="statistic">
+              <component :is="Statistics[3]?.icon" />
+              <div class="card-data">
+                <p class="card-title">Results not yet completed</p>
+                <p class="card-number">{{ state?.data?.statistics?.results_not_yet_completed }}</p>
+              </div>
+            </div>
+            <div class="statistic">
+              <component :is="Statistics[4]?.icon" />
+              <div class="card-data">
+                <p class="card-title">Delayed results</p>
+                <p class="card-number">{{ state?.data?.statistics?.delayed_results }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inspection-result-table">
+          <table>
+            <thead>
+              <tr>
+                <th>serial</th>
+                <th>Emp</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(info, index) in state.data?.inspectionInfo" :key="index">
+                <td>{{ info.serial }}</td>
+                <td>{{ info.employee.name }}</td>
+                <td>{{ info.date }}</td>
+                <td>{{ info.time }}</td>
+                <td>
+                  <!-- <DropList :actionList="actionList(i, i)" /> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div class="inspection-result-table">
-      <table>
-        <thead>
-          <tr>
-            <th>serial</th>
-            <th>Emp</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="i in 5" :key="i">
-            <td>{{ i }}</td>
-            <td>Ahmed Hawam</td>
-            <td>22 july 2025</td>
-            <td>10 : 30 AM</td>
-            <td>
-              <DropList :actionList="actionList(i, i)" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    </template>
+    <template #loader>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #initial>
+      <TableLoader :cols="3" :rows="10" />
+    </template>
+    <template #empty>
+      <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Inspection" />
+    </template>
+    <template #failed>
+      <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No Inspection" />
+    </template>
+  </DataStatus>
 </template>

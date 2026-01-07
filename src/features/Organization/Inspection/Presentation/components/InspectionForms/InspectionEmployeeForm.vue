@@ -61,6 +61,9 @@ const GetTemplateId = (data: number) => {
 }
 
 const setProject = (data: TitleInterface) => {
+  SelectedEmployee.value = null
+  SelectedProjectZone.value = null
+  AllZones.value = []
   SelectedProject.value = data
   if (data?.id) {
     GetProjectZones(data?.id)
