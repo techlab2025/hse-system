@@ -81,10 +81,18 @@ const showTextArea = () => {
 </script>
 
 <template>
-  <div class="show-template-result-radio flex flex-col gap-4">
-    <div class="options-container">
-      <span class="question">{{ title }}</span>
-      <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
+  <div class="show-template-result-radio-container">
+    <div class="show-template-result-radio flex flex-col gap-4">
+      <div class="options-container">
+        <span class="question">{{ title }}</span>
+        <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
+      </div>
+    </div>
+    <div class="textarea-conatneir">
+      <p class="title">typing text</p>
+      <span class="textarea-answer">
+        {{ selected_data?.answers?.[0]?.answer}}
+      </span>
     </div>
   </div>
 </template>

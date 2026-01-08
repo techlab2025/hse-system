@@ -84,14 +84,22 @@ const showTextArea = () => {
 
 
 <template>
-  <!-- <pre>{{ selected_data }}</pre> -->
-  <div class="show-template-result-checkbox flex flex-col gap-4">
-    <div class="options-container">
-      <span class="question">{{ title }}</span>
-      <div class="asnwers-container flex gap-2">
-        <span class="answer" v-for="(answer, index) in selected_data?.answers" :key="index">{{
-          answer?.templateItemOption?.title }}</span>
+  <div class="show-template-result-checkbox-conatiner">
+
+    <div class="show-template-result-checkbox flex flex-col gap-4">
+      <div class="options-container">
+        <span class="question">{{ title }}</span>
+        <div class="asnwers-container flex gap-2">
+          <span class="answer" v-for="(answer, index) in selected_data?.answers" :key="index">{{
+            answer?.templateItemOption?.title }}</span>
+        </div>
       </div>
+    </div>
+    <div class="textarea-conatneir" v-for="(answer, index) in selected_data?.answers" :key="index">
+      <p class="title">typing text</p>
+      <span class="textarea-answer">
+        {{ answer?.answer }}
+      </span>
     </div>
   </div>
 </template>
