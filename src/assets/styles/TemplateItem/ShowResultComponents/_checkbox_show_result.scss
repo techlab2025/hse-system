@@ -1,0 +1,53 @@
+@import '../../variables';
+@import '../../mixins/flex';
+
+.show-template-result-checkbox {
+  @include flex-row(nowrap, flex-start, center);
+  gap: $XsSize4;
+  font-family: 'Regular';
+  width: 100%;
+  .options-container {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    // border-bottom: 1px dashed #fddddd;
+    padding-bottom: $XsSize;
+    gap: $XsSize2;
+    position: relative;
+    padding-left: 15px;
+    .asnwers-container {
+      @include flex-row(nowrap, flex-end, center);
+      &::before {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 7px;
+        border-radius: 18px;
+        background-color: #1f41bb0a;
+      }
+      &::after {
+        position: absolute;
+        content: '';
+        left: 2px;
+        top: 0;
+        height: 90%;
+        width: 3px;
+        border-radius: 18px;
+        background-color: $PrimaryColor;
+      }
+      .answer {
+        color: $PrimaryColor;
+        font-size: $SmSize;
+        font-weight: $BaseFontWeightBold;
+        background-color: #1f41bb0a;
+        padding: 10px;
+        padding-inline: 15px;
+        border-radius: 8px;
+      }
+    }
+    .question {
+      color: #5e5e5e;
+    }
+  }
+}

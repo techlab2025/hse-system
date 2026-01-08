@@ -1,7 +1,7 @@
 @import '../../variables';
 @import '../../mixins/flex';
 
-.show-template-result-select {
+.show-template-result-radio {
   @include flex-row(nowrap, flex-start, center);
   gap: $XsSize4;
   font-family: 'Regular';

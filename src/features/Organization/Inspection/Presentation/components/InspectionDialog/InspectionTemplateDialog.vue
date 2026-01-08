@@ -69,6 +69,7 @@ const GetTemplateId = (data: number) => {
 
 const clearSelectedTemplate = () => {
   selectedTemplates.value = undefined
+  TemplateId.value = undefined
   emit('update:data', selectedTemplates.value || TemplateId.value)
   emit('update:isInLibrary', isInLibrary.value)
 
@@ -82,7 +83,6 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
   TemplateId.value = data.templateId
   isInLibrary.value = data.isInLibrary
   TemplateTitle.value = data.teamplateTitle
-  console.log(data, "data.value");
   emit('update:data', data.templateId)
   emit('update:isInLibrary', data.isInLibrary)
 
@@ -108,7 +108,7 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
 
 
       <div class="template-header" v-if="selectedTemplates || TemplateTitle">
-        <button class="delete" @click="clearSelectedTemplate">
+        <button class="delete" @click.prevent="clearSelectedTemplate">
           <DeleteTemplateIcon class="delete-icon" />
         </button>
         <p class="header-title">
