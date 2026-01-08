@@ -51,9 +51,10 @@ watch(
   { deep: true },
 )
 
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'update:isInLibrary'])
 const sendTemplatesId = () => {
   emit('update:data', selectedTemplates.value)
+  emit('update:isInLibrary', isInLibrary.value)
   visible.value = false
 }
 
@@ -61,17 +62,33 @@ const selectedTemplateHeader = ref()
 const GetTemplateId = (data: number) => {
   selectedTemplates.value = data
   selectedTemplateHeader.value = state.value.data?.find((item) => item.id === data)
-  emit('update:data', selectedTemplates.value)
+  emit('update:data', selectedTemplates.value || TemplateId.value)
+  emit('update:isInLibrary', isInLibrary.value)
   // visible.value = false
 }
 
 const clearSelectedTemplate = () => {
   selectedTemplates.value = undefined
-  emit('update:data', selectedTemplates.value)
+  emit('update:data', selectedTemplates.value || TemplateId.value)
+  emit('update:isInLibrary', isInLibrary.value)
+
   visible.value = false
 }
 
+const TemplateId = ref()
+const TemplateTitle = ref()
+const isInLibrary = ref()
+const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teamplateTitle: string }) => {
+  TemplateId.value = data.templateId
+  isInLibrary.value = data.isInLibrary
+  TemplateTitle.value = data.teamplateTitle
+  console.log(data, "data.value");
+  emit('update:data', data.templateId)
+  emit('update:isInLibrary', data.isInLibrary)
 
+  visible.value = false
+
+}
 </script>
 
 <template>
@@ -90,20 +107,19 @@ const clearSelectedTemplate = () => {
 
 
 
-      <div class="template-header" v-if="selectedTemplates">
+      <div class="template-header" v-if="selectedTemplates || TemplateTitle">
         <button class="delete" @click="clearSelectedTemplate">
           <DeleteTemplateIcon class="delete-icon" />
         </button>
         <p class="header-title">
           {{
-            selectedTemplateHeader?.title
+            selectedTemplateHeader?.title || TemplateTitle
           }}
         </p>
         <img :src="DocumnetHeader" alt="header" />
 
       </div>
     </div>
-
 
 
     <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
@@ -120,7 +136,7 @@ const clearSelectedTemplate = () => {
         <hr class="inspection-template-dialog-divider" />
 
         <div class="add-new-template">
-          <AddNewTemplateDialog  />
+          <AddNewTemplateDialog @update:templateId="GetTemplateInfo" />
         </div>
 
 

@@ -151,9 +151,11 @@ const updateData = () => {
       data.fromDate,
       null,
       DataParams.value?.ProjectZoneId,
+      IsInLibrary.value
     )
 
   console.log(data.inspectionType, "data.inspectionType");
+  console.log(IsInLibrary.value, "IsInLibrary.value");
   emit('update:data', params)
 }
 
@@ -191,6 +193,7 @@ watch(
   () => { },
   { immediate: true }
 )
+const IsInLibrary = ref()
 </script>
 
 <template>
@@ -230,7 +233,7 @@ watch(
 
       <!-- Templates -->
       <div class="input-wrapper col-span-6 md:col-span-3" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
-        <InspectionTemplateDialog @update:data="GetTemplateId" />
+        <InspectionTemplateDialog @update:isInLibrary="IsInLibrary = $event" @update:data="GetTemplateId" />
       </div>
 
       <!-- General Inspection Data -->

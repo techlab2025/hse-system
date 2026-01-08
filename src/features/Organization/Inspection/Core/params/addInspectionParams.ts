@@ -15,6 +15,7 @@ export default class AddInspectionParams implements Params {
   public fromDate: string
   public toDate: string
   public projectZoneId: number
+  public isInLibrary: number
   constructor(
     morphType: AssignToTypeEnum,
     morphId: number,
@@ -27,6 +28,7 @@ export default class AddInspectionParams implements Params {
     fromDate: string,
     toDate: string,
     projectZoneId: number,
+    isInLibrary: number,
   ) {
     this.morphType = morphType
     this.morphId = morphId
@@ -39,6 +41,7 @@ export default class AddInspectionParams implements Params {
     this.fromDate = fromDate
     this.toDate = toDate
     this.projectZoneId = projectZoneId
+    this.isInLibrary = isInLibrary
   }
 
   toMap(): Record<
@@ -67,6 +70,8 @@ export default class AddInspectionParams implements Params {
     if (this.fromDate) data['from_date'] = formatJoinDate(this.fromDate)
     if (this.toDate) data['to_date'] = formatJoinDate(this.toDate)
     if (this.projectZoneId) data['project_zone_id'] = this.projectZoneId
+    data['is_in_library'] = this.isInLibrary
+
     return data
   }
 }
