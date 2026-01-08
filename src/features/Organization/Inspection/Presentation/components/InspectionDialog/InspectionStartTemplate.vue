@@ -222,13 +222,13 @@ watch(() => showTemplateController.state.value, (newState) => {
 
     <button class="show-result-btn flex  gap-1" v-if="lastinspection" style="z-index: 999;" @click="GetData">
       <span>show Result</span>
-      <ShowResultIcon />
+      <!-- <ShowResultIcon /> -->
     </button>
 
     <button class="show-result-btn flex w-full  items-center gap-1" v-if="showResult" style="z-index: 999;"
       @click="GetData">
       <span>show Result</span>
-      <ShowResultIcon />
+      <!-- <ShowResultIcon /> -->
     </button>
 
 

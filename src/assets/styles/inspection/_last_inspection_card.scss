@@ -16,7 +16,7 @@
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize4;
       .title {
-        color: $PrimaryColor;
+        color: #00006b;
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         border: none;
@@ -42,7 +42,7 @@
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
           span {
-            color: #202020;
+            color: #5a627e;
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
             font-family: 'Regular';
@@ -65,5 +65,6 @@
         font-family: 'Regular';
       }
     }
+
   }
 }
