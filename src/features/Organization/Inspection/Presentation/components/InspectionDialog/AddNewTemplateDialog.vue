@@ -211,7 +211,7 @@ const addTemplate = async (isInLibrary: number) => {
   if (state?.value.data) {
     emit('update:templateId', {
       templateId: state?.value.data.id,
-      teamplateTitle:state?.value.data.title,
+      teamplateTitle: state?.value.data.title,
       isInLibrary: isInLibrary
     })
   }

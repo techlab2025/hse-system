@@ -83,28 +83,12 @@ const showTextArea = () => {
 </script>
 
 <template>
-  <div class="show-template-result-select not-disabled flex flex-col gap-4">
+  <!-- <pre>{{ selected_data }}</pre> -->
+  <div class="show-template-result-select not-disabled flex gap-4">
     <div class="options-container">
-      <div class="input-wrapper">
-        <label class="font-bold mb-2 block">{{ title }}</label>
-        <div class="col-span-4 md:col-span-2">
-          <CustomSelectInput :label="''" :static-options="Options" @update:modelValue="SetSelectedOption"
-            :modelValue="SelectedOption" id="option" />
-        </div>
-      </div>
+      <span class="question">{{ Options[0]?.title }}</span>
+      <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
     </div>
-
-    <div v-if="require_image" class="image-upload-section  pt-2" style="padding-top: 10px;">
-      <UploadMultiImage class="image-upload" @update:images="UpdateImg"
-        :initialImages="selected_data?.files?.map((el) => el.url) || []" />
-    </div>
-
-  </div>
-
-  <div v-if="showTextArea()" class="input-wrapper w-full animate-fade-in">
-    <label for="notes" class="block mb-1 text-sm font-medium">Notes</label>
-    <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
-      placeholder="Please enter details..."></textarea>
   </div>
 </template>
 
