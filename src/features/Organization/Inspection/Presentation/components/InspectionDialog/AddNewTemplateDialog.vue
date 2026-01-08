@@ -31,7 +31,7 @@ import TemplateImage from '@/features/setting/TemplateItem/Presentation/componen
 
 
 const visible = ref(false)
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'update:templateId'])
 
 // Translations
 const langs = ref<{ locale: string; title: string }[]>([])
@@ -207,10 +207,11 @@ const addTemplate = async () => {
     SelectedTemplateType?.value?.id
   )
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
+  if (state?.value.data) {
+    emit('update:templateId', state?.value.data.id)
+  }
   visible.value = false
 }
-
-
 
 </script>
 
@@ -229,7 +230,7 @@ const addTemplate = async () => {
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
+  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '60vw', height: '80vh' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
     <template #header>
       <div class="add-new-template-dialog-header">
@@ -248,8 +249,13 @@ const addTemplate = async () => {
           label="Template Type " id="TemplateType" placeholder="Select Template Type"
           @update:modelValue="setTemplateType" />
       </div>
+
       <TemplateTimeLine @update:data="GetTemplateData" />
-      <button class="btn btn-primary w-full col-span-4" @click="addTemplate">update</button>
+
+      <div class="flex w-full col-span-4 gap-2">
+        <button style="width: 50%;" class="btn btn-primary " @click="addTemplate">use & save to library</button>
+        <button style="width: 50%;" class="btn btn-secondary " @click="addTemplate">use only this time</button>
+      </div>
     </div>
   </Dialog>
 </template>

@@ -61,17 +61,17 @@ const selectedTemplateHeader = ref()
 const GetTemplateId = (data: number) => {
   selectedTemplates.value = data
   selectedTemplateHeader.value = state.value.data?.find((item) => item.id === data)
-  emit('update:data', selectedTemplates.value)
+  emit('update:data', selectedTemplates.value || TemplateId.value)
   // visible.value = false
 }
 
 const clearSelectedTemplate = () => {
   selectedTemplates.value = undefined
-  emit('update:data', selectedTemplates.value)
+  emit('update:data', selectedTemplates.value || TemplateId.value)
   visible.value = false
 }
 
-
+const TemplateId = ref()
 </script>
 
 <template>
@@ -120,7 +120,7 @@ const clearSelectedTemplate = () => {
         <hr class="inspection-template-dialog-divider" />
 
         <div class="add-new-template">
-          <AddNewTemplateDialog  />
+          <AddNewTemplateDialog @update:templateId="TemplateId = $event" />
         </div>
 
 
