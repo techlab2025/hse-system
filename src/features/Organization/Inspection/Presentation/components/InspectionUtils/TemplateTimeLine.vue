@@ -4,9 +4,9 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
-import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
 import TemplateItemTimeLine from './TemplateItemTimeLine.vue'
 import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
+import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -48,10 +48,10 @@ onMounted(() => {
 
 
 const ActionsType = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.Radio, title: 'Radio', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.DropDown, title: 'Dropdown', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.TextArea, title: 'TextArea', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.RADIOBUTTON, title: 'Radio', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.DROPDOWN, title: 'Dropdown', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'TextArea', subtitle: '' }),
 ])
 
 // const TemplateItems = ref()
