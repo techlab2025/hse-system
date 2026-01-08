@@ -178,7 +178,7 @@ const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
 
-const addTemplate = async () => {
+const addTemplate = async (isInLibrary: number) => {
 
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
@@ -204,11 +204,16 @@ const addTemplate = async () => {
     image.value || null,
     null,
     items,
-    SelectedTemplateType?.value?.id
+    SelectedTemplateType?.value?.id,
+    isInLibrary
   )
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
   if (state?.value.data) {
-    emit('update:templateId', state?.value.data.id)
+    emit('update:templateId', {
+      templateId: state?.value.data.id,
+      teamplateTitle:state?.value.data.title,
+      isInLibrary: isInLibrary
+    })
   }
   visible.value = false
 }
@@ -230,7 +235,7 @@ const addTemplate = async () => {
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '60vw', height: '80vh' }"
+  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '60vw', height: '75vh' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
     <template #header>
       <div class="add-new-template-dialog-header">
@@ -253,8 +258,8 @@ const addTemplate = async () => {
       <TemplateTimeLine @update:data="GetTemplateData" />
 
       <div class="flex w-full col-span-4 gap-2">
-        <button style="width: 50%;" class="btn btn-primary " @click="addTemplate">use & save to library</button>
-        <button style="width: 50%;" class="btn btn-secondary " @click="addTemplate">use only this time</button>
+        <button style="width: 50%;" class="btn btn-primary " @click="addTemplate(1)">use & save to library</button>
+        <button style="width: 50%;" class="btn btn-secondary " @click="addTemplate(0)">use only this time</button>
       </div>
     </div>
   </Dialog>
