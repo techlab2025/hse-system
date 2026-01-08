@@ -18,11 +18,16 @@
       font-size: $MdSize;
       font-weight: $BaseFontMediumWeight;
     }
+    .icon {
+      width: 40px;
+      height: 40px;
+    }
   }
   .template-hr {
     border: none;
     height: 1px;
     width: 100%;
+
     background-color: #f0f0f0;
     margin-block: $XsSize2;
   }

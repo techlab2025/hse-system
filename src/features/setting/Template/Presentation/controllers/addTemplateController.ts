@@ -29,12 +29,11 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
   async addTemplate(params: AddTemplateParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      //      params.validate()
-
-      // if (!params.validate().isValid) {
-      //   params.validateOrThrow()
-      //   return
-      // }
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
       const dataState: DataState<TemplateModel> = await this.AddTemplateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -47,9 +46,9 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
 
         const { user } = useUserStore()
         // if (!draft)
-          // await router.push(
-          //   // `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template`,
-          // )
+        // await router.push(
+        //   // `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template`,
+        // )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

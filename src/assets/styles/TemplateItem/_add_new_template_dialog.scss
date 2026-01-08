@@ -1,0 +1,16 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.add-new-template-dialog-container {
+  width: 100%;
+  .add-new-template-dialog-header {
+    width: 100%;
+    @include flex-column(nowrap, center, center);
+    .title {
+      color: #202020;
+      font-size: $XlSize2;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+}

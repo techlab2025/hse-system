@@ -1,6 +1,8 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import type { ActionsEnum } from '../Enum/ActionType'
+import type AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddTemplateParams implements Params {
   translation: TranslationsParams
@@ -8,8 +10,12 @@ export default class AddTemplateParams implements Params {
   industries: number[]
   require_image: number
   action: ActionsEnum | null
-  items: AddTemplateParams[] = []
+  items: AddTemplateItemParams[] = []
   template_type: number | null
+
+  public static readonly validation = new ClassValidation().setRules({
+    translation: { required: true, minLength: 2, maxLength: 100 },
+  })
 
   constructor(
     translation: TranslationsParams,
@@ -17,7 +23,7 @@ export default class AddTemplateParams implements Params {
     industries: number[],
     require_image: number,
     action: ActionsEnum | null,
-    items: AddTemplateParams[] = [],
+    items: AddTemplateItemParams[] = [],
     template_type: number | null,
   ) {
     this.translation = translation
@@ -45,11 +51,11 @@ export default class AddTemplateParams implements Params {
     if (this.template_type != null) data['type'] = this.template_type
     return data
   }
-  //   validate() {
-  //   return AddTemplateParams.validation.validate(this)
-  // }
+  validate() {
+    return AddTemplateParams.validation.validate(this)
+  }
 
-  // validateOrThrow() {
-  //   return AddTemplateParams.validation.validateOrThrow(this)
-  // }
+  validateOrThrow() {
+    return AddTemplateParams.validation.validateOrThrow(this)
+  }
 }
