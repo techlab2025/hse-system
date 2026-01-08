@@ -83,7 +83,7 @@ const showTextArea = () => {
 <template>
   <div class="show-template-result-radio flex flex-col gap-4">
     <div class="options-container">
-      <span class="question">{{ options[0]?.title }}</span>
+      <span class="question">{{ title }}</span>
       <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
     </div>
   </div>

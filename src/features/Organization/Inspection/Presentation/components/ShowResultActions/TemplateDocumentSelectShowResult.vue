@@ -86,7 +86,7 @@ const showTextArea = () => {
   <!-- <pre>{{ selected_data }}</pre> -->
   <div class="show-template-result-select not-disabled flex gap-4">
     <div class="options-container">
-      <span class="question">{{ Options[0]?.title }}</span>
+      <span class="question">{{ title }}</span>
       <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
     </div>
   </div>
