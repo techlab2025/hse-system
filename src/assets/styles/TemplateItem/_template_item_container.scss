@@ -1,0 +1,35 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.tempalte-item-conatainer {
+  width: 100%;
+  .add-answer {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    gap: 4px;
+    .items-title {
+      color: #202020;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    hr {
+      width: 82%;
+      border-color: #1f41bb1a;
+      // background-color: #f1f3f533;
+      // height: 1px;
+      // display: block;
+    }
+  }
+
+  .tree-marker {
+    @include flex-row(nowrap, flex-start, center);
+    gap: 12px;
+    .add-text {
+      cursor: pointer;
+      color: $PrimaryColor;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+}

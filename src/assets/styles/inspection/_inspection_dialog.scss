@@ -91,11 +91,36 @@
   .inspection-template-dialog-data {
     height: 60vh;
     overflow-y: scroll;
+
+    .add-new-template {
+      @include flex-row(wrap, flex-start, center);
+      gap: $XsSize2;
+      cursor: pointer;
+      background-color: #3443c60a;
+      border: 1px solid #3443c699;
+      border-radius: $MdSize;
+      padding: $XsSize2 $MdSize;
+      margin-inline: 20px;
+      .add-new-template-header {
+        @include flex-column(nowrap flex-start, flex-start);
+        gap: $XsSize4;
+        .title {
+          color: #3443c6;
+          font-size: $MdSize2;
+          font-weight: $BaseFontWeightBold;
+        }
+      }
+      .descripetion {
+        color: #b9bcc5;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
     .inspection-template-dialog-divider {
       width: 100%;
-      border: none;
-      background-color: #f1f3f5;
-      height: 1px;
+      border-color: #f1f3f5;
+      // background-color: #f1f3f5;
+      // height: 1px;
       margin-bottom: $MdSize;
     }
     .my-template-selection {
@@ -121,12 +146,13 @@
     }
     .inspection-templates-items {
       @include flex(column, nowrap, flex-start, flex-start);
+
       gap: $MdSize;
       width: 100%;
       margin-top: $XsSize;
       padding: 0 $XsSize3;
       height: 700px;
-      overflow-y: auto;
+      // overflow-y: auto;
       &::-webkit-scrollbar {
         width: 6px;
       }
@@ -142,7 +168,7 @@
         border: 0.5px solid #e6e8ea;
         height: 700px;
         width: 100%;
-        overflow-y: auto;
+        // overflow-y: auto;
 
         &::-webkit-scrollbar {
           width: 6px;

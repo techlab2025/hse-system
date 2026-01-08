@@ -15,6 +15,12 @@
       background-color: #fcfcfc;
       padding: $MdSize;
       border-radius: $XlSize2;
+      .type-select {
+        // padding-top: 10px;
+      }
+      &.template-timeline-content {
+        background-color: #f1f3f533;
+      }
       .timeline-content-text {
         width: 100%;
       }
@@ -22,6 +28,79 @@
         @include flex-row(nowrap, space-between, center);
         width: 100%;
         gap: 20px;
+        &.timeline-templateitem-contect-select {
+          @include grid(12, 4px);
+          .text-input {
+            background-color: white;
+          }
+
+          .text-area-type-container {
+            padding: 8px;
+            background-color: #c9cbcf08;
+            border: 1px solid #c9cbcf1a;
+            border-radius: 12px;
+            padding-block: 14px;
+            &.active {
+              background-color: #b5bfe317;
+            }
+            .text-required {
+              label {
+                color: #9ea5b3;
+                font-size: 14px;
+                font-weight: 600;
+              }
+              @include flex-row(nowrap, center, center);
+            }
+            .text-area-type {
+              @include flex-row(nowrap, space-between, center);
+              width: 100%;
+              gap: 8px;
+              padding-top: 8px;
+
+              .input-wrapper.active {
+                label {
+                  color: $PrimaryColor;
+                  font-size: 12px;
+                  font-weight: 600;
+                  text-decoration: underline;
+                }
+              }
+              input {
+                display: none;
+              }
+              label {
+                cursor: pointer;
+
+                color: #acb3bc;
+                font-size: 12px;
+                font-weight: 600;
+              }
+            }
+          }
+          .checkbox {
+            @include flex-row(nowrap, center, center);
+            padding: 8px;
+            background-color: #c9cbcf08;
+            border: 1px solid #c9cbcf1a;
+            border-radius: 12px;
+            padding-block: 14px;
+            // margin-top: 15px;
+            cursor: pointer;
+
+            label {
+              color: #9ea5b3;
+              font-size: 14px;
+              font-weight: 600;
+            }
+          }
+          .remove {
+            // margin-top: 20px;
+            color: #e23535;
+            font-size: $SmSize;
+            font-weight: $BaseFontWeightBold;
+            text-decoration: underline;
+          }
+        }
         .date-picker {
           margin-top: $XsSize4;
         }

@@ -14,6 +14,14 @@ import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTe
 import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
+import AddNewTemplateIcon from '@/shared/icons/AddNewTemplateIcon.vue'
+import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
+import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
+import { useRouter } from 'vue-router'
+import type Params from '@/base/core/params/params'
 
 
 
@@ -62,10 +70,14 @@ const clearSelectedTemplate = () => {
   emit('update:data', selectedTemplates.value)
   visible.value = false
 }
+
+
 </script>
 
 <template>
   <div class="inspection-template-dialog-container ">
+
+
     <div class="flex flex-col gap-1">
       <div class="title">
         <span>{{ $t('inspection template') }}</span>
@@ -94,7 +106,7 @@ const clearSelectedTemplate = () => {
 
 
 
-    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '50vw', height: '80vh' }"
+    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
 
       <template #header>
@@ -106,12 +118,19 @@ const clearSelectedTemplate = () => {
 
       <div class="inspection-template-dialog-data">
         <hr class="inspection-template-dialog-divider" />
-        <div class="my-template-selection">
+
+        <div class="add-new-template">
+          <AddNewTemplateDialog  />
+        </div>
+
+
+
+        <!-- <div class="my-template-selection">
           <div class="title">
             <ArrowsLeft />
             <span>{{ $t('my templates') }}</span>
           </div>
-        </div>
+        </div> -->
 
         <div class="inspection-templates-items">
           <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
