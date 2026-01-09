@@ -497,7 +497,7 @@ const GetHeader = (value: number) => {
 
 
     <!-- Observation Level -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">
       <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss"
         @update:data="handleObservationLevel" />
     </div>

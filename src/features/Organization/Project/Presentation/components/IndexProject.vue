@@ -30,6 +30,7 @@ import Popover from 'primevue/popover'
 import TablePopover from '@/shared/FormInputs/TablePopover.vue'
 import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
+import ProjectCard from './ProjectUtils/ProjectCard.vue'
 
 const op = ref()
 
@@ -224,6 +225,8 @@ watch(
               </tr>
             </tbody>
           </table>
+
+          <!-- <ProjectCard v-for="item in state.data" :key="item.id" :data="item" /> -->
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>

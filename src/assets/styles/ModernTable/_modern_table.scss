@@ -1,5 +1,6 @@
 @import '../variables';
 @import '../mixins/flex';
+@import '../mixins/grid';
 
 .modern-table-responsive {
   overflow-x: auto;
@@ -238,4 +239,12 @@
       }
     }
   }
+
+  // @include grid(
+  //   2,
+  //   10px,
+  //   (
+  //     900px: 1,
+  //   )
+  // );
 }
