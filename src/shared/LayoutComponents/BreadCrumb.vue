@@ -4,93 +4,13 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BackIcon from '../icons/BackIcon.vue'
 import FastRoutes from './FastrRoutes/FastRoutes.vue'
+import { buildBreadcrumb } from './Helper/RouteHelper'
 
 const route = useRoute()
 const router = useRouter()
 
-const items = ref<{ label: string; url?: string }[]>([])
 
 
-
-// get section after /organization/
-const getSection = (path: string) => {
-  const match = path.match(/^\/organization\/([^\/]+)/)
-  return match ? match[1] : null
-}
-
-// is edit page
-const isEditRoute = (name?: string) =>
-  name?.toLowerCase().includes('edit')
-
-// is add page
-const isAddRoute = (name?: string) =>
-  name?.toLowerCase().includes('add')
-
-// remove ONLY edit breadcrumb
-const removeEdit = () => {
-  items.value = items.value.filter(
-    i => !i.label.toLowerCase().includes('edit')
-  )
-}
-
-// remove ONLY add breadcrumb
-const removeAdd = () => {
-  items.value = items.value.filter(
-    i => !i.label.toLowerCase().includes('add')
-  )
-}
-
-
-
-const buildBreadcrumb = () => {
-  items.value = []
-
-  // Home
-  items.value.push({
-    label: 'Home',
-    url: '/organization',
-  })
-
-  if (route.path === '/organization') return
-
-  const section = getSection(route.path)
-  const currentLabel = route.name as string
-
-  // Add Table (section) ONCE
-  if (section) {
-    items.value.push({
-      label: section,
-      url: `/organization/${section}`,
-    })
-  }
-
-  // If Edit page
-  if (isEditRoute(currentLabel)) {
-    removeEdit()
-
-    items.value.push({
-      label: currentLabel,
-      url: undefined,
-    })
-  }
-
-  // If Add page
-  if (isAddRoute(currentLabel)) {
-    removeAdd()
-
-    items.value.push({
-      label: currentLabel,
-      url: undefined,
-    })
-  }
-}
-
-
-watch(
-  () => route.fullPath,
-  () => buildBreadcrumb(),
-  { immediate: true }
-)
 
 
 
@@ -104,6 +24,25 @@ const IsHome = computed(
 const IsHomeSetting = computed(
   () => route.path === '/organization/setting' || route.path === '/admin' || route.path === '/organization'
 )
+
+
+const items = computed(() =>
+  buildBreadcrumb(route, router)
+)
+
+const allRoutes = router.getRoutes()
+// const GetCurrentRoute = () => {
+
+//   console.log(allRoutes.find((el) => el.name === route.meta?.parent))
+// }
+
+watch(() => route, () => {
+  // console.log(allRoutes.filter((item) => item.name?.includes('project')))
+  console.log(allRoutes.map((item) => item.name))
+
+
+  buildBreadcrumb(route, router)
+}, { immediate: true })
 
 </script>
 

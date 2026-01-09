@@ -235,7 +235,7 @@ const addTemplate = async (isInLibrary: number) => {
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '60vw', height: '75vh' }"
+  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
     <template #header>
       <div class="add-new-template-dialog-header">
@@ -243,24 +243,35 @@ const addTemplate = async (isInLibrary: number) => {
         <p>follow the steps to add your templet now</p>
       </div>
     </template>
-    <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
-      <hr class="inspection-template-dialog-divider col-span-4" />
 
-      <div class="col-span-4 md:col-span-2">
-        <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-      </div>
-      <div class="col-span-4 md:col-span-2">
-        <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
-          label="Template Type " id="TemplateType" placeholder="Select Template Type"
-          @update:modelValue="setTemplateType" />
-      </div>
+    <!-- BODY -->
+    <div class="dialog-body">
+      <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
+        <hr class="inspection-template-dialog-divider col-span-4" />
 
-      <TemplateTimeLine @update:data="GetTemplateData" />
+        <div class="col-span-4 md:col-span-2">
+          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+        </div>
 
-      <div class="flex w-full col-span-4 gap-2">
-        <button style="width: 50%;" class="btn btn-primary " @click="addTemplate(1)">use & save to library</button>
-        <button style="width: 50%;" class="btn btn-secondary " @click="addTemplate(0)">use only this time</button>
+        <div class="col-span-4 md:col-span-2">
+          <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+            label="Template Type" id="TemplateType" placeholder="Select Template Type"
+            @update:modelValue="setTemplateType" />
+        </div>
+
+        <TemplateTimeLine @update:data="GetTemplateData" />
       </div>
     </div>
+
+    <!-- FOOTER FIXED -->
+    <div class="dialog-footer">
+      <button class="btn btn-primary" @click="addTemplate(1)">
+        use & save to library
+      </button>
+      <button class="btn btn-secondary" @click="addTemplate(0)">
+        use only this time
+      </button>
+    </div>
   </Dialog>
+
 </template>

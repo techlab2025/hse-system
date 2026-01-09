@@ -91,17 +91,20 @@ const UpdateType = (data) => {
             </div>
 
             <div class="timeline-content template-timeline-content  grid grid-cols-4  w-full">
-              <div class="col-span-4 flex w-full items-center gap-3">
+
+              <div class="col-span-4 flex flex-col md:flex-row w-full items-center gap-3">
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('item_title') }} </label>
                   <input type="text" id="text" v-model="item.itemTitle" class="input" placeholder="add your title"
                     @input="UpdateData" />
                 </div>
+
                 <div class="input-wrapper type-select">
                   <CustomSelectInput :static-options="ActionsType" v-model="item.SelectedActionType"
                     placeholder="select templet type.." class="mt-4 mr-2 input" label="type"
                     @update:modelValue="UpdateType" />
                 </div>
+
               </div>
               <TemplateImage class="w-full col-span-4 md:col-span-4" @update:data="
                 item.isUpdloadImage = $event.isUpdloadImage; item.ImageStatus = $event.ImageType

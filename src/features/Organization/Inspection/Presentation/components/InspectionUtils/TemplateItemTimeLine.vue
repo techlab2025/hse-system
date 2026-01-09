@@ -8,7 +8,7 @@ import { onMounted, ref } from 'vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   itemindex: number
-  isRadio?:boolean
+  isRadio?: boolean
 }>()
 
 const Answers = ref([
@@ -48,9 +48,9 @@ onMounted(() => {
 <template>
   <div class="template-container tempalte-item-conatainer">
 
-    <div class="flex w-full items-center add-answer">
+    <div class="flex flex-col md:flex-row w-full items-center add-answer">
       <p class="items-title">add your answers</p>
-      <hr class="">
+      <hr class="w-full ">
     </div>
     <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
       :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
