@@ -167,6 +167,7 @@ watch(
     <DataStatus :controller="state">
       <template #success>
         <div class="modern-table-responsive">
+
           <table class="main-table">
             <thead>
               <tr>
@@ -225,7 +226,6 @@ watch(
               </tr>
             </tbody>
           </table>
-
           <!-- <ProjectCard v-for="item in state.data" :key="item.id" :data="item" /> -->
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
