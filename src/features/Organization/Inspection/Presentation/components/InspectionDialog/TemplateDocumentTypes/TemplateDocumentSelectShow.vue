@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
 import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
@@ -30,18 +30,27 @@ const UpdateImg = (data: string) => {
 const SetSelectedOption = (data: any) => {
   if (data) {
     SelectedOption.value = data
-    showTextArea()
-    UpdateData()
+
+    // Use nextTick to ensure the ref has updated
+    nextTick(() => {
+      showTextArea()
+      UpdateData()
+    })
   }
 }
 
 const UpdateData = () => {
-  emit('update:data', {
+  const dataToEmit = {
     itemId: props.item_id,
     selected: SelectedOption.value?.id,
     img: Img.value,
     value: textArea.value,
-  })
+  }
+
+  // Debug log to verify correct data
+  console.log('Select emitting data:', dataToEmit)
+
+  emit('update:data', dataToEmit)
 }
 
 watch(() => props.options, (newValue) => {

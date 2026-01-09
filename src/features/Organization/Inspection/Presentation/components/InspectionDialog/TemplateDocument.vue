@@ -34,14 +34,25 @@ watch(
 
 const SelectedCheckBoxs = ref<
   {
-    ItemId: number
-    selected: { id: number; values: number[] }[]
+    itemid: number
+    selected: number[]
     img: string
     notes: string
   }[]
 >([])
+
 const UpdateCheckBoxs = (data) => {
-  SelectedCheckBoxs.value.push(data)
+  // Find existing item index
+  const existingIndex = SelectedCheckBoxs.value.findIndex(item => item.itemid === data.itemid)
+
+  if (existingIndex !== -1) {
+    // Update existing item
+    SelectedCheckBoxs.value[existingIndex] = data
+  } else {
+    // Add new item
+    SelectedCheckBoxs.value.push(data)
+  }
+
   UpdateData()
 }
 
@@ -53,8 +64,19 @@ const SelectedRadioButtons = ref<
     notes: string
   }[]
 >([])
+
 const UpdateRadioButtons = (data) => {
-  SelectedRadioButtons.value.push(data)
+  // Find existing item index
+  const existingIndex = SelectedRadioButtons.value.findIndex(item => item.itemid === data.itemid)
+
+  if (existingIndex !== -1) {
+    // Update existing item
+    SelectedRadioButtons.value[existingIndex] = data
+  } else {
+    // Add new item
+    SelectedRadioButtons.value.push(data)
+  }
+
   UpdateData()
 }
 
@@ -64,9 +86,19 @@ const SelectedSelects = ref<
     selected: any
   }[]
 >([])
-const UpdateSelects = (data) => {
 
-  SelectedSelects.value.push(data)
+const UpdateSelects = (data) => {
+  // Find existing item index
+  const existingIndex = SelectedSelects.value.findIndex(item => item.itemId === data.itemId)
+
+  if (existingIndex !== -1) {
+    // Update existing item
+    SelectedSelects.value[existingIndex] = data
+  } else {
+    // Add new item
+    SelectedSelects.value.push(data)
+  }
+
   UpdateData()
 }
 
@@ -76,8 +108,19 @@ const SelectedTextAreas = ref<
     value: string
   }[]
 >([])
+
 const UpdateTextAreas = (data) => {
-  SelectedTextAreas.value.push(data)
+  // Find existing item index
+  const existingIndex = SelectedTextAreas.value.findIndex(item => item.itemid === data.itemid)
+
+  if (existingIndex !== -1) {
+    // Update existing item
+    SelectedTextAreas.value[existingIndex] = data
+  } else {
+    // Add new item
+    SelectedTextAreas.value.push(data)
+  }
+
   UpdateData()
 }
 
@@ -193,6 +236,7 @@ const getAnswerForItem = (templateItemId: number) => {
         </div>
 
         <div class="w-full" v-if="item?.action == ActionsEnum.DROPDOWN">
+
 
           <div v-if="task_results?.taskResultItems?.length > 0" class="">
             <TemplateDocumentSelectShowResult :title="item.name" :key="index" :item_id="item.id" :options="item.options"

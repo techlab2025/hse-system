@@ -1,53 +1,71 @@
 @import '../../variables';
 @import '../../mixins/flex';
 
-.show-template-result-checkbox {
-  @include flex-row(nowrap, flex-start, center);
-  gap: $XsSize4;
-  font-family: 'Regular';
+.show-template-result-checkbox-conatiner {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 6px;
   width: 100%;
-  .options-container {
+  .show-template-result-checkbox {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize4;
+    font-family: 'Regular';
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
-    // border-bottom: 1px dashed #fddddd;
-    padding-bottom: $XsSize;
-    gap: $XsSize2;
-    position: relative;
-    padding-left: 15px;
-    .asnwers-container {
-      @include flex-row(nowrap, flex-end, center);
-      &::before {
-        position: absolute;
-        content: '';
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 7px;
-        border-radius: 18px;
-        background-color: #1f41bb0a;
+    .options-container {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      // border-bottom: 1px dashed #fddddd;
+      padding-bottom: $XsSize;
+      gap: $XsSize2;
+      position: relative;
+      padding-left: 15px;
+      .asnwers-container {
+        @include flex-row(nowrap, flex-end, center);
+        &::before {
+          position: absolute;
+          content: '';
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 7px;
+          border-radius: 18px;
+          background-color: #1f41bb0a;
+        }
+        &::after {
+          position: absolute;
+          content: '';
+          left: 2px;
+          top: 0;
+          height: 90%;
+          width: 3px;
+          border-radius: 18px;
+          background-color: $PrimaryColor;
+        }
+        .answer {
+          color: $PrimaryColor;
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+          background-color: #1f41bb0a;
+          padding: 10px;
+          padding-inline: 15px;
+          border-radius: 8px;
+        }
       }
-      &::after {
-        position: absolute;
-        content: '';
-        left: 2px;
-        top: 0;
-        height: 90%;
-        width: 3px;
-        border-radius: 18px;
-        background-color: $PrimaryColor;
-      }
-      .answer {
-        color: $PrimaryColor;
-        font-size: $SmSize;
-        font-weight: $BaseFontWeightBold;
-        background-color: #1f41bb0a;
-        padding: 10px;
-        padding-inline: 15px;
-        border-radius: 8px;
+      .question {
+        color: #5e5e5e;
       }
     }
-    .question {
-      color: #5e5e5e;
+  }
+  .textarea-conatneir {
+    background-color: #fbfbfb;
+    @include flex-column(nowrap, flex-start, flex-start);
+    padding-left: 15px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    .title {
+      color: #121212;
+      font-size: 14px;
+      font-weight: 700;
     }
   }
 }

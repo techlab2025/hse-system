@@ -84,15 +84,38 @@ const showTextArea = () => {
 
 <template>
   <!-- <pre>{{ selected_data }}</pre> -->
-  <div class="show-template-result-select not-disabled flex gap-4">
-    <div class="options-container">
-      <span class="question">{{ Options[0]?.title }}</span>
-      <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
+
+  <div class="show-template-result-select-container" v-if="selected_data?.answers?.length > 0">
+
+    <div class="show-template-result-select not-disabled flex gap-4">
+      <div class="options-container">
+        <span class="question">{{ title }}</span>
+        <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
+      </div>
+
+    </div>
+    <div class="w-full flex  gap-2">
+      <div class="textarea-conatneir" v-if="selected_data?.answers?.[0]?.answer">
+        <p class="title">typing text</p>
+        <span class="textarea-answer">
+          {{ selected_data?.answers?.[0]?.answer }}
+        </span>
+      </div>
+      <div v-if="selected_data?.files?.length > 0" class="ml-auto mt-4">
+        <UploadMultiImage @update:images="UpdateImg" class="image-upload"
+          :initialImages="selected_data?.files?.map((el) => el.url) || []" />
+      </div>
+
+
     </div>
   </div>
 </template>
 
 <style scoped>
+.ml-auto {
+  margin-left: auto;
+}
+
 .animate-fade-in {
   margin-top: 10px;
   animation: fadeIn 0.3s ease-in;

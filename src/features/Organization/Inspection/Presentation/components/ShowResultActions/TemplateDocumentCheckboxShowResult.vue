@@ -84,14 +84,31 @@ const showTextArea = () => {
 
 
 <template>
-  <!-- <pre>{{ selected_data }}</pre> -->
-  <div class="show-template-result-checkbox flex flex-col gap-4">
-    <div class="options-container">
-      <span class="question">{{ options[0]?.title }}</span>
-      <div class="asnwers-container flex gap-2">
-        <span class="answer" v-for="(answer, index) in selected_data?.answers" :key="index">{{
-          answer?.templateItemOption?.title }}</span>
+  <div class="show-template-result-checkbox-conatiner" v-if="selected_data?.answers?.length > 0">
+
+    <div class="show-template-result-checkbox flex flex-col gap-4">
+      <div class="options-container">
+        <span class="question">{{ title }}</span>
+        <div class="asnwers-container flex gap-2">
+          <span class="answer" v-for="(answer, index) in selected_data?.answers" :key="index">{{
+            answer?.templateItemOption?.title }}</span>
+        </div>
       </div>
+    </div>
+    <!-- v-for="(answer, index) in selected_data?.answers" :key="index" -->
+    <div class="w-full flex  gap-2">
+      <div class="textarea-conatneir" v-if="selected_data?.answers?.[0]?.answer">
+        <p class="title">typing text</p>
+        <span class="textarea-answer">
+          {{ selected_data?.answers?.[0]?.answer }}
+        </span>
+      </div>
+      <div v-if="selected_data?.files?.length > 0" class="mt-4">
+        <UploadMultiImage @update:images="UpdateImg" class="image-upload"
+          :initialImages="selected_data?.files?.map((el) => el.url) || []" />
+      </div>
+
+
     </div>
   </div>
 </template>
