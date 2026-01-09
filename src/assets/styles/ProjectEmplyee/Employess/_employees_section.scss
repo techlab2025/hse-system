@@ -7,11 +7,26 @@
   padding: $SmSize;
   margin-block: 30px;
   .card-header {
-    @include flex-row(nowrap, space-between, center);
+    @include flex-row(wrap, space-between, center);
+    gap: 12px;
 
+    @media (max-width: 768px) {
+      @include flex-column(wrap, flex-start, flex-start);
+      a,
+      button {
+        width: 100%;
+      }
+    }
     .card-actions {
-      @include flex-row(nowrap, flex-end, center);
+      @include flex-row(wrap, flex-end, center);
       gap: $MdSize;
+      @media (max-width: 768px) {
+        @include flex-column(wrap, flex-start, flex-start);
+        a,
+        button {
+          width: 100%;
+        }
+      }
       button,
       a {
         padding-inline: calc($XlSize + 2px);
