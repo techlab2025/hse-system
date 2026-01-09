@@ -3,15 +3,17 @@
 /*loader container*/
 .loader-dialog {
   animation: fade-out 0.7s ease-out;
-  border: none;
+  border: none !important;
   border-radius: 5px;
   padding: 20px 60px;
   margin: auto;
   // background: red;
 
-  background-color: transparent !important;
+  background-color: rgba(155, 155, 155, 0.178) !important;
+  backdrop-filter: blur(5px);
   .loader-container {
     padding: 20px 60px;
+    border: none !important;
   }
 }
 
@@ -31,7 +33,7 @@
   height: 22px;
   border-radius: 20px;
   color: $PrimaryColor;
-  border: 2px solid;
+  // border: 2px solid;
   position: relative;
 }
 .loader::before {

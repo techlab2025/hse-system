@@ -32,9 +32,17 @@ watch(
 </script>
 
 <template>
-  <div class="show-template-result-textarea">
-    <div class="options-container">
-      {{ selected_data?.answers?.[0]?.answer }}
+  <div class="show-template-result-textarea-container">
+    <div class="show-template-result-textarea">
+      <div class="options-container">
+        <span class="question">{{ title }}</span>
+      </div>
+    </div>
+    <div class="textarea-conatneir" v-if="selected_data?.answers?.[0]?.answer">
+      <p class="title">typing text</p>
+      <span class="textarea-answer">
+        {{ selected_data?.answers?.[0]?.answer }}
+      </span>
     </div>
   </div>
 </template>

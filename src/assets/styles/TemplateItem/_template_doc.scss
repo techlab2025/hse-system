@@ -55,8 +55,8 @@
     width: 100%;
     .template-document-content {
       width: 100%;
-      padding: $MdSize;
-      margin-top: $XsSize2;
+      padding: $XsSize2;
+      margin-top: $XsSize4;
       @include flex-column(nowrap, flex-start, flex-start);
       gap: 20px;
       background-color: white;

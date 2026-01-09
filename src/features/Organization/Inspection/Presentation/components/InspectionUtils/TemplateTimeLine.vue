@@ -13,7 +13,7 @@ const emit = defineEmits(['update:data'])
 const Answers = ref([
   {
     itemTitle: ' ',
-    SelectedActionType: new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox' }),
+    SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
     TemplateItems: [],
     isUpdloadImage: false,
     ImageStatus: 0,
@@ -23,7 +23,7 @@ const Answers = ref([
 const addNewAnswer = () => {
   Answers.value.push({
     itemTitle: '',
-    SelectedActionType: new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox' }),
+    SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
     TemplateItems: [],
     isUpdloadImage: false,
     ImageStatus: 0,
@@ -107,7 +107,7 @@ const UpdateType = (data) => {
                 item.isUpdloadImage = $event.isUpdloadImage; item.ImageStatus = $event.ImageType
                 " :IdIndex="`${index}`" />
 
-              <TemplateItemTimeLine v-if="item.SelectedActionType.id != ActionsEnum.TextArea" :itemindex="index"
+              <TemplateItemTimeLine v-if="item.SelectedActionType.id != ActionsEnum.TEXTAREA" :itemindex="index"
                 @update:data="item.TemplateItems = $event" :isRadio="item.SelectedActionType.id == ActionsEnum.Radio" />
 
 

@@ -1,21 +1,21 @@
 @import '../../variables';
 @import '../../mixins/flex';
 
-.show-template-result-textarea {
-  @include flex-row(nowrap, flex-start, center);
-  gap: $XsSize4;
-  font-family: 'Regular';
-  width: 100%;
-  .options-container {
+.show-template-result-textarea-container {
+  .show-template-result-textarea {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize4;
+    font-family: 'Regular';
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
-    // border-bottom: 1px dashed #fddddd;
-    padding-bottom: $XsSize;
-    gap: $XsSize2;
-    position: relative;
-    padding-left: 15px;
-    .asnwers-container {
-      @include flex-row(nowrap, flex-end, center);
+    .options-container {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      // border-bottom: 1px dashed #fddddd;
+      padding-bottom: $XsSize;
+      gap: $XsSize2;
+      position: relative;
+      padding-left: 15px;
+
       &::before {
         position: absolute;
         content: '';
@@ -45,9 +45,22 @@
         padding-inline: 15px;
         border-radius: 8px;
       }
+      .question {
+        color: #5e5e5e;
+      }
     }
-    .question {
-      color: #5e5e5e;
+  }
+  .textarea-conatneir {
+    background-color: #fbfbfb;
+    @include flex-column(nowrap, flex-start, flex-start);
+    padding-left: 15px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    .title {
+      color: #121212;
+      font-size: 14px;
+      font-weight: 700;
     }
   }
 }
