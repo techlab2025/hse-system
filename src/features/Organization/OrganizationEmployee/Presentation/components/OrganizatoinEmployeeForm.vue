@@ -200,7 +200,7 @@ const UpdateSerial = (data) => {
     <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="false"
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
       @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

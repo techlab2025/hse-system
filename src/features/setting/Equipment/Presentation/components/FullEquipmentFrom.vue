@@ -502,7 +502,7 @@ const UpdateActiveTap = (data) => {
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper" v-if="!data?.id">
-        <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="false"
+        <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
           @update:value="UpdateSerial" />
       </div>
 
