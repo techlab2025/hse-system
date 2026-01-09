@@ -29,7 +29,15 @@
         width: 100%;
         gap: 20px;
         &.timeline-templateitem-contect-select {
-          @include grid(12, 4px);
+          @include grid(
+            12,
+            4px,
+            (
+              1000px: 10,
+              900px: 8,
+              768px: 6,
+            )
+          );
           .text-input {
             background-color: white;
           }
@@ -55,6 +63,9 @@
             }
             .text-area-type {
               @include flex-row(nowrap, center, center);
+              @media (max-width: 900px) {
+                flex-wrap: wrap;
+              }
               width: 100%;
               gap: 4px;
               padding-top: 8px;
@@ -72,7 +83,7 @@
               }
               label {
                 cursor: pointer;
-
+                text-align: center;
                 color: #acb3bc;
                 font-size: 12px;
                 font-weight: 600;

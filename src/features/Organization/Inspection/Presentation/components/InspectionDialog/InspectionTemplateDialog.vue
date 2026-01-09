@@ -1,27 +1,15 @@
-z
 <script setup lang="ts">
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import Dialog from 'primevue/dialog'
 import InspectionTemplateImage from '@/assets/images/check-list.png'
-
 import { onMounted, ref, watch } from 'vue'
-import ArrowsLeft from '@/shared/icons/arrowsLeft.vue'
-import ArrowLeftCurved from '@/shared/icons/arrowLeftCurved.vue'
-import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
 import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
-import AddNewTemplateIcon from '@/shared/icons/AddNewTemplateIcon.vue'
 import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
-import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
-import { useRouter } from 'vue-router'
-import type Params from '@/base/core/params/params'
 
 
 
@@ -106,7 +94,6 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
       </button>
 
 
-
       <div class="template-header" v-if="selectedTemplates || TemplateTitle">
         <button class="delete" @click.prevent="clearSelectedTemplate">
           <DeleteTemplateIcon class="delete-icon" />
@@ -154,9 +141,18 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
 
 
       </div>
-      <button class="btn btn-primary w-full !mt-4" @click="sendTemplatesId">
+      <button class="confirm-btn btn btn-primary w-full !mt-4" @click="sendTemplatesId">
         {{ $t('confirm') }}
       </button>
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.confirm-btn {
+  width: 95%;
+  border-radius: 10px;
+  margin: auto;
+  /* margin-inline: 12px; */
+}
+</style>

@@ -3,7 +3,11 @@
 @import '../mixins/grid';
 
 .add-new-template-dialog-container {
+  @include flex-column(nowrap, flex-start, flex-start);
   width: 100%;
+  .p-dialog-header {
+    width: 100%;
+  }
   .add-new-template-dialog-header {
     width: 100%;
     @include flex-column(nowrap, center, center);
@@ -11,6 +15,36 @@
       color: #202020;
       font-size: $XlSize2;
       font-weight: $BaseFontWeightBold;
+    }
+  }
+  .p-dialog-content {
+    padding: 0;
+    @include flex-column(nowrap, flex-start, flex-start);
+    height: 100%;
+  }
+  .p-dialog-content {
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+  }
+  .dialog-body {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+  }
+
+  .dialog-footer {
+    // display: flex;
+    @include flex-row(nowrap, center, center);
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eee;
+    background: #fff;
+
+    button {
+      width: 50%;
+      flex: 1;
     }
   }
 }
