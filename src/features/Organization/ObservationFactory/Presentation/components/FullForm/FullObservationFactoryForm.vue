@@ -66,6 +66,7 @@ const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
+  console.log(Accidents?.value?.isAnotherMeeting, "Accidents?.value?.isAnotherMeeting")
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -374,7 +375,8 @@ const GetHeader = (value: number) => {
 
     <!-- Serial -->
     <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
-      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="false" @update:value="UpdateSerial" />
+      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+        @update:value="UpdateSerial" />
     </div>
 
     <!-- Place -->

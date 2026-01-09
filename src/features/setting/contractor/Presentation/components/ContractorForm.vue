@@ -167,7 +167,7 @@ onMounted(() => {
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
     <label for="company_number">{{ $t('contractor_number') }}</label>
-    <input type="text" id="company_number" class="input" v-model="phoneNumber" @input="setPhoneNumber"
+    <input type="text" id="company_number" min="1" class="input" v-model="phoneNumber" @input="setPhoneNumber"
       placeholder="Enter contractor Number " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">

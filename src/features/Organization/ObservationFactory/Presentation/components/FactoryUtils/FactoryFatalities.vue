@@ -42,6 +42,9 @@ watch(() => isAnotherMeeting.value, (newVal) => {
   if (newVal == 1) {
     updateData()
   } else {
+    emit('update:data', {
+      isAnotherMeeting: isAnotherMeeting.value,
+    })
     image.value = []
     text.value = ''
     SelectedEmployee.value = undefined

@@ -359,7 +359,8 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Serial -->
       <div class="col-span-4 md:grid-cols-12" v-if="!(data?.id)">
-        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+          @update:value="UpdateSerial" />
       </div>
 
       <!-- Place -->
@@ -414,7 +415,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
     </div>
 
- 
+
 
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
