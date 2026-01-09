@@ -2,6 +2,85 @@
 @import '../mixins/flex';
 @import '../mixins/grid';
 
-.project-card-container{
-  
+.project-card-container {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize4;
+  width: 100%;
+  border: 1px solid #1f41bb0a;
+  border-radius: $XsSize;
+  padding: $SmSize;
+  .project-card-header-container {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    .project-card-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize4;
+      .project-header {
+        @include flex-row(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+
+        .status {
+          color: #4caf50;
+          font-size: $MdSize;
+          font-weight: $BaseFontWeightBold;
+        }
+        .serial {
+          color: #c4ccda;
+          font-size: $MdSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+      .project-title {
+        color: #121212;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+
+    .project-employees {
+      color: #9298ae;
+      background-color: #fbfbfb;
+      padding: $XsSize;
+      border-radius: $XsSize;
+      span {
+        color: $PrimaryColor;
+      }
+    }
+  }
+
+  .project-card-info {
+    @include flex-row(nowrap, flex-start, flex-start);
+    gap: $XlSize3;
+
+    .locations {
+      color: #b7beca;
+      font-size: $MdSize;
+      font-weight: $BaseFontMediumWeight;
+      span {
+        font-family: 'Regular';
+        color: $PrimaryColor;
+      }
+    }
+  }
+  .project-card-data {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    .data-info {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 4px;
+      .info-title {
+        color: #b7beca;
+        font-size: $MdSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+      .info-count {
+        color: $PrimaryColor;
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        &.warn{
+          color: #FFBF52;
+        }
+      }
+    }
+  }
 }
