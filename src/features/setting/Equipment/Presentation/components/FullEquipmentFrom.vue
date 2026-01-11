@@ -228,7 +228,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) || image.value === "*" ? image.value : null,
-      certificateImage: isBase64(certificateImage.value) || certificateImage.value === "*" ? certificateImage.value : "",
+      certificateImage: isBase64(certificateImage.value) || certificateImage.value === "*" ? certificateImage.value : null,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
