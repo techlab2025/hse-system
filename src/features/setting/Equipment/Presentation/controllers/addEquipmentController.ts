@@ -37,10 +37,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         return
       }
 
-      if(params?.equipmentRentTime < 1){
-        new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
-        return
-      }
+      // if(params?.equipmentRentTime < 1){
+      //   new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
+      //   return
+      // }
       const dataState: DataState<EquipmentModel> = await this.addEquipmentUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
