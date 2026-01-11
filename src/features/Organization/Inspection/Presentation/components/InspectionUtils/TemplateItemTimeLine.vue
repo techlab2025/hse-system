@@ -3,12 +3,13 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   itemindex: number
   isRadio?: boolean
+  deletedIndex?: number
 }>()
 
 const Answers = ref([
@@ -34,6 +35,7 @@ const addNewAnswer = () => {
 }
 
 const DeleteItem = (index: number) => {
+  console.log(index)
   Answers.value.splice(index, 1)
   UpdateData()
 }
@@ -44,6 +46,11 @@ const UpdateData = () => {
 onMounted(() => {
   emit('update:data', Answers.value)
 })
+
+// watch(() => props.deletedIndex, (newVal) => {
+//   // console.log(newVal, "newVal");
+//   DeleteItem(newVal)
+// })
 </script>
 <template>
   <div class="template-container tempalte-item-conatainer">
@@ -94,7 +101,8 @@ onMounted(() => {
               @input="UpdateData" />
           </div>
           <!-- && index !== Answers.length - 1 -->
-          <button class="remove" @click.prevent="DeleteItem(index)" v-if="index != 0">Remove</button>
+          <button class="remove" @click.prevent="DeleteItem(index)"
+            v-if="Answers?.length != 0 && Answers?.length != 1">Remove</button>
         </div>
       </div>
 
