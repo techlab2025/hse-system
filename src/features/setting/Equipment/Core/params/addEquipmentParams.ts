@@ -30,6 +30,8 @@ export default class AddEquipmentParams implements Params {
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     equipmentTypeId: { required: true },
+    equipmentRentStartDate: { required: true },
+    
   })
 
   constructor(data: {
