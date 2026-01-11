@@ -5,14 +5,11 @@ import { useRoute, useRouter } from 'vue-router'
 import BackIcon from '../icons/BackIcon.vue'
 import FastRoutes from './FastrRoutes/FastRoutes.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const route = useRoute()
 const router = useRouter()
-
-
-
-
-
 
 const RouterBack = () => {
   router.back()
@@ -26,23 +23,66 @@ const IsHomeSetting = computed(
 )
 
 
-const items = computed(() =>
-  buildBreadcrumb(route, router)
-)
+// const items = computed(() =>
+//   buildBreadcrumb(route, router)
+// )
+const getUrlWithParams = () => {
+  const Params = Object.values(route.params)[0]
+  return Params
+}
+const items = computed(() => {
+  const breadcrumb = buildBreadcrumb(route, router)
+
+  if (route.meta.type === 'Shared') {
+    const parentRoute = allRoutes.find(
+      (pr) =>
+        pr.name ===
+        `${route.meta.parent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
+        }`
+    )
+
+    if (parentRoute) {
+      breadcrumb.splice(breadcrumb.length - 1, 0, {
+        label: parentRoute.meta?.breadcrumb as string,
+        url: parentRoute.path.replace(/\/:[^/]+(\?)?/g, ``),
+      })
+    }
+  }
+
+  return breadcrumb
+})
+
 
 const allRoutes = router.getRoutes()
-// const GetCurrentRoute = () => {
 
-//   console.log(allRoutes.find((el) => el.name === route.meta?.parent))
-// }
+const { user } = useUserStore()
+
+const HandleSharedRoutes = () => {
+  const parentRoute = allRoutes.find(
+    (pr) =>
+      pr.name ===
+      (route.meta.parent as string) + " " +
+      (user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'),
+  )
+
+
+  items.value.push({
+    label: parentRoute?.meta?.breadcrumb as string,
+    url: parentRoute?.path as string,
+  })
+
+}
+
 
 watch(() => route, () => {
-  // console.log(allRoutes.filter((item) => item.name?.includes('project')))
-  console.log(allRoutes.map((item) => item.name))
-
-
+  // if (route.meta.type == 'Shared') {
+  // console.log(route.meta.type, "route.meta.type")
+  // HandleSharedRoutes()
+  // }
+  // else {
   buildBreadcrumb(route, router)
-}, { immediate: true })
+  // }
+}, { immediate: true, deep: true })
 
 </script>
 

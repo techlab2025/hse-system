@@ -113,7 +113,7 @@ const GetEquipmentType = (type: number) => {
               <p>{{ equipmentData?.licensePlateNumber }}</p>
             </div>
             <div class="item" v-if="equipmentData?.kilometer">
-              <span>{{ $t('Vehicle License No') }} : </span>
+              <span>{{ $t('Vehicle Kilometer') }} : </span>
               <p>{{ equipmentData?.kilometer }}</p>
             </div>
           </div>

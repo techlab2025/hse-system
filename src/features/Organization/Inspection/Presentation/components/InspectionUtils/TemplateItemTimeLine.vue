@@ -3,12 +3,13 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   itemindex: number
   isRadio?: boolean
+  deletedIndex?: number
 }>()
 
 const Answers = ref([
@@ -34,6 +35,7 @@ const addNewAnswer = () => {
 }
 
 const DeleteItem = (index: number) => {
+  console.log(index)
   Answers.value.splice(index, 1)
   UpdateData()
 }
@@ -44,6 +46,11 @@ const UpdateData = () => {
 onMounted(() => {
   emit('update:data', Answers.value)
 })
+
+// watch(() => props.deletedIndex, (newVal) => {
+//   // console.log(newVal, "newVal");
+//   DeleteItem(newVal)
+// })
 </script>
 <template>
   <div class="template-container tempalte-item-conatainer">
@@ -52,8 +59,8 @@ onMounted(() => {
       <p class="items-title">add your answers</p>
       <hr class="w-full ">
     </div>
-    <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
-      :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
+    <div class="timeline-item" v-for="(item, index) in (isRadio ? Answers.slice(0, 3) : Answers)" :key="index"
+      :class="{ active: index === 0 }" :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
       <div class="timeline-content ">
 
         <div class="timeline-contect-select timeline-templateitem-contect-select ">
@@ -93,8 +100,9 @@ onMounted(() => {
             <input type="checkbox" :id="`observation-${index}-${itemindex}`" v-model="item.isObservation" class="input"
               @input="UpdateData" />
           </div>
+          <!-- && index !== Answers.length - 1 -->
           <button class="remove" @click.prevent="DeleteItem(index)"
-            v-if="index >= 0 && index !== Answers.length - 1">Remove</button>
+            v-if="Answers?.length != 0 && Answers?.length != 1">Remove</button>
         </div>
       </div>
 
@@ -109,7 +117,7 @@ onMounted(() => {
             <!-- <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
               @click="DeleteItem(index)" /> -->
             <!-- v-else -->
-            <AddAnswer v-if="!(index >= 0 && index !== Answers.length - 1)" @click="addNewAnswer"
+            <AddAnswer v-if="!(index >= 0 && index !== Answers.length - 1) " @click="addNewAnswer"
               class="cursor-pointer" />
             <!-- <span>aaaa</span> -->
           </div>

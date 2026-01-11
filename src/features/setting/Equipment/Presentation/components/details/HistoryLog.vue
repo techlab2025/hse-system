@@ -27,7 +27,7 @@ const Types = ref(["sunday", "monday", "tuesday",])
 
 <template>
   <div class="history-log">
-    <Filter />
+    <!-- <Filter /> -->
     <!-- <div class="title">
       <HistoryLog />
       <h4>{{ $t('History Log') }}</h4>

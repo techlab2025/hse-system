@@ -123,7 +123,7 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
         <hr class="inspection-template-dialog-divider" />
 
         <div class="add-new-template">
-          <AddNewTemplateDialog @update:templateId="GetTemplateInfo" />
+          <AddNewTemplateDialog :visible="visible" @update:templateId="GetTemplateInfo" />
         </div>
 
 

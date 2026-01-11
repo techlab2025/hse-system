@@ -168,11 +168,19 @@ const setEquipmentType = (data: TitleInterface) => {
 
 const setImage = async (value: string) => {
   image.value = typeof value === 'string' ? value : await filesToBase64(value)
+  if (value?.length < 1) {
+    image.value = "*"
+  }
   updateData()
 }
 
 const setCertificateImage = async (value: string) => {
+  // console.log(value, "value");
   certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+  if (value?.length < 1) {
+    console.log(value?.length, "value?.length");
+    certificateImage.value = "*"
+  }
   updateData()
 }
 
@@ -205,29 +213,29 @@ const updateData = () => {
   )
 
   const AllIndustry = user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
-  const StartDateFormat = formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
+  const StartDateFormat = StartDate.value ? formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value) : null
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
-  console.log(activeTab.value, "activeTab.value ")
+  console.log(certificateImage.value, "certificateImage.value")
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
       translation: translationsParams,
       equipmentTypeId: equipmentType.value?.id,
-      date: decommissioningDate.value,
+      date: deviceStatus.value == EquipmentStatus.OWN ? null : decommissioningDate.value,
       status: deviceStatus.value,
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) ? image.value : null,
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : "",
+      image: isBase64(image.value) || image.value === "*" ? image.value : null,
+      certificateImage: isBase64(certificateImage.value) || certificateImage.value === "*" ? certificateImage.value : null,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
       constructorId: SelectedContractor.value?.id,
       equipmentRentType: SelectedRentType?.value?.id,
       equipmentRentTime: Rent.value,
-      equipmentRentStartDate: StartDateFormat,
+      equipmentRentStartDate: deviceStatus.value == EquipmentStatus.OWN ? null : StartDateFormat,
       VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT ? VehicleKm.value : null,
       serialNumber: SerialNumber.value?.SerialNumber,
       SelectedWhereHosue: SelectedWhereHosue.value?.id,

@@ -9,6 +9,7 @@ import EditEquipmentUseCase from '../../Domain/useCase/editEquipmentUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type EditEquipmentParams from '../../Core/params/editEquipmentParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class EditEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: EditEquipmentController
@@ -33,6 +34,11 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
+        return
+      }
+
+      if (params?.equipmentRentTime < 1) {
+        new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return
       }
       const dataState: DataState<EquipmentModel> = await this.editEquipmentUseCase.call(params)
