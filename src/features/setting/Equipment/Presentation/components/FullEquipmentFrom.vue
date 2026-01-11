@@ -168,19 +168,16 @@ const setEquipmentType = (data: TitleInterface) => {
 
 const setImage = async (value: string) => {
   image.value = typeof value === 'string' ? value : await filesToBase64(value)
-  if (value?.length < 1) {
-    image.value = "*"
-  }
+  // if (value?.length < 1) {
+  //   image.value = "*"
+  // }
   updateData()
 }
 
 const setCertificateImage = async (value: string) => {
   // console.log(value, "value");
   certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
-  if (value?.length < 1) {
-    console.log(value?.length, "value?.length");
-    certificateImage.value = "*"
-  }
+
   updateData()
 }
 
@@ -217,6 +214,19 @@ const updateData = () => {
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
   console.log(certificateImage.value, "certificateImage.value")
+  // if (certificateImage.value?.length < 1) {
+  //   certificateImage.value = "*"
+  // }
+  // if (image.value?.length < 1) {
+  //   image.value = "*"
+  // }
+
+  const CertificateImageValue = computed(() => {
+    return certificateImage.value?.length > 1 && isBase64(certificateImage.value) ? certificateImage.value : "*"
+  })
+  // const ImageValue = computed(()=>{
+  //   rey
+  // })
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
@@ -228,7 +238,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) || image.value === "*" ? image.value : null,
-      certificateImage: isBase64(certificateImage.value) || certificateImage.value === "*" ? certificateImage.value : null,
+      certificateImage: CertificateImageValue.value,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -535,6 +545,7 @@ const UpdateActiveTap = (data) => {
           index="1" placeholder="upload image" />
       </div>
 
+      <!-- {{ certificateImage }} -->
       <div class="flex flex-col gap-2 input-wrapper">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
