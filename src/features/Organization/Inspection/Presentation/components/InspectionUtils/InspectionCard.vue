@@ -10,8 +10,9 @@ import { AssignToTypeEnum } from '../../../Core/Enum/AssignToTypesEnum'
 import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
 
 import DurationBox from './DurationBox.vue'
-import ChevronRight from '@/shared/Icons/ChevronRight.vue'
-import ButtonArrow from '@/shared/Icons/ButtonArrow.vue'
+import ButtonArrow from '../../../../../../shared/icons/ButtonArrow.vue';
+import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue';
+
 import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
 import type TaskPeriodModel from '../../../Data/models/TaskPeriodModel'
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
