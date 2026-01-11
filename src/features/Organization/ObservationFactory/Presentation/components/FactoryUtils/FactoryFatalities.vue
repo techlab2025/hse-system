@@ -81,7 +81,7 @@ watch(() => isAnotherMeeting.value, (newVal) => {
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
         <div class="col-span-6 md:col-span-6 input-wrapper w-full">
           <label for="">upload image</label>
-          <MultiImagesInput :initialImages="image" @update:images="setImages" :index="2" />
+          <MultiImagesInput :initialImages="image" @update:images="setImages" :index="3" />
         </div>
       </div>
     </div>
