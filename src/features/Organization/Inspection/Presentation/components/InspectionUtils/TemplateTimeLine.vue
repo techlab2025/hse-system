@@ -3,16 +3,19 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import TemplateItemTimeLine from './TemplateItemTimeLine.vue'
 import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
 import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 
 const emit = defineEmits(['update:data'])
+const props = defineProps<{
+  visable: boolean
+}>()
 
 // Helper to create a new empty answer object with a unique ID
 const createNewAnswerObject = () => ({
-  id: crypto.randomUUID(), // Unique ID ensures children are destroyed on delete
+  id: Math.random().toString(36).substring(2, 9),
   itemTitle: '',
   SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
   TemplateItems: [],
@@ -54,6 +57,13 @@ const ActionsType = ref<TitleInterface[]>([
 const UpdateType = () => {
   UpdateData()
 }
+
+watch(() => props.visable, (newVal) => {
+  console.log(newVal, "Newval");
+  if (!newVal) {
+    Answers.value = []
+  }
+})
 </script>
 
 <template>

@@ -43,8 +43,32 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
         )
       })
 
-      if (IsRadionMoreThanOne.includes(false)) {
-        new OpenWarningDilaog('Radio Type Should Be More Than One').openDialog()
+      const IsItemTitle = params?.items?.map((el) => {
+        return el?.title?.length > 0
+      })
+
+      const IsOptionTitle = params?.items?.map((el) => {
+        const checks = el?.answers?.map((option) => {
+          return option?.title?.length > 1
+        })
+        return checks.includes(false)
+      })
+
+      // if (Number(params?.action) != ActionsEnum.TEXTAREA && IsOptionTitle) {
+      //   new OpenWarningDilaog('Option Title Should Be More Than One').openDialog()
+      //   return
+      // }
+
+      // if (IsItemTitle) {
+      //   new OpenWarningDilaog('Item Title Should Be More Than One').openDialog()
+      //   return
+      // }
+      if (
+        (Number(params?.action) == ActionsEnum.RADIOBUTTON ||
+          Number(params?.action) == ActionsEnum.CHECKBOX) &&
+        IsRadionMoreThanOne.includes(false)
+      ) {
+        new OpenWarningDilaog('Radio Type or checkbox type Should Be More Than One').openDialog()
         return
       }
 

@@ -218,6 +218,16 @@ const addTemplate = async (isInLibrary: number) => {
   visible.value = false
 }
 
+watch(() => visible.value, (newVal) => {
+  console.log(newVal, "Newval");
+  if (!newVal) {
+    TemplateData.value = []
+    langs.value = []
+    SelectedTemplateType.value = null
+    image.value = null
+
+  }
+})
 </script>
 
 <template>
@@ -259,7 +269,7 @@ const addTemplate = async (isInLibrary: number) => {
             @update:modelValue="setTemplateType" />
         </div>
 
-        <TemplateTimeLine @update:data="GetTemplateData" />
+        <TemplateTimeLine :visable="visible" @update:data="GetTemplateData" />
       </div>
     </div>
 
