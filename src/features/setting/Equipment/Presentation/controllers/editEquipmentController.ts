@@ -37,10 +37,10 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
         return
       }
 
-      if (params?.equipmentRentTime < 1) {
-        new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
-        return
-      }
+      // if (params?.equipmentRentTime < 1) {
+      //   new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
+      //   return
+      // }
       const dataState: DataState<EquipmentModel> = await this.editEquipmentUseCase.call(params)
 
       this.setState(dataState)
