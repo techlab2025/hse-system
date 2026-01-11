@@ -8,6 +8,8 @@ import TitleInterface from '@/base/Data/Models/title_interface';
 import { ref } from 'vue';
 import DatePicker from 'primevue/datepicker';
 import { watch } from 'vue'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController';
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams';
 
 const emit = defineEmits(['update:data', 'change:btn'])
 
@@ -25,6 +27,8 @@ const UpdateData = () => {
     WithDays: WithDays.value
   })
 }
+
+
 const inspectionType = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'AD-HOC' }),
   new TitleInterface({ id: 2, title: 'Periodic' }),
