@@ -92,7 +92,7 @@ const UpdateType = () => {
 
                 <div class="input-wrapper type-select">
                   <CustomSelectInput :static-options="ActionsType" v-model="item.SelectedActionType"
-                    placeholder="select template type.." class="mt-4 mr-2 input" label="type"
+                    placeholder="select template type.." class="mt-4 mr-2 input" label="type" :reload="false"
                     @update:modelValue="UpdateType" />
                 </div>
               </div>

@@ -210,7 +210,11 @@
   display: flex;
   flex-direction: row-reverse;
   gap: 5px;
+  .label-container {
+    width: 100%;
+  }
   label {
+    margin-inline-end: auto;
     width: fit-content;
     text-align: start;
     font-weight: $BaseFontSemiBoldWeight;
