@@ -213,7 +213,7 @@ const updateData = () => {
   )
 
   const AllIndustry = user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
-  const StartDateFormat = formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
+  const StartDateFormat = StartDate.value ? formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value) : null
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
   console.log(certificateImage.value, "certificateImage.value")
