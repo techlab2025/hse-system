@@ -1,6 +1,8 @@
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import MorphModel from './MorphModel'
 import LastInspectionModel from './LastInspectionModel'
+import TaskPeriodModel from './TaskPeriodModel'
+import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
 
 export default class InspectionModel {
   public id: number
@@ -18,6 +20,9 @@ export default class InspectionModel {
   public lastInspectionResult: LastInspectionModel
   public createdBy: CreatedBy
   public hasResults: boolean
+  public taskPeriods: TaskPeriodModel[]
+  public equipment: EquipmentDetailsModel[]
+
   constructor(
     id: number,
     template: TemplateDetailsModel,
@@ -34,6 +39,8 @@ export default class InspectionModel {
     lastInspectionResult: LastInspectionModel,
     createdBy: CreatedBy,
     hasResults: boolean,
+    taskPeriods: TaskPeriodModel[],
+    equipment: EquipmentDetailsModel[],
   ) {
     this.id = id
     this.template = template
@@ -50,6 +57,8 @@ export default class InspectionModel {
     this.lastInspectionResult = lastInspectionResult
     this.createdBy = createdBy
     this.hasResults = hasResults
+    this.taskPeriods = taskPeriods
+    this.equipment = equipment
   }
 
   static fromMap(data: any): InspectionModel {
@@ -69,6 +78,9 @@ export default class InspectionModel {
       data.last_inspection_result ? LastInspectionModel.fromMap(data.last_inspection_result) : null,
       data.created_by,
       data.has_results,
+      data.task_periods?.map((item) => TaskPeriodModel.fromMap(item)),
+      data.equipment?.map((item) => EquipmentDetailsModel.fromMap(item)),
+      // datadata.task_periods,
     )
   }
 }

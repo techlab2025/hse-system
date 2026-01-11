@@ -37,37 +37,142 @@
           width: 100%;
           .title-container {
             width: 100%;
-            @include flex-row(nowrap, flex-start, center);
+            padding: $XsSize3 0;
+
+            border-bottom: 1px solid transparent;
+            border-image: repeating-linear-gradient(
+                to right,
+                #efefef 0,
+                #efefef 10px,
+                transparent 10px,
+                transparent 20px
+              )
+              1;
+
+            @include flex-column(nowrap, flex-start, start);
             gap: $XsSize4;
-            .title {
-              color: #121212;
-              font-size: $MdSize2;
-              font-weight: $BaseFontWeightBold;
-              border: none;
+            .date-wrapper {
+              width: 100%;
+              @include flex(row, nowrap, space-between, center);
+              .title {
+                color: #121212;
+                font-size: $MdSize2;
+                font-weight: $BaseFontWeightBold;
+                border: none;
+              }
+              .date {
+                color: #6b7280;
+                font-size: $XsSize;
+                font-weight: $BaseFontMediumWeight;
+              }
             }
-            .date {
-              color: #6b7280;
-              font-size: $XsSize;
-              font-weight: $BaseFontMediumWeight;
+            .count {
+              @include flex(row, nowrap, start, center);
+              gap: 4px;
+
+              h5 {
+                color: $PrimaryColor;
+                font-weight: $BaseFontWeightBold;
+                font-size: $SmSize;
+              }
+              span {
+                color: $SubtitleColor;
+                font-size: $SmSize;
+                font-weight: $BaseFontMediumWeight;
+              }
             }
           }
           .inspection-info {
-            // border-bottom: 1px dashed #6b728048;
             padding-top: $XsSize3;
             padding-bottom: $XsSize4;
             width: 100%;
-            @include flex-row(nowrap, flex-start, flex-start);
+            @include flex-row(wrap, space-between, center);
             gap: $MdSize2;
+            > * {
+              flex: 1;
+            }
 
-            p {
-              color: #9ca3af;
-              font-size: $SmSize;
-              font-weight: $BaseFontMediumWeight;
-              span {
-                color: #202020;
+            .info-box {
+              p {
+                @include flex-column();
+                gap: 4px;
+                color: $SubtitleColor;
                 font-size: $SmSize;
-                font-weight: $BaseFontWeightBold;
+                font-weight: $BaseFontMediumWeight;
+              }
+              .position {
+                font-size: $MdSize2;
+                font-weight: bold;
+                color: #80879780;
                 font-family: 'Regular';
+                span {
+                  color: #202020;
+                  font-size: $SmSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                  font-family: 'Regular';
+                }
+              }
+            }
+            .arrow-img {
+              img {
+                width: 100%;
+              }
+            }
+            .session-box {
+              background: #fcfcfd;
+              border: 1px solid #1d4ed803;
+              border-radius: $XsSize2;
+              padding: $XsSize2;
+              gap: 6px;
+
+              @include flex-column();
+
+              /* =====================
+     ONCE STATE
+  ===================== */
+              &.once {
+                @include flex-row(nowrap, space-between, center);
+              }
+
+              .session-header {
+                @include flex-column();
+                gap: 4px;
+
+                h4 {
+                  color: #bcc1d0;
+                  font-size: $XsSize;
+                  font-weight: $BaseFontSemiBoldWeight;
+                }
+
+                h5 {
+                  font-size: $XsSize;
+                  font-weight: $BaseFontWeight;
+                  color: #848995;
+
+                  span {
+                    font-weight: $BaseFontSemiBoldWeight;
+                  }
+                }
+              }
+
+              .content-items {
+                @include flex(row, nowrap, center, center);
+
+                span {
+                  padding: 0 $XsSize;
+                  color: #6b7280;
+
+                  &:not(:last-of-type) {
+                    border-inline-end: 1px solid #eef1f5;
+                  }
+                }
+              }
+
+              /* الصورة في حالة once */
+              .single-image {
+                width: $XlSize4;
+                height: $XlSize4;
+                object-fit: contain;
               }
             }
           }
@@ -78,13 +183,113 @@
             width: 100%;
 
             .view-inspection {
-              color: #041953;
+              color: var(--header-page-color);
               font-size: $MdSize;
               font-weight: $BaseFontSemiBoldWeight;
             }
           }
         }
       }
+      .tool-box {
+        width: 100%;
+        background: url('@/assets/images/toolOv.png') right / contain no-repeat #fcfcfd;
+        padding: $XsSize;
+
+        border-radius: $SmSize;
+        @include flex();
+        gap: 20px;
+
+        // &::before {
+        //   content: '';
+        //   position: absolute;
+        //   background-image: url('../../images/AnotherMeeting.png');
+        //   background-position: right;
+        //   background-size: 100% 100%;
+        //   // width: 100%;
+        //   // height: 100%;
+        //   left: 0;
+        //   top: 50%;
+        //   // background-color: #0f1927;
+        // }
+        .tool-img {
+          max-width: $XlSize4;
+          max-height: $XlSize4;
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: $XsSize;
+            border: 1px solid #f4f4f4;
+          }
+        }
+        .contents {
+          @include flex-column();
+          gap: 4px;
+          .past {
+            @include flex-row(nowrap, flex-start, center);
+            gap: 6px;
+            h4 {
+              color: $PrimaryColor;
+              font-size: $SmSize;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+            h6 {
+              color: $SubtitleColor;
+              font-size: $SmSize;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
+          h3 {
+            color: #0f1927;
+            font-size: $SmSize;
+            font-weight: $BaseFontWeightBold;
+          }
+        }
+      }
+    }
+  }
+  .show-button {
+    @include flex(row, nowrap, space-between, center);
+    background: #1f41bb0d;
+    border: 1px solid $PrimaryColor;
+    border-radius: $SmSize;
+    padding: $XsSize4 $MdSize;
+    width: 100%;
+    cursor: pointer;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      background: rgba($PrimaryColor, 0.12);
+      border-color: darken(#1d4ed8, 5%);
+      transform: translateY(-2px);
+    }
+
+    .button-text {
+      @include flex(row, nowrap, start, center);
+      gap: $XsSize3;
+
+      h5 {
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $MdSize;
+        color: $PrimaryColor;
+        transition: color 0.3s ease;
+      }
+
+      span {
+        background: #dfe2ea;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-size: $MdSize;
+        color: $PrimaryColor;
+        border-radius: $XsSize4;
+        padding: $BorderWidth3;
+        transition: background 0.3s ease;
+      }
+    }
+
+    &:hover .button-text span {
+      background: lighten(#1d4ed8, 40%);
     }
   }
 }
