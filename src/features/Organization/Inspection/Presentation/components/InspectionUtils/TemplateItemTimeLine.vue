@@ -93,8 +93,8 @@ onMounted(() => {
             <input type="checkbox" :id="`observation-${index}-${itemindex}`" v-model="item.isObservation" class="input"
               @input="UpdateData" />
           </div>
-          <button class="remove" @click.prevent="DeleteItem(index)"
-            v-if="index >= 0 && index !== Answers.length - 1">Remove</button>
+          <!-- && index !== Answers.length - 1 -->
+          <button class="remove" @click.prevent="DeleteItem(index)" v-if="index != 0">Remove</button>
         </div>
       </div>
 

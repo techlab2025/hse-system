@@ -11,6 +11,8 @@ import AddTemplateUseCase from '../../Domain/useCase/addTemplateUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type AddTemplateParams from '../../Core/params/addTemplateParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 
 export default class AddTemplateController extends ControllerInterface<TemplateModel> {
   private static instance: AddTemplateController
@@ -34,6 +36,18 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
         params.validateOrThrow()
         return
       }
+      const IsRadionMoreThanOne = params?.items?.map((el) => {
+        return (
+          (el?.type == ActionsEnum.RADIOBUTTON || el?.type == ActionsEnum.CHECKBOX) &&
+          el.answers?.length > 1
+        )
+      })
+
+      if (IsRadionMoreThanOne.includes(false)) {
+        new OpenWarningDilaog('Radio Type Should Be More Than One').openDialog()
+        return
+      }
+
       const dataState: DataState<TemplateModel> = await this.AddTemplateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
