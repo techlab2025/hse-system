@@ -11,6 +11,8 @@ import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Co
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
@@ -32,6 +34,7 @@ const UpdateData = () => {
     data: date.value,
     TempalteIds: TempalteIds.value,
     ProjectId: SelectedProject.value?.id,
+    SelectedEquipment: SelectedEquipment?.value?.id
   })
 }
 const setZones = (data: TitleInterface) => {
@@ -61,6 +64,14 @@ const ClearDate = () => {
   // date.value = null
 
 }
+const indexEquipmentController = IndexEquipmentController.getInstance()
+const deleteEquipmentTypeParams = new IndexEquipmentParams("", 1, 10, 0)
+
+const SelectedEquipment = ref<TitleInterface>()
+const setEquipment = (data: TitleInterface) => {
+  SelectedEquipment.value = data
+  UpdateData()
+}
 
 </script>
 <template>
@@ -77,6 +88,9 @@ const ClearDate = () => {
         :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" placeholder="select your Zone"
         @update:modelValue="setZones" />
     </div>
+    <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
+      :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
+      @update:modelValue="setEquipment" />
     <!-- Dialog -->
     <div class="input-wrapper col-span-2">
       <InspectionTemplateDialog @update:data="GetTemplateId" />

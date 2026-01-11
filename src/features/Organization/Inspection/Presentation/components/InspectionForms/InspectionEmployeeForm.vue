@@ -12,6 +12,8 @@ import IndexProjectParams from '@/features/Organization/Project/Core/params/inde
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController';
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams';
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel';
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController';
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams';
 
 const emit = defineEmits(['update:data'])
 const SelectedProject = ref<TitleInterface>()
@@ -42,6 +44,7 @@ const UpdateData = () => {
     TempalteIds: TempalteIds.value,
     ProjectZoneId: SelectedProjectZone.value?.id,
     ProjectId: SelectedProject.value?.id,
+    SelectedEquipment: SelectedEquipment.value?.id
   })
 }
 const setEmployee = (data: TitleInterface) => {
@@ -111,7 +114,14 @@ const ClearDate = () => {
   UpdateData()
 }
 
+const indexEquipmentController = IndexEquipmentController.getInstance()
+const deleteEquipmentTypeParams = new IndexEquipmentParams("", 1, 10, 0)
 
+const SelectedEquipment = ref<TitleInterface>()
+const setEquipment = (data: TitleInterface) => {
+  SelectedEquipment.value = data
+  UpdateData()
+}
 </script>
 
 <template>
@@ -127,6 +137,10 @@ const ClearDate = () => {
     <CustomSelectInput v-if="SelectedProjectZone" :modelValue="SelectedEmployee" class="input"
       :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams" label="Employee" id="employee"
       placeholder="select your employee" @update:modelValue="setEmployee" />
+
+    <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
+      :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
+      @update:modelValue="setEquipment" />
 
     <InspectionTemplateDialog @update:data="GetTemplateId" />
 

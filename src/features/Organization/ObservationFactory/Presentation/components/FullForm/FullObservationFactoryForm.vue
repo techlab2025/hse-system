@@ -408,19 +408,9 @@ watch(() => HazardType.value, () => {
         id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
     </div>
 
-    <!-- Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper">
-      <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-        :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
-        @update:modelValue="setHazardType" />
-    </div>
 
-    <!--Sub Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="HazardType">
-      <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
-        :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
-        @update:modelValue="setSubHazardType" />
-    </div>
+
+
 
     <!-- Incedant Type -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
@@ -520,6 +510,19 @@ watch(() => HazardType.value, () => {
       <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
     </div>
 
+    <!-- Hazard Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="saveStatus == SaveStatusEnum.NotSaved">
+      <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
+        :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
+        @update:modelValue="setHazardType" />
+    </div>
+
+    <!--Sub Hazard Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="HazardType">
+      <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
+        :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
+        @update:modelValue="setSubHazardType" />
+    </div>
 
     <!-- Observation Level -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">

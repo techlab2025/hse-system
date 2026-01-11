@@ -62,6 +62,7 @@ interface InspectionForm {
   TempalteIds: number[]
   ProjectZoneId: number
   ProjectId: number
+  SelectedEquipment: number
 }
 
 
@@ -151,7 +152,8 @@ const updateData = () => {
       data.fromDate,
       null,
       DataParams.value?.ProjectZoneId,
-      IsInLibrary.value
+      IsInLibrary.value,
+      DataParams.value?.SelectedEquipment,
     )
 
   console.log(data.inspectionType, "data.inspectionType");
