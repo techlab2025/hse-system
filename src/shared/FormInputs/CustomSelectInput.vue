@@ -178,7 +178,7 @@ const updateSlot = (data: any) => {
       <IconBackStage />
     </span>
 
-    <div class="flex items-center gap-2">
+    <div class="label-container flex items-center gap-2">
 
       <label :class="{ required: required }" class="input-label">
         <span v-if="required" class="text-red-500">*</span>

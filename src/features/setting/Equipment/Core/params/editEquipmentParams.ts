@@ -33,6 +33,7 @@ export default class EditEquipmentParams implements Params {
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     equipmentTypeId: { required: true },
+    equipmentRentStartDate: { required: true },
   })
 
   constructor(data: {
@@ -91,6 +92,7 @@ export default class EditEquipmentParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
+    console.log(this.certificateImage, 'this.certificateImage')
     data['equipment_id'] = this.id
 
     data['translations'] = this.translation.toMap()
