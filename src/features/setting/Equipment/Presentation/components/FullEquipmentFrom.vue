@@ -227,6 +227,7 @@ const updateData = () => {
   // const ImageValue = computed(()=>{
   //   rey
   // })
+
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
