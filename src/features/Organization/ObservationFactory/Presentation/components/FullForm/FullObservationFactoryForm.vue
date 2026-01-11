@@ -49,6 +49,7 @@ import { markRaw } from 'vue'
 import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
+import { HazardTypeParentEnum } from '@/features/setting/HazardType/Core/Enums/HazardTypeEnum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -149,7 +150,9 @@ const updateData = () => {
       time: SelctedTime.value,
       code: SerialNumber.value?.SerialNumber,
       place: PlaceText.value,
-      isWorkStopped: isWorkStopped.value ? 1 : 0
+      isWorkStopped: isWorkStopped.value ? 1 : 0,
+      HazardTypeId: HazardType.value?.id,
+      HazardSubtypeId: SubHazardType.value?.id
 
     })
   console.log(isWorkStopped.value, "isWorkStopped.value");
@@ -295,7 +298,7 @@ const GetObservationType = (type) => {
 }
 
 const indexObservatioTyepController = IndexObserverationTypeController.getInstance()
-const indexObservationTypeParams = new IndexObserverationTypeParams("", 1, 10, 1)
+const indexObservationTypeParams = new IndexObserverationTypeParams("", 1, 10, 0)
 const SelectedObservationType = ref<TitleInterface>()
 const setSelectedObservationType = (data: TitleInterface) => {
   SelectedObservationType.value = data
@@ -303,16 +306,25 @@ const setSelectedObservationType = (data: TitleInterface) => {
 }
 
 
-const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 1)
+const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 0, null, HazardTypeParentEnum?.Parent)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
+
 const HazardType = ref<TitleInterface>()
 const setHazardType = (data: TitleInterface) => {
   HazardType.value = data
   updateData()
 }
 
+const indexSubHazardTypeParams = ref(new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child))
+const indexSubHazardTypeController = IndexHazardTypeController.getInstance()
+const SubHazardType = ref<TitleInterface>()
+const setSubHazardType = (data: TitleInterface) => {
+  SubHazardType.value = data
+  updateData()
+}
+
 const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
-const indexAccidentsTypeParams = new IndexAccidentsTypeParams("", 1, 10, 1)
+const indexAccidentsTypeParams = new IndexAccidentsTypeParams("", 1, 10, 0)
 const AccidentsType = ref<TitleInterface>()
 const setAccidentsType = (data: TitleInterface) => {
   AccidentsType.value = data
@@ -337,6 +349,10 @@ const handleObservationLevel = (data: any) => {
 const GetHeader = (value: number) => {
   return Observation[value] == "ObservationType" ? "Observation" : Observation[value] == "HazardType" ? "Hazard" : "Accidents"
 }
+
+watch(() => HazardType.value, () => {
+  indexSubHazardTypeParams.value = new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child)
+}, { immediate: true })
 </script>
 
 <template>
@@ -393,10 +409,17 @@ const GetHeader = (value: number) => {
     </div>
 
     <!-- Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.HazardType">
+    <div class="col-span-3 md:col-span-3 input-wrapper">
       <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
         :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
         @update:modelValue="setHazardType" />
+    </div>
+
+    <!--Sub Hazard Type -->
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="HazardType">
+      <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
+        :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
+        @update:modelValue="setSubHazardType" />
     </div>
 
     <!-- Incedant Type -->

@@ -38,6 +38,8 @@ export default class AddHazardParams implements Params {
   public code: string
   public place: string
   public isWorkStopped: number
+  public HazardTypeId: number
+  public HazardSubtypeId: number
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -73,6 +75,8 @@ export default class AddHazardParams implements Params {
     code: string
     place: string
     isWorkStopped: number
+    HazardTypeId: number
+    HazardSubtypeId: number
   }) {
     this.title = data.title
     this.description = data.description
@@ -103,6 +107,8 @@ export default class AddHazardParams implements Params {
     this.code = data.code
     this.place = data.place
     this.isWorkStopped = data.isWorkStopped
+    this.HazardTypeId = data.HazardTypeId
+    this.HazardSubtypeId = data.HazardSubtypeId
   }
 
   toMap(): Record<
@@ -157,6 +163,8 @@ export default class AddHazardParams implements Params {
     if (this.code) data['serial_number'] = this.code
     if (this.place) data['place'] = this.place
     if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
+    if (this.HazardTypeId) data['hazard_type_id'] = this.HazardTypeId
+    if (this.HazardSubtypeId) data['hazard_sub_type_id'] = this.HazardSubtypeId
     return data
   }
 

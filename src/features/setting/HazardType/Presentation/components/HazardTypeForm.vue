@@ -27,6 +27,8 @@ const indexFactoryController = IndexFactoryController.getInstance()
 const indexFactoryParams = new IndexFactoryParams("", 1, 10, 1)
 
 
+const route = useRoute()
+const ParentId = route.params.parent_id
 const props = defineProps<{
   data?: ShowHazardTypeModel
 }>()
@@ -123,14 +125,16 @@ const updateData = () => {
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id) ?? [],
-      HazaradFactor
+      HazaradFactor,
+      Number(ParentId)
 
     )
     : new AddHazardTypeParams(
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      HazaradFactor
+      HazaradFactor,
+      Number(ParentId)
     )
 
   // console.log(params, 'params')

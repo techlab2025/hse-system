@@ -5,7 +5,7 @@ import './assets/styles/tailwind.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import ToastService from 'primevue/toastservice';
+import ToastService from 'primevue/toastservice'
 
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
@@ -30,7 +30,7 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
-if (process.env.NODE_ENV !== "development") {
+if (process.env.NODE_ENV !== 'development') {
   Sentry.init({
     app,
     dsn: 'https://cfe55d2f98b4608cd87f9adca3a5163a@o1353746.ingest.us.sentry.io/4509994332585984',
@@ -46,7 +46,7 @@ if (process.env.NODE_ENV !== "development") {
     },
   })
 } else {
-  console.log("🔕 Sentry disabled in local environment");
+  console.log('🔕 Sentry disabled in local environment')
 }
 
 const pinia = createPinia()
@@ -55,15 +55,15 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
-app.use(ToastService);
+app.use(ToastService)
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
     options: {
       prefix: 'p',
       darkModeSelector: false,
-      cssLayer: false
-    }
+      cssLayer: false,
+    },
   },
 })
 app.mount('#app')
