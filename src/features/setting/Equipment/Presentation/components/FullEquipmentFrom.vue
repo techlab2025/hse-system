@@ -168,11 +168,19 @@ const setEquipmentType = (data: TitleInterface) => {
 
 const setImage = async (value: string) => {
   image.value = typeof value === 'string' ? value : await filesToBase64(value)
+  if (value?.length < 1) {
+    image.value = "*"
+  }
   updateData()
 }
 
 const setCertificateImage = async (value: string) => {
+  // console.log(value, "value");
   certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+  if (value?.length < 1) {
+    console.log(value?.length, "value?.length");
+    certificateImage.value = "*"
+  }
   updateData()
 }
 
@@ -208,7 +216,7 @@ const updateData = () => {
   const StartDateFormat = formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
-  console.log(activeTab.value, "activeTab.value ")
+  console.log(certificateImage.value, "certificateImage.value")
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
@@ -219,8 +227,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) ? image.value : null,
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : "",
+      image: isBase64(image.value) || image.value === "*" ? image.value : null,
+      certificateImage: isBase64(certificateImage.value) || certificateImage.value === "*" ? certificateImage.value : "",
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,

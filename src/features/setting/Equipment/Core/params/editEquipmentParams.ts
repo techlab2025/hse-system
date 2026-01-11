@@ -91,6 +91,7 @@ export default class EditEquipmentParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
+    console.log(this.certificateImage, 'this.certificateImage')
     data['equipment_id'] = this.id
 
     data['translations'] = this.translation.toMap()

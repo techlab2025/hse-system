@@ -59,8 +59,8 @@ onMounted(() => {
       <p class="items-title">add your answers</p>
       <hr class="w-full ">
     </div>
-    <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
-      :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
+    <div class="timeline-item" v-for="(item, index) in (isRadio ? Answers.slice(0, 3) : Answers)" :key="index"
+      :class="{ active: index === 0 }" :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
       <div class="timeline-content ">
 
         <div class="timeline-contect-select timeline-templateitem-contect-select ">
@@ -117,7 +117,7 @@ onMounted(() => {
             <!-- <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
               @click="DeleteItem(index)" /> -->
             <!-- v-else -->
-            <AddAnswer v-if="!(index >= 0 && index !== Answers.length - 1)" @click="addNewAnswer"
+            <AddAnswer v-if="!(index >= 0 && index !== Answers.length - 1) " @click="addNewAnswer"
               class="cursor-pointer" />
             <!-- <span>aaaa</span> -->
           </div>
