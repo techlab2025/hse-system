@@ -11,6 +11,7 @@ import AddEquipmentUseCase from '../../Domain/useCase/addEquipmentUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: AddEquipmentController
@@ -33,6 +34,11 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
+        return
+      }
+
+      if(params?.equipmentRentTime < 1){
+        new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return
       }
       const dataState: DataState<EquipmentModel> = await this.addEquipmentUseCase.call(params)
