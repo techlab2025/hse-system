@@ -16,6 +16,9 @@ import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue'
 import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
 import type TaskPeriodModel from '../../../Data/models/TaskPeriodModel'
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
+import image from '@/assets/images/onceimg.png'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 
 const props = defineProps<{
   tasks: InspectionModel[]
@@ -36,7 +39,9 @@ const getInspectionType = (type: number) => {
 const GetMorohType = (type) => {
   return AssignToTypeEnum[type]
 }
-
+const GetEquipmentType = (type: number) => {
+  return EquipmentTypesEnum[type]
+}
 // if all (inspection form) 1  => !isDrag && !showresult
 // if all (Drag inspection form) 2  => isDrag
 // if all (Show inspection form) 3  => showresult
@@ -88,7 +93,7 @@ const GetMorohType = (type) => {
                 <!-- {{ period }} -->
                 <DurationBox
                   v-if="task?.periodType == InspectionTypeEnum.DAY"
-                  singleImage="/src/assets/images/onceimg.png"
+                  :singleImage="image"
                   :data="task"
                 />
 
@@ -109,17 +114,18 @@ const GetMorohType = (type) => {
           </div>
         </div>
 
-        <div class="tool-box" v-if="task?.equipment?.length > 0">
+        <div class="tool-box" v-if="task?.equipment">
           <div class="tool-img">
-            <img src="/src/assets/images/toolimg.png" alt="" />
+            <img :src="task?.equipment?.image!" alt="" @error="setDefaultImage" />
           </div>
           <div class="contents">
             <div class="past">
-              <h4>Tools</h4>
+              <!-- <pre>{{ task?.equipment }}</pre> -->
+              <h4>{{ GetEquipmentType(task.equipment.equipmentType.type) }}</h4>
               <ChevronRight />
-              <h6>hand tool</h6>
+              <h6>{{ task.equipment.equipmentType.title }}</h6>
             </div>
-            <h3>Drilling Rig</h3>
+            <h3>{{ task.equipment.title }}</h3>
           </div>
         </div>
 

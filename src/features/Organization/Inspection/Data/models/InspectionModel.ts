@@ -2,6 +2,8 @@ import type TemplateDetailsModel from '@/features/setting/Template/Data/models/T
 import MorphModel from './MorphModel'
 import LastInspectionModel from './LastInspectionModel'
 import TaskPeriodModel from './TaskPeriodModel'
+// import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
+import EquipmentModel from '@/features/_templateFeature/Data/models/equipmentModel'
 import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
 
 export default class InspectionModel {
@@ -21,7 +23,7 @@ export default class InspectionModel {
   public createdBy: CreatedBy
   public hasResults: boolean
   public taskPeriods: TaskPeriodModel[]
-  public equipment: EquipmentDetailsModel[]
+  public equipment: EquipmentModel | null
 
   constructor(
     id: number,
@@ -40,7 +42,7 @@ export default class InspectionModel {
     createdBy: CreatedBy,
     hasResults: boolean,
     taskPeriods: TaskPeriodModel[],
-    equipment: EquipmentDetailsModel[],
+    equipment: EquipmentModel | null,
   ) {
     this.id = id
     this.template = template
@@ -79,7 +81,7 @@ export default class InspectionModel {
       data.created_by,
       data.has_results,
       data.task_periods?.map((item) => TaskPeriodModel.fromMap(item)),
-      data.equipment?.map((item) => EquipmentDetailsModel.fromMap(item)),
+      data.equipment ? EquipmentModel.fromMap(data.equipment) : null,
       // datadata.task_periods,
     )
   }
