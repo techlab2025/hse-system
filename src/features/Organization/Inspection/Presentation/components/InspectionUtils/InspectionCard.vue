@@ -10,8 +10,8 @@ import { AssignToTypeEnum } from '../../../Core/Enum/AssignToTypesEnum'
 import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
 
 import DurationBox from './DurationBox.vue'
-import ButtonArrow from '../../../../../../shared/icons/ButtonArrow.vue';
-import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue';
+import ButtonArrow from '../../../../../../shared/icons/ButtonArrow.vue'
+import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue'
 
 import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
 import type TaskPeriodModel from '../../../Data/models/TaskPeriodModel'
@@ -30,6 +30,10 @@ const GetInspectionTitle = (task: InspectionModel) => {
 }
 
 const getInspectionType = (type: number) => {
+  return AssignToTypeEnum[type]
+}
+
+const GetMorohType = (type) => {
   return AssignToTypeEnum[type]
 }
 
@@ -75,7 +79,7 @@ const getInspectionType = (type: number) => {
               <div class="info-box">
                 <p class="assigned-by">Assigned To :</p>
                 <h5 class="position">
-                  Emp_
+                  {{ GetMorohType(task?.morphType).slice(0, 3) }}_
                   <span>{{ task?.createdBy?.name }}</span>
                 </h5>
               </div>
@@ -88,10 +92,7 @@ const getInspectionType = (type: number) => {
                   :data="task"
                 />
 
-                <DurationBox
-                  v-if="task?.periodType == InspectionTypeEnum.PERIOD"
-                  :data="task"
-                />
+                <DurationBox v-if="task?.periodType == InspectionTypeEnum.PERIOD" :data="task" />
               </div>
 
               <!-- <p>
@@ -121,6 +122,7 @@ const getInspectionType = (type: number) => {
             <h3>Drilling Rig</h3>
           </div>
         </div>
+
         <!-- <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult" -->
         <LastInspectionCard
           class="mt"
