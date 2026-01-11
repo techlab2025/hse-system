@@ -29,8 +29,13 @@ import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
+import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 
 const { t } = useI18n()
+const route = useRoute()
+
+const ParentId = route.params.parent_id
 
 // import DialogChangeStatusHazardType from "@/features/setting/HazardType/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
 // const route = useRoute()
@@ -40,7 +45,6 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
 const state = ref(indexHazardTypeController.state.value)
-const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
 
@@ -49,8 +53,10 @@ const fetchHazardType = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  parent_id?: number = ParentId,
+  parent_type?: HazardTypeParentEnum = HazardTypeParentEnum.Parent,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, id)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(parent_id), parent_type)
   await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 
@@ -108,26 +114,26 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     ],
   },
-  // {
-  //   text: t('add_sub_HAZARD_type'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-type/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
-  // {
-  //   text: t('sub_HAZARD_types'),
-  //   icon: IconEdit,
-  //   link: `/admin/Hazard-types/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //   ],
-  // },
+  {
+    text: t('add_HAZARD'),
+    icon: IconEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${id}`,
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+    ],
+  },
+  {
+    text: t('hazards'),
+    icon: ShowProjectIcon,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}/hazards`,
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+    ],
+  },
   {
     text: t('delete'),
     icon: IconDelete,
@@ -142,6 +148,10 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
     ],
   },
 ]
+
+watch(() => route.params.parent_id, () => {
+  fetchHazardType('', currentPage.value, countPerPage.value, 1, route.params.parent_id, route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent)
+})
 </script>
 
 <template>
@@ -206,7 +216,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
                 <td data-label="#">
                   <router-link
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`">{{
-                    index + 1 }}
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>

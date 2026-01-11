@@ -7,6 +7,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/EquipmentType/IndexEquipmentType.vue'),
     meta: {
       breadcrumb: 'Equipment Type',
+      type: 'Shared',
     },
   },
   {
@@ -16,6 +17,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Equipment Type',
       parent: 'Equipment Type',
+      type: 'Shared',
     },
   },
   {
@@ -25,6 +27,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Equipment Type',
       parent: 'Equipment Type',
+      type: 'Shared',
     },
   },
   {
@@ -33,6 +36,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Equipment/IndexEquipment.vue'),
     meta: {
       breadcrumb: 'Equipment ',
+      type: 'Shared',
     },
   },
   {
@@ -41,7 +45,8 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Equipment/AddEquipment.vue'),
     meta: {
       breadcrumb: 'Add Equipment',
-      parent: 'Equipment Organization',
+      parent: 'Equipment',
+      type: 'Shared',
     },
   },
   {
@@ -50,7 +55,8 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Equipment/EditEquipment.vue'),
     meta: {
       breadcrumb: 'Edit Equipment',
-      parent: 'Equipments',
+      parent: 'Equipment',
+      type: 'Shared',
     },
   },
   {
@@ -59,7 +65,8 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Equipment/showEquipment.vue'),
     meta: {
       breadcrumb: 'Show Equipment',
-      parent: 'Equipments',
+      parent: 'Equipment',
+      type: 'Shared',
     },
   },
 ]
