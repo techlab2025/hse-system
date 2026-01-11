@@ -25,11 +25,12 @@
         color: #6b7280;
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
+        font-family: 'Bold';
       }
     }
     .inspection-info-container {
       width: 100%;
-      @include flex-row(nowrap, space-between, center);
+      @include flex-row(wrap, space-between, center);
       .inspection-info {
         padding-top: $XsSize3;
         padding-bottom: $XsSize4;
@@ -54,7 +55,7 @@
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
         text-decoration: underline;
-        font-family: 'Regular' !important;
+        font-family: 'Bold' !important;
       }
       .view-inspection-btn {
         font-size: $SmSize;
@@ -65,6 +66,5 @@
         font-family: 'Regular';
       }
     }
-
   }
 }

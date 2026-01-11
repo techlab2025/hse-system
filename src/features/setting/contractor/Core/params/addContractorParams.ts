@@ -23,6 +23,9 @@ export default class AddContractorParams implements Params {
       maxLength: 20,
       pattern: /^\+?\d[\d\s\-()]{4,}$/,
     },
+    contactPersonPhone: {
+      pattern: /^\+?\d[\d\s\-()]{4,}$/,
+    },
   })
 
   constructor(
@@ -51,7 +54,10 @@ export default class AddContractorParams implements Params {
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number |any| Record<string, string>>
+    | number
+    | string
+    | number[]
+    | Record<string, string | number[] | number | any | Record<string, string>>
   > {
     const data: Record<
       string,

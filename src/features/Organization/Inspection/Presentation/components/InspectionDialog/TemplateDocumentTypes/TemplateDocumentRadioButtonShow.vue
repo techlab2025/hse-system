@@ -4,7 +4,7 @@ import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode
 import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import RadioButton from 'primevue/radiobutton'
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -32,16 +32,25 @@ const UpdateOptions = (option: ItemModel) => {
   } else {
     SelectedOption.value = option
   }
-  UpdateData()
+
+  // Use nextTick to ensure the ref has updated
+  nextTick(() => {
+    UpdateData()
+  })
 }
 
 const UpdateData = () => {
-  emit('update:data', {
+  const dataToEmit = {
     itemid: props.item_id,
     value: SelectedOption.value?.id || 0,
     img: Img.value,
     notes: textArea.value,
-  })
+  }
+
+  // Debug log to verify correct data
+  console.log('Radio emitting data:', dataToEmit)
+
+  emit('update:data', dataToEmit)
 }
 
 // Watch for manual text changes to emit updates
@@ -102,7 +111,7 @@ const showTextArea = () => {
           placeholder="Please enter details..."></textarea>
       </div>
 
-      <div v-if="require_image" class="mt-4 border-t pt-4">
+      <div v-if="require_image" class="mt-4">
         <UploadMultiImage @update:images="UpdateImg" class="image-upload"
           :initialImages="selected_data?.files?.map((el) => el.url) || []" />
       </div>

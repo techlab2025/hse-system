@@ -10,10 +10,15 @@ import { AssignToTypeEnum } from '../../../Core/Enum/AssignToTypesEnum'
 import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
 
 import DurationBox from './DurationBox.vue'
-import ChevronRight from '../../../../../../shared/Icons/ChevronRight.vue'
+import ChevronRight from '@/shared/Icons/ChevronRight.vue'
+import ButtonArrow from '@/shared/Icons/ButtonArrow.vue'
+import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
+import type TaskPeriodModel from '../../../Data/models/TaskPeriodModel'
+import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 
 const props = defineProps<{
   tasks: InspectionModel[]
+  // perioddata: TaskPeriodModel[]
   isDrag?: boolean
   showresult?: boolean
 }>()
@@ -75,7 +80,17 @@ const getInspectionType = (type: number) => {
               </div>
 
               <div>
-                <DurationBox />
+                <!-- {{ period }} -->
+                <DurationBox
+                  v-if="task?.periodType == InspectionTypeEnum.DAY"
+                  singleImage="/src/assets/images/onceimg.png"
+                  :data="task"
+                />
+
+                <DurationBox
+                  v-if="task?.periodType == InspectionTypeEnum.PERIOD"
+                  :data="task"
+                />
               </div>
 
               <!-- <p>
@@ -92,7 +107,7 @@ const getInspectionType = (type: number) => {
           </div>
         </div>
 
-        <div class="tool-box">
+        <div class="tool-box" v-if="task?.equipment?.length > 0">
           <div class="tool-img">
             <img src="/src/assets/images/toolimg.png" alt="" />
           </div>
@@ -134,13 +149,14 @@ const getInspectionType = (type: number) => {
 
         <router-link
           v-if="!isDrag && !showresult"
-          class="show-button w-full"
+          class="show-button w-full mt"
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`"
         >
           <div class="button-text">
             <h5>Show all results</h5>
-            <span>20</span>
+            <!-- <span>20</span> -->
           </div>
+          <ButtonArrow />
         </router-link>
       </div>
     </div>
@@ -148,7 +164,7 @@ const getInspectionType = (type: number) => {
 </template>
 <style scoped>
 .mt {
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
 .btn-primary {

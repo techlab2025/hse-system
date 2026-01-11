@@ -31,7 +31,7 @@ import TemplateImage from '@/features/setting/TemplateItem/Presentation/componen
 
 
 const visible = ref(false)
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'update:templateId'])
 
 // Translations
 const langs = ref<{ locale: string; title: string }[]>([])
@@ -178,7 +178,7 @@ const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
 
-const addTemplate = async () => {
+const addTemplate = async (isInLibrary: number) => {
 
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
@@ -204,13 +204,19 @@ const addTemplate = async () => {
     image.value || null,
     null,
     items,
-    SelectedTemplateType?.value?.id
+    SelectedTemplateType?.value?.id,
+    isInLibrary
   )
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
+  if (state?.value.data) {
+    emit('update:templateId', {
+      templateId: state?.value.data.id,
+      teamplateTitle: state?.value.data.title,
+      isInLibrary: isInLibrary
+    })
+  }
   visible.value = false
 }
-
-
 
 </script>
 
@@ -237,19 +243,35 @@ const addTemplate = async () => {
         <p>follow the steps to add your templet now</p>
       </div>
     </template>
-    <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
-      <hr class="inspection-template-dialog-divider col-span-4" />
 
-      <div class="col-span-4 md:col-span-2">
-        <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <!-- BODY -->
+    <div class="dialog-body">
+      <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
+        <hr class="inspection-template-dialog-divider col-span-4" />
+
+        <div class="col-span-4 md:col-span-2">
+          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+        </div>
+
+        <div class="col-span-4 md:col-span-2">
+          <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+            label="Template Type" id="TemplateType" placeholder="Select Template Type"
+            @update:modelValue="setTemplateType" />
+        </div>
+
+        <TemplateTimeLine @update:data="GetTemplateData" />
       </div>
-      <div class="col-span-4 md:col-span-2">
-        <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
-          label="Template Type " id="TemplateType" placeholder="Select Template Type"
-          @update:modelValue="setTemplateType" />
-      </div>
-      <TemplateTimeLine @update:data="GetTemplateData" />
-      <button class="btn btn-primary w-full col-span-4" @click="addTemplate">update</button>
+    </div>
+
+    <!-- FOOTER FIXED -->
+    <div class="dialog-footer">
+      <button class="btn btn-primary" @click="addTemplate(1)">
+        use & save to library
+      </button>
+      <button class="btn btn-secondary" @click="addTemplate(0)">
+        use only this time
+      </button>
     </div>
   </Dialog>
+
 </template>

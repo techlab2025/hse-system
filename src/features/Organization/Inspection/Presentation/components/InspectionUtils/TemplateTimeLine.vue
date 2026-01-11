@@ -4,16 +4,16 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
-import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
 import TemplateItemTimeLine from './TemplateItemTimeLine.vue'
 import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
+import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 
 const emit = defineEmits(['update:data'])
 
 const Answers = ref([
   {
     itemTitle: ' ',
-    SelectedActionType: new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox' }),
+    SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
     TemplateItems: [],
     isUpdloadImage: false,
     ImageStatus: 0,
@@ -23,7 +23,7 @@ const Answers = ref([
 const addNewAnswer = () => {
   Answers.value.push({
     itemTitle: '',
-    SelectedActionType: new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox' }),
+    SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
     TemplateItems: [],
     isUpdloadImage: false,
     ImageStatus: 0,
@@ -48,10 +48,10 @@ onMounted(() => {
 
 
 const ActionsType = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.Radio, title: 'Radio', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.DropDown, title: 'Dropdown', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.TextArea, title: 'TextArea', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.RADIOBUTTON, title: 'Radio', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.DROPDOWN, title: 'Dropdown', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'TextArea', subtitle: '' }),
 ])
 
 // const TemplateItems = ref()
@@ -91,23 +91,26 @@ const UpdateType = (data) => {
             </div>
 
             <div class="timeline-content template-timeline-content  grid grid-cols-4  w-full">
-              <div class="col-span-4 flex w-full items-center gap-3">
+
+              <div class="col-span-4 flex flex-col md:flex-row w-full items-center gap-3">
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('item_title') }} </label>
                   <input type="text" id="text" v-model="item.itemTitle" class="input" placeholder="add your title"
                     @input="UpdateData" />
                 </div>
+
                 <div class="input-wrapper type-select">
                   <CustomSelectInput :static-options="ActionsType" v-model="item.SelectedActionType"
                     placeholder="select templet type.." class="mt-4 mr-2 input" label="type"
                     @update:modelValue="UpdateType" />
                 </div>
+
               </div>
               <TemplateImage class="w-full col-span-4 md:col-span-4" @update:data="
                 item.isUpdloadImage = $event.isUpdloadImage; item.ImageStatus = $event.ImageType
                 " :IdIndex="`${index}`" />
 
-              <TemplateItemTimeLine v-if="item.SelectedActionType.id != ActionsEnum.TextArea" :itemindex="index"
+              <TemplateItemTimeLine v-if="item.SelectedActionType.id != ActionsEnum.TEXTAREA" :itemindex="index"
                 @update:data="item.TemplateItems = $event" :isRadio="item.SelectedActionType.id == ActionsEnum.Radio" />
 
 

@@ -44,7 +44,7 @@ const updateData = () => {
     accidentsImages: image.value?.map((el) => el?.file),
     descripe: descripe.value,
     text: text.value,
-    employeeId: SelectedEmployee.value?.id,
+    employeeId: isAnotherMeeting.value == 1 ? SelectedEmployee.value?.id : null,
     infectionTypeId: SelectedInfection.value?.id,
     employeeName: EmployeeName.value,
     isWorkStopped: isWorkStopped.value ? 1 : 0
@@ -85,6 +85,9 @@ watch(() => isAnotherMeeting.value, (newVal) => {
   if (newVal == 1) {
     updateData()
   } else {
+    emit('update:data', {
+      isAnotherMeeting: isAnotherMeeting.value,
+    })
     image.value = []
     text.value = ''
     SelectedEmployee.value = undefined

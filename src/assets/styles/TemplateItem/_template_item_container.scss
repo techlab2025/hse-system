@@ -6,16 +6,22 @@
   width: 100%;
   .add-answer {
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
+    @include flex-row(wrap, space-between, center);
     gap: 4px;
+    @media (max-width: 768px) {
+      @include flex-column(wrap, center, center);
+    }
     .items-title {
       color: #202020;
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
     }
     hr {
-      width: 82%;
+      width: 75%;
       border-color: #1f41bb1a;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
       // background-color: #f1f3f533;
       // height: 1px;
       // display: block;

@@ -21,9 +21,10 @@ const { title, options } = defineProps<{
           <Checkbox binary disabled :inputId="`checkbox-${index}-${title}`" type="checkbox" class="input" />
         </div>
       </div>
+
       <UploadImage class="image-upload" v-if="require_image" />
       <div>
-        
+
       </div>
     </div>
 
