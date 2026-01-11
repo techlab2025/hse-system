@@ -88,9 +88,11 @@ const setEquipment = (data: TitleInterface) => {
         :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" placeholder="select your Zone"
         @update:modelValue="setZones" />
     </div>
-    <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
-      :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
-      @update:modelValue="setEquipment" />
+    <div class="input-wrapper col-span-2">
+      <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
+        :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
+        @update:modelValue="setEquipment" />
+    </div>
     <!-- Dialog -->
     <div class="input-wrapper col-span-2">
       <InspectionTemplateDialog @update:data="GetTemplateId" />
