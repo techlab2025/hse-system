@@ -32,8 +32,10 @@ const addNewAnswer = () => {
   UpdateData()
 }
 
+const DeletedIndex = ref<number>()
 const DeleteItem = (index: number) => {
   Answers.value.splice(index, 1)
+  DeletedIndex.value = index
   UpdateData()
 }
 
@@ -111,10 +113,8 @@ const UpdateType = (data) => {
                 " :IdIndex="`${index}`" />
 
               <TemplateItemTimeLine v-if="item.SelectedActionType.id != ActionsEnum.TEXTAREA" :itemindex="index"
-                @update:data="item.TemplateItems = $event" :isRadio="item.SelectedActionType.id == ActionsEnum.Radio" />
-
-
-
+                :key="item.itemTitle" @update:data="item.TemplateItems = $event"
+                :isRadio="item.SelectedActionType.id == ActionsEnum.RADIOBUTTON" :deletedIndex="DeletedIndex" />
             </div>
           </div>
         </div>
