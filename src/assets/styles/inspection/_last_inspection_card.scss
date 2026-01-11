@@ -16,7 +16,7 @@
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize4;
       .title {
-        color: $PrimaryColor;
+        color: #00006b;
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         border: none;
@@ -25,11 +25,12 @@
         color: #6b7280;
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
+        font-family: 'Bold';
       }
     }
     .inspection-info-container {
       width: 100%;
-      @include flex-row(nowrap, space-between, center);
+      @include flex-row(wrap, space-between, center);
       .inspection-info {
         padding-top: $XsSize3;
         padding-bottom: $XsSize4;
@@ -42,7 +43,7 @@
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
           span {
-            color: #202020;
+            color: #5a627e;
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
             font-family: 'Regular';
@@ -54,7 +55,7 @@
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
         text-decoration: underline;
-        font-family: 'Regular' !important;
+        font-family: 'Bold' !important;
       }
       .view-inspection-btn {
         font-size: $SmSize;
