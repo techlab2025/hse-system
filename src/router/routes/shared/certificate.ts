@@ -6,7 +6,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Certificates',
     component: () => import('@/views/Admin/Certificate/IndexCertificate.vue'),
     meta: {
-      parent: 'Certificates',
+      breadcrumb: 'Certificates',
       type: 'Shared',
     },
   },
@@ -15,6 +15,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Add Certificate',
     component: () => import('@/views/Admin/Certificate/AddCertificate.vue'),
     meta: {
+      breadcrumb: 'Add certificate',
       parent: 'Certificates',
       type: 'Shared',
     },
@@ -24,6 +25,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Edit Certificate',
     component: () => import('@/views/Admin/Certificate/EditCertificate.vue'),
     meta: {
+      breadcrumb: 'Edit certificate',
       parent: 'Certificates',
       type: 'Shared',
     },
