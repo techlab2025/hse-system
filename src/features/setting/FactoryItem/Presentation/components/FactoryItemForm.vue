@@ -108,7 +108,7 @@ onMounted(async () => {
 })
 
 const factory = ref<TitleInterface | null>(null)
-const factoryParams = new IndexFactoryParams('', 0, 10, 1)
+const factoryParams = new IndexFactoryParams('', 1, 10, 0)
 const factoryController = IndexFactoryController.getInstance()
 
 const updateData = () => {
