@@ -22,8 +22,6 @@ export default class IndexHazardParams implements Params {
   public equipmentTypeIds?: number[] = []
   public equipmentSubTypeIds?: number[] = []
 
-
-
   constructor(
     word: string,
     pageNumber: number = 1,
