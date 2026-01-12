@@ -21,6 +21,14 @@ const setParams = (data: Params) => {
   // console.log(data, 'data')
   params.value = data
 }
+// router.beforeResolve((to, from, next) => {
+//   if (to.params.parent_id) {
+//     params.value = {
+//       parent_id: Number(to.params.parent_id),
+//     }
+//   }
+//   next()
+// })
 </script>
 
 <template>
