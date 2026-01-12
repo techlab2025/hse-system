@@ -16,6 +16,7 @@ export default class AddTemplateParams implements Params {
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
+    items: { required: true },
   })
 
   constructor(

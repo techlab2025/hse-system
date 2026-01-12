@@ -11,6 +11,7 @@ export default class AddTemplateItemParams implements Params {
   imageType: number
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
+    
   })
   constructor(
     id: number,
