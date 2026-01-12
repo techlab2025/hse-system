@@ -70,7 +70,7 @@ const fetchHazard = async (
     pageNumber,
     perPage,
     withPage,
-    Observation.ObservationType,
+    [Observation.ObservationType, Observation.HazardType],
     null,
     zoonIds,
     projectLocationIds || null,
