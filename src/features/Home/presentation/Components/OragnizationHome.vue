@@ -27,9 +27,9 @@ const GetProjectStatistics = async () => {
   await fetchPorjectStatisticsController.getData(fetchPorjectStatisticsParams)
 }
 
-onMounted(() => {
-  GetProjectStatistics()
-})
+// onMounted(() => {
+//   GetProjectStatistics()
+// })
 
 watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
   state.value = newState
