@@ -40,7 +40,10 @@ const getUrlWithParams = () => {
 const items = computed(() => {
   const breadcrumb = buildBreadcrumb(route, router)
 
+  // If Route Type Shared
   if (route.meta.type === 'Shared') {
+    // If Shared But Special Hazard Routes
+    // Make Parent SubParent Not Parent
     if (route.meta.subType && (route.params.parent_id || route.query.hazard == 1)) {
 
       const parentRoute = allRoutes.find(
@@ -56,8 +59,9 @@ const items = computed(() => {
         })
       }
     }
+    // If Shared But Normal Routes
+    // Parent Is Parent
     else {
-
       const parentRoute = allRoutes.find(
         (pr) =>
           pr.name ===

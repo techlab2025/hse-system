@@ -26,15 +26,16 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
 
   const addRoute = (r: RouteLocationMatched) => {
     if (!r.meta?.breadcrumb || added.has(r.name as string)) return
-    console.log(r, 'outside r')
     // ⬅ parent first
+    // If Route have Parent
     if (r.meta.parent) {
+      // If Route have Parent And SubType As Special case In Hazard Use Sub Parent
       if (r.meta.subType && (route.params.parent_id || route.query.hazard == 1)) {
         const parentRoute = allRoutes.find((pr) => `${pr.name}` === r.meta.subParent)
-        console.log(parentRoute, 'parentRoute')
-        console.log(r, 'r route')
         if (parentRoute) addRoute(parentRoute as any)
-      } else {
+      }
+      // If Route have Parent And SubType As Normal Use Parent
+      else {
         const parentRoute = allRoutes.find((pr) => pr.name === r.meta.parent)
         if (parentRoute) addRoute(parentRoute as any)
       }
