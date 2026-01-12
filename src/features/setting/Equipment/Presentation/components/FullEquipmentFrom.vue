@@ -174,10 +174,49 @@ const setImage = async (value: string) => {
   updateData()
 }
 
-const setCertificateImage = async (value: string) => {
-  // console.log(value, "value");
-  certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+// const setCertificateImage = async (value: string) => {
+//   // console.log(value, "value");
+//   certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+//   updateData()
+// }
+const originalCertificateImage = ref<string | null>(null)
 
+const resolveCertificateImage = () => {
+  // ADD
+  if (!props.data?.id) {
+    return isBase64(certificateImage.value)
+      ? certificateImage.value
+      : ''
+  }
+
+  // EDIT
+  // 1) not changed
+  if (certificateImage.value === originalCertificateImage.value) {
+    return undefined // <-- key مش هيتبعت
+  }
+
+  // 2) deleted
+  if (!certificateImage.value) {
+    return '*'
+  }
+
+  // 3) updated
+  if (isBase64(certificateImage.value)) {
+    return certificateImage.value
+  }
+
+  return undefined
+}
+
+const setCertificateImage = async (value: any) => {
+  if (!value) {
+    // user deleted image
+    certificateImage.value = ''
+  } else if (typeof value === 'string') {
+    certificateImage.value = value
+  } else {
+    certificateImage.value = await filesToBase64(value)
+  }
   updateData()
 }
 
@@ -213,7 +252,7 @@ const updateData = () => {
   const StartDateFormat = StartDate.value ? formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value) : null
   const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
 
-  console.log(certificateImage.value, "certificateImage.value")
+  // console.log(certificateImage.value, "certificateImage.value")
   // if (certificateImage.value?.length < 1) {
   //   certificateImage.value = "*"
   // }
@@ -221,12 +260,21 @@ const updateData = () => {
   //   image.value = "*"
   // }
 
-  const CertificateImageValue = computed(() => {
-    return certificateImage.value?.length > 1 && isBase64(certificateImage.value) ? certificateImage.value : "*"
-  })
+  // const CertificateImageValue = computed(() => {
+  //   console.log(certificateImage.value, "certificateImage.value")
+  //   if (certificateImage.value?.length > 1 && isBase64(certificateImage.value)) {
+  //     return certificateImage.value
+  //   } else if (certificateImage.value?.length < 1 && isBase64(certificateImage.value)) {
+  //     return ""
+  //   } else {
+  //     return "*"
+  //   }
+  // })
   // const ImageValue = computed(()=>{
   //   rey
   // })
+  const certificateImagePayload = resolveCertificateImage()
+
 
   const params = props.data?.id
     ? new EditEquipmentParams({
@@ -239,7 +287,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) || image.value === "*" ? image.value : null,
-      certificateImage: CertificateImageValue.value,
+      certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -261,7 +309,7 @@ const updateData = () => {
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
       image: isBase64(image.value) ? image.value : '*',
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
+      certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -358,6 +406,8 @@ watch(
       isVehicle.value = newData?.kilometer ? true : false
       SelectedWhereHosue.value = new TitleInterface({ id: newData?.warehouse?.id, title: newData?.warehouse?.name })
       EndDate.value = newData?.RentEndDate ? new Date(newData.RentEndDate) : null
+      //  certificateImage.value = newData?.certificateImage
+      originalCertificateImage.value = newData?.certificateImage
     }
   },
   { immediate: true }
