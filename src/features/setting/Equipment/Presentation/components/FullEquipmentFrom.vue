@@ -166,13 +166,52 @@ const setEquipmentType = (data: TitleInterface) => {
   updateData()
 }
 
-const setImage = async (value: string) => {
-  image.value = typeof value === 'string' ? value : await filesToBase64(value)
-  // if (value?.length < 1) {
-  //   image.value = "*"
-  // }
+const originalImage = ref<string | null>(null)
+
+// const setImage = async (value: string) => {
+//   image.value = typeof value === 'string' ? value : await filesToBase64(value)
+//   // if (value?.length < 1) {
+//   //   image.value = "*"
+//   // }
+//   updateData()
+// }
+const resolveImage = () => {
+  // ADD
+  if (!props.data?.id) {
+    return isBase64(image.value) ? image.value : '*'
+  }
+
+  // EDIT
+  // 1) not changed
+  if (image.value === originalImage.value) {
+    return undefined // مش هيتبعت
+  }
+
+  // 2) deleted
+  if (!image.value) {
+    return '*'
+  }
+
+  // 3) updated
+  if (isBase64(image.value)) {
+    return image.value
+  }
+
+  return undefined
+}
+
+const setImage = async (value: any) => {
+  if (!value) {
+    // user deleted image
+    image.value = ''
+  } else if (typeof value === 'string') {
+    image.value = value
+  } else {
+    image.value = await filesToBase64(value)
+  }
   updateData()
 }
+
 
 // const setCertificateImage = async (value: string) => {
 //   // console.log(value, "value");
@@ -274,6 +313,7 @@ const updateData = () => {
   //   rey
   // })
   const certificateImagePayload = resolveCertificateImage()
+  const imagePayload = resolveImage()
 
 
   const params = props.data?.id
@@ -286,7 +326,7 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) || image.value === "*" ? image.value : null,
+      image: imagePayload,
       certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
@@ -308,7 +348,7 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) ? image.value : '*',
+      image: imagePayload,
       certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
@@ -408,6 +448,7 @@ watch(
       EndDate.value = newData?.RentEndDate ? new Date(newData.RentEndDate) : null
       //  certificateImage.value = newData?.certificateImage
       originalCertificateImage.value = newData?.certificateImage
+      originalImage.value = newData?.image
     }
   },
   { immediate: true }
