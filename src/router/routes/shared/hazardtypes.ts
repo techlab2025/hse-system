@@ -8,6 +8,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Hazard Type',
       type: 'Shared',
+      subType: 'Hazards',
     },
   },
   {
@@ -18,6 +19,8 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Hazard Type',
       parent: 'Hazard Type',
       type: 'Shared',
+      subType: 'Add Hazard',
+      subParent: 'Hazards',
     },
   },
   {
@@ -28,6 +31,8 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Hazard Type',
       parent: 'Hazard Type',
       type: 'Shared',
+      subType: 'Edit Hazard',
+      subParent: 'Hazards',
     },
   },
   {

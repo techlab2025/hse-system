@@ -29,6 +29,7 @@ const indexFactoryParams = new IndexFactoryParams("", 1, 10, 1)
 
 const route = useRoute()
 const ParentId = route.params.parent_id
+const ParentIdEdit = route.query.parent_id
 const props = defineProps<{
   data?: ShowHazardTypeModel
 }>()
@@ -126,7 +127,7 @@ const updateData = () => {
       AllIndustry,
       industry.value?.map((item) => item.id) ?? [],
       HazaradFactor,
-      Number(ParentId)
+      Number(ParentIdEdit)
 
     )
     : new AddHazardTypeParams(
