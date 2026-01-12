@@ -1,4 +1,6 @@
 import type { RouteRecordRaw } from '@/router/types'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
 export const hazardTypesRoutes: RouteRecordRaw[] = [
   {
@@ -15,7 +17,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     name: 'Add Hazard Type',
     component: () => import('@/views/Admin/HazardType/AddHazardType.vue'),
     meta: {
-      breadcrumb: 'Add Hazard Type',
+      breadcrumb: route?.params.parent_id ? 'Add Hazard Type' : 'Add Hazard ',
       parent: 'Hazard Type',
       type: 'Shared',
     },
@@ -35,7 +37,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     name: 'Hazards',
     component: () => import('@/views/Admin/HazardType/IndexHazardType.vue'),
     meta: {
-      breadcrumb: 'Hazards',
+      breadcrumb: ' Hazards',
       parent: 'Hazard Type',
       type: 'Shared',
     },

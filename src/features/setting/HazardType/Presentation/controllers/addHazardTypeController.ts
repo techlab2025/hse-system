@@ -6,7 +6,7 @@ import AddHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/a
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
+import { useRoute, type Router } from 'vue-router'
 import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -47,10 +47,21 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const { user } = useUserStore()
 
+        const route = useRoute()
+
+        // if (route.params?.parent_id) {
+        //   if (!draft)
+        //     await router.push(
+        //       `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${route.params.parent_id}/hazards`,
+        //     )
+        // } else {
         if (!draft)
           await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
+            params?.ParentId
+              ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
+              : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
           )
+        // }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

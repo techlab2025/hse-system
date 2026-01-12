@@ -43,7 +43,7 @@ export default class HazardTypeModel extends TitleInterface {
       data.industries?.length > 0
         ? data.industries?.map((industry) => TitleModel.fromMap(industry))
         : [],
-      data.parent_id,
+      data?.parent_id,
       data.image,
       data.titles,
     )

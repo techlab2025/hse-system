@@ -35,7 +35,8 @@ import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 const { t } = useI18n()
 const route = useRoute()
 
-const ParentId = route.params.parent_id
+const ParentId = ref(route.params.parent_id)
+const Id = route.params.id
 
 // import DialogChangeStatusHazardType from "@/features/setting/HazardType/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
 // const route = useRoute()
@@ -53,8 +54,8 @@ const fetchHazardType = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  parent_id?: number = ParentId,
-  parent_type?: HazardTypeParentEnum = HazardTypeParentEnum.Parent,
+  parent_id?: number = ParentId.value,
+  parent_type?: HazardTypeParentEnum = route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent,
 ) => {
   const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(parent_id), parent_type)
   await indexHazardTypeController.getData(deleteHazardTypeParams)
@@ -149,9 +150,12 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   },
 ]
 
-watch(() => route.params.parent_id, () => {
+watch(() => route.params.parent_id, (newVal) => {
+  // ParentId = newVal
   fetchHazardType('', currentPage.value, countPerPage.value, 1, route.params.parent_id, route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent)
 })
+
+
 </script>
 
 <template>
@@ -172,9 +176,10 @@ watch(() => route.params.parent_id, () => {
         PermissionsEnum.HAZARD_TYPE_CREATE,
         PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
       ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+        <router-link
+          :to="route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
           class="btn btn-primary">
-          {{ $t('Add_HazardType') }}
+          {{ route.params?.parent_id ? $t('Add_Hazard') : $t('Add_HazardType') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -188,7 +193,6 @@ watch(() => route.params.parent_id, () => {
     PermissionsEnum.HAZARD_TYPE_FETCH,
     PermissionsEnum.HAZARD_TYPE_UPDATE,
     PermissionsEnum.HAZARD_TYPE_CREATE,
-
     PermissionsEnum.ORG_HAZARD_TYPE_ALL,
     PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
     PermissionsEnum.ORG_HAZARD_TYPE_FETCH,

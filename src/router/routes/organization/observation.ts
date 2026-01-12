@@ -36,7 +36,7 @@ export const observationRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/ObservationFactory/Observation/AllObservation.vue'),
     meta: {
-      breadcrumb: 'All Observeration',
+      breadcrumb: 'Operations',
     },
   },
 ]
