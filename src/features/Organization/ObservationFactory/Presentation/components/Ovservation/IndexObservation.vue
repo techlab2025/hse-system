@@ -70,7 +70,7 @@ const fetchHazard = async (
     pageNumber,
     perPage,
     withPage,
-    Observation.ObservationType,
+    [Observation.ObservationType, Observation.HazardType],
     null,
     zoonIds,
     projectLocationIds || null,
@@ -217,7 +217,7 @@ const ShowDetails = ref<number[]>([])
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder :code="[
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.ORG_OBSERVATION_ALL,

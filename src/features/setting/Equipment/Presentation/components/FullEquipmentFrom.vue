@@ -168,18 +168,93 @@ const setEquipmentType = (data: TitleInterface) => {
   updateData()
 }
 
-const setImage = async (value: string) => {
-  image.value = typeof value === 'string' ? value : await filesToBase64(value)
-  // if (value?.length < 1) {
-  //   image.value = "*"
-  // }
+const originalImage = ref<string | null>(null)
+
+// const setImage = async (value: string) => {
+//   image.value = typeof value === 'string' ? value : await filesToBase64(value)
+//   // if (value?.length < 1) {
+//   //   image.value = "*"
+//   // }
+//   updateData()
+// }
+const resolveImage = () => {
+  // ADD
+  if (!props.data?.id) {
+    return isBase64(image.value) ? image.value : '*'
+  }
+
+  // EDIT
+  // 1) not changed
+  if (image.value === originalImage.value) {
+    return undefined // مش هيتبعت
+  }
+
+  // 2) deleted
+  if (!image.value) {
+    return '*'
+  }
+
+  // 3) updated
+  if (isBase64(image.value)) {
+    return image.value
+  }
+
+  return undefined
+}
+
+const setImage = async (value: any) => {
+  if (!value) {
+    // user deleted image
+    image.value = ''
+  } else if (typeof value === 'string') {
+    image.value = value
+  } else {
+    image.value = await filesToBase64(value)
+  }
   updateData()
 }
 
-const setCertificateImage = async (value: string) => {
-  // console.log(value, "value");
-  certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+// const setCertificateImage = async (value: string) => {
+//   // console.log(value, "value");
+//   certificateImage.value = typeof value === 'string' ? value : await filesToBase64(value)
+//   updateData()
+// }
+const originalCertificateImage = ref<string | null>(null)
 
+const resolveCertificateImage = () => {
+  // ADD
+  if (!props.data?.id) {
+    return isBase64(certificateImage.value) ? certificateImage.value : ''
+  }
+
+  // EDIT
+  // 1) not changed
+  if (certificateImage.value === originalCertificateImage.value) {
+    return undefined // <-- key مش هيتبعت
+  }
+
+  // 2) deleted
+  if (!certificateImage.value) {
+    return '*'
+  }
+
+  // 3) updated
+  if (isBase64(certificateImage.value)) {
+    return certificateImage.value
+  }
+
+  return undefined
+}
+
+const setCertificateImage = async (value: any) => {
+  if (!value) {
+    // user deleted image
+    certificateImage.value = ''
+  } else if (typeof value === 'string') {
+    certificateImage.value = value
+  } else {
+    certificateImage.value = await filesToBase64(value)
+  }
   updateData()
 }
 
@@ -226,6 +301,8 @@ const updateData = () => {
   // const ImageValue = computed(()=>{
   //   rey
   // })
+  const certificateImagePayload = resolveCertificateImage()
+  const imagePayload = resolveImage()
 
   const params = props.data?.id
     ? new EditEquipmentParams({
@@ -378,6 +455,9 @@ watch(
         title: newData?.warehouse?.name,
       })
       EndDate.value = newData?.RentEndDate ? new Date(newData.RentEndDate) : null
+      //  certificateImage.value = newData?.certificateImage
+      originalCertificateImage.value = newData?.certificateImage
+      originalImage.value = newData?.image
     }
   },
   { immediate: true },
@@ -414,7 +494,7 @@ const setRentType = (data: TitleInterface) => {
   updateData()
 }
 
-const Rent = ref<string>()
+const Rent = ref<string>(1)
 
 const setRentTime = (time: string) => {
   Rent.value = time.target.value
@@ -427,7 +507,7 @@ const setDecoDate = (date) => {
   updateData()
 }
 
-const StartDate = ref<Date>()
+const StartDate = ref<Date>(new Date())
 
 const setStartDate = (date) => {
   StartDate.value = date
@@ -583,7 +663,6 @@ const UpdateActiveTap = (data) => {
           @update:modelValue="setEquipmentType"
           :isDialog="true"
           :dialogVisible="EquipmentTypeDialog"
-          @close="EquipmentTypeDialog = false"
         >
           <template #LabelHeader>
             <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>
@@ -594,7 +673,7 @@ const UpdateActiveTap = (data) => {
         </UpdatedCustomInputSelect>
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label>{{ $t('upload image') }}</label>
         <SingleFileUpload
           :returnType="`base64`"
@@ -608,7 +687,7 @@ const UpdateActiveTap = (data) => {
       </div>
 
       <!-- {{ certificateImage }} -->
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
         </label>
@@ -623,7 +702,7 @@ const UpdateActiveTap = (data) => {
         />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label>{{ $t('certification / Inspection expiry date') }}</label>
         <DatePicker
           v-model="decommissioningDate"
@@ -656,6 +735,7 @@ const UpdateActiveTap = (data) => {
       </div>
 
       <div
+      
         v-if="
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
@@ -670,7 +750,6 @@ const UpdateActiveTap = (data) => {
           @update:modelValue="setContructor"
           :isDialog="true"
           :dialogVisible="ContractorDialog"
-          @close="ContractorDialog = false"
         >
           <template #LabelHeader>
             <span class="add-dialog" @click="ContractorDialog = true">New</span>
@@ -696,10 +775,7 @@ const UpdateActiveTap = (data) => {
         />
       </div>
       <div>
-        <!-- <CustomSelectInput
-                 New Update => Custom input Select
-        /> -->
-        <UpdatedCustomInputSelect
+        <CustomSelectInput
           :controller="indexWhereHouseController"
           :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue"
@@ -707,20 +783,7 @@ const UpdateActiveTap = (data) => {
           id="Warehouse"
           placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse"
-          :isDialog="true"
-          :dialogVisible="wearHouseDialog"
-          @close="wearHouseDialog = false"
-        >
-          <template #LabelHeader>
-            <span class="add-dialog" @click="wearHouseDialog = true">New</span>
-          </template>
-          <template #Dialog>
-            <AddWhereHouse @update:data="wearHouseDialog = $eve" />
-          </template>
-        </UpdatedCustomInputSelect>
-        <!-- <CustomSelectInput
-                 New Update => Custom input Select
-        /> -->
+        />
       </div>
 
       <div
@@ -774,7 +837,7 @@ const UpdateActiveTap = (data) => {
         />
       </div>
 
-      <div class="input-wrapper">
+      <div class="input-wrapper col-span-2 md:col-span-1">
         <label for="License Plate Number">
           {{ $t('License Plate No.') }}
         </label>
