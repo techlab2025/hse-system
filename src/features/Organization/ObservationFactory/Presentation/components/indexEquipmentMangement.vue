@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import BlueBack from '@/assets/images/BgGroup.png'
@@ -25,7 +25,6 @@ const Routes = ref([
 ])
 </script>
 <template>
-  <!-- {{ route.query }} -->
   <div class="equipment-sidebar" v-if="!route.query?.isAll">
     <ul>
       <router-link v-for="(route, index) in Routes" :key="index" :to="route.route">
@@ -40,5 +39,11 @@ const Routes = ref([
         </div>
       </router-link>
     </ul>
+  </div>
+</template> -->
+
+<template>
+  <div>
+
   </div>
 </template>
