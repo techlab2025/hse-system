@@ -9,7 +9,7 @@ export default class IndexHazardParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
-  public type: Observation
+  public type: Observation[]
   public projectId: number | null = null
   // public code?: LangEnum
   public projectZoonIds?: number[]
@@ -29,7 +29,7 @@ export default class IndexHazardParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
-    type: Observation,
+    type: Observation[],
     projectId: number | null = null,
     projectZoonIds?: number[],
     projectLocationIds?: number[],
@@ -67,7 +67,7 @@ export default class IndexHazardParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    if (this.type) data['type'] = [this.type]
+    if (this.type) data['type'] = this.type
     if (this.projectId) data['project_id'] = this.projectId
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
