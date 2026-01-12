@@ -9,6 +9,7 @@ import errorImage from '@/assets/images/error.png'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type EditHazardTypeParams from '../../Core/params/editHazardTypeParams'
+import { useRoute } from 'vue-router'
 
 export default class EditHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: EditHazardTypeController
@@ -48,9 +49,11 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
         })
 
         const { user } = useUserStore()
-
+        const route = useRoute()
         await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
+          params?.ParentId
+            ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
+            : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
         )
         // console.log(this.state.value.data)
       } else {
