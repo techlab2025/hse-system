@@ -54,7 +54,7 @@ const fetchHazardType = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  parent_id?: number = ParentId.value,
+  parent_id?: number = route.params.parent_id ? Number(route.params.parent_id) : null,
   parent_type?: HazardTypeParentEnum = route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent,
 ) => {
   const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(parent_id), parent_type)
@@ -66,7 +66,7 @@ onMounted(() => {
 })
 
 const searchHazardType = debounce(() => {
-  fetchHazardType(word.value)
+  fetchHazardType(word.value, currentPage.value, countPerPage.value, 1, route.params.parent_id ? route.params.parent_id : null, route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent)
 })
 
 const deleteHazardType = async (id: number) => {
@@ -259,14 +259,16 @@ watch(() => route.params.parent_id, (newVal) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          addText="Add HazardType"
+        <DataEmpty
+          :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+          :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
           description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No HazardType" />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          addText="Add HazardType"
+        <DataFailed
+          :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+          :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
           description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No HazardType" />
       </template>
