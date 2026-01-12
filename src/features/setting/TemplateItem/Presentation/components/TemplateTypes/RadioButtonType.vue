@@ -12,7 +12,7 @@ import { TextAreaStatusEnum } from '../../../Core/Enum/TextAreaStatusEnum';
 const emit = defineEmits(['update:data'])
 const Answers = ref([
   {
-    title: '',
+    title: 'No',
     isDanger: false,
     isTextAreaRequired: false,
     textarea_type: false,
@@ -21,14 +21,15 @@ const Answers = ref([
 ]);
 
 const addNewAnswer = () => {
-  Answers.value.push({
-    title: '',
-    isDanger: false,
-    isTextAreaRequired: false,
-    textarea_type: false,
-    has_auto_observation: false
-
-  });
+  Answers.value.push(
+    {
+      title: '',
+      isDanger: false,
+      isTextAreaRequired: false,
+      textarea_type: false,
+      has_auto_observation: false
+    },
+  );
   console.log(Answers.value, "Answers.value");
   UpdateData()
 }
@@ -42,6 +43,16 @@ const UpdateData = () => {
   emit('update:data', Answers.value)
 }
 onMounted(() => {
+  Answers.value.push(
+    {
+      title: 'Yes',
+      isDanger: false,
+      isTextAreaRequired: false,
+      textarea_type: false,
+      has_auto_observation: false
+    },
+
+  );
   emit('update:data', Answers.value)
 })
 </script>

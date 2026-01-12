@@ -70,7 +70,7 @@ export default class EditContractorParams implements Params {
     if (this.contactPerson != null) data['contact_person'] = this.contactPerson
     if (this.contactPersonEmail) data['contact_person_email'] = this.contactPersonEmail
     if (this.contactPersonPhone) data['contact_person_phone'] = this.contactPersonPhone
-    if (this.SelectedStatus) data['status'] = this.SelectedStatus
+    if (this.SelectedStatus || this.SelectedStatus === 0) data['status'] = this.SelectedStatus
     if (this.date) data['expiry_date'] = this.date
 
     return data
