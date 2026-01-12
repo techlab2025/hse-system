@@ -63,6 +63,7 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
       //   new OpenWarningDilaog('Item Title Should Be More Than One').openDialog()
       //   return
       // }
+
       if (
         (Number(params?.action) == ActionsEnum.RADIOBUTTON ||
           Number(params?.action) == ActionsEnum.CHECKBOX) &&
