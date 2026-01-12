@@ -297,7 +297,7 @@ const updateData = () => {
       equipmentRentStartDate: deviceStatus.value == EquipmentStatus.OWN ? null : StartDateFormat,
       VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value ? VehicleKm.value : " ",
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
+      SelectedWhereHosue: SelectedWhereHosue.value?.id,
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
     })
     : new AddEquipmentParams({
@@ -319,7 +319,7 @@ const updateData = () => {
       equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
       VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value ? VehicleKm.value : " ",
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
+      SelectedWhereHosue: SelectedWhereHosue.value?.id,
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
 
     })
