@@ -291,13 +291,13 @@ const updateData = () => {
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
-      constructorId: SelectedContractor.value?.id,
+      constructorId: SelectedContractor.value?.id || " ",
       equipmentRentType: deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
       equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
       equipmentRentStartDate: deviceStatus.value == EquipmentStatus.OWN ? null : StartDateFormat,
       VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value ? VehicleKm.value : " ",
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id,
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
     })
     : new AddEquipmentParams({
@@ -313,13 +313,13 @@ const updateData = () => {
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
-      constructorId: SelectedContractor.value?.id,
+      constructorId: SelectedContractor.value?.id || " ",
       equipmentRentType: deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
       equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
       equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
       VehicleKm: activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value ? VehicleKm.value : " ",
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id,
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
       equipmentRentEndDate: deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
 
     })
@@ -437,7 +437,7 @@ const setRentType = (data: TitleInterface) => {
   updateData()
 }
 
-const Rent = ref<string>()
+const Rent = ref<string>(1)
 
 const setRentTime = (time: string) => {
   Rent.value = time.target.value
@@ -450,7 +450,7 @@ const setDecoDate = (date) => {
   updateData()
 }
 
-const StartDate = ref<Date>()
+const StartDate = ref<Date>(new Date())
 
 const setStartDate = (date) => {
   StartDate.value = date
