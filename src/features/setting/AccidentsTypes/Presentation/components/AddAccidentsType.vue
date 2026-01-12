@@ -10,11 +10,12 @@ import AccidentsTypeForm from './AccidentsTypeForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addAccidentsTypeController = AddAccidentsTypeController.getInstance()
 
 const addAccidentsType = async () => {
   await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router)
+  emit(`update:data`)
 }
 const setParams = (data: Params) => {
   params.value = data

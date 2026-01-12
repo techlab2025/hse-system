@@ -9,7 +9,7 @@ import EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEm
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 import { useUserStore } from '@/stores/user'
-import { useToast } from 'primevue/usetoast';
+import { useToast } from 'primevue/usetoast'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -22,8 +22,7 @@ import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleP
 import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
-const toast = useToast();
-
+const toast = useToast()
 
 const emit = defineEmits(['update:data'])
 
@@ -38,23 +37,22 @@ const ConfirmPassword = ref<string>()
 const SerialNumber = ref()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams("", 1, 10, 1, false)
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 1, false)
 
 const indexCertificateController = IndexCertificateController.getInstance()
-const deleteCertificateParams = new IndexCertificateParams("", 0, 0, 0)
+const deleteCertificateParams = new IndexCertificateParams('', 0, 0, 0)
 
 const indexRoleController = IndexRoleController.getInstance()
-const indexRoleParams = new IndexRoleParams("", 0, 0, 0)
+const indexRoleParams = new IndexRoleParams('', 0, 0, 0)
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-const user = useUserStore();
+const user = useUserStore()
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
@@ -100,36 +98,34 @@ const Heirarchy = ref<TitleInterface[]>()
 const role = ref<TitleInterface[]>()
 
 const updateData = () => {
-
   const HeirarchyIds = Heirarchy.value?.map((item) => new HirarachyEmployeeParams(item.id))
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
-      props?.data?.id,
-      Name.value,
-      Phone.value,
-      Email.value,
-      Password.value,
-      ConfirmPassword.value,
-      HeirarchyIds,
-      RoleIds,
-      SerialNumber.value?.SerialNumber,
+        props?.data?.id,
+        Name.value,
+        Phone.value,
+        Email.value,
+        Password.value,
+        ConfirmPassword.value,
+        HeirarchyIds,
+        RoleIds,
+        SerialNumber.value?.SerialNumber,
 
-      // Certificates.value.map((item) => item.id)
-    )
+        // Certificates.value.map((item) => item.id)
+      )
     : new AddOrganizatoinEmployeeParams(
-      Name.value,
-      Phone.value,
-      Email.value,
-      Password.value,
-      ConfirmPassword.value,
-      HeirarchyIds,
-      RoleIds,
-      SerialNumber.value?.SerialNumber,
+        Name.value,
+        Phone.value,
+        Email.value,
+        Password.value,
+        ConfirmPassword.value,
+        HeirarchyIds,
+        RoleIds,
+        SerialNumber.value?.SerialNumber,
 
-      // Certificates.value.map((item) => item.id)
-
-    )
+        // Certificates.value.map((item) => item.id)
+      )
   // console.log(params, "params");
   emit('update:data', params)
 }
@@ -183,9 +179,14 @@ const UpdateConfirmPassword = (data) => {
   updateData()
 }
 
-
 const fields = ref([
-  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
 ])
 const UpdateSerial = (data) => {
   SerialNumber.value = data
@@ -194,40 +195,88 @@ const UpdateSerial = (data) => {
 </script>
 
 <template>
-
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
+    <input
+      id="name"
+      type="text"
+      v-model="Name"
+      @input="UpdateName"
+      :placeholder="$t('enter your name')"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
-      @update:value="UpdateSerial" />
+  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :isAuto="true"
+      :switch_reverse="true"
+      @update:value="UpdateSerial"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>
-    <input id="phone" type="tel" v-model="Phone" @input="UpdatePhone" :placeholder="$t('enter your phone')" />
+    <input
+      id="phone"
+      type="tel"
+      v-model="Phone"
+      @input="UpdatePhone"
+      :placeholder="$t('enter your phone')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">{{ $t('Email') }}</label>
-    <input id="email" type="email" v-model="Email" @input="UpdateEmail" :placeholder="$t('enter your email')" />
+    <input
+      id="email"
+      type="email"
+      v-model="Email"
+      @input="UpdateEmail"
+      :placeholder="$t('enter your email')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input id="password" type="text" min="8" v-model="Password" @input="UpdatePassword"
-      :placeholder="$t('enter your password')" />
+    <input
+      id="password"
+      type="text"
+      min="8"
+      v-model="Password"
+      @input="UpdatePassword"
+      :placeholder="$t('enter your password')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password_confirmation">{{ $t('confirm_password') }}</label>
-    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
-      :placeholder="$t('enter your confirm password')" />
+    <input
+      id="password_confirmation"
+      type="text"
+      min="8"
+      v-model="ConfirmPassword"
+      @input="UpdateConfirmPassword"
+      :placeholder="$t('enter your confirm password')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-      :params="HerikalyParams" :label="$t('Job Description')" :type="2" :placeholder="$t('Select Heirarchy')" />
+    <CustomSelectInput
+      :modelValue="Heirarchy"
+      @update:modelValue="setHeirarchy"
+      :controller="indexHerikalyController"
+      :params="HerikalyParams"
+      :label="$t('Job Description')"
+      :type="2"
+      :placeholder="$t('Select Heirarchy')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
-      :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
+    <CustomSelectInput
+      :modelValue="role"
+      @update:modelValue="setRole"
+      :controller="indexRoleController"
+      :params="indexRoleParams"
+      :label="$t('permissions')"
+      :type="2"
+      :placeholder="$t('Select Role')"
+    />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

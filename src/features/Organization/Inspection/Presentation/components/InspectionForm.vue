@@ -31,6 +31,10 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 /* Equipment */
 import IndexEquipmentController from '@/features/_templateFeature/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+// import AddInspection from './AddInspection.vue'
+import AddEquipment from '@/features/_templateFeature/Presentation/components/AddEquipment.vue'
+import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 
 /* =========================
  * Route & Props
@@ -65,8 +69,6 @@ interface InspectionForm {
   SelectedEquipment: number
 }
 
-
-
 // Assign To (Machine / Employee / Zone)
 const AssignToOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: AssignToTypeEnum.MACHINE, title: 'Machine' }),
@@ -85,8 +87,6 @@ const TempalteIds = ref<number>()
 const SelectedEquipment = ref<TitleInterface>()
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1, null, false)
-
-
 
 /**
  * Build period tasks based on selected period type
@@ -109,18 +109,16 @@ const updateData = () => {
   const periodTasks: TaskPeriodParams[] = []
 
   if (data.periodType !== PeriodTypeEnum.DAILY) {
-    data.periodByday?.forEach(item => {
+    data.periodByday?.forEach((item) => {
       periodTasks.push(new TaskPeriodParams(null, item.id, null))
     })
 
-    data.PeridWithDate?.forEach(item => {
+    data.PeridWithDate?.forEach((item) => {
       periodTasks.push(new TaskPeriodParams(null, null, item.id))
     })
 
-    data.bydates?.forEach(item => {
-      periodTasks.push(
-        new TaskPeriodParams(null, null, formatJoinDate(item))
-      )
+    data.bydates?.forEach((item) => {
+      periodTasks.push(new TaskPeriodParams(null, null, formatJoinDate(item)))
     })
   }
 
@@ -131,33 +129,33 @@ const updateData = () => {
   /* ---- Decide Add or Edit ---- */
   const params = props.data?.id
     ? new EditInspectionParams(
-      props.data.id,
-      SelectedAssigned.value,
-      DataParams.value?.morph?.id,
-      DataParams.value?.TempalteIds,
-      data.inspectionType,
-      data.periodType,
-      37,
-      periodTasks
-    )
+        props.data.id,
+        SelectedAssigned.value,
+        DataParams.value?.morph?.id,
+        DataParams.value?.TempalteIds,
+        data.inspectionType,
+        data.periodType,
+        37,
+        periodTasks,
+      )
     : new AddInspectionParams(
-      id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
-      DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
-      DataParams.value?.TempalteIds || TempalteIds.value,
-      data.inspectionType || InspectionTypeEnum?.DAY,
-      data.periodType || PeriodTypeEnum?.DAILY,
-      DataParams.value?.ProjectId || null,
-      periodTasks,
-      data.onceday,
-      data.fromDate,
-      null,
-      DataParams.value?.ProjectZoneId,
-      IsInLibrary.value,
-      DataParams.value?.SelectedEquipment,
-    )
+        id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
+        DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
+        DataParams.value?.TempalteIds || TempalteIds.value,
+        data.inspectionType || InspectionTypeEnum?.DAY,
+        data.periodType || PeriodTypeEnum?.DAILY,
+        DataParams.value?.ProjectId || null,
+        periodTasks,
+        data.onceday,
+        data.fromDate,
+        null,
+        DataParams.value?.ProjectZoneId,
+        IsInLibrary.value,
+        DataParams.value?.SelectedEquipment,
+      )
 
-  console.log(data.inspectionType, "data.inspectionType");
-  console.log(IsInLibrary.value, "IsInLibrary.value");
+  console.log(data.inspectionType, 'data.inspectionType')
+  console.log(IsInLibrary.value, 'IsInLibrary.value')
   emit('update:data', params)
 }
 
@@ -189,64 +187,142 @@ const setEquipment = (data: TitleInterface) => {
   updateData()
 }
 
-
 watch(
   () => props.data,
-  () => { },
-  { immediate: true }
+  () => {},
+  { immediate: true },
 )
 const IsInLibrary = ref()
+const inspectionDoalouge = ref(false)
 </script>
 
 <template>
   <!-- Page Header -->
   <div class="col-span-6 md:col-span-6">
-    <PagesHeader title="Task Assignment Center"
-      subtitle="Distribute responsibilities across users and zones to streamline project workflows" />
+    <PagesHeader
+      title="Task Assignment Center"
+      subtitle="Distribute responsibilities across users and zones to streamline project workflows"
+    />
   </div>
 
   <!-- Assign To Selector (only in create mode) -->
   <div class="col-span-6 md:col-span-6" v-if="!id">
-    <TaskAssignTo title="Assign task to" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
+    <TaskAssignTo
+      title="Assign task to"
+      :options="AssignToOptions"
+      @update:data="GetSelectedAssigned"
+    />
   </div>
 
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <!-- Main Inspection Details -->
-    <div class="inspection-details grid grid-cols-6 gap-4" :class="SelectedAssigned === AssignToTypeEnum.ZONE || id || SelectedAssigned === AssignToTypeEnum.MACHINE
-      ? 'full-width'
-      : ''">
+    <div
+      class="inspection-details grid grid-cols-6 gap-4"
+      :class="
+        SelectedAssigned === AssignToTypeEnum.ZONE ||
+        id ||
+        SelectedAssigned === AssignToTypeEnum.MACHINE
+          ? 'full-width'
+          : ''
+      "
+    >
       <!-- Machine Selection -->
+
+      <!-- <CustomSelectInput
+                 New Update => Custom input Select inspection Form
+        /> -->
+
       <div class="input-wrapper col-span-6 pt-15 md:col-span-3" v-if="!id">
-        <CustomSelectInput v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
-          :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
-          :label="$t('Equipment')" placeholder="select your Machine" @update:modelValue="setEquipment" />
+        <!-- <CustomSelectInput 
+        v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" 
+        class="input"
+          :modelValue="SelectedEquipment" 
+          :controller="indexEquipmentController"
+           :params="indexEquipmentParams"
+          :label="$t('Equipment')"
+           placeholder="select your Machine"
+            @update:modelValue="setEquipment" /> -->
+
+        <UpdatedCustomInputSelect
+          v-if="SelectedAssigned === AssignToTypeEnum.MACHINE"
+          class="input"
+          :modelValue="SelectedEquipment"
+          :controller="indexEquipmentController"
+          :params="indexEquipmentParams"
+          :label="$t('Equipment')"
+          placeholder="select your Machine"
+          @update:modelValue="setEquipment"
+          :isDialog="true"
+          :dialogVisible="inspectionDoalouge"
+          @close="inspectionDoalouge = false"
+        >
+          <template #LabelHeader>
+            <span class="add-dialog" @click="inspectionDoalouge = true">New</span>
+          </template>
+          <template #Dialog>
+            <AddFullEquipment @update:data="inspectionDoalouge = false" />
+          </template>
+        </UpdatedCustomInputSelect>
       </div>
 
       <!-- Employee Form -->
-      <div class="input-wrapper col-span-6 md:col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id">
+      <div
+        class="input-wrapper col-span-6 md:col-span-12"
+        v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id"
+      >
         <InspectionEmployeeForm @update:data="UpdateFormData" />
       </div>
 
       <!-- Zones Form -->
 
-      <div class="input-wrapper col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id">
+      <div
+        class="input-wrapper col-span-12"
+        v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id"
+      >
         <InspectionZonesForm @update:data="UpdateFormData" />
       </div>
 
       <!-- Templates -->
-      <div class="input-wrapper col-span-6 md:col-span-3" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
-        <InspectionTemplateDialog @update:isInLibrary="IsInLibrary = $event" @update:data="GetTemplateId" />
+      <div
+        class="input-wrapper col-span-6 md:col-span-3"
+        v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
+      >
+        <InspectionTemplateDialog
+          @update:isInLibrary="IsInLibrary = $event"
+          @update:data="GetTemplateId"
+        />
       </div>
 
       <!-- General Inspection Data -->
-      <div class="input-wrapper col-span-6" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
+      <div
+        class="input-wrapper col-span-6"
+        v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
+      >
         <InspectionGeneralForm @update:data="GetGeneralData" />
       </div>
-
     </div>
 
     <!-- Employee Tasks Preview -->
-    <EmployeeTasksCard v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id" :employee_id="DataParams?.morph?.id"
-      :employee_name="DataParams?.morph?.title" />
+    <EmployeeTasksCard
+      v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id"
+      :employee_id="DataParams?.morph?.id"
+      :employee_name="DataParams?.morph?.title"
+    />
   </div>
 </template>
+<style scoped>
+.add-dialog {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  cursor: pointer;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-family: 'Regular';
+}
+
+.add-dialog svg {
+  width: 18px;
+  height: 18px;
+}
+</style>

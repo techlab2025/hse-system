@@ -14,7 +14,10 @@ const addObserverationTypeController = AddObserverationTypeController.getInstanc
 
 const addObserverationType = async () => {
   console.log(params.value, 'params')
-  await addObserverationTypeController.addObserverationType(params.value as AddObserverationTypeParams, router)
+  await addObserverationTypeController.addObserverationType(
+    params.value as AddObserverationTypeParams,
+    router,
+  )
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -24,11 +27,10 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addObserverationType">
-
     <ObserverationTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button @click="$emit(`update:data`)" type="submit" class="btn btn-primary">Add</button>
     </div>
   </form>
 </template>

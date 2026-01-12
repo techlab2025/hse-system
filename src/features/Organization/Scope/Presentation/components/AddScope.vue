@@ -7,12 +7,14 @@ import type AddScopeParams from '../../Core/params/addScopeParams'
 import ScopeForm from './ScopeForm.vue'
 
 const router = useRouter()
+const emit = defineEmits(['update:data'])
 const params = ref<Params | null>(null)
 
 const addScopeController = AddScopeController.getInstance()
 
 const addScope = async () => {
   await addScopeController.addScope(params.value as AddScopeParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -22,7 +24,6 @@ const setParams = (data: Params) => {
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addScope">
     <ScopeForm @update:data="setParams" />
-
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
