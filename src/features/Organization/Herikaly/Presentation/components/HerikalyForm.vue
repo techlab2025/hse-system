@@ -101,8 +101,6 @@ watch(
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
-
-
     }
   },
   { immediate: true },
@@ -116,8 +114,13 @@ watch(
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
-      @update:modelValue="setLangs" />
+    <LangTitleInput
+      type="text"
+      :langs="langDefault"
+      :modelValue="langs"
+      :label="$t('title')"
+      @update:modelValue="setLangs"
+    />
   </div>
   <!-- <div class="input-wrapper col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="Certificate" :controller="indexCertificateController"

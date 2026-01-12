@@ -26,7 +26,7 @@ const setParams = (data: Params) => {
     <WhereHouseForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
+      <button type="submit" @click="$emit(`update:data`)" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

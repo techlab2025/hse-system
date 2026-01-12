@@ -8,7 +8,7 @@ import type Params from '@/base/core/Params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 import PlusIcon from '../icons/PlusIcon.vue'
-import Dialog from 'primevue/dialog';
+import Dialog from 'primevue/dialog'
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -67,7 +67,7 @@ const isMultiselect = computed(() => Number(type.value) === 2)
 const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
 const mergedOptions = computed(() => staticOptions?.value ?? dynamicOptions.value)
 const multiselectProps = computed(() =>
-  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {}
+  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
 )
 
 // Value handling
@@ -161,14 +161,21 @@ async function reloadData(): Promise<void> {
   normalizedValue.value = isMultiselect.value ? [] : null
 }
 
-
 const DialogVisable = ref(props.dialogVisible)
-watch(() => props.dialogVisible, (newVal) => {
-  DialogVisable.value = newVal
-  if (!newVal) {
-    reloadData()
-  }
-})
+watch(
+  () => props.dialogVisible,
+  (newVal) => {
+    DialogVisable.value = newVal
+    if (!newVal) {
+      reloadData()
+    }
+  },
+)
+
+const closeDailog = () => {
+  // reloadData()
+  emit('close', false)
+}
 </script>
 
 <template>
@@ -176,8 +183,11 @@ watch(() => props.dialogVisible, (newVal) => {
     <slot v-if="!hasHeader">
       <div class="flex items-center">
         <slot name="reloadHeader"></slot>
-        <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-          @click="reloadData">
+        <span
+          v-if="enableReload"
+          class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+          @click="reloadData"
+        >
           <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
           <IconBackStage />
         </span>
@@ -196,19 +206,32 @@ watch(() => props.dialogVisible, (newVal) => {
   </div>
 
   <slot v-if="!hascontent">
-    <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-      class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-      :empty-message="message" />
+    <component
+      :is="componentType"
+      v-model="normalizedValue"
+      :options="mergedOptions"
+      :placeholder="placeholder"
+      class="input-select w-full"
+      option-label="title"
+      v-bind="multiselectProps"
+      filter
+      :loading="loading"
+      :empty-message="message"
+    />
     <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
   </slot>
   <slot v-else name="content"> </slot>
   <div v-if="isDialog">
-    <Dialog v-model:visible="DialogVisable" modal :dismissable-mask="true" :style="{ width: '50rem' }">
+    <Dialog
+      @hide="closeDailog"
+      v-model:visible="DialogVisable"
+      modal
+      :dismissable-mask="true"
+      :style="{ width: '50rem' }"
+    >
       <slot name="Dialog"></slot>
     </Dialog>
   </div>
-
-
 </template>
 
 <style scoped lang="scss">

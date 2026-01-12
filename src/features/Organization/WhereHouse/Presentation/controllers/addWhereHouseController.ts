@@ -30,8 +30,7 @@ export default class AddWhereHouseController extends ControllerInterface<WhereHo
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<WhereHouseModel> =
-        await this.AddWhereHouseUseCase.call(params)
+      const dataState: DataState<WhereHouseModel> = await this.AddWhereHouseUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -40,7 +39,9 @@ export default class AddWhereHouseController extends ControllerInterface<WhereHo
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/where-house')
+        if (router.currentRoute.value.path.includes('where-house')) {
+          if (!draft) await router.push('/organization/where-house')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -12,10 +12,13 @@ import DatePicker from 'primevue/datepicker'
 import { ContractorStatusEnum } from '../../Core/Enum/ContractorStatusEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import ScopeIdParams from '../../Core/params/AddscopesParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
 const emit = defineEmits(['update:data'])
 
 const indexScopeController = IndexScopeController.getInstance()
 const indexScopeParams = new IndexScopeParams('', 1, 10, 1)
+const scopeDialogRef = ref(false)
 
 const props = defineProps<{
   data?: ContractorDetailsModel
@@ -28,32 +31,32 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editContractorParams(
-      props.data?.id! ?? 0,
-      Name.value,
-      phoneNumber.value,
-      Scopes,
-      CompanyEmail.value,
-      CompanyAddress.value,
-      contactPerson.value,
-      contactPersonEmail.value,
-      contactPersonPhone.value,
-      SelectedStatus.value ? SelectedStatus.value?.id : null,
-      formatJoinDate(date.value)
-    )
+        props.data?.id! ?? 0,
+        Name.value,
+        phoneNumber.value,
+        Scopes,
+        CompanyEmail.value,
+        CompanyAddress.value,
+        contactPerson.value,
+        contactPersonEmail.value,
+        contactPersonPhone.value,
+        SelectedStatus.value ? SelectedStatus.value?.id : null,
+        formatJoinDate(date.value),
+      )
     : new AddContractorParams(
-      Name.value,
-      phoneNumber.value,
-      Scopes,
-      CompanyEmail.value ? CompanyEmail.value : " ",
-      CompanyAddress.value ? CompanyAddress.value : " ",
-      contactPerson.value ? contactPerson.value : " ",
-      contactPersonEmail.value ? contactPersonEmail.value : " ",
-      contactPersonPhone.value ? contactPersonPhone.value : " ",
-      SelectedStatus.value ? SelectedStatus.value?.id : 0,
-      formatJoinDate(date.value)
-    )
+        Name.value,
+        phoneNumber.value,
+        Scopes,
+        CompanyEmail.value ? CompanyEmail.value : ' ',
+        CompanyAddress.value ? CompanyAddress.value : ' ',
+        contactPerson.value ? contactPerson.value : ' ',
+        contactPersonEmail.value ? contactPersonEmail.value : ' ',
+        contactPersonPhone.value ? contactPersonPhone.value : ' ',
+        SelectedStatus.value ? SelectedStatus.value?.id : 0,
+        formatJoinDate(date.value),
+      )
 
-  console.log("params", params);
+  console.log('params', params)
   emit('update:data', params)
 }
 const Scope = ref<TitleInterface[]>()
@@ -69,18 +72,17 @@ const StatusList = ref<TitleInterface[]>([
   new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
 ])
 
-
 watch(
   [() => props.data],
   ([newData]) => {
     if (newData) {
-      console.log(newData.scopes, "newData.scopes");
+      console.log(newData.scopes, 'newData.scopes')
       Scope.value = newData.scopes.map(
         (item) =>
           new TitleInterface({
             id: item.id,
             title: item.titles?.[0]?.title,
-          })
+          }),
       )
 
       Name.value = newData.name
@@ -94,15 +96,12 @@ watch(
       SelectedStatus.value = StatusList.value.find((item) => item?.id == newData.SelectedStatus)
       date.value = newData.date
     }
-
   },
   { immediate: true },
 )
 
-
-
 const setPhoneNumber = (data) => {
-  console.log(data.target.value);
+  console.log(data.target.value)
   phoneNumber.value = data.target.value
   updateData()
 }
@@ -121,12 +120,10 @@ const setCompanyEmail = (data: string) => {
   updateData()
 }
 
-
 const setCompanyAddress = (data: string) => {
   CompanyAddress.value = data.target.value
   updateData()
 }
-
 
 const setcontactPerson = (data: string) => {
   contactPerson.value = data.target.value
@@ -143,12 +140,10 @@ const setcontactPersonPhone = (data: string) => {
   updateData()
 }
 
-
 const setExpiryDate = (data: Date) => {
   date.value = data
   updateData()
 }
-
 
 const setStatus = (data: TitleInterface) => {
   SelectedStatus.value = data
@@ -163,51 +158,140 @@ onMounted(() => {
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
+    <input
+      type="text"
+      id="name"
+      class="input"
+      v-model="Name"
+      @input="setName"
+      placeholder="Enter Name "
+    />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
     <label for="company_number">{{ $t('contractor_number') }}</label>
-    <input type="text" id="company_number" min="1" class="input" v-model="phoneNumber" @input="setPhoneNumber"
-      placeholder="Enter contractor Number " />
+    <input
+      type="text"
+      id="company_number"
+      min="1"
+      class="input"
+      v-model="phoneNumber"
+      @input="setPhoneNumber"
+      placeholder="Enter contractor Number "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
-    <input type="email" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
-      placeholder="Enter contractor Email " />
+    <input
+      type="email"
+      id="company_email"
+      class="input"
+      v-model="CompanyEmail"
+      @input="setCompanyEmail"
+      placeholder="Enter contractor Email "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_address">{{ $t('contractor_address') }}</label>
-    <input type="text" id="company_address" class="input" v-model="CompanyAddress" @input="setCompanyAddress"
-      placeholder="Enter contractor Adress " />
+    <input
+      type="text"
+      id="company_address"
+      class="input"
+      v-model="CompanyAddress"
+      @input="setCompanyAddress"
+      placeholder="Enter contractor Adress "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person">{{ $t('contact_person') }}</label>
-    <input type="text" id="contact_person" class="input" v-model="contactPerson" @input="setcontactPerson"
-      placeholder="Enter Contact Person " />
+    <input
+      type="text"
+      id="contact_person"
+      class="input"
+      v-model="contactPerson"
+      @input="setcontactPerson"
+      placeholder="Enter Contact Person "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_email">{{ $t('contact_person_email') }}</label>
-    <input type="text" id="contact_person_email" class="input" v-model="contactPersonEmail"
-      @input="setcontactPersonEmail" placeholder="Enter Contact Person Email" />
+    <input
+      type="text"
+      id="contact_person_email"
+      class="input"
+      v-model="contactPersonEmail"
+      @input="setcontactPersonEmail"
+      placeholder="Enter Contact Person Email"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
-    <input type="text" id="contact_person_phone" class="input" v-model="contactPersonPhone"
-      @input="setcontactPersonPhone" placeholder="Enter Contact Person Phone" />
+    <input
+      type="text"
+      id="contact_person_phone"
+      class="input"
+      v-model="contactPersonPhone"
+      @input="setcontactPersonPhone"
+      placeholder="Enter Contact Person Phone"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="Scope" class="input" :controller="indexScopeController" :params="indexScopeParams"
-      label="Scope" id="Scope" placeholder="Select Scope" @update:modelValue="setScope" :type="2" />
+    <!-- <CustomSelectInput 
+    :modelValue="Scope"
+        class="input" 
+        :controller="indexScopeController" 
+        :params="indexScopeParams"
+        label="Scope"
+        id="Scope"
+        placeholder="Select Scope"
+        @update:modelValue="setScope" 
+        :type="2" 
+        
+        /> -->
+
+    <UpdatedCustomInputSelect
+      :modelValue="Scope"
+      class="input"
+      :controller="indexScopeController"
+      :params="indexScopeParams"
+      label="Scope"
+      id="Scope"
+      placeholder="Select Scope"
+      @update:modelValue="setScope"
+      :type="2"
+      @close="scopeDialogRef = false"
+      :isDialog="true"
+      :dialogVisible="scopeDialogRef"
+    >
+      <template #LabelHeader>
+        <span class="add-dialog" @click="scopeDialogRef = true">New</span>
+      </template>
+      <template #Dialog>
+        <AddScope @update:data="scopeDialogRef = false" />
+      </template>
+    </UpdatedCustomInputSelect>
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList" label="Status"
-      id="Status" placeholder="Select Status" @update:modelValue="setStatus" />
+    <CustomSelectInput
+      :modelValue="SelectedStatus"
+      class="input"
+      :static-options="StatusList"
+      label="Status"
+      id="Status"
+      placeholder="Select Status"
+      @update:modelValue="setStatus"
+    />
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
-    <DatePicker :modelValue="date" class="input" label="Date" id="expiry_date" placeholder="Contruct Expiry Date"
-      @update:modelValue="setExpiryDate" />
+    <DatePicker
+      :modelValue="date"
+      class="input"
+      label="Date"
+      id="expiry_date"
+      placeholder="Contruct Expiry Date"
+      @update:modelValue="setExpiryDate"
+    />
   </div>
 </template>

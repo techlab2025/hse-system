@@ -31,7 +31,7 @@ const setParams = (data: Params) => {
           <span>Cancel</span>
         </router-link>
 
-        <button type="submit" class="btn btn-primary w-full">
+        <button  @click="$emit(`update:data`)" type="submit" class="btn btn-primary w-full">
           <span>Add Equipment</span>
         </button>
       </div>
