@@ -52,11 +52,12 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         })
 
         const { user } = useUserStore()
-
-        if (!draft)
-          await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
-          )
+        if (router.currentRoute.value.path.includes('equipment/add')) {
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
+            )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

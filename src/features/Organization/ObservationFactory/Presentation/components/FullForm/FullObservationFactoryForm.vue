@@ -50,6 +50,11 @@ import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
 import { HazardTypeParentEnum } from '@/features/setting/HazardType/Core/Enums/HazardTypeEnum'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddObserverationType from '@/features/setting/ObserverationType/Presentation/components/AddObserverationType.vue'
+import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
+import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
+import AddAccidentsType from '@/features/setting/AccidentsTypes/Presentation/components/AddAccidentsType.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -60,106 +65,110 @@ const date = ref<string>(new Date())
 const descripe = ref<string>('')
 const image = ref([])
 const route = useRoute()
-const ObservationFactoryType = ref(route?.path?.includes('incedant') ? Observation.AccidentsType : route?.path?.includes('hazard') ? Observation.HazardType : Observation.ObservationType)
+const ObservationFactoryType = ref(
+  route?.path?.includes('incedant')
+    ? Observation.AccidentsType
+    : route?.path?.includes('hazard')
+      ? Observation.HazardType
+      : Observation.ObservationType,
+)
 const saveStatus = ref<SaveStatusEnum | null>(SaveStatusEnum.NotSaved)
 const riskLevel = ref<RiskLevelEnum | null>(RiskLevelEnum.Low)
 const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
-  console.log(Accidents?.value?.isAnotherMeeting, "Accidents?.value?.isAnotherMeeting")
+  console.log(Accidents?.value?.isAnotherMeeting, 'Accidents?.value?.isAnotherMeeting')
   const params = props.data?.id
     ? new EditHazardParams(
-      props.data?.id! ?? 0,
-      text.value,
-      descripe.value,
-      image.value?.map((el) => el?.file),
-      0,
-      ObservationFactoryType.value,
-      SelectedMachine.value?.id ?? null,
-      ZoneIds.value ?? 0,
-      SelectedProjectId.value,
-      0,
-      0,
-      0,
-      '',
-      0,
-      0,
-      date.value ?? '',
-      [],
-      0,
-    )
+        props.data?.id! ?? 0,
+        text.value,
+        descripe.value,
+        image.value?.map((el) => el?.file),
+        0,
+        ObservationFactoryType.value,
+        SelectedMachine.value?.id ?? null,
+        ZoneIds.value ?? 0,
+        SelectedProjectId.value,
+        0,
+        0,
+        0,
+        '',
+        0,
+        0,
+        date.value ?? '',
+        [],
+        0,
+      )
     : new AddHazardParams({
-      title: text.value ?? null,
-      description: descripe.value ?? null,
-      image: image.value?.map(el => el?.file) ?? null,
-      typeId: SelectedObservationType.value?.id || HazardType?.value?.id || AccidentsType?.value?.id || null,
-      type: ObservationFactoryType.value,
-      equipmentId: SelectedMachine.value?.id ?? null,
-      zoonId: ZoneIds.value ?? null,
-      projectId: SelectedProjectId.value ?? null,
-      isResult: 0,
-      riskLevel: riskLevel.value,
-      saveStatus: saveStatus.value,
-      action: preventive_action.value ?? null,
-      isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? isNearMiss.value ? 1 : 0 : 0,
-      capaStatus: 0,
-      date: date.value ?? null,
-      capa: [],
-      isAction: takeAction.value === "yes" ? 1 : 0,
-      isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
-      isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
-      isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
-      Injury:
-        Accidents?.value?.isAnotherMeeting === 1
-          ? [
-            new InjuryParams(
-              Accidents?.value?.employeeId || [],
-              Accidents?.value?.employeeName || '',
-              Accidents?.value?.text || null,
-              Accidents?.value?.infectionTypeId || 0,
-              Accidents?.value?.isWorkStopped == 1 ? 0 : 1,
-              Accidents?.value?.accidentsImages || []
-            )
-          ]
-          : [],
-      deaths:
-        Fatalities?.value?.isAnotherMeeting === 1
-          ? [
-            new DethParams(
-              Fatalities?.value?.text || '',
-              Fatalities?.value?.SelectedEmployee || 0,
-              Fatalities?.value?.img || []
-            )
-          ]
-          : [],
-      witnesses:
-        witnesses?.value?.isAnotherMeeting === 1
-          ? witnesses?.value?.AllWitnessesData?.map(
-            (w: any) =>
-              new WitnessParams(
-                w?.text || [],
-                w?.employee?.id || '',
-                null
+        title: text.value ?? null,
+        description: descripe.value ?? null,
+        image: image.value?.map((el) => el?.file) ?? null,
+        typeId:
+          SelectedObservationType.value?.id ||
+          HazardType?.value?.id ||
+          AccidentsType?.value?.id ||
+          null,
+        type: ObservationFactoryType.value,
+        equipmentId: SelectedMachine.value?.id ?? null,
+        zoonId: ZoneIds.value ?? null,
+        projectId: SelectedProjectId.value ?? null,
+        isResult: 0,
+        riskLevel: riskLevel.value,
+        saveStatus: saveStatus.value,
+        action: preventive_action.value ?? null,
+        isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? (isNearMiss.value ? 1 : 0) : 0,
+        capaStatus: 0,
+        date: date.value ?? null,
+        capa: [],
+        isAction: takeAction.value === 'yes' ? 1 : 0,
+        isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
+        isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
+        isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
+        Injury:
+          Accidents?.value?.isAnotherMeeting === 1
+            ? [
+                new InjuryParams(
+                  Accidents?.value?.employeeId || [],
+                  Accidents?.value?.employeeName || '',
+                  Accidents?.value?.text || null,
+                  Accidents?.value?.infectionTypeId || 0,
+                  Accidents?.value?.isWorkStopped == 1 ? 0 : 1,
+                  Accidents?.value?.accidentsImages || [],
+                ),
+              ]
+            : [],
+        deaths:
+          Fatalities?.value?.isAnotherMeeting === 1
+            ? [
+                new DethParams(
+                  Fatalities?.value?.text || '',
+                  Fatalities?.value?.SelectedEmployee || 0,
+                  Fatalities?.value?.img || [],
+                ),
+              ]
+            : [],
+        witnesses:
+          witnesses?.value?.isAnotherMeeting === 1
+            ? witnesses?.value?.AllWitnessesData?.map(
+                (w: any) => new WitnessParams(w?.text || [], w?.employee?.id || '', null),
               )
-          )
-          : [],
+            : [],
 
-      severity: 0,
-      Likelihood: 0,
-      time: SelctedTime.value,
-      code: SerialNumber.value?.SerialNumber,
-      place: PlaceText.value,
-      isWorkStopped: isWorkStopped.value ? 1 : 0,
-      HazardTypeId: HazardType.value?.id,
-      HazardSubtypeId: SubHazardType.value?.id
-
-    })
-  console.log(isWorkStopped.value, "isWorkStopped.value");
+        severity: 0,
+        Likelihood: 0,
+        time: SelctedTime.value,
+        code: SerialNumber.value?.SerialNumber,
+        place: PlaceText.value,
+        isWorkStopped: isWorkStopped.value ? 1 : 0,
+        HazardTypeId: HazardType.value?.id,
+        HazardSubtypeId: SubHazardType.value?.id,
+      })
+  console.log(isWorkStopped.value, 'isWorkStopped.value')
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
 const indexEquipmentController = IndexEquipmentController.getInstance()
@@ -168,7 +177,6 @@ const setMachine = (data: TitleInterface | null) => {
   SelectedMachine.value = data
   updateData()
 }
-
 
 const ZoneIds = ref<number>()
 const GetZones = (data: number) => {
@@ -180,7 +188,6 @@ const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
-
 
 const Projects = ref<MyProjectsModel[]>([])
 const FetchMyProjects = async () => {
@@ -198,7 +205,7 @@ onMounted(() => {
 const SelectedProjectId = ref<number>()
 const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
-  updateData();
+  updateData()
 }
 
 const Accidents = ref()
@@ -209,35 +216,38 @@ const UpdateAccidents = (data: any) => {
 const witnesses = ref()
 const Updatewitnesses = (data: any) => {
   witnesses.value = data
-  console.log(witnesses.value, "witnesses.value");
+  console.log(witnesses.value, 'witnesses.value')
   updateData()
 }
 const Fatalities = ref()
 const UpdateFatalities = (data: any) => {
   Fatalities.value = data
-  console.log(Fatalities.value, "Fatalities.value");
+  console.log(Fatalities.value, 'Fatalities.value')
   updateData()
 }
-const takeAction = ref<'yes' | 'no' | null>("no")
+const takeAction = ref<'yes' | 'no' | null>('no')
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 const solved = ref<'yes' | 'no' | null>()
 const preventive_action = ref<string>()
-
 
 const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
 const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
 ])
 
 const UpdateSerial = (data) => {
   SerialNumber.value = data
   updateData()
 }
-
-
 
 const SelectedSeverity = ref<TitleInterface>()
 const SeverityList = ref<TitleInterface[]>([
@@ -267,46 +277,56 @@ const setLikelihood = (data: TitleInterface) => {
   CalcObservationLevel()
 }
 
-
 const ObservationLevelValue = ref<number>()
 const CalcObservationLevel = () => {
-  ObservationLevelValue.value = Number(Number(SelectedSeverity.value?.id) * Number(SelectedLikelihood.value?.id))
+  ObservationLevelValue.value = Number(
+    Number(SelectedSeverity.value?.id) * Number(SelectedLikelihood.value?.id),
+  )
 
   if (ObservationLevelValue.value > 1 && ObservationLevelValue.value < 5) {
     riskLevel.value = RiskLevelEnum.Low
-  }
-  else if (ObservationLevelValue.value > 4 && ObservationLevelValue.value < 10) {
+  } else if (ObservationLevelValue.value > 4 && ObservationLevelValue.value < 10) {
     riskLevel.value = RiskLevelEnum.Medium
-  }
-  else if (ObservationLevelValue.value > 9 && ObservationLevelValue.value < 16) {
+  } else if (ObservationLevelValue.value > 9 && ObservationLevelValue.value < 16) {
+    riskLevel.value = RiskLevelEnum.High
+  } else if (ObservationLevelValue.value > 15 && ObservationLevelValue.value < 25) {
     riskLevel.value = RiskLevelEnum.High
   }
-  else if (ObservationLevelValue.value > 15 && ObservationLevelValue.value < 25) {
-    riskLevel.value = RiskLevelEnum.High
-  }
-
 }
 
-watch(() => route.path, (newVal) => {
-  ObservationFactoryType.value = newVal.includes('incedant') ? Observation.AccidentsType : newVal.includes('hazard') ? Observation.HazardType : Observation.ObservationType
-  console.log(ObservationFactoryType.value, "ObservationFactoryType.value");
-}, { immediate: true })
-
+watch(
+  () => route.path,
+  (newVal) => {
+    ObservationFactoryType.value = newVal.includes('incedant')
+      ? Observation.AccidentsType
+      : newVal.includes('hazard')
+        ? Observation.HazardType
+        : Observation.ObservationType
+    console.log(ObservationFactoryType.value, 'ObservationFactoryType.value')
+  },
+  { immediate: true },
+)
 
 const GetObservationType = (type) => {
   return Observation[type]
 }
 
 const indexObservatioTyepController = IndexObserverationTypeController.getInstance()
-const indexObservationTypeParams = new IndexObserverationTypeParams("", 1, 10, 0)
+const indexObservationTypeParams = new IndexObserverationTypeParams('', 1, 10, 0)
 const SelectedObservationType = ref<TitleInterface>()
 const setSelectedObservationType = (data: TitleInterface) => {
   SelectedObservationType.value = data
   updateData()
 }
 
-
-const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 0, null, HazardTypeParentEnum?.Parent)
+const indexHazardTypeParams = new IndexHazardTypeParams(
+  '',
+  1,
+  10,
+  0,
+  null,
+  HazardTypeParentEnum?.Parent,
+)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
 
 const HazardType = ref<TitleInterface>()
@@ -315,7 +335,9 @@ const setHazardType = (data: TitleInterface) => {
   updateData()
 }
 
-const indexSubHazardTypeParams = ref(new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child))
+const indexSubHazardTypeParams = ref(
+  new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child),
+)
 const indexSubHazardTypeController = IndexHazardTypeController.getInstance()
 const SubHazardType = ref<TitleInterface>()
 const setSubHazardType = (data: TitleInterface) => {
@@ -324,7 +346,7 @@ const setSubHazardType = (data: TitleInterface) => {
 }
 
 const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
-const indexAccidentsTypeParams = new IndexAccidentsTypeParams("", 1, 10, 0)
+const indexAccidentsTypeParams = new IndexAccidentsTypeParams('', 1, 10, 0)
 const AccidentsType = ref<TitleInterface>()
 const setAccidentsType = (data: TitleInterface) => {
   AccidentsType.value = data
@@ -337,8 +359,6 @@ const UpdateWorkStatus = (data) => {
   updateData()
 }
 
-
-
 const handleObservationLevel = (data: any) => {
   riskLevel.value = data.level
   isNearMiss.value = data.is_near_miss
@@ -347,30 +367,58 @@ const handleObservationLevel = (data: any) => {
 }
 
 const GetHeader = (value: number) => {
-  return Observation[value] == "ObservationType" ? "Observation" : Observation[value] == "HazardType" ? "Hazard" : "Accidents"
+  return Observation[value] == 'ObservationType'
+    ? 'Observation'
+    : Observation[value] == 'HazardType'
+      ? 'Hazard'
+      : 'Accidents'
 }
 
-watch(() => HazardType.value, () => {
-  indexSubHazardTypeParams.value = new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child)
-}, { immediate: true })
+watch(
+  () => HazardType.value,
+  () => {
+    indexSubHazardTypeParams.value = new IndexHazardTypeParams(
+      '',
+      1,
+      10,
+      0,
+      HazardType?.value?.id,
+      HazardTypeParentEnum?.Child,
+    )
+  },
+  { immediate: true },
+)
+
+//Dialouges Re
+const observationTypeDialog = ref(false)
+const machineDialogRef = ref(false)
+const acedentDialogRef = ref(false)
 </script>
 
 <template>
   <div class="full-observation-form col-span-6 grid grid-cols-1 md:grid-cols-6 gap-4">
     <div class="col-span-6 md:col-span-6">
-      <HeaderPage :title="`create ${GetHeader(ObservationFactoryType)}`"
-        :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
+      <HeaderPage
+        :title="`create ${GetHeader(ObservationFactoryType)}`"
+        :subtitle="'Identify and report potential Incedants before they cause harm'"
+        :img="HazardImage"
+      />
       <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
     </div>
 
     <div class="col-span-6 md:col-span-6">
-      <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
+      <TabsSelection
+        v-if="SelectedProjectId"
+        :ProjectId="SelectedProjectId"
+        @update:data="GetZones"
+      />
     </div>
 
     <div class="Hazard-form col-span-6 md:col-span-6">
       <div class="Hazard-form-header">
         <HazardIcon class="icon" />
-        <p class="title">{{ GetHeader(ObservationFactoryType) }} form
+        <p class="title">
+          {{ GetHeader(ObservationFactoryType) }} form
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
@@ -385,63 +433,182 @@ watch(() => HazardType.value, () => {
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12">
       <label for="time">time</label>
-      <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
-        @update:model-value="updateData" input-id="time" :time-only="true" />
+      <DatePicker
+        v-model="SelctedTime"
+        class="mt-4 mr-2 input date-picker"
+        placeholder="Select time"
+        @update:model-value="updateData"
+        input-id="time"
+        :time-only="true"
+      />
     </div>
 
     <!-- Serial -->
-    <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
-      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-        @update:value="UpdateSerial" />
+    <div class="col-span-2 md:grid-cols-12" v-if="!data?.id">
+      <SwitchInput
+        :fields="fields"
+        :switch_title="$t('auto')"
+        :switch_reverse="true"
+        :is-auto="true"
+        @update:value="UpdateSerial"
+      />
     </div>
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12">
       <label for="time">Place</label>
-      <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+      <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
     </div>
 
     <!-- Observation Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.ObservationType">
-      <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
-        :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
-        id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="ObservationFactoryType == Observation.ObservationType"
+    >
+      <!-- <CustomSelectInput 
+      :required="false" :modelValue="SelectedObservationType"
+        :controller="indexObservatioTyepController" 
+        :params="indexObservationTypeParams"
+         label="Observation Type "
+        id="Equipment" placeholder="Select Observation Type" 
+        @update:modelValue="setSelectedObservationType" /> -->
+
+      <!-- <CustomSelectInput
+                 New Update => Custom input Select inspection Observisoon Form 
+        /> -->
+
+      <UpdatedCustomInputSelect
+        :required="false"
+        :modelValue="SelectedObservationType"
+        :controller="indexObservatioTyepController"
+        :params="indexObservationTypeParams"
+        label="Observation Type "
+        id="Equipment"
+        placeholder="Select Observation Type"
+        @update:modelValue="setSelectedObservationType"
+        @close="observationTypeDialog = false"
+        :isDialog="true"
+        :dialogVisible="observationTypeDialog"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="observationTypeDialog = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddObserverationType @update:data="observationTypeDialog = false" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
-
-
-
-
     <!-- Incedant Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
-      <CustomSelectInput :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-        :params="indexAccidentsTypeParams" label="Incidant Type" id="incedant" placeholder="Select Incedant Type"
-        @update:modelValue="setAccidentsType" />
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="ObservationFactoryType == Observation.AccidentsType"
+    >
+      <!-- <CustomSelectInput
+        :modelValue="AccidentsType"
+        class="input"
+        :controller="indexAccidentsTypeController"
+        :params="indexAccidentsTypeParams"
+        label="Incidant Type"
+        id="incedant"
+        placeholder="Select Incedant Type"
+        @update:modelValue="setAccidentsType"
+      /> -->
+
+      <UpdatedCustomInputSelect
+        :modelValue="AccidentsType"
+        class="input"
+        :controller="indexAccidentsTypeController"
+        :params="indexAccidentsTypeParams"
+        label="Incidant Type"
+        id="incedant"
+        placeholder="Select Incedant Type"
+        @update:modelValue="setAccidentsType"
+        @close="acedentDialogRef = false"
+        :isDialog="true"
+        :dialogVisible="acedentDialogRef"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="acedentDialogRef = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddAccidentsType @update:data="acedentDialogRef = false" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
     <!-- Machine -->
     <div class="col-span-3 md:col-span-3 input-wrapper">
-      <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-        :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
-        @update:modelValue="setMachine" />
+      <!-- <CustomSelectInput
+        :modelValue="SelectedMachine"
+        class="input"
+        :controller="indexEquipmentController"
+        :params="indexEquipmentParams"
+        label="select machine (optional)"
+        id="machine"
+        placeholder="select your machine"
+        @update:modelValue="setMachine"
+      /> -->
+
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedMachine"
+        class="input"
+        :controller="indexEquipmentController"
+        :params="indexEquipmentParams"
+        label="select machine (optional)"
+        id="machine"
+        placeholder="select your machine"
+        @update:modelValue="setMachine"
+        @close="machineDialogRef = false"
+        :isDialog="true"
+        :dialogVisible="machineDialogRef"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="machineDialogRef = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddFullEquipment @update:data="machineDialogRef = false" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper">
       <label for="text">{{ $t('description') }}</label>
-      <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
+      <input
+        placeholder="Add your title"
+        type="text"
+        class="input"
+        id="text"
+        v-model="text"
+        @input="updateData"
+      />
     </div>
 
     <!-- Sevarity -->
     <div class="col-span-3 md:col-span-3">
-      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
-        label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+      <CustomSelectInput
+        :required="false"
+        :modelValue="SelectedSeverity"
+        :static-options="SeverityList"
+        label="Severity"
+        id="Severity"
+        placeholder="Select Severity"
+        @update:modelValue="setSeverity"
+      />
     </div>
 
     <!-- Likelihood -->
     <div class="col-span-3 md:col-span-3">
-      <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+      <CustomSelectInput
+        :required="false"
+        :modelValue="SelectedLikelihood"
+        :static-options="LikelihoodList"
+        label="Likelihood"
+        id="Likelihood"
+        placeholder="Select Likelihood"
+        @update:modelValue="setLikelihood"
+      />
     </div>
 
     <!-- Image -->
@@ -451,25 +618,46 @@ watch(() => HazardType.value, () => {
     </div>
 
     <!-- IsWorkStopped -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
-      @click="isWorkStopped = !isWorkStopped; updateData()">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
+      @click="
+        isWorkStopped = !isWorkStopped;
+        updateData()
+      "
+    >
       <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
-      <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
+      <Checkbox
+        binary
+        :modelValue="isWorkStopped"
+        @change="UpdateWorkStatus"
+        inputId="is_stoped"
+        :name="`is_stoped`"
+      />
     </div>
 
     <!-- Take Action -->
     <div class="hazard-type-container incedant col-span-6 md:col-span-6">
-      <div class="input-wrapper radio-container incedant  col-span-12 md:col-span-12">
+      <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
           <label class="radio-title">{{ $t('take action') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
-              <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
+              <RadioButton
+                v-model="takeAction"
+                name="takeAction"
+                value="yes"
+                @update:model-value="updateData"
+              />
               <label>Yes</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
-              <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
+              <RadioButton
+                v-model="takeAction"
+                name="takeAction"
+                value="no"
+                @update:model-value="updateData"
+              />
               <label>No</label>
             </div>
           </div>
@@ -479,12 +667,22 @@ watch(() => HazardType.value, () => {
           <label class="radio-title">{{ $t('Status') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === 'yes' }">
-              <RadioButton v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
+              <RadioButton
+                v-model="solved"
+                name="solved"
+                value="yes"
+                @update:model-value="updateData"
+              />
               <label>Closed</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: solved === 'no' }">
-              <RadioButton v-model="solved" name="solved" value="no" @update:model-value="updateData" />
+              <RadioButton
+                v-model="solved"
+                name="solved"
+                value="no"
+                @update:model-value="updateData"
+              />
               <label>Open</label>
             </div>
           </div>
@@ -495,8 +693,13 @@ watch(() => HazardType.value, () => {
     <!-- Action Description -->
     <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
       <label for="action">{{ $t('action') }}</label>
-      <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
-        placeholder="add your descripe"></textarea>
+      <textarea
+        id="action"
+        class="input"
+        v-model="preventive_action"
+        @input="updateData"
+        placeholder="add your descripe"
+      ></textarea>
     </div>
 
     <!-- Description -->
@@ -511,46 +714,108 @@ watch(() => HazardType.value, () => {
     </div>
 
     <!-- Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="saveStatus == SaveStatusEnum.NotSaved">
-      <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-        :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
-        @update:modelValue="setHazardType" />
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+    >
+      <CustomSelectInput
+        :modelValue="HazardType"
+        class="input"
+        :controller="indexHazardTypeController"
+        :params="indexHazardTypeParams"
+        label="HazardType"
+        id="HazardType"
+        placeholder="Select Hazard Type"
+        @update:modelValue="setHazardType"
+      />
+
+      <!-- <UpdatedCustomInputSelect
+        :modelValue="HazardType"
+        class="input"
+        :controller="indexHazardTypeController"
+        :params="indexHazardTypeParams"
+        label="HazardType"
+        id="HazardType"
+        placeholder="Select Hazard Type"
+        @update:modelValue="setHazardType"
+        @close="hazardDialogRef = false"
+        :isDialog="true"
+        :dialogVisible="hazardDialogRef"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="hazardDialogRef = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddHazardType @update:data="hazardDialogRef = false" />
+        </template>
+      </UpdatedCustomInputSelect> -->
     </div>
 
     <!--Sub Hazard Type -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="HazardType">
-      <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
-        :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
-        @update:modelValue="setSubHazardType" />
+      <CustomSelectInput
+        :modelValue="SubHazardType"
+        class="input"
+        :controller="indexSubHazardTypeController"
+        :params="indexSubHazardTypeParams"
+        label="Hazard"
+        id="Hazard"
+        placeholder="Select Hazard"
+        @update:modelValue="setSubHazardType"
+      />
     </div>
 
     <!-- Observation Level -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">
-      <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss"
-        @update:data="handleObservationLevel" />
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+    >
+      <ObservationLevel
+        :modelRiskLevel="riskLevel"
+        :modelIsNearMiss="isNearMiss"
+        @update:data="handleObservationLevel"
+      />
     </div>
 
-
     <!-- Factorywitnesses -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-      v-if="ObservationFactoryType != Observation?.ObservationType">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType"
+    >
       <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
     </div>
 
     <!-- FactoryAccidents -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-      v-if="ObservationFactoryType != Observation?.ObservationType">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType"
+    >
       <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
     </div>
 
     <!-- FactoryFatalities -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-      v-if="ObservationFactoryType != Observation?.ObservationType">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation?.ObservationType"
+    >
       <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
     </div>
-
-
-
   </div>
-
 </template>
+
+<style scoped>
+.add-dialog {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  cursor: pointer;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-family: 'Regular';
+}
+
+.add-dialog svg {
+  width: 18px;
+  height: 18px;
+}
+</style>

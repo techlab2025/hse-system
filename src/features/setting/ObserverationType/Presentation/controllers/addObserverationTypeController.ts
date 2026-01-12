@@ -28,8 +28,7 @@ export default class AddObserverationTypeController extends ControllerInterface<
   async addObserverationType(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
-      console.log("Ssssssss")
+      console.log('Ssssssss')
       const dataState: DataState<ObserverationTypeModel> =
         await this.AddObserverationTypeUseCase.call(params)
       this.setState(dataState)
@@ -43,8 +42,11 @@ export default class AddObserverationTypeController extends ControllerInterface<
 
         const { user } = useUserStore()
 
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`)
+        if (!router.currentRoute.value.path.includes('/equipment-mangement/observation'))
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`,
+            )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

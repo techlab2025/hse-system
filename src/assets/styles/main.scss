@@ -262,3 +262,18 @@ body {
     height: 18px;
   }
 }
+
+.add-dialog {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  cursor: pointer;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-family: 'Regular';
+}
+
+.add-dialog svg {
+  width: 18px;
+  height: 18px;
+}

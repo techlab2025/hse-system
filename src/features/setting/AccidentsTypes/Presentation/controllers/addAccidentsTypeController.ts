@@ -48,10 +48,17 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
 
         const { user } = useUserStore()
 
-        if (!draft)
-          await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type`,
-          )
+        // if (!draft)
+        //   await router.push(
+        //     `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type`,
+        //   )
+
+        if (!router.currentRoute.value.path.includes('equipment-mangement')) {
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
+            )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

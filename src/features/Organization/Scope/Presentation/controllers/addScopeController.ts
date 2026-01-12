@@ -37,8 +37,9 @@ export default class AddScopeController extends ControllerInterface<ScopeModel> 
           messageContent: null,
         })
 
-
+        if (router.currentRoute?.value?.path.includes('scope')) {
           router.push('/organization/scope')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
