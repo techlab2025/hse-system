@@ -49,14 +49,13 @@ export default class EditHazardTypeController extends ControllerInterface<Hazard
         })
 
         const { user } = useUserStore()
-        const route = useRoute()
+
         await router.push(
-          // params?.ParentId
-          route.params?.id
-            ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${route.params?.id}/hazards`
+          params?.ParentId
+            ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
             : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
         )
-        // console.log(this.state.value.data)
+        // await router.back()
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

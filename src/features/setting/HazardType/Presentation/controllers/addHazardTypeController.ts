@@ -49,21 +49,11 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const route = useRoute()
 
-        // if (route.params?.parent_id) {
-        //   if (!draft)
-        //     await router.push(
-        //       `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${route.params.parent_id}/hazards`,
-        //     )
-        // } else {
-        // if (!draft)
-          await router.push(
-            params?.ParentId
-              ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
-              : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
-          )
-        // }
-
-        // useLoaderStore().endLoadingWithDialog();
+        await router.push(
+          params?.ParentId
+            ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
+            : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

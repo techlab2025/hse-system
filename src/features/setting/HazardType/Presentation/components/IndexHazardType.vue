@@ -105,7 +105,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,

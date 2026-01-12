@@ -23,7 +23,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'hazard-type/:id',
+    path: 'hazard-type/:id/:parent_id?',
     name: 'Edit Hazard Type',
     component: () => import('@/views/Admin/HazardType/EditHazardType.vue'),
     meta: {
