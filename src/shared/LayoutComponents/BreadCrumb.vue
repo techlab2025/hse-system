@@ -27,25 +27,49 @@ const IsHomeSetting = computed(
 //   buildBreadcrumb(route, router)
 // )
 const getUrlWithParams = () => {
-  const Params = Object.values(route.params)[0]
-  return Params
+  if (route.path.includes("add")) {
+    const Params = Object.values(route.params)[0]
+    return Params
+  }
+  else {
+    const Params = Object.values(route.query)[1]
+    return Params
+
+  }
 }
 const items = computed(() => {
   const breadcrumb = buildBreadcrumb(route, router)
 
   if (route.meta.type === 'Shared') {
-    const parentRoute = allRoutes.find(
-      (pr) =>
-        pr.name ===
-        `${route.meta.parent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
-        }`
-    )
+    if (route.meta.subType && (route.params.parent_id || route.query.hazard == 1)) {
 
-    if (parentRoute) {
-      breadcrumb.splice(breadcrumb.length - 1, 0, {
-        label: parentRoute.meta?.breadcrumb as string,
-        url: parentRoute.path.replace(/\/:[^/]+(\?)?/g, ``),
-      })
+      const parentRoute = allRoutes.find(
+        (pr) =>
+          pr.name ===
+          `${route.meta.subParent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
+          }`
+      )
+      if (parentRoute) {
+        breadcrumb.splice(breadcrumb.length - 1, 0, {
+          label: parentRoute.meta?.breadcrumb as string,
+          url: parentRoute.path.replace(/\/:[^/]+(\?)?/g, `/${String(getUrlWithParams())}`),
+        })
+      }
+    }
+    else {
+
+      const parentRoute = allRoutes.find(
+        (pr) =>
+          pr.name ===
+          `${route.meta.parent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
+          }`
+      )
+      if (parentRoute) {
+        breadcrumb.splice(breadcrumb.length - 1, 0, {
+          label: parentRoute.meta?.breadcrumb as string,
+          url: parentRoute.path.replace(/\/:[^/]+(\?)?/g, ``),
+        })
+      }
     }
   }
 

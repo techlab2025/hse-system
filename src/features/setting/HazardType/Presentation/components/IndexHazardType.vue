@@ -105,7 +105,7 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
@@ -161,7 +161,6 @@ watch(() => route.params.parent_id, (newVal) => {
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
