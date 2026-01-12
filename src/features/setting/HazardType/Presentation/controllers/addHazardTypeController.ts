@@ -55,7 +55,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         //       `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${route.params.parent_id}/hazards`,
         //     )
         // } else {
-        if (!draft)
+        // if (!draft)
           await router.push(
             params?.ParentId
               ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`

@@ -27,7 +27,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     name: 'Edit Hazard Type',
     component: () => import('@/views/Admin/HazardType/EditHazardType.vue'),
     meta: {
-      breadcrumb: 'Edit Hazard Type',
+      breadcrumb: route?.params.parent_id ? 'Edit Hazard Type' : 'Edit Hazard ',
       parent: 'Hazard Type',
       type: 'Shared',
     },
