@@ -6,7 +6,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Factories',
     component: () => import('@/views/Admin/Factory/IndexFactory.vue'),
     meta: {
-      breadcrumb: 'Hazard Factories',
+      breadcrumb: 'Hazard Factors',
       type: 'Shared',
     },
   },
@@ -35,7 +35,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Factories Items',
     component: () => import('@/views/Admin/FactoryItem/IndexFactoryItem.vue'),
     meta: {
-      breadcrumb: 'Hazard Factories Items',
+      breadcrumb: 'Hazard Factors Items',
       type: 'Shared',
     },
   },
