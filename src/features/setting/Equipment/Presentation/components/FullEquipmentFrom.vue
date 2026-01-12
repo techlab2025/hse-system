@@ -605,18 +605,18 @@ const UpdateActiveTap = (data) => {
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-2 sm:grid-cols-1 gap-6 mt-8">
-      <div class="">
+    <div class="grid grid-cols-2  gap-6 mt-8">
+      <div class="col-span-2 md:col-span-1">
         <LangTitleInput :label="`${EquipmentTypesEnum[activeTab]} Name`" :langs="langDefault" :modelValue="langs"
           @update:modelValue="setLangs" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper" v-if="!data?.id">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="!data?.id">
         <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
           @update:value="UpdateSerial" />
       </div>
 
-      <div>
+      <div class="col-span-2 md:col-span-1">
         <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
           :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
@@ -631,14 +631,14 @@ const UpdateActiveTap = (data) => {
         </UpdatedCustomInputSelect>
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label>{{ $t('upload image') }}</label>
         <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
           index="1" placeholder="upload image" />
       </div>
 
       <!-- {{ certificateImage }} -->
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex justify-between flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
         </label>
@@ -646,7 +646,7 @@ const UpdateActiveTap = (data) => {
           label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label>{{ $t('certification / Inspection expiry date') }}</label>
         <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" placeholder="certification expiry date"
           @update:modelValue="setDecoDate" />
@@ -654,7 +654,7 @@ const UpdateActiveTap = (data) => {
 
 
 
-      <div class="col-span-2 flex item-center justify-start gap-4"
+      <div class="col-span-2 flex item-center justify-start gap-4 md:col-span-1"
         v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
         <div class="radio-wrapper gap-2" :class="deviceStatus == option?.id ? 'active' : ''"
           v-for="(option, index) in deviceStatusOptions" :key="index">
@@ -665,7 +665,7 @@ const UpdateActiveTap = (data) => {
       </div>
 
 
-      <div v-if="
+      <div class="col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
 
@@ -681,19 +681,19 @@ const UpdateActiveTap = (data) => {
         </UpdatedCustomInputSelect>
       </div>
 
-      <div v-if="
+      <div class="col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
         <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
           placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
       </div>
-      <div>
+      <div class="col-span-2 md:col-span-1">
         <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse" />
       </div>
 
-      <div class="input-wrapper" v-if="
+      <div class="input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
         <label for="rent-time">Rent {{RentTypes.find((el) => el.id == SelectedRentType?.id)?.title}}</label>
@@ -701,7 +701,7 @@ const UpdateActiveTap = (data) => {
           @input="setRentTime" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper" v-if="
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
         <label>{{ $t('start_date') }}</label>
@@ -709,14 +709,14 @@ const UpdateActiveTap = (data) => {
           @update:modelValue="setStartDate" />
       </div>
 
-      <div class="flex flex-col gap-2 input-wrapper" v-if="
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
         <label>{{ $t('end_date') }}</label>
         <DatePicker :showTime="true" v-model="EndDate" id="end_date" placeholder="Auto-calculated end date" disabled />
       </div>
 
-      <div class="input-wrapper">
+      <div class="input-wrapper col-span-2 md:col-span-1">
         <label for="License Plate Number">
           {{ $t('License Plate No.') }}
         </label>
@@ -724,10 +724,10 @@ const UpdateActiveTap = (data) => {
           :placeholder="$t('License Plate Number')" />
       </div>
 
-      <div class="input-wrapper" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+      <div class="input-wrapper col-span-2 md:col-span-1" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomCheckbox :title="'all_industries'" :checked="allIndustries" @update:checked="allIndustries = $event" />
       </div>
-      <div class="input-wrapper" v-if="deviceStatus == EquipmentStatus.RENT">
+      <div class="input-wrapper col-span-2 md:col-span-1" v-if="deviceStatus == EquipmentStatus.RENT">
       </div>
 
       <div v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN">
