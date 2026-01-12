@@ -73,9 +73,7 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
   TemplateTitle.value = data.teamplateTitle
   emit('update:data', data.templateId)
   emit('update:isInLibrary', data.isInLibrary)
-
   visible.value = false
-
 }
 </script>
 
