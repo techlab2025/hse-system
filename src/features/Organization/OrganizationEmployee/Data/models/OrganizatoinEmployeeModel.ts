@@ -1,4 +1,5 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
+import CertificateItemsModel from './CertificateItemsModel'
 
 export default class OrganizatoinEmployeeModel extends TitleInterface {
   public id: number
@@ -7,6 +8,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public email: string
   public is_master: number
   public image: null
+  public certificates: CertificateItemsModel[]
   constructor(
     id: number,
     title: string,
@@ -15,6 +17,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     email: string,
     is_master: number,
     image: null,
+    certificates: CertificateItemsModel[],
   ) {
     super({ id, title })
 
@@ -24,6 +27,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     this.email = email
     this.is_master = is_master
     this.image = image
+    this.certificates = certificates
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
@@ -35,6 +39,28 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.email,
       data.is_master,
       data.image,
+      data.certificates,
     )
   }
+
+  static example: OrganizatoinEmployeeModel[] = [
+    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
+      new CertificateItemsModel(157, 'cer1', true),
+      new CertificateItemsModel(156, 'cer2', true),
+      new CertificateItemsModel(155, 'cer3', false),
+      new CertificateItemsModel(154, 'cer4', false),
+    ]),
+    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
+      new CertificateItemsModel(157, 'cer1', true),
+      new CertificateItemsModel(156, 'cer2', true),
+      new CertificateItemsModel(155, 'cer3', false),
+      new CertificateItemsModel(154, 'cer4', false),
+    ]),
+    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
+      new CertificateItemsModel(157, 'cer1', true),
+      new CertificateItemsModel(156, 'cer2', true),
+      new CertificateItemsModel(155, 'cer3', false),
+      new CertificateItemsModel(154, 'cer4', false),
+    ]),
+  ]
 }
