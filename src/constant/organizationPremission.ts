@@ -958,6 +958,39 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // EMPLOYEE CERTIFICATE
+        {
+          key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+          code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+          label: 'Scope',
+          permissions: [
+            {
+              key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+              code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+              code: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.EMPLOYEE_CERTIFICATE_DETAILS,
+              code: PermissionsEnum.EMPLOYEE_CERTIFICATE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+              code: PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+              code: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

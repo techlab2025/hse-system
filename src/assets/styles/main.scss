@@ -152,6 +152,9 @@
 /*<editor-fold desc="Project">*/
 @use './Project/project_import';
 /*</editor-fold>*/
+/*<editor-fold desc="Project">*/
+@use './EmployeeCertificates/employee_certificates_imports';
+/*</editor-fold>*/
 
 html {
   scroll-behavior: smooth;
