@@ -1349,6 +1349,13 @@ class ApiNames {
   public get FetchInspectionsResults() {
     return this.prefix + 'fetch_inspections_results'
   }
+  // Employee Certificate
+  public get CreateEmployeeCertificate() {
+    return this.prefix + 'create_employee_certificate'
+  }
+  public get DeleteEmployeeCertificate() {
+    return this.prefix + 'delete_employee_certificate'
+  }
 }
 
 export { ApiNames }
