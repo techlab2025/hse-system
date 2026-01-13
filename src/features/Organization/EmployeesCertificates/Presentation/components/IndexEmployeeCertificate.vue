@@ -15,6 +15,8 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
+import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 const { t } = useI18n()
 
 const route = useRoute()
@@ -26,7 +28,7 @@ const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.
 const state = ref(indexOrganizatoinEmployeeController.state.value)
 
 const indexCertificateController = IndexCertificateController.getInstance()
-const Certificatestate = ref(indexCertificateController.state.value)
+const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
 
 
 
@@ -132,6 +134,31 @@ watch(
 //     fetchOrganizationEmployee()
 //   },
 // )
+
+const GetEmployeesCertificate = (employeeId: number) => {
+  const employee = state.value.data?.find(
+    (employee) => employee.id === employeeId
+  )
+
+  const employeeCertificates = employee?.certificates?.map((certificate) => {
+    return Certificatestate.value.data?.find(
+      (el) => el.id === certificate.id
+    )
+  })
+
+  console.log(employeeCertificates, 'EmployeeCertificates')
+  return employeeCertificates
+}
+
+const CheckIfEmployeeHasDoneTheCertificate = (certificate: TitleInterface) => {
+  console.log(certificate, 'certificate')
+  const HasDoneCertificate = state.value.data?.find((employee) => {
+    employee.certificates?.find((el) => el?.id === certificate?.id)
+  })
+
+  console.log(HasDoneCertificate, "HasDoneCertificate")
+  return HasDoneCertificate
+}
 </script>
 
 <template>
@@ -169,11 +196,23 @@ watch(
             <thead>
               <tr>
                 <th scope="col">{{ $t('emp') }}</th>
-                <!-- <th scope="col" v-for="(certificate, index) in Certificatestate" :key=index>{{ certificate?. }}</th> -->
+                <th scope="col" v-for="(certificate, index) in Certificatestate.data" :key="certificate?.id">
+                  {{ certificate?.title }}
+                </th>
               </tr>
             </thead>
             <tbody>
+              <tr v-for="(employee, index) in state.data" :key="employee?.id">
+                <td>{{ employee?.name }}</td>
 
+                <td v-for="(certificate, index) in Certificatestate.data" :key="certificate?.id">
+                  {{
+                    CheckIfEmployeeHasDoneTheCertificate(GetEmployeesCertificate(employee.id)?.find((el) => el?.id ===
+                      certificate?.id))
+
+                  }}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
