@@ -78,8 +78,8 @@ const updateData = () => {
   })
 
   const params = props.data?.id
-    ? new EditHerikalyParams(props?.data?.id, translationsParams, ParentId)
-    : new AddHerikalyParams(translationsParams, ParentId)
+    ? new EditHerikalyParams(props?.data?.id, translationsParams, ParentId, Certificate.value.map((item) => item.id))
+    : new AddHerikalyParams(translationsParams, Certificate.value.map((item) => item.id), ParentId)
 
   emit('update:data', params)
 }
@@ -105,26 +105,21 @@ watch(
   },
   { immediate: true },
 )
-// const Certificate = ref<TitleInterface[]>([]);
-// const setCertificate = (data: TitleInterface[]) => {
-//   Certificate.value = data;
-//   updateData()
-// }
+const Certificate = ref<TitleInterface[]>([]);
+const setCertificate = (data: TitleInterface[]) => {
+  Certificate.value = data;
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="$t('title')"
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
+      @update:modelValue="setLangs" />
   </div>
-  <!-- <div class="input-wrapper col-span-4 md:col-span-2">
+  <div class="input-wrapper col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="Certificate" :controller="indexCertificateController"
       :params="indexCertificateParams" label="Certificate" id="Certificate" placeholder="Select certificate" :type="2"
       @update:modelValue="setCertificate" />
-  </div> -->
+  </div>
 </template>

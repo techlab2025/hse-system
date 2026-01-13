@@ -3,6 +3,17 @@
 @import '../mixins/grid';
 
 .employee-certificates-matrix {
+  .table-row {
+    transition: 0.3s all linear;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  tbody:hover .table-row:not(:hover) {
+    filter: blur(2px);
+  }
   .employee-info-container {
     @include flex-row(nowrap, space-between, center);
     gap: 20px;
@@ -17,6 +28,8 @@
       .employee-description {
         text-align: start;
         color: $PrimaryColor;
+        max-width: 200px;
+        overflow: auto;
       }
     }
     .employee-static {
@@ -139,10 +152,12 @@
 
   td {
     height: 100%;
+    text-align: center;
     &:last-of-type {
-      height: 100% !important;
-      @include flex-row(nowrap, center, center);
-      margin-top: auto !important;
+      // height: 100% !important;
+      // @include flex-row(nowrap, center, center);
+      // margin-top: auto !important;
+      vertical-align: bottom !important;
     }
   }
 }

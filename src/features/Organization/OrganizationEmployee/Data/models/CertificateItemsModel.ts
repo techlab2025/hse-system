@@ -14,7 +14,7 @@ export default class CertificateItemsModel {
   }
 
   static fromMap(data: any): CertificateItemsModel {
-    return new CertificateItemsModel(data.id, data.title, data.status, data.expiry_date)
+    return new CertificateItemsModel(data.id, data.title, data.status, data.expired_at)
   }
 
   static example: CertificateItemsModel = new CertificateItemsModel(
