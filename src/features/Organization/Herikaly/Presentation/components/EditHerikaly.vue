@@ -18,7 +18,6 @@ const showHerikalyController = ShowHerikalyController.getInstance()
 const state = ref(showHerikalyController.state.value)
 const fetchHerikalyDetails = async () => {
   const HerikalyParams = new ShowHerikalyParams(Number(id))
-
   await showHerikalyController.showHerikaly(HerikalyParams)
 }
 
