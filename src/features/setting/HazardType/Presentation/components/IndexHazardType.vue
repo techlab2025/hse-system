@@ -101,7 +101,7 @@ watch(
 
 const { user } = useUserStore()
 
-const actionList = (id: number, deleteHazardType: (id: number) => void) => [
+const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
@@ -135,6 +135,35 @@ const actionList = (id: number, deleteHazardType: (id: number) => void) => [
       PermissionsEnum.HAZARD_TYPE_ALL,
     ],
   },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteHazardType(id),
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+    ],
+  },
+]
+const HazardactionList = (id: number, deleteHazardType: (id: number) => void) => [
+  {
+    text: t('edit'),
+    icon: IconEdit,
+    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+    ],
+  },
+
   {
     text: t('delete'),
     icon: IconDelete,
@@ -243,7 +272,10 @@ watch(() => route.params.parent_id, (newVal) => {
                   <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteHazardType)" @delete="deleteHazardType(item.id)" />
+                  <DropList v-if="!route.params.parent_id" :actionList="HazardTypeactionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)" />
+                  <DropList v-else :actionList="HazardactionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)" />
                 </td>
               </tr>
             </tbody>
