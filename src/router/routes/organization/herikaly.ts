@@ -2,7 +2,8 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const herikalyRoutes: RouteRecordRaw[] = [
   {
-    path: 'herikaly/:parent_id?',
+    // path: 'herikaly/:parent_id?',
+    path: 'herikaly',
     name: 'Hierarchy',
     component: () => import('@/views/Organization/Herikaly/IndexHerikaly.vue'),
     meta: {
