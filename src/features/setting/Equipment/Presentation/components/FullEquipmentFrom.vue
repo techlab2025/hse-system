@@ -220,7 +220,6 @@ const setImage = async (value: any) => {
 //   updateData()
 // }
 const originalCertificateImage = ref<string | null>(null)
-
 const resolveCertificateImage = () => {
   // ADD
   if (!props.data?.id) {
@@ -314,8 +313,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) || image.value === '*' ? image.value : null,
-      certificateImage: CertificateImageValue.value,
+      image: imagePayload,
+      certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
@@ -341,8 +340,8 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
-      image: isBase64(image.value) ? image.value : '*',
-      certificateImage: isBase64(certificateImage.value) ? certificateImage.value : '',
+      image: imagePayload,
+      certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
