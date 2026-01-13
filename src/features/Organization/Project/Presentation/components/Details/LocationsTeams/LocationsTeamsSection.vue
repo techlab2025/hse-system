@@ -15,6 +15,7 @@ const props = defineProps<{
 }>()
 
 const CheckTeamsEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.length).reduce((a, b) => a + b, 0) === 0)
+const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.map((employee) => employee?.Employees?.length)).flat().some((el) => el > 0))
 </script>
 
 <template>
@@ -25,9 +26,10 @@ const CheckTeamsEmpty = computed(() => props.teamLocations?.map((p) => p.project
         subtitle="view_all_working_teams_assigned_to_each_operational_zone" />
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
-    <pre>
-    </pre>
-    <div class="locations-sections" v-if="teamLocations?.length > 0 && !CheckTeamsEmpty">
+
+    <!-- {{ teamLocations?.length }}
+    {{ CheckTeamsEmployeesEmpty }} -->
+    <div class="locations-sections" v-if="teamLocations?.length > 0 && CheckTeamsEmployeesEmpty">
       <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location" />
     </div>
     <div class="empty-teams" v-else>

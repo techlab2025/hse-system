@@ -3,39 +3,39 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import InjuryForm from '@/features/Organization/Injury/Presentation/components/InjuryForm.vue'
+import EmployeeCertificateForm from '@/features/Organization/EmployeeCertificate/Presentation/components/EmployeeCertificateForm.vue'
 import type Params from '@/base/core/params/params'
-import ShowInjurytController from '../controllers/showEmployeeCertificateController'
-import ShowInjuryParams from '../../Core/params/showEmployeeCertificateParams'
-import EditInjuryController from '../controllers/editEmployeeCertificateController'
+import ShowEmployeeCertificatetController from '../controllers/showEmployeeCertificateController'
+import ShowEmployeeCertificateParams from '../../Core/params/showEmployeeCertificateParams'
+import EditEmployeeCertificateController from '../controllers/editEmployeeCertificateController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showInjuryController = ShowInjurytController.getInstance()
-const state = ref(showInjuryController.state.value)
-const fetchInjuryDetails = async () => {
-  const InjuryParams = new ShowInjuryParams(Number(id))
+const showEmployeeCertificateController = ShowEmployeeCertificatetController.getInstance()
+const state = ref(showEmployeeCertificateController.state.value)
+const fetchEmployeeCertificateDetails = async () => {
+  const EmployeeCertificateParams = new ShowEmployeeCertificateParams(Number(id))
 
-  await showInjuryController.showInjury(InjuryParams)
+  await showEmployeeCertificateController.showEmployeeCertificate(EmployeeCertificateParams)
 }
 
 onMounted(() => {
-  fetchInjuryDetails()
+  fetchEmployeeCertificateDetails()
 })
 
-const EditInjury = async (draft: boolean) => {
+const EditEmployeeCertificate = async (draft: boolean) => {
   if (draft) {
-    await EditInjuryController.getInstance().editInjury(params.value!, router)
+    await EditEmployeeCertificateController.getInstance().editEmployeeCertificate(params.value!, router)
   } else {
-    await EditInjuryController.getInstance().editInjury(params.value!, router)
+    await EditEmployeeCertificateController.getInstance().editEmployeeCertificate(params.value!, router)
   }
 }
 
 watch(
-  () => showInjuryController.state.value,
+  () => showEmployeeCertificateController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -56,8 +56,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditInjury">
-        <InjuryForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditEmployeeCertificate">
+        <EmployeeCertificateForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('edit') }}</button>
         </div>

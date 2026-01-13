@@ -8,15 +8,15 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import { useRoute } from 'vue-router'
-import type InjuryDetailsModel from '../../Data/models/InjuryDetailsModel'
+import type EmployeeCertificateDetailsModel from '../../Data/models/EmployeeCertificateDetailsModel'
 import { useUserStore } from '@/stores/user'
-import EditInjuryParams from '../../Core/params/EditEmployeeCertificateParams'
-import AddInjuryParams from '../../Core/params/AddEmplyeeCertificateParams'
+import EditEmployeeCertificateParams from '../../Core/params/EditEmployeeCertificateParams'
+import AddEmployeeCertificateParams from '../../Core/params/AddEmplyeeCertificateParams'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: InjuryDetailsModel
+  data?: EmployeeCertificateDetailsModel
 }>()
 
 const route = useRoute()
@@ -59,9 +59,9 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexInjuryController = await IndexLangController.getInstance().getData(params)
+  const indexEmployeeCertificateController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexInjuryController.value
+  const response = indexEmployeeCertificateController.value
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -93,8 +93,8 @@ const updateData = () => {
 
   console.log(translationsParams, "langs");
   const params = props.data?.id
-    ? new EditInjuryParams(props.data.id, translationsParams)
-    : new AddInjuryParams(translationsParams)
+    ? new EditEmployeeCertificateParams(props.data.id, translationsParams)
+    : new AddEmployeeCertificateParams(translationsParams)
 
   // console.log(params, 'params')
 

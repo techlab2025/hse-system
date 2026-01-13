@@ -6,12 +6,8 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
-
-// import ToggleSwitch from 'primevue/toggleswitch'
-
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -19,69 +15,66 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-// import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-// import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import IndexInjuryController from '../controllers/indexEmployeeCertificateController'
-import IndexInjuryParams from '../../Core/params/IndexEmployeeCertificateParams'
-import DeleteInjuryParams from '../../Core/params/DeleteEmployeeCertificateParams'
-import DeleteInjuryController from '../controllers/deleteEmployeeCertificateController'
+import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
+import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
+import DeleteEmployeeCertificateParams from '../../Core/params/DeleteEmployeeCertificateParams'
+import DeleteEmployeeCertificateController from '../controllers/deleteEmployeeCertificateController'
 
 const { t } = useI18n()
 
-// import DialogChangeStatusInjury from "@/features/setting/Injuryuages/Presentation/components/Injury/DialogChangeStatusInjury.vue";
+// import DialogChangeStatusEmployeeCertificate from "@/features/setting/EmployeeCertificateuages/Presentation/components/EmployeeCertificate/DialogChangeStatusEmployeeCertificate.vue";
 // const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexInjuryController = IndexInjuryController.getInstance()
-const state = ref(indexInjuryController.state.value)
+const indexEmployeeCertificateController = IndexEmployeeCertificateController.getInstance()
+const state = ref(indexEmployeeCertificateController.state.value)
 const route = useRoute()
 
 // const id = ref(route.params.parent_id)
 
-// const type = ref<InjuryStatusEnum>(InjuryStatusEnum[route.params.type as keyof typeof InjuryStatusEnum])
+// const type = ref<EmployeeCertificateStatusEnum>(EmployeeCertificateStatusEnum[route.params.type as keyof typeof EmployeeCertificateStatusEnum])
 
-const fetchInjury = async (
+const fetchEmployeeCertificate = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteInjuryParams = new IndexInjuryParams(query, pageNumber, perPage, withPage)
-  await indexInjuryController.getData(deleteInjuryParams)
+  const deleteEmployeeCertificateParams = new IndexEmployeeCertificateParams(query, pageNumber, perPage, withPage)
+  await indexEmployeeCertificateController.getData(deleteEmployeeCertificateParams)
 }
 
 onMounted(() => {
-  fetchInjury()
+  fetchEmployeeCertificate()
 })
 
-const searchInjury = debounce(() => {
-  fetchInjury(word.value)
+const searchEmployeeCertificate = debounce(() => {
+  fetchEmployeeCertificate(word.value)
 })
 
-const deleteInjury = async (id: number) => {
-  const deleteInjuryParams = new DeleteInjuryParams(id)
-  await DeleteInjuryController.getInstance().deleteInjury(deleteInjuryParams)
-  await fetchInjury()
+const deleteEmployeeCertificate = async (id: number) => {
+  const deleteEmployeeCertificateParams = new DeleteEmployeeCertificateParams(id)
+  await DeleteEmployeeCertificateController.getInstance().deleteEmployeeCertificate(deleteEmployeeCertificateParams)
+  await fetchEmployeeCertificate()
 }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchInjury('', currentPage.value, countPerPage.value)
+  fetchEmployeeCertificate('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchInjury('', currentPage.value, countPerPage.value)
+  fetchEmployeeCertificate('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexInjuryController.state.value,
+  () => indexEmployeeCertificateController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -93,26 +86,26 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteInjury: (id: number) => void) => [
+const actionList = (id: number, deleteEmployeeCertificate: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/organization/Injury/${id}`,
+    link: `/organization/EmployeeCertificate/${id}`,
     permission: [
-      PermissionsEnum.INJURY_UPDATE,
+      PermissionsEnum.EmployeeCertificate_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.INJURY_ALL,
+      PermissionsEnum.EmployeeCertificate_ALL,
     ],
   },
 
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteInjury(id),
+    action: () => deleteEmployeeCertificate(id),
     permission: [
-      PermissionsEnum.INJURY_DELETE,
+      PermissionsEnum.EmployeeCertificate_DELETE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.INJURY_ALL,
+      PermissionsEnum.EmployeeCertificate_ALL,
     ],
   },
 ]
@@ -121,7 +114,7 @@ watch(
   () => route?.params?.id,
   (Newvalue) => {
     // id = Newvalue
-    fetchInjury()
+    fetchEmployeeCertificate()
   },
 )
 </script>
@@ -130,7 +123,7 @@ watch(
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchInjury())">
+      <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
         <Search />
       </span>
       <input
@@ -138,17 +131,17 @@ watch(
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchInjury"
+        @input="searchEmployeeCertificate"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
       <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EmployeeCertificate_CREATE]"
       >
-        <router-link to="/organization/injury/add" class="btn btn-primary">
-          {{ $t('Add_Injury') }}
+        <router-link to="/organization/EmployeeCertificate/add" class="btn btn-primary">
+          {{ $t('Add_EmployeeCertificate') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -157,11 +150,11 @@ watch(
   <PermissionBuilder
     :code="[
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.INJURY_ALL,
-      PermissionsEnum.INJURY_DELETE,
-      PermissionsEnum.INJURY_FETCH,
-      PermissionsEnum.INJURY_UPDATE,
-      PermissionsEnum.INJURY_CREATE,
+      PermissionsEnum.EmployeeCertificate_ALL,
+      PermissionsEnum.EmployeeCertificate_DELETE,
+      PermissionsEnum.EmployeeCertificate_FETCH,
+      PermissionsEnum.EmployeeCertificate_UPDATE,
+      PermissionsEnum.EmployeeCertificate_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -182,7 +175,7 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/injury/${item.id}`"
+                  <router-link :to="`/organization/EmployeeCertificate/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
@@ -193,15 +186,15 @@ watch(
                 </td> -->
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusInjury-->
-                  <!--                  v-if="item.InjuryStatus === InjuryStatusEnum.Draft"-->
-                  <!--                  :InjuryId="item.id"-->
-                  <!--                  @InjuryChangeStatus="fetchInjury"-->
+                  <!--                <DialogChangeStatusEmployeeCertificate-->
+                  <!--                  v-if="item.EmployeeCertificateStatus === EmployeeCertificateStatusEnum.Draft"-->
+                  <!--                  :EmployeeCertificateId="item.id"-->
+                  <!--                  @EmployeeCertificateChangeStatus="fetchEmployeeCertificate"-->
                   <!--                />-->
 
                   <DropList
-                    :actionList="actionList(item.id, deleteInjury)"
-                    @delete="deleteInjury(item.id)"
+                    :actionList="actionList(item.id, deleteEmployeeCertificate)"
+                    @delete="deleteEmployeeCertificate(item.id)"
                   />
                 </td>
               </tr>
@@ -222,18 +215,18 @@ watch(
       </template>
       <template #empty>
         <DataEmpty
-          :link="`/organization/Injury/add`"
-          addText="Add Injury"
-          description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Injury"
+          :link="`/organization/EmployeeCertificate/add`"
+          addText="Add EmployeeCertificate"
+          description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No EmployeeCertificate"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`/organization/Injury/add`"
-          addText="Add Injury"
-          description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Injury"
+          :link="`/organization/EmployeeCertificate/add`"
+          addText="Add EmployeeCertificate"
+          description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
+          title="..ops! You have No EmployeeCertificate"
         />
       </template>
     </DataStatus>
@@ -241,7 +234,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
         link=""
       />
     </template>

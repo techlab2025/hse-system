@@ -1,18 +1,18 @@
-// import LangModel from '@/features/setting/Injury/Data/models/langModel.ts'
+// import LangModel from '@/features/setting/EmployeeCertificate/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import type InjuryModel from '../../Data/models/InjuryModel'
-import { AddInjuryApiService } from '../../Data/apiServices/addEmployeeCertificateApiService'
+import type EmployeeCertificateModel from '../../Data/models/EmployeeCertificateModel'
+import { AddEmployeeCertificateApiService } from '../../Data/apiServices/addEmployeeCertificateApiService'
 
-class AddInjuryRepo extends RepoInterface<InjuryModel> {
-  private static instance: AddInjuryRepo
+class AddEmployeeCertificateRepo extends RepoInterface<EmployeeCertificateModel> {
+  private static instance: AddEmployeeCertificateRepo
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddInjuryRepo()
+      this.instance = new AddEmployeeCertificateRepo()
     }
     return this.instance
   }
@@ -21,13 +21,13 @@ class AddInjuryRepo extends RepoInterface<InjuryModel> {
     return ResponseType.withoutData
   }
 
-  onParse(data: any): InjuryModel {
-    return InjuryModel.fromMap(data)
+  onParse(data: any): EmployeeCertificateModel {
+    return EmployeeCertificateModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return AddInjuryApiService.getInstance()
+    return AddEmployeeCertificateApiService.getInstance()
   }
 }
 
-export { AddInjuryRepo }
+export { AddEmployeeCertificateRepo }

@@ -4,25 +4,25 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type InjuryModel from '../../Data/models/InjuryModel'
-import AddInjuryteUseCase from '../../Domain/useCase/addInjuryUseCase'
-import type AddInjuryParams from '../../Core/params/AddEmplyeeCertificateParams'
+import type EmployeeCertificateModel from '../../Data/models/EmployeeCertificateModel'
+import AddEmployeeCertificateteUseCase from '../../Domain/useCase/addEmployeeCertificateUseCase'
+import type AddEmployeeCertificateParams from '../../Core/params/AddEmplyeeCertificateParams'
 
-export default class AddInjuryController extends ControllerInterface<InjuryModel> {
-  private static instance: AddInjuryController
+export default class AddEmployeeCertificateController extends ControllerInterface<EmployeeCertificateModel> {
+  private static instance: AddEmployeeCertificateController
   private constructor() {
     super()
   }
-  private AddInjuryUseCase = new AddInjuryteUseCase()
+  private AddEmployeeCertificateUseCase = new AddEmployeeCertificateteUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddInjuryController()
+      this.instance = new AddEmployeeCertificateController()
     }
     return this.instance
   }
 
-  async addInjury(params: AddInjuryParams, router: Router, draft: boolean = false) {
+  async addEmployeeCertificate(params: AddEmployeeCertificateParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -30,7 +30,7 @@ export default class AddInjuryController extends ControllerInterface<InjuryModel
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<InjuryModel> = await this.AddInjuryUseCase.call(params)
+      const dataState: DataState<EmployeeCertificateModel> = await this.AddEmployeeCertificateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -39,7 +39,7 @@ export default class AddInjuryController extends ControllerInterface<InjuryModel
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/injury')
+        if (!draft) await router.push('/organization/EmployeeCertificate')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
