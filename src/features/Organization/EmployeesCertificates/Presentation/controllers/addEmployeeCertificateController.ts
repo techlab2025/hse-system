@@ -22,7 +22,11 @@ export default class AddEmployeeCertificateController extends ControllerInterfac
     return this.instance
   }
 
-  async addEmployeeCertificate(params: AddEmployeeCertificateParams, router: Router, draft: boolean = false) {
+  async addEmployeeCertificate(
+    params: AddEmployeeCertificateParams,
+    router: Router,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -30,7 +34,8 @@ export default class AddEmployeeCertificateController extends ControllerInterfac
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<EmployeeCertificateModel> = await this.AddEmployeeCertificateUseCase.call(params)
+      const dataState: DataState<EmployeeCertificateModel> =
+        await this.AddEmployeeCertificateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -39,7 +44,7 @@ export default class AddEmployeeCertificateController extends ControllerInterfac
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/EmployeeCertificate')
+        if (!draft) await router.push('/organization/employee-certificate')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

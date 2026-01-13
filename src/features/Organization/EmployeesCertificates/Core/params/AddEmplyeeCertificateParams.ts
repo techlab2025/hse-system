@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export default class AddEmployeeCertificateParams implements Params {
   certificateId: number
@@ -41,7 +42,7 @@ export default class AddEmployeeCertificateParams implements Params {
 
     data['certificate_id'] = this.certificateId
     data['organization_employee_id'] = this.organizationEmployeeId
-    data['expired_at'] = this.expiredAt
+    data['expired_at'] = formatJoinDate(this.expiredAt)
     data['notes'] = this.notes
     data['certificate_image'] = this.certificate_image
 

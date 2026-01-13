@@ -115,6 +115,8 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
   // console.log(CertificateStatus, "CertificateStatus")
   return CertificateStatus?.status;
 };
+
+// const isHovered = ref()
 </script>
 
 <template>
@@ -151,7 +153,7 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="employee in state.data" :key="employee.id">
+              <tr v-for="employee in state.data" :key="employee.id" class="table-row" >
                 <td class="employee-info-container">
                   <div class="employee-info">
                     <span class="name">
@@ -171,13 +173,14 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
 
                 <td v-for="cert in Certificatestate.data" :key="cert.id" class=" text-center h-full">
                   <span :class="cert.id">
+
                     <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
-                      :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expiry_date" />
+                      :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at" />
 
                     <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid" />
-                    <ExpiredCertificate :certificateId="cert?.id" :organizationEmployeeId="employee?.id"
+                    <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id" :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired" />
                     <div class="not-required" v-else>
                       <span class="not-required-left"></span>
