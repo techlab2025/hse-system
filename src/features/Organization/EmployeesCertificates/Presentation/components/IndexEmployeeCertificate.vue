@@ -1,83 +1,87 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
-import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
-import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
-import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
-import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
-import DeleteEmployeeCertificateParams from '../../Core/params/DeleteEmployeeCertificateParams'
-import DeleteEmployeeCertificateController from '../controllers/deleteEmployeeCertificateController'
-
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
+import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 const { t } = useI18n()
 
-// import DialogChangeStatusEmployeeCertificate from "@/features/setting/EmployeeCertificateuages/Presentation/components/EmployeeCertificate/DialogChangeStatusEmployeeCertificate.vue";
-// const route = useRoute()
-
+const route = useRoute()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexEmployeeCertificateController = IndexEmployeeCertificateController.getInstance()
-const state = ref(indexEmployeeCertificateController.state.value)
-const route = useRoute()
 
-// const id = ref(route.params.parent_id)
+const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const state = ref(indexOrganizatoinEmployeeController.state.value)
 
-// const type = ref<EmployeeCertificateStatusEnum>(EmployeeCertificateStatusEnum[route.params.type as keyof typeof EmployeeCertificateStatusEnum])
+const indexCertificateController = IndexCertificateController.getInstance()
+const Certificatestate = ref(indexCertificateController.state.value)
 
-const fetchEmployeeCertificate = async (
+
+
+const fetchCertficates = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteEmployeeCertificateParams = new IndexEmployeeCertificateParams(query, pageNumber, perPage, withPage)
-  await indexEmployeeCertificateController.getData(deleteEmployeeCertificateParams)
+  const indexCertificateParams = new IndexCertificateParams(query, pageNumber, perPage, withPage)
+  await indexCertificateController.getData(indexCertificateParams)
+}
+
+const fetchOrganizationEmployee = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 1,
+) => {
+  const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams(query, pageNumber, perPage, withPage)
+  await indexOrganizatoinEmployeeController.getData(indexOrganizatoinEmployeeParams)
 }
 
 onMounted(() => {
-  fetchEmployeeCertificate()
+  fetchOrganizationEmployee()
+  fetchCertficates()
 })
 
 const searchEmployeeCertificate = debounce(() => {
-  fetchEmployeeCertificate(word.value)
+  fetchOrganizationEmployee(word.value)
 })
 
-const deleteEmployeeCertificate = async (id: number) => {
-  const deleteEmployeeCertificateParams = new DeleteEmployeeCertificateParams(id)
-  await DeleteEmployeeCertificateController.getInstance().deleteEmployeeCertificate(deleteEmployeeCertificateParams)
-  await fetchEmployeeCertificate()
-}
+// const deleteEmployeeCertificate = async (id: number) => {
+//   const deleteEmployeeCertificateParams = new DeleteEmployeeCertificateParams(id)
+//   await DeleteEmployeeCertificateController.getInstance().deleteEmployeeCertificate(deleteEmployeeCertificateParams)
+//   await fetchOrganizationEmployee()
+// }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchEmployeeCertificate('', currentPage.value, countPerPage.value)
+  fetchOrganizationEmployee('', currentPage.value, countPerPage.value)
+  fetchCertficates('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchEmployeeCertificate('', currentPage.value, countPerPage.value)
+  fetchOrganizationEmployee('', currentPage.value, countPerPage.value)
+  fetchCertficates('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexEmployeeCertificateController.state.value,
+  () => indexOrganizatoinEmployeeController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
       state.value = newState
     }
   },
@@ -85,38 +89,49 @@ watch(
     deep: true,
   },
 )
-
-const actionList = (id: number, deleteEmployeeCertificate: (id: number) => void) => [
-  {
-    text: t('edit'),
-    icon: IconEdit,
-    link: `/organization/EmployeeCertificate/${id}`,
-    permission: [
-      PermissionsEnum.EmployeeCertificate_UPDATE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EmployeeCertificate_ALL,
-    ],
-  },
-
-  {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteEmployeeCertificate(id),
-    permission: [
-      PermissionsEnum.EmployeeCertificate_DELETE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EmployeeCertificate_ALL,
-    ],
-  },
-]
-
 watch(
-  () => route?.params?.id,
-  (Newvalue) => {
-    // id = Newvalue
-    fetchEmployeeCertificate()
+  () => indexCertificateController.state.value,
+  (newState) => {
+    if (newState) {
+      Certificatestate.value = newState
+    }
+  },
+  {
+    deep: true,
   },
 )
+
+// const actionList = (id: number, deleteEmployeeCertificate: (id: number) => void) => [
+//   {
+//     text: t('edit'),
+//     icon: IconEdit,
+//     link: `/organization/EmployeeCertificate/${id}`,
+//     permission: [
+//       PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+//       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+//     ],
+//   },
+
+//   {
+//     text: t('delete'),
+//     icon: IconDelete,
+//     action: () => deleteEmployeeCertificate(id),
+//     permission: [
+//       PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+//       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+//     ],
+//   },
+// ]
+
+// watch(
+//   () => route?.params?.id,
+//   (Newvalue) => {
+//     // id = Newvalue
+//     fetchOrganizationEmployee()
+//   },
+// )
 </script>
 
 <template>
@@ -126,86 +141,43 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchEmployeeCertificate"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEmployeeCertificate" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
-      <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EmployeeCertificate_CREATE]"
-      >
+      <!-- <ExportExcel :data="state.data" />
+      <ExportPdf /> -->
+      <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EMPLOYEE_CERTIFICATE_CREATE]">
         <router-link to="/organization/EmployeeCertificate/add" class="btn btn-primary">
           {{ $t('Add_EmployeeCertificate') }}
         </router-link>
-      </PermissionBuilder>
+      </PermissionBuilder> -->
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EmployeeCertificate_ALL,
-      PermissionsEnum.EmployeeCertificate_DELETE,
-      PermissionsEnum.EmployeeCertificate_FETCH,
-      PermissionsEnum.EmployeeCertificate_UPDATE,
-      PermissionsEnum.EmployeeCertificate_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+    PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+    PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+    PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+    PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
+        <div class="table-responsive employee-certificates-matrix">
           <table class="main-table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-
-                <!-- <th scope="col">{{ $t('phone') }}</th> -->
-                <!-- <th scope="col">{{ $t('status') }}</th> -->
-
-                <th scope="col">{{ $t('actions') }}</th>
+                <th scope="col">{{ $t('emp') }}</th>
+                <!-- <th scope="col" v-for="(certificate, index) in Certificatestate" :key=index>{{ certificate?. }}</th> -->
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/EmployeeCertificate/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
-                <!-- <td data-label="phone">
-                  {{ item.phone }}
-                </td> -->
-
-                <td data-label="Actions">
-                  <!--                <DialogChangeStatusEmployeeCertificate-->
-                  <!--                  v-if="item.EmployeeCertificateStatus === EmployeeCertificateStatusEnum.Draft"-->
-                  <!--                  :EmployeeCertificateId="item.id"-->
-                  <!--                  @EmployeeCertificateChangeStatus="fetchEmployeeCertificate"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteEmployeeCertificate)"
-                    @delete="deleteEmployeeCertificate(item.id)"
-                  />
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -214,29 +186,21 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/EmployeeCertificate/add`"
-          addText="Add EmployeeCertificate"
+        <DataEmpty :link="`/organization/EmployeeCertificate/add`" addText="Add EmployeeCertificate"
           description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeCertificate"
-        />
+          title="..ops! You have No EmployeeCertificate" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/EmployeeCertificate/add`"
-          addText="Add EmployeeCertificate"
+        <DataFailed :link="`/organization/EmployeeCertificate/add`" addText="Add EmployeeCertificate"
           description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeCertificate"
-        />
+          title="..ops! You have No EmployeeCertificate" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
+      <DataFailed addText="Have not  Permission"
         description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
-        link=""
-      />
+        link="" />
     </template>
   </PermissionBuilder>
 </template>

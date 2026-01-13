@@ -318,7 +318,7 @@ const updateData = () => {
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
-      constructorId: SelectedContractor.value?.id,
+      constructorId: SelectedContractor.value?.id || " ",
       equipmentRentType:
         deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
       equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
@@ -328,7 +328,7 @@ const updateData = () => {
           ? VehicleKm.value
           : ' ',
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id,
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
     })
@@ -345,7 +345,7 @@ const updateData = () => {
       AllIndustry: AllIndustry,
       industry: industry.value?.map((item) => item.id),
       parentId: +route.params.parent_id,
-      constructorId: SelectedContractor.value?.id,
+      constructorId: SelectedContractor.value?.id || " ",
       equipmentRentType:
         deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
       equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
@@ -355,7 +355,7 @@ const updateData = () => {
           ? VehicleKm.value
           : ' ',
       serialNumber: SerialNumber.value?.SerialNumber,
-      SelectedWhereHosue: SelectedWhereHosue.value?.id,
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || " ",
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
     })
@@ -375,15 +375,14 @@ const breadcrumbs = [
 ]
 
 const indexContractorController = IndexContractorController.getInstance()
-const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 1, false)
+const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false)
 const SelectedContractor = ref<TitleInterface>()
 const setContructor = (data: TitleInterface) => {
   SelectedContractor.value = data
   updateData()
 }
 
-const deviceStatus = ref<number>(null)
-
+const deviceStatus = ref<number>(EquipmentStatus.RENT)
 const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),

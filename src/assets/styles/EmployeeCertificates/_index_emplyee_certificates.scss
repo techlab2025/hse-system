@@ -1,0 +1,13 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.employee-certificates-matrix {
+  .employee-info {
+    @include flex-column(nowrap, flex-start, flex-start);
+
+    .employee-description {
+      text-align: center;
+    }
+  }
+}
