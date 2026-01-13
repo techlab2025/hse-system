@@ -10,4 +10,22 @@
       text-align: center;
     }
   }
+  .not-required {
+    font-family: 'Light';
+    color: #adadad;
+    font-size: $XsSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    height: 100%;
+  }
+  .certificate-not-required {
+    height: 100%;
+  }
+
+  td {
+    &:last-of-type {
+      @include flex-row(nowrap, center, center);
+      height: 100%;
+      // background-color: red;
+    }
+  }
 }

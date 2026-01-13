@@ -1,5 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CertificateItemsModel from './CertificateItemsModel'
+import { CertificateStatusEnum } from '../../Core/Enum/CertificateStatusEnum'
 
 export default class OrganizatoinEmployeeModel extends TitleInterface {
   public id: number
@@ -45,22 +46,22 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
 
   static example: OrganizatoinEmployeeModel[] = [
     new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', true),
-      new CertificateItemsModel(156, 'cer2', true),
-      new CertificateItemsModel(155, 'cer3', false),
-      new CertificateItemsModel(154, 'cer4', false),
+      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
+      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
+      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
+      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
     ]),
     new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', true),
-      new CertificateItemsModel(156, 'cer2', true),
-      new CertificateItemsModel(155, 'cer3', false),
-      new CertificateItemsModel(154, 'cer4', false),
+      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
+      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
+      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
+      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
     ]),
     new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', true),
-      new CertificateItemsModel(156, 'cer2', true),
-      new CertificateItemsModel(155, 'cer3', false),
-      new CertificateItemsModel(154, 'cer4', false),
+      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
+      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
+      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
+      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
     ]),
   ]
 }

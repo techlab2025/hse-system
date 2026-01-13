@@ -17,6 +17,10 @@ import IndexCertificateController from '@/features/setting/Certificate/Presentat
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import ValidCertificate from '../supcomponents/ValidCertificate.vue'
+import NotValidCertificate from '../supcomponents/NotValidCertificate.vue'
+import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
+import ExpiredCertificate from '../supcomponents/ExpiredCertificate.vue'
 const { t } = useI18n()
 
 const route = useRoute()
@@ -61,11 +65,7 @@ const searchEmployeeCertificate = debounce(() => {
   fetchOrganizationEmployee(word.value)
 })
 
-// const deleteEmployeeCertificate = async (id: number) => {
-//   const deleteEmployeeCertificateParams = new DeleteEmployeeCertificateParams(id)
-//   await DeleteEmployeeCertificateController.getInstance().deleteEmployeeCertificate(deleteEmployeeCertificateParams)
-//   await fetchOrganizationEmployee()
-// }
+
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
@@ -103,81 +103,29 @@ watch(
   },
 )
 
-// const actionList = (id: number, deleteEmployeeCertificate: (id: number) => void) => [
-//   {
-//     text: t('edit'),
-//     icon: IconEdit,
-//     link: `/organization/EmployeeCertificate/${id}`,
-//     permission: [
-//       PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-//     ],
-//   },
 
-//   {
-//     text: t('delete'),
-//     icon: IconDelete,
-//     action: () => deleteEmployeeCertificate(id),
-//     permission: [
-//       PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-//     ],
-//   },
-// ]
+// Check if a specific employee has a specific certificate and return its status
+const getCertificateStatus = (employee: any, certificateId: number) => {
+  const CertificateStatus = employee.certificates?.find(
+    (certificate: any) => certificate.id === certificateId
+  );
 
-// watch(
-//   () => route?.params?.id,
-//   (Newvalue) => {
-//     // id = Newvalue
-//     fetchOrganizationEmployee()
-//   },
-// )
+  // if (!CertificateStatus) return "NotRequired";
 
-const GetEmployeesCertificate = (employeeId: number) => {
-  const employee = state.value.data?.find(
-    (employee) => employee.id === employeeId
-  )
-
-  const employeeCertificates = employee?.certificates?.map((certificate) => {
-    return Certificatestate.value.data?.find(
-      (el) => el.id === certificate.id
-    )
-  })
-
-  console.log(employeeCertificates, 'EmployeeCertificates')
-  return employeeCertificates
-}
-
-const CheckIfEmployeeHasDoneTheCertificate = (certificate: TitleInterface) => {
-  console.log(certificate, 'certificate')
-  const HasDoneCertificate = state.value.data?.find((employee) => {
-    employee.certificates?.find((el) => el?.id === certificate?.id)
-  })
-
-  console.log(HasDoneCertificate, "HasDoneCertificate")
-  return HasDoneCertificate
-}
+  // console.log(CertificateStatus, "CertificateStatus")
+  return CertificateStatus?.isDone;
+};
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
         <Search />
       </span>
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEmployeeCertificate" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" />
-      <ExportPdf /> -->
-      <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EMPLOYEE_CERTIFICATE_CREATE]">
-        <router-link to="/organization/EmployeeCertificate/add" class="btn btn-primary">
-          {{ $t('Add_EmployeeCertificate') }}
-        </router-link>
-      </PermissionBuilder> -->
     </div>
   </div>
 
@@ -196,26 +144,34 @@ const CheckIfEmployeeHasDoneTheCertificate = (certificate: TitleInterface) => {
             <thead>
               <tr>
                 <th scope="col">{{ $t('emp') }}</th>
-                <th scope="col" v-for="(certificate, index) in Certificatestate.data" :key="certificate?.id">
-                  {{ certificate?.title }}
+
+                <th scope="col" v-for="cert in Certificatestate.data" :key="cert.id">
+                  {{ cert.title }}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(employee, index) in state.data" :key="employee?.id">
-                <td>{{ employee?.name }}</td>
+              <tr v-for="employee in state.data" :key="employee.id">
+                <td class="font-bold">{{ employee.name }}</td>
 
-                <td v-for="(certificate, index) in Certificatestate.data" :key="certificate?.id">
-                  {{
-                    CheckIfEmployeeHasDoneTheCertificate(GetEmployeesCertificate(employee.id)?.find((el) => el?.id ===
-                      certificate?.id))
+                <td v-for="cert in Certificatestate.data" :key="cert.id" class=" text-center h-full">
+                  <span :class="cert.id">
+                    <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      :expiry_date="`1-1-2001`" />
 
-                  }}
+                    <NotValidCertificate
+                      v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid" />
+                    <ExpiredCertificate
+                      v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired" />
+                    <div class="not-required" v-else>
+                      NotRequired</div>
+                  </span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
