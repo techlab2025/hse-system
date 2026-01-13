@@ -113,7 +113,7 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
   // if (!CertificateStatus) return "NotRequired";
 
   // console.log(CertificateStatus, "CertificateStatus")
-  return CertificateStatus?.isDone;
+  return CertificateStatus?.status;
 };
 </script>
 
@@ -152,19 +152,38 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
             </thead>
             <tbody>
               <tr v-for="employee in state.data" :key="employee.id">
-                <td class="font-bold">{{ employee.name }}</td>
+                <td class="employee-info-container">
+                  <div class="employee-info">
+                    <span class="name">
+                      {{ employee.name }}
+                    </span>
+                    <span class="employee-description ">{{employee?.hierarchy.map((el) => el.title).join(', ')}}</span>
+                  </div>
+                  <div class="employee-static">
+                    <span class="valid-counter">{{employee?.certificates?.filter((el) => el.status ==
+                      CertificateStatusEnum?.Valid)?.length}} <span>valid</span></span>
+                    <span class="invalid-counter">{{employee?.certificates?.filter((el) => el.status ==
+                      CertificateStatusEnum?.Invalid)?.length}} <span>invalid</span></span>
+                    <span class="expired-counter">{{employee?.certificates?.filter((el) => el.status ==
+                      CertificateStatusEnum?.Expired)?.length}} <span>expired</span></span>
+                  </div>
+                </td>
 
                 <td v-for="cert in Certificatestate.data" :key="cert.id" class=" text-center h-full">
                   <span :class="cert.id">
                     <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
-                      :expiry_date="`1-1-2001`" />
+                      :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expiry_date" />
 
-                    <NotValidCertificate
+                    <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                      :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid" />
-                    <ExpiredCertificate
+                    <ExpiredCertificate :certificateId="cert?.id" :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired" />
                     <div class="not-required" v-else>
-                      NotRequired</div>
+                      <span class="not-required-left"></span>
+                      NotRequired
+                      <span class="not-required-right"></span>
+                    </div>
                   </span>
                 </td>
               </tr>

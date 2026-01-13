@@ -1,6 +1,16 @@
 <script lang="ts" setup>
 import NotValidIcon from '@/shared/icons/NotValidIcon.vue';
+import CertificateImageDialog from "./CertificateImageDialog.vue"
 
+const props = defineProps<{
+  certificateId: number,
+  organizationEmployeeId: number,
+}>()
+
+const emit = defineEmits(['update:data'])
+const updateData = () => {
+  emit('update:data')
+}
 
 </script>
 <template>
@@ -9,6 +19,7 @@ import NotValidIcon from '@/shared/icons/NotValidIcon.vue';
       <NotValidIcon />
       <span class="invalid-title">invalid</span>
     </div>
-    <p class="invalid-date">add</p>
+    <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
+      :organizationEmployeeId="organizationEmployeeId" />
   </div>
 </template>

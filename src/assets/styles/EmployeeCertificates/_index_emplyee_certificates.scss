@@ -24,8 +24,7 @@
   td {
     &:last-of-type {
       @include flex-row(nowrap, center, center);
-      height: 100%;
-      // background-color: red;
+      margin-top: $XlSize;
     }
   }
 }
