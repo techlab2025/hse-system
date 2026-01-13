@@ -203,7 +203,7 @@ const setFactor = (data: TitleInterface[]) => {
       id="HazardType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
     <CustomSelectInput :modelValue="Factor" :controller="indexFactoryController" :params="indexFactoryParams"
       label="Factor" id="factor" placeholder="Select Factor" :type="2" @update:modelValue="setFactor" />
   </div>
