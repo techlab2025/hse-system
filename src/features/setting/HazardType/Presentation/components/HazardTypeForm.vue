@@ -24,7 +24,7 @@ import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const emit = defineEmits(['update:data'])
 const indexFactoryController = IndexFactoryController.getInstance()
-const indexFactoryParams = new IndexFactoryParams("", 1, 10, 1)
+const indexFactoryParams = new IndexFactoryParams("", 1, 10, 0)
 
 
 const route = useRoute()
