@@ -56,7 +56,7 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
         if (!router.currentRoute.value.path.includes('equipment-mangement')) {
           if (!draft)
             await router.push(
-              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/accidents-type`,
             )
         }
 

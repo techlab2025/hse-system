@@ -10,6 +10,8 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public is_master: number
   public image: null
   public certificates: CertificateItemsModel[]
+  public hierarchy: TitleInterface[]
+
   constructor(
     id: number,
     title: string,
@@ -19,6 +21,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     is_master: number,
     image: null,
     certificates: CertificateItemsModel[],
+    hierarchy: TitleInterface[],
   ) {
     super({ id, title })
 
@@ -29,6 +32,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     this.is_master = is_master
     this.image = image
     this.certificates = certificates
+    this.hierarchy = hierarchy
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
@@ -41,27 +45,202 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.is_master,
       data.image,
       data.certificates,
+      data.hierarchy,
     )
   }
 
   static example: OrganizatoinEmployeeModel[] = [
-    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
-      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
-      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
-      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
-    ]),
-    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
-      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
-      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
-      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
-    ]),
-    new OrganizatoinEmployeeModel(1, 'Mohab', 'Mohab', '01007599123', 'mohab@gmail.com', 1, null, [
-      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid),
-      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid),
-      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired),
-      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired),
-    ]),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
+    new OrganizatoinEmployeeModel(
+      1,
+      'Mohab',
+      'Mohab',
+      '01007599123',
+      'mohab@gmail.com',
+      1,
+      null,
+      [
+        new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Invalid, '10-20-30'),
+        new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+        new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+        new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+      ],
+      [new TitleInterface({ id: 1, title: 'SEO' })],
+    ),
   ]
 }

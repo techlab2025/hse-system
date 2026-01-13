@@ -20,4 +20,12 @@
     font-weight: $BaseFontSemiBoldWeight;
     text-decoration: underline;
   }
+  .certificate-dialog {
+    hr {
+      border-color: #f1f3f5;
+    }
+    .dialog-content {
+      margin-top: $XsSize2;
+    }
+  }
 }
