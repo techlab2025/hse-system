@@ -1,0 +1,23 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.expired-certificate {
+  @include flex-column(nowrap, center, center);
+  gap: $XsSize4;
+  .expired {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize4;
+    .expired-title {
+      color: #ffc456;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+  .expired-date {
+    color: #2f2d2d;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    text-decoration: underline;
+  }
+}

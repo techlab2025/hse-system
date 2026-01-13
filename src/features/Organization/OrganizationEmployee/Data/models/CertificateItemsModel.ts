@@ -1,9 +1,11 @@
+import { CertificateStatusEnum } from '../../Core/Enum/CertificateStatusEnum'
+
 export default class CertificateItemsModel {
   public id: number
   public title: string
-  public isDone: boolean
+  public isDone: CertificateStatusEnum
 
-  constructor(id: number, title: string, isDone: boolean) {
+  constructor(id: number, title: string, isDone: CertificateStatusEnum) {
     this.id = id
     this.title = title
     this.isDone = isDone
@@ -13,5 +15,9 @@ export default class CertificateItemsModel {
     return new CertificateItemsModel(data.id, data.title, data.isDone)
   }
 
-  static example: CertificateItemsModel = new CertificateItemsModel(1, 'Mohab', true)
+  static example: CertificateItemsModel = new CertificateItemsModel(
+    1,
+    'Mohab',
+    CertificateStatusEnum.Invalid,
+  )
 }

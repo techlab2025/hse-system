@@ -1,0 +1,22 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.valid-certificate {
+  @include flex-column(nowrap, center, center);
+  gap: $XsSize4;
+  .valid {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize4;
+    .valid-title {
+      color: #6cb765;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+  .valid-date {
+    color: #939393;
+    font-size: $XsSize;
+    font-weight: $BaseFontMediumWeight;
+  }
+}
