@@ -6,7 +6,7 @@ import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Pro
 import DeleteProjectLocationTeamEmployeeController from '../../../controllers/DeleteProjectLocationTeamEmployeeController';
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController';
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
 
 
@@ -30,8 +30,10 @@ const GetProjectLocationsEmployes = async () => {
 const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
-  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams)
-  GetProjectLocationsEmployes()
+  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams, route)
+  if (route.path.includes("employee-details")) {
+    GetProjectLocationsEmployes()
+  }
 }
 
 </script>

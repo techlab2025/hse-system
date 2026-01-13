@@ -25,6 +25,7 @@ class DeleteProjectLocationTeamEmployeeRepo extends RepoInterface<ProjectModel> 
     return this.instance
   }
 
+  
   onParse(data: any): ProjectModel {
     return ProjectModel.fromMap(data)
   }

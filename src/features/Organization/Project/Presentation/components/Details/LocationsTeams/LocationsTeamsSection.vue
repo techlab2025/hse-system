@@ -20,6 +20,7 @@ const CheckTeamsEmpty = computed(() => props.teamLocations?.map((p) => p.project
 <template>
   <div class="locations-teams">
     <div class="locations-teams-header">
+
       <HeaderSection :img="LoactionTeams" title="teams_by_operational_location"
         subtitle="view_all_working_teams_assigned_to_each_operational_zone" />
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>

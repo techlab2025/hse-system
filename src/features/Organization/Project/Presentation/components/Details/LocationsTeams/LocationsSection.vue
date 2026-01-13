@@ -23,7 +23,7 @@ const props = defineProps<{
 
     <div class="teams" v-if="location?.projectLocationTeams?.length > 0">
       <TeamCard v-for="(team, index) in location.projectLocationTeams" :key="index" :team="team" />
-    </div>  
+    </div>
     <div class="empty-teams" v-else>
       <EmptyData :img="EmptyFolder" title="No Team Members Yet"
         subtitle="You haven’t added any employees to this team. Start building your crew now!"
