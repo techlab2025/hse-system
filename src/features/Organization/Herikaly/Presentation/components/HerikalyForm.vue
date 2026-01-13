@@ -15,7 +15,7 @@ import { useRoute } from 'vue-router'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 const emit = defineEmits(['update:data'])
 
@@ -98,6 +98,14 @@ watch(
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
         })
+
+        console.log(newData.certificates, "newData.certificates");
+        Certificate.value = newData.certificates.map((item: any) => (new TitleInterface({ id: item.id, title: item.titles[0]?.title, locale: item.titles[0]?.locale })))
+        // {
+        //   id: item.id,
+        //   title: item.titles?.map((title: any) => title.title),
+        //   locale: item.locale,
+        // }
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
