@@ -3,29 +3,29 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
-import type InjuryModel from '../../Data/models/InjuryModel'
-import DeleteInjuryUseCase from '../../Domain/useCase/deleteInjuryUseCase'
+import type EmployeeCertificateModel from '../../Data/models/EmployeeCertificateModel'
+import DeleteEmployeeCertificateUseCase from '../../Domain/useCase/deleteEmployeeCertificateUseCase'
 
-export default class DeleteInjuryController extends ControllerInterface<InjuryModel> {
-  private static instance: DeleteInjuryController
+export default class DeleteEmployeeCertificateController extends ControllerInterface<EmployeeCertificateModel> {
+  private static instance: DeleteEmployeeCertificateController
   private constructor() {
     super()
   }
-  private DeleteInjuryUseCase = new DeleteInjuryUseCase()
+  private DeleteEmployeeCertificateUseCase = new DeleteEmployeeCertificateUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteInjuryController()
+      this.instance = new DeleteEmployeeCertificateController()
     }
     return this.instance
   }
 
-  async deleteInjury(params: Params) {
+  async deleteEmployeeCertificate(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<InjuryModel> =
-        await this.DeleteInjuryUseCase.call(params)
+      const dataState: DataState<EmployeeCertificateModel> =
+        await this.DeleteEmployeeCertificateUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

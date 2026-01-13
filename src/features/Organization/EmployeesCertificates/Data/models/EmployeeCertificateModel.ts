@@ -1,6 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class InjuryModel extends TitleInterface {
+export default class EmployeeCertificateModel extends TitleInterface {
   public id: number
   public title: string
 
@@ -11,7 +11,7 @@ export default class InjuryModel extends TitleInterface {
 
   }
 
-  static fromMap(data: any): InjuryModel {
-    return new InjuryModel(data.id, data.title)
+  static fromMap(data: any): EmployeeCertificateModel {
+    return new EmployeeCertificateModel(data.id, data.title)
   }
 }
