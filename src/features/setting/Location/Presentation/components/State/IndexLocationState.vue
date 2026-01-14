@@ -228,16 +228,31 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states/add' : '/organization/states/add'"
-          addText="Add HazardType"
-          description="Sorry .. You have no states .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No states" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states/add' : '/organization/states/add'"
+            addText="Add State"
+            description="Sorry .. You have no states .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No states" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states/add' : '/organization/states/add'"
-          addText="Add HazardType"
-          description="Sorry .. You have no states .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No states" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataFailed
+            :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/states/add' : '/organization/states/add'"
+            addText="Add state"
+            description="Sorry .. You have no states .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No states" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

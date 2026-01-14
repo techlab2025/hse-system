@@ -56,16 +56,16 @@ const { item } = defineProps<{
       </permission-builder>
 
 
-      <!-- <permission-builder :code="item.DragInspectionPermissions"> -->
-      <RouterLink v-if="item.dragInspectionRoute" :to="item.dragInspectionRoute" class="btn btn-secondary">{{
-        $t('drag_inspection') }}
-      </RouterLink>
-      <!-- </permission-builder> -->
-      <!-- <permission-builder :code="item.inspectionsResultsPermissions"> -->
-      <RouterLink v-if="item.resultInspectionRoute" :to="item.resultInspectionRoute" class="btn btn-secondary">{{
-        $t('inspections_results') }}
-      </RouterLink>
-      <!-- </permission-builder> -->
+      <permission-builder v-if="item.DragInspectionPermissions" :code="item.DragInspectionPermissions">
+        <RouterLink v-if="item.dragInspectionRoute" :to="item.dragInspectionRoute" class="btn btn-secondary">{{
+          $t('drag_inspection') }}
+        </RouterLink>
+      </permission-builder>
+      <permission-builder v-if="item.inspectionsResultsPermissions" :code="item.inspectionsResultsPermissions">
+        <RouterLink v-if="item.resultInspectionRoute" :to="item.resultInspectionRoute" class="btn btn-secondary">{{
+          $t('inspections_results') }}
+        </RouterLink>
+      </permission-builder>
     </div>
   </div>
 </template>

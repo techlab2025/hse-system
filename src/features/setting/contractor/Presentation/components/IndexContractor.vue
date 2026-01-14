@@ -165,11 +165,11 @@ watch(
   <permission-builder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.CONTRACTOR_All,
-    PermissionsEnum.CONTRACTOR_DELETE,
-    PermissionsEnum.CONTRACTOR_FETCH,
-    PermissionsEnum.CONTRACTOR_UPDATE,
-    PermissionsEnum.CONTRACTOR_CREATE,
+    PermissionsEnum.ORG_CONTRACTOR_ALL,
+    PermissionsEnum.ORG_CONTRACTOR_DELETE,
+    PermissionsEnum.ORG_CONTRACTOR_FETCH,
+    PermissionsEnum.ORG_CONTRACTOR_UPDATE,
+    PermissionsEnum.ORG_CONTRACTOR_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>

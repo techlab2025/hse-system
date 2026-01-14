@@ -714,6 +714,11 @@ export const OrgPermissions: PermissionItem = {
               label: 'Details',
             },
             {
+              key: PermissionsEnum.ORG_CONTRACTOR_CREATE,
+              code: PermissionsEnum.ORG_CONTRACTOR_CREATE,
+              label: 'Create',
+            },
+            {
               key: PermissionsEnum.ORG_CONTRACTOR_DELETE,
               code: PermissionsEnum.ORG_CONTRACTOR_DELETE,
               label: 'Delete',
@@ -779,6 +784,11 @@ export const OrgPermissions: PermissionItem = {
               key: PermissionsEnum.ORG_ROLE_DETAILS,
               code: PermissionsEnum.ORG_ROLE_DETAILS,
               label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_ROLE_CREATE,
+              code: PermissionsEnum.ORG_ROLE_CREATE,
+              label: 'Create',
             },
             {
               key: PermissionsEnum.ORG_ROLE_DELETE,
@@ -957,6 +967,11 @@ export const OrgPermissions: PermissionItem = {
               label: 'Details',
             },
             {
+              key: PermissionsEnum.SCOPE_CREATE,
+              code: PermissionsEnum.SCOPE_CREATE,
+              label: 'Create',
+            },
+            {
               key: PermissionsEnum.SCOPE_DELETE,
               code: PermissionsEnum.SCOPE_DELETE,
               label: 'Delete',
@@ -972,7 +987,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
           code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-          label: 'Scope',
+          label: 'Employee Certificates',
           permissions: [
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,

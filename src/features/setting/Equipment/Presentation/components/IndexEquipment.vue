@@ -234,9 +234,9 @@ watch(
           PermissionsEnum.ORG_EQUIPMENT_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/EquipmentType`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            }/equipment/add`" addText="Add Equipment"
+            description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Equipment" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -247,16 +247,17 @@ watch(
           PermissionsEnum.ORG_EQUIPMENT_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/EquipmentType`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            }/equipment/add`" addText="Add Equipment"
+            description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Equipment" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
+        :link="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
+        description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

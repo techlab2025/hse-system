@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user';
 const {
   title,
   description,
-  link = '/',
+  link,
   addText = 'Home',
 } = defineProps<{
   title?: string
@@ -19,6 +19,7 @@ const { user } = useUserStore()
 
 <template>
   <div class="data-empty ">
+
     <img alt="imageFailed" class="data-empty-image" src="@/assets/images/DataFailed.gif" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
