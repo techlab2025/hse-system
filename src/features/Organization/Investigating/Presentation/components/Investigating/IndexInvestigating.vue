@@ -11,7 +11,7 @@ import FilterDialog from './InvestigatingUtils/FilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestigatingSidebar from './InvestigatingSidebar.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
-import { link } from 'fs'
+// import { link } from 'fs'
 import LiveLink from '@/assets/images/LiveLink.png'
 import LiveIcon from '@/assets/images/LiveIcon.png'
 import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
@@ -21,10 +21,10 @@ import { useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
-import mark from "@/assets/images/mark.png"
+import mark from '@/assets/images/mark.png'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
-
+import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -41,22 +41,21 @@ const GetInvsetegationResult = async (
   pageNumber = 1,
   perPage = 10,
   withPage = 1,
-  observationRiskLevel?: RiskLevelEnum
+  observationRiskLevel?: RiskLevelEnum,
 ) => {
   const indexInvestigationResultParams = new IndexInvestigationResultParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    observationRiskLevel
-  );
-  await indexInvestigatingController.getData(indexInvestigationResultParams);
-
+    observationRiskLevel,
+  )
+  await indexInvestigatingController.getData(indexInvestigationResultParams)
 }
 
 onMounted(() => {
   // ShowDetails.value = InvestigatingList.value.map(() => false)
-  GetInvsetegationResult();
+  GetInvsetegationResult()
 })
 
 const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
@@ -83,7 +82,7 @@ watch(
   (newState) => {
     if (newState) state.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 const GetInvestigationType = (type: number) => {
@@ -100,8 +99,6 @@ const GetInvestigationType = (type: number) => {
 
   // return Observation[type]
 }
-
-
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
@@ -140,11 +137,15 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      {{ console.log(state.data, "state") }}
+      {{ console.log(state.data, 'state') }}
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
-        <InvestigatingSidebar :selectedRiskLevel="observationRiskLevel" :highObservationCount="5"
-          :mediumObservationCount="5" @update:data="GetRiskLevel" />
+        <InvestigatingSidebar
+          :selectedRiskLevel="observationRiskLevel"
+          :highObservationCount="5"
+          :mediumObservationCount="5"
+          @update:data="GetRiskLevel"
+        />
 
         <!-- Main content (Cards) -->
         <div class="col-span-9">
@@ -169,16 +170,21 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                     <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-
-                          <p class="first-label-item-primary"
-                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)">
-                            {{ GetObservationRiskLevel(item?.observation?.riskLevel) + " " +
-                              GetInvestigationType(item?.observation?.type) }} <span v-if="item?.observation?.serial">{{
-                              `_` + item?.observation?.serial ||
-                              '_OBS-2025-0112'
+                          <p
+                            class="first-label-item-primary"
+                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
+                          >
+                            {{
+                              GetObservationRiskLevel(item?.observation?.riskLevel) +
+                              ' ' +
+                              GetInvestigationType(item?.observation?.type)
+                            }}
+                            <span v-if="item?.observation?.serial">{{
+                              `_` + item?.observation?.serial || '_OBS-2025-0112'
                             }}</span>
                           </p>
-                          <p :class="`status ${ReturnStatusTitle(item?.status)}`">{{ ReturnStatusTitle(item?.status) }}
+                          <p :class="`status ${ReturnStatusTitle(item?.status)}`">
+                            {{ ReturnStatusTitle(item?.status) }}
                           </p>
                         </div>
                         <div class="first-card-details">
@@ -205,35 +211,49 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                         <div class="project-details">
                           <!-- <pre>{{ item?.observation }}</pre> -->
                           <p class="label-item-primary flex" v-if="item?.observation?.zoon">
-                            <img :src="mark" alt="zone">
+                            <img :src="mark" alt="zone" />
                             Zone: <span>{{ item?.observation?.zoon?.title }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.equipment">
                             Machine: <span>{{ item?.observation?.equipment?.title }}</span>
                           </p>
                           <p class="label-item-primary">
-                            Status: <span>{{ item?.observation?.saveStatus == 1 ? "Solved" : "Unsolved" }}</span>
+                            Status:
+                            <span>{{
+                              item?.observation?.saveStatus == 1 ? 'Solved' : 'Unsolved'
+                            }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.isAction">
-                            take action: <span>{{ item?.observation?.isAction == 1 ? "true" : "false" }}</span>
+                            take action:
+                            <span>{{ item?.observation?.isAction == 1 ? 'true' : 'false' }}</span>
                           </p>
                         </div>
                       </div>
 
-                      <div class="btns-container" style="margin-top: 20px;">
-                        <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
-                          <button class="btn first-btn">
-                            <span>{{ $t('show details') }}</span>
-                          </button>
+                      <div class="btns-container" style="margin-top: 20px">
+                        <div
+                          class="unsolved-btns gap-2"
+                          v-if="item?.status == InvestegationStatusEnum.NEW"
+                        >
+                          
+                            <!-- <div > -->
+                              <ShowInvestegationDetailsDialog />
+                            <!-- </div> -->
+                   
 
-                          <router-link :to="`/organization/investigating/add?id=${item?.Investegationid}`">
+                          <router-link
+                            :to="`/organization/investigating/add?id=${item?.Investegationid}`"
+                          >
                             <button class="btn second-btn">
                               <span>{{ $t('assign investigation team') }}</span>
                             </button>
                           </router-link>
                         </div>
 
-                        <div class="btn-inprogress" v-if="item?.status === InvestegationStatusEnum.COMPLETED">
+                        <div
+                          class="btn-inprogress"
+                          v-if="item?.status === InvestegationStatusEnum.COMPLETED"
+                        >
                           <router-link :to="`/organization/investigating/view`">
                             <button class="btn view-btn">
                               <div>
@@ -248,22 +268,34 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </router-link>
                         </div>
 
-                        <div class="solved-btn flex gap-2" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
-                          <router-link style="width: 50%;"
-                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
+                        <div
+                          class="solved-btn flex gap-2"
+                          v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS"
+                        >
+                          <router-link
+                            style="width: 50%"
+                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`"
+                          >
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>
                             </button>
                           </router-link>
-                          <router-link style="width: 50%;"
-                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
+                          <router-link
+                            style="width: 50%"
+                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                          >
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('view_results') }}</span>
                             </button>
                           </router-link>
                         </div>
-                        <div class="solved-btn" v-if="item?.status == InvestegationStatusEnum.CLOSED">
-                          <router-link :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
+                        <div
+                          class="solved-btn"
+                          v-if="item?.status == InvestegationStatusEnum.CLOSED"
+                        >
+                          <router-link
+                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                          >
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('view_results') }}</span>
                             </button>
@@ -278,8 +310,11 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
           </div>
         </div>
       </div>
-      <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
-
+      <Pagination
+        :pagination="state.pagination"
+        @changePage="handleChangePage"
+        @countPerPage="handleCountPerPage"
+      />
     </template>
     <template #loader>
       <TableLoader :cols="3" :rows="10" />
@@ -288,19 +323,27 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
+      <DataEmpty
+        :link="`/organization/hazard/add`"
+        addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+        title="..ops! You have No Hazard"
+      />
     </template>
     <template #failed>
-      <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
+      <DataFailed
+        :link="`/organization/hazard/add`"
+        addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+        title="..ops! You have No Hazard"
+      />
     </template>
 
     <template #notPermitted>
-      <DataFailed addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </DataStatus>
 </template>

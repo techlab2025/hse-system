@@ -1,0 +1,183 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.investigation-show-details {
+  // width: 30%;
+  .show-details-btn {
+    font-size: $MdSize;
+    font-weight: $BaseFontWeightBold;
+    color: #1f41bb;
+    background-color: #1d4ed808;
+    border: 1px dashed #1d4ed880;
+    padding: $SmSize;
+    border-radius: $XlSize2;
+    cursor: pointer;
+    transition: 0.6s ease;
+    width: 100%;
+    &:hover {
+      background-color: #1d4ed8;
+      color: #fff;
+    }
+  }
+
+  .dialog-header {
+    @include flex-column();
+    gap: $XsSize4;
+
+    h3 {
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+      color: #0f1927;
+    }
+
+    p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+  }
+
+  .dialog-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: $XlSize2;
+    margin-top: $MdSize;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ========== TEXT SIDE ========== */
+  .all-text-content {
+    display: flex;
+    flex-direction: column;
+    gap: $XlSize;
+  }
+
+  .observer-info {
+    display: flex;
+    flex-direction: column;
+    gap: $XsSize2;
+
+    .name {
+      h4 {
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: #0f1927;
+
+        span {
+          font-weight: $BaseFontWeight;
+          color: #c7c7cc;
+          font-size: $SmSize;
+        }
+      }
+    }
+
+    p {
+      font-size: $SmSize;
+      color: $SubtitleColor;
+      line-height: 1.6;
+      max-width: 520px;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $XlSize2;
+      margin-top: $XsSize2;
+
+      .info-item {
+        display: flex;
+        gap: 4px;
+
+        .zone-img {
+          width: $XlSize;
+          height: $XlSize;
+          rotate: -20deg;
+        }
+
+        h5 {
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+          color: $SubtitleColor;
+        }
+
+        span {
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: #1f41bb;
+        }
+      }
+    }
+  }
+
+  /* ========== DESCRIPTION ========== */
+  .description {
+    padding-top: $XsSize;
+    border-top: 1px solid transparent;
+    border-image: repeating-linear-gradient(
+        to right,
+        #e9ebf4 0,
+        #e9ebf4 10px,
+        transparent 10px,
+        transparent 20px
+      )
+      1;
+
+    h4 {
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: #111;
+      text-transform: capitalize;
+      margin-bottom: 6px;
+    }
+
+    p {
+      font-size: $SmSize;
+      color: #8e8e93;
+      line-height: 1.7;
+    }
+  }
+  a {
+    font-size: $MdSize;
+    font-weight: $BaseFontWeightBold;
+    color: #1f41bb;
+    text-decoration: underline;
+    transition: 0.6s ease;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  /* ========== IMAGE SIDE ========== */
+  .img-side {
+    width: 100%;
+    height: 100%;
+    border-radius: $SmSize;
+    overflow: hidden;
+    background: #f3f4f6;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  /* ========== FOOTER LINK ========== */
+
+  /* ========== DIALOG ITSELF ========== */
+  .p-dialog {
+    border-radius: var($XlSize2 + 4px);
+  }
+
+  .p-dialog-header {
+    border-bottom: 2px solid #f1f3f5;
+  }
+
+  .p-dialog-content {
+    padding-top: 0;
+  }
+}
