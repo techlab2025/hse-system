@@ -137,7 +137,7 @@ const setAnotherMeeting = (data) => {
         <InvestigationTasks @update:data="setInvestigationTasks" />
         <RateActions @update:data="setRateAction" />
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
-        <div class="attachments-show">
+        <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
           <img :src="investigationAttachments?.files?.[0]" alt="attachment" width="150">
         </div>

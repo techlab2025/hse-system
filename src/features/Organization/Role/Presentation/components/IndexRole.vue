@@ -88,6 +88,7 @@ const actionList = (id: number, deleteRole: (id: number) => void) => [
     link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Role/${id}` : `/organization/Role/${id}`,
     permission: [
       PermissionsEnum.ORG_ROLE_UPDATE,
+      PermissionsEnum.ORG_ROLE_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_ROLE_ALL,
     ],

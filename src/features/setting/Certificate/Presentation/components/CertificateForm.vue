@@ -155,20 +155,21 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
-  console.log(isBase64(image.value), "isBase64(image.value)");
+  // console.log(isBase64(image.value), "isBase64(image.value)");
+  console.log(ImageCahnge.value, "ImageCahnge.value");
   const params = props.data?.id
     ? new EditCertificateParams(
       props.data.id,
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      isBase64(image.value) ? image.value : null,
+      ImageCahnge.value ? isBase64(image.value) ? image.value : " " : isBase64(image.value) && image.value.length > 0 ? image.value : "*",
     )
     : new AddCertificateParams(
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      isBase64(image.value) ? image.value : '',
+      isBase64(image.value) && image.value.length > 0 ? image.value : '*',
     )
 
   // console.log(params, 'params')
@@ -219,9 +220,15 @@ watch(
 )
 
 // ---------- Helpers ----------
+const ImageCahnge = ref(false)
 const setImage = async (data: File | string) => {
+  if (image.value == props?.data?.image) {
+    ImageCahnge.value = false
+  }
+  else {
+    ImageCahnge.value = true
+  }
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
-
   updateData()
 }
 </script>

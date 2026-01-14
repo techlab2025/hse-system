@@ -107,6 +107,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     link: `/organization/herikaly/${id}`,
     permission: [
       PermissionsEnum.HERIKALY_UPDATE,
+      PermissionsEnum.HERIKALY_DETAILS,
       PermissionsEnum.WEBSITE,
       PermissionsEnum.HERIKALY_ALL,
     ],

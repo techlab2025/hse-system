@@ -5,6 +5,8 @@ import EmployeeLinkIcon from '../../../../../shared/icons/EmployeeLinkIcon.vue';
 import type HerikalyModel from '../../Data/models/HerikalyModel';
 import DeleteHerikalyController from '../controllers/deleteHerikalyController';
 import DeleteHerikalyParams from '../../Core/params/deleteHerikalyParams';
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 
 const emit = defineEmits(['delete-data']);
 
@@ -68,28 +70,36 @@ const DeleteHierarchy = async (Id: number) => {
                 'timeline-card-header-2': item.level > 0
               }" :style="{ marginLeft: `${item.level * 20}px` }">
 
-                <router-link :to="`/organization/herikaly/add/${item.id}`">
+                <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_CREATE]">
+                  <router-link :to="`/organization/herikaly/add/${item.id}`">
 
-                  <div class="heirarchy-container">
-                    <div class="heirarchy-header">
-                      <EmployeeIcon class="icon" />
-                      <p class="heirarchy-title">{{ item.title }}</p>
+                    <div class="heirarchy-container">
+                      <div class="heirarchy-header">
+                        <EmployeeIcon class="icon" />
+                        <p class="heirarchy-title">{{ item.title }}</p>
+                      </div>
+                      <div class="heirarchy-details">
+                        <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
+                        <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
+                      </div>
                     </div>
-                    <div class="heirarchy-details">
-                      <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
-                      <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
-                    </div>
-                  </div>
-                </router-link>
-
-                <div class="actions">
-                  <router-link class="btn edit-btn flex "
-                    :to="`/organization/organization-employee?heirarchy_id=${item.id}`">
-                    <span>{{ $t('employees') }}</span>
-                    <EmployeeLinkIcon class="w-[15px] h-[15px]" />
                   </router-link>
-                  <router-link :to="`/organization/herikaly/${item.id}`" class="btn add-btn">{{ $t('edit') }}</router-link>
-                  <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> {{ $t('delete') }} </button>
+                </PermissionBuilder>
+                <div class="actions">
+                  <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
+                    <router-link class="btn edit-btn flex "
+                      :to="`/organization/organization-employee?heirarchy_id=${item.id}`">
+                      <span>{{ $t('employees') }}</span>
+                      <EmployeeLinkIcon class="w-[15px] h-[15px]" />
+                    </router-link>
+                  </PermissionBuilder>
+                  <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_UPDATE]">
+                    <router-link :to="`/organization/herikaly/${item.id}`" class="btn add-btn">{{ $t('edit')
+                    }}</router-link>
+                  </PermissionBuilder>
+                  <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_DELETE]">
+                    <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> {{ $t('delete') }} </button>
+                  </PermissionBuilder>
                 </div>
               </div>
             </div>

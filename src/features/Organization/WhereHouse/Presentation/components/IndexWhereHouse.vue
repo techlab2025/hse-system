@@ -87,6 +87,7 @@ const actionList = (id: number, deleteWhereHouse: (id: number) => void) => [
     link: `/organization/where-house/${id}`,
     permission: [
       PermissionsEnum.WHIERE_HOUSE_UPDATE,
+      PermissionsEnum.WHIERE_HOUSE_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.WHIERE_HOUSE_ALL,
     ],

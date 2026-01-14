@@ -160,6 +160,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
     link: `/organization/equipment-mangement/incedant/${id}`,
     permission: [
       PermissionsEnum.ORG_INCEDANT_UPDATE,
+      PermissionsEnum.ORG_INCEDANT_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_ALL,
     ],

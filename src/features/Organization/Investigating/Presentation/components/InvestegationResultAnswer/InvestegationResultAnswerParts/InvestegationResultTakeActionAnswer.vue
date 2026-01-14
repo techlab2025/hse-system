@@ -26,6 +26,9 @@ const Actions = ref([
 
 ])
 
+const props = defineProps({
+  actions: String
+})
 
 </script>
 
@@ -39,7 +42,8 @@ const Actions = ref([
     </div>
 
     <div class="content">
-      <InvestegaionResultTakeActionCard v-for="(action, index) in Actions" :key="index" :action="action" />
+      <!-- v-for="(action, index) in Actions" :key="index" -->
+      <InvestegaionResultTakeActionCard :action="actions" />
     </div>
   </div>
 </template>

@@ -16,38 +16,38 @@ import ShowInvestigatingParams from '../../../Core/params/showInvestigatingParam
 import { useRoute } from 'vue-router';
 
 
-const Factors = ref([
-  {
-    mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
-    subFactors: [
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-    ],
-    correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
-  },
-  {
-    mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
-    subFactors: [
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-      {
-        factor: "Lorem Ipsum is simply dumm"
-      },
-    ],
-    correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
-  },
-])
+// const Factors = ref([
+//   {
+//     mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
+//     subFactors: [
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//     ],
+//     correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
+//   },
+//   {
+//     mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
+//     subFactors: [
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//       {
+//         factor: "Lorem Ipsum is simply dumm"
+//       },
+//     ],
+//     correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
+//   },
+// ])
 
 const route = useRoute()
 const id = route.params.id
@@ -85,9 +85,9 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
         <CauseOfAccidantAnswer class="w-full" :Factors="state.data?.investigationFactors" />
         <MeetingOverviewAnswer :meetings="state.data?.investigationMeetings" />
         <InvestegationResultTasksAnswer :tasks="state.data?.investigationTasks" />
-        <InvestegationResultTakeActionAnswer :actions="state.data" />
+        <InvestegationResultTakeActionAnswer :actions="state.data?.explainWhyText" />
         <InvestegationResultAttachmentAnswer :attachments="state.data?.investigationDocumentations" />
-        <InvestegationResultViewersAnswer />
+        <InvestegationResultViewersAnswer :viewers="state.data?.witnessStatements" />
       </div>
     </template>
     <template #loader>
