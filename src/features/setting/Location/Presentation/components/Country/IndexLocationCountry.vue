@@ -222,18 +222,32 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/countries/add' : '/organization/countries/add'"
-          addText="Add Country"
-          description="Sorry .. You have no Country .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Country" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataEmpty
+            :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/countries/add' : '/organization/countries/add'"
+            addText="Add Country"
+            description="Sorry .. You have no Country .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Country" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed
-          :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/countries/add' : '/organization/countries/add'"
-          addText="Add Country"
-          description="Sorry .. You have no Country .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Country" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataFailed
+            :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/countries/add' : '/organization/countries/add'"
+            addText="Add Country"
+            description="Sorry .. You have no Country .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Country" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

@@ -226,9 +226,9 @@ watch(
           PermissionsEnum.ORG_TEAM_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-            addText="Add TeamType"
-            description="Sorry .. You have no TeamTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No TeamTypes" />
+            addText="Add Team"
+            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Team" />
         </permission-builder>
       </template>
       <template #failed>
@@ -239,9 +239,9 @@ watch(
           PermissionsEnum.ORG_TEAM_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-            addText="Add TeamType"
-            description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No TeamTypes" />
+            addText="Add Team"
+            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Team" />
         </permission-builder>
       </template>
     </DataStatus>

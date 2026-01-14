@@ -261,9 +261,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
           PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/factory/add`" addText="Add Factory"
-            description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Factory" />
+            }/factory/add`" addText="Add Factor Item"
+            description="Sorry .. You have no Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Factor Item" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -274,16 +274,16 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
           PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/factory/add`" addText="Add Factory"
-            description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Factory" />
+            }/factory/add`" addText="Add Factor Item"
+            description="Sorry .. You have no Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Factor Item " />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no Factor Item .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

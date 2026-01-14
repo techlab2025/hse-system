@@ -227,16 +227,30 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
-          addText="Add HazardType"
-          description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No areas" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
+            addText="Add Area"
+            description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No areas" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
-          addText="Add HazardType"
-          description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No areas" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]">
+          <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
+            addText="Add Area"
+            description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No areas" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
