@@ -32,6 +32,15 @@
         color: $PrimaryColor;
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
+        &.high {
+          color: #d80027;
+        }
+        &.medium {
+          color: #ffbf52;
+        }
+        &.low {
+          color: $PrimaryColor;
+        }
         span {
           color: rgba(202, 205, 219, 1);
           font-size: $SmSize;

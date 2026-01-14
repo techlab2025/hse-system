@@ -23,7 +23,7 @@ import IndexInvestigatingController from '../../controllers/indexInvestigatingCo
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import mark from "@/assets/images/mark.png"
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import type { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 
 
 const word = ref('')
@@ -87,7 +87,18 @@ watch(
 )
 
 const GetInvestigationType = (type: number) => {
-  return Observation[type]
+  switch (type) {
+    case Observation.AccidentsType:
+      return 'Accidents'
+    case Observation.ObservationType:
+      return 'Observation'
+    case Observation.HazardType:
+      return 'Hazard'
+    default:
+      return ''
+  }
+
+  // return Observation[type]
 }
 
 
@@ -109,6 +120,19 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
     GetInvsetegationResult('', currentPage.value, countPerPage.value)
   } else {
     GetInvsetegationResult('', currentPage.value, countPerPage.value, 1, observationRiskLevel.value)
+  }
+}
+
+const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
+  switch (riskLevel) {
+    case RiskLevelEnum.High:
+      return 'high'
+    case RiskLevelEnum.Medium:
+      return 'medium'
+    case RiskLevelEnum.Low:
+      return 'low'
+    default:
+      return ''
   }
 }
 </script>
@@ -145,15 +169,14 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                     <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-                          <p class="first-label-item-primary" :class="{
-                            'high-observation': item.title === 'High observation',
-                            'medium-observation': item.title === 'Medium observation',
-                          }">
-                            {{ GetInvestigationType(item?.observation?.type) }} <span
-                              v-if="item?.observation?.serialNumber">{{
-                                item?.observation?.serialNumber ||
-                                '_OBS-2025-0112'
-                              }}</span>
+
+                          <p class="first-label-item-primary"
+                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)">
+                            {{ GetObservationRiskLevel(item?.observation?.riskLevel) + " " +
+                              GetInvestigationType(item?.observation?.type) }} <span v-if="item?.observation?.serial">{{
+                              `_` + item?.observation?.serial ||
+                              '_OBS-2025-0112'
+                            }}</span>
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">{{ ReturnStatusTitle(item?.status) }}
                           </p>

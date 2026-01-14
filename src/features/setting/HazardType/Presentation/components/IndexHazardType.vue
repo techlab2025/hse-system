@@ -123,6 +123,9 @@ const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORG_HAZARD_CREATE,
     ],
   },
   {
@@ -133,6 +136,7 @@ const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_FETCH,
     ],
   },
   {
@@ -297,7 +301,7 @@ watch(() => route.params.parent_id, (newVal) => {
           PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
         ]">
           <DataEmpty
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
             description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No HazardType" />
@@ -311,7 +315,7 @@ watch(() => route.params.parent_id, (newVal) => {
           PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
         ]">
           <DataFailed
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
             description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No HazardType" />

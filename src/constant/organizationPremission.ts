@@ -873,6 +873,11 @@ export const OrgPermissions: PermissionItem = {
               label: 'Details',
             },
             {
+              key: PermissionsEnum.ORG_HAZARD_CREATE,
+              code: PermissionsEnum.ORG_HAZARD_CREATE,
+              label: 'Create',
+            },
+            {
               key: PermissionsEnum.ORG_HAZARD_DELETE,
               code: PermissionsEnum.ORG_HAZARD_DELETE,
               label: 'Delete',
@@ -1027,6 +1032,44 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Observation Type
+        {
+          key: PermissionsEnum.OBSERVATION_TYPE_ALL,
+          code: PermissionsEnum.OBSERVATION_TYPE_ALL,
+          label: 'Observation Type',
+          permissions: [
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_ALL,
+              code: PermissionsEnum.OBSERVATION_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_FETCH,
+              code: PermissionsEnum.OBSERVATION_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_DETAILS,
+              code: PermissionsEnum.OBSERVATION_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_DELETE,
+              code: PermissionsEnum.OBSERVATION_TYPE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_CREATE,
+              code: PermissionsEnum.OBSERVATION_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+              code: PermissionsEnum.OBSERVATION_TYPE_UPDATE,
               label: 'update',
             },
           ],
