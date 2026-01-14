@@ -174,6 +174,7 @@ watch(
 </script>
 
 <template>
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
@@ -255,8 +256,8 @@ watch(
     </DataStatus>
 
     <template #notPermitted>
+      <!-- {{ user?.type == OrganizationTypeEnum?.ADMIN }} -->
       <DataFailed addText="Have not  Permission"
-        :link="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
         description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
