@@ -224,16 +224,22 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          addText="Add certificate"
-          description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Certificate" />
+        <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+            addText="Add certificate"
+            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Certificate" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          addText="Add Certificate"
-          description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Certificate" />
+        <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+            addText="Add Certificate"
+            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Certificate" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

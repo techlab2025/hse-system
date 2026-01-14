@@ -94,9 +94,8 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/accidents-type/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/accidents-type/${id}`,
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
       PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
@@ -125,50 +124,36 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click=";(word = ''), searchAccidentType()">
+      <span class="icon-remove" @click="; (word = ''), searchAccidentType()">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchAccidentType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchAccidentType" />
     </div>
-    <PermissionBuilder
-      :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
-    >
+    <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
       <div class="col-span-2 flex justify-end gap-2">
         <ExportExcel :data="state.data" />
         <ExportPdf />
-        <router-link
-          :to="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/accidents-type/add`"
-          class="btn btn-primary"
-        >
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/accidents-type/add`" class="btn btn-primary">
           {{ $t('Add_AccidentsType') }}
         </router-link>
       </div>
     </PermissionBuilder>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
-      PermissionsEnum.ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
+    PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
+    PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
+    PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
+    PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+    PermissionsEnum.ACCIDENTS_TYPE_ALL,
+    PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+    PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+    PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+    PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -189,11 +174,8 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
-                    :to="`/${
-                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                    }/accidents-type/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/accidents-type/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -209,20 +191,14 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
                 </td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteAccidentsType)"
-                    @delete="deleteAccidentsType(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteAccidentsType)"
+                    @delete="deleteAccidentsType(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -231,32 +207,26 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/accidents-type`"
-          addText="Add AccidentType"
-          description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No AccidentType"
-        />
+        <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/accidents-type`" addText="Add AccidentType"
+            description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No AccidentType" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/accidents-type`"
-          addText="Add AccidentType"
-          description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No AccidentType"
-        />
+        <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/accidents-type`" addText="Add AccidentType"
+            description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No AccidentType" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

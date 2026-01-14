@@ -237,14 +237,20 @@ watch(
         <TableLoader :cols="8" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/project/add`" addText="Add Project"
-          description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]">
+
+          <DataEmpty :link="`/organization/project/add`" addText="Add Project"
+            description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Project" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/project/add`" addText="Add Project"
-          description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]">
+
+          <DataFailed :link="`/organization/project/add`" addText="Add Project"
+            description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Project" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

@@ -108,11 +108,10 @@ const actionList = (id: number, deleteContractor: (id: number) => void) => [
     icon: IconEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/${id}`,
     permission: [
-      PermissionsEnum.CONTRACTOR_UPDATE,
-      PermissionsEnum.CONTRACTOR_UPDATE,
+      PermissionsEnum.ORG_CONTRACTOR_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CONTRACTOR_All,
+      PermissionsEnum.ORG_CONTRACTOR_ALL,
     ],
   },
 
@@ -121,10 +120,10 @@ const actionList = (id: number, deleteContractor: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteContractor(id),
     permission: [
-      PermissionsEnum.CONTRACTOR_DELETE,
+      PermissionsEnum.ORG_CONTRACTOR_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CONTRACTOR_All,
+      PermissionsEnum.ORG_CONTRACTOR_ALL,
     ],
   },
 ]
@@ -153,8 +152,7 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.CONTRACTOR_CREATE,
-        PermissionsEnum.CONTRACTOR_CREATE,
+        PermissionsEnum.ORG_CONTRACTOR_CREATE,
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
           class="btn btn-primary">
@@ -190,7 +188,7 @@ watch(
                 <td data-label="#">
                   <router-link
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/edit/${item.id}`">{{
-                    index + 1 }}
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item?.title) }}</td>
@@ -217,16 +215,28 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-          addText="Add ContractorType"
-          description="Sorry .. You have no ContractorTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ContractorTypes" />
+        <permission-builder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_CONTRACTOR_CREATE,
+        ]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+            addText="Add ContractorType"
+            description="Sorry .. You have no ContractorTypes .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No ContractorTypes" />
+        </permission-builder>
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-          addText="Add ContractorType"
-          description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ContractorTypes" />
+        <permission-builder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_CONTRACTOR_CREATE,
+        ]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+            addText="Add ContractorType"
+            description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No ContractorTypes" />
+        </permission-builder>
       </template>
     </DataStatus>
 

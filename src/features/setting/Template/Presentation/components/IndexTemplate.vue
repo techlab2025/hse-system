@@ -50,7 +50,7 @@ const fetchTemplate = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteTemplateParams = new IndexTemplateParams(query, pageNumber, perPage, withPage, id ,true)
+  const deleteTemplateParams = new IndexTemplateParams(query, pageNumber, perPage, withPage, id, true)
   await indexTemplateController.getData(deleteTemplateParams)
 }
 
@@ -239,16 +239,30 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
-          addText="Add Template"
-          description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Template" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.TEMPLATE_CREATE,
+          PermissionsEnum.ORG_TEMPLATE_CREATE,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        ]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
+            addText="Add Template"
+            description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Template" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
-          addText="Add Template"
-          description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Template" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.TEMPLATE_CREATE,
+          PermissionsEnum.ORG_TEMPLATE_CREATE,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        ]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
+            addText="Add Template"
+            description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Template" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

@@ -221,14 +221,20 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
-          description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No OrganizatoinEmployeeuages" />
+        <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+
+          <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+            description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No OrganizatoinEmployeeuages" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
-          description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No OrganizatoinEmployeeuages" />
+        <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+
+          <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+            description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No OrganizatoinEmployeeuages" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

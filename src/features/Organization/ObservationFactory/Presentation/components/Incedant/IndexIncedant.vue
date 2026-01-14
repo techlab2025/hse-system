@@ -238,9 +238,11 @@ const ShowDetails = ref<number[]>([])
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <router-link :to="`/organization/equipment-mangement/incedant/add`">
-                <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
-              </router-link>
+              <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
+                <router-link :to="`/organization/equipment-mangement/incedant/add`">
+                  <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
+                </router-link>
+              </PermissionBuilder>
             </div>
           </div>
         </div>
@@ -312,14 +314,18 @@ const ShowDetails = ref<number[]>([])
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
-              description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No incedant" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
+              <DataEmpty :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
+                description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No incedant" />
+            </PermissionBuilder>
           </template>
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
-              description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No incedant" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
+              <DataFailed :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
+                description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No incedant" />
+            </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>

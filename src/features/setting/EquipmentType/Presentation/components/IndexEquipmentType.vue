@@ -273,16 +273,30 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment-type/add`" addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+        ]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/equipment-type/add`" addText="Add EquipmentType"
+            description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No EquipmentTypes" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/EquipmentType`" addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+        ]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/EquipmentType`" addText="Add EquipmentType"
+            description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No EquipmentTypes" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
