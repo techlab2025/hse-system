@@ -1038,38 +1038,38 @@ export const OrgPermissions: PermissionItem = {
         },
         // Observation Type
         {
-          key: PermissionsEnum.OBSERVATION_TYPE_ALL,
-          code: PermissionsEnum.OBSERVATION_TYPE_ALL,
+          key: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+          code: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
           label: 'Observation Type',
           permissions: [
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_ALL,
-              code: PermissionsEnum.OBSERVATION_TYPE_ALL,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
               label: 'All',
             },
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_FETCH,
-              code: PermissionsEnum.OBSERVATION_TYPE_FETCH,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
               label: 'Fetch',
             },
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_DETAILS,
-              code: PermissionsEnum.OBSERVATION_TYPE_DETAILS,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_DETAILS,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_DETAILS,
               label: 'Details',
             },
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_DELETE,
-              code: PermissionsEnum.OBSERVATION_TYPE_DELETE,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
               label: 'Delete',
             },
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_CREATE,
-              code: PermissionsEnum.OBSERVATION_TYPE_CREATE,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
               label: 'Create',
             },
             {
-              key: PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-              code: PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+              key: PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+              code: PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
               label: 'update',
             },
           ],
