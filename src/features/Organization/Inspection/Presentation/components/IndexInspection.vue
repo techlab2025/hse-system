@@ -282,9 +282,10 @@ watch(
           <IndexInspectionHeader :title="`Inspection`" :length="state?.pagination?.total || 0" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
 
-          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-            :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
-
+          <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+              :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
+          </PermissionBuilder>
         </div>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
           :controller="AllTasksState">
@@ -307,14 +308,18 @@ watch(
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
         </DataStatus>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
@@ -340,14 +345,20 @@ watch(
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
+              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
+              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
         </DataStatus>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.Result)"
@@ -372,14 +383,20 @@ watch(
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
+              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection" />
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
+              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Inspection" />
+            </PermissionBuilder>
           </template>
         </DataStatus>
 

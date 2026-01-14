@@ -231,15 +231,21 @@ const ShowDetails = ref<number[]>([])
             @update:data="setSelectedProjectFilter" />
 
           <div class="flex items-center justify-between">
-            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            <PermissionBuilder
+              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]">
+              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            </PermissionBuilder>
 
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <router-link :to="`/organization/equipment-mangement/observation/add`">
-                <button class="btn btn-primary">{{ $t('Create observation') }}</button>
-              </router-link>
+              <PermissionBuilder
+                :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]">
+                <router-link :to="`/organization/equipment-mangement/observation/add`">
+                  <button class="btn btn-primary">{{ $t('Create observation') }}</button>
+                </router-link>
+              </PermissionBuilder>
             </div>
           </div>
         </div>
@@ -312,14 +318,20 @@ const ShowDetails = ref<number[]>([])
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
-              description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Observation" />
+            <PermissionBuilder
+              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]">
+              <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Observation" />
+            </PermissionBuilder>
           </template>
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
-              description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Observation" />
+            <PermissionBuilder
+              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]">
+              <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No Observation" />
+            </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>

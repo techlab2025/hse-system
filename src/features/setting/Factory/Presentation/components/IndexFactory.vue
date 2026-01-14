@@ -150,58 +150,41 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchFactory())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchFactory"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchFactory" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel
-        :data="state.data!"
-        filename="formatted_export"
-        sheet-name="Equipment Type Data"
-        button-text="Export Formatted"
-        button-class="btn-primary"
-      />
+      <ExportExcel :data="state.data!" filename="formatted_export" sheet-name="Equipment Type Data"
+        button-text="Export Formatted" button-class="btn-primary" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.FACTORY_CREATE,
-          PermissionsEnum.ORG_FACTORY_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-          class="btn btn-primary"
-        >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.FACTORY_CREATE,
+        PermissionsEnum.ORG_FACTORY_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+          class="btn btn-primary">
           {{ $t('Add_Factory') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.FACTORY_ALL,
-      PermissionsEnum.FACTORY_DELETE,
-      PermissionsEnum.FACTORY_FETCH,
-      PermissionsEnum.FACTORY_UPDATE,
-      PermissionsEnum.FACTORY_CREATE,
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.FACTORY_ALL,
+    PermissionsEnum.FACTORY_DELETE,
+    PermissionsEnum.FACTORY_FETCH,
+    PermissionsEnum.FACTORY_UPDATE,
+    PermissionsEnum.FACTORY_CREATE,
 
-      PermissionsEnum.ORG_FACTORY_ALL,
-      PermissionsEnum.ORG_FACTORY_DELETE,
-      PermissionsEnum.ORG_FACTORY_FETCH,
-      PermissionsEnum.ORG_FACTORY_UPDATE,
-      PermissionsEnum.ORG_FACTORY_CREATE,
-    ]"
-  >
+    PermissionsEnum.ORG_FACTORY_ALL,
+    PermissionsEnum.ORG_FACTORY_DELETE,
+    PermissionsEnum.ORG_FACTORY_FETCH,
+    PermissionsEnum.ORG_FACTORY_UPDATE,
+    PermissionsEnum.ORG_FACTORY_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -222,12 +205,13 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/${item.id}`">{{
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
+                  ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
@@ -246,20 +230,13 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                   <!--                  @FactoryChangeStatus="fetchFactory"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteFactory)"
-                    @delete="deleteFactory(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteFactory)" @delete="deleteFactory(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -268,28 +245,36 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-          addText="Add Factory"
-          description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Factory"
-        />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.FACTORY_CREATE,
+          PermissionsEnum.ORG_FACTORY_CREATE,
+        ]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+            addText="Add Factory"
+            description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Factory" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-          addText="Add Factory"
-          description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Factory"
-        />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.FACTORY_CREATE,
+          PermissionsEnum.ORG_FACTORY_CREATE,
+        ]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+            addText="Add Factory"
+            description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Factory" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Factory .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

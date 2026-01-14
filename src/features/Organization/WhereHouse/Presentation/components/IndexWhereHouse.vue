@@ -175,14 +175,20 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
-          description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No WhereHouse" />
+        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
+
+          <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
+            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No WhereHouse" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
-          description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No WhereHouse" />
+        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
+
+          <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
+            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No WhereHouse" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 

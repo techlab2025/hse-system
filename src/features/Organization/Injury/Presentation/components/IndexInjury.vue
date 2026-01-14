@@ -133,20 +133,12 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchInjury())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchInjury"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchInjury" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
-      >
+      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <router-link to="/organization/injury/add" class="btn btn-primary">
           {{ $t('Add_Injury') }}
         </router-link>
@@ -154,16 +146,14 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.INJURY_ALL,
-      PermissionsEnum.INJURY_DELETE,
-      PermissionsEnum.INJURY_FETCH,
-      PermissionsEnum.INJURY_UPDATE,
-      PermissionsEnum.INJURY_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.INJURY_ALL,
+    PermissionsEnum.INJURY_DELETE,
+    PermissionsEnum.INJURY_FETCH,
+    PermissionsEnum.INJURY_UPDATE,
+    PermissionsEnum.INJURY_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -182,8 +172,7 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/injury/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/organization/injury/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -199,20 +188,13 @@ watch(
                   <!--                  @InjuryChangeStatus="fetchInjury"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteInjury)"
-                    @delete="deleteInjury(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteInjury)" @delete="deleteInjury(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -221,29 +203,25 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/Injury/add`"
-          addText="Add Injury"
-          description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Injury"
-        />
+        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
+          <DataEmpty :link="`/organization/Injury/add`" addText="Add Injury"
+            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Injury" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/Injury/add`"
-          addText="Add Injury"
-          description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Injury"
-        />
+        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
+          <DataFailed :link="`/organization/Injury/add`" addText="Add Injury"
+            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Injury" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
+      <DataFailed addText="Have not  Permission"
         description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-        link=""
-      />
+        link="" />
     </template>
   </PermissionBuilder>
 </template>

@@ -290,18 +290,32 @@ watch(() => route.params.parent_id, (newVal) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+        ]">
+          <DataEmpty
+            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
+            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No HazardType" />
+        </PermissionBuilder>
       </template>
       <template #failed>
-        <DataFailed
-          :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
-          :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-          description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HazardType" />
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+        ]">
+          <DataFailed
+            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/HazardType`"
+            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
+            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No HazardType" />
+        </PermissionBuilder>
       </template>
     </DataStatus>
 
