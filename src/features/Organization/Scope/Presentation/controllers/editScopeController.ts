@@ -37,7 +37,7 @@ export default class EditScopeController extends ControllerInterface<ScopeModel>
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/Scope')
+        await router.push('/organization/scope?type=1')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

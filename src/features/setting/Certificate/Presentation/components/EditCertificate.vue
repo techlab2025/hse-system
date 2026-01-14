@@ -18,7 +18,6 @@ const showCertificateController = ShowCertificateController.getInstance()
 const state = ref(showCertificateController.state.value)
 const fetchCertificateDetails = async () => {
   const CertificateParams = new ShowCertificateParams(Number(id))
-
   await showCertificateController.showCertificate(CertificateParams)
 }
 

@@ -11,7 +11,7 @@ import type InvestegationTasksModel from '@/features/Organization/Investigating/
 import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel';
 
 const props = defineProps<{
-  task: TasksModel
+  task: InvestegationTasksModel
 }>()
 
 const TasksStatus = ref([
@@ -62,8 +62,8 @@ watch(() => props.task, (newVal) => {
         {{ task?.description || task?.title }}
       </p>
       <div class="info ">
-        <span class="date">due date :<span>{{ task?.date }}</span></span>
-        <span class="responsable">Responsible: <span>{{ task?.responablePerson }}</span> </span>
+        <span class="date">due date :<span>{{ task?.due_date }}</span></span>
+        <span class="responsable">Responsible: <span>{{ task?.ResponsablePerson }}</span> </span>
       </div>
 
       <div class="assigned-to-container">

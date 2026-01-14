@@ -104,6 +104,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     link: `/organization/organization-employee/${id}`,
     permission: [
       PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORG_EMPLOYEE_ALL,
     ],

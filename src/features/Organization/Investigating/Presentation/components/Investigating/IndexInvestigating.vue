@@ -176,7 +176,7 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                               GetInvestigationType(item?.observation?.type) }} <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serial ||
                               '_OBS-2025-0112'
-                            }}</span>
+                              }}</span>
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">{{ ReturnStatusTitle(item?.status) }}
                           </p>

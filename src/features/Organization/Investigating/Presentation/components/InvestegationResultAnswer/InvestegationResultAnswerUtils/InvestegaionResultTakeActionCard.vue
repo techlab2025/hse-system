@@ -7,6 +7,6 @@ const props = defineProps<{
 <template>
   <div class="investegaion-take-action-card">
     <p class="corrective-action">{{ $t('correct_action') }}</p>
-    <p class="description">{{ action?.description }}</p>
+    <p class="description">{{ action }}</p>
   </div>
 </template>

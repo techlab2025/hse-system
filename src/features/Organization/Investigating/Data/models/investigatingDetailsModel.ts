@@ -8,6 +8,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestegationDocumentMedaModel from './InvestegationDocumentMedaModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import type witnessStatementsModel from './InvestegationwitnessStatementsModel'
 
 export default class InvestigatingDetailsModel {
   public id: number
@@ -23,6 +24,8 @@ export default class InvestigatingDetailsModel {
   public investigationFactors: InvestegationFactorModel[]
   public investigationMeetings: InvestigationMeetingsModel[]
   public investigationDocumentations: InvestigatingDocumentModel[]
+  public explainWhyText: string
+  public witnessStatements: witnessStatementsModel[]
 
   constructor(
     id: number,
@@ -38,6 +41,8 @@ export default class InvestigatingDetailsModel {
     investigationFactors: InvestegationFactorModel[],
     investigationMeetings: InvestigationMeetingsModel[],
     investigationDocumentations: InvestigatingDocumentModel[],
+    explainWhyText: string,
+    witnessStatements: witnessStatementsModel[],
   ) {
     this.id = id
     this.investigationId = investigationId
@@ -52,6 +57,8 @@ export default class InvestigatingDetailsModel {
     this.investigationFactors = investigationFactors
     this.investigationMeetings = investigationMeetings
     this.investigationDocumentations = investigationDocumentations
+    this.explainWhyText = explainWhyText
+    this.witnessStatements = witnessStatements
   }
 
   static fromMap(data: any): InvestigatingDetailsModel {
@@ -69,6 +76,8 @@ export default class InvestigatingDetailsModel {
       data.investigation_factors,
       data.investigation_meetings,
       data.investigation_documentations,
+      data.explain_why_text,
+      data.witness_statements,
     )
   }
 

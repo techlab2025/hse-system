@@ -163,6 +163,7 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
       PermissionsEnum.ORG_OBSERVATION_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_OBSERVATION_ALL,
+      PermissionsEnum.ORG_OBSERVATION_DETAILS,
     ],
   },
   {
