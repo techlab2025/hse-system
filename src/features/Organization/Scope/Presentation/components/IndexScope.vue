@@ -177,17 +177,20 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
+
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
 
-          <DataEmpty :link="`/organization/scope/add`" addText="Add Scope"
+          <DataEmpty :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
+            addText="Add Scope"
             description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No Scope" />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
 
-          <DataFailed :link="`/organization/scope/add`" addText="Add Scope"
+        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
+          <DataFailed :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
+            addText="Add Scope"
             description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No Scope" />
         </PermissionBuilder>

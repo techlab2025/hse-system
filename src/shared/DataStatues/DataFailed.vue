@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user';
 const {
   title,
   description,
-  link,
+  link = "/",
   addText = 'Home',
 } = defineProps<{
   title?: string
@@ -23,10 +23,16 @@ const { user } = useUserStore()
     <img alt="imageFailed" class="data-empty-image" src="@/assets/images/DataFailed.gif" />
     <h2>{{ title }}</h2>
     <p>{{ description }}</p>
-    <router-link :to="link || user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
+
+
+    <router-link v-if="link" :to="link" class="btn btn-primary">
+      {{ addText }}
+    </router-link>
+    <router-link v-else :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
       class="btn btn-primary">
       {{ addText }}
     </router-link>
+
   </div>
 </template>
 
