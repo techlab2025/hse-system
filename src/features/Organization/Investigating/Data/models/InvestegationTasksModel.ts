@@ -1,3 +1,5 @@
+import type InvestigationTaskEmployeesModel from "./investigationTaskEmployeesModel"
+
 export default class InvestegationTasksModel {
   id: number
   title: string
@@ -7,6 +9,7 @@ export default class InvestegationTasksModel {
   assignedTo: string
   investigation_meeting_id: number
   description: string
+  investigationTaskEmployees: InvestigationTaskEmployeesModel[]
 
   constructor(
     id: number,
@@ -17,6 +20,7 @@ export default class InvestegationTasksModel {
     assignedTo: string,
     investigation_meeting_id: number,
     description: string,
+    investigationTaskEmployees: InvestigationTaskEmployeesModel[],
   ) {
     this.id = id
     this.title = title
@@ -26,6 +30,7 @@ export default class InvestegationTasksModel {
     this.assignedTo = assignedTo
     this.investigation_meeting_id = investigation_meeting_id
     this.description = description
+    this.investigationTaskEmployees = investigationTaskEmployees
   }
 
   static fromMap(data: any): InvestegationTasksModel {
@@ -38,6 +43,7 @@ export default class InvestegationTasksModel {
       data.assignedTo,
       data.investigation_meeting_id,
       data.description,
+      data.investigation_task_employees,
     )
   }
 
