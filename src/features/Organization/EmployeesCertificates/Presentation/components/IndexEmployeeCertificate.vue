@@ -153,7 +153,7 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="employee in state.data" :key="employee.id" class="table-row" >
+              <tr v-for="employee in state.data" :key="employee.id" class="table-row">
                 <td class="employee-info-container">
                   <div class="employee-info">
                     <span class="name">
@@ -180,7 +180,8 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                     <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid" />
-                    <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id" :organizationEmployeeId="employee?.id"
+                    <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                      :organizationEmployeeId="employee?.id"
                       v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired" />
                     <div class="not-required" v-else>
                       <span class="not-required-left"></span>
@@ -203,21 +204,21 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/EmployeeCertificate/add`" addText="Add EmployeeCertificate"
-          description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
+        <DataEmpty :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+          description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EmployeeCertificate" />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/EmployeeCertificate/add`" addText="Add EmployeeCertificate"
-          description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
+        <DataFailed :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+          description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
           title="..ops! You have No EmployeeCertificate" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no EmployeeCertificate .. All your joined customers will appear here when you add your customer data"
-        link="" />
+        description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
+        />
     </template>
   </PermissionBuilder>
 </template>
