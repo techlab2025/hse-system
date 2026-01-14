@@ -256,7 +256,6 @@ watch(
     </DataStatus>
 
     <template #notPermitted>
-      <!-- {{ user?.type == OrganizationTypeEnum?.ADMIN }} -->
       <DataFailed addText="Have not  Permission"
         description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data" />
     </template>

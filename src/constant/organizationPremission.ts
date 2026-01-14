@@ -825,6 +825,11 @@ export const OrgPermissions: PermissionItem = {
               label: 'Details',
             },
             {
+              key: PermissionsEnum.ORG_INSPECTION_CREATE,
+              code: PermissionsEnum.ORG_INSPECTION_CREATE,
+              label: 'Create',
+            },
+            {
               key: PermissionsEnum.ORG_INSPECTION_DELETE,
               code: PermissionsEnum.ORG_INSPECTION_DELETE,
               label: 'Delete',
@@ -901,6 +906,11 @@ export const OrgPermissions: PermissionItem = {
               label: 'Details',
             },
             {
+              key: PermissionsEnum.ORG_INCEDANT_CREATE,
+              code: PermissionsEnum.ORG_INCEDANT_CREATE,
+              label: 'Create',
+            },
+            {
               key: PermissionsEnum.ORG_INCEDANT_DELETE,
               code: PermissionsEnum.ORG_INCEDANT_DELETE,
               label: 'Delete',
@@ -932,6 +942,11 @@ export const OrgPermissions: PermissionItem = {
               key: PermissionsEnum.ORG_OBSERVATION_DETAILS,
               code: PermissionsEnum.ORG_OBSERVATION_DETAILS,
               label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_OBSERVATION_CREATE,
+              code: PermissionsEnum.ORG_OBSERVATION_CREATE,
+              label: 'Create',
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_DELETE,

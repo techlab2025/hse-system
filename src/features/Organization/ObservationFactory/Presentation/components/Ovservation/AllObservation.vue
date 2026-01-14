@@ -25,6 +25,8 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INSPECTION_CREATE,
       PermissionsEnum.ORG_INSPECTION_ALL,
+      PermissionsEnum.TASK_CREATE,
+      PermissionsEnum.ORG_INSPECTION_CREATE,
     ],
     indexPermissions: [
       PermissionsEnum.ADMIN,

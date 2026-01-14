@@ -233,16 +233,16 @@ watch(
           PermissionsEnum.ORG_CONTRACTOR_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-            addText="Add ContractorType"
-            description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ContractorTypes" />
+            addText="Add Contractor"
+            description="Sorry .. You have no Contractor .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Contractor" />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ContractorType .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no Contractor .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>
