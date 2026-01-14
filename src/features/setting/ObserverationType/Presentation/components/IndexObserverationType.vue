@@ -253,7 +253,8 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
           PermissionsEnum.OBSERVATION_TYPE_CREATE,
           PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
         ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/add`"
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
             description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No ObserverationType" />
@@ -266,7 +267,8 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
           PermissionsEnum.OBSERVATION_TYPE_CREATE,
           PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
         ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation/add`"
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
             description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No ObserverationType" />

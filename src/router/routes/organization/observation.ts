@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from '@/router/types'
+  import type { RouteRecordRaw } from '@/router/types'
 
 export const observationRoutes: RouteRecordRaw[] = [
   {
