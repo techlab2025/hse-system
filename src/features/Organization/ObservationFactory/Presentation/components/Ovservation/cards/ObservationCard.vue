@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+
 
 interface Item {
   title: string;
@@ -10,6 +13,11 @@ interface Item {
   dragInspectionRoute: string;
   resultInspectionRoute: string;
   description: string;
+  AddPermissions: PermissionsEnum[]
+  indexPermissions: PermissionsEnum[]
+  inspectionFormPermissions: PermissionsEnum[],
+  DragInspectionPermissions: PermissionsEnum[],
+  inspectionsResultsPermissions: PermissionsEnum[]
 }
 const { item } = defineProps<{
   item: Item
@@ -31,19 +39,33 @@ const { item } = defineProps<{
       <p class="description">{{ item.description }}</p>
     </div>
     <div class="card-options">
-      <RouterLink v-if="item.addRoute" :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
-      <RouterLink v-if="item.indexRoute" :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
+
+      <permission-builder :code="item.AddPermissions">
+        <RouterLink v-if="item.addRoute" :to="item.addRoute" class="btn btn-secondary">{{ $t('add') }}</RouterLink>
+      </permission-builder>
+      <permission-builder :code="item.indexPermissions">
+        <RouterLink v-if="item.indexRoute" :to="item.indexRoute" class="btn btn-secondary">{{ $t('show') }}</RouterLink>
+      </permission-builder>
+
       <RouterLink v-if="item.overdueRoute" :to="item.overdueRoute" class="btn btn-secondary">{{ $t('over_due') }}
       </RouterLink>
-      <RouterLink v-if="item.inspectionFormRoute" :to="item.inspectionFormRoute" class="btn btn-secondary">{{
-        $t('inspection_form') }}
-      </RouterLink>
+      <permission-builder :code="item.indexPermissions">
+        <RouterLink v-if="item.inspectionFormRoute" :to="item.inspectionFormRoute" class="btn btn-secondary">{{
+          $t('inspection_form') }}
+        </RouterLink>
+      </permission-builder>
+
+
+      <!-- <permission-builder :code="item.DragInspectionPermissions"> -->
       <RouterLink v-if="item.dragInspectionRoute" :to="item.dragInspectionRoute" class="btn btn-secondary">{{
         $t('drag_inspection') }}
       </RouterLink>
+      <!-- </permission-builder> -->
+      <!-- <permission-builder :code="item.inspectionsResultsPermissions"> -->
       <RouterLink v-if="item.resultInspectionRoute" :to="item.resultInspectionRoute" class="btn btn-secondary">{{
         $t('inspections_results') }}
       </RouterLink>
+      <!-- </permission-builder> -->
     </div>
   </div>
 </template>

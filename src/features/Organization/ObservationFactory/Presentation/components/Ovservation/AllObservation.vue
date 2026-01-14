@@ -6,6 +6,7 @@ import ALERT from "@/assets/images/ALERT.png"
 import PoliceLine from "@/assets/images/PoliceLine.png"
 import ToDoLogo from "@/assets/images/ToDoLogo.png"
 import { InspectionPageType, InspectionType } from '../../../Core/Enums/InspectionTypeEnum'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 
 const items = [
@@ -18,21 +19,71 @@ const items = [
     inspectionFormRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.InspectionForm}`,
     dragInspectionRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.DragInspection}`,
     resultInspectionRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
-    description: 'Add . show'
+    description: 'Add . show',
+    AddPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INSPECTION_CREATE,
+      PermissionsEnum.ORG_INSPECTION_ALL,
+    ],
+    indexPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INSPECTION_FETCH,
+      PermissionsEnum.ORG_INSPECTION_ALL,
+      PermissionsEnum.TASK_FETCH,
+    ],
+    DragInspectionPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.MY_TASKS_ALL,
+      PermissionsEnum.ORG_INSPECTION_ALL,
+    ],
+    inspectionsResultsPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.INSPECTION_RESULTS_FETCH,
+      PermissionsEnum.ORG_INSPECTION_ALL,
+    ],
+
   },
   {
     title: 'Observation',
     image: Political,
     addRoute: '/organization/equipment-mangement/observation/add',
     indexRoute: '/organization/equipment-mangement/observation?isAll=1',
-    description: 'Add . show'
+    description: 'Add . show',
+    AddPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_OBSERVATION_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+    ],
+    indexPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_OBSERVATION_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+    ]
   },
   {
     title: 'Incident',
     image: PoliceLine,
     addRoute: '/organization/equipment-mangement/incedant/add',
     indexRoute: '/organization/equipment-mangement/incedant?isAll=1',
-    description: 'Add . show'
+    description: 'Add . show',
+    AddPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INCEDANT_CREATE,
+      PermissionsEnum.ORG_INCEDANT_ALL,
+    ],
+    indexPermissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INCEDANT_FETCH,
+      PermissionsEnum.ORG_INCEDANT_ALL,
+    ]
   },
   // {
   //   title: 'Hazard',

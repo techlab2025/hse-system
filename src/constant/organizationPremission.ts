@@ -730,7 +730,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
           code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-          label: 'Equipment Manegement',
+          label: 'Operations',
           permissions: [
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
@@ -823,6 +823,16 @@ export const OrgPermissions: PermissionItem = {
               key: PermissionsEnum.ORG_INSPECTION_UPDATE,
               code: PermissionsEnum.ORG_INSPECTION_UPDATE,
               label: 'update',
+            },
+            {
+              key: PermissionsEnum.MY_TASKS_ALL,
+              code: PermissionsEnum.MY_TASKS_ALL,
+              label: 'drag',
+            },
+            {
+              key: PermissionsEnum.INSPECTION_RESULTS_FETCH,
+              code: PermissionsEnum.INSPECTION_RESULTS_FETCH,
+              label: 'results',
             },
           ],
         },
