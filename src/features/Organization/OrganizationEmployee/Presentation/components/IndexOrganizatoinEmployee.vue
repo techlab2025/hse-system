@@ -239,7 +239,7 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
+      <DataFailed link="/organization" addText="Have not  Permission"
         description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
