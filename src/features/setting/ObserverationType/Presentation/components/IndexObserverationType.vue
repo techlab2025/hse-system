@@ -179,7 +179,6 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
     PermissionsEnum.OBSERVATION_TYPE_FETCH,
     PermissionsEnum.OBSERVATION_TYPE_UPDATE,
     PermissionsEnum.OBSERVATION_TYPE_CREATE,
-
     PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
     PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
     PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
