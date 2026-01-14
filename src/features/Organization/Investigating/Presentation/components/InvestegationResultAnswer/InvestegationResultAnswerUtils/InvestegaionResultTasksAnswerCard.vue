@@ -48,6 +48,7 @@ watch(() => props.task, (newVal) => {
 
 </script>
 <template>
+
   <!-- <pre>{{ task }}</pre> -->
   <div class="investegaion-task-card" :class="GetTaskStatus(task.status)">
     <div class="card-header">
@@ -63,7 +64,9 @@ watch(() => props.task, (newVal) => {
       </p>
       <div class="info ">
         <span class="date">due date :<span>{{ task?.due_date }}</span></span>
-        <span class="responsable">Responsible: <span>{{ task?.ResponsablePerson }}</span> </span>
+        <span class="responsable">Responsible: <span>{{ task?.investigation_task_employees[0]?.follow_up_employee?.name
+            }}</span>
+        </span>
       </div>
 
       <div class="assigned-to-container">
@@ -71,7 +74,7 @@ watch(() => props.task, (newVal) => {
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
             <p class="assign">assigned to :</p>
-            <p class="person">{{ task?.assignedTo }}</p>
+            <p class="person">{{ task?.investigation_task_employees[0]?.employee?.name }}</p>
           </div>
         </div>
         <button :class="GetTaskStatus(task?.status)">
