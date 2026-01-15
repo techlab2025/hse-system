@@ -251,24 +251,32 @@
 
   .btns-container {
     @include flex-row(wrap, space-between, center);
+
     gap: $XsSize4;
     width: 100%;
     .unsolved-btns {
       @include flex-row(nowrap, space-between, center);
+      @media screen and (max-width: 425px) {
+        flex-direction: column;
+      }
       width: 100%;
       margin-top: 10px;
       .first-btn {
         width: 30%;
+        @media screen and (max-width: 425px) {
+          width: 100%;
+        }
         background-color: #1d4ed808;
       }
-      .second-btn {
-        width: 100%;
-      }
-      button {
-        width: 100%;
-      }
+
       a {
         width: 70%;
+        @media screen and (max-width: 425px) {
+          width: 100%;
+        }
+        .second-btn {
+          width: 100%;
+        }
       }
     }
 

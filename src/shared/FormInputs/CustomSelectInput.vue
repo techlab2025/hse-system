@@ -152,25 +152,25 @@ function handleFetchError(error: unknown): void {
 }
 
 async function reloadData(): Promise<void> {
-  emit("update:reload")
+  emit('update:reload')
   if (loading.value) return
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null
 }
 
-
 const updateSlot = (data: any) => {
-  console.log(data, "data");
+  console.log(data, 'data')
   emit('update:slot', data)
 }
-
 </script>
 
 <template>
   <div class="input-label flex justify-between w-full">
-
-    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-      @click="reloadData">
+    <span
+      v-if="enableReload"
+      class="reload-icon cursor-pointer flex items-center w-full"
+      @click="reloadData"
+    >
       <span>
         <component @update:data="updateSlot" v-if="component" :is="component" />
       </span>
@@ -178,8 +178,7 @@ const updateSlot = (data: any) => {
       <IconBackStage />
     </span>
 
-    <div class="label-container flex items-center gap-2">
-
+    <div class="label-container flex justify-center items-center gap-2">
       <label :class="{ required: required }" class="input-label">
         <span v-if="required" class="text-red-500">*</span>
         {{ $t(label ?? '') }}
@@ -190,9 +189,18 @@ const updateSlot = (data: any) => {
       </span>
     </div>
   </div>
-  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-    :empty-message="message" />
+  <component
+    :is="componentType"
+    v-model="normalizedValue"
+    :options="mergedOptions"
+    :placeholder="placeholder"
+    class="input-select w-full"
+    option-label="title"
+    v-bind="multiselectProps"
+    filter
+    :loading="loading"
+    :empty-message="message"
+  />
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 
   <!-- <template v-else>
@@ -208,12 +216,11 @@ const updateSlot = (data: any) => {
   cursor: pointer;
   color: #1d4ed8;
   text-decoration: underline;
-  font-family: "Regular";
+  font-family: 'Regular';
 
   svg {
     width: 18px;
     height: 18px;
-
   }
 }
 
@@ -221,6 +228,7 @@ const updateSlot = (data: any) => {
   width: 100%;
   background-color: transparent;
   border-radius: 24px;
+  // padding: 16px 0;
 
   &:focus {
     border: 1px solid #d9dbe9 !important;

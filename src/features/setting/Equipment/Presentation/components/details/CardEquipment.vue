@@ -75,7 +75,6 @@ const deleteEquipment = async (id: number) => {
   await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
 }
 
-
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
@@ -83,13 +82,20 @@ const GetEquipmentType = (type: number) => {
 
 <template>
   <div class="card-equipment">
-    <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
-      class="img-equipment" />
+    <img
+      :src="equipmentData.image || `/src/assets/images/logo.svg`"
+      @error="setDefaultImage($event)"
+      alt=""
+      class="img-equipment"
+    />
     <div class="card-body">
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-          :equipmentType="equipmentData?.equipment_type?.title" />
+        <BreadCrumb
+          :BreadCramps="breadcrumbs"
+          :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
+          :equipmentType="equipmentData?.equipment_type?.title"
+        />
         <div class="card-body-title">
           <h3 class="title">{{ tTitle }}</h3>
           <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
@@ -100,12 +106,12 @@ const GetEquipmentType = (type: number) => {
             {{ equipmentData.lastInspectoinDate }} <span>({{ $t('per_week') }})</span>
           </p>
         </div>
-        <div class="date-of-decommissioning">
+        <!-- <div class="date-of-decommissioning">
           <span>{{ $t('Date of Decommissioning') }} :</span>
           <p>{{ new Date(equipmentData.checkinDate).toLocaleDateString() }}</p>
-        </div>
+        </div> -->
         <div class="vehicle">
-          <Car />
+          <!-- <Car /> -->
 
           <div class="items">
             <div class="item">
@@ -129,16 +135,27 @@ const GetEquipmentType = (type: number) => {
             <div class="flex flex-col gap-4">
               <div>
                 <ul class="list-none !px-3 !py-1 flex-col m-0 flex gap-3">
-                  <li v-for="action in actions" :key="action.id"
-                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border">
-                    <RouterLink :to="action.link" class="flex items-center gap-3" v-if="action.id == 1">
+                  <li
+                    v-for="action in actions"
+                    :key="action.id"
+                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
+                  >
+                    <RouterLink
+                      :to="action.link"
+                      class="flex items-center gap-3"
+                      v-if="action.id == 1"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
                     </RouterLink>
 
-                    <button v-else-if="action.id == 2" @click="deleteEquipment" class="flex items-center gap-3 w-full">
+                    <button
+                      v-else-if="action.id == 2"
+                      @click="deleteEquipment"
+                      class="flex items-center gap-3 w-full"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
@@ -152,8 +169,8 @@ const GetEquipmentType = (type: number) => {
         </div>
         <div class="image-content">
           <div class="texts">
-            <p>Lorem ipsum dolor</p>
-            <span>{{ $t('EXP-Date') }} 12/5/2025</span>
+            <!-- <p>Lorem ipsum dolor</p> -->
+            <span>{{ $t('EXP-Date') }} {{ equipmentData?.certificateExppiredDate }}</span>
           </div>
           <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>

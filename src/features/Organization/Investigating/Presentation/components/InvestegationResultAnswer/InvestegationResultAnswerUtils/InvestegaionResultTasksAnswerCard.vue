@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { MeetingStatus } from '@/features/Organization/Investigating/Core/Enums/MeetingStatusEnum'
 import { TasksStatusEnum } from '@/features/Organization/Investigating/Core/Enums/TasksStatusEnum'
 import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue'
@@ -11,8 +10,7 @@ import { ref, watch } from 'vue'
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
 import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
 import InvestigationResultDialoge from './InvestigationResultDialoge.vue'
-import AddInvestegationTaskAnswerDialog from '../../Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue';
-
+import AddInvestegationTaskAnswerDialog from '../../Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue'
 
 const props = defineProps<{
   task: InvestegationTasksModel
@@ -20,21 +18,20 @@ const props = defineProps<{
 
 const TasksStatus = ref([
   {
-    title: "Open",
+    title: 'Open',
     status: TasksStatusEnum.OPEN,
-    icon: NewTaskIcon
+    icon: NewTaskIcon,
   },
   {
-    title: "Open",
+    title: 'Open',
     status: 0,
-    icon: NewTaskIcon
+    icon: NewTaskIcon,
   },
   {
-    title: "Closed",
+    title: 'Closed',
     status: TasksStatusEnum.COLSED,
-    icon: TasksWorking
+    icon: TasksWorking,
   },
-
 ])
 
 const GetTaskStatus = (status) => {
@@ -56,7 +53,6 @@ watch(
 )
 </script>
 <template>
-
   <!-- <pre>{{ task }}</pre> -->
   <div class="investegaion-task-card" :class="GetTaskStatus(task.status)">
     <div class="card-header">
@@ -71,11 +67,13 @@ watch(
         {{ task?.description || task?.title }}
       </p>
 
-      <div class="info ">
-        <span class="date">due date :<span>{{ task?.due_date }}</span></span>
-        <span class="responsable">Responsible: <span>{{
-          task?.investigation_task_employees?.[0]?.follow_up_employee?.name
-            }}</span>
+      <div class="info">
+        <span class="date"
+          >due date :<span>{{ task?.due_date }}</span></span
+        >
+        <span class="responsable"
+          >Responsible:
+          <span>{{ task?.investigation_task_employees?.[0]?.follow_up_employee?.name }}</span>
         </span>
       </div>
 
@@ -89,12 +87,14 @@ watch(
         </div>
 
         <button v-if="task?.status === TasksStatusEnum.OPEN || task?.status === 0">
-          <AddInvestegationTaskAnswerDialog :taskId="task?.id" :task="task?.description || task?.title" />
+          <AddInvestegationTaskAnswerDialog
+            :taskId="task?.id"
+            :task="task?.description || task?.title"
+          />
         </button>
         <!-- class="btn btn-secondary" -->
-        <button v-else >
-        <InvestigationResultDialoge :item="task"/>
-
+        <button v-else>
+          <InvestigationResultDialoge :item="task" />
         </button>
       </div>
     </div>
