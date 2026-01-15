@@ -2,41 +2,41 @@
 @import '../../mixins/flex';
 @import '../../mixins/grid';
 
-.investigation-show-details {
-  // width: 30%;
-  .show-details-btn {
-    font-size: $MdSize;
+.investigation-show-details-btn {
+  font-size: $MdSize;
+  font-weight: $BaseFontWeightBold;
+  color: #1f41bb;
+  background-color: #1d4ed808;
+  border: 1px dashed #1d4ed880;
+  padding: $XsSize;
+  border-radius: $XlSize2;
+  cursor: pointer;
+  transition: 0.6s ease;
+  width: 30%;
+  &:hover {
+    background-color: #1d4ed8;
+    color: $White;
+  }
+}
+
+.show-investigation-dialog-header {
+  @include flex-column();
+  gap: $XsSize4;
+
+  h3 {
+    font-size: $XlSize;
     font-weight: $BaseFontWeightBold;
-    color: #1f41bb;
-    background-color: #1d4ed808;
-    border: 1px dashed #1d4ed880;
-    padding: $SmSize;
-    border-radius: $XlSize2;
-    cursor: pointer;
-    transition: 0.6s ease;
-    width: 100%;
-    &:hover {
-      background-color: #1d4ed8;
-      color: #fff;
-    }
+    color: #0f1927;
   }
 
-  .dialog-header {
-    @include flex-column();
-    gap: $XsSize4;
-
-    h3 {
-      font-size: $XlSize;
-      font-weight: $BaseFontWeightBold;
-      color: #0f1927;
-    }
-
-    p {
-      font-size: 14px;
-      color: #6b7280;
-    }
+  p {
+    font-size: 14px;
+    color: #6b7280;
   }
+}
 
+.investigation-show-details {
+  border-top: 2px solid#F1F3F5;
   .dialog-content {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -50,14 +50,12 @@
 
   /* ========== TEXT SIDE ========== */
   .all-text-content {
-    display: flex;
-    flex-direction: column;
+    @include flex-column();
     gap: $XlSize;
   }
 
   .observer-info {
-    display: flex;
-    flex-direction: column;
+    @include flex-column();
     gap: $XsSize2;
 
     .name {
@@ -82,8 +80,7 @@
     }
 
     .info-row {
-      display: flex;
-      flex-wrap: wrap;
+      @include flex-row(wrap, start, center);
       gap: $XlSize2;
       margin-top: $XsSize2;
 
@@ -151,17 +148,34 @@
   }
 
   /* ========== IMAGE SIDE ========== */
-  .img-side {
-    width: 100%;
-    height: 100%;
-    border-radius: $SmSize;
-    overflow: hidden;
-    background: #f3f4f6;
 
-    img {
-      width: 100%;
+  .img-side {
+    .p-galleria {
       height: 100%;
-      object-fit: cover;
+    }
+
+    .p-galleria-content {
+      height: 100%;
+    }
+
+    .p-galleria-item-container {
+      height: 100%;
+    }
+
+    .p-galleria-item {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .p-galleria-item img {
+      max-width: 288px;
+      max-height: 203px;
+      min-width: 250px;
+      min-height: 200px;
+      border-radius: 13px;
+      object-fit: cover; // 🔥 الحل السحري
       display: block;
     }
   }

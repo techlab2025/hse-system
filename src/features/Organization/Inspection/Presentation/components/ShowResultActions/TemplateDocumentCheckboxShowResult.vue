@@ -101,6 +101,7 @@ const showTextArea = () => {
         <p class="title">typing text</p>
         <span class="textarea-answer">
           {{ selected_data?.answers?.[0]?.answer }}
+          
         </span>
       </div>
       <div v-if="selected_data?.files?.length > 0" class="mt-4">

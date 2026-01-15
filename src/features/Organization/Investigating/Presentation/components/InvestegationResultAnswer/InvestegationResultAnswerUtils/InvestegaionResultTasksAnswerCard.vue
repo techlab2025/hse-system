@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { MeetingStatus } from '@/features/Organization/Investigating/Core/Enums/MeetingStatusEnum';
-import { TasksStatusEnum } from '@/features/Organization/Investigating/Core/Enums/TasksStatusEnum';
-import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue';
-import NewTaskIcon from '@/shared/icons/NewTaskIcon.vue';
-import TasksComplated from '@/shared/icons/TasksComplated.vue';
-import AssignedToicon from '@/shared/icons/AssignedToicon.vue';
-import TasksWorking from '@/shared/icons/TasksWorking.vue';
-import { ref, watch } from 'vue';
-import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
-import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel';
+import { MeetingStatus } from '@/features/Organization/Investigating/Core/Enums/MeetingStatusEnum'
+import { TasksStatusEnum } from '@/features/Organization/Investigating/Core/Enums/TasksStatusEnum'
+import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue'
+import NewTaskIcon from '@/shared/icons/NewTaskIcon.vue'
+import TasksComplated from '@/shared/icons/TasksComplated.vue'
+import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
+import TasksWorking from '@/shared/icons/TasksWorking.vue'
+import { ref, watch } from 'vue'
+import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
+import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
+import InvestigationResultDialoge from './InvestigationResultDialoge.vue'
 
 const props = defineProps<{
   task: TasksModel
@@ -16,22 +17,21 @@ const props = defineProps<{
 
 const TasksStatus = ref([
   {
-    title: "New",
+    title: 'New',
     status: TasksStatusEnum.new,
-    icon: NewTaskIcon
+    icon: NewTaskIcon,
   },
   {
-    title: "working",
+    title: 'working',
     status: TasksStatusEnum.working,
-    icon: TasksWorking
+    icon: TasksWorking,
   },
   {
-    title: "completed",
+    title: 'completed',
     status: TasksStatusEnum.completed,
-    icon: TasksComplated
+    icon: TasksComplated,
   },
 ])
-
 
 const GetTaskStatus = (status) => {
   return TasksStatusEnum[status]
@@ -40,12 +40,16 @@ const GetTaskStatus = (status) => {
 // const SelectedTaskStatus = ref(
 //   TasksStatus.value?.filter(item => item.status == props.task?.status)[0])
 
-const SelectedTaskStatus = ref(TasksStatus.value.filter((item => item.status === props.task.status))[0])
+const SelectedTaskStatus = ref(
+  TasksStatus.value.filter((item) => item.status === props.task.status)[0],
+)
 
-watch(() => props.task, (newVal) => {
-  SelectedTaskStatus.value = TasksStatus.value?.filter(item => item.status == newVal.status)[0]
-})
-
+watch(
+  () => props.task,
+  (newVal) => {
+    SelectedTaskStatus.value = TasksStatus.value?.filter((item) => item.status == newVal.status)[0]
+  },
+)
 </script>
 <template>
   <!-- <pre>{{ task }}</pre> -->
@@ -61,9 +65,13 @@ watch(() => props.task, (newVal) => {
       <p class="task-description">
         {{ task?.description || task?.title }}
       </p>
-      <div class="info ">
-        <span class="date">due date :<span>{{ task?.date }}</span></span>
-        <span class="responsable">Responsible: <span>{{ task?.responablePerson }}</span> </span>
+      <div class="info">
+        <span class="date"
+          >due date :<span>{{ task?.date }}</span></span
+        >
+        <span class="responsable"
+          >Responsible: <span>{{ task?.responablePerson }}</span>
+        </span>
       </div>
 
       <div class="assigned-to-container">
@@ -74,13 +82,17 @@ watch(() => props.task, (newVal) => {
             <p class="person">{{ task?.assignedTo }}</p>
           </div>
         </div>
-        <button :class="GetTaskStatus(task?.status)">
-          {{ GetTaskStatus(task?.status) !== "completed" ? "Complate" : "view details" }}
+        <button
+          v-if="GetTaskStatus(task?.status) == 'completed'"
+          :class="GetTaskStatus(task?.status)"
+        >
+          {{ 'Complate' }}
+        </button>
+        <!-- <button v-else :class="GetTaskStatus(task?.status)">view details</button> -->
+        <button class="investigation-show-result-button">
+          <InvestigationResultDialoge :item="task"/>
         </button>
       </div>
     </div>
-
-
-
   </div>
 </template>

@@ -235,11 +235,7 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                           class="unsolved-btns gap-2"
                           v-if="item?.status == InvestegationStatusEnum.NEW"
                         >
-                          
-                            <!-- <div > -->
-                              <ShowInvestegationDetailsDialog />
-                            <!-- </div> -->
-                   
+                          <ShowInvestegationDetailsDialog :item="item" />
 
                           <router-link
                             :to="`/organization/investigating/add?id=${item?.Investegationid}`"
