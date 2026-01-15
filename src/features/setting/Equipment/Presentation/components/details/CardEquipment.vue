@@ -88,12 +88,12 @@ const GetEquipmentType = (type: number) => {
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
         <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-          :equipmentType="tTitle" />
+          :equipmentType="equipmentData.equipment_type?.title" />
         <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
         <div class="card-body-title">
           <!-- <h3 class="title">{{ tTitle }}</h3> -->
 
-          <h3 class="title">{{equipmentData?.equipment_type?.titles?.find((item) => item.locale === locale)?.title}}
+          <h3 class="title">{{ equipmentData?.title }}
           </h3>
           <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
         </div>

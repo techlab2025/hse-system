@@ -26,7 +26,7 @@ const fetchEquipmentDetails = async () => {
   const id = Number(route.params.id)
   if (!id) return
 
-  const params = new ShowEquipmentParams(id)
+  const params = new ShowEquipmentParams(id, true)
   await controller.showEquipmentType(params)
 }
 
