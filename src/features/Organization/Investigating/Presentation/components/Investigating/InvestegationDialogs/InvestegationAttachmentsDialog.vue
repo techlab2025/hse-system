@@ -71,7 +71,7 @@ const updateTilte = (data: string) => {
     </div>
 
     <button class="btn btn-primary w-full" @click="SendData">
-      Add
+      Confirm 
     </button>
   </Dialog>
 </template>

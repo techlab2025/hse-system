@@ -64,7 +64,7 @@ const PeriodTypeSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: PeriodTypeEnum.WITHDAY, title: 'Set Period' }),
 
 ])
-const SelectedWithDaysType = ref<TitleInterface>()
+const SelectedWithDaysType = ref<TitleInterface>(new TitleInterface({ id: 1, title: 'Day' }))
 
 const SelectedPeriodType = ref<TitleInterface>(new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }))
 const GetSelectedPeridType = (data) => {
@@ -103,7 +103,7 @@ const setByDateDayes = (date: Date[]) => {
   UpdateData()
 }
 
-const WithDays = ref<number>()
+const WithDays = ref<number>(1)
 const setWithDays = (data: number) => {
   WithDays.value = data.target.value
   UpdateData()
@@ -196,7 +196,7 @@ const setWithDayesType = (data: TitleInterface) => {
           @update:modelValue="setWithDayesType" />
       </div>
       <div class="input-wrapper" v-if="SelectedPeriodType === PeriodTypeEnum.WITHDAY">
-        <label for="with-day">{{ $t('with days') }}</label>
+        <label for="with-day">{{ $t(`with ${SelectedWithDaysType?.title}`) }}</label>
         <input type="number" min="1" max="31" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
           @change="setWithDays" />
       </div>

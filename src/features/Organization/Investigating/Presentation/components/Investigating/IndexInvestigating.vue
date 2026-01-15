@@ -255,7 +255,8 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                               <span>{{ $t('add_meeting_result') }}</span>
                             </button>
                           </router-link>
-                          <router-link style="width: 50%;"
+
+                          <router-link v-if="item?.hasResults" style="width: 50%;"
                             :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('view_results') }}</span>
@@ -288,19 +289,19 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
+      <!-- <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+        title="..ops! You have No Hazard" /> -->
     </template>
     <template #failed>
-      <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
+      <!-- <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" />
+        title="..ops! You have No Hazard" /> -->
     </template>
 
     <template #notPermitted>
       <DataFailed addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data" />
     </template>
   </DataStatus>
 </template>
