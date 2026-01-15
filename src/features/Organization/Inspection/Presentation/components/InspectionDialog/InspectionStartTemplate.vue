@@ -213,34 +213,27 @@ watch(
 
 <template>
   <div class="inspection-start card w-full flex justify-center">
-    <button
-      class="show-button"
-      style="z-index: 999"
-      @click="GetData"
-      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection && !showResult"
-    >
+    <button class="show-button" style="z-index: 999" @click="GetData"
+      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection && !showResult">
       <div class="button-text">
         <h5 class="">Add results</h5>
       </div>
     </button>
+    <button class="show-button" style="z-index: 999" @click="GetData"
+      v-if="status == InspectionStatus.FINISHED && !lastinspection && !showResult">
+      <div class="button-text">
+        <h5 class="">Show results</h5>
+      </div>
+    </button>
 
-    <button
-      class="show-result-btn flex gap-1"
-      v-if="lastinspection"
-      style="z-index: 999"
-      @click="GetData"
-    >
+
+    <button class="show-result-btn flex gap-1" v-if="lastinspection" style="z-index: 999" @click="GetData">
       <span>show Result</span>
       <!-- <ShowResultIcon /> -->
     </button>
 
-    <button
-      class="show-button  "
-      v-if="showResult"
-      style="z-index: 999"
-      @click="GetData"
-    >
-        <div class="button-text">
+    <button class="show-button  " v-if="showResult" style="z-index: 999" @click="GetData">
+      <div class="button-text">
         <h5 class="">Show results</h5>
       </div>
       <!-- <ShowResultIcon /> -->
@@ -251,32 +244,18 @@ watch(
       <span> show inspection details </span>
       <ArrowDetails />
     </button> -->
-    <Dialog
-      v-model:visible="visible"
-      :header="title"
-      modal
-      :dismissable-mask="true"
-      :style="{ width: '60vw' }"
-    >
+    <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
       <!-- <div :class="status == InspectionStatus.FINISHED ? 'overlay' : ''"> -->
 
       <!-- {{ console.log(TaskResults?.taskResults[TaskResults?.taskResults], "resullllttt") }} -->
       <!-- {{ console.log(TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1], "resullllttt") }} -->
-      <TemplateDocument
-        :isOverlay="status == InspectionStatus.FINISHED"
-        :allData="AllDocument"
-        @update:data="UpdateData"
-        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]"
-      />
+      <TemplateDocument :isOverlay="status == InspectionStatus.FINISHED" :allData="AllDocument"
+        @update:data="UpdateData" :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
 
-      <button
-        v-if="
-          status == InspectionStatus.NOT_FINISHED &&
-          route?.query?.inspectionType != InspectionPageType.InspectionForm
-        "
-        class="btn btn-primary w-full mt-4"
-        @click="CreateAnswer"
-      >
+      <button v-if="
+        status == InspectionStatus.NOT_FINISHED &&
+        route?.query?.inspectionType != InspectionPageType.InspectionForm
+      " class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>
       <!-- </div> -->
