@@ -62,13 +62,13 @@ const staticData = ref({
               </div>
             </div>
           </div>
-          <div class="description">
+          <div class="description" v-if="item?.action || item?.action != null">
             <h4>preventive action:</h4>
             <p>
               {{ item?.action }}
             </p>
           </div>
-          <router-link to="/organization"> show the observation </router-link>
+          <!-- <router-link to="/organization"> show the observation </router-link> -->
         </div>
 
         <div class="img-side" v-if="item?.image?.length > 0">

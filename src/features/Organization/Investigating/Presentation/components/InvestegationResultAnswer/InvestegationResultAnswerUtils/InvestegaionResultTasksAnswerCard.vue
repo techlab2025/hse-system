@@ -91,7 +91,8 @@ watch(
         <button v-if="task?.status === TasksStatusEnum.OPEN || task?.status === 0">
           <AddInvestegationTaskAnswerDialog :taskId="task?.id" :task="task?.description || task?.title" />
         </button>
-        <button v-else class="btn btn-secondary">
+        <!-- class="btn btn-secondary" -->
+        <button v-else >
         <InvestigationResultDialoge :item="task"/>
 
         </button>
