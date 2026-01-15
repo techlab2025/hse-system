@@ -3,7 +3,10 @@ import { ref, computed } from 'vue'
 import UploadImage from '@/shared/icons/UploadImage.vue'
 import MultiImagesDialog from './dialog/MultiImagesDialog.vue'
 
-const props = defineProps<{ initialImages?: string[] }>()
+const props = defineProps<{ 
+  initialImages?: string[]
+  isUpload?:boolean | true
+ }>()
 const images = ref<string[]>(props.initialImages || [])
 const emit = defineEmits(['update:images'])
 
@@ -32,7 +35,7 @@ const extraCount = computed(() => images.value.length - 3)
 
 <template>
   <div>
-    <label v-if="images.length === 0" class="cursor-pointer inline-block">
+    <label v-if="images.length === 0 && isUpload" class="cursor-pointer inline-block">
       <UploadImage class="image-upload" />
       <input type="file" multiple accept="image/*" class="hidden" @change="handleUpload" />
     </label>
@@ -53,6 +56,7 @@ const extraCount = computed(() => images.value.length - 3)
       </div>
 
       <div v-else class="grid grid-cols-1 w-15">
+
         <div v-for="(img, i) in images" :key="i" class="w-full h-full rounded-md overflow-hidden">
           <img :src="img" class="w-15 h-full object-cover" />
         </div>
