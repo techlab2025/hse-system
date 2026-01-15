@@ -24,7 +24,7 @@ class ShowEquipmentApiService extends ServicesInterface {
       type: CrudType.FormData,
       auth: true,
       params: params,
-      headers: HeaderHandler.Instance.getHeader(true, false), // Exclude Accept-Language
+      headers: HeaderHandler.Instance.getHeader(true, params.isLang ? true : false), // Exclude Accept-Language
     })
   }
 }

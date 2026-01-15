@@ -39,6 +39,7 @@ export default class EquipmentDetailsModel {
   public tasks_without_result: InspectionModel[]
   public tasks_with_result: InspectionModel[]
   public certificateExppiredDate: string
+  public title: string
 
   constructor(
     id: number,
@@ -67,6 +68,7 @@ export default class EquipmentDetailsModel {
     tasks_without_result: InspectionModel[],
     tasks_with_result: InspectionModel[],
     certificateExppiredDate: string,
+    title: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -94,6 +96,7 @@ export default class EquipmentDetailsModel {
     this.tasks_without_result = tasks_without_result
     this.tasks_with_result = tasks_with_result
     this.certificateExppiredDate = certificateExppiredDate
+    this.title = title
 
     // this.type = type
   }
@@ -131,6 +134,7 @@ export default class EquipmentDetailsModel {
         ? data.tasks_with_result.map((task) => InspectionModel?.fromMap(task))
         : [],
       data.certificate_exppired_date,
+      data.title,
     )
   }
 
