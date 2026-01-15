@@ -1356,6 +1356,9 @@ class ApiNames {
   public get DeleteEmployeeCertificate() {
     return this.prefix + 'delete_employee_certificate'
   }
+  public get CreateInvestigationTaskResult() {
+    return this.prefix + 'create_investigation_task_result'
+  }
 }
 
 export { ApiNames }

@@ -66,7 +66,7 @@ const fetchTasks = async (
     pageNumber,
     perPage,
     withPage,
-
+    route.params.id ? Number(route.params.id) : null
   )
   await indexTasksController.indexTasks(deleteEquipmentTypeParams, router)
 }

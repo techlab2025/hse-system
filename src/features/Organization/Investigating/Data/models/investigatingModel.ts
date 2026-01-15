@@ -36,6 +36,7 @@ export default class InvestigatingModel {
   public status: number
   public observation: HazardDetailsModel
   public LatestInvestigatingMeetingId: number
+  public hasResults: boolean
 
   constructor(
     Investegationid: number,
@@ -65,6 +66,7 @@ export default class InvestigatingModel {
     status: number,
     observation: HazardDetailsModel,
     LatestInvestigatingMeetingId: number,
+    hasResults: boolean,
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -93,6 +95,7 @@ export default class InvestigatingModel {
     this.status = status
     this.observation = observation
     this.LatestInvestigatingMeetingId = LatestInvestigatingMeetingId
+    this.hasResults = hasResults
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -126,6 +129,7 @@ export default class InvestigatingModel {
       data.status,
       HazardDetailsModel.fromMap(data.observation),
       data.latest_investigation_meeting_id,
+      data.has_results,
     )
   }
 

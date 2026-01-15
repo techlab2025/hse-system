@@ -9,6 +9,7 @@ import TasksWorking from '@/shared/icons/TasksWorking.vue';
 import { ref, watch } from 'vue';
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
 import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel';
+import AddInvestegationTaskAnswerDialog from '../../Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue';
 
 const props = defineProps<{
   task: InvestegationTasksModel
@@ -16,20 +17,21 @@ const props = defineProps<{
 
 const TasksStatus = ref([
   {
-    title: "New",
-    status: TasksStatusEnum.new,
+    title: "Open",
+    status: TasksStatusEnum.OPEN,
     icon: NewTaskIcon
   },
   {
-    title: "working",
-    status: TasksStatusEnum.working,
-    icon: TasksWorking
+    title: "Open",
+    status: 0,
+    icon: NewTaskIcon
   },
   {
-    title: "completed",
-    status: TasksStatusEnum.completed,
-    icon: TasksComplated
+    title: "Closed",
+    status: TasksStatusEnum.COLSED,
+    icon: TasksWorking
   },
+
 ])
 
 
@@ -64,7 +66,8 @@ watch(() => props.task, (newVal) => {
       </p>
       <div class="info ">
         <span class="date">due date :<span>{{ task?.due_date }}</span></span>
-        <span class="responsable">Responsible: <span>{{ task?.investigation_task_employees[0]?.follow_up_employee?.name
+        <span class="responsable">Responsible: <span>{{
+          task?.investigation_task_employees?.[0]?.follow_up_employee?.name
             }}</span>
         </span>
       </div>
@@ -74,11 +77,14 @@ watch(() => props.task, (newVal) => {
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
             <p class="assign">assigned to :</p>
-            <p class="person">{{ task?.investigation_task_employees[0]?.employee?.name }}</p>
+            <p class="person">{{ task?.investigation_task_employees?.[0]?.employee?.name }}</p>
           </div>
         </div>
-        <button :class="GetTaskStatus(task?.status)">
-          {{ GetTaskStatus(task?.status) !== "completed" ? "Complate" : "view details" }}
+        <button v-if="task?.status === TasksStatusEnum.OPEN || task?.status === 0">
+          <AddInvestegationTaskAnswerDialog :taskId="task?.id" :task="task?.description || task?.title" />
+        </button>
+        <button v-else class="btn btn-secondary">
+          view details
         </button>
       </div>
     </div>

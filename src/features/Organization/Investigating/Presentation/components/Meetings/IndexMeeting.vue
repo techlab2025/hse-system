@@ -61,6 +61,8 @@ const fetchMeetings = async (
     pageNumber,
     perPage,
     withPage,
+    route.params.id ? Number(route.params.id) : null
+
 
   )
   await indexMeetingController.indexMeeting(deleteEquipmentTypeParams, router)
