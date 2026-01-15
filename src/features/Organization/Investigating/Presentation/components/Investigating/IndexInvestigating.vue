@@ -249,7 +249,7 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                         </div>
 
                         <div class="solved-btn flex gap-2" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
-                          <router-link style="width: 50%;"
+                          <router-link :style="{ width: item?.hasResults ? '50%' : '100%' }"
                             :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>

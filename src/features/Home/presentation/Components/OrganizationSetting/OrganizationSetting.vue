@@ -253,6 +253,18 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
         ],
       },
+      {
+        route: '/organization/injury',
+        Name: 'Injury',
+        permissions: [
+          PermissionsEnum.INDUSTRY_ALL,
+          PermissionsEnum.INDUSTRY_CREATE,
+          PermissionsEnum.INDUSTRY_DELETE,
+          PermissionsEnum.INDUSTRY_FETCH,
+          PermissionsEnum.INDUSTRY_UPDATE,
+          PermissionsEnum.INJURY_DETAILS,
+        ],
+      },
 
     ],
 

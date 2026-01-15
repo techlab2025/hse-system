@@ -1074,6 +1074,120 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // WareHouse
+        {
+          key: PermissionsEnum.WHIERE_HOUSE_ALL,
+          code: PermissionsEnum.WHIERE_HOUSE_ALL,
+          label: 'Warehouse',
+          permissions: [
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_ALL,
+              code: PermissionsEnum.WHIERE_HOUSE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_FETCH,
+              code: PermissionsEnum.WHIERE_HOUSE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_DETAILS,
+              code: PermissionsEnum.WHIERE_HOUSE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_DELETE,
+              code: PermissionsEnum.WHIERE_HOUSE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_CREATE,
+              code: PermissionsEnum.WHIERE_HOUSE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_UPDATE,
+              code: PermissionsEnum.WHIERE_HOUSE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // WareHouse Type
+        {
+          key: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+          code: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+          label: 'Warehouse Type',
+          permissions: [
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+              code: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Injury
+        {
+          key: PermissionsEnum.INJURY_ALL,
+          code: PermissionsEnum.INJURY_ALL,
+          label: 'Injury',
+          permissions: [
+            {
+              key: PermissionsEnum.INJURY_ALL,
+              code: PermissionsEnum.INJURY_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.INJURY_FETCH,
+              code: PermissionsEnum.INJURY_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.INJURY_DETAILS,
+              code: PermissionsEnum.INJURY_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.INJURY_DELETE,
+              code: PermissionsEnum.INJURY_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.INJURY_CREATE,
+              code: PermissionsEnum.INJURY_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.INJURY_UPDATE,
+              code: PermissionsEnum.INJURY_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],
