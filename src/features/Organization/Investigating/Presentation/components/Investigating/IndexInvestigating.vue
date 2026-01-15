@@ -170,18 +170,16 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                     <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-                          <p
-                            class="first-label-item-primary"
-                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
-                          >
-                            {{
-                              GetObservationRiskLevel(item?.observation?.riskLevel) +
-                              ' ' +
-                              GetInvestigationType(item?.observation?.type)
-                            }}
-                            <span v-if="item?.observation?.serial">{{
-                              `_` + item?.observation?.serial || '_OBS-2025-0112'
-                            }}</span>
+
+
+                          <p class="first-label-item-primary"
+                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)">
+                            {{ GetObservationRiskLevel(item?.observation?.riskLevel) + " " +
+                              GetInvestigationType(item?.observation?.type) }} <span v-if="item?.observation?.serial">{{
+                              `_` + item?.observation?.serial ||
+                              '_OBS-2025-0112'
+                              }}</span>
+
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
@@ -264,22 +262,19 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </router-link>
                         </div>
 
-                        <div
-                          class="solved-btn flex gap-2"
-                          v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS"
-                        >
-                          <router-link
-                            style="width: 50%"
-                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`"
-                          >
+
+                        <div class="solved-btn flex gap-2" v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS">
+                          <router-link :style="{ width: item?.hasResults ? '50%' : '100%' }"
+                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`">
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('add_meeting_result') }}</span>
                             </button>
                           </router-link>
-                          <router-link
-                            style="width: 50%"
-                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
-                          >
+
+
+                          <router-link v-if="item?.hasResults" style="width: 50%;"
+                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`">
+
                             <button class="btn btn-primary w-full">
                               <span>{{ $t('view_results') }}</span>
                             </button>
@@ -319,27 +314,21 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
       <TableLoader :cols="3" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty
-        :link="`/organization/hazard/add`"
-        addText="Add Hazard"
+
+      <!-- <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard"
-      />
+        title="..ops! You have No Hazard" /> -->
     </template>
     <template #failed>
-      <DataFailed
-        :link="`/organization/hazard/add`"
-        addText="Add Hazard"
+      <!-- <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
         description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard"
-      />
+        title="..ops! You have No Hazard" /> -->
     </template>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not Permission"
+        description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data" />
+
     </template>
   </DataStatus>
 </template>

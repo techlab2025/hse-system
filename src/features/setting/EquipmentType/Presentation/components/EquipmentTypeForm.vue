@@ -4,7 +4,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 
 // import { EquipmentTypesMap } from '@/constant/EquipmentTypes'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import type ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/ProjectTypeDetailsModel.ts'
+// import ShowEquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/ProjectTypeDetailsModel.ts'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -24,11 +24,13 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import isBase64 from '@/base/Presentation/utils/isBase64'
+import type ProjectTypeDetailsModel from '@/features/setting/ProjectType/Data/models/projectTypeDetailsModel'
 
 const emit = defineEmits(['update:data', 'close:data'])
 
 const props = defineProps<{
-  data?: ShowEquipmentTypeModel
+  data?: ProjectTypeDetailsModel
 }>()
 
 const route = useRoute()
@@ -109,6 +111,8 @@ const updateData = () => {
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
+  // console.log(ImageCahnge.value, "ImageCahnge.value");
+  console.log(image.value.length > 0 ? image.value : "*", "isBase64(image.value) || image.value.length > 0 ? image.value : '*'");
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
       props.data?.id! ?? 0,
@@ -117,7 +121,7 @@ const updateData = () => {
       user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
       industry.value?.map((item) => item.id),
       +parent_id.value,
-      image.value,
+      image.value.length > 0 ? image.value : "*",
       null,
       EquipmentType.value?.id,
     )
@@ -176,7 +180,14 @@ watch(
   { immediate: true },
 )
 
+const ImageCahnge = ref(false)
 const setImage = async (data: File | string) => {
+  if (image.value == props?.data?.image) {
+    ImageCahnge.value = false
+  }
+  else {
+    ImageCahnge.value = true
+  }
   // image.value = await filesToBase64(data)
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()

@@ -100,6 +100,7 @@ const actionList = (id: number, deleteInjury: (id: number) => void) => [
     link: `/organization/Injury/${id}`,
     permission: [
       PermissionsEnum.INJURY_UPDATE,
+      PermissionsEnum.INJURY_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.INJURY_ALL,
     ],

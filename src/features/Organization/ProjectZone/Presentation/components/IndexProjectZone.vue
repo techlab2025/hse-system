@@ -106,6 +106,7 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
     link: `/organization/project-zone/${id}`,
     permission: [
       PermissionsEnum.PROJECT_ZONE_UPDATE,
+      PermissionsEnum.PROJECT_ZONE_DETAILS,
       PermissionsEnum.WEBSITE,
       PermissionsEnum.PROJECT_ZONE_ALL,
     ],

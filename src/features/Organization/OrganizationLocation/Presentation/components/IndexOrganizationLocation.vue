@@ -108,6 +108,7 @@ const actionList = (id: number, deleteOrganizationLocation: (id: number) => void
     link: `/organization/organization-location/${id}`,
     permission: [
       PermissionsEnum.ORG_LOCATION_UPDATE,
+      PermissionsEnum.ORG_LOCATION_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_LOCATION_ALL,
     ],

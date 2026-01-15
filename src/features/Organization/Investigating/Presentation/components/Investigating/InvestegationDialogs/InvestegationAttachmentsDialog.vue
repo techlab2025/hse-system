@@ -11,13 +11,17 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
 import { useUserStore } from '@/stores/user'
 
+const props = defineProps<{
+  images: string[]
+}>()
+
 const emit = defineEmits<{
   (e: 'update:data', payload: { title: any; files: any[] }): void
 }>()
 
 const visible = ref(false)
 const title = ref("")
-const Files = ref<any[]>([])
+const Files = ref<any[]>(props.images)
 
 
 const user = useUserStore()
@@ -58,15 +62,16 @@ const updateTilte = (data: string) => {
       <hr class="attch-hr" />
 
       <div class="input-wrapper">
-        <input type="text" v-model="title" class="input" @input="updateTilte" />
+        <label for="title">title</label>
+        <input type="text" id="title" v-model="title" class="input" @input="updateTilte" />
       </div>
 
       <FileUpload class="file-upload" label="Image" id="image" placeholder="Select image" :multiple="false"
-        @update:fileData="setFiles" />
+        :initialFileData="images" @update:fileData="setFiles" />
     </div>
 
     <button class="btn btn-primary w-full" @click="SendData">
-      Add
+      Confirm 
     </button>
   </Dialog>
 </template>

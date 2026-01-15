@@ -11,22 +11,26 @@
   border: 1px solid #f6f6f6;
   width: 100%;
 
-  &.new {
+  &.OPEN {
     background-color: #fcfcfc;
+    font-family: 'Regular';
+
     .task-status-title {
       color: #4f8cd3;
+      font-size: 14px;
+      font-weight: 700;
     }
   }
 
-  &.working {
-    background-color: #523cd905;
-    border: 1px solid #523cd933;
-    .task-status-title {
-      color: #523cd9;
-    }
-  }
+  // &.working {
+  //   background-color: #523cd905;
+  //   border: 1px solid #523cd933;
+  //   .task-status-title {
+  //     color: #523cd9;
+  //   }
+  // }
 
-  &.completed {
+  &.CLOSED {
     background-color: #25a42e05;
     border: 1px solid #25a42e33;
 
@@ -111,15 +115,28 @@
         padding: $XsSize3 $SmSize;
         border-radius: $MdSize;
       }
-      .working,
-      .new {
-        color: white;
-        background-color: #4caf50;
-      }
-      .completed {
-        color: #1f41bbcc;
-        background-color: #1f41bb12;
-        border: 1px solid #1f41bb99;
+      // .working,
+      // .new {
+      //   color: white;
+      //   background-color: #4caf50;
+      // }
+      // .completed {
+      //   color: #1f41bbcc;
+      //   background-color: #1f41bb12;
+      //   border: 1px solid #1f41bb99;
+      // }
+
+      .p-dialog-header {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize2;
+        img {
+          width: 25px;
+          height: 25px;
+        }
+        h3 {
+          font-size: $MdSize;
+          font-weight: $BaseFontWeightBold;
+        }
       }
     }
   }

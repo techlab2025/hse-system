@@ -16,7 +16,7 @@ export const accidentsRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Accidents/AddAccidentsType.vue'),
     meta: {
       breadcrumb: 'Add Accidents Type',
-      parent: `Accidents Type `,
+      parent: `Accidents Type`,
       type: 'Shared',
     },
   },
@@ -26,7 +26,7 @@ export const accidentsRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/Accidents/EditAccidentsType.vue'),
     meta: {
       breadcrumb: 'Edit Accidents Type',
-      parent: `Accidents Type `,
+      parent: `Accidents Type`,
       type: 'Shared',
     },
   },

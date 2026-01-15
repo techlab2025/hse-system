@@ -42,7 +42,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return
       }
-      if (params?.status == EquipmentStatus.RENT && params?.equipmentRentStartDate) {
+      if (params?.status == EquipmentStatus.RENT && !params?.equipmentRentStartDate) {
         new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
         return
       }

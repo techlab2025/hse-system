@@ -88,6 +88,7 @@ const actionList = (id: number, deleteScope: (id: number) => void) => [
     link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Scope/${id}` : `/organization/Scope/${id}`,
     permission: [
       PermissionsEnum.SCOPE_UPDATE,
+      PermissionsEnum.SCOPE_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.SCOPE_ALL,
     ],

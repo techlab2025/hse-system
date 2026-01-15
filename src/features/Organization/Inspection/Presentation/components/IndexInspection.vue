@@ -172,6 +172,7 @@ const actionList = (id: number, deleteInspection: (id: number) => void) => [
     link: `/organization/Inspection/${id}`,
     permission: [
       PermissionsEnum.ORG_INSPECTION_UPDATE,
+      PermissionsEnum.ORG_INSPECTION_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INSPECTION_ALL,
     ],

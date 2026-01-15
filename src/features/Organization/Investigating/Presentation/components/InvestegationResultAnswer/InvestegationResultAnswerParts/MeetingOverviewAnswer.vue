@@ -5,8 +5,9 @@ import InvestegaionMeetingResultAnswerCard from '../InvestegationResultAnswerUti
 import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue';
 import { ref } from 'vue';
 import type InvestigationMeetingsModel from '@/features/Organization/Investigating/Data/models/InvestigationMeetingsModel';
+import { useRoute } from 'vue-router';
 
-
+const route = useRoute()
 const props = defineProps<{
   meetings: InvestigationMeetingsModel[]
 }>()
@@ -58,7 +59,9 @@ const props = defineProps<{
     <div class="header">
       <HeaderPage :title="`Meetings Overview`" :subtitle="`A complete list of your past and upcoming meetings.`"
         :img="investigationImg" class="title-header answer-header border-top" />
-      <button class="show-all-btn">{{ $t('show_all_meetings') }}</button>
+      <router-link :to="`/organization/investegation-meetings/${route?.params?.id}`" class="show-all-btn">{{
+        $t('show_all_meetings')
+        }}</router-link>
     </div>
 
     <div class="content">

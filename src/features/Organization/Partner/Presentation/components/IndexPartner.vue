@@ -100,6 +100,7 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
     link: `/organization/partner/${id}`,
     permission: [
       PermissionsEnum.PARTNER_UPDATE,
+      PermissionsEnum.PARTNER_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.PARTNER_ALL,
     ],
