@@ -15,6 +15,7 @@ import { InspectionStatus } from '@/features/Organization/Inspection/Core/Enum/I
 import ViewInspectionArrow from '@/shared/icons/ViewInspectionArrow.vue'
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
+import ButtonArrow from '@/shared/icons/ButtonArrow.vue'
 
 const visible = ref(false)
 
@@ -23,6 +24,7 @@ const { templateId, taskId } = defineProps<{
   taskId: number,
   status: number,
   all_document: TaskFullResponseModel
+  isEquipment?: boolean,
 }>()
 
 const router = useRouter()
@@ -188,13 +190,19 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
 </script>
 
 <template>
-  <div class="card flex justify-center">
+  <div class="card flex justify-center w-full">
     <!-- v-if="status == InspectionStatus.NOT_FINISHED" -->
-    <button class="card-info-status" @click="GetData">
+    <button v-if="!isEquipment" class="card-info-status" @click="GetData">
       <div class="view-inspection-container">
         <p class="view-inspection">view inspection details</p>
         <ViewInspectionArrow />
       </div>
+    </button>
+    <button v-if="isEquipment" class="flex items-center gap-2 w-full" @click="GetData">
+      <div class="button-text">
+        <h5>History Log</h5>
+      </div>
+      <ButtonArrow />
     </button>
 
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">

@@ -70,7 +70,7 @@ const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
         <div class="history-qr">
           <HistoryLog :show_tasks="state.data?.tasks_without_result" :result_tasks="state.data?.tasks_with_result"
             :inspectionType="InspectionStatus" />
-          <QrCode />
+          <!-- <QrCode /> -->
         </div>
       </div>
     </template>

@@ -82,12 +82,8 @@ const GetEquipmentType = (type: number) => {
 
 <template>
   <div class="card-equipment">
-    <img
-      :src="equipmentData.image || `/src/assets/images/logo.svg`"
-      @error="setDefaultImage($event)"
-      alt=""
-      class="img-equipment"
-    />
+    <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
+      class="img-equipment" />
     <div class="card-body">
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
@@ -136,27 +132,16 @@ const GetEquipmentType = (type: number) => {
             <div class="flex flex-col gap-4">
               <div>
                 <ul class="list-none !px-3 !py-1 flex-col m-0 flex gap-3">
-                  <li
-                    v-for="action in actions"
-                    :key="action.id"
-                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
-                  >
-                    <RouterLink
-                      :to="action.link"
-                      class="flex items-center gap-3"
-                      v-if="action.id == 1"
-                    >
+                  <li v-for="action in actions" :key="action.id"
+                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border">
+                    <RouterLink :to="action.link" class="flex items-center gap-3" v-if="action.id == 1">
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
                     </RouterLink>
 
-                    <button
-                      v-else-if="action.id == 2"
-                      @click="deleteEquipment"
-                      class="flex items-center gap-3 w-full"
-                    >
+                    <button v-else-if="action.id == 2" @click="deleteEquipment" class="flex items-center gap-3 w-full">
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
@@ -168,8 +153,8 @@ const GetEquipmentType = (type: number) => {
             </div>
           </Popover>
         </div>
-        <div class="image-content">
-          <div class="texts">
+        <div class="image-content" v-if="equipmentData?.certificateImage">
+          <div class="texts" v-if="equipmentData?.certificateExppiredDate">
             <!-- <p>Lorem ipsum dolor</p> -->
             <span>{{ $t('EXP-Date') }} {{ equipmentData?.certificateExppiredDate }}</span>
           </div>
