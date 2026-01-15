@@ -184,7 +184,7 @@
 
   /* ========== DIALOG ITSELF ========== */
   .p-dialog {
-    border-radius: var($XlSize2 + 4px);
+    border-radius: calc($XlSize2 + 4px);
   }
 
   .p-dialog-header {

@@ -268,7 +268,7 @@ watch(
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
-    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
+    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder :code="[
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -284,8 +284,10 @@ watch(
             @update:data="setSelectedProjectFilter" />
 
           <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
             <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
+              :link="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm) ? '/organization/equipment-mangement/inspection/add' : ''"
+              :linkTitle="'Create Inspection'" />
           </PermissionBuilder>
         </div>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
