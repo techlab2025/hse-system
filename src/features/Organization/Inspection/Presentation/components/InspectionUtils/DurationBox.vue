@@ -7,6 +7,9 @@ import type InspectionModel from '../../../Data/models/InspectionModel'
 interface SessionCardProps {
   singleImage?: string
   data: InspectionModel
+  isShow?: boolean
+  isDrag?: boolean
+
 }
 const { data, singleImage } = defineProps<SessionCardProps>()
 
@@ -43,9 +46,17 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
     <div class="session-header">
       <h4>{{ cardTitle }} :</h4>
 
-      <h5 v-if="data.date">
+      <h5 v-if="data.date && !isShow">
         start day: <span>{{ data.date }}</span>
       </h5>
+      <!-- <h5 v-if="isShow">
+        <p>
+          start day: <span>{{ data?.task_results[data?.task_results?.length - 1]?.date }}</span>
+        </p>
+        <p>
+          start time: <span>{{ data?.task_results[data?.task_results?.length - 1]?.time }}</span>
+        </p>
+      </h5> -->
     </div>
 
     <div class="content-items" v-if="!isOnce">

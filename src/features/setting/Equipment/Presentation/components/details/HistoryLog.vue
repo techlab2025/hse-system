@@ -11,6 +11,7 @@ import EquipmentInspectionShowDialog from '../Dialogs/EquipmentInspectionShowDia
 import EquipmentInspectionResultDialog from '../Dialogs/EquipmentInspectionResultDialog.vue';
 import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum';
 import { PeriodTypeEnum } from '@/features/Organization/Inspection/Core/Enum/PeriodTypeEnum';
+import InspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionCard.vue';
 
 const props = defineProps<{
   show_tasks: InspectionModel[]
@@ -35,7 +36,7 @@ const Types = ref(["sunday", "monday", "tuesday",])
 
 
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
-      <div class="inspection-history flex items-start gap-2" v-for="(task, index) in show_tasks" :key="index">
+      <!-- <div class="inspection-history flex items-start gap-2" v-for="(task, index) in show_tasks" :key="index">
         <img class="bg" :src="InspectionTaskbg" alt="">
         <div class="inspection-header">
           <img class="warn" :src="Warn" alt="warn" width="30" height="30">
@@ -52,10 +53,7 @@ const Types = ref(["sunday", "monday", "tuesday",])
         </div>
 
       </div>
-    </div>
-    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
       <div class="inspection-history flex items-start gap-2" v-for="(task, index) in result_tasks" :key="index">
-        <!-- {{ GetInspectionTitle(task) }} -->
         <img class="bg" :src="InspectionTaskbg" alt="">
         <div class="inspection-header">
           <img class="warn" :src="Warn" alt="warn" width="30" height="30">
@@ -65,9 +63,27 @@ const Types = ref(["sunday", "monday", "tuesday",])
               <span class="date">{{ task?.date }}</span>
             </div>
             <div class="inspection-type">
-              <!-- <p>
-                per week : <span v-for="(type, index) in Types" :key="index">{{ type }} | </span>
-              </p> -->
+              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
+            </div>
+            <EquipmentInspectionShowDialog :taskId="task.id" />
+          </div>
+        </div>
+
+      </div> -->
+      <InspectionCard :tasks="show_tasks" :isDrag="false" :showresult="false" :isEquipment="true" />
+    </div>
+    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
+      <!-- <div class="inspection-history flex items-start gap-2" v-for="(task, index) in result_tasks" :key="index">
+        <img class="bg" :src="InspectionTaskbg" alt="">
+        <div class="inspection-header">
+          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
+          <div class="inspection-header-content">
+            <div class="title-container">
+              <span class="title">Inspection</span>
+              <span class="date">{{ task?.date }}</span>
+            </div>
+            <div class="inspection-type">
+
               <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
 
             </div>
@@ -75,7 +91,9 @@ const Types = ref(["sunday", "monday", "tuesday",])
           </div>
         </div>
 
-      </div>
+      </div> -->
+      <InspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" />
+
     </div>
 
 

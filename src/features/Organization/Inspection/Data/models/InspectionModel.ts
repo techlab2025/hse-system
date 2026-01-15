@@ -24,6 +24,7 @@ export default class InspectionModel {
   public hasResults: boolean
   public taskPeriods: TaskPeriodModel[]
   public equipment: EquipmentModel | null
+  public task_results: TaskResults[]
 
   constructor(
     id: number,
@@ -43,6 +44,7 @@ export default class InspectionModel {
     hasResults: boolean,
     taskPeriods: TaskPeriodModel[],
     equipment: EquipmentModel | null,
+    task_results: TaskResults[],
   ) {
     this.id = id
     this.template = template
@@ -61,6 +63,7 @@ export default class InspectionModel {
     this.hasResults = hasResults
     this.taskPeriods = taskPeriods
     this.equipment = equipment
+    this.task_results = task_results
   }
 
   static fromMap(data: any): InspectionModel {
@@ -82,6 +85,7 @@ export default class InspectionModel {
       data.has_results,
       data.task_periods?.map((item) => TaskPeriodModel.fromMap(item)),
       data.equipment ? EquipmentModel.fromMap(data.equipment) : null,
+      data.task_results,
       // datadata.task_periods,
     )
   }
@@ -92,4 +96,9 @@ interface CreatedBy {
   organization_employee_id: number
   name: string
   hierarchy: any[]
+}
+interface TaskResults {
+  id: number
+  date: number
+  time: string
 }
