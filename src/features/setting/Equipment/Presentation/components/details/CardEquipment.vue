@@ -91,13 +91,14 @@ const GetEquipmentType = (type: number) => {
     <div class="card-body">
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <BreadCrumb
-          :BreadCramps="breadcrumbs"
-          :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-          :equipmentType="equipmentData?.equipment_type?.title"
-        />
+        <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
+          :equipmentType="tTitle" />
+        <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
         <div class="card-body-title">
-          <h3 class="title">{{ tTitle }}</h3>
+          <!-- <h3 class="title">{{ tTitle }}</h3> -->
+
+          <h3 class="title">{{equipmentData?.equipment_type?.titles?.find((item) => item.locale === locale)?.title}}
+          </h3>
           <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
         </div>
         <div class="inspection" v-if="equipmentData.lastInspectoinDate">
@@ -107,8 +108,8 @@ const GetEquipmentType = (type: number) => {
           </p>
         </div>
         <!-- <div class="date-of-decommissioning">
-          <span>{{ $t('Date of Decommissioning') }} :</span>
-          <p>{{ new Date(equipmentData.checkinDate).toLocaleDateString() }}</p>
+          <span>{{ $t('expiry date') }} :</span>
+          <p>{{ new Date(equipmentData.).toLocaleDateString() }}</p>
         </div> -->
         <div class="vehicle">
           <!-- <Car /> -->

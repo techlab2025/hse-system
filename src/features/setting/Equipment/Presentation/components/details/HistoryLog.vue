@@ -33,6 +33,7 @@ const Types = ref(["sunday", "monday", "tuesday",])
       <h4>{{ $t('History Log') }}</h4>
     </div> -->
 
+
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
       <div class="inspection-history flex items-start gap-2" v-for="(task, index) in show_tasks" :key="index">
         <img class="bg" :src="InspectionTaskbg" alt="">

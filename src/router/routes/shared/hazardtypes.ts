@@ -45,4 +45,14 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       type: 'Shared',
     },
   },
+  {
+    path: 'hazards/:parent_id',
+    name: 'Hazards',
+    component: () => import('@/views/Admin/HazardType/IndexHazardType.vue'),
+    meta: {
+      breadcrumb: ' Hazards',
+      parent: 'Hazard Type',
+      type: 'Shared',
+    },
+  },
 ]
