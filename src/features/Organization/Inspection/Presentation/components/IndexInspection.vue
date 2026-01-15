@@ -284,8 +284,10 @@ watch(
             @update:data="setSelectedProjectFilter" />
 
           <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+
             <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/inspection/add'" :linkTitle="'Create Inspection'" />
+              :link="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm) ? '/organization/equipment-mangement/inspection/add' : ''"
+              :linkTitle="'Create Inspection'" />
           </PermissionBuilder>
         </div>
         <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"

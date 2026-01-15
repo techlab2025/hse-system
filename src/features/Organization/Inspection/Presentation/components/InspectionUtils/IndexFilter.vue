@@ -39,7 +39,8 @@
           <span>Filter</span>
           <IndexFilterIcon />
         </button> -->
-        <router-link :to="link">
+
+        <router-link :to="link" v-if="link != ''">
           <button class="btn btn-primary">{{ linkTitle }}</button>
         </router-link>
       </div>
