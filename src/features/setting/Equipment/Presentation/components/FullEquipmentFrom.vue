@@ -750,6 +750,7 @@ const UpdateActiveTap = (data) => {
       </div>
 
       <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
+      :isForm="true"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''" :selctedequipment="langs"
         :selectedequipmentType="equipmentType" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
         :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []" :langDefault="langDefault"

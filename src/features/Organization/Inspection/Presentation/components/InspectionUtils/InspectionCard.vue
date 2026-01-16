@@ -57,13 +57,14 @@ const GetEquipmentType = (type: number) => {
           <div class="inspection-header-content">
             <div class="title-container">
               <div class="date-wrapper">
-                <span class="title">Prime Inspection</span>
-                <span class="date">{{ task?.date }}</span>
+                <span class="title" v-if="task?.template?.title">{{ task?.template?.title }}</span>
+                <span class="title" v-else> Inspection</span>
+                <span class="date">{{ task?.created_at }}</span>
               </div>
-              <!-- <div class="count">
-                <h5>10</h5>
+              <div class="count" v-if="task?.template?.template_items?.length > 0">
+                <h5>{{ task?.template?.template_items?.length }}</h5>
                 <span>items</span>
-              </div> -->
+              </div>
             </div>
 
             <div class="inspection-info">

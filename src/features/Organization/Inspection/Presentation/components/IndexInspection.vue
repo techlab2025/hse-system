@@ -280,8 +280,9 @@ watch(
         PermissionsEnum?.ORG_INSPECTION_FETCH,
       ]">
         <div>
-          <IndexInspectionHeader :title="`Inspection`" :length="state?.pagination?.total || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
+          <IndexInspectionHeader :title="`Inspection`"
+            :length="state?.pagination?.total || AllTasksState?.pagination?.total || InspectionsResultsState?.pagination?.total || 0"
+            :projects="Projects" @update:data="setSelectedProjectFilter" />
 
           <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
 
@@ -296,6 +297,7 @@ watch(
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
                 <div class="header-container w-full">
+
                   <InspectionFormPage v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
                     class="w-full" :data="AllTasksState?.data" />
                 </div>

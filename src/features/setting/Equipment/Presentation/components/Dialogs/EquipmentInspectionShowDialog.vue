@@ -200,7 +200,7 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
     </button>
     <button v-if="isEquipment" class="flex items-center gap-2 w-full" @click="GetData">
       <div class="button-text">
-        <h5>History Log</h5>
+        <h5>Show Inspection</h5>
       </div>
       <ButtonArrow />
     </button>
