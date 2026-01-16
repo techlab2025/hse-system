@@ -520,7 +520,7 @@ const acedentDialogRef = ref(false)
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper">
       <label for="text">{{ $t('description') }}</label>
-      <input placeholder="Add your title" type="text" class="input" id="text" v-model="text" @input="updateData" />
+      <input placeholder="Add your description" type="text" class="input" id="text" v-model="text" @input="updateData" />
     </div>
 
     <!-- Sevarity -->

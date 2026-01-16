@@ -204,17 +204,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_OBSERVATION_UPDATE,
         ],
       },
-      // {
-      //   route: "/organization/equipment-mangement/hazard",
-      //   Name: "hazard",
-      //   permissions: [
-      //     PermissionsEnum.ORG_HAZARD_ALL,
-      //     PermissionsEnum.ORG_HAZARD_CREATE,
-      //     PermissionsEnum.ORG_HAZARD_DELETE,
-      //     PermissionsEnum.ORG_HAZARD_FETCH,
-      //     PermissionsEnum.ORG_HAZARD_UPDATE,
-      //   ],
-      // },
+      {
+        route: "/organization/hazard",
+        Name: "hazard",
+        permissions: [
+          PermissionsEnum.ORG_HAZARD_ALL,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+          PermissionsEnum.ORG_HAZARD_DELETE,
+          PermissionsEnum.ORG_HAZARD_FETCH,
+          PermissionsEnum.ORG_HAZARD_UPDATE,
+        ],
+      },
       {
         route: "/organization/factory",
         Name: "factor",

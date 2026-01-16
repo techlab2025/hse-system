@@ -42,7 +42,7 @@ export default class AddHazardParams implements Params {
   public HazardSubtypeId: number
 
   public static readonly validation = new ClassValidation().setRules({
-    title: { required: true, minLength: 2, maxLength: 100 },
+    // title: { required: true, minLength: 2, maxLength: 100 },
     typeId: { required: true },
   })
 

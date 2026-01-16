@@ -17,6 +17,7 @@ const props = withDefaults(
     cardType?: string
     selctedequipment: any
     selectedequipmentType: any
+    isForm?: boolean
   }>(),
   {
     BreadCramps: () => [],
@@ -58,7 +59,7 @@ const { user } = useUserStore()
 
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
-          <BreadCrumb :selctedequipment="selctedequipment" :equipmentType="selectedequipmentType"
+          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment" :equipmentType="selectedequipmentType"
             :BreadCramps="props.BreadCramps" :cardType="cardType" />
           <CertificateImageDialog :certificateImage="props.certificateImage" />
         </div>
@@ -76,7 +77,7 @@ const { user } = useUserStore()
           </p>
         </div> -->
 
-        <div class="date">
+        <!-- <div class="date">
           {{ $t(' Inspection expiry date') }}:
           <span>
             {{
@@ -85,7 +86,7 @@ const { user } = useUserStore()
                 : 'Y / M / D'
             }}
           </span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

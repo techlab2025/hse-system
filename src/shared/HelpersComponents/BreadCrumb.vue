@@ -8,19 +8,22 @@ const props = defineProps<{
   equipmentType: string
   equipment: string
   selctedequipment: TitleInterface
+  isForm?: boolean
 }>()
 </script>
 
 <template>
   <!-- {{ equipmentType }} -->
+  <!-- 1- {{ cardType }}
+  1- {{ equipmentType }} -->
   <div class="breadcrumbs">
     <ul>
       <li>
-
-        <span>{{ equipment }}</span>
+        <span>{{ equipment || cardType }} </span>
         <ArrowIcons />
       </li>
-      <p>{{ equipmentType }}</p>
+      <p v-if="isForm">{{ equipmentType?.title }}</p>
+      <p v-else>{{ equipmentType }}</p>
     </ul>
   </div>
 </template>

@@ -25,6 +25,7 @@ export default class InspectionModel {
   public taskPeriods: TaskPeriodModel[]
   public equipment: EquipmentModel | null
   public task_results: TaskResults[]
+  public created_at: string
 
   constructor(
     id: number,
@@ -45,6 +46,7 @@ export default class InspectionModel {
     taskPeriods: TaskPeriodModel[],
     equipment: EquipmentModel | null,
     task_results: TaskResults[],
+    created_at: string,
   ) {
     this.id = id
     this.template = template
@@ -64,6 +66,7 @@ export default class InspectionModel {
     this.taskPeriods = taskPeriods
     this.equipment = equipment
     this.task_results = task_results
+    this.created_at = created_at
   }
 
   static fromMap(data: any): InspectionModel {
@@ -86,6 +89,7 @@ export default class InspectionModel {
       data.task_periods?.map((item) => TaskPeriodModel.fromMap(item)),
       data.equipment ? EquipmentModel.fromMap(data.equipment) : null,
       data.task_results,
+      data.created_at,
       // datadata.task_periods,
     )
   }

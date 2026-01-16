@@ -65,14 +65,29 @@
         }
 
         .card-info {
-          @include flex-column(nowrap, flex-start, flex-start);
+          @include flex-column(nowrap, flex-start, center);
           gap: 6px;
           .title {
             color: $PrimaryColor;
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
           }
-          .p-image, img {
+          .observation-risk-level {
+            font-weight: 700;
+            font-size: 16px;
+
+            &.Low {
+              color: #e23535;
+            }
+            &.Medium {
+              color: #ffbf52;
+            }
+            &.High {
+              color: $PrimaryColor;
+            }
+          }
+          .p-image,
+          img {
             object-fit: cover;
             width: clamp(calc(90 * 0.8px), calc(90 * 100vw / var(--base-width)), calc(90 * 1.2px));
             height: clamp(calc(65 * 0.8px), calc(65 * 100vw / var(--base-width)), calc(65 * 1.2px));
@@ -136,7 +151,6 @@
       }
     }
   }
-
 }
 
 .label-item-primary {
