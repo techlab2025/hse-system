@@ -193,17 +193,6 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: '/organization/equipment-mangement/observation',
-        Name: 'observation',
-        permissions: [
-          PermissionsEnum.ORG_OBSERVATION_ALL,
-          PermissionsEnum.ORG_OBSERVATION_CREATE,
-          PermissionsEnum.ORG_OBSERVATION_DELETE,
-          PermissionsEnum.ORG_OBSERVATION_FETCH,
-          PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        ],
-      },
-      {
         route: '/organization/hazard',
         Name: 'hazard',
         permissions: [
@@ -214,6 +203,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_HAZARD_UPDATE,
         ],
       },
+
+
       {
         route: '/organization/factory',
         Name: 'Hazard factor',
@@ -250,6 +241,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
           PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
           PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/equipment-mangement/observation',
+        Name: 'observation',
+        permissions: [
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
         ],
       },
     ],
