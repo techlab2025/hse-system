@@ -35,29 +35,22 @@ import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 const { t } = useI18n()
 const route = useRoute()
 
-const ParentId = ref(route.params.parent_id)
-const Id = route.params.id
-
-// import DialogChangeStatusHazardType from "@/features/setting/HazardType/Presentation/components/HazardType/DialogChangeStatusHazardType.vue";
-// const route = useRoute()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
 const state = ref(indexHazardTypeController.state.value)
-const id = route.params.parent_id
-// const type = ref<HazardTypeStatusEnum>(HazardTypeStatusEnum[route.params.type as keyof typeof HazardTypeStatusEnum])
-
+// const parent_id = ref(route.params.parent_id)
 const fetchHazardType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  parent_id?: number = route.params.parent_id ? Number(route.params.parent_id) : null,
-  parent_type?: HazardTypeParentEnum = route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent,
+  parent_id?: number = route.query.hazardType || null,
+  parent_type?: HazardTypeParentEnum = HazardTypeParentEnum.Child,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(parent_id), parent_type)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(route.query.hazardType), parent_type)
   await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 
@@ -66,7 +59,7 @@ onMounted(() => {
 })
 
 const searchHazardType = debounce(() => {
-  fetchHazardType(word.value, currentPage.value, countPerPage.value, 1, route.params.parent_id ? route.params.parent_id : null, route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent)
+  fetchHazardType(word.value, currentPage.value, countPerPage.value, 1, null, HazardTypeParentEnum.Child)
 })
 
 const deleteHazardType = async (id: number) => {
@@ -101,70 +94,17 @@ watch(
 
 const { user } = useUserStore()
 
-const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void) => [
-  {
-    text: t('edit'),
-    icon: IconEdit,
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
-    permission: [
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-    ],
-  },
-  // {
-  //   text: t('add_HAZARD'),
-  //   icon: IconEdit,
-  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add/${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //     PermissionsEnum.HAZARD_TYPE_CREATE,
-  //     PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-  //     PermissionsEnum.ORG_HAZARD_CREATE,
-  //   ],
-  // },
-  // {
-  //   text: t('hazards'),
-  //   icon: ShowProjectIcon,
-  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard?hazardType=${id}`,
-  //   permission: [
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //     PermissionsEnum.ORG_HAZARD_FETCH,
-  //   ],
-  // },
-  {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteHazardType(id),
-    permission: [
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-    ],
-  },
-]
+
 const HazardactionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/${id}`,
     permission: [
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_ALL,
     ],
   },
 
@@ -173,19 +113,17 @@ const HazardactionList = (id: number, deleteHazardType: (id: number) => void) =>
     icon: IconDelete,
     action: () => deleteHazardType(id),
     permission: [
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_ALL,
     ],
   },
 ]
 
 watch(() => route.params.parent_id, (newVal) => {
   // ParentId = newVal
-  fetchHazardType('', currentPage.value, countPerPage.value, 1, route.params.parent_id, route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent)
+  fetchHazardType('', currentPage.value, countPerPage.value, 1, null, HazardTypeParentEnum?.Child)
 })
 
 
@@ -205,13 +143,12 @@ watch(() => route.params.parent_id, (newVal) => {
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.HAZARD_TYPE_CREATE,
-        PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+        PermissionsEnum.ORG_HAZARD_CREATE,
+        PermissionsEnum.ORG_HAZARD_ALL,
       ]">
-        <router-link
-          :to="route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
           class="btn btn-primary">
-          {{ route.params?.parent_id ? $t('Add_Hazard') : $t('Add_HazardType') }}
+          {{ $t('Add_Hazard') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -220,16 +157,11 @@ watch(() => route.params.parent_id, (newVal) => {
   <PermissionBuilder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.HAZARD_TYPE_ALL,
-    PermissionsEnum.HAZARD_TYPE_DELETE,
-    PermissionsEnum.HAZARD_TYPE_FETCH,
-    PermissionsEnum.HAZARD_TYPE_UPDATE,
-    PermissionsEnum.HAZARD_TYPE_CREATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-    PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-    PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-    PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+    PermissionsEnum.ORG_HAZARD_ALL,
+    PermissionsEnum.ORG_HAZARD_DELETE,
+    PermissionsEnum.ORG_HAZARD_FETCH,
+    PermissionsEnum.ORG_HAZARD_UPDATE,
+    PermissionsEnum.ORG_HAZARD_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -276,9 +208,8 @@ watch(() => route.params.parent_id, (newVal) => {
                   <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
-                  <DropList v-if="!route.params.parent_id" :actionList="HazardTypeactionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)" />
-                  <DropList v-else :actionList="HazardactionList(item.id, deleteHazardType)"
+
+                  <DropList :actionList="HazardactionList(item.id, deleteHazardType)"
                     @delete="deleteHazardType(item.id)" />
                 </td>
               </tr>
@@ -297,35 +228,33 @@ watch(() => route.params.parent_id, (newVal) => {
         <PermissionBuilder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+          PermissionsEnum.ORG_HAZARD_ALL,
         ]">
-          <DataEmpty
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType" />
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
+            addText="Add Hazard"
+            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Hazard" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+          PermissionsEnum.ORG_HAZARD_ALL,
         ]">
-          <DataFailed
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType" />
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
+            addText="Add Hazard"
+            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Hazard" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
