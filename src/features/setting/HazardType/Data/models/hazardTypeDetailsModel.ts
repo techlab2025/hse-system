@@ -14,6 +14,8 @@ export default class HazardTypeDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public factories: TitleInterface[]
+  public parent: TitleInterface
+
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -25,6 +27,7 @@ export default class HazardTypeDetailsModel {
     parentId: number,
     image: string,
     factories: TitleInterface[],
+    parent: TitleInterface,
   ) {
     this.id = id
     this.titles = titles
@@ -34,6 +37,7 @@ export default class HazardTypeDetailsModel {
     this.parentId = parentId
     this.image = image
     this.factories = factories
+    this.parent = parent
   }
 
   static fromMap(data: any): HazardTypeDetailsModel {
@@ -48,6 +52,7 @@ export default class HazardTypeDetailsModel {
       data.parent_id,
       data.image,
       data.factories?.length > 0 ? data.factories?.map((factory) => this.getTitle(factory)) : [],
+      this.getTitle(data.parent),
     )
   }
 

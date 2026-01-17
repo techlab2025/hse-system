@@ -103,9 +103,9 @@ const GetEquipmentType = (type: number) => {
             {{ equipmentData.lastInspectoinDate }} <span>({{ $t('per_week') }})</span>
           </p>
         </div>
-        <!-- <div class="date-of-decommissioning">
+        <!-- <div class="date-of-decommissioning" v-if="equipmentData.date">
           <span>{{ $t('expiry date') }} :</span>
-          <p>{{ new Date(equipmentData.).toLocaleDateString() }}</p>
+          <p>{{ new Date(equipmentData.check) }}</p>
         </div> -->
         <div class="vehicle">
           <!-- <Car /> -->
@@ -153,10 +153,10 @@ const GetEquipmentType = (type: number) => {
             </div>
           </Popover>
         </div>
-        <div class="image-content" v-if="equipmentData?.certificateImage">
-          <div class="texts" v-if="equipmentData?.certificateExppiredDate">
+        <div class="image-content" v-if="equipmentData?.date">
+          <div class="texts" v-if="equipmentData?.date">
             <!-- <p>Lorem ipsum dolor</p> -->
-            <span>{{ $t('EXP-Date') }} {{ equipmentData?.certificateExppiredDate }}</span>
+            <span>{{ $t('EXP-Date') }} {{ equipmentData?.date }}</span>
           </div>
           <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>

@@ -205,6 +205,7 @@ watch(
     allIndustries.value = newData?.allIndustries === 1
     industry.value = newData?.industries ?? []
     Factor.value = newData?.factories ?? []
+    HazardType.value = newData?.parent ?? null
   },
   { immediate: true },
 )

@@ -5,6 +5,7 @@ import TaskPeriodModel from './TaskPeriodModel'
 // import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
 import EquipmentModel from '@/features/_templateFeature/Data/models/equipmentModel'
 import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class InspectionModel {
   public id: number
@@ -26,6 +27,7 @@ export default class InspectionModel {
   public equipment: EquipmentModel | null
   public task_results: TaskResults[]
   public created_at: string
+  public assigned_to: AssignedTo
 
   constructor(
     id: number,
@@ -47,6 +49,7 @@ export default class InspectionModel {
     equipment: EquipmentModel | null,
     task_results: TaskResults[],
     created_at: string,
+    assigned_to: AssignedTo,
   ) {
     this.id = id
     this.template = template
@@ -67,6 +70,7 @@ export default class InspectionModel {
     this.equipment = equipment
     this.task_results = task_results
     this.created_at = created_at
+    this.assigned_to = assigned_to
   }
 
   static fromMap(data: any): InspectionModel {
@@ -90,6 +94,7 @@ export default class InspectionModel {
       data.equipment ? EquipmentModel.fromMap(data.equipment) : null,
       data.task_results,
       data.created_at,
+      data.assigned_to,
       // datadata.task_periods,
     )
   }
@@ -105,4 +110,10 @@ interface TaskResults {
   id: number
   date: number
   time: string
+}
+interface AssignedTo {
+  id: number
+  name: number
+  organization_employee_id: string
+  title: string
 }

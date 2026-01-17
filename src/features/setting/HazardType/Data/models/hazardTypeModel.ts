@@ -10,6 +10,7 @@ export default class HazardTypeModel extends TitleInterface {
   public parentId: number
   public image: string
   public titles: string
+  public parent: HazardTypeModel
 
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export default class HazardTypeModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
+    parent: HazardTypeModel,
   ) {
     super({ id, title, subtitle })
 
@@ -31,6 +33,7 @@ export default class HazardTypeModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
+    this.parent = parent
   }
 
   static fromMap(data: any): HazardTypeModel {
@@ -46,6 +49,7 @@ export default class HazardTypeModel extends TitleInterface {
       data?.parent_id,
       data.image,
       data.titles,
+      data.parent,
     )
   }
 }

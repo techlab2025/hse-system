@@ -288,17 +288,18 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
                           <p class="subtitle">{{ item.description }}</p>
                           <div class="project-details">
-                            <p class="label-item-primary">
+                            <p class="label-item-primary" v-if="item.zoon?.title">
                               Zone : <span>{{ item.zoon?.title }}</span>
                             </p>
-                            <p class="label-item-primary">
+                            <p class="label-item-primary" v-if="item.equipment?.title">
                               Machine : <span>{{ item.equipment?.title }}</span>
                             </p>
                           </div>
                         </div>
                       </div>
                       <div class="card-info">
-                        <span class="observation-risk-level" :class="GetRiskLevel(item.riskLevel)">
+                        <span v-if="item.riskLevel" class="observation-risk-level"
+                          :class="GetRiskLevel(item.riskLevel)">
                           {{ GetRiskLevel(item.riskLevel) }} Level
                         </span>
                         <!-- <img :src="item.HazardImg" alt="hazard-img"> -->

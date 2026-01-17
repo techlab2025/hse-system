@@ -83,7 +83,7 @@ const GetEquipmentType = (type: number) => {
                 <p class="assigned-by">Assigned To :</p>
                 <h5 class="position">
                   {{ GetMorohType(task?.morphType).slice(0, 3) }}_
-                  <span>{{ task?.createdBy?.name }}</span>
+                  <span>{{ task?.assigned_to?.name || task?.assigned_to?.title }}</span>
                 </h5>
               </div>
 
@@ -168,5 +168,9 @@ const GetEquipmentType = (type: number) => {
 
 .btn-primary {
   margin-top: 20px;
+}
+
+.count {
+  display: block;
 }
 </style>

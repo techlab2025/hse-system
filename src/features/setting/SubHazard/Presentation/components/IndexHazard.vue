@@ -174,7 +174,7 @@ watch(() => route.params.parent_id, (newVal) => {
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
+                <th scope="col">{{ $t('hazard_type') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -201,6 +201,9 @@ watch(() => route.params.parent_id, (newVal) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
+                <td data-label="hazard_type">
+                  {{ item?.parent?.title }}
+                </td>
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusHazardType-->
                   <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
