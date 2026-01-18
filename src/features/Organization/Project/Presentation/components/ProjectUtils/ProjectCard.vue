@@ -11,13 +11,13 @@ const props = defineProps<{
       <div class="project-card-header-container">
         <div class="project-card-header">
           <div class="project-header">
-            <span class="status">active </span>
-            <span class="serial">| #{{ data?.serial_number }} </span>
+            <!-- <span class="status">active </span> -->
+            <span class="serial"> #{{ data?.serial_number }} </span>
           </div>
           <p class="project-title">{{ data?.title }}</p>
         </div>
 
-        <p class="project-employees">employees :<span>{{ data?.employees_count || 10 }}</span></p>
+        <p class="project-employees">employees :<span>{{ data?.assigned_employees_count || 10 }}</span></p>
       </div>
       <div class="project-card-info">
         <p class="locations">locations : <span>{{ data?.locations?.length }}</span></p>
@@ -26,23 +26,23 @@ const props = defineProps<{
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">observation :</span>
-          <span class="info-count">100</span>
+          <span class="info-count">{{ data?.observations_count }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">hazerd :</span>
-          <span class="info-count">100</span>
+          <span class="info-count">{{ data?.observation_hazards_count }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">incident :</span>
-          <span class="info-count">100</span>
+          <span class="info-count">{{ data?.observation_accidents_count }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">Investigation :</span>
-          <span class="info-count warn">100</span>
+          <span class="info-count warn">{{ data?.investigation_count }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">Equibments :</span>
-          <span class="info-count warn">100</span>
+          <span class="info-count warn">{{ data?.equipment_count }}</span>
         </div>
       </div>
     </div>

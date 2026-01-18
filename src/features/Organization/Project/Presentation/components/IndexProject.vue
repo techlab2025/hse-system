@@ -169,26 +169,20 @@ watch(
       <template #success>
         <div class="modern-table-responsive">
 
-          <table class="main-table">
+          <!-- <table class="main-table">
             <thead>
               <tr>
-                <!-- <th scope="col" class="w-20">
-                  <input type="checkbox" class="checkbox-input" />
-                </th> -->
+
                 <th scope="col">{{ $t('project_number') }}</th>
                 <th scope="col">{{ $t('project_name') }}</th>
                 <th scope="col">{{ $t('contractors') }}</th>
                 <th scope="col">{{ $t('locations') }}</th>
-                <!-- <th scope="col">{{ $t('supervisors') }}</th> -->
-                <!-- <th scope="col">{{ $t('teams') }}</th> -->
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
-                <!-- <td data-label="Select">
-                  <input type="checkbox" class="checkbox-input" />
-                </td> -->
+
                 <td data-label="Serial">
                   <router-link :to="`/organization/project/${item.id}`" class="serial-number">
                     #{{ item?.serial_number }}
@@ -204,30 +198,21 @@ watch(
                   <div class="tag-container">
                     <TablePopover :data="item.contractor" />
                   </div>
-                  <!-- {{ item.partner?.title }} -->
+
                 </td>
                 <td data-label="Locations">
                   <div class="tag-container">
                     <TablePopover :data="item.locations" />
                   </div>
                 </td>
-                <!-- <td data-label="Supervisors"> -->
-                <!-- <div class="avatar-group">
-                    <TablePopover :data_img="item." />
-                  </div> -->
-                <!-- </td> -->
-                <!-- <td data-label="Teams">
-                <div class="tag-container">
-                    <TablePopover :data="item." />
-                  </div>
-                </td> -->
+
                 <td data-label="Actions">
                   <DropList :actionList="actionList(item.id, deleteProject)" @delete="deleteProject(item.id)" />
                 </td>
               </tr>
             </tbody>
-          </table>
-          <!-- <ProjectCard v-for="item in state.data" :key="item.id" :data="item" /> -->
+          </table> -->
+          <ProjectCard v-for="item in state.data" :key="item.id" :data="item" />
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>

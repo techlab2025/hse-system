@@ -20,7 +20,7 @@ export default class EquipmentModel extends TitleInterface {
   // public equipmentType: TitleModel
   public equipmentType?: EquipmentTypeDetailsModel
   public project: TitleInterface
-  public projectZoon: TitleInterface
+  public projectZoon: ProjectZoon
   public certificateImage: string
 
   constructor(
@@ -36,7 +36,7 @@ export default class EquipmentModel extends TitleInterface {
     status: EquipmentStatus,
     equipmentType: EquipmentTypeDetailsModel,
     project: TitleInterface,
-    projectZoon: TitleInterface,
+    projectZoon: ProjectZoon,
     certificateImage: string,
     warehouse: WhereHouseDetailsModel,
   ) {
@@ -74,7 +74,7 @@ export default class EquipmentModel extends TitleInterface {
       data.equipment_type ? EquipmentTypeDetailsModel.fromMap(data.equipment_type) : null,
       // data.equipment_type_id
       data.project ? TitleModel.fromMap(data.project) : null,
-      data.project_zoon ? TitleModel.fromMap(data.project_zoon) : null,
+      data.project_zone,
       data.certificate_image,
       data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
     )
@@ -167,4 +167,12 @@ export default class EquipmentModel extends TitleInterface {
       new WhereHouseDetailsModel(1, 'hand tool', '102030'),
     ),
   ]
+}
+
+interface ProjectZoon {
+  project_id: number
+  project_location_id: number
+  project_zoon_id: number
+  zoon_id: number
+  zoon_title: string
 }
