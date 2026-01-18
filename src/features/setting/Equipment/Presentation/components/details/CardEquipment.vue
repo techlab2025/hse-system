@@ -87,16 +87,19 @@ const GetEquipmentType = (type: number) => {
     <div class="card-body">
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-          :equipmentType="equipmentData.equipment_type?.title" />
-        <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
-        <div class="card-body-title">
-          <!-- <h3 class="title">{{ tTitle }}</h3> -->
+        <div class="info-container flex flex-col gap-2">
+          <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
+            :equipmentType="equipmentData.equipment_type?.title" />
+          <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
+          <div class="card-body-title">
+            <!-- <h3 class="title">{{ tTitle }}</h3> -->
 
-          <h3 class="title">{{ equipmentData?.title }}
-          </h3>
-          <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
+            <h3 class="title">{{ equipmentData?.title }}
+            </h3>
+            <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
+          </div>
         </div>
+
         <div class="inspection" v-if="equipmentData.lastInspectoinDate">
           <span>{{ $t('inspection date') }} :</span>
           <p>
