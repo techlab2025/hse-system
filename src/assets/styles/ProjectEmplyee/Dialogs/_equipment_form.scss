@@ -4,6 +4,10 @@
 .equipment-form {
   font-family: 'Regular';
   margin-top: $XsSize;
+  // background-color: red;
+  .p-multiselect-option {
+    padding: 0 !important;
+  }
   .select-container {
     @include flex-row(nowrap, flex-start, center);
     gap: $XlSize;
@@ -100,12 +104,12 @@
     border: 1px solid #f1f3f5b2;
     color: #04195393;
     padding: 22px;
-    border: 1px solid #D9D9E8;
+    border: 1px solid #d9d9e8;
 
     &.active {
       // background-color: #0419531a;
       color: $PrimaryColor;
-      background: radial-gradient(white 40% , #cce1f544 );
+      background: radial-gradient(white 40%, #cce1f544);
     }
     label {
       width: 100%;

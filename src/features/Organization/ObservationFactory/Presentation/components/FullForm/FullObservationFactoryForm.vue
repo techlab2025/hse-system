@@ -510,9 +510,9 @@ const acedentDialogRef = ref(false)
       /> -->
 
       <UpdatedCustomInputSelect :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-        :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
-        @update:modelValue="setMachine" @close="machineDialogRef = false" :isDialog="true"
-        :dialogVisible="machineDialogRef">
+        :params="indexEquipmentParams" label="select Equipment (optional)" id="machine"
+        placeholder="select your machine" @update:modelValue="setMachine" @close="machineDialogRef = false"
+        :isDialog="true" :dialogVisible="machineDialogRef">
         <template #LabelHeader>
           <span class="add-dialog" @click="machineDialogRef = true">New</span>
         </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import MultiSelect from 'primevue/multiselect';
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import EquipmentCard from "@/features/setting/Equipment/Presentation/components/EquipmentUtils/EquipmentCard.vue";
@@ -9,9 +9,12 @@ const props = defineProps<{
   modelValue: []
 
 }>()
+const emit = defineEmits(['update:modelValue'])
 
 const selectedCountries = ref(props.modelValue);
-
+watch(() => selectedCountries.value, () => {
+  emit('update:modelValue', selectedCountries.value);
+})
 
 </script>
 
@@ -21,9 +24,7 @@ const selectedCountries = ref(props.modelValue);
       <div class="flex items-center gap-2 w-full border-none">
         <!-- <img width="50" height="50" :src="slotProps.option.image" alt="">
         <p>{{ slotProps.option.title }}</p> -->
-
         <EquipmentCard :tool="slotProps.option" :isSelect="true" />
-
       </div>
     </template>
     <template #dropdownicon>

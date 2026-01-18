@@ -25,7 +25,7 @@ const updateData = () => {
 const text = ref<string>('')
 const SelectedEmployee = ref<TitleInterface>()
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
 const setEmployee = (data: TitleInterface) => {
   SelectedEmployee.value = data
