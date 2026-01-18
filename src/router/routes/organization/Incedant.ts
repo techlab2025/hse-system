@@ -6,7 +6,7 @@ export const IncedantRoutes: RouteRecordRaw[] = [
     name: 'Incedant',
     component: () => import('@/views/Organization/ObservationFactory/Incedant/IndexIncedant.vue'),
     meta: {
-      breadcrumb: 'Incedant',
+      breadcrumb: 'incident',
     },
   },
   {
@@ -14,7 +14,7 @@ export const IncedantRoutes: RouteRecordRaw[] = [
     name: 'Add Incedant ',
     component: () => import('@/views/Organization/ObservationFactory/Incedant/AddIncedant.vue'),
     meta: {
-      breadcrumb: 'Add Incedant ',
+      breadcrumb: 'Add incident ',
       parent: 'Incedant',
     },
   },
@@ -23,7 +23,7 @@ export const IncedantRoutes: RouteRecordRaw[] = [
     name: 'Edit Incedant',
     component: () => import('@/views/Organization/ObservationFactory/Incedant/EditIncedant.vue'),
     meta: {
-      breadcrumb: 'Edit Incedant',
+      breadcrumb: 'Edit incident',
       parent: 'Incedant',
     },
   },

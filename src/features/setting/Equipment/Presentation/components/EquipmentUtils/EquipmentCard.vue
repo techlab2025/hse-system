@@ -26,6 +26,7 @@ const { t } = useI18n()
 
 const props = defineProps<{
   tool: EquipmentModel
+  isSelect?: boolean
 }>()
 
 const GetEquipmentType = (type: number) => {
@@ -116,8 +117,8 @@ const deleteEquipment = async (id: number) => {
 
   <!-- <pre>{{ tool }}</pre> -->
 
-  <div class="tool-card equipment-card ">
-    <div class="tool-card-header">
+  <div class="tool-card equipment-card w-full" :class="isSelect ? 'is-select' : ''">
+    <div class="tool-card-header w-full">
       <img :src="tool?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
       <div class="tool-card-header-text w-full">
         <div class="flex gap-2 w-full items-center justify-between card-type">
@@ -132,7 +133,7 @@ const deleteEquipment = async (id: number) => {
           </div>
 
           <EquipmentCardImgDialog :Visable="DialogVisable" :img="tool?.certificateImage" />
-          <DropList :actionList="actionList(tool.id, deleteEquipment)" @delete="deleteEquipment(tool.id)" />
+          <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)" @delete="deleteEquipment(tool.id)" />
 
         </div>
         <p class="type flex gap-2">

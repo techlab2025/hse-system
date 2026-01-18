@@ -144,7 +144,7 @@ const UpdateWorkStatus = (data) => {
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
         <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
-          :params="indexInjuryParams" label="Infection Type" id="infection" placeholder="select your infection"
+          :params="indexInjuryParams" label="injury Type" id="injury" placeholder="select your injury"
           @update:modelValue="setInfection" />
       </div>
 
