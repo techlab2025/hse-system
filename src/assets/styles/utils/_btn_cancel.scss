@@ -1,11 +1,10 @@
 @import '../variables';
 @import '../mixins/flex';
 .btn-cancel {
-  font-family: 'Light';
+  font-family: 'Regular';
   background-color: #e235351a;
   color: #e23535;
-  padding-inline: calc($XlSize + 2px);
-  padding-block: $XsSize3;
+  padding: $XsSize2 $MdSize;
   font-size: $MdSize;
   font-weight: $BaseFontWeightBold;
   border-radius: calc($XlSize3 + 16px);

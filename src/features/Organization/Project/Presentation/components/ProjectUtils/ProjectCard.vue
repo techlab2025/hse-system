@@ -23,6 +23,7 @@ const props = defineProps<{
         <p class="locations">locations : <span>{{ data?.locations?.length }}</span></p>
         <p class="locations">zones :<span>{{ data?.zoons?.length }}</span></p>
       </div>
+      <hr style="height:1px;width:100%;border-width:1px;color:#F5F6F7;background-color:#F5F6F7">
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">observation :</span>

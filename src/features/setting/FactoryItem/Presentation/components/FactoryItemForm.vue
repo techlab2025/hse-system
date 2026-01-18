@@ -241,6 +241,7 @@ const setFactory = (data: TitleInterface) => {
       @update:modelValue="setFactory"
     />
   </div>
+
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->
   <!--      :initialFileData="image"-->
