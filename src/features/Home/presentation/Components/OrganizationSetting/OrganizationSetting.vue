@@ -114,7 +114,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/accidents-type',
-        Name: 'Accidents Types',
+        Name: 'incidents Types',
         permissions: [
           PermissionsEnum.WEBSITE,
           PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,

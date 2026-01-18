@@ -58,7 +58,7 @@ const descripe = ref<string>('')
 const text = ref<string>('')
 const SelectedEmployee = ref<TitleInterface>()
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
 const setEmployee = (data: TitleInterface) => {
   SelectedEmployee.value = data
@@ -80,7 +80,7 @@ const updateEmployeeState = (data: any) => {
 }
 
 const indexInjuryController = IndexInjuryController.getInstance()
-const indexInjuryParams = new IndexInjuryParams('', 1, 10, 1)
+const indexInjuryParams = new IndexInjuryParams('', 1, 10, 0)
 watch(() => isAnotherMeeting.value, (newVal) => {
   if (newVal == 1) {
     updateData()
@@ -144,7 +144,7 @@ const UpdateWorkStatus = (data) => {
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
         <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
-          :params="indexInjuryParams" label="Infection Type" id="infection" placeholder="select your infection"
+          :params="indexInjuryParams" label="injury Type" id="injury" placeholder="select your injury"
           @update:modelValue="setInfection" />
       </div>
 

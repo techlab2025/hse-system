@@ -135,7 +135,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
         <ExportPdf />
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/accidents-type/add`" class="btn btn-primary">
-          {{ $t('Add_AccidentsType') }}
+          {{ $t('Add_incident_Type') }}
         </router-link>
       </div>
     </PermissionBuilder>

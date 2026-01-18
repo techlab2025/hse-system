@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Dialog from 'primevue/dialog';
 import EquipmentImg from "@/assets/images/Equipment.png";
 import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
-import IndexEquipmentController from "@/features/_templateFeature/Presentation/controllers/indexEquipmentController";
-import IndexEquipmentParams from "@/features/_templateFeature/Core/params/indexEquipmentParams";
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import HeaderSection from "../../Details/DetailsHeader/HeaderSection.vue";
 import CreateProjectZoneEquipment from "@/features/Organization/Project/Core/params/Equipments/CreateProjectZoneEquipment";
 import CreateProjectZoneEquipmentsController from "../../../controllers/Equipments/CreateProjectZoneEquipmentsController";
+import MultiSelect from '@/shared/HelpersComponents/MultiSelect.vue'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from "@/features/_templateFeature/Core/params/indexEquipmentParams";
 
 const props = defineProps<{
   btn_name: string
@@ -28,8 +29,7 @@ const equipments = ref<TitleInterface[]>([])
 
 // ================== CONTROLLERS ==================
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0)
-
+const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0, null, true)
 // ================== HANDLERS ==================
 
 
@@ -58,6 +58,19 @@ const AddEquipment = async () => {
   //   console.log(error)
   // }
 }
+
+
+
+const AllEquipments = ref([])
+const getEquipment = async () => {
+  const res = await indexEquipmentController.getData(indexEquipmentParams)
+  AllEquipments.value = res.value?.data || []
+}
+const Equipment = ref<TitleInterface[]>([])
+onMounted(() => {
+  getEquipment()
+})
+
 </script>
 
 <template>
@@ -71,9 +84,14 @@ const AddEquipment = async () => {
       </template>
       <!-- Equipment selection -->
       <div class="equipment-selection">
-        <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
+        <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
+          @update:modelValue="setEquipments" /> -->
+        <label for="equipment">Select Equipment</label>
+        <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
+          placeholder="Select Your Equipment" display="chip" class="w-full md:w-80"
           @update:modelValue="setEquipments" />
+
 
         <div class="submit-btn w-full mt-4">
           <button class="btn btn-primary w-full" @click="AddEquipment">

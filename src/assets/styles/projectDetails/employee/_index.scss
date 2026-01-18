@@ -91,7 +91,12 @@
     }
 
     .equipment-form {
-      width: 100%;
+      form {
+        width: 100%;
+      }
+      .p-multiselect {
+        width: 100%;
+      }
 
       .input-container {
         margin: 0;

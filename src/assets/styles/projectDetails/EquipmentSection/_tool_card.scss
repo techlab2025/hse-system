@@ -15,6 +15,12 @@
     // height: 15vh;
   }
 
+  &.is-select {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   img {
     width: 100px;
     height: 80px;
