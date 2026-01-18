@@ -7,18 +7,20 @@
   padding: $XsSize;
   border-radius: $SmSize;
   font-family: 'Light';
+  overflow: hidden;
 
   &.equipment-card {
     background-color: #ffffff;
     width: 100%;
-    height: 15vh;
+    // height: 15vh;
   }
 
   img {
-    width: 120px;
-    height: 100%;
+    width: 100px;
+    height: 80px;
+    max-height: 80px;
     border-radius: 8px;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .tool-card-header {
