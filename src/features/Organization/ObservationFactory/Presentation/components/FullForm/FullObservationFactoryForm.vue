@@ -641,20 +641,23 @@ const acedentDialogRef = ref(false)
 
 
     <!-- Factorywitnesses -->
-    <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">
+
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation?.ObservationType">
       <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
     </div>
 
     <!-- FactoryAccidents -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation?.ObservationType">
       <FactoryAccidents idents class="not-colored" @update:data="UpdateAccidents" />
     </div>
 
     <!-- FactoryFatalities -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="saveStatus == SaveStatusEnum.NotSaved">
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation?.ObservationType">
       <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
     </div>
   </div>

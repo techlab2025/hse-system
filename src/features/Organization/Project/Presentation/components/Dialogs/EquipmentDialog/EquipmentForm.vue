@@ -79,13 +79,13 @@ onMounted(() => {
       <div class="input-container">
         <div class="input-wrapper w-full">
 
-          <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
+          <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
-            placeholder="Select Your Equipment" @update:modelValue="setEquipments" />
+            placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
 
-          <!-- <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
+          <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
             placeholder="Select Your Equipment" display="chip" class="w-full md:w-80"
-            @update:modelValue="setEquipments" /> -->
+            @update:modelValue="setEquipments" />
 
         </div>
       </div>
