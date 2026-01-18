@@ -42,7 +42,7 @@ const fetchCertficates = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexCertificateParams = new IndexCertificateParams(query, pageNumber, perPage, withPage)
+  const indexCertificateParams = new IndexCertificateParams(query, pageNumber, perPage, 0)
   await indexCertificateController.getData(indexCertificateParams)
 }
 
@@ -145,35 +145,34 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
           <table class="main-table">
             <thead>
               <tr>
-                <th scope="col">{{ $t('emp') }}</th>
-
+                <th scope="col" class="w-fit">{{ $t('emp') }}</th>
                 <th scope="col" v-for="cert in Certificatestate.data" :key="cert.id">
-                  {{ cert.title }}
+                  <span v-if="cert.title">{{ cert.title }}</span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="employee in state.data" :key="employee.id" class="table-row">
+              <tr v-for="employee in state.data" :key="employee.id">
                 <td class="employee-info-container">
                   <div class="employee-info">
                     <span class="name">
                       {{ employee.name }}
                     </span>
-                    <span class="employee-description ">{{employee?.hierarchy.map((el) => el.title).join(', ')}}</span>
+                    <div class="employee-static">
+                      <span class="valid-counter">{{employee?.certificates?.filter((el) => el.status ==
+                        CertificateStatusEnum?.Valid)?.length}} <span>valid</span></span>
+                      <span class="invalid-counter">{{employee?.certificates?.filter((el) => el.status ==
+                        CertificateStatusEnum?.Invalid)?.length}} <span>invalid</span></span>
+                      <span class="expired-counter">{{employee?.certificates?.filter((el) => el.status ==
+                        CertificateStatusEnum?.Expired)?.length}} <span>expired</span></span>
+                    </div>
+                    <!-- <span class="employee-description ">{{employee?.hierarchy.map((el) => el.title).join(', ')}}</span> -->
                   </div>
-                  <div class="employee-static">
-                    <span class="valid-counter">{{employee?.certificates?.filter((el) => el.status ==
-                      CertificateStatusEnum?.Valid)?.length}} <span>valid</span></span>
-                    <span class="invalid-counter">{{employee?.certificates?.filter((el) => el.status ==
-                      CertificateStatusEnum?.Invalid)?.length}} <span>invalid</span></span>
-                    <span class="expired-counter">{{employee?.certificates?.filter((el) => el.status ==
-                      CertificateStatusEnum?.Expired)?.length}} <span>expired</span></span>
-                  </div>
+
                 </td>
 
-                <td v-for="cert in Certificatestate.data" :key="cert.id" class=" text-center h-full">
+                <td v-for="cert in Certificatestate.data" :key="cert.id">
                   <span :class="cert.id">
-
                     <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
                       :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at" />
 
@@ -217,10 +216,13 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
-        />
+        description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
 
-<style scoped></style>
+<style scoped>
+.w-fit {
+  width: fit-content;
+}
+</style>
