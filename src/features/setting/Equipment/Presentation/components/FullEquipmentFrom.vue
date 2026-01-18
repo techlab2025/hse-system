@@ -701,7 +701,7 @@ const UpdateActiveTap = (data) => {
         <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
           placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
       </div>
-      <div class="col-span-2 md:col-span-1">
+      <div class="col-span-2 md:col-span-1" v-if="!data?.id">
         <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse" />
@@ -749,8 +749,7 @@ const UpdateActiveTap = (data) => {
           @update:modelValue="setIndustry" />
       </div>
 
-      <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
-      :isForm="true"
+      <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName" :isForm="true"
         :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''" :selctedequipment="langs"
         :selectedequipmentType="equipmentType" :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true"
         :certificateImage="certificateImage || ''" :BreadCramps="breadcrumbs || []" :langDefault="langDefault"
