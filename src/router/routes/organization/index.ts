@@ -20,6 +20,7 @@ import { SettingRoutes } from './setting'
 import { AllInvestigationMeetingRoutes } from './allInvestigationmeetings'
 import { AllInvestigationTasksRoutes } from './allInvestigationTasks'
 import { EmployeeCertificateRoutes } from './EmployeeCertificate'
+import { serialNumberRoutes } from './SerialNumber'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -48,6 +49,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...AllInvestigationMeetingRoutes,
   ...AllInvestigationTasksRoutes,
   ...EmployeeCertificateRoutes,
+  ...serialNumberRoutes,
 
   {
     path: 'permission/:id',

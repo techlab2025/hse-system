@@ -156,6 +156,9 @@
 @use './EmployeeCertificates/employee_certificates_imports';
 /*</editor-fold>*/
 
+// SERIAL 
+@use './SerialNumber/serial_imports';
+
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;

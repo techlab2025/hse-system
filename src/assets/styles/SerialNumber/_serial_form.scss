@@ -1,0 +1,24 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.serial-form {
+  padding: 40px 0;
+  .serial-form-section {
+    @include flex-column();
+    gap: calc($XlSize2 + 4px);
+    padding: calc($XlSize3 + 4px) 0;
+
+    .serial-form-title {
+      background: #f0f4ff;
+      border-radius: calc($XlSize2 + 2px);
+      h2 {
+        color: $PrimaryColor;
+        padding: $MdSize $XlSize;
+        text-align: center;
+        font-size: $XlSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-family: 'Regular';
+      }
+    }
+  }
+}
