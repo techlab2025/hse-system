@@ -209,7 +209,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/accidents-type`" addText="Add AccidentType"
+            }/accidents-type/add`" addText="Add AccidentType"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No AccidentType" />
         </PermissionBuilder>
@@ -217,7 +217,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/accidents-type`" addText="Add AccidentType"
+            }/accidents-type/add`" addText="Add AccidentType"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No AccidentType" />
         </PermissionBuilder>
@@ -226,7 +226,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

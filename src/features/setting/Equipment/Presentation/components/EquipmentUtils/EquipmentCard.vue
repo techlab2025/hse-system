@@ -114,6 +114,7 @@ const deleteEquipment = async (id: number) => {
 
 <template>
 
+  <!-- <pre>{{ tool }}</pre> -->
 
   <div class="tool-card equipment-card ">
     <div class="tool-card-header">
@@ -145,19 +146,17 @@ const deleteEquipment = async (id: number) => {
           <div class="project-data">
             <p class="project-name"><span class="project-name-title">{{ tool?.project?.title }}</span></p>
             <div class="project-zone-name">
-              <img :src="mark" alt="">
-              <p> <span class="project-name-title">{{ tool?.projectZoon?.title }}</span></p>
+              <div class="project-zone-name" v-if="tool?.projectZoon?.zoon_title">
+                <img :src="mark" alt="">
+                <p> <span class="project-name-title">{{ tool?.projectZoon?.zoon_title }}</span></p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="equipment-project-info" v-if="tool?.warehouse">
+        <div class="equipment-project-info" v-if="tool?.warehouse && !tool?.project?.title">
           <img :src="WareHouseIcon" alt="helmet">
           <div class="project-data">
             <p class="project-name"><span class="project-name-title">{{ tool?.warehouse?.name }}</span></p>
-            <div class="project-zone-name" v-if="tool?.projectZoon?.title">
-              <img :src="mark" alt="">
-              <p> <span class="project-name-title">{{ tool?.projectZoon?.title }}</span></p>
-            </div>
           </div>
         </div>
 
