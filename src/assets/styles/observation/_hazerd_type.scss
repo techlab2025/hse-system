@@ -13,8 +13,8 @@
     &.incedant {
       margin-top: 0;
       width: 100%;
-      @include flex-row(nowrap , flex-start , center);
-      gap: 12px;
+      @include flex-row(nowrap, flex-start, center);
+      gap: 120px;
     }
   }
 
