@@ -114,6 +114,9 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add/${id}`,
     permission: [
       PermissionsEnum.ADMIN,
+      PermissionsEnum.TEMPLATE_ITEM_ALL,
+      PermissionsEnum.TEMPLATE_ITEM_FETCH,
+      PermissionsEnum.TEMPLATE_ITEM_CREATE,
     ],
   },
   // {

@@ -315,6 +315,44 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // Template Item
+        {
+          key: PermissionsEnum.TEMPLATE_ITEM_ALL,
+          code: PermissionsEnum.TEMPLATE_ITEM_ALL,
+          label: 'Template Item',
+          permissions: [
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_ALL,
+              code: PermissionsEnum.TEMPLATE_ITEM_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_FETCH,
+              code: PermissionsEnum.TEMPLATE_ITEM_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_DETAILS,
+              code: PermissionsEnum.TEMPLATE_ITEM_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_CREATE,
+              code: PermissionsEnum.TEMPLATE_ITEM_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+              code: PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.TEMPLATE_ITEM_DELETE,
+              code: PermissionsEnum.TEMPLATE_ITEM_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
 
         // Hazard Type
         {
