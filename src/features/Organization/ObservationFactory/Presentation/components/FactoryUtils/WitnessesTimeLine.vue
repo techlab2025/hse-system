@@ -11,7 +11,7 @@ import DatePicker from 'primevue/datepicker'
 const emit = defineEmits(['update:data'])
 
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 const Answers = ref([
   {
     text: ' ',

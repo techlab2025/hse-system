@@ -4,11 +4,11 @@ import { useRoute, useRouter } from 'vue-router'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-import IndexEquipmentController from '@/features/_templateFeature/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/_templateFeature/Core/params/indexEquipmentParams'
 import CreateProjectZoneEquipmentsController from '../../../controllers/Equipments/CreateProjectZoneEquipmentsController'
 import CreateProjectZoneEquipment from '@/features/Organization/Project/Core/params/Equipments/CreateProjectZoneEquipment'
 import MultiSelect from '@/shared/HelpersComponents/MultiSelect.vue'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 
 const route = useRoute()
 const router = useRouter()
@@ -35,6 +35,8 @@ const EquipmentsData = ref<CreateProjectZoneEquipment>(
 
 const setEquipments = (data: TitleInterface[]) => {
   const equipmentIds = data.map((item) => item.id)
+
+  console.log(equipmentIds, "equipmentIds");
 
   EquipmentsData.value = new CreateProjectZoneEquipment(id,
     [
@@ -82,7 +84,7 @@ onMounted(() => {
           <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
             placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
-
+          <label for="equipment">Select Equipment</label>
           <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
             placeholder="Select Your Equipment" display="chip" class="w-full md:w-80"
             @update:modelValue="setEquipments" />
