@@ -81,7 +81,7 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
   <div class="inspection-template-dialog-container ">
 
 
-    <div class="flex flex-col gap-1">
+    <div class="input-wrapper col-span-6 pt-15 md:col-span-3">
       <div class="title">
         <span>{{ $t('inspection template') }}</span>
         <ImportantIcon />

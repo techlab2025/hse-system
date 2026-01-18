@@ -3,12 +3,13 @@
 @use '../mixins/grid' as *;
 
 .inspection-template-dialog-container {
-  margin-block: $XlSize;
+  // margin-block: $MdSize;
   width: 100%;
   .title {
     @include flex(row, nowrap, flex-start, flex-start);
     gap: $XsSize2;
     width: 100%;
+
     span {
       font-size: $MdSize;
       color: #202020;
@@ -24,11 +25,11 @@
     color: $SubtitleColor;
     font-weight: $BaseFontWeightBold;
     border: 1px dashed $MainBorder;
-    border-radius: $XlSize2;
-    margin-top: $XsSize;
-    padding: $XsSize $SmSize;
+    // padding: $XsSize $SmSize;
     text-align: center;
-    font-size: $MdSize;
+    font-size: $SmSize;
+    padding: var(--md-size-2) var(--md-size);
+    border-radius: calc(var(--xl-size-base) + 2px);
   }
 
   .template-header {

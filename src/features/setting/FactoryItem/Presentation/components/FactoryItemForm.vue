@@ -123,19 +123,19 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditFactoryItemParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],
-      factory.value?.id,
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+        factory.value?.id,
+      )
     : new AddFactoryItemParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      factory.value?.id,
-      // id,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        factory.value?.id,
+        // id,
+      )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -209,16 +209,37 @@ const setFactory = (data: TitleInterface) => {
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div class="input-wrapper col-span-4 md:col-span-2 " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="input-wrapper col-span-4 md:col-span-2"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="Factory" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div
+    class="input-wrapper col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="Factory"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="factory" :controller="factoryController" :params="factoryParams" label="factory"
-      id="Factory" placeholder="Select factory" @update:modelValue="setFactory" />
+  <div class="input-wrapper col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="factory"
+      :controller="factoryController"
+      :params="factoryParams"
+      label="factory"
+      id="Factory"
+      placeholder="Select factory"
+      @update:modelValue="setFactory"
+    />
   </div>
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->

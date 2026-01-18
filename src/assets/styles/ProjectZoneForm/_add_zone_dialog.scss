@@ -5,7 +5,7 @@
   @include flex-row(nowrap, flex-start, center);
   gap: 6px;
   padding: calc($XlSize2 + 2px);
-  margin-top: $XsSize4;
+  // margin-top: $XsSize4;
   border-radius: $XlSize2;
   border: 1px solid #d9dbe9;
   font-family: 'Light';
