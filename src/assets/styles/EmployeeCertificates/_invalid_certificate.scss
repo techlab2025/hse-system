@@ -3,7 +3,7 @@
 @import '../mixins/grid';
 
 .invalid-certificate {
-  @include flex-column(nowrap, center, center);
+  @include flex-column(nowrap, center, flex-start);
   gap: $XsSize4;
   .invalid {
     @include flex-row(nowrap, center, center);
