@@ -11,6 +11,8 @@
     width: 100%;
     .input-title {
       width: 100%;
+      height: fit-content;
+
       @include flex-justify();
       .title {
         font-family: 'Light' !important;

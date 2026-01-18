@@ -1,6 +1,6 @@
-@use "../variables" as *;
-@use "../mixins/border" as *;
-@use "../mixins/flex" as *;
+@use '../variables' as *;
+@use '../mixins/border' as *;
+@use '../mixins/flex' as *;
 
 .input-wrapper-profile {
   position: relative;
@@ -26,7 +26,6 @@
     overflow: hidden;
     //border-radius: 50px;
 
-
     &::placeholder {
       color: $TextGray2;
     }
@@ -43,15 +42,11 @@
       -webkit-text-fill-color: $SecondaryColor;
     }
 
-
     &:focus {
       border-color: $SecondaryColor;
       outline: none;
     }
-
-
   }
-
 
   .input-icon {
     position: absolute;
@@ -61,6 +56,4 @@
 
     //aspect-ratio: 1/1;
   }
-
-
 }
