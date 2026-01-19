@@ -292,19 +292,19 @@ const ShowDetails = ref<number[]>([])
                           <img v-else src="@/assets/images/logo.svg" alt="">
                         </div>
                       </div>
-                      <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                      <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                         <span v-if="ShowDetails[index]">Show Less</span>
                         <span v-else>Show More</span>
                         <ShowMoreIcon />
-                      </p>
+                      </p> -->
                     </div>
 
-                    <div v-if="ShowDetails[index]" class="card-description">
+                    <!-- <div v-if="ShowDetails[index]" class="card-description">
                       <p class="title">Description</p>
                       <p class="description">
                         {{ item.description }}
                       </p>
-                    </div>
+                    </div> -->
                   </router-link>
                 </div>
               </div>

@@ -164,6 +164,8 @@
   font-weight: $BaseFontMediumWeight;
   span {
     color: $PrimaryColor;
+    font-family: 'Regular';
+    font-weight: $BaseFontSemiBoldWeight;
   }
 }
 .label-item-secondary {
@@ -172,5 +174,7 @@
   font-weight: $BaseFontMediumWeight;
   span {
     color: #000000;
+    font-family: 'Regular';
+    font-weight: $BaseFontSemiBoldWeight;
   }
 }
