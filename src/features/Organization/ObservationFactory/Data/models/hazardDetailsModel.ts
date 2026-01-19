@@ -5,6 +5,7 @@ import type OvservationEquipmentModel from './OvservationEquipmentModel'
 import type OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
 import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
+import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 
 export default class HazardDetailsModel {
   public id: number
@@ -32,6 +33,7 @@ export default class HazardDetailsModel {
   public creator: OvserverModel
   public capa: CapaModel
   public serialNumber: number
+  public media: FilesModel[]
 
   constructor(
     id: number,
@@ -59,6 +61,7 @@ export default class HazardDetailsModel {
     creator: OvserverModel,
     capa: CapaModel,
     serialNumber: number,
+    media: FilesModel[],
   ) {
     this.id = id
     this.title = title
@@ -85,6 +88,7 @@ export default class HazardDetailsModel {
     this.creator = creator
     this.capa = capa
     this.serialNumber = serialNumber
+    this.media = media
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -114,6 +118,7 @@ export default class HazardDetailsModel {
       data.creator,
       data.capa,
       data.serial_number,
+      data.media.map((item: any) => FilesModel.fromMap(item)),
     )
   }
 }

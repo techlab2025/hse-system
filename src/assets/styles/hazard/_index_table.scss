@@ -6,6 +6,11 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $SmSize;
   width: 100%;
+  &.show {
+    .card-header-container {
+      border: none;
+    }
+  }
 
   .index-table-card {
     @include flex-column(nowrap, flex-start, flex-start);

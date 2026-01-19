@@ -6,7 +6,7 @@
   @include flex-column(nowrap, center, flex-start);
   gap: $XsSize4;
   .invalid {
-    @include flex-row(nowrap, center, center);
+    @include flex-row(nowrap, center, flex-start);
     gap: $XsSize4;
     .invalid-title {
       color: #f65a5a;

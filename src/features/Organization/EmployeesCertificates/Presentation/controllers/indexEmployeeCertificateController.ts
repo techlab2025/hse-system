@@ -2,32 +2,29 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type InjuryModel from '../../Data/models/InjuryModel'
-import IndexInjuryUseCase from '../../Domain/useCase/indexInjuryUseCase'
+import IndexEmployeeCertificateUseCase from '../../Domain/useCase/indexEmployeeCertificateUseCase'
+import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
-
-export default class IndexInjuryController extends SelectControllerInterface<
-  InjuryModel[]
+export default class IndexEmployeeCertificateController extends SelectControllerInterface<
+  OrganizatoinEmployeeModel[]
 > {
-  private static instance: IndexInjuryController
+  private static instance: IndexEmployeeCertificateController
   private constructor() {
     super()
   }
-  private IndexInjuryUseCase = new IndexInjuryUseCase()
+  private indexEmployeeCertificateUseCase = new IndexEmployeeCertificateUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexInjuryController()
+      this.instance = new IndexEmployeeCertificateController()
     }
     return this.instance
   }
 
   async getData(params: Params) {
-    // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
     this.setLoading()
-    const dataState: DataState<InjuryModel[]> =
-      await this.IndexInjuryUseCase.call(params)
+    const dataState: DataState<OrganizatoinEmployeeModel[]> =
+      await this.indexEmployeeCertificateUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

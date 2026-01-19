@@ -1,10 +1,10 @@
-import { ShowHazardModel } from '@/features/setting/Hazard/Data/models/HazardDetailsModel'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import ShowHazardUseCase from '../../Domain/useCase/showHazardUseCase'
+import type HazardDetailsModel from '../../Data/models/hazardDetailsModel'
 
-export default class ShowHazardController extends ControllerInterface<ShowHazardModel> {
+export default class ShowHazardController extends ControllerInterface<HazardDetailsModel> {
   private static instance: ShowHazardController
 
   private constructor() {
@@ -25,7 +25,7 @@ export default class ShowHazardController extends ControllerInterface<ShowHazard
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ShowHazardModel> = await this.ShowHazardUseCase.call(params)
+    const dataState: DataState<HazardDetailsModel> = await this.ShowHazardUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

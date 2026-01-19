@@ -1359,8 +1359,11 @@ class ApiNames {
   public get CreateInvestigationTaskResult() {
     return this.prefix + 'create_investigation_task_result'
   }
-  public get createCodingSystem () {
+  public get createCodingSystem() {
     return this.prefix + 'create_coding_system'
+  }
+  public get IndexEmployeeCertificate() {
+    return this.prefix + 'fetch_organization_employees_certificates'
   }
 }
 
