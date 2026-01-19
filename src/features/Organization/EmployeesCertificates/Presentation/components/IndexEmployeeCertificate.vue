@@ -34,8 +34,6 @@ const state = ref(indexOrganizatoinEmployeeController.state.value)
 const indexCertificateController = IndexCertificateController.getInstance()
 const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
 
-
-
 const fetchCertficates = async (
   query: string = '',
   pageNumber: number = 1,
@@ -52,7 +50,12 @@ const fetchOrganizationEmployee = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams(query, pageNumber, perPage, withPage)
+  const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+  )
   await indexOrganizatoinEmployeeController.getData(indexOrganizatoinEmployeeParams)
 }
 
@@ -64,8 +67,6 @@ onMounted(() => {
 const searchEmployeeCertificate = debounce(() => {
   fetchOrganizationEmployee(word.value)
 })
-
-
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
@@ -103,18 +104,17 @@ watch(
   },
 )
 
-
 // Check if a specific employee has a specific certificate and return its status
 const getCertificateStatus = (employee: any, certificateId: number) => {
   const CertificateStatus = employee.certificates?.find(
-    (certificate: any) => certificate.id === certificateId
-  );
+    (certificate: any) => certificate.id === certificateId,
+  )
 
   // if (!CertificateStatus) return "NotRequired";
 
   // console.log(CertificateStatus, "CertificateStatus")
-  return CertificateStatus?.status;
-};
+  return CertificateStatus?.status
+}
 
 // const isHovered = ref()
 </script>
@@ -125,20 +125,27 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
       <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEmployeeCertificate" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchEmployeeCertificate"
+      />
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-    </div>
+    <div class="col-span-2 flex justify-end gap-2"></div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive employee-certificates-matrix">
@@ -159,29 +166,60 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                       {{ employee.name }}
                     </span>
                     <div class="employee-static">
-                      <span class="valid-counter">{{employee?.certificates?.filter((el) => el.status ==
-                        CertificateStatusEnum?.Valid)?.length}} <span>valid</span></span>
-                      <span class="invalid-counter">{{employee?.certificates?.filter((el) => el.status ==
-                        CertificateStatusEnum?.Invalid)?.length}} <span>invalid</span></span>
-                      <span class="expired-counter">{{employee?.certificates?.filter((el) => el.status ==
-                        CertificateStatusEnum?.Expired)?.length}} <span>expired</span></span>
+                      <span class="valid-counter"
+                        >{{
+                          employee?.certificates?.filter(
+                            (el) => el.status == CertificateStatusEnum?.Valid,
+                          )?.length
+                        }}
+                        <span>valid</span></span
+                      >
+                      <span class="invalid-counter"
+                        >{{
+                          employee?.certificates?.filter(
+                            (el) => el.status == CertificateStatusEnum?.Invalid,
+                          )?.length
+                        }}
+                        <span>invalid</span></span
+                      >
+                      <span class="expired-counter"
+                        >{{
+                          employee?.certificates?.filter(
+                            (el) => el.status == CertificateStatusEnum?.Expired,
+                          )?.length
+                        }}
+                        <span>expired</span></span
+                      >
                     </div>
                     <!-- <span class="employee-description ">{{employee?.hierarchy.map((el) => el.title).join(', ')}}</span> -->
                   </div>
-
                 </td>
 
                 <td v-for="cert in Certificatestate.data" :key="cert.id">
                   <span :class="cert.id">
-                    <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
-                      :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at" />
+                    <ValidCertificate
+                      v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      :expiry_date="
+                        employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
+                      "
+                    />
 
-                    <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                    <NotValidCertificate
+                      @update:data="fetchOrganizationEmployee"
+                      :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id"
-                      v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid" />
-                    <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                      v-else-if="
+                        getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid
+                      "
+                    />
+                    <ExpiredCertificate
+                      @update:data="fetchOrganizationEmployee"
+                      :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id"
-                      v-else-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired" />
+                      v-else-if="
+                        getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
+                      "
+                    />
                     <div class="not-required" v-else>
                       <span class="not-required-left"></span>
                       NotRequired
@@ -194,7 +232,11 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
           </table>
         </div>
 
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -203,20 +245,28 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+        <DataEmpty
+          :link="`/organization/EmployeeCertificate/add`"
+          addText="Add Employee Certificate"
           description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeCertificate" />
+          title="..ops! You have No EmployeeCertificate"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+        <DataFailed
+          :link="`/organization/EmployeeCertificate/add`"
+          addText="Add Employee Certificate"
           description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeCertificate" />
+          title="..ops! You have No EmployeeCertificate"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Employee Certificate .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>
