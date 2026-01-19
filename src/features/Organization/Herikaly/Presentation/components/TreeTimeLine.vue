@@ -95,7 +95,12 @@ const DeleteHierarchy = async (Id: number) => {
                   </PermissionBuilder>
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_UPDATE]">
                     <router-link :to="`/organization/herikaly/${item.id}`" class="btn add-btn">{{ $t('edit')
-                    }}</router-link>
+                      }}</router-link>
+                  </PermissionBuilder>
+                  <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_UPDATE]">
+                    <router-link :to="`/organization/employee-certificate/${item.id}`" class="btn add-btn">{{
+                      $t('certificates')
+                      }}</router-link>
                   </PermissionBuilder>
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_DELETE]">
                     <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> {{ $t('delete') }} </button>

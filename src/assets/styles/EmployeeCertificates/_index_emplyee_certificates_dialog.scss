@@ -6,11 +6,9 @@
   .main-table {
     width: 100%;
     border-collapse: collapse;
-
     tr {
       display: table-row !important;
     }
-
     td {
       display: table-cell !important;
       vertical-align: middle !important;
@@ -35,13 +33,17 @@
     filter: blur(2px);
   }
   .employee-info-container {
-    @include flex-row(nowrap, flex-start, center);
-    width: fit-content;
+    @include flex-row(nowrap, flex-start, flex-start);
     gap: 20px;
+    width: fit-content;
     .employee-info {
       @include flex-row(nowrap, flex-start, flex-start);
       font-family: 'Regular';
       gap: 30px;
+      background-color: #fcfcfc;
+      padding: 5px;
+      border-radius: 12px;
+      width: fit-content;
       .name {
         color: #202020;
         font-size: $MdSize;
@@ -126,7 +128,7 @@
     font-size: $XsSize;
     font-weight: $BaseFontSemiBoldWeight;
     height: 100%;
-    @include flex-row(nowrap, flex-start, center);
+    @include flex-row(nowrap, center, center);
     gap: 4px;
 
     .not-required-left {
@@ -177,9 +179,6 @@
     height: 100%;
     text-align: center;
     &:last-of-type {
-      // height: 100% !important;
-      // @include flex-row(nowrap, center, center);
-      // margin-top: auto !important;
       vertical-align: bottom !important;
     }
   }

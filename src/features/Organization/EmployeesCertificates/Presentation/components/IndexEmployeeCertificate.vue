@@ -21,6 +21,9 @@ import ValidCertificate from '../supcomponents/ValidCertificate.vue'
 import NotValidCertificate from '../supcomponents/NotValidCertificate.vue'
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 import ExpiredCertificate from '../supcomponents/ExpiredCertificate.vue'
+import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
+import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
+import NotRequired from '../supcomponents/NotRequired.vue'
 const { t } = useI18n()
 
 const route = useRoute()
@@ -28,8 +31,8 @@ const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 
-const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const state = ref(indexOrganizatoinEmployeeController.state.value)
+const indexEmployeeCertificateController = IndexEmployeeCertificateController.getInstance()
+const state = ref(indexEmployeeCertificateController.state.value)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
@@ -50,18 +53,17 @@ const fetchOrganizationEmployee = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-  )
-  await indexOrganizatoinEmployeeController.getData(indexOrganizatoinEmployeeParams)
+
+
+  const indexEmployeeCertificateParams = new IndexEmployeeCertificateParams(query, pageNumber, perPage, withPage, route.params.id ? Number(route.params.id) : null)
+  await indexEmployeeCertificateController.getData(indexEmployeeCertificateParams)
 }
 
 onMounted(() => {
   fetchOrganizationEmployee()
-  fetchCertficates()
+  if (!route.params.id) {
+    fetchCertficates()
+  }
 })
 
 const searchEmployeeCertificate = debounce(() => {
@@ -82,7 +84,7 @@ const handleCountPerPage = (count: number) => {
 }
 
 watch(
-  () => indexOrganizatoinEmployeeController.state.value,
+  () => indexEmployeeCertificateController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -153,7 +155,7 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
             <thead>
               <tr>
                 <th scope="col" class="w-fit">{{ $t('emp') }}</th>
-                <th scope="col" v-for="cert in Certificatestate.data" :key="cert.id">
+                <th scope="col" v-for="cert in (Certificatestate.data || state.data[0]?.certificates)" :key="cert.id">
                   <span v-if="cert.title">{{ cert.title }}</span>
                 </th>
               </tr>
@@ -195,7 +197,7 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                   </div>
                 </td>
 
-                <td v-for="cert in Certificatestate.data" :key="cert.id">
+                <td v-for="cert in (Certificatestate.data || employee?.certificates)" :key="cert.id">
                   <span :class="cert.id">
                     <ValidCertificate
                       v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
@@ -221,9 +223,8 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                       "
                     />
                     <div class="not-required" v-else>
-                      <span class="not-required-left"></span>
-                      NotRequired
-                      <span class="not-required-right"></span>
+                      <NotRequired :certificateId="cert?.id" :organizationEmployeeId="employee?.id" />
+
                     </div>
                   </span>
                 </td>

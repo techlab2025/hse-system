@@ -6,7 +6,7 @@
   @include flex-column(nowrap, center, center);
   gap: $XsSize4;
   .valid {
-    @include flex-row(nowrap, center, center);
+    @include flex-row(nowrap, center, flex-start);
     gap: $XsSize4;
     .valid-title {
       color: #6cb765;
