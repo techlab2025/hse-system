@@ -101,8 +101,8 @@ const updateData = () => {
       0,
     )
     : new AddHazardParams({
-      title: text.value ?? null,
-      description: descripe.value ?? null,
+      title: ObservationTitle.value ?? '',
+      description: text.value ?? null,
       image: image.value?.map((el) => el?.file) ?? null,
       typeId:
         ObservationFactoryType.value == Observation.ObservationType
@@ -394,6 +394,14 @@ watch(
 const observationTypeDialog = ref(false)
 const machineDialogRef = ref(false)
 const acedentDialogRef = ref(false)
+
+
+const UpdateSaveStatus = (data: SaveStatusEnum) => {
+  saveStatus.value = data
+  updateData()
+}
+
+const ObservationTitle = ref<string>()
 </script>
 
 <template>
@@ -416,6 +424,12 @@ const acedentDialogRef = ref(false)
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
+    </div>
+
+    <!-- title -->
+    <div class="input-wrapper col-span-6">
+      <label for="time">title</label>
+      <input type="text" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
     </div>
 
     <!-- Date -->
@@ -548,7 +562,7 @@ const acedentDialogRef = ref(false)
     <!-- Save Status Positive or Negative -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full"
       v-if="ObservationFactoryType != Observation.AccidentsType">
-      <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
+      <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="UpdateSaveStatus" />
     </div>
     <!-- Sevarity -->
     <div class="col-span-3 md:col-span-3"

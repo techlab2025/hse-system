@@ -1,4 +1,4 @@
-  import type { RouteRecordRaw } from '@/router/types'
+import type { RouteRecordRaw } from '@/router/types'
 
 export const observationRoutes: RouteRecordRaw[] = [
   {
@@ -27,6 +27,16 @@ export const observationRoutes: RouteRecordRaw[] = [
       import('@/views/Organization/ObservationFactory/Observation/EditObservation.vue'),
     meta: {
       breadcrumb: 'Edit Observeration',
+      parent: 'Observeration',
+    },
+  },
+  {
+    path: 'observation/show/:id',
+    name: 'Show Observeration',
+    component: () =>
+      import('@/views/Organization/ObservationFactory/Observation/ShowObservation.vue'),
+    meta: {
+      breadcrumb: 'Show Observeration',
       parent: 'Observeration',
     },
   },

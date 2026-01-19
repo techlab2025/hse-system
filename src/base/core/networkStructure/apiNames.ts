@@ -1364,6 +1364,10 @@ class ApiNames {
   }
   public get fetchCodingSystem() {
     return this.prefix + 'fetch_coding_systems '
+
+  public get IndexEmployeeCertificate() {
+    return this.prefix + 'fetch_organization_employees_certificates'
+
   }
 }
 
