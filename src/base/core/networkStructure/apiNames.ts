@@ -1362,8 +1362,12 @@ class ApiNames {
   public get createCodingSystem() {
     return this.prefix + 'create_coding_system'
   }
+  public get fetchCodingSystem() {
+    return this.prefix + 'fetch_coding_systems '
+
   public get IndexEmployeeCertificate() {
     return this.prefix + 'fetch_organization_employees_certificates'
+
   }
 }
 

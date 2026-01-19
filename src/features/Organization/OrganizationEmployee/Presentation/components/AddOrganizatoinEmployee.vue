@@ -15,8 +15,11 @@ const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getI
 
 const addOrganizatoinEmployee = async () => {
   if (params.value) {
-    console.log(params.value, 'params value');
-    await addOrganizatoinEmployeeController.addOrganizatoinEmployee(params.value as AddOrganizatoinEmployeeParams, router)
+    console.log(params.value, 'params value')
+    await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
+      params.value as AddOrganizatoinEmployeeParams,
+      router,
+    )
   }
 }
 const setParams = (data: Params) => {
@@ -26,10 +29,11 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizatoinEmployee">
-
     <OrganizatoinEmployeeForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">
+        {{ $t('add') }}
+      </button>
     </div>
   </form>
 </template>

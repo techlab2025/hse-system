@@ -159,6 +159,9 @@
 // SERIAL
 @use './SerialNumber/serial_imports';
 
+// Organization Employee
+@use './OrganizationEmployee/emp_imports';
+
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;

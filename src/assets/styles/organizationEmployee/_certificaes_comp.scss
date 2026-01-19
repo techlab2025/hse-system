@@ -1,0 +1,74 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+// _certifications.scss
+.certifications-section {
+  background: #f9f9f9;
+  border-radius: $XlSize;
+  padding: $SmSize;
+}
+
+.cert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $XsSize;
+}
+
+.cert-item {
+  margin: 0;
+}
+
+.cert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: $XlSize;
+}
+
+.status-dot {
+  width: $XsSize2;
+  height: $XsSize2;
+  border-radius: 50%;
+  margin-top: $XsSize4;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+}
+
+.status-dot.success {
+  background: $Green;
+  box-shadow: 0 0 6px rgba(24, 168, 81, 0.7);
+}
+
+.status-dot.error {
+  background: $Red;
+  box-shadow: 0 0 6px rgba(251, 3, 3, 0.7);
+}
+
+.cert-text {
+  display: flex;
+  flex-direction: column;
+  gap: $BorderRadiusXs;
+  flex: 1;
+}
+
+.cert-name {
+  font-size: $SmSize;
+  font-weight: $BaseFontMediumWeight;
+  color: $ThirdColor;
+  line-height: 1.4;
+}
+
+.cert-date {
+  font-size: $XsSize;
+  font-weight: $BaseFontMediumWeight;
+  color: #ef4444;
+}
+
+.cert-missing {
+  font-size: $XsSize;
+  font-weight: $BaseFontMediumWeight;
+  color: $LowColor;
+}

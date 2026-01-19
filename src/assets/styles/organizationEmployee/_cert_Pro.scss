@@ -1,0 +1,51 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.side-card {
+  max-width: 340px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: $XsSize;
+  padding: $XlSize;
+}
+
+.section {
+  margin-bottom: $XlSize3;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: $XsSize3;
+  margin-bottom: $XsSize3;
+  padding: 0 0 $XsSize 0;
+  border-bottom: 1px dashed #eeeeee;
+
+  .icon {
+    width: calc($XlSize4 + 2px);
+    height: calc($XlSize4 + 2px);
+    object-fit: contain;
+  }
+
+  .section-header-text {
+    @include flex-column();
+    gap: $XsSize;
+    h4 {
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: $ThirdColor;
+      margin: 0;
+    }
+    .hint {
+      font-size: $XsSize;
+      color: $GrayText;
+      line-height: 1.4;
+    }
+  }
+}
