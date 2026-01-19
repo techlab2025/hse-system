@@ -287,7 +287,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </div>
                           <div class="card-details">
                             <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
-                            <p class="subtitle">{{ item.description }}</p>
+                            <p class="subtitle">{{ item.title }}</p>
                             <div class="project-details">
                               <p class="label-item-primary" v-if="item.zoon?.title">
                                 Zone : <span>{{ item.zoon?.title }}</span>
@@ -325,7 +325,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                     <div v-if="ShowDetails[index]" class="card-description">
                       <p class="title">Description</p>
                       <p class="description">
-                        {{ item.title }}
+                        {{ item.description }}
                       </p>
                     </div>
                   </router-link>

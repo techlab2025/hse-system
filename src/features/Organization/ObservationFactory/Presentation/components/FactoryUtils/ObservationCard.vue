@@ -33,7 +33,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
             Date & Time : <span>{{ data?.date }}</span>
           </p>
         </div>
-        <p>{{ data?.title }}</p>
+        <p class="observation-title">{{ data?.title }}</p>
         <div class="card-details">
           <p class="subtitle">{{ data?.description }}</p>
           <div class="project-details">
@@ -47,6 +47,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
         </div>
       </div>
       <div class="observer-container " v-if="data?.observer.name">
+        <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="30" height="30" />
         <p class="title">{{ data?.observer.name }}</p>
         <span class="observer">observer</span>
         <!-- <p class="title">{{ data?.observer. }}</p> -->

@@ -82,13 +82,13 @@
             font-size: 16px;
 
             &.Low {
-              color: #e23535;
+              color: $PrimaryColor;
             }
             &.Medium {
               color: #ffbf52;
             }
             &.High {
-              color: $PrimaryColor;
+              color: #e23535;
             }
           }
           .p-image,
