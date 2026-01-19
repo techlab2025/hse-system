@@ -1,32 +1,30 @@
-import { ApiNames } from "@/base/core/networkStructure/apiNames";
-import ServicesInterface from "@/base/Data/ApiService/api_service_interface";
-import { CrudType } from "@/base/core/params/call_params_interface";
-import type Params from "@/base/core/params/params";
+import { ApiNames } from '@/base/core/networkStructure/apiNames'
+import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import { CrudType } from '@/base/core/params/call_params_interface'
+import type Params from '@/base/core/params/params'
 
-class IndexInjuryApiService extends ServicesInterface {
-  private static instance: IndexInjuryApiService;
+class IndexEmployeeCertificateApiService extends ServicesInterface {
+  private static instance: IndexEmployeeCertificateApiService
 
   private constructor() {
-    super(); // Ensure this does not call any uninitialized methods or properties
+    super() // Ensure this does not call any uninitialized methods or properties
   }
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexInjuryApiService();
+      this.instance = new IndexEmployeeCertificateApiService()
     }
-    return this.instance;
+    return this.instance
   }
 
-  async applyService(
-    params: Params,
-  ): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.IndexInjury,
+      url: ApiNames.instance.IndexEmployeeCertificate,
       type: CrudType.POST,
       auth: true,
       params: params,
-    });
+    })
   }
 }
 
-export { IndexInjuryApiService };
+export { IndexEmployeeCertificateApiService }

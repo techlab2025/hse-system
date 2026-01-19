@@ -1,0 +1,158 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.show-observation-container {
+  .observation-card {
+    margin-top: 12px;
+    @include flex-column(nowrap, flex-end, flex-end);
+    padding-bottom: $XsSize;
+    width: 100%;
+    gap: $XsSize;
+    &.show {
+      border-bottom: none;
+    }
+    .header-container {
+      @include flex-row(nowrap, space-between, center);
+      width: 100%;
+      gap: $XsSize4;
+      font-family: 'Regular';
+
+      .card-content {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+
+        .card-header {
+          @include flex-row(nowrap, flex-start, center);
+          gap: $XlSize4;
+        }
+
+        .card-details {
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: $XsSize4;
+
+          .title {
+            color: #0f1927;
+            font-size: $MdSize;
+            font-weight: $BaseFontSemiBoldWeight;
+            span {
+              font-family: 'Light';
+              color: #c7c7cc;
+              font-size: $SmSize;
+              font-weight: $BaseFontMediumWeight;
+            }
+          }
+          .subtitle {
+            color: #9ca3af;
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+          }
+          .project-details {
+            @include flex-row(nowrap, flex-start, center);
+            gap: $XlSize4;
+          }
+        }
+      }
+      .observer-container {
+        @include flex-column(nowrap, flex-start, center);
+        gap: $XsSize4;
+        .title {
+          color: #0f1927;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          text-decoration: underline;
+        }
+        .observer {
+          color: #9ca3af;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+
+      .card-info {
+        @include flex-column(nowrap, flex-start, center);
+        gap: 6px;
+        .title {
+          color: $PrimaryColor;
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+        }
+        .observation-risk-level {
+          font-weight: 700;
+          font-size: 16px;
+
+          &.Low {
+            color: #e23535;
+          }
+          &.Medium {
+            color: #ffbf52;
+          }
+          &.High {
+            color: $PrimaryColor;
+          }
+        }
+        .p-image,
+        img {
+          object-fit: cover;
+          width: clamp(calc(90 * 0.8px), calc(90 * 100vw / var(--base-width)), calc(90 * 1.2px));
+          height: clamp(calc(65 * 0.8px), calc(65 * 100vw / var(--base-width)), calc(65 * 1.2px));
+          aspect-ratio: 16/9;
+          border-radius: 12px;
+          .p-image-preview-mask {
+            border-radius: 12px;
+            display: block;
+            opacity: 1;
+            background: #00000069;
+            backdrop-filter: blur(1px);
+          }
+          img {
+            border-radius: 12px;
+          }
+          .perview {
+            @include flex-center();
+            gap: 5px;
+            span {
+              color: white;
+              font-size: $SmSize;
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
+        }
+      }
+      .card-info-status {
+        background: $greenDone;
+        color: #4caf50;
+        padding: $XsSize $XlSize3;
+        border-radius: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        font-size: $MdSize;
+      }
+    }
+    .show-more {
+      @include flex-row(nowrap, center, center);
+      gap: 4px;
+      cursor: pointer;
+      span {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+
+  .card-description {
+    padding-top: $XsSize2;
+    @include flex-column(nowrap, flex-start, flex-start);
+    // gap: $MdSize;
+    .title {
+      color: #000000;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .description {
+      color: #8e8e93;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
+}

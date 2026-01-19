@@ -24,7 +24,7 @@ class ShowHazardApiService extends ServicesInterface {
       type: CrudType.FormData,
       auth: true,
       params: params,
-      headers: HeaderHandler.Instance.getHeader(true, false), // Exclude Accept-Language
+      headers: HeaderHandler.Instance.getHeader(true, params?.isShow ? true : false), // Exclude Accept-Language
     })
   }
 }

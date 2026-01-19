@@ -1,10 +1,10 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import InjuryModel from '../../Data/models/InjuryModel'
-import { IndexInjuryApiService } from '../../Data/apiServices/indexInjuryApiService'
+import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
+import { IndexEmployeeCertificateApiService } from '../../Data/apiServices/indexEmployeeCertificateApiService'
 
-class IndexInjuryRepo extends RepoInterface<InjuryModel[]> {
-  private static instance: IndexInjuryRepo
+class IndexEmployeeCertificateRepo extends RepoInterface<OrganizatoinEmployeeModel[]> {
+  private static instance: IndexEmployeeCertificateRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -13,7 +13,7 @@ class IndexInjuryRepo extends RepoInterface<InjuryModel[]> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexInjuryRepo()
+      this.instance = new IndexEmployeeCertificateRepo()
     }
     return this.instance
   }
@@ -22,13 +22,13 @@ class IndexInjuryRepo extends RepoInterface<InjuryModel[]> {
     return true
   }
 
-  onParse(data: any): InjuryModel[] {
-    return data.map((item: any) => InjuryModel.fromMap(item))
+  onParse(data: any): OrganizatoinEmployeeModel[] {
+    return data.map((item: any) => OrganizatoinEmployeeModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
-    return IndexInjuryApiService.getInstance()
+    return IndexEmployeeCertificateApiService.getInstance()
   }
 }
 
-export { IndexInjuryRepo }
+export { IndexEmployeeCertificateRepo }
