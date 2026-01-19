@@ -4,11 +4,15 @@
 
 .show-observation-container {
   .observation-card {
-    margin-top: 12px;
+    margin-top: 15px;
     @include flex-column(nowrap, flex-end, flex-end);
     padding-bottom: $XsSize;
     width: 100%;
     gap: $XsSize;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #f6f6f6;
+    border-radius: 12px;
     &.show {
       border-bottom: none;
     }
@@ -25,6 +29,13 @@
         .card-header {
           @include flex-row(nowrap, flex-start, center);
           gap: $XlSize4;
+          .label-item-secondary,
+          .label-item-primary {
+            span {
+              font-family: 'Regular';
+              font-weight: $BaseFontSemiBoldWeight;
+            }
+          }
         }
 
         .card-details {
@@ -36,10 +47,10 @@
             font-size: $MdSize;
             font-weight: $BaseFontSemiBoldWeight;
             span {
-              font-family: 'Light';
               color: #c7c7cc;
               font-size: $SmSize;
               font-weight: $BaseFontMediumWeight;
+              font-family: 'Regular';
             }
           }
           .subtitle {
@@ -56,6 +67,9 @@
       .observer-container {
         @include flex-column(nowrap, flex-start, center);
         gap: $XsSize4;
+        background-color: #d0d0d00f;
+        padding: $MdSize2;
+        border-radius: $XsSize;
         .title {
           color: #0f1927;
           font-size: $MdSize;
@@ -80,15 +94,14 @@
         .observation-risk-level {
           font-weight: 700;
           font-size: 16px;
-
           &.Low {
-            color: #e23535;
+            color: $PrimaryColor;
           }
           &.Medium {
             color: #ffbf52;
           }
           &.High {
-            color: $PrimaryColor;
+            color: #e23535;
           }
         }
         .p-image,
@@ -154,5 +167,17 @@
       font-size: $SmSize;
       font-weight: $BaseFontMediumWeight;
     }
+  }
+  .label-item-secondary,
+  .label-item-primary {
+    span {
+      font-family: 'Regular';
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+  .observation-title {
+    color: #32353d;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
   }
 }

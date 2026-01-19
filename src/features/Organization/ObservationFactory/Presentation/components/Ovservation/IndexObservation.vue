@@ -287,6 +287,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </div>
                           <div class="card-details">
                             <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                            <p class="subtitle">{{ item.title }}</p>
                             <p class="subtitle">{{ item.description }}</p>
                             <div class="project-details">
                               <p class="label-item-primary" v-if="item.zoon?.title">
@@ -315,19 +316,19 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           <!-- <img v-else src="@/assets/images/logo.svg" alt=""> -->
                         </div>
                       </div>
-                      <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                      <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                         <span v-if="ShowDetails[index]">Show Less</span>
                         <span v-else>Show More</span>
                         <ShowMoreIcon />
-                      </p>
+                      </p> -->
                     </div>
 
-                    <div v-if="ShowDetails[index]" class="card-description">
+                    <!-- <div v-if="ShowDetails[index]" class="card-description">
                       <p class="title">Description</p>
                       <p class="description">
-                        {{ item.title }}
+                        {{ item.description }}
                       </p>
-                    </div>
+                    </div> -->
                   </router-link>
                 </div>
               </div>

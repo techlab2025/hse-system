@@ -101,8 +101,8 @@ const updateData = () => {
       0,
     )
     : new AddHazardParams({
-      title: text.value ?? null,
-      description: descripe.value ?? null,
+      title: ObservationTitle.value ?? '',
+      description: text.value ?? null,
       image: image.value?.map((el) => el?.file) ?? null,
       typeId:
         ObservationFactoryType.value == Observation.ObservationType
@@ -400,6 +400,8 @@ const UpdateSaveStatus = (data: SaveStatusEnum) => {
   saveStatus.value = data
   updateData()
 }
+
+const ObservationTitle = ref<string>()
 </script>
 
 <template>
@@ -422,6 +424,12 @@ const UpdateSaveStatus = (data: SaveStatusEnum) => {
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
+    </div>
+
+    <!-- title -->
+    <div class="input-wrapper col-span-6">
+      <label for="time">title</label>
+      <input type="text" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
     </div>
 
     <!-- Date -->

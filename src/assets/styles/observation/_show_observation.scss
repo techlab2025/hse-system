@@ -3,4 +3,186 @@
 @import '../mixins/grid';
 
 .show-observation-container {
+  background-color: #d0d0d00f;
+  padding: $XsSize2;
+
+  .observation-type-title {
+    margin-top: $XsSize;
+    color: #32353d;
+    font-size: $MdSize2;
+    font-weight: $BaseFontWeightBold;
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    text-align: center;
+    padding: $XsSize $XlSize2;
+  }
+  .injury-header-container {
+    @include flex-column(nowrap, flex-start, flex-start);
+    margin-top: $SmSize;
+    background-color: white;
+    border-radius: $XsSize;
+    padding: $MdSize2;
+    gap: $XsSize2;
+    .death-header-employees {
+      border-bottom: 1px dashed #efefef;
+      padding: 10px;
+    }
+    .injury-header {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      border-bottom: 1px dashed #efefef;
+      padding: 10px;
+      .injury-header-info {
+        @include flex-row(nowrap, flex-start, center);
+
+        gap: $XsSize;
+        p {
+          color: #202020;
+          font-size: $MdSize;
+          font-weight: $BaseFontWeightBold;
+        }
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .injury-header-employees {
+        color: #0f1927;
+        border: 1px solid #f9f9f9;
+        padding: $XsSize2;
+        border-radius: $XsSize;
+        font-weight: $BaseFontWeightBold;
+        font-size: $MdSize;
+      }
+      .death-header-employees {
+        .employee-name {
+          color: #0f1927;
+          font-weight: $BaseFontWeightBold;
+          font-size: $MdSize;
+          text-decoration: underline;
+        }
+        .employee-hierarchy {
+          color: #9ca3af;
+          font-weight: $BaseFontMediumWeight;
+          font-size: $SmSize;
+        }
+      }
+    }
+    .witnessStatement-container {
+      @include flex-column(nowrap, flex-start, center);
+      gap: $SmSize;
+
+      .witnessStatement {
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize;
+        .employee-name {
+          color: #0f1927;
+          font-size: $MdSize;
+          font-weight: $BaseFontWeightBold;
+          text-decoration: underline;
+        }
+        .employee-note {
+          color: #9ca3af;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+    }
+    .note {
+      color: #404248;
+      font-size: $MdSize2;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+    .death-container {
+      @include flex-row(nowrap, space-between, center);
+      .death-note {
+        color: #9ca3af;
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+
+  .observation-genral-info {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    border-bottom: 1px dashed #efefef;
+    padding: $XsSize;
+    .like_lihood {
+      color: #32353d;
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      position: relative;
+      padding-left: $SmSize;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0px;
+        width: 5px;
+        height: 5px;
+        background-color: #32353d;
+        border-radius: 50%;
+      }
+    }
+    .severity {
+      color: #32353d;
+      font-weight: $BaseFontSemiBoldWeight;
+      font-size: $MdSize;
+      position: relative;
+      padding-left: $SmSize;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0px;
+        width: 5px;
+        height: 5px;
+        background-color: #32353d;
+        border-radius: 50%;
+      }
+    }
+    .observation-risk-level {
+      font-weight: 700;
+      font-size: 16px;
+
+      &.Low {
+        color: $PrimaryColor;
+      }
+      &.Medium {
+        color: #ffbf52;
+      }
+      &.High {
+        color: #e23535;
+      }
+    }
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  .take-action-container {
+    width: 100%;
+    padding: $XsSize;
+
+    @include flex-row(nowrap, space-between, center);
+    .action-container {
+      margin-top: $XsSize2;
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize;
+      .emp-text {
+        color: #32353d;
+        font-size: $MdSize2;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+      .action-text {
+        color: #8b8d91;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+  }
 }
