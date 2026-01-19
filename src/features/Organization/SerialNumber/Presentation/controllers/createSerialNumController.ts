@@ -7,7 +7,7 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 // import { useUserStore } from '@/stores/user'
-import SerialNumUseCase from '../../Domain/useCase/serialNumUseCase'
+import SerialNumUseCase from '../../Domain/useCase/createSerialNumUseCase'
 import type SerialNumberModel from '../../Data/models/serialNumberModel'
 
 export default class SerialNumController extends ControllerInterface<SerialNumberModel> {

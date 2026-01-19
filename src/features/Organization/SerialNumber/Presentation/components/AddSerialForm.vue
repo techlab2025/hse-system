@@ -2,23 +2,14 @@
 import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import { SerialNumberEnum } from '../../Core/Enums/serialNum'
 import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CreateCodingSystemParams from '../../Core/params/createsSerialNumParams'
-import SerialNumController from '../controllers/serialNumController'
+import SerialNumController from '../controllers/createSerialNumController'
 import { useRouter } from 'vue-router'
+import ShowSerialNumController from '../controllers/showSerialNumController'
+import ShowSerialNumberParams from '../../Core/params/ShowSerialNumber'
 
-// const SerialNumberLabels: Record<SerialNumberEnum, string> = {
-//   [SerialNumberEnum.EQUIPMENT]: 'Equipment',
-//   [SerialNumberEnum.PROJECT]: 'Project',
-//   [SerialNumberEnum.EMPLOYEE]: 'Employee',
-// }
-
-// const sections = Object.values(SerialNumberEnum)
-//   .filter((v) => typeof v === 'number')
-//   .map((id) => ({
-//     id,
-//     title: SerialNumberLabels[id as SerialNumberEnum],
-//   }))
+const showSerialNumController = ShowSerialNumController.getInstance()
 
 const router = useRouter()
 
@@ -66,9 +57,35 @@ const fields = ref([
 ])
 
 const sendData = () => {
-  const params = new CreateCodingSystemParams(fields.value)
+  fields.value.map((el) => {
+    if (!el.prefix && !el.suffix && !el.start) {
+      el.name = 0
+    }
+  })
+
+  const params = new CreateCodingSystemParams(fields.value.filter((el) => el.name != 0))
   SerialNumController.getInstance().addSerialNumber(params, router)
 }
+
+const ShowData = async () => {
+  const showSerialNumberParams = new ShowSerialNumberParams()
+  const state = await showSerialNumController.ShowSerialNumber(showSerialNumberParams, router)
+  if (state.value.data) {
+    state.value.data.map((el) => {
+      fields.value.map((field) => {
+        if (Number(el.name) == Number(field.name)) {
+          field.prefix = el.prefix
+          field.suffix = el.suffix
+          field.start = el.start
+        }
+      })
+    })
+  }
+}
+
+onMounted(() => {
+  ShowData()
+})
 </script>
 
 <template>

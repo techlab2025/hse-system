@@ -38,7 +38,7 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
       // If Route have Parent And SubType As Normal Use Parent
       else {
         const parentRoute = allRoutes.find((pr) => pr.name === r.meta.parent)
-        console.log(parentRoute, 'parentRoute')
+        // console.log(parentRoute, 'parentRoute')
         if (parentRoute) addRoute(parentRoute as any)
       }
     }

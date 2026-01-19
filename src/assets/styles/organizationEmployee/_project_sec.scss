@@ -1,0 +1,75 @@
+// _projects.scss
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.projects-section {
+  background: #f9f9f9;
+  border-radius: $XlSize;
+  padding: $SmSize;
+}
+
+.project-item {
+  padding: $SmSize 0;
+  margin-bottom: $XsSize;
+  border-bottom: 2px solid #eeeeee;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: $SmSize;
+  font-weight: $BaseFontSemiBoldWeight;
+  margin-bottom: $XsSize4;
+
+  &.current {
+    color: $Green;
+  }
+
+  &.ended {
+    color: var(--low-color);
+  }
+
+  &.starts-at,
+  &.upcoming {
+    color: var(--medium-colo);
+  }
+}
+
+.project-title {
+  font-size: $MdSize;
+  font-weight: $BaseFontSemiBoldWeight;
+  color: #3d4c5e;
+  margin: 0 0 $XsSize2 0;
+  line-height: 1.4;
+}
+
+.project-meta {
+  @include flex-row(wrap, start, center);
+  gap: $MdSize;
+}
+
+.meta-item {
+  @include flex-center();
+  gap: $XsSize4;
+
+  svg {
+    width: $SmSize;
+    height: $SmSize;
+    flex-shrink: 0;
+  }
+
+  .meta-title {
+    @include flex-center();
+    gap: $BorderWidth4;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    color: $SubtitleColor;
+
+    .value {
+      color: #6b7280;
+    }
+  }
+}

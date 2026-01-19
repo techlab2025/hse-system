@@ -1,0 +1,186 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.performance-box {
+  @include flex-column(nowrap, start, center);
+  position: relative;
+  overflow: hidden;
+  border-radius: $XlSize;
+  margin: $XlSize4 0;
+  padding: 0 $MdSize $XlSize;
+  border-radius: calc($XlSize + 2px);
+  background-color: #f9f9f9;
+
+  // Gradient decorations
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 0;
+  }
+
+  // Top left gradient
+  &::before {
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(#1d4ed8 20%, #e8d5b5af 70%);
+
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 120px;
+      top: -30px;
+      left: -30px;
+    }
+  }
+
+  // Bottom right gradient
+  &::after {
+    bottom: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(#e8d5b58c 30%, #1d4fd83e 70%);
+
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 120px;
+      bottom: -30px;
+      right: -30px;
+    }
+  }
+
+  /* RTL support */
+  html[dir='rtl'] & {
+    &::before {
+      left: auto;
+      right: -50px;
+
+      @media (max-width: 768px) {
+        right: -30px;
+      }
+    }
+
+    &::after {
+      right: auto;
+      left: -50px;
+
+      @media (max-width: 768px) {
+        left: -30px;
+      }
+    }
+  }
+
+  .per-wrapper {
+    @include flex-row(nowrap, start, start);
+    padding: $MdSize 0;
+    border-bottom: 1px solid transparent;
+    border-image: repeating-linear-gradient(
+        to right,
+        #e5e5ea 0,
+        #e5e5ea 10px,
+        transparent 10px,
+        transparent 20px
+      )
+      1;
+    gap: $XlSize;
+    width: 100%;
+
+    .performance-title {
+      @include flex-column(nowrap, start, start);
+      gap: $XsSize;
+
+      .title {
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        color: #041953;
+      }
+
+      .description {
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        color: $SubtitleColor;
+      }
+    }
+  }
+
+  .details-wrapper {
+    @include flex-row(nowrap, space-between, start);
+    width: 100%;
+    padding: $XlSize $MdSize;
+    border-bottom: 3px solid #f5f5f5;
+
+    .info {
+      @include flex-column(nowrap, start, start);
+      gap: 2px;
+
+      h5 {
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: $Green;
+      }
+
+      span {
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: #3d4c5e;
+      }
+    }
+  }
+
+  .per-wrapper {
+    @include flex-row(nowrap, start, start);
+    padding: $MdSize 0;
+    border-bottom: 1px dashed #e5e5ea;
+    border-bottom: 1px solid transparent;
+    border-image: repeating-linear-gradient(
+        to right,
+        #e5e5ea 0,
+        #e5e5ea 10px,
+        transparent 10px,
+        transparent 20px
+      )
+      1;
+    gap: $XlSize;
+    width: 100%;
+    .performance-title {
+      @include flex-column(nowrap, start, start);
+      gap: $XsSize;
+      .title {
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        color: var(--header-page-color);
+      }
+      .description {
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        color: $SubtitleColor;
+      }
+    }
+  }
+  .details-wrapper {
+    @include flex-row(nowrap, space-between, start);
+    width: 100%;
+    padding: $XlSize $MdSize;
+    border-bottom: 3px solid #f5f5f5;
+
+    .info {
+      @include flex-column(nowrap, start, start);
+      gap: 2px;
+      h5 {
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: $Green;
+      }
+      span {
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        color: #3d4c5e;
+      }
+    }
+  }
+}
