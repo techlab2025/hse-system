@@ -4,6 +4,7 @@ import type LocationDetailsModel from '@/features/setting/Location/Data/models/L
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
 import TeamLocation from './TeamLocationModel'
 import SohwProjectZoonModel from './ShowProjectZone'
+import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
 
 export default class ShowProjectDetailsModel {
   public id: number
@@ -21,6 +22,7 @@ export default class ShowProjectDetailsModel {
   public city: TitleInterface | null
   public area: TitleInterface | null
   public Zones: SohwProjectZoonModel[] | null
+  public contractors: ContractorDetailsModel[] | null
 
   constructor(
     id: number,
@@ -38,6 +40,7 @@ export default class ShowProjectDetailsModel {
     city: TitleInterface | null,
     area: TitleInterface | null,
     Zones: SohwProjectZoonModel[] | null,
+    contractors: ContractorDetailsModel[] | null,
   ) {
     this.id = id
     this.title = title
@@ -54,6 +57,7 @@ export default class ShowProjectDetailsModel {
     this.city = city
     this.area = area
     this.Zones = Zones
+    this.contractors = contractors
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -73,6 +77,7 @@ export default class ShowProjectDetailsModel {
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
       data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
+      data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
     )
   }
 

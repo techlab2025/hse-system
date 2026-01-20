@@ -1,0 +1,79 @@
+@import '../../variables';
+@import '../../mixins/flex';
+@import '../../mixins/grid';
+
+.project-header-container {
+  width: 100%;
+  @include flex-row(nowrap, space-between, flex-start);
+  font-family: 'Regular';
+  padding: $MdSize $XsSize;
+  border-radius: $MdSize;
+  background-color: #fbfbfb;
+  position: relative;
+  overflow: hidden;
+  .bg-yellow {
+    position: absolute;
+    left: 0;
+    top: 0%;
+    opacity: 0.1;
+  }
+  .bg-blue {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.1;
+  }
+
+  .project-header {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize4;
+    z-index: 999;
+    .project-info {
+      @include flex-row(nowrap, flex-start, flex-start);
+      gap: $XsSize;
+      z-index: 999;
+
+      .serial {
+        color: #9ca3af;
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+        span {
+          font-family: 'Regular';
+          color: #4b5563;
+        }
+      }
+
+      .date {
+        color: #9ca3af;
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+
+        span {
+          font-family: 'Regular';
+          color: #4b5563;
+        }
+      }
+    }
+    .project-name {
+      color: #121212;
+      font-size: calc($XlSize2 + 2px);
+      font-weight: $BaseFontWeightBold;
+      z-index: 999;
+    }
+    .project-statics {
+      @include flex-row(nowrap, flex-start, center);
+      gap: $XsSize3;
+      z-index: 999;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+      .contractor {
+        color: $PrimaryColor;
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
+      }
+    }
+  }
+}
