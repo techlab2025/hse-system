@@ -11,14 +11,25 @@
   gap: $XlSize;
   width: 100%;
 
+  .project-location-header {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+
+    .show-all-btn {
+      color: #3d4c5e;
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      text-decoration: underline;
+    }
+  }
   .card-section {
     // @include flex-row(nowrap, space-between, center);
     @include grid(
       2,
       10px,
       (
-        1440: 2,
-        1000: 1,
+        1440px: 2,
+        768px: 1,
       )
     );
     gap: $XsSize3;

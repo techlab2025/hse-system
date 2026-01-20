@@ -6,49 +6,62 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XlSize;
   width: 100%;
-
-  .location {
-    position: relative;
+  .p-accordionheader {
     width: 100%;
-    margin-block: $MdSize;
-    &::after {
-      content: '';
-      position: absolute;
-      right: -8px;
-      top: 50%;
-      transform: translateY(-80%);
-      width: 12px;
-      height: 12px;
-      background-color: #1d4ed81a;
-      rotate: 45deg;
-      z-index: 999;
-    }
-    &::before {
-      content: '';
-      position: absolute;
-      left: -20px;
-      top: 50%;
-      transform: translateY(-80%);
-      width: 12px;
-      height: 12px;
-      background-color: #1d4ed81a;
-      rotate: 45deg;
-    }
-    .location-hr {
+    @include flex-row(nowrap, space-between, center);
+  }
+  .location-container {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+
+    .location {
+      position: relative;
       width: 100%;
-      border: none;
-      height: 2px;
-      background-color: #1d4ed81a;
-    }
-    .location-title {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: $PrimaryColor;
-      z-index: 999;
-      font-size: $MdSize2;
-      font-weight: $BaseFontWeightBold;
+      margin-block: $MdSize;
+      .arrow-accord {
+        svg {
+          rotate: -90deg;
+        }
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-80%);
+        width: $XsSize;
+        height: $XsSize;
+        background-color: #1d4ed81a;
+        rotate: 45deg;
+        z-index: 999;
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-80%);
+        width: $XsSize;
+        height: $XsSize;
+        background-color: #1d4ed81a;
+        rotate: 45deg;
+      }
+      .location-hr {
+        width: 100%;
+        border: none;
+        height: 2px;
+        background-color: #1d4ed81a;
+      }
+      .location-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $PrimaryColor;
+        z-index: 999;
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+      }
     }
   }
 
@@ -68,9 +81,122 @@
 
   .empty-teams {
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: $XsSize2;
     font-size: 24px;
-    // opacity: 0.2;
-    margin: auto  ;
+    margin: auto;
+  }
+}
+
+.p-icon.p-accordionheader-toggle-icon {
+  display: none !important;
+}
+.p-accordionheader,
+.p-accordioncontent,
+.p-accordioncontent-content {
+  border: none !important;
+}
+
+.p-accordion {
+  div:not(.location-container) {
+    border: none !important;
+  }
+  div.member-card {
+    border: 1px solid #f9f9f9 !important;
+    margin-inline: 12px;
+  }
+}
+
+.p-accordion {
+  .location-container {
+    border-bottom: 2px dashed #dce3ef;
+    padding-bottom: $XsSize;
+
+    .arrow-accord {
+      padding-top: 5px;
+    }
+
+    .location-title {
+      color: #121212;
+      font-size: $XlSize;
+      font-weight: $BaseFontWeightBold;
+    }
+  }
+
+  .location-info-statics {
+    @include flex-row(nowrap, flex-start, center);
+
+    gap: $XsSize2;
+
+    p {
+      color: #202020;
+      font-size: $XsSize;
+      font-weight: $BaseFontMediumWeight;
+
+      span {
+        color: #6b7280;
+      }
+    }
+  }
+
+  .all-employees,
+  .teams-container {
+    background-color: #ffffff;
+    padding: $XsSize;
+    border-radius: $SmSize;
+    width: 100%;
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize3;
+    margin-block: $XlSize3;
+    .all-employees-header-container {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      background-color: #fcfcfc;
+      border-radius: $XsSize;
+      padding: $XsSize;
+      .icon {
+        width: 50px;
+        height: 50px;
+      }
+
+      .all-employees-header {
+        @include flex-column(nowrap, flex-start, flex-start);
+        width: 100%;
+
+        .employee {
+          color: $PrimaryColor;
+        }
+
+        .employee-count {
+          color: #6b7280;
+          font-size: $XsSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+
+      .all-employees-view {
+        color: #121212;
+        font-size: $SmSize;
+        font-weight: $BaseFontWeightBold;
+        text-decoration: underline;
+        cursor: pointer;
+        font-family: 'Regular';
+      }
+    }
+    .team-members {
+      width: 100%;
+      @include flex-row(nowrap, flex-start, flex-start);
+      overflow-x: auto;
+      .member-card {
+        border: 1px solid #fafafa;
+      }
+    }
+    .teams-container {
+      width: 100%;
+    }
+    .teams {
+      width: 100%;
+      @include flex-row(nowrap, flex-start, flex-start);
+      overflow-x: auto;
+    }
   }
 }

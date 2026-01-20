@@ -8,26 +8,43 @@
   width: 100%;
   font-family: 'Regular';
   height: 11rem;
+  &.dialog {
+    background-color: #fcfcfc;
+    margin-block: 10px;
+  }
   .card-header {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
-    .location-header {
-      width: 100%;
+    .location-header-container {
       @include flex-row(nowrap, space-between, center);
-      .title {
-        font-weight: $BaseFontWeightBold;
-        color: #121212;
-        font-size: $MdSize2;
+      width: 100%;
+      gap: $XsSize4;
+      .location-header {
+        width: 80%;
+        @include flex-row(nowrap, flex-start, center);
+        gap: $XsSize4;
+        .title {
+          font-weight: $BaseFontWeightBold;
+          color: #121212;
+          font-size: $MdSize2;
+        }
+
+        .zone {
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+          color: #9ca3af;
+
+          // span {
+          //   color: #121212;
+          // }
+        }
       }
 
-      .zone {
-        font-size: $SmSize;
-        font-weight: $BaseFontSemiBoldWeight;
-        color: #6b7280;
-
-        span {
-          color: #121212;
-        }
+      .add-zone {
+        color: #3d4c5e;
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        text-decoration: underline;
       }
     }
 
@@ -59,6 +76,33 @@
       padding: $XsSize2 $MdSize2;
       border: 1px solid #f1f3f5;
       border-radius: $SmSize;
+    }
+
+    .empty-zoon {
+      width: 100%;
+
+      @include flex-row(nowrap, space-between, center);
+
+      .empty-zoon-info {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+        .no-zoon {
+          color: #656667;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+
+        .no-zoon-description {
+          color: #9ca3af;
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+        }
+      }
+      img {
+        width: 100px;
+        height: 100px;
+        opacity: 0.6;
+      }
     }
   }
 }

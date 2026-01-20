@@ -12,7 +12,6 @@ const props = defineProps<{
   member: ProjectLocationEmployeeModel
 }>()
 const UpdateData = (id: number) => {
-  console.log(id, "idididididdidiiddididi");
   emit('update:data', id)
 }
 
@@ -26,7 +25,7 @@ const UpdateData = (id: number) => {
     <img class="member-img" :src="member?.image || person" @error="setDefaultImage" :alt="member.name">
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>
-      <!-- <p class="position">{{ member. }}</p> -->
+      <p class="position" v-if="member.hierarchy?.length > 0">{{member.hierarchy?.map((p) => p.title).join(', ')}}</p>
     </div>
   </div>
 </template>

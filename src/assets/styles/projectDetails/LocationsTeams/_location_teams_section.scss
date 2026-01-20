@@ -2,7 +2,7 @@
 @import '../../mixins/flex';
 
 .locations-teams {
-  background-color: #fafafacc;
+  background-color: white;
   padding: $MdSize $MdSize $XlSize3 $MdSize;
   border-radius: $XlSize;
   font-family: 'Regular';
@@ -13,6 +13,7 @@
     @include flex-row(nowrap, space-between, center);
     gap: $XsSize3;
     width: 100%;
+    background-color: white;
 
     .show-all {
       color: #3d4c5e;
@@ -22,7 +23,8 @@
     }
   }
 
-  .locations-sections{
+  .locations-sections {
     width: 100%;
+    background-color: #fcfcfc;
   }
 }

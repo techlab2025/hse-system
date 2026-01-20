@@ -62,7 +62,7 @@ watch(
         </div> -->
 
 
-        <ProjectSiteSection :locations="state.data?.locations" />
+        <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
         <LocationsTeamsSection :teamLocations="state.data?.TeamLocations" />
         <EquipmentSection :project_zoons="state.data?.projectZoons" />
       </div>

@@ -8,6 +8,10 @@ import { useRoute } from 'vue-router'
 import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
 import { computed } from 'vue'
 
+
+
+
+
 const route = useRoute()
 const id = route.params.id
 const props = defineProps<{
@@ -27,8 +31,6 @@ const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => 
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
 
-    <!-- {{ teamLocations?.length }}
-    {{ CheckTeamsEmployeesEmpty }} -->
     <div class="locations-sections" v-if="teamLocations?.length > 0 && CheckTeamsEmployeesEmpty">
       <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location" />
     </div>
@@ -39,3 +41,5 @@ const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => 
     </div>
   </div>
 </template>
+
+<style scoped></style>

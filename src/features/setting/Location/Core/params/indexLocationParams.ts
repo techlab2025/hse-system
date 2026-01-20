@@ -11,6 +11,7 @@ export default class IndexLocationParams implements Params {
   public type: LocationEnum
   public id?: number
   public ids?: number[]
+  public LocationId?: number
   // public code?: LangEnum
 
   constructor(
@@ -21,6 +22,7 @@ export default class IndexLocationParams implements Params {
     type: number,
     id?: number,
     ids?: number[],
+    LocationId?: number,
 
     // code?: LangEnum,
   ) {
@@ -31,6 +33,7 @@ export default class IndexLocationParams implements Params {
     this.id = id
     this.type = type
     this.ids = ids
+    this.LocationId = LocationId
     // this.code = code
   }
 
@@ -43,6 +46,7 @@ export default class IndexLocationParams implements Params {
     if (this.id) data['parent_id'] = this.id
     if (this.ids) data['parent_id'] = this.ids
     data['type'] = this.type
+    data['location_id'] = this.LocationId
     // if (this.code) data['code'] = this.code
     return data
   }
