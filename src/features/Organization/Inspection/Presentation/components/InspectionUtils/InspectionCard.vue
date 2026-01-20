@@ -46,15 +46,12 @@ const GetEquipmentType = (type: number) => {
 // if all (inspection form) 1  => !isDrag && !showresult
 // if all (Drag inspection form) 2  => isDrag
 // if all (Show inspection form) 3  => showresult
+
 </script>
 <template>
   <div class="inspection-card">
     <div class="inspection-history-container">
-      <div
-        class="inspection-history w-full flex items-start gap-2"
-        v-for="(task, index) in tasks"
-        :key="index"
-      >
+      <div class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
         <img class="bg" :src="InspectionTaskbg" alt="" />
         <div class="inspection-header">
           <!-- <img class="warn" :src="Warn" alt="warn" width="30" height="30"> -->
@@ -93,13 +90,8 @@ const GetEquipmentType = (type: number) => {
 
               <div>
                 <!-- {{ period }} -->
-                <DurationBox
-                  v-if="task?.periodType == InspectionTypeEnum.DAY"
-                  :singleImage="image"
-                  :data="task"
-                  :isShow="showresult"
-                  :isDrag="isDrag"
-                />
+                <DurationBox v-if="task?.periodType == InspectionTypeEnum.DAY" :singleImage="image" :data="task"
+                  :isShow="showresult" :isDrag="isDrag" />
 
                 <DurationBox v-if="task?.periodType == InspectionTypeEnum.PERIOD" :data="task" />
               </div>
@@ -134,37 +126,23 @@ const GetEquipmentType = (type: number) => {
         </div>
 
         <!-- <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult" -->
-        <LastInspectionCard
-          class="mt"
-          v-if="!isDrag && !showresult"
-          :task="task?.lastInspectionResult"
-          :fulltask="task"
-        />
+        <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult"
+          :fulltask="task" />
 
         <!-- <ShowInspectionDialog class="mt" v-if="isDrag" :taskId="task.id" /> -->
 
         <div class="mt w-full" v-if="isDrag">
-          <InspectionStartTemplate
-            :templateId="task?.template?.id"
-            :taskId="task?.id"
-            :status="task?.status"
-            :showResult="false"
-          />
-        </div>
-        <div class="mt w-full" v-if="showresult">
-          <InspectionStartTemplate
-            :templateId="task?.template?.id"
-            :taskId="task?.id"
-            :status="task?.status"
-            :showResult="true"
-          />
+          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.id" :status="task?.status"
+            :showResult="false" />
         </div>
 
-        <router-link
-          v-if="!isDrag && !showresult && !isEquipment"
-          class="show-button w-full mt"
-          :to="`/organization/equipment-mangement/inspection/result/${task.id}`"
-        >
+        <div class="mt w-full" v-if="showresult">
+          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.task_id" :status="task?.status"
+            :showResult="true" />
+        </div>
+
+        <router-link v-if="!isDrag && !showresult && !isEquipment" class="show-button w-full mt"
+          :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
           <div class="button-text">
             <h5>Show all results</h5>
             <!-- <span>20</span> -->

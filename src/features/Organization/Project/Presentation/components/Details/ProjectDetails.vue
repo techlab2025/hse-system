@@ -15,6 +15,7 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import InspectionsSections from './Inspection/InspectionsSections.vue'
 import zoneInspectionTasks from '@/assets/images/check-list.png'
 import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
+import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = ref(showProjectDetailsController.state.value)
@@ -45,27 +46,21 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
+        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber"
+          :Projectdate="state.data?.startDate" :Contractors="state.data?.contractors?.length" />
         <MainObjectivesSection :description="state.data?.description" />
 
         <!-- <div class="inspections-sections">
-          <InspectionsSections
-            :inspectionsImage="zoneInspectionTasks"
-            :inspectionHeaderTitle="'zone Inspection Tasks'"
-            :inspectionHeaderSubtitle="'Track and manage all inspection assignments by zone.'"
-            :showHeader="true"
-            :showArrowLink="true"
-            :isAssign="false"
-          />
+          <InspectionsSections :inspectionsImage="zoneInspectionTasks" :inspectionHeaderTitle="'zone Inspection Tasks'"
+            :inspectionHeaderSubtitle="'Track and manage all inspection assignments by zone.'" :showHeader="true"
+            :showArrowLink="true" :isAssign="false" />
           <hr class="divider" />
-          <InspectionsSections
-            :inspectionsImage="EmployeeInspectionTasks"
+          <InspectionsSections :inspectionsImage="EmployeeInspectionTasks"
             :inspectionHeaderTitle="'employee Inspection Tasks'"
-            :inspectionHeaderSubtitle="'Track and manage all inspection assignments for employee'"
-            :showHeader="false"
-            :showArrowLink="false"
-            :isAssign="false"
-          />
+            :inspectionHeaderSubtitle="'Track and manage all inspection assignments for employee'" :showHeader="false"
+            :showArrowLink="false" :isAssign="false" />
         </div> -->
+
 
         <ProjectSiteSection :locations="state.data?.locations" />
         <LocationsTeamsSection :teamLocations="state.data?.TeamLocations" />
