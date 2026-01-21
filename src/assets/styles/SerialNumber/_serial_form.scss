@@ -3,10 +3,11 @@
 
 .serial-form {
   padding: 40px 0;
+  overflow: visible;
   .serial-form-section {
     @include flex-column();
     gap: calc($XlSize2 + 4px);
-    padding: calc($XlSize3 + 4px) 0;
+    // padding: calc($XlSize3 + 4px) 0;
 
     .serial-form-title {
       background: #f0f4ff;
@@ -21,4 +22,24 @@
       }
     }
   }
+  .form-sticky-button {
+    padding: $MdSize $XlSize;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 20;
+
+    @media (max-width: 768px) {
+      padding: $SmSize $MdSize;
+      flex-direction: column;
+      gap: $SmSize;
+
+      .btn {
+        width: 100% !important;
+      }
+    }
+  }
 }
+// .p-accordionheader-toggle-icon {
+//   display: none !important;
+// }

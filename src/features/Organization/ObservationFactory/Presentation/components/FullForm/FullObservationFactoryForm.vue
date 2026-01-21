@@ -5,7 +5,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import DatePicker from 'primevue/datepicker'
-import HazardImage from '@/assets/images/alert 2.png'
+import ObservationImage from '@/assets/images/create_obs.png'
 
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
@@ -408,7 +408,7 @@ const ObservationTitle = ref<string>()
   <div class="full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4">
     <div class="col-span-6 md:col-span-6">
       <HeaderPage :title="`create ${GetHeader(ObservationFactoryType)}`"
-        :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
+        :subtitle="'Identify and report potential Incedants before they cause harm'" :img="ObservationImage" />
       <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
     </div>
 
