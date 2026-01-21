@@ -5,6 +5,8 @@ import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum
 import TeamLocation from './TeamLocationModel'
 import SohwProjectZoonModel from './ShowProjectZone'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
+import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import projectLocationModel from './ProjectLocationModel'
 
 export default class ShowProjectDetailsModel {
   public id: number
@@ -23,6 +25,9 @@ export default class ShowProjectDetailsModel {
   public area: TitleInterface | null
   public Zones: SohwProjectZoonModel[] | null
   public contractors: ContractorDetailsModel[] | null
+  public hierarchies: TitleInterface[] | null
+  public organization_employees: OrganizatoinEmployeeDetailsModel[] | null
+  public project_locations: projectLocationModel[] | null
 
   constructor(
     id: number,
@@ -41,6 +46,9 @@ export default class ShowProjectDetailsModel {
     area: TitleInterface | null,
     Zones: SohwProjectZoonModel[] | null,
     contractors: ContractorDetailsModel[] | null,
+    hierarchies: TitleInterface[] | null,
+    organization_employees: OrganizatoinEmployeeDetailsModel[] | null,
+    project_locations: projectLocationModel[] | null,
   ) {
     this.id = id
     this.title = title
@@ -58,6 +66,9 @@ export default class ShowProjectDetailsModel {
     this.area = area
     this.Zones = Zones
     this.contractors = contractors
+    this.hierarchies = hierarchies
+    this.organization_employees = organization_employees
+    this.project_locations = project_locations
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -78,6 +89,11 @@ export default class ShowProjectDetailsModel {
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
       data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
       data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
+      data.hierarchies,
+      data.organization_employees?.map((item: any) =>
+        OrganizatoinEmployeeDetailsModel.fromMap(item),
+      ),
+      data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
     )
   }
 

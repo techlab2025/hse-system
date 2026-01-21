@@ -1,7 +1,11 @@
-@import "../variables";
-@import "../mixins/flex";
+@import '../variables';
+@import '../mixins/flex';
 
-.project-details-section{
+.project-details-section {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XlSize3;
+  width: 100%;
+  .p-accordion {
+    width: 100%;
+  }
 }

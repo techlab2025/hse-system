@@ -104,6 +104,11 @@
     border: 1px solid #f9f9f9 !important;
     margin-inline: 12px;
   }
+
+  div.project-equipment-card {
+    border: 1px solid #f6f6f6 !important;
+    margin-inline: 12px;
+  }
 }
 
 .p-accordion {
@@ -147,6 +152,9 @@
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize3;
     margin-block: $XlSize3;
+    &.equipment {
+      padding: 0;
+    }
     .all-employees-header-container {
       width: 100%;
       @include flex-row(nowrap, space-between, center);
@@ -198,5 +206,23 @@
       @include flex-row(nowrap, flex-start, flex-start);
       overflow-x: auto;
     }
+    .project-equipment-card-container {
+      @include grid(
+        2,
+        10px,
+        (
+          1000px: 1,
+        )
+      );
+
+      // background-color: #fafafa;
+      // overflow-x: auto;
+      padding-right: 30px;
+      width: 100%;
+    }
   }
+}
+
+.p-accordioncontent-content {
+  padding: 0 !important;
 }

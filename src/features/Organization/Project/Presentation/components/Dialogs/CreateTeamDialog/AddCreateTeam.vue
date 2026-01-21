@@ -22,7 +22,7 @@ const UpdateData = () => {
 
 <template>
   <button @click="visible = true" :class="isShow ? `btn btn-secondary` : 'btn btn-primary'">{{ $t('create_team')
-    }}</button>
+  }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
       <div class="add-equipment-header">

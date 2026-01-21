@@ -3,11 +3,12 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type LocationHierarchyModel from '@/features/Organization/Project/Data/models/LocationHierarchyModel'
+import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/ProjectLocationHierarchyModel'
 import IndexLocationHierarchyUseCase from '@/features/Organization/Project/Domain/useCase/Hierarchy/LocationHierarchy/indexLocationHierarchiesUseCase'
 
 
 export default class IndexLocationHierarchyController extends SelectControllerInterface<
-    LocationHierarchyModel[]
+    ProjectLocationHierarchyModel[]
 > {
     private static instance: IndexLocationHierarchyController
     private constructor() {
@@ -26,7 +27,7 @@ export default class IndexLocationHierarchyController extends SelectControllerIn
         // useLoaderStore().setLoadingWithDialog();
         // console.log(params)
         this.setLoading()
-        const dataState: DataState<LocationHierarchyModel[]> =
+        const dataState: DataState<ProjectLocationHierarchyModel[]> =
             await this.IndexLocationHierarchyUseCase.call(params)
 
         this.setState(dataState)

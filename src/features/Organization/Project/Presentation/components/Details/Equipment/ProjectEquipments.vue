@@ -11,6 +11,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
 import EmptyEquimentsProjectZones from '../PorjectUtils/EmptyEquimentsProjectZones.vue';
+import ProjectEquipmentCard from './ProjectEquipmentCard.vue';
 
 const route = useRoute()
 const id = route.params.project_id
@@ -41,8 +42,9 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
         subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone" />
       <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
         <EmptyEquimentsProjectZones :zonesNumber="EmptyZones?.length" :zones="EmptyZones" />
-        <div v-for="(zone, index) in zones.locationZones" :key="index">
-          <EquipmentCard :zones="zone" />
+        <div class="project-equipment-card-container grid grid-cols-2 gap-4"
+          v-for="(zone, index) in zones.locationZones" :key="index">
+          <ProjectEquipmentCard v-for="(tool, index) in zone.projectZoonEquipments" :key="index" :tool="tool" />
         </div>
       </div>
     </template>
