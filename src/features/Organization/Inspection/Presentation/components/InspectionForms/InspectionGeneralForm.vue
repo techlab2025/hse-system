@@ -10,6 +10,7 @@ import DatePicker from 'primevue/datepicker';
 import { watch } from 'vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController';
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams';
+import { PeriodicDaysEnum } from '../../../Core/Enum/PeriodicDaysEnum';
 
 const emit = defineEmits(['update:data', 'change:btn'])
 
@@ -41,13 +42,13 @@ const GetInspectionType = (data: InspectionTypeEnum) => {
 
 const SelectedDay = ref<TitleInterface[]>()
 const DayesSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Saturday' }),
-  new TitleInterface({ id: 2, title: 'Sunday' }),
-  new TitleInterface({ id: 3, title: 'Monday' }),
-  new TitleInterface({ id: 4, title: 'Tuesday' }),
-  new TitleInterface({ id: 5, title: 'Wednesday' }),
-  new TitleInterface({ id: 6, title: 'Thursday' }),
-  new TitleInterface({ id: 7, title: 'Friday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.SATURDAY, title: 'Saturday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.SUNDAY, title: 'Sunday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.MONDAY, title: 'Monday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.TUESDAY, title: 'Tuesday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.WEDNESDAY, title: 'Wednesday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.THURSDAY, title: 'Thursday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.FRIDAY, title: 'Friday' }),
 ])
 
 
