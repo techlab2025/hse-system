@@ -2,7 +2,9 @@
 
 .add-employee {
   width: 100%;
-
+  .add-employee-header {
+    margin-top: $MdSize;
+  }
   .submit-btn {
     width: 100%;
     margin-top: $MdSize;
@@ -50,7 +52,8 @@
       .art-line {
         position: relative;
         margin-block: $SmSize;
-        width: 100%;
+        width: 100% !important;
+        flex: 1;
       }
 
       .location {
@@ -60,6 +63,7 @@
         transform: translate(-50%, -50%);
         background-color: #fbfbfb;
         // margin-bottom: 1.5rem;
+        padding: 0 $XlSize;
         border-radius: 50%;
         @include flex(row, nowrap, center, center);
         gap: 0.5rem;
@@ -88,6 +92,21 @@
       background-color: var(--BgWhite);
       padding: $SmSize $XsSize;
       border-radius: $XlSize;
+
+      .hr-dashed-line {
+        margin-block: $SmSize;
+        width: 100%;
+        border-bottom: 1px dashed #9ca3af3d;
+        border-bottom: 1px solid transparent;
+        border-image: repeating-linear-gradient(
+            to right,
+            #e9ebf4 0,
+            #e9ebf4 10px,
+            transparent 10px,
+            transparent 20px
+          )
+          1;
+      }
     }
 
     .equipment-form {

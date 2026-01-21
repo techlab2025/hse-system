@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import EmployeeBg from '@/assets/images/topleft.png'
 import Yellowback from '@/assets/images/botleft.png'
+
+import type OrganizatoinEmployeeDetailsModel from '../../../Data/models/OrganizatoinEmployeeDetailsModel'
+
+const { state } = defineProps<{
+  state: OrganizatoinEmployeeDetailsModel
+}>()
 </script>
 
 <template>
@@ -35,7 +41,6 @@ import Yellowback from '@/assets/images/botleft.png'
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>

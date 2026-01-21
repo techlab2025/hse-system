@@ -10,6 +10,7 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 
 const route = useRoute()
@@ -88,7 +89,8 @@ const updateData = () => {
       translationsParams
     )
     : new AddScopeParams(
-      translationsParams
+      translationsParams,
+      SerialNumber.value?.SerialNumber
     )
 
   console.log(params, "params");
@@ -125,6 +127,23 @@ watch(
   },
   { deep: true }
 )
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -133,5 +152,16 @@ watch(
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
+
+    <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
+  </div>
+
 
 </template>

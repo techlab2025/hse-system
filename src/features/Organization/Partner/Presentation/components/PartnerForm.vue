@@ -19,6 +19,7 @@ import type PartnerDetailsModel from '../../Data/models/PartnerDetailsModel'
 import EditPartnerParams from '../../Core/params/editPartnerParams'
 import AddPartnerParams from '../../Core/params/addPartnerParams'
 import { useUserStore } from '@/stores/user'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 // import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const emit = defineEmits(['update:data'])
@@ -136,10 +137,9 @@ const updateData = () => {
   //   translationsParams.setTranslation('description', lang.locale, lang.title)
   // })
 
-
   const params = props.data?.id
     ? new EditPartnerParams(props.data.id, translationsParams, phone.value)
-    : new AddPartnerParams(translationsParams, phone.value)
+    : new AddPartnerParams(translationsParams, phone.value, SerialNumber.value?.SerialNumber)
 
   // console.log(params, 'params')
 
@@ -178,6 +178,23 @@ watch(
   },
   { deep: true },
 )
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -198,6 +215,15 @@ watch(
       @change="updateData"
       class="input"
       placeholder="Enter Your phone"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
     />
   </div>
 </template>

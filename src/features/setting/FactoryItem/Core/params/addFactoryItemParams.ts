@@ -7,6 +7,7 @@ export default class AddFactoryItemParams implements Params {
   allIndustries: boolean | null
   industries: number[]
   factoryId: number
+  serialNumber: string
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -17,11 +18,13 @@ export default class AddFactoryItemParams implements Params {
     allIndustries: boolean | null,
     industries: number[],
     factoryId: number,
+    serialNumber: string,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
     this.factoryId = factoryId
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -40,12 +43,13 @@ export default class AddFactoryItemParams implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['factory_id'] = this.factoryId
+    data['serialNumber'] = Number(this.serialNumber)
 
     return data
   }
 
   validate() {
-    console.log(AddFactoryItemParams.validation.validate(this) , "validate")
+    console.log(AddFactoryItemParams.validation.validate(this), 'validate')
     return AddFactoryItemParams.validation.validate(this)
   }
 

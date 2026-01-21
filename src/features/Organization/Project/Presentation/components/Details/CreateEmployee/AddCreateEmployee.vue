@@ -29,11 +29,9 @@ const router = useRouter()
 const projectId = +route.params.project_id
 const locationId = route.query?.locationId
 
-const addHierarchyEmployeeController =
-  AddHierarchyEmployeeController.getInstance()
+const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
 
-const projectCustomLocationController =
-  ProjectCustomLocationController.getInstance()
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
 
@@ -43,7 +41,7 @@ watch(
   () => projectCustomLocationController.state.value,
   (newState) => {
     if (newState) state.value = newState
-  }
+  },
 )
 
 const getProjectLocationsHierarchiesEmployees = async () => {
@@ -57,10 +55,7 @@ const getProjectLocationsHierarchiesEmployees = async () => {
 
 onMounted(getProjectLocationsHierarchiesEmployees)
 
-const handleEmployeesUpdate = (
-  hierarchyId: number,
-  employees: TitleInterface[]
-) => {
+const handleEmployeesUpdate = (hierarchyId: number, employees: TitleInterface[]) => {
   employeesByHierarchy.value[hierarchyId] = employees || []
 }
 
@@ -70,8 +65,8 @@ const handleAddAllEmployees = async () => {
       ([hierarchyId, employees]) =>
         new LocationHierarchyEmployeeParams(
           +hierarchyId,
-          employees?.length ? employees.map(e => e.id) : []
-        )
+          employees?.length ? employees.map((e) => e.id) : [],
+        ),
     )
 
     // لو مفيش أي hierarchies خالص
@@ -83,15 +78,19 @@ const handleAddAllEmployees = async () => {
     console.error('Error adding employees:', error)
   }
 }
-
 </script>
 
 <template>
   <div class="add-employee">
     <Breadcrumbs />
 
-    <HeaderPage title="Assign your employees" subtitle="Select your employees based on each hierarchy in every location"
-      :number="2" />
+    <div class="add-employee-header">
+      <HeaderPage
+        title="Assign your employees"
+        subtitle="Select your employees based on each hierarchy in every location"
+        :number="2"
+      />
+    </div>
 
     <DataStatus :controller="state">
       <!-- SUCCESS -->
@@ -105,21 +104,27 @@ const handleAddAllEmployees = async () => {
             </div>
           </div>
 
-          <div v-if="item.id == locationId" v-for="hierarchy in item.locationHierarchy" :key="hierarchy.id"
-            class="form-employee-wrapper">
+          <div
+            v-if="item.id == locationId"
+            v-for="hierarchy in item.locationHierarchy"
+            :key="hierarchy.id"
+            class="form-employee-wrapper"
+          >
             <div class="title">
               <Person />
               <h5>{{ hierarchy.title }}</h5>
             </div>
 
-            <DashedLine class="dashed-line" />
+            <!-- <DashedLine class="dashed-line" /> -->
+            <hr class="hr-dashed-line" />
 
-            <CreateEmployeeForm :heirarchyId="hierarchy.id" :employess="hierarchy.Employees" @update:employee="value =>
-              handleEmployeesUpdate(
-                hierarchy.projectLocationHierarchyId,
-                value
-              )
-            " />
+            <CreateEmployeeForm
+              :heirarchyId="hierarchy.id"
+              :employess="hierarchy.Employees"
+              @update:employee="
+                (value) => handleEmployeesUpdate(hierarchy.projectLocationHierarchyId, value)
+              "
+            />
           </div>
         </div>
 
@@ -145,16 +150,22 @@ const handleAddAllEmployees = async () => {
 
       <!-- EMPTY -->
       <template #empty>
-        <DataEmpty :link="`/organization/project/add`" addText="Add Project"
+        <DataEmpty
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
 
       <!-- FAILED -->
       <template #failed>
-        <DataFailed :link="`/organization/project/add`" addText="Add Project"
+        <DataFailed
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
     </DataStatus>
   </div>

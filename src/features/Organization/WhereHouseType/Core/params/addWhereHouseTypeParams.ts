@@ -4,13 +4,15 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddWhereHouseTypeParams implements Params {
   translation: TranslationsParams
+  serial_number?: string
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 
-  constructor(translation: TranslationsParams) {
+  constructor(translation: TranslationsParams, serial_number?: string) {
     this.translation = translation
+    this.serial_number = serial_number
   }
 
   toMap(): Record<
@@ -26,6 +28,7 @@ export default class AddWhereHouseTypeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
+    if (this.serial_number) data['serial_number'] = Number(this.serial_number)
 
     return data
   }

@@ -66,7 +66,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles?.map((item) => item.toMap()) || []
-    data['serial_number'] = this.serialNumber
+    data['serial_number'] = Number(this.serialNumber)
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

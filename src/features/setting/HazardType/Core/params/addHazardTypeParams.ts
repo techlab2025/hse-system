@@ -9,6 +9,7 @@ export default class AddHazardTypeParams implements Params {
   industries: number[]
   FcatorIds: HazardFactorParams[]
   ParentId?: number
+  SerialNumber?: string
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
   })
@@ -18,12 +19,14 @@ export default class AddHazardTypeParams implements Params {
     industries: number[],
     FcatorIds: HazardFactorParams[],
     ParentId?: number,
+    SerialNumber?: string,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
     this.FcatorIds = FcatorIds
     this.ParentId = ParentId
+    this.SerialNumber = SerialNumber
   }
 
   toMap(): Record<
@@ -47,7 +50,7 @@ export default class AddHazardTypeParams implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
     if (this.FcatorIds) data['factories'] = this.FcatorIds.map((item) => item.toMap())
     if (this.ParentId) data['parent_id'] = this.ParentId
-
+    data['serial_number'] = Number(this.SerialNumber)
     return data
   }
   validate() {

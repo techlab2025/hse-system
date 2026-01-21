@@ -34,17 +34,33 @@
   border-radius: 50%;
   margin-top: $XsSize4;
   flex-shrink: 0;
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+  // box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+  &.Valid {
+    background: $Green;
+    box-shadow: 0 0 6px rgba(24, 168, 81, 0.7);
+  }
+  &.Invalid {
+    background: #8a38f5;
+    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+  }
+  &.Expired {
+    background: #8a38f5;
+    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+  }
+  &.NotRequired {
+    background: #8a38f5;
+    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+  }
+
 }
 
 .status-dot.success {
   background: $Green;
   box-shadow: 0 0 6px rgba(24, 168, 81, 0.7);
 }
-
-.status-dot.error {
-  background: $Red;
-  box-shadow: 0 0 6px rgba(251, 3, 3, 0.7);
+.status-dot.invalidCert {
+  background: #8a38f5;
+  box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
 }
 
 .cert-text {
@@ -62,9 +78,18 @@
 }
 
 .cert-date {
-  font-size: $XsSize;
-  font-weight: $BaseFontMediumWeight;
-  color: #ef4444;
+  @include flex-row(nowrap, start, center);
+  gap: 4px;
+  span {
+    font-size: $XsSize;
+    font-weight: $BaseFontMediumWeight;
+    color: #ef4444;
+  }
+  h6 {
+    color: #9ca3af;
+    font-size: $XsSize;
+    font-weight: $BaseFontMediumWeight;
+  }
 }
 
 .cert-missing {

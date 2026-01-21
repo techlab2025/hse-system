@@ -131,6 +131,12 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   // },
 
   {
+    text: t('show'),
+    icon: IconEdit,
+    link: `/organization/organization-employee/show/${id}`,
+    permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
     text: t('add_permission'),
     icon: IconEdit,
     link: `/organization/permission/${id}`,
@@ -149,9 +155,12 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   },
 ]
 
-watch(() => route?.params?.heirarchy_id, (newId) => {
-  fetchOrganizatoinEmployee()
-})
+watch(
+  () => route?.params?.heirarchy_id,
+  (newId) => {
+    fetchOrganizatoinEmployee()
+  },
+)
 </script>
 
 <template>
@@ -161,7 +170,13 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
       <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchOrganizatoinEmployee"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel />
@@ -174,14 +189,16 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORG_EMPLOYEE_ALL,
-    PermissionsEnum.ORG_EMPLOYEE_DELETE,
-    PermissionsEnum.ORG_EMPLOYEE_FETCH,
-    PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-    PermissionsEnum.ORG_EMPLOYEE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -190,30 +207,43 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('name') }}</th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
+                <th scope="col">{{ $t('hierarchy') }}</th>
+                <th scope="col">{{ $t('email') }}</th>
+                <th scope="col">{{ $t('phone') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/organization-employee/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/organization-employee/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
+                <td data-label="Hierarchy">{{ item.hierarchy.map(el=>el.title).join(' - ') }}</td>
+                <td data-label="Email">{{ item.email }}</td>
+                <td data-label="Phone">{{ item.phone }}</td>
                 <!-- <td data-label="images">
                   <img :src="item.image || '/src/assets/images/logo.svg'" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
-                    @delete="deleteOrganizatoinEmployee(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
+                    @delete="deleteOrganizatoinEmployee(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -223,25 +253,32 @@ watch(() => route?.params?.heirarchy_id, (newId) => {
       </template>
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-
-          <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+          <DataEmpty
+            :link="`/organization/organization-employee/add`"
+            addText="Add OrganizatoinEmployee"
             description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployeeuages" />
+            title="..ops! You have No OrganizatoinEmployeeuages"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-
-          <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+          <DataFailed
+            :link="`/organization/organization-employee/add`"
+            addText="Add OrganizatoinEmployee"
             description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployeeuages" />
+            title="..ops! You have No OrganizatoinEmployeeuages"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed link="/organization" addText="Have not  Permission"
-        description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        link="/organization"
+        addText="Have not  Permission"
+        description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>
