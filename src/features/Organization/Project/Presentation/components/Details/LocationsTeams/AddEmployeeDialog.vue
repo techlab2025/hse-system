@@ -32,7 +32,7 @@ const setSelectedHierarchy = (data: TitleInterface) => {
     1,
     10,
     0,
-    SelectedHierarchy.value?.id
+    SelectedHierarchy.value?.subtitle
   )
 }
 const SelectedEmployee = ref<TitleInterface[]>()
@@ -73,7 +73,7 @@ const UpdateDate = async () => {
     // لو مفيش أي hierarchies خالص
     // if (hierarchies.length === 0) return
 
-    const locationHierarchyEmployeeParams = new LocationHierarchyEmployeeParams(props.ProjectLocation, SelectedEmployee.value.map(e => e.id))
+    const locationHierarchyEmployeeParams = new LocationHierarchyEmployeeParams(SelectedHierarchy?.value?.id, SelectedEmployee.value.map(e => e.id))
     const params = new AddHierarchyEmployeeParams(route.params.id, locationHierarchyEmployeeParams)
     await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
     visible.value = false

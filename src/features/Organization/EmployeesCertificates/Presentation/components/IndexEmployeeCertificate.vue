@@ -24,6 +24,7 @@ import ExpiredCertificate from '../supcomponents/ExpiredCertificate.vue'
 import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
 import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
 import NotRequired from '../supcomponents/NotRequired.vue'
+import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 const { t } = useI18n()
 
 const route = useRoute()
@@ -107,7 +108,7 @@ watch(
 )
 
 // Check if a specific employee has a specific certificate and return its status
-const getCertificateStatus = (employee: any, certificateId: number) => {
+const getCertificateStatus = (employee: OrganizatoinEmployeeModel, certificateId: number) => {
   const CertificateStatus = employee.certificates?.find(
     (certificate: any) => certificate.id === certificateId,
   )
@@ -115,6 +116,14 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
   // if (!CertificateStatus) return "NotRequired";
 
   // console.log(CertificateStatus, "CertificateStatus")
+  return CertificateStatus?.status
+}
+
+const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, certificateId: number) => {
+  const CertificateStatus = employee.employee_certificates?.find(
+    (certificate: any) => certificate.certificate_id === certificateId,
+  )
+
   return CertificateStatus?.status
 }
 
@@ -161,19 +170,25 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                     </span>
                     <div class="employee-static">
                       <span class="valid-counter">{{
-                        employee?.certificates?.filter(
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Valid,
+                        )?.length + employee?.certificates?.filter(
                           (el) => el.status == CertificateStatusEnum?.Valid,
                         )?.length
                       }}
                         <span>valid</span></span>
                       <span class="invalid-counter">{{
-                        employee?.certificates?.filter(
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Invalid,
+                        )?.length + employee?.certificates?.filter(
                           (el) => el.status == CertificateStatusEnum?.Invalid,
                         )?.length
                       }}
                         <span>invalid</span></span>
                       <span class="expired-counter">{{
-                        employee?.certificates?.filter(
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Expired,
+                        )?.length + employee?.certificates?.filter(
                           (el) => el.status == CertificateStatusEnum?.Expired,
                         )?.length
                       }}
@@ -184,10 +199,28 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                 </td>
 
                 <td v-for="cert in (Certificatestate.data || employee?.certificates)" :key="cert.id">
+
                   <span :class="cert.id">
                     <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
                       :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
                         " />
+
+                    <div v-else-if="GetEmployeeCertificationStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      class="flex flex-col items-center">
+                      <div class="not-required ">
+                        <div class="invalid-certificate">
+                          <div class="invalid">
+                            <!-- <NotValidIcon /> -->
+                            <span class="not-required-left"></span>
+                            <span>NotRequired</span>
+                            <span class="not-required-right"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <ValidCertificate :expiry_date="employee?.employee_certificates?.find((el) => el.certificate_id == cert.id)?.expired_at
+                        " />
+                    </div>
+
 
                     <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id" v-else-if="
@@ -197,9 +230,25 @@ const getCertificateStatus = (employee: any, certificateId: number) => {
                       :organizationEmployeeId="employee?.id" v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
                       " />
-                    <div class="not-required" v-else>
-                      <NotRequired :certificateId="cert?.id" :organizationEmployeeId="employee?.id" />
 
+                    <div v-else-if="GetEmployeeCertificationStatus(employee, cert.id) == CertificateStatusEnum.Expired">
+                      <div class="not-required ">
+                        <div class="invalid-certificate">
+                          <div class="invalid">
+                            <!-- <NotValidIcon /> -->
+                            <span class="not-required-left"></span>
+                            <span>NotRequired</span>
+                            <span class="not-required-right"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                        :organizationEmployeeId="employee?.id" />
+                    </div>
+
+                    <div class="not-required" v-else>
+                      <NotRequired @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
+                        :organizationEmployeeId="employee?.id" />
                     </div>
                   </span>
                 </td>

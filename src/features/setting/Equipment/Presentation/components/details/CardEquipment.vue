@@ -156,7 +156,7 @@ const GetEquipmentType = (type: number) => {
             </div>
           </Popover>
         </div>
-        <div class="image-content" v-if="equipmentData?.date">
+        <div class="image-content" v-if="equipmentData.certificateImage">
           <div class="texts" v-if="equipmentData?.date">
             <!-- <p>Lorem ipsum dolor</p> -->
             <span>{{ $t('EXP-Date') }} {{ equipmentData?.date }}</span>

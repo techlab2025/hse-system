@@ -8,12 +8,14 @@ import ProjectZoneForm from './ProjectZoneForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const emit = defineEmits(['update:data'])
 
 const addProjectZoneController = AddProjectZoneController.getInstance()
 
 const addProjectZone = async () => {
   console.log(params.value, 'params')
   await addProjectZoneController.addProjectZone(params.value as AddProjectZoneParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -26,7 +28,7 @@ const setParams = (data: Params) => {
     <ProjectZoneForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full">Add</button>
     </div>
   </form>
 </template>

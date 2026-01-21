@@ -22,6 +22,8 @@ import EquipmentCardImgDialog from '@/features/setting/Equipment/Presentation/co
 import type EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel';
 import LastInspectionIcon from '@/shared/icons/LastInspectionIcon.vue';
 import InspectionStartTemplate from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue';
+import EquipmentInspectionShowDialog from '@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionShowDialog.vue';
+import EquipmentLastInspectionResultDialog from './EquipmentLastInspectionResultDialog.vue';
 
 const { t } = useI18n()
 
@@ -112,6 +114,7 @@ const emit = defineEmits(['delete:data'])
 const deleteEquipment = async (id: number) => {
   emit('delete:data', id)
 }
+
 </script>
 
 <template>
@@ -175,19 +178,11 @@ const deleteEquipment = async (id: number) => {
             <p class="inspection-data">results No <span>{{ tool?.equipment?.inspections_with_result_count }}</span>
             </p>
           </div>
-          <div class="last-inspection-info-container" v-if="tool?.equipment?.lastest_inspection_result">
-            <p class="last-inspection">last inspection</p>
-            <div class="last-inspection-info">
-              <span class="by">by : <span>{{ tool?.equipment?.lastest_inspection_result?.created_by?.name
-                  }}</span></span>
-              <span class="date-time">date & Time : <span>{{ tool?.equipment?.lastest_inspection_result?.date
-              }}-{{ tool?.equipment?.lastest_inspection_result?.time }}</span></span>
-            </div>
-            <!-- <InspectionStartTemplate :equipment="true"
-              :templateId="tool?.equipment?.lastest_inspection_result?.template_id"
-              :taskId="tool?.equipment?.lastest_inspection_result?.task_id"
-              :status="tool?.equipment?.lastest_inspection_result?.status" :lastinspection="true" /> -->
-          </div>
+          <EquipmentLastInspectionResultDialog v-if="tool?.equipment?.lastest_inspection_result"
+            :createdby="tool?.equipment?.lastest_inspection_result?.created_by?.name"
+            :date="tool?.equipment?.lastest_inspection_result?.date"
+            :time="tool?.equipment?.lastest_inspection_result?.time"
+            :taskId="tool?.equipment?.lastest_inspection_result?.task_id" :lastinspection="true" />
         </div>
       </div>
     </div>
