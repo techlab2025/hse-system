@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
 import AddProjectZoneUseCase from '../../Domain/useCase/addProjectZoneUseCase'
 
-
-
 export default class AddProjectZoneController extends ControllerInterface<ProjectZoneModel> {
   private static instance: AddProjectZoneController
   private constructor() {
@@ -28,10 +26,8 @@ export default class AddProjectZoneController extends ControllerInterface<Projec
   async addProjectZone(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
       // console.log("Ssssssss")
-      const dataState: DataState<ProjectZoneModel> =
-        await this.AddProjectZoneUseCase.call(params)
+      const dataState: DataState<ProjectZoneModel> = await this.AddProjectZoneUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -40,7 +36,9 @@ export default class AddProjectZoneController extends ControllerInterface<Projec
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/project-zone')
+        if (router?.currentRoute?.value?.path.includes('project-zone')) {
+          if (!draft) await router.push('/organization/project-zone')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -124,22 +124,22 @@ const updatetabValue = (value) => {
                 :team="team" />
             </div> -->
             <!-- @delete:data="deleteEquipment" -->
-            <div class="project-equipment-card-container  grid grid-cols-2 gap-4"">
+            <div class="project-equipment-card-container  grid grid-cols-2 gap-4">
               <ProjectEquipmentCard v-for="(tool, index) in zone?.projectZoonEquipments.slice(0, 4)" :key="index"
-              :tool="tool" />
+                :tool="tool" />
+            </div>
+
           </div>
+          <div class="empty-teams" v-else>
+            <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" :isEmpty="true" />
 
-  </div>
-  <div class="empty-teams" v-else>
-    <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" :isEmpty="true" />
-
-    <!-- <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
+            <!-- <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
               subtitle="You haven’t added any equipment to this project. Start building your crew now!"
               linkText=" Start adding equipment now!" :link="`/organization/project-equipment/project/${id}`" /> -->
-  </div>
-  </AccordionContent>
-  </AccordionPanel>
-  </Accordion>
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
+    </Accordion>
   </div>
 
 </template>

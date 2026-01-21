@@ -29,6 +29,7 @@ import IndexContractorParams from '@/features/setting/contractor/Core/params/ind
 import ContructorSelectDialog from './SelectDialogs/ContructorSelectDialog.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
+import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -157,24 +158,24 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditProjectParams(
-        props.data.id,
-        translationsParams,
-        ContractorIds.value?.map((p) => p.id),
-        date.value,
-        SerialNumber.value?.SerialNumber,
-        location.value.map((l) => l.id),
-        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        EvaluatingMethod.value?.map((p) => p.id),
-      )
+      props.data.id,
+      translationsParams,
+      ContractorIds.value?.map((p) => p.id),
+      date.value,
+      SerialNumber.value?.SerialNumber,
+      location.value.map((l) => l.id),
+      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+      EvaluatingMethod.value?.map((p) => p.id),
+    )
     : new AddProjectParams(
-        translationsParams,
-        ContractorIds.value?.map((p) => p.id),
-        date.value,
-        location.value.map((l) => l.id),
-        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        EvaluatingMethod.value?.map((p) => p.id),
-        SerialNumber.value?.SerialNumber,
-      )
+      translationsParams,
+      ContractorIds.value?.map((p) => p.id),
+      date.value,
+      location.value.map((l) => l.id),
+      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+      EvaluatingMethod.value?.map((p) => p.id),
+      SerialNumber.value?.SerialNumber,
+    )
   emit('update:data', params)
 }
 
@@ -402,81 +403,44 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <LangTitleInput
-      :label="`Project Name`"
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
       {{ $t('start_date') }}
     </label>
-    <DatePicker
-      v-model="date"
-      @date-select="UpdateDate"
-      id="date"
-      :placeholder="`select the date`"
-    />
+    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="ContractorIds"
-      @update:modelValue="setContractorIds"
-      :type="2"
-      :controller="indexContractorController"
-      :params="indexContractorTypeParams"
-      label="contractors"
-      placeholder="contractors"
-      :onclick="ShowContructorDialog"
-    />
+    <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
+      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
+      placeholder="contractors" :onclick="ShowContructorDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="location"
-      @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams"
-      label="location"
-      placeholder="location"
-      :type="2"
-      :onclick="ShowLocationDialog"
-    />
+    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
+      placeholder="location" :type="2" :onclick="ShowLocationDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="zone">{{ $t('zones') }}</label>
-    <AddZoneDialog
-      id="zone"
-      class="input"
-      :locations="location"
-      @update:data="UpdateZones"
-      :selectedZones="SelectedZones"
-    />
+    <label for="zone" class="flex flex-start item-center gap-2">
+      <span>{{ $t('zones') }}</span>
+      <AddProjectZoneDialog @update:data="UpdateZones" />
+    </label>
+    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
+      :selectedZones="SelectedZones" />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput
-      label="project_objectives"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      field-type="description"
-      type="textarea"
-      :placeholder="`What are the project objectives?`"
-      :required="false"
-    />
+    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
+      :placeholder="`What are the project objectives?`" :required="false" />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />
