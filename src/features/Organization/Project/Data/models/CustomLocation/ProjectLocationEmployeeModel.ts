@@ -1,3 +1,5 @@
+import type TitleInterface from '@/base/Data/Models/title_interface'
+
 export default class ProjectLocationEmployeeModel {
   public projectLocationHierarchyEmployeeId: number
   public projectLocationId: number
@@ -6,6 +8,7 @@ export default class ProjectLocationEmployeeModel {
   public email: string
   public image: string
   public projectLocationTeamEmployeeId: number
+  public hierarchy: TitleInterface[]
   constructor(
     projectLocationHierarchyEmployeeId: number,
     projectLocationId: number,
@@ -14,6 +17,7 @@ export default class ProjectLocationEmployeeModel {
     email: string,
     image: string,
     projectLocationTeamEmployeeId: number,
+    hierarchy: TitleInterface[],
   ) {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationId = projectLocationId
@@ -22,6 +26,7 @@ export default class ProjectLocationEmployeeModel {
     this.email = email
     this.image = image
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
+    this.hierarchy = hierarchy
   }
 
   static fromMap(data: any): ProjectLocationEmployeeModel {
@@ -33,6 +38,7 @@ export default class ProjectLocationEmployeeModel {
       data.email,
       data.image,
       data.project_location_team_employee_id,
+      data.hierarchy,
     )
   }
 }

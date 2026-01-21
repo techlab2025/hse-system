@@ -17,8 +17,7 @@ import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/index
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
 
-// const fetchProjectZoneController = FetchProjectZoneController.getInstance()
-// const fetchProjectZonesParams = new FetchProjectZonesParams(37)
+
 const SelectedProject = ref<TitleInterface>()
 
 const fetchMyProjectsController = FetchMyProjectsController.getInstance()

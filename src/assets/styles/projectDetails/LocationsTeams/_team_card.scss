@@ -15,6 +15,7 @@
   &.employee-card {
     .members-section {
       .member-card {
+        border: 1px solid #fafafa;
         padding: 8px;
         width: 100%;
         @media (max-width: 1000px) {

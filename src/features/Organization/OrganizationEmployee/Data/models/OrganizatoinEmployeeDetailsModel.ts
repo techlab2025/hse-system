@@ -87,7 +87,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.certificates,
       data.employee_certificates,
       data.hierarchy,
-      data.projects.map((item: any) => ProjectModel.fromMap(item)),
+      data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
       // data.employee_tasks,
       // data.employee_performance,
     )

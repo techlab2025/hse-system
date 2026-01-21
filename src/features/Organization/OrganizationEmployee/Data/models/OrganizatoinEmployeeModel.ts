@@ -11,6 +11,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public image: null
   public certificates: CertificateItemsModel[]
   public hierarchy: TitleInterface[]
+  public employee_certificates: CertificateItemsModel[]
 
   constructor(
     id: number,
@@ -22,6 +23,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     image: null,
     certificates: CertificateItemsModel[],
     hierarchy: TitleInterface[],
+    employee_certificates: CertificateItemsModel[],
   ) {
     super({ id, title })
 
@@ -33,6 +35,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     this.image = image
     this.certificates = certificates
     this.hierarchy = hierarchy
+    this.employee_certificates = employee_certificates
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
@@ -46,6 +49,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.image,
       data.certificates,
       data.hierarchy,
+      data.employee_certificates,
     )
   }
 

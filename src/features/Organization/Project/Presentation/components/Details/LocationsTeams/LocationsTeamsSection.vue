@@ -7,15 +7,25 @@ import EmptyFolder from '@/assets/images/EmptyFolder.png'
 import { useRoute } from 'vue-router'
 import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
 import { computed } from 'vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import type projectLocationModel from '@/features/Organization/Project/Data/models/ProjectLocationModel'
+
+
+
+
 
 const route = useRoute()
 const id = route.params.id
 const props = defineProps<{
   teamLocations: TeamLocation[]
+  project_locations: projectLocationModel[]
+  hierarchy: TitleInterface[]
 }>()
 
-const CheckTeamsEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.length).reduce((a, b) => a + b, 0) === 0)
-const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.map((employee) => employee?.Employees?.length)).flat().some((el) => el > 0))
+// const CheckTeamsEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.length).reduce((a, b) => a + b, 0) === 0)
+// const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => p.projectLocationTeams?.map((employee) => employee?.Employees?.length)).flat().some((el) => el > 0))
+const CheckProjectLocationEmployeeEmpty = computed(() => props.project_locations?.map((p) => p.employees?.map((employee) => employee.id)).flat().length > 0)
 </script>
 
 <template>
@@ -27,10 +37,12 @@ const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => 
       <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
     </div>
 
-    <!-- {{ teamLocations?.length }}
-    {{ CheckTeamsEmployeesEmpty }} -->
-    <div class="locations-sections" v-if="teamLocations?.length > 0 && CheckTeamsEmployeesEmpty">
-      <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location" />
+
+    <!-- {{ CheckProjectLocationEmployeeEmpty }} -->
+
+    <div class="locations-sections" v-if="CheckProjectLocationEmployeeEmpty">
+      <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location"
+        :projectLocation="project_locations" :hierarchy="hierarchy"/>
     </div>
     <div class="empty-teams" v-else>
       <EmptyData :img="EmptyFolder" title="No Team Members Yet"
@@ -39,3 +51,5 @@ const CheckTeamsEmployeesEmpty = computed(() => props.teamLocations?.map((p) => 
     </div>
   </div>
 </template>
+
+<style scoped></style>
