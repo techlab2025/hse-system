@@ -36,6 +36,8 @@ import FetchMyZonesController from '../../controllers/FetchMyZonesController'
 import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import PinIcons from '@/shared/icons/PinIcons.vue'
+import HighLevel from '@/shared/icons/HighLevel.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -233,34 +235,48 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_OBSERVATION_ALL,
-        PermissionsEnum.ORG_OBSERVATION_DELETE,
-        PermissionsEnum.ORG_OBSERVATION_FETCH,
-        PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        PermissionsEnum.ORG_OBSERVATION_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="`observation`" :length="state?.pagination?.total || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
+          <IndexHazardHeader
+            :title="`observation`"
+            :length="state?.pagination?.total || 0"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
 
           <div class="flex items-center justify-between">
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <IndexFilter
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/observation/add'"
+                :linkText="'Create Observation'"
+              />
             </PermissionBuilder>
 
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <PermissionBuilder :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]">
+              <PermissionBuilder
+                :code="[
+                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                  PermissionsEnum?.ORG_OBSERVATION_CREATE,
+                ]"
+              >
                 <router-link :to="`/organization/equipment-mangement/observation/add`">
                   <button class="btn btn-primary">{{ $t('Create observation') }}</button>
                 </router-link>
@@ -288,24 +304,39 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           <div class="card-details">
                             <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
                             <p class="subtitle">{{ item.title }}</p>
-                            <p class="subtitle">{{ item.description }}</p>
+                            <!-- <p class="subtitle">{{ item.description }}</p> -->
                             <div class="project-details">
-                              <p class="label-item-primary" v-if="item.zoon?.title">
-                                Zone : <span>{{ item.zoon?.title }}</span>
+                              <p
+                                class="label-item-primary flex items-center gap-1"
+                                v-if="item.zoon?.title"
+                              >
+                                <PinIcons /> Zone : <span>{{ item.zoon?.title }}</span>
                               </p>
                               <p class="label-item-primary" v-if="item.equipment?.title">
                                 Machine : <span>{{ item.equipment?.title }}</span>
                               </p>
+                              <!-- <p class="label-item-primary" v-if="item.status">
+                                Status : <span>{{ item?.status }}</span>
+                              </p> -->
                             </div>
                           </div>
                         </div>
                         <div class="card-info">
-                          <span v-if="item.riskLevel" class="observation-risk-level"
-                            :class="GetRiskLevel(item.riskLevel)">
+                          <span
+                            v-if="item.riskLevel"
+                            class="observation-risk-level flex items-center gap-1"
+                            :class="GetRiskLevel(item.riskLevel)"
+                          >
                             {{ GetRiskLevel(item.riskLevel) }} Level
+                            <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
                           </span>
                           <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                          <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
+                          <Image
+                            v-if="item.media[0]?.url"
+                            :src="item.media[0]?.url"
+                            alt="Image"
+                            preview
+                          >
                             <template #previewicon>
                               <div class="perview">
                                 <span>view</span>
@@ -316,25 +347,31 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           <!-- <img v-else src="@/assets/images/logo.svg" alt=""> -->
                         </div>
                       </div>
-                      <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                        <span v-if="ShowDetails[index]">Show Less</span>
-                        <span v-else>Show More</span>
-                        <ShowMoreIcon />
-                      </p> -->
                     </div>
+                  </router-link>
 
-                    <!-- <div v-if="ShowDetails[index]" class="card-description">
-                      <p class="title">Description</p>
+                  <div class="observation-dwspcription-more">
+                    <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+                      <span v-if="ShowDetails[index]">Show Less</span>
+                      <span v-else>Show More</span>
+                      <ShowMoreIcon />
+                    </p>
+
+                    <div v-if="ShowDetails[index]" class="card-description">
+                      <p class="title">preventive action :</p>
                       <p class="description">
                         {{ item.description }}
                       </p>
-                    </div> -->
-                  </router-link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <TableLoader :cols="3" :rows="10" />
@@ -343,29 +380,41 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
             <TableLoader :cols="3" :rows="10" />
           </template>
           <template #empty>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <DataEmpty
+                :link="`/organization/equipment-mangement/observation/add`"
+                addText="Add Observation"
                 description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+                title="..ops! You have No Observation"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/observation/add`"
+                addText="Add Observation"
                 description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+                title="..ops! You have No Observation"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>

@@ -141,18 +141,36 @@
         font-size: $MdSize;
       }
     }
-    .show-more {
-      @include flex-row(nowrap, center, center);
-      gap: 4px;
-      cursor: pointer;
-      span {
-        color: #9ca3af;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-      }
-    }
   }
 
+  .label-item-secondary,
+  .label-item-primary {
+    span {
+      font-family: 'Regular';
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+  .observation-title {
+    color: #32353d;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
+  }
+}
+
+.observation-dwspcription-more {
+  .show-more {
+    @include flex-row(nowrap, center, center);
+    gap: 4px;
+    padding-top: $XsSize2;
+    transition: all 0.3s ease-in-out;
+    text-align: end;
+    cursor: pointer;
+    span {
+      color: #9ca3af;
+      font-size: $SmSize;
+      font-weight: $BaseFontMediumWeight;
+    }
+  }
   .card-description {
     padding-top: $XsSize2;
     @include flex-column(nowrap, flex-start, flex-start);
@@ -167,17 +185,5 @@
       font-size: $SmSize;
       font-weight: $BaseFontMediumWeight;
     }
-  }
-  .label-item-secondary,
-  .label-item-primary {
-    span {
-      font-family: 'Regular';
-      font-weight: $BaseFontSemiBoldWeight;
-    }
-  }
-  .observation-title {
-    color: #32353d;
-    font-size: $MdSize;
-    font-weight: $BaseFontSemiBoldWeight;
   }
 }
