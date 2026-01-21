@@ -8,6 +8,7 @@ export default class AddCertificateParams implements Params {
   industries: number[]
   // parentId: number
   image: string
+  serialNumber: number
 
   constructor(
     translation: TranslationsParams,
@@ -16,6 +17,7 @@ export default class AddCertificateParams implements Params {
     industries: number[],
     // parentId: number,
     image: string,
+    serialNumber: number,
   ) {
     this.translation = translation
     // this.hasCertificate = hasCertificate
@@ -23,6 +25,7 @@ export default class AddCertificateParams implements Params {
     this.industries = industries
     // this.parentId = parentId
     this.image = image
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -44,7 +47,7 @@ export default class AddCertificateParams implements Params {
     if (this.industries?.length > 0 && !this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
-
+    data['serial_number'] = Number(this.serialNumber)
     return data
   }
 }

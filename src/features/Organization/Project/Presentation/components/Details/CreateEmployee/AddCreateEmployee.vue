@@ -31,8 +31,7 @@ const router = useRouter()
 const projectId = +route.params.project_id
 const locationId = route.query?.locationId
 
-const addHierarchyEmployeeController =
-  AddHierarchyEmployeeController.getInstance()
+const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 
@@ -44,7 +43,7 @@ watch(
   () => projectCustomLocationController.state.value,
   (newState) => {
     if (newState) state.value = newState
-  }
+  },
 )
 
 const getProjectLocationsHierarchiesEmployees = async () => {
@@ -58,10 +57,7 @@ const getProjectLocationsHierarchiesEmployees = async () => {
 
 onMounted(getProjectLocationsHierarchiesEmployees)
 
-const handleEmployeesUpdate = (
-  hierarchyId: number,
-  employees: TitleInterface[]
-) => {
+const handleEmployeesUpdate = (hierarchyId: number, employees: TitleInterface[]) => {
   employeesByHierarchy.value[hierarchyId] = employees || []
 }
 
@@ -71,8 +67,8 @@ const handleAddAllEmployees = async () => {
       ([hierarchyId, employees]) =>
         new LocationHierarchyEmployeeParams(
           +hierarchyId,
-          employees?.length ? employees.map(e => e.id) : []
-        )
+          employees?.length ? employees.map((e) => e.id) : [],
+        ),
     )
 
     // لو مفيش أي hierarchies خالص
@@ -84,19 +80,23 @@ const handleAddAllEmployees = async () => {
     console.error('Error adding employees:', error)
   }
 }
+
 const IsLocationIsTheSelectedLocaion = computed(() => {
   return state.value.data?.find(item => item.id == locationId)
 })
 
+
 </script>
 
 <template>
+
 
   <div class="add-employee w-full">
     <!-- <Breadcrumbs /> -->
 
     <HeaderPage title="Assign your employees"
       subtitle="Select your employees based on each hierarchy in every location" />
+
 
     <DataStatus :controller="state">
       <!-- SUCCESS -->
@@ -145,6 +145,7 @@ const IsLocationIsTheSelectedLocaion = computed(() => {
               subtitle="You haven’t added any Hierarchy to this project. Start building your Hierarchy now!"
               :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
               linkText=" Start building your Hierarchy now!" />
+
           </div>
         </div>
       </template>

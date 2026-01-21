@@ -15,6 +15,7 @@ import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -82,14 +83,19 @@ const lang = ref<TitleInterface[] | null>([]) // selected language
 
 const updateData = async () => {
   const translationsParams = new TranslationsParams()
-  console.log(langs.value, "langs.value")
+  console.log(langs.value, 'langs.value')
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
   const params = props.data?.id
     ? new EditLocationParams(id, translationsParams, Code.value, LocationEnum.COUNTRY)
-    : new AddLocationParams(translationsParams, Code.value, LocationEnum.COUNTRY)
+    : new AddLocationParams(
+        translationsParams,
+        Code.value,
+        LocationEnum.COUNTRY,
+        SerialNumber.value?.SerialNumber,
+      )
 
   console.log(params, 'Locatio nparams')
   emit('update:data', params)
@@ -141,6 +147,23 @@ const UpdateCode = (data) => {
   Code.value = data.target.value
   updateData()
 }
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -150,7 +173,23 @@ const UpdateCode = (data) => {
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
+    <input
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      placeholder="Enter The Code"
+      @input="UpdateCode"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

@@ -13,6 +13,7 @@ export default class AddTemplateParams implements Params {
   items: AddTemplateItemParams[] = []
   template_type: number | null
   isInLiberary: number | null
+  serialNumber: number
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -28,6 +29,7 @@ export default class AddTemplateParams implements Params {
     items: AddTemplateItemParams[] = [],
     template_type: number | null,
     isInLiberary: number | null,
+    serialNumber: number,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
@@ -37,6 +39,7 @@ export default class AddTemplateParams implements Params {
     this.action = action
     this.template_type = template_type
     this.isInLiberary = isInLiberary
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<string, unknown> {
@@ -54,6 +57,7 @@ export default class AddTemplateParams implements Params {
     }
     if (this.template_type != null) data['type'] = this.template_type
     if (this.isInLiberary != null) data['is_in_library'] = this.isInLiberary
+    data['serial_number'] = Number(this.serialNumber)
     return data
   }
   validate() {

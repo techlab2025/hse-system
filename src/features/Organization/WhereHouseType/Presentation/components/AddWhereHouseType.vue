@@ -13,7 +13,10 @@ const params = ref<Params | null>(null)
 const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
 const addWhereHouseType = async () => {
-  await addWhereHouseTypeController.addWhereHouseType(params.value as AddWhereHouseTypeParams, router)
+  await addWhereHouseTypeController.addWhereHouseType(
+    params.value as AddWhereHouseTypeParams,
+    router,
+  )
 }
 const setParams = (data: Params) => {
   params.value = data

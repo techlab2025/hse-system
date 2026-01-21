@@ -4,17 +4,18 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddPartnerParams implements Params {
   translation: TranslationsParams
-
   phone: string
+  serialNumber: number
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, minLength: 11, maxLength: 20, pattern: /^\+?\d[\d\s\-()]{4,}$/ },
   })
 
-  constructor(translation: TranslationsParams, phone: string) {
+  constructor(translation: TranslationsParams, phone: string, serialNumber: number) {
     this.translation = translation
     this.phone = phone
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -30,6 +31,7 @@ export default class AddPartnerParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
+    data['serial_number'] = Number(this.serialNumber)
     if (this.phone) data['phone'] = this.phone
 
     return data

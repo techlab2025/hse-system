@@ -45,7 +45,7 @@ export default class AddProjectParams implements Params {
     data['translations'] = this.translation.toMap()
     data['contractor_ids'] = this.ContractorIds.map((id) => id)
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
-    if (this.SerialNumber) data['serial_number'] = this.SerialNumber
+    if (this.SerialNumber) data['serial_number'] = Number(this.SerialNumber)
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds

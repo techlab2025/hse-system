@@ -51,10 +51,6 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <!--      <pre>-->
-      <!--              {{ state.data?.titles }}-->
-
-      <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHerikaly">
         <HerikalyForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">

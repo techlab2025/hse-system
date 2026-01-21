@@ -6,6 +6,7 @@ export default class AddAccidentsTypeParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
+  serialNumber: string
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
   })
@@ -14,10 +15,12 @@ export default class AddAccidentsTypeParams implements Params {
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
+    serialNumber: string,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -33,6 +36,7 @@ export default class AddAccidentsTypeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
+    data['serialNumber'] = Number(this.serialNumber)
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 

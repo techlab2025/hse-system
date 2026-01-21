@@ -9,10 +9,10 @@ export default class EditProjectParams implements Params {
   translation: TranslationsParams
   partnerId: number[]
   startDate: string
-  SerialNumber: string
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
+  SerialNumber: string
 
   constructor(
     id: number,
@@ -28,10 +28,10 @@ export default class EditProjectParams implements Params {
     this.translation = translation
     this.partnerId = partnerId
     this.startDate = startDate
-    this.SerialNumber = SerialNumber
     this.locationIds = locationIds
     this.zoonIds = zoonIds
     this.methodIds = methodIds
+    this.SerialNumber = SerialNumber
   }
 
   toMap(): Record<
@@ -50,10 +50,10 @@ export default class EditProjectParams implements Params {
     data['translations'] = this.translation.toMap()
     if (this.partnerId?.length > 0) data['contractor_ids'] = this.partnerId
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
-    if (this.SerialNumber) data['serial_number'] = this.SerialNumber
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
+    if (this.SerialNumber) data['serial_number'] = Number(this.SerialNumber)
 
     return data
   }

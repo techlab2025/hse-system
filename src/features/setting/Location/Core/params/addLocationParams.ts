@@ -7,6 +7,7 @@ export default class AddLocationParams implements Params {
   code?: string
   public type: number
   ParentId?: number
+  serialNumber?: number
 
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
@@ -14,11 +15,12 @@ export default class AddLocationParams implements Params {
     // code: { required: true, minLength: 1, maxLength: 5 },
   })
 
-  constructor(title: TranslationsParams, code: string, type: number, ParentId?: number) {
+  constructor(title: TranslationsParams, code: string, type: number, ParentId?: number, serialNumber?: number) {
     this.title = title
     this.code = code
     this.type = type
     this.ParentId = ParentId
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -37,6 +39,7 @@ export default class AddLocationParams implements Params {
     if (this.code) data['code'] = this.code
     data['type'] = this.type
     if (this.ParentId) data['parent_id'] = this.ParentId
+    data['serialNumber'] = Number(this.serialNumber)
     return data
   }
 

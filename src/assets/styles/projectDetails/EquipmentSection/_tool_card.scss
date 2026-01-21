@@ -23,9 +23,9 @@
 
   img {
     width: 100px;
-    height: 80px;
-    max-height: 80px;
-    border-radius: 8px;
+    height: calc($XlSize4 + $XsSize3);
+    max-height: calc($XlSize4 + $XsSize3);
+    border-radius: $XsSize3;
     object-fit: contain;
   }
 
@@ -36,7 +36,7 @@
 
     .tool-card-header-text {
       @include flex-column(nowrap, flex-start, flex-start);
-      gap: 3px;
+      gap: $BorderRadiusXs;
       height: 100%;
 
       .certificat-btn {
@@ -50,8 +50,8 @@
           font-size: $MdSize2;
         }
         .icon {
-          width: 20px;
-          height: 20px;
+          width: $XlSize;
+          height: $XlSize;
         }
       }
 
@@ -71,7 +71,7 @@
         @include flex-row(nowrap, flex-start, center);
         gap: 6px;
         color: #0f1927;
-        padding-top: 3px;
+        // padding-top: 3px;
 
         .subtype-title {
           color: $PrimaryColor;
@@ -79,20 +79,20 @@
           font-weight: $BaseFontSemiBoldWeight;
         }
         .arrow {
-          color: #9ca3af;
-          font-size: 14px;
-          font-weight: 600;
+          color: $SubtitleColor;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
         }
       }
 
       .title {
-        color: #9ca3af;
+        color: $SubtitleColor;
         font-weight: $BaseFontSemiBoldWeight;
         font-size: $SmSize;
       }
 
       .inspection {
-        color: #9ca3af;
+        color: $SubtitleColor;
         font-weight: $BaseFontMediumWeight;
         font-size: $SmSize;
 
@@ -144,7 +144,7 @@
 
       &.status {
         span {
-          color: #4caf50;
+          color: $Green;
         }
       }
     }
@@ -152,19 +152,19 @@
 
   .equipment-project-info {
     @include flex-row(nowrap, flex-start, center);
-    gap: 10px;
+    gap: $XsSize2;
     background-color: #fefcfa;
     padding: $XsSize2;
     border-radius: $SmSize;
     width: 100%;
 
     img {
-      width: 30px;
-      height: 30px;
+      width: $XlSize3;
+      height: $XlSize3;
     }
     .project-data {
       @include flex-column(nowrap, flex-start, flex-start);
-      gap: 4px;
+      gap: $BorderRadiusXs;
       .project-name {
         padding-left: 6px;
         color: #d36816;
@@ -178,8 +178,8 @@
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
         img {
-          width: 12px;
-          height: 12px;
+          width: $XsSize;
+          height: $XsSize;
           rotate: -20deg;
         }
       }

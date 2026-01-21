@@ -3,7 +3,7 @@
 @import '../mixins/grid';
 
 .employee-profile-box {
-  @include flex-row();
+  @include flex-row(nowrap, center, center);
   gap: $XsSize2;
   padding: $XsSize2 $MdSize;
   border-radius: calc($XlSize + 2px);
@@ -21,7 +21,8 @@
     flex: 1;
     gap: $MdSize;
     .info-wrapper {
-      @include flex-row(nowrap, space-between, center);
+      @include flex-row(wrap, space-between, center);
+
       width: 100%;
       .employee-info {
         @include flex-column();
@@ -38,8 +39,9 @@
       }
     }
     .all-info-row {
-      @include flex-row(nowrap, space-between, center);
-      flex: 1;
+      // @include flex-row(wrap, space-between, center);
+      @include grid(3, $MdSize2,(768px:1));
+      // flex: 1;
       width: 100%;
       .all-info-row-item {
         @include flex-row(nowrap, start, center);

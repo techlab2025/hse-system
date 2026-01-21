@@ -17,6 +17,7 @@ import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
 import { useUserStore } from '@/stores/user'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -97,6 +98,7 @@ const updateData = () => {
         Code.value,
         LocationEnum.STATE,
         ParentId.value || SelectedCountry?.value?.id,
+        SerialNumber.value?.SerialNumber,
       )
 
   emit('update:data', params)
@@ -160,11 +162,39 @@ watch(
     ParentId.value = newParentId
   },
 )
+
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+
+    <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">

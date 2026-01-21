@@ -12,6 +12,7 @@ import { useUserStore } from '@/stores/user'
 import EditWhereHouseTypeParams from '../../Core/params/editWhereHouseTypeParams'
 import AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypeParams'
 import type WhereHouseTypeDetailsModel from '../../Data/models/WhereHouseTypeDetailsModel'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -47,7 +48,7 @@ const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 0
+  withPage: number = 0,
 ) => {
   // console.log(user.user, 'user')
   if (user?.user?.languages.length) {
@@ -77,7 +78,6 @@ const fetchLang = async (
   }
 }
 
-
 onMounted(async () => {
   await fetchLang()
 })
@@ -91,10 +91,10 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(translationsParams, "langs");
+  console.log(translationsParams, 'langs')
   const params = props.data?.id
     ? new EditWhereHouseTypeParams(props.data.id, translationsParams)
-    : new AddWhereHouseTypeParams(translationsParams)
+    : new AddWhereHouseTypeParams(translationsParams, SerialNumber.value?.SerialNumber)
 
   // console.log(params, 'params')
 
@@ -108,7 +108,7 @@ watch(
   ([newData, newDefault]) => {
     if (newDefault.length) {
       // titles
-      console.log(newData, "newData");
+      console.log(newData, 'newData')
       if (newData?.titles?.length) {
         langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
@@ -121,19 +121,49 @@ watch(
       updateData()
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 watch(
   langs,
   () => {
     updateData()
   },
-  { deep: true }
+  { deep: true },
 )
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 </template>

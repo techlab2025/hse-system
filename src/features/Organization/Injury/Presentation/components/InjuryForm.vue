@@ -12,6 +12,7 @@ import type InjuryDetailsModel from '../../Data/models/InjuryDetailsModel'
 import { useUserStore } from '@/stores/user'
 import EditInjuryParams from '../../Core/params/editInjuryParams'
 import AddInjuryParams from '../../Core/params/addInjuryParams'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -47,7 +48,7 @@ const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 0
+  withPage: number = 0,
 ) => {
   // console.log(user.user, 'user')
   if (user?.user?.languages.length) {
@@ -77,7 +78,6 @@ const fetchLang = async (
   }
 }
 
-
 onMounted(async () => {
   await fetchLang()
 })
@@ -91,10 +91,10 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(translationsParams , "langs");
+  console.log(translationsParams, 'langs')
   const params = props.data?.id
     ? new EditInjuryParams(props.data.id, translationsParams)
-    : new AddInjuryParams(translationsParams)
+    : new AddInjuryParams(translationsParams, SerialNumber.value?.SerialNumber)
 
   // console.log(params, 'params')
 
@@ -120,15 +120,32 @@ watch(
       updateData()
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 watch(
   langs,
   () => {
     updateData()
   },
-  { deep: true }
+  { deep: true },
 )
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -137,6 +154,16 @@ watch(
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
+    />
+  </div>
+
+  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
     />
   </div>
 </template>

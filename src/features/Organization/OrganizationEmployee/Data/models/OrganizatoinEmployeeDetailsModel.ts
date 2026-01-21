@@ -2,8 +2,14 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
 import acc from '@/assets/images/acc.png'
+import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
+import ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
+import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
 export default class OrganizatoinEmployeeDetailsModel {
+  // =====================
+  // Properties
+  // =====================
   public id: number
   public name: string
   public phone: string
@@ -12,7 +18,18 @@ export default class OrganizatoinEmployeeDetailsModel {
   public image: null
   public hierarchy: TitleInterface[]
   public roles: RoleDetailsModel[]
+  public organization_employee_id: number
+  public organization_id: number
+  public serial_name: string
+  public serial_number: string
+  public certificates: CertificateModel[]
+  public employee_certificates: CertificateModel[]
+  public showHierarchy: TitleInterface[]
+  public projects: ProjectModel[]
 
+  // =====================
+  // Constructor
+  // =====================
   constructor(
     id: number,
     name: string,
@@ -22,6 +39,14 @@ export default class OrganizatoinEmployeeDetailsModel {
     image: null,
     hierarchy: TitleInterface[],
     roles: RoleDetailsModel[],
+    organization_employee_id: number,
+    organization_id: number,
+    serial_name: string,
+    serial_number: string,
+    certificates: CertificateModel[],
+    employee_certificates: CertificateModel[],
+    showHierarchy: TitleInterface[],
+    projects: ProjectModel[],
   ) {
     this.id = id
     this.name = name
@@ -31,8 +56,19 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.image = image
     this.hierarchy = hierarchy
     this.roles = roles
+    this.organization_employee_id = organization_employee_id
+    this.organization_id = organization_id
+    this.serial_name = serial_name
+    this.serial_number = serial_number
+    this.certificates = certificates
+    this.employee_certificates = employee_certificates
+    this.showHierarchy = showHierarchy
+    this.projects = projects
   }
 
+  // =====================
+  // Mapper (API → Model)
+  // =====================
   static fromMap(data: any): OrganizatoinEmployeeDetailsModel {
     return new OrganizatoinEmployeeDetailsModel(
       data.id,
@@ -42,11 +78,24 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.is_master,
       data.image,
       data.hierarchy?.map((item: any) => this.getTitle(item)) || [],
-      // data.hierarchy?.map((item: any) => HierarchyEmployeeModel.fromMap(item)),
-      data.roles?.map((roleData: any) => RoleDetailsModel.fromMap(roleData)),
+      // data.projects?.map((item: any) => ProjectDetailsModel.fromMap(item))  || [],
+      data.roles?.map((roleData: any) => RoleDetailsModel.fromMap(roleData)) || [],
+      data.organization_employee_id,
+      data.organization_id,
+      data.serial_name,
+      data.serial_number,
+      data.certificates,
+      data.employee_certificates,
+      data.hierarchy,
+      data.projects.map((item: any) => ProjectModel.fromMap(item)),
+      // data.employee_tasks,
+      // data.employee_performance,
     )
   }
 
+  // =====================
+  // Helpers
+  // =====================
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
@@ -56,6 +105,9 @@ export default class OrganizatoinEmployeeDetailsModel {
     })
   }
 
+  // =====================
+  // Example Data
+  // =====================
   static example: OrganizatoinEmployeeDetailsModel = new OrganizatoinEmployeeDetailsModel(
     10,
     'Mohab',
@@ -70,5 +122,9 @@ export default class OrganizatoinEmployeeDetailsModel {
       },
     ],
     [],
+    1,
+    1,
+    'EMP',
+    '0001',
   )
 }
