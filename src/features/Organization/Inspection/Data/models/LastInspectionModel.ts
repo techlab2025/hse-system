@@ -6,16 +6,16 @@ export default class LastInspectionModel {
   public taskResultId: number
   public name: string
   public status: number
-  public employee: OrganizatoinEmployeeDetailsModel
-  public created_by: CreatedBy
+  public employee: OrganizatoinEmployeeDetailsModel | null
+  public created_by: CreatedBy | null
   constructor(
     id: number,
     date: string,
     taskResultId: number,
     name: string,
     status: number,
-    employee: OrganizatoinEmployeeDetailsModel,
-    created_by: CreatedBy,
+    employee: OrganizatoinEmployeeDetailsModel | null,
+    created_by: CreatedBy | null,
   ) {
     this.id = id
     this.date = date
@@ -33,8 +33,8 @@ export default class LastInspectionModel {
       data.task_result_id,
       data.name,
       data.status,
-      data.employee,
-      data.created_by,
+      data?.employee,
+      data?.created_by,
     )
   }
 }

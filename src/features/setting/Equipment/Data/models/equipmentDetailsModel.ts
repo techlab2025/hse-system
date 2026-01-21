@@ -147,7 +147,7 @@ export default class EquipmentDetailsModel {
       data.inspections_count,
       data.inspections_with_result_count,
       data.lastest_inspection_result
-        ? LastInspectionModel.fromMap(data.last_inspection_result)
+        ? LastInspectionModel.fromMap(data.lastest_inspection_result)
         : null,
     )
   }
