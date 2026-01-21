@@ -16,6 +16,7 @@ import IndexCertificateController from '@/features/setting/Certificate/Presentat
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -118,6 +119,23 @@ const setCertificate = (data: TitleInterface[]) => {
   Certificate.value = data;
   updateData()
 }
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -129,5 +147,14 @@ const setCertificate = (data: TitleInterface[]) => {
     <CustomSelectInput :modelValue="Certificate" :controller="indexCertificateController"
       :params="indexCertificateParams" label="Certificate" id="Certificate" placeholder="Select certificate" :type="2"
       @update:modelValue="setCertificate" />
+  </div>
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+      <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 </template>

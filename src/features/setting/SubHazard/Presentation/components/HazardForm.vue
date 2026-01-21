@@ -34,6 +34,7 @@ import IndexHazardTypeController from '@/features/setting/HazardType/Presentatio
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import { routeLocationKey, useRoute } from 'vue-router'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 /* ================= props & emits ================= */
 
@@ -146,6 +147,7 @@ const updateData = () => {
         industry.value.map((i) => i.id),
         hazardFactors,
         HazardType.value?.id || route.params.parent_id,
+        SerialNumber.value?.SerialNumber,
       )
 
   emit('update:data', params)
@@ -201,6 +203,24 @@ watch(
   { immediate: true },
 )
 const route = useRoute()
+
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -208,6 +228,16 @@ const route = useRoute()
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
+
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
+  </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />

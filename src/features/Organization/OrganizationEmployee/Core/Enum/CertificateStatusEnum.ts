@@ -4,4 +4,3 @@ export enum CertificateStatusEnum {
   Expired = 3,
   NotRequired = 4,
 }
-

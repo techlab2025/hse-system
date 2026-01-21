@@ -22,6 +22,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -125,6 +126,7 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
+        SerialNumber.value?.SerialNumber,
         // id,
       )
 
@@ -173,11 +175,38 @@ watch(
 //   image.value = await filesToBase64(data)
 //   updateData()
 // }
+
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->

@@ -21,6 +21,7 @@ import AddCertificateParams from '../../Core/params/addCertificateParams'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { isNull } from 'util'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -36,12 +37,9 @@ function isBase64(str: any): boolean {
   if (typeof str !== 'string') return false
 
   // remove base64 prefix if exists
-  const base64 = str.includes('base64,')
-    ? str.split('base64,')[1]
-    : str
+  const base64 = str.includes('base64,') ? str.split('base64,')[1] : str
 
-  const base64Regex =
-    /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+  const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
 
   return base64Regex.test(base64)
 }
@@ -54,11 +52,13 @@ const langs = ref<
   }[]
 >([])
 
-const langsDescription = ref<{
-  locale: string;
-  icon?: any;
-  description: string
-}[]>([])
+const langsDescription = ref<
+  {
+    locale: string
+    icon?: any
+    description: string
+  }[]
+>([])
 
 const allIndustries = ref<number>(0)
 const industry = ref<TitleInterface[]>([])
@@ -156,21 +156,29 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   // console.log(isBase64(image.value), "isBase64(image.value)");
-  console.log(ImageCahnge.value, "ImageCahnge.value");
+  console.log(ImageCahnge.value, 'ImageCahnge.value')
   const params = props.data?.id
     ? new EditCertificateParams(
-      props.data.id,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      ImageCahnge.value ? isBase64(image.value) ? image.value : " " : isBase64(image.value) && image.value.length > 0 ? image.value : "*",
-    )
+        props.data.id,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        ImageCahnge.value
+          ? isBase64(image.value)
+            ? image.value
+            : ' '
+          : isBase64(image.value) && image.value.length > 0
+            ? image.value
+            : '*',
+        SerialNumber.value?.SerialNumber,
+      )
     : new AddCertificateParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      isBase64(image.value) && image.value.length > 0 ? image.value : '*',
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        isBase64(image.value) && image.value.length > 0 ? image.value : '*',
+        SerialNumber.value?.SerialNumber,
+      )
 
   // console.log(params, 'params')
 
@@ -189,17 +197,17 @@ watch(
 
       langs.value = newData?.titles?.length
         ? newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+            const existing = newData.titles.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       // descriptions
       langsDescription.value = newData?.descriptions?.length
         ? newDefault.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+            const existing = newData.descriptions.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       allIndustries.value = newData?.allIndustries ?? 0
@@ -224,40 +232,93 @@ const ImageCahnge = ref(false)
 const setImage = async (data: File | string) => {
   if (image.value == props?.data?.image) {
     ImageCahnge.value = false
-  }
-  else {
+  } else {
     ImageCahnge.value = true
   }
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
 }
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)"
-      :required="true" />
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+      :required="true"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
-      field-type="description" @update:modelValue="(val) => (langsDescription = val)" type="textarea" />
+    <LangTitleInput
+      :label="$t('description')"
+      :langs="langDefaultDescription"
+      :modelValue="langsDescription"
+      field-type="description"
+      @update:modelValue="(val) => (langsDescription = val)"
+      type="textarea"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
-      :label="$t('all_industries')" id="all_industries" placeholder="Select industry" :type="2"
-      @update:modelValue="(val) => (industry = val)" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('all_industries')"
+      id="all_industries"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="(val) => (industry = val)"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
-      placeholder="Select image" />
-
+    <SingleFileUpload
+      :returnType="`base64`"
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
   </div>
 </template>

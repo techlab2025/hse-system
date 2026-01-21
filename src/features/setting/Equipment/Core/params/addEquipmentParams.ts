@@ -94,7 +94,7 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentRentStartDate) data['checkin_date'] = this.equipmentRentStartDate
     if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
-    if (this.serialNumber) data['serial_number'] = this.serialNumber
+    if (this.serialNumber) data['serial_number'] = Number(this.serialNumber)
     if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
 
     return data

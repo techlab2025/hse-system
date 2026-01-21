@@ -14,6 +14,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import ScopeIdParams from '../../Core/params/AddscopesParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
+import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 const emit = defineEmits(['update:data'])
 
 const indexScopeController = IndexScopeController.getInstance()
@@ -54,6 +55,7 @@ const updateData = () => {
         contactPersonPhone.value ? contactPersonPhone.value : ' ',
         SelectedStatus.value ? SelectedStatus.value?.id : 0,
         formatJoinDate(date.value),
+        SerialNumber.value?.SerialNumber,
       )
 
   console.log('params', params)
@@ -153,6 +155,23 @@ const setStatus = (data: TitleInterface) => {
 onMounted(() => {
   updateData()
 })
+
+const UpdateSerial = (data) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
 </script>
 
 <template>
@@ -165,6 +184,15 @@ onMounted(() => {
       v-model="Name"
       @input="setName"
       placeholder="Enter Name "
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
     />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
@@ -235,17 +263,17 @@ onMounted(() => {
     />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <!-- <CustomSelectInput 
+    <!-- <CustomSelectInput
     :modelValue="Scope"
-        class="input" 
-        :controller="indexScopeController" 
+        class="input"
+        :controller="indexScopeController"
         :params="indexScopeParams"
         label="Scope"
         id="Scope"
         placeholder="Select Scope"
-        @update:modelValue="setScope" 
-        :type="2" 
-        
+        @update:modelValue="setScope"
+        :type="2"
+
         /> -->
 
     <UpdatedCustomInputSelect
