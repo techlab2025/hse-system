@@ -8,18 +8,19 @@
   font-family: 'Regular';
   margin-top: $XsSize2;
   border-radius: $MdSize;
-  border: 1px solid #f9f9f9;
+  border: 1px solid #fafafa;
   position: relative;
-  width: 50%;
+  min-width: 200px;
+  padding: $XsSize;
 
   &.employee-card {
-    background-color: white;
+    background-color: #fafafa;
     width: 25%;
     padding: 10px;
-    @media(max-width:1000px){
+    @media (max-width: 1000px) {
       width: 50%;
     }
-    @media(max-width:768px){
+    @media (max-width: 768px) {
       width: 100%;
     }
   }

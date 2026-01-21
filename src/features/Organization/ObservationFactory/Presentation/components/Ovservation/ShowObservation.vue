@@ -79,38 +79,40 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
           :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
         <ObservationCard :data="state.data" />
 
-        <p class="observation-type-title">{{ GetHeader(state.data?.type) }} Type</p>
+        <div class="observation-type-container">
+          <p class="observation-type-title">{{ GetHeader(state.data?.type) }} Type</p>
 
-        <div class="observation-genral-info">
-          <p class="like_lihood">{{ GetLikelyHood(state.data?.like_lihood) }}</p>
-          <p class="severity">{{ GetSeverity(state.data?.severity) }}</p>
-          <span v-if="state.data?.riskLevel" class="observation-risk-level flex items-center gap-2"
-            :class="GetRiskLevel(state.data?.riskLevel)">
-            <WarningIcon v-if="state.data?.riskLevel == RiskLevelEnum.High" />
-            {{ GetRiskLevel(state.data?.riskLevel) }} Level
-          </span>
-          <div>
-            <Image v-if="state?.data?.media[0]?.url" :src="state?.data?.media[0]?.url" alt="Image" preview>
-              <template #previewicon>
-                <div class="perview">
-                  <span>view</span>
-                  <ViewIcon />
-                </div>
-              </template>
-            </Image>
-          </div>
-        </div>
-
-        <div class="take-action-container" v-if="state?.data?.action">
-          <div class="action-container flex items-center gap-2">
-            <TakeActionIcon />
-            <div class="flex flex-col">
-              <p class="emp-text">Emp take an action</p>
-              <p class="action-text">{{ state?.data?.action }}</p>
+          <div class="observation-genral-info">
+            <p class="like_lihood">{{ GetLikelyHood(state.data?.like_lihood) }}</p>
+            <p class="severity">{{ GetSeverity(state.data?.severity) }}</p>
+            <span v-if="state.data?.riskLevel" class="observation-risk-level flex items-center gap-2"
+              :class="GetRiskLevel(state.data?.riskLevel)">
+              <WarningIcon v-if="state.data?.riskLevel == RiskLevelEnum.High" />
+              {{ GetRiskLevel(state.data?.riskLevel) }} Level
+            </span>
+            <div>
+              <Image v-if="state?.data?.media[0]?.url" :src="state?.data?.media[0]?.url" alt="Image" preview>
+                <template #previewicon>
+                  <div class="perview">
+                    <span>view</span>
+                    <ViewIcon />
+                  </div>
+                </template>
+              </Image>
             </div>
           </div>
+          <div class="take-action-container" v-if="state?.data?.action">
+            <div class="action-container flex items-center gap-2">
+              <TakeActionIcon />
+              <div class="flex flex-col">
+                <p class="emp-text">Emp take an action</p>
+                <p class="action-text">{{ state?.data?.action }}</p>
+              </div>
+            </div>
 
+          </div>
         </div>
+
 
 
         <div class="injury-header-container" v-if="state.data?.injuries?.length > 0"

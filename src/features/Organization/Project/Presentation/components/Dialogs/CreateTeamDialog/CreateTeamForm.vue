@@ -18,7 +18,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:data'])
 
 const route = useRoute()
-const id = Number(route.params.project_id)
+const id = Number(route.params.project_id || route.params.id)
 
 
 const TeamType = ref<TitleInterface | null>(null)

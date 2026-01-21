@@ -156,8 +156,8 @@ const updateData = () => {
           )
           : [],
 
-      severity: 0,
-      Likelihood: 0,
+      severity: SelectedSeverity.value?.id,
+      Likelihood: SelectedLikelihood.value?.id,
       time: SelctedTime.value,
       code: SerialNumber.value?.SerialNumber,
       place: PlaceText.value,

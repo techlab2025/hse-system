@@ -1369,6 +1369,9 @@ class ApiNames {
   public get IndexEmployeeCertificate() {
     return this.prefix + 'fetch_organization_employees_certificates'
   }
+  public get CreateProjectZoon() {
+    return this.prefix + 'create_project_zone'
+  }
 }
 
 export { ApiNames }

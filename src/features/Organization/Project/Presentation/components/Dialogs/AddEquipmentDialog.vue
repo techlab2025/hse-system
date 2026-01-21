@@ -14,9 +14,12 @@ import CreateProjectZoneEquipment from "../../../Core/params/Equipments/CreatePr
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import CreateProjectZoneEquipmentsController from "../../controllers/Equipments/CreateProjectZoneEquipmentsController";
+import AddEquipmentIcon from "@/shared/icons/AddEquipmentIcon.vue";
 
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]
+  isEmpty?: boolean
+  ZoonId?: number
 }>()
 
 const visible = ref(false)
@@ -31,7 +34,7 @@ const equipments = ref<TitleInterface[]>([])
 
 // ================== CONTROLLERS ==================
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0)
+const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0, null, true)
 
 // ================== HANDLERS ==================
 const setZoneId = (id: number) => {
@@ -48,7 +51,7 @@ const AddEquipment = async () => {
 
   const payload = new CreateProjectZoneEquipment(projectId, [
     {
-      project_zoon_id: selectedZoneId.value,
+      project_zoon_id: selectedZoneId.value || props.ZoonId,
       equipment_ids: equipments.value.map(e => e.id)
     }
   ])
@@ -69,8 +72,10 @@ const AddEquipment = async () => {
   <div class="card flex justify-center">
     <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
       subtitle="You haven’t added any equipment to this project. Start building your crew now!"
-      linkText="Start building your crew now!" @click="visible = true" />
+      linkText="Start building your crew now!" @click="visible = true" v-if="isEmpty" />
 
+    <!-- <AddEquipmentIcon class="add-equipment-icon" @click="visible = true" v-else /> -->
+    <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add_equipment` }}</p>
     <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
       <template #header>
         <HeaderSection :img="EquipmentImg" title="Equipment"
@@ -78,7 +83,7 @@ const AddEquipment = async () => {
       </template>
 
       <!-- Zone selection -->
-      <div class="zone-selection mb-4">
+      <div class="zone-selection mb-4" v-if="!ZoonId">
         <ProjectZoneSelection :zones="project_zoons" @update:data="setZoneId" />
       </div>
 

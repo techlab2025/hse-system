@@ -34,7 +34,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="idnex-header">
+  <div class="idnex-header noborder">
     <div class="categories-container" v-if="AllProjects && AllProjects.length > 1">
       <button class="category" :class="ActiveTap === item.id ? 'active' : ''" v-for="(item, index) in AllProjects"
         :key="index" @click.prevent="UpdateData(item.id)">
