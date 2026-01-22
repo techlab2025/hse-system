@@ -24,6 +24,7 @@ class ShowProjectDetailsApiService extends ServicesInterface {
       type: CrudType.FormData,
       auth: true,
       params: params,
+      showLoadingDialog: true,
       // headers: HeaderHandler.Instance.getHeader(true, false), // Exclude Accept-Language
     })
   }

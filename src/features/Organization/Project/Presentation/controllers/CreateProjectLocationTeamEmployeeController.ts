@@ -6,8 +6,10 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import CreateProjectLocationTeamEmployeeUseCase from '../../Domain/useCase/CreateProjectLocationTeamEmployeeUseCase'
+import ShowProjectDetailsController from './ShowProjectDetailsController'
+import ShowProjectDetailsParams from '../../Core/params/ShowProjectDetailsParams'
 
-export default class  CreateProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
+export default class CreateProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectLocationTeamEmployeeController
 
   private constructor() {
@@ -23,7 +25,7 @@ export default class  CreateProjectLocationTeamEmployeeController extends Contro
     return this.instance
   }
 
-  async CreatePorjectLocationTeamEmployee(params: Params, router: any) {
+  async CreatePorjectLocationTeamEmployee(params: Params, route: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -40,6 +42,9 @@ export default class  CreateProjectLocationTeamEmployeeController extends Contro
         // })
         // await router.push('/organization/projects')
         // console.log(this.state.value.data)
+        await ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(Number(route?.params?.id)),
+        )
       } else {
         // DialogSelector.instance.failedDialog.openDialog({
         //   dialogName: 'dialog',

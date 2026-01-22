@@ -34,66 +34,11 @@ const Types = ref(["sunday", "monday", "tuesday",])
       <h4>{{ $t('History Log') }}</h4>
     </div> -->
 
-
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
-      <!-- <div class="inspection-history flex items-start gap-2" v-for="(task, index) in show_tasks" :key="index">
-        <img class="bg" :src="InspectionTaskbg" alt="">
-        <div class="inspection-header">
-          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
-          <div class="inspection-header-content">
-            <div class="title-container">
-              <span class="title">Inspection</span>
-              <span class="date">{{ task?.date }}</span>
-            </div>
-            <div class="inspection-type">
-              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
-            </div>
-            <EquipmentInspectionShowDialog :taskId="task.id" />
-          </div>
-        </div>
-
-      </div>
-      <div class="inspection-history flex items-start gap-2" v-for="(task, index) in result_tasks" :key="index">
-        <img class="bg" :src="InspectionTaskbg" alt="">
-        <div class="inspection-header">
-          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
-          <div class="inspection-header-content">
-            <div class="title-container">
-              <span class="title">Inspection</span>
-              <span class="date">{{ task?.date }}</span>
-            </div>
-            <div class="inspection-type">
-              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
-            </div>
-            <EquipmentInspectionShowDialog :taskId="task.id" />
-          </div>
-        </div>
-
-      </div> -->
       <InspectionCard :tasks="show_tasks" :isDrag="false" :showresult="false" :isEquipment="true" />
     </div>
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
-      <!-- <div class="inspection-history flex items-start gap-2" v-for="(task, index) in result_tasks" :key="index">
-        <img class="bg" :src="InspectionTaskbg" alt="">
-        <div class="inspection-header">
-          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
-          <div class="inspection-header-content">
-            <div class="title-container">
-              <span class="title">Inspection</span>
-              <span class="date">{{ task?.date }}</span>
-            </div>
-            <div class="inspection-type">
-
-              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
-
-            </div>
-            <EquipmentInspectionResultDialog :taskId="task.id" />
-          </div>
-        </div>
-
-      </div> -->
       <InspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" />
-
     </div>
 
 

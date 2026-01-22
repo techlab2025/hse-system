@@ -13,8 +13,6 @@ import type projectLocationModel from '@/features/Organization/Project/Data/mode
 
 
 
-
-
 const route = useRoute()
 const id = route.params.id
 const props = defineProps<{
@@ -42,7 +40,7 @@ const CheckProjectLocationEmployeeEmpty = computed(() => props.project_locations
 
     <div class="locations-sections" v-if="CheckProjectLocationEmployeeEmpty">
       <LocationsSection v-for="(location, index) in teamLocations" :key="index" :location="location"
-        :projectLocation="project_locations" :hierarchy="hierarchy"/>
+        :projectLocation="project_locations" :hierarchy="hierarchy" />
     </div>
     <div class="empty-teams" v-else>
       <EmptyData :img="EmptyFolder" title="No Team Members Yet"

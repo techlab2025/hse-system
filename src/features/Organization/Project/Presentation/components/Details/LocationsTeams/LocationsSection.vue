@@ -10,7 +10,7 @@ import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
 import AccordArrowDown from '@/shared/icons/AccordArrowDown.vue';
 import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue';
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
@@ -25,6 +25,10 @@ import AddEmployeeDialog from './AddEmployeeDialog.vue';
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel';
 import type projectLocationModel from '@/features/Organization/Project/Data/models/ProjectLocationModel';
 import type TitleInterface from '@/base/Data/Models/title_interface';
+import DeleteProjectlocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationHierarchyEmployeeParams';
+import DeleteProjectLocationHeirarchyEmployeeController from '../../../controllers/DeleteProjectLocationHeirarchyEmployeeController';
+import ShowProjectDetailsController from '../../../controllers/ShowProjectDetailsController';
+import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams';
 
 const route = useRoute()
 const id = route.params.id
@@ -63,13 +67,22 @@ onMounted(() => {
 })
 
 const DeleteTeamMember = async (id: number) => {
-  const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
-  const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
-  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams, route)
-  if (route.path.includes("employee-details")) {
-    GetProjectLocationsEmployes()
-  }
+  const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(id)
+  const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationHeirarchyEmployeeController.getInstance();
+  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationHeirarchyEmployee(deleteProjectLocationTeamEmployeeparams, route)
+
+  GetProjectLocationsEmployes()
+
+
 }
+// const DeleteTeamMember = async (id: number) => {
+//   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
+//   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
+//   await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams, route)
+//   if (route.path.includes("employee-details")) {
+//     GetProjectLocationsEmployes()
+//   }
+// }
 
 const updatetabValue = (value) => {
   OpenAccordion.value = value
@@ -78,6 +91,12 @@ const updatetabValue = (value) => {
 const GetSelectedLocation = (locationId: number) => {
   return props.projectLocation?.find((p) => p.locationId === locationId)
 }
+
+watch(() => props.location, () => {
+  ShowProjectDetailsController.getInstance().showProjectDetails(
+    new ShowProjectDetailsParams(Number(route.params?.id)),
+  )
+})
 </script>
 
 <template>
@@ -109,13 +128,13 @@ const GetSelectedLocation = (locationId: number) => {
               class="btn btn-secondary">
               Edit Hierarchy
             </RouterLink>
-            <AddCreateTeam :ProjectLocationId="route.params.id" :LocationId="location.locationId"
+            <AddCreateTeam :ProjectLocationId="location?.projectLocationId" :LocationId="location.locationId"
               @update:data="GetProjectLocationsEmployes" />
             <!-- <RouterLink :to="`/organization/project-employee/project/${id}?locationId=${location.locationId}`"
               class="add-btn">
               Add employee
             </RouterLink> -->
-            <AddEmployeeDialog :hierarchy="hierarchy" :ProjectLocation="location.projectLocationId"/>
+            <AddEmployeeDialog :hierarchy="hierarchy" :ProjectLocation="location.projectLocationId" />
           </div>
         </div>
       </AccordionHeader>

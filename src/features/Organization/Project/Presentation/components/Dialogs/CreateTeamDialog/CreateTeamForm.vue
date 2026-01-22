@@ -38,7 +38,6 @@ const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getIns
 const indexLocationHierarchyEmployeeParams = new IndexLocationHierarchyEmployeeParams(id, props.LocationId, null)
 
 const loading = ref(false)
-
 const CreateProjectLocationTeamEmployee = async () => {
   if (!TeamType.value || Employees.value.length === 0) {
     return
@@ -57,9 +56,10 @@ const CreateProjectLocationTeamEmployee = async () => {
   const createParams = new CreateProjectLocationTeamEmployeeParams(id, teams)
   const controller = CreateProjectLocationTeamEmployeeController.getInstance()
 
+
   try {
     loading.value = true
-    const response = await controller.CreatePorjectLocationTeamEmployee(createParams, useRouter())
+    const response = await controller.CreatePorjectLocationTeamEmployee(createParams, route)
     emit('update:data')
   } finally {
     loading.value = false

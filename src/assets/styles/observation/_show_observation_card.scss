@@ -155,6 +155,27 @@
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
   }
+
+  .label-item-primary {
+    color: #aeaeb2;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: $PrimaryColor;
+      font-family: 'Regular';
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+  .label-item-secondary {
+    color: #aeaeb2;
+    font-size: $SmSize;
+    font-weight: $BaseFontMediumWeight;
+    span {
+      color: #000000;
+      font-family: 'Regular';
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
 }
 
 .observation-dwspcription-more {

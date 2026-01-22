@@ -69,23 +69,27 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
   if (!newState) return
   state.value = newState
 })
+
+// const
 </script>
 
 <template>
   <!-- <pre>{{ state.data }}</pre> -->
   <div class="add-hierarchy">
-    <Breadcrumbs />
+    <!-- <Breadcrumbs /> -->
     <HeaderPage title="Add your hierarchy" subtitle="Select your hierarchy for each location from your main hierarchy"
       :number="1" />
     <DataStatus :controller="state">
       <template #success>
-        <div v-for="(item, index) in state.data" :key="index" class="hierarchy-form">
-          <div class="title" v-if="item.id == LocatioId">
-            <LocationColor />
-            <h5>{{ item.title }}</h5>
+        <div v-for="(item, index) in state.data" :key="index">
+          <div class="hierarchy-form" v-if="item?.id == LocatioId">
+            <div class="title" v-if="item.id == LocatioId">
+              <LocationColor />
+              <h5>{{ item.title }}</h5>
+            </div>
+            <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)"
+              :selectedHirarchy="item.locationHierarchy" v-if="item.id == LocatioId" />
           </div>
-          <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)"
-            :selectedHirarchy="item.locationHierarchy" v-if="item.id == LocatioId" />
         </div>
 
         <div class="submit-btn">
