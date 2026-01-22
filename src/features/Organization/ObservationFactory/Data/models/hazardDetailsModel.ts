@@ -9,6 +9,8 @@ import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTask
 import InjuryDetailsModel from './InjuryModel'
 import type { LikelihoodEnum } from '../../Core/Enums/LikelihoodEnum'
 import type { SeverityEnum } from '../../Core/Enums/SeverityEnum'
+import InspectionObservatioModel from './InspectionObservationModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class HazardDetailsModel {
   public id: number
@@ -42,6 +44,8 @@ export default class HazardDetailsModel {
   public deaths: InjuryDetailsModel[]
   public like_lihood: LikelihoodEnum
   public severity: SeverityEnum
+  public taskResultItemAnswer: InspectionObservatioModel
+  public rootCauses: TitleInterface[]
 
   constructor(
     id: number,
@@ -75,6 +79,8 @@ export default class HazardDetailsModel {
     deaths: InjuryDetailsModel[],
     like_lihood: LikelihoodEnum,
     severity: SeverityEnum,
+    taskResultItemAnswer: InspectionObservatioModel,
+    rootCauses: TitleInterface[],
   ) {
     this.id = id
     this.title = title
@@ -107,6 +113,8 @@ export default class HazardDetailsModel {
     this.deaths = deaths
     this.like_lihood = like_lihood
     this.severity = severity
+    this.taskResultItemAnswer = taskResultItemAnswer
+    this.rootCauses = rootCauses
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -142,6 +150,8 @@ export default class HazardDetailsModel {
       data.deaths.map((item: any) => InjuryDetailsModel.fromMap(item)),
       data.like_lihood,
       data.severity,
+      data?.task_result_item_answer,
+      data?.root_causes,
     )
   }
 }

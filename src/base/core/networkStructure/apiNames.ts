@@ -1372,6 +1372,9 @@ class ApiNames {
   public get CreateProjectZoon() {
     return this.prefix + 'create_project_zone'
   }
+  public get CreateCapaResult() {
+    return this.prefix + 'set_capa_result'
+  }
 }
 
 export { ApiNames }
