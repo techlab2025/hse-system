@@ -15,13 +15,11 @@ export default class AddObserverationTypeParams implements Params {
     allIndustries: boolean | null,
     industries: number[],
     serialNumber: string,
-
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
     this.serialNumber = serialNumber
-
   }
 
   toMap(): Record<
