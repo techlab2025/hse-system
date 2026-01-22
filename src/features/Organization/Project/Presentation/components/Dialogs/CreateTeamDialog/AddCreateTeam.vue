@@ -9,7 +9,8 @@ import CreateTeamForm from './CreateTeamForm.vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   ProjectLocationId: number,
-  LocationId: number
+  LocationId: number,
+  isShow: boolean
 }>()
 const visible = ref(false)
 
@@ -20,7 +21,8 @@ const UpdateData = () => {
 </script>
 
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('create_team') }}</button>
+  <button @click="visible = true" :class="isShow ? `btn btn-secondary` : 'btn btn-primary'">{{ $t('create_team')
+  }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
       <div class="add-equipment-header">

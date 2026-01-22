@@ -1,14 +1,27 @@
 @import '../../variables';
 @import '../../mixins/flex';
+@import '../../mixins/grid';
 
 .equipment-section {
-  background-color: #fafafacc;
+  background-color: #fbfbfbcc;
   padding: $MdSize $MdSize $XlSize3 $MdSize;
   border-radius: $XlSize;
   font-family: 'Regular';
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XlSize;
   width: 100%;
+  .p-accordion {
+    border-radius: $XlSize4 !important;
+    padding: $XsSize $XsSize4;
+    background-color: #fafafa;
+    .p-accordionpanel {
+      border-radius: $XlSize4 !important;
+      margin-block: $XsSize;
+    }
+    .p-accordionheader {
+      // border-radius: $XlSize3 !important;
+    }
+  }
 
   .equipment-section-header {
     @include flex-row(nowrap, space-between, center);
@@ -27,5 +40,38 @@
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize2;
     width: 100%;
+    .project-equipment-card-container {
+      @include grid(
+        2,
+        10px,
+        (
+          1000px: 1,
+        )
+      );
+      padding: 12px;
+
+      width: 100%;
+    }
   }
+  .p-accordioncontent {
+    background-color: white !important;
+    .project-equipment-card {
+      border: 1px solid gray;
+      border-radius: 12px;
+    }
+  }
+  .p-accordionheader {
+    background-color: white !important;
+  }
+}
+.project-equipment-card-container {
+  @include grid(
+    2,
+    10px,
+    (
+      1000px: 1,
+    )
+  );
+  padding: 12px;
+  width: 100%;
 }

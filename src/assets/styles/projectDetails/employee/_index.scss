@@ -44,7 +44,7 @@
     padding: $SmSize $XsSize;
     border-radius: $XlSize;
     @include flex(column, nowrap, flex-start, flex-start);
-
+    overflow: hidden;
     .type {
       position: relative;
       width: 100%;
@@ -133,5 +133,9 @@
         font-size: $XlSize2;
       }
     }
+  }
+  .hierarchy-empty {
+    height: 15vh;
+    @include flex(row, nowrap, center, center);
   }
 }

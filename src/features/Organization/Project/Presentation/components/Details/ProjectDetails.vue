@@ -62,8 +62,9 @@ watch(
         </div> -->
 
 
-        <ProjectSiteSection :locations="state.data?.locations" />
-        <LocationsTeamsSection :teamLocations="state.data?.TeamLocations" />
+        <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
+        <LocationsTeamsSection :teamLocations="state.data?.TeamLocations"
+          :project_locations="state.data?.project_locations" :hierarchy="state.data?.hierarchies" />
         <EquipmentSection :project_zoons="state.data?.projectZoons" />
       </div>
     </template>

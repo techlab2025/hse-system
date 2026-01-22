@@ -3,10 +3,10 @@
 @import '../mixins/grid';
 
 .valid-certificate {
-  @include flex-column(nowrap, center, center);
+  @include flex-column(nowrap, flex-start, flex-startF);
   gap: $XsSize4;
   .valid {
-    @include flex-row(nowrap, center, flex-start);
+    @include flex-row(nowrap, flex-start, flex-start);
     gap: $XsSize4;
     .valid-title {
       color: #6cb765;

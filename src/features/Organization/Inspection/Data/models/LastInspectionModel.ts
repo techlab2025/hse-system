@@ -6,14 +6,16 @@ export default class LastInspectionModel {
   public taskResultId: number
   public name: string
   public status: number
-  public employee: OrganizatoinEmployeeDetailsModel
+  public employee: OrganizatoinEmployeeDetailsModel | null
+  public created_by: CreatedBy | null
   constructor(
     id: number,
     date: string,
     taskResultId: number,
     name: string,
     status: number,
-    employee: OrganizatoinEmployeeDetailsModel,
+    employee: OrganizatoinEmployeeDetailsModel | null,
+    created_by: CreatedBy | null,
   ) {
     this.id = id
     this.date = date
@@ -21,6 +23,7 @@ export default class LastInspectionModel {
     this.name = name
     this.status = status
     this.employee = employee
+    this.created_by = created_by
   }
 
   static fromMap(data: any): LastInspectionModel {
@@ -30,7 +33,16 @@ export default class LastInspectionModel {
       data.task_result_id,
       data.name,
       data.status,
-      data.employee,
+      data?.employee,
+      data?.created_by,
     )
   }
+}
+interface CreatedBy {
+  id: number
+  organization_employee_id: number
+  name: string
+  hierarchy: any[]
+  date: string
+  time: string
 }

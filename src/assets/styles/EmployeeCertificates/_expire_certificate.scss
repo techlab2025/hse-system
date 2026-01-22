@@ -3,10 +3,11 @@
 @import '../mixins/grid';
 
 .expired-certificate {
-  @include flex-column(nowrap, center, center);
+  @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
+  width: fit-content;
   .expired {
-    @include flex-row(nowrap, center, center);
+    @include flex-row(nowrap, flex-start, center);
     gap: $XsSize4;
     .expired-title {
       color: #ffc456;
@@ -20,11 +21,14 @@
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     text-decoration: underline;
+    text-align: center;
+    width: 100%;
   }
   .expired-date {
     color: #2f2d2d;
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     text-decoration: underline;
+    text-align: center;
   }
 }

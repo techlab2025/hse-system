@@ -30,7 +30,7 @@ export default class TaskResultModel {
       data.id,
       data.date,
       data.status,
-      OrganizatoinEmployeeModel.fromMap(data.employee),
+      OrganizatoinEmployeeModel?.fromMap(data?.created_by),
       data.task_result_items?.map((i: any) => TaskResultItemModel.fromMap(i)) ?? [],
       data.time,
     )

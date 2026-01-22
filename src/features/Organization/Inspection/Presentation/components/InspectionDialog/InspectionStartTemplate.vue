@@ -46,7 +46,7 @@ const FetchTemplateDocument = async () => {
 // onMounted(() => FetchTemplateDocument())
 
 watch(
-  () => showTemplateController.state.value,
+  () => showTemplateController.state.value, 
   (newState) => {
     if (newState) state.value = newState
   },

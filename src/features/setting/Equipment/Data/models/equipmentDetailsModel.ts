@@ -11,6 +11,7 @@ import TaskResultModel from '@/features/Organization/Inspection/Data/models/Fetc
 import InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
 import TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import TemplateItemModel from '@/features/setting/TemplateItem/Data/models/TemplateItemModel'
+import LastInspectionModel from '@/features/Organization/Inspection/Data/models/LastInspectionModel'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -40,6 +41,9 @@ export default class EquipmentDetailsModel {
   public tasks_with_result: InspectionModel[]
   public certificateExppiredDate: string
   public title: string
+  public inspections_count: number
+  public inspections_with_result_count: number
+  public last_inspection: LastInspectionModel
 
   constructor(
     id: number,
@@ -69,6 +73,9 @@ export default class EquipmentDetailsModel {
     tasks_with_result: InspectionModel[],
     certificateExppiredDate: string,
     title: string,
+    inspections_count: number,
+    inspections_with_result_count: number,
+    last_inspection: LastInspectionModel,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -97,7 +104,9 @@ export default class EquipmentDetailsModel {
     this.tasks_with_result = tasks_with_result
     this.certificateExppiredDate = certificateExppiredDate
     this.title = title
-
+    this.inspections_count = inspections_count
+    this.inspections_with_result_count = inspections_with_result_count
+    this.last_inspection = last_inspection
     // this.type = type
   }
 
@@ -135,6 +144,11 @@ export default class EquipmentDetailsModel {
         : [],
       data.certificate_exppired_date,
       data.title,
+      data.inspections_count,
+      data.inspections_with_result_count,
+      data.lastest_inspection_result
+        ? LastInspectionModel.fromMap(data.lastest_inspection_result)
+        : null,
     )
   }
 

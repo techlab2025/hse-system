@@ -8,10 +8,12 @@ import ProjectCustomLocationController from '../../../controllers/ProjectCustomL
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams';
 import { useRoute, useRouter } from 'vue-router';
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
+import TeamIcon from '@/shared/icons/TeamIcon.vue';
 
 
 const props = defineProps<{
   team: ProjectLocationTeamModel
+  isShow?: boolean
 }>()
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
@@ -43,7 +45,8 @@ const DeleteTeamMember = async (id: number) => {
   <div class="team-card" v-if="team.Employees?.length > 0">
     <div class="team-card-header">
       <div class="team-card-header-content">
-        <TeamsIcon class="team-icon" />
+        <TeamsIcon v-if="!isShow" class="team-icon" />
+        <TeamIcon v-else class="team-icon" />
         <div class="team-card-text">
           <p class="team-card-title">{{ team.teamTitle }}</p>
           <p class="team-card-members"><span>{{ team.Employees?.length }}</span> members</p>

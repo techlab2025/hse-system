@@ -51,6 +51,7 @@ watch(
 )
 </script>
 <template>
+
   <DataStatus :controller="state">
     <template #success>
       <div class="emoloyees-details" v-for="(locationTeam, index) in state.data" :key="index">
