@@ -5,13 +5,16 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import DeleteProjectLocationHeirarchyEmployeeUseCase from '../../Domain/useCase/DeleteProjectLocationHeirarchyEmployeeUseCase'
+import ShowProjectDetailsController from './ShowProjectDetailsController'
+import ShowProjectDetailsParams from '../../Core/params/ShowProjectDetailsParams'
 
 export default class DeleteProjectLocationHeirarchyEmployeeController extends ControllerInterface<ProjectModel> {
   private static instance: DeleteProjectLocationHeirarchyEmployeeController
   private constructor() {
     super()
   }
-  private deleteProjectLocationHeirarchyEmployeeUseCase = new DeleteProjectLocationHeirarchyEmployeeUseCase()
+  private deleteProjectLocationHeirarchyEmployeeUseCase =
+    new DeleteProjectLocationHeirarchyEmployeeUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -20,7 +23,7 @@ export default class DeleteProjectLocationHeirarchyEmployeeController extends Co
     return this.instance
   }
 
-  async deleteProjectLocationHeirarchyEmployee(params: Params) {
+  async deleteProjectLocationHeirarchyEmployee(params: Params, route: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -30,6 +33,9 @@ export default class DeleteProjectLocationHeirarchyEmployeeController extends Co
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
+        await ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(Number(route.params?.id)),
+        )
       } else {
         throw new Error('Error while addServices')
       }

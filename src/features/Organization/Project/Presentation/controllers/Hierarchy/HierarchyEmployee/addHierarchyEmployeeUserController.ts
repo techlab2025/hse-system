@@ -8,8 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import AddHierarchyEmployeeUseCase from '@/features/Organization/Project/Domain/useCase/Hierarchy/HierarchyEmployee/addHierarchyEmployeeUserCase'
-
-
+import ShowProjectDetailsController from '../../ShowProjectDetailsController'
+import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 
 export default class AddHierarchyEmployeeController extends ControllerInterface<HierarchyEmployeeModel> {
   private static instance: AddHierarchyEmployeeController
@@ -25,7 +25,7 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
     return this.instance
   }
 
-  async addHierarchyEmployee(params: Params, router: Router,) {
+  async addHierarchyEmployee(params: Params, router: Router) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<HierarchyEmployeeModel> =
@@ -38,7 +38,18 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push(`/organization/employee-details/${params?.projectId}`)
+        if (router.currentRoute.value.path.includes('employee-details')) {
+          await router.push(
+            `/organization/employee-details/${router.currentRoute.value.params?.project_id || router.currentRoute.value.params?.id}`,
+          )
+        }
+        await ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(
+            Number(
+              router.currentRoute.value.params?.project_id || router.currentRoute.value.params?.id,
+            ),
+          ),
+        )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

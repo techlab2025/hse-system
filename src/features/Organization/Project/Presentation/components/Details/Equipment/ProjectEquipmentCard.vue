@@ -137,22 +137,29 @@ const deleteEquipment = async (id: number) => {
                 </span>
                 <span class="arrow">></span>
               </span>
+
               <p class="title" v-if="tool?.equipment?.title">{{ tool?.equipment?.title }}</p>
+
             </div>
 
             <EquipmentCardImgDialog :Visable="DialogVisable" :img="tool?.equipment?.certificateImage" />
             <!-- <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)"
             @delete="deleteEquipment(tool.id)" /> -->
+
             <p class="serial-number">#{{ tool?.equipment?.serial_number }}</p>
 
           </div>
           <p class="type flex gap-2">
-            <span class="main-type">{{ tool?.equipment?.title }}</span>
+            <router-link :to="`/organization/equipment-show/${tool?.equipment?.id}`">
+              <span class="main-type">{{ tool?.equipment?.title }}</span>
+            </router-link>
+
+
             <!-- <img :src="Rent" alt="rent" > -->
             <RentIcon v-if="tool?.equipment?.status == EquipmentStatus.RENT" class="icon" />
           </p>
 
-          <div class="equipment-project-info" v-if="tool?.equipment?.project?.title">
+          <!-- <div class="equipment-project-info" v-if="tool?.equipment?.project?.title">
             <img :src="Helmet" alt="helmet">
             <div class="project-data">
               <p class="project-name"><span class="project-name-title">{{ tool?.equipment?.project?.title }}</span>
@@ -164,7 +171,7 @@ const deleteEquipment = async (id: number) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="equipment-project-info" v-if="tool?.equipment?.warehouse && !tool?.equipment?.project?.title">
             <img :src="WareHouseIcon" alt="helmet">
             <div class="project-data">

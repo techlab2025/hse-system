@@ -85,7 +85,13 @@ const IsLocationIsTheSelectedLocaion = computed(() => {
   return state.value.data?.find(item => item.id == locationId)
 })
 
-
+const IsThereAnyLocationHierarchy = computed(() => state.value.data?.map((el) => {
+  const numberOfHierarchy = ref(0)
+  if (el.id == locationId && el.locationHierarchy?.length > 0) {
+    numberOfHierarchy.value = numberOfHierarchy.value + 1;
+  }
+  return numberOfHierarchy?.value == 0 ? false : true
+}))
 </script>
 
 <template>
@@ -101,8 +107,10 @@ const IsLocationIsTheSelectedLocaion = computed(() => {
     <DataStatus :controller="state">
       <!-- SUCCESS -->
       <template #success>
-        <div v-for="(item, index) in state.data" :key="index" class="employee-form w-full">
-          <div v-if="item?.locationHierarchy?.length > 0" class="w-full">
+        <div v-for="(item, index) in state.data" :key="index"
+          v-if="IsThereAnyLocationHierarchy?.find(el => el == true)">
+
+          <div v-if="item?.locationHierarchy?.length > 0 && item.id == locationId" class="employee-form w-full">
             <div v-if="item.id == locationId" class="type w-full">
               <ArtLine class="art-line" />
               <div class="location">
@@ -137,16 +145,13 @@ const IsLocationIsTheSelectedLocaion = computed(() => {
               </button>
             </div>
           </div>
-          <div v-else class="hierarchy-empty">
-            <!-- <DataEmpty :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
-              addText="Add Hierarchy" description="Sorry .. You have no Hierarchy .. All your joined customers will appear
-              here when you add your customer data" title="..ops! You have No Hierarchy" /> -->
-            <EmptyData :img="EmptyFolder" title="No Hierarchy Yet"
-              subtitle="You haven’t added any Hierarchy to this project. Start building your Hierarchy now!"
-              :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
-              linkText=" Start building your Hierarchy now!" />
 
-          </div>
+        </div>
+        <div v-else class="hierarchy-empty">
+          <EmptyData :img="EmptyFolder" title="No Hierarchy Yet"
+            subtitle="You haven’t added any Hierarchy to this project. Start building your Hierarchy now!"
+            :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
+            linkText=" Start building your Hierarchy now!" />
         </div>
       </template>
 
