@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ShowHazardParams from '../../../Core/params/showHazardParams';
 import ShowHazardController from '../../controllers/showHazardController';
 import { onMounted, ref, watch } from 'vue';
@@ -22,6 +22,10 @@ import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
 import WarningIcon from '@/shared/icons/WarningIcon.vue';
 import ViewIcon from '@/shared/icons/ViewIcon.vue';
 import TakeActionIcon from '@/shared/icons/TakeActionIcon.vue';
+import CapaArrows from '@/assets/images/CapaArrows.png'
+import Editor from 'primevue/editor'
+import CreateCapaResultController from '../../controllers/CreateCapaResultController';
+import CapaParams from '../../../Core/params/CapaParam';
 
 const route = useRoute()
 const id = route.params?.id
@@ -70,6 +74,16 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
   }
 }
 
+const corrective = ref('')
+const preventive = ref('')
+const router = useRouter()
+const CreatCapaResult = async () => {
+  const createCapaResultController = CreateCapaResultController.getInstance()
+  const createCapaResultParams = new CapaParams(preventive.value, corrective.value, Number(route.params?.id))
+  await createCapaResultController.createCapaResult(createCapaResultParams, router)
+  corrective.value = ''
+  preventive.value = ''
+}
 </script>
 <template>
   <DataStatus :controller="state">
@@ -80,27 +94,79 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
         <ObservationCard :data="state.data" />
 
         <div class="observation-type-container">
+
           <p class="observation-type-title">{{ GetHeader(state.data?.type) }} Type</p>
 
-          <div class="observation-genral-info">
-            <p class="like_lihood">{{ GetLikelyHood(state.data?.like_lihood) }}</p>
-            <p class="severity">{{ GetSeverity(state.data?.severity) }}</p>
-            <span v-if="state.data?.riskLevel" class="observation-risk-level flex items-center gap-2"
-              :class="GetRiskLevel(state.data?.riskLevel)">
-              <WarningIcon v-if="state.data?.riskLevel == RiskLevelEnum.High" />
-              {{ GetRiskLevel(state.data?.riskLevel) }} Level
-            </span>
-            <div>
-              <Image v-if="state?.data?.media[0]?.url" :src="state?.data?.media[0]?.url" alt="Image" preview>
-                <template #previewicon>
-                  <div class="perview">
-                    <span>view</span>
-                    <ViewIcon />
+          <div class="observation-genral-info-conatiner">
+
+            <div class="observation-genral-info">
+
+              <p class="like_lihood-container flex flex-col" v-if="state.data?.type == Observation.HazardType">
+                <span class="like_lihood-title">likelihood</span>
+                <span class="like_lihood">{{ GetLikelyHood(state.data?.like_lihood) }}</span>
+              </p>
+
+              <p class="severity-container flex flex-col">
+                <span class="severity-title">severity</span>
+
+              <p class="severity" v-if="state.data?.type == Observation.HazardType">{{
+                GetSeverity(state.data?.severity) }}</p>
+              </p>
+
+              <span v-if="state.data?.riskLevel && state.data?.type == Observation.HazardType"
+                class="observation-risk-level flex items-center gap-2" :class="GetRiskLevel(state.data?.riskLevel)">
+                <WarningIcon v-if="state.data?.riskLevel == RiskLevelEnum.High" />
+                {{ GetRiskLevel(state.data?.riskLevel) }} Level
+              </span>
+
+              <div class="flex flex-col gap-2">
+                <p class="observation-type" v-if="state.data?.type != Observation.HazardType">
+                  {{ GetHeader(state.data?.type) }} type :
+                  <span>{{
+                    state.data?.typeModel?.title }}</span>
+                </p>
+
+                <div class="root-causes" v-if="state.data?.rootCauses && state.data?.rootCauses.length > 0">
+                  <span class="root-causes-title">
+                    root causes
+                  </span>
+                  <div class="root-causes-content">
+                    <p v-for="(root, index) in state.data?.rootCauses" :key="index" class="root-title">
+                      {{ root?.title }}
+                    </p>
                   </div>
-                </template>
-              </Image>
+                </div>
+              </div>
+
+              <div>
+                <Image v-if="state?.data?.media[0]?.url" :src="state?.data?.media[0]?.url" alt="Image" preview>
+                  <template #previewicon>
+                    <div class="perview">
+                      <span>view</span>
+                      <ViewIcon />
+                    </div>
+                  </template>
+                </Image>
+              </div>
+
+            </div>
+
+            <div class="hazard-info flex items-center gap-2">
+              <p class="severity-container flex flex-col">
+                <span class="severity-title">Hazard Type</span>
+
+              <p class="severity" v-if="state.data?.type == Observation.HazardType">{{
+                state.data?.typeModel?.title }}</p>
+              </p>
+              <p class="severity-container flex flex-col">
+                <span class="severity-title">Hazard </span>
+
+                <!-- <p class="severity" v-if="state.data?.type == Observation.HazardType">{{
+                state.data?.typeModel?.title }}</p> -->
+              </p>
             </div>
           </div>
+
           <div class="take-action-container" v-if="state?.data?.action">
             <div class="action-container flex items-center gap-2">
               <TakeActionIcon />
@@ -113,7 +179,55 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
           </div>
         </div>
 
+        <!--  -->
+        <div class="observation-inspection-card" v-if="state?.data?.taskResultItemAnswer">
+          <div class="observation-inspection-card-header">
+            <p class="inspection-name">{{ state?.data?.taskResultItemAnswer?.templateTitle }}</p>
+            <p class="inspection-auto">inspection Auto obervation</p>
+          </div>
+          <div class="observation-inspection-card-content">
+            <p class="question-title">{{ state?.data?.taskResultItemAnswer?.templateItemTitle }}</p>
 
+            <div class="answers-choose">
+              <span class="choose" v-for="(answer, index) in state.data?.taskResultItemAnswer?.answers">{{ answer?.title
+                }}</span>
+            </div>
+            <div class="text-area">
+              <span class="typing-text">typing text</span>
+              <span class="text">{{ state?.data?.taskResultItemAnswer?.taskResultItemAnswerTextReply }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="capa-header-container" v-if="state?.data?.capa">
+          <p class="capa-title">Expected Safety Measures</p>
+        </div>
+        <div class="capa-content-container" v-if="state?.data?.capa">
+          <p class="capa-content-title">Corrective And Preventive Actions <span>(CAPA)</span></p>
+          <img :src="CapaArrows" alt="capa_arrows">
+          <div class="capa-actions-container">
+            <div class="capa-action" v-if="!state.data?.capa?.corrective">
+              <span class="capa-action-title">Corrective </span>
+              <Editor v-model="corrective" editorStyle="height: 320px"
+                :placeholder="'enter What action should have been taken immediately'" />
+              <button @click.prevent="CreatCapaResult" class="corrective-button">submit</button>
+            </div>
+            <div class="capa-action" v-else>
+              <span class="capa-action-title ">Corrective </span>
+              <p v-html="state.data?.capa?.corrective" class="corrective-text corrective-textarea"></p>
+            </div>
+            <div class="capa-action preventive" v-if="!state.data?.capa?.preventive">
+              <span class="capa-action-title">Preventive </span>
+              <Editor v-model="preventive" editorStyle="height: 320px"
+                :placeholder="'enter What action should have been taken immediately'" />
+              <button @click.prevent="CreatCapaResult" class="corrective-button">submit</button>
+            </div>
+            <div class="capa-action preventive" v-else>
+              <span class="capa-action-title ">Preventive </span>
+              <p v-html="state.data?.capa?.preventive" class="corrective-text corrective-textarea"></p>
+            </div>
+          </div>
+        </div>
 
         <div class="injury-header-container" v-if="state.data?.injuries?.length > 0"
           v-for="injury in state.data?.injuries">
