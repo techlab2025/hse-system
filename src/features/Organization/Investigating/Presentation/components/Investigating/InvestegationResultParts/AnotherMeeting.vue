@@ -10,7 +10,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 
 const emit = defineEmits(['update:data'])
-const time = ref()
+const time = ref(new Date())
 const date = ref(new Date())
 const SelectedPlatform = ref<TitleInterface>()
 const Platforms = ref([

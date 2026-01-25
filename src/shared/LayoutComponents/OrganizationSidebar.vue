@@ -16,19 +16,7 @@ interface Routes {
   permissions: PermissionsEnum[]
 }
 const OrganizationRoutes = ref<Routes[]>([
-  {
-    link: '/organization/accidents-type',
-    name: 'Accidents Types',
-    permissions: [
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_DETAILS,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-    ],
-  },
+
   {
     link: '/organization/partner',
     name: 'partners',
@@ -87,51 +75,7 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
     ],
   },
-  {
-    link: '/organization/factory',
-    name: 'factors',
-    permissions: [
-      PermissionsEnum.ORG_FACTORY_ALL,
-      PermissionsEnum.ORG_FACTORY_CREATE,
-      PermissionsEnum.ORG_FACTORY_DELETE,
-      PermissionsEnum.ORG_FACTORY_FETCH,
-      PermissionsEnum.ORG_FACTORY_UPDATE,
-    ],
-  },
-  {
-    link: '/organization/factories-items',
-    name: 'factor_item',
-    permissions: [
-      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
-      PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
-      PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
-      PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
-      PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
-    ],
-  },
-  {
-    link: '/organization/hazard-type',
-    name: 'Hazard Types',
-    permissions: [
-      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-    ],
-  },
-  {
-    link: '/organization/observation-type',
-    name: 'observation_types',
-    permissions: [
-      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    ],
-  },
+
   // {
   //   link: '/organization/health-conditions',
   //   name: 'health_conditions',
@@ -210,17 +154,7 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_CONTRACTOR_UPDATE,
     ],
   },
-  {
-    link: '/organization/equipment-mangement/all-observatin',
-    name: 'management',
-    permissions: [
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
-    ],
-  },
+
   {
     link: '/organization/role',
     name: 'roles',
@@ -254,6 +188,30 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.SCOPE_UPDATE,
     ],
   },
+
+  {
+    link: '/organization/where-house-type',
+    name: 'WareHouse Type',
+    permissions: [
+      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/where-house',
+    name: 'WareHouse',
+    permissions: [
+      PermissionsEnum.WHIERE_HOUSE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_CREATE,
+      PermissionsEnum.WHIERE_HOUSE_DELETE,
+      PermissionsEnum.WHIERE_HOUSE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_UPDATE,
+    ],
+  },
+
 
 ])
 
@@ -324,19 +282,133 @@ const LocationRoutes = ref<Routes[]>([
 
 
 ])
+const OperationRoutesRoutes = ref<Routes[]>([
+  {
+    link: '/organization/equipment-mangement/all-observatin',
+    name: 'operations',
+    permissions: [
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/accidents-type',
+    name: 'incidant_types',
+    permissions: [
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_DETAILS,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
+    ],
+  },
+  {
+    link: '/organization/equipment-mangement/incedant?isAll=1',
+    name: 'incidants',
+    permissions: [
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INCEDANT_FETCH,
+      PermissionsEnum.ORG_INCEDANT_ALL,
+      PermissionsEnum.ORG_INCEDANT_CREATE,
+      PermissionsEnum.ORG_INCEDANT_UPDATE,
+      PermissionsEnum.ORG_INCEDANT_DELETE,
+    ],
+  },
+  {
+    link: '/organization/factory',
+    name: 'hazard_factors',
+    permissions: [
+      PermissionsEnum.ORG_FACTORY_ALL,
+      PermissionsEnum.ORG_FACTORY_CREATE,
+      PermissionsEnum.ORG_FACTORY_DELETE,
+      PermissionsEnum.ORG_FACTORY_FETCH,
+      PermissionsEnum.ORG_FACTORY_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/factories-items',
+    name: 'hazard_factor_item',
+    permissions: [
+      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
+      PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
+      PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
+      PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
+      PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/hazard-type',
+    name: 'hazard_types',
+    permissions: [
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/hazard',
+    name: 'hazard',
+    permissions: [
+      PermissionsEnum.ORG_HAZARD_ALL,
+      PermissionsEnum.ORG_HAZARD_CREATE,
+      PermissionsEnum.ORG_HAZARD_DELETE,
+      PermissionsEnum.ORG_HAZARD_FETCH,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/observation-type',
+    name: 'observation_types',
+    permissions: [
+      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ],
+  },
+
+  {
+    link: '/organization/equipment-mangement/observation',
+    name: 'observation',
+    permissions: [
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+      PermissionsEnum.ORG_OBSERVATION_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+    ],
+  },
+
+
+
+])
 
 const SelectedOrgRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
+const SelectedOperationRoute = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
     SelectedOrgRoute.value = OrganizationRoutes.value.find(item => item.link === newPath)?.name
     SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name
+    SelectedOperationRoute.value = OperationRoutesRoutes.value.find(item => item.link === newPath)?.name
   }
 )
 
 const orgAccordion = ref<string | null>('1')
 const locationAccordion = ref<string | null>('2')
+const OperationAccordion = ref<string | null>('2')
 
 
 watch(orgAccordion, (val) => {
@@ -345,9 +417,15 @@ watch(orgAccordion, (val) => {
 watch(locationAccordion, (val) => {
   locationAccordion.value = val
 })
+watch(OperationAccordion, (val) => {
+  OperationAccordion.value = val
+})
+
 </script>
 
 <template>
+
+
   <Accordion v-model:value="orgAccordion">
     <AccordionPanel value="1">
       <AccordionHeader>
@@ -372,9 +450,34 @@ watch(locationAccordion, (val) => {
     <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
       <span>{{ SelectedOrgRoute }}</span>
     </AccordionPanel>
-
   </Accordion>
 
+  <Accordion v-model:value="OperationAccordion">
+    <AccordionPanel value="2">
+      <AccordionHeader>
+        <div class="links-header">
+          <GeerIcon />
+          {{ $t('organization_operations') }}
+        </div>
+      </AccordionHeader>
+
+      <AccordionContent>
+        <ul>
+          <PermissionBuilder v-for="(orgroute, index) in OperationRoutesRoutes" :key="index"
+            :code="orgroute?.permissions">
+            <li>
+              <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                <span>{{ $t(orgroute.name) }}</span>
+              </router-link>
+            </li>
+          </PermissionBuilder>
+        </ul>
+      </AccordionContent>
+    </AccordionPanel>
+    <AccordionPanel class="active-panel-out" v-if="SelectedOperationRoute && !OperationAccordion">
+      <span>{{ SelectedOperationRoute }}</span>
+    </AccordionPanel>
+  </Accordion>
 
   <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
     <Accordion v-model:value="locationAccordion">

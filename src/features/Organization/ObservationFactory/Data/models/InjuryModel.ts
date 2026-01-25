@@ -59,4 +59,20 @@ export default class InjuryDetailsModel {
       data.updated_at,
     )
   }
+
+  static example: InjuryDetailsModel = new InjuryDetailsModel(
+    1,
+    'title',
+    'description',
+    'created_at',
+    'employee_name',
+    true,
+    // [FilesModel.example],
+    [],
+    'note',
+    OrganizatoinEmployeeModel.example,
+    1,
+    1,
+    'updated_at',
+  )
 }

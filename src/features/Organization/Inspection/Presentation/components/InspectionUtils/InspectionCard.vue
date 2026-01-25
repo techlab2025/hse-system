@@ -62,8 +62,8 @@ const GetEquipmentType = (type: number) => {
                 <span class="title" v-else> Inspection</span>
                 <span class="date">{{ task?.created_at }}</span>
               </div>
-              <div class="count" v-if="task?.template?.template_items?.length > 0">
-                <h5>{{ task?.template?.template_items?.length }}</h5>
+              <div class="count" v-if="task?.template?.templateItems?.length > 0">
+                <h5>{{ task?.template?.templateItems?.length }}</h5>
                 <span>items</span>
               </div>
             </div>
@@ -117,9 +117,9 @@ const GetEquipmentType = (type: number) => {
           <div class="contents">
             <div class="past">
               <!-- <pre>{{ task?.equipment }}</pre> -->
-              <h4>{{ GetEquipmentType(task?.equipment?.equipmentType?.type) }}</h4>
+              <h4>{{ GetEquipmentType(task?.equipment?.equipment_type?.type) }}</h4>
               <ChevronRight />
-              <h6>{{ task?.equipment?.equipmentType?.title }}</h6>
+              <h6>{{ task?.equipment?.equipment_type?.title }}</h6>
             </div>
             <h3>{{ task?.equipment?.title }}</h3>
           </div>

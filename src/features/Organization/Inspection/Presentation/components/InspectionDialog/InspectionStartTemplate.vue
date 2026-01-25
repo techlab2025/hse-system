@@ -46,7 +46,7 @@ const FetchTemplateDocument = async () => {
 // onMounted(() => FetchTemplateDocument())
 
 watch(
-  () => showTemplateController.state.value, 
+  () => showTemplateController.state.value,
   (newState) => {
     if (newState) state.value = newState
   },
@@ -254,7 +254,8 @@ watch(
 
       <button v-if="
         status == InspectionStatus.NOT_FINISHED &&
-        route?.query?.inspectionType != InspectionPageType.InspectionForm
+        route?.query?.inspectionType != InspectionPageType.InspectionForm &&
+        route?.query?.inspectionType != InspectionPageType.Result
       " class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}
       </button>

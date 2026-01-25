@@ -5,6 +5,7 @@ import acc from '@/assets/images/acc.png'
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
 import ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
 import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 
 export default class OrganizatoinEmployeeDetailsModel {
   // =====================
@@ -26,6 +27,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public employee_certificates: CertificateModel[]
   public showHierarchy: TitleInterface[]
   public projects: ProjectModel[]
+  public emplyeeStatus: EmployeeStatusEnum
 
   // =====================
   // Constructor
@@ -47,6 +49,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     employee_certificates: CertificateModel[],
     showHierarchy: TitleInterface[],
     projects: ProjectModel[],
+    emplyeeStatus: EmployeeStatusEnum,
   ) {
     this.id = id
     this.name = name
@@ -64,6 +67,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.employee_certificates = employee_certificates
     this.showHierarchy = showHierarchy
     this.projects = projects
+    this.emplyeeStatus = emplyeeStatus
   }
 
   // =====================
@@ -88,6 +92,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.employee_certificates,
       data.hierarchy,
       data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
+      data?.emplyee_status,
       // data.employee_tasks,
       // data.employee_performance,
     )
