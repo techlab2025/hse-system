@@ -156,8 +156,6 @@ const updateData = () => {
         SerialNumber.value?.SerialNumber,
       )
 
-  console.log(data.inspectionType, 'data.inspectionType')
-  console.log(IsInLibrary.value, 'IsInLibrary.value')
   emit('update:data', params)
 }
 

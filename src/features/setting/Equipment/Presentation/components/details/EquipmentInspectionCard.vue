@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import { EquipmentInspectionEnum } from '@/features/setting/Equipment/Core/enum/EquipmentInspectionEnum'
-import type InspectionModel from '../../../Data/models/InspectionModel'
 import InspectionTaskbg from '@/assets/images/InspectionTaskbg.png'
 import { ref } from 'vue'
 import EquipmentInspectionShowDialog from '@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionShowDialog.vue'
-import LastInspectionCard from './LastInspectionCard.vue'
-import ShowInspectionDialog from '../InspectionDialog/ShowInspectionDialog.vue'
-import { AssignToTypeEnum } from '../../../Core/Enum/AssignToTypesEnum'
-import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
-
-import DurationBox from './DurationBox.vue'
 import ButtonArrow from '../../../../../../shared/icons/ButtonArrow.vue'
 import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue'
-
-import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
-import type TaskPeriodModel from '../../../Data/models/TaskPeriodModel'
-import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 import image from '@/assets/images/onceimg.png'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
+import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
+import DurationBox from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/DurationBox.vue'
+import { InspectionTypeEnum } from '@/features/Organization/Inspection/Core/Enum/InspectionTypeEnum'
+import LastInspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/LastInspectionCard.vue'
+import InspectionStartTemplate from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue'
+import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum'
 
 const props = defineProps<{
   tasks: InspectionModel[]
@@ -28,14 +22,7 @@ const props = defineProps<{
   isEquipment?: boolean
 }>()
 
-const GetInspectionTitle = (task: InspectionModel) => {
-  return task.template?.titles?.find((title: any) => title.locale === localStorage.getItem('lang'))
-    ?.title
-}
 
-const getInspectionType = (type: number) => {
-  return AssignToTypeEnum[type]
-}
 
 const GetMorohType = (type) => {
   return AssignToTypeEnum[type]
@@ -43,9 +30,6 @@ const GetMorohType = (type) => {
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
-// if all (inspection form) 1  => !isDrag && !showresult
-// if all (Drag inspection form) 2  => isDrag
-// if all (Show inspection form) 3  => showresult
 
 </script>
 <template>
@@ -54,7 +38,6 @@ const GetEquipmentType = (type: number) => {
       <div class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
         <img class="bg" :src="InspectionTaskbg" alt="" />
         <div class="inspection-header">
-          <!-- <img class="warn" :src="Warn" alt="warn" width="30" height="30"> -->
           <div class="inspection-header-content">
             <div class="title-container">
               <div class="date-wrapper">
@@ -89,23 +72,12 @@ const GetEquipmentType = (type: number) => {
               </div>
 
               <div>
-                <!-- {{ period }} -->
                 <DurationBox v-if="task?.periodType == InspectionTypeEnum.DAY" :singleImage="image" :data="task"
                   :isShow="showresult" :isDrag="isDrag" />
-
                 <DurationBox v-if="task?.periodType == InspectionTypeEnum.PERIOD" :data="task" />
               </div>
 
-              <!-- <p>
-                Inspection Type: <span>{{ getInspectionType(task?.morphType) }}</span>
-              </p> -->
 
-              <!-- <p v-if="!isDrag">
-                Number of result: <span>{{ task?.numberOfResults }}</span>
-              </p> -->
-              <!-- <p>
-                Date&Time : <span>{{ task?.date }}</span>
-              </p> -->
             </div>
           </div>
         </div>
@@ -145,17 +117,13 @@ const GetEquipmentType = (type: number) => {
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
           <div class="button-text">
             <h5>Show all results</h5>
-            <!-- <span>20</span> -->
           </div>
           <ButtonArrow />
         </router-link>
 
         <div v-if="isEquipment" class="show-button w-full mt">
-          <!-- <div class="button-text">
-            <h5>History Log</h5>
-          </div>
-          <ButtonArrow /> -->
-          <EquipmentInspectionShowDialog :taskId="task.id" :isEquipment="true"  />
+
+          <EquipmentInspectionShowDialog :taskId="task.id" :isEquipment="true" />
         </div>
       </div>
     </div>

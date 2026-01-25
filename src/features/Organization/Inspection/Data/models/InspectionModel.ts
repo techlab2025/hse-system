@@ -1,4 +1,4 @@
-import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
+import TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import MorphModel from './MorphModel'
 import LastInspectionModel from './LastInspectionModel'
 import TaskPeriodModel from './TaskPeriodModel'
@@ -79,7 +79,7 @@ export default class InspectionModel {
   static fromMap(data: any): InspectionModel {
     return new InspectionModel(
       data.id,
-      data.template,
+      TemplateDetailsModel.fromMap(data.template),
       data.date,
       data.status,
       data.period_type,

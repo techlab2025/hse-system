@@ -1,6 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
+import type MeetingModel from '../Meetings/MeetingModel'
 
 export default class InvestegationResultDetailsModel {
   public id: number
@@ -12,6 +13,10 @@ export default class InvestegationResultDetailsModel {
   public serialNumber: string
   public investigationTeamLeader: TitleInterface
   public investigationEmployees: InvestegationEmployeeModel[]
+  public nextMeetingDate: string
+  public nextMeetingTime: string
+  public lastMeetingDate: string
+  public lastMeetingTime: string
 
   constructor(
     id: number,
@@ -23,6 +28,10 @@ export default class InvestegationResultDetailsModel {
     type: number,
     investigationTeamLeader: TitleInterface,
     investigationEmployees: InvestegationEmployeeModel[],
+    lastMeetingDate: string,
+    lastMeetingTime: string,
+    nextMeetingDate: string,
+    nextMeetingTime: string,
   ) {
     this.id = id
     this.title = title
@@ -33,11 +42,15 @@ export default class InvestegationResultDetailsModel {
     this.type = type
     this.investigationTeamLeader = investigationTeamLeader
     this.investigationEmployees = investigationEmployees
+    this.lastMeetingDate = lastMeetingDate
+    this.lastMeetingTime = lastMeetingTime
+    this.nextMeetingDate = nextMeetingDate
+    this.nextMeetingTime = nextMeetingTime
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
     return new InvestegationResultDetailsModel(
-      data.id,
+      data.id || data?.investigation_id,
       data.title,
       data.serial_number,
       data.date,
@@ -46,6 +59,10 @@ export default class InvestegationResultDetailsModel {
       data.type,
       data.investigation_team_leader,
       data.investigation_employees?.map((i: any) => InvestegationEmployeeModel.fromMap(i)) ?? [],
+      data.next_meeting_date,
+      data.next_meeting_time,
+      data.last_meeting_date,
+      data.last_meeting_time,
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
@@ -56,7 +73,7 @@ export default class InvestegationResultDetailsModel {
     HazardModel.example,
     1,
     2,
-    new TitleInterface({id:1 , title: 'Mohab Mohamed'}),
+    new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
     [
       InvestegationEmployeeModel.example,
       InvestegationEmployeeModel.example,

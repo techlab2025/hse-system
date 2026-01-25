@@ -12,6 +12,8 @@ import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import CreateCapaResultUseCase from '../../Domain/useCase/CreateCapaResultUseCase'
 import type CapaParams from '../../Core/params/CapaParam'
 import type CapaModel from '../../Data/models/CapaModel'
+import ShowHazardController from './showHazardController'
+import ShowHazardParams from '../../Core/params/showHazardParams'
 
 export default class CreateCapaResultController extends ControllerInterface<CapaModel> {
   private static instance: CreateCapaResultController
@@ -27,7 +29,7 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
     return this.instance
   }
 
-  async createCapaResult(params: CapaParams, router: Router, draft: boolean = false) {
+  async createCapaResult(params: CapaParams, route: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       // params.validate()
@@ -48,13 +50,15 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
 
         const { user } = useUserStore()
 
-        if (params.type == Observation.HazardType) {
-          await router.push(`/organization/equipment-mangement/hazard`)
-        } else if (params.type == Observation.ObservationType) {
-          await router.push(`/organization/equipment-mangement/observation`)
-        } else if (params.type == Observation.AccidentsType) {
-          await router.push(`/organization/equipment-mangement/incedant`)
-        }
+        // if (params.type == Observation.HazardType) {
+        //   await router.push(`/organization/equipment-mangement/hazard`)
+        // } else if (params.type == Observation.ObservationType) {
+        //   await router.push(`/organization/equipment-mangement/observation`)
+        // } else if (params.type == Observation.AccidentsType) {
+        //   await router.push(`/organization/equipment-mangement/incedant`)
+        // }
+
+        ShowHazardController.getInstance().showHazard(new ShowHazardParams(route.params?.id, true))
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

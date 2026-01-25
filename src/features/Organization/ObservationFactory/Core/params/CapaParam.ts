@@ -13,8 +13,8 @@ export default class CapaParams implements Params {
   toMap(): Record<string, number | string> {
     const data: Record<string, number | string> = {}
     data['observation_id'] = this.observationId
-    data['preventive'] = this.preventive
-    data['corrective'] = this.corrective
+    if (this.preventive) data['preventive'] = this.preventive
+    if (this.corrective) data['corrective'] = this.corrective
     return data
   }
 }

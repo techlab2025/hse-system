@@ -12,6 +12,7 @@ import EquipmentInspectionResultDialog from '../Dialogs/EquipmentInspectionResul
 import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum'
 import { PeriodTypeEnum } from '@/features/Organization/Inspection/Core/Enum/PeriodTypeEnum'
 import InspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionCard.vue'
+import EquipmentInspectionCard from './EquipmentInspectionCard.vue'
 
 const props = defineProps<{
   show_tasks: InspectionModel[]
@@ -35,17 +36,13 @@ const Types = ref(['sunday', 'monday', 'tuesday'])
       <h4>{{ $t('History Log') }}</h4>
     </div> -->
 
-    <div
-      class="inspection-history-container"
-      v-if="inspectionType == EquipmentInspectionEnum.Inspection"
-    >
-      <InspectionCard :tasks="show_tasks" :isDrag="false" :showresult="false" :isEquipment="true" />
+    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
+      <EquipmentInspectionCard :tasks="show_tasks" :isDrag="false" :showresult="false" :isEquipment="true" />
+      <!-- <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="false" :isEquipment="true" /> -->
+
     </div>
-    <div
-      class="inspection-history-container"
-      v-if="inspectionType == EquipmentInspectionEnum.Results"
-    >
-      <InspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" />
+    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
+      <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" />
     </div>
 
     <!-- <PendingHistoryCard /> -->

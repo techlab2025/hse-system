@@ -55,6 +55,7 @@ import AddObserverationType from '@/features/setting/ObserverationType/Presentat
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
 import AddAccidentsType from '@/features/setting/AccidentsTypes/Presentation/components/AddAccidentsType.vue'
+import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -78,7 +79,6 @@ const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
-  console.log(Accidents?.value?.isAnotherMeeting, 'Accidents?.value?.isAnotherMeeting')
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -164,8 +164,9 @@ const updateData = () => {
       isWorkStopped: isWorkStopped.value ? 1 : 0,
       HazardTypeId: HazardType.value?.id,
       HazardSubtypeId: SubHazardType.value?.id,
+      actionstatus: solved.value,
     })
-  console.log(isWorkStopped.value, 'isWorkStopped.value')
+  console.log(solved.value, 'solved.value')
   emit('update:data', params)
 }
 
@@ -228,7 +229,7 @@ const UpdateFatalities = (data: any) => {
 }
 const takeAction = ref<'yes' | 'no' | null>('no')
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
-const solved = ref<'yes' | 'no' | null>("no")
+const solved = ref<ActionStatusEnum | null>(ActionStatusEnum.CLOSED)
 const preventive_action = ref<string>()
 
 const SelctedTime = ref<Date>(new Date())
@@ -631,13 +632,15 @@ const ObservationTitle = ref<string>()
         <div class="col-span-12 md:col-span-12" v-show="showSolvedAndDescription">
           <label class="radio-title">{{ $t('Status') }}</label>
           <div class="radio-answers flex">
-            <div class="radio-selection" :class="{ selected: solved === 'yes' }">
-              <RadioButton id="closed" v-model="solved" name="solved" value="yes" @update:model-value="updateData" />
+            <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
+              <RadioButton id="closed" v-model="solved" name="solved" :value="ActionStatusEnum.CLOSED"
+                @update:model-value="updateData" />
               <label for="closed">Closed</label>
             </div>
 
-            <div class="radio-selection" :class="{ selected: solved === 'no' }">
-              <RadioButton id="open" v-model="solved" name="solved" value="no" @update:model-value="updateData" />
+            <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.OPEN }">
+              <RadioButton id="open" v-model="solved" name="solved" :value="ActionStatusEnum.OPEN"
+                @update:model-value="updateData" />
               <label for="open">Open</label>
             </div>
           </div>

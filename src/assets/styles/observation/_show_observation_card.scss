@@ -179,8 +179,10 @@
 }
 
 .observation-dwspcription-more {
+  width: 100%;
+  @include flex-row-reverse(nowrap, space-between, center);
   .show-more {
-    @include flex-row(nowrap, center, center);
+    @include flex-row(nowrap, flex-end, center);
     gap: 4px;
     padding-top: $XsSize2;
     transition: all 0.3s ease-in-out;
