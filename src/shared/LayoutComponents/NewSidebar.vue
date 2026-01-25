@@ -6,6 +6,7 @@ import OrganizationSidebar from './OrganizationSidebar.vue'
 import AdminSidebar from './AdminSidebar.vue'
 import BackIcon from '../icons/BackIcon.vue'
 import { useRoute, useRouter } from 'vue-router'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 const isOpen = ref(true)
 
@@ -35,7 +36,8 @@ const RouterBack = () => {
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
           <AdminSidebar />
         </template>
-        <template v-if="user?.user?.type === OrganizationTypeEnum?.ORGANIZATION">
+        <template
+          v-if="user?.user?.type === OrganizationTypeEnum?.ORGANIZATION ">
           <OrganizationSidebar />
         </template>
       </div>

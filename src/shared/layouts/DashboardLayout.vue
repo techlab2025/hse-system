@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import NewSidebar from '../LayoutComponents/NewSidebar.vue'
 import BreadCrumb from '../LayoutComponents/BreadCrumb.vue'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 const { user } = useUserStore()
 const route = useRoute()
@@ -32,7 +33,7 @@ const showSidebar = computed(() => {
     <!-- <Sidebar  /> -->
     <!-- <div class="sidebar"> -->
     <!-- v-if="user?.type === OrganizationTypeEnum.ADMIN" -->
-    <NewSidebar />
+    <NewSidebar v-if="ConditionHandler.getInstance().isAdmin()" />
     <!-- </div> -->
     <section class="content-wrapper">
 
