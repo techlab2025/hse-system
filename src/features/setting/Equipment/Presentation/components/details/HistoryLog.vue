@@ -37,12 +37,52 @@ const Types = ref(['sunday', 'monday', 'tuesday'])
     </div> -->
 
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
-      <EquipmentInspectionCard :tasks="show_tasks" :isDrag="false" :showresult="false" :isEquipment="true" />
-      <!-- <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="false" :isEquipment="true" /> -->
 
+
+      <!-- <div class="inspection-history flex items-start gap-2" v-for="(task, index) in show_tasks" :key="index">
+        <img class="bg" :src="InspectionTaskbg" alt="">
+        <div class="inspection-header">
+          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
+          <div class="inspection-header-content">
+            <div class="title-container">
+              <span class="title">Inspection</span>
+              <span class="date">{{ task?.date }}</span>
+            </div>
+            <div class="inspection-type">
+              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
+            </div>
+            <EquipmentInspectionShowDialog :taskId="task.id" />
+          </div>
+        </div>
+
+      </div>
+      <div class="inspection-history flex items-start gap-2" v-for="(task, index) in result_tasks" :key="index">
+        <img class="bg" :src="InspectionTaskbg" alt="">
+        <div class="inspection-header">
+          <img class="warn" :src="Warn" alt="warn" width="30" height="30">
+          <div class="inspection-header-content">
+            <div class="title-container">
+              <span class="title">Inspection</span>
+              <span class="date">{{ task?.date }}</span>
+            </div>
+            <div class="inspection-type">
+              <p>{{ PeriodTypeEnum[task?.periodType] }}</p>
+            </div>
+            <EquipmentInspectionShowDialog :taskId="task.id" />
+          </div>
+        </div>
+
+      </div> -->
+
+
+      <EquipmentInspectionCard :isEquipmentShowQuestions="true" :tasks="show_tasks" :isDrag="false" :showresult="false"
+        :isEquipment="true" />
+      <EquipmentInspectionCard :isEquipmentShowQuestions="true" :tasks="result_tasks" :isDrag="false"
+        :showresult="false" :isEquipment="true" />
+      <!-- <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" :isEquipment="true" /> -->
     </div>
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
-      <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" />
+      <EquipmentInspectionCard :tasks="result_tasks" :isEquipmentResult="true" />
     </div>
 
     <!-- <PendingHistoryCard /> -->

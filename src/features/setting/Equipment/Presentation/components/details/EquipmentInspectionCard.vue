@@ -13,6 +13,8 @@ import { InspectionTypeEnum } from '@/features/Organization/Inspection/Core/Enum
 import LastInspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/LastInspectionCard.vue'
 import InspectionStartTemplate from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue'
 import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum'
+import ShowInspectionDialog from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/ShowInspectionDialog.vue'
+import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 
 const props = defineProps<{
   tasks: InspectionModel[]
@@ -20,6 +22,8 @@ const props = defineProps<{
   isDrag?: boolean
   showresult?: boolean
   isEquipment?: boolean
+  isEquipmentResult?: boolean
+  isEquipmentShowQuestions?: boolean
 }>()
 
 
@@ -36,7 +40,9 @@ const GetEquipmentType = (type: number) => {
   <div class="inspection-card">
     <div class="inspection-history-container">
       <div class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
+
         <img class="bg" :src="InspectionTaskbg" alt="" />
+
         <div class="inspection-header">
           <div class="inspection-header-content">
             <div class="title-container">
@@ -50,7 +56,6 @@ const GetEquipmentType = (type: number) => {
                 <span>items</span>
               </div>
             </div>
-
             <div class="inspection-info">
               <div class="info-box">
                 <p class="assigned-by">Assigned by :</p>
@@ -77,7 +82,6 @@ const GetEquipmentType = (type: number) => {
                 <DurationBox v-if="task?.periodType == InspectionTypeEnum.PERIOD" :data="task" />
               </div>
 
-
             </div>
           </div>
         </div>
@@ -88,43 +92,24 @@ const GetEquipmentType = (type: number) => {
           </div>
           <div class="contents">
             <div class="past">
-              <!-- <pre>{{ task?.equipment }}</pre> -->
-              <h4>{{ GetEquipmentType(task?.equipment?.equipmentType?.type) }}</h4>
+              <h4>{{ GetEquipmentType(task?.equipment?.equipment_type?.type) }}</h4>
               <ChevronRight />
-              <h6>{{ task?.equipment?.equipmentType?.title }}</h6>
+              <h6>{{ task?.equipment?.equipment_type?.title }}</h6>
             </div>
             <h3>{{ task?.equipment?.title }}</h3>
           </div>
         </div>
 
-        <!-- <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult" -->
-        <LastInspectionCard class="mt" v-if="!isDrag && !showresult" :task="task?.lastInspectionResult"
+        <LastInspectionCard v-if="isEquipmentShowQuestions" class="mt" :task="task?.lastInspectionResult"
           :fulltask="task" />
 
-        <!-- <ShowInspectionDialog class="mt" v-if="isDrag" :taskId="task.id" /> -->
+        <EquipmentInspectionShowDialog v-if="isEquipmentShowQuestions" :taskId="task.id" :isEquipment="true" />
 
-        <div class="mt w-full" v-if="isDrag">
-          <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.id" :status="task?.status"
-            :showResult="false" />
-        </div>
-
-        <div class="mt w-full" v-if="showresult">
+        <div class="mt w-full" v-if="isEquipmentResult">
           <InspectionStartTemplate :templateId="task?.template?.id" :taskId="task?.task_id" :status="task?.status"
             :showResult="true" />
         </div>
 
-        <router-link v-if="!isDrag && !showresult && !isEquipment" class="show-button w-full mt"
-          :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
-          <div class="button-text">
-            <h5>Show all results</h5>
-          </div>
-          <ButtonArrow />
-        </router-link>
-
-        <div v-if="isEquipment" class="show-button w-full mt">
-
-          <EquipmentInspectionShowDialog :taskId="task.id" :isEquipment="true" />
-        </div>
       </div>
     </div>
   </div>

@@ -117,9 +117,9 @@ const GetEquipmentType = (type: number) => {
           <div class="contents">
             <div class="past">
               <!-- <pre>{{ task?.equipment }}</pre> -->
-              <h4>{{ GetEquipmentType(task?.equipment?.equipmentType?.type) }}</h4>
+              <h4>{{ GetEquipmentType(task?.equipment?.equipment_type?.type) }}</h4>
               <ChevronRight />
-              <h6>{{ task?.equipment?.equipmentType?.title }}</h6>
+              <h6>{{ task?.equipment?.equipment_type?.title }}</h6>
             </div>
             <h3>{{ task?.equipment?.title }}</h3>
           </div>
@@ -155,7 +155,7 @@ const GetEquipmentType = (type: number) => {
             <h5>History Log</h5>
           </div>
           <ButtonArrow /> -->
-          <EquipmentInspectionShowDialog :taskId="task.id" :isEquipment="true"  />
+          <EquipmentInspectionShowDialog :taskId="task.id" :isEquipment="true" />
         </div>
       </div>
     </div>

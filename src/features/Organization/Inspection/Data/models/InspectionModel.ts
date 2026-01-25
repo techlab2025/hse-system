@@ -4,8 +4,8 @@ import LastInspectionModel from './LastInspectionModel'
 import TaskPeriodModel from './TaskPeriodModel'
 // import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
 import EquipmentModel from '@/features/_templateFeature/Data/models/equipmentModel'
-import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 
 export default class InspectionModel {
   public id: number
@@ -24,7 +24,7 @@ export default class InspectionModel {
   public createdBy: CreatedBy
   public hasResults: boolean
   public taskPeriods: TaskPeriodModel[]
-  public equipment: EquipmentModel | null
+  public equipment: EquipmentDetailsModel | null
   public task_results: TaskResults[]
   public created_at: string
   public assigned_to: AssignedTo
@@ -47,7 +47,7 @@ export default class InspectionModel {
     createdBy: CreatedBy,
     hasResults: boolean,
     taskPeriods: TaskPeriodModel[],
-    equipment: EquipmentModel | null,
+    equipment: EquipmentDetailsModel | null,
     task_results: TaskResults[],
     created_at: string,
     assigned_to: AssignedTo,
@@ -94,7 +94,7 @@ export default class InspectionModel {
       data.created_by,
       data.has_results,
       data.task_periods?.map((item) => TaskPeriodModel.fromMap(item)),
-      data.equipment ? EquipmentModel.fromMap(data.equipment) : null,
+      data.equipment ? EquipmentDetailsModel.fromMap(data.equipment) : null,
       data.task_results,
       data.created_at,
       data.assigned_to,
