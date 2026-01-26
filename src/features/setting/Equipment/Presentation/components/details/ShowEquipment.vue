@@ -48,49 +48,26 @@ const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
       <div class="show-equipment">
         <CardEquipment :equipmentData="state.data!" />
         <div class="inspection-btn w-full flex">
-          <button
-            @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
-            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''"
-          >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
+            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectioBtn" alt="bg"
+              class="down-bg" />
             <span>Insepection</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectionTopBtn" alt="bg"
+              class="top-bg" />
           </button>
-          <button
-            @click="InspectionStatus = EquipmentInspectionEnum.Results"
-            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''"
-          >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Results"
+            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectioBtn" alt="bg"
+              class="down-bg" />
             <span>Results</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectionTopBtn" alt="bg"
+              class="top-bg" />
           </button>
         </div>
         <div class="history-qr">
-          <HistoryLog
-            :show_tasks="state.data?.tasks_without_result"
-            :result_tasks="state.data?.tasks_with_result"
-            :inspectionType="InspectionStatus"
-          />
+          <HistoryLog :show_tasks="state.data?.tasks_without_result" :result_tasks="state.data?.tasks_with_result"
+            :inspectionType="InspectionStatus" />
           <!-- <QrCode /> -->
         </div>
       </div>

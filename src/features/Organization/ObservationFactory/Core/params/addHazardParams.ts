@@ -7,6 +7,7 @@ import InjuryParams from './InjuriesParams'
 import type DethParams from './DethParams'
 import type WitnessParams from './WitnessesParams'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import type { ActionStatusEnum } from '../Enums/ActionStatusEnum'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -40,7 +41,11 @@ export default class AddHazardParams implements Params {
   public isWorkStopped: number
   public HazardTypeId: number
   public HazardSubtypeId: number
+
   public RootCausesId: number[]
+
+  public actionstatus: ActionStatusEnum
+
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -79,7 +84,11 @@ export default class AddHazardParams implements Params {
     isWorkStopped: number
     HazardTypeId: number
     HazardSubtypeId: number
+
     RootCausesId: number[]
+
+    actionstatus: ActionStatusEnum
+
   }) {
     this.title = data.title
     this.description = data.description
@@ -112,7 +121,11 @@ export default class AddHazardParams implements Params {
     this.isWorkStopped = data.isWorkStopped
     this.HazardTypeId = data.HazardTypeId
     this.HazardSubtypeId = data.HazardSubtypeId
+
     this.RootCausesId = data.RootCausesId
+
+    this.actionstatus = data.actionstatus
+
   }
 
   toMap(): Record<
@@ -169,7 +182,11 @@ export default class AddHazardParams implements Params {
     if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
     if (this.HazardTypeId) data['hazard_type_id'] = this.HazardTypeId
     if (this.HazardSubtypeId) data['hazard_sub_type_id'] = this.HazardSubtypeId
+
     if (this.RootCausesId) data['root_causes_id'] = this.RootCausesId
+
+    if (this.actionstatus) data['action_status'] = this.actionstatus
+
     return data
   }
 

@@ -10,6 +10,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import LoginOrganizationUseCase from '../../Domain/use_case/login_organization_use_case'
 import axios from 'axios'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 export default class LoginController extends ControllerInterface<UserModel> {
   private static instance: LoginController
@@ -57,9 +58,16 @@ export default class LoginController extends ControllerInterface<UserModel> {
           localStorage.setItem('user', JSON.stringify(this.state.value.data))
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
         }
-        await router.push({
-          path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
-        })
+
+        if (!ConditionHandler.getInstance().isEmployee()) {
+          await router.push({
+            path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
+          })
+        } else {
+          await router.push({
+            path: '/organization/equipment-mangement/all-observatin?type=2',
+          })
+        }
       } else {
         throw new Error(this.state.value.error?.title ?? 'Unknown login error')
       }

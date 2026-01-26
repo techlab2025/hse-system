@@ -1372,6 +1372,7 @@ class ApiNames {
   public get CreateProjectZoon() {
     return this.prefix + 'create_project_zone'
   }
+
   public get IndexRootCauses() {
     return this.prefix + 'fetch_root_causes'
   }
@@ -1385,7 +1386,11 @@ class ApiNames {
     return this.prefix + 'delete_root_cause'
   }
   public get CreateRootCauses() {
-    return this.prefix + 'create_root_cause'
+    return this.prefix + 'create_root_cause'}
+
+  public get CreateCapaResult() {
+    return this.prefix + 'set_capa_result'
+
   }
 }
 

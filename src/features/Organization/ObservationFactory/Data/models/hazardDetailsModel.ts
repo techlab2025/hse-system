@@ -1,14 +1,20 @@
-import type ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
-import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
+import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
+import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 // import { LocationModel } from '@/features/setting/Location/Data/models/LocationModel'
-import type OvservationEquipmentModel from './OvservationEquipmentModel'
-import type OvserverModel from './OvserverModel'
-import type CapaModel from './CapaModel'
-import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
+import OvservationEquipmentModel from './OvservationEquipmentModel'
+import OvserverModel from './OvserverModel'
+import CapaModel from './CapaModel'
+import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import InjuryDetailsModel from './InjuryModel'
-import type { LikelihoodEnum } from '../../Core/Enums/LikelihoodEnum'
-import type { SeverityEnum } from '../../Core/Enums/SeverityEnum'
+import { LikelihoodEnum } from '../../Core/Enums/LikelihoodEnum'
+import { SeverityEnum } from '../../Core/Enums/SeverityEnum'
+import InspectionObservatioModel from './InspectionObservationModel'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import InvestegationResultDetailsModel from '@/features/Organization/Investigating/Data/models/investigationResult/InvestegationResulDetailsModel'
+import acc from '@/assets/images/acc.png'
+import { Observation } from '../../Core/Enums/ObservationTypeEnum'
+import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
 
 export default class HazardDetailsModel {
   public id: number
@@ -19,7 +25,7 @@ export default class HazardDetailsModel {
   public taskResultItem: number
   public type: number
   public typeId: number
-  public typeModel: number
+  public typeModel: TitleInterface
   public equipment: OvservationEquipmentModel[]
   public location: LocationDetailsModel
   public zoon: SohwProjectZoonModel
@@ -42,6 +48,11 @@ export default class HazardDetailsModel {
   public deaths: InjuryDetailsModel[]
   public like_lihood: LikelihoodEnum
   public severity: SeverityEnum
+  public taskResultItemAnswer: InspectionObservatioModel
+  public rootCauses: TitleInterface[]
+  public investigation: InvestegationResultDetailsModel
+  public isWorkStopped: boolean
+  public actionStatus: ActionStatusEnum
 
   constructor(
     id: number,
@@ -52,7 +63,7 @@ export default class HazardDetailsModel {
     taskResultItem: number,
     type: number,
     typeId: number,
-    typeModel: number,
+    typeModel: TitleInterface,
     equipment: OvservationEquipmentModel[],
     location: LocationDetailsModel,
     zoon: SohwProjectZoonModel,
@@ -75,6 +86,11 @@ export default class HazardDetailsModel {
     deaths: InjuryDetailsModel[],
     like_lihood: LikelihoodEnum,
     severity: SeverityEnum,
+    taskResultItemAnswer: InspectionObservatioModel,
+    rootCauses: TitleInterface[],
+    investigation: InvestegationResultDetailsModel,
+    isWorkStopped: boolean,
+    actionStatus: ActionStatusEnum,
   ) {
     this.id = id
     this.title = title
@@ -107,6 +123,11 @@ export default class HazardDetailsModel {
     this.deaths = deaths
     this.like_lihood = like_lihood
     this.severity = severity
+    this.taskResultItemAnswer = taskResultItemAnswer
+    this.rootCauses = rootCauses
+    this.investigation = investigation
+    this.isWorkStopped = isWorkStopped
+    this.actionStatus = actionStatus
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -137,11 +158,53 @@ export default class HazardDetailsModel {
       data.capa,
       data.serial_number,
       data.media.map((item: any) => FilesModel.fromMap(item)),
-      data.injuries.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data.witness_statements.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data.deaths.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data.like_lihood,
-      data.severity,
+      data?.injuries?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+      data?.witness_statements?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+      data?.deaths?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+      data?.like_lihood,
+      data?.severity,
+      data?.task_result_item_answer,
+      data?.root_causes,
+      data?.investigation ? InvestegationResultDetailsModel.fromMap(data?.investigation) : null,
+      data?.is_work_stopped,
+      data?.action_status,
     )
   }
+
+  static example: HazardDetailsModel = new HazardDetailsModel(
+    1,
+    'New Observation FactoryModel Title',
+    'New Observation FactoryModel Title',
+    acc,
+    1,
+    1,
+    Observation.AccidentsType,
+    20,
+    { id: 1, title: 'Mohab Mohamed' },
+    [OvservationEquipmentModel.example],
+    LocationDetailsModel.example,
+    SohwProjectZoonModel.example,
+    ShowProjectDetailsModel.example,
+    1,
+    1,
+    1,
+    'I Take An Action',
+    'no',
+    'CapaStatus',
+    '1-920001',
+    123456,
+    OvserverModel.example,
+    OvserverModel.example,
+    CapaModel.example,
+    123456,
+    [acc, acc],
+    [InjuryDetailsModel.example],
+    [InjuryDetailsModel.example],
+    [InjuryDetailsModel.example],
+    LikelihoodEnum.AlmostCertain,
+    SeverityEnum.Catastrophic,
+    InspectionObservatioModel.example,
+    [{ id: 1, title: 'title' }],
+    InvestegationResultDetailsModel.example,
+  )
 }

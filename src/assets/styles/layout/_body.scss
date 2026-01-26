@@ -23,6 +23,12 @@ body {
     gap: $MdSize;
     width: 100%;
   }
+  .p-accordioncontent-content {
+    margin-inline: 19px;
+  }
+  .p-accordionpanel.active-panel-out {
+    margin-inline: 19px;
+  }
 
   .main-content {
     background-color: $White;

@@ -1,27 +1,29 @@
-import LangModel from "@/features/setting/languages/Data/models/langModel";
-import { OrganizationTypeEnum } from "../../Core/Enum/organization_type";
+import LangModel from '@/features/setting/languages/Data/models/langModel'
+import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 export default class UserModel {
-  public id: number;
-  public name: string; // Use 'string' instead of 'String'
-  public email: string; // Use 'string' instead of 'String'
-  public image: string;
-  public phone?: string;
-  public isMaster?: number;
-  public firstName?: string;
-  public lastName?: string;
-  public apiToken: string;
-  public aboutMe?: string;
-  public sendNotifications?: boolean;
-  public facebook?: string;
-  public x?: string;
-  public instagram?: string;
-  public youtube?: string;
-  public linkedin?: string;
-  public whatsapp?: string;
+  public id: number
+  public name: string // Use 'string' instead of 'String'
+  public email: string // Use 'string' instead of 'String'
+  public image: string
+  public phone?: string
+  public isMaster?: number
+  public firstName?: string
+  public lastName?: string
+  public apiToken: string
+  public aboutMe?: string
+  public sendNotifications?: boolean
+  public facebook?: string
+  public x?: string
+  public instagram?: string
+  public youtube?: string
+  public linkedin?: string
+  public whatsapp?: string
   public languages: LangModel[] = []
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   public permission: string[] = []
+  public employeeType: EmployeeStatusEnum = EmployeeStatusEnum.Employee
 
   constructor(
     id: number,
@@ -43,52 +45,55 @@ export default class UserModel {
     whatsapp?: string,
     languages: LangModel[] = [],
     type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN,
-    permission: string[] = []
+    permission: string[] = [],
+    employeeType: EmployeeStatusEnum = EmployeeStatusEnum.Employee,
   ) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.image = image;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.phone = phone;
+    this.id = id
+    this.name = name
+    this.email = email
+    this.image = image
+    this.firstName = firstName
+    this.lastName = lastName
+    this.phone = phone
     this.isMaster = isMaster
-    this.apiToken = apiToken;
-    this.aboutMe = aboutMe;
-    this.sendNotifications = sendNotifications;
-    this.facebook = facebook;
-    this.x = x;
-    this.instagram = instagram;
-    this.youtube = youtube;
-    this.linkedin = linkedin;
-    this.whatsapp = whatsapp;
+    this.apiToken = apiToken
+    this.aboutMe = aboutMe
+    this.sendNotifications = sendNotifications
+    this.facebook = facebook
+    this.x = x
+    this.instagram = instagram
+    this.youtube = youtube
+    this.linkedin = linkedin
+    this.whatsapp = whatsapp
     this.languages = languages
     this.type = type
     this.permission = permission
+    this.employeeType = employeeType
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
     return new UserModel(
-      map["id"],
-      map["name"],
-      map["email"],
-      map["api_token"],
-      map["image"],
-      map["phone"],
-      map["is_master"],
-      map["first_name"],
-      map["last_name"],
-      map["about_me"],
-      map["send_notifications"],
-      map["facebook"],
-      map["x"],
-      map["instagram"],
-      map["youtube"],
-      map["linkedin"],
-      map["whatsapp"],
-      map["languages"]?.map((lang: any) => LangModel.fromMap(lang)),
-      map["type"],
-      map["permissions"]
-    );
+      map['id'],
+      map['name'],
+      map['email'],
+      map['api_token'],
+      map['image'],
+      map['phone'],
+      map['is_master'],
+      map['first_name'],
+      map['last_name'],
+      map['about_me'],
+      map['send_notifications'],
+      map['facebook'],
+      map['x'],
+      map['instagram'],
+      map['youtube'],
+      map['linkedin'],
+      map['whatsapp'],
+      map['languages']?.map((lang: any) => LangModel.fromMap(lang)),
+      map['type'],
+      map['permissions'],
+      map['employee_type'],
+    )
   }
 }

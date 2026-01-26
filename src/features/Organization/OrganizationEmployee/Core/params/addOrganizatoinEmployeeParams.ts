@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
+import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
@@ -12,6 +13,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   hierarchies: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
   serialNumber: string
+  EmployeeStatus: EmployeeStatusEnum
   // certificateId: number[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -31,6 +33,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     serialNumber: string,
+    EmployeeStatus: EmployeeStatusEnum,
     // certificateId: number[],
   ) {
     this.name = name
@@ -41,6 +44,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.hierarchies = hierarchies
     this.roles = roles
     this.serialNumber = serialNumber
+    this.EmployeeStatus = EmployeeStatus
     // this.certificateId = certificateId
   }
 
@@ -67,6 +71,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles?.map((item) => item.toMap()) || []
     data['serial_number'] = Number(this.serialNumber)
+    data['employee_type'] = Number(this.EmployeeStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

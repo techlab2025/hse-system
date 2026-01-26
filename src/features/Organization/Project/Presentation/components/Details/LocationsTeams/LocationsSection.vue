@@ -97,6 +97,9 @@ watch(() => props.location, () => {
     new ShowProjectDetailsParams(Number(route.params?.id)),
   )
 })
+const CheckThatAtLeastOneEmployeeInTeams = () => {
+  return props.location?.projectLocationTeams?.some((team) => team.Employees?.length > 0)
+}
 </script>
 
 <template>
@@ -116,7 +119,8 @@ watch(() => props.location, () => {
                 <p>{{ GetSelectedLocation(location.locationId)?.employees?.length || 0 }}
                   <span>Employees</span>
                 </p>
-                <p>{{ location?.projectLocationTeams?.length || 0 }} <span>Teams</span>
+                <p>{{ CheckThatAtLeastOneEmployeeInTeams() ? location?.projectLocationTeams?.length || 0 : 0 }}
+                  <span>Teams</span>
                 </p>
               </div>
             </div>
@@ -157,7 +161,9 @@ watch(() => props.location, () => {
               :member="member" @update:data="DeleteTeamMember" />
           </div>
         </div>
-        <div class="teams-container" v-if="location?.projectLocationTeams?.length > 0">
+
+        <div class="teams-container"
+          v-if="location?.projectLocationTeams?.length > 0 && CheckThatAtLeastOneEmployeeInTeams()">
           <div class="all-employees-header-container">
             <div class="flex items-center gap-2">
               <TeamsIcon class="icon" />

@@ -21,6 +21,8 @@ import IndexRoleController from '@/features/Organization/Role/Presentation/contr
 import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleParams'
 import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const toast = useToast()
 
@@ -96,36 +98,43 @@ onMounted(async () => {
 })
 const Heirarchy = ref<TitleInterface[]>()
 const role = ref<TitleInterface[]>()
-
+const EmployeeStatus = ref()
+const updaetAdminStatus = (status) => {
+  EmployeeStatus.value = status == 0 ? EmployeeStatusEnum.Employee : EmployeeStatusEnum.Admin
+  updateData()
+}
 const updateData = () => {
   const HeirarchyIds = Heirarchy.value?.map((item) => new HirarachyEmployeeParams(item.id))
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
-        props?.data?.id,
-        Name.value,
-        Phone.value,
-        Email.value,
-        Password.value,
-        ConfirmPassword.value,
-        HeirarchyIds,
-        RoleIds,
-        SerialNumber.value?.SerialNumber,
+      props?.data?.id,
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+      ConfirmPassword.value,
+      HeirarchyIds,
+      RoleIds,
+      SerialNumber.value?.SerialNumber,
+      EmployeeStatus.value || EmployeeStatusEnum.Employee
 
-        // Certificates.value.map((item) => item.id)
-      )
+
+      // Certificates.value.map((item) => item.id)
+    )
     : new AddOrganizatoinEmployeeParams(
-        Name.value,
-        Phone.value,
-        Email.value,
-        Password.value,
-        ConfirmPassword.value,
-        HeirarchyIds,
-        RoleIds,
-        SerialNumber.value?.SerialNumber,
+      Name.value,
+      Phone.value,
+      Email.value,
+      Password.value,
+      ConfirmPassword.value,
+      HeirarchyIds,
+      RoleIds,
+      SerialNumber.value?.SerialNumber,
+      EmployeeStatus.value || EmployeeStatusEnum.Employee
 
-        // Certificates.value.map((item) => item.id)
-      )
+      // Certificates.value.map((item) => item.id)
+    )
   // console.log(params, "params");
   emit('update:data', params)
 }
@@ -141,6 +150,7 @@ watch(
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
+      EmployeeStatus.value = newData.emplyee_status
       updateData()
     }
   },
@@ -192,91 +202,46 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data
   updateData()
 }
+
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input
-      id="name"
-      type="text"
-      v-model="Name"
-      @input="UpdateName"
-      :placeholder="$t('enter your name')"
-    />
+    <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :isAuto="true"
-      :switch_reverse="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
+      @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>
-    <input
-      id="phone"
-      type="tel"
-      v-model="Phone"
-      @input="UpdatePhone"
-      :placeholder="$t('enter your phone')"
-    />
+    <input id="phone" type="tel" v-model="Phone" @input="UpdatePhone" :placeholder="$t('enter your phone')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="email">{{ $t('Email') }}</label>
-    <input
-      id="email"
-      type="email"
-      v-model="Email"
-      @input="UpdateEmail"
-      :placeholder="$t('enter your email')"
-    />
+    <input id="email" type="email" v-model="Email" @input="UpdateEmail" :placeholder="$t('enter your email')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input
-      id="password"
-      type="text"
-      min="8"
-      v-model="Password"
-      @input="UpdatePassword"
-      :placeholder="$t('enter your password')"
-    />
+    <input id="password" type="text" min="8" v-model="Password" @input="UpdatePassword"
+      :placeholder="$t('enter your password')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password_confirmation">{{ $t('confirm_password') }}</label>
-    <input
-      id="password_confirmation"
-      type="text"
-      min="8"
-      v-model="ConfirmPassword"
-      @input="UpdateConfirmPassword"
-      :placeholder="$t('enter your confirm password')"
-    />
+    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
+      :placeholder="$t('enter your confirm password')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Heirarchy"
-      @update:modelValue="setHeirarchy"
-      :controller="indexHerikalyController"
-      :params="HerikalyParams"
-      :label="$t('Job Description')"
-      :type="2"
-      :placeholder="$t('Select Heirarchy')"
-    />
+    <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
+      :params="HerikalyParams" :label="$t('Job Description')" :type="2" :placeholder="$t('Select Heirarchy')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="role"
-      @update:modelValue="setRole"
-      :controller="indexRoleController"
-      :params="indexRoleParams"
-      :label="$t('permissions')"
-      :type="2"
-      :placeholder="$t('Select Role')"
-    />
+    <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
+      :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomCheckbox :title="`isAdmin`" :checked="EmployeeStatus" @update:checked="updaetAdminStatus" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

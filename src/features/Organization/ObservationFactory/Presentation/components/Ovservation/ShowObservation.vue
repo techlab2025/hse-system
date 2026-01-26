@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ShowHazardParams from '../../../Core/params/showHazardParams';
 import ShowHazardController from '../../controllers/showHazardController';
 import { onMounted, ref, watch } from 'vue';
@@ -12,16 +12,16 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import HazardImage from '@/assets/images/alert 2.png'
 import ObservationCard from '../FactoryUtils/ObservationCard.vue';
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum';
-import acc from '@/assets/images/acc.png'
-import people from '@/assets/images/people.png'
-import RIP from '@/assets/images/RIP.png'
-import Image from 'primevue/image'
-import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum';
-import { SeverityEnum } from '../../../Core/Enums/SeverityEnum';
-import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
 import WarningIcon from '@/shared/icons/WarningIcon.vue';
-import ViewIcon from '@/shared/icons/ViewIcon.vue';
-import TakeActionIcon from '@/shared/icons/TakeActionIcon.vue';
+
+
+import ObservationFactoryGenralInfo from '../FactoryUtils/ShowFactoryUtils/ObservationFactoryGenralInfo.vue';
+import ObservationFactoryInspection from '../FactoryUtils/ShowFactoryUtils/ObservationFactoryInspection.vue';
+import ObservationCapaDestails from '../FactoryUtils/ShowFactoryUtils/ObservationCapaDestails.vue';
+import ObservationInjuriesShow from '../FactoryUtils/ShowFactoryUtils/ObservationInjuriesShow.vue';
+import ObservationWitnessStatements from '../FactoryUtils/ShowFactoryUtils/ObservationWitnessStatements.vue';
+import ObservationDeths from '../FactoryUtils/ShowFactoryUtils/ObservationDeths.vue';
+import ObservationInvestigationDetails from '../FactoryUtils/ShowFactoryUtils/ObservationInvestigationDetails.vue';
 
 const route = useRoute()
 const id = route.params?.id
@@ -41,6 +41,7 @@ onMounted(() => {
 watch(() => showHazardController.state.value, (newVal) => {
   state.value = newVal
 })
+
 const GetHeader = (value: number) => {
   return Observation[value] == 'ObservationType'
     ? 'Observation'
@@ -49,133 +50,52 @@ const GetHeader = (value: number) => {
       : 'incident'
 }
 
-const GetLikelyHood = (value: number) => {
-  return LikelihoodEnum[value]
-}
-
-const GetSeverity = (value: number) => {
-  return SeverityEnum[value]
-}
-
-const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
-  switch (riskLevel) {
-    case RiskLevelEnum.Low:
-      return 'Low'
-    case RiskLevelEnum.Medium:
-      return 'Medium'
-    case RiskLevelEnum.High:
-      return 'High'
-    default:
-      return 'Unknown'
-  }
-}
 
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <div class="show-observation-container">
-        <HeaderPage :title="`${GetHeader(state.data?.type)}`"
-          :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" />
+      <div class="is-work-stopped" v-if="state.data?.isWorkStopped">
+        <WarningIcon />
+        <span class="title">
+          This Hazared caused the project to be halted.
+        </span>
+      </div>
+
+      <div class="show-observation-container top-card">
         <ObservationCard :data="state.data" />
+      </div>
+      <div class="show-observation-container">
+
+        <!-- <HeaderPage :title="`${GetHeader(state.data?.type)}`"
+          :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" /> -->
+
+
 
         <div class="observation-type-container">
-          <p class="observation-type-title">{{ GetHeader(state.data?.type) }} Type</p>
-
-          <div class="observation-genral-info">
-            <p class="like_lihood">{{ GetLikelyHood(state.data?.like_lihood) }}</p>
-            <p class="severity">{{ GetSeverity(state.data?.severity) }}</p>
-            <span v-if="state.data?.riskLevel" class="observation-risk-level flex items-center gap-2"
-              :class="GetRiskLevel(state.data?.riskLevel)">
-              <WarningIcon v-if="state.data?.riskLevel == RiskLevelEnum.High" />
-              {{ GetRiskLevel(state.data?.riskLevel) }} Level
-            </span>
-            <div>
-              <Image v-if="state?.data?.media[0]?.url" :src="state?.data?.media[0]?.url" alt="Image" preview>
-                <template #previewicon>
-                  <div class="perview">
-                    <span>view</span>
-                    <ViewIcon />
-                  </div>
-                </template>
-              </Image>
-            </div>
-          </div>
-          <div class="take-action-container" v-if="state?.data?.action">
-            <div class="action-container flex items-center gap-2">
-              <TakeActionIcon />
-              <div class="flex flex-col">
-                <p class="emp-text">Emp take an action</p>
-                <p class="action-text">{{ state?.data?.action }}</p>
-              </div>
-            </div>
-
-          </div>
+          <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} Type</p>
+          <ObservationFactoryGenralInfo :data="state.data" />
         </div>
 
 
+        <ObservationFactoryInspection v-if="state?.data?.taskResultItemAnswer"
+          :data="state?.data?.taskResultItemAnswer" />
 
-        <div class="injury-header-container" v-if="state.data?.injuries?.length > 0"
-          v-for="injury in state.data?.injuries">
-          <div class="injury-header">
-            <div class="injury-header-info">
-              <img :src="acc" alt="acc">
-              <p>There are
-                casualties from the accident.</p>
-            </div>
-            <div class="injury-header-employees">
-              {{ injury?.organization_employee?.name || injury?.employee_name }}
-            </div>
-          </div>
-          <p class="note">{{ injury?.note }}</p>
-        </div>
+        <ObservationCapaDestails v-if="state?.data?.capa && state?.data?.type == Observation.HazardType"
+          :data="state.data?.capa" />
 
-        <div class="injury-header-container" v-if="state.data?.witnessStatements?.length > 0">
-          <div class="injury-header">
-            <div class="injury-header-info">
-              <img :src="people" alt="people">
-              <p>witnesses</p>
-            </div>
 
-          </div>
-          <div class="witnessStatement-container">
-            <div class="flex items-center gap-3 witnessStatement "
-              v-for="witnessStatement in state.data?.witnessStatements">
-              <div class="flex items-center gap-3">
-                <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="30" height="30" />
-                <div class="flex flex-col items-start">
-                  <p class="employee-name">{{ witnessStatement?.employee_name ||
-                    witnessStatement?.organization_employee?.name }}
-                  </p>
-                  <p class="employee-note">{{ witnessStatement.note }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ObservationInjuriesShow v-if="state.data?.injuries?.length && state.data?.injuries?.length > 0"
+          :data="state.data?.injuries" />
 
-        <div class="injury-header-container" v-if="state.data?.deaths?.length > 0" v-for="death in state.data?.deaths">
-          <div class="injury-header">
-            <div class="injury-header-info">
-              <img :src="RIP" alt="RIP">
-              <p>fatalities
-                from the accident</p>
-            </div>
-            <div class="death-header-employees flex gap-3">
-              <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="40" height="30" />
-              <div class="flex flex-col items-start">
-                <span class="employee-name">{{ death?.organization_employee?.name || death?.employee_name }}</span>
-                <span class="employee-hierarchy">{{ death?.organization_employee?.hierarchy[0].title }}</span>
-              </div>
-            </div>
+        <ObservationWitnessStatements
+          v-if="state.data?.witnessStatements?.length && state.data?.witnessStatements?.length > 0"
+          :data="state.data?.witnessStatements" />
 
-          </div>
-          <div class="death-container w-full justify-between">
-            <p class="death-note">{{ death?.note }} </p>
-            <img :src="death?.media[0]?.url" alt="">
-          </div>
-        </div>
+        <ObservationDeths v-if="state.data?.deaths?.length && state.data?.deaths?.length > 0"
+          :data="state.data?.deaths" />
+
+        <ObservationInvestigationDetails v-if="state.data?.investigation" :data="state.data?.investigation" />
 
 
       </div>

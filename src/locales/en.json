@@ -832,5 +832,13 @@
   "charts": "Charts",
   "is_work_stopped": "Is Work Stopped",
   "project_location_&_site_overview": "Project Location & Site Overview",
-  "all_projects": "All Projects"
+  "all_projects": "All Projects",
+  "organization_operations": "Organization Operations",
+  "incidant_types": "Incidant Types",
+  "hazard_factors": "Hazard Factors",
+  "hazard_factor_item": "Hazard Factor Item",
+  "hazard_types": "Hazard Types",
+  "hazard": "Hazard",
+  "hazard_item": "Hazard Item",
+  "hazard_factor": "Hazard Factor"
 }
