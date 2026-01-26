@@ -29,8 +29,8 @@ onMounted(() => {
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <div class="lg:col-span-3 space-y-6">
       <EmployeeProfileBox :state="empDetastate" />
-     <!-- Pass Data to PerformanceBox -->
-      <PerformanceBox :state="empDetastate" />
+      <!-- Pass Data to PerformanceBox -->
+      <!-- <PerformanceBox :state="empDetastate" /> -->
     </div>
 
     <div class="lg:col-span-1 space-y-6">
