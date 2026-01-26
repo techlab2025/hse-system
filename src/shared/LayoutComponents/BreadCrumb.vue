@@ -125,6 +125,6 @@ watch(() => route, () => {
       <Breadcrumb :model="items" />
     </div>
 
-    <FastRoutes v-if="!IsHomeSetting" />
+    <!-- <FastRoutes v-if="!IsHomeSetting" /> -->
   </div>
 </template>

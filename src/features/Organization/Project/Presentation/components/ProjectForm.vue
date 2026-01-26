@@ -144,39 +144,39 @@ onMounted(async () => {
 const date = ref(new Date())
 
 // ---------- Emit update ----------
-const updateData = () => {
-  const translationsParams = new TranslationsParams()
-
+ const translationsParams = new TranslationsParams()
   // titles
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.description)
   })
-
+  console.log('ZoneIdiiiiis.value', ZoneIds.value)
   const params = props.data?.id
     ? new EditProjectParams(
-        props.data.id,
-        translationsParams,
-        ContractorIds.value?.map((p) => p.id),
-        date.value,
-        location.value.map((l) => l.id),
-        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        EvaluatingMethod.value?.map((p) => p.id),
-      )
+      props.data.id,
+      translationsParams,
+      ContractorIds.value?.map((p) => p.id),
+      date.value,
+      SerialNumber.value?.SerialNumber,
+      location.value.map((l) => l.id),
+      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+      EvaluatingMethod.value?.map((p) => p.id),
+    )
     : new AddProjectParams(
-        translationsParams,
-        ContractorIds.value?.map((p) => p.id),
-        date.value,
-        location.value.map((l) => l.id),
-        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        EvaluatingMethod.value?.map((p) => p.id),
-        SerialNumber.value?.SerialNumber,
-      )
+      {
+        translation: translationsParams,
+        ContractorIds:ContractorIds.value?.map((p) => p.id),
+        startDate:date.value,
+        locationIds:location.value.map((l) => l.id),
+        zoonIds:ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+        methodIds:EvaluatingMethod.value?.map((p) => p.id),
+        SerialNumber:SerialNumber.value?.SerialNumber,
+      }
+    )
+  console.log(params, "paramsparamsparams");
   emit('update:data', params)
-}
 
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
@@ -266,12 +266,9 @@ const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
 
 const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
-  console.log('Grandparent - UpdateZones received:', data)
 
-  // Extract flat zone IDs for the params
   ZoneIds.value = data.flatMap((item) => item.ZoneIds || [])
-
-  console.log('Grandparent - Updated ZoneIds:', ZoneIds.value)
+  // console.log('ZoneIds.value', ZoneIds.value)
 
   updateData()
 }
@@ -281,7 +278,6 @@ watch(
   () => props.data?.Zones,
   (newZones) => {
     if (newZones) {
-      console.log('Grandparent - Props.data.Zones changed:', newZones)
       SelectedZones.value = newZones
 
       // Also update ZoneIds from the zones
@@ -294,7 +290,6 @@ watch(
         }
       })
       ZoneIds.value = zoneIdsFromProps
-      console.log('Grandparent - Initialized ZoneIds from props:', ZoneIds.value)
     }
   },
   { deep: true, immediate: true },
@@ -461,13 +456,11 @@ const ShowLocationDialog = () => {
       <span>{{ $t('zones') }}</span>
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
-    <AddZoneDialog
-      id="zone"
-      class="input"
-      :locations="location"
-      @update:data="UpdateZones"
-      :selectedZones="SelectedZones"
-    />
+
+
+    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
+      :selectedZones="SelectedZones" />
+
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput
