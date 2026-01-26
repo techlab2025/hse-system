@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -40,7 +41,8 @@ export default class IndexHerikalyParams implements Params {
     if (this.parentOnly) data['page'] = this.pageNumber
     if (this.parentOnly) data['limit'] = this.perPage
     if (this.parentOnly) data['return_patent_only'] = this.parentOnly
-    if (this.projectId) data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
     return data

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import { onMounted, watch } from 'vue';
 import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
@@ -32,10 +33,11 @@ onMounted(() => {
 })
 
 
+const ProjectStore = useProjectSelectStore()
 </script>
 <template>
-  <div class="idnex-header noborder">
-    <div class="categories-container" v-if="AllProjects && AllProjects.length > 1">
+  <div class="idnex-header noborder" v-if="AllProjects && AllProjects.length > 1 && ProjectStore.showProjectsFilter()">
+    <div class="categories-container">
       <button class="category" :class="ActiveTap === item.id ? 'active' : ''" v-for="(item, index) in AllProjects"
         :key="index" @click.prevent="UpdateData(item.id)">
         {{ item.title }}

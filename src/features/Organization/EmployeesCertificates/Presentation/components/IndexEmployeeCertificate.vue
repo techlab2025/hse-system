@@ -200,6 +200,8 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
 
                 <td v-for="cert in (Certificatestate.data || employee?.certificates)" :key="cert.id">
 
+
+
                   <span :class="cert.id">
                     <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
                       :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
@@ -225,11 +227,11 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                     <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id" v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid
-                      " />
+                      " :is_expire_date="cert?.requireExpiredDate" />
                     <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id" v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
-                      " />
+                      " :is_expire_date="cert?.requireExpiredDate" />
 
                     <div v-else-if="GetEmployeeCertificationStatus(employee, cert.id) == CertificateStatusEnum.Expired">
                       <div class="not-required ">
@@ -243,12 +245,12 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                         </div>
                       </div>
                       <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
-                        :organizationEmployeeId="employee?.id" />
+                        :organizationEmployeeId="employee?.id" :is_expire_date="cert?.requireExpiredDate" />
                     </div>
 
                     <div class="not-required" v-else>
                       <NotRequired @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
-                        :organizationEmployeeId="employee?.id" />
+                        :organizationEmployeeId="employee?.id" :is_expire_date="cert?.requireExpiredDate" />
                     </div>
                   </span>
                 </td>

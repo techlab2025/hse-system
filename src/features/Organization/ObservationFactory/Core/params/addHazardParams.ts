@@ -8,6 +8,7 @@ import type DethParams from './DethParams'
 import type WitnessParams from './WitnessesParams'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import type { ActionStatusEnum } from '../Enums/ActionStatusEnum'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -42,7 +43,9 @@ export default class AddHazardParams implements Params {
   public HazardSubtypeId: number
   public RootCausesId: number[]
   public actionstatus: ActionStatusEnum
+
   public code: string
+
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -85,7 +88,9 @@ export default class AddHazardParams implements Params {
     RootCausesId: number[]
 
     actionstatus: ActionStatusEnum
+
     code: string
+
   }) {
     this.title = data.title
     this.description = data.description
@@ -122,7 +127,9 @@ export default class AddHazardParams implements Params {
     this.RootCausesId = data.RootCausesId
 
     this.actionstatus = data.actionstatus
+
     this.code = data.code
+
   }
 
   toMap(): Record<
@@ -149,7 +156,8 @@ export default class AddHazardParams implements Params {
     if (this.type) data['type'] = this.type
     if (this.equipmentId) data['equipment_id'] = this.equipmentId
     if (this.zoonId) data['project_zoon_id'] = Number(this.zoonId)
-    if (this.projectId) data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.isResult) data['is_result'] = this.isResult
     if (this.riskLevel) data['risk_level'] = this.riskLevel
     if (this.saveStatus) data['save_status'] = this.saveStatus

@@ -8,6 +8,8 @@ export const contractorsRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Contractor',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -18,6 +20,8 @@ export const contractorsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Contractor',
       parent: 'Contractor',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -28,6 +32,8 @@ export const contractorsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Contractor',
       parent: 'Contractor',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
 ]

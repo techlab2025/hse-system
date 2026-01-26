@@ -7,6 +7,7 @@ import FastRoutes from './FastrRoutes/FastRoutes.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 const route = useRoute()
 const router = useRouter()
@@ -117,7 +118,8 @@ watch(() => route, () => {
 <template>
   <div class="breadcrump-container">
     <div class="breadcrump">
-      <button class="sidebar-back" @click="RouterBack" v-if="!IsHome">
+      <button class="sidebar-back" @click="RouterBack"
+        v-if="!IsHome || !ConditionHandler.getInstance().isOrganizationEmployee()">
         <BackIcon class="icon" />
         <span>back</span>
       </button>

@@ -8,6 +8,8 @@ export const RoleRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Role',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -18,6 +20,8 @@ export const RoleRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Role',
       parent: 'Role',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -28,6 +32,8 @@ export const RoleRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Role',
       parent: 'Role',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
 ]

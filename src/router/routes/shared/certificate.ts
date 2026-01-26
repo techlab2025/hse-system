@@ -8,6 +8,8 @@ export const certificateRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Certificates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -18,6 +20,8 @@ export const certificateRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add certificate',
       parent: 'Certificates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -28,6 +32,8 @@ export const certificateRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit certificate',
       parent: 'Certificates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
 ]

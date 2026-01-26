@@ -8,6 +8,8 @@ export const serialNumberRoutes: RouteRecordRaw[] = [
       import('@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue'),
     meta: {
       breadcrumb: 'Serial Number',
+      isSidebar: true,
+
     },
   },
 ]

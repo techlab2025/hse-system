@@ -12,7 +12,7 @@ const props = defineProps<{
         <div class="project-card-header">
           <div class="project-header">
             <!-- <span class="status">active </span> -->
-            <span class="serial"> #{{ data?.serial_number }} </span>
+            <span class="serial"> #{{ data?.serialName }} </span>
           </div>
           <p class="project-title">{{ data?.title }}</p>
         </div>
@@ -23,7 +23,7 @@ const props = defineProps<{
         <p class="locations">locations : <span>{{ data?.locations?.length }}</span></p>
         <p class="locations">zones :<span>{{ data?.zoons?.length }}</span></p>
       </div>
-      <hr style="height:1px;width:100%;border-width:1px;color:#F5F6F7;background-color:#F5F6F7">
+      <hr style="height:1px;width:100%;border-width:1px;color:#b7beca2c ;background-color:#F5F6F7">
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">observation :</span>

@@ -8,6 +8,7 @@ export const observationRoutes: RouteRecordRaw[] = [
       import('@/views/Organization/ObservationFactory/Observation/IndexObservation.vue'),
     meta: {
       breadcrumb: 'Observeration',
+      isSidebar: false,
     },
   },
   {

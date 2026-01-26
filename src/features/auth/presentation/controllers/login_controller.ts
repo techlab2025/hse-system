@@ -11,6 +11,7 @@ import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import LoginOrganizationUseCase from '../../Domain/use_case/login_organization_use_case'
 import axios from 'axios'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class LoginController extends ControllerInterface<UserModel> {
   private static instance: LoginController
@@ -50,6 +51,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
         })
 
         const userStore = useUserStore()
+        const ProjectSelector = useProjectSelectStore()
 
         if (this.state.value.data) {
           userStore.setUser(this.state.value.data as UserModel)
@@ -57,6 +59,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
           localStorage.setItem('token', JSON.stringify(apiToken))
           localStorage.setItem('user', JSON.stringify(this.state.value.data))
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
+          ProjectSelector.setProjectId(this.state.value.data.Defaultproject)
         }
 
         if (!ConditionHandler.getInstance().isOrganizationEmployee()) {

@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class FetchProjectZonesParams implements Params {
   id: number
@@ -11,7 +12,8 @@ export default class FetchProjectZonesParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['project_id'] = this.id
+       if (this.id || useProjectSelectStore().getProjectId())
+         data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
     data['project_location_id'] = this.ProjectLocationId
     return data
   }

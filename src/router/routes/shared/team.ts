@@ -8,6 +8,7 @@ export const teamsRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Teams',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const teamsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Team',
       parent: 'Teams',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const teamsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Team',
       parent: 'Teams',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

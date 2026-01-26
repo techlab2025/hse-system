@@ -4,11 +4,9 @@ import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import IndexProjectUseCase from '../../Domain/useCase/indexProjectUseCase'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
-
-export default class IndexProjectController extends SelectControllerInterface<
-  ProjectModel[]
-> {
+export default class IndexProjectController extends SelectControllerInterface<ProjectModel[]> {
   private static instance: IndexProjectController
   private constructor() {
     super()
@@ -26,8 +24,7 @@ export default class IndexProjectController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<ProjectModel[]> =
-      await this.IndexProjectUseCase.call(params)
+    const dataState: DataState<ProjectModel[]> = await this.IndexProjectUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -37,5 +34,28 @@ export default class IndexProjectController extends SelectControllerInterface<
     }
     super.handleResponseDialogs()
     return this.state
+  }
+
+  async fetch(params: Params) {
+    const data = await this.getData(params)
+    const adaptData: any[] = []
+    if (this.isDataSuccess()) {
+      adaptData.push(
+        new TitleInterface({
+          id: -1,
+          title: 'All',
+        }),
+      )
+      ;(data.value.data ?? []).map((el: any) => {
+        adaptData.push(
+          new TitleInterface({
+            id: el?.id,
+            title: el?.title,
+          }),
+        )
+      })
+    }
+
+    return adaptData
   }
 }

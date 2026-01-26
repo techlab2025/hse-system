@@ -1,6 +1,8 @@
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import type ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class UserModel {
   public id: number
@@ -24,6 +26,7 @@ export default class UserModel {
   public languages: LangModel[] = []
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   public permission: string[] = []
+  public Defaultproject?: TitleInterface
 
   constructor(
     id: number,
@@ -47,6 +50,7 @@ export default class UserModel {
     languages: LangModel[] = [],
     type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN,
     permission: string[] = [],
+    Defaultproject?: TitleInterface,
   ) {
     this.id = id
     this.name = name
@@ -69,6 +73,7 @@ export default class UserModel {
     this.languages = languages
     this.type = type
     this.permission = permission
+    this.Defaultproject = Defaultproject
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -94,6 +99,7 @@ export default class UserModel {
       map['languages']?.map((lang: any) => LangModel.fromMap(lang)),
       map['type'],
       map['permissions'],
+      map['default_project'],
     )
   }
 }

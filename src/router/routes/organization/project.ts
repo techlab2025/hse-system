@@ -7,6 +7,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/IndexProject.vue'),
     meta: {
       breadcrumb: 'Projects',
+      isSidebar: false,
     },
   },
   {
@@ -16,6 +17,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Project',
       parent: 'Projects',
+      isSidebar: false,
     },
   },
   {
@@ -25,6 +27,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Project',
       parent: 'Projects',
+      isSidebar: false,
     },
   },
   {
@@ -34,6 +37,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Project Details',
       parent: 'Projects',
+      isSidebar: false,
     },
   },
   {
@@ -43,6 +47,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Employee Details',
       parent: 'Project Details',
+      isSidebar: false,
     },
   },
   {
@@ -52,6 +57,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Project Hierarchy',
       parent: 'Project Details',
+      isSidebar: false,
     },
   },
   {
@@ -61,6 +67,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Project Employee',
       parent: 'Project Details',
+      isSidebar: false,
     },
   },
   {
@@ -70,6 +77,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Project Equipment',
       parent: 'Project Details',
+      isSidebar: false,
     },
   },
 ]
