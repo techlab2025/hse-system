@@ -34,7 +34,7 @@ export default class AddScopeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['serialNumber'] = Number(this.serialNumber)
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

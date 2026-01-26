@@ -53,8 +53,8 @@ export default class AddEquipmentParams implements Params {
     equipmentRentStartDate: string
     equipmentRentEndDate: string
     VehicleKm: string
-    serialNumber: string
     SelectedWhereHosue: number
+    serialNumber: string
   }) {
     Object.assign(this, data)
   }
@@ -94,8 +94,8 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentRentStartDate) data['checkin_date'] = this.equipmentRentStartDate
     if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
-    if (this.serialNumber) data['serial_number'] = Number(this.serialNumber)
     if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
+    if (this.serialNumber) data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

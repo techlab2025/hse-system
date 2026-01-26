@@ -139,7 +139,7 @@ const updateData = () => {
         // id,
       )
 
-  console.log(params, 'params')
+  // console.log(params, 'params')
   emit('update:data', params)
 }
 

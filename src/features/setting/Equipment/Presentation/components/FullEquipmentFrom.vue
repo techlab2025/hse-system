@@ -329,7 +329,6 @@ const updateData = () => {
           activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
             ? VehicleKm.value
             : ' ',
-        serialNumber: SerialNumber.value?.SerialNumber,
         SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
         equipmentRentEndDate:
           deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
@@ -356,10 +355,10 @@ const updateData = () => {
           activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
             ? VehicleKm.value
             : ' ',
-        serialNumber: SerialNumber.value?.SerialNumber,
         SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
         equipmentRentEndDate:
           deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+        serialNumber: SerialNumber.value?.SerialNumber,
       })
 
   emit('update:data', params)

@@ -22,19 +22,14 @@ const Name = ref<string>()
 
 const updateData = () => {
   const params = props.data?.id
-    ? new EditWhereHouseParams(
-        props.data.id,
-        SelectedWhereHouseType?.value?.id,
-        Name.value,
-        SerialNumber.value?.SerialNumber,
-      )
+    ? new EditWhereHouseParams(props.data.id, SelectedWhereHouseType?.value?.id, Name.value)
     : new AddWhereHouseParams(
         SelectedWhereHouseType?.value?.id,
         Name.value,
         SerialNumber.value?.SerialNumber,
       )
 
-  console.log(SerialNumber, 'SerialNumber')
+  // console.log(SerialNumber, 'SerialNumber')
   emit('update:data', params)
 }
 
