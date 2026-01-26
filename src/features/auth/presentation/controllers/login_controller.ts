@@ -65,7 +65,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
           })
         } else {
           await router.push({
-            path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
+            path: '/organization/equipment-mangement/all-observatin?type=2',
           })
         }
       } else {

@@ -7,7 +7,7 @@ import PoliceLine from "@/assets/images/PoliceLine.png"
 import ToDoLogo from "@/assets/images/ToDoLogo.png"
 import { InspectionPageType, InspectionType } from '../../../Core/Enums/InspectionTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 
 const items = [
   {
@@ -104,7 +104,9 @@ const items = [
     <!-- <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" /> -->
 
     <div class="cards">
-      <ObservationCard v-for="i in items" :key="i" :item="i" />
+      <permission-builder v-for="i in items" :key="i" :code="i.indexPermissions || i.AddPermissions">
+        <ObservationCard :item="i" />
+      </permission-builder>
     </div>
   </div>
 </template>

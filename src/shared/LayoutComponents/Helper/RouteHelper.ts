@@ -1,3 +1,4 @@
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import type { RouteLocationMatched } from 'vue-router'
 
 type BreadCrumbItem = {
@@ -17,7 +18,11 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
   // 1️⃣ Home always
   result.push({
     label: 'Home',
-    url: route.path.startsWith('/admin') ? '/admin' : '/organization',
+    url: ConditionHandler.getInstance().isEmployee()
+      ? '/organization/equipment-mangement/all-observatin?type=2'
+      : route.path.startsWith('/admin')
+        ? '/admin'
+        : '/organization',
   })
 
   const added = new Set<string>()
