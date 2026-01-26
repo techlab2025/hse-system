@@ -11,23 +11,22 @@ export default class AddProjectParams implements Params {
   zoonIds: number[]
   methodIds: number[]
 
-
-  constructor(
-    translation: TranslationsParams,
-    ContractorIds: number[],
-    startDate: string,
-    SerialNumber: string,
-    locationIds: number[],
-    zoonIds: number[],
-    methodIds: number[],
-  ) {
-    this.translation = translation
-    this.ContractorIds = ContractorIds
-    this.startDate = startDate
-    this.SerialNumber = SerialNumber
-    this.locationIds = locationIds
-    this.zoonIds = zoonIds
-    this.methodIds = methodIds
+  constructor(data: {
+    translation: TranslationsParams
+    ContractorIds: number[]
+    startDate: string
+    SerialNumber: string
+    locationIds: number[]
+    zoonIds: number[]
+    methodIds: number[]
+  }) {
+    this.translation = data.translation
+    this.ContractorIds = data.ContractorIds
+    this.startDate = data.startDate
+    this.SerialNumber = data.SerialNumber
+    this.locationIds = data.locationIds
+    this.zoonIds = data.zoonIds
+    this.methodIds = data.methodIds
   }
 
   toMap(): Record<

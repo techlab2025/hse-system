@@ -112,7 +112,7 @@ onMounted(() => {
                   <div class="flex w-full space-between gap-2">
                     <input type="checkbox" v-model="item.has_auto_observation" @change="UpdateData"
                       :id="`obervation-${index}`">
-                    <label :for="`obervation-${index}`">Auto obervation</label>
+                    <label :for="`obervation-${index}`">Auto observation</label>
                   </div>
                 </div>
               </div>

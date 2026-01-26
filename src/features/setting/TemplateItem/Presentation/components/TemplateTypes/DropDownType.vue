@@ -5,6 +5,7 @@ import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue';
 import RedDangerIcon from '@/shared/icons/RedDangerIcon.vue';
 import TextAreaRequiredIcon from '@/shared/icons/TextAreaRequiredIcon.vue';
 import TextAreaRequiredSelectedIcon from '@/shared/icons/TextAreaRequiredSelectedIcon.vue';
+import UploadImageIcon from '@/shared/icons/UploadImageIcon.vue';
 import { onMounted, ref } from 'vue';
 
 const emit = defineEmits(['update:data'])
@@ -83,7 +84,7 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-col gap-2">
                   <div class="flex gap-2">
-                    <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
+                    <UploadImageIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
                       @click="Answers[index].isDanger = true; UpdateData()" />
                     <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].isDanger"
                       @click="Answers[index].isDanger = false; UpdateData()" />

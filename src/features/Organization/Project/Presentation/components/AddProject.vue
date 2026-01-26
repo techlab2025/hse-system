@@ -14,6 +14,7 @@ const addProjectController = AddProjectController.getInstance()
 
 const addProject = async () => {
   const state = await addProjectController.addProject(params.value as AddProjectParams, router)
+  console.log(params?.value, "params?.value");
   if (state.value.data) {
     router.push(`/organization/project-details/${state.value.data.id}`)
   }
