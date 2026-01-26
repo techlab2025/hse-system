@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import empinerface from '@/assets/images/empinerface.png'
+import EmployeeInterfaceCard from '../supcomponents/Card/EmployeeInterfaceCard.vue'
+import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
 
-import Political from "@/assets/images/Political.png"
-import ALERT from "@/assets/images/ALERT.png"
-import PoliceLine from "@/assets/images/PoliceLine.png"
-import ToDoLogo from "@/assets/images/ToDoLogo.png"
+
+
+
+</script>
+
+<!-- <script setup lang="ts">
+import Political from '@/assets/images/Political.png'
+import ALERT from '@/assets/images/ALERT.png'
+import PoliceLine from '@/assets/images/PoliceLine.png'
+import ToDoLogo from '@/assets/images/ToDoLogo.png'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ObservationCard from "@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ObservationCard.vue"
-import { InspectionPageType } from "@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum"
-
+import ObservationCard from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ObservationCard.vue'
+import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
 
 const items = [
   {
@@ -47,7 +55,6 @@ const items = [
       PermissionsEnum.INSPECTION_RESULTS_FETCH,
       PermissionsEnum.ORG_INSPECTION_ALL,
     ],
-
   },
   {
     title: 'Observation',
@@ -66,7 +73,7 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_OBSERVATION_FETCH,
       PermissionsEnum.ORG_OBSERVATION_ALL,
-    ]
+    ],
   },
   {
     title: 'Incident',
@@ -85,7 +92,7 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_FETCH,
       PermissionsEnum.ORG_INCEDANT_ALL,
-    ]
+    ],
   },
   // {
   //   title: 'Hazard',
@@ -94,17 +101,19 @@ const items = [
   //   indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
   //   description: 'Add . show'
   // },
-
-
 ]
-</script>
+</script> -->
 
 <template>
   <div class="all-observation">
-    <!-- <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" /> -->
+    <HeaderPage
+      :title="'all you need in one page'"
+      :subtitle="'select what you want to do'"
+      :img="empinerface"
+    />
 
-    <div class="cards">
-      <ObservationCard v-for="i in items" :key="i" :item="i" />
+    <div class="">
+      <EmployeeInterfaceCard />
     </div>
   </div>
 </template>

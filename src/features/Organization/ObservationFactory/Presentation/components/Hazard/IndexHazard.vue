@@ -222,7 +222,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
+  <div class="grid grid-cols-12 gap-4 mt-2">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
       <div class="col-span-10">
