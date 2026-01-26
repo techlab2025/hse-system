@@ -116,7 +116,6 @@ const updateData = () => {
       ConfirmPassword.value,
       HeirarchyIds,
       RoleIds,
-      SerialNumber.value?.SerialNumber,
       EmployeeStatus.value || EmployeeStatusEnum.Employee
 
 
@@ -130,8 +129,8 @@ const updateData = () => {
       ConfirmPassword.value,
       HeirarchyIds,
       RoleIds,
-      SerialNumber.value?.SerialNumber,
       EmployeeStatus.value || EmployeeStatusEnum.Employee
+      SerialNumber.value?.SerialNumber,
 
       // Certificates.value.map((item) => item.id)
     )

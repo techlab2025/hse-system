@@ -73,15 +73,15 @@ export default class AddContractorParams implements Params {
 
     data['name'] = this.Name
     data['phone'] = this.ContractorNumber
-    data['serial_number'] = Number(this.serialNumber)
     if (this.Scope) data['scopes'] = this.Scope.map((scope) => scope.toMap())
-    if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
+      if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
     if (this.CompanyAddress) data['company_address'] = this.CompanyAddress
     if (this.contactPerson) data['contact_person'] = this.contactPerson
     if (this.contactPersonEmail) data['contact_person_email'] = this.contactPersonEmail
     if (this.contactPersonPhone) data['contact_person_phone'] = this.contactPersonPhone
     if (this.SelectedStatus || this.SelectedStatus === 0) data['status'] = this.SelectedStatus
     if (this.date) data['expiry_date'] = formatJoinDate(this.date)
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

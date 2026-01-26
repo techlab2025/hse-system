@@ -8,8 +8,8 @@ export default class AddCertificateParams implements Params {
   industries: number[]
   // parentId: number
   image: string
-  serialNumber: number
   require_expired_date: boolean
+  serialNumber: number
 
   constructor(
     translation: TranslationsParams,
@@ -27,8 +27,8 @@ export default class AddCertificateParams implements Params {
     this.industries = industries
     // this.parentId = parentId
     this.image = image
-    this.serialNumber = serialNumber
     this.require_expired_date = require_expired_date
+    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -50,8 +50,8 @@ export default class AddCertificateParams implements Params {
     if (this.industries?.length > 0 && !this.allIndustries) data['industry_ids'] = this.industries
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
-    data['serial_number'] = Number(this.serialNumber)
     data['require_expired_date'] = this.require_expired_date
+    data['serial_number'] = Number(this.serialNumber)
     return data
   }
 }

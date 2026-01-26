@@ -12,14 +12,12 @@ export default class EditProjectParams implements Params {
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
-  SerialNumber: string
 
   constructor(
     id: number,
     translation: TranslationsParams,
     partnerId: number[],
     startDate: string,
-    SerialNumber: string,
     locationIds: number[],
     zoonIds: number[],
     methodIds: number[],
@@ -31,7 +29,6 @@ export default class EditProjectParams implements Params {
     this.locationIds = locationIds
     this.zoonIds = zoonIds
     this.methodIds = methodIds
-    this.SerialNumber = SerialNumber
   }
 
   toMap(): Record<
@@ -53,7 +50,6 @@ export default class EditProjectParams implements Params {
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
-    if (this.SerialNumber) data['serial_number'] = Number(this.SerialNumber)
 
     return data
   }

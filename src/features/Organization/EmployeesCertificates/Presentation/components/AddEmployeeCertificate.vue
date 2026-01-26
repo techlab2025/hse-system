@@ -13,7 +13,10 @@ const params = ref<Params | null>(null)
 const addEmployeeCertificateController = AddEmployeeCertificateController.getInstance()
 
 const addEmployeeCertificate = async () => {
-  await addEmployeeCertificateController.addEmployeeCertificate(params.value as AddEmployeeCertificateParams, router)
+  await addEmployeeCertificateController.addEmployeeCertificate(
+    params.value as AddEmployeeCertificateParams,
+    router,
+  )
 }
 const setParams = (data: Params) => {
   params.value = data
