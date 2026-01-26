@@ -56,6 +56,8 @@ import AddFullEquipment from '@/features/setting/Equipment/Presentation/componen
 import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
 import AddAccidentsType from '@/features/setting/AccidentsTypes/Presentation/components/AddAccidentsType.vue'
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
+import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
+import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -165,6 +167,7 @@ const updateData = () => {
         HazardSubtypeId: SubHazardType.value?.id,
         actionstatus: solved.value,
         code: SerialNumber.value?.SerialNumber,
+        RootCausesId: RootCauses.value?.map((item) => item.id),
       })
   console.log(solved.value, 'solved.value')
   emit('update:data', params)
@@ -402,6 +405,13 @@ const UpdateSaveStatus = (data: SaveStatusEnum) => {
 }
 
 const ObservationTitle = ref<string>()
+const indexRootCaueseController = IndexRootCausesController.getInstance()
+const indexRootCaueseParams = new IndexRootCausesParams('', 1, 10, 0)
+const RootCauses = ref<TitleInterface[]>([])
+const setRootCause = (data: TitleInterface[]) => {
+  RootCauses.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -553,6 +563,20 @@ const ObservationTitle = ref<string>()
     </div>
 
     <!-- Machine -->
+    <div class="col-span-3 md:col-span-3 input-wrapper">
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedMachine"
+        class="input"
+        :controller="indexRootCaueseController"
+        :params="indexRootCaueseParams"
+        label="select Root Cause"
+        id="rootCause"
+        placeholder="select your root cause"
+        @update:modelValue="setRootCause"
+        :type="2"
+      />
+    </div>
+
     <div class="col-span-3 md:col-span-3 input-wrapper">
       <!-- <CustomSelectInput
         :modelValue="SelectedMachine"

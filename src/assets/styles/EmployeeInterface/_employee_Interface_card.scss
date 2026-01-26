@@ -1,0 +1,212 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.employee-interface-wrapper {
+  @include flex-column();
+  gap: $XlSize2;
+  padding: $XlSize4 0;
+  .employee-interface-card {
+    @include flex-row(nowrap, space-between, center);
+    border-radius: $XlSize2;
+    border: 1px solid #eceef4;
+    padding: $MdSize $XlSize2;
+    width: 100%;
+    gap: $XlSize2;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s ease-in-out;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: $XsSize3; // العرض الأساسي
+      height: 100%;
+      border-top-left-radius: $XlSize2;
+      border-bottom-left-radius: $XlSize2;
+      transition: width 0.4s ease-in-out;
+    }
+    &:hover {
+      &::before {
+        width: $MdSize; // أكبر شوية عند الهوفر
+      }
+    }
+
+    /* ================= Inspection ================= */
+    &.Inspection {
+      &::before {
+        background: #1f41bb;
+      }
+
+      .card-title {
+        color: #1f41bb;
+      }
+
+      .button-main {
+        background: #1f41bb;
+        border-color: #1f41bb;
+      }
+
+      .button-view {
+        color: #1f41bb;
+        border-color: #1f41bb33;
+        background: #f4f8ff;
+      }
+    }
+
+    /* ================= Observation ================= */
+    &.Observation {
+      &::before {
+        background: #f4971e;
+      }
+
+      .card-title {
+        color: #f4971e;
+      }
+
+      .button-main {
+        background: #f4971e;
+        border-color: #f4971e;
+      }
+
+      .button-view {
+        color: #f4971e;
+        border-color: rgba(244, 151, 30, 0.3);
+        background: #fff6eb;
+      }
+    }
+
+    /* ================= Incident ================= */
+    &.Incident {
+      &::before {
+        background: #ce1515;
+      }
+
+      .card-title {
+        color: #ce1515;
+      }
+
+      .button-main {
+        background: #ce1515;
+        border-color: #ce1515;
+      }
+
+      .button-view {
+        color: #ce1515;
+        border-color: rgba(226, 53, 53, 0.3);
+        background: #ce151533;
+      }
+    }
+
+    .card-text {
+      @include flex-column();
+      gap: $XsSize3;
+      white-space: initial;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      .info-sub-wrapper {
+        @include flex-row(nowrap, space-between, center);
+        gap: $XsSize3;
+        img {
+          @media (min-width: 769px) {
+            display: none;
+          }
+        }
+      }
+
+      .card-title {
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+      }
+
+      .card-subtitle {
+        font-size: $MdSize2;
+        font-weight: $BaseFontMediumWeight;
+        color: #cbcbcb;
+      }
+
+      .actions-button {
+        @include flex-row(wrap, start, start);
+        gap: $XlSize2;
+        width: 100%;
+
+        button {
+          flex: 1;
+          padding: $XsSize2;
+          border-radius: $XlSize;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          white-space: nowrap;
+        }
+
+        .button-main {
+          color: #fff;
+        }
+      }
+    }
+
+    .lotty-card-img {
+      // flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      img {
+        max-width: 220px;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+// @media (max-width: 768px) {
+//   .employee-interface-card {
+//     align-items: flex-start !important;
+//     justify-content: start !important;
+
+//     .card-text {
+//       flex: 2;
+//     }
+
+//     .lotty-card-img {
+//       flex: 1;
+//       align-self: start;
+
+//       img {
+//         max-width: 140px; // تصغير الصورة للموبايل
+//       }
+//     }
+
+//     .actions-button {
+//       width: 100%;
+//       margin-top: $XsSize3;
+
+//       button {
+//         // flex: 1;
+//         width: 100%;
+//       }
+//     }
+//   }
+// }
+
+// @media (max-width: 480px) {
+//   .employee-interface-card {
+//     gap: $MdSize;
+
+//     .lotty-card-img img {
+//       max-width: 110px;
+//     }
+
+//     .actions-button {
+//       gap: $MdSize;
+//     }
+//   }
+// }

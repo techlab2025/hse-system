@@ -167,7 +167,7 @@ watch(
   ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="modern-table-responsive">
+        <div class="modern-table-responsive mt-2 ">
 
           <!-- <table class="main-table">
             <thead>
