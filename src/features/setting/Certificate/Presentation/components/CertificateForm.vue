@@ -172,15 +172,14 @@ const updateData = () => {
           : isBase64(image.value) && image.value.length > 0
             ? image.value
             : '*',
-        SerialNumber.value?.SerialNumber,
       )
     : new AddCertificateParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
         isBase64(image.value) && image.value.length > 0 ? image.value : null,
-        SerialNumber.value?.SerialNumber,
         expiredate.value,
+        SerialNumber.value?.SerialNumber,
       )
 
   // console.log(params, 'params')
@@ -277,24 +276,23 @@ const updateExpireDate = (data) => {
     />
   </div>
 
-    <div class="input-wrapper col-span-4">
-      <SwitchInput
-        :fields="fields"
-        :switch_title="$t('auto')"
-        :switch_reverse="true"
-        :is-auto="true"
-        @update:value="UpdateSerial"
-      />
-    </div>
+  <div class="input-wrapper col-span-4">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
+  </div>
 
-
-      <div class="input-wrapper col-span-4">
-        <CustomCheckbox
-          :title="`expire_date_required`"
-          :checked="expiredate"
-          @update:checked="updateExpireDate"
-        />
-      </div>
+  <div class="input-wrapper col-span-4">
+    <CustomCheckbox
+      :title="`expire_date_required`"
+      :checked="expiredate"
+      @update:checked="updateExpireDate"
+    />
+  </div>
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput

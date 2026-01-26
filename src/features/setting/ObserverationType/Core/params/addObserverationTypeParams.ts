@@ -37,7 +37,7 @@ export default class AddObserverationTypeParams implements Params {
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
-    data['serialNumber'] = Number(this.serialNumber)
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

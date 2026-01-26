@@ -144,18 +144,14 @@ onMounted(async () => {
 const date = ref(new Date())
 
 // ---------- Emit update ----------
-const updateData = () => {
-  const translationsParams = new TranslationsParams()
-
+ const translationsParams = new TranslationsParams()
   // titles
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.description)
   })
-
   console.log('ZoneIdiiiiis.value', ZoneIds.value)
   const params = props.data?.id
     ? new EditProjectParams(
@@ -181,7 +177,6 @@ const updateData = () => {
     )
   console.log(params, "paramsparamsparams");
   emit('update:data', params)
-}
 
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
@@ -402,30 +397,58 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput
+      :label="`Project Name`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
       {{ $t('start_date') }}
     </label>
-    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
+    <DatePicker
+      v-model="date"
+      @date-select="UpdateDate"
+      id="date"
+      :placeholder="`select the date`"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
-      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
-      placeholder="contractors" :onclick="ShowContructorDialog" />
+    <CustomSelectInput
+      :modelValue="ContractorIds"
+      @update:modelValue="setContractorIds"
+      :type="2"
+      :controller="indexContractorController"
+      :params="indexContractorTypeParams"
+      label="contractors"
+      placeholder="contractors"
+      :onclick="ShowContructorDialog"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
-      placeholder="location" :type="2" :onclick="ShowLocationDialog" />
+    <CustomSelectInput
+      :modelValue="location"
+      @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams"
+      label="location"
+      placeholder="location"
+      :type="2"
+      :onclick="ShowLocationDialog"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -434,13 +457,22 @@ const ShowLocationDialog = () => {
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
 
+
     <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
       :selectedZones="SelectedZones" />
+
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`What are the project objectives?`" :required="false" />
+    <LangTitleInput
+      label="project_objectives"
+      :langs="langDefault"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+      :placeholder="`What are the project objectives?`"
+      :required="false"
+    />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />

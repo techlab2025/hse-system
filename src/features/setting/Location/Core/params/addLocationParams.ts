@@ -39,7 +39,7 @@ export default class AddLocationParams implements Params {
     if (this.code) data['code'] = this.code
     data['type'] = this.type
     if (this.ParentId) data['parent_id'] = this.ParentId
-    data['serialNumber'] = Number(this.serialNumber)
+    data['serial_number'] = Number(this.serialNumber)
     return data
   }
 

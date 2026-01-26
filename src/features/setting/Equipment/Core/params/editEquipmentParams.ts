@@ -26,7 +26,6 @@ export default class EditEquipmentParams implements Params {
   equipmentRentTime: string
   equipmentRentStartDate: string
   VehicleKm: string
-  serialNumber: string
   SelectedWhereHosue: number
 
   // hasCertificate: number
@@ -56,7 +55,6 @@ export default class EditEquipmentParams implements Params {
     equipmentRentTime: string
     equipmentRentStartDate: string
     VehicleKm: string
-    serialNumber: string
     SelectedWhereHosue: number
   }) {
     Object.assign(this, data)
@@ -127,7 +125,6 @@ export default class EditEquipmentParams implements Params {
     if (this.equipmentRentStartDate)
       data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
-    if (this.serialNumber) data['serial_number'] = Number(this.serialNumber)
     if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
 
     return data

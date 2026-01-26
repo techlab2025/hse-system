@@ -45,7 +45,7 @@ const getStatusText = (status, startDate) => {
 
       <h5 class="project-title">{{ project.title }}</h5>
       <div class="project-meta">
-        <div class="meta-item" v-if="project.team">
+        <!-- <div class="meta-item" v-if="project.team">
           <ProjTeam />
           <h5 class="meta-title">
             Team
@@ -59,7 +59,7 @@ const getStatusText = (status, startDate) => {
             Locations
             <span class="value">:{{ project.locations }}</span>
           </h5>
-        </div>
+        </div> -->
       </div>
     </div>
 

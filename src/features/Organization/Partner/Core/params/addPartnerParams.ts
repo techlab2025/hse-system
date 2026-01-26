@@ -31,8 +31,8 @@ export default class AddPartnerParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['serial_number'] = Number(this.serialNumber)
     if (this.phone) data['phone'] = this.phone
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

@@ -37,15 +37,15 @@ export default class AddHazardParams implements Params {
   public severity?: number
   public Likelihood?: number
   public time: string
-  public code: string
   public place: string
   public isWorkStopped: number
   public HazardTypeId: number
   public HazardSubtypeId: number
-
   public RootCausesId: number[]
-
   public actionstatus: ActionStatusEnum
+
+  public code: string
+
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -79,7 +79,7 @@ export default class AddHazardParams implements Params {
     severity?: number
     Likelihood?: number
     time: string
-    code: string
+
     place: string
     isWorkStopped: number
     HazardTypeId: number
@@ -88,6 +88,9 @@ export default class AddHazardParams implements Params {
     RootCausesId: number[]
 
     actionstatus: ActionStatusEnum
+
+    code: string
+
   }) {
     this.title = data.title
     this.description = data.description
@@ -115,7 +118,7 @@ export default class AddHazardParams implements Params {
     this.severity = data.severity
     this.Likelihood = data.Likelihood
     this.time = data.time
-    this.code = data.code
+
     this.place = data.place
     this.isWorkStopped = data.isWorkStopped
     this.HazardTypeId = data.HazardTypeId
@@ -124,6 +127,9 @@ export default class AddHazardParams implements Params {
     this.RootCausesId = data.RootCausesId
 
     this.actionstatus = data.actionstatus
+
+    this.code = data.code
+
   }
 
   toMap(): Record<
@@ -176,7 +182,7 @@ export default class AddHazardParams implements Params {
     if (this.severity) data['severity'] = this.severity
     if (this.Likelihood) data['like_lihood'] = this.Likelihood
     if (this.time) data['time'] = formatTime(this.time)
-    if (this.code) data['serial_number'] = Number(this.code)
+
     if (this.place) data['place'] = this.place
     if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
     if (this.HazardTypeId) data['hazard_type_id'] = this.HazardTypeId
@@ -185,6 +191,7 @@ export default class AddHazardParams implements Params {
     if (this.RootCausesId) data['root_causes_id'] = this.RootCausesId
 
     if (this.actionstatus) data['action_status'] = this.actionstatus
+     if (this.code) data['serial_number'] = Number(this.code)
 
     return data
   }

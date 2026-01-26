@@ -36,9 +36,9 @@ export default class AddAccidentsTypeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['serialNumber'] = Number(this.serialNumber)
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
+    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }
