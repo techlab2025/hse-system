@@ -44,7 +44,10 @@ export default class AddEmployeeCertificateController extends ControllerInterfac
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/employee-certificate')
+        if (!draft)
+          await router.push(
+            `/organization/employee-certificate/${router.currentRoute?.value?.params?.id}`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

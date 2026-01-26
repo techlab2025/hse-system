@@ -123,6 +123,7 @@ watch(
         </div>
       </div>
 
+
       <div v-if="require_image" class="mt-4">
         <UploadMultiImage @update:images="UpdateImg" :initialImages="selected_data?.files?.map(el => el.url) || []" />
       </div>
