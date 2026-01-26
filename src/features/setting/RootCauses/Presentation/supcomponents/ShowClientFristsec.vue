@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import type ShowClientModel from "../../Data/models/equipmentTypeDetailsModel.ts";
-import IconsSms from "@/components/icons/sms.vue";
-import IconsWhatsApp from "@/components/icons/SocialIcons.vue";
-import IconsNotification from "@/components/icons/notificationBing.vue";
-import { ClientStatusEnum } from "@/features/users/clients/clients/Core/enums/clientStatusEnum.ts";
+import type ShowClientModel from '../../Data/models/RootCausesDetailsModel.ts'
+import IconsSms from '@/components/icons/sms.vue'
+import IconsWhatsApp from '@/components/icons/SocialIcons.vue'
+import IconsNotification from '@/components/icons/notificationBing.vue'
+import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 
-const props = defineProps<{ data: ShowClientModel | null }>();
-
+const props = defineProps<{ data: ShowClientModel | null }>()
 
 const getClientStatusLabel = (id: number): string => {
-  return ClientStatusEnum[id] || "Unknown";
-};
+  return ClientStatusEnum[id] || 'Unknown'
+}
 
 // LangEnum
 </script>
@@ -42,10 +41,7 @@ const getClientStatusLabel = (id: number): string => {
               <h4>Client name</h4>
               <p>{{ data?.name }}</p>
             </div>
-
-
           </div>
-
         </div>
         <div class="flex flex-col lg:col-span-2">
           <h4>Client Code</h4>
@@ -64,14 +60,14 @@ const getClientStatusLabel = (id: number): string => {
           <p>{{ data?.clientCategory?.title }}</p>
         </div>
         <div class="academic-degree lg:col-span-2">
-          <h4> Client status</h4>
+          <h4>Client status</h4>
           <p>{{ getClientStatusLabel(data?.clientStatus) }}</p>
         </div>
         <!-- <div class="marital-status col-span-2">
           <h4>marital status</h4>
           <p>{{ data?.maritalStatus }}</p>
         </div> -->
-        <div class="kind lg:col-span-8 ">
+        <div class="kind lg:col-span-8">
           <h4>The date of the first interaction with the customer</h4>
           <p>{{ data?.firstDate }}</p>
         </div>
@@ -82,10 +78,8 @@ const getClientStatusLabel = (id: number): string => {
           <p v-html="data?.reasonDeal"></p>
         </div>
         <div class="kind flex flex-col" v-if="data?.bio">
-          <h4>
-            A short overview of the client (his most important specifications)
-          </h4>
-          <p>{{ data?.bio}}</p>
+          <h4>A short overview of the client (his most important specifications)</h4>
+          <p>{{ data?.bio }}</p>
         </div>
         <div class="kind flex flex-col" v-if="data?.clientSatisfaction">
           <h4>Client satisfaction with the office</h4>

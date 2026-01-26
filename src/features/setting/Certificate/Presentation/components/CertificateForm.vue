@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 
@@ -22,6 +22,8 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { isNull } from 'util'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import RadioButton from 'primevue/radiobutton'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -156,7 +158,7 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   // console.log(isBase64(image.value), "isBase64(image.value)");
-  console.log(ImageCahnge.value, 'ImageCahnge.value')
+  // console.log(ImageCahnge.value, 'ImageCahnge.value')
   const params = props.data?.id
     ? new EditCertificateParams(
         props.data.id,
@@ -176,8 +178,9 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        isBase64(image.value) && image.value.length > 0 ? image.value : '*',
+        isBase64(image.value) && image.value.length > 0 ? image.value : null,
         SerialNumber.value?.SerialNumber,
+        expiredate.value,
       )
 
   // console.log(params, 'params')
@@ -255,6 +258,13 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+const expiredate = ref(0)
+const updateExpireDate = (data) => {
+  expiredate.value = data
+  // console.log(expiredate.value, 'expiredate')
+  // updateData()
+}
 </script>
 
 <template>
@@ -266,15 +276,25 @@ const fields = ref([
       :required="true"
     />
   </div>
-  <div class="col-span-4 md:col-span-4">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div>
+
+    <div class="input-wrapper col-span-4">
+      <SwitchInput
+        :fields="fields"
+        :switch_title="$t('auto')"
+        :switch_reverse="true"
+        :is-auto="true"
+        @update:value="UpdateSerial"
+      />
+    </div>
+
+
+      <div class="input-wrapper col-span-4">
+        <CustomCheckbox
+          :title="`expire_date_required`"
+          :checked="expiredate"
+          @update:checked="updateExpireDate"
+        />
+      </div>
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput

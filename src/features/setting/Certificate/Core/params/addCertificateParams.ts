@@ -9,6 +9,7 @@ export default class AddCertificateParams implements Params {
   // parentId: number
   image: string
   serialNumber: number
+  require_expired_date: boolean
 
   constructor(
     translation: TranslationsParams,
@@ -18,6 +19,7 @@ export default class AddCertificateParams implements Params {
     // parentId: number,
     image: string,
     serialNumber: number,
+    require_expired_date: boolean,
   ) {
     this.translation = translation
     // this.hasCertificate = hasCertificate
@@ -26,6 +28,7 @@ export default class AddCertificateParams implements Params {
     // this.parentId = parentId
     this.image = image
     this.serialNumber = serialNumber
+    this.require_expired_date = require_expired_date
   }
 
   toMap(): Record<
@@ -48,6 +51,7 @@ export default class AddCertificateParams implements Params {
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
     data['serial_number'] = Number(this.serialNumber)
+    data['require_expired_date'] = this.require_expired_date
     return data
   }
 }
