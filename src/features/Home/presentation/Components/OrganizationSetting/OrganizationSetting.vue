@@ -42,17 +42,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.PARTNER_FETCH,
         ],
       },
-      {
-        route: "/organization/projects",
-        Name: "projects",
-        permissions: [
-          PermissionsEnum.PROJECT_ALL,
-          PermissionsEnum.PROJECT_CREATE,
-          PermissionsEnum.PROJECT_DELETE,
-          PermissionsEnum.PROJECT_FETCH,
-          PermissionsEnum.PROJECT_UPDATE,
-        ],
-      },
+      // {
+      //   route: "/organization/projects",
+      //   Name: "projects",
+      //   permissions: [
+      //     PermissionsEnum.PROJECT_ALL,
+      //     PermissionsEnum.PROJECT_CREATE,
+      //     PermissionsEnum.PROJECT_DELETE,
+      //     PermissionsEnum.PROJECT_FETCH,
+      //     PermissionsEnum.PROJECT_UPDATE,
+      //   ],
+      // },
       {
         route: "/organization/certificate",
         Name: "certifications",
@@ -403,6 +403,7 @@ const handleCardClick = (id: RouterEnum) => {
 <template>
   <div class="organization-setting">
     <div class="organization-setting-container">
+
       <div v-for="(card, index) in OrganizationSetting" :key="index" class="organization-setting-card"
         :class="{ active: selectedRoutesType === card.id }" @click="handleCardClick(card.id)">
         <img :src="card.icon" :alt="card.title" />
@@ -415,7 +416,6 @@ const handleCardClick = (id: RouterEnum) => {
 
     <div class="routers w-full" v-if="selectedCard">
       <PermissionBuilder v-for="(routeName, index) in selectedCard.routes" :key="index" :code="routeName?.permissions">
-
         <router-link :to="`${routeName.route}?type=${selectedRoutesType}`" class="btn-route w-full ">
           {{ routeName.Name }}
         </router-link>

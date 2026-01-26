@@ -8,6 +8,8 @@ export const RootCausesRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Root Causes',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -18,6 +20,8 @@ export const RootCausesRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Root Causes',
       parent: 'Root Causes',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -28,6 +32,8 @@ export const RootCausesRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Root Causes',
       parent: 'Root Causes',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
 ]

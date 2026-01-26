@@ -7,6 +7,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/WhereHouseType/IndexWhereHouseType.vue'),
     meta: {
       breadcrumb: 'WhereHouseType',
+      isSidebar: true,
     },
   },
   {
@@ -16,6 +17,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add WhereHouseType',
       parent: 'WhereHouseType',
+      isSidebar: true,
     },
   },
   {
@@ -25,6 +27,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit WhereHouseType',
       parent: 'WhereHouseType',
+      isSidebar: true,
     },
   },
 ]

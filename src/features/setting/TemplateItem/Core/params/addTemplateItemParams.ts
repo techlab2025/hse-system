@@ -11,7 +11,7 @@ export default class AddTemplateItemParams implements Params {
   imageType: number
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
-    
+
   })
   constructor(
     id: number,
@@ -51,7 +51,7 @@ export default class AddTemplateItemParams implements Params {
     data['action'] = this.type
     data['options'] = this.answers.map((item) => ({
       title: item.title,
-      is_upload: item.isDanger ? 1 : 0,
+      is_upload: item.is_upload ? 1 : 0,
       textarea_type: item?.normal_textarea
         ? item?.textarea_type
         : item?.isTextAreaRequired
@@ -77,7 +77,7 @@ export default class AddTemplateItemParams implements Params {
 
 interface items {
   title: string
-  isDanger: boolean
+  is_upload: boolean
   isTextAreaRequired: boolean
   textarea_type: number
   has_auto_observation: boolean

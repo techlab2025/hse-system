@@ -7,6 +7,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/OrganizationEmployee/IndexOrganization.vue'),
     meta: {
       breadcrumb: 'Organization Employee',
+      isSidebar: true,
     },
   },
   {
@@ -16,6 +17,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Organization Employee',
       parent: 'Organization Employee',
+      isSidebar: true,
     },
   },
   {
@@ -25,6 +27,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Organization Employee',
       parent: 'Organization Employee',
+      isSidebar: true,
     },
   },
   {
@@ -37,6 +40,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Show Organization Employee',
       parent: 'Organization Employee',
+      isSidebar: true,
     },
   },
 ]

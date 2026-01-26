@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -66,7 +67,8 @@ export default class IndexHazardParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
-    if (this.projectId) data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds

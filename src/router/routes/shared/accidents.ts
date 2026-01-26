@@ -8,6 +8,7 @@ export const accidentsRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'incident Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const accidentsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add incidents Type',
       parent: `Accidents Type`,
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const accidentsRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit incidents Type',
       parent: `Accidents Type`,
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type LocationHierarchyEmployeeParams from './locationHierarchyEmployeeParams'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class AddHierarchyEmployeeParams implements Params {
   projectId: number
@@ -12,7 +13,8 @@ export default class AddHierarchyEmployeeParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {}
-    if (this.projectId != null) data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.locations != null) data['locations'] = this.locations
     return data
   }

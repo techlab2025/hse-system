@@ -3,6 +3,7 @@ import type Params from '@/base/core/params/params'
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class EditProjectParams implements Params {
   id: number
@@ -46,7 +47,8 @@ export default class EditProjectParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['project_id'] = this.id
+    if (this.id || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
     data['translations'] = this.translation.toMap()
     if (this.partnerId?.length > 0) data['contractor_ids'] = this.partnerId
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)

@@ -8,6 +8,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Equipment Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Equipment Type',
       parent: 'Equipment Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Equipment Type',
       parent: 'Equipment Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {

@@ -8,6 +8,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Scope',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Scope',
       parent: 'Scope',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Scope',
       parent: 'Scope',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

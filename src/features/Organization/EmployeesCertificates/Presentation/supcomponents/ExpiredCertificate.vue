@@ -5,6 +5,7 @@ import ExpiredIcon from '@/shared/icons/ExpiredIcon.vue';
 const props = defineProps<{
   certificateId: number,
   organizationEmployeeId: number,
+  is_expire_date: boolean,
 }>()
 
 const emit = defineEmits(['update:data'])
@@ -21,6 +22,6 @@ const updateData = () => {
     </div>
     <!-- <p class="expired-date">Renew</p> -->
     <CertificateImageDialog :title="`Renew`" @update:data="updateData" :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId" />
+      :organizationEmployeeId="organizationEmployeeId" :is_expire_date="is_expire_date" />
   </div>
 </template>

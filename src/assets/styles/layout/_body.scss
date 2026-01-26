@@ -22,6 +22,7 @@ body {
     @include flex-column();
     gap: $MdSize;
     width: 100%;
+    overflow: hidden;
   }
   .p-accordioncontent-content {
     margin-inline: 19px;
@@ -34,6 +35,7 @@ body {
     background-color: $White;
     padding: $MdSize;
     border-radius: $XlSize;
+    overflow: hidden;
     // min-height: 100vh;
   }
 }

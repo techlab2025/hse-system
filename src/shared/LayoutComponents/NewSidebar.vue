@@ -7,7 +7,7 @@ import AdminSidebar from './AdminSidebar.vue'
 import BackIcon from '../icons/BackIcon.vue'
 import { useRoute, useRouter } from 'vue-router'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
-
+const route = useRoute()
 const isOpen = ref(true)
 
 const toggleSidebar = () => {

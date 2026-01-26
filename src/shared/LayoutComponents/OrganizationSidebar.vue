@@ -211,6 +211,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.WHIERE_HOUSE_UPDATE,
     ],
   },
+  {
+    link: '/organization/employee-certificate',
+    name: 'employee_certificate',
+    permissions: [
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+    ],
+  },
 
 
 ])
