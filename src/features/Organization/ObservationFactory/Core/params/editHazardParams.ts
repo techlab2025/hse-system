@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params.ts'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import type CapaParams from './CapaParam'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class EditHazardParams implements Params {
   public id: number
@@ -81,7 +82,8 @@ export default class EditHazardParams implements Params {
     if (this.type) data['type'] = this.type
     if (this.equipmentId) data['equipment_id'] = this.equipmentId
     if (this.zoonId) data['zoon_id'] = this.zoonId
-    if (this.projectId) data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.isResult) data['is_result'] = this.isResult
     if (this.riskLevel) data['risk_level'] = this.riskLevel
     if (this.saveStatus) data['save_status'] = this.saveStatus

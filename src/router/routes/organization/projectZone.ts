@@ -7,6 +7,8 @@ export const projectZoneRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/ProjectZone/IndexProjectZone.vue'),
     meta: {
       breadcrumb: 'Project Zone',
+      isSidebar: true,
+
     },
   },
   {
@@ -16,6 +18,8 @@ export const projectZoneRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Project Zone',
       parent: 'Project Zone',
+      isSidebar: true,
+
     },
   },
   {
@@ -25,6 +29,8 @@ export const projectZoneRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Project Zone',
       parent: 'Project Zone',
+      isSidebar: true,
+
     },
   },
 ]

@@ -8,6 +8,7 @@ export const observerationRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Observeration Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const observerationRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Observeration Type',
       parent: 'Observeration Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const observerationRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Observeration Type',
       parent: 'Observeration Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

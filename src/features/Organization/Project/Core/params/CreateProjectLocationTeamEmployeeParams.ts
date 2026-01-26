@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class CreateProjectLocationTeamEmployeeParams implements Params {
   public id: number
@@ -10,7 +11,8 @@ export default class CreateProjectLocationTeamEmployeeParams implements Params {
 
   toMap(): Record<string, number | any[]> {
     const data: Record<string, number | any[]> = {}
-    data['project_id'] = this.id
+    if (this.id || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
     data['teams'] = this.teams
     return data
   }

@@ -11,7 +11,7 @@ const emit = defineEmits(['update:data'])
 const Answers = ref([
   {
     title: '',
-    isDanger: false,
+    is_upload: false,
     isTextAreaRequired: false,
     textarea_type: 0,
     has_auto_observation: false
@@ -21,7 +21,7 @@ const Answers = ref([
 const addNewAnswer = () => {
   Answers.value.push({
     title: '',
-    isDanger: false,
+    is_upload: false,
     isTextAreaRequired: false,
     textarea_type: 0,
     has_auto_observation: false
@@ -83,10 +83,10 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-col gap-2">
                   <div class="flex gap-2">
-                    <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].isDanger"
-                      @click="Answers[index].isDanger = true; UpdateData()" />
-                    <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].isDanger"
-                      @click="Answers[index].isDanger = false; UpdateData()" />
+                    <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].is_upload"
+                      @click="Answers[index].is_upload = true; UpdateData()" />
+                    <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].is_upload"
+                      @click="Answers[index].is_upload = false; UpdateData()" />
                     <TextAreaRequiredIcon class="icon cursor-pointer" v-if="!Answers[index].isTextAreaRequired"
                       @click="Answers[index].isTextAreaRequired = true; Answers[index].textarea_type = 1; UpdateData()" />
                     <TextAreaRequiredSelectedIcon class="icon cursor-pointer" v-if="Answers[index].isTextAreaRequired"
@@ -95,7 +95,7 @@ onMounted(() => {
                   <div class="flex w-full space-between gap-2">
                     <input type="checkbox" v-model="item.has_auto_observation" @change="UpdateData"
                       :id="`has_auto_observation-${index}`">
-                    <label :for="`has_auto_observation-${index}`">Auto obervation</label>
+                    <label :for="`has_auto_observation-${index}`">Auto observation</label>
                   </div>
                 </div>
               </div>

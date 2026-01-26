@@ -8,6 +8,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Herikaly/IndexHerikaly.vue'),
     meta: {
       breadcrumb: 'Hierarchy',
+      isSidebar: false,
     },
   },
   {
@@ -17,6 +18,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Hierarchy',
       parent: 'Hierarchy',
+      isSidebar: false,
     },
   },
   {
@@ -26,6 +28,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Hierarchy',
       parent: 'Hierarchy',
+      isSidebar: false,
     },
   },
 ]

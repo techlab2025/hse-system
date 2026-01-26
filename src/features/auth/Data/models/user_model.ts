@@ -1,12 +1,15 @@
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import type ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class UserModel {
   public id: number
   public name: string // Use 'string' instead of 'String'
   public email: string // Use 'string' instead of 'String'
   public image: string
+  public employeeType: EmployeeStatusEnum
   public phone?: string
   public isMaster?: number
   public firstName?: string
@@ -23,7 +26,7 @@ export default class UserModel {
   public languages: LangModel[] = []
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   public permission: string[] = []
-  public employeeType: EmployeeStatusEnum = EmployeeStatusEnum.Employee
+  public Defaultproject?: TitleInterface
 
   constructor(
     id: number,
@@ -31,6 +34,7 @@ export default class UserModel {
     email: string,
     apiToken: string,
     image: string,
+    employeeType: EmployeeStatusEnum,
     phone?: string,
     isMaster?: number,
     firstName?: string,
@@ -46,12 +50,13 @@ export default class UserModel {
     languages: LangModel[] = [],
     type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN,
     permission: string[] = [],
-    employeeType: EmployeeStatusEnum = EmployeeStatusEnum.Employee,
+    Defaultproject?: TitleInterface,
   ) {
     this.id = id
     this.name = name
     this.email = email
     this.image = image
+    this.employeeType = employeeType
     this.firstName = firstName
     this.lastName = lastName
     this.phone = phone
@@ -68,7 +73,7 @@ export default class UserModel {
     this.languages = languages
     this.type = type
     this.permission = permission
-    this.employeeType = employeeType
+    this.Defaultproject = Defaultproject
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -78,6 +83,7 @@ export default class UserModel {
       map['email'],
       map['api_token'],
       map['image'],
+      map['employee_type'],
       map['phone'],
       map['is_master'],
       map['first_name'],
@@ -93,7 +99,7 @@ export default class UserModel {
       map['languages']?.map((lang: any) => LangModel.fromMap(lang)),
       map['type'],
       map['permissions'],
-      map['employee_type'],
+      map['default_project'],
     )
   }
 }

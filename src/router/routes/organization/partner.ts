@@ -7,6 +7,8 @@ export const partnerRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Partener/IndexPartener.vue'),
     meta: {
       breadcrumb: 'Partners Organization',
+      isSidebar: true,
+
     },
   },
   {
@@ -16,6 +18,8 @@ export const partnerRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Partner Organization',
       parent: 'Partners Organization',
+      isSidebar: true,
+
     },
   },
   {
@@ -25,6 +29,8 @@ export const partnerRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Partner Organization',
       parent: 'Partners Organization',
+      isSidebar: true,
+
     },
   },
 ]

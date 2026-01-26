@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class CreateProjectZoneParams implements Params {
   projectId: number
@@ -23,7 +24,8 @@ export default class CreateProjectZoneParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['project_id'] = this.projectId
+    if (this.projectId || useProjectSelectStore().getProjectId())
+      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     data['location_id'] = this.projectLocationId
     data['zoon_id'] = this.zoonId
 

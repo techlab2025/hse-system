@@ -1,3 +1,4 @@
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import { useUserStore } from '@/stores/user'
 
@@ -12,13 +13,16 @@ export default class ConditionHandler {
     return this.instance
   }
 
-  isAdmin() {
+  isOrganizationAdmin() {
     const { user } = useUserStore()
     return user?.employeeType == EmployeeStatusEnum.Admin
   }
-  isEmployee() {
+  isOrganizationEmployee() {
     const { user } = useUserStore()
     return user?.employeeType == EmployeeStatusEnum.Employee
   }
+  isSettingAdmin() {
+    const { user } = useUserStore()
+    return user?.type == OrganizationTypeEnum.ADMIN
+  }
 }
-  

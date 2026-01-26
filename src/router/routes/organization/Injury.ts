@@ -7,6 +7,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Injury/IndexInjury.vue'),
     meta: {
       breadcrumb: 'Injury',
+      isSidebar: true,
     },
   },
   {
@@ -16,6 +17,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Add Injury',
       parent: 'Injury',
+      isSidebar: true,
     },
   },
   {
@@ -25,6 +27,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Edit Injury',
       parent: 'Injury',
+      isSidebar: true,
     },
   },
 ]

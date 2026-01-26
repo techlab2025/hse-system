@@ -8,6 +8,7 @@ export default class AddEmployeeCertificateParams implements Params {
   expiredAt: string
   notes: string
   certificate_image: string
+  issueDate: string
 
   public static readonly validation = new ClassValidation().setRules({
     certificateId: { required: true },
@@ -20,12 +21,14 @@ export default class AddEmployeeCertificateParams implements Params {
     expiredAt: string,
     notes: string,
     certificate_image: string,
+    issueDate: string,
   ) {
     this.certificateId = certificateId
     this.organizationEmployeeId = organizationEmployeeId
     this.expiredAt = expiredAt
     this.notes = notes
     this.certificate_image = certificate_image
+    this.issueDate = issueDate
   }
 
   toMap(): Record<
@@ -45,6 +48,7 @@ export default class AddEmployeeCertificateParams implements Params {
     data['expired_at'] = formatJoinDate(this.expiredAt)
     data['notes'] = this.notes
     data['certificate_image'] = this.certificate_image
+    data['issue_date'] = formatJoinDate(this  .issueDate)
 
     return data
   }

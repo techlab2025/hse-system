@@ -15,6 +15,13 @@ import SearchIcon from '../icons/SearchIcon.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import defaultLogo from '@/assets/images/logo.svg'
+import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
+import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
 
 const route = useRoute()
 // console.log(route.name)
@@ -38,11 +45,13 @@ const logout = () => {
   if (user?.type == OrganizationTypeEnum.ADMIN) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+    localStorage.removeItem('ProjectSelect')
     window.location.href = '/login/admin'
   }
   else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+    localStorage.removeItem('ProjectSelect')
     window.location.href = '/login/organization'
   }
   // router.push("/login");
@@ -56,6 +65,21 @@ const toggleDropMenu = () => {
 
 // fetch user store data
 const { user } = useUserStore()
+const ProjectSelector = useProjectSelectStore()
+
+const SelectProject = ref<TitleInterface>(new TitleInterface({ id: ProjectSelector.getProject()?.id, title: ProjectSelector.getProject()?.title }))
+const indexProjectController = IndexProjectController.getInstance()
+const indexProjectParams = new IndexProjectParams("", 1, 10, 0)
+
+const setSelectedProject = async (project: TitleInterface) => {
+  const organizationEmployeeDefaultProjectRepoController = OrganizationEmployeeDefaultProjectRepoController.getInstance()
+  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(user?.id, project?.id == -1 ? null : project?.id)
+  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(organizationEmployeeDefaultProjectParams, router)
+  // SelectProject.value = project
+  ProjectSelector.setProjectId(project)
+  // location.reload()
+}
+
 </script>
 
 <template>
@@ -82,6 +106,13 @@ const { user } = useUserStore()
         </router-link>
       </div>
 
+      <div class="input-wrapper">
+        <!-- label="Project" -->
+        <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
+          :params="indexProjectParams" id="project" placeholder="select your project"
+          @update:modelValue="setSelectedProject" :reload="false" />
+
+      </div>
       <!-- <div class="search">
         <SearchIcon />
         <input type="serach" placeholder="Search What You Want" />
@@ -117,4 +148,12 @@ const { user } = useUserStore()
   </header>
 </template>
 
-<style scoped></style>
+<style scoped>
+.input-wrapper {
+  .input {
+    width: 400px;
+  }
+
+  width: 400px;
+}
+</style>

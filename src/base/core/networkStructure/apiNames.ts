@@ -1390,7 +1390,9 @@ class ApiNames {
 
   public get CreateCapaResult() {
     return this.prefix + 'set_capa_result'
-
+  }
+  public get OrganizationEmployeeDefaultProject() {
+    return this.prefix + 'update_organization_employee_default_project'
   }
 }
 

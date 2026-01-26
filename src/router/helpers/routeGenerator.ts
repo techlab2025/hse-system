@@ -12,6 +12,7 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
       meta: {
         breadcrumb: name == 'Areas' ? 'Location' : name,
         type: 'Shared',
+        isSidebar: true,
       },
     },
     {
@@ -22,6 +23,7 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
         breadcrumb: `Add ${name == 'Areas' ? 'Location' : name}`,
         parent: name == 'Areas' ? 'Location' : name,
         type: 'Shared',
+        isSidebar: true,
       },
     },
     {
@@ -32,6 +34,7 @@ export function createCrudRoutes(path: string, name: string, basePath: string): 
         breadcrumb: `Edit ${name == 'Areas' ? 'Location' : name}`,
         parent: name == 'Areas' ? 'Location' : name,
         type: 'Shared',
+        isSidebar: true,
       },
     },
   ]
@@ -50,6 +53,7 @@ export function createLocationRoutes(path: string, name: string): RouteRecordRaw
       meta: {
         breadcrumb: ` ${name == 'Areas' ? 'Location' : name}`,
         type: 'Shared',
+        isSidebar: true,
       },
     },
     {
@@ -60,6 +64,7 @@ export function createLocationRoutes(path: string, name: string): RouteRecordRaw
         breadcrumb: `Add  ${name == 'Areas' ? 'Location' : name}`,
         parent: ` ${name == 'Areas' ? 'Location' : name}`,
         type: 'Shared',
+        isSidebar: true,
       },
     },
     {
@@ -70,6 +75,7 @@ export function createLocationRoutes(path: string, name: string): RouteRecordRaw
         breadcrumb: `Edit  ${name == 'Areas' ? 'Location' : name}`,
         parent: ` ${name == 'Areas' ? 'Location' : name}`,
         type: 'Shared',
+        isSidebar: true,
       },
     },
   ]
@@ -93,6 +99,7 @@ export function createWebsiteModuleRoutes(modules: WebsiteModule[]): RouteRecord
         meta: {
           breadcrumb: displayName,
           type: 'Shared',
+          isSidebar: true,
         },
       },
       {
@@ -103,6 +110,7 @@ export function createWebsiteModuleRoutes(modules: WebsiteModule[]): RouteRecord
           breadcrumb: `Add ${displayName}`,
           parent: displayName,
           type: 'Shared',
+          isSidebar: true,
         },
       },
       {
@@ -113,6 +121,7 @@ export function createWebsiteModuleRoutes(modules: WebsiteModule[]): RouteRecord
           breadcrumb: `Edit ${displayName}`,
           parent: displayName,
           type: 'Shared',
+          isSidebar: true,
         },
       },
     )

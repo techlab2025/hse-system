@@ -8,6 +8,8 @@ export const templateRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Templates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -18,6 +20,8 @@ export const templateRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Template',
       parent: 'Templates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
   {
@@ -28,6 +32,8 @@ export const templateRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Template',
       parent: 'Templates',
       type: 'Shared',
+      isSidebar: true,
+
     },
   },
 ]

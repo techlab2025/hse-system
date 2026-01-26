@@ -9,6 +9,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Hazard Type',
       type: 'Shared',
       subType: 'Hazards',
+      isSidebar: true,
     },
   },
   {
@@ -21,6 +22,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       type: 'Shared',
       subType: 'Add Hazard',
       subParent: 'Hazards',
+      isSidebar: true,
     },
   },
   {
@@ -33,6 +35,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       type: 'Shared',
       subType: 'Edit Hazard',
       subParent: 'Hazards',
+      isSidebar: true,
     },
   },
   {
@@ -43,6 +46,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       breadcrumb: ' Hazards',
       parent: 'Hazard Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -53,6 +57,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       breadcrumb: ' Hazards',
       parent: 'Hazard Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

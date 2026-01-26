@@ -8,6 +8,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Hazard Factors',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Hazrad Factors',
       parent: 'Hazard Factories',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Hazard Factors',
       parent: 'Factories',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -37,6 +40,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Hazard Factors Items',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -47,6 +51,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Hazard Factor Item',
       parent: 'Factories Items',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -57,6 +62,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Hazard Factor Item',
       parent: 'Factories Items',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

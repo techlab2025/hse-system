@@ -14,14 +14,20 @@ import { useRouter } from "vue-router";
 const props = defineProps<{
   certificateId: number,
   organizationEmployeeId: number,
-  title: string
+  title: string,
+  is_expire_date: boolean
 }>()
 const visible = ref(false);
 const Notes = ref()
 const SelectedData = ref(new Date())
+const SelectedIssueData = ref(new Date())
 
 const UpdateDate = (date) => {
   SelectedData.value = date
+  // UpdateData();
+}
+const UpdateIssueDate = (date) => {
+  SelectedIssueData.value = date
   // UpdateData();
 }
 const certificateImage = ref<string | null>(null)
@@ -71,7 +77,7 @@ const emit = defineEmits(['update:data'])
 const router = useRouter()
 const UploadCertificateImage = async () => {
   const addEmployeeCertificateController = AddEmployeeCertificateController.getInstance()
-  const addEmployeeCertificateParams = new AddEmployeeCertificateParams(props.certificateId, props.organizationEmployeeId, SelectedData.value, Notes.value, certificateImage.value)
+  const addEmployeeCertificateParams = new AddEmployeeCertificateParams(props.certificateId, props.organizationEmployeeId, SelectedData.value, Notes.value, certificateImage.value, SelectedIssueData.value)
   const state = await addEmployeeCertificateController.addEmployeeCertificate(addEmployeeCertificateParams, router)
   visible.value = false
   emit("update:data")
@@ -93,10 +99,15 @@ const UploadCertificateImage = async () => {
           <label for="Notes">Notes</label>
           <input type="text" v-model="Notes" class="input" placeholder="Add notes ...">
         </div>
-        <div class="input-wrapper mt-10">
-          <label for="">{{ $t('select_date') }}</label>
+        <div class="input-wrapper mt-10" v-if="is_expire_date">
+          <label for="">{{ $t('select_expire_date') }}</label>
           <DatePicker v-model="SelectedData" class="input" label="select Expiry Date" id="Day"
             placeholder="select Expiry Date" @update:modelValue="UpdateDate" />
+        </div>
+        <div class="input-wrapper mt-10">
+          <label for="">{{ $t('select_issue_date') }}</label>
+          <DatePicker v-model="SelectedIssueData" class="input" label="select Issue Date" id="Day"
+            placeholder="select Issue Date" @update:modelValue="UpdateIssueDate" />
         </div>
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
