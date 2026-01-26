@@ -33,7 +33,8 @@ const showSidebar = computed(() => {
     <!-- <Sidebar  /> -->
     <!-- <div class="sidebar"> -->
     <!-- v-if="user?.type === OrganizationTypeEnum.ADMIN" -->
-    <NewSidebar v-if="ConditionHandler.getInstance().isAdmin()" />
+
+    <NewSidebar v-if="!ConditionHandler.getInstance().isOrganizationEmployee()" />
     <!-- </div> -->
     <section class="content-wrapper">
 
