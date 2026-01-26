@@ -457,7 +457,7 @@ watch(OperationAccordion, (val) => {
       <AccordionHeader>
         <div class="links-header">
           <GeerIcon />
-          {{ $t('organization_operations') }}
+          {{ $t('operations') }}
         </div>
       </AccordionHeader>
 
