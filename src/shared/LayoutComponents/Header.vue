@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
 // import IconMenu from '@/shared/icons/IconMenu.vue'
@@ -22,6 +22,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const route = useRoute()
 // console.log(route.name)
@@ -80,6 +81,9 @@ const setSelectedProject = async (project: TitleInterface) => {
   // location.reload()
 }
 
+const showProjectSelect = computed(() => {
+  return user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+})
 </script>
 
 <template>
@@ -106,7 +110,7 @@ const setSelectedProject = async (project: TitleInterface) => {
         </router-link>
       </div>
 
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-if="showProjectSelect">
         <!-- label="Project" -->
         <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
           :params="indexProjectParams" id="project" placeholder="select your project"

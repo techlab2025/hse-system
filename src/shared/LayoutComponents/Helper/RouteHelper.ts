@@ -19,7 +19,7 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
   result.push({
     label: 'Home',
     url: ConditionHandler.getInstance().isOrganizationEmployee()
-      ? '/organization/equipment-mangement/all-observatin?type=2'
+      ? '/organization/employee-interface'
       : route.path.startsWith('/admin')
         ? '/admin'
         : '/organization',
