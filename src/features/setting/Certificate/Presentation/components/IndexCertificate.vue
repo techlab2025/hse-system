@@ -138,43 +138,33 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4" v-if="state.data?.length > 0">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchCertificate())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchCertificate"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCertificate" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          class="btn btn-primary"
-        >
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          class="btn btn-primary">
           {{ $t('Add_Certificate') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.CERTIFICATE_ALL,
-      PermissionsEnum.CERTIFICATE_DELETE,
-      PermissionsEnum.CERTIFICATE_FETCH,
-      PermissionsEnum.CERTIFICATE_UPDATE,
-      PermissionsEnum.CERTIFICATE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.CERTIFICATE_ALL,
+    PermissionsEnum.CERTIFICATE_DELETE,
+    PermissionsEnum.CERTIFICATE_FETCH,
+    PermissionsEnum.CERTIFICATE_UPDATE,
+    PermissionsEnum.CERTIFICATE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive mt-2 ">
@@ -198,8 +188,8 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`">{{
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -225,20 +215,13 @@ watch(
                   <!--                  @CertificateChangeStatus="fetchCertificate"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteCertificate)"
-                    @delete="deleteCertificate(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteCertificate)" @delete="deleteCertificate(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -248,31 +231,25 @@ watch(
       </template>
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
             addText="Add certificate"
             description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
-          />
+            title="..ops! You have No Certificate" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
             addText="Add Certificate"
             description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
-          />
+            title="..ops! You have No Certificate" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
