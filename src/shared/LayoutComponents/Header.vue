@@ -104,13 +104,13 @@ const showProjectSelect = computed(() => {
           <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
         </div> -->
         <router-link class="flex items-center gap-2"
-          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'">
+          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : user?.employeeType == EmployeeStatusEnum.Employee ? '/organization/employee-interface' : '/organization'">
           <img :src="defaultLogo" alt="logo-img">
           <p class="logo">HSE.Cloud.Ai </p>
         </router-link>
       </div>
 
-      <div class="input-wrapper" v-if="showProjectSelect">
+      <div class="input-wrapper" v-if="!showProjectSelect">
         <!-- label="Project" -->
         <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
           :params="indexProjectParams" id="project" placeholder="select your project"
