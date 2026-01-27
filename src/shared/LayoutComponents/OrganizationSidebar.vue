@@ -52,18 +52,18 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.CERTIFICATE_UPDATE,
     ],
   },
-  {
-    link: '/organization/equipment-types',
-    name: 'Equipment Types',
-    permissions: [
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/equipment-types',
+  //   name: 'Equipment Types',
+  //   permissions: [
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
+  //     PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+  //   ],
+  // },
   // {
   //   link: '/organization/equipments',
   //   name: 'Equipments',
@@ -189,17 +189,17 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
 
-  {
-    link: '/organization/where-house-type',
-    name: 'WareHouse Type',
-    permissions: [
-      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-      PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
-      PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
-      PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
-      PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/where-house-type',
+  //   name: 'WareHouse Type',
+  //   permissions: [
+  //     PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+  //     PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+  //     PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+  //     PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+  //     PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/where-house',
     name: 'WareHouse',
@@ -247,7 +247,6 @@ const OrganizationRoutes = ref<Routes[]>([
 
 
 ])
-
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',
@@ -426,22 +425,89 @@ const OperationRoutesRoutes = ref<Routes[]>([
 
 
 ])
+const LockUpsRoutes = ref<Routes[]>([
+  {
+    link: '/organization/where-house-type',
+    name: 'where_house_types',
+    permissions: [
+      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/organization/hazard-type',
+    name: 'hazard_type',
+    permissions: [
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_FETCH,
+      PermissionsEnum.HAZARD_TYPE_DETAILS,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/organization/accidents-type',
+    name: 'accidents_type',
+    permissions: [
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ACCIDENTS_TYPE_DETAILS,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/organization/observation-type',
+    name: 'observation_type',
+    permissions: [
+      PermissionsEnum.OBSERVATION_TYPE_ALL,
+      PermissionsEnum.OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.OBSERVATION_TYPE_DETAILS,
+      PermissionsEnum.OBSERVATION_TYPE_CREATE,
+      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.OBSERVATION_TYPE_DELETE,
+
+    ],
+  },
+  {
+    link: '/organization/equipment-types',
+    name: 'equipment_types',
+    permissions: [
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+    ],
+  },
+])
 
 const SelectedOrgRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
 const SelectedOperationRoute = ref<string>('')
+const SelectedLockupsRoute = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
     SelectedOrgRoute.value = OrganizationRoutes.value.find(item => item.link === newPath)?.name
     SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name
     SelectedOperationRoute.value = OperationRoutesRoutes.value.find(item => item.link === newPath)?.name
+    SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name
+
   }
 )
 
 const orgAccordion = ref<string | null>('1')
 const locationAccordion = ref<string | null>('2')
-const OperationAccordion = ref<string | null>('2')
+const OperationAccordion = ref<string | null>('3')
+const LoackupsAccordion = ref<string | null>('4')
 
 
 watch(orgAccordion, (val) => {
@@ -453,37 +519,43 @@ watch(locationAccordion, (val) => {
 watch(OperationAccordion, (val) => {
   OperationAccordion.value = val
 })
+watch(LoackupsAccordion, (val) => {
+  LoackupsAccordion.value = val
+})
 
 </script>
 
 <template>
 
 
-  <Accordion v-model:value="orgAccordion">
-    <AccordionPanel value="1">
-      <AccordionHeader>
-        <div class="links-header">
-          <GeerIcon />
-          {{ $t('organization_setting') }}
-        </div>
-      </AccordionHeader>
+  <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+    <Accordion v-model:value="orgAccordion">
+      <AccordionPanel value="1">
+        <AccordionHeader>
+          <div class="links-header">
+            <GeerIcon />
+            {{ $t('organization_setting') }}
+          </div>
+        </AccordionHeader>
 
-      <AccordionContent>
-        <ul>
-          <PermissionBuilder v-for="(orgroute, index) in OrganizationRoutes" :key="index" :code="orgroute?.permissions">
-            <li>
-              <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
-                <span>{{ $t(orgroute.name) }}</span>
-              </router-link>
-            </li>
-          </PermissionBuilder>
-        </ul>
-      </AccordionContent>
-    </AccordionPanel>
-    <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
-      <span>{{ SelectedOrgRoute }}</span>
-    </AccordionPanel>
-  </Accordion>
+        <AccordionContent>
+          <ul>
+            <PermissionBuilder v-for="(orgroute, index) in OrganizationRoutes" :key="index"
+              :code="orgroute?.permissions">
+              <li>
+                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                  <span>{{ $t(orgroute.name) }}</span>
+                </router-link>
+              </li>
+            </PermissionBuilder>
+          </ul>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
+        <span>{{ SelectedOrgRoute }}</span>
+      </AccordionPanel>
+    </Accordion>
+  </PermissionBuilder>
 
   <!-- <Accordion v-model:value="OperationAccordion">
     <AccordionPanel value="2">
@@ -615,4 +687,31 @@ watch(OperationAccordion, (val) => {
     </Accordion>
   </PermissionBuilder>
 
+  <PermissionBuilder :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+    <Accordion v-model:value="LoackupsAccordion">
+      <AccordionPanel value="4">
+        <AccordionHeader>
+          <div class="links-header">
+            <GeerIcon />
+            {{ $t('Lockups') }}
+          </div>
+        </AccordionHeader>
+
+        <AccordionContent>
+          <ul>
+            <PermissionBuilder v-for="(orgroute, index) in LockUpsRoutes" :key="index" :code="orgroute?.permissions">
+              <li>
+                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                  <span>{{ $t(orgroute.name) }}</span>
+                </router-link>
+              </li>
+            </PermissionBuilder>
+          </ul>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
+        <span>{{ SelectedLockupsRoute }}</span>
+      </AccordionPanel>
+    </Accordion>
+  </PermissionBuilder>
 </template>
