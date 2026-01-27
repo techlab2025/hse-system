@@ -90,7 +90,6 @@ const updateData = () => {
     )
     : new AddScopeParams(
       translationsParams,
-      SerialNumber.value?.SerialNumber
     )
 
   console.log(params, "params");
@@ -153,15 +152,7 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
 
-    <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div>
+
 
 
 </template>

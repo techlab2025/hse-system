@@ -5,7 +5,7 @@ import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
+import { useRoute, type Router } from 'vue-router'
 import type LocationModel from '../../Data/models/LocationModel'
 import AddLocationUseCase from '../../Domain/useCase/addLocationUseCase'
 import LocationRouterHandler from '../routeHandler/RoutHandler'
@@ -58,7 +58,8 @@ export default class AddLocationController extends ControllerInterface<LocationM
         // if (!draft) await router.push('/admin/locations_country')
 
         const { user } = useUserStore()
-        await router.push(LocationRouterHandler.LocationRouter(params.type, user))
+        const route = useRoute()
+        await router.push(LocationRouterHandler.LocationRouter(params.type, user, route))
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

@@ -32,31 +32,31 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editContractorParams(
-        props.data?.id! ?? 0,
-        Name.value,
-        phoneNumber.value,
-        Scopes,
-        CompanyEmail.value,
-        CompanyAddress.value,
-        contactPerson.value,
-        contactPersonEmail.value,
-        contactPersonPhone.value,
-        SelectedStatus.value ? SelectedStatus.value?.id : null,
-        formatJoinDate(date.value),
-      )
+      props.data?.id! ?? 0,
+      Name.value,
+      phoneNumber.value,
+      Scopes,
+      CompanyEmail.value,
+      CompanyAddress.value,
+      contactPerson.value,
+      contactPersonEmail.value,
+      contactPersonPhone.value,
+      SelectedStatus.value ? SelectedStatus.value?.id : null,
+      formatJoinDate(date.value),
+    )
     : new AddContractorParams(
-        Name.value,
-        phoneNumber.value,
-        Scopes,
-        CompanyEmail.value ? CompanyEmail.value : ' ',
-        CompanyAddress.value ? CompanyAddress.value : ' ',
-        contactPerson.value ? contactPerson.value : ' ',
-        contactPersonEmail.value ? contactPersonEmail.value : ' ',
-        contactPersonPhone.value ? contactPersonPhone.value : ' ',
-        SelectedStatus.value ? SelectedStatus.value?.id : 0,
-        formatJoinDate(date.value),
-        SerialNumber.value?.SerialNumber,
-      )
+      Name.value,
+      phoneNumber.value,
+      Scopes,
+      CompanyEmail.value ? CompanyEmail.value : ' ',
+      CompanyAddress.value ? CompanyAddress.value : ' ',
+      contactPerson.value ? contactPerson.value : ' ',
+      contactPersonEmail.value ? contactPersonEmail.value : ' ',
+      contactPersonPhone.value ? contactPersonPhone.value : ' ',
+      SelectedStatus.value ? SelectedStatus.value?.id : 0,
+      formatJoinDate(date.value),
+      SerialNumber.value?.SerialNumber,
+    )
 
   console.log('params', params)
   emit('update:data', params)
@@ -69,6 +69,7 @@ const contactPerson = ref<string>()
 const CompanyAddress = ref<string>('')
 const CompanyEmail = ref<string>('')
 const SelectedStatus = ref<TitleInterface>()
+
 const StatusList = ref<TitleInterface[]>([
   new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Valid' }),
   new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
@@ -177,90 +178,41 @@ const fields = ref([
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input
-      type="text"
-      id="name"
-      class="input"
-      v-model="Name"
-      @input="setName"
-      placeholder="Enter Name "
-    />
+    <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
     <label for="company_number">{{ $t('contractor_number') }}</label>
-    <input
-      type="text"
-      id="company_number"
-      min="1"
-      class="input"
-      v-model="phoneNumber"
-      @input="setPhoneNumber"
-      placeholder="Enter contractor Number "
-    />
+    <input type="text" id="company_number" min="1" class="input" v-model="phoneNumber" @input="setPhoneNumber"
+      placeholder="Enter contractor Number " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
-    <input
-      type="email"
-      id="company_email"
-      class="input"
-      v-model="CompanyEmail"
-      @input="setCompanyEmail"
-      placeholder="Enter contractor Email "
-    />
+    <input type="email" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
+      placeholder="Enter contractor Email " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_address">{{ $t('contractor_address') }}</label>
-    <input
-      type="text"
-      id="company_address"
-      class="input"
-      v-model="CompanyAddress"
-      @input="setCompanyAddress"
-      placeholder="Enter contractor Adress "
-    />
+    <input type="text" id="company_address" class="input" v-model="CompanyAddress" @input="setCompanyAddress"
+      placeholder="Enter contractor Adress " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person">{{ $t('contact_person') }}</label>
-    <input
-      type="text"
-      id="contact_person"
-      class="input"
-      v-model="contactPerson"
-      @input="setcontactPerson"
-      placeholder="Enter Contact Person "
-    />
+    <input type="text" id="contact_person" class="input" v-model="contactPerson" @input="setcontactPerson"
+      placeholder="Enter Contact Person " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_email">{{ $t('contact_person_email') }}</label>
-    <input
-      type="text"
-      id="contact_person_email"
-      class="input"
-      v-model="contactPersonEmail"
-      @input="setcontactPersonEmail"
-      placeholder="Enter Contact Person Email"
-    />
+    <input type="text" id="contact_person_email" class="input" v-model="contactPersonEmail"
+      @input="setcontactPersonEmail" placeholder="Enter Contact Person Email" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
-    <input
-      type="text"
-      id="contact_person_phone"
-      class="input"
-      v-model="contactPersonPhone"
-      @input="setcontactPersonPhone"
-      placeholder="Enter Contact Person Phone"
-    />
+    <input type="text" id="contact_person_phone" class="input" v-model="contactPersonPhone"
+      @input="setcontactPersonPhone" placeholder="Enter Contact Person Phone" />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <!-- <CustomSelectInput
@@ -276,20 +228,9 @@ const fields = ref([
 
         /> -->
 
-    <UpdatedCustomInputSelect
-      :modelValue="Scope"
-      class="input"
-      :controller="indexScopeController"
-      :params="indexScopeParams"
-      label="Scope"
-      id="Scope"
-      placeholder="Select Scope"
-      @update:modelValue="setScope"
-      :type="2"
-      @close="scopeDialogRef = false"
-      :isDialog="true"
-      :dialogVisible="scopeDialogRef"
-    >
+    <UpdatedCustomInputSelect :modelValue="Scope" class="input" :controller="indexScopeController"
+      :params="indexScopeParams" label="Scope" id="Scope" placeholder="Select Scope" @update:modelValue="setScope"
+      :type="2" @close="scopeDialogRef = false" :isDialog="true" :dialogVisible="scopeDialogRef">
       <template #LabelHeader>
         <span class="add-dialog" @click="scopeDialogRef = true">New</span>
       </template>
@@ -300,26 +241,13 @@ const fields = ref([
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedStatus"
-      class="input"
-      :static-options="StatusList"
-      label="Status"
-      id="Status"
-      placeholder="Select Status"
-      @update:modelValue="setStatus"
-    />
+    <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList" label="Status"
+      :reload="false" id="Status" placeholder="Select Status" @update:modelValue="setStatus" />
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
-    <DatePicker
-      :modelValue="date"
-      class="input"
-      label="Date"
-      id="expiry_date"
-      placeholder="Contruct Expiry Date"
-      @update:modelValue="setExpiryDate"
-    />
+    <DatePicker :modelValue="date" class="input" label="Date" id="expiry_date" placeholder="Contruct Expiry Date"
+      @update:modelValue="setExpiryDate" />
   </div>
 </template>

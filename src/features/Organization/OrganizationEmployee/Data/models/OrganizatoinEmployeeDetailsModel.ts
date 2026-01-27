@@ -28,7 +28,6 @@ export default class OrganizatoinEmployeeDetailsModel {
   public showHierarchy: TitleInterface[]
   public projects: ProjectModel[]
   public emplyeeStatus: EmployeeStatusEnum
-  
 
   // =====================
   // Constructor
@@ -93,7 +92,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.employee_certificates,
       data.hierarchy,
       data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
-      data?.emplyee_status,
+      data?.employee_type,
       // data.employee_tasks,
       // data.employee_performance,
     )

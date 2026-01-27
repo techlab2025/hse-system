@@ -77,11 +77,11 @@ const updateData = () => {
   const params = props.data?.id
     ? new EditProjectZoneParams(props?.data?.id, translationsParams, SelectedLocation.value?.id)
     : new AddProjectZoneParams(
-        translationsParams,
-        SelectedArea.value?.id,
-        SerialNumber.value?.SerialNumber,
-        // SelectedArea.value?.id,
-      )
+      translationsParams,
+      SelectedArea.value?.id,
+      // SerialNumber.value?.SerialNumber,
+      // SelectedArea.value?.id,
+    )
 
   emit('update:data', params)
 }
@@ -174,16 +174,11 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="$t('title')"
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
+      @update:modelValue="setLangs" />
   </div>
 
-    <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -191,56 +186,29 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
+  </div> -->
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      @update:modelValue="SetCountrySelection" />
+  </div>
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedCountry"
-      :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams"
-      label="Country "
-      id="Location"
-      placeholder="Select  Country"
-      @update:modelValue="SetCountrySelection"
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedState"
-      v-if="SelectedCountry"
-      :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams"
-      label="State"
-      id="Location"
-      placeholder="Select State"
-      @update:modelValue="SetStateSelection"
-    />
+    <CustomSelectInput :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
+      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      @update:modelValue="SetCitySelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedCity"
-      v-if="SelectedState"
-      :controller="indexLocationCityController"
-      :params="indexLocationCityParams"
-      label="City"
-      id="City"
-      placeholder="Select City"
-      @update:modelValue="SetCitySelection"
-    />
-  </div>
-
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="SelectedArea"
-      v-if="SelectedCity"
-      :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams"
-      label="Location"
-      id="Area"
-      placeholder="Select Location"
-      @update:modelValue="SetAreaSelection"
-    />
+    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity" :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams" label="Location" id="Area" placeholder="Select Location"
+      @update:modelValue="SetAreaSelection" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

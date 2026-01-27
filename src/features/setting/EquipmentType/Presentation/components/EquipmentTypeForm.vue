@@ -112,31 +112,28 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   // console.log(ImageCahnge.value, "ImageCahnge.value");
-  console.log(
-    image.value.length > 0 ? image.value : '*',
-    "isBase64(image.value) || image.value.length > 0 ? image.value : '*'",
-  )
+
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        hasCertificate.value,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        +parent_id.value,
-        image.value.length > 0 ? image.value : '*',
-        null,
-        EquipmentType.value?.id,
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      hasCertificate.value,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+      +parent_id.value,
+      image.value.length > 0 ? image.value : '*',
+      null,
+      EquipmentType.value?.id,
+    )
     : new AddEquipmentTypeParams(
-        translationsParams,
-        hasCertificate.value,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        +parent_id.value,
-        image.value,
-        EquipmentType.value?.id,
-      )
+      translationsParams,
+      hasCertificate.value,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+      +parent_id.value,
+      image.value,
+      EquipmentType.value?.id,
+    )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -228,14 +225,8 @@ const UpdateHasCertificate = (data) => {
 
   <!-- Equipment Selection -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="EquipmentType"
-      :static-options="EquipmentsTypes"
-      label="Category"
-      id="Type"
-      placeholder="Select Type"
-      @update:modelValue="setEquipmentType"
-    />
+    <CustomSelectInput :modelValue="EquipmentType" :static-options="EquipmentsTypes" label="Category" id="Type"
+      placeholder="Select Type" @update:modelValue="setEquipmentType" />
   </div>
 
   <!-- all_industries -->
@@ -248,40 +239,21 @@ const UpdateHasCertificate = (data) => {
   <!-- all industry -->
 
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox
-      :title="`all_industries`"
-      :checked="allIndustries"
-      @update:checked="allIndustries = $event"
-    />
+    <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
   </div>
 
   <!--industry  -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Select Industry"
-      id="EquipmentType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+      label="Select Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+      @update:modelValue="setIndustry" />
   </div>
 
   <!-- image -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <label for="image">Image</label>
-    <SingleFileUpload
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
-    />
+    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
+      placeholder="Select image" />
   </div>
 
   <!-- <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button> -->

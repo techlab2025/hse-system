@@ -105,7 +105,6 @@ const updateData = () => {
       Code.value,
       LocationEnum.AREA,
       ParentId?.value || SelectedCity?.value?.id,
-      SerialNumber.value?.SerialNumber,
     )
 
   emit('update:data', params)
@@ -255,7 +254,7 @@ const fields = ref([
       :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
-    <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -263,7 +262,7 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
     <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"

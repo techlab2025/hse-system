@@ -148,7 +148,7 @@ const fields = ref([
       :params="indexCertificateParams" label="Certificate" id="Certificate" placeholder="Select certificate" :type="2"
       @update:modelValue="setCertificate" />
   </div>
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
       <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -156,5 +156,5 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 </template>

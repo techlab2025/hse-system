@@ -1386,13 +1386,31 @@ class ApiNames {
     return this.prefix + 'delete_root_cause'
   }
   public get CreateRootCauses() {
-    return this.prefix + 'create_root_cause'}
+    return this.prefix + 'create_root_cause'
+  }
 
   public get CreateCapaResult() {
     return this.prefix + 'set_capa_result'
   }
   public get OrganizationEmployeeDefaultProject() {
     return this.prefix + 'update_organization_employee_default_project'
+  }
+
+  // Subscription Type
+  public get CreateSubscriptionType() {
+    return this.prefix + 'create_subscription_type'
+  }
+  public get IndexSubscriptionType() {
+    return this.prefix + 'fetch_subscription_types'
+  }
+  public get ShowSubscriptionType() {
+    return this.prefix + 'fetch_subscription_type_details'
+  }
+  public get EditSubscriptionType() {
+    return this.prefix + 'update_subscription_type'
+  }
+  public get DeleteSubscriptionType() {
+    return this.prefix + 'delete_subscription_type'
   }
 }
 
