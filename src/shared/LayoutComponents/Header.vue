@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
 // import IconMenu from '@/shared/icons/IconMenu.vue'
@@ -22,6 +22,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const route = useRoute()
 // console.log(route.name)
@@ -47,7 +48,8 @@ const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
     window.location.href = '/login/admin'
-  } else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
+  }
+  else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
@@ -66,30 +68,23 @@ const toggleDropMenu = () => {
 const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
-const SelectProject = ref<TitleInterface>(
-  new TitleInterface({
-    id: ProjectSelector.getProject()?.id,
-    title: ProjectSelector.getProject()?.title,
-  }),
-)
+const SelectProject = ref<TitleInterface>(new TitleInterface({ id: ProjectSelector.getProject()?.id, title: ProjectSelector.getProject()?.title }))
 const indexProjectController = IndexProjectController.getInstance()
-const indexProjectParams = new IndexProjectParams('', 1, 10, 0)
+const indexProjectParams = new IndexProjectParams("", 1, 10, 0)
 
 const setSelectedProject = async (project: TitleInterface) => {
-  const organizationEmployeeDefaultProjectRepoController =
-    OrganizationEmployeeDefaultProjectRepoController.getInstance()
-  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(
-    user?.id,
-    project?.id == -1 ? null : project?.id,
-  )
-  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(
-    organizationEmployeeDefaultProjectParams,
-    router,
-  )
+  const organizationEmployeeDefaultProjectRepoController = OrganizationEmployeeDefaultProjectRepoController.getInstance()
+  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(user?.id, project?.id == -1 ? null : project?.id)
+  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(organizationEmployeeDefaultProjectParams, router)
   // SelectProject.value = project
   ProjectSelector.setProjectId(project)
   // location.reload()
 }
+
+const showProjectSelect = ref<boolean>(false)
+onMounted(() => {
+  showProjectSelect.value = user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+})
 </script>
 
 <template>
@@ -109,26 +104,19 @@ const setSelectedProject = async (project: TitleInterface) => {
           </h1>
           <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
         </div> -->
-        <router-link
-          class="flex items-center gap-2"
-          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"
-        >
-          <img :src="defaultLogo" alt="logo-img" />
-          <p class="logo">HSE.Cloud.Ai</p>
+        <router-link class="flex items-center gap-2"
+          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : user?.employeeType == EmployeeStatusEnum.Employee ? '/organization/employee-interface' : '/organization'">
+          <img :src="defaultLogo" alt="logo-img">
+          <p class="logo">HSE.Cloud.Ai </p>
         </router-link>
       </div>
 
-      <div class="input-wrapper">
-        <CustomSelectInput
-          :modelValue="SelectProject"
-          class="input"
-          :controller="indexProjectController"
-          :params="indexProjectParams"
-          id="project"
-          placeholder="select your project"
-          @update:modelValue="setSelectedProject"
-          :reload="false"
-        />
+      <div class="input-wrapper" v-if="!showProjectSelect">
+        <!-- label="Project" -->
+        <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
+          :params="indexProjectParams" id="project" placeholder="select your project"
+          @update:modelValue="setSelectedProject" :reload="false" />
+
       </div>
       <!-- <div class="search">
         <SearchIcon />
@@ -138,9 +126,9 @@ const setSelectedProject = async (project: TitleInterface) => {
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
 
-        <div class="notification cursor-pointer" @click="toggleFullScreen">
+        <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />
-        </div>
+        </div> -->
 
         <div class="user cursor-pointer dropdown-trigger" @click="toggleDropMenu">
           <IconArrowDownNav class="drop-icon" />

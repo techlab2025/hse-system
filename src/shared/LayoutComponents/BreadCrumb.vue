@@ -8,6 +8,7 @@ import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,7 +18,7 @@ const RouterBack = () => {
 }
 
 const IsHome = computed(
-  () => route.path === '/organization' || route.path === '/admin'
+  () => route.path === '/organization' || route.path === '/admin' || route.path === '/organization/employee-interface'
 )
 const IsHomeSetting = computed(
   () => route.path === '/organization/setting' || route.path === '/admin' || route.path === '/organization'
@@ -113,13 +114,15 @@ watch(() => route, () => {
   // }
 }, { immediate: true, deep: true })
 
+const ShowBackBtn = computed(() => {
+  return user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+})
 </script>
 
 <template>
   <div class="breadcrump-container">
     <div class="breadcrump">
-      <button class="sidebar-back" @click="RouterBack"
-        v-if="!IsHome || !ConditionHandler.getInstance().isOrganizationEmployee()">
+      <button class="sidebar-back" @click="RouterBack" v-if="!IsHome || !ShowBackBtn">
         <BackIcon class="icon" />
         <span>back</span>
       </button>

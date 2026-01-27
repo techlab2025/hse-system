@@ -43,7 +43,7 @@ export default class IndexProjectController extends SelectControllerInterface<Pr
       adaptData.push(
         new TitleInterface({
           id: -1,
-          title: 'All',
+          title: 'All Projects',
         }),
       )
       ;(data.value.data ?? []).map((el: any) => {

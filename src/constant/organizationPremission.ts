@@ -1226,10 +1226,83 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // Root Causes
+        {
+          key: PermissionsEnum.ROOT_CAUSES_ALL,
+          code: PermissionsEnum.ROOT_CAUSES_ALL,
+          label: 'Root Causes',
+          permissions: [
+            {
+              key: PermissionsEnum.ROOT_CAUSES_ALL,
+              code: PermissionsEnum.ROOT_CAUSES_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ROOT_CAUSES_FETCH,
+              code: PermissionsEnum.ROOT_CAUSES_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ROOT_CAUSES_DETAILS,
+              code: PermissionsEnum.ROOT_CAUSES_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ROOT_CAUSES_DELETE,
+              code: PermissionsEnum.ROOT_CAUSES_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.ROOT_CAUSES_CREATE,
+              code: PermissionsEnum.ROOT_CAUSES_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ROOT_CAUSES_UPDATE,
+              code: PermissionsEnum.ROOT_CAUSES_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        //Coding System
+        {
+          key: PermissionsEnum.CODING_SYSTEM_ALL,
+          code: PermissionsEnum.CODING_SYSTEM_ALL,
+          label: 'Coding System',
+          permissions: [
+            {
+              key: PermissionsEnum.CODING_SYSTEM_ALL,
+              code: PermissionsEnum.CODING_SYSTEM_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.CODING_SYSTEM_FETCH,
+              code: PermissionsEnum.CODING_SYSTEM_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.CODING_SYSTEM_DETAILS,
+              code: PermissionsEnum.CODING_SYSTEM_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.CODING_SYSTEM_DELETE,
+              code: PermissionsEnum.CODING_SYSTEM_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.CODING_SYSTEM_CREATE,
+              code: PermissionsEnum.CODING_SYSTEM_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.CODING_SYSTEM_UPDATE,
+              code: PermissionsEnum.CODING_SYSTEM_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
-
-
-      
     },
   ],
 }

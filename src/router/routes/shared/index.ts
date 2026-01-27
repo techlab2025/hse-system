@@ -16,7 +16,7 @@ import { healthConditionsRoutes } from './healthconditions'
 import { RoleRoutes } from './role'
 import { ScopeRoutes } from './scope'
 import { SubHazardRoutes } from './subHazard'
-import { RootCausesRoutes } from './rootcauses'
+import { RootCausesRoutes } from './rootCauses'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,

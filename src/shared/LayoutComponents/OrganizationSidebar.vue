@@ -30,17 +30,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.PARTNER_FETCH,
     ],
   },
-  {
-    link: '/organization/projects',
-    name: 'Projects',
-    permissions: [
-      PermissionsEnum.PROJECT_ALL,
-      PermissionsEnum.PROJECT_CREATE,
-      PermissionsEnum.PROJECT_DELETE,
-      PermissionsEnum.PROJECT_FETCH,
-      PermissionsEnum.PROJECT_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/projects',
+  //   name: 'Projects',
+  //   permissions: [
+  //     PermissionsEnum.PROJECT_ALL,
+  //     PermissionsEnum.PROJECT_CREATE,
+  //     PermissionsEnum.PROJECT_DELETE,
+  //     PermissionsEnum.PROJECT_FETCH,
+  //     PermissionsEnum.PROJECT_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/certificate',
     name: 'certificates',
@@ -64,17 +64,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
     ],
   },
-  {
-    link: '/organization/equipments',
-    name: 'Equipments',
-    permissions: [
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/equipments',
+  //   name: 'Equipments',
+  //   permissions: [
+  //     PermissionsEnum.ORG_EQUIPMENT_ALL,
+  //     PermissionsEnum.ORG_EQUIPMENT_CREATE,
+  //     PermissionsEnum.ORG_EQUIPMENT_DELETE,
+  //     PermissionsEnum.ORG_EQUIPMENT_FETCH,
+  //     PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+  //   ],
+  // },
 
   // {
   //   link: '/organization/health-conditions',
@@ -220,6 +220,28 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
       PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
       PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/root-causes',
+    name: 'root_causes',
+    permissions: [
+      PermissionsEnum.ROOT_CAUSES_ALL,
+      PermissionsEnum.ROOT_CAUSES_CREATE,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
+      PermissionsEnum.ROOT_CAUSES_FETCH,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/serial-number',
+    name: 'coding_system',
+    permissions: [
+      PermissionsEnum.CODING_SYSTEM_ALL,
+      PermissionsEnum.CODING_SYSTEM_CREATE,
+      PermissionsEnum.CODING_SYSTEM_DELETE,
+      PermissionsEnum.CODING_SYSTEM_FETCH,
+      PermissionsEnum.CODING_SYSTEM_UPDATE,
     ],
   },
 
@@ -463,7 +485,7 @@ watch(OperationAccordion, (val) => {
     </AccordionPanel>
   </Accordion>
 
-  <Accordion v-model:value="OperationAccordion">
+  <!-- <Accordion v-model:value="OperationAccordion">
     <AccordionPanel value="2">
       <AccordionHeader>
         <div class="links-header">
@@ -488,7 +510,7 @@ watch(OperationAccordion, (val) => {
     <AccordionPanel class="active-panel-out" v-if="SelectedOperationRoute && !OperationAccordion">
       <span>{{ SelectedOperationRoute }}</span>
     </AccordionPanel>
-  </Accordion>
+  </Accordion> -->
 
   <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
     <Accordion v-model:value="locationAccordion">
