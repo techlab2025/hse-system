@@ -9,7 +9,6 @@ import ShowHazardParams from '../../../Core/params/showHazardParams'
 import EditHazardController from '../../controllers/editHazardController'
 import HazardForm from './HazardForm.vue'
 
-
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id

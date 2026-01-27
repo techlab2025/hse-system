@@ -84,7 +84,11 @@ const GetEquipmentType = (type: number) => {
   <div class="card-equipment">
     <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
       class="img-equipment" />
+
     <div class="card-body">
+
+
+
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
         <div class="info-container flex flex-col gap-2">
@@ -117,6 +121,9 @@ const GetEquipmentType = (type: number) => {
             <div class="item">
               <span>{{ $t('License number') }} : </span>
               <p>{{ equipmentData?.licensePlateNumber }}</p>
+              <br>
+              <span>{{ $t('serial name') }}</span>
+               <p>{{ equipmentData.serial_name }}</p>
             </div>
             <div class="item" v-if="equipmentData?.kilometer">
               <span>{{ $t('Vehicle Kilometer') }} : </span>
