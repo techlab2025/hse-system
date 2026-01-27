@@ -32,6 +32,7 @@ import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 
 const emit = defineEmits(['update:data'])
+const SerialNumber = ref()
 
 const props = defineProps<{
   data?: ProjectDetailsModel
@@ -85,6 +86,7 @@ const langDefaultDescription = ref<
 >([])
 
 const user = useUserStore()
+const ZoneIds = ref<number[]>([])
 
 // ---------- Fetch available languages ----------
 const fetchLang = async (
@@ -144,7 +146,8 @@ onMounted(async () => {
 const date = ref(new Date())
 
 // ---------- Emit update ----------
- const translationsParams = new TranslationsParams()
+const updateData = () => {
+  const translationsParams = new TranslationsParams()
   // titles
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
@@ -152,7 +155,6 @@ const date = ref(new Date())
   langsDescription.value.forEach((lang) => {
     translationsParams.setTranslation('description', lang.locale, lang.description)
   })
-  console.log('ZoneIdiiiiis.value', ZoneIds.value)
   const params = props.data?.id
     ? new EditProjectParams(
       props.data.id,
@@ -167,16 +169,17 @@ const date = ref(new Date())
     : new AddProjectParams(
       {
         translation: translationsParams,
-        ContractorIds:ContractorIds.value?.map((p) => p.id),
-        startDate:date.value,
-        locationIds:location.value.map((l) => l.id),
-        zoonIds:ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        methodIds:EvaluatingMethod.value?.map((p) => p.id),
-        SerialNumber:SerialNumber.value?.SerialNumber,
+        ContractorIds: ContractorIds.value?.map((p) => p.id),
+        startDate: date.value,
+        locationIds: location.value.map((l) => l.id),
+        zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+        methodIds: EvaluatingMethod.value?.map((p) => p.id),
+        SerialNumber: SerialNumber.value?.SerialNumber,
       }
     )
   console.log(params, "paramsparamsparams");
   emit('update:data', params)
+}
 
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
@@ -250,7 +253,6 @@ watch(
   },
   { immediate: true },
 )
-const SerialNumber = ref()
 
 const fields = ref([
   {
@@ -262,14 +264,12 @@ const fields = ref([
   },
 ])
 
-const ZoneIds = ref<number[]>([])
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
 
 const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
 
   ZoneIds.value = data.flatMap((item) => item.ZoneIds || [])
   // console.log('ZoneIds.value', ZoneIds.value)
-
   updateData()
 }
 
@@ -397,58 +397,30 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <LangTitleInput
-      :label="`Project Name`"
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">
       {{ $t('start_date') }}
     </label>
-    <DatePicker
-      v-model="date"
-      @date-select="UpdateDate"
-      id="date"
-      :placeholder="`select the date`"
-    />
+    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="ContractorIds"
-      @update:modelValue="setContractorIds"
-      :type="2"
-      :controller="indexContractorController"
-      :params="indexContractorTypeParams"
-      label="contractors"
-      placeholder="contractors"
-      :onclick="ShowContructorDialog"
-    />
+    <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
+      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
+      placeholder="contractors" :onclick="ShowContructorDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="location"
-      @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams"
-      label="location"
-      placeholder="location"
-      :type="2"
-      :onclick="ShowLocationDialog"
-    />
+    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
+      placeholder="location" :type="2" :onclick="ShowLocationDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -463,16 +435,9 @@ const ShowLocationDialog = () => {
 
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput
-      label="project_objectives"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      field-type="description"
-      type="textarea"
-      :placeholder="`What are the project objectives?`"
-      :required="false"
-    />
+    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
+      :placeholder="`What are the project objectives?`" :required="false" />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />
