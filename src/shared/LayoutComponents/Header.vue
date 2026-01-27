@@ -83,7 +83,7 @@ const setSelectedProject = async (project: TitleInterface) => {
 
 const showProjectSelect = ref<boolean>(false)
 onMounted(() => {
-  showProjectSelect.value = user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+  showProjectSelect.value = user?.type == OrganizationTypeEnum.ADMIN || user?.employeeType == EmployeeStatusEnum.Employee
 })
 </script>
 
@@ -160,5 +160,9 @@ onMounted(() => {
   }
 
   width: 400px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+  }
 }
 </style>

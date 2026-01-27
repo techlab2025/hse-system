@@ -5,6 +5,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import DeleteOrganizatoinEmployeeUseCase from '../../Domain/useCase/deleteOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
+import type { Router } from 'vue-router'
 
 export default class DeleteOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
   private static instance: DeleteOrganizatoinEmployeeController
@@ -20,7 +21,7 @@ export default class DeleteOrganizatoinEmployeeController extends ControllerInte
     return this.instance
   }
 
-  async deleteOrganizatoinEmployee(params: Params) {
+  async deleteOrganizatoinEmployee(params: Params, router?: Router) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -33,6 +34,7 @@ export default class DeleteOrganizatoinEmployeeController extends ControllerInte
       } else {
         throw new Error('Error while addServices')
       }
+      router?.push('/organization/organization-employee')
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({

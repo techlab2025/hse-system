@@ -15,7 +15,13 @@ export default class AddLocationParams implements Params {
     // code: { required: true, minLength: 1, maxLength: 5 },
   })
 
-  constructor(title: TranslationsParams, code: string, type: number, ParentId?: number, serialNumber?: number) {
+  constructor(
+    title: TranslationsParams,
+    code: string,
+    type: number,
+    ParentId?: number,
+    serialNumber?: number,
+  ) {
     this.title = title
     this.code = code
     this.type = type

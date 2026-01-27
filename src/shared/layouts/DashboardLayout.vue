@@ -8,6 +8,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import NewSidebar from '../LayoutComponents/NewSidebar.vue'
 import BreadCrumb from '../LayoutComponents/BreadCrumb.vue'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import MobileNavegation from '../LayoutComponents/MobileNavegation.vue'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const { user } = useUserStore()
 const route = useRoute()
@@ -34,7 +36,8 @@ const showSidebar = computed(() => {
     <!-- <div class="sidebar"> -->
     <!-- v-if="user?.type === OrganizationTypeEnum.ADMIN" -->
 
-    <NewSidebar v-if="!ConditionHandler.getInstance().isOrganizationEmployee() && route.meta?.isSidebar" />
+    <NewSidebar
+      v-if="user?.type === OrganizationTypeEnum.ADMIN || (user?.employeeType == EmployeeStatusEnum.Admin && route.meta?.isSidebar)" />
     <!-- </div> -->
     <section class="content-wrapper">
 
@@ -44,6 +47,7 @@ const showSidebar = computed(() => {
         <slot />
       </div>
     </section>
+    <!-- <MobileNavegation /> -->
   </main>
 </template>
 

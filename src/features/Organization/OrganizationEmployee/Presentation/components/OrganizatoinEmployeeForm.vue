@@ -149,7 +149,7 @@ watch(
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
-      EmployeeStatus.value = newData.emplyee_status
+      EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       updateData()
     }
   },

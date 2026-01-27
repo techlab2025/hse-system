@@ -75,7 +75,7 @@ const UpdateDate = async () => {
 
     const locationHierarchyEmployeeParams = new LocationHierarchyEmployeeParams(SelectedHierarchy?.value?.id, SelectedEmployee.value.map(e => e.id))
     const params = new AddHierarchyEmployeeParams(route.params.id, [locationHierarchyEmployeeParams])
-    await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
+    await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
     visible.value = false
 
   } catch (error) {

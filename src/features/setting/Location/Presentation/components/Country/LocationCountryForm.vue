@@ -94,7 +94,6 @@ const updateData = async () => {
         translationsParams,
         Code.value,
         LocationEnum.COUNTRY,
-        SerialNumber.value?.SerialNumber,
       )
 
   console.log(params, 'Locatio nparams')
@@ -182,7 +181,7 @@ const fields = ref([
       @input="UpdateCode"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -190,7 +189,7 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 
   <!-- <div class="col-span-4 md:col-span-2">
     <CustomSelectInput

@@ -4,14 +4,12 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddScopeParams implements Params {
   translation: TranslationsParams
-  serialNumber: string
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 
-  constructor(translation: TranslationsParams , serialNumber: string) {
+  constructor(translation: TranslationsParams) {
     this.translation = translation
-    this.serialNumber = serialNumber
   }
 
   toMap(): Record<
@@ -34,7 +32,6 @@ export default class AddScopeParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['serial_number'] = Number(this.serialNumber)
 
     return data
   }

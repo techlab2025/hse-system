@@ -58,6 +58,7 @@ import AddAccidentsType from '@/features/setting/AccidentsTypes/Presentation/com
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
+import RootCausesIdParams from '../../../Core/params/RootCausesIdParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -81,6 +82,10 @@ const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
+  const rootCausesIdParams = RootCauses.value?.map((item) => {
+    return new RootCausesIdParams({ root_cause_id: item.id })
+  })
+
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -167,9 +172,8 @@ const updateData = () => {
       HazardSubtypeId: SubHazardType.value?.id,
       actionstatus: solved.value,
       code: SerialNumber.value?.SerialNumber,
-      RootCausesId: RootCauses.value?.map((item) => item.id),
+      RootCausesId: rootCausesIdParams
     })
-  console.log(solved.value, 'solved.value')
   emit('update:data', params)
 }
 
@@ -521,8 +525,8 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- Machine -->
-    <div class="col-span-3 md:col-span-3 input-wrapper">
-      <UpdatedCustomInputSelect :modelValue="SelectedMachine" class="input" :controller="indexRootCaueseController"
+    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
+      <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
         :params="indexRootCaueseParams" label="select Root Cause" id="rootCause" placeholder="select your root cause"
         @update:modelValue="setRootCause" :type="2" />
     </div>
@@ -623,9 +627,8 @@ const setRootCause = (data: TitleInterface[]) => {
       @click="
         isWorkStopped = !isWorkStopped;
 
-        updateData()
-      "
-    >
+      updateData()
+        ">
 
       <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
       <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />

@@ -104,7 +104,6 @@ const updateData = () => {
       Code.value,
       LocationEnum.CITY,
       +ParentId?.value || SelectedState.value?.id!,
-      SerialNumber.value?.SerialNumber,
     )
 
   // console.log(params, 'Newparams')
@@ -231,7 +230,7 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-    <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+    <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -239,7 +238,7 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>

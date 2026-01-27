@@ -47,7 +47,7 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-    if (user?.user?.languages.length) {
+  if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
@@ -87,19 +87,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-        id,
-        translationsParams,
-        Code.value,
-        LocationEnum.STATE,
-        ParentId.value || SelectedCountry?.value?.id,
-      )
+      id,
+      translationsParams,
+      Code.value,
+      LocationEnum.STATE,
+      ParentId.value || SelectedCountry?.value?.id,
+    )
     : new AddLocationParams(
-        translationsParams,
-        Code.value,
-        LocationEnum.STATE,
-        ParentId.value || SelectedCountry?.value?.id,
-        SerialNumber.value?.SerialNumber,
-      )
+      translationsParams,
+      Code.value,
+      LocationEnum.STATE,
+      ParentId.value || SelectedCountry?.value?.id,
+    )
 
   emit('update:data', params)
 }
@@ -187,7 +186,7 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-    <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -195,29 +194,15 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input
-      type="text"
-      id="code"
-      v-model="Code"
-      class="input"
-      placeholder="Enter The Code"
-      @input="UpdateCode"
-    />
+    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput
-      :modelValue="SelectedCountry"
-      :controller="indexLocationController"
-      :params="indexLocationParams"
-      label="Country"
-      id="Location"
-      placeholder="Selected Country"
-      @update:modelValue="SetCountrySelection"
-    />
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationController" :params="indexLocationParams"
+      label="Country" id="Location" placeholder="Selected Country" @update:modelValue="SetCountrySelection" />
   </div>
 </template>

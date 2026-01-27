@@ -5,6 +5,9 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
+import DeleteOrganizatoinEmployeeParams from '../../../Core/params/deleteOrganizatoinEmployeeParams'
+import DeleteOrganizatoinEmployeeController from '../../controllers/deleteOrganizatoinEmployeeController'
+import { useRouter } from 'vue-router'
 // import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 
 const { state } = defineProps<{
@@ -25,12 +28,12 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
       PermissionsEnum.ORG_EMPLOYEE_ALL,
     ],
   },
-  {
-    text: t('show'),
-    icon: IconEdit,
-    link: `/organization/organization-employee/show/${id}`,
-    permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  },
+  // {
+  //   text: t('show'),
+  //   icon: IconEdit,
+  //   link: `/organization/organization-employee/show/${id}`,
+  //   permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  // },
   {
     text: t('add_permission'),
     icon: IconEdit,
@@ -49,6 +52,15 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     ],
   },
 ]
+const router = useRouter()
+const deleteOrganizatoinEmployee = async (id: number) => {
+  const deleteOrganizatoinEmployeeParams = new DeleteOrganizatoinEmployeeParams(id)
+  await DeleteOrganizatoinEmployeeController.getInstance().deleteOrganizatoinEmployee(
+    deleteOrganizatoinEmployeeParams,
+    router
+  )
+  // await fetchOrganizatoinEmployee()
+}
 </script>
 
 <template>
@@ -63,14 +75,12 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
           <span class="employee-position employee-serial text-2xl">{{ state?.serial_number }}</span>
 
           <div class="employee-position">
-            {{ state?.showHierarchy?.map((el) => el.title).join(' - ') }}
+            {{state?.showHierarchy?.map((el) => el.title).join(' - ')}}
           </div>
           <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
         </div>
-        <DropList
-          :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
-          @delete="deleteOrganizatoinEmployee(state?.id)"
-        />
+        <DropList :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
+          @delete="deleteOrganizatoinEmployee(state?.id)" />
       </div>
       <div class="all-info-row">
         <div class="all-info-row-item">

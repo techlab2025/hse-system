@@ -25,7 +25,7 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
     return this.instance
   }
 
-  async addHierarchyEmployee(params: Params, router: Router) {
+  async addHierarchyEmployee(params: Params, router: Router, route: any) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<HierarchyEmployeeModel> =
@@ -38,17 +38,13 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
           imageElement: successImage,
           messageContent: null,
         })
-        if (router.currentRoute.value.path.includes('employee-details')) {
+        if (route.path.includes('project-employee')) {
           await router.push(
-            `/organization/employee-details/${router.currentRoute.value.params?.project_id || router.currentRoute.value.params?.id}`,
+            `/organization/employee-details/${route.params?.project_id || route.params?.id}`,
           )
         }
         await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(
-            Number(
-              router.currentRoute.value.params?.project_id || router.currentRoute.value.params?.id,
-            ),
-          ),
+          new ShowProjectDetailsParams(Number(route.params?.project_id || route.params?.id)),
         )
 
         // useLoaderStore().endLoadingWithDialog();
