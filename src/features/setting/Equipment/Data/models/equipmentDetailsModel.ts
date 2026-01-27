@@ -44,6 +44,7 @@ export default class EquipmentDetailsModel {
   public inspections_count: number
   public inspections_with_result_count: number
   public last_inspection: LastInspectionModel
+  public serial_name : string
 
   constructor(
     id: number,
@@ -76,6 +77,7 @@ export default class EquipmentDetailsModel {
     inspections_count: number,
     inspections_with_result_count: number,
     last_inspection: LastInspectionModel,
+    serial_name : string
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -107,6 +109,7 @@ export default class EquipmentDetailsModel {
     this.inspections_count = inspections_count
     this.inspections_with_result_count = inspections_with_result_count
     this.last_inspection = last_inspection
+    this.serial_name = serial_name
     // this.type = type
   }
 
@@ -149,6 +152,7 @@ export default class EquipmentDetailsModel {
       data.lastest_inspection_result
         ? LastInspectionModel.fromMap(data.lastest_inspection_result)
         : null,
+        data.serial_name
     )
   }
 

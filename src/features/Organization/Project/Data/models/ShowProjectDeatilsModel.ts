@@ -28,6 +28,7 @@ export default class ShowProjectDetailsModel {
   public hierarchies: TitleInterface[] | null
   public organization_employees: OrganizatoinEmployeeDetailsModel[] | null
   public project_locations: projectLocationModel[] | null
+  public serialName: string
 
   constructor(
     id: number,
@@ -49,6 +50,7 @@ export default class ShowProjectDetailsModel {
     hierarchies: TitleInterface[] | null,
     organization_employees: OrganizatoinEmployeeDetailsModel[] | null,
     project_locations: projectLocationModel[] | null,
+       serialName: string
   ) {
     this.id = id
     this.title = title
@@ -69,6 +71,7 @@ export default class ShowProjectDetailsModel {
     this.hierarchies = hierarchies
     this.organization_employees = organization_employees
     this.project_locations = project_locations
+    this.serialName = serialName
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -94,6 +97,7 @@ export default class ShowProjectDetailsModel {
         OrganizatoinEmployeeDetailsModel.fromMap(item),
       ),
       data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
+      data.serial_name,
     )
   }
 

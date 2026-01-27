@@ -46,7 +46,7 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
-        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber"
+        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber" :serialName="state.data?.serialName"
           :Projectdate="state.data?.startDate" :Contractors="state.data?.contractors?.length" />
         <MainObjectivesSection :description="state.data?.description" />
 

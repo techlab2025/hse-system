@@ -13,6 +13,7 @@ const props = defineProps<{
           <div class="project-header">
             <!-- <span class="status">active </span> -->
             <span class="serial"> #{{ data?.serialName }} </span>
+            
           </div>
           <p class="project-title">{{ data?.title }}</p>
         </div>

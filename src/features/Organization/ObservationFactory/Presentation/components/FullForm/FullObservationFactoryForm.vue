@@ -622,8 +622,11 @@ const setRootCause = (data: TitleInterface[]) => {
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
       @click="
         isWorkStopped = !isWorkStopped;
-      updateData()
-        ">
+
+        updateData()
+      "
+    >
+
       <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
       <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
     </div>
