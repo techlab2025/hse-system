@@ -72,7 +72,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
     <div class="all-info">
       <div class="info-wrapper">
         <div class="employee-info">
-          <span class="employee-position employee-serial text-2xl">{{ state?.serial_number }}</span>
+          <span class="employee-position employee-serial text-2xl">{{ state?.serial_name }}</span>
 
           <div class="employee-position">
             {{state?.showHierarchy?.map((el) => el.title).join(' - ')}}
