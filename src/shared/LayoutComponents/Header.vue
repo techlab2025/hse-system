@@ -111,7 +111,7 @@ onMounted(() => {
         </router-link>
       </div>
 
-      <div class="input-wrapper" v-if="!showProjectSelect">
+      <div class="input-wrapper" v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN">
         <!-- label="Project" -->
         <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
           :params="indexProjectParams" id="project" placeholder="select your project"

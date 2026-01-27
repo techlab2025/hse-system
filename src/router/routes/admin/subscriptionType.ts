@@ -6,7 +6,7 @@ export const SubscriptionTypeRoutes: RouteRecordRaw[] = [
     name: 'Subscription Types',
     component: () => import('@/views/Admin/SubscriptionType/IndexSubscriptionType.vue'),
     meta: {
-      breadCrumb: 'Subscription Types',
+      breadcrumb: 'Subscription Types',
     },
   },
   {
@@ -14,7 +14,7 @@ export const SubscriptionTypeRoutes: RouteRecordRaw[] = [
     name: 'Add Subscription Type',
     component: () => import('@/views/Admin/SubscriptionType/AddSubscriptionType.vue'),
     meta: {
-      breadCrumb: 'Add Subscription Type',
+      breadcrumb: 'Add Subscription Type',
       parent: 'Subscription Types',
     },
   },
@@ -23,7 +23,7 @@ export const SubscriptionTypeRoutes: RouteRecordRaw[] = [
     name: 'Edit Subscription Type',
     component: () => import('@/views/Admin/SubscriptionType/EditSubscriptionType.vue'),
     meta: {
-      breadCrumb: 'Edit Subscription Type',
+      breadcrumb: 'Edit Subscription Type',
       parent: 'Subscription Types',
     },
   },
