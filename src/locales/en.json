@@ -840,6 +840,8 @@
   "hazard_types": "Hazard Types",
   "hazard": "Hazard",
   "hazard_item": "Hazard Item",
-  "hazard_factor": "Hazard Factor"
-
+  "hazard_factor": "Hazard Factor",
+  "employee_certificate": "Employee Certificate",
+  "root_causes": "Root Causes",
+  "coding_system": "Coding System"
 }

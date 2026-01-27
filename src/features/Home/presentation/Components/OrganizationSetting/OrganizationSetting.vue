@@ -90,17 +90,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_CONTRACTOR_UPDATE,
         ],
       },
-      {
-        route: "/organization/equipment-mangement/all-observatin",
-        Name: "management",
-        permissions: [
-          PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-          PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
-          PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-          PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
-        ],
-      },
+      // {
+      //   route: "/organization/equipment-mangement/all-observatin",
+      //   Name: "management",
+      //   permissions: [
+      //     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
+      //     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
+      //     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
+      //     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
+      //     PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
+      //   ],
+      // },
       {
         route: "/organization/role",
         Name: "roles",

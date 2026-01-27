@@ -81,8 +81,9 @@ const setSelectedProject = async (project: TitleInterface) => {
   // location.reload()
 }
 
-const showProjectSelect = computed(() => {
-  return user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+const showProjectSelect = ref<boolean>(false)
+onMounted(() => {
+  showProjectSelect.value = user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
 })
 </script>
 
