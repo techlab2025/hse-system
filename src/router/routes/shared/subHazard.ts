@@ -8,6 +8,7 @@ export const SubHazardRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Hazard',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -18,6 +19,7 @@ export const SubHazardRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Hazard',
       parent: 'Hazard',
       type: 'Shared',
+      isSidebar: true,
     },
   },
   {
@@ -28,6 +30,7 @@ export const SubHazardRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Hazard',
       parent: 'Hazard',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

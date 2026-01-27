@@ -31,6 +31,7 @@ import TablePopover from '@/shared/FormInputs/TablePopover.vue'
 import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import ProjectCard from './ProjectUtils/ProjectCard.vue'
+import ProjectCardSkelaton from './ProjectUtils/ProjectCardSkelaton.vue'
 
 const op = ref()
 
@@ -215,9 +216,13 @@ watch(
           <ProjectCard v-for="item in state.data" :key="item.id" :data="item" />
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+
       </template>
       <template #loader>
-        <TableLoader :cols="8" :rows="10" />
+        <!-- <TableLoader :cols="8" :rows="10" /> -->
+        <div class="modern-table-responsive mt-2 flex w-full gap-2 ">
+          <ProjectCardSkelaton v-for="item in 6" />
+        </div>
       </template>
       <template #initial>
         <TableLoader :cols="8" :rows="10" />
