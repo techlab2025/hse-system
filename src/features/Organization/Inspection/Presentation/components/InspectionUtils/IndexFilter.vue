@@ -27,12 +27,14 @@
   <template>
     <div class="idnex-filter">
       <div class="filter-container">
-        <p class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="item in filters"
+        <div class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="item in filters"
           :key="item.id" @click="UpdateData(item.id)">
-          <span v-if="item?.title != null">
-            {{ item?.title }}
-          </span>
-        </p>
+          <p v-if="item?.title != null">
+            <span>
+              {{ item?.title }}
+            </span>
+          </p>
+        </div>
       </div>
       <div class="btns">
         <!-- <button class="btn btn-filter">

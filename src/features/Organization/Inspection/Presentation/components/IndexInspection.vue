@@ -197,6 +197,7 @@ const FetchMyProjects = async () => {
   const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
   if (res.value.data) {
     Projects.value = res.value.data
+    // console.log(res.value.data?.length, "res.value.data?.length");
   }
 }
 
@@ -206,6 +207,7 @@ const selectedProjctesFilters = ref<number>()
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
+  console.log(selectedProjctesFilters.value, "selectedProjctesFilters");
   const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
   if (response.value.data) {
@@ -220,7 +222,6 @@ const ApplayFilter = (data: number[]) => {
 }
 
 const setSelectedProjectFilter = (data) => {
-  // console.log(data, 'selected project filter')
   selectedProjctesFilters.value = data
   if (data) {
     FetchMyZones()

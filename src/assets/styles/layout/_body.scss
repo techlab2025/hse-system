@@ -36,6 +36,8 @@ body {
     padding: $MdSize;
     border-radius: $XlSize;
     overflow: hidden;
+    z-index: 999;
+    position: relative;
     // min-height: 100vh;
   }
 }

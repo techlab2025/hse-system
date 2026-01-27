@@ -24,6 +24,9 @@ export const useProjectSelectStore = defineStore(
     }
 
     function SelectedProjectId(projectId: number) {
+      if (projectId) {
+        return projectId
+      }
       if (project.value?.id != -1 && project.value?.id != null) {
         return project.value.id
       } else if (project.value?.id != null) {
