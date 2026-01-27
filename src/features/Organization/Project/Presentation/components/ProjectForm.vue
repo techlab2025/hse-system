@@ -147,6 +147,7 @@ const date = ref(new Date())
 
 // ---------- Emit update ----------
 const updateData = () => {
+
   const translationsParams = new TranslationsParams()
   // titles
   langs.value.forEach((lang) => {

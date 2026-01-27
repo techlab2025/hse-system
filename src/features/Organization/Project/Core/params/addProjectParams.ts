@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 export default class AddProjectParams implements Params {
   translation: TranslationsParams
   ContractorIds: number[]
