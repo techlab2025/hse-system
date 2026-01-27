@@ -53,6 +53,7 @@ export default class HazardDetailsModel {
   public investigation: InvestegationResultDetailsModel
   public isWorkStopped: boolean
   public actionStatus: ActionStatusEnum
+  public serialName: string
 
   constructor(
     id: number,
@@ -91,6 +92,7 @@ export default class HazardDetailsModel {
     investigation: InvestegationResultDetailsModel,
     isWorkStopped: boolean,
     actionStatus: ActionStatusEnum,
+    serialName: string,
   ) {
     this.id = id
     this.title = title
@@ -128,6 +130,7 @@ export default class HazardDetailsModel {
     this.investigation = investigation
     this.isWorkStopped = isWorkStopped
     this.actionStatus = actionStatus
+    this.serialName = serialName
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -168,6 +171,7 @@ export default class HazardDetailsModel {
       data?.investigation ? InvestegationResultDetailsModel.fromMap(data?.investigation) : null,
       data?.is_work_stopped,
       data?.action_status,
+      data?.serial_name,
     )
   }
 

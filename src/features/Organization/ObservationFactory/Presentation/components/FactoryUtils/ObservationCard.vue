@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
-import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel';
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
 
 const props = defineProps<{
   data: HazardDetailsModel
 }>()
-
 
 const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
   switch (riskLevel) {
@@ -19,7 +18,6 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
       return 'Unknown'
   }
 }
-
 </script>
 <template>
   <div class="observation-card">
@@ -27,7 +25,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
       <div class="card-content">
         <div class="card-header">
           <p class="label-item-primary">
-            Serial : <span>{{ data?.serial }}</span>
+            Serial : <span>{{ data?.serialName }}</span>
           </p>
           <p class="label-item-secondary">
             Date & Time : <span>{{ data?.date }}</span>
@@ -46,12 +44,11 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
           </div>
         </div>
       </div>
-      <div class="observer-container " v-if="data?.observer.name">
+      <div class="observer-container" v-if="data?.observer.name">
         <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="30" height="30" />
         <p class="title">{{ data?.observer.name }}</p>
         <span class="observer">observer</span>
         <!-- <p class="title">{{ data?.observer. }}</p> -->
-
       </div>
       <!-- <div class="card-info">
         <span v-if="data?.riskLevel" class="observation-risk-level" :class="GetRiskLevel(data?.riskLevel)">

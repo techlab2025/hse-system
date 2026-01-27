@@ -11,8 +11,6 @@ const { state } = defineProps<{
   state: OrganizatoinEmployeeDetailsModel
 }>()
 
-
-
 const { t } = useI18n()
 
 const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void) => [
@@ -62,6 +60,8 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     <div class="all-info">
       <div class="info-wrapper">
         <div class="employee-info">
+          <span class="employee-position employee-serial text-2xl">{{ state?.serial_number }}</span>
+
           <div class="employee-position">
             {{ state?.showHierarchy?.map((el) => el.title).join(' - ') }}
           </div>
@@ -75,11 +75,11 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
       <div class="all-info-row">
         <div class="all-info-row-item">
           <h4 class="all-info-row-item-label">{{ $t('Phone') }} :</h4>
-          <span class="all-info-row-item-value">{{ state?.phone || '01023456789' }}</span>
+          <span class="all-info-row-item-value">{{ state?.phone || '**********' }}</span>
         </div>
         <div class="all-info-row-item">
           <h4 class="all-info-row-item-label">{{ $t('Email') }} :</h4>
-          <span class="all-info-row-item-value">{{ state?.email || 'Min3m@mail.com' }}</span>
+          <span class="all-info-row-item-value">{{ state?.email || 'not-select@mail.com' }}</span>
         </div>
         <div class="all-info-row-item" v-if="state?.startDate">
           <h4 class="all-info-row-item-label">{{ $t('Start Date') }} :</h4>

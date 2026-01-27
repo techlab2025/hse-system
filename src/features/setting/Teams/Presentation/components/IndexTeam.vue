@@ -137,44 +137,57 @@ watch(
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4" v-if="state.data?.length > 0">
+
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchTeamType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTeamType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchTeamType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-          class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.TEAM_CREATE,
+          PermissionsEnum.ORG_TEAM_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Team') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.TEAM_ALL,
-    PermissionsEnum.TEAM_DELETE,
-    PermissionsEnum.TEAM_FETCH,
-    PermissionsEnum.TEAM_UPDATE,
-    PermissionsEnum.TEAM_CREATE,
-    PermissionsEnum.ORG_TEAM_ALL,
-    PermissionsEnum.ORG_TEAM_DELETE,
-    PermissionsEnum.ORG_TEAM_FETCH,
-    PermissionsEnum.ORG_TEAM_UPDATE,
-    PermissionsEnum.ORG_TEAM_CREATE,
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.TEAM_DELETE,
+      PermissionsEnum.TEAM_FETCH,
+      PermissionsEnum.TEAM_UPDATE,
+      PermissionsEnum.TEAM_CREATE,
+      PermissionsEnum.ORG_TEAM_ALL,
+      PermissionsEnum.ORG_TEAM_DELETE,
+      PermissionsEnum.ORG_TEAM_FETCH,
+      PermissionsEnum.ORG_TEAM_UPDATE,
+      PermissionsEnum.ORG_TEAM_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -191,8 +204,8 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/edit/${item.id}`">{{
-                      index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/edit/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -204,13 +217,20 @@ watch(
                   <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteTeam)" @delete="deleteTeam(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteTeam)"
+                    @delete="deleteTeam(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -219,42 +239,54 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.TEAM_CREATE,
+            PermissionsEnum.ORG_TEAM_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
             description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            title="..ops! You have No Team"
+          />
         </permission-builder>
       </template>
       <template #failed>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.TEAM_CREATE,
+            PermissionsEnum.ORG_TEAM_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
             description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            title="..ops! You have No Team"
+          />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
-      ]">
-        <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.TEAM_CREATE,
+          PermissionsEnum.ORG_TEAM_CREATE,
+        ]"
+      >
+        <DataFailed
+          addText="Have not  Permission"
+          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data"
+        />
       </permission-builder>
     </template>
   </permission-builder>
