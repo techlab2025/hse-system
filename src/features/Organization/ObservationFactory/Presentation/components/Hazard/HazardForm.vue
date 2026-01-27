@@ -90,7 +90,7 @@ const updateData = () => {
         Likelihood: SelectedLikelihood.value?.id,
         time: SelctedTime.value,
         place: PlaceText.value
-        code: SerialNumber.value?.SerialNumber,
+        // code: SerialNumber.value?.SerialNumber,
       }
     )
 
