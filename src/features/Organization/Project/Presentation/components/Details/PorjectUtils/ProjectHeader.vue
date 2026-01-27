@@ -19,6 +19,7 @@ const props = defineProps<{
   SerialNumber: string
   Projectdate: string
   Contractors: string
+  serialName: string
 }>()
 
 const actionList = (id: number, deleteProject: (id: number) => void) => [
@@ -58,7 +59,7 @@ const deleteProject = async (id: number) => {
     <img class="bg-blue" :src="ShowProjectBlueHeader" alt="blue">
     <div class="project-header">
       <div class="flex project-info">
-        <span class="serial">serial : <span>{{ SerialNumber }}</span></span>
+        <span class="serial">serial : <span>{{ serialName }}</span></span>
         <span class="date">start in : <span>{{ Projectdate }}</span></span>
       </div>
       <p class="project-name">{{ projectName }}</p>

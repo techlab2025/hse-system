@@ -103,7 +103,8 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: user?.type == OrganizationTypeEnum.ADMIN ? `/admin/areas/${id}` : `/organization/areas/${id}`,
+    link:
+      user?.type == OrganizationTypeEnum.ADMIN ? `/admin/areas/${id}` : `/organization/areas/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
       PermissionsEnum.ADMIN,
@@ -154,42 +155,57 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchHazardType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />
       <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.LOCATION_CREATE,
-        PermissionsEnum.ORG_LOCATION_CREATE,
-        PermissionsEnum.LOCATION_ORG_CREATE,
-      ]">
-        <router-link :to="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
-          class="btn btn-primary">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.LOCATION_CREATE,
+          PermissionsEnum.ORG_LOCATION_CREATE,
+          PermissionsEnum.LOCATION_ORG_CREATE,
+        ]"
+      >
+        <router-link
+          :to="
+            user?.type == OrganizationTypeEnum.ADMIN
+              ? '/admin/areas/add'
+              : '/organization/areas/add'
+          "
+          class="btn btn-primary"
+        >
           {{ $t('add_location') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.LOCATION_ALL,
-    PermissionsEnum.LOCATION_DELETE,
-    PermissionsEnum.LOCATION_FETCH,
-    PermissionsEnum.LOCATION_UPDATE,
-    PermissionsEnum.LOCATION_CREATE,
-    PermissionsEnum.LOCATION_ORG_CREATE,
-    PermissionsEnum.LOCATION_ORG_ALL,
-    PermissionsEnum.LOCATION_ORG_FETCH,
-    PermissionsEnum.LOCATION_ORG_UPDATE,
-    PermissionsEnum.LOCATION_ORG_DELETE,
-
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LOCATION_ALL,
+      PermissionsEnum.LOCATION_DELETE,
+      PermissionsEnum.LOCATION_FETCH,
+      PermissionsEnum.LOCATION_UPDATE,
+      PermissionsEnum.LOCATION_CREATE,
+      PermissionsEnum.LOCATION_ORG_CREATE,
+      PermissionsEnum.LOCATION_ORG_ALL,
+      PermissionsEnum.LOCATION_ORG_FETCH,
+      PermissionsEnum.LOCATION_ORG_UPDATE,
+      PermissionsEnum.LOCATION_ORG_DELETE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
+        <div class="table-responsive mt-2">
           <table class="main-table">
             <thead>
               <tr>
@@ -212,13 +228,20 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
                 <td data-label="email">{{ wordSlice(item.title) }}</td>
 
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteLocation)" @delete="deleteLocation(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteLocation)"
+                    @delete="deleteLocation(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -227,36 +250,54 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.LOCATION_CREATE,
-          PermissionsEnum.ORG_LOCATION_CREATE,
-          PermissionsEnum.LOCATION_ORG_CREATE,
-        ]">
-          <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.LOCATION_CREATE,
+            PermissionsEnum.ORG_LOCATION_CREATE,
+            PermissionsEnum.LOCATION_ORG_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="
+              user?.type == OrganizationTypeEnum.ADMIN
+                ? '/admin/areas/add'
+                : '/organization/areas/add'
+            "
             addText="Add Area"
             description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No areas" />
+            title="..ops! You have No areas"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.LOCATION_CREATE,
-          PermissionsEnum.ORG_LOCATION_CREATE,
-          PermissionsEnum.LOCATION_ORG_CREATE,
-        ]">
-          <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN ? '/admin/areas/add' : '/organization/areas/add'"
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.LOCATION_CREATE,
+            PermissionsEnum.ORG_LOCATION_CREATE,
+            PermissionsEnum.LOCATION_ORG_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="
+              user?.type == OrganizationTypeEnum.ADMIN
+                ? '/admin/areas/add'
+                : '/organization/areas/add'
+            "
             addText="Add Area"
             description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No areas" />
+            title="..ops! You have No areas"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no areas .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

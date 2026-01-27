@@ -735,7 +735,7 @@ const setRootCause = (data: TitleInterface[]) => {
       v-if="saveStatus == SaveStatusEnum.NotSaved"
       class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
       @click="
-        isWorkStopped = !isWorkStopped
+        isWorkStopped = !isWorkStopped;
         updateData()
       "
     >

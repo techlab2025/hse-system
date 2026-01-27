@@ -295,7 +295,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                         <div class="card-content">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              Serial : <span>{{ item.serial }}</span>
+                              Serial : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
                               Date & Time : <span>{{ item.date }}</span>
