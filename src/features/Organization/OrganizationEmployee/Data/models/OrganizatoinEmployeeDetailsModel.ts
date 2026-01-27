@@ -28,6 +28,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public showHierarchy: TitleInterface[]
   public projects: ProjectModel[]
   public emplyeeStatus: EmployeeStatusEnum
+  public serialName: string
 
   // =====================
   // Constructor
