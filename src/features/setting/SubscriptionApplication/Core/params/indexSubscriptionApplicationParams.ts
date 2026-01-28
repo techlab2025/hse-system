@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 
-export default class IndexSubscriptionParams implements Params {
+export default class IndexSubscriptionApplicationParams implements Params {
   public word: string
   public withPage: number = 1
   public perPage: number = 10

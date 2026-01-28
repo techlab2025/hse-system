@@ -93,14 +93,14 @@ const fetchLang = async () => {
 
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
     : [
-        { locale: 'en', icon: USA, title: '' },
-        { locale: 'ar', icon: SA, title: '' },
-      ]
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
 
   if (!items.value.length) {
     items.value.push(createNewItem())
@@ -135,25 +135,24 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditTemplateParams(
-        props.data?.id ?? 0,
-        translationsParams,
-        AllIndustry,
-        industries ?? [],
-        image.value || null,
-        [],
-        SelectedTemplateType?.value?.id,
-      )
+      props.data?.id ?? 0,
+      translationsParams,
+      AllIndustry,
+      industries ?? [],
+      image.value || null,
+      [],
+      SelectedTemplateType?.value?.id,
+    )
     : new AddTemplateParams(
-        translationsParams,
-        AllIndustry,
-        industries ?? [],
-        image.value || null,
-        null,
-        [],
-        SelectedTemplateType?.value?.id,
-        true,
-        SerialNumber.value?.SerialNumber,
-      )
+      translationsParams,
+      AllIndustry,
+      industries ?? [],
+      image.value || null,
+      null,
+      [],
+      SelectedTemplateType?.value?.id,
+      true,
+    )
   emit('update:data', params)
 }
 
@@ -169,14 +168,15 @@ watch(
 
     langs.value = newData?.titles?.length
       ? newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+        const existing = newData.titles.find((t) => t.locale === l.locale)
+        return existing ?? { locale: l.locale, title: '' }
+      })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
     IndustrySelectOption.value = newData?.allIndustries == 1 ? true : false
 
     industry.value = newData?.industries ?? []
+    SelectedTemplateType.value = new TitleInterface({ id: newData?.type, title: TemplateType[newData?.type] })
     console.log(industry.value, 'industry.value')
   },
   { immediate: true },
@@ -211,47 +211,24 @@ const setTemplateType = (data: TitleInterface) => {
   updateData()
 }
 
-const UpdateSerial = (data) => {
-  SerialNumber.value = data
-  updateData()
-}
 
-const SerialNumber = ref()
 
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
 </script>
 
 <template>
   <div class="w-full col-span-4">
-    <PagesHeader
-      :img="Setting"
-      title="Customize Inspection Template"
-      subtitle="Choose a predefined inspection template, adjust its fields if needed, and decide whether to save your changes permanently or just for this session."
-    />
+    <PagesHeader :img="Setting" title="Customize Inspection Template"
+      subtitle="Choose a predefined inspection template, adjust its fields if needed, and decide whether to save your changes permanently or just for this session." />
   </div>
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="col-span-4 md:col-span-4">
-    <CustomSelectInput
-      :modelValue="SelectedTemplateType"
-      :staticOptions="TemplateTypes"
-      :required="true"
-      label="Template Type "
-      id="TemplateType"
-      placeholder="Select Template Type"
-      @update:modelValue="setTemplateType"
-    />
+    <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+      label="Template Type " id="TemplateType" placeholder="Select Template Type"
+      @update:modelValue="setTemplateType" />
   </div>
-  <div class="col-span-4 md:col-span-4" v-if="!data?.id">
+  <!-- <div class="col-span-4 md:col-span-4" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -259,52 +236,26 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
-  <div
-    class="col-span-4 md:col-span-2 select-container"
-    :class="IndustrySelectOption == 1 ? 'selected' : ''"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  </div> -->
+  <div class="col-span-4 md:col-span-2 select-container" :class="IndustrySelectOption == 1 ? 'selected' : ''"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="all-industry">
       <span>All industries</span>
       <img :src="Geer" alt="all industries" />
     </label>
-    <input
-      type="radio"
-      id="all-industry"
-      name="industry"
-      value="1"
-      v-model="IndustrySelectOption"
-      @change="updateData"
-    />
+    <input type="radio" id="all-industry" name="industry" value="1" v-model="IndustrySelectOption"
+      @change="updateData" />
   </div>
-  <div
-    class="col-span-4 md:col-span-2 select-container"
-    :class="IndustrySelectOption == 2 ? 'selected' : ''"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
+  <div class="col-span-4 md:col-span-2 select-container" :class="IndustrySelectOption == 2 ? 'selected' : ''"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
     <label for="select-industry" class="select-industry">
       <!-- <MultiSelect :modelValue="industry" :options="Industries" optionLabel="title" placeholder="select single industry"
         :multiple="true" class=" w-full md:w-56 select-container-multi" @update:modelValue="setIndustry" /> -->
-      <CustomSelectInput
-        :modelValue="industry"
-        :controller="industryController"
-        :params="industryParams"
-        label="Industry"
-        id="Industry"
-        placeholder="Select industry"
-        :type="2"
-        @update:modelValue="setIndustry"
-      />
+      <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+        label="Industry" id="Industry" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
       <img :src="hand" alt="single industry" />
     </label>
 
-    <input
-      type="radio"
-      id="select-industry"
-      value="2"
-      name="industry"
-      v-model="IndustrySelectOption"
-    />
+    <input type="radio" id="select-industry" value="2" name="industry" v-model="IndustrySelectOption" />
   </div>
 </template>

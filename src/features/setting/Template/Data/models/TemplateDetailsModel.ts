@@ -19,7 +19,8 @@ export default class TemplateDetailsModel {
   public requireImage: number
   public action: TitleInterface | null
   public title: string | null = null
-  
+  public type: number
+
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -35,6 +36,7 @@ export default class TemplateDetailsModel {
     requireImage: number = 0,
     action: TitleInterface | null = null,
     title: string | null = null,
+    type: number,
   ) {
     this.id = id
     this.name = name
@@ -48,6 +50,7 @@ export default class TemplateDetailsModel {
     this.requireImage = requireImage
     this.action = action
     this.title = title
+    this.type = type
   }
 
   static fromMap(data: any): TemplateDetailsModel {
@@ -68,6 +71,7 @@ export default class TemplateDetailsModel {
       data.require_image,
       this.getTemplateItemsAction(data.action),
       data.title,
+      data.type,
     )
   }
 

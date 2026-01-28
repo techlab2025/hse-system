@@ -4,9 +4,9 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import EditSubscriptionController from '../controllers/editSubscriptionController'
+import EditSubscriptionController from '../controllers/editSubscriptionApplicationController'
 import ShowSubscriptionParams from '../../Core/params/showSubscriptionAplicationParams'
-import ShowSubscriptionController from '../controllers/showSubscriptionController'
+import ShowSubscriptionController from '../controllers/showSubscriptionApplicationController'
 import SubscriptionForm from './SubscriptionApplicationForm.vue'
 
 const route = useRoute()

@@ -6,42 +6,41 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import AddSubscriptionUseCase from '../../Domain/useCase/addSubscriptionApplicationUseCase'
+import ApproveSubscriptionApplicationUseCase from '../../Domain/useCase/ApproveSubscriptionApplicationUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type SubscriptionModel from '../../Data/models/SubscriptionModel'
+import type SubscriptionModel from '@/features/setting/Subscription/Data/models/SubscriptionModel'
 
-export default class AddSubscriptionController extends ControllerInterface<SubscriptionModel> {
-  private static instance: AddSubscriptionController
+export default class ApproveSubscriptionApplicationController extends ControllerInterface<SubscriptionModel> {
+  private static instance: ApproveSubscriptionApplicationController
   private constructor() {
     super()
   }
-  private addSubscriptionUseCase = new AddSubscriptionUseCase()
+  private addSubscriptionUseCase = new ApproveSubscriptionApplicationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddSubscriptionController()
+      this.instance = new ApproveSubscriptionApplicationController()
     }
     return this.instance
   }
 
-  async addSubscription(params: Params, router: Router, draft: boolean = false) {
+  async approveSubscriptionApplication(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<SubscriptionModel> =
-        await this.addSubscriptionUseCase.call(params)
+      console.log(params, 'params')
+      const dataState: DataState<SubscriptionModel> = await this.addSubscriptionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: 'Approved was successful',
           imageElement: successImage,
           messageContent: null,
         })
 
         const { user } = useUserStore()
-
-        if (!draft) await router.push(`/admin/subscriptions`)
+        if (!draft) await router.push(`/admin/subscription-application`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
