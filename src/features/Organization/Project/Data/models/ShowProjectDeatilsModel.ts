@@ -50,7 +50,7 @@ export default class ShowProjectDetailsModel {
     hierarchies: TitleInterface[] | null,
     organization_employees: OrganizatoinEmployeeDetailsModel[] | null,
     project_locations: projectLocationModel[] | null,
-       serialName: string
+    serialName: string,
   ) {
     this.id = id
     this.title = title
