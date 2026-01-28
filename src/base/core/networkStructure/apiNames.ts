@@ -1412,6 +1412,23 @@ class ApiNames {
   public get DeleteSubscriptionType() {
     return this.prefix + 'delete_subscription_type'
   }
+
+  // Subscription
+  public get CreateSubscription() {
+    return this.prefix + 'create_subscription'
+  }
+  public get IndexSubscription() {
+    return this.prefix + 'fetch_subscriptions'
+  }
+  public get ShowSubscription() {
+    return this.prefix + 'fetch_subscription_details'
+  }
+  public get EditSubscription() {
+    return this.prefix + 'update_subscription'
+  }
+  public get DeleteSubscription() {
+    return this.prefix + 'delete_subscription'
+  }
 }
 
 export { ApiNames }
