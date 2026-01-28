@@ -4,8 +4,9 @@ import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import type Params from '@/base/core/params/params'
 import SubscriptionForm from './SubscriptionApplicationForm.vue'
-import AddSubscriptionController from '../controllers/addSubscriptionController'
-import type AddSubscriptionParams from '../../Core/params/addSubscriptionApplicationParams'
+import AddSubscriptionController from '../controllers/ApproveSubscriptionApplicationController'
+import type AddSubscriptionParams from '../../Core/params/ApproveSubscriptionApplication'
+import SubscriptionApplicationForm from './SubscriptionApplicationForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
@@ -23,7 +24,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addSubscription">
-    <SubscriptionForm @update:data="setParams" />
+    <SubscriptionApplicationForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary ">Add</button>

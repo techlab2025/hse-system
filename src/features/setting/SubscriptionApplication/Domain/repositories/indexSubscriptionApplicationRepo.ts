@@ -1,11 +1,11 @@
 // import LangModel from "@/features/setting/languages/Data/models/langModel.ts";
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { IndexSubscriptionApiService } from '../../Data/apiServices/indexSubscriptionApiService'
-import SubscriptionModel from '../../Data/models/SubscriptionModel'
+import SubscriptionApplicationModel from '../../Data/models/SubscriptionApplicationModel'
+import { IndexSubscriptionApiService } from '../../Data/apiServices/indexSubscriptionApplicationApiService'
 
-class IndexSubscriptionRepo extends RepoInterface<SubscriptionModel[]> {
-  private static instance: IndexSubscriptionRepo
+class IndexSubscriptionApplicationRepo extends RepoInterface<SubscriptionApplicationModel[]> {
+  private static instance: IndexSubscriptionApplicationRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -14,7 +14,7 @@ class IndexSubscriptionRepo extends RepoInterface<SubscriptionModel[]> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexSubscriptionRepo()
+      this.instance = new IndexSubscriptionApplicationRepo()
     }
     return this.instance
   }
@@ -23,8 +23,8 @@ class IndexSubscriptionRepo extends RepoInterface<SubscriptionModel[]> {
     return true
   }
 
-  onParse(data: any): SubscriptionModel[] {
-    return data.map((item: any) => SubscriptionModel.fromMap(item))
+  onParse(data: any): SubscriptionApplicationModel[] {
+    return data.map((item: any) => SubscriptionApplicationModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
@@ -32,4 +32,4 @@ class IndexSubscriptionRepo extends RepoInterface<SubscriptionModel[]> {
   }
 }
 
-export { IndexSubscriptionRepo }
+export { IndexSubscriptionApplicationRepo }

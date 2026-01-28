@@ -154,9 +154,9 @@ const UpdateWorkStatus = (data) => {
       </div>
 
       <!-- IsWorkStopped -->
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white"
-        @click="isWorkStopped = !isWorkStopped">
-        <label for="is_stoped">{{ $t('is_there_work_days_lost') }}</label>
+      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white">
+        <label class="w-full" @click="isWorkStopped = !isWorkStopped" for="is_stoped">{{ $t('is_there_work_days_lost')
+          }}</label>
         <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
           :name="`is_stoped`" />
       </div>

@@ -442,14 +442,14 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- title -->
     <div class="input-wrapper col-span-6">
-      <label for="time">title</label>
-      <input type="text" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
+      <label for="title">title</label>
+      <input type="text" id="title" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
     </div>
 
     <!-- Date -->
     <div class="col-span-2 md:col-span-2 input-wrapper">
       <label for="date">Date</label>
-      <DatePicker v-model="date" placeholder="Add your date" />
+      <DatePicker input-id="date" v-model="date" placeholder="Add your date" />
     </div>
 
     <!-- Time -->
@@ -467,8 +467,8 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12">
-      <label for="time">Place</label>
-      <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
+      <label for="place">Place</label>
+      <input type="text" id="place" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
     </div>
 
     <!-- Observation Type -->
@@ -558,8 +558,8 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper">
-      <label for="text">{{ $t('description') }}</label>
-      <input placeholder="Add your description" type="text" class="input" id="text" v-model="text"
+      <label for="description">{{ $t('description') }}</label>
+      <input placeholder="Add your description" type="text" class="input" id="description" v-model="text"
         @input="updateData" />
     </div>
 
@@ -616,7 +616,7 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!--Sub Hazard Type -->
     <div class="col-span-3 md:col-span-3 input-wrapper"
-      v-if="HazardType && ObservationFactoryType != Observation.AccidentsType">
+      v-if="HazardType && ObservationFactoryType != Observation.AccidentsType && saveStatus == SaveStatusEnum.NotSaved">
       <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
         :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
         @update:modelValue="setSubHazardType" />

@@ -2,20 +2,22 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import IndexSubscriptionUseCase from '../../Domain/useCase/indexSubscriptionApplicationUseCase'
-import type SubscriptionModel from '../../Data/models/SubscriptionModel'
+import type SubscriptionApplicationModel from '../../Data/models/SubscriptionApplicationModel'
+import IndexSubscriptionApplicationUseCase from '../../Domain/useCase/indexSubscriptionApplicationUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexSubscriptionController extends SelectControllerInterface<SubscriptionModel[]> {
-  private static instance: IndexSubscriptionController
+export default class IndexSubscriptionApplicationController extends SelectControllerInterface<
+  SubscriptionApplicationModel[]
+> {
+  private static instance: IndexSubscriptionApplicationController
   private constructor() {
     super()
   }
-  private indexSubscriptionUseCase = new IndexSubscriptionUseCase()
+  private indexSubscriptionApplicationUseCase = new IndexSubscriptionApplicationUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexSubscriptionController()
+      this.instance = new IndexSubscriptionApplicationController()
     }
     return this.instance
   }
@@ -24,7 +26,8 @@ export default class IndexSubscriptionController extends SelectControllerInterfa
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<SubscriptionModel[]> = await this.indexSubscriptionUseCase.call(params)
+    const dataState: DataState<SubscriptionApplicationModel[]> =
+      await this.indexSubscriptionApplicationUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
