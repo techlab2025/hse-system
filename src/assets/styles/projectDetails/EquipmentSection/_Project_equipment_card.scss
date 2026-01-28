@@ -38,6 +38,7 @@
       @include flex-row(nowrap, flex-start, center);
       width: 100%;
       gap: $XsSize2;
+      height: 100%;
       img {
         border-radius: 50%;
       }

@@ -111,6 +111,16 @@ const emit = defineEmits(['delete:data'])
 const deleteEquipment = async (id: number) => {
   emit('delete:data', id)
 }
+
+
+import EmptyEquipment from '@/assets/images/EmptyEquipment.png'
+
+function setEquipmentDefaultImage(event: Event) {
+  const img = event.target as HTMLImageElement
+  img.src = EmptyEquipment
+}
+
+
 </script>
 
 <template>
@@ -119,7 +129,11 @@ const deleteEquipment = async (id: number) => {
 
   <div class="tool-card equipment-card w-full" :class="isSelect ? 'is-select' : ''">
     <div class="tool-card-header w-full">
-      <img :src="tool?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
+
+
+      <img :src="tool?.image || '/src/assets/images/EmptyEquipment.png'" alt="tool" @error="setEquipmentDefaultImage">
+
+
       <div class="tool-card-header-text w-full">
         <div class="flex gap-2 w-full items-center justify-between card-type">
           <div class="flex items-center gap-2">
@@ -133,7 +147,8 @@ const deleteEquipment = async (id: number) => {
           </div>
 
           <EquipmentCardImgDialog :Visable="DialogVisable" :img="tool?.certificateImage" />
-          <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)" @delete="deleteEquipment(tool.id)" />
+          <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)"
+            @delete="deleteEquipment(tool.id)" />
 
         </div>
         <p class="type flex gap-2">
