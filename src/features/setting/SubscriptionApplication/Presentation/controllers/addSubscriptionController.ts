@@ -2,53 +2,34 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
-import AddHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/addHazardTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import { useRoute, type Router } from 'vue-router'
-import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
+import type { Router } from 'vue-router'
+import AddSubscriptionUseCase from '../../Domain/useCase/addSubscriptionApplicationUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
-import type AddHazardTypeParams from '../../Core/params/addHazardParams'
+import type SubscriptionModel from '../../Data/models/SubscriptionModel'
 
-export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
-  private static instance: AddHazardTypeController
+export default class AddSubscriptionController extends ControllerInterface<SubscriptionModel> {
+  private static instance: AddSubscriptionController
   private constructor() {
     super()
   }
-  private AddHazardTypeUseCase = new AddHazardTypeUseCase()
+  private addSubscriptionUseCase = new AddSubscriptionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddHazardTypeController()
+      this.instance = new AddSubscriptionController()
     }
     return this.instance
   }
 
-  async addHazardType(
-    params: AddHazardTypeParams,
-    router: Router,
-    route: any,
-    draft: boolean = false,
-  ) {
+  async addSubscription(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
-      console.log(route?.path, 'route')
-      if (route?.path?.includes('hazard/add') && !params?.ParentId) {
-        console.log('inside')
-        new OpenWarningDilaog('Should Select Hazard Type').openDialog()
-        return
-      }
-
-      const dataState: DataState<HazardTypeModel> = await this.AddHazardTypeUseCase.call(params)
+      const dataState: DataState<SubscriptionModel> =
+        await this.addSubscriptionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -60,11 +41,9 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const { user } = useUserStore()
 
-        const route = useRoute()
+        if (!draft) await router.push(`/admin/subscriptions`)
 
-        await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
-        )
+        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

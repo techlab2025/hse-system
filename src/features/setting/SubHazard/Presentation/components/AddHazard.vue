@@ -15,7 +15,7 @@ const addHazardTypeController = AddHazardTypeController.getInstance()
 
 const addHazardType = async () => {
   // console.log(params.value, 'params')
-  await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router)
+  await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router, route)
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
