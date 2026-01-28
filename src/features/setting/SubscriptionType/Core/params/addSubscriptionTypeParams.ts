@@ -14,29 +14,28 @@ export default class AddSubscriptionTypeParams implements Params {
   is_free: boolean
   type: SubscriptionTypeEnum
 
-  constructor(
-    translation: TranslationsParams,
-
-    price: number,
-    days: number,
-    isSupportExists: boolean,
-    support_days: number,
-    support_price: number,
-    is_active: boolean,
-    is_default: boolean,
-    is_free: boolean,
-    type: SubscriptionTypeEnum,
-  ) {
-    this.translation = translation
-    this.price = price
-    this.days = days
-    this.isSupportExists = isSupportExists
-    this.support_days = support_days
-    this.support_price = support_price
-    this.is_active = is_active
-    this.is_default = is_default
-    this.is_free = is_free
-    this.type = type
+  constructor(data: {
+    translation: TranslationsParams
+    price: number
+    days: number
+    isSupportExists: boolean
+    support_days: number
+    support_price: number
+    is_active: boolean
+    is_default: boolean
+    is_free: boolean
+    type: SubscriptionTypeEnum
+  }) {
+    this.translation = data.translation
+    this.price = data.price
+    this.days = data.days
+    this.isSupportExists = data.isSupportExists
+    this.support_days = data.support_days
+    this.support_price = data.support_price
+    this.is_active = data.is_active
+    this.is_default = data.is_default
+    this.is_free = data.is_free
+    this.type = data.type
   }
 
   toMap(): Record<

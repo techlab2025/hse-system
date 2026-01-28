@@ -29,7 +29,8 @@ export default class EditSubscriptionTypeController extends ControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<SubscriptionTypeModel> = await this.editSubscriptionTypeUseCase.call(params)
+      const dataState: DataState<SubscriptionTypeModel> =
+        await this.editSubscriptionTypeUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -42,7 +43,7 @@ export default class EditSubscriptionTypeController extends ControllerInterface<
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/SubscriptionType`)
+        await router.push(`/admin/subscription-types`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

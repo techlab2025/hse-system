@@ -20,6 +20,9 @@ import editSubscriptionTypeParams from '../../Core/params/editSubscriptionTypePa
 import AddSubscriptionTypeParams from '../../Core/params/addSubscriptionTypeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import type SubscriptionTypeDetailsModel from '../../Data/models/SubscriptionTypeDetailsModel'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { SubscriptionTypeEnum } from '../../Core/Enum/SubscriptionTypeEnum'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -105,11 +108,34 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editSubscriptionTypeParams(
-      props.data?.id! ?? 0,
-      translationsParams,
+      {
+        id: props.data?.id! ?? 0,
+        translation: translationsParams,
+        days: days.value,
+        price: price.value,
+        isSupportExists: isSupportExists.value,
+        support_days: support_days.value,
+        support_price: support_price.value,
+        is_active: isActive.value,
+        is_default: isDefault.value,
+        is_free: isFree.value,
+        type: SubscriptionType.value?.id ?? 0,
+      }
     )
     : new AddSubscriptionTypeParams(
-      translationsParams,
+      {
+        translation: translationsParams,
+        days: Number(days.value),
+        price: Number(price.value),
+        isSupportExists: isSupportExists.value,
+        support_days: Number(support_days.value),
+        support_price: Number(support_price.value),
+        is_active: isActive.value,
+        is_default: isDefault.value,
+        is_free: isFree.value,
+        type: SubscriptionType.value?.id ?? 0,
+      }
+
     )
 
   emit('update:data', params)
@@ -135,6 +161,15 @@ watch(
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
+      price.value = newData?.price;
+      days.value = newData?.days;
+      isSupportExists.value = newData?.isSupportExists;
+      support_days.value = newData?.supportDays;
+      support_price.value = newData?.supportPrice;
+      isActive.value = newData?.isActive;
+      isDefault.value = newData?.isDefault;
+      isFree.value = newData?.isFree;
+      SubscriptionType.value = SubscriptionTypes.value.find((item) => item.id === newData?.type);
 
     }
   },
@@ -144,6 +179,42 @@ watch(
 
 
 const price = ref<number>(0)
+const days = ref<number>(0)
+const isSupportExists = ref<boolean>(false)
+const setIsSupportExists = (value: boolean) => {
+  isSupportExists.value = value
+  updateData()
+}
+const support_days = ref<number>(0)
+const support_price = ref<number>(0)
+const isActive = ref<boolean>(false)
+const setIsActive = (value: boolean) => {
+  isActive.value = value
+  updateData()
+}
+const isDefault = ref<boolean>(false)
+const setIsDefault = (value: boolean) => {
+  isDefault.value = value
+  updateData()
+}
+const isFree = ref<boolean>(false)
+const setIsFree = (value: boolean) => {
+  isFree.value = value
+  updateData()
+}
+
+const SubscriptionType = ref<TitleInterface>()
+const SubscriptionTypes = ref<TitleInterface[]>([
+  new TitleInterface({ id: SubscriptionTypeEnum.TRIAL, title: 'Trial' }),
+  new TitleInterface({ id: SubscriptionTypeEnum.LIFETIME, title: 'Lifetime' }),
+  new TitleInterface({ id: SubscriptionTypeEnum.MONTHLY, title: 'Monthly' }),
+  new TitleInterface({ id: SubscriptionTypeEnum.YEARLY, title: 'Yearly' }),
+])
+
+const setSubscriptionType = (value: TitleInterface) => {
+  SubscriptionType.value = value
+  updateData()
+}
 </script>
 
 <template>
@@ -152,8 +223,43 @@ const price = ref<number>(0)
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper ">
-    <label for="price">Price</label>
-    <input id="price" type="text" v-model="price" placeholder="Enter Price" class="input" />
+    <label for="price">{{ $t('price') }}</label>
+    <input id="price" type="text" v-model="price" placeholder="Enter Price" class="input" @input="updateData" />
   </div>
-
+  <div class="col-span-4 md:col-span-2 input-wrapper ">
+    <label for="days">{{ $t('days') }}</label>
+    <input id="days" type="text" v-model="days" placeholder="Enter Days" class="input" @input="updateData" />
+  </div>
+  <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`is_support_exists`" :checked="isSupportExists" @update:checked="setIsSupportExists" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper " v-if="isSupportExists">
+    <label for="support_days">{{ $t('support_days') }}</label>
+    <input id="support_days" type="text" v-model="support_days" placeholder="Enter Support Days" class="input"
+      @input="updateData" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper " v-if="isSupportExists">
+    <label for="support_price">{{ $t('support_price') }}</label>
+    <input id="support_price" type="text" v-model="support_price" placeholder="Enter Support Price" class="input"
+      @input="updateData" />
+  </div>
+  <div class="input-wrapper col-span-2 ">
+    <CustomCheckbox :title="`is_active`" :checked="isActive" @update:checked="setIsActive" />
+  </div>
+  <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`is_default`" :checked="isDefault" @update:checked="setIsDefault" />
+  </div>
+  <div class="input-wrapper col-span-2">
+    <CustomCheckbox :title="`is_free`" :checked="isFree" @update:checked="setIsFree" />
+  </div>
+  <div class="input-wrapper col-span-2">
+    <UpdatedCustomInputSelect :modelValue="SubscriptionType" :staticOptions="SubscriptionTypes" label="Type" id="Type"
+      placeholder="Select Type" @update:modelValue="setSubscriptionType" />
+  </div>
 </template>
+
+<style scoped>
+/* .p-2 {
+  padding: 0.5rem;
+} */
+</style>

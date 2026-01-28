@@ -6,30 +6,30 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import AddSubscriptionTypeUseCase from '../../Domain/useCase/addSubscriptionTypeUseCase'
+import AddSubscriptionUseCase from '../../Domain/useCase/addSubscriptionUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type SubscriptionTypeModel from '../../Data/models/SubscriptionTypeModel'
+import type SubscriptionModel from '../../Data/models/SubscriptionModel'
 
-export default class AddSubscriptionTypeController extends ControllerInterface<SubscriptionTypeModel> {
-  private static instance: AddSubscriptionTypeController
+export default class AddSubscriptionController extends ControllerInterface<SubscriptionModel> {
+  private static instance: AddSubscriptionController
   private constructor() {
     super()
   }
-  private addSubscriptionTypeUseCase = new AddSubscriptionTypeUseCase()
+  private addSubscriptionUseCase = new AddSubscriptionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddSubscriptionTypeController()
+      this.instance = new AddSubscriptionController()
     }
     return this.instance
   }
 
-  async addSubscriptionType(params: Params, router: Router, draft: boolean = false) {
+  async addSubscription(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<SubscriptionTypeModel> =
-        await this.addSubscriptionTypeUseCase.call(params)
+      const dataState: DataState<SubscriptionModel> =
+        await this.addSubscriptionUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -41,7 +41,7 @@ export default class AddSubscriptionTypeController extends ControllerInterface<S
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/admin/subscription-types`)
+        if (!draft) await router.push(`/admin/subscriptions`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

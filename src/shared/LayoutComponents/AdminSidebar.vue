@@ -246,6 +246,36 @@ const LocationRoutes = ref<Routes[]>([
   },
 ])
 
+const SubscriptionTypeRoutes = ref<Routes[]>([
+  {
+    link: '/admin/subscription-types',
+    name: 'subscription_type',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
+      PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_UPDATE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_DETAILS,
+      PermissionsEnum.SUBSCRIPTION_TYPE_DELETE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_FETCH,
+    ],
+  },
+  {
+    link: '/admin/subscriptions',
+    name: 'subscriptions',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum?.SUBSCRIPTION_ALL,
+      PermissionsEnum.SUBSCRIPTION_CREATE,
+      PermissionsEnum.SUBSCRIPTION_UPDATE,
+      PermissionsEnum.SUBSCRIPTION_DETAILS,
+      PermissionsEnum.SUBSCRIPTION_DELETE,
+      PermissionsEnum.SUBSCRIPTION_FETCH,
+    ],
+  },
+])
+
+
 const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/client-opinions',
@@ -527,6 +557,7 @@ const WebsiteRoutes = ref<Routes[]>([
 const SelectedSettingsRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
 const SelectedWebsiteRoute = ref<string>('')
+const SelectedSubscriptionTypeRoute = ref<string>('')
 
 watch(
   () => route.path,
@@ -534,12 +565,14 @@ watch(
     SelectedSettingsRoute.value = SettingsRoutes.value.find(item => item.link === newPath)?.name || ''
     SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name || ''
     SelectedWebsiteRoute.value = WebsiteRoutes.value.find(item => item.link === newPath)?.name || ''
+    SelectedSubscriptionTypeRoute.value = SubscriptionTypeRoutes.value.find(item => item.link === newPath)?.name || ''
   }
 )
 
 const settingsAccordion = ref<string | null>('0')
 const locationAccordion = ref<string | null>('1')
 const websiteAccordion = ref<string | null>('2')
+const subscriptionTypeAccordion = ref<string | null>('3')
 </script>
 
 <template>
@@ -608,6 +641,40 @@ const websiteAccordion = ref<string | null>('2')
       </AccordionPanel>
       <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
         <span>{{ SelectedLocationRoute }}</span>
+      </AccordionPanel>
+    </Accordion>
+  </PermissionBuilder>
+
+  <PermissionBuilder :code="[
+    PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
+    PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
+    PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
+    PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
+    PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
+    PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
+  ]">
+    <Accordion v-model:value="subscriptionTypeAccordion">
+      <AccordionPanel value="3">
+        <AccordionHeader>
+          <div class="links-header">
+            <IconSetting />
+            {{ $t('subscription_type') }}
+          </div>
+        </AccordionHeader>
+        <AccordionContent>
+          <ul>
+            <PermissionBuilder v-for="(route, index) in SubscriptionTypeRoutes" :key="index" :code="route.permissions">
+              <li>
+                <router-link :to="route.link">
+                  <span>{{ $t(route.name) }}</span>
+                </router-link>
+              </li>
+            </PermissionBuilder>
+          </ul>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel class="active-panel-out" v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion">
+        <span>{{ SelectedSubscriptionTypeRoute }}</span>
       </AccordionPanel>
     </Accordion>
   </PermissionBuilder>

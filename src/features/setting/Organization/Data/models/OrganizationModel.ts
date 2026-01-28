@@ -21,7 +21,7 @@ export default class OrganizationModel extends TitleInterface {
     industry: string,
     languages: string,
   ) {
-    super({ id: 0, title: '', subtitle: '' })
+    super({ id: id, title: name, subtitle: '' })
     this.id = id
     this.name = name
     this.phone = phone

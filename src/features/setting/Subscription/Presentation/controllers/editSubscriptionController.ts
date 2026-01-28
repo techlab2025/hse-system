@@ -1,49 +1,50 @@
-import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
-import AddSubscriptionTypeUseCase from '../../Domain/useCase/addSubscriptionTypeUseCase'
-import { useUserStore } from '@/stores/user'
+import EditSubscriptionUseCase from '../../Domain/useCase/editSubscriptionUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type SubscriptionTypeModel from '../../Data/models/SubscriptionTypeModel'
+import { useUserStore } from '@/stores/user'
+import type SubscriptionModel from '../../Data/models/SubscriptionModel'
 
-export default class AddSubscriptionTypeController extends ControllerInterface<SubscriptionTypeModel> {
-  private static instance: AddSubscriptionTypeController
+export default class EditSubscriptionController extends ControllerInterface<SubscriptionModel> {
+  private static instance: EditSubscriptionController
+
   private constructor() {
     super()
   }
-  private addSubscriptionTypeUseCase = new AddSubscriptionTypeUseCase()
+
+  private editSubscriptionUseCase = new EditSubscriptionUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddSubscriptionTypeController()
+      this.instance = new EditSubscriptionController()
     }
     return this.instance
   }
 
-  async addSubscriptionType(params: Params, router: Router, draft: boolean = false) {
+  async editSubscription(params: Params, router: any) {
     // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
     try {
-      const dataState: DataState<SubscriptionTypeModel> =
-        await this.addSubscriptionTypeUseCase.call(params)
+      const dataState: DataState<SubscriptionModel> =
+        await this.editSubscriptionUseCase.call(params)
+
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
         })
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/admin/subscription-types`)
-
-        // useLoaderStore().endLoadingWithDialog();
+        await router.push(`/admin/subscriptions`)
+        // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -52,16 +53,14 @@ export default class AddSubscriptionTypeController extends ControllerInterface<S
           messageContent: null,
         })
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
-        titleContent: this.state.value.error?.title ?? (error as string),
+        titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,
       })
     }
-
-    super.handleResponseDialogs()
     return this.state
   }
 }
