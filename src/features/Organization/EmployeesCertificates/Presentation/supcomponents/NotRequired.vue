@@ -14,7 +14,7 @@ const updateData = () => {
 
 </script>
 <template>
-  <div class="invalid-certificate">
+  <div class="invalid-certificate not-required-container">
     <div class="invalid">
       <!-- <NotValidIcon /> -->
       <span class="not-required-left"></span>

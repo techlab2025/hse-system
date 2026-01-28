@@ -33,6 +33,7 @@
     @include flex-row(nowrap, flex-start, center);
     width: 100%;
     gap: $XsSize2;
+    height: 100%;
 
     .tool-card-header-text {
       @include flex-column(nowrap, flex-start, flex-start);
