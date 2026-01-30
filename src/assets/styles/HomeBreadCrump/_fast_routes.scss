@@ -3,6 +3,9 @@
 
 .fast-route-container {
   font-family: 'Regular';
+  @media (min-width: 768px) {
+    display: none;
+  }
 
   .fast-route {
     @include flex-row(wrap, center, center);
