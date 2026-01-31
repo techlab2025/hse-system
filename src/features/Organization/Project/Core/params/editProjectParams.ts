@@ -44,8 +44,9 @@ export default class EditProjectParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    if (this.id || useProjectSelectStore().getProjectId())
-      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
+    // if (this.id || useProjectSelectStore().getProjectId())
+    //   data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
+    data['project_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.partnerId?.length > 0) data['contractor_ids'] = this.partnerId
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
