@@ -5,6 +5,7 @@ import { organizationRoutes } from './routes/organization'
 import { sharedRoutes } from './routes/shared'
 import { addSuffix } from './helpers'
 import { authGuard } from './guards'
+import NotFountPage from '@/views/NotFountPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       name: 'Organization App',
       component: Dashboard,
       children: [...organizationRoutes, ...addSuffix(sharedRoutes, 'Organization')],
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Not Found',
+      component: NotFountPage,
     },
   ],
 })
