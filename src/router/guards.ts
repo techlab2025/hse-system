@@ -1,12 +1,18 @@
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export function authGuard(to, from, next) {
   const userData = useUserStore()
   const Path = ref<boolean>(to.path == '' || to.path == '/' || to.path == '/login')
 
   const loginPages = ['Login', 'Organization Login']
+  const router = useRouter()
+  const route = router.getRoutes().find((r) => r.name === to.name)
+  if (!route) {
+    router.push({ name: 'Not Found' })
+  }
 
   //  NOT AUTHENTICATED
   if (!userData.isAuth) {
