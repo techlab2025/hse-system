@@ -6,12 +6,17 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
   width: fit-content;
-  border-radius: 20px;
+  border-radius: $XlSize;
   padding: $XsSize;
 
   &.not-required-container {
-    background-color: #fcfcfc;
+    background: #fcfcfc;
+    border: 1px solid #dadcdf1a;
     padding: $XsSize3;
+    border-radius: $XsSize2;
+    @include flex-row(nowrap, space-between, center);
+    gap: $XsSize4;
+    padding: $XsSize;
   }
   .invalid {
     @include flex-row(nowrap, flex-start, flex-start);
@@ -21,6 +26,11 @@
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       margin-left: auto;
+    }
+    .not-req-span {
+      color: #161716bf;
+      font-size: $MdSize;
+      font-family: 'Bold';
     }
   }
   .invalid-date {
