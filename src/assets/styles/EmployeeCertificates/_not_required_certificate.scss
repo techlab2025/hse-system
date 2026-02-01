@@ -6,6 +6,13 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
   width: fit-content;
+  border-radius: 20px;
+  padding: $XsSize;
+
+  &.not-required-container {
+    background-color: #fcfcfc;
+    padding: $XsSize3;
+  }
   .invalid {
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XsSize4;

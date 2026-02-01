@@ -353,7 +353,7 @@ watch(
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
 
-              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+              <DataEmpty  
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No Inspection" />
             </PermissionBuilder>
@@ -361,7 +361,7 @@ watch(
           <template #failed>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
 
-              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+              <DataFailed
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No Inspection" />
             </PermissionBuilder>

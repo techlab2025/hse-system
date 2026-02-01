@@ -5,6 +5,8 @@
 .invalid-certificate {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
+  background-color: #fffdfd;
+  padding: $XsSize2;
   .invalid {
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XsSize4;

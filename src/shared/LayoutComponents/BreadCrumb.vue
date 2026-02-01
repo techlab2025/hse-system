@@ -130,6 +130,7 @@ const ShowBackBtn = computed(() => {
       <Breadcrumb :model="items" />
     </div>
 
-    <!-- <FastRoutes v-if="!IsHomeSetting" /> -->
+    <!-- v-if="!IsHomeSetting" -->
+    <FastRoutes />
   </div>
 </template>

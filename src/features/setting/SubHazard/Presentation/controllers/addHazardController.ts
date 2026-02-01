@@ -10,7 +10,8 @@ import { useRoute, type Router } from 'vue-router'
 import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type AddHazardTypeParams from '../../Core/params/addHazardTypeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import type AddHazardTypeParams from '../../Core/params/addHazardParams'
 
 export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: AddHazardTypeController
@@ -26,7 +27,12 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
     return this.instance
   }
 
-  async addHazardType(params: AddHazardTypeParams, router: Router, draft: boolean = false) {
+  async addHazardType(
+    params: AddHazardTypeParams,
+    router: Router,
+    route: any,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -35,6 +41,13 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         params.validateOrThrow()
         return
       }
+      console.log(route?.path, 'route')
+      if (route?.path?.includes('hazard/add') && !params?.ParentId) {
+        console.log('inside')
+        new OpenWarningDilaog('Should Select Hazard Type').openDialog()
+        return
+      }
+
       const dataState: DataState<HazardTypeModel> = await this.AddHazardTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

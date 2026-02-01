@@ -1429,6 +1429,16 @@ class ApiNames {
   public get DeleteSubscription() {
     return this.prefix + 'delete_subscription'
   }
+
+  public get IndexSubscriptionApplication() {
+    return this.prefix + 'fetch_subscription_applications'
+  }
+  public get ApproveSubscriptionApplication() {
+    return this.prefix + 'approve_subscription_application'
+  }
+  public get RejectSubscriptionApplication() {
+    return this.prefix + 'reject_subscription_application'
+  }
 }
 
 export { ApiNames }

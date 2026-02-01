@@ -8,6 +8,7 @@ import { adminsRoutes } from './admins'
 import { organizationRoutes } from './organization'
 import { SubscriptionTypeRoutes } from './subscriptionType'
 import { SubscriptionRoutes } from './subscription'
+import { SubscriptionApplicationRoutes } from './subscriptionApplication'
 
 export const adminRoutes: RouteRecordRaw[] = [
   {
@@ -24,6 +25,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   ...organizationRoutes,
   ...SubscriptionTypeRoutes,
   ...SubscriptionRoutes,
+  ...SubscriptionApplicationRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Admin',

@@ -75,8 +75,9 @@ watch(() => isAnotherMeeting.value, (newVal) => {
           @update:model-value="setEmployee" />
       </div>
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="text">Text</label>
-        <input type="text" id="text" v-model="text" class="input" placeholder="add your title" @input="updateData" />
+        <label for="deth-text">Text</label>
+        <input type="text" id="deth-text" v-model="text" class="input" placeholder="add your title"
+          @input="updateData" />
       </div>
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
         <div class="col-span-6 md:col-span-6 input-wrapper w-full">

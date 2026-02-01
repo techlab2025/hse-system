@@ -64,15 +64,15 @@ onMounted(() => {
 
             <div class="timeline-content">
               <div class=" input-wrapper">
-                <label for="text">Text</label>
-                <input type="text" id="text" v-model="item.text" class="input" placeholder="add your title"
+                <label for="wetness-text">Text</label>
+                <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
                   @input="UpdateData" />
               </div>
               <!-- <div class="timeline-contect-select"> -->
-                <div class="input-wrapper">
-                  <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
-                    :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                    class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" />
+              <div class="input-wrapper">
+                <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
+                  :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
+                  class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" />
                 <!-- </div> -->
 
               </div>

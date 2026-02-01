@@ -11,6 +11,7 @@ import type HazardTypeModel from '@/features/setting/HazardType/Data/models/haza
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type AddHazardTypeParams from '../../Core/params/addHazardTypeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: AddHazardTypeController
@@ -35,6 +36,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         params.validateOrThrow()
         return
       }
+
       const dataState: DataState<HazardTypeModel> = await this.AddHazardTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
