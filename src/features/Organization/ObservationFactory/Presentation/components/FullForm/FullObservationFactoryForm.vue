@@ -442,7 +442,7 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- title -->
     <div class="input-wrapper col-span-6">
-      <label for="time">title</label>
+      <label for="title">title</label>
       <input type="text" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
     </div>
 
@@ -467,7 +467,7 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12">
-      <label for="time">Place</label>
+      <label for="place">Place</label>
       <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
     </div>
 
