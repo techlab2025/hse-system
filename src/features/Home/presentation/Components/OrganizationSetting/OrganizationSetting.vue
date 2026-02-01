@@ -10,11 +10,15 @@ import SettingLocation from "@/assets/images/SettingLocation.png";
 import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
 import PermissionBuilder from "@/components/DataStatus/PermissionBuilder.vue";
 import { RouterEnum } from "@/features/Home/core/enums/SettingEnum/SettingEnum";
+import HomeOrganizationSetting from "@/shared/icons/HomeOrganizationSetting.vue";
+import OperationHomeIcon from "@/shared/icons/OperationHomeIcon.vue";
+import HomeSettingEmployeeIcon from "@/shared/icons/HomeSettingEmployeeIcon.vue";
+import HomeLocationIcon from "@/shared/icons/HomeLocationIcon.vue";
 
 interface OrganizationSettingItem {
   id: RouterEnum;
   title: string;
-  icon: string;
+  icon: any;
   description: string;
   routes: { route: string, Name: string, permissions: PermissionsEnum[] }[];
 
@@ -25,7 +29,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.ORGANIZATION,
     title: "organization setting",
-    icon: FilesOrganization,
+    icon: HomeOrganizationSetting,
     description:
       "partners . projects . certifications . templet . methods . contractors . management . roles",
     routes: [
@@ -178,7 +182,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.OPERATION,
     title: "operation setting",
-    icon: OrganizationSettingIcon,
+    icon: OperationHomeIcon,
     description:
       "hazard type . types of observation . hazard . factor . factors item",
     routes: [
@@ -272,7 +276,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.EMPLOYEES,
     title: "employees",
-    icon: PersonalData,
+    icon: HomeSettingEmployeeIcon,
     description: "organization employee . hierarchy . team",
     routes: [
       {
@@ -314,7 +318,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.LOCATION,
     title: "location setting",
-    icon: SettingLocation,
+    icon: HomeLocationIcon,
     description: "state . country . city . location . zones",
     routes: [
       {
@@ -406,7 +410,8 @@ const handleCardClick = (id: RouterEnum) => {
 
       <div v-for="(card, index) in OrganizationSetting" :key="index" class="organization-setting-card"
         :class="{ active: selectedRoutesType === card.id }" @click="handleCardClick(card.id)">
-        <img :src="card.icon" :alt="card.title" />
+        <!-- <img :src="card.icon" :alt="card.title" /> -->
+        <component :is="card.icon"></component>
         <div class="card-content">
           <p class="title">{{ card.title }}</p>
           <p class="description">{{ card.description }}</p>

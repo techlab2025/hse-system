@@ -17,6 +17,11 @@ import TotalMachines from './HomeStatistics/TotalMachines.vue';
 import MostIncidantFactor from './HomeStatistics/MostIncidantFactor.vue';
 import ObservatoinFactoryStatistics from './HomeStatistics/ObservatoinFactoryStatistics.vue';
 import InvestegationStatics from './HomeStatistics/InvestegationStatics.vue';
+import HomeProjectIcon from '@/shared/icons/HomeProjectIcon.vue';
+import HomeOperationIcon from '@/shared/icons/HomeOperationIcon.vue';
+import HomeEquipmentIcon from '@/shared/icons/HomeEquipmentIcon.vue';
+import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue';
+import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue';
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -47,7 +52,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
       PermissionsEnum.PROJECT_DETAILS,
     ]">
       <router-link to="/organization/projects">
-        <HomeRoutesCard :img-src="CardProjectLogo" :title="`${$t('project')}`"
+        <HomeRoutesCard :icon="HomeProjectIcon" :title="`${$t('project')}`"
           :description="`${$t('plan')} . ${$t('tasks ')} . ${$t('hierarchy')}`" />
       </router-link>
     </PermissionBuilder>
@@ -62,7 +67,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
     ]">
       <router-link :to="`/organization/equipment-mangement/all-observatin?type=${RouterEnum?.OPERATION}`">
-        <HomeRoutesCard :img-src="Operation" :title="`${$t('operations')}`"
+        <HomeRoutesCard :icon="HomeOperationIcon" :title="`${$t('operations')}`"
           :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `" />
       </router-link>
     </PermissionBuilder>
@@ -87,7 +92,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
     ]">
       <router-link to="/organization/equipments">
-        <HomeRoutesCard :img-src="EquipmentBag" :title="`${$t('equipment')}`"
+        <HomeRoutesCard :icon="HomeEquipmentIcon" :title="`${$t('equipment')}`"
           :description="`${$t('add')} . ${$t('assign_insepction ')} . ${$t('show')}  `" />
       </router-link>
     </PermissionBuilder>
@@ -101,7 +106,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <router-link :to="`/organization/organization-employee?type=${RouterEnum?.EMPLOYEES}`">
-        <HomeRoutesCard :img-src="TeamLogo" :title="`${$t('employee')}`"
+        <HomeRoutesCard :icon="HomeEmployeeIcon" :title="`${$t('employee')}`"
           :description="`${$t('add')} . ${$t('show')} . ${$t('edit')} . ${$t('assign_to')}`" />
       </router-link>
     </PermissionBuilder>
@@ -116,7 +121,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
     ]">
       <!-- /organization?setting=1 -->
       <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
-        <HomeRoutesCard :img-src="HomeSetting" :title="`${$t('setting')}`"
+        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('setting')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
     </PermissionBuilder>
