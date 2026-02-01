@@ -24,6 +24,7 @@ import DeleteAccidentsTypeParams from '../../Core/params/deleteAccidentsTypePara
 import DeleteAccidentsTypeController from '../controllers/deleteAccidentsTypeController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -93,7 +94,7 @@ watch(
 const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/accidents-type/${id}`,
     permission: [

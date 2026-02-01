@@ -28,6 +28,7 @@ import IndexInjuryController from '../controllers/indexInjuryController'
 import IndexInjuryParams from '../../Core/params/indexInjuryParams'
 import DeleteInjuryParams from '../../Core/params/deleteInjuryParams'
 import DeleteInjuryController from '../controllers/deleteInjuryController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -96,7 +97,7 @@ watch(
 const actionList = (id: number, deleteInjury: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/organization/Injury/${id}`,
     permission: [
       PermissionsEnum.INJURY_UPDATE,

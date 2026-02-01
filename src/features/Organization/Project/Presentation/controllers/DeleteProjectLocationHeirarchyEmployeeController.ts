@@ -33,20 +33,20 @@ export default class DeleteProjectLocationHeirarchyEmployeeController extends Co
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
-        await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route.params?.id)),
-        )
+        // await ShowProjectDetailsController.getInstance().showProjectDetails(
+        //   new ShowProjectDetailsParams(Number(route.params?.id || route.params?.project_id)),
+        // )
       } else {
         throw new Error('Error while addServices')
       }
     } catch (error: any) {
       console.log(error)
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
-        titleContent: this.state.value.message,
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog',
+      //   titleContent: this.state.value.message,
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
     super.handleResponseDialogs()
     return this.state

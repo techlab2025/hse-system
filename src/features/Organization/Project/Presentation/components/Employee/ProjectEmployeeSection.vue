@@ -33,10 +33,11 @@ const GetProjectLocationsEmployes = async () => {
   console.log(response.value.data, 'response.va')
 }
 
+const route = useRoute()
 const DeleteMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(id)
   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationHeirarchyEmployeeController.getInstance();
-  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationHeirarchyEmployee(deleteProjectLocationTeamEmployeeparams)
+  await deleteProjectLocationTeamEmployeeController.deleteProjectLocationHeirarchyEmployee(deleteProjectLocationTeamEmployeeparams, route)
   GetProjectLocationsEmployes()
 
 }

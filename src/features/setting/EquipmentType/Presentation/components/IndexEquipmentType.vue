@@ -29,6 +29,7 @@ import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -105,7 +106,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/equipment-type/${id}`,
     permission: [

@@ -209,7 +209,7 @@ watch(
   ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mt-2">
           <InvestegaionResultTasksAnswerCard v-for="(task, index) in state.data" :key="index" :task="task" />
 
           <!-- <InvestegaionMeetingResultAnswerCard class="meetings-page" v-for="(meeting, index) in state.data" :key="index"

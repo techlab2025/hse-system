@@ -5,18 +5,18 @@ export default class AddTeamParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
-  serial_number: string
+  // serial_number: string
 
   constructor(
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
-    serial_number: string,
+    // serial_number: string,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
-    this.serial_number = serial_number
+    // this.serial_number = serial_number
   }
 
   toMap(): Record<
@@ -34,7 +34,7 @@ export default class AddTeamParams implements Params {
     data['translations'] = this.translation.toMap() // tranlations:asd
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
-    data['serial_number'] = Number(this.serial_number)
+    // data['serial_number'] = Number(this.serial_number)
     // if (this.image) data['image'] = this.image
 
     return data

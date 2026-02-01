@@ -127,7 +127,7 @@ export default class InvestigatingModel {
       data.creator,
       data.capa,
       data.status,
-      HazardDetailsModel.fromMap(data.observation),
+      HazardDetailsModel?.fromMap(data.observation),
       data.latest_investigation_meeting_id,
       data.has_results,
     )

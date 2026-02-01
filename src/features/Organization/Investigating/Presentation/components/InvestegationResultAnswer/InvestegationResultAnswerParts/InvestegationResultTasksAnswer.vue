@@ -23,11 +23,9 @@ const props = defineProps<{
         class="title-header answer-header border-top" />
       <router-link :to="`/organization/investegation-tasks/${route.params.id}`" class="show-all-btn">{{
         $t('show_all_tasks')
-        }}</router-link>
+      }}</router-link>
     </div>
-
     <div class="content">
-
       <InvestegaionResultTasksAnswerCard v-for="(task, index) in tasks" :key="index" :task="task" />
     </div>
   </div>

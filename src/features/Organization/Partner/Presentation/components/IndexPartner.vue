@@ -28,6 +28,7 @@ import IndexPartnerController from '../controllers/indexPartnerController'
 import IndexPartnerParams from '../../Core/params/indexPartnerParams'
 import DeletePartnerParams from '../../Core/params/deletePartnerParams'
 import DeletePartnerController from '../controllers/deletePartnerController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -96,7 +97,7 @@ watch(
 const actionList = (id: number, deletePartner: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/organization/partner/${id}`,
     permission: [
       PermissionsEnum.PARTNER_UPDATE,

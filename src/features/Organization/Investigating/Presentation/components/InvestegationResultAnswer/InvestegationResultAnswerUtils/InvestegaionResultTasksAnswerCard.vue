@@ -68,12 +68,10 @@ watch(
       </p>
 
       <div class="info">
-        <span class="date"
-          >due date :<span>{{ task?.due_date }}</span></span
-        >
-        <span class="responsable"
-          >Responsible:
-          <span>{{ task?.investigation_task_employees?.[0]?.follow_up_employee?.name }}</span>
+        <span class="date">due date :<span>{{ task?.due_date || task?.date }}</span></span>
+        <span class="responsable">Responsible:
+          <span>{{ task?.investigation_task_employees?.[0]?.follow_up_employee?.name || task?.responablePerson?.title
+          }}</span>
         </span>
       </div>
 
@@ -82,15 +80,14 @@ watch(
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
             <p class="assign">assigned to :</p>
-            <p class="person">{{ task?.investigation_task_employees?.[0]?.employee?.name }}</p>
+
+            <p class="person">{{ task?.investigation_task_employees?.[0]?.employee?.name || task?.assignedTo?.name }}
+            </p>
           </div>
         </div>
 
         <button v-if="task?.status === TasksStatusEnum.OPEN || task?.status === 0">
-          <AddInvestegationTaskAnswerDialog
-            :taskId="task?.id"
-            :task="task?.description || task?.title"
-          />
+          <AddInvestegationTaskAnswerDialog :taskId="task?.id" :task="task?.description || task?.title" />
         </button>
         <!-- class="btn btn-secondary" -->
         <button v-else>
