@@ -276,10 +276,13 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
             <div class="table-responsive">
               <div class="index-table-card-container">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                  <router-link class="w-full" :to="`observation/show/${item?.id}`">
+                  <div class="w-full" :to="`observation/show/${item?.id}`">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                       <div class="header-container">
-                        <div class="card-content">
+
+
+
+                        <router-link :to="`observation/show/${item?.id}`" class="card-content" style="flex: 1;">
                           <div class="card-header">
                             <p class="label-item-primary">
                               Serial : <span>{{ item.serialName }}</span>
@@ -304,8 +307,18 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                               </p> -->
                             </div>
                           </div>
-                        </div>
-                        <div class="card-info">
+                        </router-link>
+
+
+
+
+
+
+
+
+
+
+                        <div class="card-info" >
                           <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
                             class="observation-risk-level flex items-center gap-1"
                             :class="GetRiskLevel(item.riskLevel)">
@@ -325,7 +338,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                         </div>
                       </div>
                     </div>
-                  </router-link>
+                  </div>
 
                   <div class="observation-dwspcription-more">
                     <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">

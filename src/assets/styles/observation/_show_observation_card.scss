@@ -86,6 +86,7 @@
       .card-info {
         @include flex-column(nowrap, flex-start, center);
         gap: 6px;
+        
         .title {
           color: $PrimaryColor;
           font-size: $SmSize;
