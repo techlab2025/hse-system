@@ -9,6 +9,10 @@
   padding: $SmSize;
   border-radius: $MdSize;
   width: 100%;
+  svg {
+    width: 60px;
+    height: 60px;
+  }
   .card-img {
     width: 60px;
     height: 60px;

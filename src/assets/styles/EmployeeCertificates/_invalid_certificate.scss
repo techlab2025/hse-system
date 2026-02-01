@@ -6,7 +6,7 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
   background-color: #fffdfd;
-  padding: $XsSize2;
+  padding: $XsSize3;
   .invalid {
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XsSize4;
