@@ -278,9 +278,18 @@
     .capa-actions-container {
       width: 100%;
       @include flex-row(nowrap, space-between, center);
+      @media (max-width: 786px) {
+        @include flex-row(wrap, center, center);
+      }
       gap: $XsSize;
       .capa-action {
         @include flex-column(nowrap, center, center);
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
+        @media (max-width: 786px) {
+          width: 100%;
+        }
         gap: $XsSize2;
         width: 50%;
         border: 1px solid #f4971e33;
@@ -307,10 +316,9 @@
           font-weight: $BaseFontWeightBold;
         }
         .corrective-textarea {
-          color: #515253;
+          color: #535151;
           font-size: $MdSize2;
           font-weight: $BaseFontWeightBold;
-          width: 100%;
           border: 1px solid #f7f7f7;
           border-radius: $XsSize2;
           padding: $XsSize2;

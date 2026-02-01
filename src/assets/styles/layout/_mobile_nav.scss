@@ -1,130 +1,484 @@
+// ============================================
+// LIQUID GLASS MOBILE NAVIGATION
+// Telegram-inspired design with glassmorphism
+// Fixed for Vue.js compatibility
+// ============================================
+
+// Configuration Variables (Customize these)
+$nav-height: 72px;
+$nav-item-size: 56px;
+$nav-active-lift: -28px;
+$nav-bg-blur: 20px;
+$nav-border-radius: 24px;
+$nav-shadow: 0 -8px 32px rgb(255, 253, 253);
+$nav-glass-bg: rgba(255, 255, 255, 0.979);
+$nav-glass-border: rgba(255, 255, 255, 0.616);
+
+// Color Variables - Using your brand color
+$primary-color: #00c3f7;
+
+$active-bg: rgba(2, 182, 232, 0.223);
+$icon-default: #ffffff;
+$icon-active: $primary-color;
+$text-default: #ffffff;
+$text-active: $primary-color;
+
+// Animation Variables
+$transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ============================================
+// MAIN NAVIGATION COMPONENT
+// ============================================
+
 .navigation {
   display: none;
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  height: 70px;
-  background: #fff;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px 10px 0 0;
-  box-shadow: -1px -10px 0 0 var(--primary-color);
-  // background-color: ;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  @media (max-width: 1100px) {
+
+  // Only show on mobile/tablet
+  @media screen and (max-width: 992px) {
     display: flex;
-  }
-  z-index: 9999;
-}
-.navigation ul {
-  display: flex;
-  width: 350px;
-}
-.navigation ul li {
-  position: relative;
-  list-style: none;
-  width: 70px;
-  height: 70px;
-  z-index: 1;
-}
-.navigation ul li a,
-.navigation ul li .quick-search-mobile {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  font-weight: 500;
-}
-.navigation ul li a .icon,
-.navigation ul li .quick-search-mobile .icon {
-  position: relative;
-  display: block;
-  line-height: 75px;
-  font-size: 1.5em;
-  text-align: center;
-  transition: 0.5s;
-  color: var(--primary-color);
-}
-.navigation ul li.active a .icon {
-  transform: translateY(-32px);
-  color: #fff;
-}
-.navigation ul li.active .quick-search-mobile .icon {
-  transform: translateY(-32px);
-  svg {
-    path {
-      stroke: #fff;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 0 8px 0px;
+    pointer-events: none;
+
+    // Navigation List Container
+    > ul {
+      width: 100%;
+      max-width: 600px;
+      height: $nav-height;
+      margin: 0 auto;
+      padding: 0 12px;
+      position: relative;
+      pointer-events: all;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      // Liquid Glass Effect
+      background: $nav-glass-bg;
+      backdrop-filter: blur($nav-bg-blur) saturate(180%);
+      -webkit-backdrop-filter: blur($nav-bg-blur) saturate(180%);
+      border: 1px solid $nav-glass-border;
+      border-radius: $nav-border-radius;
+      // box-shadow: $nav-shadow;
+
+      // Subtle gradient overlay
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: $nav-border-radius;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+        pointer-events: none;
+        z-index: 0;
+      }
+    }
+
+    // Navigation Item (li)
+    li,
+    .list {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      transition: $transition-smooth;
+      z-index: 1;
+
+      // Active State Container
+      &.active {
+        .nav-link {
+          transform: translateY($nav-active-lift);
+        }
+
+        // Floating bubble effect
+        &::before {
+          content: '';
+          position: absolute;
+          width: $nav-item-size;
+          height: $nav-item-size;
+          background: $active-bg;
+          border-radius: 50%;
+          z-index: -1;
+          transform: translateY($nav-active-lift);
+          box-shadow:
+            0 4px 12px rgba($primary-color, 0.2),
+            0 2px 8px rgba($primary-color, 0.15),
+            inset 0 1px 2px rgba(255, 255, 255, 0.5);
+          animation: pulseGlow 2s ease-in-out infinite;
+        }
+      }
+    }
+
+    // Navigation Link
+    .nav-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      text-decoration: none;
+      transition: $transition-smooth;
+      cursor: pointer;
+      border-radius: 16px;
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      // Tap feedback
+      &:active {
+        transform: scale(0.92);
+      }
+
+      // Focus state for accessibility
+      &:focus-visible {
+        outline: 2px solid $primary-color;
+        outline-offset: 4px;
+      }
+
+      // Hover effect
+      &:hover {
+        .icon {
+          color: $icon-active;
+          transform: translateY(-2px) scale(1.1);
+          filter: drop-shadow(0 4px 8px rgba($primary-color, 0.3));
+        }
+
+        .text {
+          color: $text-active;
+          opacity: 1;
+          font-weight: 600;
+        }
+      }
+
+      // Active state
+      &.active {
+        .icon {
+          color: $icon-active;
+          transform: scale(1.15);
+          filter: drop-shadow(0 6px 12px rgba(red, 0.4));
+
+          :deep(svg) {
+            animation: iconBounce 0.6s ease-out;
+          }
+        }
+
+        .text {
+          color: #fff;
+          opacity: 1;
+          font-weight: 700;
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    // Icon Container - FIXED SIZE
+    .icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $icon-default;
+      transition: $transition-bounce;
+      position: relative;
+      flex-shrink: 0;
+
+      // Force SVG size inside icon
+      :deep(svg) {
+        width: 24px !important;
+        height: 24px !important;
+        max-width: 24px;
+        max-height: 24px;
+        stroke-width: 2;
+        transition: $transition-smooth;
+      }
+
+      // Force Vue component size
+      :deep(*) {
+        width: 24px;
+        height: 24px;
+        max-width: 24px;
+        max-height: 24px;
+      }
+    }
+
+    // Text Label
+    .text {
+      font-size: 10px;
+      font-weight: 500;
+      color: $text-default;
+      letter-spacing: 0.02em;
+      transition: $transition-smooth;
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    // Animated Indicator
+    // .indicator {
+    //   position: absolute;
+    //   bottom: 4px;
+    //   height: 3px;
+    //   background: $primary-color;
+    //   border-radius: 3px 3px 0 0;
+    //   transition: $transition-smooth;
+    //   opacity: 0.8;
+    //   box-shadow: 0 -1px 4px rgba($primary-color, 0.4);
+    //   z-index: 2;
+    // }
+
+    // Language Selector Container
+    .lang_sar {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      // margin-top: 10px;
+      pointer-events: all;
+
+      .menu {
+        // background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        padding: 8px 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+        &:hover {
+          // background: rgba(255, 255, 255, 1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: scale(0.96);
+        }
+
+        // Icon size fix
+        :deep(svg) {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .menu-content {
+        position: absolute;
+        bottom: 120%;
+        // background:
+        backdrop-filter: blur(20px);
+        padding: 12px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 99;
+        width: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        .wrapper-content {
+          h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+          }
+
+          hr {
+            border: none;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin: 8px 0;
+          }
+        }
+
+        .lang-items {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          .lang-item {
+            margin-top: 8px;
+
+            a {
+              color: #333;
+              text-decoration: none;
+              transition: color 0.2s;
+              display: block;
+              padding: 6px 8px;
+              border-radius: 6px;
+              font-size: 13px;
+
+              &:hover {
+                color: $primary-color;
+                background: rgba($primary-color, 0.1);
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
-.text {
-  color: var(--primary-color);
-}
-.navigation ul li a .text,
-.navigation ul li .quick-search-mobile .text {
-  position: absolute;
-  color: var(--primary-color);
-  font-weight: 400;
-  font-size: 0.65em;
-  letter-spacing: 0.05em;
-  transition: 0.5s;
-  opacity: 0;
-  transform: translateY(20px);
-}
-.navigation ul li.active a .text,
-.navigation ul li.active .quick-search-mobile .text {
-  opacity: 1;
-  transform: translateY(10px);
-}
-.indicator {
-  position: absolute;
-  top: -50%;
-  width: 70px;
-  height: 70px;
-  background: var(--primary-color);
-  border-radius: 50%;
-  border: 6px solid var(--primary-color);
-  transition: 0.5s;
-}
-.indicator::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-right-radius: 20px;
-  box-shadow: 1px -10px 0 0 var(--primary-color);
-}
-.indicator::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -22px;
-  width: 20px;
-  height: 20px;
-  background: transparent;
-  border-top-left-radius: 20px;
-  box-shadow: -1px -10px 0 0 var(--primary-color);
+
+// ============================================
+// ANIMATIONS
+// ============================================
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    transform: translateY($nav-active-lift) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY($nav-active-lift) scale(1.05);
+    opacity: 0.9;
+  }
 }
 
-/* Indicator Transitions */
-.navigation ul li:nth-child(1).active ~ .indicator {
-  transform: translateX(calc(70px * 0));
+@keyframes iconBounce {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1.15);
+  }
 }
-.navigation ul li:nth-child(2).active ~ .indicator {
-  transform: translateX(calc(70px * 1));
+
+// Language menu transitions
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
 }
-.navigation ul li:nth-child(3).active ~ .indicator {
-  transform: translateX(calc(70px * 2));
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
 }
-.navigation ul li:nth-child(4).active ~ .indicator {
-  transform: translateX(calc(70px * 3));
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
-.navigation ul li:nth-child(5).active ~ .indicator {
-  transform: translateX(calc(70px * 4));
+
+// ============================================
+// DARK MODE SUPPORT
+// ============================================
+
+@media (prefers-color-scheme: dark) {
+  .navigation {
+    @media screen and (max-width: 992px) {
+      > ul {
+        background: rgb(231 226 226 / 50%);
+        border-color: rgba(255, 255, 255, 0.1);
+
+        &::before {
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.08),
+            rgba(255, 255, 255, 0.02)
+          );
+        }
+      }
+
+      li.active::before,
+      .list.active::before {
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
+      }
+
+      .icon {
+        color: #8e8e93;
+      }
+
+      .text {
+        color: #06283b;
+      }
+
+      .nav-link.active {
+        // .icon {
+        //   color: #1fff17;
+        // }
+
+        .text {
+          color: #00c3f7;
+        }
+      }
+
+      // .lang_sar {
+      //   .menu {
+      //     background: rgba(28, 28, 30, 0.9);
+      //     color: #fff;
+      //     border-color: rgba(255, 255, 255, 0.15);
+      //   }
+
+      //   .menu-content {
+      //     background: rgba(28, 28, 30, 0.95);
+      //     border-color: rgba(255, 255, 255, 0.15);
+
+      //     h4 {
+      //       color: #fff;
+      //     }
+
+      //     hr {
+      //       border-color: rgba(255, 255, 255, 0.1);
+      //     }
+
+      //     .lang-item a {
+      //       color: #fff;
+
+      //       &:hover {
+      //         background: rgba(171, 0, 44, 0.2);
+      //       }
+      //     }
+      //   }
+      // }
+    }
+  }
+}
+
+// ============================================
+// UTILITY CLASSES
+// ============================================
+
+// Hide text on very small screens
+@media screen and (max-width: 375px) {
+  .navigation .text {
+    display: none;
+  }
+
+  .navigation .icon {
+    margin-bottom: 0;
+  }
+}
+
+// Prevent layout shift when keyboard appears
+.navigation.keyboard-open {
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+// RTL Support
+[dir='rtl'] .navigation {
+  .indicator {
+    left: auto;
+    right: var(--indicator-left, 0);
+  }
 }

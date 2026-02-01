@@ -110,12 +110,10 @@ const actionList = (id: number, deleteRootCauses: (id: number) => void) => [
       user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
     }/root-causes/${id}`,
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ROOT_CAUSES_ALL,
     ],
   },
   // {
@@ -153,12 +151,10 @@ const actionList = (id: number, deleteRootCauses: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteRootCauses(id),
     permission: [
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.ROOT_CAUSES_ALL,
     ],
   },
 ]
@@ -195,8 +191,7 @@ watch(
         :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+          PermissionsEnum.ROOT_CAUSES_CREATE,
         ]"
       >
         <router-link
@@ -215,16 +210,11 @@ watch(
     :code="[
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ROOT_CAUSES_ALL,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
+      PermissionsEnum.ROOT_CAUSES_FETCH,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
+      PermissionsEnum.ROOT_CAUSES_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -296,14 +286,13 @@ watch(
           :code="[
             PermissionsEnum.ADMIN,
             PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-            PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+            PermissionsEnum.ROOT_CAUSES_CREATE,
           ]"
         >
           <DataEmpty
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/equipment-type/add`"
+            }/root-causes/add`"
             addText="Add RootCauses"
             description="Sorry .. You have no RootCausess .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No RootCausess"
@@ -315,14 +304,13 @@ watch(
           :code="[
             PermissionsEnum.ADMIN,
             PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-            PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+            PermissionsEnum.ROOT_CAUSES_CREATE,
           ]"
         >
           <DataFailed
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/RootCauses`"
+            }/root-causes/add`"
             addText="Add RootCauses"
             description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No RootCausess"
