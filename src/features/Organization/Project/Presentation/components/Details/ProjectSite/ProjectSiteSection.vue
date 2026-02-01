@@ -18,8 +18,8 @@ const props = defineProps<{
 <template>
   <div class="project-location">
     <div class="project-location-header">
-      <HeaderSection :img="Location" :title="`project_location_&_site_overview`"
-        :subtitle="`mapping_each_main_site_with_its_associated_working_areas`" />
+      <HeaderSection :img="Location" :title="$t('project_location_&_site_overview')"
+        :subtitle="$t('mapping_each_main_site_with_its_associated_working_areas')" />
 
       <ShowAllZonesDialog :locations="locations" :projectId="projectId" />
     </div>

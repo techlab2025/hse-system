@@ -4,7 +4,7 @@ import ProjectEmployeeSection from './ProjectEmployeeSection.vue';
 
 </script>
 <template>
-  <PagesHeader title="Teams by Operational location"
-    subtitle="View all working teams assigned to each operational zone" />
+  <PagesHeader :title="$t('Teams by Operational location')"
+    :subtitle="$t('View all working teams assigned to each operational zone')" />
   <ProjectEmployeeSection />
 </template>

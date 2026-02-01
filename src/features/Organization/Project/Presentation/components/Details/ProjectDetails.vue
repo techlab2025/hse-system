@@ -43,7 +43,7 @@ watch(
 )
 </script>
 <template>
-  <DataStatus :controller="state">
+  <DataStatus :controller="state"> 
     <template #success>
       <div class="project-details-section">
         <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber" :serialName="state.data?.serialName"

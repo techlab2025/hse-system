@@ -195,7 +195,7 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
         <p class="view-inspection">view inspection details</p>
         <ViewInspectionArrow />
       </div> -->
-      Show
+      {{ $t('show') }}
     </button>
 
     <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">

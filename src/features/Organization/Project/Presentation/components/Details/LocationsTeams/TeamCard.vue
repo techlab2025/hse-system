@@ -49,7 +49,7 @@ const DeleteTeamMember = async (id: number) => {
         <TeamIcon v-else class="team-icon" />
         <div class="team-card-text">
           <p class="team-card-title">{{ team.teamTitle }}</p>
-          <p class="team-card-members"><span>{{ team.Employees?.length }}</span> members</p>
+          <p class="team-card-members"><span>{{ team.Employees?.length }}</span> {{ $t('members') }}</p>
         </div>
       </div>
       <div class="state">

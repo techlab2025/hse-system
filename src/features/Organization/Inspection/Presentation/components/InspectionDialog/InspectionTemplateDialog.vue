@@ -112,8 +112,8 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
 
       <template #header>
         <div class="add-equipment-header">
-          <HeaderSection :img="InspectionTemplateImage" title="inspection template"
-            subtitle="Select from the available templates." />
+          <HeaderSection :img="InspectionTemplateImage" :title="$t('inspection template')"
+            :subtitle="$t('Select from the available templates.')" />
         </div>
       </template>
 

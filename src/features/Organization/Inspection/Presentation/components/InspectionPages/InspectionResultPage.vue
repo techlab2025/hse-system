@@ -118,11 +118,11 @@ const getInspectionType = (type: number) => {
           <img class="bg" :src="InspectionTaskbg" alt="">
           <img class="inspection-header-bg" :src="InspectionHeader" alt="">
           <img class="right-bg" :src="InspectionTaskbg" alt="">
-          <p class="title">inspection</p>
+          <p class="title">{{ $t('inspection') }}</p>
           <div class="card-info">
-            <p>Inspection Type: <span>{{ getInspectionType(staticstate?.data?.morphType) }}</span></p>
-            <p>Assigned by : <span>{{ staticstate?.data?.createdBy?.name }}</span></p>
-            <p>Date&Time : <span>{{ staticstate?.data?.createdAt }}</span></p>
+            <p>{{ $t('Inspection Type') }}: <span>{{ getInspectionType(staticstate?.data?.morphType) }}</span></p>
+            <p>{{ $t('Assigned by') }} : <span>{{ staticstate?.data?.createdBy?.name }}</span></p>
+            <p>{{ $t('Date&Time') }} : <span>{{ staticstate?.data?.createdAt }}</span></p>
           </div>
         </div>
         <div class="inspection-result-body">
@@ -130,35 +130,35 @@ const getInspectionType = (type: number) => {
             <div class="statistic">
               <component :is="Statistics[0]?.icon" />
               <div class="card-data">
-                <p class="card-title">All Results</p>
+                <p class="card-title">{{ $t('All Results') }}</p>
                 <p class="card-number">{{ staticstate?.data?.allResult }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[1]?.icon" />
               <div class="card-data">
-                <p class="card-title">Results received today</p>
+                <p class="card-title">{{ $t('Results received today') }}</p>
                 <p class="card-number">{{ staticstate?.data?.resultsReceivedToday }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[2]?.icon" />
               <div class="card-data">
-                <p class="card-title">Results completed</p>
+                <p class="card-title">{{ $t('Results completed') }}</p>
                 <p class="card-number">{{ staticstate?.data?.resultsCompleted }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[3]?.icon" />
               <div class="card-data">
-                <p class="card-title">Results not yet completed</p>
+                <p class="card-title">{{ $t('Results not yet completed') }}</p>
                 <p class="card-number">{{ staticstate?.data?.resultsNotYetCompleted }}</p>
               </div>
             </div>
             <div class="statistic">
               <component :is="Statistics[4]?.icon" />
               <div class="card-data">
-                <p class="card-title">Delayed results</p>
+                <p class="card-title">{{ $t('Delayed results') }}</p>
                 <p class="card-number">{{ staticstate?.data?.delayedResults }}</p>
               </div>
             </div>
@@ -168,10 +168,10 @@ const getInspectionType = (type: number) => {
           <table>
             <thead>
               <tr>
-                <th>serial</th>
-                <th>Emp</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>{{ $t('serial') }}</th>
+                <th>{{ $t('Emp') }}</th>
+                <th>{{ $t('Date') }}</th>
+                <th>{{ $t('Time') }}</th>
                 <th></th>
               </tr>
             </thead>

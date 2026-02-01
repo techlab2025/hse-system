@@ -40,8 +40,8 @@ const GetSelectedAssigned = (data: number) => {
         <div class="!px-5 !mt-5">
           <HeaderSection
             :img="InspectionTemplateImage"
-            title="Inspection Tasks"
-            subtitle="Track and manage all inspection assignments"
+            :title="$t('Inspection Tasks')"
+            :subtitle="$t('Track and manage all inspection assignments')"
           />
 
           <button class="btn btn-primary w-full !mt-3">{{ $t('add_task') }}</button>

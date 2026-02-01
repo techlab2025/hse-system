@@ -92,10 +92,10 @@ watch(
   <div class="inspection-start card w-full  flex justify-center">
     <button @click="GetData" class="w-full">
       <div class="last-inspection-info-container">
-        <p class="last-inspection">last inspection</p>
+        <p class="last-inspection">{{ $t('last inspection') }}</p>
         <div class="last-inspection-info">
-          <span class="by">by : <span>{{ createdby }}</span></span>
-          <span class="date-time">date & Time : <span>{{ date }}-{{ time }}</span></span>
+          <span class="by">{{ $t('by') }} : <span>{{ createdby }}</span></span>
+          <span class="date-time">{{ $t('date & Time') }} : <span>{{ date }}-{{ time }}</span></span>
         </div>
         <LastInspectionIcon />
       </div>

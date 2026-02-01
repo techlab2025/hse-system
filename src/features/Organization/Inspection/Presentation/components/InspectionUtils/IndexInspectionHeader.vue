@@ -37,7 +37,7 @@ const GetProjectId = (id: number) => {
   <div class="idnex-header">
     <p class="title">{{ title }}</p>
     <p class="index-length">
-      Total: <span>{{ length }}</span>
+      {{ $t('Total') }}: <span>{{ length }}</span>
     </p>
     <!-- <div class="categories-container" v-if="projects && projects.length > 1">
       <button

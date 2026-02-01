@@ -70,16 +70,16 @@ const AddEquipment = async () => {
 
 <template>
   <div class="card flex justify-center">
-    <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
-      subtitle="You haven’t added any equipment to this project. Start building your crew now!"
+    <EmptyData :img="EquimentFolderEmpty" :title="$t('No Equipment Yet')"
+      :subtitle="$t('You haven’t added any equipment to this project. Start building your crew now!')"
       linkText="Start building your crew now!" @click="visible = true" v-if="isEmpty" />
 
     <!-- <AddEquipmentIcon class="add-equipment-icon" @click="visible = true" v-else /> -->
     <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add_equipment` }}</p>
     <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
       <template #header>
-        <HeaderSection :img="EquipmentImg" title="Equipment"
-          subtitle="Choose for each zone all the equipment and devices you want." />
+        <HeaderSection :img="EquipmentImg" :title="$t('Equipment')"
+          :subtitle="$t('Choose for each zone all the equipment and devices you want.')" />
       </template>
 
       <!-- Zone selection -->
@@ -90,12 +90,12 @@ const AddEquipment = async () => {
       <!-- Equipment selection -->
       <div class="equipment-selection">
         <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
-          :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
+          :params="indexEquipmentParams" :label="$t('Equipment')" :placeholder="$t('Select Your Equipment')" :type="2"
           @update:modelValue="setEquipments" />
 
         <div class="submit-btn w-full mt-4">
           <button class="btn btn-primary w-full" @click="AddEquipment">
-            Confirm
+            {{ $t('Confirm') }}
           </button>
         </div>
       </div>

@@ -24,7 +24,7 @@ const setEmployee = (data: TitleInterface) => {
         </div>
         <div class="input-wrapper">
           <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            label="functional Hierarchy" id="Employee" placeholder="select your functional Hierarchy"
+            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
             @update:modelValue="setEmployee" />
         </div>
       </div>
@@ -35,7 +35,7 @@ const setEmployee = (data: TitleInterface) => {
         </div>
         <div class="input-wrapper">
           <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            label="functional Hierarchy" id="Employee" placeholder="select your functional Hierarchy"
+            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
             @update:modelValue="setEmployee" />
         </div>
       </div>
@@ -46,13 +46,13 @@ const setEmployee = (data: TitleInterface) => {
         </div>
         <div class="input-wrapper">
           <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            label="functional Hierarchy" id="Employee" placeholder="select your functional Hierarchy"
+            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
             @update:modelValue="setEmployee" />
         </div>
       </div>
     </div>
     <div class="submit-btn">
-      <button class="btn btn-ptimary">confirm</button>
+      <button class="btn btn-ptimary">{{ $t('confirm') }}</button>
     </div>
   </div>
 </template>

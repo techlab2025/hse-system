@@ -14,7 +14,7 @@ const { showHeader, showArrowLink, isAssign } = defineProps<{
     <div class="card-header" v-if="showHeader">
       <div class="card-header-title">
         <PinIcons />
-        <p class="title">Obour City</p>
+        <p class="title">{{ $t('Obour City') }}</p>
       </div>
       <div class="tasks-num">
         10
@@ -26,13 +26,13 @@ const { showHeader, showArrowLink, isAssign } = defineProps<{
     <hr class="card-divider" v-if="showHeader" />
     <div class="card-body">
       <div class="content-container">
-        <p class="status">non _ complete</p>
+        <p class="status">{{ $t('non _ complete') }}</p>
         <div class="card-body-content">
-          <p class="content-title">device inspection</p>
+          <p class="content-title">{{ $t('device inspection') }}</p>
           <span class="content-date"> 22 july / 10 : 30 AM </span>
         </div>
         <div class="assign-to" v-if="isAssign">
-          <span> assigned to :</span>
+          <span> {{ $t('assigned to') }} :</span>
           <p>Abdallah Mohamed</p>
         </div>
       </div>

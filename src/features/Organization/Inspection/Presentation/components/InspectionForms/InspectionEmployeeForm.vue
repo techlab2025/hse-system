@@ -127,19 +127,19 @@ const setEquipment = (data: TitleInterface) => {
 <template>
   <div class="input-wrapper">
     <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="indexProjectController"
-      :params="indexProjectParams" label="Projects" id="project" placeholder="select your Project"
+      :params="indexProjectParams" :label="$t('Projects')" id="project" :placeholder="$t('select your Project')"
       @update:modelValue="setProject" />
 
     <CustomSelectInput v-if="SelectedProject" :modelValue="SelectedProjectZone" class="input" :static-options="AllZones"
-      label="Zones" id="project" placeholder="select your Zone" @update:modelValue="setProjectZone" />
+      :label="$t('Zones')" id="project" :placeholder="$t('select your Zone')" @update:modelValue="setProjectZone" />
 
 
     <CustomSelectInput v-if="SelectedProjectZone" :modelValue="SelectedEmployee" class="input"
-      :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams" label="Employee" id="employee"
-      placeholder="select your employee" @update:modelValue="setEmployee" />
+      :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams" :label="$t('Employee')" id="employee"
+      :placeholder="$t('select your employee')" @update:modelValue="setEmployee" />
 
     <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
-      :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
+      :params="deleteEquipmentTypeParams" :label="$t('Equipment')" id="equipment" :placeholder="$t('select your equipment')"
       @update:modelValue="setEquipment" />
 
     <InspectionTemplateDialog @update:data="GetTemplateId" />

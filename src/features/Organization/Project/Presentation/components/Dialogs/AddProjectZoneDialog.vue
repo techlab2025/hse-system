@@ -18,7 +18,7 @@ const updateData = () => {
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '65%' }">
     <template #header>
       <div class="add-employee-header">
-        <HeaderSection :img="AddEmployee" title="add your Zone" subtitle="follow the steps to add your Zone easly" />
+        <HeaderSection :img="AddEmployee" :title="$t('add your Zone')" :subtitle="$t('follow the steps to add your Zone easly')" />
       </div>
     </template>
 

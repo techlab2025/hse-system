@@ -23,8 +23,8 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Alexandria</p>
         </div>
         <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" label="employee"
-            id="Employee" placeholder="select employee" @update:modelValue="setEmployee" />
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+            id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>
       <div class="add-employee-card">
@@ -33,8 +33,8 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Cairo</p>
         </div>
         <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" label="employee"
-            id="Employee" placeholder="select employee" @update:modelValue="setEmployee" />
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+            id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>
       <div class="add-employee-card">
@@ -43,13 +43,13 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Cairo</p>
         </div>
         <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" label="employee"
-            id="Employee" placeholder="select employee" @update:modelValue="setEmployee" />
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+            id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>
     </div>
     <div class="submit-btn">
-      <button class="btn btn-ptimary">confirm</button>
+      <button class="btn btn-ptimary">{{ $t('confirm') }}</button>
     </div>
   </div>
 </template>

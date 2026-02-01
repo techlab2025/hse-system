@@ -28,10 +28,10 @@ const GetInspectionTitle = (task: InspectionModel) => {
         <div class="inspection-info-container">
           <div class="inspection-info">
             <p>
-              Inspected by : <span>{{ task?.employee?.name }}</span>
+              {{ $t('Inspected by') }} : <span>{{ task?.employee?.name }}</span>
             </p>
             <p>
-              Date : <span>{{ task?.date }}</span>
+              {{ $t('Date') }} : <span>{{ task?.date }}</span>
             </p>
             <!-- <p>Time : <span>{{task?.date}}</span></p> -->
           </div>

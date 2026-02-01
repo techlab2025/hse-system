@@ -124,7 +124,7 @@ const ShowBackBtn = computed(() => {
     <div class="breadcrump">
       <button class="sidebar-back" @click="RouterBack" v-if="!IsHome || !ShowBackBtn">
         <BackIcon class="icon" />
-        <span>back</span>
+        <span>{{ $t('back') }}</span>
       </button>
 
       <Breadcrumb :model="items" />

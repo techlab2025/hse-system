@@ -16,7 +16,7 @@ import InspectionsCard from './InspectionsCard.vue'
             <div class="flex items-center justify-self-start gap-1">
               <div class="flex items-center justify-self-start">
                 <PinIcons />
-                <p class="text-black">Obour City</p>
+                <p class="text-black">{{ $t('OObour City') }}</p>
               </div>
               <div class="text-slate-500 text-sm font-light">
                 ( 10

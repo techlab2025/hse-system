@@ -32,7 +32,7 @@ const CheckProjectLocationEmployeeEmpty = computed(() => props.project_locations
 
       <HeaderSection :img="LoactionTeams" title="teams_by_operational_location"
         subtitle="view_all_working_teams_assigned_to_each_operational_zone" />
-      <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">Show all</RouterLink>
+      <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">{{ $t('Show all') }}</RouterLink>
     </div>
 
 
@@ -44,8 +44,8 @@ const CheckProjectLocationEmployeeEmpty = computed(() => props.project_locations
     </div>
     <div class="empty-teams" v-else>
       <EmptyData :img="EmptyFolder" title="No Team Members Yet"
-        subtitle="You haven’t added any employees to this team. Start building your crew now!"
-        :link="`/organization/employee-details/${id}`" linkText=" Start building your crew now!" />
+        :subtitle="$t('You haven’t added any employees to this team. Start building your crew now!')"
+        :link="`/organization/employee-details/${id}`" :linkText="$t('Start building your crew now!')" />
     </div>
   </div>
 </template>

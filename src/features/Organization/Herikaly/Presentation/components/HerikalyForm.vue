@@ -145,7 +145,7 @@ const fields = ref([
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="Certificate" :controller="indexCertificateController"
-      :params="indexCertificateParams" label="Certificate" id="Certificate" placeholder="Select certificate" :type="2"
+      :params="indexCertificateParams" :label="$t('certificate')" id="Certificate" :placeholder="$t('Select certificate')" :type="2"
       @update:modelValue="setCertificate" />
   </div>
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">

@@ -63,13 +63,13 @@ watch(
           <div class="card-actions">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
               class="edit-btn">
-              Edit Hierarchy
+              {{ $t('Edit Hierarchy') }}
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="locationTeam.projectLocationId" :LocationId="locationTeam.id"
               @update:data="GetProjectLocationsEmployes" />
             <RouterLink :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
               class="add-btn">
-              Add employee
+              {{ $t('Add Employee') }}
             </RouterLink>
           </div>
         </div>
@@ -92,8 +92,8 @@ watch(
     </template>
     <template #empty>
       <DataEmpty :link="`/add-project`"
-        description="Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Projects" addText="Add Projects" />
+        :description="$t('Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data')"
+        :title="$t('..ops! You have No Projects')" :addText="$t('Add Projects')" />
     </template>
     <template #failed>
       <DataFailed />

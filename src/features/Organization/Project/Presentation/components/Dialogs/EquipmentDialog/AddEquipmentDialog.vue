@@ -22,8 +22,8 @@ const UpdateData = () => {
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', minHeight: '25vh' }">
     <template #header>
       <div class="add-equipment-header">
-        <HeaderSection :img="EquipmentImg" title="Equipment , Devices & Tools"
-          subtitle="Choose for each zone all the equipment and devices you want." />
+        <HeaderSection :img="EquipmentImg" :title="$t('Equipment , Devices & Tools')"
+          :subtitle="$t('Choose for each zone all the equipment and devices you want.')" />
       </div>
     </template>
     <div class="equipment-dialog-data">

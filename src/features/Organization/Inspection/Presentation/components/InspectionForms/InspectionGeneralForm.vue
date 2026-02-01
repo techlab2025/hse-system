@@ -163,13 +163,13 @@ const setWithDayesType = (data: TitleInterface) => {
 
     <div class="input-wrapper">
       <label for="">{{ $t('select_day') }}</label>
-      <DatePicker v-model="SelectedData" class="input" label="select day" id="Day" placeholder="select your Day"
+      <DatePicker v-model="SelectedData" class="input" :label="$t('select day')" id="Day" :placeholder="$t('select your Day')"
         @update:modelValue="UpdateDate" />
     </div>
 
   </div>
   <div v-else>
-    <PeriodTypeSelect :selctedOption="PeriodTypeSelect" :options="PeriodTypeSelection" :title="`select period type`"
+    <PeriodTypeSelect :selctedOption="PeriodTypeSelect" :options="PeriodTypeSelection" :title="$t('select period type')"
       @update:data="GetSelectedPeridType" />
 
     <div class="grid grid-cols-2 gap-2 general-form-container">
@@ -198,14 +198,14 @@ const setWithDayesType = (data: TitleInterface) => {
       </div>
       <div class="input-wrapper" v-if="SelectedPeriodType === PeriodTypeEnum.WITHDAY">
         <label for="with-day">{{ $t(`with ${SelectedWithDaysType?.title}`) }}</label>
-        <input type="number" min="1" max="31" id="with-day" class="input" placeholder="every day ..." v-model="WithDays"
+        <input type="number" min="1" max="31" id="with-day" class="input" :placeholder="$t('every day ...')" v-model="WithDays"
           @change="setWithDays" />
       </div>
 
       <div class="input-wrapper mt-4">
         <label for="from-dete">{{ $t('from_date') }}</label>
         <DatePicker id="from-dete" class="input" v-if="inspectionType !== InspectionTypeEnum.DAY" v-model="fromDate"
-          @update:model-value="UpdateFromDate" placeholder="select from date..." />
+          @update:model-value="UpdateFromDate" :placeholder="$t('select from date...')" />
       </div>
     </div>
 

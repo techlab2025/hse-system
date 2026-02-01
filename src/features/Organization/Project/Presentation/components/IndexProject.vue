@@ -145,7 +145,7 @@ watch(
       <span class="icon-remove" @click="; (word = ''), searchProject()">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchProject" />
+      <input v-model="word" :placeholder="`${t('search')}`" class="input" type="text" @input="searchProject" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" />

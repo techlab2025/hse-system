@@ -112,9 +112,9 @@ const showTextArea = () => {
   </div>
 
   <div v-if="showTextArea()" class="input-wrapper w-full animate-fade-in">
-    <label for="notes" class="block mb-1 text-sm font-medium">Notes</label>
+    <label for="notes" class="block mb-1 text-sm font-medium">{{ $t('Notes') }}</label>
     <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
-      placeholder="Please enter details..."></textarea>
+      :placeholder="$t('Please enter details...')"></textarea>
   </div>
 </template>
 

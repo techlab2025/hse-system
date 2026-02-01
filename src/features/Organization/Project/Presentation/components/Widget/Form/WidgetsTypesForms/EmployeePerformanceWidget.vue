@@ -76,31 +76,31 @@ const UpdateTitle = (data) => {
 
 
   <div class="selctors-container">
-    <p class="title">check on details you want it to appear in your widget</p>
+    <p class="title">{{ $t('check on details you want it to appear in your widget') }}</p>
 
     <div class="setting-form">
-      <RadioSection title="employee picture" :selections="['Yes', 'On']"
+      <RadioSection :title="$t('employee picture')" :selections="['Yes', 'On']"
         @update:value="v => updateField('employeePicture', v)" />
-      <RadioSection title="employee job" :selections="['Yes', 'No']"
+      <RadioSection :title="$t('employee job')" :selections="['Yes', 'No']"
         @update:value="v => updateField('employeeJob', v)" />
     </div>
 
     <div class="setting-form">
-      <RadioSection title="employee name" :selections="['Yes', 'On']"
+      <RadioSection :title="$t('employee name')" :selections="['Yes', 'On']"
         @update:value="v => updateField('employeeName', v)" />
-      <RadioSection title="last task" :selections="['Yes', 'No']" @update:value="v => updateField('lastTask', v)" />
+      <RadioSection :title="$t('last task')" :selections="['Yes', 'No']" @update:value="v => updateField('lastTask', v)" />
     </div>
 
 
     <div class="setting-form">
-      <RadioSection title="team" :selections="['Yes', 'On']" @update:value="v => updateField('team', v)" />
+      <RadioSection :title="$t('team')" :selections="['Yes', 'On']" @update:value="v => updateField('team', v)" />
     </div>
   </div>
 
-  <ColorSelection title="chart color" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-  <RadioSection title="Available to"
+  <ColorSelection :title="$t('chart color')" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
+  <RadioSection :title="$t('Available to')"
     :images_selections="[Progress1, EmployeePerformanceProgress2, EmployeePerformanceProgress3]"
     @update:value="v => updateField('Progress', v)" />
-  <RadioSection title="Available to" :selections="['anyone', 'only me']"
+  <RadioSection :title="$t('Available to')" :selections="['anyone', 'only me']"
     @update:value="v => updateField('SelectedAvailable', v)" />
 </template>

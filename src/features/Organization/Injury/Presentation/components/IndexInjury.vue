@@ -135,7 +135,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchInjury())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchInjury" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchInjury" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />

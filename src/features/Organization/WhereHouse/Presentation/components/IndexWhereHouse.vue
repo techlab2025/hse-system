@@ -122,7 +122,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchWhereHouse())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchWhereHouse" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchWhereHouse" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ExportExcel :data="state.data" />

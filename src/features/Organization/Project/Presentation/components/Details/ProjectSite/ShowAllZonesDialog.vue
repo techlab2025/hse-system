@@ -22,7 +22,7 @@ const emit = defineEmits(['update:data'])
   <button @click.prevent="visible = true" class="show-all-btn">{{ $t('show_all') }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection :img="ZoneDialog" title="All Zones" subtitle="Show All Locations Zones" />
+      <HeaderSection :img="ZoneDialog" :title="$t('All Zones')" :subtitle="$t('Show All Locations Zones')" />
     </template>
     <div class="card-section">
       <LocationCard v-for="(card, index) in locations" :key="index" :title="card.title" :zone="card.zoons.length"

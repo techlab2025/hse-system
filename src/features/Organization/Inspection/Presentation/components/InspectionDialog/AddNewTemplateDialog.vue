@@ -240,8 +240,7 @@ watch(() => visible.value, (newVal) => {
         <span class="title">{{ $t('new_template') }}</span>
         <NewTemplateArrowIcon />
       </div>
-      <p class="descripetion">you can customize a new templet from here and you can use it once or save it to your
-        collection</p>
+      <p class="descripetion">{{ $t('you can customize a new templet from here and you can use it once or save it to your collection') }}</p>
     </div>
   </div>
 
@@ -249,8 +248,8 @@ watch(() => visible.value, (newVal) => {
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
     <template #header>
       <div class="add-new-template-dialog-header">
-        <p class="title">create new templet</p>
-        <p>follow the steps to add your templet now</p>
+        <p class="title">{{ $t('create new templet') }}</p>
+        <p>{{ $t('follow the steps to add your templet now') }}</p>
       </div>
     </template>
 
@@ -265,7 +264,7 @@ watch(() => visible.value, (newVal) => {
 
         <div class="col-span-4 md:col-span-2">
           <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
-            label="Template Type" id="TemplateType" placeholder="Select Template Type"
+            :label="$t('Template Type')" id="TemplateType" :placeholder="$t('Select Template Type')"
             @update:modelValue="setTemplateType" />
         </div>
 
@@ -276,10 +275,10 @@ watch(() => visible.value, (newVal) => {
     <!-- FOOTER FIXED -->
     <div class="dialog-footer">
       <button class="btn btn-primary" @click="addTemplate(1)">
-        use & save to library
+        {{ $t('use & save to library') }}
       </button>
       <button class="btn btn-secondary" @click="addTemplate(0)">
-        use only this time
+        {{ $t('use only this time') }}
       </button>
     </div>
   </Dialog>

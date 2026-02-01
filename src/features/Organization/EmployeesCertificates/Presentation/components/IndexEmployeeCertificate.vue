@@ -193,6 +193,30 @@ const GetEmployeeCertificationStatus = (
                       {{ employee.name }}
                     </span>
                     <div class="employee-static">
+                      <span class="valid-counter">{{
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Valid,
+                        )?.length + employee?.certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Valid,
+                        )?.length
+                      }}
+                        <span>{{ $t('valid') }}</span></span>
+                      <span class="invalid-counter">{{
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Invalid,
+                        )?.length + employee?.certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Invalid,
+                        )?.length
+                      }}
+                        <span>{{ $t('invalid') }}</span></span>
+                      <span class="expired-counter">{{
+                        employee?.employee_certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Expired,
+                        )?.length + employee?.certificates?.filter(
+                          (el) => el.status == CertificateStatusEnum?.Expired,
+                        )?.length
+                      }}
+                        <span>{{ $t('expired') }}</span></span>
                       <span class="valid-counter"
                         >{{
                           employee?.employee_certificates?.filter(
@@ -233,6 +257,19 @@ const GetEmployeeCertificationStatus = (
 
                 <td v-for="cert in Certificatestate.data || employee?.certificates" :key="cert.id">
                   <span :class="cert.id">
+                    <ValidCertificate v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      :expiry_date="employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
+                        " />
+
+                    <div v-else-if="GetEmployeeCertificationStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      class="flex flex-col items-center">
+                      <div class="not-required ">
+                        <div class="invalid-certificate">
+                          <div class="invalid">
+                            <!-- <NotValidIcon /> -->
+                            <span class="not-required-left"></span>
+                            <span>{{ $t('NotRequired') }}</span>
+                            <span class="not-required-right"></span>
                     <ValidCertificate
                       v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
                       :expiry_date="
@@ -286,6 +323,17 @@ const GetEmployeeCertificationStatus = (
                       :organizationEmployeeId="employee?.id"
                       v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
+                      " :is_expire_date="cert?.requireExpiredDate" />
+
+                    <div v-else-if="GetEmployeeCertificationStatus(employee, cert.id) == CertificateStatusEnum.Expired">
+                      <div class="not-required ">
+                        <div class="invalid-certificate">
+                          <div class="invalid">
+                            <!-- <NotValidIcon /> -->
+                            <span class="not-required-left"></span>
+                            <span>{{ $t('NotRequired') }}</span>
+                            <span class="not-required-right"></span>
+                          </div>
                       "
                       :is_expire_date="cert?.requireExpiredDate"
                       :status="getCertificateStatus(employee, cert.id)"

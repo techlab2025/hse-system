@@ -53,7 +53,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
     ]">
       <router-link to="/organization/projects">
         <HomeRoutesCard :icon="HomeProjectIcon" :title="`${$t('project')}`"
-          :description="`${$t('plan')} . ${$t('tasks ')} . ${$t('hierarchy')}`" />
+          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('hierarchy')}`" />
       </router-link>
     </PermissionBuilder>
 
@@ -93,7 +93,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
     ]">
       <router-link to="/organization/equipments">
         <HomeRoutesCard :icon="HomeEquipmentIcon" :title="`${$t('equipment')}`"
-          :description="`${$t('add')} . ${$t('assign_insepction ')} . ${$t('show')}  `" />
+          :description="`${$t('add')} . ${$t('assign_insepction')} . ${$t('show')}  `" />
       </router-link>
     </PermissionBuilder>
 
@@ -121,7 +121,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
     ]">
       <!-- /organization?setting=1 -->
       <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
-        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('setting')}`"
+        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
     </PermissionBuilder>
