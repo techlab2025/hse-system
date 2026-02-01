@@ -49,7 +49,7 @@ const showSidebar = computed(() => {
         <slot />
       </div>
     </section>
-    <MobileNavegation />
+    <!-- <MobileNavegation /> -->
   </main>
 </template>
 
