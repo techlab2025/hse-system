@@ -40,11 +40,11 @@ watch(() => isAnotherMeeting.value, (newVal) => {
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
           :class="isAnotherMeeting == 1 ? 'active' : ''">
-          Yes
+          {{ $t('Yes') }}
         </button>
         <button class="meeting-status-on" @click.prevent="isAnotherMeeting = 0"
           :class="isAnotherMeeting == 0 ? 'active' : ''">
-          No
+          {{ $t('No') }}
         </button>
       </div>
     </div>

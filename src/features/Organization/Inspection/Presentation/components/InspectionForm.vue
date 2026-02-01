@@ -217,15 +217,15 @@ const fields = ref([
   <!-- Page Header -->
   <div class="col-span-6 md:col-span-6">
     <PagesHeader
-      title="Task Assignment Center"
-      subtitle="Distribute responsibilities across users and zones to streamline project workflows"
+      :title="$t('Task Assignment Center')"
+      :subtitle="$t('Distribute responsibilities across users and zones to streamline project workflows')"
     />
   </div>
 
   <!-- Assign To Selector (only in create mode) -->
   <div class="col-span-6 md:col-span-6" v-if="!id">
     <TaskAssignTo
-      title="Assign task to"
+      :title="$t('Assign task to')"
       :options="AssignToOptions"
       @update:data="GetSelectedAssigned"
     />
@@ -277,14 +277,14 @@ const fields = ref([
           :controller="indexEquipmentController"
           :params="indexEquipmentParams"
           :label="$t('Equipment')"
-          placeholder="select your Machine"
+          :placeholder="$t('select your Machine')"
           @update:modelValue="setEquipment"
           :isDialog="true"
           :dialogVisible="inspectionDoalouge"
           @close="inspectionDoalouge = false"
         >
           <template #LabelHeader>
-            <span class="add-dialog" @click="inspectionDoalouge = true">New</span>
+            <span class="add-dialog" @click="inspectionDoalouge = true">{{ $t('new') }}</span>
           </template>
           <template #Dialog>
             <AddFullEquipment @update:data="inspectionDoalouge = false" />

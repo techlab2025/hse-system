@@ -422,7 +422,7 @@ const setRootCause = (data: TitleInterface[]) => {
   <div class="full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4">
     <div class="col-span-6 md:col-span-6">
       <HeaderPage :title="`create ${GetHeader(ObservationFactoryType)}`"
-        :subtitle="'Identify and report potential Incedants before they cause harm'" :img="ObservationImage" />
+        :subtitle="$t('Identify and report potential Incedants before they cause harm')" :img="ObservationImage" />
       <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
     </div>
 
@@ -434,7 +434,7 @@ const setRootCause = (data: TitleInterface[]) => {
       <div class="Hazard-form-header">
         <HazardIcon class="icon" />
         <p class="title">
-          {{ GetHeader(ObservationFactoryType) }} form
+          {{ GetHeader(ObservationFactoryType) }} {{ $t('form') }}
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
@@ -442,20 +442,20 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- title -->
     <div class="input-wrapper col-span-6">
-      <label for="title">title</label>
-      <input type="text" id="title" v-model="ObservationTitle" @input="updateData" placeholder="Enter title" />
+      <label for="title">{{ $t('title') }}</label>
+      <input type="text" id="title" v-model="ObservationTitle" @input="updateData" :placeholder="$t('Enter title')" />
     </div>
 
     <!-- Date -->
     <div class="col-span-2 md:col-span-2 input-wrapper">
-      <label for="date">Date</label>
-      <DatePicker input-id="date" v-model="date" placeholder="Add your date" />
+      <label for="date">{{ $t('date') }}</label>
+      <DatePicker input-id="date" v-model="date" :Lplaceholder="$t('Add your date')" />
     </div>
 
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12">
-      <label for="time">time</label>
-      <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+      <label for="time">{{ $t('time') }}</label>
+      <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" :placeholder="$t('Select time')"
         @update:model-value="updateData" input-id="time" :time-only="true" />
     </div>
 
@@ -467,8 +467,8 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12">
-      <label for="place">Place</label>
-      <input type="text" id="place" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
+      <label for="place">{{ $t('place') }}</label>
+      <input type="text" id="place" v-model="PlaceText" @input="updateData" :placeholder="$t('Enter Place')" />
     </div>
 
     <!-- Observation Type -->
@@ -486,8 +486,8 @@ const setRootCause = (data: TitleInterface[]) => {
         /> -->
 
       <UpdatedCustomInputSelect :required="false" :modelValue="SelectedObservationType"
-        :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
-        id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType"
+        :controller="indexObservatioTyepController" :params="indexObservationTypeParams" :label="$t('Observation Type')"
+        id="Equipment" :placeholder="$t('Select Observation Type')" @update:modelValue="setSelectedObservationType"
         @close="observationTypeDialog = false" :isDialog="true" :dialogVisible="observationTypeDialog">
         <template #LabelHeader>
           <span class="add-dialog" @click="observationTypeDialog = true">New</span>
@@ -512,11 +512,11 @@ const setRootCause = (data: TitleInterface[]) => {
       /> -->
 
       <UpdatedCustomInputSelect :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-        :params="indexAccidentsTypeParams" label="incident Type" id="incident" placeholder="Select Incident Type"
+        :params="indexAccidentsTypeParams" :label="$t('incident Type')" id="incident" placeholder="Select Incident Type"
         @update:modelValue="setAccidentsType" @close="acedentDialogRef = false" :isDialog="true"
         :dialogVisible="acedentDialogRef">
         <template #LabelHeader>
-          <span class="add-dialog" @click="acedentDialogRef = true">New</span>
+          <span class="add-dialog" @click="acedentDialogRef = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddAccidentsType @update:data="acedentDialogRef = false" />

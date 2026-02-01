@@ -64,7 +64,7 @@ onMounted(() => {
 
             <div class="timeline-content">
               <div class=" input-wrapper">
-                <label for="wetness-text">Text</label>
+                <label for="wetness-text">{{ $t('Text') }}</label>
                 <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
                   @input="UpdateData" />
               </div>

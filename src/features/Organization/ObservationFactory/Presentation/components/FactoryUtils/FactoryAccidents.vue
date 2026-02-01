@@ -114,15 +114,15 @@ const UpdateWorkStatus = (data) => {
         class="title-header" />
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
-          :class="isAnotherMeeting == 1 ? 'active' : ''">Yes</button>
+          :class="isAnotherMeeting == 1 ? 'active' : ''">{{ $t('Yes') }}</button>
         <button class="meeting-status-on" @click.prevent="isAnotherMeeting = 0"
-          :class="isAnotherMeeting == 0 ? 'active' : ''">No</button>
+          :class="isAnotherMeeting == 0 ? 'active' : ''">{{ $t('No') }}</button>
       </div>
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="">text</label>
+        <label for="">{{ $t('text') }}</label>
         <input type="text" class="input " placeholder="add your title" v-model="text" @input="updateData">
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
@@ -149,7 +149,7 @@ const UpdateWorkStatus = (data) => {
       </div>
 
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="">upload image</label>
+        <label for="">{{ $t('upload image') }}</label>
         <MultiImagesInput :initialImages="image" @update:images="setImages" :index="2" />
       </div>
 

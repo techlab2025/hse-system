@@ -59,11 +59,11 @@ watch(() => isAnotherMeeting.value, (newVal) => {
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
           :class="isAnotherMeeting == 1 ? 'active' : ''">
-          Yes
+          {{ $t('Yes') }}
         </button>
         <button class="meeting-status-on" @click.prevent="isAnotherMeeting = 0"
           :class="isAnotherMeeting == 0 ? 'active' : ''">
-          No
+          {{ $t('No') }}
         </button>
       </div>
     </div>
@@ -71,17 +71,17 @@ watch(() => isAnotherMeeting.value, (newVal) => {
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
         <CustomSelectInput :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams"
-          v-model="SelectedEmployee" placeholder="Select Employee" class="mt-4 mr-2 input" label="Employee"
+          v-model="SelectedEmployee" placeholder="Select Employee" class="mt-4 mr-2 input" :label="$t('Employee')"
           @update:model-value="setEmployee" />
       </div>
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="deth-text">Text</label>
-        <input type="text" id="deth-text" v-model="text" class="input" placeholder="add your title"
+        <label for="deth-text">{{ $t('Text') }}</label>
+        <input type="text" id="deth-text" v-model="text" class="input" :placeholder="$t('add your title')"
           @input="updateData" />
       </div>
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
         <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-          <label for="">upload image</label>
+          <label for="">{{ $t('upload image') }}</label>
           <MultiImagesInput :initialImages="image" @update:images="setImages" :index="3" />
         </div>
       </div>
