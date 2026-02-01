@@ -31,6 +31,7 @@ import DeleteContractorController from '../controllers/deleteContractorControlle
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -105,7 +106,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteContractor: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/${id}`,
     permission: [
       PermissionsEnum.ORG_CONTRACTOR_UPDATE,

@@ -21,12 +21,7 @@ const props = defineProps({
   <button label="Show" @click="visible = true" class="investigation-show-result-btn">
     view details
   </button>
-  <Dialog
-    v-model:visible="visible"
-    modal
-    :dismissableMask="true"
-    :style="{ width: '90vw', maxWidth: '60rem' }"
-  >
+  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '60rem' }">
     <template #header>
       <div class="show-result-dialog-header">
         <h3>{{ staticData.title }}</h3>
@@ -48,7 +43,7 @@ const props = defineProps({
               </div>
               <div class="info-item">
                 <h5>Responsible :</h5>
-                <span> {{ item?.responablePerson }}</span>
+                <span> {{ item?.responablePerson?.title }}</span>
               </div>
             </div>
           </div>
@@ -65,7 +60,7 @@ const props = defineProps({
           <img src="@/assets/images/user-assign.png" alt="" />
           <div class="name">
             <span>assigned to :</span>
-            <p>{{ item?.assignedTo }}</p>
+            <p>{{ item?.assignedTo?.name }}</p>
           </div>
         </div>
       </div>

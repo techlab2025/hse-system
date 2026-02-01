@@ -220,6 +220,21 @@ onMounted(() => {
                 </div>
                 <div class="input-wrapper">
                   <label>{{ $t('start') }} <ImportantIcon /></label>
+                  <label>Prefix
+                    <ImportantIcon />
+                  </label>
+                  <input type="text" v-model="field.prefix" placeholder="Enter your prefix" />
+                </div>
+                <div class="input-wrapper">
+                  <label>Suffix
+                    <ImportantIcon />
+                  </label>
+                  <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
+                </div>
+                <div class="input-wrapper">
+                  <label>Start
+                    <ImportantIcon />
+                  </label>
                   <input type="number" v-model="field.start" placeholder="Enter your start" />
                 </div>
               </div>
@@ -232,6 +247,8 @@ onMounted(() => {
     <div class="form-sticky-button flex gap-2">
       <router-link to="/" class="btn btn-cancel" style="width: 15%">{{ $t('cancel') }}</router-link>
       <button type="submit" class="btn btn-primary" style="width: 85%">{{ $t('Add') }}</button>
+      <router-link to="/organization" class="btn btn-cancel" style="width: 15%">Cancel</router-link>
+      <button type="submit" class="btn btn-primary" style="width: 85%">Add</button>
     </div>
   </form>
 </template>

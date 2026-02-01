@@ -21,6 +21,7 @@ import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeCon
 import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams'
 import DeleteWhereHouseTypeParams from '../../Core/params/deleteWhereHouseTypeParams'
 import DeleteWhereHouseTypeController from '../controllers/deleteWhereHouseTypeController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -83,14 +84,14 @@ watch(
 const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/organization/where-house-type/${id}`,
     permission: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
       PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-    ],
+    ],  
   },
 
   {

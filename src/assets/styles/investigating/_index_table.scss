@@ -255,7 +255,7 @@
     gap: $XsSize4;
     width: 100%;
     .unsolved-btns {
-      @include flex-row(nowrap, space-between, center);
+      @include flex-row(nowrap, space-between, stretch);
       @media screen and (max-width: 425px) {
         flex-direction: column;
       }

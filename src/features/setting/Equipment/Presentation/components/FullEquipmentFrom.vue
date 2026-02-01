@@ -671,20 +671,16 @@ const UpdateActiveTap = (data) => {
           @update:modelValue="setDecoDate" />
       </div>
 
-      <div class="col-span-2 flex item-center justify-start gap-4"
-        v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
+      <div v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
+        class="col-span-2 flex item-center justify-start gap-4">
         <div class="radio-wrapper" :class="deviceStatus == option?.id ? 'active' : ''"
-          v-for="(option, index) in deviceStatusOptions" :key="index">
-          <div class="flex items-center justify-center gap-1 w-full">
+          v-for="(option, index) in deviceStatusOptions" :key="index" @click="deviceStatus = option?.id">
+          <div class="flex items-center justify-center gap-1 w-full h-full">
             <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
               {{ option?.title }}
             </label>
-            <template v-if="option?.id == EquipmentStatus.RENT">
-              <RentIcon class="w-10 h-10" />
-            </template>
-            <template v-if="option?.id == EquipmentStatus.OWN">
-              <OwnedIcon class="w-10 h-10" />
-            </template>
+            <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+            <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
           </div>
           <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="deviceStatus" :value="option?.id"
             name="radio" @change="UpdateDeviceStatus" />
@@ -785,5 +781,15 @@ const UpdateActiveTap = (data) => {
 .add-dialog svg {
   width: 18px;
   height: 18px;
+}
+
+.radio-wrapper {
+  padding: 0;
+}
+
+.h-full {
+  height: 100%;
+  padding: 12px;
+
 }
 </style>

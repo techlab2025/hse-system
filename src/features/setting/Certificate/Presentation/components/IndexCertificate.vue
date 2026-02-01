@@ -29,6 +29,7 @@ import DeleteCertificateParams from '../../Core/params/deleteCertificateParams'
 import DeleteCertificateController from '../controllers/deleteCertificateController'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -105,7 +106,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${id}`,
     permission: [
       PermissionsEnum.CERTIFICATE_UPDATE,

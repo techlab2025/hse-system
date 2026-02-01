@@ -35,6 +35,9 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import IconEye from '@/shared/icons/IconEye.vue'
 import EquipmentCard from './EquipmentUtils/EquipmentCard.vue'
 import ToolCard from '@/features/Organization/Project/Presentation/components/Details/Equipment/ToolCard.vue'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
+import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 
 const { t } = useI18n()
 
@@ -110,7 +113,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
@@ -123,7 +126,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   },
   {
     text: t('add_inspection'),
-    icon: IconEdit,
+    icon: ActionsTableShild,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/equipment-mangement/inspection/add/${id}`,
     permission: [
@@ -137,7 +140,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   },
   {
     text: t('show'),
-    icon: IconEye,
+    icon: ActionsTableView,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/equipment-show/${id}`,
     permission: [

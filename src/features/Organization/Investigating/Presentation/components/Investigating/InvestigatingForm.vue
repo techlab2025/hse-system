@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -27,11 +27,13 @@ import FactorInvestigating from './FactorInvestigating.vue'
 import meetingImage from '../../../../../../assets/images/meeting.png'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MeetingParams from '../../../Core/params/MeetingParams'
 import InvestigatingEmployeeParams from '../../../Core/params/InvestegationEmployeeParams'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
+import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -51,7 +53,8 @@ const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
 const updateData = () => {
-  const meeting = new MeetingParams(formatJoinDate(date?.value), formatTime(time?.value), SelectedPlatform?.value?.id)
+  console.log(time?.value, "date?.value");
+  const meeting = (date?.value != undefined && time?.value != undefined) ? new MeetingParams(formatJoinDate(date?.value), time?.value || null, SelectedPlatform?.value?.id) : null
   const params = props.data?.id
     ? new EditInvestigatingParams(
       {
@@ -157,6 +160,35 @@ const setSelectedPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
   updateData()
 }
+
+const router = useRouter()
+const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
+const state = ref(showInvestigationResultController.state.value)
+const ShoeInvestegationResultDetails = () => {
+  const showInvestigationResultParams = new ShowInvestigationResultParams(route.query.id)
+  showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, router)
+}
+
+onMounted(() => {
+  ShoeInvestegationResultDetails()
+})
+
+watch(() => showInvestigationResultController.state.value, (newState) => {
+  if (newState) {
+    state.value = newState
+    date.value = newState?.data?.investigationMeetings?.[newState.data.investigationMeetings.length - 1]?.date
+    time.value = newState?.data?.investigationMeetings?.[newState.data.investigationMeetings.length - 1]?.time
+    SelectedPlatform.value = new TitleInterface({ id: newState.data?.type, title: MeetingPlatforms.value.find(el => el.id === newState.data?.type)?.title })
+    // Employees.value = newState?.data?.employees?.map(el => new InvestigatingEmployeeParams(el.id!, el.is_leader))
+    // SelectedTeam.value = newState?.data?.employees?.map(el => new TitleInterface({ id: el.id!, title: el.name }))
+    // SelectedTeamLeader.value = newState?.data?.employees?.find(el => el.is_leader)?.id
+
+
+  }
+})
+
+
+
 </script>
 
 <template>

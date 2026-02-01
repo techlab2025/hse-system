@@ -23,6 +23,7 @@ import DeleteRoleParams from '../../Core/params/deleteRoleParams'
 import DeleteRoleController from '../controllers/deleteRoleController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 
 const { t } = useI18n()
@@ -84,7 +85,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteRole: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Role/${id}` : `/organization/Role/${id}`,
     permission: [
       PermissionsEnum.ORG_ROLE_UPDATE,

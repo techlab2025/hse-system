@@ -34,22 +34,22 @@ export default class DeleteProjectLocationTeamEmployeeController extends Control
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.message,
-          imageElement: successImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.message,
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
         await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route.params?.id)),
+          new ShowProjectDetailsParams(Number(route.params?.id || route.params?.project_id)),
         )
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
         throw new Error('Error while addServices')
       }
     } catch (error: any) {

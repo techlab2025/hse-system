@@ -3,16 +3,22 @@
 @import '../mixins/grid';
 
 .valid-certificate {
-  @include flex-column(nowrap, flex-start, flex-start);
+  @include flex-column(nowrap, center, center);
   gap: $XsSize4;
-  width: fit-content;
+  width: 100%;
+  padding: $XsSize3;
+  background: #fdfffd;
+  border: 1px solid #6cb7651a;
+  border-radius: $XsSize2;
   .valid {
-    @include flex-row(nowrap, flex-start, flex-start);
+    @include flex-center();
     gap: $XsSize4;
     .valid-title {
       color: #6cb765;
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
+      text-align: center;
+      font-family: 'Bold';
     }
   }
   .valid-date {
@@ -20,5 +26,17 @@
     font-size: $XsSize;
     font-weight: $BaseFontMediumWeight;
     text-align: center;
+  }
+  .valid {
+    @include flex-center();
+    gap: $XsSize4;
+    .not-required-date {
+      color: #2f2d2d;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+
+      text-align: center;
+      width: 100%;
+    }
   }
 }

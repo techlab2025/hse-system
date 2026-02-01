@@ -1,12 +1,13 @@
-import type InvestigationTaskEmployeesModel from "./investigationTaskEmployeesModel"
+import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
+import type InvestigationTaskEmployeesModel from './investigationTaskEmployeesModel'
 
 export default class InvestegationTasksModel {
   id: number
   title: string
   status: number
   due_date: string
-  ResponsablePerson: string
-  assignedTo: string
+  ResponsablePerson: OrganizatoinEmployeeModel
+  assignedTo: OrganizatoinEmployeeModel
   investigation_meeting_id: number
   description: string
   investigationTaskEmployees: InvestigationTaskEmployeesModel[]
@@ -16,8 +17,8 @@ export default class InvestegationTasksModel {
     title: string,
     status: number,
     due_date: string,
-    ResponsablePerson: string,
-    assignedTo: string,
+    ResponsablePerson: OrganizatoinEmployeeModel,
+    assignedTo: OrganizatoinEmployeeModel,
     investigation_meeting_id: number,
     description: string,
     investigationTaskEmployees: InvestigationTaskEmployeesModel[],
@@ -39,8 +40,8 @@ export default class InvestegationTasksModel {
       data.title,
       data.status,
       data.due_date,
-      data.ResponsablePerson,
-      data.assignedTo,
+      OrganizatoinEmployeeModel.fromMap(data.responable_person),
+      OrganizatoinEmployeeModel.fromMap(data.assigned_to),
       data.investigation_meeting_id,
       data.description,
       data.investigation_task_employees,

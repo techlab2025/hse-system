@@ -31,6 +31,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -104,7 +105,7 @@ const { user } = useUserStore()
 const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,

@@ -29,6 +29,7 @@ import DeleteProjectZoneParams from '../../Core/params/deleteProjectZoneParams'
 import DeleteProjectZoneController from '../controllers/deleteProjectZoneController'
 import ChangeStatusProjectZoneParams from '../../Core/params/changeStatusProjectZoneParams'
 import ChangeStatusProjectZoneController from '../controllers/changeStatusProjectZoneController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 const { t } = useI18n()
 
@@ -102,7 +103,7 @@ watch(
 const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/organization/project-zone/${id}`,
     permission: [
       PermissionsEnum.PROJECT_ZONE_UPDATE,

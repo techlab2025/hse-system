@@ -428,7 +428,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
 const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/where-house-type',
-    name: 'where_house_types',
+    name: 'warehouse_types',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
       PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -452,7 +452,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/accidents-type',
-    name: 'accidents_type',
+    name: 'incident_types',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,

@@ -38,7 +38,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${props?.tool.id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
@@ -51,7 +51,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   },
   {
     text: t('add_inspection'),
-    icon: IconEdit,
+    icon: ActionsTableShild,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/equipment-mangement/inspection/add/${props?.tool?.id}`,
     permission: [
@@ -65,7 +65,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   },
   {
     text: t('show'),
-    icon: IconEye,
+    icon: ActionsTableView,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
       }/equipment-show/${props?.tool?.id}`,
     permission: [
@@ -114,6 +114,9 @@ const deleteEquipment = async (id: number) => {
 
 
 import EmptyEquipment from '@/assets/images/EmptyEquipment.png'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue';
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue';
+import ActionsTableView from '@/shared/icons/ActionsTableView.vue';
 
 function setEquipmentDefaultImage(event: Event) {
   const img = event.target as HTMLImageElement
