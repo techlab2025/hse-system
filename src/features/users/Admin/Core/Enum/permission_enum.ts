@@ -937,4 +937,12 @@ export enum PermissionsEnum {
   // Inspections Tasks
   MY_TASKS_ALL = 'MT00',
   INSPECTION_RESULTS_FETCH = 'MT01',
+
+  // Ticket Type
+  TICKET_TYPE_ALL = 'TT00',
+  TICKET_TYPE_FETCH = 'TT01',
+  TICKET_TYPE_DETAILS = 'TT02',
+  TICKET_TYPE_CREATE = 'TT03',
+  TICKET_TYPE_UPDATE = 'TT04',
+  TICKET_TYPE_DELETE = 'TT05',
 }

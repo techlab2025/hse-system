@@ -10,24 +10,25 @@ import type { Router } from 'vue-router'
 import type RootCausesModel from '@/features/setting/RootCauses/Data/models/RootCausesModel'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
-import type AddRootCausesParams from '../../Core/params/addRootCausesParams'
-import AddRootCausesUseCase from '../../Domain/useCase/addRootCausesUseCase'
+import type AddTicketTypeParams from '../../Core/params/addTicketTypeParams'
+import AddTicketTypeUseCase from '../../Domain/useCase/addTicketTypeUseCase'
+import type TicketTypeModel from '../../Data/models/TicketTypeModel'
 
-export default class AddRootCausesController extends ControllerInterface<RootCausesModel> {
-  private static instance: AddRootCausesController
+export default class AddTicketTypeController extends ControllerInterface<TicketTypeModel> {
+  private static instance: AddTicketTypeController
   private constructor() {
     super()
   }
-  private AddRootCausesUseCase = new AddRootCausesUseCase()
+  private AddTicketTypeUseCase = new AddTicketTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddRootCausesController()
+      this.instance = new AddTicketTypeController()
     }
     return this.instance
   }
 
-  async addRootCauses(params: AddRootCausesParams, router: Router, draft: boolean = false) {
+  async addTicketType(params: AddTicketTypeParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -36,7 +37,7 @@ export default class AddRootCausesController extends ControllerInterface<RootCau
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<RootCausesModel> = await this.AddRootCausesUseCase.call(params)
+      const dataState: DataState<TicketTypeModel> = await this.AddTicketTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -49,9 +50,9 @@ export default class AddRootCausesController extends ControllerInterface<RootCau
         const { user } = useUserStore()
 
         if (!draft)
-          if (router.currentRoute?.value.fullPath.includes('root-causes')) {
+          if (router.currentRoute?.value.fullPath.includes('ticket-types')) {
             await router.push(
-              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/root-causes`,
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-types`,
             )
           } else {
           }
