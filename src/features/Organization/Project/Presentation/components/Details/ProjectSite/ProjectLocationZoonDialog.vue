@@ -54,10 +54,10 @@ const CreatProjectZoon = async () => {
 
     <div class="input-wrapper">
       <CustomSelectInput :required="false" :modelValue="SelectedProjectZone" :controller="indexProjectZoneController"
-        :params="indexProjectZoneParams" label="Zoon" id="Equipment" placeholder="Select Zoon"
+        :params="indexProjectZoneParams" label="Zoon" id="Equipment" :placeholder="$t('Select Zoon')"
         @update:modelValue="setProjectLocationZoon" />
     </div>
-    <button class="btn btn-primary w-full" @click="CreatProjectZoon">Confirm</button>
+    <button class="btn btn-primary w-full" @click="CreatProjectZoon">{{ $t('Confirm') }}</button>
   </Dialog>
 </template>
 

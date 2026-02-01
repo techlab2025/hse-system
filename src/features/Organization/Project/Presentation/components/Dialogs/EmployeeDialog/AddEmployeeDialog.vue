@@ -15,7 +15,7 @@ const visible = ref(false);
 </script>
 
 <template>
-  <button @click="visible = true">Add Employee</button>
+  <button @click="visible = true">{{ $t('Add Employee') }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '65%' }">
     <template #header>
       <div class="add-employee-header">
@@ -28,8 +28,8 @@ const visible = ref(false);
       <Tabs value="0">
         <TabList>
           <Tab value="0">
-            select the Hierarchy in each location</Tab>
-          <Tab value="1">add your employees</Tab>
+            {{ $t('select the Hierarchy in each location') }}</Tab>
+          <Tab value="1">{{ $t('add your employees') }}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel value="0">

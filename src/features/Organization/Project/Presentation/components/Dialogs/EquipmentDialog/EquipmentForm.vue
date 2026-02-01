@@ -84,16 +84,16 @@ onMounted(() => {
           <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
             placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
-          <label for="equipment">Select Equipment</label>
+          <label for="equipment">{{ $t('Select Equipment') }}</label>
           <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
-            placeholder="Select Your Equipment" display="chip" class="w-full md:w-80"
+            :placeholder="$t('Select Your Equipment')" display="chip" class="w-full md:w-80"
             @update:modelValue="setEquipments" />
 
         </div>
       </div>
 
       <div class="submit-btn">
-        <button class="btn btn-primary" type="submit">Confirm</button>
+        <button class="btn btn-primary" type="submit">{{ $t('confirm') }}</button>
       </div>
     </form>
   </div>

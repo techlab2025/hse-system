@@ -68,7 +68,7 @@ const updatetabValue = (value) => {
     <div class="equipment-section-header">
       <HeaderSection :img="Equipment" title="Equipment , tools & Devices by Site "
         subtitle="View and manage all equipment assigned to each operational zone" />
-      <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">Show all</router-link>
+      <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">{{ $t("Show all") }}</router-link>
 
 
     </div>
@@ -85,7 +85,7 @@ const updatetabValue = (value) => {
               <div class="flex flex-col items-start gap-0">
                 <p class="location-title">{{ zone?.zoonTitle }}</p>
                 <div class="location-info-statics flex items-center gap-2">
-                  <p>{{ zone?.projectZoonEquipments?.length }} <span>Equipment & Devices</span></p>
+                  <p>{{ zone?.projectZoonEquipments?.length }} <span>{{ $t("Equipment & Devices") }}</span></p>
                 </div>
               </div>
               <div>

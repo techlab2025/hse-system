@@ -79,23 +79,23 @@ onMounted(() => {
     <button @click="visible = true" class="content-btn">{{ btn_name }}</button>
     <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
       <template #header>
-        <HeaderSection :img="EquipmentImg" title="Equipment"
-          subtitle="Choose for each zone all the equipment and devices you want." />
+        <HeaderSection :img="EquipmentImg" :title="$t('Equipment')"
+          :subtitle="$t('Choose for each zone all the equipment and devices you want.')" />
       </template>
       <!-- Equipment selection -->
       <div class="equipment-selection">
         <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
           @update:modelValue="setEquipments" /> -->
-        <label for="equipment">Select Equipment</label>
+        <label for="equipment">{{ $t('Select Equipment') }}</label>
         <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
-          placeholder="Select Your Equipment" display="chip" class="w-full md:w-80"
+          :placeholder="$t('Select Your Equipment')" display="chip" class="w-full md:w-80"
           @update:modelValue="setEquipments" />
 
 
         <div class="submit-btn w-full mt-4">
           <button class="btn btn-primary w-full" @click="AddEquipment">
-            Confirm
+            {{ $t('Confirm') }}
           </button>
         </div>
       </div>

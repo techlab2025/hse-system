@@ -89,8 +89,8 @@ const flattenedHierarchies = computed(() => {
                   <p class="heirarchy-title">{{ item.status }}</p>
                 </div>
                 <div class="heirarchy-details">
-                  <p>employees: <span>{{ item.employees || 100 }}</span></p>
-                  <p>certifications: <span>{{ item.certifications || 10 }}</span></p>
+                  <p>{{ $t('employees') }}: <span>{{ item.employees || 100 }}</span></p>
+                  <p>{{ $t('certifications') }}: <span>{{ item.certifications || 10 }}</span></p>
                 </div>
               </div>
             </div>

@@ -115,7 +115,7 @@ const deleteZone = (index: number) => {
 
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '59%' }">
     <template #header>
-      <HeaderSection :img="ZoneDialog" title="Select Zones" subtitle="At least 1 zone required for every location" />
+      <HeaderSection :img="ZoneDialog" :title="$t('Select Zones')" :subtitle="$t('At least 1 zone required for every location')" />
     </template>
 
     <div v-if="locations.length > 0" class="equipment-dialog-data">
@@ -128,7 +128,7 @@ const deleteZone = (index: number) => {
     </div>
 
     <div v-else class="empty">
-      <p>No Selected locations</p>
+      <p>{{ $t('No Selected locations') }}</p>
     </div>
   </Dialog>
 </template>

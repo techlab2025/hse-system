@@ -132,10 +132,10 @@ watch(
 
   <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in mt-4">
     <label for="notes" class="block mb-1 text-sm font-medium">
-      Notes
+      {{ $t('Notes') }}
     </label>
     <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
-      placeholder="Please enter details..." />
+      :placeholder="$t('Please enter details...')" />
   </div>
 </template>
 

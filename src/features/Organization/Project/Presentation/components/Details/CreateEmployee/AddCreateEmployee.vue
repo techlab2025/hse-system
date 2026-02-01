@@ -148,8 +148,8 @@ const IsThereAnyLocationHierarchy = computed(() => state.value.data?.map((el) =>
 
         </div>
         <div v-else class="hierarchy-empty">
-          <EmptyData :img="EmptyFolder" title="No Hierarchy Yet"
-            subtitle="You haven’t added any Hierarchy to this project. Start building your Hierarchy now!"
+          <EmptyData :img="EmptyFolder" :title="$t('No Hierarchy Yet')"
+            :subtitle="$t('You haven’t added any Hierarchy to this project. Start building your Hierarchy now!')"
             :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
             linkText=" Start building your Hierarchy now!" />
         </div>

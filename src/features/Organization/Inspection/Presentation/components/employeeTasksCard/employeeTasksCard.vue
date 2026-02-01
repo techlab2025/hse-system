@@ -92,7 +92,7 @@ watch(() => props.employee_name, (newValue) => {
           </div>
         </template>
         <template #empty>
-          <h3 class="text-center ">No Inspections</h3>
+          <h3 class="text-center ">{{ $t('No Inspections') }}</h3>
         </template>
       </DataStatus>
     </div>

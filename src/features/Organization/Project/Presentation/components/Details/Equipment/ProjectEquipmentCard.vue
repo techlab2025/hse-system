@@ -181,8 +181,8 @@ const deleteEquipment = async (id: number) => {
           </div>
 
           <div class="equipment-inspections-info">
-            <p class="inspection-data">inspections No <span>{{ tool?.equipment?.inspections_count }}</span></p>
-            <p class="inspection-data">results No <span>{{ tool?.equipment?.inspections_with_result_count }}</span>
+            <p class="inspection-data">{{ $t('inspections No') }} <span>{{ tool?.equipment?.inspections_count }}</span></p>
+            <p class="inspection-data">{{ $t('results No') }} <span>{{ tool?.equipment?.inspections_with_result_count }}</span>
             </p>
           </div>
           <EquipmentLastInspectionResultDialog v-if="tool?.equipment?.lastest_inspection_result"

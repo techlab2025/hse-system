@@ -9,7 +9,7 @@ import AccordionContent from 'primevue/accordioncontent';
   <div class="card">
     <Accordion :value="['0']" multiple>
       <AccordionPanel value="0">
-        <AccordionHeader>Header I</AccordionHeader>
+        <AccordionHeader>{{ $t('Header I') }}</AccordionHeader>
         <AccordionContent>
 
         </AccordionContent>

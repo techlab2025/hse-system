@@ -78,18 +78,18 @@ const setEquipment = (data: TitleInterface) => {
 
     <div class="input-wrapper col-span-2 pt-15">
       <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="fetchMyProjectsController"
-        :params="fetchMyProjectsParams" :label="$t('Projects')" id="employee" placeholder="select your project"
+        :params="fetchMyProjectsParams" :label="$t('Projects')" id="employee" :placeholder="$t('select your project')"
         @update:modelValue="setProject" />
     </div>
 
     <div class="input-wrapper col-span-2" v-if="SelectedProject">
       <CustomSelectInput :modelValue="SelectedZones" class="input" :controller="fetchMyZonesController"
-        :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" placeholder="select your Zone"
+        :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" :placeholder="$t('select your Zone')"
         @update:modelValue="setZones" />
     </div>
     <div class="input-wrapper col-span-2">
       <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
-        :params="deleteEquipmentTypeParams" label="Equipment" id="equipment" placeholder="select your equipment"
+        :params="deleteEquipmentTypeParams" :label="$t('Equipment')" id="equipment" :placeholder="$t('select your equipment')"
         @update:modelValue="setEquipment" />
     </div>
     <!-- Dialog -->

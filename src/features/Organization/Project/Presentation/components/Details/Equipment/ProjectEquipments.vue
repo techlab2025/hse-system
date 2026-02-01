@@ -38,8 +38,8 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
 
   <DataStatus :controller="state">
     <template #success>
-      <PagesHeader title="Equipment_tools_&_devices_by_zone"
-        subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone" />
+      <PagesHeader :title="$t('Equipment_tools_&_devices_by_zone')"
+        :subtitle="$t('view_and_manage_all_equipment_assigned_to_each_operational_zone')" />
       <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
         <EmptyEquimentsProjectZones :zonesNumber="EmptyZones?.length" :zones="EmptyZones" />
         <div class="project-equipment-card-container grid grid-cols-2 gap-4"

@@ -77,7 +77,7 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
   <!-- <pre>{{ state.data }}</pre> -->
   <div class="add-hierarchy">
     <!-- <Breadcrumbs /> -->
-    <HeaderPage title="Add your hierarchy" subtitle="Select your hierarchy for each location from your main hierarchy"
+    <HeaderPage :title="$t('Add your hierarchy')" :subtitle="$t('Select your hierarchy for each location from your main hierarchy')"
       :number="1" />
     <DataStatus :controller="state">
       <template #success>

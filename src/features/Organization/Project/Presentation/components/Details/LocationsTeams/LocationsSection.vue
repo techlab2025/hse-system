@@ -117,10 +117,10 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
               <p class="location-title">{{ GetSelectedLocation(location.locationId)?.locationTitle }}</p>
               <div class="location-info-statics flex items-center gap-2">
                 <p>{{ GetSelectedLocation(location.locationId)?.employees?.length || 0 }}
-                  <span>Employees</span>
+                  <span>{{ $t('Employees') }}</span>
                 </p>
                 <p>{{ CheckThatAtLeastOneEmployeeInTeams() ? location?.projectLocationTeams?.length || 0 : 0 }}
-                  <span>Teams</span>
+                  <span>{{ $t('Teams') }}</span>
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           <div class="card-actions flex items-center gap-2">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${location.locationId}`"
               class="btn btn-secondary">
-              Edit Hierarchy
+              {{ $t('Edit Hierarchy') }}
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="location?.projectLocationId" :LocationId="location.locationId"
               @update:data="GetProjectLocationsEmployes" />
@@ -148,12 +148,12 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
             <div class="flex items-center gap-2">
               <ProjectEmployeeIcon class="icon" />
               <div class="all-employees-header flex flex-col">
-                <p class="employee">employees</p>
+                <p class="employee">{{ $t('Employees') }}</p>
                 <p class="employee-count">{{ GetSelectedLocation(location.locationId)?.employees?.length || 0 }}
-                  Employee</p>
+                  {{ $t('Employees') }}</p>
               </div>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">View all employees ({{
+            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all employees') }} ({{
               GetSelectedLocation(location.locationId)?.employees?.length || 0 }})</router-link>
           </div>
           <div class="team-members">
@@ -168,11 +168,11 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
             <div class="flex items-center gap-2">
               <TeamsIcon class="icon" />
               <div class="all-employees-header flex flex-col">
-                <p class="employee">team</p>
-                <p class="employee-count">{{ location?.projectLocationTeams?.length }} team</p>
+                <p class="employee">{{ $t('Teams') }}</p>
+                <p class="employee-count">{{ location?.projectLocationTeams?.length }} {{ $t('Teams') }}</p>
               </div>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">View all teams ({{
+            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all teams') }} ({{
               location?.projectLocationTeams?.length }})</router-link>
           </div>
           <div class="teams">
@@ -180,8 +180,8 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           </div>
         </div>
         <div class="empty-teams" v-if="GetSelectedLocation(location.locationId)?.employees?.length < 1">
-          <EmptyData :img="EmptyFolder" title="No Teams Or Employees Yet"
-            subtitle="You haven’t added any employees to this team. Start building your crew now!"
+          <EmptyData :img="EmptyFolder" :title="$t('No Teams Or Employees Yet')"
+            :subtitle="$t('You haven’t added any employees to this team. Start building your crew now!')"
             :link="`/organization/project-employee/project/${id}?locationId=${location.locationId}`"
             linkText=" Start building your crew now!" />
         </div>

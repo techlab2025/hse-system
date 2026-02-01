@@ -84,7 +84,7 @@ const setName = (data) => {
       class="input"
       v-model="Name"
       @input="setName"
-      placeholder="Enter Name "
+      :placeholder="$t('Enter Name')"
     />
   </div>
 
@@ -104,7 +104,7 @@ const setName = (data) => {
       :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController"
       :params="indexWhereHouseTypeParams"
-      label="Where House Type "
+      :label="$t('Where House Type')"
       id="Equipment"
       placeholder="Select Where House Type"
       @update:modelValue="setSelectedWhereHouseType"

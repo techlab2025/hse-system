@@ -12,7 +12,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Dialog :visible="props.visible" modal header="Add Contractor" dismissable-mask :style="{ width: '50rem' }"
+  <Dialog :visible="props.visible" modal :header="$t('Add Contractor')" dismissable-mask :style="{ width: '50rem' }"
     @update:visible="emit('update:visible', $event)">
     <AddOrganizatoinEmployee @update:data="emit('update:visible', false)" />
   </Dialog>

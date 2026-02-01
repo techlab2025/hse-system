@@ -58,16 +58,16 @@ const deleteProject = async (id: number) => {
     <div class="project-header">
       <div class="flex project-info">
         <span class="serial"
-          >serial : <span>{{ serialName }}</span></span
+          >{{ t('serial') }} : <span>{{ serialName }}</span></span
         >
         <span class="date"
-          >start in : <span>{{ Projectdate }}</span></span
+          >{{ t('start in') }} : <span>{{ Projectdate }}</span></span
         >
       </div>
       <p class="project-name">{{ projectName }}</p>
       <div class="project-statics">
         <ContractorIcon class="icon" />
-        <span class="contractor">contractor : {{ Contractors }}</span>
+        <span class="contractor">{{ t('contractor') }} : {{ Contractors }}</span>
       </div>
     </div>
     <DropList

@@ -26,8 +26,8 @@ const UpdateData = () => {
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
       <div class="add-equipment-header">
-        <HeaderSection :img="CreateTeam" title="create team"
-          subtitle="select your team type & add your employee from the location" />
+        <HeaderSection :img="CreateTeam" :title="$t('create team')"
+          :subtitle="$t('select your team type & add your employee from the location')" />
       </div>
     </template>
     <div class="equipment-dialog-data">

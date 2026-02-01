@@ -59,7 +59,7 @@ const GetEquipmentType = (type: number) => {
             <div class="title-container">
               <div class="date-wrapper">
                 <span class="title" v-if="task?.template?.title">{{ task?.template?.title }}</span>
-                <span class="title" v-else> Inspection</span>
+                <span class="title" v-else> {{ $t('Inspection') }}</span>
                 <span class="date">{{ task?.created_at }}</span>
               </div>
               <div class="count" v-if="task?.template?.templateItems?.length > 0">
@@ -70,7 +70,7 @@ const GetEquipmentType = (type: number) => {
 
             <div class="inspection-info">
               <div class="info-box">
-                <p class="assigned-by">Assigned by :</p>
+                <p class="assigned-by">{{ $t('Assigned by') }} :</p>
                 <h5 class="position">
                   <span>{{ task?.createdBy?.name }}</span>
                 </h5>
@@ -81,7 +81,7 @@ const GetEquipmentType = (type: number) => {
               </div>
 
               <div class="info-box">
-                <p class="assigned-by">Assigned To :</p>
+                <p class="assigned-by">{{ $t('Assigned To') }} :</p>
                 <h5 class="position">
                   {{ GetMorohType(task?.morphType).slice(0, 3) }}_
                   <span>{{ task?.assigned_to?.name || task?.assigned_to?.title }}</span>
@@ -144,7 +144,7 @@ const GetEquipmentType = (type: number) => {
         <router-link v-if="!isDrag && !showresult && !isEquipment" class="show-button w-full mt"
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
           <div class="button-text">
-            <h5>Show all results</h5>
+            <h5>{{ $t('Show all results') }}</h5>
             <!-- <span>20</span> -->
           </div>
           <ButtonArrow />

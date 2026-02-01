@@ -5,11 +5,11 @@ import ArrowIcons from '@/shared/icons/ArrowIcons.vue'
   <div class="breadcrumbs-project">
     <div class="first-item">
       <div class="small-circle"></div>
-      <p>select hierarchy</p>
+      <p>{{ $t('select hierarchy') }}</p>
     </div>
 
     <ArrowIcons />
 
-    <p class="last-child">select hierarchy</p>
+    <p class="last-child">{{ $t('select hierarchy') }}</p>
   </div>
 </template>

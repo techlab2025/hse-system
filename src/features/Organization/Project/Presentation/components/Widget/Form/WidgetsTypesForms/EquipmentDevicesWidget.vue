@@ -60,9 +60,9 @@ const UpdateTitle = (data) => {
 
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
-  <ColorSelection title="chart color" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-  <RadioSection title="choose progress ui" :images_selections="[Pogress2, EquipmentProgress2, EquipmentProgress3]"
+  <ColorSelection :title="$t('chart color')" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
+  <RadioSection :title="$t('choose progress ui')" :images_selections="[Pogress2, EquipmentProgress2, EquipmentProgress3]"
     @update:value="v => updateField('Progress', v)" />
-  <RadioSection title="Available to" :selections="['anyone', 'only me']"
+  <RadioSection :title="$t('Available to')" :selections="['anyone', 'only me']"
     @update:value="v => updateField('SelectedAvailable', v)" />
 </template>

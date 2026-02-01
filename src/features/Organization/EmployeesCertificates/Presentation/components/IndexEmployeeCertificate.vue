@@ -176,7 +176,7 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                           (el) => el.status == CertificateStatusEnum?.Valid,
                         )?.length
                       }}
-                        <span>valid</span></span>
+                        <span>{{ $t('valid') }}</span></span>
                       <span class="invalid-counter">{{
                         employee?.employee_certificates?.filter(
                           (el) => el.status == CertificateStatusEnum?.Invalid,
@@ -184,7 +184,7 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                           (el) => el.status == CertificateStatusEnum?.Invalid,
                         )?.length
                       }}
-                        <span>invalid</span></span>
+                        <span>{{ $t('invalid') }}</span></span>
                       <span class="expired-counter">{{
                         employee?.employee_certificates?.filter(
                           (el) => el.status == CertificateStatusEnum?.Expired,
@@ -192,7 +192,7 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                           (el) => el.status == CertificateStatusEnum?.Expired,
                         )?.length
                       }}
-                        <span>expired</span></span>
+                        <span>{{ $t('expired') }}</span></span>
                     </div>
                     <!-- <span class="employee-description ">{{employee?.hierarchy.map((el) => el.title).join(', ')}}</span> -->
                   </div>
@@ -214,7 +214,7 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                           <div class="invalid">
                             <!-- <NotValidIcon /> -->
                             <span class="not-required-left"></span>
-                            <span>NotRequired</span>
+                            <span>{{ $t('NotRequired') }}</span>
                             <span class="not-required-right"></span>
                           </div>
                         </div>
@@ -239,7 +239,7 @@ const GetEmployeeCertificationStatus = (employee: OrganizatoinEmployeeModel, cer
                           <div class="invalid">
                             <!-- <NotValidIcon /> -->
                             <span class="not-required-left"></span>
-                            <span>NotRequired</span>
+                            <span>{{ $t('NotRequired') }}</span>
                             <span class="not-required-right"></span>
                           </div>
                         </div>

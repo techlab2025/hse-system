@@ -190,24 +190,24 @@ const fields = ref([
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country"
+      :params="indexLocationCountriesParams" :label="$t('Country')" id="Location" :placeholder="$t('Select Country')"
       @update:modelValue="SetCountrySelection" />
   </div>
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
+      :params="indexLocationStatesParams" :label="$t('State')" id="Location" :placeholder="$t('Select State')"
       @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
-      :params="indexLocationCityParams" label="City" id="City" placeholder="Select City"
+      :params="indexLocationCityParams" :label="$t('City')" id="City" :placeholder="$t('Select City')"
       @update:modelValue="SetCitySelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity" :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams" label="Location" id="Area" placeholder="Select Location"
+      :params="indexLocationAreasParams" :label="$t('Location')" id="Area" :placeholder="$t('Select Location')"
       @update:modelValue="SetAreaSelection" />
   </div>
 

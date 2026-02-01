@@ -13,8 +13,8 @@ const props = defineProps<{
   <div class="main-objective">
     <HeaderSection
       :img="ObjectiveImg"
-      :title="'main_objectives'"
-      :subtitle="`defining_the_main_objectives_and_expected_outcomes_of_the_project`"
+      :title="$t('main_objectives')"
+      :subtitle="$t('defining_the_main_objectives_and_expected_outcomes_of_the_project')"
     />
     <div class="objective-details">
       <ObjectivesDetails :object_details="description" />

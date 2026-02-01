@@ -13,8 +13,8 @@ const props = defineProps<{
     <div class="empty-zones-equipment-container">
       <img :src="EquimentFolderEmpty" alt="empty-equipment">
       <div class="header">
-        <h2 class="title">empty zones</h2>
-        <p class="description">{{ zonesNumber }} empty zone without an eauipment select one and add now</p>
+        <h2 class="title">{{ $t('empty zones') }}</h2>
+        <p class="description">{{ zonesNumber }} {{ $t('empty zone without an eauipment select one and add now') }}</p>
       </div>
     </div>
     <div class="content">

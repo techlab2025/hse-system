@@ -58,7 +58,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditProject">
         <ProjectForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper w-full">
-          <button type="submit" class="btn btn-primary w-full">Edit</button>
+          <button type="submit" class="btn btn-primary w-full">{{ $t('edit') }}</button>
         </div>
       </form>
     </template>

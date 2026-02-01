@@ -81,25 +81,25 @@ const UpdateTitle = (data) => {
   <ColorSelection title="Action color" :colors="colors" @update:value="v => updateField('ActionColor', v)" />
 
   <div class="selctors-container">
-    <p class="title">check on the data that can be added in a single note</p>
+    <p class="title">{{ $t('check on the data that can be added in a single note') }}</p>
     <div class="setting-form">
-      <RadioSection title="title" :selections="['Yes', 'No']" @update:value="v => updateField('title', v)" />
-      <RadioSection title="description" :selections="['Yes', 'No']"
+      <RadioSection :title="$t('title') " :selections="['Yes', 'No']" @update:value="v => updateField('title', v)" />
+      <RadioSection :title="$t('description')" :selections="['Yes', 'No']"
         @update:value="v => updateField('description', v)" />
     </div>
     <div class="setting-form">
-      <RadioSection title="picture" :selections="['Yes', 'No']" @update:value="v => updateField('picture', v)" />
-      <RadioSection title="date" :selections="['Yes', 'No']" @update:value="v => updateField('date', v)" />
+      <RadioSection :title="$t('picture')" :selections="['Yes', 'No']" @update:value="v => updateField('picture', v)" />
+      <RadioSection :title="$t('date')" :selections="['Yes', 'No']" @update:value="v => updateField('date', v)" />
     </div>
     <div class="setting-form">
-      <RadioSection title="time" :selections="['Yes', 'No']" @update:value="v => updateField('time', v)" />
-      <RadioSection title="added by" :selections="['Yes', 'No']" @update:value="v => updateField('addedby', v)" />
+      <RadioSection :title="$t('Time')" :selections="['Yes', 'No']" @update:value="v => updateField('time', v)" />
+      <RadioSection :title="$t('added by')" :selections="['Yes', 'No']" @update:value="v => updateField('addedby', v)" />
     </div>
-    <RadioSection title="Who has the power to edit and delete?"
+    <RadioSection :title="$t('Who has the power to edit and delete?')"
       :selections="['anyone', 'only me', 'Each person has access to his own note only.']"
       @update:value="v => updateField('PoweredTo', v)" />
   </div>
-  <ColorSelection title="chart color" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-  <RadioSection title="Available to" :selections="['anyone', 'only me']"
+  <ColorSelection :title="$t('chart color')" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
+  <RadioSection :title="$t('Available to')" :selections="['anyone', 'only me']"
     @update:value="v => updateField('SelectedAvailable', v)" />
 </template>

@@ -161,7 +161,7 @@ watch(() => controller.state.value, (newState) => {
         <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
           <div class="location-header">
             <h2 class="title">
-              Location: <span>{{ location.zoonTitle }}</span>
+              {{ $t('Location') }}: <span>{{ location.zoonTitle }}</span>
             </h2>
           </div>
 
@@ -176,11 +176,11 @@ watch(() => controller.state.value, (newState) => {
                 :checked="isZoneSelected(location.zoonId, zone.id)"
                 @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)" />
             </div>
-            <div v-else class="empty-zone">No Available Zones</div>
+            <div v-else class="empty-zone">{{ $t('No Available Zones') }}</div>
           </div>
         </div>
         <button class="confirm-btn btn btn-primary" @click="UpdateData">
-          <span>Confirm</span>
+          <span>{{ $t('confirm') }}</span>
         </button>
       </div>
     </template>
