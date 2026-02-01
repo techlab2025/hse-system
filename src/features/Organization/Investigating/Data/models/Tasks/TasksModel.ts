@@ -1,3 +1,5 @@
+import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
+
 export default class TasksModel {
   public id: number
   public investigation: investigationMeeting
@@ -6,8 +8,8 @@ export default class TasksModel {
   public date: string
   public createdAt: string
   public description: string
-  public assignedTo: string
-  public responablePerson: string
+  public assignedTo: OrganizatoinEmployeeModel
+  public responablePerson: OrganizatoinEmployeeModel
 
   constructor(
     id: number,
@@ -17,8 +19,8 @@ export default class TasksModel {
     date: string,
     createdAt: string,
     description: string,
-    assignedTo: string,
-    responablePerson: string,
+    assignedTo: OrganizatoinEmployeeModel,
+    responablePerson: OrganizatoinEmployeeModel,
   ) {
     this.id = id
     this.investigation = investigation
@@ -40,8 +42,8 @@ export default class TasksModel {
       data.due_date,
       data.created_at,
       data.description,
-      data.assigned_to,
-      data.responable_person,
+      OrganizatoinEmployeeModel.fromMap(data.assigned_to),
+      OrganizatoinEmployeeModel.fromMap(data.responable_person),
     )
   }
 
@@ -60,7 +62,7 @@ export default class TasksModel {
     new TasksModel(
       1,
       { id: 1, date: '2025-12-23', status: 1, type: 0 },
-      1 ,
+      1,
       '2025-12-23',
       '12:00',
       '10-12-2000',

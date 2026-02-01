@@ -30,8 +30,12 @@ watch([selectedFactors, selectedSubs], () => {
 <template>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full factor-item factor-items-container">
     <label class="flex gap-2 factot-title">
+
       <FactorItemIcon />
-      <span>Factors</span>
+      <div class="flex flex-col gap-1">
+        <span>Factors</span>
+        <span class="subtitle">Select the main factor</span>
+      </div>
     </label>
     <div class="radio-grid">
       <div class="radio-column" v-for="(Factors, index) in factors" :key="index">
@@ -53,3 +57,11 @@ watch([selectedFactors, selectedSubs], () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.subtitle {
+  color: #BDCBDA;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>

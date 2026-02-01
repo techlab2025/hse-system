@@ -29,6 +29,8 @@ import DeleteLocationController from '../../controllers/deleteLocationController
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 
 const { t } = useI18n()
 
@@ -95,7 +97,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteLocation: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: user?.type == OrganizationTypeEnum.ADMIN ? `/admin/countries/${id}` : `/organization/countries/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,
@@ -107,7 +109,7 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
   },
   {
     text: t('add_sub_Stats_type'),
-    icon: IconEdit,
+    icon: ActionsTableShild,
     link: user?.type == OrganizationTypeEnum.ADMIN ? `/admin/states/add/${id}` : `/organization/states/add/${id}`,
     permission: [
       PermissionsEnum.LOCATION_UPDATE,

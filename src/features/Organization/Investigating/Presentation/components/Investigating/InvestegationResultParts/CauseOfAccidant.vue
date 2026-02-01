@@ -45,7 +45,7 @@ const GetAllFators = async () => {
 // Fetch factor items by selected factor
 const AllFactorItems = ref<FactoryItemModel[]>()
 const GetFatorItems = async (Id?: number) => {
-  const indexFactorItemParams = new IndexFactoryItemParams("", 1, 10, 1, Id ?? SelectedFactor.value)
+  const indexFactorItemParams = new IndexFactoryItemParams("", 1, 10, 0, Id ?? SelectedFactor.value)
   const indexFactorItemController = IndexFactoryItemController.getInstance()
   const state = await indexFactorItemController.getData(indexFactorItemParams)
   if (state.value?.data) {

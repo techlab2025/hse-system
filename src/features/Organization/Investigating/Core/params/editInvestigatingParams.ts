@@ -6,12 +6,12 @@ export default class EditInvestigatingParams implements Params {
   public id: number
   public observationId: number
   public employees: InvestigatingEmployeeParams[]
-  public meetings: MeetingParams
+  public meetings: MeetingParams | null
   constructor(data: {
     id: number
     observationId: number
     employees: InvestigatingEmployeeParams[]
-    meetings: MeetingParams
+    meetings: MeetingParams | null
   }) {
     this.id = data.id
     this.observationId = data.observationId
@@ -28,7 +28,7 @@ export default class EditInvestigatingParams implements Params {
     data['observation_id'] = this.id
     if (this.observationId) data['investigation_id'] = this.observationId
     if (this.employees) data['employees'] = this.employees
-    if (this.meetings) data['meetings'] = this.meetings
+    if (this.meetings != null) data['meetings'] = this.meetings
     return data
   }
 }

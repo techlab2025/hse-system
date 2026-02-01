@@ -5,15 +5,13 @@ import type InvestigatingEmployeeParams from './InvestegationEmployeeParams'
 export default class AddInvestigatingParams implements Params {
   public observationId: number
   public employees: InvestigatingEmployeeParams[]
-  public meetings: MeetingParams
+  public meetings: MeetingParams | null
 
-  constructor(
-    data:{
-      observationId: number,
-      employees: InvestigatingEmployeeParams[],
-      meetings: MeetingParams,
-    }
-  ) {
+  constructor(data: {
+    observationId: number
+    employees: InvestigatingEmployeeParams[]
+    meetings: MeetingParams | null
+  }) {
     this.observationId = data.observationId
     this.employees = data.employees
     this.meetings = data.meetings
@@ -33,7 +31,7 @@ export default class AddInvestigatingParams implements Params {
 
     if (this.observationId) data['investigation_id'] = this.observationId
     if (this.employees) data['employees'] = this.employees
-    if (this.meetings) data['meeting'] = this.meetings
+    if (this.meetings != null) data['meeting'] = this.meetings
 
     return data
   }

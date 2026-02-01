@@ -29,6 +29,8 @@ import DeleteTemplateParams from '../../Core/params/deleteTemplateParams'
 import DeleteTemplateController from '../controllers/deleteTemplateController'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 
 const { t } = useI18n()
 
@@ -97,7 +99,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteTemplate: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/${id}`,
     permission: [
       PermissionsEnum.TEMPLATE_UPDATE,
@@ -110,7 +112,7 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
   },
   {
     text: t('add_template_item'),
-    icon: IconEdit,
+    icon: ActionsTableShild,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add/${id}`,
     permission: [
       PermissionsEnum.ADMIN,

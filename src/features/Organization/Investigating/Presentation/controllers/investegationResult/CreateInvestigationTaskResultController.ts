@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type InvestegationResultModel from '../../../Data/models/investigationResult/InvestegationResulModel'
 import CreateInvestigationTaskResultUseCase from '../../../Domain/useCase/investegationResult/CreateInvestigationTaskResultUseCase'
+import ShowInvestigatingResultController from './ShowInvestigatingResultController'
+import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 
 export default class CreateInvestigationTaskResultController extends ControllerInterface<InvestegationResultModel> {
   private static instance: CreateInvestigationTaskResultController
@@ -23,7 +25,12 @@ export default class CreateInvestigationTaskResultController extends ControllerI
     return this.instance
   }
 
-  async CreateInvestigationTaskResult(params: Params, router: Router, draft: boolean = false) {
+  async CreateInvestigationTaskResult(
+    params: Params,
+    router: Router,
+    draft: boolean = false,
+    route?: any,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       // console.log('Ssssssss')
@@ -37,7 +44,11 @@ export default class CreateInvestigationTaskResultController extends ControllerI
           imageElement: successImage,
           messageContent: null,
         })
+
         // await router.push('/organization/investigating')
+        // if (route) {
+
+        // }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -46,6 +57,11 @@ export default class CreateInvestigationTaskResultController extends ControllerI
           messageContent: null,
         })
       }
+      await ShowInvestigatingResultController.getInstance().ShowInvestigatingResult(
+        new ShowInvestigationResultParams(route.params.id),
+        router,
+      )
+      location.reload()
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',

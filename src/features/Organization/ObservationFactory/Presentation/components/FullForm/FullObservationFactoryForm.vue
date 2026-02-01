@@ -623,16 +623,19 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- IsWorkStopped -->
-    <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped"
-      @click="
-        isWorkStopped = !isWorkStopped;
-
-      updateData()
-        ">
-
-      <label for="is_stoped">{{ $t('is_work_stopped') }}</label>
+    <!-- isWorkStopped = !isWorkStopped -->
+    <!-- input-wrapper -->
+    <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="col-span-6 md:col-span-6  w-full is-stopped"
+      @click=" updateData()">
+      <label class="w-full" for="is_stoped">{{ $t('is_work_stopped') }}</label>
       <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
     </div>
+    <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped">
+      <label class="w-full" for="is_stopedd" @click="isWorkStopped = !isWorkStopped">{{ $t('is_there_work_days_lost')
+        }}</label>
+      <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stopedd"
+        :name="`is_stoped`" />
+    </div> -->
 
     <!-- Take Action -->
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="hazard-type-container incedant col-span-6 md:col-span-6">

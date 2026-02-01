@@ -54,6 +54,7 @@ watch(() => isAnotherMeeting.value, () => {
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
+
       <div class="flex flex-col gap-2 input-wrapper col-span-2">
         <label for="time">time</label>
         <DatePicker v-model="time" class="mt-4 mr-2 input date-picker" placeholder="Select time"
@@ -64,7 +65,7 @@ watch(() => isAnotherMeeting.value, () => {
         <DatePicker v-model="date" class="mt-4 mr-2 input date-picker" placeholder="Select Date"
           @update:model-value="UpdateData" input-id="date" />
       </div>
-      <div class="input-wrapper col-span-2">
+      <div class="input-wrapper col-span-1">
         <CustomSelectInput :static-options="Platforms" v-model="SelectedPlatform" placeholder="Select meeting platform"
           class="mt-4 mr-2 input" label="meeting platform" @update:model-value="setPlatform" />
       </div>

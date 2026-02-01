@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
-import type MeetingModel from '../Meetings/MeetingModel'
+import MeetingModel from '../Meetings/MeetingModel'
 
 export default class InvestegationResultDetailsModel {
   public id: number
@@ -17,6 +17,7 @@ export default class InvestegationResultDetailsModel {
   public nextMeetingTime: string
   public lastMeetingDate: string
   public lastMeetingTime: string
+  public investigationMeetings: MeetingModel[]
 
   constructor(
     id: number,
@@ -32,6 +33,7 @@ export default class InvestegationResultDetailsModel {
     lastMeetingTime: string,
     nextMeetingDate: string,
     nextMeetingTime: string,
+    investigationMeetings: MeetingModel[],
   ) {
     this.id = id
     this.title = title
@@ -46,6 +48,7 @@ export default class InvestegationResultDetailsModel {
     this.lastMeetingTime = lastMeetingTime
     this.nextMeetingDate = nextMeetingDate
     this.nextMeetingTime = nextMeetingTime
+    this.investigationMeetings = investigationMeetings
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -63,6 +66,7 @@ export default class InvestegationResultDetailsModel {
       data.next_meeting_time,
       data.last_meeting_date,
       data.last_meeting_time,
+      data.investigation_meetings.map((i: any) => MeetingModel.fromMap(i)),
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

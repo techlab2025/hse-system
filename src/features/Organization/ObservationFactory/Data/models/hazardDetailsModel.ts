@@ -160,7 +160,7 @@ export default class HazardDetailsModel {
       data.creator,
       data.capa,
       data.serial_number,
-      data.media.map((item: any) => FilesModel.fromMap(item)),
+      data?.media?.map((item: any) => FilesModel.fromMap(item)),
       data?.injuries?.map((item: any) => InjuryDetailsModel.fromMap(item)),
       data?.witness_statements?.map((item: any) => InjuryDetailsModel.fromMap(item)),
       data?.deaths?.map((item: any) => InjuryDetailsModel.fromMap(item)),

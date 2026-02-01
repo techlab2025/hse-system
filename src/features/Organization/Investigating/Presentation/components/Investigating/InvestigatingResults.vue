@@ -37,19 +37,19 @@ const item = ref<items[]>([{
   isDanger: true
 }])
 
-const Details = ref({
-  id: 3,
-  title: 'Medium observation',
-  serial: 'Third card dummy text',
-  date: '2025-03-15 09:45 AM',
-  observer: { name: 'Khaled Samir' },
-  description: 'Electrical issue near main control panel.',
-  zoon: { title: 'Zone C' },
-  equipment: { title: 'Crane Liebherr' },
-  status: InvestegationStatusEnum.CLOSED,
-  image: 'https://picsum.photos/222/150',
-  link: '',
-})
+// const Details = ref({
+//   id: 3,
+//   title: 'Medium observation',
+//   serial: 'Third card dummy text',
+//   date: '2025-03-15 09:45 AM',
+//   observer: { name: 'Khaled Samir' },
+//   description: 'Electrical issue near main control panel.',
+//   zoon: { title: 'Zone C' },
+//   equipment: { title: 'Crane Liebherr' },
+//   status: InvestegationStatusEnum.CLOSED,
+//   image: 'https://picsum.photos/222/150',
+//   link: '',
+// })
 
 const ShoeInvestegationResultDetails = () => {
   const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
@@ -57,6 +57,13 @@ const ShoeInvestegationResultDetails = () => {
 }
 
 const AddEnvestigatingResult = async () => {
+  const CheckWitnessIsFullyEmpty = viewersResults.value.map((el) => {
+    return (el.organizationEmployeeId != null || el.employeeName != undefined) && el?.witnessesStatements?.length > 1
+  })
+  const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value.map((el) => {
+    return el?.tasks?.length > 0
+  })
+  // CheckWitnessIsFullyEmpty ? [] :
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
@@ -64,8 +71,8 @@ const AddEnvestigatingResult = async () => {
     investigationMeetingId: id,
     isActionCorrect: rateActions.value?.actionRate,
     isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
-    tasks: investigationTasks.value,
-    witnesses: viewersResults.value,
+    tasks: CheckInvestigationTasksIsFullyEmpty.find((el) => el) ? investigationTasks.value : [],
+    witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: anotherMeeting?.value?.meetings,
     corrective: CauseOfAction.value?.description
   });
@@ -86,14 +93,17 @@ const setCauseOfAction = (data) => {
 
 const investigationTasks = ref()
 const setInvestigationTasks = (data) => {
-  console.log(data, "investigationTasks");
+  // console.log(data, "investigationTasks");
   investigationTasks.value = data
+
+
 }
 
 const rateActions = ref()
 const setRateAction = (data) => {
   rateActions.value = data
-  console.log(rateActions.value, "rateActions");
+
+  // console.log(rateActions.value, "rateActions");
 }
 
 const investigationAttachments = ref()
@@ -104,8 +114,9 @@ const setInvestigationAttachments = (data) => {
 
 const viewersResults = ref()
 const setViewersResults = (data) => {
-  console.log(data, "viwer");
   viewersResults.value = data
+
+
 }
 
 const anotherMeeting = ref()

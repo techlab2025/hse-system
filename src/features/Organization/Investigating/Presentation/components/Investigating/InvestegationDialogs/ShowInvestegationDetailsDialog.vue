@@ -4,6 +4,7 @@ import Dialog from 'primevue/dialog'
 import mark from '@/assets/images/mark.png'
 import type InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
 import Galleria from 'primevue/galleria'
+import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
 
 const visible = ref(false)
 
@@ -15,6 +16,25 @@ const staticData = ref({
   title: 'Investigation Details',
   description: 'here are all the observation details and photos the observer add ',
 })
+
+const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
+  switch (status) {
+    case InvestegationStatusEnum.NEW:
+      return 'New'
+    case InvestegationStatusEnum.IN_PROGRESS:
+      return 'InProgress'
+    case InvestegationStatusEnum.CLOSED:
+      return 'Closed'
+    case InvestegationStatusEnum.COMPLETED:
+      return 'Completed'
+    case InvestegationStatusEnum.HOLD:
+      return 'Hold'
+    case InvestegationStatusEnum.OPEN:
+      return 'Open'
+    default:
+      return 'Unknown'
+  }
+}
 </script>
 
 <template>
@@ -22,12 +42,7 @@ const staticData = ref({
     show details
   </button>
 
-  <Dialog
-    v-model:visible="visible"
-    modal
-    :dismissableMask="true"
-    :style="{ width: '90vw', maxWidth: '60rem' }"
-  >
+  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '60rem' }">
     <template #header>
       <div class="show-investigation-dialog-header">
         <h3>{{ staticData?.title }}</h3>
@@ -58,7 +73,7 @@ const staticData = ref({
               </div>
               <div class="info-item">
                 <h5>Status :</h5>
-                <span>{{ item?.status }}</span>
+                <span>{{ ReturnStatusTitle(item?.status) }}</span>
               </div>
             </div>
           </div>

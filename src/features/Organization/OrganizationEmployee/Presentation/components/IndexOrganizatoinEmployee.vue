@@ -24,6 +24,9 @@ import IndexOrganizatoinEmployeeController from '../controllers/indexOrganizatoi
 import IndexOrganizatoinEmployeeParams from '../../Core/params/indexOrganizatoinEmployeeParams'
 import DeleteOrganizatoinEmployeeParams from '../../Core/params/deleteOrganizatoinEmployeeParams'
 import DeleteOrganizatoinEmployeeController from '../controllers/deleteOrganizatoinEmployeeController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 
 const { t } = useI18n()
 
@@ -100,7 +103,7 @@ watch(
 const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: `/organization/organization-employee/${id}`,
     permission: [
       PermissionsEnum.ORG_EMPLOYEE_UPDATE,
@@ -132,13 +135,13 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
 
   {
     text: t('show'),
-    icon: IconEdit,
+    icon: ActionsTableView,
     link: `/organization/organization-employee/show/${id}`,
     permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     text: t('add_permission'),
-    icon: IconEdit,
+    icon: ActionsTableShild,
     link: `/organization/permission/${id}`,
     permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },

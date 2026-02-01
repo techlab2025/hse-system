@@ -162,7 +162,6 @@ const updateData = () => {
       translationsParams,
       ContractorIds.value?.map((p) => p.id),
       date.value,
-      SerialNumber.value?.SerialNumber,
       location.value.map((l) => l.id),
       ZoneIds.value.filter((z): z is number => typeof z === 'number'),
       EvaluatingMethod.value?.map((p) => p.id),

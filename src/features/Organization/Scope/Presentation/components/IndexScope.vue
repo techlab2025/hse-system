@@ -23,6 +23,7 @@ import IndexScopeController from '../controllers/indexScopeController'
 import IndexScopeParams from '../../Core/params/indexScopeParams'
 import DeleteScopeParams from '../../Core/params/deleteScopeParams'
 import DeleteScopeController from '../controllers/deleteScopeController'
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
 
 const { t } = useI18n()
@@ -84,7 +85,7 @@ const { user } = useUserStore()
 const actionList = (id: number, deleteScope: (id: number) => void) => [
   {
     text: t('edit'),
-    icon: IconEdit,
+    icon: ActionsTableEdit,
     link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Scope/${id}` : `/organization/Scope/${id}`,
     permission: [
       PermissionsEnum.SCOPE_UPDATE,

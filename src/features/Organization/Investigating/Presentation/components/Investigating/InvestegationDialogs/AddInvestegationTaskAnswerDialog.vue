@@ -4,7 +4,9 @@ import Dialog from 'primevue/dialog';
 import ChatForward from "@/assets/images/ChatForward.png"
 import CreateInvestigationTaskResultController from "../../../controllers/investegationResult/CreateInvestigationTaskResultController";
 import CreateInvestigationTaskResultParams from "@/features/Organization/Investigating/Core/params/investegationResult/CreateInvestigationTaskResultParams";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import ShowInvestigatingResultController from "../../../controllers/investegationResult/ShowInvestigatingResultController";
+import ShowInvestigationResultParams from "@/features/Organization/Investigating/Core/params/investegationResult/ShowInvestigationResultParams";
 
 const visible = ref(false);
 const props = defineProps<{
@@ -18,18 +20,21 @@ const emit = defineEmits(['update:data'])
 //   visible.value = false
 // }
 const router = useRouter()
+const route = useRoute()
 const CreateInvestegationTaskResult = async () => {
   const createInvestigationTaskResultController = CreateInvestigationTaskResultController.getInstance()
   const createInvestigationTaskResultParams = new CreateInvestigationTaskResultParams(
     props.taskId, answer.value
   );
-  await createInvestigationTaskResultController.CreateInvestigationTaskResult(createInvestigationTaskResultParams, router);
+  await createInvestigationTaskResultController.CreateInvestigationTaskResult(createInvestigationTaskResultParams, router, null, route);
+
   visible.value = false
 
 }
 </script>
 
 <template>
+  
   <button class="btn btn-primary" @click="visible = true">Answer</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '40rem' }">
 
