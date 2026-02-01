@@ -102,31 +102,17 @@ const UploadCertificateImage = async () => {
 </script>
 
 <template>
-  <button class="invalid-date" @click="visible = true" v-if="notRequired">
-    <Addcertificates />
+  <button @click="visible = true" >
+    <div class="expired">
+      <span class="not-required-date">
+        <span>Not Required</span>
+      </span>
+      <span class="not-required">
+        <Repeaticon />
+      </span>
+    </div>
   </button>
-  <button
-    class="not-required"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Invalid"
-  >
-    <InVaildIcon />
-  </button>
-  <button
-    class="expired-certificate renew"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Expired"
-  >
-    {{ `Renew` }}
-    <Repeaticon />
-  </button>
-  <button
-    class="not-required"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Valid"
-  >
-    {{ `Valid` }}
-  </button>
+
   <Dialog v-model:visible="visible" :dismissable-mask="true" modal :style="{ width: '50rem' }">
     <template #header>
       <HeaderSection
