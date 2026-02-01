@@ -3,9 +3,13 @@
 @import '../mixins/grid';
 
 .expired-certificate {
-  @include flex-column(nowrap, flex-start, flex-start);
+  @include flex-column(nowrap, center, center);
   gap: $XsSize4;
-  width: fit-content;
+  width: 100%;
+  padding: $XsSize3;
+  background: #fffefb;
+  border: 1px solid #f2f2f233;
+  border-radius: $XsSize2;
   .expired {
     @include flex-row(nowrap, flex-start, center);
     gap: $XsSize4;
@@ -14,13 +18,21 @@
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       text-align: center;
+      font-family: 'Bold';
     }
   }
   .invalid-date {
     color: #2f2d2d;
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
-    text-decoration: underline;
+    // text-decoration: underline;
+    text-align: center;
+    width: 100%;
+  }
+  .not-required-date {
+    color: #2f2d2d;
+    font-size: $MdSize;
+    font-weight: $BaseFontSemiBoldWeight;
     text-align: center;
     width: 100%;
   }
@@ -28,7 +40,22 @@
     color: #2f2d2d;
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
-    text-decoration: underline;
+    // text-decoration: underline;
     text-align: center;
+  }
+  .expired-certificate {
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize4;
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    text-align: center;
+    color: #2f2d2d;
+    background: #bfa47411;
+    border: none;
+    background: transparent;
+    padding: 0;
+    &.renew {
+      text-decoration: underline;
+    }
   }
 }
