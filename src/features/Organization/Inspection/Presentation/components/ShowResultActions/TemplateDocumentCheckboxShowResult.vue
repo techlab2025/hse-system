@@ -98,7 +98,7 @@ const showTextArea = () => {
     <!-- v-for="(answer, index) in selected_data?.answers" :key="index" -->
     <div class="w-full flex  gap-2">
       <div class="textarea-conatneir" v-if="selected_data?.answers?.[0]?.answer">
-        <p class="title">typing text</p>
+        <p class="title">{{ $t('typing text') }}</p>
         <span class="textarea-answer">
           {{ selected_data?.answers?.[0]?.answer }}
           

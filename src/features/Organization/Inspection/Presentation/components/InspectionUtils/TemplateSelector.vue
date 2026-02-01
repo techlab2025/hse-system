@@ -47,17 +47,17 @@ watch(() => props.selectedTemplates, (newVal) => {
                 <div class="template-details">
 
                   <p>
-                    Id : <span>{{ template?.id }}</span>
+                    {{ $t('id') }} : <span>{{ template?.id }}</span>
                   </p>
-                  <p>location :<span>example</span></p>
-                  <p>Zone :<span>example</span></p>
+                  <p>{{ $t('location') }} :<span>{{ $t('example') }}</span></p>
+                  <p>{{ $t('zone') }} :<span>{{ $t('example') }}</span></p>
                 </div>
               </div>
               <div class="header-select">
                 <div class="template-checkbox">
                   <RadioButton @change="SetSelectedTemplate(template.id)" :inputId="`${template.id}`" name="template"
                     v-model="SelectedTemplate" :value="template.id" />
-                  <label :for="`${template.id}`">Select</label>
+                  <label :for="`${template.id}`">{{ $t('select') }}</label>
                 </div>
                 <img :src="DocumnetHeader" alt="header" />
               </div>

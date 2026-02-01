@@ -96,13 +96,13 @@ watch(() => props.visable, (newVal) => {
               <div class="col-span-4 flex flex-col md:flex-row w-full items-center gap-3">
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('item_title') }}</label>
-                  <input type="text" v-model="item.itemTitle" class="input" placeholder="add your title"
+                  <input type="text" v-model="item.itemTitle" class="input" :placeholder="$t('add your title')"
                     @input="UpdateData" />
                 </div>
 
                 <div class="input-wrapper type-select">
                   <CustomSelectInput :static-options="ActionsType" v-model="item.SelectedActionType"
-                    placeholder="select template type.." class="mt-4 mr-2 input" label="type" :reload="false"
+                    :placeholder="$t('select template type..')" class="mt-4 mr-2 input" :label="$t('type')" :reload="false"
                     @update:modelValue="UpdateType" />
                 </div>
               </div>
