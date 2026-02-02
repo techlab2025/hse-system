@@ -1457,6 +1457,23 @@ class ApiNames {
   public get RejectSubscriptionApplication() {
     return this.prefix + 'reject_subscription_application'
   }
+
+  //Ticket Type
+  public get IndexTicketType() {
+    return this.prefix + 'fetch_ticket_types'
+  }
+  public get CreateTicketType() {
+    return this.prefix + 'create_ticket_type'
+  }
+  public get ShowTicketType() {
+    return this.prefix + 'fetch_ticket_type_details'
+  }
+  public get EditTicketType() {
+    return this.prefix + 'update_ticket_type'
+  }
+  public get DeleteTicketType() {
+    return this.prefix + 'delete_ticket_type'
+  }
 }
 
 export { ApiNames }

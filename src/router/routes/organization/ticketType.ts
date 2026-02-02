@@ -13,7 +13,7 @@ export const ticketTypeRoutes: RouteRecordRaw[] = [
   {
     path: 'ticket-type/add',
     name: 'Create Ticket Type',
-    component: () => import('@/views/Organization/TicketType/IndexTicketType.vue'),
+    component: () => import('@/views/Organization/TicketType/AddTicketType.vue'),
     meta: {
       breadcrumb: 'Create Ticket Type',
       isSidebar: true,
@@ -22,18 +22,9 @@ export const ticketTypeRoutes: RouteRecordRaw[] = [
   {
     path: 'ticket-type/:id/edit',
     name: 'Edit Ticket Type',
-    component: () => import('@/views/Organization/TicketType/IndexTicketType.vue'),
+    component: () => import('@/views/Organization/TicketType/EditTicketType.vue'),
     meta: {
       breadcrumb: 'Edit Ticket Type',
-      isSidebar: true,
-    },
-  },
-  {
-    path: 'ticket-type/:id',
-    name: 'Show Ticket Type',
-    component: () => import('@/views/Organization/TicketType/IndexTicketType.vue'),
-    meta: {
-      breadcrumb: 'Show Ticket Type',
       isSidebar: true,
     },
   },

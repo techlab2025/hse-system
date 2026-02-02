@@ -4,6 +4,10 @@
 .serial-form {
   padding: 40px 0;
   overflow: visible;
+  position: relative;
+  // &:last-child {
+  //   padding-bottom: 120px;
+  // }
   .serial-form-section {
     @include flex-column();
     gap: calc($XlSize2 + 4px);
@@ -23,16 +27,17 @@
     }
   }
   .form-sticky-button {
-    padding: $MdSize $XlSize;
-    position: fixed;
-    width: 80%;
+    position: sticky;
     bottom: 0;
+    width: 100%;
+    padding: $XlSize2;
     background: #fff;
-    z-index: 20;
-
+    z-index: 5;
     @media (max-width: 768px) {
       padding: $SmSize $MdSize;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: $SmSize;
 
       .btn {
@@ -49,6 +54,7 @@
       gap: $XsSize4;
     }
   }
+
 }
 // .p-accordionheader-toggle-icon {
 //   display: none !important;

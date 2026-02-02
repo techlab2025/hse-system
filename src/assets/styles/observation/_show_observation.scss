@@ -73,14 +73,7 @@
           height: 40px;
         }
       }
-      .injury-header-employees {
-        color: #0f1927;
-        border: 1px solid #f9f9f9;
-        padding: $XsSize2;
-        border-radius: $XsSize;
-        font-weight: $BaseFontWeightBold;
-        font-size: $MdSize;
-      }
+
       .death-header-employees {
         .employee-name {
           color: #0f1927;
@@ -94,6 +87,14 @@
           font-size: $SmSize;
         }
       }
+    }
+    .injury-header-employees {
+      color: #0f1927;
+      border: 1px solid #f9f9f9;
+      padding: $XsSize2;
+      border-radius: $XsSize;
+      font-weight: $BaseFontWeightBold;
+      font-size: $MdSize;
     }
     .witnessStatement-container {
       @include flex-column(nowrap, flex-start, flex-start);

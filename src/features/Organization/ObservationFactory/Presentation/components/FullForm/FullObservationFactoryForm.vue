@@ -86,6 +86,17 @@ const updateData = () => {
     return new RootCausesIdParams({ root_cause_id: item.id })
   })
 
+  console.log(Accidents.value?.accidentsData?.map((item: any) => item), "loop");
+  const isThereanyDatainAccidents = Accidents.value?.accidentsData?.map((item: any) => {
+    console.log((item?.employee?.id));
+    if ((item?.employee?.id == 0 && item?.employee?.title.length == 0) && item?.employeeName.length > 0 && item?.images?.length > 0 && item?.infectionTypeId?.id == 0
+      && item?.text) {
+
+      return false
+    }
+    return true
+  })
+  console.log(isThereanyDatainAccidents, "isThereanyDatainAccidents");
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -134,17 +145,17 @@ const updateData = () => {
       isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
       isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
       Injury:
-        Accidents?.value?.isAnotherMeeting === 1
-          ? [
-            new InjuryParams(
-              Accidents?.value?.employeeId || [],
-              Accidents?.value?.employeeName || '',
-              Accidents?.value?.text || null,
-              Accidents?.value?.infectionTypeId || 0,
-              Accidents?.value?.isWorkStopped == 1 ? 0 : 1,
-              Accidents?.value?.accidentsImages || [],
-            ),
-          ]
+        Accidents?.value?.isAnotherMeeting === 1 ?
+          Accidents.value?.accidentsData?.map((item: any) => {
+            return new InjuryParams(
+              item?.employee?.id || 0,
+              item?.employee?.title || '',
+              item?.text || null,
+              item?.infectionTypeId?.id || 0,
+              item?.isWorkStopped ? 1 : 0,
+              item?.images.map((el: any) => el?.file) || [],
+            )
+          })
           : [],
       deaths:
         Fatalities?.value?.isAnotherMeeting === 1
@@ -220,6 +231,7 @@ const GetProjectId = (id: number) => {
 const Accidents = ref()
 const UpdateAccidents = (data: any) => {
   Accidents.value = data
+  console.log(Accidents.value, 'Accidents.value')
   updateData()
 }
 const witnesses = ref()
@@ -527,8 +539,8 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- Machine -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
       <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-        :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause" :placeholder="$t('select your root cause')"
-        @update:modelValue="setRootCause" :type="2" />
+        :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause"
+        :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" />
     </div>
 
     <div class="col-span-3 md:col-span-3 input-wrapper">
@@ -595,7 +607,8 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved
     ">
       <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')" @update:modelValue="setLikelihood" />
+        :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')"
+        @update:modelValue="setLikelihood" />
     </div>
 
     <!-- Observation Level -->
@@ -614,8 +627,8 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
     ">
       <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-        :params="indexHazardTypeParams" :label="$t('HazardType')" id="HazardType" :placeholder="$t('Select Hazard Type')"
-        @update:modelValue="setHazardType" />
+        :params="indexHazardTypeParams" :label="$t('HazardType')" id="HazardType"
+        :placeholder="$t('Select Hazard Type')" @update:modelValue="setHazardType" />
     </div>
 
     <!--Sub Hazard Type -->
@@ -702,7 +715,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved &&
       ObservationFactoryType != Observation?.ObservationType
     ">
-      <FactoryAccidents idents class="not-colored" @update:data="UpdateAccidents" />
+      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
     </div>
 
     <!-- FactoryFatalities -->

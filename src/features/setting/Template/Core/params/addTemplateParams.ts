@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
-import type { ActionsEnum } from '../Enum/ActionType'
+import { ActionsEnum } from '../Enum/ActionType'
 import type AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
@@ -49,7 +49,7 @@ export default class AddTemplateParams implements Params {
     }
     if (this.require_image != null) data['require_image'] = this.require_image
     if (this.action) data['action'] = this.action
-    if (this.items.length > 0) {
+    if (this.items.length > 0 && this.action != ActionsEnum.TextArea) {
       data['items'] = this.items.map((item) => item.toMap())
     }
     if (this.template_type != null) data['type'] = this.template_type

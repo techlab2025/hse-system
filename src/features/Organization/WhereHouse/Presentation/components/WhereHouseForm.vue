@@ -24,10 +24,10 @@ const updateData = () => {
   const params = props.data?.id
     ? new EditWhereHouseParams(props.data.id, SelectedWhereHouseType?.value?.id, Name.value)
     : new AddWhereHouseParams(
-        SelectedWhereHouseType?.value?.id,
-        Name.value,
-        SerialNumber.value?.SerialNumber,
-      )
+      SelectedWhereHouseType?.value?.id,
+      Name.value,
+      SerialNumber.value?.SerialNumber,
+    )
 
   // console.log(SerialNumber, 'SerialNumber')
   emit('update:data', params)
@@ -48,18 +48,20 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data
   updateData()
 }
+const SelectedWhereHouseType = ref<TitleInterface>()
 
 watch(
   [() => props.data],
   ([newData]) => {
     console.log(newData, 'newData')
     Name.value = newData?.name
-    // SelectedWhereHouseType.value = new TitleInterface({id:newData})
+    const savedLocale = localStorage.getItem('lang')
+    SelectedWhereHouseType.value = new TitleInterface({ id: newData?.warehouse_type?.id, title: newData?.warehouse_type?.titles })
+
   },
   { immediate: true },
 )
 
-const SelectedWhereHouseType = ref<TitleInterface>()
 
 const indexWhereHouseTypeController = IndexWhereHouseTypeController.getInstance()
 const indexWhereHouseTypeParams = new IndexWhereHouseTypeParams('', 1, 10, 1, false)
@@ -78,36 +80,17 @@ const setName = (data) => {
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input
-      type="text"
-      id="name"
-      class="input"
-      v-model="Name"
-      @input="setName"
-      :placeholder="$t('Enter Name')"
-    />
+    <input type="text" id="name" class="input" v-model="Name" @input="setName" :placeholder="$t('Enter Name')" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :required="false"
-      :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController"
-      :params="indexWhereHouseTypeParams"
-      :label="$t('Where House Type')"
-      id="Equipment"
-      placeholder="Select Where House Type"
-      @update:modelValue="setSelectedWhereHouseType"
-    />
+    <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
+      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
+      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" />
   </div>
 </template>
