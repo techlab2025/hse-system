@@ -30,7 +30,7 @@ const setParams = (data: Params) => {
     <FullObservationFactoryForm @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">Add</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('Add') }}</button>
     </div>
   </form>
 </template>

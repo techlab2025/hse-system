@@ -72,7 +72,7 @@ onMounted(() => {
               <div class="input-wrapper">
                 <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" />
+                  class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData" />
                 <!-- </div> -->
 
               </div>

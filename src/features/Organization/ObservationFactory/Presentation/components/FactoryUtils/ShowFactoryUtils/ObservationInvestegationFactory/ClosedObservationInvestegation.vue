@@ -17,23 +17,23 @@ const props = defineProps<{
       <div class="flex items-center gap-2">
         <InvestegationIcon />
         <div class="investegatino-header">
-          <p class="investegation-title">investegation</p>
-          <p class="investegation-header-status">closed</p>
+          <p class="investegation-title">{{ $t('investegation') }}</p>
+          <p class="investegation-header-status">{{ $t('closed') }}</p>
         </div>
       </div>
 
       <router-link :to="`/organization/Investigating-result-answer/${props.data?.id}`"
-        class="show-details">showDetails</router-link>
+        class="show-details">{{ $t('showDetails') }}</router-link>
     </div>
     <div class="investigation-container-inprogress-content">
       <div class="investegation-team-hedaer">
         <InvestegationTeam />
         <div class="Team-members">
-          <p class="title">Team</p>
+          <p class="title">{{ $t('Team') }}</p>
           <div class="team-details">
-            <p class="investegation-team-leader">Investigation team leader : <span>{{
+            <p class="investegation-team-leader">{{ $t('Investigation team leader') }} : <span>{{
               props.data?.investigationEmployees?.find((el) => el.isLeader)?.organizationEmployee?.name}}</span></p>
-            <p class="investegation-team-leader">Num of team : <span>{{ props.data?.investigationEmployees?.length
+            <p class="investegation-team-leader">{{ $t('Num of team') }} : <span>{{ props.data?.investigationEmployees?.length
             }}</span></p>
           </div>
         </div>
@@ -54,11 +54,11 @@ const props = defineProps<{
       <div class="last-meeting">
         <div class="last-meeting-header">
           <LastMeetingIcon />
-          <p class="title">last meeting</p>
+          <p class="title">{{ $t('last meeting') }}</p>
         </div>
         <div class="last-meeting-data">
-          <p class="info">Date : <span>{{ formatJoinDate(props.data?.lastMeetingDate) }}</span></p>
-          <p class="info">Time : <span>{{ formatTime(props.data?.lastMeetingTime) }}</span></p>
+          <p class="info">{{ $t('Date') }} : <span>{{ formatJoinDate(props.data?.lastMeetingDate) }}</span></p>
+          <p class="info">{{ $t('Time') }} : <span>{{ formatTime(props.data?.lastMeetingTime) }}</span></p>
         </div>
       </div>
     </div>

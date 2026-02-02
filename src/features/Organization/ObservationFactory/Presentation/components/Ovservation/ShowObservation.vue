@@ -58,7 +58,7 @@ const GetHeader = (value: number) => {
       <div class="is-work-stopped" v-if="state.data?.isWorkStopped">
         <WarningIcon />
         <span class="title">
-          This Hazared caused the project to be halted.
+          {{ $t('This Hazared caused the project to be halted') }}.
         </span>
       </div>
 
@@ -73,7 +73,7 @@ const GetHeader = (value: number) => {
 
 
         <div class="observation-type-container">
-          <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} Type</p>
+          <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} {{ $t('Type') }}</p>
           <ObservationFactoryGenralInfo :data="state.data" />
         </div>
 

@@ -10,7 +10,7 @@ const props = defineProps<{
   <div class="observation-inspection-card">
     <div class="observation-inspection-card-header">
       <p class="inspection-name">{{ props?.data?.templateTitle }}</p>
-      <p class="inspection-auto">inspection Auto obervation</p>
+      <p class="inspection-auto">{{ $t('inspection Auto obervation') }}</p>
     </div>
     <div class="observation-inspection-card-content">
       <p class="question-title">{{ props?.data?.templateItemTitle }}</p>
@@ -20,7 +20,7 @@ const props = defineProps<{
           }}</span>
       </div>
       <div class="text-area">
-        <span class="typing-text">typing text</span>
+        <span class="typing-text">{{ $t('typing text') }}</span>
         <span class="text">{{ props?.data?.taskResultItemAnswerTextReply }}</span>
       </div>
     </div>

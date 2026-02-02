@@ -300,14 +300,14 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                         >
                           <div class="card-header">
                             <p class="label-item-primary">
-                              Serial : <span>{{ item.serialName }}</span>
+                              {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              Date & Time : <span>{{ item.date }}</span>
+                              {{ $t('Date & Time') }} : <span>{{ item.date }}</span>
                             </p>
                           </div>
                           <div class="card-details">
-                            <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                            <p class="title">{{ item.observer.name }} <span>{{ '(observer)' }}</span></p>
                             <p class="subtitle">{{ item.title }}</p>
                             <!-- <p class="subtitle">{{ item.description }}</p> -->
                             <div class="project-details">
@@ -315,10 +315,10 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                                 class="label-item-primary flex items-center gap-1"
                                 v-if="item.zoon?.title"
                               >
-                                <PinIcons /> Zone : <span>{{ item.zoon?.title }}</span>
+                                <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
                               </p>
                               <p class="label-item-primary" v-if="item.equipment?.title">
-                                Machine : <span>{{ item.equipment?.title }}</span>
+                                {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
                               </p>
                               <!-- <p class="label-item-primary" v-if="item.status">
                                 Status : <span>{{ item?.status }}</span>
@@ -333,7 +333,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                             class="observation-risk-level flex items-center gap-1"
                             :class="GetRiskLevel(item.riskLevel)"
                           >
-                            {{ GetRiskLevel(item.riskLevel) }} Level
+                            {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
                             <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
                           </span>
                           <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
@@ -345,7 +345,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           >
                             <template #previewicon>
                               <div class="perview">
-                                <span>view</span>
+                                <span>{{ $t('View') }}</span>
                                 <ViewIcon />
                               </div>
                             </template>
@@ -358,13 +358,13 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
 
                   <div class="observation-dwspcription-more">
                     <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                      <span v-if="ShowDetails[index]">Show Less</span>
-                      <span v-else>Show More</span>
+                      <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
+                      <span v-else>{{ $t('Show More') }}</span>
                       <ShowMoreIcon />
                     </p>
 
                     <div v-if="ShowDetails[index]" class="card-description">
-                      <p class="title">preventive action :</p>
+                      <p class="title">{{ $t('preventive action') }} :</p>
                       <p class="description">
                         {{ item.description }}
                       </p>

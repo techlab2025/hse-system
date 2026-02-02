@@ -12,8 +12,8 @@ const props = defineProps<{
     >
     <div class="flex items-center gap-2">
       <InvestegationIcon />
-      <p class="investegation-title">investegation</p>
+      <p class="investegation-title">{{ $t('investegation') }}</p>
     </div>
-    <p class="investegation-status">new</p>
+    <p class="investegation-status">{{ $t('new') }}</p>
   </router-link>
 </template>

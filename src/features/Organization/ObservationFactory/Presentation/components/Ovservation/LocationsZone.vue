@@ -50,7 +50,7 @@ const changeTab = (tab: string) => {
     <div class="tabs-title">
       <p>{{ $t('zones') }}</p>
       <div class="line">
-        <p><span>main location is</span> : cairo</p>
+        <p><span>{{ $t('main location is') }}</span> : {{ $t('cairo') }}</p>
       </div>
     </div>
     <div class="tabs-container">

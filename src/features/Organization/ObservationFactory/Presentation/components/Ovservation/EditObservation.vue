@@ -60,7 +60,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-1 gap-4" @submit.prevent="EditObservation">
         <ObservationForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

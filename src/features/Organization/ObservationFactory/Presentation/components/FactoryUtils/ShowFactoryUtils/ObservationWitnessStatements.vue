@@ -12,7 +12,7 @@ const props = defineProps<{
     <div class="injury-header">
       <div class="injury-header-info">
         <img :src="people" alt="people">
-        <p>witnesses</p>
+        <p>{{ $t('witnesses') }}</p>
       </div>
 
     </div>

@@ -52,7 +52,7 @@ const GetHeader = (value: number) => {
           class="like_lihood-container flex flex-col"
           v-if="props.data?.type == Observation.HazardType && props.data?.like_lihood"
         >
-          <span class="like_lihood-title">likelihood</span>
+          <span class="like_lihood-title">{{ $t('Likelihood') }}</span>
           <span class="like_lihood">{{ GetLikelyHood(props.data?.like_lihood) }}</span>
         </p>
 
@@ -60,7 +60,7 @@ const GetHeader = (value: number) => {
           class="severity-container flex flex-col"
           v-if="props.data?.type == Observation.HazardType && props.data?.severity"
         >
-          <span class="severity-title">severity</span>
+          <span class="severity-title">{{ $t('Severity') }}</span>
           <span class="severity">{{ GetSeverity(props.data?.severity) }}</span>
         </div>
 
@@ -70,12 +70,12 @@ const GetHeader = (value: number) => {
           :class="GetRiskLevel(props.data?.riskLevel)"
         >
           <WarningIcon v-if="props.data?.riskLevel == RiskLevelEnum.High" />
-          {{ GetRiskLevel(props.data?.riskLevel) }} Level
+          {{ GetRiskLevel(props.data?.riskLevel) }} {{ $t('Level') }}
         </span>
 
         <div class="flex flex-col gap-2">
           <p class="observation-type" v-if="props.data?.type != Observation.HazardType">
-            {{ GetHeader(props.data?.type) }} type :
+            {{ GetHeader(props.data?.type) }} {{ $t('Type') }} :
             <span>{{ props.data?.typeModel?.title }}</span>
           </p>
 
@@ -101,7 +101,7 @@ const GetHeader = (value: number) => {
           >
             <template #previewicon>
               <div class="perview">
-                <span>view</span>
+                <span>{{ $t('view') }}</span>
                 <ViewIcon />
               </div>
             </template>
@@ -117,7 +117,7 @@ const GetHeader = (value: number) => {
           class="severity-container flex flex-col"
           v-if="props.data?.type == Observation.HazardType && props.data?.typeModel?.title"
         >
-          <span class="severity-title">Hazard Type</span>
+          <span class="severity-title">{{ $t('Hazard Type') }}</span>
           <p class="severity">{{ props.data?.typeModel?.title }}</p>
         </div>
 
@@ -137,18 +137,18 @@ const GetHeader = (value: number) => {
       <div class="action-container flex items-center gap-2">
         <TakeActionIcon />
         <div class="flex flex-col">
-          <p class="emp-text">Emp take an action</p>
+          <p class="emp-text">{{ $t('Emp take an action') }}</p>
           <p class="action-text">{{ props?.data?.action }}</p>
         </div>
       </div>
       <div class="status-container">
         <div class="status" v-if="props.data?.actionStatus == ActionStatusEnum.OPEN">
           <ActionOpen class="icon" />
-          <span>Open</span>
+          <span>{{ $t('Open') }}</span>
         </div>
         <div class="status" v-else>
           <ActionClosed class="icon" />
-          <span>Closed</span>
+          <span>{{ $t('Closed') }}</span>
         </div>
       </div>
     </div>

@@ -11,8 +11,7 @@ const props = defineProps<{
     <div class="injury-header">
       <div class="injury-header-info">
         <img :src="acc" alt="acc">
-        <p>There are
-          casualties from the accident.</p>
+        <p>{{ $t('There are casualties from the accident.') }}</p>
       </div>
       <div class="injury-header-employees">
         {{ injury?.organization_employee?.name || injury?.employee_name }}
