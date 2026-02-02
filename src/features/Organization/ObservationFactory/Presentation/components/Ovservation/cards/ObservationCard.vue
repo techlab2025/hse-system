@@ -58,7 +58,7 @@ const { item } = defineProps<{
 
       <permission-builder v-if="item.DragInspectionPermissions" :code="item.DragInspectionPermissions">
         <RouterLink v-if="item.dragInspectionRoute" :to="item.dragInspectionRoute" class="btn btn-secondary">{{
-          $t('drag_inspection') }}
+          $t('required_inspection') }}
         </RouterLink>
       </permission-builder>
       <permission-builder v-if="item.inspectionsResultsPermissions" :code="item.inspectionsResultsPermissions">

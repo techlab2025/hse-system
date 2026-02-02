@@ -29,6 +29,7 @@ export default class InspectionModel {
   public created_at: string
   public assigned_to: AssignedTo
   public task_id: number
+  public inspectedBy: CreatedBy
 
   constructor(
     id: number,
@@ -52,6 +53,7 @@ export default class InspectionModel {
     created_at: string,
     assigned_to: AssignedTo,
     task_id: number,
+    inspectedBy: CreatedBy,
   ) {
     this.id = id
     this.template = template
@@ -74,6 +76,7 @@ export default class InspectionModel {
     this.created_at = created_at
     this.assigned_to = assigned_to
     this.task_id = task_id
+    this.inspectedBy = inspectedBy
   }
 
   static fromMap(data: any): InspectionModel {
@@ -99,6 +102,7 @@ export default class InspectionModel {
       data.created_at,
       data.assigned_to,
       data.task_id,
+      data.task_created_by,
       // datadata.task_periods,
     )
   }

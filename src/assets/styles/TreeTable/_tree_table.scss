@@ -135,6 +135,33 @@
   opacity: 0;
   animation: fadeInUp 0.6s ease-out forwards;
   border-radius: 18px;
+
+  .emp-name {
+    font-family: 'Regular';
+    color: #bfc3d0;
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    cursor: pointer;
+
+    &.active {
+      color: $PrimaryColor;
+      text-decoration: underline;
+    }
+  }
+
+  .emp-select {
+    font-family: 'Regular';
+
+    color: #bfc3d0;
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    cursor: pointer;
+
+    &.active {
+      color: $PrimaryColor;
+      text-decoration: underline;
+    }
+  }
 }
 
 @keyframes fadeInUp {

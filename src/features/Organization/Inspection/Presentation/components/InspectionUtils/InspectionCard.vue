@@ -69,10 +69,16 @@ const GetEquipmentType = (type: number) => {
             </div>
 
             <div class="inspection-info">
-              <div class="info-box">
+              <div class="info-box" v-if="!showresult">
                 <p class="assigned-by">{{ $t('Assigned by') }} :</p>
                 <h5 class="position">
                   <span>{{ task?.createdBy?.name }}</span>
+                </h5>
+              </div>
+              <div class="info-box" v-else>
+                <p class="assigned-by">{{ $t('inspected_by') }} :</p>
+                <h5 class="position">
+                  <span>{{ task?.inspectedBy?.name }}</span>
                 </h5>
               </div>
 

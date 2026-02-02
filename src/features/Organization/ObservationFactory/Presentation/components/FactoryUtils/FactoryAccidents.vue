@@ -154,11 +154,17 @@ const UpdateWorkStatus = (data) => {
       </div>
 
       <!-- IsWorkStopped -->
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white">
+      <!-- <div >
         <label class="w-full" @click="isWorkStopped = !isWorkStopped" for="is_stoped">{{ $t('is_there_work_days_lost')
           }}</label>
         <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
           :name="`is_stoped`" />
+      </div> -->
+      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white"
+        @click="isWorkStopped = !isWorkStopped; updateData()">
+        <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
+        <Checkbox binary disabled :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_sstoped"
+          :name="`is_sstoped`" />
       </div>
     </div>
   </div>

@@ -168,7 +168,7 @@ export default class HazardDetailsModel {
       data?.severity,
       data?.task_result_item_answer,
       data?.root_causes,
-      data?.investigation ? InvestegationResultDetailsModel.fromMap(data?.investigation) : null,
+      data?.investigation ? InvestegationResultDetailsModel?.fromMap(data?.investigation) : null,
       data?.is_work_stopped,
       data?.action_status,
       data?.serial_name,

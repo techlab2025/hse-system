@@ -49,8 +49,8 @@ watch(() => props.selectedTemplates, (newVal) => {
                   <p>
                     {{ $t('id') }} : <span>{{ template?.id }}</span>
                   </p>
-                  <p>{{ $t('location') }} :<span>{{ $t('example') }}</span></p>
-                  <p>{{ $t('zone') }} :<span>{{ $t('example') }}</span></p>
+                  <!-- <p>{{ $t('location') }} :<span>{{ $t('example') }}</span></p>
+                  <p>{{ $t('zone') }} :<span>{{ $t('example') }}</span></p> -->
                 </div>
               </div>
               <div class="header-select">
