@@ -87,6 +87,16 @@ const updateData = () => {
   })
 
   console.log(Accidents.value?.accidentsData?.map((item: any) => item), "loop");
+  const isThereanyDatainAccidents = Accidents.value?.accidentsData?.map((item: any) => {
+    console.log((item?.employee?.id));
+    if ((item?.employee?.id == 0 && item?.employee?.title.length == 0) && item?.employeeName.length > 0 && item?.images?.length > 0 && item?.infectionTypeId?.id == 0
+      && item?.text) {
+
+      return false
+    }
+    return true
+  })
+  console.log(isThereanyDatainAccidents, "isThereanyDatainAccidents");
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -136,16 +146,6 @@ const updateData = () => {
       isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
       Injury:
         Accidents?.value?.isAnotherMeeting === 1 ?
-          // ? [
-          //   new InjuryParams(
-          //     Accidents?.value?.employeeId || [],
-          //     Accidents?.value?.employeeName || '',
-          //     Accidents?.value?.text || null,
-          //     Accidents?.value?.infectionTypeId || 0,
-          //     Accidents?.value?.isWorkStopped == 1 ? 0 : 1,
-          //     Accidents?.value?.accidentsImages || [],
-          //   ),
-          // ]
           Accidents.value?.accidentsData?.map((item: any) => {
             return new InjuryParams(
               item?.employee?.id || 0,
