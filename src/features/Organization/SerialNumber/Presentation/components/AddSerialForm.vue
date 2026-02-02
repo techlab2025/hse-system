@@ -230,7 +230,9 @@ onMounted(() => {
     </div>
 
     <div class="form-sticky-button flex gap-2">
-      <router-link to="/organization" class="btn btn-cancel" style="width: 15%">{{ $t('cancel') }}</router-link>
+      <router-link to="/organization" class="btn btn-cancel" style="width: 15%">{{
+        $t('cancel')
+      }}</router-link>
       <button type="submit" class="btn btn-primary" style="width: 85%">{{ $t('Add') }}</button>
     </div>
   </form>

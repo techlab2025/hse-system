@@ -20,6 +20,11 @@ import AddRootCausesParams from '../../Core/params/addTicketParams'
 import EditRootCausesParams from '../../Core/params/editTicketParams'
 import type TicketDetailsModel from '../../Data/models/TicketDetailsModel'
 import EditTicketParams from '../../Core/params/editTicketParams'
+import IndexTicketTypeController from '@/features/Organization/TicketType/Presentation/controllers/indexTicketTypeController'
+import IndexTicketTypeParams from '@/features/Organization/TicketType/Core/params/indexTicketTypeParams'
+import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import AddTicketParams from '../../Core/params/addTicketParams'
 
 const emit = defineEmits(['update:data', 'close:data'])
 
@@ -43,6 +48,14 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
+const langsDescription = ref<
+  {
+    locale: string
+    icon?: any
+    description: string
+  }[]
+>([])
+
 const allIndustries = ref<number>(0)
 
 // industry
@@ -52,7 +65,13 @@ const industryController = IndexIndustryController.getInstance()
 
 // default available EquipmentTypes
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
+const langDefaultDescription = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
 const user = useUserStore()
 const fetchLang = async (
   query: string = '',
@@ -63,6 +82,12 @@ const fetchLang = async (
   // console.log(user.user, 'user')
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -81,8 +106,17 @@ const fetchLang = async (
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
+    langDefaultDescription.value = response.data.map((item: any) => ({
+      locale: item.code,
+      description: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
   } else {
     langDefault.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
+    langDefaultDescription.value = [
       { locale: 'en', icon: USA, title: '' },
       { locale: 'ar', icon: SA, title: '' },
     ]
@@ -108,11 +142,17 @@ const updateData = () => {
         translationsParams,
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
         industry.value?.map((item) => item.id),
+        allIndustries.value?.map((item) => item.id),
+        SelectedTicketType.value?.id,
+        images.value,
       )
     : new AddTicketParams(
         translationsParams,
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
         industry.value?.map((item) => item.id),
+        allIndustries.value?.map((item) => item.id),
+        SelectedTicketType.value?.id,
+        images.value,
       )
   emit('update:data', params)
 }
@@ -147,11 +187,43 @@ watch(
   },
   { immediate: true },
 )
+
+const SelectedTicketType = ref<TitleInterface>()
+const indexTicketTypeController = IndexTicketTypeController.getInstance()
+const ticketTypeParams = new IndexTicketTypeParams('', 0, 10, 0)
+const setTicketType = (data: TitleInterface) => {
+  SelectedTicketType.value = data
+  updateData()
+}
+
+const images = ref<string[]>([])
+const setImages = async (data: File[]) => {
+  images.value = await filesToBase64(data)
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4">
+    <!--title  -->
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+
+  <!--ticket type  -->
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="SelectedTicketType"
+      :controller="indexTicketTypeController"
+      :params="ticketTypeParams"
+      label="Select Ticket Type"
+      id="ticket"
+      placeholder="Select ticket type"
+      :type="2"
+      @update:modelValue="setTicketType"
+    />
   </div>
 
   <!--industry  -->
@@ -159,15 +231,21 @@ watch(
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Select Industry"
-      id="EquipmentType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
+    <LangTitleInput
+      label="project_objectives"
+      :langs="langDefault"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+      :placeholder="`What are the project objectives?`"
+      :required="false"
     />
+  </div>
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <MultiImagesInput :modelValue="images" @update:modelValue="setImages" />
   </div>
 </template>

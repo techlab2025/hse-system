@@ -45,27 +45,26 @@ const updateData = () => {
   // console.log(ZoneIds.value, "ZoneIds.value");
   const params = props.data?.id
     ? new EditHazardParams(
-      props.data?.id! ?? 0,
-      text.value,
-      descripe.value,
-      image.value?.map((el) => el.file),
-      HazardType.value.id,
-      2,
-      SelectedMachine.value.id,
-      ZoneIds.value,
-      SelectedProjectId.value,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      date.value,
-      null,
-      null,
-    )
-    : new AddHazardParams(
-      {
+        props.data?.id! ?? 0,
+        text.value,
+        descripe.value,
+        image.value?.map((el) => el.file),
+        HazardType.value.id,
+        2,
+        SelectedMachine.value.id,
+        ZoneIds.value,
+        SelectedProjectId.value,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        date.value,
+        null,
+        null,
+      )
+    : new AddHazardParams({
         title: text.value,
         description: descripe.value,
         image: image.value?.map((el) => el.file),
@@ -89,16 +88,15 @@ const updateData = () => {
         severity: SelectedSeverity.value?.id,
         Likelihood: SelectedLikelihood.value?.id,
         time: SelctedTime.value,
-        place: PlaceText.value
+        place: PlaceText.value,
         // code: SerialNumber.value?.SerialNumber,
-      }
-    )
+      })
 
-  console.log(SerialNumber.value, "SerialNumber");
+  console.log(SerialNumber.value, 'SerialNumber')
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 const indexHazardTypeParams = new IndexHazardTypeParams('', 1, 10, 1)
 const indexHazardTypeController = IndexHazardTypeController.getInstance()
@@ -114,7 +112,6 @@ const setMachine = (data: TitleInterface) => {
   SelectedMachine.value = data
   updateData()
 }
-
 
 const ZoneIds = ref<number>()
 const GetZones = (data: number) => {
@@ -153,7 +150,6 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
 
-
 const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
   updateData()
@@ -175,7 +171,7 @@ onMounted(() => {
 const SelectedProjectId = ref<number>()
 const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
-  updateData();
+  updateData()
 }
 
 const SelectedSeverity = ref<TitleInterface>()
@@ -204,13 +200,18 @@ const setLikelihood = (data: TitleInterface) => {
   updateData()
 }
 
-
 const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
 const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
 ])
 
 const UpdateSerial = (data) => {
@@ -221,21 +222,27 @@ const UpdateSerial = (data) => {
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage :title="'create Hazerd'" :subtitle="'Identify and report potential hazards before they cause harm'"
-      :img="hazardImage" />
+    <HeaderPage
+      :title="'create Hazerd'"
+      :subtitle="'Identify and report potential hazards before they cause harm'"
+      :img="hazardImage"
+    />
     <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
-
   </div>
   <div class="col-span-6 md:col-span-6">
-    <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
+    <TabsSelection
+      v-if="SelectedProjectId"
+      :ProjectId="SelectedProjectId"
+      @update:data="GetZones"
+    />
   </div>
   <div class="hazard-form col-span-6 md:col-span-6">
     <div class="hazard-form-header">
       <HazardIcon class="icon" />
-      <p class="title">Hazerd form
+      <p class="title">
+        Hazerd form
         <!-- <span>( #001 )</span> -->
       </p>
-
     </div>
   </div>
 
@@ -248,13 +255,24 @@ const UpdateSerial = (data) => {
   <!-- Time -->
   <div class="input-wrapper col-span-2 md:grid-cols-12">
     <label for="time">time</label>
-    <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
-      @update:model-value="updateData" input-id="time" :time-only="true" />
+    <DatePicker
+      v-model="SelctedTime"
+      class="mt-4 mr-2 input date-picker"
+      placeholder="Select time"
+      @update:model-value="updateData"
+      input-id="time"
+      :time-only="true"
+    />
   </div>
 
   <!-- Serial -->
-  <div class="col-span-2 md:grid-cols-12" v-if="!(data?.id)">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" @update:value="UpdateSerial" />
+  <div class="col-span-2 md:grid-cols-12" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      @update:value="UpdateSerial"
+    />
   </div>
 
   <!-- Description -->
@@ -266,42 +284,76 @@ const UpdateSerial = (data) => {
   <!-- Place -->
   <div class="input-wrapper col-span-2 md:grid-cols-12">
     <label for="time">Placa</label>
-    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
   </div>
 
-
-
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
-      @update:modelValue="setHazardType" />
+    <CustomSelectInput
+      :modelValue="HazardType"
+      class="input"
+      :controller="indexHazardTypeController"
+      :params="indexHazardTypeParams"
+      label="HazardType"
+      id="HazardType"
+      placeholder="Select Hazard Type"
+      @update:modelValue="setHazardType"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-      :params="indexEquipmentParams" label="select machine (optional)" id="machine" placeholder="select your machine"
-      @update:modelValue="setMachine" />
+    <CustomSelectInput
+      :modelValue="SelectedMachine"
+      class="input"
+      :controller="indexEquipmentController"
+      :params="indexEquipmentParams"
+      label="select machine (optional)"
+      id="machine"
+      placeholder="select your machine"
+      @update:modelValue="setMachine"
+    />
   </div>
 
   <div class="col-span-3 md:grid-cols-12">
-    <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" label="Severity"
-      id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+    <CustomSelectInput
+      :required="false"
+      :modelValue="SelectedSeverity"
+      :static-options="SeverityList"
+      label="Severity"
+      id="Severity"
+      placeholder="Select Severity"
+      @update:modelValue="setSeverity"
+    />
   </div>
   <div class="col-span-3 md:grid-cols-12">
-    <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-      label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+    <CustomSelectInput
+      :required="false"
+      :modelValue="SelectedLikelihood"
+      :static-options="LikelihoodList"
+      label="Likelihood"
+      id="Likelihood"
+      placeholder="Select Likelihood"
+      @update:modelValue="setLikelihood"
+    />
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="">upload image</label>
     <!-- <FileUpload class="w-full" :modelValue="image" @update:fileData="setImage" /> -->
     <MultiImagesInput :initialImages="image" @update:images="setImages" />
-
-
   </div>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full observation-form">
-    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" :isHazard="true"
-      @update:data="handleObservationLevel" />
-    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText" @update:data="handleHazardData" />
+    <ObservationLevel
+      :modelRiskLevel="riskLevel"
+      :modelIsNearMiss="isNearMiss"
+      :isHazard="true"
+      @update:data="handleObservationLevel"
+    />
+    <HazerdType
+      :riskLevel="riskLevel"
+      :is_near_miss="isNearMiss"
+      :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'"
+      :modelAction="actionText"
+      @update:data="handleHazardData"
+    />
   </div>
   <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full">
     <label for="descripe">descripe <span class="optional">(optional)</span></label>
