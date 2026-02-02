@@ -91,7 +91,8 @@ const isSelectHasContent = ref([])
 
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData"
+
+                  class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
@@ -106,7 +107,6 @@ const isSelectHasContent = ref([])
                     <input type="text" v-model="item.employee.title" class="input" placeholder="Select Employee">
                   </template>
                 </UpdatedCustomInputSelect>
-
 
                 <!-- </div> -->
 

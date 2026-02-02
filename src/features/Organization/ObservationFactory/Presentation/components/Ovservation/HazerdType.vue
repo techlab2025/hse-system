@@ -87,7 +87,7 @@ const updateEmitData = () => {
           :controller="indexHazardController"
           :params="hazerdParams"
           id="Hazerd"
-          label="Hazard Type"
+          :Llabel="$t('Hazard Type')"
           placeholder="Select Hazard"
           @update:modelValue="setHazerd"
         />
@@ -101,12 +101,12 @@ const updateEmitData = () => {
           <div class="radio-answers">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton v-model="takeAction" name="takeAction" value="yes" />
-              <label>Yes</label>
+              <label>{{ $t('Yes') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
               <RadioButton v-model="takeAction" name="takeAction" value="no" />
-              <label>No</label>
+              <label>{{ $t('No') }}</label>
             </div>
           </div>
         </div>
@@ -117,12 +117,12 @@ const updateEmitData = () => {
           <div class="radio-answers">
             <div class="radio-selection" :class="{ selected: solved === 'yes' }">
               <RadioButton v-model="solved" name="solved" value="yes" />
-              <label>Yes</label>
+              <label>{{ $t('Yes') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: solved === 'no' }">
               <RadioButton v-model="solved" name="solved" value="no" />
-              <label>No</label>
+              <label>{{ $t('No') }}</label>
             </div>
           </div>
         </div>

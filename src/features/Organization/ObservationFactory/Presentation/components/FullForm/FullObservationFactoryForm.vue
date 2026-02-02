@@ -490,7 +490,7 @@ const setRootCause = (data: TitleInterface[]) => {
         id="Equipment" :placeholder="$t('Select Observation Type')" @update:modelValue="setSelectedObservationType"
         @close="observationTypeDialog = false" :isDialog="true" :dialogVisible="observationTypeDialog">
         <template #LabelHeader>
-          <span class="add-dialog" @click="observationTypeDialog = true">New</span>
+          <span class="add-dialog" @click="observationTypeDialog = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddObserverationType @update:data="observationTypeDialog = false" />
@@ -527,7 +527,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- Machine -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
       <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-        :params="indexRootCaueseParams" label="select Root Cause" id="rootCause" placeholder="select your root cause"
+        :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause" :placeholder="$t('select your root cause')"
         @update:modelValue="setRootCause" :type="2" />
     </div>
 
@@ -544,11 +544,11 @@ const setRootCause = (data: TitleInterface[]) => {
       /> -->
 
       <UpdatedCustomInputSelect :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-        :params="indexEquipmentParams" label="select Equipment (optional)" id="machine"
-        placeholder="select your machine" @update:modelValue="setMachine" @close="machineDialogRef = false"
+        :params="indexEquipmentParams" :label="$t('select machine (optional)')" id="machine"
+        :placeholder="$t('select your machine')" @update:modelValue="setMachine" @close="machineDialogRef = false"
         :isDialog="true" :dialogVisible="machineDialogRef">
         <template #LabelHeader>
-          <span class="add-dialog" @click="machineDialogRef = true">New</span>
+          <span class="add-dialog" @click="machineDialogRef = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddFullEquipment @update:data="machineDialogRef = false" />
@@ -559,13 +559,13 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper">
       <label for="description">{{ $t('description') }}</label>
-      <input placeholder="Add your description" type="text" class="input" id="description" v-model="text"
+      <input :placeholder="$t('Add your description')" type="text" class="input" id="description" v-model="text"
         @input="updateData" />
     </div>
 
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-      <label for="">upload image</label>
+      <label for="">{{ $t('upload image') }}</label>
       <MultiImagesInput :initialImages="image" @update:images="setImages" />
     </div>
 
@@ -586,7 +586,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved
     ">
       <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
-        label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+        :label="$t('Severity')" id="Severity" :placeholder="$t('Select Severity')" @update:modelValue="setSeverity" />
     </div>
 
     <!-- Likelihood -->
@@ -595,7 +595,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved
     ">
       <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+        :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')" @update:modelValue="setLikelihood" />
     </div>
 
     <!-- Observation Level -->
@@ -614,7 +614,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
     ">
       <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-        :params="indexHazardTypeParams" label="HazardType" id="HazardType" placeholder="Select Hazard Type"
+        :params="indexHazardTypeParams" :label="$t('HazardType')" id="HazardType" :placeholder="$t('Select Hazard Type')"
         @update:modelValue="setHazardType" />
     </div>
 
@@ -622,7 +622,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <div class="col-span-3 md:col-span-3 input-wrapper"
       v-if="HazardType && ObservationFactoryType != Observation.AccidentsType && saveStatus == SaveStatusEnum.NotSaved">
       <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
-        :params="indexSubHazardTypeParams" label="Hazard" id="Hazard" placeholder="Select Hazard"
+        :params="indexSubHazardTypeParams" :label="$t('Hazard')" id="Hazard" :placeholder="$t('Select Hazard')"
         @update:modelValue="setSubHazardType" />
     </div>
 
@@ -650,12 +650,12 @@ const setRootCause = (data: TitleInterface[]) => {
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
-              <label>Yes</label>
+              <label>{{ $t('Yes') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
               <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
-              <label>No</label>
+              <label>{{ $t('No') }}</label>
             </div>
           </div>
         </div>
@@ -666,13 +666,13 @@ const setRootCause = (data: TitleInterface[]) => {
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
               <RadioButton id="closed" v-model="solved" name="solved" :value="ActionStatusEnum.CLOSED"
                 @update:model-value="updateData" />
-              <label for="closed">Closed</label>
+              <label for="closed">{{ $t('Closed') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.OPEN }">
               <RadioButton id="open" v-model="solved" name="solved" :value="ActionStatusEnum.OPEN"
                 @update:model-value="updateData" />
-              <label for="open">Open</label>
+              <label for="open">{{ $t('Open') }}</label>
             </div>
           </div>
         </div>

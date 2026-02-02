@@ -34,11 +34,11 @@ const UpdateData = (data: number, index: number) => {
     </div>
     <div class="btns">
       <button class="btn btn-filter">
-        <span>Filter</span>
+        <span>{{ $t('Filter') }}</span>
         <IndexFilterIcon />
       </button>
       <router-link to="/organization/incedant/add">
-        <button class="btn btn-primary">Create Incedant</button>
+        <button class="btn btn-primary">{{ $t('Create Incedant') }}</button>
       </router-link>
     </div>
   </div>

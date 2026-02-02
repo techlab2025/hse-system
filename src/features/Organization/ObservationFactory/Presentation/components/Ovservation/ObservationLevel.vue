@@ -37,7 +37,7 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
     }">
       <label>
         <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.Low" class="radio-input" />
-        <span>Low</span>
+        <span>{{ $t('low') }}</span>
       </label>
       <div class="circle" v-if="selectedIndustry === RiskLevelEnum.Low"></div>
     </div>
@@ -49,22 +49,22 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
     }">
       <label>
         <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.Medium" class="radio-input" />
-        <span>Medium</span>
+        <span>{{ $t('Medium') }}</span>
       </label>
 
       <div class="circle" v-if="selectedIndustry === RiskLevelEnum.Medium"></div>
 
       <div class="details-box" v-if="selectedIndustry === RiskLevelEnum.Medium && !isHazard">
-        <p class="status-label">Status:</p>
+        <p class="status-label">{{ $t('Status') }}:</p>
         <div class="status-container">
           <label class="status-option">
             <input type="radio" v-model="selectedStatus" :value="1" class="radio-input" />
-            <span class="status-value">near miss</span>
+            <span class="status-value">{{ $t('near miss') }}</span>
           </label>
 
           <label class="status-option">
             <input type="radio" v-model="selectedStatus" :value="0" class="radio-input" />
-            <span class="status-values">Non</span>
+            <span class="status-values">{{ $t('Non') }}</span>
           </label>
         </div>
       </div>
@@ -77,7 +77,7 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
     }">
       <label>
         <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.High" class="radio-input" />
-        <span>High</span>
+        <span>{{ $t('High') }}</span>
       </label>
 
       <div class="circle" v-if="selectedIndustry === RiskLevelEnum.High"></div>

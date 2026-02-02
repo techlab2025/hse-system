@@ -14,8 +14,7 @@ const props = defineProps<{
     <div class="injury-header">
       <div class="injury-header-info">
         <img :src="RIP" alt="RIP">
-        <p>fatalities
-          from the accident</p>
+        <p>{{ $t('fatalities from the accident') }}</p>
       </div>
       <div class="death-header-employees flex gap-3">
         <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="40" height="30" />

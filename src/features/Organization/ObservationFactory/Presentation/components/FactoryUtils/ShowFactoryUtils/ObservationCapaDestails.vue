@@ -27,40 +27,40 @@ const CreatCapaResult = async () => {
 <template>
   <div class="capa-container">
     <div class="capa-header-container">
-      <p class="capa-title">Expected Safety Measures</p>
+      <p class="capa-title">{{ $t('Expected Safety Measures') }}</p>
     </div>
     <div class="capa-content-container">
-      <p class="capa-content-title">Corrective And Preventive Actions <span>(CAPA)</span></p>
+      <p class="capa-content-title">{{ $t('Corrective And Preventive Actions') }} <span>(CAPA)</span></p>
       <img :src="CapaArrows" alt="capa_arrows" />
       <div class="capa-actions-container">
         <div class="capa-action" v-if="!data?.corrective">
-          <span class="capa-action-title">Corrective </span>
+          <span class="capa-action-title">{{ $t('Corrective') }} </span>
           <Editor
             v-model="corrective"
             editorStyle="height: 320px"
             :placeholder="'enter What action should have been taken immediately'"
           />
-          <button @click.prevent="CreatCapaResult" class="corrective-button">submit</button>
+          <button @click.prevent="CreatCapaResult" class="corrective-button">{{ $t('submit') }}</button>
         </div>
 
         <div class="capa-action" v-else>
-          <span class="capa-action-title">Corrective </span>
+          <span class="capa-action-title">{{ $t('Corrective') }} </span>
           <p v-html="data?.corrective" class="corrective-text corrective-textarea"></p>
         </div>
 
         <div class="capa-action preventive" v-if="!data?.preventive">
-          <span class="capa-action-title">Preventive </span>
+          <span class="capa-action-title">{{ $t('Preventive') }} </span>
           <Editor
             v-model="preventive"
             editorStyle="height: 320px"
             :placeholder="'enter What action should have been taken immediately'"
             style="max-width: 100% !important"
           />
-          <button @click.prevent="CreatCapaResult" class="corrective-button">submit</button>
+          <button @click.prevent="CreatCapaResult" class="corrective-button">{{ $t('submit') }}</button>
         </div>
 
         <div class="capa-action preventive" v-else>
-          <span class="capa-action-title">Preventive </span>
+          <span class="capa-action-title">{{ $t('Preventive') }} </span>
           <p v-html="data?.preventive" class="corrective-text corrective-textarea"></p>
         </div>
       </div>

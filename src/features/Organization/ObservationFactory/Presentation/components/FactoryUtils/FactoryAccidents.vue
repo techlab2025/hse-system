@@ -123,13 +123,13 @@ const UpdateWorkStatus = (data) => {
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="col-span-6 md:col-span-6 input-wrapper w-full">
         <label for="">{{ $t('text') }}</label>
-        <input type="text" class="input " placeholder="add your title" v-model="text" @input="updateData">
+        <input type="text" class="input " :placeholder="$t('add your title')" v-model="text" @input="updateData">
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
 
         <CustomSelectInput v-if="emplyeeType == EmployeeNameStatus.Select" :modelValue="SelectedEmployee" class="input"
           :component="EmployeeTypeSelect" :controller="indexOrganizatoinEmployeeController"
-          :params="indexEmployeeParams" label="Employee" id="employee" placeholder="select your employee"
+          :params="indexEmployeeParams" :label="$t('Employee')" id="employee" :placeholder="$t('select your employee')"
           @update:modelValue="setEmployee" @update:slot="updateEmployeeState" />
 
         <div v-if="emplyeeType == EmployeeNameStatus.Name" class="input-wrapper custom">
@@ -137,14 +137,14 @@ const UpdateWorkStatus = (data) => {
             <span>{{ $t('employee') }}</span>
             <EmployeeTypeSelect @update:data="emplyeeType = $event" :selectedstatus="emplyeeType" />
           </label>
-          <input type="text" v-model="EmployeeName" class="input" placeholder="select your employee">
+          <input type="text" v-model="EmployeeName" class="input" :placeholder="$t('select your employee')">
         </div>
 
 
       </div>
       <div class="col-span-6 md:col-span-3 input-wrapper w-full">
         <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
-          :params="indexInjuryParams" label="injury Type" id="injury" placeholder="select your injury"
+          :params="indexInjuryParams" :label="$t('injury Type')" id="injury" :placeholder="$t('select your injury')"
           @update:modelValue="setInfection" />
       </div>
 

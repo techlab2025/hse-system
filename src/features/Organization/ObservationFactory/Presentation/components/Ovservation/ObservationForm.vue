@@ -351,8 +351,8 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Time -->
       <div class="input-wrapper col-span-4 md:grid-cols-12">
-        <label for="time">time</label>
-        <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" placeholder="Select time"
+        <label for="time">{{ $t('time') }}</label>
+        <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" :placeholder="$t('Select time')"
           @update:model-value="updateData" input-id="time" :time-only="true" />
       </div>
 
@@ -365,16 +365,16 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Place -->
       <div class="input-wrapper col-span-6 md:grid-cols-12">
-        <label for="time">Placa</label>
-        <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place">
+        <label for="time">{{ $t('place') }}</label>
+        <input type="text" v-model="PlaceText" @input="updateData" :placeholder="$t('Enter Place')">
       </div>
 
 
       <!-- Observation Type -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
-          :controller="indexObservatioTyepController" :params="indexObservationTypeParams" label="Observation Type "
-          id="Equipment" placeholder="Select Observation Type" @update:modelValue="setSelectedObservationType" />
+          :controller="indexObservatioTyepController" :params="indexObservationTypeParams" :label="$t('Observation Type')"
+          id="Equipment" :placeholder="$t('Select Observation Type')" @update:modelValue="setSelectedObservationType" />
       </div>
 
       <!-- Description -->
@@ -386,19 +386,19 @@ const setSelectedObservationType = (data: TitleInterface) => {
       <!-- Sevarity -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
-          label="Severity" id="Severity" placeholder="Select Severity" @update:modelValue="setSeverity" />
+          :label="$t('severity')" id="Severity" :placeholder="$t('Select Severity')" @update:modelValue="setSeverity" />
       </div>
 
       <!-- Likelihood -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-          label="Likelihood" id="Likelihood" placeholder="Select Likelihood" @update:modelValue="setLikelihood" />
+          :label="$t('likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')" @update:modelValue="setLikelihood" />
       </div>
 
       <!-- Equipemt -->
       <div class="col-span-6 md:grid-cols-12">
         <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
-          :params="equipmentParams" label="Equipment" id="Equipment" placeholder="Select Equipment"
+          :params="equipmentParams" :label="$t('Equipment')" id="Equipment" :placeholder="$t('Select Equipment')"
           @update:modelValue="setEquipment" />
       </div>
 

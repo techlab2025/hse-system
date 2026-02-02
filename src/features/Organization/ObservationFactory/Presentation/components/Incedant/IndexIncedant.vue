@@ -259,22 +259,22 @@ const ShowDetails = ref<number[]>([])
                         <div class="card-content">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              Serial : <span>{{ item.serialName }}</span>
+                              {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              Date & Time : <span>{{ item.date }}</span>
+                              {{ $t('Date & Time') }} : <span>{{ item.date }}</span>
                             </p>
                           </div>
                           <div class="card-details">
-                            <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                            <p class="title">{{ item.observer.name }} <span>{{ $t('(observer)') }}</span></p>
                             <p class="subtitle">{{ item.title }}</p>
                             <p class="subtitle">{{ item.description }}</p>
                             <div class="project-details">
                               <p class="label-item-primary">
-                                Zone : <span>{{ item.zoon?.title }}</span>
+                                {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
                               </p>
                               <p class="label-item-primary">
-                                Machine : <span>{{ item.equipment?.title }}</span>
+                                {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
                               </p>
                             </div>
                           </div>
@@ -284,7 +284,7 @@ const ShowDetails = ref<number[]>([])
                           <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
                             <template #previewicon>
                               <div class="perview">
-                                <span>view</span>
+                                <span>{{ $t('view') }}</span>
                                 <ViewIcon />
                               </div>
                             </template>
