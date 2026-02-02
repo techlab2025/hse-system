@@ -5,14 +5,20 @@ import TranslationsModel from '@/base/core/Models/translations_model'
 export default class TicketDetailsModel {
   public id: number
   public translation: TranslationsModel
+  public description: string
+  public type: string
+  public image: string
 
-  constructor(id: number, translation: TranslationsModel) {
+  constructor(id: number, translation: TranslationsModel, description: string, type: string, image: string) {
     this.id = id
     this.translation = translation
+    this.description = description
+    this.type = type
+    this.image = image
   }
 
   static fromMap(data: any): TicketDetailsModel {
-    return new TicketDetailsModel(data.id, TranslationsModel.fromData(data.titles))
+    return new TicketDetailsModel(data.id, TranslationsModel.fromData(data.titles), data.description, data.type, data.image)
   }
 
   static getTitle(data: any) {

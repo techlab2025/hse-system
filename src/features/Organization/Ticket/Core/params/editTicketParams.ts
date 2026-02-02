@@ -5,12 +5,24 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class EditTicketParams implements Params {
   id: number
   translation: TranslationsParams
+  description: string
+  type: string
+  image: string
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
   })
-  constructor(id: number, translation: TranslationsParams) {
+  constructor(
+    id: number,
+    translation: TranslationsParams,
+    description: string,
+    type: string,
+    image: string,
+  ) {
     this.id = id
     this.translation = translation
+    this.description = description
+    this.type = type
+    this.image = image
   }
 
   toMap(): Record<
@@ -27,6 +39,9 @@ export default class EditTicketParams implements Params {
 
     data['ticket_id'] = this.id
     data['translations'] = this.translation.toMap()
+    data['description'] = this.description
+    data['type'] = this.type
+    data['image'] = this.image
 
     return data
   }
