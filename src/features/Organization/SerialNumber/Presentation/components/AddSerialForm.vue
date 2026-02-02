@@ -211,15 +211,21 @@ onMounted(() => {
             <AccordionContent>
               <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-4">
                 <div class="input-wrapper star">
-                  <label>{{ $t('prefix') }} <ImportantIcon /></label>
+                  <label>{{ $t('prefix') }}
+                    <ImportantIcon />
+                  </label>
                   <input type="text" v-model="field.prefix" placeholder="Enter your prefix" />
                 </div>
                 <div class="input-wrapper star">
-                  <label>{{ $t('suffix') }} <ImportantIcon /></label>
+                  <label>{{ $t('suffix') }}
+                    <ImportantIcon />
+                  </label>
                   <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
                 </div>
                 <div class="input-wrapper star">
-                  <label>{{ $t('start') }} <ImportantIcon /></label>
+                  <label>{{ $t('start') }}
+                    <ImportantIcon />
+                  </label>
                   <input type="text" v-model="field.start" placeholder="Enter your start" />
                 </div>
               </div>
