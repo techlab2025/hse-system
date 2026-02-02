@@ -10,6 +10,9 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import RentIcon from '@/shared/icons/RentIcon.vue'
 import Rent from '@/shared/icons/rent.vue'
+import type { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import  { RentTypeEnum } from '../../../Core/enum/RentTypeEnum'
+import { formatTime } from '@/base/Presentation/utils/time_format'
 const props = withDefaults(
   defineProps<{
     isBreadCramp: boolean
@@ -26,7 +29,7 @@ const props = withDefaults(
     expiredate: string
     startDate: string
     EndDate: string
-    rentType: string
+    rentType: RentTypeEnum
     typerent?: OrganizationTypeEnum
     deviceStatus?: number
   }>(),
@@ -83,12 +86,13 @@ const { user } = useUserStore()
           {{ wordSlice(selctedequipment[1]?.title, 40) }}
         </h3>
 
+
         <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">
           <h2 class="expire_date">Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span></h2>
           <div class="date_rent">
-            <p class="rent"><Rent /> <span>Rent</span> |per{{ rentType }}</p>
-            <h6 class="start_date">start date : <span>{{ formatJoinDate(startDate) }}</span></h6>
-          <h6 class="end_date">end date : <span>{{ formatJoinDate(EndDate) }}</span></h6>
+            <p class="rent"><Rent /> <span>Rent</span> |per {{ RentTypeEnum[rentType] }}</p>
+            <h6 class="start_date">start date : <span>{{ rentType === RentTypeEnum.HOUR ? formatJoinDate(startDate) +  " " + formatTime(startDate) : formatJoinDate(startDate) }}</span></h6>
+          <h6 class="end_date">end date : <span>{{ rentType === RentTypeEnum.HOUR ? formatJoinDate(EndDate) + "  " +formatTime(EndDate) : formatJoinDate(EndDate) }}</span></h6>
           
           </div>
         </div>
