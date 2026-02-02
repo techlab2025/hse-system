@@ -201,6 +201,24 @@ class ApiNames {
     return this.prefix + 'delete_team'
   }
 
+  // Catalog
+  public get CreateCatalog() {
+    return this.prefix + 'create_team'
+  }
+    public get IndexCatalog() {
+    return this.prefix + 'fetch_teams'
+  }
+  public get ShowCatalog() {
+    return this.prefix + 'fetch_team_details'
+  }
+  public get EditCatalog() {
+    return this.prefix + 'update_team'
+  }
+  public get DeleteCatalog() {
+    return this.prefix + 'delete_team'
+  }
+
+
   // contractor
   public get CreateContractor() {
     return this.prefix + 'create_contractor'
