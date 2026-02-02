@@ -6,9 +6,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type TicketModel from '../../Data/models/TicketModel'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexTicketController extends SelectControllerInterface<
-  TicketModel[]
-> {
+export default class IndexTicketController extends SelectControllerInterface<TicketModel[]> {
   private static instance: IndexTicketController
   private constructor() {
     super()
