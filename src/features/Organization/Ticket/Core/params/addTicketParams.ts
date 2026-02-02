@@ -3,22 +3,28 @@ import type TranslationsParams from '@/base/core/params/translations_params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddTicketParams implements Params {
-  translation: TranslationsParams
-  type: string
-  image: string
+  images: string[]
+  type: number
+  title: string
+  description: string
 
-  public static readonly validation = new ClassValidation().setRules({
-    translation: { required: true },
-  })
-  constructor(translation: TranslationsParams, type: string, image: string) {
-    this.translation = translation
+  // public static readonly validation = new ClassValidation().setRules({
+  //   type: { required: true },
+  // })
+  constructor(images: string[], type: number, title: string, description: string) {
+    this.images = images
     this.type = type
-    this.image = image
+    this.title = title
+    this.description = description
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | number
+    | string
+    | number[]
+    | Record<string, string | number[] | number | Record<string, string>>
+    | string[]
   > {
     const data: Record<
       string,
@@ -26,21 +32,21 @@ export default class AddTicketParams implements Params {
       | string
       | number[]
       | Record<string, string | number[] | number | Record<string, string>>
+      | string[]
     > = {}
 
-    data['translations'] = this.translation.toMap()
-
-    data['type'] = this.type
-    data['image'] = this.image
-
+    data['files'] = this.images
+    data['ticket_type_id'] = this.type
+    data['title'] = this.title
+    data['description'] = this.description
     return data
   }
 
-  validate() {
-    return AddTicketParams.validation.validate(this)
-  }
+  // validate() {
+  //   return AddTicketParams.validation.validate(this)
+  // }
 
-  validateOrThrow() {
-    return AddTicketParams.validation.validateOrThrow(this)
-  }
+  // validateOrThrow() {
+  //   return AddTicketParams.validation.validateOrThrow(this)
+  // }
 }

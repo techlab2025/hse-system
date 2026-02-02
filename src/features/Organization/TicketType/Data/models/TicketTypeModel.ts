@@ -4,16 +4,16 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 
 export default class TicketTypeModel extends TitleInterface {
   public id: number
-  public translation: string
+  public title: string
 
-  constructor(id: number, translation: string) {
-    super({ id: id, title: translation })
+  constructor(id: number, title: string) {
+    super({ id: id, title: title })
 
     this.id = id
-    this.translation = translation
+    this.title = title
   }
 
   static fromMap(data: any): TicketTypeModel {
-    return new TicketTypeModel(data.id, data.translation)
+    return new TicketTypeModel(data.id, data.title)
   }
 }

@@ -194,7 +194,33 @@ watch(
   >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive"></div>
+        <div class="table-responsive">
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in state.data" :key="item.id">
+                <td data-label="#">
+                  <router-link :to="`/organization/ticket-type/${item.id}`"
+                    >{{ index + 1 }}
+                  </router-link>
+                </td>
+                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Actions">
+                  <DropList
+                    :actionList="actionList(item.id, deleteTicketType)"
+                    @delete="deleteTicketType(item.id)"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <Pagination
           :pagination="state.pagination"
           @changePage="handleChangePage"

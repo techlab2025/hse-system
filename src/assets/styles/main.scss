@@ -155,6 +155,9 @@
 // SERIAL
 @use './SerialNumber/serial_imports';
 
+// Ticket
+@use './Ticket/imports_ticket';
+
 // Organization Employee
 @use './OrganizationEmployee/emp_imports';
 

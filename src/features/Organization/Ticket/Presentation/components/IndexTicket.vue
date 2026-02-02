@@ -31,6 +31,9 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexTicketController from '../controllers/indexTicketController'
 import IndexTicketParams from '../../Core/params/indexTicketParams'
+import DeleteTicketController from '../controllers/deleteTicketController'
+import DeleteTicketParams from '../../Core/params/deleteTicketParams'
+import { StatusEnum } from '../../Core/Enums/statusEnum'
 
 const { t } = useI18n()
 
@@ -139,6 +142,23 @@ watch(
     fetchTickets()
   },
 )
+
+const getStatusLabel = (status: StatusEnum | undefined) => {
+  switch (status) {
+    case StatusEnum.PENDING:
+      return 'pending'
+    case StatusEnum.OPEN:
+      return 'open'
+    case StatusEnum.SOLVED:
+      return 'solved'
+    case StatusEnum.RESOLVED:
+      return 'solved'
+    case StatusEnum.CLOSED:
+      return 'solved'
+    default:
+      return 'unknown'
+  }
+}
 </script>
 
 <template>
@@ -190,7 +210,79 @@ watch(
   >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive"></div>
+        <div class="tickets-cards-grid-system">
+          <div class="tickets-card" v-for="ticket in state.data" :key="ticket.id">
+            <div class="card-header" :data-status="getStatusLabel(ticket?.status)">
+              <h4 class="code">{{ ticket?.title }}</h4>
+              <div class="flex items-center gap-3">
+                <h6 :class="getStatusLabel(ticket?.status)">
+                  {{ getStatusLabel(ticket?.status) }}
+                </h6>
+
+                <!-- <CloseTicketDialog
+          v-if="ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED"
+          @refresh="$emit('refresh')"
+          :ticketId="ticket?.id"
+        /> -->
+
+                <RouterLink
+                  v-if="ticket.status == StatusEnum.PENDING"
+                  :to="`/ticket/edit/${ticket?.id}`"
+                  class="pin-mark"
+                >
+                  <span class="text-[#3D4C5E] underline text-md">{{ $t('edit') }}</span>
+                </RouterLink>
+              </div>
+            </div>
+
+            <RouterLink
+              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              class="card-info"
+            >
+              <h2>{{ ticket?.title }}</h2>
+              <div class="description">
+                <h5>{{ ticket?.description }}</h5>
+              </div>
+            </RouterLink>
+
+            <div class="card-statics">
+              <RouterLink
+                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              >
+                <h6>{{ $t('Refernce number') }}:</h6>
+                <span class="refrence-num">{{ ticket?.project?.projectCode }}</span>
+              </RouterLink>
+
+              <MultiImagesDialog :images="ticket?.media || []">
+                <div class="imgs">
+                  <img
+                    v-for="(img, i) in ticket?.media?.slice(0, 4)"
+                    :key="i"
+                    :src="img?.file"
+                    :class="'img-' + (i + 1)"
+                    alt="static"
+                  />
+                </div>
+              </MultiImagesDialog>
+            </div>
+
+            <RouterLink
+              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              class="card-fotter"
+            >
+              <div class="img">
+                <img :src="footerImg" class="footer-img" alt="footer-img" />
+              </div>
+
+              <div class="description-location">
+                <h4>
+                  <span>{{ $t('Project') }} _ </span> {{ ticket?.project?.title }}
+                </h4>
+              </div>
+            </RouterLink>
+          </div>
+        </div>
+
         <Pagination
           :pagination="state.pagination"
           @changePage="handleChangePage"

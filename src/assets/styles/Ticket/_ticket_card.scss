@@ -1,0 +1,246 @@
+@use '../mixins/grid' as *;
+@use '../mixins/flex' as *;
+@use '../variables' as *;
+
+.tickets {
+  padding: 0 $MdSize;
+
+  .section-header {
+    width: 100%;
+    .info {
+      width: 80%;
+    }
+  }
+
+  .tickets-cards-grid-system {
+    margin-block: $MdSize;
+    display: none;
+    @include grid(
+      3,
+      10px,
+      (
+        1440px: 3,
+
+        1024px: 2,
+
+        768px: 1,
+      )
+    );
+    .tickets-card {
+      @include flex-column();
+      gap: $SmSize;
+      padding: $SmSize;
+      border-radius: $XlSize2;
+      background: red;
+      border: 2px solid #fbfbfb;
+      width: 100%;
+
+      transition: all 0.5s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .card-header {
+        @include flex(row, nowrap, space-between, center);
+        background-image: linear-gradient(90deg, #fef9f3 0%, #ffffff29 50%, #eeffee 100%);
+        padding: $XsSize2 $XsSize;
+        text-transform: capitalize;
+        border-radius: $XsSize;
+        button {
+          all: unset;
+          color: red;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        // Status-based gradient colors
+        &[data-status='solved'] {
+          color: #4caf50;
+          background: linear-gradient(
+            90.5deg,
+            #fef9f3 -3.82%,
+            rgba(255, 255, 255, 0.16) 52.88%,
+            #eeffee 98.9%
+          );
+        }
+
+        &[data-status='pending'] {
+          color: #b2bbc6;
+          background: linear-gradient(
+            90.5deg,
+            #fef9f3 -3.82%,
+            rgba(255, 255, 255, 0.16) 52.88%,
+            #f4f4f6 98.9%
+          );
+        }
+
+        &[data-status='resolved'] {
+          color: #ef3826;
+          background-image: linear-gradient(
+            90deg,
+            #fef9f3 0%,
+            #ffffff29 50%,
+            rgba(239, 56, 38, 0.2) 100%
+          );
+        }
+
+        &[data-status='open'] {
+          color: #a396e9;
+          background: linear-gradient(
+            90.5deg,
+            #fef9f3 -3.82%,
+            rgba(255, 255, 255, 0.16) 52.88%,
+            #f1edfb 98.9%
+          );
+        }
+
+        &[data-status='closed'] {
+          color: #212a43;
+          background-image: linear-gradient(
+            90deg,
+            #fef9f3 0%,
+            #ffffff29 50%,
+            rgba(33, 42, 67, 0.2) 100%
+          );
+        }
+
+        .code {
+          color: red;
+          font-size: $MdSize;
+          font-family: 'Regular';
+        }
+
+        h6 {
+          font-size: $MdSize2;
+          font-family: 'Bold';
+        }
+      }
+      .card-info {
+        @include flex-column();
+        gap: $XsSize3;
+        border-bottom: 1px dashed #b2bbc64d;
+        padding: $XsSize 0;
+        h2 {
+          color: red;
+          font-size: $XlSize;
+          font-family: 'Bold';
+          text-wrap: inherit;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: calc(var(--line-height) * 1em);
+          line-height: var(--line-height);
+          --line-height: 1.5;
+        }
+        .description {
+          @include flex(row, nowrap, start, center);
+          gap: $XsSize4;
+          text-transform: capitalize;
+          p {
+            color: red;
+            font-family: 'Regular';
+            font-size: $MdSize;
+          }
+          h5 {
+            color: red;
+            font-family: 'Bold';
+            font-size: $MdSize;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: calc(var(--line-height) * 2em);
+            line-height: var(--line-height);
+            --line-height: 1.5;
+          }
+        }
+      }
+      .card-statics {
+        @include flex(row, wrap, space-between, center);
+
+        a {
+          @include flex-column();
+          text-transform: capitalize;
+          h6 {
+            color: red;
+            font-family: 'Regular';
+            font-size: $MdSize;
+          }
+          span {
+            color: red;
+            font-family: 'Bold';
+            font-size: $MdSize;
+            &.attention {
+              color: red;
+            }
+            &.refrence-num {
+              color: red;
+            }
+          }
+        }
+        div.imgs {
+          @include flex(row, nowrap, center, center);
+          position: relative;
+          height: calc($XlSize3 + 10px);
+          z-index: 10;
+          img {
+            width: calc($XlSize3 + 5px);
+            height: calc($XlSize3 + 5px);
+            border-radius: $XsSize2;
+            object-fit: cover;
+            border: 2px solid #99999959;
+            background-color: white;
+
+            position: relative;
+            margin-left: -10px;
+            transition: transform 0.6s;
+            &:hover {
+              transform: scale(1.1);
+              z-index: 10;
+            }
+            img:first-child {
+              margin-left: 0;
+            }
+          }
+        }
+      }
+      .card-fotter {
+        @include flex(row, nowrap, start, center);
+        gap: $XsSize2;
+        background-color: #3c58ac0a;
+        padding: $XsSize2 $XsSize;
+        border-radius: $XsSize;
+        .img {
+          max-width: calc($XlSize3 + 10px);
+          img.fotter-img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .description-location {
+          h4 {
+            font-family: 'Bold';
+            color: $PrimaryColor;
+            font-size: $MdSize;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: calc(var(--line-height) * 1em);
+            line-height: var(--line-height);
+            --line-height: 1.5;
+            span {
+              color: #3c58ac99;
+            }
+          }
+        }
+      }
+    }
+  }
+}

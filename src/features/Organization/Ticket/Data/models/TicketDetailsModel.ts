@@ -7,18 +7,18 @@ export default class TicketDetailsModel {
   public translation: TranslationsModel
   public description: string
   public type: string
-  public image: string
+  public images: string
 
-  constructor(id: number, translation: TranslationsModel, description: string, type: string, image: string) {
+  constructor(id: number, translation: TranslationsModel, description: string, type: string, images: string) {
     this.id = id
     this.translation = translation
     this.description = description
     this.type = type
-    this.image = image
+    this.images = images
   }
 
   static fromMap(data: any): TicketDetailsModel {
-    return new TicketDetailsModel(data.id, TranslationsModel.fromData(data.titles), data.description, data.type, data.image)
+    return new TicketDetailsModel(data.id, TranslationsModel.fromData(data.titles), data.description, data.type, data.images)
   }
 
   static getTitle(data: any) {
