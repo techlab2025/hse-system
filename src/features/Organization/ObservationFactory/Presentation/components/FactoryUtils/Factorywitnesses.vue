@@ -11,7 +11,6 @@ const updateData = () => {
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,
     AllWitnessesData: AllWitnessesData.value,
-
   })
 }
 

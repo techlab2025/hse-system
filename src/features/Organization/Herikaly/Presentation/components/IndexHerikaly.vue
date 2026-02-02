@@ -195,4 +195,12 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   </PermissionBuilder>
 </template>
 
-<style scoped></style>
+<style scoped>
+.btn-container {
+  position: fixed;
+  bottom: 0;
+  width: 72%;
+  padding-block: 1rem;
+  /* background-color: white; */
+}
+</style>

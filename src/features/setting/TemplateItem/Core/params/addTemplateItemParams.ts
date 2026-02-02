@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import { TextAreaStatusEnum } from '../Enum/TextAreaStatusEnum'
+import { ActionsEnum } from '../Enum/ActionsEnum'
 
 export default class AddTemplateItemParams implements Params {
   id: number
@@ -52,18 +53,19 @@ export default class AddTemplateItemParams implements Params {
     data['template_id'] = this.id
     data['name'] = this.title
     data['action'] = this.type
-    data['options'] = this.answers.map((item) => ({
-      title: item.title,
-      is_upload: item.is_upload ? 1 : 0,
-      textarea_type: item?.normal_textarea
-        ? item?.textarea_type
-        : item?.isTextAreaRequired
-          ? item.textarea_type
-            ? TextAreaStatusEnum.required
-            : TextAreaStatusEnum.optional
-          : 0,
-      has_auto_observation: item.has_auto_observation ? 1 : 0,
-    }))
+    if (this.type != ActionsEnum.TEXTAREA)
+      data['options'] = this.answers.map((item) => ({
+        title: item.title,
+        is_upload: item.is_upload ? 1 : 0,
+        textarea_type: item?.normal_textarea
+          ? item?.textarea_type
+          : item?.isTextAreaRequired
+            ? item.textarea_type
+              ? TextAreaStatusEnum.required
+              : TextAreaStatusEnum.optional
+            : 0,
+        has_auto_observation: item.has_auto_observation ? 1 : 0,
+      }))
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = this.imageType || 0
     data['tag'] = this.tag || ''
