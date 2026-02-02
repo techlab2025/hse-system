@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IndexTicketType from '@/features/Organization/TicketType/Presentation/components/indexTicketType.vue'
+import IndexTicketType from '@/features/Organization/TicketType/Presentation/components/IndexTicketType.vue'
 </script>
 
 <template>

@@ -31,6 +31,8 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexTicketTypeController from '../controllers/indexTicketTypeController'
 import IndexTicketTypeParams from '../../Core/params/indexTicketTypeParams'
+import DeleteTicketTypeParams from '../../Core/params/deleteTicketTypeParams'
+import DeleteTicketTypeController from '../controllers/deleteTicketTypeController'
 
 const { t } = useI18n()
 
