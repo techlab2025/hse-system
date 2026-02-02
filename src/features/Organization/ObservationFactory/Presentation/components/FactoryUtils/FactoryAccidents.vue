@@ -14,73 +14,113 @@ import { EmployeeNameStatus } from '../../../Core/Enums/EmplyeeNameStatus'
 import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
 import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
 import Checkbox from 'primevue/checkbox'
+import InjuresTimeLine from './InjuresTimeLine.vue'
+
+// const emit = defineEmits(['update:data'])
+// const time = ref()
+// const date = ref(new Date())
+// const SelectedPlatform = ref<TitleInterface>()
+// const Platforms = ref([
+//   new TitleInterface({ id: 1, title: 'zoom' }),
+//   new TitleInterface({ id: 2, title: 'teams' }),
+// ])
+// const UpdateData = () => {
+//   emit('update:data', {
+//     platform: SelectedPlatform.value?.id,
+//     date: date.value,
+//     time: time.value,
+//   })
+// }
+
+// const setPlatform = (data: TitleInterface) => {
+//   SelectedPlatform.value = data
+// }
+
+// const isAnotherMeeting = ref(0)
+// const image = ref([])
+// const updateData = () => {
+//   console.log(isAnotherMeeting.value, " isAnotherMeeting.value");
+//   emit('update:data', {
+//     isAnotherMeeting: isAnotherMeeting.value,
+//     accidentsImages: image.value?.map((el) => el?.file),
+//     descripe: descripe.value,
+//     text: text.value,
+//     employeeId: isAnotherMeeting.value == 1 ? SelectedEmployee.value?.id : null,
+//     infectionTypeId: SelectedInfection.value?.id,
+//     employeeName: EmployeeName.value,
+//     isWorkStopped: isWorkStopped.value ? 1 : 0
+//   })
+// }
+// const setImages = async (data: string[]) => {
+//   image.value = typeof data === 'string' ? data : await filesToBase64(data)
+//   updateData()
+// }
+// const descripe = ref<string>('')
+// const text = ref<string>('')
+// const SelectedEmployee = ref<TitleInterface>()
+// const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+// const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
+
+// const setEmployee = (data: TitleInterface) => {
+//   SelectedEmployee.value = data
+//   updateData()
+// }
+// const SelectedInfection = ref<TitleInterface>()
+// const setInfection = (data: TitleInterface) => {
+//   SelectedInfection.value = data
+//   updateData()
+// }
+
+// const emplyeeType = ref(EmployeeNameStatus.Select)
+// const EmployeeName = ref<string>('')
+
+// const updateEmployeeState = (data: any) => {
+//   emplyeeType.value = data
+//   console.log(emplyeeType.value);
+//   // updateData()
+// }
+
+
+// watch(() => isAnotherMeeting.value, (newVal) => {
+//   if (newVal == 1) {
+//     updateData()
+//   } else {
+//     emit('update:data', {
+//       isAnotherMeeting: isAnotherMeeting.value,
+//     })
+//     image.value = []
+//     text.value = ''
+//     SelectedEmployee.value = undefined
+//     descripe.value = ''
+//     SelectedInfection.value = undefined
+//     emplyeeType.value = EmployeeNameStatus.Select
+//     EmployeeName.value = ''
+//   }
+// })
+
+// const isWorkStopped = ref()
+// const UpdateWorkStatus = (data) => {
+//   isWorkStopped.value = data?.target?.checked
+//   updateData()
+// }
+
 
 const emit = defineEmits(['update:data'])
-const time = ref()
-const date = ref(new Date())
-const SelectedPlatform = ref<TitleInterface>()
-const Platforms = ref([
-  new TitleInterface({ id: 1, title: 'zoom' }),
-  new TitleInterface({ id: 2, title: 'teams' }),
-])
-const UpdateData = () => {
-  emit('update:data', {
-    platform: SelectedPlatform.value?.id,
-    date: date.value,
-    time: time.value,
-  })
-}
-
-const setPlatform = (data: TitleInterface) => {
-  SelectedPlatform.value = data
-}
-
 const isAnotherMeeting = ref(0)
-const image = ref([])
 const updateData = () => {
-  console.log(isAnotherMeeting.value, " isAnotherMeeting.value");
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,
-    accidentsImages: image.value?.map((el) => el?.file),
-    descripe: descripe.value,
-    text: text.value,
-    employeeId: isAnotherMeeting.value == 1 ? SelectedEmployee.value?.id : null,
-    infectionTypeId: SelectedInfection.value?.id,
-    employeeName: EmployeeName.value,
-    isWorkStopped: isWorkStopped.value ? 1 : 0
+    accidentsData: accidentsData.value,
   })
 }
-const setImages = async (data: string[]) => {
-  image.value = typeof data === 'string' ? data : await filesToBase64(data)
-  updateData()
-}
-const descripe = ref<string>('')
-const text = ref<string>('')
-const SelectedEmployee = ref<TitleInterface>()
-const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
-const setEmployee = (data: TitleInterface) => {
-  SelectedEmployee.value = data
-  updateData()
-}
-const SelectedInfection = ref<TitleInterface>()
-const setInfection = (data: TitleInterface) => {
-  SelectedInfection.value = data
+const accidentsData = ref()
+const UpdateAccidentsData = (data: any) => {
+  accidentsData.value = data
+  console.log(accidentsData.value, 'accidentsData.value');
   updateData()
 }
 
-const emplyeeType = ref(EmployeeNameStatus.Select)
-const EmployeeName = ref<string>('')
-
-const updateEmployeeState = (data: any) => {
-  emplyeeType.value = data
-  console.log(emplyeeType.value);
-  // updateData()
-}
-
-const indexInjuryController = IndexInjuryController.getInstance()
-const indexInjuryParams = new IndexInjuryParams('', 1, 10, 0)
 watch(() => isAnotherMeeting.value, (newVal) => {
   if (newVal == 1) {
     updateData()
@@ -88,23 +128,9 @@ watch(() => isAnotherMeeting.value, (newVal) => {
     emit('update:data', {
       isAnotherMeeting: isAnotherMeeting.value,
     })
-    image.value = []
-    text.value = ''
-    SelectedEmployee.value = undefined
-    descripe.value = ''
-    SelectedInfection.value = undefined
-    emplyeeType.value = EmployeeNameStatus.Select
-    EmployeeName.value = ''
+    accidentsData.value = []
   }
 })
-
-const isWorkStopped = ref()
-const UpdateWorkStatus = (data) => {
-  isWorkStopped.value = data?.target?.checked
-  updateData()
-}
-
-
 
 </script>
 <template>
@@ -121,51 +147,7 @@ const UpdateWorkStatus = (data) => {
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="">{{ $t('text') }}</label>
-        <input type="text" class="input " :placeholder="$t('add your title')" v-model="text" @input="updateData">
-      </div>
-      <div class="col-span-6 md:col-span-3 input-wrapper w-full">
-
-        <CustomSelectInput v-if="emplyeeType == EmployeeNameStatus.Select" :modelValue="SelectedEmployee" class="input"
-          :component="EmployeeTypeSelect" :controller="indexOrganizatoinEmployeeController"
-          :params="indexEmployeeParams" :label="$t('Employee')" id="employee" :placeholder="$t('select your employee')"
-          @update:modelValue="setEmployee" @update:slot="updateEmployeeState" />
-
-        <div v-if="emplyeeType == EmployeeNameStatus.Name" class="input-wrapper custom">
-          <label for="employee" class="flex w-full">
-            <span>{{ $t('employee') }}</span>
-            <EmployeeTypeSelect @update:data="emplyeeType = $event" :selectedstatus="emplyeeType" />
-          </label>
-          <input type="text" v-model="EmployeeName" class="input" :placeholder="$t('select your employee')">
-        </div>
-
-
-      </div>
-      <div class="col-span-6 md:col-span-3 input-wrapper w-full">
-        <CustomSelectInput :modelValue="SelectedInfection" class="input" :controller="indexInjuryController"
-          :params="indexInjuryParams" :label="$t('injury Type')" id="injury" :placeholder="$t('select your injury')"
-          @update:modelValue="setInfection" />
-      </div>
-
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-        <label for="">{{ $t('upload image') }}</label>
-        <MultiImagesInput :initialImages="image" @update:images="setImages" :index="2" />
-      </div>
-
-      <!-- IsWorkStopped -->
-      <!-- <div >
-        <label class="w-full" @click="isWorkStopped = !isWorkStopped" for="is_stoped">{{ $t('is_there_work_days_lost')
-          }}</label>
-        <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
-          :name="`is_stoped`" />
-      </div> -->
-      <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped is-stopped-white"
-        @click="isWorkStopped = !isWorkStopped; updateData()">
-        <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
-        <Checkbox binary disabled :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_sstoped"
-          :name="`is_sstoped`" />
-      </div>
+      <InjuresTimeLine @update:data="UpdateAccidentsData" />
     </div>
   </div>
 </template>
