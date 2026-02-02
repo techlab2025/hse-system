@@ -285,7 +285,8 @@ const updateExpireDate = (data: number) => {
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
-      field-type="description" @update:modelValue="(val) => (langsDescription = val)" type="textarea" />
+      field-type="description" @update:modelValue="(val) => (langsDescription = val)" type="textarea"
+      :required="false" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">

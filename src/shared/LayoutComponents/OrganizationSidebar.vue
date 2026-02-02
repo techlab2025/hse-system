@@ -166,17 +166,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_ROLE_UPDATE,
     ],
   },
-  {
-    link: '/organization/injury',
-    name: 'injury',
-    permissions: [
-      PermissionsEnum.INJURY_ALL,
-      PermissionsEnum.INJURY_CREATE,
-      PermissionsEnum.INJURY_DELETE,
-      PermissionsEnum.INJURY_FETCH,
-      PermissionsEnum.INJURY_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/injury',
+  //   name: 'injury',
+  //   permissions: [
+  //     PermissionsEnum.INJURY_ALL,
+  //     PermissionsEnum.INJURY_CREATE,
+  //     PermissionsEnum.INJURY_DELETE,
+  //     PermissionsEnum.INJURY_FETCH,
+  //     PermissionsEnum.INJURY_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/scope',
     name: 'Scope',
@@ -222,17 +222,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
     ],
   },
-  {
-    link: '/organization/root-causes',
-    name: 'root_causes',
-    permissions: [
-      PermissionsEnum.ROOT_CAUSES_ALL,
-      PermissionsEnum.ROOT_CAUSES_CREATE,
-      PermissionsEnum.ROOT_CAUSES_DELETE,
-      PermissionsEnum.ROOT_CAUSES_FETCH,
-      PermissionsEnum.ROOT_CAUSES_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/organization/root-causes',
+  //   name: 'root_causes',
+  //   permissions: [
+  //     PermissionsEnum.ROOT_CAUSES_ALL,
+  //     PermissionsEnum.ROOT_CAUSES_CREATE,
+  //     PermissionsEnum.ROOT_CAUSES_DELETE,
+  //     PermissionsEnum.ROOT_CAUSES_FETCH,
+  //     PermissionsEnum.ROOT_CAUSES_UPDATE,
+  //   ],
+  // },
   {
     link: '/organization/serial-number',
     name: 'coding_system',
@@ -485,6 +485,28 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/organization/root-causes',
+    name: 'root_causes',
+    permissions: [
+      PermissionsEnum.ROOT_CAUSES_ALL,
+      PermissionsEnum.ROOT_CAUSES_CREATE,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
+      PermissionsEnum.ROOT_CAUSES_FETCH,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/injury',
+    name: 'injury',
+    permissions: [
+      PermissionsEnum.INJURY_ALL,
+      PermissionsEnum.INJURY_CREATE,
+      PermissionsEnum.INJURY_DELETE,
+      PermissionsEnum.INJURY_FETCH,
+      PermissionsEnum.INJURY_UPDATE,
     ],
   },
 ])

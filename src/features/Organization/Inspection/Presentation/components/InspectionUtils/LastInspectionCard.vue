@@ -28,7 +28,7 @@ const GetInspectionTitle = (task: InspectionModel) => {
         <div class="inspection-info-container">
           <div class="inspection-info">
             <p>
-              {{ $t('Inspected by') }} : <span>{{ task?.employee?.name }}</span>
+              {{ $t('Inspected by') }} : <span>{{ task?.employee?.name || task?.created_by?.name }}</span>
             </p>
             <p>
               {{ $t('Date') }} : <span>{{ task?.date }}</span>
@@ -37,12 +37,8 @@ const GetInspectionTitle = (task: InspectionModel) => {
           </div>
           <div>
             <span class="view-inspection-btn">
-              <InspectionStartTemplate
-                :templateId="fulltask?.template?.id"
-                :taskId="fulltask?.id"
-                :status="fulltask?.status"
-                :lastinspection="true"
-              />
+              <InspectionStartTemplate :templateId="fulltask?.template?.id" :taskId="fulltask?.id"
+                :status="fulltask?.status" :lastinspection="true" />
             </span>
           </div>
         </div>

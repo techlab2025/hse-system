@@ -159,7 +159,7 @@ const updateData = () => {
       witnesses:
         witnesses?.value?.isAnotherMeeting === 1
           ? witnesses?.value?.AllWitnessesData?.map(
-            (w: any) => new WitnessParams(w?.text || [], w?.employee?.id || '', null),
+            (w: any) => new WitnessParams(w?.employee?.title ? w?.employee?.title : '', w?.text || [], w?.employee?.id || '', null),
           )
           : [],
 
@@ -599,9 +599,13 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- Observation Level -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="
+
+    <div class="col-span-6 md:col-span-6 input-wrapper w-full overlay-container" v-if="
       saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
     ">
+      <div class="section-overlay">
+
+      </div>
       <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss"
         @update:data="handleObservationLevel" />
     </div>
@@ -626,9 +630,10 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- isWorkStopped = !isWorkStopped -->
     <!-- input-wrapper -->
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="col-span-6 md:col-span-6  w-full is-stopped"
-      @click=" updateData()">
-      <label class="w-full" for="is_stoped">{{ $t('is_work_stopped') }}</label>
-      <Checkbox binary :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped" :name="`is_stoped`" />
+      @click="isWorkStopped = !isWorkStopped; updateData()">
+      <label class="w-full" for="is_stopedd">{{ $t('is_work_stopped') }}</label>
+      <Checkbox binary disabled :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
+        :name="`is_stopedd`" />
     </div>
     <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped">
       <label class="w-full" for="is_stopedd" @click="isWorkStopped = !isWorkStopped">{{ $t('is_there_work_days_lost')
@@ -725,5 +730,18 @@ const setRootCause = (data: TitleInterface[]) => {
 .add-dialog svg {
   width: 18px;
   height: 18px;
+}
+
+.overlay-container {
+  position: relative;
+}
+
+.section-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 </style>

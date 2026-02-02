@@ -96,7 +96,7 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-const Heirarchy = ref<TitleInterface[]>()
+const Heirarchy = ref<TitleInterface>()
 const role = ref<TitleInterface[]>()
 const EmployeeStatus = ref()
 const updaetAdminStatus = (status) => {
@@ -104,7 +104,7 @@ const updaetAdminStatus = (status) => {
   updateData()
 }
 const updateData = () => {
-  const HeirarchyIds = Heirarchy.value?.map((item) => new HirarachyEmployeeParams(item.id))
+  const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy.value.id)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
@@ -114,7 +114,7 @@ const updateData = () => {
       Email.value,
       Password.value,
       ConfirmPassword.value,
-      HeirarchyIds,
+      [HeirarchyIds],
       RoleIds,
       EmployeeStatus.value || EmployeeStatusEnum.Employee
 
@@ -127,7 +127,7 @@ const updateData = () => {
       Email.value,
       Password.value,
       ConfirmPassword.value,
-      HeirarchyIds,
+      [HeirarchyIds],
       RoleIds,
       EmployeeStatus.value || EmployeeStatusEnum.Employee,
       SerialNumber.value?.SerialNumber,
@@ -145,7 +145,7 @@ watch(
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
-      Heirarchy.value = newData.hierarchy
+      Heirarchy.value = newData.hierarchy[0]
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
@@ -173,7 +173,7 @@ const UpdatePassword = (data) => {
   updateData()
 }
 
-const setHeirarchy = (data: TitleInterface[]) => {
+const setHeirarchy = (data: TitleInterface) => {
   Heirarchy.value = data
   updateData()
 }
@@ -231,16 +231,18 @@ const UpdateSerial = (data) => {
     <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
       :placeholder="$t('enter your confirm password')" />
   </div>
+  <!-- :type="2" -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-      :params="HerikalyParams" :label="$t('Job Description')" :type="2" :placeholder="$t('Select Heirarchy')" />
+      :params="HerikalyParams" :label="$t('Job Description')" :placeholder="$t('Select Heirarchy')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
       :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomCheckbox :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus" @update:checked="updaetAdminStatus" />
+    <CustomCheckbox :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
+      @update:checked="updaetAdminStatus" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

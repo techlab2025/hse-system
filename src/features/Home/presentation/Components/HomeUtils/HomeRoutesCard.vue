@@ -14,7 +14,7 @@ const props = defineProps<{
   <div class="home-routes-card">
     <div class="card-img">
       <img v-if="!props.icon" :src="props.imgSrc" alt="logo">
-      <component v-if="props.icon" :is="props.icon"></component>
+      <component class="icon" v-if="props.icon" :is="props.icon"></component>
     </div>
     <div class="card-content">
       <h3 class="title">{{ props.title }}</h3>
