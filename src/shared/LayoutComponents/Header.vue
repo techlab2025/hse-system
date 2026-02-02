@@ -153,15 +153,16 @@ onMounted(() => {
   </header>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .input-wrapper {
-  .input {
+  /* .input {
     width: 400px;
-  }
+  } */
 
+  padding-inline: 24px;
   width: 400px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     width: 200px;
   }
 }

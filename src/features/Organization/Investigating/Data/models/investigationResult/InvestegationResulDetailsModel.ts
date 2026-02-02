@@ -66,7 +66,7 @@ export default class InvestegationResultDetailsModel {
       data.next_meeting_time,
       data.last_meeting_date,
       data.last_meeting_time,
-      data.investigation_meetings.map((i: any) => MeetingModel.fromMap(i)),
+      data.investigation_meetings?.map((i: any) => MeetingModel.fromMap(i)),
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

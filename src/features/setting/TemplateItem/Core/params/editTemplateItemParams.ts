@@ -9,6 +9,7 @@ export default class implements Params {
   public answers: items[]
   public isImageRequired: number
   public imageType: number
+  public tag?: string
 
   constructor(
     templateItemId: number,
@@ -18,6 +19,7 @@ export default class implements Params {
     answers: items[],
     isImageRequired: number,
     imageType: number,
+    tag?: string,
   ) {
     this.templateItemId = templateItemId
     this.TemplateId = TemplateId
@@ -26,6 +28,7 @@ export default class implements Params {
     this.answers = answers
     this.isImageRequired = isImageRequired
     this.imageType = imageType
+    this.tag = tag
   }
 
   toMap(): Record<
@@ -58,6 +61,7 @@ export default class implements Params {
     }))
     data['require_image'] = this.isImageRequired
     data['required_type'] = this.imageType
+    data['tag'] = this.tag || ''
 
     return data
   }
