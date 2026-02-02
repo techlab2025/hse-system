@@ -9,9 +9,10 @@ export default class AddTemplateItemParams implements Params {
   answers: items[]
   isImageRequired: number
   imageType: number
+  tag?: string
+
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
-
   })
   constructor(
     id: number,
@@ -20,6 +21,7 @@ export default class AddTemplateItemParams implements Params {
     answers: items[],
     isImageRequired: number,
     imageType: number,
+    tag?: string,
   ) {
     this.id = id
     this.title = title
@@ -27,6 +29,7 @@ export default class AddTemplateItemParams implements Params {
     this.answers = answers
     this.isImageRequired = isImageRequired
     this.imageType = imageType
+    this.tag = tag
   }
 
   toMap(): Record<
@@ -63,6 +66,7 @@ export default class AddTemplateItemParams implements Params {
     }))
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = this.imageType || 0
+    data['tag'] = this.tag || ''
     return data
   }
 
