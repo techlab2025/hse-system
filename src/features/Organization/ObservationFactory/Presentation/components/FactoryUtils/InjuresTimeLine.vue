@@ -133,7 +133,7 @@ const setImages = async (data: string[], index: number) => {
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('upload image') }}</label>
                 <MultiImagesInput :initialImages="item.images" @update:images="setImages($event, index)"
-                  :index="index + 2" />
+                  :index="index + 2000" />
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
                 @click="item.isWorkStopped = !item.isWorkStopped; UpdateData()">
