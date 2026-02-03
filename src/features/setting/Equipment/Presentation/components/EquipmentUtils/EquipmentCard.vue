@@ -150,6 +150,9 @@ function setEquipmentDefaultImage(event: Event) {
           </div>
 
           <EquipmentCardImgDialog :Visable="DialogVisable" :img="tool?.certificateImage" />
+
+
+          
           <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)"
             @delete="deleteEquipment(tool.id)" />
 

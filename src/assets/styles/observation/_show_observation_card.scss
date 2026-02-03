@@ -11,13 +11,37 @@
     gap: $XsSize;
     background-color: #ffffff;
     padding: 10px;
-    border: 1px solid #f6f6f6;
+    // border: 1px solid #f6f6f6;
+    // background: linear-gradient( to right, #E8D5B5 0%,#1D4ED8 10%,white 100%);
     border-radius: 12px;
+    position: relative;
+    &::after{
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 200px;
+      height: 15px;
+      background-color: #1d4fd85e;
+      opacity: 0.1;
+      border-radius: $XsSize;
+    }
+      &::before{
+      position: absolute;
+      content: '';
+      // top: 0;
+      left: 0;
+      width: 15px;
+      height: 100%;
+      background-color: #E8D5B5;
+      opacity: 0.1;
+      border-radius: $XsSize;
+    }
     &.show {
       border-bottom: none;
     }
     .header-container {
-      @include flex-row(nowrap, space-between, center);
+      @include flex-row(nowrap, space-between, flex-start);
       width: 100%;
       gap: $XsSize4;
       font-family: 'Regular';
@@ -25,16 +49,39 @@
       .card-content {
         @include flex-column(nowrap, flex-start, flex-start);
         gap: $XsSize4;
+        .title_observation {
+          .observation-title {
+            color: var(--second-dark-color);
+            font-size: $XlSize2;
+            font-weight: $BaseFontWeightBold;
+              margin-bottom: $XsSize;
+          }
+          .Description {
+            color: #aab1bd;
+            font-size: $MdSize;
+            font-weight: $BaseFontMediumWeight;
+          }
+        }
 
         .card-header {
           @include flex-row(nowrap, flex-start, center);
           gap: $XlSize4;
+          margin-top: $XsSize;
           .label-item-secondary,
           .label-item-primary {
             span {
               font-family: 'Regular';
               font-weight: $BaseFontSemiBoldWeight;
             }
+          }
+        }
+        .label-employee {
+          color: #aeaeb2;
+          font-size: $SmSize;
+          font-weight: $BaseFontWeightBold;
+          span {
+            border-bottom: 1px solid #1f41bb;
+            color: #1f41bb;
           }
         }
 
@@ -86,7 +133,7 @@
       .card-info {
         @include flex-column(nowrap, flex-start, center);
         gap: 6px;
-        
+
         .title {
           color: $PrimaryColor;
           font-size: $SmSize;
@@ -112,6 +159,7 @@
           height: clamp(calc(65 * 0.8px), calc(65 * 100vw / var(--base-width)), calc(65 * 1.2px));
           aspect-ratio: 16/9;
           border-radius: 12px;
+        
           .p-image-preview-mask {
             border-radius: 12px;
             display: block;
@@ -125,10 +173,12 @@
           .perview {
             @include flex-center();
             gap: 5px;
+             
             span {
               color: white;
               font-size: $SmSize;
               font-weight: $BaseFontSemiBoldWeight;
+              
             }
           }
         }
@@ -141,6 +191,42 @@
         font-weight: $BaseFontWeightBold;
         font-size: $MdSize;
       }
+      .card_status {
+        background-color: #d8002708;
+        padding: $XlSize $XlSize4 $XlSize $SmSize;
+        border-radius: $SmSize;
+        position: relative;
+        &::after {
+          position: absolute;
+          content: '';
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          top: 0;
+          right: 0;
+          background-color: #f833571c;
+        }
+        &::before {
+          position: absolute;
+          content: '';
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          top: 33px;
+          right: 0;
+          background-color: #f833571c;
+        }
+        p {
+          color: #ceb9c3;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+        h6 {
+          color: #d80027;
+          font-size: $MdSize2;
+          font-weight: $BaseFontWeightBold;
+        }
+      }
     }
   }
 
@@ -150,11 +236,6 @@
       font-family: 'Regular';
       font-weight: $BaseFontSemiBoldWeight;
     }
-  }
-  .observation-title {
-    color: #32353d;
-    font-size: $MdSize;
-    font-weight: $BaseFontSemiBoldWeight;
   }
 
   .label-item-primary {
