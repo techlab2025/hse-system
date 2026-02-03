@@ -96,7 +96,7 @@ const updateData = () => {
     }
     return true
   })
-  console.log(isThereanyDatainAccidents, "isThereanyDatainAccidents");
+  console.log(Fatalities.value, "Fatalities");
   const params = props.data?.id
     ? new EditHazardParams(
       props.data?.id! ?? 0,
@@ -153,19 +153,27 @@ const updateData = () => {
               item?.text || null,
               item?.infectionTypeId?.id || 0,
               item?.isWorkStopped ? 1 : 0,
-              item?.images.map((el: any) => el?.file) || [],
+              item?.images.map((el: any) => el.file) || [],
             )
           })
           : [],
       deaths:
         Fatalities?.value?.isAnotherMeeting === 1
-          ? [
-            new DethParams(
-              Fatalities?.value?.text || '',
-              Fatalities?.value?.SelectedEmployee || 0,
-              Fatalities?.value?.img || [],
-            ),
-          ]
+          ? Fatalities?.value.DethsData?.map((item: any) => {
+            return new DethParams(
+              item?.employee?.title || '',
+              item?.text || null,
+              item?.employee?.id || 0,
+              item?.images.map((el: any) => el.file) || [],
+            )
+          })
+          // ? [
+          //   new DethParams(
+          //     Fatalities?.value?.text || '',
+          //     Fatalities?.value?.SelectedEmployee || 0,
+          //     Fatalities?.value?.img || [],
+          //   ),
+          // ]
           : [],
       witnesses:
         witnesses?.value?.isAnotherMeeting === 1
@@ -597,7 +605,7 @@ const setRootCause = (data: TitleInterface[]) => {
       ObservationFactoryType != Observation?.AccidentsType &&
       saveStatus == SaveStatusEnum.NotSaved
     ">
-      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
+      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" :reload="false"
         :label="$t('Severity')" id="Severity" :placeholder="$t('Select Severity')" @update:modelValue="setSeverity" />
     </div>
 
@@ -607,7 +615,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved
     ">
       <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')"
+        :reload="false" :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')"
         @update:modelValue="setLikelihood" />
     </div>
 

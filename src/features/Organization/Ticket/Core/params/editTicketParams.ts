@@ -6,9 +6,8 @@ export default class EditTicketParams implements Params {
   id: number
   translation: TranslationsParams
   description: string
-  type: string
-  allIndustries: boolean | null
-  industries: number[]
+  type: number
+  title: string
   image: string
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
@@ -17,17 +16,15 @@ export default class EditTicketParams implements Params {
     id: number,
     translation: TranslationsParams,
     description: string,
-    type: string,
-    allIndustries: boolean | null,
-    industries: number[],
+    type: number,
+    title: string,
     image: string,
   ) {
     this.id = id
     this.translation = translation
     this.description = description
     this.type = type
-    this.allIndustries = allIndustries
-    this.industries = industries
+    this.title = title
     this.image = image
   }
 
@@ -47,8 +44,7 @@ export default class EditTicketParams implements Params {
     data['translations'] = this.translation.toMap()
     data['description'] = this.description
     data['type'] = this.type
-    data['all_industries'] = this.allIndustries ? 1 : 0
-    data['industry_ids'] = this.industries
+    data['title'] = this.title
     data['image'] = this.image
 
     return data

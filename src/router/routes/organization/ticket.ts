@@ -13,27 +13,18 @@ export const ticketRoutes: RouteRecordRaw[] = [
   {
     path: 'ticket/add',
     name: 'Create Ticket',
-    component: () => import('@/views/Organization/Ticket/IndexTicket.vue'),
+    component: () => import('@/views/Organization/Ticket/AddTicket.vue'),
     meta: {
       breadcrumb: 'Create Ticket',
       isSidebar: true,
     },
   },
   {
-    path: 'ticket/:id/edit',
-    name: 'Edit Ticket',
-    component: () => import('@/views/Organization/Ticket/IndexTicket.vue'),
-    meta: {
-      breadcrumb: 'Edit Ticket',
-      isSidebar: true,
-    },
-  },
-  {
     path: 'ticket/:id',
-    name: 'Show Ticket',
-    component: () => import('@/views/Organization/Ticket/IndexTicket.vue'),
+    name: 'History Ticket',
+    component: () => import('@/views/Organization/Ticket/HistoryTicket.vue'),
     meta: {
-      breadcrumb: 'Show Ticket',
+      breadcrumb: 'History Ticket',
       isSidebar: true,
     },
   },

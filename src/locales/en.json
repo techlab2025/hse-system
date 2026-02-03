@@ -1149,6 +1149,11 @@
   "Non":"Non",
   "High":"High",
   "This Hazared caused the project to be halted":"This Hazared caused the project to be halted",
+
   "Root Causes":"Root Causes",
   "Analyze the main reasons behind the event to prevent recurrence":"Analyze the main reasons behind the event to prevent recurrence"
+
+  "type_of_problem":"Type of problem",
+  "Select_ticket_type":"Select Ticket Type"
+
 }

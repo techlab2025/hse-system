@@ -123,6 +123,8 @@ const fetchLang = async (
   }
 }
 
+const title = ref<string>('')
+const description = ref<string>('')
 onMounted(async () => {
   await fetchLang()
 })
@@ -141,19 +143,17 @@ const updateData = () => {
         props.data?.id! ?? 0,
         translationsParams,
         user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        allIndustries.value?.map((item) => item.id),
+        title.value,
         SelectedTicketType.value?.id,
         images.value,
       )
     : new AddTicketParams(
-        translationsParams,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-        allIndustries.value?.map((item) => item.id),
+        images.value.map((el) => el.file),
         SelectedTicketType.value?.id,
-        images.value,
+        title.value,
+        description.value,
       )
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -191,8 +191,10 @@ watch(
 const SelectedTicketType = ref<TitleInterface>()
 const indexTicketTypeController = IndexTicketTypeController.getInstance()
 const ticketTypeParams = new IndexTicketTypeParams('', 0, 10, 0)
+
 const setTicketType = (data: TitleInterface) => {
   SelectedTicketType.value = data
+  // console.log(SelectedTicketType.value, 'SelectedTicketType.value')
   updateData()
 }
 
@@ -205,15 +207,6 @@ const setImages = async (data: File[]) => {
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <!--title  -->
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-  </div>
-
-  <!--ticket type  -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
     <CustomSelectInput
       :modelValue="SelectedTicketType"
       :controller="indexTicketTypeController"
@@ -221,31 +214,24 @@ const setImages = async (data: File[]) => {
       label="Select Ticket Type"
       id="ticket"
       placeholder="Select ticket type"
-      :type="2"
       @update:modelValue="setTicketType"
     />
   </div>
 
-  <!--industry  -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <LangTitleInput
-      label="project_objectives"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
-      field-type="description"
-      type="textarea"
-      :placeholder="`What are the project objectives?`"
-      :required="false"
-    />
+  <div class="col-span-4 md:col-span-4">
+    <div class="input-wrapper">
+      <label for="title">Title</label>
+      <input type="text" id="title" v-model="title" @input="updateData" />
+    </div>
   </div>
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <MultiImagesInput :modelValue="images" @update:modelValue="setImages" />
+  <div class="col-span-4 md:col-span-4">
+    <div class="input-wrapper">
+      <label for="description">description</label>
+      <textarea id="description" v-model="description" @input="updateData" />
+    </div>
+  </div>
+
+  <div class="col-span-4 md:col-span-4">
+    <MultiImagesInput :initialImages="images" @update:images="setImages" />
   </div>
 </template>

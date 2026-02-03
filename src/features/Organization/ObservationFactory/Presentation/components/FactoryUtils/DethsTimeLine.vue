@@ -2,16 +2,11 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
-import DatePicker from 'primevue/datepicker'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
-import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
-import Checkbox from 'primevue/checkbox'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
 const emit = defineEmits(['update:data'])
@@ -22,9 +17,6 @@ const Answers = ref([
   {
     text: ' ',
     employee: new TitleInterface({ id: 0, title: '' }),
-    infectionTypeId: new TitleInterface({ id: 0, title: '' }),
-    employeeName: '',
-    isWorkStopped: false,
     images: [],
   },
 ])
@@ -33,9 +25,6 @@ const addNewAnswer = () => {
   Answers.value.push({
     text: '',
     employee: new TitleInterface({ id: 0, title: '' }),
-    infectionTypeId: new TitleInterface({ id: 0, title: '' }),
-    employeeName: '',
-    isWorkStopped: false,
     images: [],
   })
   UpdateData()
@@ -53,15 +42,6 @@ onMounted(() => {
   emit('update:data', Answers.value)
 })
 
-const UpdateInjury = (item: TitleInterface, index: number) => {
-  console.log(item);
-  Answers.value[index].infectionTypeId = new TitleInterface({ id: item.id, title: item.title })
-}
-
-const isSelectHasContent = ref([])
-
-const indexInjuryController = IndexInjuryController.getInstance()
-const indexInjuryParams = new IndexInjuryParams('', 1, 10, 0)
 
 
 
@@ -69,6 +49,10 @@ const setImages = async (data: string[], index: number) => {
   Answers.value[index].images = typeof data === 'string' ? data : await filesToBase64(data)
   UpdateData()
 }
+
+
+
+const isSelectHasContent = ref([])
 
 
 </script>
@@ -96,13 +80,7 @@ const setImages = async (data: string[], index: number) => {
 
             <!-- timeline-content -->
             <div class=" grid grid-cols-12 gap-2">
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <label for="">{{ $t('text') }}</label>
-                <input type="text" class="input " :placeholder="$t('add your title')" v-model="item.text"
-                  @input="UpdateData">
-              </div>
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-
+              <div class="col-span-6 md:col-span-6 input-wrapper w-full">
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
                   class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
@@ -120,28 +98,17 @@ const setImages = async (data: string[], index: number) => {
                     <input type="text" v-model="item.employee.title" class="input" placeholder="Select Employee">
                   </template>
                 </UpdatedCustomInputSelect>
-
-
-
-
               </div>
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
-                  :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
-                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" />
+              <div class="col-span-6 md:col-span-6 input-wrapper w-full">
+                <label for="deth-text">{{ $t('Text') }}</label>
+                <input type="text" id="deth-text" v-model="item.text" class="input" :placeholder="$t('add your title')"
+                  @input="UpdateData" />
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('upload image') }}</label>
                 <MultiImagesInput :initialImages="item.images" @update:images="setImages($event, index)"
-                  :index="index + 2" />
+                  :index="index + 5" />
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
-                @click="item.isWorkStopped = !item.isWorkStopped; UpdateData()">
-                <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
-                <Checkbox binary disabled :modelValue="item.isWorkStopped" @change="UpdateData" inputId="is_sstoped"
-                  :name="`is_sstoped`" />
-              </div>
-
 
             </div>
           </div>

@@ -31,7 +31,7 @@ export default class InjuryParams implements Params {
     data['note'] = this.note
     data['injury_type_id'] = this.injuryTypeId
     data['is_work_stopped'] = this.isWorkStopped
-    data['image'] = this.images
+    data['files'] = this.images
     return data
   }
 }

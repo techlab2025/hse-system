@@ -50,12 +50,9 @@ export default class AddTicketTypeController extends ControllerInterface<TicketT
         const { user } = useUserStore()
 
         if (!draft)
-          if (router.currentRoute?.value.fullPath.includes('ticket-types')) {
-            await router.push(
-              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-types`,
-            )
-          } else {
-          }
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-type`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

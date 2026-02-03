@@ -5,12 +5,21 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class EditTicketTypeParams implements Params {
   id: number
   translation: TranslationsParams
+  allIndustries: boolean | null
+  industries: number[]
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
   })
-  constructor(id: number, translation: TranslationsParams) {
+  constructor(
+    id: number,
+    translation: TranslationsParams,
+    allIndustries: boolean | null,
+    industries: number[],
+  ) {
     this.id = id
     this.translation = translation
+    this.allIndustries = allIndustries
+    this.industries = industries
   }
 
   toMap(): Record<
@@ -27,6 +36,8 @@ export default class EditTicketTypeParams implements Params {
 
     data['ticket_type_id'] = this.id
     data['translations'] = this.translation.toMap()
+    data['all_industries'] = this.allIndustries ? 1 : 0
+    data['industry_ids'] = this.industries
 
     return data
   }

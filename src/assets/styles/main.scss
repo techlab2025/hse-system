@@ -155,6 +155,9 @@
 // SERIAL
 @use './SerialNumber/serial_imports';
 
+// Ticket
+@use './Ticket/imports_ticket';
+
 // Organization Employee
 // @use './OrganizationEmployee/emp_imports';
 
@@ -288,4 +291,28 @@ body {
 
 .p-multiselect {
   width: 100%;
+}
+
+.ticket-icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  z-index: 99999;
+  cursor: pointer;
+  transition: 0.3s all linear;
+  animation: moveTicketIcon 2s ease-in-out infinite;
+
+  @keyframes moveTicketIcon {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
 }

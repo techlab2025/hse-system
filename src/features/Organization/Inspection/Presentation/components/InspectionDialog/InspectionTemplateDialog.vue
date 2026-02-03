@@ -53,20 +53,27 @@ const GetTemplateId = (data: number) => {
   emit('update:data', selectedTemplates.value || TemplateId.value)
   emit('update:isInLibrary', isInLibrary.value)
   // visible.value = false
+  // ShowTemplate.value = true
 }
+
+const TemplateTitle = ref()
+const isInLibrary = ref()
 
 const clearSelectedTemplate = () => {
   selectedTemplates.value = undefined
   TemplateId.value = undefined
   emit('update:data', selectedTemplates.value || TemplateId.value)
   emit('update:isInLibrary', isInLibrary.value)
-
+  // ShowTemplate.value = false
   visible.value = false
+  TemplateTitle.value = ''
+
 }
 
 const TemplateId = ref()
-const TemplateTitle = ref()
-const isInLibrary = ref()
+
+
+
 const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teamplateTitle: string }) => {
   TemplateId.value = data.templateId
   isInLibrary.value = data.isInLibrary
@@ -74,7 +81,11 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
   emit('update:data', data.templateId)
   emit('update:isInLibrary', data.isInLibrary)
   visible.value = false
+  // ShowTemplate.value = true
+  fetchTemplateItem()
 }
+
+const ShowTemplate = ref(true)
 </script>
 
 <template>
@@ -92,13 +103,14 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
       </button>
 
 
-      <div class="template-header" v-if="selectedTemplates || TemplateTitle">
+      <!-- && ShowTemplate -->
+      <div class="template-header" v-if="(selectedTemplates || TemplateTitle)">
         <button class="delete" @click.prevent="clearSelectedTemplate">
           <DeleteTemplateIcon class="delete-icon" />
         </button>
         <p class="header-title">
           {{
-            selectedTemplateHeader?.title || TemplateTitle
+            TemplateTitle || selectedTemplateHeader?.title
           }}
         </p>
         <img :src="DocumnetHeader" alt="header" />

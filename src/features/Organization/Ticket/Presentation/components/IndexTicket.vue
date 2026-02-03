@@ -31,6 +31,10 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexTicketController from '../controllers/indexTicketController'
 import IndexTicketParams from '../../Core/params/indexTicketParams'
+import DeleteTicketController from '../controllers/deleteTicketController'
+import DeleteTicketParams from '../../Core/params/deleteTicketParams'
+import { StatusEnum } from '../../Core/Enums/statusEnum'
+import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
 
 const { t } = useI18n()
 
@@ -139,6 +143,23 @@ watch(
     fetchTickets()
   },
 )
+
+const getStatusLabel = (status: StatusEnum | undefined) => {
+  switch (status) {
+    case StatusEnum.PENDING:
+      return 'solved'
+    case StatusEnum.OPEN:
+      return 'open'
+    case StatusEnum.SOLVED:
+      return 'solved'
+    case StatusEnum.RESOLVED:
+      return 'solved'
+    case StatusEnum.CLOSED:
+      return 'solved'
+    default:
+      return 'unknown'
+  }
+}
 </script>
 
 <template>
@@ -190,7 +211,58 @@ watch(
   >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive"></div>
+        <div class="tickets-cards-grid-system">
+          <div class="tickets-card" v-for="ticket in state.data" :key="ticket.id">
+            <div class="card-header" :data-status="getStatusLabel(ticket?.status)">
+              <div class="flex items-center gap-3">
+                <h6 :class="getStatusLabel(ticket?.status)">
+                  {{ getStatusLabel(ticket?.status) }}
+                </h6>
+              </div>
+            </div>
+
+            <RouterLink
+              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/${ticket?.id}` : ''}`"
+              class="card-info"
+            >
+              <div class="card-info-txt">
+                <p>
+                  {{ ticket.type || 'Technical' }}
+                  <span>{{ ticket?.category?.name || 'FGt-9' }}</span>
+                </p>
+                <h2>
+                  {{
+                    ticket?.title ||
+                    'Lorem Ipsum is simply dummy text of the printing and typesetting'
+                  }}
+                </h2>
+              </div>
+
+              <MultiImagesDialog :images="ticket?.media || []">
+                <div class="imgs">
+                  <img
+                    v-for="(img, i) in ticket?.media.slice(0, 2)"
+                    :key="i"
+                    :src="img.url"
+                    :class="'img-' + (i + 1)"
+                    alt="static"
+                  />
+                </div>
+              </MultiImagesDialog>
+            </RouterLink>
+
+            <div class="card-footer">
+              <RouterLink
+                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              >
+                <div class="description">
+                  <p>{{ ticket?.description }}</p>
+                </div>
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+
         <Pagination
           :pagination="state.pagination"
           @changePage="handleChangePage"

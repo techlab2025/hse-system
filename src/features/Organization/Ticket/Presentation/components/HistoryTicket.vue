@@ -8,6 +8,7 @@ import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
 import TicketForm from './TicketForm.vue'
 import ShowTicketController from '../controllers/showTicketController'
+import IndexDetails from './Details/IndexDetails.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,7 +18,7 @@ const params = ref<Params | null>(null)
 const showTicketController = ShowTicketController.getInstance()
 const state = ref(showTicketController.state.value)
 const fetchTicketDetails = async () => {
-  const TicketParams = new ShowTicketParams(Number(id))
+  const TicketParams = new ShowTicketParams(Number(id), true)
 
   await showTicketController.showTicket(TicketParams)
 }
@@ -50,14 +51,10 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  {{}}
   <DataStatus :controller="state">
     <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTicket">
-        <TicketForm @update:data="setParams" :data="state.data!" />
-        <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
-        </div>
-      </form>
+      <IndexDetails :data="state.data" />
     </template>
     <template #loader>
       <FormLoader :inputsCount="5" />

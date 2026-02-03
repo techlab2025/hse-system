@@ -20,6 +20,7 @@ import AddRootCausesParams from '../../Core/params/addTicketTypeParams'
 import EditRootCausesParams from '../../Core/params/editTicketTypeParams'
 import type TicketTypeDetailsModel from '../../Data/models/TicketTypeDetailsModel'
 import EditTicketTypeParams from '../../Core/params/editTicketTypeParams'
+import AddTicketTypeParams from '../../Core/params/addTicketTypeParams'
 
 const emit = defineEmits(['update:data', 'close:data'])
 
