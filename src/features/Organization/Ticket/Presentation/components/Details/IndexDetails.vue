@@ -16,6 +16,8 @@ import EmployeeReply from './EmployeeReply.vue'
 import ShowTicketController from '@/features/Organization/Ticket/Presentation/controllers/showTicketController'
 import ShowTicketParams from '../../../Core/params/showTicketParams'
 import type TicketDetailsModel from '../../../Data/models/TicketDetailsModel'
+import CloseTicketDialog from '../Dialog/CloseTicketDialog.vue'
+import { StatusEnum } from '../../../Core/Enums/statusEnum'
 
 const route = useRoute()
 const props = defineProps<{ data: TicketDetailsModel[] }>()
@@ -56,10 +58,15 @@ const props = defineProps<{ data: TicketDetailsModel[] }>()
       </div>
 
       <!-- <div v-for="history in data" :key="history?.id"> -->
-      <!-- <ClientReply v-if="history.userType == UserTypeEnum.CLIENT" :history="history" /> -->
       <ClientReply :history="data" />
+      <EmployeeReply :history="data" />
 
-      <!-- <EmployeeReply :history="history" /> -->
+      <CloseTicketDialog
+        v-if="data.status !== StatusEnum.SOLVED || data.status !== StatusEnum.RESOLVED"
+        @refresh="$emit('refresh')"
+        :ticketId="data?.id"
+      />
+
       <!-- </div> -->
 
       <!-- <CloseTicketDialog v-if="state.data?.status !== StatusEnum.CLOSED" :ticket="state.data" /> -->

@@ -1490,6 +1490,11 @@ class ApiNames {
   public get DeleteTicket() {
     return this.prefix + 'delete_ticket'
   }
+
+  //Replace Ticket
+  public get ReplaceTicket() {
+    return this.prefix + 'create_ticket_reply'
+  }
 }
 
 export { ApiNames }

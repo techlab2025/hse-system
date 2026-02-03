@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import HeaderSection from '@/shared/LayoutComponents/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
 import { ref } from 'vue'
 import ResolveTickeDialog from './ResolveTickeDialog.vue'
 import { useRoute } from 'vue-router'
-import CloseTicketParams from '@/features/Organization/Tickets/Core/params/closeTicketParams'
-import CloseTicketController from '../../../controllers/CloseTicketController'
+import ShowTicketParams from '../../../Core/params/showTicketParams'
+import ShowTicketController from '../../controllers/showTicketController'
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 
 const route = useRoute()
 
-const { ticketId,  } = defineProps<{
+const { ticketId } = defineProps<{
   ticketId?: number
 }>()
 
@@ -20,11 +20,11 @@ const emit = defineEmits<{
 }>()
 
 const closeTicket = () => {
-  const params = new CloseTicketParams({
+  const params = new ShowTicketParams({
     ticketId: ticketId ? ticketId : +route?.params?.ticket_id,
   })
 
-  CloseTicketController.getInstance().closeTicket(params)
+  ShowTicketController.getInstance().closeTicket(params)
 
   emit('refresh')
   visible.value = false
@@ -50,9 +50,7 @@ const closeTicket = () => {
         />
       </template>
 
-      <div
-        class="flex items-center justify-center gap-3"
-      >
+      <div class="flex items-center justify-center gap-3">
         <button class="btn !bg-[#22C197] !text-white w-full" @click="closeTicket">
           {{ $t('close') }}
         </button>

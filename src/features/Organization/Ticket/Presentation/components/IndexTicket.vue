@@ -35,6 +35,7 @@ import DeleteTicketController from '../controllers/deleteTicketController'
 import DeleteTicketParams from '../../Core/params/deleteTicketParams'
 import { StatusEnum } from '../../Core/Enums/statusEnum'
 import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
+import CloseTicketDialog from './Dialog/CloseTicketDialog.vue'
 
 const { t } = useI18n()
 
@@ -147,7 +148,7 @@ watch(
 const getStatusLabel = (status: StatusEnum | undefined) => {
   switch (status) {
     case StatusEnum.PENDING:
-      return 'solved'
+      return 'pending'
     case StatusEnum.OPEN:
       return 'open'
     case StatusEnum.SOLVED:
@@ -220,21 +221,16 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
                 </h6>
               </div>
             </div>
-
             <RouterLink
               :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/${ticket?.id}` : ''}`"
               class="card-info"
             >
               <div class="card-info-txt">
-                <p>
-                  {{ ticket.type || 'Technical' }}
-                  <span>{{ ticket?.category?.name || 'FGt-9' }}</span>
+                <p v-for="type in ticket?.type" :key="type?.id">
+                  {{ type?.title}}
                 </p>
                 <h2>
-                  {{
-                    ticket?.title ||
-                    'Lorem Ipsum is simply dummy text of the printing and typesetting'
-                  }}
+                  {{ ticket?.title }}
                 </h2>
               </div>
 
