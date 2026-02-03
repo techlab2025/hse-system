@@ -9,13 +9,14 @@ import IndexTicketTypeParams from "@/features/Organization/TicketType/Core/param
 import AddTicketParams from "../../../Core/params/addTicketParams";
 import AddTicketController from "../../controllers/addTicketController";
 import { useRouter } from "vue-router";
+import type TitleInterface from "@/base/Data/Models/title_interface";
 // const visible = ref(false);
 const ticketStore = useTicketStore()
 const indexTicketTypeController = IndexTicketTypeController.getInstance()
 const indexTicketTypeParams = new IndexTicketTypeParams("", 1, 10, 0)
 
-const TicketType = ref()
-const setTicketType = (data: any) => {
+const TicketType = ref<TitleInterface>()
+const setTicketType = (data: TitleInterface) => {
   TicketType.value = data
 }
 const description = ref<string>()
@@ -23,8 +24,15 @@ const description = ref<string>()
 const router = useRouter()
 const SubmitTicket = async () => {
   const addTicketController = AddTicketController.getInstance()
-  const addTicketParams = new AddTicketParams(TicketType.value, description.value, ticketStore.capturedImage)
+  const addTicketParams = new AddTicketParams([ticketStore.capturedImage], TicketType.value?.id, null, description.value,)
   const response = await addTicketController.addTicket(addTicketParams, router)
+
+  if (response) {
+    ticketStore.OpenTicketDialog = false
+    ticketStore.capturedImage = null
+    TicketType.value = undefined
+    description.value = ""
+  }
 }
 
 </script>
@@ -49,7 +57,7 @@ const SubmitTicket = async () => {
           <div class="input-wrapper">
             <CustomSelectInput :modelValue="TicketType" :controller="indexTicketTypeController"
               :params="indexTicketTypeParams" :label="$t('type_of_problem')" id="TicketType"
-              :placeholder="$t('Select_ticket_type')" :type="2" @update:modelValue="setTicketType" />
+              :placeholder="$t('Select_ticket_type')" @update:modelValue="setTicketType" />
           </div>
           <div class="input-wrapper">
             <label for="">{{ $t('description') }}</label>
