@@ -4,6 +4,10 @@ import Dialog from 'primevue/dialog'
 import MemberDeleteIcon from '@/shared/icons/MemberDeleteIcon.vue';
 const visible = ref(false)
 const emits = defineEmits(['delete'])
+const DeleteEmployee = () => {
+  emits('delete')
+  visible.value = false
+}
 </script>
 
 <template>
@@ -14,7 +18,7 @@ const emits = defineEmits(['delete'])
       <h4 class="dialog-title">{{ $t('Are you sure') }}</h4>
       <p class="dialog-message">{{ $t('Now you will delete') }}</p>
       <div class="flex w-full btns">
-        <button class="btn btn-primary justify-center mb-sm" @click.prevent="emits('delete')">{{ $t('Delete') }}</button>
+        <button class="btn btn-primary justify-center mb-sm" @click.prevent="DeleteEmployee">{{ $t('Delete') }}</button>
         <button class="btn btn-secondary" @click.prevent="visible = false">{{ $t('Cancel') }}</button>
       </div>
     </template>

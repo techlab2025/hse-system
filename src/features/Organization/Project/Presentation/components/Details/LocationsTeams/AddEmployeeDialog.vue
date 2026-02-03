@@ -75,7 +75,7 @@ const UpdateDate = async () => {
 
     const locationHierarchyEmployeeParams = new LocationHierarchyEmployeeParams(SelectedHierarchy?.value?.id, SelectedEmployee.value.map(e => e.id))
     const params = new AddHierarchyEmployeeParams(route.params.id, [locationHierarchyEmployeeParams])
-    await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
+    await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
     visible.value = false
 
   } catch (error) {
@@ -93,23 +93,23 @@ const AllHeirarchy = computed(() => {
   <button @click.prevent="visible = true" class="add-btn">{{ $t('add_employee') }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection :img="ZoneDialog" :title="$t('Select Employees')"
-        :subtitle="$t('At least 1 Employees required for every location')" />
+      <HeaderSection :img="ZoneDialog" title="Select Employees"
+        subtitle="At least 1 Employees required for every location" />
     </template>
 
     <div class="input-wrapper">
 
       <CustomSelectInput :required="false" :modelValue="SelectedHierarchy"
-        :controller="indexLocationHierarchyController" :params="indexLocationHierarchyEmployeeParams" :label="$t('Hierarchy')"
-        id="Hierarchy" :placeholder="$t('Select Hierarchy')" :static-options="AllHeirarchy" @update:modelValue="setSelectedHierarchy" />
+        :controller="indexLocationHierarchyController" :params="indexLocationHierarchyEmployeeParams" label="Hierarchy"
+        id="Hierarchy" placeholder="Select Hierarchy" @update:modelValue="setSelectedHierarchy" />
     </div>
     <div class="input-wrapper" v-if="SelectedHierarchy">
       <CustomSelectInput :required="false" :modelValue="SelectedEmployee"
-        :controller="indexOrganizatoinEmployeeController" :params="indexOrganizatoinEmployeeParams" :label="$t('Employee')"
-        :type="2" id="Employee" :placeholder="$t('Select Employee')" @update:modelValue="setSelectedEmployee" />
+        :controller="indexOrganizatoinEmployeeController" :params="indexOrganizatoinEmployeeParams" label="Employee"
+        :type="2" id="Employee" placeholder="Select Employee" @update:modelValue="setSelectedEmployee" />
     </div>
 
-    <button class="btn btn-primary w-full" @click.prevent="UpdateDate">{{ $t('Confirm') }}</button>
+    <button class="btn btn-primary w-full" @click.prevent="UpdateDate">Confirm</button>
   </Dialog>
 </template>
 
