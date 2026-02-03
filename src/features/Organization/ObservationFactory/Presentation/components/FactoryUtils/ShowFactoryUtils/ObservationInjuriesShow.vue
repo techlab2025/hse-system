@@ -2,6 +2,7 @@
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import acc from '@/assets/images/acc.png'
 import Injured from '@/shared/icons/injured.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice';
 
 const props = defineProps<{
   data: InjuryDetailsModel[]
@@ -25,11 +26,11 @@ const props = defineProps<{
           <Injured />
           <div class="title">
             <p>{{ $t('infection type ') }}:</p>
-            <h6>{{ injury?.injury_type?.title }}</h6>
+            <h6>{{ wordSlice(injury?.injury_type?.title, 20) }} </h6>
           </div>
         </div>
         <div class="user_note">
-          <p class="note">{{ injury?.note }}</p>
+          <p class="note">{{ wordSlice(injury?.note, 120)}}</p>
           <div class="injury-header-employees">
             <img
               :src="

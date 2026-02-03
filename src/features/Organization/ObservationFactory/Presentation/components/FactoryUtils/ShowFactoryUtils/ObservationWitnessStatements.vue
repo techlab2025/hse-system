@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import people from '@/assets/images/people.png'
+import wordSlice from '@/base/Presentation/utils/word_slice';
 
 const props = defineProps<{
   data: InjuryDetailsModel[]
@@ -35,7 +36,7 @@ const props = defineProps<{
                 {{ witnessStatement?.employee_name || witnessStatement?.organization_employee?.name }}
               </p>
             </div>
-            <p class="employee-note">{{ witnessStatement.note }}</p>
+            <p class="employee-note">{{ wordSlice(witnessStatement?.note, 120) }}</p>
           </div>
         </div>
       </div>
