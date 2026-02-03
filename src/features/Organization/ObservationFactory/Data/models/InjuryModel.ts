@@ -1,3 +1,4 @@
+import type TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
@@ -14,6 +15,7 @@ export default class InjuryDetailsModel {
   public status: number
   public type: number
   public updated_at: string
+  public injury_type?: TitleInterface
 
   constructor(
     id: number,
@@ -28,6 +30,7 @@ export default class InjuryDetailsModel {
     status: number,
     type: number,
     updated_at: string,
+    injury_type?: TitleInterface
   ) {
     this.id = id
     this.title = title
@@ -41,6 +44,7 @@ export default class InjuryDetailsModel {
     this.status = status
     this.type = type
     this.updated_at = updated_at
+    this.injury_type = injury_type
   }
 
   static fromMap(data: any): InjuryDetailsModel {
@@ -57,6 +61,7 @@ export default class InjuryDetailsModel {
       data.status,
       data.type,
       data.updated_at,
+      data.injury_type
     )
   }
 
