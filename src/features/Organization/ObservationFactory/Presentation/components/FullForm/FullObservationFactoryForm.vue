@@ -605,7 +605,7 @@ const setRootCause = (data: TitleInterface[]) => {
       ObservationFactoryType != Observation?.AccidentsType &&
       saveStatus == SaveStatusEnum.NotSaved
     ">
-      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
+      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" :reload="false"
         :label="$t('Severity')" id="Severity" :placeholder="$t('Select Severity')" @update:modelValue="setSeverity" />
     </div>
 
@@ -615,7 +615,7 @@ const setRootCause = (data: TitleInterface[]) => {
       saveStatus == SaveStatusEnum.NotSaved
     ">
       <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')"
+        :reload="false" :label="$t('Likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')"
         @update:modelValue="setLikelihood" />
     </div>
 
