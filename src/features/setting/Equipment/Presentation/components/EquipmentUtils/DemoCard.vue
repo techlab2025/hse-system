@@ -2,9 +2,14 @@
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
 import CertificateImageDialog from '../certificateImageDialog.vue'
-import { useUserStore } from '@/stores/user';
-import { watch } from 'vue';
-
+import { useUserStore } from '@/stores/user'
+import { watch } from 'vue'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
+import RentIcon from '@/shared/icons/RentIcon.vue'
+import Rent from '@/shared/icons/rent.vue'
 const props = withDefaults(
   defineProps<{
     isBreadCramp: boolean
@@ -18,6 +23,12 @@ const props = withDefaults(
     selctedequipment: any
     selectedequipmentType: any
     isForm?: boolean
+    expiredate: string
+    startDate: string
+    EndDate: string
+    rentType: string
+    typerent?: OrganizationTypeEnum
+    deviceStatus?: number
   }>(),
   {
     BreadCramps: () => [],
@@ -44,32 +55,43 @@ const { user } = useUserStore()
 
 <template>
   <div class="demo-card">
-    <div class="texts">
+    <!-- <div class="texts">
       <h5 class="title">{{ cardType }} Card</h5>
       <span class="subtitle">
         Preview only — data shown is illustrative. Confirm to add the equipment
       </span>
-    </div>
+    </div> -->
 
     <div class="sub-card">
       <img v-if="props.image" :src="props.image" alt="demo card" class="demo-img" />
       <img v-else src="@/assets/images/Rectangle 39931.png" alt="demo card" class="demo-img" />
 
       <div class="sub-card-body">
-
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
-          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment" :equipmentType="selectedequipmentType"
-            :BreadCramps="props.BreadCramps" :cardType="cardType" />
-          <CertificateImageDialog :certificateImage="props.certificateImage" />
+          <BreadCrumb
+            :isForm="isForm"
+            :selctedequipment="selctedequipment"
+            :equipmentType="selectedequipmentType"
+            :BreadCramps="props.BreadCramps"
+            :cardType="cardType"
+          />
+          <!-- <CertificateImageDialog :certificateImage="props.certificateImage" /> -->
         </div>
-
-
 
         <h3 class="demo-title">
           {{ wordSlice(selctedequipment[1]?.title, 40) }}
         </h3>
 
+        <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">
+          <h2 class="expire_date">Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span></h2>
+          <div class="date_rent">
+            <p class="rent"><Rent /> <span>Rent</span> |per{{ rentType }}</p>
+            <h6 class="start_date">start date : <span>{{ formatJoinDate(startDate) }}</span></h6>
+          <h6 class="end_date">end date : <span>{{ formatJoinDate(EndDate) }}</span></h6>
+          
+          </div>
+        </div>
         <!-- <div class="inspection">
           <span>{{ $t('inspection date') }}:</span>
           <p class="font-semibold text-[#4B5563]">

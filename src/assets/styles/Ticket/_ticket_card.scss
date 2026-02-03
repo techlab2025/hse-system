@@ -2,243 +2,188 @@
 @use '../mixins/flex' as *;
 @use '../variables' as *;
 
-.tickets {
-  padding: 0 $MdSize;
+.tickets-cards-grid-system {
+  margin-block: $MdSize;
+  display: none;
+  @include grid(
+    3,
+    10px,
+    (
+      1440px: 3,
 
-  .section-header {
+      1024px: 2,
+
+      768px: 1,
+    )
+  );
+  .tickets-card {
+    @include flex-column();
+    gap: $SmSize;
+    padding-bottom: $SmSize;
+    border-radius: $XlSize2;
+    // background: #FCFCFC66;
+    background: #fcfcfc99;
+    border: 2px solid #fbfbfb;
     width: 100%;
-    .info {
-      width: 80%;
+
+    transition: all 0.5s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
     }
-  }
 
-  .tickets-cards-grid-system {
-    margin-block: $MdSize;
-    display: none;
-    @include grid(
-      3,
-      10px,
-      (
-        1440px: 3,
-
-        1024px: 2,
-
-        768px: 1,
-      )
-    );
-    .tickets-card {
-      @include flex-column();
-      gap: $SmSize;
-      padding: $SmSize;
-      border-radius: $XlSize2;
-      background: red;
-      border: 2px solid #fbfbfb;
-      width: 100%;
-
-      transition: all 0.5s ease-in-out;
-
-      &:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transform: translateY(-5px);
+    .card-header {
+      @include flex(row, nowrap, center, center);
+      background-image: linear-gradient(90deg, #fef9f3 0%, #ffffff29 50%, #eeffee 100%);
+      padding: $XsSize2 $XsSize;
+      text-transform: capitalize;
+      border-top-left-radius: $XlSize2;
+      border-top-right-radius: $XlSize2;
+      button {
+        all: unset;
+        color: red;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      h6 {
+        font-family: 'Bold';
       }
 
-      .card-header {
-        @include flex(row, nowrap, space-between, center);
-        background-image: linear-gradient(90deg, #fef9f3 0%, #ffffff29 50%, #eeffee 100%);
-        padding: $XsSize2 $XsSize;
-        text-transform: capitalize;
-        border-radius: $XsSize;
-        button {
-          all: unset;
-          color: red;
-          text-decoration: underline;
-          cursor: pointer;
-        }
+      // Status-based gradient colors
+      &[data-status='solved'] {
+        color: #34c759;
+        background: linear-gradient(90.5deg, #34c7590d -3.82%, #34c75921 52.88%, #eeffee49 98.9%);
+      }
 
-        // Status-based gradient colors
-        &[data-status='solved'] {
-          color: #4caf50;
-          background: linear-gradient(
-            90.5deg,
-            #fef9f3 -3.82%,
-            rgba(255, 255, 255, 0.16) 52.88%,
-            #eeffee 98.9%
-          );
-        }
+      &[data-status='pending'] {
+        color: #ffcc00;
+        background: linear-gradient(90.5deg, #fef9f3 -3.82%, #ffcc000d 52.88%, #ffcc000d 98.9%);
+      }
 
-        &[data-status='pending'] {
-          color: #b2bbc6;
-          background: linear-gradient(
-            90.5deg,
-            #fef9f3 -3.82%,
-            rgba(255, 255, 255, 0.16) 52.88%,
-            #f4f4f6 98.9%
-          );
-        }
+      &[data-status='resolved'] {
+        color: #ef3826;
+        background-image: linear-gradient(
+          90deg,
+          #fef9f3 0%,
+          #ffffff29 50%,
+          rgba(239, 56, 38, 0.2) 100%
+        );
+      }
 
-        &[data-status='resolved'] {
-          color: #ef3826;
-          background-image: linear-gradient(
-            90deg,
-            #fef9f3 0%,
-            #ffffff29 50%,
-            rgba(239, 56, 38, 0.2) 100%
-          );
-        }
+      &[data-status='open'] {
+        color: #6155f5;
+        background: linear-gradient(90.5deg, #6e67b92b -3.82%, #6255f520 98.9%);
+      }
 
-        &[data-status='open'] {
-          color: #a396e9;
-          background: linear-gradient(
-            90.5deg,
-            #fef9f3 -3.82%,
-            rgba(255, 255, 255, 0.16) 52.88%,
-            #f1edfb 98.9%
-          );
-        }
+      &[data-status='closed'] {
+        color: #212a43;
+        background-image: linear-gradient(
+          90deg,
+          #fef9f3 0%,
+          #ffffff29 50%,
+          rgba(33, 42, 67, 0.2) 100%
+        );
+      }
 
-        &[data-status='closed'] {
-          color: #212a43;
-          background-image: linear-gradient(
-            90deg,
-            #fef9f3 0%,
-            #ffffff29 50%,
-            rgba(33, 42, 67, 0.2) 100%
-          );
-        }
+      .code {
+        color: red;
+        font-size: $MdSize;
+        font-family: 'Regular';
+      }
+    }
+    .card-info {
+      @include flex(row, nowrap, center, center);
+      gap: 12px;
+      padding: 0 16px;
+      border-bottom: 1px solid transparent;
+      border-image: repeating-linear-gradient(
+          to right,
+          #e9ebf4 0,
+          #e9ebf4 5px,
+          transparent 10px,
+          transparent 20px
+        )
+        1;
 
-        .code {
-          color: red;
-          font-size: $MdSize;
-          font-family: 'Regular';
-        }
+      .card-info-txt {
+        @include flex(column, wrap, start, start);
+        gap: $XsSize;
 
-        h6 {
-          font-size: $MdSize2;
+        p {
+          font-size: 16px;
           font-family: 'Bold';
+          color: #1f41bb;
+          span {
+            font-size: 12px;
+            font-family: 'Regular';
+          }
         }
-      }
-      .card-info {
-        @include flex-column();
-        gap: $XsSize3;
-        border-bottom: 1px dashed #b2bbc64d;
-        padding: $XsSize 0;
+
         h2 {
-          color: red;
+          color: #1d242d;
           font-size: $XlSize;
           font-family: 'Bold';
           text-wrap: inherit;
           display: -webkit-box;
-          -webkit-line-clamp: 1;
+          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
-          height: calc(var(--line-height) * 1em);
+          height: calc(var(--line-height) * 3em);
           line-height: var(--line-height);
           --line-height: 1.5;
         }
-        .description {
-          @include flex(row, nowrap, start, center);
-          gap: $XsSize4;
-          text-transform: capitalize;
-          p {
-            color: red;
-            font-family: 'Regular';
-            font-size: $MdSize;
-          }
-          h5 {
-            color: red;
-            font-family: 'Bold';
-            font-size: $MdSize;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: calc(var(--line-height) * 2em);
-            line-height: var(--line-height);
-            --line-height: 1.5;
-          }
-        }
       }
-      .card-statics {
-        @include flex(row, wrap, space-between, center);
+      div.imgs {
+        @include flex(row, nowrap, center, center);
+        position: relative;
+        height: calc($XlSize3 + 10px);
+        z-index: 10;
+        img {
+          width: calc($XlSize3 + 15px);
+          height: calc($XlSize3 + 15px);
+          border-radius: $XsSize2;
+          object-fit: cover;
+          border: 2px solid #99999959;
+          background-color: white;
 
-        a {
-          @include flex-column();
-          text-transform: capitalize;
-          h6 {
-            color: red;
-            font-family: 'Regular';
-            font-size: $MdSize;
-          }
-          span {
-            color: red;
-            font-family: 'Bold';
-            font-size: $MdSize;
-            &.attention {
-              color: red;
-            }
-            &.refrence-num {
-              color: red;
-            }
-          }
-        }
-        div.imgs {
-          @include flex(row, nowrap, center, center);
           position: relative;
-          height: calc($XlSize3 + 10px);
-          z-index: 10;
-          img {
-            width: calc($XlSize3 + 5px);
-            height: calc($XlSize3 + 5px);
-            border-radius: $XsSize2;
-            object-fit: cover;
-            border: 2px solid #99999959;
-            background-color: white;
-
-            position: relative;
-            margin-left: -10px;
-            transition: transform 0.6s;
-            &:hover {
-              transform: scale(1.1);
-              z-index: 10;
-            }
-            img:first-child {
-              margin-left: 0;
-            }
+          margin-left: -10px;
+          transition: transform 0.6s;
+          &:hover {
+            transform: scale(1.1);
+            z-index: 10;
+          }
+          img:first-child {
+            margin-left: 0;
           }
         }
       }
-      .card-fotter {
+    }
+
+    .card-footer {
+      @include flex(row, nowrap, start, center);
+      padding: $XsSize2 $XsSize;
+
+      .description {
         @include flex(row, nowrap, start, center);
-        gap: $XsSize2;
-        background-color: #3c58ac0a;
-        padding: $XsSize2 $XsSize;
-        border-radius: $XsSize;
-        .img {
-          max-width: calc($XlSize3 + 10px);
-          img.fotter-img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-        .description-location {
-          h4 {
-            font-family: 'Bold';
-            color: $PrimaryColor;
-            font-size: $MdSize;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: calc(var(--line-height) * 1em);
-            line-height: var(--line-height);
-            --line-height: 1.5;
-            span {
-              color: #3c58ac99;
-            }
-          }
+        gap: $XsSize4;
+        text-transform: capitalize;
+
+        p {
+          color: #909dad;
+          font-family: 'Regular';
+          font-weight: 500;
+          font-size: $MdSize;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: calc(var(--line-height) * 2em);
+          line-height: var(--line-height);
+          --line-height: 1.5;
         }
       }
     }

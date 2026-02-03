@@ -34,6 +34,7 @@ import IndexTicketParams from '../../Core/params/indexTicketParams'
 import DeleteTicketController from '../controllers/deleteTicketController'
 import DeleteTicketParams from '../../Core/params/deleteTicketParams'
 import { StatusEnum } from '../../Core/Enums/statusEnum'
+import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
 
 const { t } = useI18n()
 
@@ -146,7 +147,7 @@ watch(
 const getStatusLabel = (status: StatusEnum | undefined) => {
   switch (status) {
     case StatusEnum.PENDING:
-      return 'pending'
+      return 'solved'
     case StatusEnum.OPEN:
       return 'open'
     case StatusEnum.SOLVED:
@@ -213,73 +214,52 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
         <div class="tickets-cards-grid-system">
           <div class="tickets-card" v-for="ticket in state.data" :key="ticket.id">
             <div class="card-header" :data-status="getStatusLabel(ticket?.status)">
-              <h4 class="code">{{ ticket?.title }}</h4>
               <div class="flex items-center gap-3">
                 <h6 :class="getStatusLabel(ticket?.status)">
                   {{ getStatusLabel(ticket?.status) }}
                 </h6>
-
-                <!-- <CloseTicketDialog
-          v-if="ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED"
-          @refresh="$emit('refresh')"
-          :ticketId="ticket?.id"
-        /> -->
-
-                <RouterLink
-                  v-if="ticket.status == StatusEnum.PENDING"
-                  :to="`/ticket/edit/${ticket?.id}`"
-                  class="pin-mark"
-                >
-                  <span class="text-[#3D4C5E] underline text-md">{{ $t('edit') }}</span>
-                </RouterLink>
               </div>
             </div>
 
             <RouterLink
-              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/${ticket?.id}` : ''}`"
               class="card-info"
             >
-              <h2>{{ ticket?.title }}</h2>
-              <div class="description">
-                <h5>{{ ticket?.description }}</h5>
+              <div class="card-info-txt">
+                <p>
+                  {{ ticket.type || 'Technical' }}
+                  <span>{{ ticket?.category?.name || 'FGt-9' }}</span>
+                </p>
+                <h2>
+                  {{
+                    ticket?.title ||
+                    'Lorem Ipsum is simply dummy text of the printing and typesetting'
+                  }}
+                </h2>
               </div>
-            </RouterLink>
-
-            <div class="card-statics">
-              <RouterLink
-                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
-              >
-                <h6>{{ $t('Refernce number') }}:</h6>
-                <span class="refrence-num">{{ ticket?.project?.projectCode }}</span>
-              </RouterLink>
 
               <MultiImagesDialog :images="ticket?.media || []">
                 <div class="imgs">
                   <img
-                    v-for="(img, i) in ticket?.media?.slice(0, 4)"
+                    v-for="(img, i) in ticket?.media.slice(0, 2)"
                     :key="i"
-                    :src="img?.file"
+                    :src="img.url"
                     :class="'img-' + (i + 1)"
                     alt="static"
                   />
                 </div>
               </MultiImagesDialog>
-            </div>
-
-            <RouterLink
-              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
-              class="card-fotter"
-            >
-              <div class="img">
-                <img :src="footerImg" class="footer-img" alt="footer-img" />
-              </div>
-
-              <div class="description-location">
-                <h4>
-                  <span>{{ $t('Project') }} _ </span> {{ ticket?.project?.title }}
-                </h4>
-              </div>
             </RouterLink>
+
+            <div class="card-footer">
+              <RouterLink
+                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
+              >
+                <div class="description">
+                  <p>{{ ticket?.description }}</p>
+                </div>
+              </RouterLink>
+            </div>
           </div>
         </div>
 

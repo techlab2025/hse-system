@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import UploadImage from '@/shared/icons/UploadImage.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Checkbox from 'primevue/checkbox';
 import RadioButton from 'primevue/radiobutton';
 
 const emit = defineEmits(['update:data'])
-const isUpdloadImage = ref(false);
 const ImageType = ref();
 
 const props = defineProps<{
   IdIndex: number
+  isUpdloadImage: boolean
 }>()
+const isUpdloadImage = ref(props.isUpdloadImage);
 
 const UpdateData = () => {
   if (isUpdloadImage.value) {
@@ -20,6 +21,9 @@ const UpdateData = () => {
     emit("update:data", { isUpdloadImage: isUpdloadImage.value, ImageType: "" })
   }
 }
+watch(() => props.isUpdloadImage, () => {
+  isUpdloadImage.value = props.isUpdloadImage
+})
 
 </script>
 <template>
