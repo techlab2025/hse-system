@@ -137,4 +137,6 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
     <!-- <InvestegationStatics class="col-span-12 md:col-span-3" /> -->
 
   </div>
+
+  
 </template>

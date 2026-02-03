@@ -104,7 +104,7 @@ const updaetAdminStatus = (status) => {
   updateData()
 }
 const updateData = () => {
-  const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy.value.id)
+  const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy?.value?.id)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(

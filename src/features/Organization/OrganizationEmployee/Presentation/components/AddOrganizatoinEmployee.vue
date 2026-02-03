@@ -14,13 +14,13 @@ const params = ref<Params | null>(null)
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
 
 const addOrganizatoinEmployee = async () => {
-  if (params.value) {
+  // if (params.value) {
     console.log(params.value, 'params value')
     await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
       params.value as AddOrganizatoinEmployeeParams,
       router,
     )
-  }
+  // }
 }
 const setParams = (data: Params) => {
   params.value = data
