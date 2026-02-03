@@ -71,7 +71,7 @@ const UpdateImg = (data: string) => {
 }
 </script>
 <template>
-  <div class="observation-genral-info-conatiner" v-if="props.data?.type == Observation.HazardType">
+  <div class="observation-genral-info-conatiner">
     <div class="genral-info-content">
       <div class="observation-genral-info">
         <p
@@ -128,7 +128,7 @@ const UpdateImg = (data: string) => {
         </div>
 
         <div  class="image-container">
-          <div class="" >
+          <div class="" v-if="props?.data?.media && props?.data?.media.length > 0">
             <UploadMultiImage
               @update:images="UpdateImg"
               class="image-upload"
