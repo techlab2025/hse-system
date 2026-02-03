@@ -1148,6 +1148,7 @@
   "near miss":"near miss",
   "Non":"Non",
   "High":"High",
-  "This Hazared caused the project to be halted":"This Hazared caused the project to be halted"
-  
+  "This Hazared caused the project to be halted":"This Hazared caused the project to be halted",
+  "type_of_problem":"Type of problem",
+  "Select_ticket_type":"Select Ticket Type"
 }
