@@ -205,7 +205,7 @@ class ApiNames {
   public get CreateCatalog() {
     return this.prefix + 'create_team'
   }
-    public get IndexCatalog() {
+  public get IndexCatalog() {
     return this.prefix + 'fetch_teams'
   }
   public get ShowCatalog() {
@@ -217,7 +217,6 @@ class ApiNames {
   public get DeleteCatalog() {
     return this.prefix + 'delete_team'
   }
-
 
   // contractor
   public get CreateContractor() {
@@ -1473,6 +1472,23 @@ class ApiNames {
   }
   public get DeleteTicketType() {
     return this.prefix + 'delete_ticket_type'
+  }
+
+  //Ticket
+  public get IndexTicket() {
+    return this.prefix + 'fetch_tickets'
+  }
+  public get CreateTicket() {
+    return this.prefix + 'create_ticket'
+  }
+  public get ShowTicket() {
+    return this.prefix + 'fetch_ticket_details'
+  }
+  public get EditTicket() {
+    return this.prefix + 'update_ticket'
+  }
+  public get DeleteTicket() {
+    return this.prefix + 'delete_ticket'
   }
 }
 

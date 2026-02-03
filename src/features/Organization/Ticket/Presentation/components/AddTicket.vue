@@ -13,6 +13,7 @@ const params = ref<Params | null>(null)
 const addTicketController = AddTicketController.getInstance()
 
 const addTicket = async () => {
+  console.log(params.value, 'params.value')
   await addTicketController.addTicket(params.value as AddTicketParams, router)
   emit('close:data')
 }

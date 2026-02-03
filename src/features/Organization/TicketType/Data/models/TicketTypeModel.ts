@@ -14,6 +14,6 @@ export default class TicketTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): TicketTypeModel {
-    return new TicketTypeModel(data.id, data.title  )
+    return new TicketTypeModel(data.id, data.title)
   }
 }

@@ -29,12 +29,12 @@ export default class AddTicketController extends ControllerInterface<TicketModel
   async addTicket(params: AddTicketParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
+      // params.validate()
 
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<TicketModel> = await this.AddTicketUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -48,12 +48,9 @@ export default class AddTicketController extends ControllerInterface<TicketModel
         const { user } = useUserStore()
 
         if (!draft)
-          if (router.currentRoute?.value.fullPath.includes('tickets')) {
-            await router.push(
-              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/tickets`,
-            )
-          } else {
-          }
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
