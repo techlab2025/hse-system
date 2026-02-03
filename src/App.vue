@@ -17,6 +17,6 @@ const ticketStore = useTicketStore()
   <MainDialog />
   <LoaderDialog />
   <RouterView />
-  <TicketIcon class="ticket-icon" @click="ticketStore.captureScreen" />
-  <TicketDialog />
+  <!-- <TicketIcon class="ticket-icon" @click="ticketStore.captureScreen" /> -->
+  <!-- <TicketDialog /> -->
 </template>

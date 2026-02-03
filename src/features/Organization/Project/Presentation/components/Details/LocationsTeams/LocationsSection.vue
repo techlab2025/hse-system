@@ -70,10 +70,7 @@ const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(id)
   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationHeirarchyEmployeeController.getInstance();
   await deleteProjectLocationTeamEmployeeController.deleteProjectLocationHeirarchyEmployee(deleteProjectLocationTeamEmployeeparams, route)
-
   GetProjectLocationsEmployes()
-
-
 }
 // const DeleteTeamMember = async (id: number) => {
 //   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
@@ -153,8 +150,9 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
                   {{ $t('Employees') }}</p>
               </div>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all employees') }} ({{
-              GetSelectedLocation(location.locationId)?.employees?.length || 0 }})</router-link>
+            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all
+              employees') }} ({{
+                GetSelectedLocation(location.locationId)?.employees?.length || 0 }})</router-link>
           </div>
           <div class="team-members">
             <TeamMemberCard v-for="(member, index) in GetSelectedLocation(location.locationId)?.employees" :key="index"
@@ -172,8 +170,9 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
                 <p class="employee-count">{{ location?.projectLocationTeams?.length }} {{ $t('Teams') }}</p>
               </div>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all teams') }} ({{
-              location?.projectLocationTeams?.length }})</router-link>
+            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">{{ $t('View all teams')
+              }} ({{
+                location?.projectLocationTeams?.length }})</router-link>
           </div>
           <div class="teams">
             <TeamCard :isShow="true" v-for="(team, index) in location.projectLocationTeams" :key="index" :team="team" />
