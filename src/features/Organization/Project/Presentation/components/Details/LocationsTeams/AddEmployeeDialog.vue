@@ -77,6 +77,7 @@ const UpdateDate = async () => {
     const params = new AddHierarchyEmployeeParams(route.params.id, [locationHierarchyEmployeeParams])
     await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
     visible.value = false
+    location.reload()
 
   } catch (error) {
     console.error('Error adding employees:', error)
