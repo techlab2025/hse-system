@@ -22,9 +22,9 @@ import { AllInvestigationTasksRoutes } from './allInvestigationTasks'
 import { EmployeeCertificateRoutes } from './EmployeeCertificate'
 import { serialNumberRoutes } from './SerialNumber'
 import { EmployeeInterfaceRoutes } from './employeeInterface'
-import { ticketTypeRoutes } from './ticketType'
-import { ticketRoutes } from './ticket'
 import { projectProgressRoutes } from './projectProgress'
+import { ticketTypeRoutes } from '../shared/ticketType'
+import { ticketRoutes } from '../shared/ticket'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
