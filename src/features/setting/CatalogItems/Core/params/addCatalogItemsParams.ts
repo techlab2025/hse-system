@@ -1,25 +1,25 @@
 import type Params from '@/base/core/params/params'
-// import AttentionParams from "@/features/users/clients/Core/params/attention_params";
-// import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
-export default class implements Params {
-  id: number
+export default class AddCatalogItemsParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
+  order: number
+  // serial_number: string
 
   constructor(
-    id: number,
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
-
+    order: number,
+    // serial_number: string,
   ) {
-    this.id = id
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
+    this.order = order
+    // this.serial_number = serial_number
   }
 
   toMap(): Record<
@@ -34,11 +34,12 @@ export default class implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['guide_category_id'] = this.id
-    data['translations'] = this.translation.toMap()
-
+    data['translations'] = this.translation.toMap() // tranlations:asd
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
+    data['order'] = this.order
+    // data['serial_number'] = Number(this.serial_number)
+    // if (this.image) data['image'] = this.image
 
     return data
   }

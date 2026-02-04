@@ -2,12 +2,12 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
-import { DeleteCatalogApiService } from '../../Data/apiServices/deleteCatalogApiService'
-// import TeamModel from '../../Data/models/CatalogModel'
-import CatalogModel from '../../Data/models/CatalogModel'
+import {  DeleteCatalogItemsApiService } from '../../Data/apiServices/deleteCatalogItemsApiService'
+// import TeamModel from '../../Data/models/CatalogItemsModel'
+import CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 
-class DeleteCatalogRepo extends RepoInterface<CatalogModel> {
-  private static instance: DeleteCatalogRepo
+class DeleteCatalogItemsRepo extends RepoInterface<CatalogItemsModel> {
+  private static instance: DeleteCatalogItemsRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
@@ -20,18 +20,18 @@ class DeleteCatalogRepo extends RepoInterface<CatalogModel> {
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new DeleteCatalogRepo()
+      this.instance = new DeleteCatalogItemsRepo()
     }
     return this.instance
   }
 
-  onParse(data: any): CatalogModel {
-    return CatalogModel.fromMap(data)
+  onParse(data: any): CatalogItemsModel {
+    return CatalogItemsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {
-    return DeleteCatalogApiService.getInstance()
+    return DeleteCatalogItemsApiService.getInstance()
   }
 }
 
-export { DeleteCatalogRepo }
+export { DeleteCatalogItemsRepo }

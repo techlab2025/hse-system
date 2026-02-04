@@ -4,10 +4,10 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import ShowTeamParams from '../../Core/params/showCatalogParams'
+import ShowTeamParams from '../../Core/params/showCatalogItemsParams'
 import TeamForm from './CatalogForm.vue'
-import EditCatalogController from '../controllers/editCatalogController'
-import ShowCatalogController from '../controllers/showCatalogController'
+import EditCatalogController from '../controllers/editCatalogItemsController'
+import ShowCatalogController from '../controllers/showCatalogItemsController'
 
 const route = useRoute()
 const router = useRouter()
