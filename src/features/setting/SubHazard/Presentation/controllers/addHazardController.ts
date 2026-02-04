@@ -61,10 +61,11 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         const { user } = useUserStore()
 
         const route = useRoute()
-
-        await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
-        )
+        if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
+          )
+        }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

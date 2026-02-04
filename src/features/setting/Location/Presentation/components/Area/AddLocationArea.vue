@@ -16,7 +16,8 @@ const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
   const state = await addLocationController.addLocation(params.value as AddLocationParams, router)
-  if (state?.value) {
+  emit("update:data")
+  if (state?.value && !router.currentRoute.value.fullPath.includes('project-progress')) {
     router.push("/organization/areas")
   }
 }
@@ -32,7 +33,7 @@ const setParams = (data: Params) => {
     <LocationAreaForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">Add</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

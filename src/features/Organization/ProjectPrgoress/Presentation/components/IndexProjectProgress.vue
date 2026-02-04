@@ -29,6 +29,7 @@ import AddAccidentsType from '@/views/Admin/Accidents/AddAccidentsType.vue';
 import AddHazardType from '@/views/Admin/HazardType/AddHazardType.vue';
 import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddHazard.vue';
 import AddEquipmentType from '@/views/Admin/EquipmentType/AddEquipmentType.vue';
+import ProjectProgressLoader from '../supcomponents/ProjectProgressLoader.vue';
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -177,10 +178,10 @@ const routerBack = () => {
         </div>
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <ProjectProgressLoader />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <ProjectProgressLoader />
       </template>
     </DataStatus>
   </div>

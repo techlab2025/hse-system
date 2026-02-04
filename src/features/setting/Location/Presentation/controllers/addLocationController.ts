@@ -59,7 +59,9 @@ export default class AddLocationController extends ControllerInterface<LocationM
 
         const { user } = useUserStore()
         const route = useRoute()
-        await router.push(LocationRouterHandler.LocationRouter(params.type, user, route))
+        if (!router.currentRoute.value.fullPath.includes('project-progress')) {
+          await router.push(LocationRouterHandler.LocationRouter(params.type, user, route))
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

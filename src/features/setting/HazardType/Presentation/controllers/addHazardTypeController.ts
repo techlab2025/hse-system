@@ -51,11 +51,13 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const route = useRoute()
 
-        await router.push(
-          params?.ParentId
-            ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
-            : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
-        )
+        if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
+          await router.push(
+            params?.ParentId
+              ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`
+              : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
+          )
+        }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

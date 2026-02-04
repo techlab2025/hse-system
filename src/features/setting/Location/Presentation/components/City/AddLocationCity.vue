@@ -11,12 +11,12 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
   await addLocationController.addLocation(params.value as AddLocationParams, router)
-
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -28,7 +28,7 @@ const setParams = (data: Params) => {
     <LocationCityForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>
