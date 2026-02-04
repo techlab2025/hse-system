@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from '@/router/types'
 
-export const SubscriptionRoutes: RouteRecordRaw[] = [
+export const CatalogRoutes: RouteRecordRaw[] = [
   {
     path: 'Catalog',
     name: 'Catalog',
