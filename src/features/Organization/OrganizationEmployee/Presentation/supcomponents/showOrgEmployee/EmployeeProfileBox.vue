@@ -57,7 +57,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   const deleteOrganizatoinEmployeeParams = new DeleteOrganizatoinEmployeeParams(id)
   await DeleteOrganizatoinEmployeeController.getInstance().deleteOrganizatoinEmployee(
     deleteOrganizatoinEmployeeParams,
-    router
+    router,
   )
   // await fetchOrganizatoinEmployee()
 }
@@ -75,12 +75,14 @@ const deleteOrganizatoinEmployee = async (id: number) => {
           <span class="employee-position employee-serial text-2xl">{{ state?.serial_name }}</span>
 
           <div class="employee-position">
-            {{state?.showHierarchy?.map((el) => el.title).join(' - ')}}
+            {{ state?.showHierarchy?.map((el) => el.title).join(' - ') }}
           </div>
           <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
         </div>
-        <DropList :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
-          @delete="deleteOrganizatoinEmployee(state?.id)" />
+        <DropList
+          :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
+          @delete="deleteOrganizatoinEmployee(state?.id)"
+        />
       </div>
       <div class="all-info-row">
         <div class="all-info-row-item">
