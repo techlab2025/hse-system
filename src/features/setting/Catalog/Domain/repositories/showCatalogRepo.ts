@@ -2,9 +2,10 @@ import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import ShowLangModel from '@/features/setting/languages/Data/models/langDetailsModel'
 import { ShowCatalogApiService } from '../../Data/apiServices/showCatalogApiService'
-import TeamDetailsModel from '../../Data/models/CatalogDetailsModel'
+// import TeamDetailsModel from '../../Data/models/CatalogDetailsModel'
+import CatalogDetailsModel from '../../Data/models/CatalogDetailsModel'
 
-class ShowCatalogRepo extends RepoInterface<TeamDetailsModel> {
+class ShowCatalogRepo extends RepoInterface<CatalogDetailsModel> {
   private static instance: ShowCatalogRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -19,8 +20,8 @@ class ShowCatalogRepo extends RepoInterface<TeamDetailsModel> {
     return this.instance
   }
 
-  onParse(data: any): TeamDetailsModel {
-    return TeamDetailsModel.fromMap(data)
+  onParse(data: any): CatalogDetailsModel {
+    return CatalogDetailsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {

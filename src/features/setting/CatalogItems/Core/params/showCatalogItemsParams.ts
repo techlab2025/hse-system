@@ -1,6 +1,6 @@
 import type Params from '@/base/core/params/params'
 
-export default class ShowCatalogParams implements Params {
+export default class ShowCatalogItemsParams implements Params {
   id: number
 
   constructor(id: number) {
@@ -9,7 +9,7 @@ export default class ShowCatalogParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['guide_category_id'] = this.id
+    data['header_id'] = this.id
     return data
   }
 }

@@ -218,6 +218,23 @@ class ApiNames {
     return this.prefix + 'delete_guide_category'
   }
 
+   // Catalog Items
+  public get CreateCatalogItems() {
+    return this.prefix + 'create_guide_category'
+  }
+  public get IndexCatalogItems() {
+    return this.prefix + 'fetch_guide_categories'
+  }
+  public get ShowCatalogItems() {
+    return this.prefix + 'fetch_guide_category_details'
+  }
+  public get EditCatalogItems() {
+    return this.prefix + 'update_guide_category'
+  }
+  public get DeleteCatalogItems() {
+    return this.prefix + 'delete_guide_category'
+  }
+
   // contractor
   public get CreateContractor() {
     return this.prefix + 'create_contractor'
