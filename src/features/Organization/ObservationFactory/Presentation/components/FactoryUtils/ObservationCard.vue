@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum';
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum';
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
 
@@ -18,6 +20,19 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
       return 'Unknown'
   }
 }
+
+const GetHeader = (value: number) => {
+  return Observation[value] == 'ObservationType'
+    ? 'Observation'
+    : Observation[value] == 'HazardType'
+      ? 'Hazard'
+      : 'incident'
+}
+
+const GetStatus = (status: ActionStatusEnum) => {
+  return ActionStatusEnum[status]
+}
+
 </script>
 <template>
   <div class="observation-card">
@@ -37,7 +52,9 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
           <h6 class="label-item-secondary" v-if="data?.zoon?.title">
             {{ $t('Zone') }} : <span>{{ data?.zoon?.title }}</span>
           </h6>
-          <p class="label-item-primary">{{ $t('incident type') }} : <span>{{ data?.typeModel?.title }}</span></p>
+          <p class="label-item-primary">{{ $t(`${GetHeader(data.type)} Type`) }} : <span>{{
+            data?.typeModel?.title
+              }}</span></p>
           <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
         </div>
         <!-- <div class="card-details">
@@ -49,11 +66,11 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
           </div>
         </div> -->
       </div>
-      <div class="card_status">
+      <div class="card_status" v-if="data?.type != Observation.ObservationType && data?.actionStatus">
         <p>{{ $t('status') }}</p>
-        <h6>{{ $t('unsolved') }}</h6>
+        <h6>{{ $t(`${GetStatus(data?.actionStatus)}`) }}</h6>
       </div>
-      
+
       <!-- if we want add imge -->
       <!-- <div class="observer-container" v-if="data?.observer.name">
         <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" width="30" height="30" />

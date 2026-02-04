@@ -135,20 +135,12 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchObjectivesType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchObjectivesType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder
-        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
-      >
+      <permission-builder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]">
         <router-link :to="`/organization/objectives/add`" class="btn btn-primary">
           {{ $t('Add_Objectives') }}
         </router-link>
@@ -156,16 +148,14 @@ watch(
     </div>
   </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.OBJECTIVE_ORG_ALL,
-      PermissionsEnum.OBJECTIVE_ORG_DELETE,
-      PermissionsEnum.OBJECTIVE_ORG_FETCH,
-      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-      PermissionsEnum.OBJECTIVE_ORG_CREATE,
-    ]"
-  >
+  <permission-builder :code="[
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.OBJECTIVE_ORG_ALL,
+    PermissionsEnum.OBJECTIVE_ORG_DELETE,
+    PermissionsEnum.OBJECTIVE_ORG_FETCH,
+    PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+    PermissionsEnum.OBJECTIVE_ORG_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -181,27 +171,19 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/objectives/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/organization/objectives/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item?.title) }}</td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteObjectives)"
-                    @delete="deleteObjectives(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteObjectives)" @delete="deleteObjectives(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -210,28 +192,20 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/organization/Objectives/add`"
-          addText="Add Objectives"
+        <DataEmpty :link="`/organization/Objectives/add`" addText="Add Objectives"
           description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Objectives"
-        />
+          title="..ops! You have No Objectives" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/organization/objectives/add`"
-          addText="Add Objectives"
+        <DataFailed :link="`/organization/objectives/add`" addText="Add Objectives"
           description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Objectives"
-        />
+          title="..ops! You have No Objectives" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

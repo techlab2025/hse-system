@@ -58,7 +58,7 @@ const fetchAdmin = async (
 
 onMounted(() => {
   fetchAdmin()
-}) 
+})
 
 const searchAdmin = debounce(() => {
   fetchAdmin(word.value)
@@ -132,16 +132,10 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchAdmin())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchAdmin"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchAdmin" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ADMIN_CREATE]">
         <router-link to="/admin/admins/add" class="btn btn-primary">
@@ -151,16 +145,14 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ADMIN_ALL,
-      PermissionsEnum.ADMIN_DELETE,
-      PermissionsEnum.ADMIN_FETCH,
-      PermissionsEnum.ADMIN_UPDATE,
-      PermissionsEnum.ADMIN_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ADMIN_ALL,
+    PermissionsEnum.ADMIN_DELETE,
+    PermissionsEnum.ADMIN_FETCH,
+    PermissionsEnum.ADMIN_UPDATE,
+    PermissionsEnum.ADMIN_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -198,20 +190,13 @@ watch(
                   <!--                  @AdminChangeStatus="fetchAdmin"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteAdmin)"
-                    @delete="deleteAdmin(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteAdmin)" @delete="deleteAdmin(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -220,28 +205,20 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/admins/add`"
-          addText="Add Admin"
+        <DataEmpty :link="`/admin/admins/add`" addText="Add Admin"
           description="Sorry .. You have no Admin .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Admin"
-        />
+          title="..ops! You have No Admin" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/admins/add`"
-          addText="Add Admin"
+        <DataFailed :link="`/admin/admins/add`" addText="Add Admin"
           description="Sorry .. You have no Admin .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Admin"
-        />
+          title="..ops! You have No Admin" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Admin .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Admin .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

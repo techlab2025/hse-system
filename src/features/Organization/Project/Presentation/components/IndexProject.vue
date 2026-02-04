@@ -148,8 +148,8 @@ watch(
       <input v-model="word" :placeholder="`${t('search')}`" class="input" type="text" @input="searchProject" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" />
-      <ExportPdf /> -->
+      <!-- <ExportExcel :data="state.data" /> -->
+      <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]">
         <router-link to="/organization/project/add" class="btn btn-primary ">
           {{ $t('Add_Project') }}

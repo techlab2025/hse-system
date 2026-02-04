@@ -140,7 +140,7 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchBlog" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/blog/add" class="btn btn-primary">
@@ -150,16 +150,14 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.EQUIPMENT_TYPE_ALL,
+    PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+    PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+    PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+    PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -187,18 +185,13 @@ watch(
                 </td>
 
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.BLOG_ALL,
-                      PermissionsEnum.BLOG_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusBlog(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.BLOG_ALL,
+                    PermissionsEnum.BLOG_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.is_active === 1" binary
+                      @update:model-value="changeStatusBlog(item.id)" />
                   </PermissionBuilder>
                 </td>
 
@@ -209,20 +202,13 @@ watch(
                   <!--                  @BlogChangeStatus="fetchBlog"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteBlog)"
-                    @delete="deleteBlog(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteBlog)" @delete="deleteBlog(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -231,28 +217,20 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/blog/add`"
-          addText="Add blog"
+        <DataEmpty :link="`/admin/blog/add`" addText="Add blog"
           description="Sorry .. You have no Blog .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Blog"
-        />
+          title="..ops! You have No Blog" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/blog/add`"
-          addText="Add Blog"
+        <DataFailed :link="`/admin/blog/add`" addText="Add Blog"
           description="Sorry .. You have no Blog .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Blog"
-        />
+          title="..ops! You have No Blog" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Blog .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Blog .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

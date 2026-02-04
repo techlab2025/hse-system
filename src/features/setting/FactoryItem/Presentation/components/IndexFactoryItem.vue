@@ -155,7 +155,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchFactory" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,

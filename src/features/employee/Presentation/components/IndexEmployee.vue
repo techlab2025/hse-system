@@ -166,45 +166,33 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchEmployeeType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchEmployeeType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEmployeeType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
-          class="btn btn-primary"
-        >
+      <permission-builder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.EQUIPMENT_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
+          class="btn btn-primary">
           {{ $t('Add_Employee') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.EQUIPMENT_DELETE,
-      PermissionsEnum.EQUIPMENT_FETCH,
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.EQUIPMENT_CREATE,
-    ]"
-  >
+  <permission-builder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.EQUIPMENT_ALL,
+    PermissionsEnum.EQUIPMENT_DELETE,
+    PermissionsEnum.EQUIPMENT_FETCH,
+    PermissionsEnum.EQUIPMENT_UPDATE,
+    PermissionsEnum.EQUIPMENT_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -225,8 +213,8 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
-                    >{{ index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`">{{
+                    index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -249,20 +237,13 @@ watch(
                   <!--                  @EmployeeTypeChangeStatus="fetchEmployeeType"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteEmployee)"
-                    @delete="deleteEmployee(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteEmployee)" @delete="deleteEmployee(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -271,28 +252,22 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
+        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
           addText="Add EmployeeType"
           description="Sorry .. You have no EmployeeTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeTypes"
-        />
+          title="..ops! You have No EmployeeTypes" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
+        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
           addText="Add EmployeeType"
           description="Sorry .. You have no EmployeeType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EmployeeTypes"
-        />
+          title="..ops! You have No EmployeeTypes" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no EmployeeType .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no EmployeeType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

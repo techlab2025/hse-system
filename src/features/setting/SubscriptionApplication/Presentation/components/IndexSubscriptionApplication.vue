@@ -164,7 +164,7 @@ const GetProjectStatus = (status: number) => {
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchSubscriptionApplication" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> 
       <ExportPdf />
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
@@ -212,9 +212,9 @@ const GetProjectStatus = (status: number) => {
                   wordSlice(item?.status_name) }}</td>
                 <td class="flex gap-2 " v-if="item?.request_status === SubscriptionStatusEnum.PENDING">
                   <button class="btn btn-primary" @click="approveSubscriptionApplication(item.id)">{{ $t('approved')
-                    }}</button>
+                  }}</button>
                   <button class="btn btn-secondary" @click="rejectSubscriptionApplication(item.id)">{{ $t('reject')
-                    }}</button>
+                  }}</button>
                 </td>
 
               </tr>

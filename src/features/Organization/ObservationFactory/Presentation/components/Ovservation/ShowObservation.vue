@@ -65,7 +65,7 @@ const GetHeader = (value: number) => {
       <div class="show-observation-container top-card">
         <ObservationCard :data="state.data" />
       </div>
-      <div class="show-observation-container">
+      <div class="show-observation-container" v-if="state.data?.type != Observation.ObservationType">
 
         <!-- <HeaderPage :title="`${GetHeader(state.data?.type)}`"
           :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" /> -->

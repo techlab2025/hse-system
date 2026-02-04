@@ -138,7 +138,7 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchPartner" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
         <router-link to="/organization/partner/add" class="btn btn-primary">

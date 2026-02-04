@@ -132,20 +132,12 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchPowerFull())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchPowerFull"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchPowerFull" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.POWERFUL_FEATURE_CREATE]"
-      >
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.POWERFUL_FEATURE_CREATE]">
         <router-link to="/admin/power-full/add" class="btn btn-primary">
           {{ $t('Add_PowerFull') }}
         </router-link>
@@ -153,16 +145,14 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.POWERFUL_FEATURE_ALL,
-      PermissionsEnum.POWERFUL_FEATURE_DELETE,
-      PermissionsEnum.POWERFUL_FEATURE_FETCH,
-      PermissionsEnum.POWERFUL_FEATURE_UPDATE,
-      PermissionsEnum.POWERFUL_FEATURE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.POWERFUL_FEATURE_ALL,
+    PermissionsEnum.POWERFUL_FEATURE_DELETE,
+    PermissionsEnum.POWERFUL_FEATURE_FETCH,
+    PermissionsEnum.POWERFUL_FEATURE_UPDATE,
+    PermissionsEnum.POWERFUL_FEATURE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -190,36 +180,24 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.POWERFUL_FEATURE_ALL,
-                      PermissionsEnum.POWERFUL_FEATURE_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusPowerFull(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.POWERFUL_FEATURE_ALL,
+                    PermissionsEnum.POWERFUL_FEATURE_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.is_active === 1" binary
+                      @update:model-value="changeStatusPowerFull(item.id)" />
                   </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deletePowerFull)"
-                    @delete="deletePowerFull(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deletePowerFull)" @delete="deletePowerFull(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -228,28 +206,20 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/power-full/add`"
-          addText="Add PowerFull"
+        <DataEmpty :link="`/admin/power-full/add`" addText="Add PowerFull"
           description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No PowerFull"
-        />
+          title="..ops! You have No PowerFull" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/power-full/add`"
-          addText="Add PowerFull"
+        <DataFailed :link="`/admin/power-full/add`" addText="Add PowerFull"
           description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No PowerFull"
-        />
+          title="..ops! You have No PowerFull" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

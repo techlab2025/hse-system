@@ -141,16 +141,10 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchProjectType())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchProjectType"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchProjectType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_TYPE_CREATE]">
         <router-link to="/admin/project-type/add" class="btn btn-primary">
@@ -160,16 +154,14 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.PROJECT_TYPE_ALL,
-      PermissionsEnum.PROJECT_TYPE_DELETE,
-      PermissionsEnum.PROJECT_TYPE_FETCH,
-      PermissionsEnum.PROJECT_TYPE_UPDATE,
-      PermissionsEnum.PROJECT_TYPE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.PROJECT_TYPE_ALL,
+    PermissionsEnum.PROJECT_TYPE_DELETE,
+    PermissionsEnum.PROJECT_TYPE_FETCH,
+    PermissionsEnum.PROJECT_TYPE_UPDATE,
+    PermissionsEnum.PROJECT_TYPE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -187,7 +179,7 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/Project-type/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -211,20 +203,13 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                   <!--                  @ProjectTypeChangeStatus="fetchProjectType"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteProjectType)"
-                    @delete="deleteProjectType(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteProjectType)" @delete="deleteProjectType(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -233,28 +218,20 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/add/ProjectType`"
-          addText="Add ProjectType"
+        <DataEmpty :link="`/add/ProjectType`" addText="Add ProjectType"
           description="Sorry .. You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages"
-        />
+          title="..ops! You have No ProjectTypeuages" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/add/ProjectType`"
-          addText="Add ProjectType"
+        <DataFailed :link="`/add/ProjectType`" addText="Add ProjectType"
           description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages"
-        />
+          title="..ops! You have No ProjectTypeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

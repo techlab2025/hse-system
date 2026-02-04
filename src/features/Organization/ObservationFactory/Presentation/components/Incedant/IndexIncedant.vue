@@ -252,7 +252,7 @@ const ShowDetails = ref<number[]>([])
             <div class="table-responsive">
               <div class="index-table-card-container">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                  <router-link class="w-full" :to="`observation/show/${item?.id}`">
+                  <router-link class="w-full" :to="`/organization/equipment-mangement/incedant/show/${item?.id}`">
 
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                       <div class="header-container">
