@@ -161,7 +161,7 @@
 @use './projectProgress/imports_project_progress';
 
 // Organization Employee
-@use './OrganizationEmployee/emp_imports';
+@use './organizationEmployee/emp_imports';
 
 // Employee Interface
 
@@ -169,7 +169,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y mandatory; 
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
