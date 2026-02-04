@@ -8,7 +8,7 @@ import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params
 import type Params from '@/base/core/params/params'
 
 const router = useRouter()
-const emit = defineEmits(['close:data'])
+const emit = defineEmits(['close:data', "update:data"])
 const params = ref<Params | null>(null)
 
 const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
@@ -16,6 +16,7 @@ const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
 const addEquipmentType = async () => {
   await addEquipmentTypeController.addEquipmentType(params.value as AddEquipmentTypeParams, router)
   emit('close:data')
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -28,7 +29,7 @@ const setParams = (data: Params) => {
     <EquipmentTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full">Add</button>
     </div>
   </form>
 </template>

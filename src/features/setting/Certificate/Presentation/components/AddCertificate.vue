@@ -9,11 +9,12 @@ import AddCertificateController from '../controllers/addCertificateController'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addCertificateController = AddCertificateController.getInstance()
 
 const addCertificate = async () => {
   await addCertificateController.addCertificate(params.value as AddCertificateParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -25,7 +26,7 @@ const setParams = (data: Params) => {
     <CertificateForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('add') }}</button>
     </div>
   </form>
 </template>
