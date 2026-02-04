@@ -21,7 +21,7 @@ const { user } = useUserStore()
 const addTemplate = async () => {
   console.log(params.value, 'Add params')
   const state = await addTemplateController.addTemplate(params.value as AddTemplateParams, router)
-  if (state.value?.data) {
+  if (state.value?.data && !router.currentRoute.value?.fullPath.includes('project-progress')) {
     router.push(
       `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add/${state.value.data?.id}`,
     )
@@ -38,7 +38,7 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTemplate">
     <TemplateForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">{{ $t('add') }}</button>
     </div>
 
   </form>

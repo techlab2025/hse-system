@@ -133,6 +133,11 @@ const SetCountrySelection = (data: TitleInterface) => {
 const SelectedState = ref<TitleInterface>()
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
+  console.log(SelectedState.value, "SelectedState")
+  if (SelectedState.value == null) {
+    SelectedCity.value = null
+    SelectedArea.value = null
+  }
   indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, [
     data.id,
   ])
@@ -145,6 +150,7 @@ const SetCitySelection = (data: TitleInterface) => {
   indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, [
     data.id,
   ])
+  console.log(SelectedCity.value, "SelectedCity")
   updateData()
 }
 
@@ -206,9 +212,9 @@ const fields = ref([
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity" :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams" :label="$t('Location')" id="Area" :placeholder="$t('Select Location')"
-      @update:modelValue="SetAreaSelection" />
+    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity && SelectedState && SelectedCountry"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('Location')" id="Area"
+      :placeholder="$t('Select Location')" @update:modelValue="SetAreaSelection" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

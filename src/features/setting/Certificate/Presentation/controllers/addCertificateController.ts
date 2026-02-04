@@ -28,11 +28,10 @@ export default class AddCertificateController extends ControllerInterface<Certif
   async addCertificate(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
 
-    const { user } = useUserStore();
+    const { user } = useUserStore()
 
     try {
-      const dataState: DataState<CertificateModel> =
-        await this.AddCertificateUseCase.call(params)
+      const dataState: DataState<CertificateModel> = await this.AddCertificateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -41,7 +40,12 @@ export default class AddCertificateController extends ControllerInterface<Certif
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate`)
+        if (!router.currentRoute.value?.fullPath.includes('project-progress')) {
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate`,
+            )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
