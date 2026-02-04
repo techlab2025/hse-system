@@ -139,20 +139,12 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
       <span class="icon-remove" @click="((word = ''), searchSystemRiskManagement())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchSystemRiskManagement"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchSystemRiskManagement" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_FEATURE_CREATE]"
-      >
+      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_FEATURE_CREATE]">
         <router-link to="/admin/system-risk-management/add" class="btn btn-primary">
           {{ $t('Add_System_Risk_Management') }}
         </router-link>
@@ -160,16 +152,14 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
-      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_FETCH,
-      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_DELETE,
-      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_UPDATE,
-      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_FETCH,
+    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_DELETE,
+    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_UPDATE,
+    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -188,8 +178,7 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/about-us-features/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/admin/about-us-features/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="title">{{ wordSlice(item.title) || '___' }}</td>
@@ -199,36 +188,25 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
-                      PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusSystemRiskManagement(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+                    PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.is_active === 1" binary
+                      @update:model-value="changeStatusSystemRiskManagement(item.id)" />
                   </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteSystemRiskManagement)"
-                    @delete="deleteSystemRiskManagement(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteSystemRiskManagement)"
+                    @delete="deleteSystemRiskManagement(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -237,28 +215,20 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/about-us-features/add`"
-          addText="Add SystemRiskManagement"
+        <DataEmpty :link="`/admin/about-us-features/add`" addText="Add SystemRiskManagement"
           description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemRiskManagement"
-        />
+          title="..ops! You have No SystemRiskManagement" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/about-us-features/add`"
-          addText="Add SystemRiskManagement"
+        <DataFailed :link="`/admin/about-us-features/add`" addText="Add SystemRiskManagement"
           description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemRiskManagement"
-        />
+          title="..ops! You have No SystemRiskManagement" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

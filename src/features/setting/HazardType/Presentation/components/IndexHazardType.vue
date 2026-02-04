@@ -201,7 +201,7 @@ watch(() => route.params.parent_id, (newVal) => {
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,

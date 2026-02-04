@@ -126,7 +126,7 @@ watch(
       <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchRole" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]">
         <router-link :to="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/Role/add' : '/organization/Role/add'"

@@ -117,7 +117,7 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2" >
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchScope())">
@@ -126,7 +126,7 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchScope" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
         <router-link :to="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"

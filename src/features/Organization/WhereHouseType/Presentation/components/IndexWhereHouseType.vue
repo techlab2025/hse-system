@@ -91,7 +91,7 @@ const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
       PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-    ],  
+    ],
   },
 
   {
@@ -116,7 +116,7 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4" >
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
 
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
@@ -126,7 +126,7 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchWhereHouseType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <router-link to="/organization/where-house-type/add" class="btn btn-primary">

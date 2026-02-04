@@ -147,16 +147,10 @@ const changeStatusCategory = async (id: number) => {
       <span class="icon-remove" @click="((word = ''), searchCategory())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchCategory"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCategory" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-     <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.EQUIPMENT_TYPE_CREATE]">
         <router-link to="/admin/category/add" class="btn btn-primary">
@@ -166,16 +160,14 @@ const changeStatusCategory = async (id: number) => {
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.EQUIPMENT_TYPE_ALL,
+    PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+    PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+    PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+    PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -192,7 +184,7 @@ const changeStatusCategory = async (id: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/admin/Category/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -202,18 +194,13 @@ const changeStatusCategory = async (id: number) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.isActive === 1"
-                      binary
-                      @update:model-value="changeStatusCategory(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                    PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.isActive === 1" binary
+                      @update:model-value="changeStatusCategory(item.id)" />
                   </PermissionBuilder>
                 </td>
                 <td data-label="Actions">
@@ -223,20 +210,13 @@ const changeStatusCategory = async (id: number) => {
                   <!--                  @CategoryChangeStatus="fetchCategory"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteCategory)"
-                    @delete="deleteCategory(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteCategory)" @delete="deleteCategory(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -245,28 +225,20 @@ const changeStatusCategory = async (id: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/category/add`"
-          addText="Add category"
+        <DataEmpty :link="`/admin/category/add`" addText="Add category"
           description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Category"
-        />
+          title="..ops! You have No Category" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/category/add`"
-          addText="Add Category"
+        <DataFailed :link="`/admin/category/add`" addText="Add Category"
           description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Category"
-        />
+          title="..ops! You have No Category" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Category .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

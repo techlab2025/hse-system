@@ -126,7 +126,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <router-link to="/admin/industry/add" class="btn btn-primary">
         {{ $t('Add_Industry') }}
@@ -134,15 +134,13 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.LANGUAGE_ALL,
-      PermissionsEnum.LANGUAGE_FETCH,
-      PermissionsEnum.LANGUAGE_UPDATE,
-      PermissionsEnum.LANGUAGE_DELETE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LANGUAGE_ALL,
+    PermissionsEnum.LANGUAGE_FETCH,
+    PermissionsEnum.LANGUAGE_UPDATE,
+    PermissionsEnum.LANGUAGE_DELETE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -156,7 +154,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in state.data" :key="item.id">
+              <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
@@ -169,20 +167,13 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                   <!--                  @LangChangeStatus="fetchLang"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteLang)"
-                    @delete="deleteLang(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteLang)" @delete="deleteLang(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -191,28 +182,20 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/industry/add`"
-          addText="Add Lang"
+        <DataEmpty :link="`/industry/add`" addText="Add Lang"
           description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages"
-        />
+          title="..ops! You have No languages" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/industry/add`"
-          addText="Add Lang"
+        <DataFailed :link="`/industry/add`" addText="Add Lang"
           description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages"
-        />
+          title="..ops! You have No languages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

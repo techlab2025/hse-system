@@ -30,4 +30,15 @@ export const IncedantRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
+  {
+    path: 'incedant/show/:id',
+    name: 'Show Incedant',
+    component: () =>
+      import('@/views/Organization/ObservationFactory/Observation/ShowObservation.vue'),
+    meta: {
+      breadcrumb: 'Show incident',
+      parent: 'Incedant',
+      isSidebar: false,
+    },
+  },
 ]

@@ -132,7 +132,7 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
     </div>
     <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
       <div class="col-span-2 flex justify-end gap-2">
-        <ExportExcel :data="state.data" />
+        <!-- <ExportExcel :data="state.data" /> -->
         <ExportPdf />
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/accidents-type/add`" class="btn btn-primary">

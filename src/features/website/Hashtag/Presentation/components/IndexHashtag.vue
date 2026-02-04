@@ -147,16 +147,10 @@ const changeStatusHashtag = async (id: number) => {
       <span class="icon-remove" @click="((word = ''), searchHashtag())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchHashtag"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHashtag" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.HASHTAG_CREATE]">
         <router-link to="/admin/hashtag/add" class="btn btn-primary">
@@ -166,16 +160,14 @@ const changeStatusHashtag = async (id: number) => {
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.HASHTAG_ALL,
-      PermissionsEnum.HASHTAG_DELETE,
-      PermissionsEnum.HASHTAG_FETCH,
-      PermissionsEnum.HASHTAG_UPDATE,
-      PermissionsEnum.HASHTAG_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.HASHTAG_ALL,
+    PermissionsEnum.HASHTAG_DELETE,
+    PermissionsEnum.HASHTAG_FETCH,
+    PermissionsEnum.HASHTAG_UPDATE,
+    PermissionsEnum.HASHTAG_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -202,18 +194,13 @@ const changeStatusHashtag = async (id: number) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.isActive === 1"
-                      binary
-                      @update:model-value="changeStatusHashtag(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                    PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.isActive === 1" binary
+                      @update:model-value="changeStatusHashtag(item.id)" />
                   </PermissionBuilder>
                 </td>
                 <td data-label="Actions">
@@ -223,20 +210,13 @@ const changeStatusHashtag = async (id: number) => {
                   <!--                  @HashtagChangeStatus="fetchHashtag"-->
                   <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteHashtag)"
-                    @delete="deleteHashtag(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteHashtag)" @delete="deleteHashtag(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -245,28 +225,20 @@ const changeStatusHashtag = async (id: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/hashtag/add`"
-          addText="Add hashtag"
+        <DataEmpty :link="`/admin/hashtag/add`" addText="Add hashtag"
           description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Hashtag"
-        />
+          title="..ops! You have No Hashtag" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/hashtag/add`"
-          addText="Add Hashtag"
+        <DataFailed :link="`/admin/hashtag/add`" addText="Add Hashtag"
           description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Hashtag"
-        />
+          title="..ops! You have No Hashtag" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no Hashtag .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -130,16 +130,10 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchClientOpinion())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchClientOpinion"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchClientOpinion" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <ExportExcel :data="state.data" />
+      <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.CLIENT_OPINION_CREATE]">
         <router-link to="/admin/client-opinion/add" class="btn btn-primary">
@@ -149,16 +143,14 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.CLIENT_OPINION_ALL,
-      PermissionsEnum.CLIENT_OPINION_DELETE,
-      PermissionsEnum.CLIENT_OPINION_FETCH,
-      PermissionsEnum.CLIENT_OPINION_UPDATE,
-      PermissionsEnum.CLIENT_OPINION_CREATE,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.WEBSITE,
+    PermissionsEnum.CLIENT_OPINION_ALL,
+    PermissionsEnum.CLIENT_OPINION_DELETE,
+    PermissionsEnum.CLIENT_OPINION_FETCH,
+    PermissionsEnum.CLIENT_OPINION_UPDATE,
+    PermissionsEnum.CLIENT_OPINION_CREATE,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -177,8 +169,7 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/client-opinion/${item.id}`"
-                    >{{ index + 1 }}
+                  <router-link :to="`/admin/client-opinion/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
@@ -188,36 +179,25 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
                 <td data-label="status">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.CLIENT_OPINION_ALL,
-                      PermissionsEnum.CLIENT_OPINION_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusClientOpinion(item.id)"
-                    />
+                  <PermissionBuilder :code="[
+                    PermissionsEnum.WEBSITE,
+                    PermissionsEnum.CLIENT_OPINION_ALL,
+                    PermissionsEnum.CLIENT_OPINION_CHANGE_STATUS,
+                  ]">
+                    <ToggleSwitch :modelValue="item.is_active === 1" binary
+                      @update:model-value="changeStatusClientOpinion(item.id)" />
                   </PermissionBuilder>
                 </td>
 
                 <td data-label="Actions">
-                  <DropList
-                    :actionList="actionList(item.id, deleteClientOpinion)"
-                    @delete="deleteClientOpinion(item.id)"
-                  />
+                  <DropList :actionList="actionList(item.id, deleteClientOpinion)"
+                    @delete="deleteClientOpinion(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -226,28 +206,20 @@ const actionList = (id: number, deleteClientOpinion: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty
-          :link="`/admin/client-opinion/add`"
-          addText="Add ClientOpinion"
+        <DataEmpty :link="`/admin/client-opinion/add`" addText="Add ClientOpinion"
           description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ClientOpinion"
-        />
+          title="..ops! You have No ClientOpinion" />
       </template>
       <template #failed>
-        <DataFailed
-          :link="`/admin/client-opinion/add`"
-          addText="Add ClientOpinion"
+        <DataFailed :link="`/admin/client-opinion/add`" addText="Add ClientOpinion"
           description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ClientOpinion"
-        />
+          title="..ops! You have No ClientOpinion" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no ClientOpinion .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>
