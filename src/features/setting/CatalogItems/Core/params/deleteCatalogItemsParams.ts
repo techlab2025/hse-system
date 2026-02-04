@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class DeleteCatalogParams implements Params {
+export default class DeleteCatalogItemsParams implements Params {
 
   constructor(public id: number) {
     this.id = id;
@@ -9,7 +9,7 @@ export default class DeleteCatalogParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["guide_category_id"] = this.id;
+    data["header_id"] = this.id;
     return data;
   }
 }

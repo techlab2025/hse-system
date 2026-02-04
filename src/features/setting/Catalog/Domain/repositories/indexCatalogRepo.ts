@@ -2,9 +2,10 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { IndexCatalogApiService } from '../../Data/apiServices/indexCatalogApiService'
-import TeamModel from '../../Data/models/CatalogModel'
+// import TeamModel from '../../Data/models/CatalogModel'
+import CatalogModel from '../../Data/models/CatalogModel'
 
-class IndexCatalogRepo extends RepoInterface<TeamModel[]> {
+class IndexCatalogRepo extends RepoInterface<CatalogModel[]> {
   private static instance: IndexCatalogRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -23,8 +24,8 @@ class IndexCatalogRepo extends RepoInterface<TeamModel[]> {
     return true
   }
 
-  onParse(data: any): TeamModel[] {
-    return data.map((item: any) => TeamModel.fromMap(item))
+  onParse(data: any): CatalogModel[] {
+    return data.map((item: any) => CatalogModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {
