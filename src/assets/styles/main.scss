@@ -169,7 +169,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory; 
+  scroll-snap-type: y mandatory;
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
@@ -303,6 +303,7 @@ body {
   width: 60px;
   height: 60px;
   z-index: 99999;
+
   cursor: pointer;
   transition: 0.3s all linear;
   animation: moveTicketIcon 2s ease-in-out infinite;
