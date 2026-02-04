@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import ResolveTicketParams from '@/features/Organization/Tickets/Core/params/resolveTicketParams'
-import HeaderSection from '@/shared/LayoutComponents/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import ResolveTicketController from '../../../controllers/resolveTicketController'
+import ReplaceTicketParams from '../../../Core/params/replaceTicketParams'
+import ReplaceTicketController from '../../controllers/replaceTicketController'
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 
 const visible = ref(false)
 
 const route = useRoute()
 
-const description = ref('')
+const reply = ref('')
 
 const { ticketId } = defineProps<{
   ticketId?: number
@@ -21,12 +21,12 @@ const emit = defineEmits<{
 }>()
 
 const resolveTicket = () => {
-  const params = new ResolveTicketParams({
+  const params = new ReplaceTicketParams({
     ticketId: ticketId ? ticketId : +route?.params?.ticket_id,
-    description: description.value,
+    reply: reply.value,
   })
 
-  ResolveTicketController.getInstance().ResolveTicket(params)
+  ReplaceTicketController.getInstance().ReplaceTicket(params)
 
   emit('refresh')
   visible.value = false
@@ -54,12 +54,8 @@ const resolveTicket = () => {
       </template>
 
       <div class="input-wrapper">
-        <label for="description">{{ $t('description') }}</label>
-        <textarea
-          id="description"
-          v-model="description"
-          :placeholder="$t('description')"
-        ></textarea>
+        <label for="reply">{{ $t('reply') }}</label>
+        <textarea id="reply" v-model="reply" :placeholder="$t('reply')"></textarea>
       </div>
 
       <button class="btn btn-primary w-full !mt-4" @click="resolveTicket">{{ $t('Send') }}</button>

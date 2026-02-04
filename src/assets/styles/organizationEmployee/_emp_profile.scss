@@ -40,7 +40,13 @@
     }
     .all-info-row {
       // @include flex-row(wrap, space-between, center);
-      @include grid(3, $MdSize2,(768px:1));
+      @include grid(
+        3,
+        $MdSize2,
+        (
+          768px: 1,
+        )
+      );
       // flex: 1;
       width: 100%;
       .all-info-row-item {
