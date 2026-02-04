@@ -41,7 +41,7 @@ export default class AddCatalogController extends ControllerInterface<CatalogMod
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

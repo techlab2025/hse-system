@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const CatalogRoutes: RouteRecordRaw[] = [
   {
-    path: 'Catalog',
+    path: 'catalog',
     name: 'Catalog',
     component: () => import('@/views/Admin/Catalog/IndexCatalog.vue'),
     meta: {
@@ -10,7 +10,7 @@ export const CatalogRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'Catalog/add',
+    path: 'catalog/add',
     name: 'Add Catalog',
     component: () => import('@/views/Admin/Catalog/AddCatalog.vue'),
     meta: {
@@ -19,7 +19,7 @@ export const CatalogRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'Catalog/:id',
+    path: 'catalog/:id',
     name: 'Edit Catalog',
     component: () => import('@/views/Admin/Catalog/EditCatalog.vue'),
     meta: {

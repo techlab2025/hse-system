@@ -207,7 +207,7 @@ const fields = ref([
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div
+  <!-- <div
     class="col-span-4 md:col-span-2 input-wrapper check-box"
     v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -228,7 +228,7 @@ const fields = ref([
       :type="2"
       @update:modelValue="setIndustry"
     />
-  </div>
+  </div> -->
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
       <SwitchInput
       :fields="fields"

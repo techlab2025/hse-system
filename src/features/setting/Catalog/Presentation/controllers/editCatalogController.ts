@@ -42,7 +42,7 @@ export default class EditCatalogController extends ControllerInterface<CatalogMo
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

@@ -61,7 +61,7 @@ onMounted(() => {
   fetchCatalog()
 })
 
-const searchTeamType = debounce(() => {
+const searchCatalogType = debounce(() => {
   fetchCatalog(word.value)
 })
 
@@ -101,7 +101,7 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/${id}`,
     permission: [
       PermissionsEnum.TEAM_UPDATE,
       PermissionsEnum.ORG_TEAM_UPDATE,
@@ -141,7 +141,7 @@ watch(
 
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchTeamType())">
+      <span class="icon-remove" @click="((word = ''), searchCatalogType())">
         <Search />
       </span>
       <input
@@ -149,7 +149,7 @@ watch(
         :placeholder="'search'"
         class="input"
         type="text"
-        @input="searchTeamType"
+        @input="searchCatalogType"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
@@ -164,10 +164,10 @@ watch(
         ]"
       >
         <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
           class="btn btn-primary"
         >
-          {{ $t('Add_Team') }}
+          {{ $t('Add_Catalog') }}
         </router-link>
       </permission-builder>
     </div>
@@ -205,7 +205,7 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/edit/${item.id}`"
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/edit/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
@@ -249,10 +249,10 @@ watch(
           ]"
         >
           <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-            addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team"
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
+            addText="Add Catalog"
+            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Catalog"
           />
         </permission-builder>
       </template>
@@ -266,10 +266,10 @@ watch(
           ]"
         >
           <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-            addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team"
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
+            addText="Add Catalog"
+            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Catalog"
           />
         </permission-builder>
       </template>
