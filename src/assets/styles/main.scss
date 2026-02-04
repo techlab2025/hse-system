@@ -157,11 +157,14 @@
 
 // Ticket
 @use './Ticket/imports_ticket';
+// Ticket
+@use './projectProgress/imports_project_progress';
 
 // Organization Employee
 @use './organizationEmployee/emp_imports';
 
 // Employee Interface
+
 @use './EmployeeInterface/employee_Int_imports';
 
 html {

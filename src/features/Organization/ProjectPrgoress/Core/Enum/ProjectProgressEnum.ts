@@ -1,0 +1,16 @@
+export enum ProjectProgressEnum {
+  Certificate = 1,
+  Tempalte = 2,
+  Employee = 3,
+  Heirarchy = 4,
+  Country = 5,
+  State = 6,
+  City = 7,
+  Locatio = 8,
+  Zone = 9,
+  ObservationType = 10,
+  IncidantType = 11,
+  HazardType = 12,
+  Hazard = 13,
+  EquipmentType = 14,
+}

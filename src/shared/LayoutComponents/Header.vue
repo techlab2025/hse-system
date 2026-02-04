@@ -137,8 +137,8 @@ onMounted(() => {
             <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span>
           </div>
 
-          <img alt="user" src="../../assets/images/travel.png" />
-
+          <!-- <img alt="user" src="../../assets/images/travel.png" /> -->
+          <img src="https://cyber.comolho.com/static/img/avatar.png" alt="employee" />
           <div class="dropdown-menu" v-if="isDropMenuOpen">
             <ul>
               <li @click="logout">

@@ -107,7 +107,6 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
       //   }
       // }
 
-      
       const dataState: DataState<TemplateModel> = await this.AddTemplateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -125,6 +124,12 @@ export default class AddTemplateController extends ControllerInterface<TemplateM
         // )
 
         // useLoaderStore().endLoadingWithDialog();
+        // if (!router.currentRoute.value?.fullPath.includes('project-progress')) {
+        //   if (!draft)
+        //     await router.push(
+        //       `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template`,
+        //     )
+        // }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

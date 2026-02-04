@@ -209,7 +209,7 @@ const UpdateHasCertificate = (data) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 

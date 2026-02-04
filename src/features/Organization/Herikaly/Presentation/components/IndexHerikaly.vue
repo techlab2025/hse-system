@@ -51,7 +51,7 @@ const fetchHerikaly = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true)
+  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true , null)
   await indexHerikalyController.getData(HerikalyParams)
 }
 
@@ -196,11 +196,10 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 </template>
 
 <style scoped>
-.btn-container {
+/* .btn-container {
   position: fixed;
   bottom: 0;
   width: 72%;
   padding-block: 1rem;
-  /* background-color: white; */
-}
+} */
 </style>

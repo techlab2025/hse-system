@@ -97,8 +97,8 @@ const DeleteTemplateItem = async (id: number) => {
           <p>
             Id : <span>{{ allData?.id }}</span>
           </p>
-          <p>location :<span>example</span></p>
-          <p>Zone :<span>example</span></p>
+          <!-- <p>location :<span>example</span></p> -->
+          <!-- <p>Zone :<span>example</span></p> -->
         </div>
       </div>
       <img :src="DocumnetHeader" alt="header" />

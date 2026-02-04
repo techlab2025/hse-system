@@ -1508,6 +1508,10 @@ class ApiNames {
     return this.prefix + 'delete_ticket'
   }
 
+  // ProjectProgress
+  public get IndexProjectProgress() {
+    return this.prefix + 'fetch_organization_app_status_details'
+  }
   //Replace Ticket
   public get ReplaceTicket() {
     return this.prefix + 'create_ticket_reply'
