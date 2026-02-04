@@ -177,6 +177,7 @@
               .perview {
                 @include flex-center();
                 gap: 5px;
+                
                 span {
                   color: white;
                   font-size: $SmSize;

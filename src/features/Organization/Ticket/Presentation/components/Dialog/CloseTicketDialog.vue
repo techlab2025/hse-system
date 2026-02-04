@@ -6,6 +6,11 @@ import { useRoute } from 'vue-router'
 import ShowTicketParams from '../../../Core/params/showTicketParams'
 import ShowTicketController from '../../controllers/showTicketController'
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
+import ReplaceTicketParams from '../../../Core/params/replaceTicketParams'
+import ReplaceTicketController from '../../controllers/replaceTicketController'
+import { StatusEnum } from '../../../Core/Enums/statusEnum'
+import CloseTicketParams from '../../../Core/params/closeTicketParams'
+import CloseTicketController from '../../controllers/CloseTicketController'
 
 const route = useRoute()
 
@@ -20,11 +25,12 @@ const emit = defineEmits<{
 }>()
 
 const closeTicket = () => {
-  const params = new ShowTicketParams({
+  const params = new CloseTicketParams({
     ticketId: ticketId ? ticketId : +route?.params?.ticket_id,
+    status: StatusEnum.CLOSED,
   })
 
-  ShowTicketController.getInstance().closeTicket(params)
+  CloseTicketController.getInstance().closeTicket(params)
 
   emit('refresh')
   visible.value = false
@@ -33,7 +39,7 @@ const closeTicket = () => {
 
 <template>
   <div class="card flex justify-center">
-    <button class="btn btn-primary w-full" @click="visible = true">
+    <button class="btn btn-primary w-full mt-2" @click="visible = true">
       {{ $t('close ticket') }}
     </button>
     <Dialog

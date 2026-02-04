@@ -888,7 +888,7 @@ const UpdateActiveTap = (data) => {
         />
       </div>
 
-      <div class=" col-span-1 md:col-span-2 card_Qr">
+      <div class=" col-span-2 md:col-span-2 card_Qr">
         <div class="machine_card">
           <h6>{{ EquipmentTypesEnum[activeTab] }} card</h6>
           <p>Preview only — data shown is illustrative. Confirm to add the equipment</p>
@@ -910,7 +910,7 @@ const UpdateActiveTap = (data) => {
             :expiredate="decommissioningDate"
             :startDate="StartDate"
             :EndDate="EndDate"
-            :rentType="RentTypes.find((el) => el.id == SelectedRentType?.id)?.title"
+            :rentType="RentTypes.find((el) => el.id == SelectedRentType?.id)?.id"
             :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
             :deviceStatus="deviceStatus"
           />

@@ -1495,6 +1495,9 @@ class ApiNames {
   public get ReplaceTicket() {
     return this.prefix + 'create_ticket_reply'
   }
+  public get CloseTicket() {
+    return this.prefix + 'change_ticket_status'
+  }
 }
 
 export { ApiNames }

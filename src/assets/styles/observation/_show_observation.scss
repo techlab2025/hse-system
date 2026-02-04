@@ -16,12 +16,17 @@
 .show-observation-container {
   background-color: #d0d0d00f;
   padding: $XsSize2;
+
   &.top-card {
     // padding: $XsSize2 $MdSize;
     background-color: white;
     .observation-card {
       margin-top: 0;
-      box-shadow: 2px 3px 5px 3px #00000005;
+      box-shadow: inset 2px 3px 5px 3px #00000005;
+      //   box-shadow:
+      //     inset 2px 3px 5px 3px rgba(0, 0, 0, 0.0196),
+      //     -2px -2px 6px rgba(232, 213, 181, 0.15),
+      //     -3px 0 6px rgba(29, 78, 216, 0.12);
     }
   }
 
@@ -65,8 +70,13 @@
         gap: $XsSize;
         p {
           color: #202020;
-          font-size: $MdSize;
+          font-size: $XlSize;
           font-weight: $BaseFontWeightBold;
+        }
+        h6 {
+          color: #8b8d91;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
         }
         img {
           width: 40px;
@@ -88,31 +98,101 @@
         }
       }
     }
-    .injury-header-employees {
-      color: #0f1927;
-      border: 1px solid #f9f9f9;
-      padding: $XsSize2;
-      border-radius: $XsSize;
-      font-weight: $BaseFontWeightBold;
-      font-size: $MdSize;
+    .card_Injured {
+      @include grid(
+        3,
+        $MdSize2,
+        (
+          1000px: 2,
+          768px: 1,
+         )
+      );
+      
+      .Injured_title {
+        @include flex-row(nowrap, flex-start, flex-start);
+        gap: 5px;
+        border: 1px solid #D8002705;
+        border-radius: $XsSize2;
+        padding: $XsSize3;
+        .title {
+          p {
+            color: #b4b6bc;
+            font-size: $XsSize;
+            font-weight: $BaseFontMediumWeight;
+          }
+          h6 {
+            color: var(--PrimaryColor);
+            font-size: $MdSize;
+            font-weight: $BaseFontSemiBoldWeight;
+          }
+        }
+      }
+      .user_note {
+        p {
+          color: #5c5c5c;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          margin: $XsSize2 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          // overflow: anywhere;
+          overflow-wrap: anywhere
+        }
+      }
+      .injury-header-employees {
+        @include flex-row(nowrap, flex-start, center);
+        border-top: 1px solid #1F41BB1A;
+        padding-top: $XsSize2;
+        p {
+          color: #3c3c45;
+          border-bottom: 2px solid #3c3c45;
+          font-weight: $BaseFontWeightBold;
+          font-size: $MdSize2;
+        }
+        img {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+        }
+      }
     }
     .witnessStatement-container {
-      @include flex-column(nowrap, flex-start, flex-start);
-      gap: $SmSize;
+      // @include flex-column(nowrap, flex-start, flex-start);
+      // gap: $SmSize;
+       @include grid(
+        3,
+        $MdSize2,
+        (
+          1000px: 2,
+          768px: 1,
+         )
+      );
 
       .witnessStatement {
         @include flex-row(nowrap, flex-start, center);
-        gap: $XsSize;
+        gap: $XsSize; 
         .employee-name {
-          color: #0f1927;
-          font-size: $MdSize;
-          font-weight: $BaseFontWeightBold;
-          text-decoration: underline;
-        }
+          @include flex-row(nowrap, flex-start, center);
+          p{
+            color: #0F1927;
+            font-size: $MdSize;
+            font-weight: $BaseFontWeightBold;
+           
+
+          } 
+        } 
         .employee-note {
-          color: #9ca3af;
+          color: #5C5C5C;
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
+            display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          // overflow: anywhere;
+          overflow-wrap: anywhere;
+          margin: $XsSize3 0; 
+           
         }
       }
     }

@@ -3,29 +3,29 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import router from '@/router'
-import ReplaceTicketUseCase from '../../Domain/useCase/replaceTicketUseCase'
-import type ReplaceTicketParams from '../../Core/params/replaceTicketParams'
-import type TicketModel from '../../Data/models/TicketModel'
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-const { user } = useUserStore()
 
-export default class ReplaceTicketController extends ControllerInterface<TicketModel> {
-  private static instance: ReplaceTicketController
+import router from '@/router'
+import CloseTicketUseCase from '../../Domain/useCase/closeTicketUseCase'
+import type CloseTicketParams from '../../Core/params/closeTicketParams'
+import type TicketModel from '../../Data/models/TicketModel'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
+const { user } = useUserStore()
+export default class CloseTicketController extends ControllerInterface<TicketModel> {
+  private static instance: CloseTicketController
   private constructor() {
     super()
   }
-  private ReplaceTicketUseCase = new ReplaceTicketUseCase()
+  private CloseTicketUseCase = new CloseTicketUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new ReplaceTicketController()
+      this.instance = new CloseTicketController()
     }
     return this.instance
   }
 
-  async ReplaceTicket(params: ReplaceTicketParams) {
+  async closeTicket(params: CloseTicketParams) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -34,7 +34,7 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
         return
       }
 
-      const dataState: DataState<TicketModel> = await this.ReplaceTicketUseCase.call(params)
+      const dataState: DataState<TicketModel> = await this.CloseTicketUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -44,11 +44,7 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
           messageContent: null,
         })
 
-        // console.log(this.state.value.data)
-        // console.log(draft)
-        await router.push(
-          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`,
-        )
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

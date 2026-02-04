@@ -154,9 +154,9 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
     case StatusEnum.SOLVED:
       return 'solved'
     case StatusEnum.RESOLVED:
-      return 'solved'
+      return 'resolved'
     case StatusEnum.CLOSED:
-      return 'solved'
+      return 'closed'
     default:
       return 'unknown'
   }
@@ -221,20 +221,20 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
                 </h6>
               </div>
             </div>
-            <RouterLink
-              :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/${ticket?.id}` : ''}`"
+            <router-link
+              :to="`/${user?.type == OrganizationTypeEnum.ADMIN || user?.type == OrganizationTypeEnum.ORGANIZATION ? 'admin' : 'organization'}/ticket/${ticket?.id}`"
               class="card-info"
             >
               <div class="card-info-txt">
-                <p v-for="type in ticket?.type" :key="type?.id">
-                  {{ type?.title}}
+                <p>
+                  {{ ticket?.ticketType?.title }}
                 </p>
                 <h2>
                   {{ ticket?.title }}
                 </h2>
               </div>
 
-              <MultiImagesDialog :images="ticket?.media || []">
+              <MultiImagesDialog :images="ticket?.media.map((img) => img.url) || []">
                 <div class="imgs">
                   <img
                     v-for="(img, i) in ticket?.media.slice(0, 2)"
@@ -245,7 +245,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
                   />
                 </div>
               </MultiImagesDialog>
-            </RouterLink>
+            </router-link>
 
             <div class="card-footer">
               <RouterLink

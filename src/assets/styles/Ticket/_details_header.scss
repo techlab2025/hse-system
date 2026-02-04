@@ -66,6 +66,15 @@
             rgba(33, 42, 67, 0.2) 100%
           );
         }
+        &[data-status='unknown-status'] {
+          color: rgb(149, 41, 41);
+          background-image: linear-gradient(
+            90deg,
+            #fef9f3 0%,
+            #fc1a1a29 50%,
+            rgba(149, 41, 41, 0.2) 100%
+          );
+        }
 
         h6 {
           font-size: $MdSize2;
@@ -124,7 +133,9 @@
 
       .title {
         font-size: $XlSize2;
-        color: red;
+        color: #909dad;
+        font-family: 'Regular';
+        font-weight: 600;
       }
       .description {
         @include flex(row, nowrap, space-between, center);
@@ -162,15 +173,17 @@
       .date {
         text-align: end;
         span {
-          font-family: 'Bold';
           font-size: 18px;
-          color: red;
+          color: #909dad;
+          font-family: 'Regular';
+          font-weight: 600;
         }
       }
     }
   }
   .status-wrapper {
-    @include flex-row(nowrap, flex-end, center);
+    @include flex-column(nowrap, center, flex-end);
+    gap: $XlSize2;
     width: 100%;
     .status-part {
       width: 50%;
@@ -253,7 +266,9 @@
           @include flex-column();
           h5 {
             font-size: $XlSize2;
-            color: red;
+            color: #909dad;
+            font-family: 'Regular';
+            font-weight: 600;
           }
 
           p {
@@ -279,9 +294,10 @@
 .date {
   text-align: end;
   span {
-    font-family: 'Bold';
     font-size: 18px;
-    color: red;
+    color: #909dad;
+    font-family: 'Regular';
+    font-weight: 600;
   }
   div.imgs {
     @include flex(row, nowrap, center, center);

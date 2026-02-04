@@ -107,7 +107,7 @@ const isSelectHasContent = ref([])
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('upload image') }}</label>
                 <MultiImagesInput :initialImages="item.images" @update:images="setImages($event, index)"
-                  :index="index + 5" />
+                  :index="index + 1000" />
               </div>
 
             </div>

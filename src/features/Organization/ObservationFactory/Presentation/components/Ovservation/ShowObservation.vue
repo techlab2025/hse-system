@@ -73,7 +73,7 @@ const GetHeader = (value: number) => {
 
 
         <div class="observation-type-container">
-          <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} {{ $t('Type') }}</p>
+          <!-- <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} {{ $t('Type') }}</p> -->
           <ObservationFactoryGenralInfo :data="state.data" />
         </div>
 
@@ -85,13 +85,16 @@ const GetHeader = (value: number) => {
           :data="state.data?.capa" />
 
 
+          <!-- المصابين -->
         <ObservationInjuriesShow v-if="state.data?.injuries?.length && state.data?.injuries?.length > 0"
           :data="state.data?.injuries" />
 
+          <!-- الشهادات -->
         <ObservationWitnessStatements
           v-if="state.data?.witnessStatements?.length && state.data?.witnessStatements?.length > 0"
           :data="state.data?.witnessStatements" />
 
+          <!-- الوفيات -->
         <ObservationDeths v-if="state.data?.deaths?.length && state.data?.deaths?.length > 0"
           :data="state.data?.deaths" />
 

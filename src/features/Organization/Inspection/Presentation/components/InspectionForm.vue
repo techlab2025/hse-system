@@ -179,6 +179,9 @@ const GetGeneralData = (data: any) => {
 
 const GetTemplateId = (data: number) => {
   TempalteIds.value = data
+
+
+
   updateData()
 }
 

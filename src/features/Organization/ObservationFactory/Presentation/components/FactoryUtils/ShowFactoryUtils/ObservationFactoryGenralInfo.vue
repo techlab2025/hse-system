@@ -5,11 +5,14 @@ import { LikelihoodEnum } from '@/features/Organization/ObservationFactory/Core/
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import { SeverityEnum } from '@/features/Organization/ObservationFactory/Core/Enums/SeverityEnum'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
+import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import ActionClosed from '@/shared/icons/ActionClosed.vue'
 import ActionOpen from '@/shared/icons/ActionOpen.vue'
+import RootCase from '@/shared/icons/RootCase.vue'
 import TakeActionIcon from '@/shared/icons/TakeActionIcon.vue'
 import WarningIcon from '@/shared/icons/WarningIcon.vue'
 import Image from 'primevue/image'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
   data: HazardDetailsModel
@@ -43,6 +46,29 @@ const GetHeader = (value: number) => {
       ? 'Hazard'
       : 'incident'
 }
+// imges
+const emit = defineEmits(['update:data', 'update:images'])
+const Img = ref()
+const textArea = ref('')
+const SelectedValues = ref<number[]>([])
+
+const UpdateData = () => {
+  emit('update:data', {
+    itemid: props.data.media?.length,
+    selected: SelectedValues.value,
+    img: Img.value,
+    notes: textArea.value, // Updated key to match the data structure
+  })
+}
+
+// Watch for text changes
+watch(textArea, () => {
+  UpdateData()
+})
+const UpdateImg = (data: string) => {
+  Img.value = data
+  UpdateData()
+}
 </script>
 <template>
   <div class="observation-genral-info-conatiner">
@@ -74,16 +100,25 @@ const GetHeader = (value: number) => {
         </span>
 
         <div class="flex flex-col gap-2">
-          <p class="observation-type" v-if="props.data?.type != Observation.HazardType">
+          <!-- <p class="observation-type" v-if="props.data?.type != Observation.HazardType">
             {{ GetHeader(props.data?.type) }} {{ $t('Type') }} :
             <span>{{ props.data?.typeModel?.title }}</span>
-          </p>
+          </p> -->
 
           <div
             class="root-causes"
             v-if="props.data?.rootCauses && props.data?.rootCauses.length > 0"
           >
-            <span class="root-causes-title"> root causes </span>
+            <div class="icon_title">
+              <RootCase />
+
+              <p class="root-causes-title">
+                {{ $t('Root Causes') }}
+                <span>{{
+                  $t('Analyze the main reasons behind the event to prevent recurrence')
+                }}</span>
+              </p>
+            </div>
             <div class="root-causes-content">
               <p v-for="(root, index) in props.data?.rootCauses" :key="index" class="root-title">
                 {{ root?.title }}
@@ -92,20 +127,23 @@ const GetHeader = (value: number) => {
           </div>
         </div>
 
-        <div>
-          <Image
-            v-if="props?.data?.media[0]?.url"
-            :src="props?.data?.media[0]?.url"
-            alt="Image"
-            preview
-          >
+        <div  class="image-container">
+          <div class="" v-if="props?.data?.media && props?.data?.media.length > 0">
+            <UploadMultiImage
+              @update:images="UpdateImg"
+              class="image-upload"
+              :initialImages="props?.data?.media?.map((el) => el.url) || []"
+            />
+            
+          </div>
+          <!-- <Image  :src="value?.url" alt="Image" preview>
             <template #previewicon>
               <div class="perview">
                 <span>{{ $t('view') }}</span>
                 <ViewIcon />
               </div>
             </template>
-          </Image>
+          </Image> -->
         </div>
       </div>
 
@@ -141,7 +179,12 @@ const GetHeader = (value: number) => {
           <p class="action-text">{{ props?.data?.action }}</p>
         </div>
       </div>
-      <div class="status-container">
+      <div class="card_status">
+        <span></span>
+        <p>{{ $t('status') }}</p>
+        <h6>{{ $t('open') }}</h6>
+      </div>
+      <!-- <div class="status-container">
         <div class="status" v-if="props.data?.actionStatus == ActionStatusEnum.OPEN">
           <ActionOpen class="icon" />
           <span>{{ $t('Open') }}</span>
@@ -150,7 +193,7 @@ const GetHeader = (value: number) => {
           <ActionClosed class="icon" />
           <span>{{ $t('Closed') }}</span>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

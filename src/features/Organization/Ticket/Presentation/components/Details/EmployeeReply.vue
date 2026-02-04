@@ -20,7 +20,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
     case StatusEnum.CLOSED:
       return 'solved'
     default:
-      return 'unknown status'
+      return 'unknown-status'
   }
 }
 </script>

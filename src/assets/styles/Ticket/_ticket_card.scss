@@ -92,7 +92,7 @@
       }
     }
     .card-info {
-      @include flex(row, nowrap, center, center);
+      @include flex(row, nowrap, space-between, center);
       gap: 12px;
       padding: 0 16px;
       border-bottom: 1px solid transparent;
