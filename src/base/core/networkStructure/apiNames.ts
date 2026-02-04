@@ -203,19 +203,19 @@ class ApiNames {
 
   // Catalog
   public get CreateCatalog() {
-    return this.prefix + 'create_team'
+    return this.prefix + 'create_header'
   }
   public get IndexCatalog() {
-    return this.prefix + 'fetch_teams'
+    return this.prefix + 'fetch_headers'
   }
   public get ShowCatalog() {
-    return this.prefix + 'fetch_team_details'
+    return this.prefix + 'fetch_header_details'
   }
   public get EditCatalog() {
-    return this.prefix + 'update_team'
+    return this.prefix + 'update_header'
   }
   public get DeleteCatalog() {
-    return this.prefix + 'delete_team'
+    return this.prefix + 'delete_header'
   }
 
   // contractor
