@@ -171,7 +171,8 @@ const routerBack = () => {
               </div>
               <p class="description">{{AllPagesToView.find((item) => item.id == ActiveItem)?.description}}</p>
             </div>
-            <component class="full-content" :is="AllPagesToView.find((item) => item.id == ActiveItem)?.component" />
+            <component @update:data="getProjectProgress" class="full-content"
+              :is="AllPagesToView.find((item) => item.id == ActiveItem)?.component" />
           </div>
         </div>
       </template>

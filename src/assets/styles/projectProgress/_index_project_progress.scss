@@ -42,9 +42,19 @@
       background-color: #fdfdfd;
       padding: $XsSize;
       border-radius: 12px;
+
+      .timeline-marker {
+        &.not-active {
+          .timeline-icon {
+            background-color: white;
+          }
+          .timeline-dot {
+            background-color: white;
+          }
+        }
+      }
       .timeline-container {
         cursor: pointer;
-
         .timeline-icon {
           svg {
             width: 20px;
