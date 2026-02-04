@@ -28,6 +28,7 @@ export default class IndexHerikalyParams implements Params {
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.parentOnly = parentOnly
     this.projectId = projectId
 
     // this.id = id
@@ -37,10 +38,10 @@ export default class IndexHerikalyParams implements Params {
   toMap(): Record<string, string | number | number[] | null | any> {
     const data: Record<string, string | number | number[] | null | any> = {}
     if (this.word) data['word'] = this.word
-    if (this.parentOnly) data['paginate'] = this.withPage
-    if (this.parentOnly) data['page'] = this.pageNumber
-    if (this.parentOnly) data['limit'] = this.perPage
-    if (this.parentOnly) data['return_patent_only'] = this.parentOnly
+    if (this.withPage) data['paginate'] = this.withPage
+    if (this.pageNumber) data['page'] = this.pageNumber
+    if (this.perPage) data['limit'] = this.perPage
+    data['return_patent_only'] = this.parentOnly
     if (this.projectId || useProjectSelectStore().getProjectId())
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     // if (this.id) data['parent_id'] = this.id

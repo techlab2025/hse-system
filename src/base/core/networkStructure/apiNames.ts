@@ -1493,7 +1493,7 @@ class ApiNames {
 
   // ProjectProgress
   public get IndexProjectProgress() {
-    return this.prefix + 'fetch_project_progress'
+    return this.prefix + 'fetch_organization_app_status_details'
   }
 }
 

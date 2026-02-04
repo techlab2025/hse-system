@@ -15,7 +15,10 @@ const emit = defineEmits(['update:data'])
 const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
-  await addLocationController.addLocation(params.value as AddLocationParams, router)
+  const state = await addLocationController.addLocation(params.value as AddLocationParams, router)
+  if (state?.value) {
+    router.push("/organization/areas")
+  }
 }
 
 
