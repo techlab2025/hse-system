@@ -27,7 +27,7 @@ watch(SelectedProjectZone, (newVal) => {
 });
 
 const indexProjectController = IndexProjectController.getInstance()
-const indexProjectParams = new IndexProjectParams('', 1, 10, 1)
+const indexProjectParams = new IndexProjectParams('', 1, 10, 0)
 
 const fetchMyZoneController = FetchMyZonesController.getInstance()
 const fetchMyZoneParams = ref<FetchMyZonesParams | null>(null)
