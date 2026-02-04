@@ -45,7 +45,7 @@ const showSidebar = computed(() => {
 
       <Header />
       <div class="main-content">
-        <BreadCrumb />
+        <BreadCrumb v-if="!route.fullPath.includes('project-progress')" />
         <slot />
       </div>
     </section>

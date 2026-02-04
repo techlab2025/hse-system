@@ -24,6 +24,7 @@ import { serialNumberRoutes } from './SerialNumber'
 import { EmployeeInterfaceRoutes } from './employeeInterface'
 import { ticketTypeRoutes } from './ticketType'
 import { ticketRoutes } from './ticket'
+import { projectProgressRoutes } from './projectProgress'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -56,6 +57,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...EmployeeInterfaceRoutes,
   ...ticketTypeRoutes,
   ...ticketRoutes,
+  ...projectProgressRoutes,
 
   {
     path: 'permission/:id',

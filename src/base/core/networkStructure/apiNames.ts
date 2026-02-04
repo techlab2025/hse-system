@@ -1490,6 +1490,11 @@ class ApiNames {
   public get DeleteTicket() {
     return this.prefix + 'delete_ticket'
   }
+
+  // ProjectProgress
+  public get IndexProjectProgress() {
+    return this.prefix + 'fetch_project_progress'
+  }
 }
 
 export { ApiNames }

@@ -1,0 +1,30 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.project-progress-header-container {
+  width: 100%;
+  @include flex-row(nowrap, space-between, center);
+  background-image: linear-gradient(to right, #8baaff1e, #ffffff);
+  border: 1px solid #1f41bb12;
+  border-radius: $XlSize2;
+  padding: $SmSize $XlSize2;
+  .project-progress-info {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize;
+    .project-progress-info-text {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize4;
+
+      .title {
+        color: #170f49;
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+      }
+      .description {
+        color: #aeaeba;
+        font-size: $MdSize;
+        font-weight: $BaseFontMediumWeight;
+      }
+    }
+  }
+}

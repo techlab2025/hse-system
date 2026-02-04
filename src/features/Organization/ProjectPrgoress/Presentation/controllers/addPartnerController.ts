@@ -6,32 +6,33 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type CertificateModel from '../../Data/models/CertificateModel'
-import AddCertificateUseCase from '../../Domain/useCase/addCertificateUseCase'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useUserStore } from '@/stores/user'
+import type PartnerModel from '../../Data/models/PartnerModel'
+import AddPartnerteUseCase from '../../Domain/useCase/addPartnerUseCase'
+import type AddPartnerParams from '../../Core/params/addPartnerParams'
 
-export default class AddCertificateController extends ControllerInterface<CertificateModel> {
-  private static instance: AddCertificateController
+export default class AddPartnerController extends ControllerInterface<PartnerModel> {
+  private static instance: AddPartnerController
   private constructor() {
     super()
   }
-  private AddCertificateUseCase = new AddCertificateUseCase()
+  private AddPartnerUseCase = new AddPartnerteUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddCertificateController()
+      this.instance = new AddPartnerController()
     }
     return this.instance
   }
 
-  async addCertificate(params: Params, router: Router, draft: boolean = false) {
+  async addPartner(params: AddPartnerParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-
-    const { user } = useUserStore()
-
     try {
-      const dataState: DataState<CertificateModel> = await this.AddCertificateUseCase.call(params)
+      params.validate()
+      if (!params.validate()?.isValid) {
+        params.validateOrThrow()
+        return
+      }
+      const dataState: DataState<PartnerModel> = await this.AddPartnerUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -40,12 +41,7 @@ export default class AddCertificateController extends ControllerInterface<Certif
           imageElement: successImage,
           messageContent: null,
         })
-        if (!router.currentRoute.value?.fullPath.includes('project-progress')) {
-          if (!draft)
-            await router.push(
-              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate`,
-            )
-        }
+        if (!draft) await router.push('/organization/partner')
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
