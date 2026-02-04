@@ -203,19 +203,19 @@ class ApiNames {
 
   // Catalog
   public get CreateCatalog() {
-    return this.prefix + 'create_team'
+    return this.prefix + 'create_guide_category'
   }
   public get IndexCatalog() {
-    return this.prefix + 'fetch_teams'
+    return this.prefix + 'fetch_guide_categories'
   }
   public get ShowCatalog() {
-    return this.prefix + 'fetch_team_details'
+    return this.prefix + 'fetch_guide_category_details'
   }
   public get EditCatalog() {
-    return this.prefix + 'update_team'
+    return this.prefix + 'update_guide_category'
   }
   public get DeleteCatalog() {
-    return this.prefix + 'delete_team'
+    return this.prefix + 'delete_guide_category'
   }
 
   // contractor
@@ -1494,6 +1494,13 @@ class ApiNames {
   // ProjectProgress
   public get IndexProjectProgress() {
     return this.prefix + 'fetch_organization_app_status_details'
+  }
+  //Replace Ticket
+  public get ReplaceTicket() {
+    return this.prefix + 'create_ticket_reply'
+  }
+  public get CloseTicket() {
+    return this.prefix + 'change_ticket_status'
   }
 }
 

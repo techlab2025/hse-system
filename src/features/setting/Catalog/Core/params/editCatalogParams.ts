@@ -34,7 +34,7 @@ export default class implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['team_id'] = this.id
+    data['header_id'] = this.id
     data['translations'] = this.translation.toMap()
 
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0

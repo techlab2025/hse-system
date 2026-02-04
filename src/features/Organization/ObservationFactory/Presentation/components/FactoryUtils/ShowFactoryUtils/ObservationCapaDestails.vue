@@ -23,6 +23,7 @@ const CreatCapaResult = async () => {
   corrective.value = ''
   preventive.value = ''
 }
+
 </script>
 <template>
   <div class="capa-container">

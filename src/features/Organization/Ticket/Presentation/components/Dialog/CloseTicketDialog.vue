@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import HeaderSection from '@/shared/LayoutComponents/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
 import { ref } from 'vue'
 import ResolveTickeDialog from './ResolveTickeDialog.vue'
 import { useRoute } from 'vue-router'
-import CloseTicketParams from '@/features/Organization/Tickets/Core/params/closeTicketParams'
-import CloseTicketController from '../../../controllers/CloseTicketController'
+import ShowTicketParams from '../../../Core/params/showTicketParams'
+import ShowTicketController from '../../controllers/showTicketController'
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
+import ReplaceTicketParams from '../../../Core/params/replaceTicketParams'
+import ReplaceTicketController from '../../controllers/replaceTicketController'
+import { StatusEnum } from '../../../Core/Enums/statusEnum'
+import CloseTicketParams from '../../../Core/params/closeTicketParams'
+import CloseTicketController from '../../controllers/CloseTicketController'
 
 const route = useRoute()
 
-const { ticketId,  } = defineProps<{
+const { ticketId } = defineProps<{
   ticketId?: number
 }>()
 
@@ -22,6 +27,7 @@ const emit = defineEmits<{
 const closeTicket = () => {
   const params = new CloseTicketParams({
     ticketId: ticketId ? ticketId : +route?.params?.ticket_id,
+    status: StatusEnum.CLOSED,
   })
 
   CloseTicketController.getInstance().closeTicket(params)
@@ -33,7 +39,7 @@ const closeTicket = () => {
 
 <template>
   <div class="card flex justify-center">
-    <button class="btn btn-primary w-full" @click="visible = true">
+    <button class="btn btn-primary w-full mt-2" @click="visible = true">
       {{ $t('close ticket') }}
     </button>
     <Dialog
@@ -50,9 +56,7 @@ const closeTicket = () => {
         />
       </template>
 
-      <div
-        class="flex items-center justify-center gap-3"
-      >
+      <div class="flex items-center justify-center gap-3">
         <button class="btn !bg-[#22C197] !text-white w-full" @click="closeTicket">
           {{ $t('close') }}
         </button>

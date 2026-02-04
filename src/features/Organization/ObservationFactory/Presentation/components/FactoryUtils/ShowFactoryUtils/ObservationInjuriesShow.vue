@@ -35,7 +35,7 @@ const props = defineProps<{
             <img
               :src="
                 injury.organization_employee.image ||
-                'https://cyber.comolho.com/static/img/avatar.png'
+               'https://cyber.comolho.com/static/img/avatar.png'
               "
               alt="user"
             />

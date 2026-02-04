@@ -58,9 +58,9 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditCatalog">
-        <TeamForm @update:data="setParams" :data="state.data!" />
-        <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
+        <TeamForm @update:data="setParams" :data="state.data!" /> 
+        <div class="col-span-4 button-wrapper">  
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button> 
         </div>
       </form>
     </template>

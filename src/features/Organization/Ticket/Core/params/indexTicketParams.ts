@@ -9,7 +9,7 @@ export default class IndexTicketParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
-  public type?: EquipmentTypesEnum
+  public type?: number
   // public code?: LangEnum
 
   constructor(
@@ -18,7 +18,7 @@ export default class IndexTicketParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
-    type?: EquipmentTypesEnum,
+    type?: number,
     // code?: LangEnum,
   ) {
     this.word = word

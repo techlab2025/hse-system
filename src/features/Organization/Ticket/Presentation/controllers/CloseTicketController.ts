@@ -1,65 +1,73 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
+
+import router from '@/router'
+import CloseTicketUseCase from '../../Domain/useCase/closeTicketUseCase'
+import type CloseTicketParams from '../../Core/params/closeTicketParams'
+import type TicketModel from '../../Data/models/TicketModel'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
-import type CatalogModel from '../../Data/models/CatalogModel'
-import EditCatalogUseCase from '../../Domain/useCase/editCatalogUseCase'
-
-export default class EditCatalogController extends ControllerInterface<CatalogModel> {
-  private static instance: EditCatalogController
-
+const { user } = useUserStore()
+export default class CloseTicketController extends ControllerInterface<TicketModel> {
+  private static instance: CloseTicketController
   private constructor() {
     super()
   }
-
-  private editCatalogUseCase = new EditCatalogUseCase()
+  private CloseTicketUseCase = new CloseTicketUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new EditCatalogController()
+      this.instance = new CloseTicketController()
     }
     return this.instance
   }
 
-  async editCatalog(params: Params, router: any) {
+  async closeTicket(params: CloseTicketParams) {
     // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
     try {
-      const dataState: DataState<CatalogModel> = await this.editCatalogUseCase.call(params)
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
 
+      const dataState: DataState<TicketModel> = await this.CloseTicketUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: this.state.value.message,
+          titleContent: 'successful',
           imageElement: successImage,
           messageContent: null,
         })
 
-        const { user } = useUserStore()
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`)
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog`)
-        // console.log(this.state.value.data)
+        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+          titleContent: this.state.value.error?.title ?? 'An Error Occurred',
           imageElement: errorImage,
           messageContent: null,
         })
+        // throw new Error(this.state.value.error?.title)
       }
     } catch (error: any) {
+      console.log(this.state.value.message)
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
         titleContent: this.state.value.message,
+        // titleContent: 'adssddsasdadsa',
         imageElement: errorImage,
         messageContent: null,
       })
     }
+
+    super.handleResponseDialogs()
     return this.state
   }
 }

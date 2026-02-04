@@ -6,13 +6,12 @@
   margin-block: $MdSize;
   display: none;
   @include grid(
-    3,
+    2,
     10px,
     (
-      1440px: 3,
-
+      2560px: 3,
+      1440px: 2,
       1024px: 2,
-
       768px: 1,
     )
   );
@@ -93,7 +92,7 @@
       }
     }
     .card-info {
-      @include flex(row, nowrap, center, center);
+      @include flex(row, nowrap, space-between, center);
       gap: 12px;
       padding: 0 16px;
       border-bottom: 1px solid transparent;

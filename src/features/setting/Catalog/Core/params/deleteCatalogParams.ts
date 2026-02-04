@@ -9,7 +9,7 @@ export default class DeleteCatalogParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["team_id"] = this.id;
+    data["header_id"] = this.id;
     return data;
   }
 }
