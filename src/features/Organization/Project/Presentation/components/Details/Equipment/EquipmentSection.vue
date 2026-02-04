@@ -18,6 +18,8 @@ import ProjectEmployeeIcon from "@/shared/icons/ProjectEmployeeIcon.vue";
 import EquipmentCard from "@/features/setting/Equipment/Presentation/components/EquipmentUtils/EquipmentCard.vue";
 import ProjectEquipmentCard from "./ProjectEquipmentCard.vue";
 import EmptyFolder from "@/assets/images/EmptyFolder.png";
+import EquipmentZoneDialog from "../../Dialogs/EquipmentZoneDialog/EquipmentZoneDialog.vue";
+import AddNewEquipmentEmptyDialog from "./AddNewEquipmentEmptyDialog.vue";
 
 const route = useRoute()
 const id = route.params.id
@@ -68,7 +70,8 @@ const updatetabValue = (value) => {
     <div class="equipment-section-header">
       <HeaderSection :img="Equipment" title="Equipment , tools & Devices by Site "
         subtitle="View and manage all equipment assigned to each operational zone" />
-      <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">{{ $t("Show all") }}</router-link>
+      <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">{{ $t("Show all")
+        }}</router-link>
 
 
     </div>
@@ -92,8 +95,8 @@ const updatetabValue = (value) => {
 
               </div>
             </div>
-            <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" />
-
+            <!-- <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" /> -->
+            <AddNewEquipmentEmptyDialog :project_zone_id="zone?.projectZoonId" :isEmpty="false" />
             <!-- <div> -->
             <!-- <div class="card-actions flex item-center gap-2">
               <AddCreateTeam :isShow="true" :ProjectLocationId="location.id" :LocationId="location.id"
@@ -131,8 +134,9 @@ const updatetabValue = (value) => {
 
           </div>
           <div class="empty-teams" v-else>
-            <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" :isEmpty="true" />
+            <!-- <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" :isEmpty="true" /> -->
 
+            <AddNewEquipmentEmptyDialog :project_zone_id="zone?.projectZoonId" :isEmpty="true" />
             <!-- <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
               subtitle="You haven’t added any equipment to this project. Start building your crew now!"
               linkText=" Start adding equipment now!" :link="`/organization/project-equipment/project/${id}`" /> -->
