@@ -12,7 +12,7 @@
   }
   .location-container {
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
+    @include flex-row(wrap, space-between, center);
 
     .location {
       position: relative;

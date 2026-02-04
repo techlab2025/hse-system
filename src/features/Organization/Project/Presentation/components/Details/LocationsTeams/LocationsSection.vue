@@ -105,7 +105,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
   <Accordion :value="OpenAccordion" multiple @update:value="updatetabValue">
     <AccordionPanel value="0">
       <AccordionHeader>
-        <div class="location-container w-full flex items-center gap-2 justify-between">
+        <div class="location-container w-full flex items-center gap-2 justify-between flex-wrap">
           <div class="location flex items-start">
 
             <AccordArrowDown v-if="OpenAccordion.includes('0')" class="arrow-accord" />
@@ -126,17 +126,13 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           </div>
           <div>
           </div>
-          <div class="card-actions flex items-center gap-2">
+          <div class="card-actions flex items-center gap-2 flex-wrap">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${location.locationId}`"
               class="btn btn-secondary">
               {{ $t('Edit Hierarchy') }}
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="location?.projectLocationId" :LocationId="location.locationId"
               @update:data="GetProjectLocationsEmployes" />
-            <!-- <RouterLink :to="`/organization/project-employee/project/${id}?locationId=${location.locationId}`"
-              class="add-btn">
-              Add employee
-            </RouterLink> -->
             <AddEmployeeDialog :hierarchy="hierarchy" :ProjectLocation="location.projectLocationId" />
           </div>
         </div>
@@ -190,4 +186,12 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
 
 </template>
 
-<style scoped></style>
+<style scoped>
+.location-container {
+  @media (max-width: 768px) {
+    .card-actions {
+      flex-wrap: wrap;
+    }
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import HeaderSection from '../DetailsHeader/HeaderSection.vue';
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
 import Dialog from 'primevue/dialog';
@@ -16,6 +16,9 @@ import { useRoute, useRouter } from "vue-router";
 import { computed } from 'vue'
 import IndexLocationHierarchyController from "../../../controllers/Hierarchy/LocationHierarchy/indexLocationHierarchiesController";
 import IndexLocationHierarchyEmployeeParams from "../../../../Core/params/Hierarchy/HierarchyEmployee/indexLocationHierarchyEmployeeParams";
+import ProjectCustomLocationController from "../../../controllers/ProjectCustomLocationController";
+import ProjectCustomLocationParams from "@/features/Organization/Project/Core/params/ProjectCustomLocationParams";
+import { ProjectCustomLocationEnum } from "@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum";
 
 const props = defineProps<{
   hierarchy: TitleInterface[]
@@ -41,9 +44,19 @@ const setSelectedEmployee = (data: TitleInterface[]) => {
 }
 const visible = ref(false);
 
+const AllLocationHerarchy = ref<TitleInterface[]>()
 const indexLocationHierarchyController = IndexLocationHierarchyController.getInstance()
 const indexLocationHierarchyEmployeeParams = new IndexLocationHierarchyEmployeeParams(route.params.id)
 
+const getAllLocationHeeirarchy = async () => {
+  const state = await indexLocationHierarchyController.getData(indexLocationHierarchyEmployeeParams)
+  if (state.value.data) {
+    AllLocationHerarchy.value = state.value.data.filter((el) => el.projectLocationId == props.ProjectLocation)
+  }
+}
+onMounted(() => {
+  getAllLocationHeeirarchy()
+})
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const indexOrganizatoinEmployeeParams = ref(new IndexOrganizatoinEmployeeParams(
   "",
@@ -52,6 +65,7 @@ const indexOrganizatoinEmployeeParams = ref(new IndexOrganizatoinEmployeeParams(
   0,
   SelectedHierarchy.value?.id
 ))
+
 
 
 
@@ -75,9 +89,10 @@ const UpdateDate = async () => {
 
     const locationHierarchyEmployeeParams = new LocationHierarchyEmployeeParams(SelectedHierarchy?.value?.id, SelectedEmployee.value.map(e => e.id))
     const params = new AddHierarchyEmployeeParams(route.params.id, [locationHierarchyEmployeeParams])
-    await addHierarchyEmployeeController.addHierarchyEmployee(params, router)
+    const state = await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
     visible.value = false
-    location.reload()
+    // console.log()
+    // location.reload()
 
   } catch (error) {
     console.error('Error adding employees:', error)
@@ -100,9 +115,8 @@ const AllHeirarchy = computed(() => {
 
     <div class="input-wrapper">
 
-      <CustomSelectInput :required="false" :modelValue="SelectedHierarchy"
-        :controller="indexLocationHierarchyController" :params="indexLocationHierarchyEmployeeParams" label="Hierarchy"
-        id="Hierarchy" placeholder="Select Hierarchy" @update:modelValue="setSelectedHierarchy" />
+      <CustomSelectInput :required="false" :modelValue="SelectedHierarchy" :static-options="AllLocationHerarchy"
+        label="Hierarchy" id="Hierarchy" placeholder="Select Hierarchy" @update:modelValue="setSelectedHierarchy" />
     </div>
     <div class="input-wrapper" v-if="SelectedHierarchy">
       <CustomSelectInput :required="false" :modelValue="SelectedEmployee"
