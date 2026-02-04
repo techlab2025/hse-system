@@ -17,6 +17,25 @@
   background-color: #d0d0d00f;
   padding: $XsSize2;
 
+  //
+  .header-container {
+    @media (max-width: 800px) {
+      flex-wrap: wrap !important;
+    }
+  }
+  .card-header {
+    @media (max-width: 800px) {
+      flex-wrap: wrap !important;
+    }
+  }
+  .observation-card {
+    @media (max-width: 800px) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow-wrap: anywhere;
+    }
+  }
+  //
   &.top-card {
     // padding: $XsSize2 $MdSize;
     background-color: white;
@@ -55,9 +74,53 @@
     border-radius: $XsSize;
     padding: $MdSize2;
     gap: $XsSize2;
+    border-bottom: 5px solid #f8f9fb;
+    margin-bottom: $SmSize;
     .death-header-employees {
       border-bottom: 1px dashed #efefef;
       padding: 10px;
+      .death_name_note {
+        .death_all_card{
+          @media (max-width: 650px) {
+            border-bottom: 3px solid rgba(31,65,187,0.1019607843);
+          }
+        }
+        @include grid(
+          3,
+          $MdSize2,
+          (
+            1000px: 2,
+            768px: 1,
+          )
+        );
+        .death_user {
+          @include flex-row(nowrap, center, center);
+        background-color: #1f41bb2f;
+        padding: $XsSize4;
+        border-radius: $XsSize3;
+        span{
+          color: #1F41BB;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+        .employee-hierarchy {
+          display: -webkit-box;
+          // -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          // overflow: anywhere;
+          overflow-wrap: anywhere;
+          padding-bottom: $XsSize2;
+          color: #5C5C5C;
+          font-weight: $BaseFontMediumWeight;
+          font-size: $MdSize;
+        }
+      }
     }
     .injury-header {
       width: 100%;
@@ -105,13 +168,18 @@
         (
           1000px: 2,
           768px: 1,
-         )
+        )
       );
-      
+      .all_injured {
+        background-color: #fcfcfc;
+        border-radius: $XlSize2;
+        padding: $MdSize;
+      }
+
       .Injured_title {
         @include flex-row(nowrap, flex-start, flex-start);
         gap: 5px;
-        border: 1px solid #D8002705;
+        border: 1px solid #d8002705;
         border-radius: $XsSize2;
         padding: $XsSize3;
         .title {
@@ -128,22 +196,26 @@
         }
       }
       .user_note {
+        .note {
+          border-bottom: 3px solid rgba(31, 65, 187, 0.1019607843);
+          padding-bottom: $XlSize;
+        }
         p {
           color: #5c5c5c;
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
           margin: $XsSize2 0;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          // -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           // overflow: anywhere;
-          overflow-wrap: anywhere
+          overflow-wrap: anywhere;
         }
       }
       .injury-header-employees {
         @include flex-row(nowrap, flex-start, center);
-        border-top: 1px solid #1F41BB1A;
-        padding-top: $XsSize2;
+        // border-top: 3px solid #1f41bb1a;
+        // padding-top: $XsSize2;
         p {
           color: #3c3c45;
           border-bottom: 2px solid #3c3c45;
@@ -160,39 +232,40 @@
     .witnessStatement-container {
       // @include flex-column(nowrap, flex-start, flex-start);
       // gap: $SmSize;
-       @include grid(
+      @include grid(
         3,
         $MdSize2,
         (
           1000px: 2,
           768px: 1,
-         )
+        )
       );
 
       .witnessStatement {
         @include flex-row(nowrap, flex-start, center);
-        gap: $XsSize; 
+        gap: $XsSize;
+        @media (max-width: 650px) {
+          border-bottom: 3px solid rgba(31,65,187,0.1019607843);
+          padding-bottom: $XsSize2;
+        }
         .employee-name {
           @include flex-row(nowrap, flex-start, center);
-          p{
-            color: #0F1927;
+          p {
+            color: #0f1927;
             font-size: $MdSize;
             font-weight: $BaseFontWeightBold;
-           
-
-          } 
-        } 
+          }
+        }
         .employee-note {
-          color: #5C5C5C;
+          color: #5c5c5c;
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
-            display: -webkit-box;
-          -webkit-line-clamp: 3;
+          display: -webkit-box;
+          // -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           // overflow: anywhere;
           overflow-wrap: anywhere;
-          margin: $XsSize3 0; 
-           
+          margin: $XsSize3 0;
         }
       }
     }
@@ -203,6 +276,8 @@
     }
     .death-container {
       @include flex-row(nowrap, space-between, center);
+      padding: $XsSize2 0;
+      margin-top: $XlSize;
       .death-note {
         color: #9ca3af;
         font-size: $SmSize;
@@ -448,6 +523,12 @@
     @include flex-row(nowrap, space-between, center);
     border-bottom: 1px dashed #efefef;
     padding: $XsSize;
+    @media (max-width: 800px) {
+      flex-wrap: wrap !important;
+      .root-causes{
+        margin-bottom: $XsSize2;
+      }
+    }
     .like_lihood {
       color: #32353d;
       font-weight: $BaseFontSemiBoldWeight;
