@@ -9,7 +9,7 @@ import type Params from '@/base/core/params/params'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addObserverationTypeController = AddObserverationTypeController.getInstance()
 
 const addObserverationType = async () => {
@@ -18,6 +18,7 @@ const addObserverationType = async () => {
     params.value as AddObserverationTypeParams,
     router,
   )
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -30,7 +31,7 @@ const setParams = (data: Params) => {
     <ObserverationTypeForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button @click="$emit(`update:data`)" type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

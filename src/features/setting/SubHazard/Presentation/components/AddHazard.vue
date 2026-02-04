@@ -10,12 +10,13 @@ import AddHazardTypeController from '../controllers/addHazardController'
 const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addHazardTypeController = AddHazardTypeController.getInstance()
 
 const addHazardType = async () => {
   // console.log(params.value, 'params')
   await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router, route)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -37,7 +38,7 @@ const setParams = (data: Params) => {
     <HazardForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

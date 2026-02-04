@@ -49,7 +49,10 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
         const { user } = useUserStore()
 
         if (!draft)
-          if (router.currentRoute?.value.fullPath.includes('equipment-type')) {
+          if (
+            router.currentRoute?.value.fullPath.includes('equipment-type') &&
+            !router.currentRoute?.value.fullPath.includes('project-progress')
+          ) {
             await router.push(
               `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-types`,
             )

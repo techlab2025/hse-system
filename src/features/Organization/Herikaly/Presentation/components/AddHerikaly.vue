@@ -14,7 +14,8 @@ const addHerikalyController = AddHerikalyController.getInstance()
 
 const addHerikaly = async () => {
   console.log(params.value, 'params')
-  await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router)
+  const state = await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -26,7 +27,7 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHerikaly">
     <HerikalyForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary w-full"">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

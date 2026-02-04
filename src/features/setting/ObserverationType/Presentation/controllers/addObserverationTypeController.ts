@@ -42,7 +42,10 @@ export default class AddObserverationTypeController extends ControllerInterface<
 
         const { user } = useUserStore()
 
-        if (!router.currentRoute.value.path.includes('/equipment-mangement/observation'))
+        if (
+          !router.currentRoute.value.path.includes('/equipment-mangement/observation') &&
+          !router.currentRoute.value.path.includes('/project-progress')
+        )
           if (!draft)
             await router.push(
               `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`,

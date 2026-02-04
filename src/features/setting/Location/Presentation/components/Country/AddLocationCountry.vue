@@ -7,6 +7,7 @@ import LocationCountryForm from './LocationCountryForm.vue'
 import type AddLocationParams from '../../../Core/params/addLocationParams'
 import AddLocationController from '../../controllers/addLocationController'
 
+const emit = defineEmits(["update:data"])
 const router = useRouter()
 const params = ref<Params | null>(null)
 
@@ -14,6 +15,7 @@ const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
   await addLocationController.addLocation(params.value as AddLocationParams, router)
+  emit("update:data")
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -25,7 +27,7 @@ const setParams = (data: Params) => {
     <LocationCountryForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

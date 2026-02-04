@@ -10,12 +10,13 @@ import type Params from '@/base/core/params/params'
 const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addHazardTypeController = AddHazardTypeController.getInstance()
 
 const addHazardType = async () => {
   // console.log(params.value, 'params')
   await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
