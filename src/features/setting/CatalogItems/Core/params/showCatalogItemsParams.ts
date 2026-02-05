@@ -9,7 +9,7 @@ export default class ShowCatalogItemsParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['header_id'] = this.id
+    data['guid_category_id'] = this.id
     return data
   }
 }

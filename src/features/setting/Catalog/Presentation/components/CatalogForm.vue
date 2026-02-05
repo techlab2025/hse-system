@@ -16,7 +16,7 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+// import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import AddCatalogParams from '../../Core/params/addCatalogParams'
 import editCatalogParams from '../../Core/params/editCatalogParams'
 import type CatalogDetailsModel from '../../Data/models/CatalogDetailsModel'
@@ -71,9 +71,9 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexTeamsController = await IndexLangController.getInstance().getData(params)
+  const indexCatalogController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexTeamsController.value
+  const response = indexCatalogController.value
 
   if (response?.data?.length) {
     // map backend Teamss into default structure
@@ -112,7 +112,7 @@ const updateData = () => {
 
   console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
-
+  console.log(props.data?.id, 'props.data')
   const params = props.data?.id
     ? new editCatalogParams(
         props.data?.id! ?? 0,

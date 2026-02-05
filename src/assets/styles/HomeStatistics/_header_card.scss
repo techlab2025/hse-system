@@ -1,0 +1,78 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.Subscription_card {
+  @include grid(
+    3,
+    $XsSize,
+    (
+      800px: 2,
+      500px: 1,
+    )
+  );
+  background: linear-gradient(
+    90.87deg,
+    rgba(244, 151, 30, 0.06) 0%,
+    rgba(244, 151, 30, 0.0375) 50%,
+    rgba(244, 151, 30, 0.06) 100%
+  );
+  padding: $XlSize3 $XlSize2;
+  .describe {
+    h6 {
+      font-size: $XlSize2;
+      font-weight: $BaseFontWeightBold;
+      color: rgba(59, 59, 80, 1);
+    }
+    p {
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      color: rgba(158, 158, 158, 1);
+    }
+  }
+  .renew_icon {
+    @include flex(row, nowrap, space-between, center);
+    background-color: rgba(245, 178, 0, 0.1);
+    padding: $MdSize $XlSize;
+    border-radius: $XlSize;
+    .title {
+      p {
+        color: rgba(245, 178, 0, 1);
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
+  }
+  .warning {
+    @include flex(row, nowrap, end, center);
+    position: relative;
+    &::before {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(244, 151, 30, 0.1);
+      border-radius: 50%;
+      margin-right: $MdSize;
+      left: 45%;
+      bottom: 0;
+    }
+
+    &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(244, 151, 30, 0.1);
+      border-radius: 50%;
+      margin-right: $MdSize;
+      right: 25%;
+      top: 0;
+    }
+    @media screen and (max-width: 800px) {
+      display: none; 
+    }
+  } 
+}

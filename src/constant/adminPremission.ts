@@ -3180,6 +3180,45 @@ export const adminPermissions: PermissionItem = {
             },
           ],
         },
+
+         // Catalog
+        {
+          key: PermissionsEnum.CATALOG_ALL,
+          code: PermissionsEnum.CATALOG_ALL,
+          label: 'Catalog',
+          permissions: [
+            {
+              key: PermissionsEnum.CATALOG_ALL,
+              code: PermissionsEnum.CATALOG_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.CATALOG_FETCH,
+              code: PermissionsEnum.CATALOG_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.CATALOG_DETAILS,
+              code: PermissionsEnum.CATALOG_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.CATALOG_DELETE,
+              code: PermissionsEnum.CATALOG_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.CATALOG_CREATE,
+              code: PermissionsEnum.CATALOG_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.CATALOG_UPDATE,
+              code: PermissionsEnum.CATALOG_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

@@ -28,10 +28,11 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import IndexCatalogController from '../controllers/indexCatalogItemsController'
-import DeleteCatalogController from '../controllers/deleteCatalogItemsController'
-import IndexCatalogParams from '../../Core/params/indexCatalogItemsParams'
-import DeleteCatalogParams from '../../Core/params/deleteCatalogItemsParams'
+//
+import DeleteCatalogItemsController from '../controllers/deleteCatalogItemsController'
+import IndexCatalogItemsController from '../controllers/indexCatalogItemsController'
+import IndexCatalogItemsParams from '../../Core/params/indexCatalogItemsParams'
+import DeleteCatalogItemsParams from '../../Core/params/deleteCatalogItemsParams'
 
 const { t } = useI18n()
 
@@ -41,8 +42,8 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexCatalogController = IndexCatalogController.getInstance()
-const state = ref(indexCatalogController.state.value)
+const indexCatalogItemsController = IndexCatalogItemsController.getInstance()
+const state = ref(indexCatalogItemsController.state.value)
 const route = useRoute()
 let id = route.params.id
 // const type = ref<TeamTypeStatusEnum>(TeamTypeStatusEnum[route.params.type as keyof typeof TeamTypeStatusEnum])
@@ -53,21 +54,21 @@ const fetchCatalog = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteCatalogParams = new IndexCatalogParams(query, pageNumber, perPage, withPage, id)
-  await indexCatalogController.getData(deleteCatalogParams)
+  const indexCatalogItemsParams = new IndexCatalogItemsParams(query, pageNumber, perPage, withPage, id)
+  await indexCatalogItemsController.getData(indexCatalogItemsParams)
 }
 
 onMounted(() => {
   fetchCatalog()
 })
 
-const searchCatalogType = debounce(() => {
+const searchCatalogItemsType = debounce(() => {
   fetchCatalog(word.value)
 })
 
 const deleteCatalog = async (id: number) => {
-  const deleteCatalogParams = new DeleteCatalogParams(id)
-  await DeleteCatalogController.getInstance().deleteCatalog(deleteCatalogParams)
+  const deleteCatalogItemsParams = new DeleteCatalogItemsParams(id)
+  await DeleteCatalogItemsController.getInstance().deleteCatalogItems(deleteCatalogItemsParams)
   await fetchCatalog()
 }
 
@@ -83,7 +84,7 @@ const handleCountPerPage = (count: number) => {
 }
 
 watch(
-  () => indexCatalogController.state.value,
+  () => indexCatalogItemsController.state.value,
   (newState) => {
     if (newState) {
       // console.log(newState)
@@ -103,12 +104,10 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/${id}`,
     permission: [
-      PermissionsEnum.TEAM_UPDATE,
-      PermissionsEnum.ORG_TEAM_UPDATE,
+      PermissionsEnum.CATALOG_ITEMS_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CATALOG_ITEMS_ALL,
     ],
   },
 
@@ -117,12 +116,10 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteCatalog(id),
     permission: [
-      PermissionsEnum.TEAM_DELETE,
-      PermissionsEnum.ORG_TEAM_DELETE,
+      PermissionsEnum.CATALOG_ITEMS_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CATALOG_ITEMS_ALL,
     ],
   },
 ]
@@ -141,10 +138,10 @@ watch(
 
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchCatalogType())">
+      <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogType" />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogItemsType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -152,12 +149,11 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
+        PermissionsEnum.CATALOG_ITEMS_CREATE,
       ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalogItems/add`"
           class="btn btn-primary">
-          {{ $t('Add_Catalog') }}
+          {{ $t('Add_Catalog_Item') }}
         </router-link>
       </permission-builder>
     </div>
@@ -166,16 +162,11 @@ watch(
   <permission-builder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.TEAM_ALL,
-    PermissionsEnum.TEAM_DELETE,
-    PermissionsEnum.TEAM_FETCH,
-    PermissionsEnum.TEAM_UPDATE,
-    PermissionsEnum.TEAM_CREATE,
-    PermissionsEnum.ORG_TEAM_ALL,
-    PermissionsEnum.ORG_TEAM_DELETE,
-    PermissionsEnum.ORG_TEAM_FETCH,
-    PermissionsEnum.ORG_TEAM_UPDATE,
-    PermissionsEnum.ORG_TEAM_CREATE,
+    PermissionsEnum.CATALOG_ITEMS_ALL,
+    PermissionsEnum.CATALOG_ITEMS_DELETE,
+    PermissionsEnum.CATALOG_ITEMS_FETCH,
+    PermissionsEnum.CATALOG_ITEMS_UPDATE,
+    PermissionsEnum.CATALOG_ITEMS_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -186,14 +177,14 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
 
-                <th scope="col">Actions</th>
+                <th scope="col">{{ $t('Actions') }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/edit/${item.id}`">{{
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalogItems/edit/${item.id}`">{{
                     index + 1 }}
                   </router-link>
                 </td>
@@ -224,8 +215,7 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
+          PermissionsEnum.CATALOG_ITEMS_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -237,8 +227,7 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
+          PermissionsEnum.CATALOG_ITEMS_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -252,8 +241,7 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
+        PermissionsEnum.CATALOG_ITEMS_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
           description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />

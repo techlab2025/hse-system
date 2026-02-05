@@ -41,6 +41,8 @@ export default class ProjectStatisticsModel {
       data.number_of_projects,
     )
   }
+
+  
   static example: ProjectStatisticsModel = new ProjectStatisticsModel(
     1,
     120,
