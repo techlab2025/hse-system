@@ -7,15 +7,23 @@ export default class AddTicketParams implements Params {
   type: number
   title: string
   description: string
+  organizationId?: number
 
   // public static readonly validation = new ClassValidation().setRules({
   //   type: { required: true },
   // })
-  constructor(images: string[], type: number, title: string, description: string) {
+  constructor(
+    images: string[],
+    type: number,
+    title: string,
+    description: string,
+    organizationId?: number,
+  ) {
     this.images = images
     this.type = type
     this.title = title
     this.description = description
+    this.organizationId = organizationId
   }
 
   toMap(): Record<
@@ -39,6 +47,7 @@ export default class AddTicketParams implements Params {
     data['ticket_type_id'] = this.type
     data['title'] = this.title
     data['description'] = this.description
+    if (this.organizationId) data['organization_id'] = this.organizationId
     return data
   }
 

@@ -25,6 +25,8 @@ import IndexTicketTypeParams from '@/features/Organization/TicketType/Core/param
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import AddTicketParams from '../../Core/params/addTicketParams'
+import IndexOrganizationController from '@/features/setting/Organization/Presentation/controllers/indexOrganizationController'
+import IndexOrganizationParams from '@/features/setting/Organization/Core/params/indexOrganizationParams'
 
 const emit = defineEmits(['update:data', 'close:data'])
 
@@ -140,19 +142,20 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditTicketParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        title.value,
-        SelectedTicketType.value?.id,
-        images.value,
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      title.value,
+      SelectedTicketType.value?.id,
+      images.value,
+    )
     : new AddTicketParams(
-        images.value.map((el) => el.file),
-        SelectedTicketType.value?.id,
-        title.value,
-        description.value,
-      )
+      images.value.map((el) => el.file),
+      SelectedTicketType.value?.id,
+      title.value,
+      description.value,
+      SelectedOrganization?.value?.id
+    )
   console.log(params, 'params')
   emit('update:data', params)
 }
@@ -203,32 +206,39 @@ const setImages = async (data: File[]) => {
   images.value = await filesToBase64(data)
   updateData()
 }
+
+const indexOrganizationController = IndexOrganizationController.getInstance()
+const organizationParams = new IndexOrganizationParams('', 0, 10, 0)
+const SelectedOrganization = ref<TitleInterface>()
+
+const setOrganization = (data: TitleInterface) => {
+  SelectedOrganization.value = data
+  updateData()
+}
+
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <CustomSelectInput
-      :modelValue="SelectedTicketType"
-      :controller="indexTicketTypeController"
-      :params="ticketTypeParams"
-      label="Select Ticket Type"
-      id="ticket"
-      placeholder="Select ticket type"
-      @update:modelValue="setTicketType"
-    />
+    <CustomSelectInput :modelValue="SelectedTicketType" :controller="indexTicketTypeController"
+      :params="ticketTypeParams" label="Select Ticket Type" id="ticket" placeholder="Select ticket type"
+      @update:modelValue="setTicketType" />
   </div>
 
-  <div class="col-span-4 md:col-span-4">
-    <div class="input-wrapper">
-      <label for="title">Title</label>
-      <input type="text" id="title" v-model="title" @input="updateData" />
-    </div>
+  <div class="input-wrapper col-span-4 md:col-span-4">
+    <label for="title">Title</label>
+    <input type="text" id="title" v-model="title" @input="updateData" :placeholder="`${$t('enter_title')}`" />
   </div>
-  <div class="col-span-4 md:col-span-4">
-    <div class="input-wrapper">
-      <label for="description">description</label>
-      <textarea id="description" v-model="description" @input="updateData" />
-    </div>
+
+  <div class="input-wrapper col-span-4 md:col-span-4">
+    <label for="description">description</label>
+    <textarea id="description" v-model="description" @input="updateData" :placeholder="`${$t('enter_description')}`" />
+  </div>
+
+  <div class="input-wrapper col-span-4 md:col-span-4" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="SelectedOrganization" :controller="indexOrganizationController"
+      :params="organizationParams" label="Select Organization" id="organization" placeholder="Select organization"
+      @update:modelValue="setOrganization" />
   </div>
 
   <div class="col-span-4 md:col-span-4">

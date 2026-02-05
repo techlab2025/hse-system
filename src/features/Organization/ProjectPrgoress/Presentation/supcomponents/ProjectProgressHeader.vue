@@ -23,7 +23,7 @@ const value = ref(props.progressValue);
       </div>
     </div>
     <div>
-      <Knob v-model="value" :valueColor="`#1F41BB`" />
+      <Knob v-model="value" :valueColor="`#1F41BB`" :disabled="true" />
     </div>
 
   </div>

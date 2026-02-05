@@ -37,6 +37,7 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
       const dataState: DataState<TicketModel> = await this.ReplaceTicketUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
+        console.log('succsess')
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
           titleContent: 'successful',
@@ -52,6 +53,8 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
+        console.log('failed 1')
+
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
           titleContent: this.state.value.error?.title ?? 'An Error Occurred',
@@ -61,6 +64,8 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
         // throw new Error(this.state.value.error?.title)
       }
     } catch (error: any) {
+      console.log('failed 2')
+
       console.log(this.state.value.message)
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',

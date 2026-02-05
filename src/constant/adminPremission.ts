@@ -3104,6 +3104,82 @@ export const adminPermissions: PermissionItem = {
             },
           ],
         },
+        // Ticket Type
+        {
+          key: PermissionsEnum.TICKET_TYPE_ALL,
+          code: PermissionsEnum.TICKET_TYPE_ALL,
+          label: 'Ticket Type',
+          permissions: [
+            {
+              key: PermissionsEnum.TICKET_TYPE_ALL,
+              code: PermissionsEnum.TICKET_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.TICKET_TYPE_FETCH,
+              code: PermissionsEnum.TICKET_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.TICKET_TYPE_DETAILS,
+              code: PermissionsEnum.TICKET_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.TICKET_TYPE_DELETE,
+              code: PermissionsEnum.TICKET_TYPE_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.TICKET_TYPE_CREATE,
+              code: PermissionsEnum.TICKET_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.TICKET_TYPE_UPDATE,
+              code: PermissionsEnum.TICKET_TYPE_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Ticket Status
+        {
+          key: PermissionsEnum.TICKET_ALL,
+          code: PermissionsEnum.TICKET_ALL,
+          label: 'Ticket',
+          permissions: [
+            {
+              key: PermissionsEnum.TICKET_ALL,
+              code: PermissionsEnum.TICKET_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.TICKET_FETCH,
+              code: PermissionsEnum.TICKET_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.TICKET_DETAILS,
+              code: PermissionsEnum.TICKET_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.TICKET_DELETE,
+              code: PermissionsEnum.TICKET_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.TICKET_CREATE,
+              code: PermissionsEnum.TICKET_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.TICKET_UPDATE,
+              code: PermissionsEnum.TICKET_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
       ],
     },
   ],

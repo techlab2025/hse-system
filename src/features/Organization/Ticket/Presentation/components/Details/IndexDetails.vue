@@ -69,11 +69,8 @@ const props = defineProps<{ data: TicketDetailsModel }>()
 
       <!-- v-if="data.status !== StatusEnum.SOLVED || data.status !== StatusEnum.RESOLVED" -->
 
-      <CloseTicketDialog
-        v-if="user?.type === OrganizationTypeEnum.ADMIN"
-        @refresh="$emit('refresh')"
-        :ticketId="data?.id"
-      />
+      <CloseTicketDialog v-if="user?.type === OrganizationTypeEnum.ADMIN && data.status !== StatusEnum.CLOSED"
+        @refresh="$emit('refresh')" :ticketId="data?.id" />
 
       <!-- </div> -->
 

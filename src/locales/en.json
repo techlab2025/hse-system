@@ -1155,5 +1155,7 @@
   "Select_ticket_type": "Select Ticket Type",
   "Add_your_structure,_assign_reporting_levels,_and_register_employees_to_start_managing_tasks_and_workflows.": "Add your structure, assign reporting levels, and register employees to start managing tasks and workflows.",
   "Lets_Get_Your_Organization_Ready": "Let’s Get Your Organization Ready.",
-  "organization_setup": "organization setup"
+  "organization_setup": "organization setup",
+  "enter_title": "Enter title",
+  "enter_description": "Enter description"
 }
