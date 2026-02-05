@@ -79,6 +79,7 @@ const fetchHazard = async (
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
+    
     // equipmentIds,
     // riskLevel,
     // saveStatus,
