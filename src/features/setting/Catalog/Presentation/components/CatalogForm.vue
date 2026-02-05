@@ -16,7 +16,7 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+// import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import AddCatalogParams from '../../Core/params/addCatalogParams'
 import editCatalogParams from '../../Core/params/editCatalogParams'
 import type CatalogDetailsModel from '../../Data/models/CatalogDetailsModel'

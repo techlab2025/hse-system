@@ -103,12 +103,10 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: ActionsTableEdit,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/${id}`,
     permission: [
-      PermissionsEnum.TEAM_UPDATE,
-      PermissionsEnum.ORG_TEAM_UPDATE,
+      PermissionsEnum.CATALOG_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CATALOG_ALL,
     ],
   },
 
@@ -117,12 +115,10 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteCatalog(id),
     permission: [
-      PermissionsEnum.TEAM_DELETE,
-      PermissionsEnum.ORG_TEAM_DELETE,
+      PermissionsEnum.CATALOG_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.CATALOG_ALL,
     ],
   },
 ]
@@ -152,8 +148,7 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
+        PermissionsEnum.CATALOG_CREATE,
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
           class="btn btn-primary">
@@ -166,16 +161,11 @@ watch(
   <permission-builder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.TEAM_ALL,
-    PermissionsEnum.TEAM_DELETE,
-    PermissionsEnum.TEAM_FETCH,
-    PermissionsEnum.TEAM_UPDATE,
-    PermissionsEnum.TEAM_CREATE,
-    PermissionsEnum.ORG_TEAM_ALL,
-    PermissionsEnum.ORG_TEAM_DELETE,
-    PermissionsEnum.ORG_TEAM_FETCH,
-    PermissionsEnum.ORG_TEAM_UPDATE,
-    PermissionsEnum.ORG_TEAM_CREATE,
+    PermissionsEnum.CATALOG_ALL,
+    PermissionsEnum.CATALOG_DELETE,
+    PermissionsEnum.CATALOG_FETCH,
+    PermissionsEnum.CATALOG_UPDATE,
+    PermissionsEnum.CATALOG_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -186,7 +176,7 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
 
-                <th scope="col">Actions</th>
+                <th scope="col">{{ $t('Actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -224,8 +214,7 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
+          PermissionsEnum.CATALOG_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -237,8 +226,8 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TEAM_CREATE,
-          PermissionsEnum.ORG_TEAM_CREATE,
+          PermissionsEnum.CATALOG_CREATE,
+          // PermissionsEnum.ORG_TEAM_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -252,11 +241,11 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
+        PermissionsEnum.CATALOG_CREATE,
+        // PermissionsEnum.ORG_TEAM_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+          description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>
