@@ -71,7 +71,7 @@ const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationHeirarchyEmployeeController.getInstance();
   await deleteProjectLocationTeamEmployeeController.deleteProjectLocationHeirarchyEmployee(deleteProjectLocationTeamEmployeeparams, route)
   GetProjectLocationsEmployes()
-  location.reload()
+  // location.reload()
 
 }
 // const DeleteTeamMember = async (id: number) => {
