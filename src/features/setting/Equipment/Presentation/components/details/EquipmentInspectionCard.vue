@@ -58,7 +58,7 @@ const GetEquipmentType = (type: number) => {
             </div>
             <div class="inspection-info">
               <div class="info-box">
-                <p class="assigned-by">Assigned by :</p>
+                <p class="assigned-by">Inspected by :</p>
                 <h5 class="position">
                   <span>{{ task?.createdBy?.name }}</span>
                 </h5>

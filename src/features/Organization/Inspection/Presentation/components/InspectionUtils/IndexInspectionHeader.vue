@@ -2,6 +2,7 @@
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue';
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import { onMounted, ref, watch } from 'vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -9,14 +10,16 @@ const props = defineProps<{
   length: number
   projects: MyProjectsModel[]
 }>()
-const ActiveTap = ref(props.projects?.[0]?.id)
+const ProjectSelectStore = useProjectSelectStore()
+const ActiveTap = ref(ProjectSelectStore?.project?.id != -1 ? ProjectSelectStore?.project?.id : props.projects?.[0]?.id)
 
 onMounted(() => {
   emit('update:data', ActiveTap.value)
 })
+
 const UpdateData = (Id: number) => {
   ActiveTap.value = Id
-  emit('update:data', ActiveTap.value)
+  emit('update:data', ProjectSelectStore?.project?.id != -1 ? ProjectSelectStore?.project?.id : ActiveTap.value)
 }
 
 const Projects = ref(props.projects)
@@ -34,6 +37,7 @@ const GetProjectId = (id: number) => {
 }
 </script>
 <template>
+
   <div class="idnex-header">
     <p class="title">{{ title }}</p>
     <p class="index-length">

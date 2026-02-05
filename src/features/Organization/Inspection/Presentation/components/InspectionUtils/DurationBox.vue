@@ -46,7 +46,8 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
     <div class="session-header">
       <h4>{{ cardTitle }} :</h4>
 
-      <h5 v-if="data.date && !isShow">
+      <!-- && !isShow -->
+      <h5 v-if="data.date">
         {{ $t('start day') }}: <span>{{ data.date }}</span>
       </h5>
       <!-- <h5 v-if="isShow">

@@ -5,6 +5,7 @@ export default class FetchInspectionsResultsParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
+  public zoneIds?: number[]
   // public id: number
 
   constructor(
@@ -12,12 +13,14 @@ export default class FetchInspectionsResultsParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
+    zoneIds?: number[],
     // id: number,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.zoneIds = zoneIds
     // this.id = id
   }
 
@@ -27,6 +30,8 @@ export default class FetchInspectionsResultsParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
+    if (this.zoneIds) data['zone_ids'] = this.zoneIds
+
     // data['task_id'] = this.id
     return data
   }

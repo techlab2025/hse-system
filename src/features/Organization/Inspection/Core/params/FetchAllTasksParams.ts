@@ -5,12 +5,20 @@ export default class FetchAllTasksParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
+  public zoneIds?: number[]
 
-  constructor(word: string, pageNumber: number = 1, perPage: number = 10, withPage: number = 1) {
+  constructor(
+    word: string,
+    pageNumber: number = 1,
+    perPage: number = 10,
+    withPage: number = 1,
+    zoneIds?: number[],
+  ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.zoneIds = zoneIds
   }
 
   toMap(): Record<string, string | number | number[] | null | any> {
@@ -19,6 +27,7 @@ export default class FetchAllTasksParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
+    if (this.zoneIds) data['zone_ids'] = this.zoneIds
 
     return data
   }
