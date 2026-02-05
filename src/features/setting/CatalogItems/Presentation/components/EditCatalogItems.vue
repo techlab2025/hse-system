@@ -5,7 +5,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
 import ShowTeamParams from '../../Core/params/showCatalogItemsParams'
-import TeamForm from './CatalogForm.vue'
+import TeamForm from './CatalogFormItems.vue'
 import EditCatalogController from '../controllers/editCatalogItemsController'
 import ShowCatalogController from '../controllers/showCatalogItemsController'
 

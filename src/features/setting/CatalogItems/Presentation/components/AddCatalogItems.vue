@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
 import AddCatalogController from '../controllers/addCatalogItemsController'
 import type AddCatalogParams from '../../Core/params/addCatalogItemsParams'
-import CatalogForm from './CatalogForm.vue'
+import CatalogForm from './CatalogFormItems.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)

@@ -23,8 +23,8 @@
     .action-container {
       width: 33%;
 
-      .action-box {
-        @include flex-row(nowrap, space-between, center);
+      .action-box { 
+        @include flex-row(nowrap, space-between, center); 
         border-radius: calc($XlSize3 + 3px);
         border: 1px solid #d9dbe9;
         padding-inline: $MdSize;

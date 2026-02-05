@@ -71,9 +71,9 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexTeamsController = await IndexLangController.getInstance().getData(params)
+  const indexCatalogController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexTeamsController.value
+  const response = indexCatalogController.value
 
   if (response?.data?.length) {
     // map backend Teamss into default structure
