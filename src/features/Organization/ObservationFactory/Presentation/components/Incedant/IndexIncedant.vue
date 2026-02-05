@@ -58,6 +58,7 @@ const fetchHazard = async (
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],
+  projectIds?: number,
   equipmentIds?: number[],
   riskLevel?: number[],
   saveStatus?: number[],
@@ -71,7 +72,7 @@ const fetchHazard = async (
     perPage,
     withPage,
     [Observation.AccidentsType],
-    37,
+    [projectIds],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId
@@ -85,32 +86,32 @@ const fetchHazard = async (
   await indexHazardController.getData(params)
 }
 
-const confirmFilters = (
-  date: string,
-  locationIds?: number[],
-  zoneIds?: number[],
-  machineIds?: number[],
-  machineTypeIds?: number[],
-  machineSubTypeIds?: number[],
-  caseIds?: number[],
-  statusIds?: number[]
-) => {
-  fetchHazard(
-    '',
-    1,
-    10,
-    1,
-    [],
-    locationIds,
-    zoneIds,
-    machineIds,
-    statusIds,
-    caseIds,
-    date,
-    machineSubTypeIds,
-    machineTypeIds
-  )
-}
+// const confirmFilters = (
+//   date: string,
+//   locationIds?: number[],
+//   zoneIds?: number[],
+//   machineIds?: number[],
+//   machineTypeIds?: number[],
+//   machineSubTypeIds?: number[],
+//   caseIds?: number[],
+//   statusIds?: number[]
+// ) => {
+//   fetchHazard(
+//     '',
+//     1,
+//     10,
+//     1,
+//     [],
+//     locationIds,
+//     zoneIds,
+//     machineIds,
+//     statusIds,
+//     caseIds,
+//     date,
+//     machineSubTypeIds,
+//     machineTypeIds
+//   )
+// }
 
 onMounted(async () => {
   fetchHazard()
@@ -203,11 +204,12 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
+  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
+  fetchHazard("", 1, 10, 0, null, null, null, data)
   if (data) {
     FetchMyZones()
   }

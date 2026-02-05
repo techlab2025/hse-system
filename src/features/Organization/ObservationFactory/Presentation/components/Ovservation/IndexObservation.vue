@@ -62,12 +62,8 @@ const fetchHazard = async (
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],
-  equipmentIds?: number[],
-  riskLevel?: number[],
-  saveStatus?: number[],
-  date?: string,
-  equipmentTypeIds?: number[],
-  equipmentSubTypeIds?: number[],
+  projectIds?: number,
+
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -75,12 +71,11 @@ const fetchHazard = async (
     perPage,
     withPage,
     [Observation.ObservationType, Observation.HazardType],
-    null,
+    [projectIds],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
-    
-    // equipmentIds,
+
     // riskLevel,
     // saveStatus,
     // date,
@@ -91,32 +86,32 @@ const fetchHazard = async (
   await indexHazardController.getData(params)
 }
 
-const confirmFilters = (
-  date: string,
-  locationIds?: number[],
-  zoneIds?: number[],
-  machineIds?: number[],
-  machineTypeIds?: number[],
-  machineSubTypeIds?: number[],
-  caseIds?: number[],
-  statusIds?: number[],
-) => {
-  fetchHazard(
-    '',
-    1,
-    10,
-    1,
-    [],
-    locationIds,
-    zoneIds,
-    machineIds,
-    statusIds,
-    caseIds,
-    date,
-    machineSubTypeIds,
-    machineTypeIds,
-  )
-}
+// const confirmFilters = (
+//   date: string,
+//   locationIds?: number[],
+//   zoneIds?: number[],
+//   machineIds?: number[],
+//   machineTypeIds?: number[],
+//   machineSubTypeIds?: number[],
+//   caseIds?: number[],
+//   statusIds?: number[],
+// ) => {
+//   fetchHazard(
+//     '',
+//     1,
+//     10,
+//     1,
+//     [],
+//     locationIds,
+//     zoneIds,
+//     machineIds,
+//     statusIds,
+//     caseIds,
+//     date,
+//     machineSubTypeIds,
+//     machineTypeIds,
+//   )
+// }
 
 onMounted(() => {
   fetchHazard()
@@ -207,11 +202,13 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
+  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
+  console.log(data, "data")
+  fetchHazard("", 1, 10, 0, null, null, null, data)
   if (data) {
     FetchMyZones()
   }

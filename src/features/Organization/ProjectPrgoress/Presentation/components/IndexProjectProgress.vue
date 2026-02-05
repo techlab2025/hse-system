@@ -201,10 +201,11 @@ const routerBack = () => {
 .project-progress-body-content {
   margin-left: auto;
   margin-right: auto;
+  padding: 50px;
 
   .complate-img {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     /* padding: 30px; */
   }
 
