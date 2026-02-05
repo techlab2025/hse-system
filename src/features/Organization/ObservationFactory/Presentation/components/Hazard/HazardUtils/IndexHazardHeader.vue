@@ -10,10 +10,10 @@
     projects: MyProjectsModel[]
   }>()
   const projectSelectStore = useProjectSelectStore()
-  const ActiveTap = ref(projectSelectStore?.project?.id != -1 ? projectSelectStore?.project?.id : props.projects?.[0]?.id)
+  const ActiveTap = ref(projectSelectStore?.project?.id == -1 || !(projectSelectStore?.project?.id) ? projectSelectStore?.project?.id : props.projects?.[0]?.id)
   const UpdateData = (Id: number) => {
-    ActiveTap.value = Id
-    emit('update:data', projectSelectStore?.project?.id != -1 ? projectSelectStore?.project?.id : ActiveTap.value)
+    ActiveTap.value = projectSelectStore?.project?.id == -1 || !(projectSelectStore?.project?.id) ? Id : projectSelectStore?.project?.id
+    emit('update:data', ActiveTap.value)
   }
 
 </script>

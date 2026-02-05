@@ -38,3 +38,11 @@
       </div>
     </div>
   </template>
+
+<!-- <style scoped>
+.idnex-filter{
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+</style> -->

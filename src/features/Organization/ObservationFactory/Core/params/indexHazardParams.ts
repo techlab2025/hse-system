@@ -68,7 +68,7 @@ export default class IndexHazardParams implements Params {
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
     if (this.projectId || useProjectSelectStore().getProjectId())
-      data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
+      data['project_ids'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
