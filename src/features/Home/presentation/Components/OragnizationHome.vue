@@ -32,14 +32,14 @@ const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getIns
 const state = ref(fetchPorjectStatisticsController.state.value)
 
 
-const GetProjectStatistics = async () => {
+const GetProjectStatistics = async () => {  
   const fetchPorjectStatisticsParams = new FetchProjectStatisticsParams("", 1, 10, 1)
   await fetchPorjectStatisticsController.getData(fetchPorjectStatisticsParams)
 }
 
-// onMounted(() => {
-//   GetProjectStatistics()
-// })
+onMounted(() => {
+  GetProjectStatistics()
+})
 
 watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
   state.value = newState
@@ -166,14 +166,16 @@ onMounted(() => {
   </div>
 
   <div class="home-statistics gap-2">
-    <!-- <ProjectsStatistics :projectStatistics="state?.data" /> -->
-    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" /> -->
-    <!-- <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" /> -->
-    <!-- <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" /> -->
-    <!-- <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-9" />
-    <InvestegationStatics class="col-span-12 md:col-span-3" /> -->
-    <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
+
+    <ProjectsStatistics :projectStatistics="state?.data" />
+    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+    <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" />
+    <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-8  "  />
+     <InvestegationStatics class="col-span-12 md:col-span-4" />
+        <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
     <!-- <MachineStatics class="col-span-12 md:col-span-3" /> -->
+
   </div>
 
 

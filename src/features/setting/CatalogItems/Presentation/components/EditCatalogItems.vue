@@ -4,39 +4,38 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import ShowTeamParams from '../../Core/params/showCatalogItemsParams'
-import TeamForm from './CatalogForm.vue'
-import EditCatalogController from '../controllers/editCatalogItemsController'
-import ShowCatalogController from '../controllers/showCatalogItemsController'
+import CatalogItemsForm from './CatalogItemsForm.vue'
+import ShowCatalogItemsParams from '../../Core/params/showCatalogItemsParams'
+import EditCatalogItemsController from '../controllers/editCatalogItemsController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showCatalogController = ShowCatalogController.getInstance()
-const state = ref(showCatalogController.state.value)
+const showCatalogItemsController = ShowCatalogItemsParams.getInstance()
+const state = ref(showCatalogItemsController.state.value)
 
-const fetchCatalogDetails = async () => {
-  const TeamParams = new ShowTeamParams(Number(id))
+const fetchCatalogItemsDetails = async () => {
+  const showCatalogItemsParams = new ShowCatalogItemsParams(Number(id))
 
-  await showCatalogController.showCatalogType(TeamParams)
+  await showCatalogItemsController.showCatalogItemsType(showCatalogItemsParams)
 }
 
 onMounted(() => {
-  fetchCatalogDetails()
+  fetchCatalogItemsDetails()
 })
 
-const EditCatalog = async (draft: boolean) => {
+const editCatalogItems = async (draft: boolean) => {
   if (draft) {
-    await EditCatalogController.getInstance().editCatalog(params.value!, router)
+    await EditCatalogItemsController.getInstance().editCatalogItems(params.value!, router)
   } else {
-    await EditCatalogController.getInstance().editCatalog(params.value!, router)
+    await EditCatalogItemsController.getInstance().editCatalogItems(params.value!, router)
   }
 }
 
 watch(
-  () => showCatalogController.state.value,
+  () => showCatalogItemsController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -57,8 +56,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditCatalog">
-        <TeamForm @update:data="setParams" :data="state.data!" />
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editCatalogItems">
+        <CatalogItemsForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>

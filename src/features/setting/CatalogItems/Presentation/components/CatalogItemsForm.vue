@@ -16,16 +16,16 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
-import AddCatalogParams from '../../Core/params/addCatalogItemsParams'
-import editCatalogParams from '../../Core/params/editCatalogItemsParams'
-import type CatalogDetailsModel from '../../Data/models/CatalogItemsDetailsModel'
+// import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import type CatalogItemsDetailsModel from '../../Data/models/CatalogItemsDetailsModel'
+import AddCatalogItemsParams from '../../Core/params/addCatalogItemsParams'
+import editCatalogItemsParams from '../../Core/params/editCatalogItemsParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
-  data?: CatalogDetailsModel
+  data?: CatalogItemsDetailsModel
 }>()
 
 // const route = useRoute()
@@ -71,9 +71,9 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexTeamsController = await IndexLangController.getInstance().getData(params)
+  const indexCatalogItemsController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexTeamsController.value
+  const response = indexCatalogItemsController.value
 
   if (response?.data?.length) {
     // map backend Teamss into default structure
@@ -114,13 +114,13 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   const params = props.data?.id
-    ? new editCatalogParams(
+    ? new editCatalogItemsParams(
         props.data?.id! ?? 0,
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
       )
-    : new AddCatalogParams(
+    : new AddCatalogItemsParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
