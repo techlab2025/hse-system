@@ -30,6 +30,7 @@ import AddHazardType from '@/views/Admin/HazardType/AddHazardType.vue';
 import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddHazard.vue';
 import AddEquipmentType from '@/views/Admin/EquipmentType/AddEquipmentType.vue';
 import ProjectProgressLoader from '../supcomponents/ProjectProgressLoader.vue';
+import ProgressComplate from "@/assets/images/ProgressComplate.png"
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -152,19 +153,19 @@ const routerBack = () => {
         <ProgressBackIcon />
         <span>Back</span>
       </div>
-      <router-link to="/organization" class="skip">
+      <!-- <router-link to="/organization" class="skip">
         <span>skip</span>
         <SkipIcon />
-      </router-link>
+      </router-link> -->
     </div>
     <DataStatus :controller="state">
       <template #success>
-        <ProjectProgressHeader :progressValue="state.data?.progress" />
+        <ProjectProgressHeader v-if="state.data?.progress" :progressValue="state.data?.progress" />
         <div class="project-progress-body-container">
           <div class="project-progress-body-sidebar">
             <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" />
           </div>
-          <div class="project-progress-body-content">
+          <div class="project-progress-body-content" v-if="AllPagesToView.find((item) => item.id == ActiveItem)">
             <div class="content-header">
               <div class="flex items-center gap-2">
                 <h2 class="title">{{AllPagesToView.find((item) => item.id == ActiveItem)?.title}}</h2>
@@ -174,8 +175,17 @@ const routerBack = () => {
             </div>
             <component @update:data="getProjectProgress" class="full-content"
               :is="AllPagesToView.find((item) => item.id == ActiveItem)?.component" />
+
+          </div>
+
+          <div v-else class="project-progress-body-content flex flex-col items-center justify-start">
+            <img class="complate-img" :src="ProgressComplate" alt=" complate">
+            <p class="complate-title">Great! You've hit the target.</p>
+            <p class="complate-description">You have completed all the required steps. Would you like to complete the
+              remaining 3 steps?</p>
           </div>
         </div>
+
       </template>
       <template #loader>
         <ProjectProgressLoader />
@@ -187,3 +197,28 @@ const routerBack = () => {
   </div>
 
 </template>
+<style scoped>
+.project-progress-body-content {
+  margin-left: auto;
+  margin-right: auto;
+
+  .complate-img {
+    width: 200px;
+    height: 200px;
+    /* padding: 30px; */
+  }
+
+  .complate-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+  }
+
+  .complate-description {
+    font-size: 16px;
+    font-weight: 500;
+    color: #AAAAAA;
+  }
+}
+</style>

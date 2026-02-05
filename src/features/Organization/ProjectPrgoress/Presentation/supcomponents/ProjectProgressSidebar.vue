@@ -103,7 +103,7 @@ const AllPagesToView = ref([
   <div class="timeline-container">
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
-      <div class="timeline-item" :style="{ animationDelay: `${0 * 0.15}s` }">
+      <!-- <div class="timeline-item" :style="{ animationDelay: `${0 * 0.15}s` }">
         <div class="timeline-marker">
           <div class="timeline-dot">
             <div class="timeline-dot-inner"></div>
@@ -119,35 +119,54 @@ const AllPagesToView = ref([
           <p class="first-item-description">to personalize reports, compliance settings, and system behavior</p>
         </div>
 
-      </div>
+      </div> -->
       <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
         :class="{ active: ActiveItem == item?.id || item.progress }" :style="{ animationDelay: `${index * 0.15}s` }"
         @click="ActiveItem = item?.id; scrollToTop()">
+
+
+        <!-- active but not done  -->
         <div class="timeline-marker" v-if="ActiveItem == item?.id && !item.progress">
-          <div class="timeline-dot">
+          <!-- <div class="timeline-dot">
             <div class="timeline-dot-inner"></div>
             <div class="timeline-pulse"></div>
           </div>
 
           <div class="timeline-icon">
-          </div>
-        </div>
-        <div class="timeline-marker not-active" v-if="ActiveItem != item?.id && !item.progress">
-          <div class="timeline-dot">
-            <div class="timeline-dot-inner"></div>
-            <div class="timeline-pulse"></div>
-          </div>
-
-          <div class="timeline-icon">
-          </div>
-        </div>
-
-        <div class="timeline-marker" v-if="item.progress">
+          </div> -->
           <AvtiveTimeLineIcon />
         </div>
-        <div class="timeline-content">
+
+
+        <!-- not active and not done  -->
+        <div class="timeline-marker " v-if="ActiveItem != item?.id && !item.progress">
+          <div class="timeline-dot">
+            <div class="timeline-dot-inner"></div>
+            <div class="timeline-pulse"></div>
+          </div>
+
+          <div class="timeline-icon">
+          </div>
+        </div>
+
+        <!-- done  -->
+        <div class="timeline-marker" v-if="item.progress">
+          <div class="timeline-dot">
+            <div class="timeline-dot-inner"></div>
+            <div class="timeline-pulse"></div>
+          </div>
+
+          <div class="timeline-icon">
+            <LikeIcon />
+          </div>
+        </div>
+        <div class="timeline-content" v-if="!item.progress">
           <p class="time-line-title"> {{ item.title }}</p>
           <p class="time-line-description"> {{AllPagesToView.find((el) => el.id == item.id)?.description}}</p>
+        </div>
+        <div class="timeline-content" v-else>
+          <p class="first-item-title"> {{ item.title }}</p>
+          <p class="first-item-description"> {{AllPagesToView.find((el) => el.id == item.id)?.description}}</p>
         </div>
 
       </div>

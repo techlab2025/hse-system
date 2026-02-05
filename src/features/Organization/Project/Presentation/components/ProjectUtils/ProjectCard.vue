@@ -13,12 +13,12 @@ const props = defineProps<{
           <div class="project-header">
             <!-- <span class="status">active </span> -->
             <span class="serial"> #{{ data?.serialName }} </span>
-            
+
           </div>
           <p class="project-title">{{ data?.title }}</p>
         </div>
 
-        <p class="project-employees">{{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 10 }}</span></p>
+        <p class="project-employees">{{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span></p>
       </div>
       <div class="project-card-info">
         <p class="locations">{{ $t('locations') }} : <span>{{ data?.locations?.length }}</span></p>

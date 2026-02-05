@@ -23,6 +23,8 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
+import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 
 const route = useRoute()
 // console.log(route.name)
@@ -69,8 +71,20 @@ const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
 const SelectProject = ref<TitleInterface>(new TitleInterface({ id: ProjectSelector.getProject()?.id, title: ProjectSelector.getProject()?.title }))
-const indexProjectController = IndexProjectController.getInstance()
-const indexProjectParams = new IndexProjectParams("", 1, 10, 0)
+const indexProjectController = FetchMyProjectsController.getInstance()
+
+const GetAllProjects = async () => {
+  const indexProjectParams = new FetchMyProjectsParams(true)
+  const response = await indexProjectController.fetch(indexProjectParams)
+  if (response) {
+    ProjectSelector.setAllProjects(response)
+    // console.log(response, "response.value.data");
+  }
+}
+onMounted(() => {
+  GetAllProjects()
+})
+
 
 const setSelectedProject = async (project: TitleInterface) => {
   const organizationEmployeeDefaultProjectRepoController = OrganizationEmployeeDefaultProjectRepoController.getInstance()
@@ -113,9 +127,8 @@ onMounted(() => {
 
       <div class="input-wrapper" v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN">
         <!-- label="Project" -->
-        <CustomSelectInput :modelValue="SelectProject" class="input" :controller="indexProjectController"
-          :params="indexProjectParams" id="project" placeholder="select your project"
-          @update:modelValue="setSelectedProject" :reload="false" />
+        <CustomSelectInput :modelValue="SelectProject" class="input" :staticOptions="ProjectSelector.AllProjects"
+          id="project" placeholder="select your project" @update:modelValue="setSelectedProject" :reload="false" />
 
       </div>
       <!-- <div class="search">

@@ -1,4 +1,5 @@
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -38,6 +39,15 @@ export function authGuard(to, from, next) {
   if (Path?.value) {
     next({ path: '/login/organization' })
   }
+
+  if (
+    userData?.user?.employeeType === EmployeeStatusEnum.Employee &&
+    to.path !== '/organization/employee-interface' &&
+    (to.path == '/organization' || to.path == '/admin' || to.path == '/')
+  ) {
+    return next({ path: '/organization/employee-interface' })
+  }
+
   // AUTHENTICATED
   if (loginPages.includes(to.name) && Path?.value) {
     const redirectPath =

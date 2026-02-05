@@ -10,6 +10,8 @@ import LocationRouterHandler from '../routeHandler/RoutHandler'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import type EditLocationParams from '../../Core/params/editLocationParams'
 import { LocationEnum } from '../../Core/Enum/LocationEnum'
+import { useUserStore } from '@/stores/user'
+import { useRoute } from 'vue-router'
 
 export default class EditLocationController extends ControllerInterface<LocationModel> {
   private static instance: EditLocationController
@@ -52,7 +54,9 @@ export default class EditLocationController extends ControllerInterface<Location
         })
         // await router.push('/admin/locations_country')
 
-        await router.push(LocationRouterHandler.LocationRouter(params.type))
+        const { user } = useUserStore()
+        const route = useRoute()
+        await router.push(LocationRouterHandler.LocationRouter(params.type, user, route))
 
         // console.log(this.state.value.data)
       } else {

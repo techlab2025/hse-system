@@ -12,7 +12,7 @@ import { useRoute } from 'vue-router'
 import EditProjectZoneParams from '../../Core/params/editProjectZoneParams'
 import AddProjectZoneParams from '../../Core/params/addProjectZoneParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
 import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsModel'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
@@ -74,6 +74,7 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
+  console.log(SelectedState.value, "SelectedState.value?.id");
   const params = props.data?.id
     ? new EditProjectZoneParams(props?.data?.id, translationsParams, SelectedLocation.value?.id)
     : new AddProjectZoneParams(
@@ -127,6 +128,13 @@ const SetCountrySelection = (data: TitleInterface) => {
   indexLocationStatesParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.STATE, null, [
     data.id,
   ])
+  if (SelectedCountry.value == null) {
+    SelectedState.value = new TitleInterface({ id: 0, title: "" })
+    SelectedCity.value = new TitleInterface({ id: 0, title: "" })
+    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    updateData()
+
+  }
   updateData()
 }
 
@@ -135,8 +143,10 @@ const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
   console.log(SelectedState.value, "SelectedState")
   if (SelectedState.value == null) {
-    SelectedCity.value = null
-    SelectedArea.value = null
+    SelectedCity.value = new TitleInterface({ id: 0, title: "" })
+    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    updateData()
+
   }
   indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, [
     data.id,
@@ -150,6 +160,11 @@ const SetCitySelection = (data: TitleInterface) => {
   indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA, null, [
     data.id,
   ])
+  if (SelectedCity.value == null) {
+    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    updateData()
+
+  }
   console.log(SelectedCity.value, "SelectedCity")
   updateData()
 }

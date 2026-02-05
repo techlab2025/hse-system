@@ -39,7 +39,6 @@ const showSidebar = computed(() => {
       <NewSidebar
         v-if="user?.type === OrganizationTypeEnum.ADMIN || (user?.employeeType == EmployeeStatusEnum.Admin && route.meta?.isSidebar)" />
     </div>
-
     <!-- </div> -->
     <section class="content-wrapper">
 
