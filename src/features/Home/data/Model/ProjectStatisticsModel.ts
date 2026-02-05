@@ -37,6 +37,8 @@ export default class ProjectStatisticsModel {
       data.incidant_factor,
     )
   }
+
+  
   static example: ProjectStatisticsModel = new ProjectStatisticsModel(
     1,
     120,
