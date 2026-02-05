@@ -1,4 +1,5 @@
 import type TitleInterface from '@/base/Data/Models/title_interface'
+import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -6,6 +7,11 @@ export const useProjectSelectStore = defineStore(
   'ProjectSelect',
   () => {
     const project = ref<TitleInterface | null>(null)
+    const AllProjects = ref<ProjectModel[]>([])
+
+    function setAllProjects(newAllProjects: ProjectModel[]) {
+      AllProjects.value = newAllProjects
+    }
 
     function setProjectId(newProjectId: TitleInterface) {
       project.value = newProjectId
@@ -42,6 +48,8 @@ export const useProjectSelectStore = defineStore(
       SelectedProjectId,
       getProject,
       showProjectsFilter,
+      AllProjects,
+      setAllProjects,
     }
   },
   {

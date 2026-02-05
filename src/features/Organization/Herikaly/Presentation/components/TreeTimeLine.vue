@@ -70,7 +70,8 @@ const DeleteHierarchy = async (Id: number) => {
                 'timeline-card-header-2': item.level > 0
               }" :style="{ marginLeft: `${item.level * 20}px` }">
 
-                <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_CREATE]">
+                <PermissionBuilder
+                  :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_CREATE, PermissionsEnum.HERIKALY_FETCH]">
                   <router-link :to="`/organization/herikaly/add/${item.id}`">
 
                     <div class="heirarchy-container">
@@ -85,6 +86,9 @@ const DeleteHierarchy = async (Id: number) => {
                     </div>
                   </router-link>
                 </PermissionBuilder>
+
+
+
                 <div class="actions">
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
                     <router-link class="btn edit-btn flex "

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ProjectProgressIcon from '@/shared/icons/ProjectProgressIcon.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Knob from 'primevue/knob';
 
 const props = defineProps<{
@@ -8,9 +8,13 @@ const props = defineProps<{
 }>()
 const value = ref(props.progressValue);
 
+watch(() => props.progressValue, (newVal) => {
+  value.value = newVal
+})
 </script>
 
 <template>
+
   <div class="project-progress-header-container">
     <div class="project-progress-info">
       <ProjectProgressIcon />

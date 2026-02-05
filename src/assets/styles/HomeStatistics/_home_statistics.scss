@@ -1,12 +1,17 @@
-@import "../variables";
-@import "../mixins/flex";
-@import "../mixins/grid";
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
 
-.home-statistics{
-  @include grid(12 , 10px , (
-    1400px: 8,
-    992px: 6,
-    768px: 4
-  ));
+.home-statistics {
+  @include grid(
+    12,
+    10px,
+    (
+      1400px: 8,
+      992px: 6,
+      768px: 4,
+    )
+  );
   margin-top: 20px;
+  min-height: 120vh;
 }

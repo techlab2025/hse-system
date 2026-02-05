@@ -32,9 +32,7 @@ const projectId = +route.params.project_id
 const locationId = route.query?.locationId
 
 const addHierarchyEmployeeController = AddHierarchyEmployeeController.getInstance()
-
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
-
 const employeesByHierarchy = ref<Record<number, TitleInterface[]>>({})
 
 const state = ref(projectCustomLocationController.state.value)
@@ -73,6 +71,7 @@ const handleAddAllEmployees = async () => {
 
     // لو مفيش أي hierarchies خالص
     if (hierarchies.length === 0) return
+    // console.log(hierarchies, "hierarchies")
 
     const params = new AddHierarchyEmployeeParams(projectId, hierarchies)
     await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)

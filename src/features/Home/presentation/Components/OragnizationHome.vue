@@ -22,6 +22,11 @@ import HomeOperationIcon from '@/shared/icons/HomeOperationIcon.vue';
 import HomeEquipmentIcon from '@/shared/icons/HomeEquipmentIcon.vue';
 import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue';
 import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue';
+import NumberOfProjects from './HomeStatistics/NumberOfProjects.vue';
+import MachineStatics from './HomeStatistics/MachineStatics.vue';
+import ProjectProgressHeader from '@/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressHeader.vue';
+import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController';
+import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams';
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -39,8 +44,26 @@ const GetProjectStatistics = async () => {
 watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
   state.value = newState
 })
+
+const ProgressValue = ref<number>(0)
+const getProjectProgress = async () => {
+  const indexProjectProgressController = IndexProjectProgressController.getInstance()
+  const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
+  const response = await indexProjectProgressController.getData(indexProjectProgressParams)
+  if (response.value?.data) {
+    ProgressValue.value = response.value?.data?.progress
+  }
+}
+onMounted(() => {
+  getProjectProgress()
+})
+
+
 </script>
 <template>
+  <div class="mb-5">
+    <ProjectProgressHeader :progressValue="ProgressValue" v-if="ProgressValue < 100" />
+  </div>
   <div class="home-routes-cards">
 
     <PermissionBuilder :code="[
@@ -126,17 +149,38 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
       </router-link>
     </PermissionBuilder>
 
+    <!-- <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ]">
+      <router-link :to="`/organization/capa`">
+        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('capa')}`"
+          :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `" />
+      </router-link>
+    </PermissionBuilder> -->
+
   </div>
 
   <div class="home-statistics gap-2">
-    <!-- <ProjectsStatistics :projectStatistics="state?.data" />
-    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
-    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
-    <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" /> -->
-    <!-- <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-9" /> -->
-    <!-- <InvestegationStatics class="col-span-12 md:col-span-3" /> -->
-
+    <!-- <ProjectsStatistics :projectStatistics="state?.data" /> -->
+    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" /> -->
+    <!-- <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" /> -->
+    <!-- <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" /> -->
+    <!-- <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-9" />
+    <InvestegationStatics class="col-span-12 md:col-span-3" /> -->
+    <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
+    <!-- <MachineStatics class="col-span-12 md:col-span-3" /> -->
   </div>
 
-  
+
 </template>
+
+<style scoped>
+.mb-5 {
+  margin-block: 12px;
+}
+</style>
