@@ -49,14 +49,17 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 })
 
 const ProgressValue = ref<number>(0)
+
 const getProjectProgress = async () => {
   const indexProjectProgressController = IndexProjectProgressController.getInstance()
   const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
   const response = await indexProjectProgressController.getData(indexProjectProgressParams)
   if (response.value?.data) {
     ProgressValue.value = response.value?.data?.progress
+    console.log(response.value?.data?.progress, "response.value?.data?.progress");
   }
 }
+
 onMounted(() => {
   getProjectProgress()
 })
@@ -67,46 +70,34 @@ onMounted(() => {
   <div class="mb-5">
     <ProjectProgressHeader :progressValue="ProgressValue" v-if="ProgressValue < 100" />
   </div>
-  <HeaderCard />
+  <!-- <HeaderCard /> -->
   <!-- <div class="home-routes-cards"> -->
 
   <div class="home-routes-cards">
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum.PROJECT_ALL,
-        PermissionsEnum.PROJECT_CREATE,
-        PermissionsEnum.PROJECT_DELETE,
-        PermissionsEnum.PROJECT_FETCH,
-        PermissionsEnum.PROJECT_UPDATE,
-        PermissionsEnum.PROJECT_DETAILS,
-      ]"
-    >
+    <PermissionBuilder :code="[
+      PermissionsEnum.PROJECT_ALL,
+      PermissionsEnum.PROJECT_CREATE,
+      PermissionsEnum.PROJECT_DELETE,
+      PermissionsEnum.PROJECT_FETCH,
+      PermissionsEnum.PROJECT_UPDATE,
+      PermissionsEnum.PROJECT_DETAILS,
+    ]">
       <router-link to="/organization/projects">
-        <HomeRoutesCard
-          :icon="HomeProjectIcon"
-          :title="`${$t('project')}`"
-          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('hierarchy')}`"
-        />
+        <HomeRoutesCard :icon="HomeProjectIcon" :title="`${$t('project')}`"
+          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('hierarchy')}`" />
       </router-link>
     </PermissionBuilder>
 
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-        PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
-        PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
-        PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-        PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
-      ]"
-    >
-      <router-link
-        :to="`/organization/equipment-mangement/all-observatin?type=${RouterEnum?.OPERATION}`"
-      >
-        <HomeRoutesCard
-          :icon="HomeOperationIcon"
-          :title="`${$t('operations')}`"
-          :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `"
-        />
+    <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
+    ]">
+      <router-link :to="`/organization/equipment-mangement/all-observatin?type=${RouterEnum?.OPERATION}`">
+        <HomeRoutesCard :icon="HomeOperationIcon" :title="`${$t('operations')}`"
+          :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `" />
       </router-link>
     </PermissionBuilder>
     <!-- <PermissionBuilder :code="[
@@ -121,60 +112,45 @@ onMounted(() => {
       </router-link>
     </PermissionBuilder> -->
 
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EQUIPMENT_ALL,
-        PermissionsEnum.ORG_EQUIPMENT_CREATE,
-        PermissionsEnum.ORG_EQUIPMENT_DELETE,
-        PermissionsEnum.ORG_EQUIPMENT_FETCH,
-        PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-      ]"
-    >
+    <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+    ]">
       <router-link to="/organization/equipments">
-        <HomeRoutesCard
-          :icon="HomeEquipmentIcon"
-          :title="`${$t('equipment')}`"
-          :description="`${$t('add')} . ${$t('assign_insepction')} . ${$t('show')}  `"
-        />
+        <HomeRoutesCard :icon="HomeEquipmentIcon" :title="`${$t('equipment')}`"
+          :description="`${$t('add')} . ${$t('assign_insepction')} . ${$t('show')}  `" />
       </router-link>
     </PermissionBuilder>
 
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EMPLOYEE_ALL,
-        PermissionsEnum.ORG_EMPLOYEE_CREATE,
-        PermissionsEnum.ORG_EMPLOYEE_DELETE,
-        PermissionsEnum.ORG_EMPLOYEE_FETCH,
-        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-        PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-      ]"
-    >
+    <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ]">
       <router-link :to="`/organization/organization-employee?type=${RouterEnum?.EMPLOYEES}`">
-        <HomeRoutesCard
-          :icon="HomeEmployeeIcon"
-          :title="`${$t('employee')}`"
-          :description="`${$t('add')} . ${$t('show')} . ${$t('edit')} . ${$t('assign_to')}`"
-        />
+        <HomeRoutesCard :icon="HomeEmployeeIcon" :title="`${$t('employee')}`"
+          :description="`${$t('add')} . ${$t('show')} . ${$t('edit')} . ${$t('assign_to')}`" />
       </router-link>
     </PermissionBuilder>
 
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EMPLOYEE_ALL,
-        PermissionsEnum.ORG_EMPLOYEE_CREATE,
-        PermissionsEnum.ORG_EMPLOYEE_DELETE,
-        PermissionsEnum.ORG_EMPLOYEE_FETCH,
-        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-        PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-      ]"
-    >
+    <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ]">
       <!-- /organization?setting=1 -->
       <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
-        <HomeRoutesCard
-          :icon="HomeSettingIcon"
-          :title="`${$t('settings')}`"
-          :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `"
-        />
+        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
+          :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
     </PermissionBuilder>
 
@@ -198,7 +174,7 @@ onMounted(() => {
 
   <div class="home-statistics gap-2">
 
-    <ProjectsStatistics :projectStatistics="state?.data" />
+    <!-- <ProjectsStatistics :projectStatistics="state?.data" />
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
@@ -210,8 +186,8 @@ onMounted(() => {
       :totalMachines="state.data?.machines"
       class="col-span-12 md:col-span-8"
     />
-    <InvestegationStatics class="col-span-12 md:col-span-4" />
-           <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
+    <InvestegationStatics class="col-span-12 md:col-span-4" /> -->
+    <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
     <!-- <MachineStatics class="col-span-12 md:col-span-3" /> -->
   </div>
   <!-- </div> -->
