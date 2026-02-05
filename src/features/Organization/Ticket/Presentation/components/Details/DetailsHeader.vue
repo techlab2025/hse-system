@@ -15,14 +15,13 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
     case StatusEnum.SOLVED:
       return 'solved'
     case StatusEnum.RESOLVED:
-      return 'solved'
+      return 'resolved'
     case StatusEnum.CLOSED:
-      return 'solved'
+      return 'closed'
     default:
       return 'unknown'
   }
 }
-
 
 
 </script>

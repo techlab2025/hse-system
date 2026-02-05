@@ -4,30 +4,29 @@ import { ReplaceTicketApiService } from '../../Data/apiServices/replaceTicketApi
 import TicketModel from '../../Data/models/TicketModel'
 
 class ReplaceTicketRepo extends RepoInterface<TicketModel> {
-    private static instance: ReplaceTicketRepo
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {
-        super()
+  private static instance: ReplaceTicketRepo
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {
+    super()
+  }
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new ReplaceTicketRepo()
     }
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new ReplaceTicketRepo()
-        }
-        return this.instance
-    }
+    return this.instance
+  }
 
+  override get responseType(): ResponseType {
+    return ResponseType.withoutData
+  }
 
-    override get responseType(): ResponseType {
-        return ResponseType.withoutData
-    }
+  onParse(data: any): TicketModel {
+    return TicketModel.fromMap(data)
+  }
 
-    onParse(data: any): TicketModel {
-        return TicketModel.fromMap(data)
-    }
-
-    get serviceInstance(): ServicesInterface {
-        return ReplaceTicketApiService.getInstance()
-    }
+  get serviceInstance(): ServicesInterface {
+    return ReplaceTicketApiService.getInstance()
+  }
 }
 
 export { ReplaceTicketRepo }

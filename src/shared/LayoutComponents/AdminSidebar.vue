@@ -192,6 +192,28 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.ROLE_UPDATE,
     ],
   },
+  {
+    link: '/admin/ticket-type',
+    name: 'ticket_types',
+    permissions: [
+      PermissionsEnum.TICKET_TYPE_ALL,
+      PermissionsEnum.TICKET_TYPE_CREATE,
+      PermissionsEnum.TICKET_TYPE_DELETE,
+      PermissionsEnum.TICKET_TYPE_FETCH,
+      PermissionsEnum.TICKET_TYPE_UPDATE,
+    ],
+  },
+  {
+    link: '/admin/ticket',
+    name: 'ticket',
+    permissions: [
+      PermissionsEnum.TICKET_ALL,
+      PermissionsEnum.TICKET_CREATE,
+      PermissionsEnum.TICKET_DELETE,
+      PermissionsEnum.TICKET_FETCH,
+      PermissionsEnum.TICKET_UPDATE,
+    ],
+  },
 ])
 
 const LocationRoutes = ref<Routes[]>([

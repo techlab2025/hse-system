@@ -4,9 +4,8 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type TicketModel from '../../Data/models/TicketModel'
 import { ReplaceTicketRepo } from '../repositories/replaceTicketRepo'
 
-
 export default class ReplaceTicketUseCase implements UseCase<TicketModel, Params> {
-    async call(params: Params): Promise<DataState<TicketModel>> {
-        return ReplaceTicketRepo.getInstance().call(params)
-    }
+  async call(params: Params): Promise<DataState<TicketModel>> {
+    return ReplaceTicketRepo.getInstance().call(params)
+  }
 }
