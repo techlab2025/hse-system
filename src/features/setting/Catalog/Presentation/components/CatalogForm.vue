@@ -112,7 +112,7 @@ const updateData = () => {
 
   console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
-
+  console.log(props.data?.id, 'props.data')
   const params = props.data?.id
     ? new editCatalogParams(
         props.data?.id! ?? 0,
