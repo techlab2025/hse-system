@@ -2,9 +2,10 @@ import type Params from '@/base/core/params/params'
 
 export default class FetchMyProjectsParams implements Params {
   // public preventive: string
-  constructor() // preventive: string
+  public allProject: boolean
+  constructor(allProject: boolean) // preventive: string
   {
-    // this.preventive = preventive
+    this.allProject = allProject
   }
 
   toMap(): Record<string, number | string> {

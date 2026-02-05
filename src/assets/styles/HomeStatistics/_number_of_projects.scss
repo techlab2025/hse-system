@@ -1,0 +1,52 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.number-of-projects-container {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: $XsSize;
+  border-radius: $XsSize;
+  padding: $XsSize3;
+  .number-of-projects-header {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize;
+    .subtitle {
+      font-size: $SmSize;
+      font-weight: $BaseFontWeight;
+      color: #9ca3af;
+    }
+    .title {
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      color: $Black;
+    }
+  }
+  .number-of-projects-body {
+    width: 100%;
+    @include flex-row(nowrap, center, center);
+    gap: $XsSize;
+    .number {
+      font-size: calc($XlSize4 + 7px);
+      font-weight: 800;
+      color: $PrimaryColor;
+    }
+    .label {
+      font-size: $MdSize;
+      font-weight: $BaseFontMediumWeight;
+      color: #9ca3af;
+    }
+  }
+  .number-of-projects-footer {
+    @include flex-row(nowrap, flex-start, flex-start);
+    gap: $XsSize;
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+    .footer-label {
+      font-size: $XsSize;
+      font-weight: $BaseFontMediumWeight;
+      color: #1d4ed880;
+    }
+  }
+}

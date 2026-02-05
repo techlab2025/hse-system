@@ -98,8 +98,8 @@ const selectedComponent = computed(() => {
 
 const GetData = (data: any) => {
   TemplateData.value = data
-  isUpdloadImage.value = false
-  ImageStatus.value = 0
+  // isUpdloadImage.value = false
+  // ImageStatus.value = 0
 }
 
 watch(() => TemplateData.value, () => {
@@ -142,7 +142,8 @@ const ClearTitle = () => {
       <component @update:data="GetData" :is="selectedComponent?.component" :id="selectedComponent.id"
         v-if="selectedComponent?.component" />
 
-      <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo" :isUpdloadImage="isUpdloadImage" />
+      <TemplateImage v-if="SelectedComponent != ActionsEnum.TEXTAREA" @update:data="UpdateImageInfo"
+        :isUpdloadImage="isUpdloadImage" />
 
       <button class="btn add-btn w-full" @click="ClearTitle">{{ $t('add_to_template') }}</button>
     </div>

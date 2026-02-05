@@ -36,26 +36,5 @@ export default class IndexProjectController extends SelectControllerInterface<Pr
     return this.state
   }
 
-  async fetch(params: Params) {
-    const data = await this.getData(params)
-    const adaptData: any[] = []
-    if (this.isDataSuccess()) {
-      adaptData.push(
-        new TitleInterface({
-          id: -1,
-          title: 'All Projects',
-        }),
-      )
-      ;(data.value.data ?? []).map((el: any) => {
-        adaptData.push(
-          new TitleInterface({
-            id: el?.id,
-            title: el?.title,
-          }),
-        )
-      })
-    }
 
-    return adaptData
-  }
 }

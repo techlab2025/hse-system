@@ -4,10 +4,12 @@ import observationImg from '@/assets/images/observation-img.png'
 import incidentImg from '@/assets/images/incident-img.png'
 import { empCardEnum } from '@/features/EmployeeInterface/Core/Enum/empIntEnum'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 interface CardAction {
   title: string
   route: string
+  show: boolean
 }
 
 interface EmpCard {
@@ -17,6 +19,7 @@ interface EmpCard {
   img: string
   actions: CardAction[]
 }
+const useprojectSelectStore = useProjectSelectStore()
 
 const cards: EmpCard[] = [
   {
@@ -28,10 +31,12 @@ const cards: EmpCard[] = [
       {
         title: 'Daily Inspection',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.DragInspection}`,
+        show: useprojectSelectStore.AllProjects?.length > 0,
       },
       {
         title: 'Inspection Results',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
+        show: true
       },
     ],
   },
@@ -44,10 +49,12 @@ const cards: EmpCard[] = [
       {
         title: 'Add Observation',
         route: '/organization/equipment-mangement/observation/add',
+        show: useprojectSelectStore.AllProjects?.length > 0,
       },
       {
         title: 'View Observations',
         route: '/organization/equipment-mangement/observation?isAll=1',
+        show: true,
       },
     ],
   },
@@ -60,10 +67,12 @@ const cards: EmpCard[] = [
       {
         title: 'Report Incident',
         route: '/organization/equipment-mangement/incedant/add',
+        show: useprojectSelectStore.AllProjects?.length > 0,
       },
       {
         title: 'View Incident',
         route: '/organization/equipment-mangement/incedant?isAll=1',
+        show: true
       },
     ],
   },
@@ -86,10 +95,12 @@ const buttons = [{ title: 'Daily Inspection' }, { title: 'View Results' }]
         </div>
 
         <div class="actions-button">
-          <button v-for="(action, index) in card.actions" :key="index"
-            :class="index === 0 ? 'button-main' : 'button-view'" @click="$router.push(action.route)">
-            {{ action.title }}
-          </button>
+          <div v-for="(action, index) in card.actions" :key="index">
+            <button @click="$router.push(action.route)" v-if="action.show"
+              :class="index === 0 ? 'button-main' : 'button-view'">
+              {{ action.title }}
+            </button>
+          </div>
         </div>
       </div>
 

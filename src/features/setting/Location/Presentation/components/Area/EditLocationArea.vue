@@ -9,18 +9,22 @@ import ShowLocationParams from '../../../Core/params/showLocationParams'
 import EditLocationController from '../../controllers/editLocationController'
 import LocationCountryForm from './LocationAreaForm.vue'
 import LocationAreaForm from './LocationAreaForm.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const { user } = useUserStore()
 
 const showLocationController = ShowLocationController.getInstance()
 const state = ref(showLocationController.state.value)
 const fetchLocationDetails = async () => {
   const showLocationParams = new ShowLocationParams(Number(id))
 
-  await showLocationController.showLocation(showLocationParams)
+  const state = await showLocationController.showLocation(showLocationParams)
+
 }
 
 onMounted(() => {
@@ -30,8 +34,14 @@ onMounted(() => {
 const EditLocation = async (draft: boolean) => {
   if (draft) {
     await EditLocationController.getInstance().editLocation(params.value!, router)
+    if (state?.value && !router.currentRoute.value.fullPath.includes('project-progress')) {
+      router.push(`${user?.type == OrganizationTypeEnum.ADMIN ? `/admin` : `/organization`}/areas`)
+    }
   } else {
     await EditLocationController.getInstance().editLocation(params.value!, router)
+    if (state?.value && !router.currentRoute.value.fullPath.includes('project-progress')) {
+      router.push(`${user?.type == OrganizationTypeEnum.ADMIN ? `/admin` : `/organization`}/areas`)
+    }
   }
 }
 

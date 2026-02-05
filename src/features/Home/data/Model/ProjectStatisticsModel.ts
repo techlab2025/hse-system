@@ -10,6 +10,7 @@ export default class ProjectStatisticsModel {
   public topTeams: TopTeamsModel[]
   public machines: StatisticsMachineModel[]
   public incidantFactor: incidantFactorModel
+  public numberOfProjects: number
 
   constructor(
     id: number,
@@ -18,6 +19,7 @@ export default class ProjectStatisticsModel {
     topTeams: TopTeamsModel[],
     machines: StatisticsMachineModel[],
     incidantFactor: incidantFactorModel,
+    numberOfProjects: number,
   ) {
     this.id = id
     this.totalProjects = totalProjects
@@ -25,6 +27,7 @@ export default class ProjectStatisticsModel {
     this.topTeams = topTeams
     this.machines = machines
     this.incidantFactor = incidantFactor
+    this.numberOfProjects = numberOfProjects
   }
 
   static fromMap(data: any): ProjectStatisticsModel {
@@ -35,6 +38,7 @@ export default class ProjectStatisticsModel {
       data.top_teams.map((team: any) => TopTeamsModel.fromMap(team)),
       data.machines.map((team: any) => StatisticsMachineModel.fromMap(team)),
       data.incidant_factor,
+      data.number_of_projects,
     )
   }
 
@@ -106,5 +110,6 @@ export default class ProjectStatisticsModel {
       ]),
     ],
     new incidantFactorModel(30, 120, 200),
+    20,
   )
 }
