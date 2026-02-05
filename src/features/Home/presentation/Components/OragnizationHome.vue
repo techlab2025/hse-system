@@ -67,10 +67,9 @@ onMounted(() => {
   <div class="mb-5">
     <ProjectProgressHeader :progressValue="ProgressValue" v-if="ProgressValue < 100" />
   </div>
-  <div class="home-routes-cards">
+  <HeaderCard />
+  <!-- <div class="home-routes-cards"> -->
 
-
-<HeaderCard />
   <div class="home-routes-cards">
     <PermissionBuilder
       :code="[
@@ -215,7 +214,7 @@ onMounted(() => {
            <!-- <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" /> -->
     <!-- <MachineStatics class="col-span-12 md:col-span-3" /> -->
   </div>
-
+  <!-- </div> -->
 </template>
 
 <style scoped>
