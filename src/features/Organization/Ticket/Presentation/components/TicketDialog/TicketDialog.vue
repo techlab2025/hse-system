@@ -37,7 +37,7 @@ const setOrganization = (data: TitleInterface) => {
 }
 const SubmitTicket = async () => {
   const addTicketController = AddTicketController.getInstance()
-  const addTicketParams = new AddTicketParams([ticketStore.capturedImage], TicketType.value?.id, title.value, description.value, SelectedOrganization.value?.id)
+  const addTicketParams = new AddTicketParams([ticketStore.capturedImage], TicketType.value?.id, title.value, description.value, SelectedOrganization?.value ? SelectedOrganization.value?.id : null)
   const response = await addTicketController.addTicket(addTicketParams, router)
 
   if (response) {

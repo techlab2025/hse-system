@@ -33,9 +33,9 @@ export default class DeleteProjectLocationHeirarchyEmployeeController extends Co
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
-        // await ShowProjectDetailsController.getInstance().showProjectDetails(
-        //   new ShowProjectDetailsParams(Number(route.params?.id || route.params?.project_id)),
-        // )
+        await ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(Number(route.params?.id || route.params?.project_id)),
+        )
       } else {
         throw new Error('Error while addServices')
       }
