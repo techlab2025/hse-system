@@ -87,13 +87,15 @@ const { user } = useUserStore()
         </h3>
 
 
+        <div class="rent_expire">
+        <h2 class="expire_date">Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span></h2>
+        </div>
         <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">
-          <h2 class="expire_date">Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span></h2>
           <div class="date_rent">
             <p class="rent"><Rent /> <span>Rent</span> |per {{ RentTypeEnum[rentType] }}</p>
             <h6 class="start_date">start date : <span>{{ rentType === RentTypeEnum.HOUR ? formatJoinDate(startDate) +  " " + formatTime(startDate) : formatJoinDate(startDate) }}</span></h6>
           <h6 class="end_date">end date : <span>{{ rentType === RentTypeEnum.HOUR ? formatJoinDate(EndDate) + "  " +formatTime(EndDate) : formatJoinDate(EndDate) }}</span></h6>
-          
+
           </div>
         </div>
         <!-- <div class="inspection">

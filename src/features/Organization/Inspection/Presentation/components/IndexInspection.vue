@@ -37,6 +37,7 @@ import FetchAllTasksParams from '../../Core/params/FetchAllTasksParams'
 import FetchInspectionsResultsController from '../controllers/FetchInspectionsResultsController'
 import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsResultsParams'
 import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 const { t } = useI18n()
 
@@ -81,12 +82,14 @@ const InspectionFormTasks = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  filter?: number[]
 ) => {
   const fetchAllTasksParams = new FetchAllTasksParams(
     query,
     pageNumber,
     perPage,
     withPage,
+    filter?.length > 0 ? filter : null
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
@@ -95,12 +98,16 @@ const InspectionsResultsTasks = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
+  filter?: number[]
+
 ) => {
   const fetchInspectionsResultsParams = new FetchInspectionsResultsParams(
     query,
     pageNumber,
     perPage,
     withPage,
+    filter?.length > 0 ? filter : null
+
 
   )
   const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
@@ -218,7 +225,18 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
+
+  console.log(SelectedZonesFilter.value, "SelectedZonesFilter");
+  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+    fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
+  }
+  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    InspectionFormTasks('', 1, 10, 1, SelectedZonesFilter.value)
+  }
+  else {
+    InspectionsResultsTasks('', 1, 10, 1, SelectedZonesFilter.value)
+  }
+
 }
 
 const setSelectedProjectFilter = (data) => {
@@ -262,7 +280,6 @@ watch(
     deep: true,
   }
 )
-
 
 </script>
 
@@ -353,7 +370,7 @@ watch(
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
 
-              <DataEmpty  
+              <DataEmpty
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No Inspection" />
             </PermissionBuilder>
