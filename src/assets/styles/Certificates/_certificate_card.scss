@@ -1,0 +1,75 @@
+@import '../variables';
+@import '../mixins/flex';
+
+.certificate-card {
+  box-shadow: 0px 4px 20px 0px #a2a2a21a;
+  border-radius: $XlSize3;
+  border: 1px solid #fefefe;
+  padding: $SmSize;
+  @include flex-row(nowrap, space-between, stretch);
+
+  .certificate-info {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: $XsSize;
+    width: 50%;
+    .certificate-header {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize;
+      .certificate-title {
+        @include flex-row(nowrap, space-between, center);
+        gap: $XsSize;
+        .title {
+          font-size: calc($XlSize + 2px);
+          font-weight: $BaseFontWeightBold;
+          color: #000000;
+        }
+        .status {
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: $PrimaryColor;
+        }
+      }
+      .created-at {
+        font-size: $SmSize;
+        font-weight: $BaseFontMediumWeight;
+        color: #6b7280;
+        span {
+          font-size: $SmSize;
+          font-weight: $BaseFontMediumWeight;
+          color: #9ca3af;
+        }
+      }
+    }
+    .certificate-data {
+      width: 100%;
+      @include flex-row(nowrap, space-between, center);
+      .issue-date {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize;
+        span {
+          &:first-child {
+            font-size: $SmSize;
+            font-weight: $BaseFontMediumWeight;
+            color: #6b7280;
+          }
+          &:last-child {
+            font-size: $MdSize;
+            font-weight: $BaseFontSemiBoldWeight;
+            color: #333435;
+          }
+        }
+      }
+    }
+  }
+
+  .certificate-image {
+    max-width: 100px;
+    max-height: 100%;
+    img {
+      @include flex-row(nowrap, center, center);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
