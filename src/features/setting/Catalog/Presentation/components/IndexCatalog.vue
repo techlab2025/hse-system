@@ -32,6 +32,7 @@ import IndexCatalogController from '../controllers/indexCatalogController'
 import DeleteCatalogController from '../controllers/deleteCatalogController'
 import IndexCatalogParams from '../../Core/params/indexCatalogParams'
 import DeleteCatalogParams from '../../Core/params/deleteCatalogParams'
+import { ParentTypeEnum } from '@/features/setting/CatalogItems/Core/enums/parenttypeenum'
 
 const { t } = useI18n()
 
@@ -53,7 +54,7 @@ const fetchCatalog = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteCatalogParams = new IndexCatalogParams(query, pageNumber, perPage, withPage, id)
+  const deleteCatalogParams = new IndexCatalogParams(query, pageNumber, perPage, withPage, id, ParentTypeEnum.parent)
   await indexCatalogController.getData(deleteCatalogParams)
 }
 
