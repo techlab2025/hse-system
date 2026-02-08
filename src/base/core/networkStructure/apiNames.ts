@@ -235,6 +235,23 @@ class ApiNames {
     return this.prefix + 'delete_guide_category'
   }
 
+    // Catalog Items Details
+  public get CreateCatalogItemsDetails() {
+    return this.prefix + 'create_guide_category_details'
+  }
+  public get IndexCatalogItemsDetails() {
+    return this.prefix + 'fetch_guide_category_details'
+
+  }
+  public get ShowCatalogItemsDetails() {
+    return this.prefix + 'fetch_guide_category_details'
+  }
+  public get EditCatalogItemsDetails() {
+    return this.prefix + 'update_guide_category_details'
+  }
+  public get DeleteCatalogItemsDetails() {
+    return this.prefix + 'delete_guide_category_details'
+  }
   // contractor
   public get CreateContractor() {
     return this.prefix + 'create_contractor'

@@ -11,6 +11,7 @@ import { SubscriptionRoutes } from './subscription'
 import { SubscriptionApplicationRoutes } from './subscriptionApplication'
 import { CatalogRoutes } from './Catalog'
 import { CatalogItemsRoutes } from './CatalogItems'
+import { CatalogItemsDetailsRoutes } from './CatalogItemsDetails'
 
 export const adminRoutes: RouteRecordRaw[] = [
   {
@@ -30,6 +31,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   ...SubscriptionApplicationRoutes,
   ...CatalogRoutes,
   ...CatalogItemsRoutes,
+  ...CatalogItemsDetailsRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Admin',
