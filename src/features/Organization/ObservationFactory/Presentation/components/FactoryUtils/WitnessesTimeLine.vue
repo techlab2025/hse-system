@@ -34,6 +34,7 @@ const DeleteItem = (index: number) => {
 }
 
 const UpdateData = () => {
+  Answers.value.forEach(ensureEmployee)
   emit('update:data', Answers.value)
 }
 onMounted(() => {
@@ -41,7 +42,11 @@ onMounted(() => {
 })
 
 const isSelectHasContent = ref([])
-
+const ensureEmployee = (item: any) => {
+  if (!item.employee) {
+    item.employee = new TitleInterface({ id: 0, title: '' })
+  }
+}
 </script>
 <template>
   <div class="template-container col-span-6">
@@ -71,36 +76,22 @@ const isSelectHasContent = ref([])
                 <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
                   @input="UpdateData" />
               </div>
-              <!-- <div class="timeline-contect-select"> -->
               <div class="input-wrapper">
-                <!-- <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
-                  :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" /> -->
-                <!-- <CustomSelectInput v-if="emplyeeType == EmployeeNameStatus.Select" :modelValue="SelectedEmployee"
-                  class="input" :component="EmployeeTypeSelect" :controller="indexOrganizatoinEmployeeController"
-                  :params="indexEmployeeParams" label="Employee" id="employee" placeholder="select your employee"
-                  @update:modelValue="setEmployee" @update:slot="updateEmployeeState" />
 
-                <div v-if="emplyeeType == EmployeeNameStatus.Name" class="input-wrapper custom">
-                  <label for="employee" class="flex w-full">
-                    <span>{{ $t('employee') }}</span>
-                    <EmployeeTypeSelect @update:data="emplyeeType = $event" :selectedstatus="emplyeeType" />
-                  </label>
-                  <input type="text" v-model="EmployeeName" class="input" placeholder="select your employee">
-                </div> -->
 
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-
                   class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="isSelectHasContent[index] = true">{{ $t('employee_name')
+                        @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
+                          $t('employee_name')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="isSelectHasContent[index] = false">{{ $t('select') }}</button>
+                        @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
+                        }}</button>
                     </div>
                   </template>
                   <template #content>
@@ -108,10 +99,8 @@ const isSelectHasContent = ref([])
                   </template>
                 </UpdatedCustomInputSelect>
 
-                <!-- </div> -->
 
               </div>
-              <!-- </div> -->
             </div>
           </div>
         </div>
@@ -119,5 +108,3 @@ const isSelectHasContent = ref([])
     </div>
   </div>
 </template>
-
-

@@ -51,7 +51,7 @@ const fetchHerikaly = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true , null)
+  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true, null)
   await indexHerikalyController.getData(HerikalyParams)
 }
 
@@ -142,7 +142,6 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   <PagesHeader :title="$t('functional_hierarchy')"
     :subtitle="$t(`define_the_hierarchy_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
 
-
   <PermissionBuilder :code="[
     PermissionsEnum.WEBSITE,
     PermissionsEnum.HERIKALY_ALL,
@@ -154,6 +153,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     <DataStatus :controller="state">
       <template #success>
         <!-- :Hierarchies="" -->
+
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <div class="btn-container">
           <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
@@ -172,6 +172,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
+
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
 
           <DataEmpty :link="`/organization/herikaly/add`" addText="Add Herikaly"
@@ -180,6 +181,8 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         </PermissionBuilder>
       </template>
       <template #failed>
+
+
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
           <DataFailed :link="`/organization/herikaly/add`" addText="Add Herikaly"
             description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
@@ -189,6 +192,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     </DataStatus>
 
     <template #notPermitted>
+
       <DataFailed addText="Have not  Permission"
         description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data" />
     </template>

@@ -254,10 +254,11 @@ const ShowDetails = ref<number[]>([])
             <div class="table-responsive">
               <div class="index-table-card-container">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                  <router-link class="w-full" :to="`/organization/equipment-mangement/incedant/show/${item?.id}`">
 
-                    <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-                      <div class="header-container">
+                  <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+                    <div class="header-container">
+
+                      <router-link class="w-full" :to="`/organization/equipment-mangement/incedant/show/${item?.id}`">
                         <div class="card-content">
                           <div class="card-header">
                             <p class="label-item-primary">
@@ -281,33 +282,34 @@ const ShowDetails = ref<number[]>([])
                             </div>
                           </div>
                         </div>
-                        <div class="card-info">
-                          <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                          <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
-                            <template #previewicon>
-                              <div class="perview">
-                                <span>{{ $t('view') }}</span>
-                                <ViewIcon />
-                              </div>
-                            </template>
-                          </Image>
-                          <img v-else src="@/assets/images/logo.svg" alt="">
-                        </div>
+                      </router-link>
+                      <div class="card-info">
+                        <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
+                        <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
+                          <template #previewicon>
+                            <div class="perview">
+                              <span>{{ $t('view') }}</span>
+                              <ViewIcon />
+                            </div>
+                          </template>
+                        </Image>
+                        <img v-else src="@/assets/images/logo.svg" alt="">
                       </div>
-                      <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
+
+                    </div>
+                    <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                         <span v-if="ShowDetails[index]">Show Less</span>
                         <span v-else>Show More</span>
                         <ShowMoreIcon />
                       </p> -->
-                    </div>
+                  </div>
 
-                    <!-- <div v-if="ShowDetails[index]" class="card-description">
+                  <!-- <div v-if="ShowDetails[index]" class="card-description">
                       <p class="title">Description</p>
                       <p class="description">
                         {{ item.description }}
                       </p>
                     </div> -->
-                  </router-link>
                 </div>
               </div>
             </div>

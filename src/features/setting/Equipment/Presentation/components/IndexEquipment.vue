@@ -38,6 +38,7 @@ import ToolCard from '@/features/Organization/Project/Presentation/components/De
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
+import EquipmentLoader from '../supcomponents/EquipmentLoader.vue'
 
 const { t } = useI18n()
 
@@ -225,10 +226,10 @@ watch(
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <EquipmentLoader />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <EquipmentLoader />
       </template>
       <template #empty>
         <PermissionBuilder :code="[

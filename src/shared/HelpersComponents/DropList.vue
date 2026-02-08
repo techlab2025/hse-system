@@ -22,13 +22,11 @@ const op = ref()
 const ActionIconsToggle = ref(false)
 
 
-// We can create a computed property to check if the popover is actually visible
 const isVisible = computed(() => {
   return op.value?.visible;
 });
 
 const toggle = (event: Event) => {
-  // Use currentTarget to ensure we anchor to the div, not the icon inside it
   op.value.toggle(event);
 };
 const { actionList = [], showActions = true } = defineProps<{
@@ -44,6 +42,7 @@ const permittedActions = computed(() =>
     )
     : [],
 )
+
 
 
 </script>

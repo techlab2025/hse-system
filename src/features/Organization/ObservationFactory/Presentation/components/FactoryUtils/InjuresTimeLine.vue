@@ -47,6 +47,8 @@ const DeleteItem = (index: number) => {
 }
 
 const UpdateData = () => {
+  Answers.value.forEach(ensureEmployee)
+
   emit('update:data', Answers.value)
 }
 onMounted(() => {
@@ -69,7 +71,11 @@ const setImages = async (data: string[], index: number) => {
   Answers.value[index].images = typeof data === 'string' ? data : await filesToBase64(data)
   UpdateData()
 }
-
+const ensureEmployee = (item: any) => {
+  if (!item.employee) {
+    item.employee = new TitleInterface({ id: 0, title: '' })
+  }
+}
 
 </script>
 <template>
