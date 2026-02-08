@@ -30,6 +30,7 @@ import DeleteCertificateController from '../controllers/deleteCertificateControl
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import CertificateCard from '../supcomponents/CertificateCard.vue'
 
 const { t } = useI18n()
 
@@ -210,18 +211,18 @@ watch(
                 </td>
 
                 <td data-label="Actions">
-                  <!--                <DialogChangeStatusCertificate-->
-                  <!--                  v-if="item.CertificateStatus === CertificateStatusEnum.Draft"-->
-                  <!--                  :CertificateId="item.id"-->
-                  <!--                  @CertificateChangeStatus="fetchCertificate"-->
-                  <!--                />-->
+
 
                   <DropList :actionList="actionList(item.id, deleteCertificate)" @delete="deleteCertificate(item.id)" />
                 </td>
               </tr>
             </tbody>
           </table>
+
         </div>
+        <!-- <div class="index-certificate-container">
+          <CertificateCard v-for="(certificate , index) in state.data" :key="index" :cerificate="certificate" />
+         </div> -->
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
