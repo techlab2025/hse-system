@@ -352,7 +352,7 @@ watch(chartData, () => {
 <style scoped>
 .chart-wrapper {
   width: 100%;
-  height: 80vh;
+  height: 55vh;
   max-height: 780px;
   min-height: 400px;
   position: relative;
