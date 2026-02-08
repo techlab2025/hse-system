@@ -295,6 +295,19 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
       PermissionsEnum.SUBSCRIPTION_FETCH,
     ],
   },
+  {
+    link: '/admin/subscription-application',
+    name: 'subscriptions_request',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum?.SUBSCRIPTION_APPLICATION_ALL,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_DETAILS,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_FETCH,
+    ],
+  },
 ])
 
 
