@@ -221,8 +221,8 @@ watch(
 
         </div>
         <!-- <div class="index-certificate-container">
-          <CertificateCard v-for="(certificate , index) in state.data" :key="index" :cerificate="certificate" />
-         </div> -->
+          <CertificateCard v-for="(certificate, index) in state.data" :key="index" :cerificate="certificate" />
+        </div> -->
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>

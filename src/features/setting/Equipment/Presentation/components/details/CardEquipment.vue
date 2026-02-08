@@ -18,6 +18,7 @@ import DeleteEquipmentController from '../../controllers/deleteEquipmentControll
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const { t } = useI18n()
 
@@ -35,11 +36,20 @@ const actions = ref([
     title: t('edit'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${route.params.id}`,
     icon: IconEdit,
-    id: 1,
+    permission: [
+      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+    ],
   },
   {
     title: t('delete'),
     icon: IconDelete,
+    permission: [
+      PermissionsEnum.ORG_EQUIPMENT_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+    ],
     id: 2,
   },
   // {
@@ -123,7 +133,7 @@ const GetEquipmentType = (type: number) => {
               <p>{{ equipmentData?.licensePlateNumber }}</p>
               <br>
               <span>{{ $t('serial name') }}</span>
-               <p>{{ equipmentData.serial_name }}</p>
+              <p>{{ equipmentData.serial_name }}</p>
             </div>
             <div class="item" v-if="equipmentData?.kilometer">
               <span>{{ $t('Vehicle Kilometer') }} : </span>

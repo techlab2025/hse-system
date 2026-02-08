@@ -274,9 +274,11 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
             <div class="table-responsive">
               <div class="index-table-card-container">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                  <div class="w-full" :to="`observation/show/${item?.id}`">
+                  <!-- :to="`observation/show/${item?.id}`" -->
+                  <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                       <div class="header-container">
+
                         <router-link :to="`observation/show/${item?.id}`" class="card-content" style="flex: 1">
                           <div class="card-header">
                             <p class="label-item-primary">
@@ -322,6 +324,8 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                           </Image>
                           <!-- <img v-else src="@/assets/images/logo.svg" alt=""> -->
                         </div>
+
+
                       </div>
                     </div>
                   </div>

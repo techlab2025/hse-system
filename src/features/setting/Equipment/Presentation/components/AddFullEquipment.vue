@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
 import FullEquipmentFrom from './FullEquipmentFrom.vue'
 import AddEquipmentController from '../controllers/addEquipmentController'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
 
 const router = useRouter()
+const route = useRoute()
 const params = ref<Params | null>(null)
 
 const addEquipmentController = AddEquipmentController.getInstance()
@@ -27,11 +28,15 @@ const setParams = (data: Params) => {
 
     <div class="col-span-4 button-wrapper">
       <div class="flex items-center gap-2 !mt-4">
-        <router-link to="/organization/equipments" @click.prevent="" class="btn btn-danger w-30">
+        <router-link v-if="route.path.includes('equipment/add')" to="/organization/equipments" @click.prevent=""
+          class="btn btn-danger w-30">
           <span>Cancel</span>
         </router-link>
 
-        <button  @click="$emit(`update:data`)" type="submit" class="btn btn-primary w-full">
+        <button v-else @click="$emit('close:dialog')" class="btn btn-danger w-30">
+          Cancel
+        </button>
+        <button @click="$emit(`update:data`)" type="submit" class="btn btn-primary w-full">
           <span>Add Equipment</span>
         </button>
       </div>

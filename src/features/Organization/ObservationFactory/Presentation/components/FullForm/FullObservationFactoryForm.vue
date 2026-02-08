@@ -65,7 +65,7 @@ const props = defineProps<{
   data?: HazardDetailsModel
 }>()
 const text = ref<string>('')
-const date = ref<string>(new Date())
+const date = ref<Date>(new Date())
 const descripe = ref<string>('')
 const image = ref([])
 const route = useRoute()
@@ -571,7 +571,7 @@ const setRootCause = (data: TitleInterface[]) => {
           <span class="add-dialog" @click="machineDialogRef = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
-          <AddFullEquipment @update:data="machineDialogRef = false" />
+          <AddFullEquipment @close:dialog="machineDialogRef = false" @update:data="machineDialogRef = false" />
         </template>
       </UpdatedCustomInputSelect>
     </div>

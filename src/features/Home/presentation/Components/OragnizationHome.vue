@@ -68,9 +68,9 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="mb-5">
-    <ProjectProgressHeader :progressValue="ProgressValue" v-if="ProgressValue < 100" />
-  </div>
+  <router-link to="/organization/project-progress" class="mb-5" v-if="ProgressValue < 100">
+    <ProjectProgressHeader :progressValue="ProgressValue" />
+  </router-link>
   <!-- <HeaderCard /> -->
   <!-- <div class="home-routes-cards"> -->
 
