@@ -20,6 +20,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type CatalogItemsDetailsModel from '../../Data/models/CatalogItemsDetailsModel'
 import AddCatalogItemsParams from '../../Core/params/addCatalogItemsParams'
 import editCatalogItemsParams from '../../Core/params/editCatalogItemsParams'
+import IndexCatalogController from '@/features/setting/Catalog/Presentation/controllers/indexCatalogController'
+import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -124,6 +126,8 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
+        null,
+        selectedCatalog.value?.id
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -190,12 +194,36 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+const indexCatalogController = IndexCatalogController.getInstance()
+  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0)
+
+  const selectedCatalog = ref<TitleInterface>()
+  const setCatalog = (data: TitleInterface) => {
+    selectedCatalog.value = data
+    updateData()
+  }
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
+
+   <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="selectedCatalog"
+      :controller="indexCatalogController"
+      :params="indexCatalogParams"
+      label="Catalog"
+      id="catalog"
+      placeholder="Select catalog"
+      @update:modelValue="setCatalog"
+    />
+  </div> 
 
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
   <!--    <label>{{ $t('has_certificate') }}</label>-->

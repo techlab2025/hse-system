@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import type { ParentTypeEnum } from '../enums/parenttypeenum'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -8,6 +9,8 @@ export default class IndexCatalogItemsParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
+     public parentType?: ParentTypeEnum
+  
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +19,7 @@ export default class IndexCatalogItemsParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
+    parentType?: ParentTypeEnum,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,6 +27,7 @@ export default class IndexCatalogItemsParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.parentType = parentType
     // this.code = code
   }
 
@@ -33,6 +38,7 @@ export default class IndexCatalogItemsParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+    if (this.parentType) data['parent_type'] = this.parentType
     // if (this.code) data['code'] = this.code
     return data
   }
