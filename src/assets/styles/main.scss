@@ -166,6 +166,7 @@
 // Employee Interface
 
 @use './EmployeeInterface/employee_Int_imports';
+@use './Certificates/certificate_import';
 
 html {
   scroll-behavior: smooth;

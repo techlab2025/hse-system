@@ -12,6 +12,7 @@ export default class CertificateModel extends TitleInterface {
   public titles: string
   public descriptions: string
   public requireExpiredDate: boolean
+  public createdAt: string
 
   constructor(
     id: number,
@@ -25,6 +26,7 @@ export default class CertificateModel extends TitleInterface {
     titles: string,
     descriptions: string,
     requireExpiredDate: boolean,
+    createdAt: string,
   ) {
     super({ id, title, subtitle })
 
@@ -37,6 +39,7 @@ export default class CertificateModel extends TitleInterface {
     this.titles = titles
     this.descriptions = descriptions
     this.requireExpiredDate = requireExpiredDate
+    this.createdAt = createdAt
   }
 
   static fromMap(data: any): CertificateModel {
@@ -54,6 +57,7 @@ export default class CertificateModel extends TitleInterface {
       data.titles,
       data.descriptions,
       data.require_expired_date,
+      data.created_at,
     )
   }
 }

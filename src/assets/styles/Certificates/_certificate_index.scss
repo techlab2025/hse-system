@@ -1,0 +1,13 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.index-certificate-container {
+  @include grid(
+    2,
+    10px,
+    (
+      900px: 1,
+    )
+  );
+}
