@@ -110,7 +110,17 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
       PermissionsEnum.CATALOG_ALL,
     ],
   },
-
+  {
+    text: t('add_catalog_itm'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
   {
     text: t('delete'),
     icon: IconDelete,

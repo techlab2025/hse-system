@@ -25,7 +25,7 @@ import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCata
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
-
+const route = useRoute()
 const props = defineProps<{
   data?: CatalogItemsDetailsModel
 }>()
@@ -121,13 +121,15 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
+       
+        selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
         null,
-        selectedCatalog.value?.id
+        selectedCatalog.value?.id || route.params.parent_id,
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -168,6 +170,8 @@ watch(
       // hasCertificate.value = newData?.hasCertificate
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
+      selectedCatalog.value = newData?.parent
+      console.log(newData?.parent , "pppppppppppppppp");
     }
   },
   { immediate: true },
@@ -212,7 +216,7 @@ const indexCatalogController = IndexCatalogController.getInstance()
 
    <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id"
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"

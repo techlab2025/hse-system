@@ -41,7 +41,7 @@ export default class AddCatalogItemsDetailsController extends ControllerInterfac
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
