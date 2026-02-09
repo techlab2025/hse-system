@@ -8,18 +8,21 @@ export default class implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
+  parentId?: number
 
   constructor(
     id: number,
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
+    parentId?: number,
 
   ) {
     this.id = id
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
+    this.parentId = parentId
   }
 
   toMap(): Record<
@@ -34,12 +37,12 @@ export default class implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['guid_category_id'] = this.id
+    data['guide_category_id'] = this.id
     data['translations'] = this.translation.toMap()
 
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
-
+if (this.parentId) data['parent_id'] = this.parentId
     return data
   }
 }

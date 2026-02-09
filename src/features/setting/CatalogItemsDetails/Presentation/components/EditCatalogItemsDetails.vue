@@ -7,13 +7,14 @@ import type Params from '@/base/core/params/params'
 import ShowCatalogItemsDetailsParams from '../../Core/params/showCatalogItemsDetailsParams'
 import EditCatalogItemsDetailsController from '../controllers/editCatalogItemsDetailsController'
 import CatalogItemsDetailsForm from './CatalogItemsDetailsForm.vue'
+import ShowCatalogItemsDetailsController from '../controllers/showCatalogItemsDetailsController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showCatalogItemsDetailsController = ShowCatalogItemsDetailsParams.getInstance()
+const showCatalogItemsDetailsController = ShowCatalogItemsDetailsController.getInstance()
 const state = ref(showCatalogItemsDetailsController.state.value)
 
 const fetchCatalogItemsDetails = async () => {
@@ -50,6 +51,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+
   <DataStatus :controller="state">
     <template #success>
       <!--      <pre>-->
@@ -57,6 +59,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editCatalogItemsDetails">
+       
         <CatalogItemsDetailsForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>

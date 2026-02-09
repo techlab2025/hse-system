@@ -20,6 +20,9 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type CatalogItemsDetailsModel from '../../Data/models/CatalogItemsDetailsModel'
 import AddCatalogItemsDetailsParams from '../../Core/params/addCatalogItemsDetailsParams'
 import editCatalogItemsDetailsParams from '../../Core/params/editCatalogItemsDetailsParams'
+import IndexCatalogController from '@/features/setting/Catalog/Presentation/controllers/indexCatalogController'
+import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
+import { ParentTypeEnum } from '@/features/setting/CatalogItems/Core/enums/parenttypeenum'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -119,11 +122,18 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
+
+        selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsDetailsParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
+      {
+        translation: translationsParams,
+        allIndustries: AllIndustry,
+        industries: industry.value?.map((item) => item.id) ?? [],
+        order: 0,
+        guidgate_category_id: selectedCatalog.value?.id || route.params.parent_id
+      }
+         
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -146,6 +156,7 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   updateData()
 }
 
+
 // init Teamss either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
@@ -164,6 +175,7 @@ watch(
       // hasCertificate.value = newData?.hasCertificate
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
+      selectedCatalog.value = newData?.guidecategory ? new TitleInterface({id: newData.guidecategory.id, title: newData.guidecategory.title}) : undefined 
     }
   },
   { immediate: true },
@@ -190,62 +202,37 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+const indexCatalogController = IndexCatalogController.getInstance()
+  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0, null, ParentTypeEnum.child)
+
+  const selectedCatalog = ref<TitleInterface>()
+  const setCatalog = (data: TitleInterface) => { 
+    selectedCatalog.value = data
+    updateData()
+  }
+  const route = useRoute()
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-  </div>
 
-  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
-  <!--    <label>{{ $t('has_certificate') }}</label>-->
-  <!--    <input-->
-  <!--      type="checkbox"-->
-  <!--      :value="1"-->
-  <!--      v-model="hasCertificate"-->
-  <!--      :checked="hasCertificate == 1"-->
-  <!--      @change="updateData"-->
-  <!--    />-->
-  <!--  </div>-->
-  <!-- <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
-  </div>
-  <div
+       <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id"
   >
     <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="Teams"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
+      :modelValue="selectedCatalog"
+      :controller="indexCatalogController"
+      :params="indexCatalogParams"
+      label="Catalog"
+      id="catalog" 
+      placeholder="Select catalog"
+      @update:modelValue="setCatalog"
     />
-  </div> -->
-  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-      <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div> -->
-  <!--  <div class="col-span-4 md:col-span-4">-->
-  <!--    <FileUpload-->
-  <!--      :initialFileData="image"-->
-  <!--      @update:fileData="setImage"-->
-  <!--      label="Image"-->
-  <!--      id="image"-->
-  <!--      placeholder="Select image"-->
-  <!--      :multiple="false"-->
-  <!--    />-->
-  <!--  </div>-->
+  </div> 
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput  type="textarea" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+
+
+
 </template>

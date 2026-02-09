@@ -12,6 +12,7 @@ export default class CatalogItemsDetailsModel {
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
+  public parent: TitleInterface
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -21,6 +22,7 @@ export default class CatalogItemsDetailsModel {
     industries: TitleModel<string>[] = [],
     parentId: number,
     image: string,
+    parent: TitleInterface,
   ) {
     this.id = id
     this.titles = titles
@@ -28,6 +30,7 @@ export default class CatalogItemsDetailsModel {
     this.industries = industries
     this.parentId = parentId
     this.image = image
+    this.parent = parent
 
   }
 
@@ -41,6 +44,7 @@ export default class CatalogItemsDetailsModel {
         : [],
       data.parent_id,
       data.image,
+      this.getTitle(data.parent),
     )
   }
 
