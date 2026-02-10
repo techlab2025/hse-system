@@ -154,7 +154,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogItemsType" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchCatalogItemsType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
