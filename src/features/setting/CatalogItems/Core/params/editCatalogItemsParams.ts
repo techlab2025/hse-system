@@ -9,7 +9,7 @@ export default class implements Params {
   id: number
   translation: TranslationsParams
   allIndustries: boolean | null
-  industries: number[]
+  industries: number[] 
   parentId?: number
 
       public static readonly validation = new ClassValidation().setRules({

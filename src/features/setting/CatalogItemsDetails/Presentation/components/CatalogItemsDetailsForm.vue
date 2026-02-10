@@ -34,16 +34,16 @@ const props = defineProps<{
 // const route = useRoute()
 
 // actual translations (values)
-const langs = ref<{ locale: string; title: string }[]>([
+const langs = ref<{ locale: string; description: string }[]>([
   {
     locale: 'en',
     icon: USA,
-    title: '',
+    description: '',
   },
   {
     locale: 'ar',
     icon: SA,
-    title: '',
+    description: '',
   },
 ])
 
@@ -57,7 +57,7 @@ const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
 // default available Teamss
-const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: string; desciprtion: string }[]>([])
 const user = useUserStore()
 const fetchLang = async (
   query: string = '',
@@ -68,7 +68,7 @@ const fetchLang = async (
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
-      title: '',
+      desciprtion: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
     return
@@ -82,7 +82,7 @@ const fetchLang = async (
     // map backend Teamss into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
+      description: '', // empty initially
       // if you already have icons mapped, use TeamssMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
@@ -91,12 +91,12 @@ const fetchLang = async (
       {
         locale: 'en',
         icon: USA,
-        title: '',
+        desciprtion: '',
       },
       {
         locale: 'ar',
         icon: SA,
-        title: '',
+        desciprtion: '',
       },
     ]
   }
@@ -110,7 +110,7 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   console.log(allIndustries.value, 'industry')
@@ -149,7 +149,7 @@ const setIndustry = (data: TitleInterface[]) => {
 }
 
 // when child emits modelValue (updated translations)
-const setLangs = (data: { locale: string; title: string }[]) => {
+const setLangs = (data: { locale: string; description: string }[]) => {
   langs.value = data
 
   // console.log(langs.value, 'langs')
@@ -161,22 +161,32 @@ const setLangs = (data: { locale: string; title: string }[]) => {
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+    if (!newDefault.length) return
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries! ?? false
-      industry.value = newData?.industries!
-      selectedCatalog.value = newData?.guidecategory ? new TitleInterface({id: newData.guidecategory.id, title: newData.guidecategory.title}) : undefined 
+    if (newData?.descriptions?.length) {
+      langs.value = newDefault.map((l) => {
+        const existing = newData.descriptions.find(
+          (t) => t.locale === l.locale,
+        )
+
+        return {
+          locale: l.locale,
+          title: existing?.description ?? '',
+        }
+      })
+    } else {
+      langs.value = newDefault.map((l) => ({
+        locale: l.locale,
+        title: '',
+      }))
     }
+
+    selectedCatalog.value = newData?.guidecategory
+      ? new TitleInterface({
+          id: newData.guidecategory.id,
+          title: newData.guidecategory.title,
+        })
+      : undefined
   },
   { immediate: true },
 )
@@ -203,7 +213,7 @@ const fields = ref([
   },
 ])
 const indexCatalogController = IndexCatalogController.getInstance()
-  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0, null, ParentTypeEnum.child)
+  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0, null, ParentTypeEnum.child , true)
 
   const selectedCatalog = ref<TitleInterface>()
   const setCatalog = (data: TitleInterface) => { 
@@ -217,7 +227,7 @@ const indexCatalogController = IndexCatalogController.getInstance()
 
        <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id && !data?.id"
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"

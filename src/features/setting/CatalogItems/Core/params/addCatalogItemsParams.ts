@@ -30,7 +30,7 @@ export default class AddCatalogItemsParams implements Params {
     this.industries = industries
     this.order = order
     this.parentId = parentId
-    this.parentType = parentType
+    this.parentType = parentType 
     // this.serial_number = serial_number
   }
 

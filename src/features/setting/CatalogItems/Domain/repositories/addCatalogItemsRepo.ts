@@ -13,7 +13,7 @@ class AddCatalogItemsRepo extends RepoInterface<CatalogItemsModel> {
   }
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddCatalogItemsRepo()
+      this.instance = new AddCatalogItemsRepo() 
     }
     return this.instance
   }
