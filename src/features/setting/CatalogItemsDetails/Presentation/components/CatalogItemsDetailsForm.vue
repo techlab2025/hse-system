@@ -110,7 +110,7 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.title)
   })
 
   console.log(allIndustries.value, 'industry')
