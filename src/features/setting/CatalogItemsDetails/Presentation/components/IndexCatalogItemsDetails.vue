@@ -107,17 +107,17 @@ watch(
 const { user } = useUserStore()
 
 const actionList = (id: number, deleteCatalog: (id: number) => void) => [
-  // {
-  //   text: t('edit'),
-  //   icon: ActionsTableEdit,
-  //   link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/${id}`,
-  //   permission: [
-  //     PermissionsEnum.CATALOG_DETAILS_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  //     PermissionsEnum.CATALOG_DETAILS_ALL,
-  //   ],
-  // },
+  {
+    text: t('edit'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_DETAILS_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_DETAILS_ALL,
+    ],
+  },
 
   {
     text: t('delete'),

@@ -9,7 +9,8 @@ export default class IndexCatalogParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
-   parentType?: ParentTypeEnum
+   public parentType?: ParentTypeEnum
+   public notIncludeAssigned?: boolean
   // public code?: LangEnum
 
   constructor(
@@ -19,6 +20,7 @@ export default class IndexCatalogParams implements Params {
     withPage: number = 1,
     id?: number,
     parentType?: ParentTypeEnum,
+    notIncludeAssigned?: boolean
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +29,7 @@ export default class IndexCatalogParams implements Params {
     this.perPage = perPage
     this.id = id
     this.parentType = parentType
+    this.notIncludeAssigned = notIncludeAssigned
     // this.code = code
   }
 
@@ -38,6 +41,8 @@ export default class IndexCatalogParams implements Params {
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
     if (this.parentType) data['parent_type'] = this.parentType
+        if (this.notIncludeAssigned) data['not_include_assigned'] = this.notIncludeAssigned
+    
     // if (this.code) data['code'] = this.code
     return data
   }

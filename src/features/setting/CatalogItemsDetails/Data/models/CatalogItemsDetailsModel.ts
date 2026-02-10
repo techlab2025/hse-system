@@ -10,7 +10,6 @@ export default class CatalogItemsDetailsModel {
   public titles: TitleLocale[]
   public descriptions: DescriptionLocale[]
   public guidecategory :TitleInterface 
-  public description: string
   // public descriptions: DescriptionLocale[]
  
   constructor(
@@ -18,13 +17,11 @@ export default class CatalogItemsDetailsModel {
     titles: TitleLocale[],
     descriptions: DescriptionLocale[],
     guidecategory: TitleInterface,
-    description: string
   ) {
     this.id = id
     this.titles = titles
     this.descriptions = descriptions
     this.guidecategory = guidecategory
-    this.description = description
 
   }
 
@@ -32,9 +29,9 @@ export default class CatalogItemsDetailsModel {
     return new CatalogItemsDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
+      // TranslationsParams.fromMap(data.descriptions).descriptions,
       data.descriptions,
       this.getTitle(data.guide_category),
-      data.description
     )
   }
 

@@ -111,6 +111,31 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
       PermissionsEnum.CATALOG_ALL,
     ],
   },
+
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteCatalog(id),
+    permission: [
+      PermissionsEnum.CATALOG_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
+]
+const actionListWithItem = (id: number, deleteCatalog: (id: number) => void) => [
+  {
+    text: t('edit'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
 {
     text: t('add_item_details'),
     icon: ActionsTableEdit,
@@ -122,8 +147,6 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
       PermissionsEnum.CATALOG_ALL,
     ],
   },
-
-
   {
     text: t('delete'),
     icon: IconDelete,
@@ -210,7 +233,9 @@ watch(
                   <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" />
+                  <DropList :actionList="actionList(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" v-if="item?.guideCategoryItem?.id" />
+                  <DropList :actionList="actionListWithItem(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" v-else />
+                
                 </td>
               </tr>
             </tbody>
