@@ -222,9 +222,9 @@ const indexCatalogController = IndexCatalogController.getInstance()
       :modelValue="selectedCatalog"
       :controller="indexCatalogController"
       :params="indexCatalogParams"
-      label="Catalog"
+      :label="$t('Catalog')"
       id="catalog"
-      placeholder="Select catalog"
+      :placeholder="$t('Select catalog')"
       @update:modelValue="setCatalog"
     />
   </div> 

@@ -1157,5 +1157,11 @@
   "Lets_Get_Your_Organization_Ready": "Let’s Get Your Organization Ready.",
   "organization_setup": "organization setup",
   "enter_title": "Enter title",
-  "enter_description": "Enter description"
+  "enter_description": "Enter description",
+  "add_catalog_item": "Add Catalog Item",
+  "Add_Catalog": "Add Catalog",
+  "add_item_details": "Add Item Details",
+  "Select catalog": "Select Catalog",
+  "Add_Catalog_Item_Details":"Add_Catalog_Item_Details"
+  
 }
