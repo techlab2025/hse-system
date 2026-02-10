@@ -204,7 +204,7 @@ watch(
                 <td data-label="#">
                   <span>{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name" v-html="item.title"></td>
+                <td data-label="Name" v-html="item.description || item.title"></td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusTeamType-->
