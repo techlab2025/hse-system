@@ -2,6 +2,8 @@ import type Params from '@/base/core/params/params'
 // import AttentionParams from "@/features/users/clients/Core/params/attention_params";
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import AddCatalogItemsParams from './addCatalogItemsParams'
 
 export default class implements Params {
   id: number
@@ -10,6 +12,10 @@ export default class implements Params {
   industries: number[]
   parentId?: number
 
+      public static readonly validation = new ClassValidation().setRules({
+        parentId: { required: true },
+      
+      })
   constructor(
     id: number,
     translation: TranslationsParams,
@@ -44,5 +50,12 @@ export default class implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
 if (this.parentId) data['parent_id'] = this.parentId
     return data
+  }
+    validate() {
+    return AddCatalogItemsParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddCatalogItemsParams.validation.validateOrThrow(this)
   }
 }

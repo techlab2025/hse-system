@@ -9,6 +9,7 @@ import { useUserStore } from '@/stores/user'
 // import type CatalogModel from '../../Data/models/CatalogItemsModel'
 import type CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 import EditCatalogItemsUseCase from '../../Domain/useCase/editCatalogItemsUseCase'
+import type editCatalogItemsParams from '../../Core/params/editCatalogItemsParams'
 
 export default class EditCatalogItemsController extends ControllerInterface<CatalogItemsModel> {
   private static instance: EditCatalogItemsController
@@ -26,9 +27,14 @@ export default class EditCatalogItemsController extends ControllerInterface<Cata
     return this.instance
   }
 
-  async editCatalogItems(params: Params, router: any) {
+  async editCatalogItems(params: editCatalogItemsParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
+     params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
     try {
       const dataState: DataState<CatalogItemsModel> = await this.editCatalogItemsUseCase.call(params)
 
