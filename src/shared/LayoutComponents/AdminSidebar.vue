@@ -236,17 +236,17 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.CATALOG_UPDATE,
     ],
   },
-   {
-    link: '/admin/catalog-items-details',
-    name: 'catalog_items_details',
-    permissions: [
-      PermissionsEnum.CATALOG_DETAILS_ALL,
-      PermissionsEnum.CATALOG_DETAILS_CREATE,
-      PermissionsEnum.CATALOG_DETAILS_DELETE,
-      PermissionsEnum.CATALOG_DETAILS_FETCH,
-      PermissionsEnum.CATALOG_DETAILS_UPDATE,
-    ],
-  },
+  //  {
+  //   link: '/admin/catalog-items-details',
+  //   name: 'catalog_items_details',
+  //   permissions: [
+  //     PermissionsEnum.CATALOG_DETAILS_ALL,
+  //     PermissionsEnum.CATALOG_DETAILS_CREATE,
+  //     PermissionsEnum.CATALOG_DETAILS_DELETE,
+  //     PermissionsEnum.CATALOG_DETAILS_FETCH,
+  //     PermissionsEnum.CATALOG_DETAILS_UPDATE,
+  //   ],
+  // },
 ])
 
 const LocationRoutes = ref<Routes[]>([

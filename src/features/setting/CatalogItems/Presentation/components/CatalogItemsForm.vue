@@ -23,6 +23,8 @@ import editCatalogItemsParams from '../../Core/params/editCatalogItemsParams'
 import IndexCatalogController from '@/features/setting/Catalog/Presentation/controllers/indexCatalogController'
 import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
 import { ParentTypeEnum } from '../../Core/enums/parenttypeenum'
+import CatalogItemsParams from '../../Core/params/CatalogGuideItemParams'
+import AddCatalogItemsDetailsParams from '@/features/setting/CatalogItemsDetails/Core/params/addCatalogItemsDetailsParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -47,6 +49,13 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
+const langsDescription = ref<
+  {
+    locale: string
+    icon?: any
+    description: string
+  }[]
+>([])
 const allIndustries = ref<boolean>(false)
 // const hasCertificate = ref<number>(0)
 // const image = ref<string>('')
@@ -58,6 +67,14 @@ const industryController = IndexIndustryController.getInstance()
 
 // default available Teamss
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langDefaultDescription = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+
 const user = useUserStore()
 const fetchLang = async (
   query: string = '',
@@ -67,6 +84,11 @@ const fetchLang = async (
 ) => {
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -82,22 +104,23 @@ const fetchLang = async (
     // map backend Teamss into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
-      // if you already have icons mapped, use TeamssMap
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+    langDefaultDescription.value = response.data.map((item: any) => ({
+      locale: item.code,
+      description: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
   } else {
     langDefault.value = [
-      {
-        locale: 'en',
-        icon: USA,
-        title: '',
-      },
-      {
-        locale: 'ar',
-        icon: SA,
-        title: '',
-      },
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
+    langDefaultDescription.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
     ]
   }
 }
@@ -112,17 +135,21 @@ const updateData = () => {
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
+  langsDescription.value.forEach((lang) => {
+    translationsParams.setTranslation('description', lang.locale, lang.description)
+  })
 
   console.log(allIndustries.value, 'industry')
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
+  // const CatalogItem = new AddCatalogItemsDetailsParams({ translation: translationsParams })
+// console.log(CatalogItem , "CatalogItem");
   const params = props.data?.id
     ? new editCatalogItemsParams(
         props.data?.id! ?? 0,
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
-       
         selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsParams(
@@ -131,11 +158,13 @@ const updateData = () => {
         industry.value?.map((item) => item.id),
         null,
         selectedCatalog.value?.id || route.params.parent_id,
+        null,
+        translationsParams
         // SerialNumber.value?.SerialNumber,
         // id,
       )
 
-  // console.log(params, 'params')
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -155,28 +184,81 @@ const setLangs = (data: { locale: string; title: string }[]) => {
 
 // init Teamss either from backend (edit mode) or from defaults (create mode)
 watch(
-  [() => props.data, () => langDefault.value],
-  ([newData, newDefault]) => {
-    if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
+  ([newData, newDefault, newDefaultDesc]) => {
+    if (!newDefault.length) return
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries! ?? false
-      industry.value = newData?.industries!
-      selectedCatalog.value = newData?.parent
-      console.log(newData?.parent , "pppppppppppppppp");
+    // ===== titles =====
+    if (newData?.titles?.length) {
+      langs.value = newDefault.map((l) => {
+        const existing = newData.titles.find((t) => t.locale === l.locale)
+        return existing ? existing : { locale: l.locale, title: '' }
+      })
+    } else {
+      langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
     }
+
+    // ===== descriptions =====
+    if (newData?.descriptions?.length) {
+      langsDescription.value = newDefaultDesc.map((l) => {
+        const existing = newData.descriptions.find((t) => t.locale === l.locale)
+        return existing ? existing : { locale: l.locale, description: '' }
+      })
+    } else {
+      langsDescription.value = newDefaultDesc.map((l) => ({
+        locale: l.locale,
+        description: '',
+      }))
+    }
+
+    // باقي البيانات
+    allIndustries.value = newData?.allIndustries ?? false
+    industry.value = newData?.industries ?? []
+    selectedCatalog.value = newData?.parent
   },
   { immediate: true },
 )
+
+// watch(
+//   [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
+//   ([newData, newDefault, newDefaultDesc]) => {
+//     if (newDefault.length) {
+//       if (newData?.titles?.length) {
+//         langs.value = newDefault.map((l) => {
+//           const existing = newData.titles.find((t) => t.locale === l.locale)
+//           return existing ? existing : { locale: l.locale, title: '' }
+//         })
+//       } else {
+//         langsDescription.value = newDefaultDesc.map((l) => ({
+//           locale: l.locale,
+//           description: '',
+//         }))
+//       }
+
+//       // descriptions
+//       if (newData?.descriptions?.length) {
+//         langsDescription.value = newDefaultDesc.map((l) => {
+//           const existing = newData.descriptions.find((t) => t.locale === l.locale)
+//           return existing ? existing : { locale: l.locale, description: '' }
+//         })
+//       } else {
+//         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
+//         langsDescription.value = newDefaultDesc.map((l) => ({
+//           locale: l.locale,
+//           description: '',
+//         }))
+//       }
+
+//       // langs.value = newData?.code
+//       // hasCertificate.value = newData?.hasCertificate
+//       allIndustries.value = newData?.allIndustries! ?? false
+//       industry.value = newData?.industries!
+//       selectedCatalog.value = newData?.parent
+//       console.log(newData?.parent, 'pppppppppppppppp')
+//     }
+//   },
+//   { immediate: true },
+// )
 
 // const setImage = async (data: File) => {
 //   image.value = await filesToBase64(data)
@@ -201,13 +283,19 @@ const fields = ref([
 ])
 
 const indexCatalogController = IndexCatalogController.getInstance()
-  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0 , null , ParentTypeEnum.parent , true)
+const indexCatalogParams = new IndexCatalogParams('', 1, 10, 0, null, ParentTypeEnum.parent, true)
 
-  const selectedCatalog = ref<TitleInterface>()
-  const setCatalog = (data: TitleInterface) => {
-    selectedCatalog.value = data
+const selectedCatalog = ref<TitleInterface>()
+const setCatalog = (data: TitleInterface) => {
+  selectedCatalog.value = data
+  updateData()
+}
+watch(
+  () => langsDescription.value,
+  () => {
     updateData()
-  }
+  },
+)
 </script>
 
 <template>
@@ -215,9 +303,14 @@ const indexCatalogController = IndexCatalogController.getInstance()
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-   <div
+  <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id && !data?.id"
+    v-if="
+      !allIndustries &&
+      user.user?.type == OrganizationTypeEnum.ADMIN &&
+      !route.params.parent_id &&
+      !data?.id
+    "
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"
@@ -228,8 +321,20 @@ const indexCatalogController = IndexCatalogController.getInstance()
       :placeholder="$t('Select catalog')"
       @update:modelValue="setCatalog"
     />
-  </div> 
+  </div>
 
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <LangTitleInput
+      label="project_objectives"
+      :langs="langDefault"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+      :placeholder="`What are the project objectives?`"
+      :required="false"
+    />
+  </div>
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
   <!--    <label>{{ $t('has_certificate') }}</label>-->
   <!--    <input-->
