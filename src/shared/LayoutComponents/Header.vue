@@ -148,6 +148,7 @@ const minimize = ref(false)
   <header class="header" :class="minimize ? 'minmize' : ''">
     <nav class="nav">
       <div class="menu">
+
         <!-- Add the new icon to open the sidebar -->
         <!-- <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
           <IconMenu />
