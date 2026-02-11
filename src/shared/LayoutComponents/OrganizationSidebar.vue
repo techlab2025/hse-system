@@ -244,6 +244,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.CODING_SYSTEM_UPDATE,
     ],
   },
+  {
+    link: "/organization/hazard",
+    name: "hazard",
+    permissions: [
+      PermissionsEnum.ORG_HAZARD_ALL,
+      PermissionsEnum.ORG_HAZARD_CREATE,
+      PermissionsEnum.ORG_HAZARD_DELETE,
+      PermissionsEnum.ORG_HAZARD_FETCH,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
+    ],
+  },
 
 
 ])
