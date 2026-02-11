@@ -10,6 +10,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 import AddCatalogItemsUseCase from '../../Domain/useCase/addCatalogItemsUseCase'
+import type AddCatalogItemsParams from '../../Core/params/addCatalogItemsParams'
 
 export default class AddCatalogItemsController extends ControllerInterface<CatalogItemsModel> {
   private static instance: AddCatalogItemsController
@@ -25,8 +26,14 @@ export default class AddCatalogItemsController extends ControllerInterface<Catal
     return this.instance
   }
 
-  async addCatalogItems(params: Params, router: Router, draft: boolean = false) {
+  async addCatalogItems(params: AddCatalogItemsParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
     try {
       const dataState: DataState<CatalogItemsModel> =
         await this.addCatalogItemsUseCase.call(params)
@@ -41,7 +48,7 @@ export default class AddCatalogItemsController extends ControllerInterface<Catal
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalogItems`)
+        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

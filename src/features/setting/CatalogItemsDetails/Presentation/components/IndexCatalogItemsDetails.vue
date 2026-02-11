@@ -54,7 +54,13 @@ const fetchCatalogItemsDetails = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexCatalogItemsDetailsParams = new IndexCatalogItemsDetailsParams(query, pageNumber, perPage, withPage, id)
+  const indexCatalogItemsDetailsParams = new IndexCatalogItemsDetailsParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexCatalogItemsDetailsController.getData(indexCatalogItemsDetailsParams)
 }
 
@@ -68,7 +74,9 @@ const searchCatalogItemsType = debounce(() => {
 
 const deleteCatalog = async (id: number) => {
   const deleteCatalogItemsParams = new DeleteCatalogItemsDetailsParams(id)
-  await DeleteCatalogItemsDetailsController.getInstance().deleteCatalogItemsDetails(deleteCatalogItemsParams)
+  await DeleteCatalogItemsDetailsController.getInstance().deleteCatalogItemsDetails(
+    deleteCatalogItemsParams,
+  )
   await fetchCatalogItemsDetails()
 }
 
@@ -102,12 +110,12 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/${id}`,
     permission: [
-      PermissionsEnum.CATALOG_ITEMS_UPDATE,
+      PermissionsEnum.CATALOG_DETAILS_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CATALOG_ITEMS_ALL,
+      PermissionsEnum.CATALOG_DETAILS_ALL,
     ],
   },
 
@@ -116,10 +124,10 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteCatalog(id),
     permission: [
-      PermissionsEnum.CATALOG_ITEMS_DELETE,
+      PermissionsEnum.CATALOG_DETAILS_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CATALOG_ITEMS_ALL,
+      PermissionsEnum.CATALOG_DETAILS_ALL,
     ],
   },
 ]
@@ -135,39 +143,50 @@ watch(
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogItemsType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchCatalogItemsType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.CATALOG_ITEMS_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/add`"
-          class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.CATALOG_DETAILS_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Catalog_Item_Details') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.CATALOG_ITEMS_ALL,
-    PermissionsEnum.CATALOG_ITEMS_DELETE,
-    PermissionsEnum.CATALOG_ITEMS_FETCH,
-    PermissionsEnum.CATALOG_ITEMS_UPDATE,
-    PermissionsEnum.CATALOG_ITEMS_CREATE,
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_DETAILS_ALL,
+      PermissionsEnum.CATALOG_DETAILS_DELETE,
+      PermissionsEnum.CATALOG_DETAILS_FETCH,
+      PermissionsEnum.CATALOG_DETAILS_UPDATE,
+      PermissionsEnum.CATALOG_DETAILS_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -183,12 +202,9 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/edit/${item.id}`">{{
-                    index + 1 }}
-                  </router-link>
+                  <span>{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Name" v-html="item.description || item.title"></td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusTeamType-->
@@ -197,13 +213,20 @@ watch(
                   <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteCatalog)"
+                    @delete="deleteCatalog(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -212,39 +235,51 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_ITEMS_CREATE,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
-            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.CATALOG_DETAILS_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
+            addText="Add Catalog Details"
+            description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Catalog Details"
+          />
         </permission-builder>
       </template>
       <template #failed>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_ITEMS_CREATE,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
-            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.CATALOG_DETAILS_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
+            addText="Add Catalog Details"
+            description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Catalog Details"
+          />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.CATALOG_ITEMS_CREATE,
-      ]">
-        <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.CATALOG_DETAILS_CREATE,
+        ]"
+      >
+        <DataFailed
+          addText="Have not  Permission"
+          description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+        />
       </permission-builder>
     </template>
   </permission-builder>

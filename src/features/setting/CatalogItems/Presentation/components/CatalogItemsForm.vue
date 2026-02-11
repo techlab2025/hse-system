@@ -22,10 +22,11 @@ import AddCatalogItemsParams from '../../Core/params/addCatalogItemsParams'
 import editCatalogItemsParams from '../../Core/params/editCatalogItemsParams'
 import IndexCatalogController from '@/features/setting/Catalog/Presentation/controllers/indexCatalogController'
 import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
+import { ParentTypeEnum } from '../../Core/enums/parenttypeenum'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
-
+const route = useRoute()
 const props = defineProps<{
   data?: CatalogItemsDetailsModel
 }>()
@@ -121,13 +122,15 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
+       
+        selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
         null,
-        selectedCatalog.value?.id
+        selectedCatalog.value?.id || route.params.parent_id,
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -168,6 +171,8 @@ watch(
       // hasCertificate.value = newData?.hasCertificate
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
+      selectedCatalog.value = newData?.parent
+      console.log(newData?.parent , "pppppppppppppppp");
     }
   },
   { immediate: true },
@@ -196,7 +201,7 @@ const fields = ref([
 ])
 
 const indexCatalogController = IndexCatalogController.getInstance()
-  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0)
+  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0 , null , ParentTypeEnum.parent , true)
 
   const selectedCatalog = ref<TitleInterface>()
   const setCatalog = (data: TitleInterface) => {
@@ -212,15 +217,15 @@ const indexCatalogController = IndexCatalogController.getInstance()
 
    <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id && !data?.id"
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"
       :controller="indexCatalogController"
       :params="indexCatalogParams"
-      label="Catalog"
+      :label="$t('Catalog')"
       id="catalog"
-      placeholder="Select catalog"
+      :placeholder="$t('Select catalog')"
       @update:modelValue="setCatalog"
     />
   </div> 

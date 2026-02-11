@@ -110,7 +110,17 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
       PermissionsEnum.CATALOG_ALL,
     ],
   },
-
+  {
+    text: t('add_catalog_item'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
   {
     text: t('delete'),
     icon: IconDelete,
@@ -141,7 +151,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchCatalogType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogType" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchCatalogType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->

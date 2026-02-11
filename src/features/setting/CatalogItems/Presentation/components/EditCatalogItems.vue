@@ -7,13 +7,14 @@ import type Params from '@/base/core/params/params'
 import CatalogItemsForm from './CatalogItemsForm.vue'
 import ShowCatalogItemsParams from '../../Core/params/showCatalogItemsParams'
 import EditCatalogItemsController from '../controllers/editCatalogItemsController'
+import ShowCatalogItemsController from '../controllers/showCatalogItemsController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
-const showCatalogItemsController = ShowCatalogItemsParams.getInstance()
+const showCatalogItemsController = ShowCatalogItemsController.getInstance()
 const state = ref(showCatalogItemsController.state.value)
 
 const fetchCatalogItemsDetails = async () => {

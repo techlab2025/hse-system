@@ -43,7 +43,7 @@ export default class EditCatalogItemsDetailsController extends ControllerInterfa
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog`)
+        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details`)
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

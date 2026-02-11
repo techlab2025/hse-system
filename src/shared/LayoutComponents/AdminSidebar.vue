@@ -214,6 +214,39 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.TICKET_UPDATE,
     ],
   },
+   {
+    link: '/admin/catalog',
+    name: 'catalog',
+    permissions: [
+      PermissionsEnum.CATALOG_ALL,
+      PermissionsEnum.CATALOG_CREATE,
+      PermissionsEnum.CATALOG_DELETE,
+      PermissionsEnum.CATALOG_FETCH,
+      PermissionsEnum.CATALOG_UPDATE,
+    ],
+  },
+   {
+    link: '/admin/catalog-items',
+    name: 'catalog_items',
+    permissions: [
+      PermissionsEnum.CATALOG_ALL,
+      PermissionsEnum.CATALOG_CREATE,
+      PermissionsEnum.CATALOG_DELETE,
+      PermissionsEnum.CATALOG_FETCH,
+      PermissionsEnum.CATALOG_UPDATE,
+    ],
+  },
+   {
+    link: '/admin/catalog-items-details',
+    name: 'catalog_items_details',
+    permissions: [
+      PermissionsEnum.CATALOG_DETAILS_ALL,
+      PermissionsEnum.CATALOG_DETAILS_CREATE,
+      PermissionsEnum.CATALOG_DETAILS_DELETE,
+      PermissionsEnum.CATALOG_DETAILS_FETCH,
+      PermissionsEnum.CATALOG_DETAILS_UPDATE,
+    ],
+  },
 ])
 
 const LocationRoutes = ref<Routes[]>([

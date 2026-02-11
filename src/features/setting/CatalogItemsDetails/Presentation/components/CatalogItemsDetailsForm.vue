@@ -20,6 +20,9 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type CatalogItemsDetailsModel from '../../Data/models/CatalogItemsDetailsModel'
 import AddCatalogItemsDetailsParams from '../../Core/params/addCatalogItemsDetailsParams'
 import editCatalogItemsDetailsParams from '../../Core/params/editCatalogItemsDetailsParams'
+import IndexCatalogController from '@/features/setting/Catalog/Presentation/controllers/indexCatalogController'
+import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
+import { ParentTypeEnum } from '@/features/setting/CatalogItems/Core/enums/parenttypeenum'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -31,16 +34,16 @@ const props = defineProps<{
 // const route = useRoute()
 
 // actual translations (values)
-const langs = ref<{ locale: string; title: string }[]>([
+const langs = ref<{ locale: string; description: string }[]>([
   {
     locale: 'en',
     icon: USA,
-    title: '',
+    description: '',
   },
   {
     locale: 'ar',
     icon: SA,
-    title: '',
+    description: '',
   },
 ])
 
@@ -54,7 +57,7 @@ const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
 // default available Teamss
-const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
+const langDefault = ref<{ locale: string; icon?: string; desciprtion: string }[]>([])
 const user = useUserStore()
 const fetchLang = async (
   query: string = '',
@@ -65,7 +68,7 @@ const fetchLang = async (
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
-      title: '',
+      desciprtion: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
     return
@@ -79,7 +82,7 @@ const fetchLang = async (
     // map backend Teamss into default structure
     langDefault.value = response.data.map((item: any) => ({
       locale: item.code,
-      title: '', // empty initially
+      description: '', // empty initially
       // if you already have icons mapped, use TeamssMap
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
@@ -88,12 +91,12 @@ const fetchLang = async (
       {
         locale: 'en',
         icon: USA,
-        title: '',
+        desciprtion: '',
       },
       {
         locale: 'ar',
         icon: SA,
-        title: '',
+        desciprtion: '',
       },
     ]
   }
@@ -107,7 +110,7 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
 
   langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
+    translationsParams.setTranslation('description', lang.locale, lang.description)
   })
 
   console.log(allIndustries.value, 'industry')
@@ -119,11 +122,18 @@ const updateData = () => {
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
+
+        selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsDetailsParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
+      {
+        translation: translationsParams,
+        allIndustries: AllIndustry,
+        industries: industry.value?.map((item) => item.id) ?? [],
+        order: 0,
+        guidgate_category_id: selectedCatalog.value?.id || route.params.parent_id
+      }
+         
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -139,32 +149,44 @@ const setIndustry = (data: TitleInterface[]) => {
 }
 
 // when child emits modelValue (updated translations)
-const setLangs = (data: { locale: string; title: string }[]) => {
+const setLangs = (data: { locale: string; description: string }[]) => {
   langs.value = data
 
   // console.log(langs.value, 'langs')
   updateData()
 }
 
+
 // init Teamss either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
-    if (newDefault.length) {
-      if (newData?.titles?.length) {
-        langs.value = newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
-        })
-      } else {
-        langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
-      }
+    if (!newDefault.length) return
 
-      // langs.value = newData?.code
-      // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries! ?? false
-      industry.value = newData?.industries!
+    if (newData?.descriptions?.length) {
+      langs.value = newDefault.map((l) => {
+        const existing = newData.descriptions.find(
+          (t) => t.locale === l.locale,
+        )
+
+        return {
+          locale: l.locale,
+          title: existing?.description ?? '',
+        }
+      })
+    } else {
+      langs.value = newDefault.map((l) => ({
+        locale: l.locale,
+        title: '',
+      }))
     }
+
+    selectedCatalog.value = newData?.guidecategory
+      ? new TitleInterface({
+          id: newData.guidecategory.id,
+          title: newData.guidecategory.title,
+        })
+      : undefined
   },
   { immediate: true },
 )
@@ -190,62 +212,37 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+const indexCatalogController = IndexCatalogController.getInstance()
+  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0, null, ParentTypeEnum.child , true)
+
+  const selectedCatalog = ref<TitleInterface>()
+  const setCatalog = (data: TitleInterface) => { 
+    selectedCatalog.value = data
+    updateData()
+  }
+  const route = useRoute()
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-  </div>
 
-  <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
-  <!--    <label>{{ $t('has_certificate') }}</label>-->
-  <!--    <input-->
-  <!--      type="checkbox"-->
-  <!--      :value="1"-->
-  <!--      v-model="hasCertificate"-->
-  <!--      :checked="hasCertificate == 1"-->
-  <!--      @change="updateData"-->
-  <!--    />-->
-  <!--  </div>-->
-  <!-- <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
-  </div>
-  <div
+       <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id && !data?.id"
   >
     <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="Teams"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
+      :modelValue="selectedCatalog"
+      :controller="indexCatalogController"
+      :params="indexCatalogParams"
+      :label="$t('Catalog')"
+      id="catalog" 
+      :placeholder="$t('Select catalog')"
+      @update:modelValue="setCatalog"
     />
-  </div> -->
-  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-      <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div> -->
-  <!--  <div class="col-span-4 md:col-span-4">-->
-  <!--    <FileUpload-->
-  <!--      :initialFileData="image"-->
-  <!--      @update:fileData="setImage"-->
-  <!--      label="Image"-->
-  <!--      id="image"-->
-  <!--      placeholder="Select image"-->
-  <!--      :multiple="false"-->
-  <!--    />-->
-  <!--  </div>-->
+  </div> 
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput  type="textarea" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+
+
+
 </template>

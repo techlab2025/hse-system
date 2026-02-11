@@ -6,19 +6,24 @@ export default class AddCatalogItemsDetailsParams implements Params {
   allIndustries: boolean | null
   industries: number[]
   order: number
+  guidgate_category_id?: number
   // serial_number: string
 
   constructor(
-    translation: TranslationsParams,
-    allIndustries: boolean | null,
-    industries: number[],
-    order: number,
+    data:{
+      translation: TranslationsParams,
+      allIndustries: boolean | null,
+      industries: number[],
+      order: number,
+      guidgate_category_id?: number,
+    }
     // serial_number: string,
   ) {
-    this.translation = translation
-    this.allIndustries = allIndustries
-    this.industries = industries
-    this.order = order
+    this.translation = data.translation
+    this.allIndustries = data.allIndustries
+    this.industries = data.industries
+    this.order = data.order
+    this.guidgate_category_id = data.guidgate_category_id
     // this.serial_number = serial_number
   }
 
@@ -38,6 +43,7 @@ export default class AddCatalogItemsDetailsParams implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['order'] = this.order
+    if (this.guidgate_category_id) data['guide_category_id'] = this.guidgate_category_id
     // data['serial_number'] = Number(this.serial_number)
     // if (this.image) data['image'] = this.image
 

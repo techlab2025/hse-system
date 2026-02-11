@@ -103,12 +103,12 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/${id}`,
     permission: [
-      PermissionsEnum.CATALOG_ITEMS_UPDATE,
+      PermissionsEnum.CATALOG_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CATALOG_ITEMS_ALL,
+      PermissionsEnum.CATALOG_ALL,
     ],
   },
 
@@ -117,10 +117,45 @@ const actionList = (id: number, deleteCatalog: (id: number) => void) => [
     icon: IconDelete,
     action: () => deleteCatalog(id),
     permission: [
-      PermissionsEnum.CATALOG_ITEMS_DELETE,
+      PermissionsEnum.CATALOG_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CATALOG_ITEMS_ALL,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
+]
+const actionListWithItem = (id: number, deleteCatalog: (id: number) => void) => [
+  {
+    text: t('edit'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
+{
+    text: t('add_item_details'),
+    icon: ActionsTableEdit,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details/add/${id}`,
+    permission: [
+      PermissionsEnum.CATALOG_UPDATE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
+    ],
+  },
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteCatalog(id),
+    permission: [
+      PermissionsEnum.CATALOG_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.CATALOG_ALL,
     ],
   },
 ]
@@ -142,7 +177,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCatalogItemsType" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchCatalogItemsType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -150,9 +185,9 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.CATALOG_ITEMS_CREATE,
+        PermissionsEnum.CATALOG_CREATE,
       ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalogItems/add`"
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
           class="btn btn-primary">
           {{ $t('Add_Catalog_Item') }}
         </router-link>
@@ -163,11 +198,11 @@ watch(
   <permission-builder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.CATALOG_ITEMS_ALL,
-    PermissionsEnum.CATALOG_ITEMS_DELETE,
-    PermissionsEnum.CATALOG_ITEMS_FETCH,
-    PermissionsEnum.CATALOG_ITEMS_UPDATE,
-    PermissionsEnum.CATALOG_ITEMS_CREATE,
+    PermissionsEnum.CATALOG_ALL,
+    PermissionsEnum.CATALOG_DELETE,
+    PermissionsEnum.CATALOG_FETCH,
+    PermissionsEnum.CATALOG_UPDATE,
+    PermissionsEnum.CATALOG_CREATE,
   ]">
     <DataStatus :controller="state">
       <template #success>
@@ -185,7 +220,7 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalogItems/edit/${item.id}`">{{
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/edit/${item.id}`">{{
                     index + 1 }}
                   </router-link>
                 </td>
@@ -198,7 +233,9 @@ watch(
                   <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" />
+                  <DropList :actionList="actionList(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" v-if="item?.guideCategoryItem?.id" />
+                  <DropList :actionList="actionListWithItem(item.id, deleteCatalog)" @delete="deleteCatalog(item.id)" v-else />
+                
                 </td>
               </tr>
             </tbody>
@@ -216,7 +253,7 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_ITEMS_CREATE,
+          PermissionsEnum.CATALOG_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -228,7 +265,7 @@ watch(
         <permission-builder :code="[
           PermissionsEnum.ADMIN,
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_ITEMS_CREATE,
+          PermissionsEnum.CATALOG_CREATE,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
             addText="Add Catalog"
@@ -242,10 +279,10 @@ watch(
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.CATALOG_ITEMS_CREATE,
+        PermissionsEnum.CATALOG_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+          description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>

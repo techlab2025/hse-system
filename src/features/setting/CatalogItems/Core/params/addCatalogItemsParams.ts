@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import type { ParentTypeEnum } from '../enums/parenttypeenum'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddCatalogItemsParams implements Params {
   translation: TranslationsParams
@@ -11,6 +12,10 @@ export default class AddCatalogItemsParams implements Params {
   parentType?:ParentTypeEnum
   // serial_number: string
 
+    public static readonly validation = new ClassValidation().setRules({
+      parentId: { required: true },
+    
+    })
   constructor(
     translation: TranslationsParams,
     allIndustries: boolean | null,
@@ -25,7 +30,7 @@ export default class AddCatalogItemsParams implements Params {
     this.industries = industries
     this.order = order
     this.parentId = parentId
-    this.parentType = parentType
+    this.parentType = parentType 
     // this.serial_number = serial_number
   }
 
@@ -51,5 +56,13 @@ export default class AddCatalogItemsParams implements Params {
     // if (this.image) data['image'] = this.image
 
     return data
+  }
+
+    validate() {
+    return AddCatalogItemsParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddCatalogItemsParams.validation.validateOrThrow(this)
   }
 }

@@ -10,7 +10,7 @@ export const CatalogItemsDetailsRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'catalog-items-details/add',
+    path: 'catalog-items-details/add/:parent_id?',
     name: 'Add Catalog Items details',
     component: () => import('@/views/Admin/CatalogItemsDetails/AddCatalogItemsDetails.vue'),
     meta: {
