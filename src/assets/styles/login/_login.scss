@@ -13,7 +13,7 @@
     gap: $MdSize;
     padding: $MdSize;
   }
-  
+
   .images {
     @include flex(row, wrap, center, center);
     position: relative;
@@ -120,7 +120,6 @@
       @media screen and (max-width: 1179px) {
         gap: 2rem;
       }
-      
 
       .logo {
         @include flex(row, wrap, center, center);
@@ -207,6 +206,8 @@
           position: absolute;
           top: 1rem;
           right: 1rem;
+          height: 25px;
+          width: 25px;
           cursor: pointer;
         }
       }

@@ -25,6 +25,10 @@ import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Param
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
+import { useIntegratedNotifications } from "@/composables/useIntegratedNotifications";
+import { useToast } from "primevue/usetoast";
+import wordSlice from '@/base/Presentation/utils/word_slice'
+
 
 const route = useRoute()
 // console.log(route.name)
@@ -99,6 +103,43 @@ const showProjectSelect = ref<boolean>(false)
 onMounted(() => {
   showProjectSelect.value = user?.type == OrganizationTypeEnum.ADMIN || user?.employeeType == EmployeeStatusEnum.Employee
 })
+
+const userStore = useUserStore()
+const toast = useToast();
+const NOTIFICATION_SOUND_BASE64 =
+  "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIF2W56+mmUBELTKXh8bllHAU2jdXvyn0tBSh+zPLaizsKGGS46Om1XBoFM4nU8c1+LgYngM3y3I4+ChlluOvpplARC0ul4fG5ZRwFNo3V78p9LQUofszy2os7ChhluevrpVERC0yn4fG3ZBwFOI7U8ct+LQUoftDy24k7ChZluujoplARDEul4e+3ZRwGOY/V8Mp/LgYpf9Dy3Ik7CxZluejpplARDEym4fG3ZBwFOI/V8cp+LQYoftDy24o7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuujqplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/";
+
+// Integrate new notification system
+// const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
+//   useIntegratedNotifications({
+//     autoConnect: true,
+//     token: userStore.user?.apiToken,
+//     userId: userStore.user?.id,
+//     fetchNotifications: true,
+//     userToken: userStore.user?.apiToken,
+
+//     onNotification: (notification) => {
+//       console.log(notification);
+//       // make ring sound
+//       const audio = new Audio(NOTIFICATION_SOUND_BASE64);
+//       audio.play();
+
+//       // Show global toast
+//       toast.add({
+//         severity: "info",
+//         summary: notification.title,
+//         detail:
+//           wordSlice(JSON.parse(notification?.body!)?.message, 35) ||
+//           notification.body,
+//         life: 5000,
+//       });
+//     },
+//   });
+const op = ref();
+
+const toggle = (event: Event) => {
+  op.value.toggle(event);
+};
 </script>
 
 <template>
@@ -161,6 +202,43 @@ onMounted(() => {
             </ul>
           </div>
         </div>
+
+        <!-- <button class="notification" type="button" @click="toggle">
+          <Notifacations />
+          <span v-if="wsConnected" class="status-dot connected"></span>
+          <span v-else class="status-dot disconnected"></span>
+          <span v-if="unreadCount > 0" class="notification-count">
+            {{ unreadCount }}
+          </span>
+        </button>
+        <Popover ref="op">
+          <div class="list-notifaction-body">
+            <ul class="list-notifaction">
+              <li v-if="notifications.length === 0" class="list-notifaction-item empty-msg">
+                No new notifications
+              </li>
+              <li v-for="notification in notifications" :key="notification.id" class="list-notifaction-item"
+                :class="{ 'new-item': notification.status === 'PENDING' }">
+                <div class="notification-content-wrapper">
+                  <RouterLink :to="`/daily-work/${JSON.parse(notification?.body!)?.data?.type_id}`"
+                    class="notification-text">
+                    <strong>{{ wordSlice(notification.title, 25) }}</strong>
+                    <p>
+                      {{
+                        wordSlice(JSON.parse(notification?.body!)?.message, 35)
+                      }}
+                    </p>
+                    <small v-if="notification.receivedAt">{{
+                      notification.receivedAt.toLocaleTimeString()
+                    }}</small>
+                  </RouterLink>
+
+                </div>
+              </li>
+
+            </ul>
+          </div>
+        </Popover> -->
       </div>
     </nav>
   </header>

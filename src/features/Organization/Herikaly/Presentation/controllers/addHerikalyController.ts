@@ -40,7 +40,7 @@ export default class AddHerikalyController extends ControllerInterface<HerikalyM
           imageElement: successImage,
           messageContent: null,
         })
-        
+
         if(router?.currentRoute?.value?.fullPath.includes('herikaly')) {
           if (!draft) await router.push('/organization/herikaly')
         }
