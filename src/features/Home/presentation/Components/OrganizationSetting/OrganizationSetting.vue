@@ -14,6 +14,7 @@ import HomeOrganizationSetting from "@/shared/icons/HomeOrganizationSetting.vue"
 import OperationHomeIcon from "@/shared/icons/OperationHomeIcon.vue";
 import HomeSettingEmployeeIcon from "@/shared/icons/HomeSettingEmployeeIcon.vue";
 import HomeLocationIcon from "@/shared/icons/HomeLocationIcon.vue";
+import { useI18n } from "vue-i18n";
 
 interface OrganizationSettingItem {
   id: RouterEnum;
@@ -24,7 +25,7 @@ interface OrganizationSettingItem {
 
 }
 const router = useRouter();
-
+const { t } = useI18n()
 const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.ORGANIZATION,
@@ -35,7 +36,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
     routes: [
       {
         route: "/organization/partner",
-        Name: "partners",
+        Name: t("partners"),
         permissions: [
           PermissionsEnum.WEBSITE,
           PermissionsEnum.PARTNER_ALL,
@@ -59,7 +60,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       // },
       {
         route: "/organization/certificate",
-        Name: "certifications",
+        Name: t("certifications"),
         permissions: [
           PermissionsEnum.CERTIFICATE_ALL,
           PermissionsEnum.CERTIFICATE_CREATE,
@@ -70,7 +71,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: "/organization/template",
-        Name: "templates",
+        Name: t("templates"),
         permissions: [
           PermissionsEnum.ORG_TEMPLATE_ALL,
           PermissionsEnum.ORG_TEMPLATE_CREATE,
@@ -85,7 +86,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       // },
       {
         route: "/organization/contractor",
-        Name: "contractors",
+        Name: t("contractors"),
         permissions: [
           PermissionsEnum.ORG_CONTRACTOR_ALL,
           PermissionsEnum.ORG_CONTRACTOR_CREATE,
@@ -107,7 +108,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       // },
       {
         route: "/organization/role",
-        Name: "roles",
+        Name: t("roles"),
         permissions: [
           PermissionsEnum.ORG_ROLE_ALL,
           PermissionsEnum.ORG_ROLE_CREATE,
@@ -118,7 +119,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/accidents-type',
-        Name: 'incidents Types',
+        Name: t('incidants_types'),
         permissions: [
           PermissionsEnum.WEBSITE,
           PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
@@ -131,7 +132,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/equipment-types',
-        Name: 'Equipment Types',
+        Name: t('equipment_types'),
         permissions: [
           PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
           PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
@@ -143,7 +144,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/scope',
-        Name: 'Scope',
+        Name: t('scope'),
         permissions: [
           PermissionsEnum.SCOPE_ALL,
           PermissionsEnum.SCOPE_CREATE,
@@ -154,7 +155,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house-type',
-        Name: 'WareHouse Type',
+        Name: t('wareHouse_type'),
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
           PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
@@ -165,7 +166,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/where-house',
-        Name: 'WareHouse',
+        Name: t('WareHouse'),
         permissions: [
           PermissionsEnum.WHIERE_HOUSE_ALL,
           PermissionsEnum.WHIERE_HOUSE_CREATE,
@@ -174,6 +175,41 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.WHIERE_HOUSE_UPDATE,
         ],
       },
+
+      {
+        route: '/organization/employee-certificate',
+        Name: t('employee_certificate'),
+        permissions: [
+          PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+          PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+          PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+          PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+          PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+        ],
+      },
+      // {
+      //   link: '/organization/root-causes',
+      //   name: 'root_causes',
+      //   permissions: [
+      //     PermissionsEnum.ROOT_CAUSES_ALL,
+      //     PermissionsEnum.ROOT_CAUSES_CREATE,
+      //     PermissionsEnum.ROOT_CAUSES_DELETE,
+      //     PermissionsEnum.ROOT_CAUSES_FETCH,
+      //     PermissionsEnum.ROOT_CAUSES_UPDATE,
+      //   ],
+      // },
+      {
+        route: '/organization/serial-number',
+        Name: t('coding_system'),
+        permissions: [
+          PermissionsEnum.CODING_SYSTEM_ALL,
+          PermissionsEnum.CODING_SYSTEM_CREATE,
+          PermissionsEnum.CODING_SYSTEM_DELETE,
+          PermissionsEnum.CODING_SYSTEM_FETCH,
+          PermissionsEnum.CODING_SYSTEM_UPDATE,
+        ],
+      },
+
 
 
     ],

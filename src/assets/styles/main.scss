@@ -180,16 +180,12 @@ html {
     scroll-snap-align: start;
   }
 }
-$minimize-screen: true;
 
 body {
   font-family: 'Regular', sans-serif;
   color: black;
   // overflow-x: hidden;
-  @if $minimize-screen == true {
-    max-width: 85%;
-    margin: 0 auto;
-  }
+
   p,
   span,
   div {
@@ -325,4 +321,35 @@ body {
       transform: translateY(0px);
     }
   }
+}
+
+input {
+  padding: $SmSize !important;
+  &::placeholder {
+    font-size: $SmSize;
+  }
+  border-radius: calc($XlSize + 2px) !important;
+  // padding-inline: 40px !important;
+}
+.p-multiselect,
+.p-select {
+  padding: $SmSize !important;
+  // padding-inline: 40px !important;
+  border-radius: calc($XlSize + 2px) !important;
+}
+
+.checkbox-toggle-wrapper {
+  padding: $XsSize3 !important;
+  // padding-inline: 40px !important;
+  border-radius: calc($XlSize + 2px) !important;
+}
+
+.input-wrapper {
+  border-radius: calc($XlSize + 2px) !important;
+}
+.mt-6 {
+  margin-top: 6px;
+}
+.mt-10 {
+  margin-top: 10px;
 }

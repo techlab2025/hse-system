@@ -7,12 +7,14 @@ const { title, options } = defineProps<{
   options: ItemModel[]
   require_image: boolean
   has_textarea: number
+  tag: string
 }>()
 
 </script>
 <template>
   <div class="show-template-document-checkbox">
     <p class="title">{{ title }}</p>
+    <p class="title">{{ tag }}</p>
     <div class="options-container">
       <div class="options">
 

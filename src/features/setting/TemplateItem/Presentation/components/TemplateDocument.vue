@@ -83,6 +83,7 @@ const DeleteTemplateItem = async (id: number) => {
     <div class="template-document-header" v-if="headerDisplay">
       <div class="template-header">
 
+        <!-- <pre>{{ allData }}</pre> -->
         <p class="header-title" v-if="allData.titles && allData?.titles?.length > 0">
           {{
             allData?.titles
@@ -113,13 +114,16 @@ const DeleteTemplateItem = async (id: number) => {
 
 
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+          :tag="allData.tag" />
         <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+          :tag="allData.tag" />
         <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+          :tag="allData.tag" />
         <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
-          :require_image="item.requiredImage" />
+          :require_image="item.requiredImage" :tag="allData.tag" />
       </div>
     </div>
     <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->

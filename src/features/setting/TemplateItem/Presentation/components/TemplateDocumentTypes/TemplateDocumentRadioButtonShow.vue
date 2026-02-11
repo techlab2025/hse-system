@@ -6,12 +6,15 @@ const props = defineProps<{
   title: string
   options: ItemModel[]
   require_image: boolean
+  tag: string
+
 }>()
 
 </script>
 <template>
   <div class="show-template-document-radio">
     <p class="title">{{ title }}</p>
+    <p class="title">{{ tag }}</p>
     <div class="options-container">
       <div class="options">
         <div class="options-box" v-for="(option, index) in options" :key="index">

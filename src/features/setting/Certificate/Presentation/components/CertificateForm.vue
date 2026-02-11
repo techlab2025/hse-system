@@ -269,7 +269,7 @@ const updateExpireDate = (data: number) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)"
       :required="true" />
   </div>
@@ -279,7 +279,7 @@ const updateExpireDate = (data: number) => {
       @update:value="UpdateSerial" />
   </div> -->
 
-  <div class="input-wrapper col-span-4">
+  <div class="input-wrapper col-span-2 mt-6">
     <CustomCheckbox :title="`expire_date_required`" :checked="expiredate" @update:checked="updateExpireDate" />
   </div>
 

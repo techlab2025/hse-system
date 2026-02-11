@@ -7,6 +7,8 @@ const props = defineProps<{
   title: string
   options: TitleInterface[]
   require_image: boolean
+  tag: string
+
 }>()
 const Selected = ref()
 </script>
@@ -15,12 +17,9 @@ const Selected = ref()
     <div class="options-container">
       <div class="input-wrapper">
         <label>{{ title }}</label>
+        <p>{{ tag }}</p>
         <div class="col-span-4 md:col-span-2 input-wrapper">
-          <CustomSelectInput
-            :static-options="options"
-            :modelValue="Selected"
-            :placeholder="options[0]?.title"
-          />
+          <CustomSelectInput :static-options="options" :modelValue="Selected" :placeholder="options[0]?.title" />
         </div>
       </div>
       <UploadImage class="image-upload" v-if="require_image" />
