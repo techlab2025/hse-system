@@ -29,7 +29,7 @@
     gap: $XsSize4;
     z-index: 999;
     .project-info {
-      @include flex-row(nowrap, flex-start, flex-start);
+      @include flex-row(nowrap, flex-start, center);
       gap: $XsSize;
       z-index: 999;
 
@@ -51,6 +51,7 @@
         span {
           font-family: 'Regular';
           color: #4b5563;
+          font-size: $XsSize;
         }
       }
     }

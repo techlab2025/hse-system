@@ -30,6 +30,7 @@
   }
   .project-progress-body-container {
     margin-block: $XsSize;
+    width: 100%;
     @include grid(
       12,
       $XsSize2,
@@ -117,6 +118,7 @@
 
     .project-progress-body-content {
       grid-column: span 9;
+      width: 100%;
       .content-header {
         width: 100%;
         @include flex-column(nowrap, center, center);

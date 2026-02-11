@@ -13,6 +13,8 @@ import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
@@ -20,8 +22,8 @@ const SelectedZones = ref<TitleInterface>()
 
 const SelectedProject = ref<TitleInterface>()
 
-const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-const fetchMyProjectsParams = new FetchMyProjectsParams()
+const fetchMyProjectsController = IndexProjectController.getInstance()
+const fetchMyProjectsParams = new IndexProjectParams("", 1, 10, 0)
 
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 // const fetchMyZoneaParams = new FetchMyZonesParams(SelectedProject?.value?.id)
@@ -82,15 +84,15 @@ const setEquipment = (data: TitleInterface) => {
         @update:modelValue="setProject" />
     </div>
 
-    <div class="input-wrapper col-span-2" v-if="SelectedProject">
+    <div class="input-wrapper col-span-2 mt-10" v-if="SelectedProject">
       <CustomSelectInput :modelValue="SelectedZones" class="input" :controller="fetchMyZonesController"
         :params="fetchMyZoneaParams" :label="$t('Zone')" id="employee" :placeholder="$t('select your Zone')"
         @update:modelValue="setZones" />
     </div>
-    <div class="input-wrapper col-span-2">
+    <div class="input-wrapper col-span-2 mt-10">
       <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
-        :params="deleteEquipmentTypeParams" :label="$t('Equipment')" id="equipment" :placeholder="$t('select your equipment')"
-        @update:modelValue="setEquipment" />
+        :params="deleteEquipmentTypeParams" :label="$t('Equipment')" id="equipment"
+        :placeholder="$t('select your equipment')" @update:modelValue="setEquipment" />
     </div>
     <!-- Dialog -->
     <div class="input-wrapper col-span-2">
