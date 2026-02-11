@@ -36,6 +36,7 @@ const langDefault = ref<{ locale: string; icon?: any; title: string }[]>([])
 const SelectedComponent = ref<ActionsEnum>(3)
 const TemplateData = ref()
 const title = ref('')
+const category = ref('')
 
 const updateData = () => {
   // title.value = " "
@@ -47,6 +48,7 @@ const updateData = () => {
       TemplateData.value,
       isUpdloadImage.value,
       ImageStatus.value,
+      category.value
     )
     : new EditTemplateItemParams(
       props.data.id ?? 0,
@@ -56,6 +58,7 @@ const updateData = () => {
       TemplateData.value,
       isUpdloadImage.value,
       ImageStatus.value,
+      category.value
     )
 
   emit('update:data', params)
@@ -121,6 +124,7 @@ const UpdateImageInfo = (data: any) => {
 const ClearTitle = () => {
   updateData()
   title.value = ''
+  category.value = ''
 }
 </script>
 
@@ -134,6 +138,11 @@ const ClearTitle = () => {
       <label for="item-title">{{ $t('item_title') }}</label>
       <input type="text" id="item-title" v-model="title" class="input" placeholder="add your title here.."
         @input="updateData">
+    </div>
+    <div class="col-span-4 md:col-span-2 input-wrapper mt-6">
+      <label for="item-category">{{ $t('template_item_category') }}</label>
+      <input type="text" id="item-category" v-model="category" class="input"
+        placeholder="add your tepmlate item category.." @input="updateData">
     </div>
     <div class="col-span-4 md:col-span-2 form-container">
 

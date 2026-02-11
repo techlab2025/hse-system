@@ -220,10 +220,10 @@ const setTemplateType = (data: TitleInterface) => {
     <PagesHeader :img="Setting" title="Customize Inspection Template"
       subtitle="Choose a predefined inspection template, adjust its fields if needed, and decide whether to save your changes permanently or just for this session." />
   </div>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-2">
     <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
       label="Template Type " id="TemplateType" placeholder="Select Template Type"
       @update:modelValue="setTemplateType" />

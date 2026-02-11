@@ -68,7 +68,7 @@ export default class AddTemplateItemParams implements Params {
       }))
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = this.imageType || 0
-    data['tag'] = this.tag || ''
+    data['template_item_tag'] = this.tag || ''
     return data
   }
 

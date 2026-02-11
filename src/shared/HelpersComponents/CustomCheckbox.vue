@@ -4,6 +4,8 @@ import { ref, watch } from 'vue';
 const props = defineProps<{
   title: string,
   checked?: boolean
+  index: number
+
 }>()
 const emit = defineEmits(['update:checked'])
 const CheckboxValue = ref(props.checked);
@@ -16,9 +18,9 @@ watch(() => props.checked, (val) => {
 </script>
 <template>
   <div class="checkbox-toggle-wrapper">
-    <input type="checkbox" :value="1" v-model="CheckboxValue" @change="updateData" :id="title"
+    <input type="checkbox" :value="1" v-model="CheckboxValue" @change="updateData" :id="`title-${index}`"
       class="checkbox-checkbox" />
-    <label :for="title" class="checkbox-label">
+    <label :for="`title-${index}`" class="checkbox-label">
       <div class="toggle-background">
         <div class="toggle-slider">
           <svg class="icon checkbox-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

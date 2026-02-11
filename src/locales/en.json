@@ -1162,6 +1162,11 @@
   "Add_Catalog": "Add Catalog",
   "add_item_details": "Add Item Details",
   "Select catalog": "Select Catalog",
-  "Add_Catalog_Item_Details":"Add_Catalog_Item_Details"
-  
+  "Add_Catalog_Item_Details": "Add_Catalog_Item_Details",
+  "equipment_types": "Equipment Type",
+  "wareHouse_type": "Warehouse Type",
+  "incidants_types": "Incidant Types",
+  "expire_date_required": "Expire Date Required",
+  "item_title": "Item Title",
+  "template_item_category": "Template Item Title"
 }

@@ -20,6 +20,7 @@ export default class TemplateDetailsModel {
   public action: TitleInterface | null
   public title: string | null = null
   public type: number
+  public tag: string
 
   // public descriptions: DescriptionLocale[]
 
@@ -37,6 +38,7 @@ export default class TemplateDetailsModel {
     action: TitleInterface | null = null,
     title: string | null = null,
     type: number,
+    tag: string,
   ) {
     this.id = id
     this.name = name
@@ -51,6 +53,7 @@ export default class TemplateDetailsModel {
     this.action = action
     this.title = title
     this.type = type
+    this.tag = tag
   }
 
   static fromMap(data: any): TemplateDetailsModel {
@@ -72,6 +75,7 @@ export default class TemplateDetailsModel {
       this.getTemplateItemsAction(data.action),
       data.title,
       data.type,
+      data.template_item_tag,
     )
   }
 

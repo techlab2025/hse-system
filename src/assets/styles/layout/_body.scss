@@ -16,6 +16,7 @@ body {
   // }
 }
 
+$minimizeScreen: true;
 .content {
   @include flex(row, flex-start, stretch);
   gap: $XlSize3;
@@ -28,6 +29,13 @@ body {
     gap: $MdSize;
     width: 100%;
     overflow: hidden;
+    @if $minimizeScreen== true {
+      max-width: 1440px;
+      margin: 0 auto;
+      @media (max-width: 768px) {
+        max-width: 100%;
+      }
+    }
   }
   .p-accordioncontent-content {
     margin-inline: 19px;
@@ -47,6 +55,6 @@ body {
     //   max-width: 85%;
     //   margin: 0 auto;
     // }
-    // min-height: 100vh;
+    min-height: 82vh;
   }
 }
