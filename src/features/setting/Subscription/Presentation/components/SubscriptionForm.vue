@@ -228,7 +228,7 @@ const notes = ref<string>()
       @input="updateData" />
   </div>
   <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`has_discount`" :checked="has_discount" @update:checked="setHasDiscount" />
+    <CustomCheckbox :index="3" :title="`has_discount`" :checked="has_discount" @update:checked="setHasDiscount" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper " v-if="has_discount">

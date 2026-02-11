@@ -77,7 +77,7 @@ const { user } = useUserStore()
     <input type="text" id="roleName" v-model="roleName" class="input" @input="updateData">
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :title="`Allow For Organization`" :checked="AllowOrganization"
+    <CustomCheckbox :index="2" :title="`Allow For Organization`" :checked="AllowOrganization"
       @update:checked="AllowOrganization = $event" />
   </div>
   <div class="permission col-span-4 md:col-span-4">

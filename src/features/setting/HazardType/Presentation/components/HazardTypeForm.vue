@@ -122,21 +122,21 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditHazardTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id) ?? [],
-        HazaradFactor,
-        Number(ParentIdEdit),
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],
+      HazaradFactor,
+      Number(ParentIdEdit),
+    )
     : new AddHazardTypeParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        HazaradFactor,
-        Number(ParentId),
-        SerialNumber.value?.SerialNumber,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      HazaradFactor,
+      Number(ParentId),
+      SerialNumber.value?.SerialNumber,
+    )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -207,55 +207,25 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomCheckbox
-      :title="`all_industries`"
-      :checked="allIndustries"
-      @update:checked="allIndustries = $event"
-    />
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="allIndustries = $event" />
   </div>
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="HazardType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="HazardType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
-    <CustomSelectInput
-      :modelValue="Factor"
-      :controller="indexFactoryController"
-      :params="indexFactoryParams"
-      label="Factor"
-      id="factor"
-      placeholder="Select Factor"
-      :type="2"
-      @update:modelValue="setFactor"
-    />
+    <CustomSelectInput :modelValue="Factor" :controller="indexFactoryController" :params="indexFactoryParams"
+      label="Factor" id="factor" placeholder="Select Factor" :type="2" @update:modelValue="setFactor" />
   </div>
 </template>

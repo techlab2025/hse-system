@@ -117,18 +117,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditObserverationTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id) ?? [],
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],
+    )
     : new AddObserverationTypeParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        SerialNumber.value?.SerialNumber,
-        // id,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      SerialNumber.value?.SerialNumber,
+      // id,
+    )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -199,13 +199,8 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
 
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
@@ -228,27 +223,13 @@ const fields = ref([
       @change="updateData"
     />
   </div> -->
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
 
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="ObserverationType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="ObserverationType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->

@@ -214,7 +214,7 @@ watch(
                 <td data-label="#">
                   <router-link
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`">{{
-                    index + 1 }}
+                      index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
