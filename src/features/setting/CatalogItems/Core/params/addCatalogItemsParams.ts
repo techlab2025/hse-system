@@ -2,6 +2,8 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import type { ParentTypeEnum } from '../enums/parenttypeenum'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type CatalogItemsParams from './CatalogGuideItemParams'
+import type AddCatalogItemsDetailsParams from '@/features/setting/CatalogItemsDetails/Core/params/addCatalogItemsDetailsParams'
 
 export default class AddCatalogItemsParams implements Params {
   translation: TranslationsParams
@@ -10,6 +12,7 @@ export default class AddCatalogItemsParams implements Params {
   order: number
   parentId?: number
   parentType?:ParentTypeEnum
+  guideCategoryItems?: TranslationsParams[]
   // serial_number: string
 
     public static readonly validation = new ClassValidation().setRules({
@@ -23,6 +26,7 @@ export default class AddCatalogItemsParams implements Params {
     order: number,
     parentId?: number,
     parentType?: ParentTypeEnum,
+    guideCategoryItems?: TranslationsParams[],
     // serial_number: string,
   ) {
     this.translation = translation
@@ -30,20 +34,22 @@ export default class AddCatalogItemsParams implements Params {
     this.industries = industries
     this.order = order
     this.parentId = parentId
-    this.parentType = parentType 
+    this.parentType = parentType
+    this.guideCategoryItems = guideCategoryItems 
     // this.serial_number = serial_number
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    number | string | number[] | any| Record<string, string | number[] | number |  any |Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
       | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
+      | Record<string, string | number[] | number |any | Record<string, string>>
+      |any
     > = {}
 
     data['translations'] = this.translation.toMap() // tranlations:asd
@@ -52,6 +58,7 @@ export default class AddCatalogItemsParams implements Params {
     data['order'] = this.order
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.parentType) data['parent_type'] = this.parentType
+     if (this.guideCategoryItems ) data['guide_category_items'] = this.guideCategoryItems
     // data['serial_number'] = Number(this.serial_number)
     // if (this.image) data['image'] = this.image
 

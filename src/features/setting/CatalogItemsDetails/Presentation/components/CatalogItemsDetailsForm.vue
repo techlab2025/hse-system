@@ -231,10 +231,10 @@ const indexCatalogController = IndexCatalogController.getInstance()
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"
-      :controller="indexCatalogController"
+      :controller="indexCatalogController" 
       :params="indexCatalogParams"
       :label="$t('Catalog')"
-      id="catalog" 
+      id="catalog"  
       :placeholder="$t('Select catalog')"
       @update:modelValue="setCatalog"
     />

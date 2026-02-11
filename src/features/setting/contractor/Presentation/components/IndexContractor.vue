@@ -53,14 +53,14 @@ const fetchContractor = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteContractorTypeParams = new IndexContractorParams(
+  const indexContractorParams = new IndexContractorParams(
     query,
     pageNumber,
     perPage,
     withPage,
     id,
   )
-  await indexContractorController.getData(deleteContractorTypeParams)
+  await indexContractorController.getData(indexContractorParams)
 }
 
 onMounted(() => {
