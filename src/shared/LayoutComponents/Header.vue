@@ -145,7 +145,7 @@ const toggle = (event: Event) => {
 </script>
 
 <template>
-  <header class="header" >
+  <header class="header minmize">
     <nav class="nav">
       <div class="menu">
 
