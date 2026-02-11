@@ -141,11 +141,11 @@ const toggle = (event: Event) => {
   op.value.toggle(event);
 };
 
-const minimize = ref(false)
+
 </script>
 
 <template>
-  <header class="header" :class="minimize ? 'minmize' : ''">
+  <header class="header" >
     <nav class="nav">
       <div class="menu">
 

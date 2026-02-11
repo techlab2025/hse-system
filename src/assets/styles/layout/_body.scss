@@ -38,10 +38,10 @@ body {
     overflow: hidden;
     z-index: 999;
     position: relative;
-    &.minmize {
-      max-width: 85%;
-      margin: 0 auto;
-    }
+    // &.minmize {
+    //   max-width: 85%;
+    //   margin: 0 auto;
+    // }
     // min-height: 100vh;
   }
 }
