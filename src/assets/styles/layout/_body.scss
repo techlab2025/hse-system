@@ -9,6 +9,11 @@ body {
   --webkit-scrollbar-width: thin;
   scrollbar-color: $PrimaryColor $Gray-1;
   --moz-scrollbar-color: $PrimaryColor $Gray-1;
+
+  // &.minmize {
+  // max-width: 85%;
+  // margin: 0 auto;
+  // }
 }
 
 .content {
