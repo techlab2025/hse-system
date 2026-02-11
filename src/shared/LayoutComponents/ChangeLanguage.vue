@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref, markRaw, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -152,12 +151,12 @@ onMounted(async () => {
           v-for="l in langDefault"
           :key="l.locale"
           @click="changeLang(l.locale)"
-          class="flex items-center gap-2 p-1 rounded cursor-pointer hover:bg-gray-100"
+          class="flex items-center gap-2 p-1 rounded cursor-pointer hover:bg-gray-100 list_icon" 
         >
           <component :is="l.icon" class="w-5 h-5" />
           <span>{{ l.title }}</span>
         </li>
-      </ul>
+      </ul>  
     </Popover>
   </div>
 </template>
