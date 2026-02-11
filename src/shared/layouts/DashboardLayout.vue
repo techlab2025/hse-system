@@ -28,7 +28,6 @@ const showSidebar = computed(() => {
   return false
 })
 
-const minimize = ref(false)
 
 </script>
 
@@ -46,7 +45,7 @@ const minimize = ref(false)
     <section class="content-wrapper">
 
       <Header />
-      <div class="main-content" :class="minimize ? 'minmize' : ''">
+      <div class="main-content">
         <BreadCrumb v-if="!route.fullPath.includes('project-progress')" />
         <slot />
       </div>
