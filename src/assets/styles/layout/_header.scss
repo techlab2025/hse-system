@@ -10,6 +10,10 @@
   background-color: white;
   border-bottom-left-radius: $XlSize;
   border-bottom-right-radius: $XlSize;
+  &.minmize {
+    max-width: 85%;
+    margin: 0 auto;
+  }
   @media (max-width: 768px) {
     // @include flex-row(wrap, space-between, center);
     display: none;

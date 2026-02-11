@@ -201,7 +201,7 @@ onMounted(() => {
   <form @submit.prevent="sendData" class="serial-form container">
     <div v-for="field in fields" :key="field.id" class="serial-form-section">
       <div class="serial-number-input-fields flex flex-col gap-5 w-full">
-        <Accordion :value="field.id" class="w-full">
+        <Accordion :value="field.id" class="w-full" expandIcon="null" collapseIcon="null" lazy>
           <AccordionPanel :value="1" :header="field.title" class="w-full">
             <AccordionHeader>
               <div class="serial-form-title uppercase w-full">
@@ -238,7 +238,7 @@ onMounted(() => {
     <div class="form-sticky-button flex gap-2">
       <router-link to="/organization" class="btn btn-cancel" style="width: 15%">{{
         $t('cancel')
-      }}</router-link>
+        }}</router-link>
       <button type="submit" class="btn btn-primary" style="width: 85%">{{ $t('Add') }}</button>
     </div>
   </form>

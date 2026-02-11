@@ -10,6 +10,7 @@ export default class FetchProjectStatisticsUseCase
 {
   async call(params: Params): Promise<DataState<ProjectStatisticsModel>> {
     return UseCaseHandler.instance().handle({
+      
       onTest: () => {
         return new DataSuccess({ data: ProjectStatisticsModel.example })
       },

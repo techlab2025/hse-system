@@ -78,7 +78,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
         throw new Error(this.state.value.error?.title ?? 'Unknown login error')
       }
     } catch (error: any) {
-      console.log(error.message, 'error')
+      console.log(this.state.value.error, 'errorsssss')
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog',
         titleContent: error?.message ?? String(error),

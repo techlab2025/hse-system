@@ -116,19 +116,18 @@ const ensureEmployee = (item: any) => {
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="isSelectHasContent[index] = true">{{ $t('employee_name')
+                        @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
+                          $t('employee_name')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="isSelectHasContent[index] = false">{{ $t('select') }}</button>
+                        @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
+                        }}</button>
                     </div>
                   </template>
                   <template #content>
                     <input type="text" v-model="item.employee.title" class="input" placeholder="Select Employee">
                   </template>
                 </UpdatedCustomInputSelect>
-
-
-
 
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
@@ -147,8 +146,6 @@ const ensureEmployee = (item: any) => {
                 <Checkbox binary disabled :modelValue="item.isWorkStopped" @change="UpdateData" inputId="is_sstoped"
                   :name="`is_sstoped`" />
               </div>
-
-
             </div>
           </div>
         </div>

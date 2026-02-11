@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from '@/shared/LayoutComponents/Header.vue'
 import Sidebar from '@/shared/LayoutComponents/Sidebar.vue'
@@ -27,6 +27,9 @@ const showSidebar = computed(() => {
   if (user.type === OrganizationTypeEnum.ORGANIZATION && settingQuery.value === 1) return true
   return false
 })
+
+const minimize = ref(false)
+
 </script>
 
 <template>
@@ -43,7 +46,7 @@ const showSidebar = computed(() => {
     <section class="content-wrapper">
 
       <Header />
-      <div class="main-content">
+      <div class="main-content" :class="minimize ? 'minmize' : ''">
         <BreadCrumb v-if="!route.fullPath.includes('project-progress')" />
         <slot />
       </div>

@@ -299,12 +299,12 @@ const GetEmployeeCertificationStatus = (
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+        <DataEmpty
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           title="..ops! You have No Employee in this heirarchy" />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/EmployeeCertificate/add`" addText="Add Employee Certificate"
+        <DataFailed
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           title="..ops! You have No Employee in this heirarchy" />
       </template>

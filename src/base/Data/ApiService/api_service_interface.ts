@@ -141,7 +141,8 @@ export default abstract class ServicesInterface {
           case 422: {
             console.error(`ConflictException >> ${statusCode}`)
             const errors = error.response?.data?.errors
-            let message = 'Validation error'
+            // console.log(error.response?.data?.message, 'eeeeerrrrrooooossss')
+            let message = error.response?.data?.message
             if (Array.isArray(errors)) {
               message = errors.join('\n')
             } else if (errors && typeof errors === 'object') {
