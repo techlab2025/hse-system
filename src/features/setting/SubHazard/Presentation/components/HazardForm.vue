@@ -247,6 +247,7 @@ const fields = ref([
     v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
     <CustomCheckbox
+    :index="3"
       :title="`all_industries`"
       :checked="allIndustries"
       @update:checked="allIndustries = $event"

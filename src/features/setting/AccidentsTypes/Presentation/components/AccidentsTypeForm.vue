@@ -125,18 +125,18 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   const params = props.data?.id
     ? new EditAccidentsTypeParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id) ?? [],
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],
+    )
     : new AddAccidentsTypeParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        SerialNumber.value?.SerialNumber,
-        // id,
-      )
+      translationsParams,
+      AllIndustry,
+      industry.value?.map((item) => item.id),
+      SerialNumber.value?.SerialNumber,
+      // id,
+    )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -201,35 +201,16 @@ const fields = ref([
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
 
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="AccidentsType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
 </template>

@@ -239,7 +239,7 @@ const UpdateHasCertificate = (data) => {
   <!-- all industry -->
 
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries" @update:checked="allIndustries = $event" />
   </div>
 
   <!--industry  -->

@@ -231,7 +231,8 @@ const setSubscriptionType = (value: TitleInterface) => {
     <input id="days" type="text" v-model="days" placeholder="Enter Days" class="input" @input="updateData" />
   </div>
   <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`is_support_exists`" :checked="isSupportExists" @update:checked="setIsSupportExists" />
+    <CustomCheckbox :index="3" :title="`is_support_exists`" :checked="isSupportExists"
+      @update:checked="setIsSupportExists" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper " v-if="isSupportExists">
     <label for="support_days">{{ $t('support_days') }}</label>

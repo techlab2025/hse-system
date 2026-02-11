@@ -198,7 +198,7 @@ watch(
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
   <div class="input-wrapper col-span-4 md:col-span-2 " v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">

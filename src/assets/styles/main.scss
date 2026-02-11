@@ -329,8 +329,16 @@ input {
     font-size: $SmSize;
   }
   border-radius: calc($XlSize + 2px) !important;
-  // padding-inline: 40px !important;
+  &.py {
+    padding-inline: 40px !important;
+  }
 }
+.input-search {
+  input {
+    padding-inline: 40px !important;
+  }
+}
+
 .p-multiselect,
 .p-select {
   padding: $SmSize !important;

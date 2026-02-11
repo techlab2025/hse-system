@@ -103,16 +103,16 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditRootCausesParams(
-        props.data?.id! ?? 0,
-        translationsParams,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-      )
+      props.data?.id! ?? 0,
+      translationsParams,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+    )
     : new AddRootCausesParams(
-        translationsParams,
-        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-        industry.value?.map((item) => item.id),
-      )
+      translationsParams,
+      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      industry.value?.map((item) => item.id),
+    )
   emit('update:data', params)
 }
 
@@ -155,26 +155,13 @@ watch(
 
   <!-- all industry -->
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox
-      :title="`all_industries`"
-      :checked="allIndustries"
-      @update:checked="allIndustries = $event"
-    />
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="allIndustries = $event" />
   </div>
   <!--industry  -->
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="Select Industry"
-      id="EquipmentType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+      label="Select Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+      @update:modelValue="setIndustry" />
   </div>
 </template>
