@@ -39,7 +39,7 @@ const actions = ref([
     permission: [
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      // PermissionsEnum.ORG_EQUIPMENT_DETAILS,
     ],
   },
   {
@@ -48,7 +48,7 @@ const actions = ref([
     permission: [
       PermissionsEnum.ORG_EQUIPMENT_DELETE,
       PermissionsEnum.ORG_EQUIPMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      // PermissionsEnum.ORG_EQUIPMENT_DETAILS,
     ],
     id: 2,
   },

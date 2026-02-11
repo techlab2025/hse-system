@@ -140,10 +140,12 @@ const op = ref();
 const toggle = (event: Event) => {
   op.value.toggle(event);
 };
+
+const minimize = ref(false)
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="minimize ? 'minmize' : ''">
     <nav class="nav">
       <div class="menu">
         <!-- Add the new icon to open the sidebar -->

@@ -93,10 +93,12 @@ const ensureEmployee = (item: any) => {
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="isSelectHasContent[index] = true">{{ $t('employee_name')
+                        @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
+                          $t('employee_name')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="isSelectHasContent[index] = false">{{ $t('select') }}</button>
+                        @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
+                        }}</button>
                     </div>
                   </template>
                   <template #content>
