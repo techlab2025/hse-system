@@ -220,6 +220,14 @@
   display: flex;
   flex-direction: row-reverse;
   gap: 5px;
+  &.full {
+    padding-block: 5px;
+    flex-direction: row;
+  }
+  &.fullReload {
+    padding-block: 5px;
+    flex-direction: row-reverse;
+  }
   .label-container {
     // padding-block: 6px;
     // width: 100%;
@@ -232,6 +240,7 @@
     font-size: $MdSize;
     color: #202020;
     font-family: 'Light';
+    margin-inline-start: auto;
   }
   span {
     width: fit-content;

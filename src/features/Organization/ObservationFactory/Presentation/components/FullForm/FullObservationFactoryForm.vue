@@ -278,7 +278,7 @@ const UpdateSerial = (data) => {
   updateData()
 }
 
-const SelectedSeverity = ref<TitleInterface>()
+const SelectedSeverity = ref<TitleInterface>(new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }))
 const SeverityList = ref<TitleInterface[]>([
   new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
   new TitleInterface({ id: SeverityEnum.Major, title: 'b - Major' }),
@@ -286,7 +286,7 @@ const SeverityList = ref<TitleInterface[]>([
   new TitleInterface({ id: SeverityEnum.Moderate, title: 'd - Moderate' }),
   new TitleInterface({ id: SeverityEnum.Minor, title: 'e - Minor' }),
 ])
-const SelectedLikelihood = ref<TitleInterface>()
+const SelectedLikelihood = ref<TitleInterface>(new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }))
 const LikelihoodList = ref<TitleInterface[]>([
   new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
   new TitleInterface({ id: LikelihoodEnum.Unlikely, title: '2 - Unlikely' }),

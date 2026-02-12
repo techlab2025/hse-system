@@ -8,6 +8,7 @@
     filters: MyZonesModel[]
     link: string
     linkTitle: string
+    SelectdProject: number[]
   }>()
 
   const SelectedFilter = ref<number[]>([])
@@ -27,8 +28,8 @@
   <template>
     <div class="idnex-filter">
       <div class="filter-container">
-        <div class="filter" :class="SelectedFilter.includes(item.id) ? 'active' : ''" v-for="item in filters"
-          :key="item.id" @click="UpdateData(item.id)">
+        <div class="filter"  :class="SelectedFilter.includes(item.id) ? 'active' : ''"
+          v-for="item in filters" :key="item.id" @click="UpdateData(item.id)">
           <p v-if="item?.title != null">
             <span>
               {{ item?.title }}

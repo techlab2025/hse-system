@@ -99,8 +99,14 @@ onMounted(async () => {
 const Heirarchy = ref<TitleInterface>()
 const role = ref<TitleInterface[]>()
 const EmployeeStatus = ref()
-const updaetAdminStatus = (status) => {
-  EmployeeStatus.value = status == 0 ? EmployeeStatusEnum.Employee : EmployeeStatusEnum.Admin
+const booleanEmpStatus = ref(false)
+const updaetAdminStatus = (status: number) => {
+  booleanEmpStatus.value = status
+  if (status) {
+    EmployeeStatus.value = EmployeeStatusEnum.Employee
+  } else {
+    EmployeeStatus.value = EmployeeStatusEnum.Admin
+  }
   updateData()
 }
 const updateData = () => {
@@ -240,8 +246,13 @@ const UpdateSerial = (data) => {
     <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
       :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
   </div>
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomCheckbox :index="5" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
+      @update:checked="updaetAdminStatus" />
+  </div> -->
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomCheckbox :index="2" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
+    <CustomCheckbox :index="3" :title="`admin_status`" :checked="booleanEmpStatus"
       @update:checked="updaetAdminStatus" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">

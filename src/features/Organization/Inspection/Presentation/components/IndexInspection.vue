@@ -72,7 +72,8 @@ const fetchInspection = async (
     perPage,
     withPage,
     employeeId || null,
-    zoneId || null
+    zoneId || null,
+    selectedProjctesFilters.value || null
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
@@ -89,7 +90,8 @@ const InspectionFormTasks = async (
     pageNumber,
     perPage,
     withPage,
-    filter?.length > 0 ? filter : null
+    filter?.length > 0 ? filter : null,
+    selectedProjctesFilters.value || null
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
@@ -106,7 +108,8 @@ const InspectionsResultsTasks = async (
     pageNumber,
     perPage,
     withPage,
-    filter?.length > 0 ? filter : null
+    filter?.length > 0 ? filter : null,
+    selectedProjctesFilters.value || null
 
 
   )
@@ -204,6 +207,7 @@ const FetchMyProjects = async () => {
   const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
   if (res.value.data) {
     Projects.value = res.value.data
+    FetchMyZones()
     // console.log(res.value.data?.length, "res.value.data?.length");
   }
 }
@@ -214,11 +218,12 @@ const selectedProjctesFilters = ref<number>()
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
-  console.log(selectedProjctesFilters.value, "selectedProjctesFilters");
   const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
-  const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
-  if (response.value.data) {
-    Filters.value = response.value.data
+  if (selectedProjctesFilters.value) {
+    const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
+    if (response.value.data) {
+      Filters.value = response.value.data
+    }
   }
 }
 
@@ -226,7 +231,6 @@ const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
 
-  console.log(SelectedZonesFilter.value, "SelectedZonesFilter");
   if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
     fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
   }
@@ -240,11 +244,28 @@ const ApplayFilter = (data: number[]) => {
 }
 
 const setSelectedProjectFilter = (data) => {
+  // if(data != selectedProjctesFilters.value){
+  //   SelectedZonesFilter.value = []
+  //   Filters.value =
+  // }
   selectedProjctesFilters.value = data
+
+  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+    fetchInspection()
+  }
+  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    InspectionFormTasks()
+  }
+  else {
+    InspectionsResultsTasks()
+  }
+
   if (data) {
     FetchMyZones()
   }
 }
+
+
 
 watch(() => fetchAllTasksController.state.value, (newState) => {
   if (newState) {
@@ -303,8 +324,7 @@ watch(
             :projects="Projects" @update:data="setSelectedProjectFilter" />
 
           <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-
-            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
+            <IndexFilter :SelectdProject="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
               :link="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm) ? '/organization/equipment-mangement/inspection/add' : ''"
               :linkTitle="'Create Inspection'" />
           </PermissionBuilder>
@@ -332,7 +352,7 @@ watch(
           </template>
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No Inspection" />
             </PermissionBuilder>

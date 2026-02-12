@@ -4,11 +4,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class CatalogItemsParams implements Params {
   translation: TranslationsParams
 
-  constructor(
-    data:{
-      translation: TranslationsParams,
-    }
-  ) {
+  constructor(data: { translation: TranslationsParams }) {
     this.translation = data.translation
   }
 

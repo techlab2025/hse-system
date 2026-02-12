@@ -20,7 +20,7 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEye from '@/shared/icons/IconEye.vue'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const { t } = useI18n()
 
@@ -106,7 +106,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
 
 ]
 
-const DialogVisable = ref(false)
+const DialogVisable = ref()
 const emit = defineEmits(['delete:data'])
 const deleteEquipment = async (id: number) => {
   emit('delete:data', id)
@@ -123,6 +123,10 @@ function setEquipmentDefaultImage(event: Event) {
   img.src = EmptyEquipment
 }
 
+watch(() => DialogVisable.value, (val) => {
+  console.log(val, "val");
+  DialogVisable.value = val
+})
 
 </script>
 
@@ -149,10 +153,11 @@ function setEquipmentDefaultImage(event: Event) {
             <p class="title" v-if="tool?.equipmentType?.title">{{ tool?.equipmentType?.title }}</p>
           </div>
 
-          <EquipmentCardImgDialog :Visable="DialogVisable" :img="tool?.certificateImage" />
+          <EquipmentCardImgDialog @close="DialogVisable = $event" :Visable="DialogVisable"
+            :img="tool?.certificateImage" />
 
 
-          
+
           <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)"
             @delete="deleteEquipment(tool.id)" />
 

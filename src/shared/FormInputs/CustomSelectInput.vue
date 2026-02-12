@@ -165,12 +165,9 @@ const updateSlot = (data: any) => {
 </script>
 
 <template>
-  <div class="input-label flex justify-between w-full">
-    <span
-      v-if="enableReload"
-      class="reload-icon cursor-pointer flex items-center w-full"
-      @click="reloadData"
-    >
+  <div class="input-label flex justify-between w-full"
+    :class="{ full: !onclick, fullReload: enableReload && !onclick }">
+    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center w-full" @click="reloadData">
       <span>
         <component @update:data="updateSlot" v-if="component" :is="component" />
       </span>
@@ -189,18 +186,9 @@ const updateSlot = (data: any) => {
       </span>
     </div>
   </div>
-  <component
-    :is="componentType"
-    v-model="normalizedValue"
-    :options="mergedOptions"
-    :placeholder="placeholder"
-    class="input-select w-full"
-    option-label="title"
-    v-bind="multiselectProps"
-    filter
-    :loading="loading"
-    :empty-message="message"
-  />
+  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
+    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
+    :empty-message="message" />
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 
   <!-- <template v-else>
