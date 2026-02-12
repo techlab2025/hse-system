@@ -165,14 +165,11 @@ const updateData = () => {
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      ImageCahnge.value
-        ? isBase64(image.value)
-          ? image.value
-          : ' '
-        : isBase64(image.value) && image.value.length > 0
-          ? image.value
-          : '*',
-      null,
+      // ImageCahnge.value ? isBase64(image.value) ? image.value : ' ' : isBase64(image.value) && image.value.length > 0 ? image.value : '*',
+      // isBase64(image.value) && image.value.length > 0 ? image.value : null,
+      // ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
+      // firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
+      ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value : firstImage.value == image.value ? null : '*',
       expiredate.value,
     )
     : new AddCertificateParams(
@@ -187,7 +184,7 @@ const updateData = () => {
 
   emit('update:data', params)
 }
-
+const firstImage = ref('')
 // ---------- Watchers ----------
 // Init from props (edit mode) or defaults (create mode)
 watch(
@@ -216,11 +213,20 @@ watch(
       allIndustries.value = newData?.allIndustries ?? 0
       industry.value = newData?.industries ?? []
       image.value = newData?.image ? newData?.image : ''
+      firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
     }
   },
   { immediate: true },
 )
+
+watch(() => image.value, (newValue) => {
+  if (newValue == props?.data?.image) {
+    ImageCahnge.value = false
+  } else {
+    ImageCahnge.value = true
+  }
+})
 
 // Auto-update emit whenever key data changes
 watch(

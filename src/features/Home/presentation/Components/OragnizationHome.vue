@@ -30,6 +30,7 @@ import IndexProjectProgressController from '@/features/Organization/ProjectPrgor
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams';
 import HeaderCard from './HomeStatistics/HeaderCard.vue'
 import GenderStatistics from './HomeStatistics/GenderStatistics.vue'
+import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
 
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
@@ -152,6 +153,20 @@ onMounted(() => {
       <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
+      </router-link>
+    </PermissionBuilder>
+    <PermissionBuilder :code="[
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ]">
+      <!-- /organization?setting=1 -->
+      <router-link :to="`/organization/Investigating`">
+        <HomeRoutesCard :icon="InvisttigationIcon" :title="`${$t('investigation')}`"
+          :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `" />
       </router-link>
     </PermissionBuilder>
 

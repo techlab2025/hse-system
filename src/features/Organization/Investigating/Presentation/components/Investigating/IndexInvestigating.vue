@@ -26,6 +26,7 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
+import type InvestigatingModel from '../../../Data/models/investigatingModel'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -136,6 +137,20 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
 }
 
 
+const GethighObservationCount = (data: any): number => {
+  console.log(data.filter((el) => el.observation?.riskLevel == RiskLevelEnum.High), "el.observation?.riskLevel");
+  return data.filter((el) => el.observation?.riskLevel == RiskLevelEnum.High).length
+}
+
+const GetMediumObservationCount = (data: any): number => {
+  console.log(data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length, "data.map((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length");
+  return data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length
+}
+// const GetLowObservationCount = (data: any): number => {
+// //   console.log(data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length, "data.map((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length");
+// //   return data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length
+// // }
+
 
 </script>
 
@@ -145,8 +160,10 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
       {{ console.log(state.data, 'state') }}
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
-        <InvestigatingSidebar :selectedRiskLevel="observationRiskLevel" :highObservationCount="5"
-          :mediumObservationCount="5" @update:data="GetRiskLevel" />
+        <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
+        <InvestigatingSidebar :selectedRiskLevel="observationRiskLevel"
+          :highObservationCount="GethighObservationCount(state.data)" @update:data="GetRiskLevel"
+          :mediumObservationCount="GetMediumObservationCount(state.data)" />
 
         <!-- Main content (Cards) -->
         <div class="col-span-9">
