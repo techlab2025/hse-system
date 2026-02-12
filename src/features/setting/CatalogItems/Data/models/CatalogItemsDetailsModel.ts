@@ -3,6 +3,7 @@ import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
+import type GuideCatalogModel from './GuideCatalog'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class CatalogItemsDetailsModel {
@@ -14,6 +15,7 @@ export default class CatalogItemsDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public parent: TitleInterface | null
+  public guideCategoryItem: GuideCatalogModel
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -25,6 +27,7 @@ export default class CatalogItemsDetailsModel {
     parentId: number,
     image: string,
     parent: TitleInterface | null,
+    guideCategoryItem: GuideCatalogModel
   ) {
     this.id = id
     this.titles = titles
@@ -34,6 +37,7 @@ export default class CatalogItemsDetailsModel {
     this.parentId = parentId
     this.image = image
     this.parent = parent
+    this.guideCategoryItem = guideCategoryItem
 
   }
 
@@ -49,6 +53,7 @@ export default class CatalogItemsDetailsModel {
       data?.parent_id,
       data?.image,
       data?.parent ? this.getTitle(data?.parent)  : null,
+      data.guide_category_item
     )
   }
 
