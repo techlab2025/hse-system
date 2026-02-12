@@ -159,6 +159,7 @@ const updateData = () => {
       AllIndustry,
       industry.value?.map((item) => item.id) ?? [],
       selectedCatalog.value?.id || route.params.parent_id,
+      TranslationsDescription
     )
     : new AddCatalogItemsParams(
       translationsParams,
@@ -207,9 +208,9 @@ watch(
     }
 
     // ===== descriptions =====
-    if (newData?.descriptions?.length) {
+    if (newData?.guideCategoryItem?.descriptions?.length) {
       langsDescription.value = newDefaultDesc.map((l) => {
-        const existing = newData.descriptions.find((t) => t.locale === l.locale)
+        const existing = newData.guideCategoryItem.descriptions.find((t) => t.locale === l.locale)
         return existing ? existing : { locale: l.locale, description: '' }
       })
     } else {
@@ -322,9 +323,9 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
+    <LangTitleInput label="catalog_description" :langs="langDefault" :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`What are the project objectives?`" :required="false" />
+      :placeholder="`catalog description`" :required="false" />
   </div>
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
   <!--    <label>{{ $t('has_certificate') }}</label>-->

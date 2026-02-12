@@ -4,13 +4,15 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import AddCatalogItemsParams from './addCatalogItemsParams'
+import type CatalogItemsParams from './CatalogGuideItemParams'
 
 export default class implements Params {
   id: number
   translation: TranslationsParams
   allIndustries: boolean | null
-  industries: number[] 
+  industries: number[]  
   parentId?: number
+   guideCategoryItems?: CatalogItemsParams
 
       public static readonly validation = new ClassValidation().setRules({
         parentId: { required: true },
@@ -22,6 +24,7 @@ export default class implements Params {
     allIndustries: boolean | null,
     industries: number[],
     parentId?: number,
+    guideCategoryItems?: CatalogItemsParams
 
   ) {
     this.id = id
@@ -29,16 +32,18 @@ export default class implements Params {
     this.allIndustries = allIndustries
     this.industries = industries
     this.parentId = parentId
+    this.guideCategoryItems = guideCategoryItems
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    number |any| string | number[] | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
+      | any
       | number[]
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
@@ -49,8 +54,11 @@ export default class implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
 if (this.parentId) data['parent_id'] = this.parentId
+    if (this.guideCategoryItems) data['guide_category_items'] = [this.guideCategoryItems.toMap()]
+
     return data
   }
+  
     validate() {
     return AddCatalogItemsParams.validation.validate(this)
   }
