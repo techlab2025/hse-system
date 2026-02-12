@@ -8,6 +8,7 @@ import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import GeerIcon from '../icons/GeerIcon.vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 interface Routes {
@@ -15,11 +16,13 @@ interface Routes {
   name: string
   permissions: PermissionsEnum[]
 }
+const { t } = useI18n()
+
 const OrganizationRoutes = ref<Routes[]>([
 
   {
     link: '/organization/partner',
-    name: 'partners',
+    name: t('partners'),
     permissions: [
       PermissionsEnum.WEBSITE,
       PermissionsEnum.PARTNER_ALL,
@@ -43,7 +46,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/certificate',
-    name: 'certificates',
+    name: t('certificates'),
     permissions: [
       PermissionsEnum.CERTIFICATE_ALL,
       PermissionsEnum.CERTIFICATE_CREATE,
@@ -89,7 +92,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/template',
-    name: 'Templates',
+    name: t('templates'),
     permissions: [
       PermissionsEnum.ORG_TEMPLATE_ALL,
       PermissionsEnum.ORG_TEMPLATE_CREATE,
@@ -100,7 +103,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/organization-employee',
-    name: 'employees',
+    name: t('employees'),
     permissions: [
       PermissionsEnum.ORG_EMPLOYEE_ALL,
       PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -112,7 +115,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/herikaly',
-    name: 'hierarchy',
+    name: t('hierarchy'),
     permissions: [
       PermissionsEnum.HERIKALY_ALL,
       PermissionsEnum.HERIKALY_CREATE,
@@ -134,7 +137,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/team',
-    name: 'team',
+    name: t('team'),
     permissions: [
       PermissionsEnum.ORG_TEAM_ALL,
       PermissionsEnum.ORG_TEAM_CREATE,
@@ -145,7 +148,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/contractor',
-    name: 'contractors',
+    name: t('contractors'),
     permissions: [
       PermissionsEnum.ORG_CONTRACTOR_ALL,
       PermissionsEnum.ORG_CONTRACTOR_CREATE,
@@ -157,7 +160,7 @@ const OrganizationRoutes = ref<Routes[]>([
 
   {
     link: '/organization/role',
-    name: 'roles',
+    name: t('roles'),
     permissions: [
       PermissionsEnum.ORG_ROLE_ALL,
       PermissionsEnum.ORG_ROLE_CREATE,
@@ -179,7 +182,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/scope',
-    name: 'Scope',
+    name: t('scope'),
     permissions: [
       PermissionsEnum.SCOPE_ALL,
       PermissionsEnum.SCOPE_CREATE,
@@ -202,7 +205,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/where-house',
-    name: 'WareHouse',
+    name: t('warehouse'),
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_ALL,
       PermissionsEnum.WHIERE_HOUSE_CREATE,
@@ -213,7 +216,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/employee-certificate',
-    name: 'employee_certificate',
+    name: t('employee_certificate'),
     permissions: [
       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
       PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
@@ -235,7 +238,7 @@ const OrganizationRoutes = ref<Routes[]>([
   // },
   {
     link: '/organization/serial-number',
-    name: 'coding_system',
+    name: t('coding_system'),
     permissions: [
       PermissionsEnum.CODING_SYSTEM_ALL,
       PermissionsEnum.CODING_SYSTEM_CREATE,
@@ -246,7 +249,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: "/organization/hazard",
-    name: "hazard",
+    name: t("hazard"),
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,
       PermissionsEnum.ORG_HAZARD_CREATE,
@@ -261,7 +264,7 @@ const OrganizationRoutes = ref<Routes[]>([
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',
-    name: 'country',
+    name: t('country'),
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -274,7 +277,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/states',
-    name: 'state',
+    name: t('state'),
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -287,7 +290,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/cities',
-    name: 'city',
+    name: t('city'),
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -300,7 +303,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/areas',
-    name: 'location',
+    name: t('location'),
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -313,7 +316,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/project-zone',
-    name: 'zones',
+    name: t('zones'),
     permissions: [
       PermissionsEnum.PROJECT_ZONE_ALL,
       PermissionsEnum.PROJECT_ZONE_CREATE,
@@ -328,7 +331,7 @@ const LocationRoutes = ref<Routes[]>([
 const OperationRoutesRoutes = ref<Routes[]>([
   {
     link: '/organization/equipment-mangement/all-observatin',
-    name: 'operations',
+    name: t('operations'),
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
       PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
@@ -339,7 +342,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/accidents-type',
-    name: 'incidant_types',
+    name: t('incidant_types'),
     permissions: [
       PermissionsEnum.WEBSITE,
       PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
@@ -352,7 +355,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/equipment-mangement/incedant?isAll=1',
-    name: 'incidants',
+    name: t('incidants'),
     permissions: [
       PermissionsEnum.WEBSITE,
       PermissionsEnum.ADMIN,
@@ -366,7 +369,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factory',
-    name: 'hazard_factors',
+    name: t('hazard_factors'),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
       PermissionsEnum.ORG_FACTORY_CREATE,
@@ -377,7 +380,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factories-items',
-    name: 'hazard_factor_item',
+    name: t('hazard_factor_item'),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
       PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
@@ -388,7 +391,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard-type',
-    name: 'hazard_types',
+    name: t('hazard_types'),
     permissions: [
       PermissionsEnum.ORG_HAZARD_TYPE_ALL,
       PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
@@ -399,7 +402,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard',
-    name: 'hazard',
+    name: t('hazard'),
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,
       PermissionsEnum.ORG_HAZARD_CREATE,
@@ -410,7 +413,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/observation-type',
-    name: 'observation_types',
+    name: t('observation_types'),
     permissions: [
       PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
       PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
@@ -423,7 +426,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
 
   {
     link: '/organization/equipment-mangement/observation',
-    name: 'observation',
+    name: t('observation'),
     permissions: [
       PermissionsEnum.ORG_OBSERVATION_ALL,
       PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -439,7 +442,7 @@ const OperationRoutesRoutes = ref<Routes[]>([
 const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/where-house-type',
-    name: 'warehouse_types',
+    name: t('warehouse_types'),
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
       PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -451,7 +454,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard-type',
-    name: 'hazard_type',
+    name: t('hazard_type'),
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -463,7 +466,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/accidents-type',
-    name: 'incident_types',
+    name: t('incident_types'),
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -475,7 +478,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/observation-type',
-    name: 'observation_type',
+    name: t('observation_type'),
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
       PermissionsEnum.OBSERVATION_TYPE_FETCH,
@@ -488,7 +491,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/equipment-types',
-    name: 'equipment_types',
+    name: t('equipment_types'),
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
@@ -500,7 +503,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/root-causes',
-    name: 'root_causes',
+    name: t('root_causes'),
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
       PermissionsEnum.ROOT_CAUSES_CREATE,
@@ -511,7 +514,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/injury',
-    name: 'injury',
+    name: t('injury'),
     permissions: [
       PermissionsEnum.INJURY_ALL,
       PermissionsEnum.INJURY_CREATE,
