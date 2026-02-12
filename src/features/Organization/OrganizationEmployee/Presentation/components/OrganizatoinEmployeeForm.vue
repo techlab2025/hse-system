@@ -39,7 +39,7 @@ const ConfirmPassword = ref<string>()
 const SerialNumber = ref()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams('', 1, 10, 1, false)
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const deleteCertificateParams = new IndexCertificateParams('', 0, 0, 0)

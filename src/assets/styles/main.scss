@@ -361,3 +361,11 @@ input {
 .mt-10 {
   margin-top: 10px;
 }
+.p-multiselect.p-inputwrapper-filled {
+  padding: 6px !important;
+  // padding-inline: 40px !important;
+  border-radius: calc($XlSize + 2px) !important;
+}
+
+// p-multiselect p-component p-inputwrapper p-multiselect-display-chip input-select w-full
+// p-multiselect p-component p-inputwrapper p-multiselect-display-chip p-inputwrapper-filled input-select w-full

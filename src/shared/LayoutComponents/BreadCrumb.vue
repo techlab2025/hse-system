@@ -122,7 +122,8 @@ const ShowBackBtn = computed(() => {
 <template>
   <div class="breadcrump-container">
     <div class="breadcrump">
-      <button class="sidebar-back" @click="RouterBack" v-if="!IsHome || !ShowBackBtn">
+      <button class="sidebar-back" @click="RouterBack"
+        v-if="(!IsHome || !ShowBackBtn) && route.path != '/admin' && route.path != '/organization'">
         <BackIcon class="icon" />
         <span>{{ $t('back') }}</span>
       </button>
