@@ -159,6 +159,7 @@ const updateData = () => {
       AllIndustry,
       industry.value?.map((item) => item.id) ?? [],
       selectedCatalog.value?.id || route.params.parent_id,
+      TranslationsDescription
     )
     : new AddCatalogItemsParams(
       translationsParams,
