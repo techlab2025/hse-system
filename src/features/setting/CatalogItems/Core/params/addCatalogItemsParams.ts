@@ -20,7 +20,7 @@ export default class AddCatalogItemsParams implements Params {
   })
   constructor(
     translation: TranslationsParams,
-    allIndustries: boolean | null,
+    allIndustries: boolean | null, 
     industries: number[],
     order: number,
     parentId?: number,
