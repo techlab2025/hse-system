@@ -19,7 +19,7 @@ onMounted(() => {
 
 const UpdateData = (Id: number) => {
   ActiveTap.value = Id
-  emit('update:data', ProjectSelectStore?.project?.id != -1 ? ProjectSelectStore?.project?.id : ActiveTap.value)
+  emit('update:data', ProjectSelectStore?.project?.id != -1 && ProjectSelectStore?.project?.id != null ? ProjectSelectStore?.project?.id : ActiveTap.value)
 }
 
 const Projects = ref(props.projects)

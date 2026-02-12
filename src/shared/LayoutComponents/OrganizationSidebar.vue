@@ -259,6 +259,29 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
 
+  {
+    link: "/organization/factory",
+    name: t("factor"),
+    permissions: [
+      PermissionsEnum.ORG_FACTORY_ALL,
+      PermissionsEnum.ORG_FACTORY_CREATE,
+      PermissionsEnum.ORG_FACTORY_DELETE,
+      PermissionsEnum.ORG_FACTORY_FETCH,
+      PermissionsEnum.ORG_FACTORY_UPDATE,
+    ],
+  },
+  {
+    link: "/organization/factories-items",
+    name: t("factor-item"),
+    permissions: [
+      PermissionsEnum.ORG_FACTORY_ITEM_ALL,
+      PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
+      PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
+      PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
+      PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
+    ],
+  },
+
 
 ])
 const LocationRoutes = ref<Routes[]>([

@@ -14,7 +14,10 @@ const updateData = () => {
 }
 watch(() => props.checked, (val) => {
   CheckboxValue.value = val
+  // updateData()
 }, { immediate: true })
+
+
 </script>
 <template>
   <div class="checkbox-toggle-wrapper">
