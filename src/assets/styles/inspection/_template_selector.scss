@@ -11,6 +11,9 @@
   }
 
   .template-document-container {
+    .p-accordioncontent {
+      padding-inline: 25px;
+    }
     &.active {
       border: 2px solid $PrimaryColor;
     }
