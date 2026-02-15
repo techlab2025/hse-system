@@ -1169,6 +1169,10 @@
   "expire_date_required": "Expire Date Required",
   "item_title": "Item Title",
   "template_item_category": "Template Item Title",
+  "guide_route": "Guide Route",
+  "ready_to_go": "Ready To Go",
+  "overview": "Overview",
   "Hazard factor":"Hazard factor",
   "Hazard factor item":"Hazard factor item"
+
 }

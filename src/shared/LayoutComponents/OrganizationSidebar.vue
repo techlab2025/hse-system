@@ -18,6 +18,23 @@ interface Routes {
 }
 const { t } = useI18n()
 
+const GauideRoutes = ref<Routes[]>([
+  {
+    link: '/organization/project-progress',
+    name: t('overview'),
+    permissions: []
+    // permissions: [
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+    //   PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+    // ],
+  },
+
+])
+
 const OrganizationRoutes = ref<Routes[]>([
 
   {
@@ -552,6 +569,7 @@ const SelectedOrgRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
 const SelectedOperationRoute = ref<string>('')
 const SelectedLockupsRoute = ref<string>('')
+const SelectedGauideRoutes = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
@@ -559,6 +577,7 @@ watch(
     SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name
     SelectedOperationRoute.value = OperationRoutesRoutes.value.find(item => item.link === newPath)?.name
     SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name
+    SelectedGauideRoutes.value = GauideRoutes.value.find(item => item.link === newPath)?.name
 
   }
 )
@@ -567,6 +586,7 @@ const orgAccordion = ref<string | null>('1')
 const locationAccordion = ref<string | null>('2')
 const OperationAccordion = ref<string | null>('3')
 const LoackupsAccordion = ref<string | null>('4')
+const GauideAccordion = ref<string | null>('5')
 
 
 watch(orgAccordion, (val) => {
@@ -581,10 +601,42 @@ watch(OperationAccordion, (val) => {
 watch(LoackupsAccordion, (val) => {
   LoackupsAccordion.value = val
 })
+watch(GauideAccordion, (val) => {
+  GauideAccordion.value = val
+})
 
 </script>
 
 <template>
+
+
+  <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+    <Accordion v-model:value="orgAccordion">
+      <AccordionPanel value="1">
+        <AccordionHeader>
+          <div class="links-header">
+            <GeerIcon />
+            {{ $t('overview') }}
+          </div>
+        </AccordionHeader>
+
+        <AccordionContent>
+          <ul>
+            <PermissionBuilder v-for="(guideroute, index) in GauideRoutes" :key="index" :code="guideroute?.permissions">
+              <li>
+                <router-link :to="guideroute.link" :class="route?.fullPath?.includes(guideroute.link) ? '' : ''">
+                  <span>{{ $t(guideroute.name) }}</span>
+                </router-link>
+              </li>
+            </PermissionBuilder>
+          </ul>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel class="active-panel-out" v-if="SelectedGauideRoutes && !GauideAccordion">
+        <span>{{ SelectedGauideRoutes }}</span>
+      </AccordionPanel>
+    </Accordion>
+  </PermissionBuilder>
 
 
   <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
