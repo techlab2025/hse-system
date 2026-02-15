@@ -1168,5 +1168,8 @@
   "incidants_types": "Incidant Types",
   "expire_date_required": "Expire Date Required",
   "item_title": "Item Title",
-  "template_item_category": "Template Item Title"
+  "template_item_category": "Template Item Title",
+  "guide_route": "Guide Route",
+  "ready_to_go": "Ready To Go",
+  "overview": "Overview"
 }

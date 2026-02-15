@@ -150,7 +150,7 @@ onMounted(() => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <!-- /organization?setting=1 -->
-      <router-link :to="`/organization/setting?type=${RouterEnum?.ORGANIZATION}`">
+      <router-link :to="`/organization/partner?type=1`">
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>

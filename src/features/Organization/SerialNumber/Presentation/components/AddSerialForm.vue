@@ -5,7 +5,7 @@ import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
 import { onMounted, ref } from 'vue'
 import CreateCodingSystemParams from '../../Core/params/createsSerialNumParams'
 import SerialNumController from '../controllers/createSerialNumController'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ShowSerialNumController from '../controllers/showSerialNumController'
 import ShowSerialNumberParams from '../../Core/params/ShowSerialNumber'
 import Accordion from 'primevue/accordion'
@@ -195,6 +195,7 @@ const ShowData = async () => {
 onMounted(() => {
   ShowData()
 })
+const route = useRoute()
 </script>
 
 <template>
@@ -236,10 +237,12 @@ onMounted(() => {
     </div>
 
     <div class="form-sticky-button flex gap-2">
-      <router-link to="/organization" class="btn btn-cancel" style="width: 15%">{{
-        $t('cancel')
+      <router-link v-if="!route.path.includes('project-progress')" to="/organization" class="btn btn-cancel"
+        style="width: 15%">{{
+          $t('cancel')
         }}</router-link>
-      <button type="submit" class="btn btn-primary" style="width: 85%">{{ $t('Add') }}</button>
+      <button type="submit" class="btn btn-primary"
+        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'">{{ $t('Add') }}</button>
     </div>
   </form>
 </template>
