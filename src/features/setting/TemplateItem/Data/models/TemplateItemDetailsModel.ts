@@ -1,3 +1,4 @@
+import type { TitleLocale } from '@/base/core/params/translations_params'
 import ItemModel from './ItemMode'
 
 export default class TemplateItemDetailsModel {
@@ -9,7 +10,7 @@ export default class TemplateItemDetailsModel {
   public requiredImage: boolean
   public options: ItemModel[]
   public has_textarea: number = 0
-
+  public tag: TitleLocale[]
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -21,6 +22,7 @@ export default class TemplateItemDetailsModel {
     requiredImage: boolean,
     options: ItemModel[] = [],
     has_textarea: number = 0,
+    tag: TitleLocale[],
   ) {
     this.id = id
     this.name = name
@@ -30,6 +32,7 @@ export default class TemplateItemDetailsModel {
     this.requiredImage = requiredImage
     this.options = options
     this.has_textarea = has_textarea
+    this.tag = tag
   }
 
   static fromMap(data: any): TemplateItemDetailsModel {
@@ -42,6 +45,7 @@ export default class TemplateItemDetailsModel {
       data.require_image,
       data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
       data.has_textarea,
+      data.template_item_tag,
     )
   }
 }

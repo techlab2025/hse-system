@@ -20,7 +20,7 @@ export default class TemplateDetailsModel {
   public action: TitleInterface | null
   public title: string | null = null
   public type: number
-  public tag: string
+  public tag: TitleLocale[]
 
   // public descriptions: DescriptionLocale[]
 
@@ -38,7 +38,7 @@ export default class TemplateDetailsModel {
     action: TitleInterface | null = null,
     title: string | null = null,
     type: number,
-    tag: string,
+    tag: TitleLocale[],
   ) {
     this.id = id
     this.name = name

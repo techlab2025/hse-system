@@ -2,11 +2,12 @@
 import UploadImage from '@/shared/icons/UploadImage.vue';
 import RadioButton from 'primevue/radiobutton';
 import type ItemModel from '../../../Data/models/ItemMode';
+import type { TitleLocale } from '@/base/core/params/translations_params';
 const props = defineProps<{
   title: string
   options: ItemModel[]
   require_image: boolean
-  tag: string
+  tag: TitleLocale
 
 }>()
 
@@ -14,7 +15,7 @@ const props = defineProps<{
 <template>
   <div class="show-template-document-radio">
     <p class="title">{{ title }}</p>
-    <p class="title">{{ tag }}</p>
+    <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
     <div class="options-container">
       <div class="options">
         <div class="options-box" v-for="(option, index) in options" :key="index">
@@ -26,3 +27,12 @@ const props = defineProps<{
     </div>
   </div>
 </template>
+
+
+<style scoped>
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: gray;
+}
+</style>
