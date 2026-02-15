@@ -132,3 +132,8 @@ const DeleteTemplateItem = async (id: number) => {
 </template>
 
 
+<style scoped>
+.template-document-container {
+  padding-inline: 25px;
+}
+</style>

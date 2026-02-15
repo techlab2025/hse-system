@@ -134,21 +134,21 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditHazardTypeParams(
-        props.data.id,
-        translationsParams,
-        allIndustryValue,
-        industry.value.map((i) => i.id),
-        hazardFactors,
-        HazardType.value?.id || route.params.parent_id,
-      )
+      props.data.id,
+      translationsParams,
+      allIndustryValue,
+      industry.value.map((i) => i.id),
+      hazardFactors,
+      HazardType.value?.id || route.params.parent_id,
+    )
     : new AddHazardTypeParams(
-        translationsParams,
-        allIndustryValue,
-        industry.value.map((i) => i.id),
-        hazardFactors,
-        HazardType.value?.id || route.params.parent_id,
-        SerialNumber.value?.SerialNumber,
-      )
+      translationsParams,
+      allIndustryValue,
+      industry.value.map((i) => i.id),
+      hazardFactors,
+      HazardType.value?.id || route.params.parent_id,
+      SerialNumber.value?.SerialNumber,
+    )
 
   emit('update:data', params)
 }
@@ -230,66 +230,29 @@ const fields = ref([
 
 
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
-  >
-    <CustomCheckbox
-    :index="3"
-      :title="`all_industries`"
-      :checked="allIndustries"
-      @update:checked="allIndustries = $event"
-    />
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="allIndustries = $event" />
   </div>
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      label="industry"
-      id="HazardType"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="setIndustry"
-    />
+  <div class="input-wrapper col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="HazardType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="Factor"
-      :controller="indexFactoryController"
-      :params="indexFactoryParams"
-      label="Factor"
-      id="factor"
-      placeholder="Select Factor"
-      :type="2"
-      @update:modelValue="setFactor"
-    />
+    <CustomSelectInput :modelValue="Factor" :controller="indexFactoryController" :params="indexFactoryParams"
+      label="Hazard Factor" id="factor" placeholder="Select Hazard Factor" :type="2" @update:modelValue="setFactor" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!route.params.parent_id">
-    <CustomSelectInput
-      :modelValue="HazardType"
-      :controller="indexHazardTypeController"
-      :params="indexHazardTypeParams"
-      label="Hazard Type"
-      id="hazard type"
-      placeholder="Select Hazrd Type"
-      @update:modelValue="setHazrdType"
-    />
+    <CustomSelectInput :modelValue="HazardType" :controller="indexHazardTypeController" :params="indexHazardTypeParams"
+      label="Hazard Type" id="hazard type" placeholder="Select Hazrd Type" @update:modelValue="setHazrdType" />
   </div>
 </template>
