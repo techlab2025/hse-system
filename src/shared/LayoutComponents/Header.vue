@@ -191,7 +191,8 @@ const toggle = (event: Event) => {
           <IconArrowDownNav class="drop-icon" />
           <div class="profile-data">
             <span>{{ user?.name.split(' ')[0] }}</span>
-            <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span>
+            <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
+            <span>{{ user?.organizationName }}</span>
           </div>
 
           <!-- <img alt="user" src="../../assets/images/travel.png" /> -->

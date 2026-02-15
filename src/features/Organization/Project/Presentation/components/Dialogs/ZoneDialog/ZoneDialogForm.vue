@@ -7,7 +7,7 @@ import type SohwProjectZoonModel from '@/features/Organization/Project/Data/mode
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-
+import loading from "@/assets/images/loading.gif"
 const controller = IndexProjectLocationZonesController.getInstance()
 const state = ref(controller?.state?.value)
 
@@ -183,6 +183,32 @@ watch(() => controller.state.value, (newState) => {
           <span>{{ $t('confirm') }}</span>
         </button>
       </div>
+
+    </template>
+    <template #loader>
+      <div class="image-container">
+        <img :src="loading" alt="">
+      </div>
     </template>
   </DataStatus>
 </template>
+
+<style scoped>
+.image-container {
+  max-width: 300px;
+  max-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+  }
+}
+</style>

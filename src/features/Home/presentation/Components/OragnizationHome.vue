@@ -155,7 +155,7 @@ onMounted(() => {
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
     </PermissionBuilder>
-    <PermissionBuilder :code="[
+    <!-- <PermissionBuilder :code="[
       PermissionsEnum.ORG_EMPLOYEE_ALL,
       PermissionsEnum.ORG_EMPLOYEE_CREATE,
       PermissionsEnum.ORG_EMPLOYEE_DELETE,
@@ -163,12 +163,11 @@ onMounted(() => {
       PermissionsEnum.ORG_EMPLOYEE_UPDATE,
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
-      <!-- /organization?setting=1 -->
       <router-link :to="`/organization/Investigating`">
         <HomeRoutesCard :icon="InvisttigationIcon" :title="`${$t('investigation')}`"
           :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `" />
       </router-link>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
 
 
     <!-- <PermissionBuilder :code="[

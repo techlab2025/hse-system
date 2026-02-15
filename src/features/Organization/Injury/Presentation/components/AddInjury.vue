@@ -10,10 +10,12 @@ import type AddInjuryParams from '../../Core/params/addInjuryParams'
 const router = useRouter()
 const params = ref<Params | null>(null)
 
+const emit = defineEmits(['close:dialog'])
 const addInjuryController = AddInjuryController.getInstance()
 
 const addInjury = async () => {
   await addInjuryController.addInjury(params.value as AddInjuryParams, router)
+  emit('close:dialog')
 }
 const setParams = (data: Params) => {
   params.value = data
