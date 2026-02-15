@@ -287,8 +287,8 @@ watch(
           ]"
         >
           <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
+            addText="Add Catalog Item"
             description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No Catalog"
           />
@@ -303,8 +303,8 @@ watch(
           ]"
         >
           <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
+            addText="Add Catalog Item"
             description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No Catalog"
           />
