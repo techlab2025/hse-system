@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from '@/router/types'
+import IconSetting from '@/shared/icons/IconSetting.vue'
 
 export const partnerRoutes: RouteRecordRaw[] = [
   {
@@ -8,7 +9,6 @@ export const partnerRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Partners Organization',
       isSidebar: true,
-
     },
   },
   {
@@ -19,7 +19,6 @@ export const partnerRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Partner Organization',
       parent: 'Partners Organization',
       isSidebar: true,
-
     },
   },
   {
@@ -30,7 +29,6 @@ export const partnerRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Partner Organization',
       parent: 'Partners Organization',
       isSidebar: true,
-
     },
   },
 ]
