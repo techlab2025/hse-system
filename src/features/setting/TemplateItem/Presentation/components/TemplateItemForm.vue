@@ -140,7 +140,7 @@ const ClearTitle = () => {
         @input="updateData">
     </div>
     <div class="col-span-4 md:col-span-2 input-wrapper mt-6">
-      <label for="item-category">{{ $t('template_item_category') }}</label>
+      <label for="item-category">{{ $t('template_item_tag') }}</label>
       <input type="text" id="item-category" v-model="category" class="input"
         placeholder="add your tepmlate item category.." @input="updateData">
     </div>

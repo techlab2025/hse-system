@@ -2,19 +2,20 @@
 import Checkbox from 'primevue/checkbox';
 import type ItemModel from '../../../Data/models/ItemMode';
 import UploadImage from '@/shared/icons/UploadImage.vue';
+import type { TitleLocale } from '@/base/core/params/translations_params';
 const { title, options } = defineProps<{
   title: string
   options: ItemModel[]
   require_image: boolean
   has_textarea: number
-  tag: string
+  tag: TitleLocale
 }>()
 
 </script>
 <template>
   <div class="show-template-document-checkbox">
     <p class="title">{{ title }}</p>
-    <p class="title">{{ tag }}</p>
+    <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
     <div class="options-container">
       <div class="options">
 
@@ -32,3 +33,12 @@ const { title, options } = defineProps<{
 
   </div>
 </template>
+
+
+<style scoped>
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: gray;
+}
+</style>

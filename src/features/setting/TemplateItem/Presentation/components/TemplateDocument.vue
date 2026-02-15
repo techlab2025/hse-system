@@ -112,21 +112,23 @@ const DeleteTemplateItem = async (id: number) => {
           <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
         </div>
 
-
         <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
           :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="allData.tag" />
+          :tag="item.tag" />
         <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
           :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="allData.tag" />
+          :tag="item.tag" />
         <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
           :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="allData.tag" />
+          :tag="item.tag" />
         <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
-          :require_image="item.requiredImage" :tag="allData.tag" />
+          :require_image="item.requiredImage" :tag="item.tag" />
+
       </div>
     </div>
     <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->
 
   </div>
 </template>
+
+
