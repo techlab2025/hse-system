@@ -1168,5 +1168,7 @@
   "incidants_types": "Incidant Types",
   "expire_date_required": "Expire Date Required",
   "item_title": "Item Title",
-  "template_item_category": "Template Item Title"
+  "template_item_category": "Template Item Title",
+  "Hazard factor":"Hazard factor",
+  "Hazard factor item":"Hazard factor item"
 }

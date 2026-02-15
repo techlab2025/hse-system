@@ -63,7 +63,7 @@ watch(
           <div class="card-actions">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
               class="edit-btn">
-              {{ $t('Edit Hierarchy') }}
+              {{ $t('Add Hierarchy') }}
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="locationTeam.projectLocationId" :LocationId="locationTeam.id"
               @update:data="GetProjectLocationsEmployes" />
