@@ -156,6 +156,7 @@ watch(
         return new TitleInterface({ id: el.id, title: el.title })
       })
       EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
+      // booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       updateData()
     }
   },
