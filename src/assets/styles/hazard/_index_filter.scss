@@ -9,7 +9,7 @@
   // border: 3px solid #5571b927;
   // border-radius: calc($XlSize + 2px);
   padding: $MdSize;
-  background-color: #fcfcfc;
+  background-color: transparent;
   width: 100%;
   .btns {
     @include flex-row(nowrap, flex-end, center);

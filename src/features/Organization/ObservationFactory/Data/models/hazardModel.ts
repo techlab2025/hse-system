@@ -34,7 +34,8 @@ export default class HazardModel {
   public creator: OvserverModel
   public capa: CapaModel
   public media: FilesModel[]
-  public serialName :string
+  public serialName: string
+  public time: string
 
   constructor(
     id: number,
@@ -62,7 +63,8 @@ export default class HazardModel {
     creator: OvserverModel,
     capa: CapaModel,
     media: FilesModel[],
-    serialName:string
+    serialName: string,
+    time: string,
   ) {
     this.id = id
     this.title = title
@@ -90,7 +92,7 @@ export default class HazardModel {
     this.capa = capa
     this.media = media
     this.serialName = serialName
-
+    this.time = time
   }
 
   static fromMap(data: any): HazardModel {
@@ -120,7 +122,8 @@ export default class HazardModel {
       data.creator ? OvserverModel?.fromMap(data.creator) : null,
       data.capa,
       data.media.map((item: any) => FilesModel.fromMap(item)),
-      data.serial_name
+      data.serial_name,
+      data.time,
     )
   }
 
