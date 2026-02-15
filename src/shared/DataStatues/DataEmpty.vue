@@ -27,7 +27,7 @@ const { user } = useUserStore()
       <div class="data-empty-content-text">
         <!-- <h2 class="oops-message">opps ! ...there is no data here</h2> -->
         <h2 class="oops-message">{{ title }}</h2>
-        <router-link v-if="link" :to="link" class="btn btn-primary">
+        <router-link v-if="link" :to="link || '/organization'" class="btn btn-primary">
           {{ addText }}
         </router-link>
         <router-link v-else :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : '/organization'"

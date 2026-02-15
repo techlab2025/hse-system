@@ -11,7 +11,11 @@ export default class ProjectProgressItemModel {
   }
 
   static fromMap(data: any): ProjectProgressItemModel {
-    return new ProjectProgressItemModel(data.id, data.title, data.progress)
+    return new ProjectProgressItemModel(
+      data.id,
+      data.title,
+      data.id == ProjectProgressEnum.codingSystem ? true : data.progress,
+    )
   }
 
   static example: ProjectProgressItemModel[] = [

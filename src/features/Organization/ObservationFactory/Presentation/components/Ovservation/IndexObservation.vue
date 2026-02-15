@@ -285,7 +285,7 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                               {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              {{ $t('Date & Time') }} : <span>{{ item.date }}</span>
+                              {{ $t('Date & Time') }} : <span>{{ item.date }} & {{ item.time }}</span>
                             </p>
                           </div>
                           <div class="card-details">
