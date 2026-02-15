@@ -28,6 +28,7 @@
       //   display: none;
       // }
       .sidebar-back {
+        cursor: pointer;
         @include flex-row(nowrap, flex-start, center);
         gap: $XsSize3;
         width: 90%;

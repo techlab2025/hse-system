@@ -20,6 +20,7 @@ watch(() => props.checked, (val) => {
 
 </script>
 <template>
+  {{ CheckboxValue }}
   <div class="checkbox-toggle-wrapper">
     <input type="checkbox" :value="1" v-model="CheckboxValue" @change="updateData" :id="`title-${index}`"
       class="checkbox-checkbox" />

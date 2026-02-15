@@ -21,6 +21,7 @@
     .back {
       @include flex-row(nowrap, flex-end, center);
       gap: $XsSize;
+      cursor: pointer;
       span {
         color: #c3c3d1;
         font-size: $MdSize;
