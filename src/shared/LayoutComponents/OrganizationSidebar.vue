@@ -278,7 +278,7 @@ const OrganizationRoutes = ref<Routes[]>([
 
   {
     link: "/organization/factory",
-    name: t("factor"),
+    name: t("Hazard factor"),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
       PermissionsEnum.ORG_FACTORY_CREATE,
@@ -289,7 +289,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: "/organization/factories-items",
-    name: t("factor-item"),
+    name: t("Hazard factor item"),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
       PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
