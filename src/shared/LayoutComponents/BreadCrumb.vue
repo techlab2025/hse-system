@@ -140,13 +140,8 @@ const ShowBackBtn = computed(() => {
       <Breadcrumb :model="items">
         <template #item="{ item, props }">
           <router-link v-bind="props.action" :to="item.to" class="flex align-items-center gap-2">
-
-            <!-- icon -->
             <component v-if="item.icon" :is="item.icon" />
-
-            <!-- label -->
             <span>{{ item.label }}</span>
-
           </router-link>
         </template>
       </Breadcrumb>

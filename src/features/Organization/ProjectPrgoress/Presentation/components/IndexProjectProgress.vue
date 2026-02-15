@@ -160,7 +160,8 @@ const routerBack = () => {
     </div>
     <DataStatus :controller="state">
       <template #success>
-        <ProjectProgressHeader v-if="state.data?.progress" :progressValue="state.data?.progress" />
+        <!-- v-if="state.data?.progress" -->
+        <ProjectProgressHeader :progressValue="state.data?.progress" />
         <div class="project-progress-body-container">
           <div class="project-progress-body-sidebar">
             <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" />
@@ -178,12 +179,12 @@ const routerBack = () => {
 
           </div>
 
-          <div v-else class="project-progress-body-content flex flex-col items-center justify-start">
+          <!-- <div v-else class="project-progress-body-content flex flex-col items-center justify-start">
             <img class="complate-img" :src="ProgressComplate" alt=" complate">
             <p class="complate-title">Great! You've hit the target.</p>
             <p class="complate-description">You have completed all the required steps. Would you like to complete the
               remaining 3 steps?</p>
-          </div>
+          </div> -->
         </div>
 
       </template>
