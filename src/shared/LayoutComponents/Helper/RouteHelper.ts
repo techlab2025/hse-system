@@ -1,11 +1,9 @@
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
-import type { Component } from 'vue'
 import type { RouteLocationMatched } from 'vue-router'
 
 type BreadCrumbItem = {
   label: string
   url?: string
-  icon?: Component
 }
 export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
   const result: BreadCrumbItem[] = []
@@ -56,7 +54,6 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
           ? (r.meta.subType as string)
           : ((r.meta.breadcrumb || r.name) as string),
       url: r.path.replace(/\/:[^/]+(\?)?/g, `/${String(getUrlWithParams(r, route))}`),
-      icon: r?.meta?.icon,
       // getUrlWithParams(r, route),
       //  r.path.replace(/\/:[^/]+(\?)?/g, ''),
     })

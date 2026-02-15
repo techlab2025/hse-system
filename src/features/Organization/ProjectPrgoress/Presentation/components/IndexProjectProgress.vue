@@ -31,6 +31,7 @@ import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddH
 import AddEquipmentType from '@/views/Admin/EquipmentType/AddEquipmentType.vue';
 import ProjectProgressLoader from '../supcomponents/ProjectProgressLoader.vue';
 import ProgressComplate from "@/assets/images/ProgressComplate.png"
+import AddSerial from '@/views/Organization/SerialNumber/AddSerial.vue';
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -53,6 +54,12 @@ const GetActiveItem = (value: number) => {
 
 
 const AllPagesToView = ref([
+  {
+    id: ProjectProgressEnum.codingSystem,
+    component: AddSerial,
+    title: "Codeing System",
+    description: "Define Codeing System structure",
+  },
   {
     id: ProjectProgressEnum.Certificate,
     component: AddCertificate,

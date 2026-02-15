@@ -9,8 +9,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
-import IconAccept from '../icons/IconAccept.vue'
-import { useBreadcrumb } from './Helper/useBreadcrumb'
 
 const route = useRoute()
 const router = useRouter()
@@ -119,8 +117,6 @@ watch(() => route, () => {
 const ShowBackBtn = computed(() => {
   return user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
 })
-
-// const { itemss } = useBreadcrumb()
 </script>
 
 <template>
@@ -132,19 +128,7 @@ const ShowBackBtn = computed(() => {
         <span>{{ $t('back') }}</span>
       </button>
 
-      <!-- <Breadcrumb :model="items">
-        <template #itemicon>
-          <component :is="item.icon"></component>
-        </template>
-</Breadcrumb> -->
-      <Breadcrumb :model="items">
-        <template #item="{ item, props }">
-          <router-link v-bind="props.action" :to="item.to" class="flex align-items-center gap-2">
-            <component v-if="item.icon" :is="item.icon" />
-            <span>{{ item.label }}</span>
-          </router-link>
-        </template>
-      </Breadcrumb>
+      <Breadcrumb :model="items" />
     </div>
 
     <!-- v-if="!IsHomeSetting" -->

@@ -27,6 +27,7 @@ export default class UserModel {
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   public permission: string[] = []
   public Defaultproject?: TitleInterface
+  public organizationName?: string
 
   constructor(
     id: number,
@@ -51,6 +52,7 @@ export default class UserModel {
     type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN,
     permission: string[] = [],
     Defaultproject?: TitleInterface,
+    organizationName?: string,
   ) {
     this.id = id
     this.name = name
@@ -74,6 +76,7 @@ export default class UserModel {
     this.type = type
     this.permission = permission
     this.Defaultproject = Defaultproject
+    this.organizationName = organizationName
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -100,6 +103,7 @@ export default class UserModel {
       map['type'],
       map['permissions'],
       map['default_project'],
+      map['organization_name'],
     )
   }
 }

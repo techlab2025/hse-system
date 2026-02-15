@@ -13,6 +13,7 @@ import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexI
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import Checkbox from 'primevue/checkbox'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import AddInjury from '@/views/Organization/Injury/AddInjury.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -76,7 +77,7 @@ const ensureEmployee = (item: any) => {
     item.employee = new TitleInterface({ id: 0, title: '' })
   }
 }
-
+const InjuryVisable = ref(false)
 </script>
 <template>
   <div class="template-container col-span-6">
@@ -131,9 +132,21 @@ const ensureEmployee = (item: any) => {
 
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
+                <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
-                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" />
+                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
+
+                <UpdatedCustomInputSelect :modelValue="item.infectionTypeId" class="input"
+                  :controller="indexInjuryController" :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
+                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)"
+                  @close="InjuryVisable = false" :isDialog="true" :dialogVisible="InjuryVisable">
+                  <template #LabelHeader>
+                    <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>
+                  </template>
+                  <template #Dialog>
+                    <AddInjury @close:dialog="InjuryVisable = false" @update:data="InjuryVisable = false" />
+                  </template>
+                </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('upload image') }}</label>

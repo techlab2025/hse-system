@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
-import Dialog from 'primevue/dialog'
-import InspectionTemplateImage from '@/assets/images/check-list.png'
 
 import { markRaw, onMounted, ref, watch } from 'vue'
 
-import AddNewTemplateIcon from '@/shared/icons/AddNewTemplateIcon.vue'
-import NewTemplateArrowIcon from '@/shared/icons/NewTemplateArrowIcon.vue'
 import { TemplateType } from '@/features/setting/Template/Core/Enum/TemplateTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
-import EditTemplateParams from '@/features/setting/Template/Core/params/editTemplateParams'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+
 import TranslationsParams from '@/base/core/params/translations_params'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -21,12 +14,10 @@ import { useUserStore } from '@/stores/user'
 import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import TemplateTimeLine from '../InspectionUtils/TemplateTimeLine.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
 import { useRouter } from 'vue-router'
-import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
-// import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
+import TemplateTimeLine from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateTimeLine.vue'
 
 
 
@@ -144,7 +135,8 @@ const updateData = () => {
     image.value || null,
     null,
     items,
-    SelectedTemplateType?.value?.id
+    SelectedTemplateType?.value?.id,
+    null
   )
   emit('update:data', params)
 }
@@ -231,21 +223,7 @@ watch(() => visible.value, (newVal) => {
 </script>
 
 <template>
-
-
-  <div class="add-new-template-btn flex gap-2" @click="visible = true">
-    <AddNewTemplateIcon />
-    <div class="add-new-template-header">
-      <div class="flex items-center">
-        <span class="title">{{ $t('new_template') }}</span>
-        <NewTemplateArrowIcon />
-      </div>
-      <p class="descripetion">{{ $t('you can customize a new templet from here and you can use it once or save it to your collection') }}</p>
-    </div>
-  </div>
-
-  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
-    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
+  <div class="add-new-template-dialog-container">
     <template #header>
       <div class="add-new-template-dialog-header">
         <p class="title">{{ $t('create new template') }}</p>
@@ -281,6 +259,6 @@ watch(() => visible.value, (newVal) => {
         {{ $t('use only this time') }}
       </button>
     </div>
-  </Dialog>
+  </div>
 
 </template>

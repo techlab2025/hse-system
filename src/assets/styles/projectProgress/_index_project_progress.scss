@@ -63,10 +63,15 @@
           }
         }
         .timeline-content {
-          .first-item-title {
-            color: #000060;
-            font-size: $MdSize2;
-            font-weight: $BaseFontWeightBold;
+          .timeline-content-header {
+            @include flex-row(nowrap, flex-start, center);
+            gap: 10px;
+
+            .first-item-title {
+              color: #000060;
+              font-size: $MdSize2;
+              font-weight: $BaseFontWeightBold;
+            }
           }
           .first-item-description {
             color: #96aac3;
@@ -87,10 +92,14 @@
           //   }
           // }
           .timeline-content {
-            .time-line-title {
-              color: #9ca3af;
-              font-size: $MdSize2;
-              font-weight: $BaseFontWeightBold;
+            .timeline-content-header {
+              @include flex-row(nowrap, flex-start, center);
+              gap: 10px;
+              .time-line-title {
+                color: #9ca3af;
+                font-size: $MdSize2;
+                font-weight: $BaseFontWeightBold;
+              }
             }
             .time-line-description {
               color: #96aac3;
@@ -100,10 +109,14 @@
           }
           &.active {
             .timeline-content {
-              .time-line-title {
-                color: $PrimaryColor;
-                font-size: $MdSize2;
-                font-weight: $BaseFontWeightBold;
+              .timeline-content-header {
+                @include flex-row(nowrap, flex-start, center);
+                gap: 10px;
+                .time-line-title {
+                  color: $PrimaryColor;
+                  font-size: $MdSize2;
+                  font-weight: $BaseFontWeightBold;
+                }
               }
               .time-line-description {
                 color: #96aac3;

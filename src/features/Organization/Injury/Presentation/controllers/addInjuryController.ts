@@ -39,7 +39,10 @@ export default class AddInjuryController extends ControllerInterface<InjuryModel
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/injury')
+
+        if (router.currentRoute.value.path.includes('injury')) {
+          if (!draft) await router.push('/organization/injury')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
