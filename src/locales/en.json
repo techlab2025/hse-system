@@ -1172,7 +1172,10 @@
   "guide_route": "Guide Route",
   "ready_to_go": "Ready To Go",
   "overview": "Overview",
-  "Hazard factor":"Hazard factor",
-  "Hazard factor item":"Hazard factor item"
-
+  "Hazard factor": "Hazard factor",
+  "Hazard factor item": "Hazard factor item",
+  "warehouse_types": "Warehouse Types",
+  "hazard_type": "Hazard Type",
+  "incident_types": "Incident Types",
+  "observation_type": "Observation Type"
 }
