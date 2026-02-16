@@ -9,6 +9,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Hierarchy',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -19,6 +20,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Hierarchy',
       parent: 'Hierarchy',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -29,6 +31,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Hierarchy',
       parent: 'Hierarchy',
       isSidebar: true,
+      type: 'Shared',
     },
   },
 ]

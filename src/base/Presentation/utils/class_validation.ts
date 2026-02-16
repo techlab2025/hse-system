@@ -116,7 +116,7 @@ export class ClassValidation {
       // Check custom validation
       if (rule.custom) {
         const result = rule.custom(value)
-        console.log(result , "result");
+        console.log(result, 'result')
         if (result !== true) {
           errors.push({
             field,

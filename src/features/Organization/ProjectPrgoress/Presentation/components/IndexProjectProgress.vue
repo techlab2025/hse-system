@@ -31,6 +31,9 @@ import AddSerial from '@/views/Organization/SerialNumber/AddSerial.vue';
 import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue';
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue';
 import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue';
+import AddEquipment from '@/views/Admin/Equipment/AddEquipment.vue';
+import AddTeams from '@/views/Admin/Teams/AddTeams.vue';
+import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue';
 
 /* ---------------- controller ---------------- */
 
@@ -70,6 +73,9 @@ const AllPagesToView = ref([
   { id: ProjectProgressEnum.HazardType, component: AddHazardType, title: "Functional Hazard Type", description: "Define hazard types and assign related project roles" },
   { id: ProjectProgressEnum.Hazard, component: AddHazard, title: "Functional Hazard", description: "Define hazards and assign roles for risk management" },
   { id: ProjectProgressEnum.EquipmentType, component: AddEquipmentType, title: "Functional Equipment Type", description: "Define equipment types and assign roles for asset management" },
+  { id: ProjectProgressEnum.Equipment, component: AddEquipment, title: "Functional Equipment", description: "Define equipment and assign roles for asset management" },
+  { id: ProjectProgressEnum.Team, component: AddTeams, title: "Functional Team", description: "Define team and assign roles for asset management" },
+  { id: ProjectProgressEnum.RootCause, component: AddRootCauses, title: "Functional Root Cause", description: "Define root cause and assign roles for asset management" },
 ])
 
 const selectedPage = computed(() =>

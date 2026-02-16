@@ -602,6 +602,18 @@ const UpdateActiveTap = (data) => {
   activeTab.value = data
   updateData()
 }
+
+const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
+  switch (equipmenttype) {
+    case EquipmentTypesEnum.EQUIPMENT:
+      return t('Equipment')
+    case EquipmentTypesEnum.DEVICE:
+      return t('Device')
+    case EquipmentTypesEnum.TOOL:
+      return t('Tool')
+
+  }
+}
 </script>
 
 <template>
@@ -626,7 +638,7 @@ const UpdateActiveTap = (data) => {
 
     <div class="grid grid-cols-2 gap-6 mt-8">
       <div class="col-span-2 md:col-span-1">
-        <LangTitleInput :label="`${EquipmentTypesEnum[activeTab]} Name`" :langs="langDefault" :modelValue="langs"
+        <LangTitleInput :label="`${GetEquipmentTitle(activeTab)} Name`" :langs="langDefault" :modelValue="langs"
           @update:modelValue="setLangs" />
       </div>
 
@@ -638,8 +650,8 @@ const UpdateActiveTap = (data) => {
       <div class="col-span-2 md:col-span-1">
         <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
-          :label="`${EquipmentTypesEnum[activeTab]} Type`" id="Equipment Type"
-          :placeholder="`Select ${EquipmentTypesEnum[activeTab]} Type`" @update:modelValue="setEquipmentType"
+          :label="`${GetEquipmentTitle(activeTab)} Type`" :id="`${GetEquipmentTitle(activeTab)} Type`"
+          :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`" @update:modelValue="setEquipmentType"
           :isDialog="true" :dialogVisible="EquipmentTypeDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>

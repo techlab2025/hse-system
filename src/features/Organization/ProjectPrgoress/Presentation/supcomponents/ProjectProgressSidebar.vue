@@ -114,6 +114,24 @@ const AllPagesToView = ref([
     description: "Define equipment types and assign roles for asset management",
     link: "/organization/equipment-types"
   },
+  {
+    id: ProjectProgressEnum.Equipment,
+    title: "Functional Equipment",
+    description: "Define equipment and assign roles for asset management",
+    link: "/organization/equipment"
+  },
+  {
+    id: ProjectProgressEnum.Team,
+    title: "Functional Team",
+    description: "Define team and assign roles for asset management",
+    link: "/organization/teams"
+  },
+  {
+    id: ProjectProgressEnum.RootCause,
+    title: "Functional Root Cause",
+    description: "Define root cause and assign roles for asset management",
+    link: "/organization/root-causes"
+  },
 ]);
 
 
