@@ -113,7 +113,9 @@ const fetchHazard = async (
 // }
 
 onMounted(() => {
-  fetchHazard()
+  if (selectedProjctesFilters.value) {
+    fetchHazard()
+  }
   FetchMyProjects()
 })
 
@@ -244,12 +246,9 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
         ]"
       >
         <div>
-          <IndexHazardHeader
-            :title="`observation`"
-            :length="state?.pagination?.total || 0"
-            :projects="Projects"
-            @update:data="setSelectedProjectFilter"
-          />
+          <IndexHazardHeader :title="`observation`" :length="state?.data?.length" :projects="Projects"
+            @update:data="setSelectedProjectFilter" />
+
 
           <div class="flex items-center justify-between">
             <PermissionBuilder

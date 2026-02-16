@@ -1,11 +1,9 @@
 <script setup lang="ts">
 
 import { markRaw, onMounted, ref, watch } from 'vue'
-
 import { TemplateType } from '@/features/setting/Template/Core/Enum/TemplateTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
-
 import TranslationsParams from '@/base/core/params/translations_params'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -18,6 +16,7 @@ import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/a
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
 import { useRouter } from 'vue-router'
 import TemplateTimeLine from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateTimeLine.vue'
+// import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
 
 
 
@@ -69,17 +68,6 @@ const fetchLang = async () => {
   const params = new IndexLangParams('', 1, 10, 0)
   const response = (await IndexLangController.getInstance().getData(params)).value
 
-  langDefault.value = response?.data?.length
-    ? response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    : [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-
   if (!items.value.length) {
     items.value.push(createNewItem())
   }
@@ -88,7 +76,6 @@ const fetchLang = async () => {
 onMounted(
   () => {
     fetchLang();
-
   }
 )
 interface items {
@@ -111,12 +98,11 @@ const buildOptions = (templateItems: any[]): items[] => {
 }
 const updateData = () => {
   const translationsParams = new TranslationsParams()
+
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-
-  console.log(TemplateData.value, "TemplateData.value")
   const items = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
       null,
@@ -143,7 +129,7 @@ const updateData = () => {
 
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
-  updateData()
+  // updateData()
 }
 
 
@@ -156,7 +142,7 @@ const TemplateTypes = ref<TitleInterface[]>([
 
 const setTemplateType = (data: TitleInterface) => {
   SelectedTemplateType.value = data
-  updateData()
+  // updateData()
 }
 
 const TemplateData = ref()
@@ -176,8 +162,6 @@ const addTemplate = async (isInLibrary: number) => {
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
-
 
   const items = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
@@ -206,31 +190,34 @@ const addTemplate = async (isInLibrary: number) => {
       teamplateTitle: state?.value.data.title,
       isInLibrary: isInLibrary
     })
+    emit('update:data')
   }
   visible.value = false
 }
 
-watch(() => visible.value, (newVal) => {
-  console.log(newVal, "Newval");
-  if (!newVal) {
-    TemplateData.value = []
-    langs.value = []
-    SelectedTemplateType.value = null
-    image.value = null
+watch(
+  () => user?.user?.languages,
+  (langs) => {
+    if (langs?.length) {
+      langDefault.value = langs.map((item: any) => ({
+        locale: item.code,
+        title: '',
+        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+      }))
+    } else {
+      fetchLang()
+    }
+  },
+  { immediate: true }
+)
 
-  }
-})
 </script>
 
 <template>
-  <div class="add-new-template-dialog-container">
-    <template #header>
-      <div class="add-new-template-dialog-header">
-        <p class="title">{{ $t('create new template') }}</p>
-        <p>{{ $t('follow the steps to add your templet now') }}</p>
-      </div>
-    </template>
 
+
+
+  <div class="add-new-template-dialog-container">
     <!-- BODY -->
     <div class="dialog-body">
       <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
