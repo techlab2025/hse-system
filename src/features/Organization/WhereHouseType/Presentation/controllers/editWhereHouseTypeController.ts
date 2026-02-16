@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
 import EditWhereHouseTypeUseCase from '../../Domain/useCase/editWhereHouseTypeUseCase'
 
-
 export default class EditWhereHouseTypeController extends ControllerInterface<WhereHouseTypeModel> {
   private static instance: EditWhereHouseTypeController
 
@@ -28,7 +27,9 @@ export default class EditWhereHouseTypeController extends ControllerInterface<Wh
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<WhereHouseTypeModel> = await this.EditWhereHouseTypeUseCase.call(params)
+      const dataState: DataState<WhereHouseTypeModel> =
+        await this.EditWhereHouseTypeUseCase.call(params)
+      this.setLoading()
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

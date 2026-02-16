@@ -107,9 +107,7 @@ const closeOnboarding = () => {
 const visited = ref(localStorage.getItem("ProjectProgressVisited"))
 onMounted(() => {
   visited.value = localStorage.getItem("ProjectProgressVisited")
-  // if (!visited.value) {
-  //   showOverlay.value = true
-  // }
+
 })
 </script>
 

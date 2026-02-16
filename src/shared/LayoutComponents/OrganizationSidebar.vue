@@ -611,7 +611,7 @@ watch(GauideAccordion, (val) => {
 
 
   <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
-    <Accordion v-model:value="orgAccordion">
+    <Accordion v-model:value="GauideAccordion">
       <AccordionPanel value="5">
         <AccordionHeader>
           <div class="links-header">

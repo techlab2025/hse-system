@@ -24,9 +24,9 @@ export default class DeleteWhereHouseController extends ControllerInterface<Wher
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<WhereHouseModel> =
-        await this.DeleteWhereHouseUseCase.call(params)
+      const dataState: DataState<WhereHouseModel> = await this.DeleteWhereHouseUseCase.call(params)
 
+      this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
