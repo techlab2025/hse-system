@@ -36,6 +36,7 @@ import AddTeams from '@/views/Admin/Teams/AddTeams.vue';
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue';
 import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue';
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue';
+import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue';
 
 /* ---------------- controller ---------------- */
 
@@ -105,9 +106,7 @@ const routerBack = () => router.back()
       <template #success>
 
         <ProjectProgressHeader :progressValue="state.data?.progress" />
-
         <div class="project-progress-body-container">
-
           <div class="project-progress-body-sidebar">
             <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" />
           </div>
@@ -130,6 +129,9 @@ const routerBack = () => router.back()
 
         </div>
 
+        <!-- state.data?.progress == 0 -->
+        <ProjectProgreesDialog title="Add Your Own Data To Start Using System Easly " :index="6"
+          :visible="state.data?.progress == 0" />
       </template>
 
       <template #loader>
