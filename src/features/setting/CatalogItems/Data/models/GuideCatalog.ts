@@ -5,15 +5,18 @@ export default class GuideCatalogModel {
   public id: number
   public titles: TitleLocale[]
   public descriptions:DescriptionLocale[]
+    public link: string
 
   constructor(
     id: number,
     titles: TitleLocale[],
     descriptions:DescriptionLocale[], 
+    link: string
   ) {
     this.id = id
     this.titles = titles
     this.descriptions = descriptions
+    this.link = link
 
   }
 
@@ -22,6 +25,7 @@ export default class GuideCatalogModel {
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap(data.descriptions).descriptions,
+      data.link
     )
   }
 

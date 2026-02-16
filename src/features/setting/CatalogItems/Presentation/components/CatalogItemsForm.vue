@@ -29,6 +29,7 @@ import AddCatalogItemsDetailsParams from '@/features/setting/CatalogItemsDetails
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
+const link = ref("")
 const props = defineProps<{
   data?: CatalogItemsDetailsModel
 }>()
@@ -133,45 +134,46 @@ const updateData = () => {
   const translationsParams = new TranslationsParams()
   const translationsParamsDescription = new TranslationsParams()
 
-
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
 
   langsDescription.value.forEach((lang) => {
     translationsParamsDescription.setTranslation('description', lang.locale, lang.description)
   })
 
-
   const TranslationsDescription = new CatalogItemsParams({
-    translation: translationsParamsDescription
+    translation: translationsParamsDescription,
   })
-
 
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
-
   const params = props.data?.id
     ? new editCatalogItemsParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],
-      selectedCatalog.value?.id || route.params.parent_id,
-      TranslationsDescription
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+        selectedCatalog.value?.id || route.params.parent_id,
+        TranslationsDescription,
+        link.value,
+
+        // SerialNumber.value?.SerialNumber,
+        // id,
+      )
     : new AddCatalogItemsParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      null,
-      selectedCatalog.value?.id || route.params.parent_id,
-      null,
-      TranslationsDescription,
-      // SerialNumber.value?.SerialNumber,
-      // id,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        null,
+        selectedCatalog.value?.id || route.params.parent_id,
+        null,
+        TranslationsDescription,
+        link.value,
+
+        // SerialNumber.value?.SerialNumber,
+        // id,
+      )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -224,6 +226,7 @@ watch(
     allIndustries.value = newData?.allIndustries ?? false
     industry.value = newData?.industries ?? []
     selectedCatalog.value = newData?.parent
+    link.value = newData?.link
   },
   { immediate: true },
 )
@@ -312,20 +315,41 @@ watch(
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="
-    !allIndustries &&
-    user.user?.type == OrganizationTypeEnum.ADMIN &&
-    !route.params.parent_id &&
-    !data?.id
-  ">
-    <CustomSelectInput :modelValue="selectedCatalog" :controller="indexCatalogController" :params="indexCatalogParams"
-      :label="$t('Catalog')" id="catalog" :placeholder="$t('Select catalog')" @update:modelValue="setCatalog" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="
+      !allIndustries &&
+      user.user?.type == OrganizationTypeEnum.ADMIN &&
+      !route.params.parent_id &&
+      !data?.id
+    "
+  >
+    <CustomSelectInput
+      :modelValue="selectedCatalog"
+      :controller="indexCatalogController"
+      :params="indexCatalogParams"
+      :label="$t('Catalog')"
+      id="catalog"
+      :placeholder="$t('Select catalog')"
+      @update:modelValue="setCatalog"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput label="catalog_description" :langs="langDefault" :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`catalog description`" :required="false" />
+    <LangTitleInput
+      label="catalog_description"
+      :langs="langDefault"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+      :placeholder="`catalog description`"
+      :required="false"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <label for="link">Link</label>
+    <input type="link" class="input" v-model="link"   @input="updateData" placeholder="Enter Link" />
   </div>
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
   <!--    <label>{{ $t('has_certificate') }}</label>-->

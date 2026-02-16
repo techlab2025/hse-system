@@ -13,6 +13,7 @@ export default class implements Params {
   industries: number[]  
   parentId?: number
    guideCategoryItems?: CatalogItemsParams
+   link?: string
 
       public static readonly validation = new ClassValidation().setRules({
         parentId: { required: true },
@@ -24,7 +25,8 @@ export default class implements Params {
     allIndustries: boolean | null,
     industries: number[],
     parentId?: number,
-    guideCategoryItems?: CatalogItemsParams
+    guideCategoryItems?: CatalogItemsParams,
+    link?: string
 
   ) {
     this.id = id
@@ -33,6 +35,7 @@ export default class implements Params {
     this.industries = industries
     this.parentId = parentId
     this.guideCategoryItems = guideCategoryItems
+    this.link = link
   }
 
   toMap(): Record<
@@ -55,6 +58,7 @@ export default class implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
 if (this.parentId) data['parent_id'] = this.parentId
     if (this.guideCategoryItems) data['guide_category_items'] = [this.guideCategoryItems.toMap()]
+    if (this.link) data['link'] = this.link
 
     return data
   }

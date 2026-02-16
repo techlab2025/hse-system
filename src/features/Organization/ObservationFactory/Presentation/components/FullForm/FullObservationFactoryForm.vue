@@ -59,8 +59,11 @@ import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import RootCausesIdParams from '../../../Core/params/RootCausesIdParams'
+import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
 
 const emit = defineEmits(['update:data'])
+//
+const RootCausesDialog = ref<boolean>(false)
 const props = defineProps<{
   data?: HazardDetailsModel
 }>()
@@ -544,11 +547,23 @@ const setRootCause = (data: TitleInterface[]) => {
       </UpdatedCustomInputSelect>
     </div>
 
-    <!-- Machine -->
+    <!-- Root Cause -->
     <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
-      <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
+      <!-- <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
         :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause"
-        :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" />
+        :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" /> -->
+
+            <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
+              :params="indexRootCaueseParams" :label="$t('select Root Cause')"  id="rootCause"  :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" 
+               @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
+              <template #LabelHeader>
+                <span class="add-dialog" @click="RootCausesDialog = true">New</span>
+              </template>
+              <template #Dialog>
+                <!-- <AddScope @update:data="RootCausesDialog = false" /> -->
+                 <AddRootCauses @close:data="RootCausesDialog = false" />
+              </template>
+            </UpdatedCustomInputSelect>
     </div>
 
     <div class="col-span-3 md:col-span-3 input-wrapper">
