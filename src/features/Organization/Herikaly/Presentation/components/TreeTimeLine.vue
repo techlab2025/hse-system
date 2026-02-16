@@ -7,6 +7,7 @@ import DeleteHerikalyController from '../controllers/deleteHerikalyController';
 import DeleteHerikalyParams from '../../Core/params/deleteHerikalyParams';
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import DeleteHierarchy from '../supcomponents/DeleteHierarchy.vue';
 import PermissionHandler from '@/base/Presentation/utils/permission_handler';
 
 const emit = defineEmits(['delete-data']);
@@ -37,7 +38,7 @@ const flattenedHierarchies = computed(() => {
   }))
 })
 
-const DeleteHierarchy = async (Id: number) => {
+const deleteHierarchy = async (Id: number) => {
   const deleteHerikalyParams = new DeleteHerikalyParams(Id);
   const deleteHerikalyController = DeleteHerikalyController.getInstance();
   await deleteHerikalyController.deleteHerikaly(deleteHerikalyParams);
@@ -113,15 +114,15 @@ const DeleteHierarchy = async (Id: number) => {
                   </PermissionBuilder>
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_UPDATE]">
                     <router-link :to="`/organization/herikaly/${item.id}`" class="btn add-btn">{{ $t('edit')
-                    }}</router-link>
+                      }}</router-link>
                   </PermissionBuilder>
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_UPDATE]">
                     <router-link :to="`/organization/employee-certificate/${item.id}`" class="btn add-btn">{{
                       $t('certificates')
-                    }}</router-link>
+                      }}</router-link>
                   </PermissionBuilder>
                   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.HERIKALY_DELETE]">
-                    <button class="btn btn-delete" @click="DeleteHierarchy(item.id)"> {{ $t('delete') }} </button>
+                    <DeleteHierarchy @delete:data="deleteHierarchy(item.id)" />
                   </PermissionBuilder>
                 </div>
               </div>

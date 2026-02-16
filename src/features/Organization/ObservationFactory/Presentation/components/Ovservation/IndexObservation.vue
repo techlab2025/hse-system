@@ -39,6 +39,7 @@ import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import PinIcons from '@/shared/icons/PinIcons.vue'
 import HighLevel from '@/shared/icons/HighLevel.vue'
 import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
+import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -229,6 +230,16 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
       return 'Unknown'
   }
 }
+
+const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
+  switch (actionStatus) {
+    case ActionStatusEnum.OPEN:
+      return 'Open'
+    case ActionStatusEnum.CLOSED:
+      return 'Closed'
+
+  }
+}
 </script>
 
 <template>
@@ -307,6 +318,9 @@ const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
                             <p class="label-item-secondary">
                               {{ $t('Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
+                            </p>
+                            <p class="label-item-secondary" v-if="item.actionStatus">
+                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
                             </p>
                           </div>
                           <div class="card-details">
