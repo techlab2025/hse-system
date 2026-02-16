@@ -32,6 +32,7 @@ abstract class ControllerInterface<T> {
   }
 
   setLoading() {
+    this.state.value.error = null
     this.state.value = new DataLoading<T>();
   }
 
