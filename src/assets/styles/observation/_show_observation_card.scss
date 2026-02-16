@@ -159,7 +159,7 @@
           height: clamp(calc(65 * 0.8px), calc(65 * 100vw / var(--base-width)), calc(65 * 1.2px));
           aspect-ratio: 16/9;
           border-radius: 12px;
-        
+
           .p-image-preview-mask {
             border-radius: 12px;
             display: block;
@@ -173,12 +173,12 @@
           .perview {
             @include flex-center();
             gap: 5px;
-             
+
             span {
               color: white;
               font-size: $SmSize;
               font-weight: $BaseFontSemiBoldWeight;
-              
+
             }
           }
         }

@@ -11,15 +11,11 @@ export default class EditFaqParams implements Params {
   // industries: number[]
   // parentId: number
 
-
-
   constructor(
     id: number,
     translation: TranslationsParams,
 
-
     // industries: number[],
-
   ) {
     this.id = id
     this.translation = translation
@@ -27,7 +23,6 @@ export default class EditFaqParams implements Params {
     // this.allIndustries = allIndustries
     // this.industries = industries
     // this.parentId = parentId
-
   }
 
   toMap(): Record<

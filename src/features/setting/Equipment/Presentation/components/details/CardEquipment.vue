@@ -95,13 +95,13 @@ const GetEquipmentType = (type: number) => {
     <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
       class="img-equipment" />
 
-    <div class="card-body">
+    <div class="card-body flex-nowrap">
 
 
 
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <div class="info-container flex flex-col gap-2">
+        <div class="info-container flex flex-col  gap-2">
           <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
             :equipmentType="equipmentData.equipment_type?.title" />
           <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
@@ -144,9 +144,7 @@ const GetEquipmentType = (type: number) => {
       </div>
       <div class="card-body-content-right">
         <div class="card flex justify-center">
-          <button @click="toggle" type="button">
-            <DropdownIcons />
-          </button>
+
 
           <Popover ref="op">
             <div class="flex flex-col gap-4">
@@ -180,6 +178,11 @@ const GetEquipmentType = (type: number) => {
           </div>
           <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>
+
+
+                  <button @click="toggle" type="button">
+            <DropdownIcons />
+          </button>
       </div>
     </div>
   </div>
