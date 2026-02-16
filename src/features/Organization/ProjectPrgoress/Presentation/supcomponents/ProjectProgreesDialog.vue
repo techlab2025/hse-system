@@ -18,6 +18,11 @@ const visible = ref(props.visible);
 const openHelp = () => {
   visible.value = true;
 };
+const emit = defineEmits(['Gotit']);
+const Gotit = () => {
+  visible.value = false;
+  emit('Gotit' , true);
+}
 </script>
 
 <template>
@@ -61,7 +66,7 @@ const openHelp = () => {
         </div>
 
         <div class="dialog-footer">
-          <button class="close-btn" @click="visible = false">Got it!</button>
+          <button class="close-btn" @click="Gotit">Got it!</button>
         </div>
       </div>
     </Dialog>

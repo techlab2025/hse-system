@@ -9,6 +9,7 @@ import LinkIcon from '@/shared/icons/LinkIcon.vue';
 const emit = defineEmits(['update:ActiveItem'])
 const props = defineProps<{
   sidebarItems: ProjectProgressItemModel[]
+  showblure: boolean
 }>()
 
 const ActiveItem = ref(props.sidebarItems.find((el) => !el.progress)?.id)
@@ -140,12 +141,18 @@ const AllPagesToView = ref([
 <template>
   <!--  :class="ActiveItem == item?.id && !item.progress ? `` : `not-active`" -->
   <div class="timeline-container">
+    <div v-if="showblure" class="overlay-focus"></div>
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
 
       <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
         :class="{ active: ActiveItem == item?.id || item.progress }" :style="{ animationDelay: `${index * 0.15}s` }"
         @click="ActiveItem = item?.id">
+        <!-- <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index" :class="{
+        'active': ActiveItem == item?.id || item.progress,
+        'overlay-focus': showblure
+      }"> -->
+
 
 
         <!-- active but not done  -->
@@ -202,3 +209,18 @@ const AllPagesToView = ref([
     </div>
   </div>
 </template>
+<style scoped>
+.overlay-focus {
+  /* background: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  z-index: 99999;
+}
+</style>
