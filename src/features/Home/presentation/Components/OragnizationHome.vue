@@ -81,7 +81,7 @@ onMounted(() => {
     <PermissionBuilder :code="[
       PermissionsEnum.PROJECT_ALL,
       PermissionsEnum.PROJECT_CREATE,
-      PermissionsEnum.PROJECT_DELETE,
+      PermissionsEnum.PROJECT_DELETE, 
       PermissionsEnum.PROJECT_FETCH,
       PermissionsEnum.PROJECT_UPDATE,
       PermissionsEnum.PROJECT_DETAILS,
