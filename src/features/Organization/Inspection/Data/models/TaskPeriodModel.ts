@@ -11,8 +11,8 @@ export default class TaskPeriodModel {
   constructor(
     id: number,
     counter: number,
-    date: string,
     counterType: number,
+    date: string,
     day: string,
     dayLabel: string,
     status: number,
@@ -33,7 +33,7 @@ export default class TaskPeriodModel {
       data.id,
       data.counter,
       data.counter_type,
-      data.data,
+      data.date,
       data.day,
       data.day_label,
       data.status,

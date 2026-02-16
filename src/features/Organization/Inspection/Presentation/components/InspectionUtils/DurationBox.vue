@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 import type InspectionModel from '../../../Data/models/InspectionModel'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 interface SessionCardProps {
   singleImage?: string
@@ -62,9 +63,12 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
 
     <div class="content-items" v-if="!isOnce">
       <span v-for="item in data.taskPeriods" :key="item.dayLabel">
-        {{ item.dayLabel.slice(0, 3) }}
+        
+        {{ item.dayLabel.slice(0, 3) || formatJoinDate(item.date)}}
       </span>
     </div>
+
+
 
     <img v-if="isOnce" :src="singleImage" alt="Once" class="single-image" />
   </div>

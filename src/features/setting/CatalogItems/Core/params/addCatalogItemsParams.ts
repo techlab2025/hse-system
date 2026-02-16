@@ -13,6 +13,7 @@ export default class AddCatalogItemsParams implements Params {
   parentId?: number
   parentType?: ParentTypeEnum
   guideCategoryItems?: CatalogItemsParams
+  link?: string
   // serial_number: string
 
   public static readonly validation = new ClassValidation().setRules({
@@ -26,6 +27,7 @@ export default class AddCatalogItemsParams implements Params {
     parentId?: number,
     parentType?: ParentTypeEnum,
     guideCategoryItems?: CatalogItemsParams,
+    link?: string,
     // serial_number: string,
   ) {
     this.translation = translation
@@ -35,6 +37,7 @@ export default class AddCatalogItemsParams implements Params {
     this.parentId = parentId
     this.parentType = parentType
     this.guideCategoryItems = guideCategoryItems
+    this.link = link
     // this.serial_number = serial_number
   }
 
@@ -62,6 +65,7 @@ export default class AddCatalogItemsParams implements Params {
     if (this.parentId) data['parent_id'] = this.parentId
     if (this.parentType) data['parent_type'] = this.parentType
     if (this.guideCategoryItems) data['guide_category_items'] = [this.guideCategoryItems.toMap()]
+    if (this.link) data['link'] = this.link
     // data['serial_number'] = Number(this.serial_number)
     // if (this.image) data['image'] = this.image
 
