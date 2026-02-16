@@ -5,10 +5,12 @@
   @include flex-row(nowrap, flex-start, center);
   gap: $XsSize;
   font-family: 'Regular';
-  background-color: #fcfcfc;
+  background-color: #fafafa;
   padding: $SmSize;
   border-radius: $MdSize;
   width: 100%;
+  box-shadow: 0px 2px 16px 0px #6e6e6e1a;
+  border: 1px solid #eaeaea;
   svg {
     width: 60px;
     height: 60px;
@@ -27,14 +29,16 @@
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize4;
     .title {
-      font-size: $MdSize;
+      font-size: $MdSize2;
       font-weight: $BaseFontWeightBold;
+      font-family: 'bold';
       color: #000039;
     }
     .description {
-      font-size: $SmSize;
+      font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
-      color: #cbcbcb;
+      font-family: 'regular';
+      color: #a6acc3;
     }
   }
 }
