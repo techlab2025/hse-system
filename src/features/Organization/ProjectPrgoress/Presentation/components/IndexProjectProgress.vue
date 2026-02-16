@@ -33,7 +33,9 @@ import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue';
 import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue';
 import AddEquipment from '@/views/Admin/Equipment/AddEquipment.vue';
 import AddTeams from '@/views/Admin/Teams/AddTeams.vue';
-import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue';
+import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue';
+import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue';
+import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue';
 
 /* ---------------- controller ---------------- */
 
@@ -73,8 +75,8 @@ const AllPagesToView = ref([
   { id: ProjectProgressEnum.HazardType, component: AddHazardType, title: "Functional Hazard Type", description: "Define hazard types and assign related project roles" },
   { id: ProjectProgressEnum.Hazard, component: AddHazard, title: "Functional Hazard", description: "Define hazards and assign roles for risk management" },
   { id: ProjectProgressEnum.EquipmentType, component: AddEquipmentType, title: "Functional Equipment Type", description: "Define equipment types and assign roles for asset management" },
-  { id: ProjectProgressEnum.Equipment, component: AddEquipment, title: "Functional Equipment", description: "Define equipment and assign roles for asset management" },
-  { id: ProjectProgressEnum.Team, component: AddTeams, title: "Functional Team", description: "Define team and assign roles for asset management" },
+  { id: ProjectProgressEnum.Equipment, component: AddFullEquipment, title: "Functional Equipment", description: "Define equipment and assign roles for asset management" },
+  { id: ProjectProgressEnum.Team, component: AddTeam, title: "Functional Team", description: "Define team and assign roles for asset management" },
   { id: ProjectProgressEnum.RootCause, component: AddRootCauses, title: "Functional Root Cause", description: "Define root cause and assign roles for asset management" },
 ])
 

@@ -8,7 +8,7 @@ import AddRootCausesParams from '@/features/setting/RootCauses/Core/params/addRo
 import type Params from '@/base/core/params/params'
 
 const router = useRouter()
-const emit = defineEmits(['close:data'])
+const emit = defineEmits(['close:data', 'update:data'])
 const params = ref<Params | null>(null)
 
 const addRootCausesController = AddRootCausesController.getInstance()
@@ -16,6 +16,7 @@ const addRootCausesController = AddRootCausesController.getInstance()
 const addRootCauses = async () => {
   await addRootCausesController.addRootCauses(params.value as AddRootCausesParams, router)
   emit('close:data')
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
