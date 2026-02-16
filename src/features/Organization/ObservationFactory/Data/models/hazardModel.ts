@@ -7,6 +7,7 @@ import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import acc from '@/assets/images/acc.png'
+import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
 
 export default class HazardModel {
   public id: number
@@ -36,6 +37,7 @@ export default class HazardModel {
   public media: FilesModel[]
   public serialName: string
   public time: string
+  public actionStatus: ActionStatusEnum
 
   constructor(
     id: number,
@@ -65,6 +67,7 @@ export default class HazardModel {
     media: FilesModel[],
     serialName: string,
     time: string,
+    actionStatus: ActionStatusEnum,
   ) {
     this.id = id
     this.title = title
@@ -93,6 +96,7 @@ export default class HazardModel {
     this.media = media
     this.serialName = serialName
     this.time = time
+    this.actionStatus = actionStatus
   }
 
   static fromMap(data: any): HazardModel {
@@ -124,6 +128,7 @@ export default class HazardModel {
       data.media.map((item: any) => FilesModel.fromMap(item)),
       data.serial_name,
       data.time,
+      data.action_status,
     )
   }
 

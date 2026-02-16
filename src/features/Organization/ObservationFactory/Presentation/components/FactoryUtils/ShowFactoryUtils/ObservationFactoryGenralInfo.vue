@@ -111,7 +111,7 @@ const GetStatus = (status: ActionStatusEnum) => {
                 {{ $t('Root Causes') }}
                 <span>{{
                   $t('Analyze the main reasons behind the event to prevent recurrence')
-                  }}</span>
+                }}</span>
               </p>
             </div>
             <div class="root-causes-content">
@@ -167,11 +167,11 @@ const GetStatus = (status: ActionStatusEnum) => {
           <p class="action-text">{{ props?.data?.action }}</p>
         </div>
       </div>
-      <div class="card_status">
+      <!-- <div class="card_status">
         <span></span>
         <p>{{ $t('status') }}</p>
         <h6>{{ $t(`${GetStatus(props?.data?.actionStatus)}`) }}</h6>
-      </div>
+      </div> -->
       <!-- <div class="status-container">
         <div class="status" v-if="props.data?.actionStatus == ActionStatusEnum.OPEN">
           <ActionOpen class="icon" />

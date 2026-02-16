@@ -241,7 +241,7 @@ const UpdateSerial = (data) => {
   <!-- :type="2" -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-      :params="HerikalyParams" :label="$t('Job Description')" :placeholder="$t('Select Heirarchy')" />
+      :params="HerikalyParams" :label="$t('Job Type')" :placeholder="$t('Select Job Type')" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"

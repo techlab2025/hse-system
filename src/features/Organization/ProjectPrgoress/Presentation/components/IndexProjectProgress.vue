@@ -30,6 +30,7 @@ import AddSerial from '@/views/Organization/SerialNumber/AddSerial.vue';
 
 import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue';
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue';
+import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue';
 
 /* ---------------- controller ---------------- */
 
@@ -52,12 +53,11 @@ watch(() => indexProjectProgressController.state.value, (newVal) => {
 const ActiveItem = ref(0)
 const GetActiveItem = (value: number) => ActiveItem.value = value
 
-/* ---------------- pages map ---------------- */
 
 const AllPagesToView = ref([
   { id: ProjectProgressEnum.codingSystem, component: AddSerial, title: "Codeing System", description: "Define Codeing System structure" },
   { id: ProjectProgressEnum.Certificate, component: AddCertificate, title: "Functional Certificate", description: "Define certificate structure and assign related project roles" },
-  { id: ProjectProgressEnum.Tempalte, component: AddTemplate, title: "Functional Template", description: "Define templates structure and assign related project roles" },
+  { id: ProjectProgressEnum.Tempalte, component: TemplateItemAdd, title: "Functional Template", description: "Define templates structure and assign related project roles" },
   { id: ProjectProgressEnum.Employee, component: AddOrganization, title: "Functional Employee", description: "Define employees structure and assign roles within the organization" },
   { id: ProjectProgressEnum.Heirarchy, component: AddHerikaly, title: "Functional Hierarchy", description: "Define the hierarchy and assign roles for your project team" },
   { id: ProjectProgressEnum.Country, component: AddCountry, title: "Functional Country", description: "Define country structure and assign roles across locations" },
@@ -72,12 +72,10 @@ const AllPagesToView = ref([
   { id: ProjectProgressEnum.EquipmentType, component: AddEquipmentType, title: "Functional Equipment Type", description: "Define equipment types and assign roles for asset management" },
 ])
 
-/* 🔥 الحل الحقيقي للمشكلة */
 const selectedPage = computed(() =>
   AllPagesToView.value.find(item => item.id === ActiveItem.value)
 )
 
-/* ---------------- router ---------------- */
 
 const router = useRouter()
 const routerBack = () => router.back()
