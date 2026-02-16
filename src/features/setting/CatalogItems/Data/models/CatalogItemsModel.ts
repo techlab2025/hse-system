@@ -6,10 +6,12 @@ export default class CatalogItemsModel extends TitleInterface {
     public title: string
 
     public guideCategoryItem: CatalogItemsModel | null
+      public link: string
   constructor(
     id: number,
     title: string,
-    guideCategoryItem: CatalogItemsModel | null
+    guideCategoryItem: CatalogItemsModel | null,
+    link: string
 
   ) {
     super({ id, title, })
@@ -17,13 +19,16 @@ export default class CatalogItemsModel extends TitleInterface {
     this.id = id
     this.title = title
     this.guideCategoryItem = guideCategoryItem
+    this.link = link
   }
 
   static fromMap(data: any): CatalogItemsModel {
     return new CatalogItemsModel(
       data.id,
       data.title,
-      data.guide_category_item
+      data.guide_category_item,
+      data.link
+
 
     )
   }

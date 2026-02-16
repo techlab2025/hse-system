@@ -16,6 +16,7 @@ export default class CatalogItemsDetailsModel {
   public industries: TitleModel<string>[]
   public parent: TitleInterface | null
   public guideCategoryItem: GuideCatalogModel
+  public link: string
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -27,7 +28,9 @@ export default class CatalogItemsDetailsModel {
     parentId: number,
     image: string,
     parent: TitleInterface | null,
-    guideCategoryItem: GuideCatalogModel
+    guideCategoryItem: GuideCatalogModel,
+    link: string
+
   ) {
     this.id = id
     this.titles = titles
@@ -38,6 +41,7 @@ export default class CatalogItemsDetailsModel {
     this.image = image
     this.parent = parent
     this.guideCategoryItem = guideCategoryItem
+    this.link = link
 
   }
 
@@ -53,7 +57,8 @@ export default class CatalogItemsDetailsModel {
       data?.parent_id,
       data?.image,
       data?.parent ? this.getTitle(data?.parent)  : null,
-      data.guide_category_item
+      data.guide_category_item,
+      data.link
     )
   }
 
