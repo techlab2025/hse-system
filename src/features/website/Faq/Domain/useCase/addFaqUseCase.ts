@@ -5,7 +5,6 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type FaqteModel from '../../Data/models/FaqModel'
 import { AddFaqRepo } from '../repositories/addFaqRepo'
 
-
 export default class AddFaqteUseCase implements UseCase<FaqteModel, Params> {
   async call(params: Params): Promise<DataState<FaqteModel>> {
     return AddFaqRepo.getInstance().call(params)
