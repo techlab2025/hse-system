@@ -14,4 +14,7 @@ export enum ProjectProgressEnum {
   Hazard = 13,
   EquipmentType = 14,
   codingSystem = 18,
+  Equipment = 19,
+  Team = 20,
+  RootCause = 21,
 }

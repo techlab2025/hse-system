@@ -171,6 +171,13 @@
     color: #aeaeb2;
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
+    &.Positive {
+      color: #4caf50;
+    }
+    &.Negative {
+      color: #e23535;
+    }
+
     span {
       color: #000000;
       font-family: 'Regular';

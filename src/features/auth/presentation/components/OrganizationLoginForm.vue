@@ -87,11 +87,11 @@ const isPasswordVisible = ref()
       <div class="inputs">
         <div class="input-wrapper">
           <Email class="icon" />
-          <input class="input py" :placeholder="$t('enter Your Mail')" type="email" id="email" v-model="email" />
+          <input class="input py" :placeholder="$t('Enter Your Mail')" type="email" id="email" v-model="email" />
         </div>
         <div class="input-wrapper">
           <Loca class="icon " />
-          <input :type="isPasswordVisible ? 'text' : 'password'" id="password" :placeholder="$t('Password')"
+          <input :type="isPasswordVisible ? 'text' : 'password'" id="password" :placeholder="$t('Enter Password')"
             class="input py" v-model="password" />
           <CloseEye class="icon-eye" v-if="isPasswordVisible" @click="isPasswordVisible = !isPasswordVisible" />
           <EyeIcon class="icon-eye" v-else @click="isPasswordVisible = !isPasswordVisible" />

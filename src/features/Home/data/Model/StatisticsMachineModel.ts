@@ -1,11 +1,11 @@
 export default class StatisticsMachineModel {
   public id: number
   public type: number
-  public months:{month: number, number: number}[]
-  constructor(id: number, type: number, months: {month: number, number: number}[]) {
+  public zoones: { zoon: number; number: number }[]
+  constructor(id: number, type: number, months: { zoon: number; number: number }[]) {
     this.id = id
     this.type = type
-    this.months = months
+    this.zoones = months
   }
 
   static fromMap(data: any): StatisticsMachineModel {

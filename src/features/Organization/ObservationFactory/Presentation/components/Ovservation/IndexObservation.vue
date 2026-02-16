@@ -240,6 +240,16 @@ const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
 
   }
 }
+
+const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
+  switch (saveStatus) {
+    case SaveStatusEnum.Saved:
+      return 'Positive'
+    case SaveStatusEnum.NotSaved:
+      return 'Negative'
+
+  }
+}
 </script>
 
 <template>
@@ -304,6 +314,11 @@ const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
                             <p class="label-item-secondary" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
                             </p>
+                            <p class="label-item-secondary" :class="`${GetSaveStatus(item.saveStatus)}`"
+                              v-if="item.saveStatus">
+                              {{ GetSaveStatus(item.saveStatus) }}
+                            </p>
+
                           </div>
                           <div class="card-details">
                             <p class="title">

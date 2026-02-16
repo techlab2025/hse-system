@@ -101,11 +101,11 @@ const role = ref<TitleInterface[]>()
 const EmployeeStatus = ref()
 const booleanEmpStatus = ref(false)
 const updaetAdminStatus = (status: number) => {
-  booleanEmpStatus.value = status
+  booleanEmpStatus.value = status == EmployeeStatusEnum.Admin ? true : false
   if (status) {
-    EmployeeStatus.value = EmployeeStatusEnum.Employee
-  } else {
     EmployeeStatus.value = EmployeeStatusEnum.Admin
+  } else {
+    EmployeeStatus.value = EmployeeStatusEnum.Employee
   }
   updateData()
 }
@@ -155,9 +155,10 @@ watch(
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
-      EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
-      // booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
+      EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Employee ? true : false
+      booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       updateData()
+      console.log(EmployeeStatus.value, "EmployeeStatus.value");
     }
   },
   { immediate: true },
