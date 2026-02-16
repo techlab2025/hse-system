@@ -117,17 +117,18 @@ const InspectionsResultsTasks = async (
 }
 
 onMounted(() => {
-  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-    fetchInspection()
-  }
-  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-    InspectionFormTasks()
-  }
-  else {
-    InspectionsResultsTasks()
+  if (selectedProjctesFilters.value) {
+    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+      fetchInspection()
+    }
+    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+      InspectionFormTasks()
+    }
+    else {
+      InspectionsResultsTasks()
+    }
   }
   FetchMyProjects()
-
 })
 
 const searchInspection = debounce(() => {
@@ -231,14 +232,17 @@ const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
 
-  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-    fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
-  }
-  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-    InspectionFormTasks('', 1, 10, 1, SelectedZonesFilter.value)
-  }
-  else {
-    InspectionsResultsTasks('', 1, 10, 1, SelectedZonesFilter.value)
+  if (data) {
+
+    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+      fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
+    }
+    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+      InspectionFormTasks('', 1, 10, 1, SelectedZonesFilter.value)
+    }
+    else {
+      InspectionsResultsTasks('', 1, 10, 1, SelectedZonesFilter.value)
+    }
   }
 
 }
@@ -250,14 +254,17 @@ const setSelectedProjectFilter = (data) => {
   // }
   selectedProjctesFilters.value = data
 
-  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-    fetchInspection()
-  }
-  else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-    InspectionFormTasks()
-  }
-  else {
-    InspectionsResultsTasks()
+  if (data) {
+
+    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+      fetchInspection()
+    }
+    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+      InspectionFormTasks()
+    }
+    else {
+      InspectionsResultsTasks()
+    }
   }
 
   if (data) {

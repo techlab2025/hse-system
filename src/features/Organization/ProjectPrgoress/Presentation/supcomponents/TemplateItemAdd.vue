@@ -239,12 +239,12 @@ watch(
 
     <!-- FOOTER FIXED -->
     <div class="dialog-footer">
-      <button class="btn btn-primary" @click="addTemplate(1)">
-        {{ $t('use & save to library') }}
+      <button class="btn btn-primary w-full" @click="addTemplate(1)">
+        {{ $t('confirm') }}
       </button>
-      <button class="btn btn-secondary" @click="addTemplate(0)">
+      <!-- <button class="btn btn-secondary" @click="addTemplate(0)">
         {{ $t('use only this time') }}
-      </button>
+      </button> -->
     </div>
   </div>
 

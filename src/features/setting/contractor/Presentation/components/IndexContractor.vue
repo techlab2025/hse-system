@@ -222,9 +222,9 @@ watch(
           PermissionsEnum.ORG_CONTRACTOR_CREATE,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-            addText="Add ContractorType"
-            description="Sorry .. You have no ContractorTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ContractorTypes" />
+            addText="Add Contractor"
+            description="Sorry .. You have no Contractor .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Contractor" />
         </permission-builder>
       </template>
       <template #failed>
