@@ -11,7 +11,7 @@ class AddCatalogApiService extends ServicesInterface {
   }
 
   static getInstance() {
-    if (!this.instance) {
+    if (!this.instance) { 
       this.instance = new AddCatalogApiService()
     }
     return this.instance

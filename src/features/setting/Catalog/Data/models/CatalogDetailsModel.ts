@@ -14,7 +14,7 @@ export default class CatalogDetailsModel {
   public industries: TitleModel<string>[]
   // public descriptions: DescriptionLocale[]
 
-  constructor(
+  constructor( 
     id: number,
     titles: TitleLocale[],
     allIndustries: number,

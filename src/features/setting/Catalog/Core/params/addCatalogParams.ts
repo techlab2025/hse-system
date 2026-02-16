@@ -9,7 +9,7 @@ export default class AddCatalogParams implements Params {
   // serial_number: string
 
   constructor(
-    translation: TranslationsParams,
+    translation: TranslationsParams, 
     allIndustries: boolean | null,
     industries: number[],
     order: number,
