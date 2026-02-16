@@ -28,10 +28,8 @@ export default class AddTeamController extends ControllerInterface<TeamModel> {
 
   async addTeam(params: AddTeamParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    params.validateOrThrow()
     try {
-      const dataState: DataState<TeamModel> =
-        await this.addTeamUseCase.call(params)
+      const dataState: DataState<TeamModel> = await this.addTeamUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -43,7 +41,12 @@ export default class AddTeamController extends ControllerInterface<TeamModel> {
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
+        if (router.currentRoute.value.fullPath.includes('team')) {
+          if (!draft)
+            await router.push(
+              `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`,
+            )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

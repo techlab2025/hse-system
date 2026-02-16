@@ -9,12 +9,13 @@ import type AddTeamParams from '../../Core/params/addTeamParams'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addTeamController = AddTeamController.getInstance()
 
 const addTeam = async () => {
   console.log(params.value, 'params')
   await addTeamController.addTeam(params.value as AddTeamParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
