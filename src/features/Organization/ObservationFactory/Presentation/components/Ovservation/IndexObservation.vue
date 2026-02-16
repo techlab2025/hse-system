@@ -40,6 +40,12 @@ import PinIcons from '@/shared/icons/PinIcons.vue'
 import HighLevel from '@/shared/icons/HighLevel.vue'
 import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
+import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams'
+import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController'
+import ToggleObservationWorkStoppedController from '../../controllers/ToggleObservationWorkStoppedController'
+import ToggleObservationWorkStoppedParams from '../../../Core/params/ToggleObservationWorkStoppedParams'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -250,6 +256,26 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
 
   }
 }
+// const isWorkStopped = (isWorkStopped: number) => {
+//   switch (isWorkStopped) {
+//     case 1:
+//       return 'Stoped'
+//     case 0:
+//       return 'Not Stoped'
+//   }
+// }
+
+
+const toggleObservationActionStatus = async (id: number) => {
+  const toggleObservationActionStatusParams = new ToggleObservationActionStatusParams(id)
+  await ToggleObservationActionStatusController.getInstance().toggleObservationActionStatus(toggleObservationActionStatusParams, router)
+  await fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+}
+const toggleObservationWorkStopped = async (id: number) => {
+  const toggleObservationWorkStoppedParams = new ToggleObservationWorkStoppedParams(id)
+  await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(toggleObservationWorkStoppedParams, router)
+  await fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+}
 </script>
 
 <template>
@@ -298,11 +324,12 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
               <div class="index-table-card-container">
                 <div class="index-table-card" style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);"
                   v-for="(item, index) in state.data" :key="index">
+
                   <!-- :to="`observation/show/${item?.id}`" -->
                   <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                       <div class="header-container">
-                        <router-link :to="`observation/show/${item?.id}`" class="card-content" style="flex: 1">
+                        <div class="card-content" style="flex: 1">
                           <div class="card-header">
                             <p class="label-item-primary">
                               {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
@@ -311,16 +338,24 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
                               {{ $t('Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
                             </p>
-                            <p class="label-item-secondary" v-if="item.actionStatus">
+                            <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
+                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
+                                @update:checked="toggleObservationActionStatus(item?.id)" />
                             </p>
-                            <p class="label-item-secondary" :class="`${GetSaveStatus(item.saveStatus)}`"
-                              v-if="item.saveStatus">
+                            <p class="label-item-secondary flex items-center gap-1"
+                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
                               {{ GetSaveStatus(item.saveStatus) }}
-                            </p>
 
+                            </p>
+                            <p class="label-item-secondary Negative flex items-center gap-1"
+                              v-if="item.isWorkStopped == 1">
+                              {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
+                              <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
+                                @update:checked="toggleObservationWorkStopped(item?.id)" />
+                            </p>
                           </div>
-                          <div class="card-details">
+                          <router-link :to="`observation/show/${item?.id}`" class="card-details">
                             <p class="title">
                               {{ item.observer.name }} <span>{{ '(observer)' }}</span>
                             </p>
@@ -337,8 +372,8 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
                                 Status : <span>{{ item?.status }}</span>
                               </p> -->
                             </div>
-                          </div>
-                        </router-link>
+                          </router-link>
+                        </div>
 
                         <div class="card-info">
                           <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"

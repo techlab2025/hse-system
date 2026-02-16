@@ -6,32 +6,39 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import AddTeamUseCase from '../../Domain/useCase/addTeamUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import type TeamModel from '../../Data/models/TeamModel'
-import type AddTeamParams from '../../Core/params/addTeamParams'
+import AddHazardUseCase from '../../Domain/useCase/addHazardUseCase'
+import type HazardModel from '../../Data/models/hazardModel'
+import { Observation } from '../../Core/Enums/ObservationTypeEnum'
+import type AddHazardParams from '../../Core/params/addHazardParams'
+import ToggleObservationActionStatusUseCase from '../../Domain/useCase/ToggleObservationActionStatusUseCase'
+import type ToggleObservationActionStatusParams from '../../Core/params/ToggleObservationActionStatusParams'
 
-export default class AddTeamController extends ControllerInterface<TeamModel> {
-  private static instance: AddTeamController
+export default class ToggleObservationActionStatusController extends ControllerInterface<HazardModel> {
+  private static instance: ToggleObservationActionStatusController
   private constructor() {
     super()
   }
-  private addTeamUseCase = new AddTeamUseCase()
+  private ToggleObservationActionStatusUseCase = new ToggleObservationActionStatusUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new AddTeamController()
+      this.instance = new ToggleObservationActionStatusController()
     }
     return this.instance
   }
 
-  async addTeam(params: AddTeamParams, router: Router, draft: boolean = false) {
+  async toggleObservationActionStatus(
+    params: ToggleObservationActionStatusParams,
+    router: Router,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
-    params.validateOrThrow()
     try {
-      const dataState: DataState<TeamModel> =
-        await this.addTeamUseCase.call(params)
+      // console.log('Ssssssss')
+      const dataState: DataState<HazardModel> =
+        await this.ToggleObservationActionStatusUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -40,10 +47,6 @@ export default class AddTeamController extends ControllerInterface<TeamModel> {
           imageElement: successImage,
           messageContent: null,
         })
-
-        const { user } = useUserStore()
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

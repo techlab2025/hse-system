@@ -218,7 +218,7 @@ class ApiNames {
     return this.prefix + 'delete_guide_category'
   }
 
-   // Catalog Items
+  // Catalog Items
   public get CreateCatalogItems() {
     return this.prefix + 'create_guide_category'
   }
@@ -235,7 +235,7 @@ class ApiNames {
     return this.prefix + 'delete_guide_category'
   }
 
-    // Catalog Items Details
+  // Catalog Items Details
   public get CreateCatalogItemsDetails() {
     return this.prefix + 'create_guide_category_item'
   }
@@ -1534,6 +1534,12 @@ class ApiNames {
   }
   public get CloseTicket() {
     return this.prefix + 'change_ticket_status'
+  }
+  public get ToggleObservationActionStatus() {
+    return this.prefix + 'toggle_observation_action_status'
+  }
+  public get ToggleObservationWorkStopped() {
+    return this.prefix + 'toggle_observation_work_status'
   }
 }
 
