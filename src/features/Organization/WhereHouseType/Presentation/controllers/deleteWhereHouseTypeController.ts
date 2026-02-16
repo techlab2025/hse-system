@@ -26,6 +26,7 @@ export default class DeleteWhereHouseTypeController extends ControllerInterface<
     try {
       const dataState: DataState<WhereHouseTypeModel> =
         await this.DeleteWhereHouseTypeUseCase.call(params)
+      this.setLoading()
 
       this.setState(dataState)
       if (this.isDataSuccess()) {

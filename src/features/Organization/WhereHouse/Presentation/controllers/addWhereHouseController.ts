@@ -32,6 +32,7 @@ export default class AddWhereHouseController extends ControllerInterface<WhereHo
       }
       const dataState: DataState<WhereHouseModel> = await this.AddWhereHouseUseCase.call(params)
       this.setState(dataState)
+      this.setLoading()
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',

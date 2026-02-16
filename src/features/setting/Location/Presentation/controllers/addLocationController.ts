@@ -47,6 +47,7 @@ export default class AddLocationController extends ControllerInterface<LocationM
         return
       }
       const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)
+      this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
