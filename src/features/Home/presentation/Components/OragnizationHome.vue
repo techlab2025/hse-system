@@ -12,7 +12,7 @@ import { RouterEnum } from '../../core/enums/SettingEnum/SettingEnum'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
 import FetchProjectStatisticsParams from '../../core/params/FetchProjectStatisticsParams'
 import FetchPorjectStatisticsController from '../Controllers/FetchProjectStatisticsController'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import TopTeams from './HomeStatistics/TopTeams.vue'
 import TotalMachines from './HomeStatistics/TotalMachines.vue'
 import MostIncidantFactor from './HomeStatistics/MostIncidantFactor.vue'
@@ -50,7 +50,7 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
   state.value = newState
 })
 
-const ProgressValue = ref<number>(0)
+const ProgressValue = ref<number | null>(null)
 
 const getProjectProgress = async () => {
   const indexProjectProgressController = IndexProjectProgressController.getInstance()
@@ -66,22 +66,42 @@ onMounted(() => {
   getProjectProgress()
 })
 
+const showOverlay = computed(() => {
+  return (ProgressValue.value == 0)
+})
+const setVisited = () => {
+  localStorage.setItem("visited", "true")
+}
 
+const visited = ref(localStorage.getItem("visited"))
+onMounted(() => {
+  visited.value = localStorage.getItem("visited")
+  if (visited.value) {
+    setVisited()
+  }
+})
 </script>
 <template>
-
-  <router-link to="/organization/project-progress" class="mb-5"
+  <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
+    :class="{ 'highlight-active': showOverlay && !visited }"
     v-if="(ProgressValue || ProgressValue == 0) && (ProgressValue < 100)">
     <ProjectProgressHeader :progressValue="ProgressValue" style="margin-block: 20px;" />
+
+    <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
+      <h3>Step 1: Click Here To Start Adding Your Data</h3>
+      <p>Fill All Data From this page</p>
+      <!-- <button @click="goToContentNote" class="ok-btn">Next Tip</button> -->
+    </div>
   </router-link>
   <!-- <HeaderCard /> -->
   <!-- <div class="home-routes-cards"> -->
+  <div v-if="showOverlay && !visited" class="container-overlay"></div>
 
   <div class="home-routes-cards">
     <PermissionBuilder :code="[
       PermissionsEnum.PROJECT_ALL,
       PermissionsEnum.PROJECT_CREATE,
-      PermissionsEnum.PROJECT_DELETE, 
+      PermissionsEnum.PROJECT_DELETE,
       PermissionsEnum.PROJECT_FETCH,
       PermissionsEnum.PROJECT_UPDATE,
       PermissionsEnum.PROJECT_DETAILS,
@@ -208,5 +228,52 @@ onMounted(() => {
 <style scoped>
 .mb-5 {
   margin-block: 12px;
+}
+
+
+.container-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  z-index: 998;
+  pointer-events: all;
+}
+
+.highlight-active {
+  position: relative !important;
+  z-index: 999 !important;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.11);
+  pointer-events: all;
+}
+
+.overlay-note {
+  position: absolute;
+  width: 320px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.overlay-note h3 {
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.overlay-note p {
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 </style>

@@ -31,14 +31,12 @@ import AddSerial from '@/views/Organization/SerialNumber/AddSerial.vue';
 import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue';
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue';
 import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue';
-import AddEquipment from '@/views/Admin/Equipment/AddEquipment.vue';
-import AddTeams from '@/views/Admin/Teams/AddTeams.vue';
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue';
 import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue';
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue';
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue';
 
-/* ---------------- controller ---------------- */
+/* ---------------- Controller & State ---------------- */
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -54,14 +52,13 @@ watch(() => indexProjectProgressController.state.value, (newVal) => {
   state.value = newVal
 })
 
-/* ---------------- active item ---------------- */
+/* ---------------- Active Item Logic ---------------- */
 
 const ActiveItem = ref(0)
 const GetActiveItem = (value: number) => ActiveItem.value = value
 
-
 const AllPagesToView = ref([
-  { id: ProjectProgressEnum.codingSystem, component: AddSerial, title: "Codeing System", description: "Define Codeing System structure" },
+  { id: ProjectProgressEnum.codingSystem, component: AddSerial, title: "Coding System", description: "Define Coding System structure" },
   { id: ProjectProgressEnum.Certificate, component: AddCertificate, title: "Functional Certificate", description: "Define certificate structure and assign related project roles" },
   { id: ProjectProgressEnum.Tempalte, component: TemplateItemAdd, title: "Functional Template", description: "Define templates structure and assign related project roles" },
   { id: ProjectProgressEnum.Employee, component: AddOrganization, title: "Functional Employee", description: "Define employees structure and assign roles within the organization" },
@@ -85,14 +82,41 @@ const selectedPage = computed(() =>
   AllPagesToView.value.find(item => item.id === ActiveItem.value)
 )
 
-
 const router = useRouter()
 const routerBack = () => router.back()
 
+/* ---------------- Onboarding Logic ---------------- */
+
+const showOverlay = ref(false)
+const startNextNote = ref(false)
+
+const setGotit = () => {
+  showOverlay.value = true
+  startNextNote.value = false
+}
+
+const goToContentNote = () => {
+  startNextNote.value = true
+}
+
+const closeOnboarding = () => {
+  showOverlay.value = false
+  startNextNote.value = false
+  localStorage.setItem("ProjectProgressVisited", "true")
+}
+const visited = ref(localStorage.getItem("ProjectProgressVisited"))
+onMounted(() => {
+  visited.value = localStorage.getItem("ProjectProgressVisited")
+  // if (!visited.value) {
+  //   showOverlay.value = true
+  // }
+})
 </script>
 
 <template>
   <div class="project-progress-container">
+
+    <div v-if="showOverlay" class="container-overlay"></div>
 
     <div class="project-progress-actions">
       <div class="back" @click="routerBack">
@@ -102,17 +126,29 @@ const routerBack = () => router.back()
     </div>
 
     <DataStatus :controller="state">
-
       <template #success>
-
         <ProjectProgressHeader :progressValue="state.data?.progress" />
+
         <div class="project-progress-body-container">
-          <div class="project-progress-body-sidebar">
+
+          <div class="project-progress-body-sidebar" :class="{ 'highlight-active': showOverlay && !startNextNote }">
             <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" />
+
+            <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
+              <h3>Step 2: The Roadmap</h3>
+              <p>This list contains all the forms you need to complete. Start from the top to set up your system
+                correctly.</p>
+              <button @click="goToContentNote" class="ok-btn">Next Tip</button>
+            </div>
           </div>
 
-          <!-- FIXED AREA -->
-          <div class="project-progress-body-content" v-if="selectedPage">
+          <div class="project-progress-body-content" v-if="selectedPage"
+            :class="{ 'highlight-active': showOverlay && startNextNote }">
+            <div v-if="showOverlay && startNextNote" class="overlay-note content-tip">
+              <h3>Step 3: Configuration</h3>
+              <p>Fill in the details for each section here. Once saved, your progress will update automatically.</p>
+              <button @click="closeOnboarding" class="ok-btn">Let's Start!</button>
+            </div>
 
             <div class="content-header">
               <div class="flex items-center gap-2">
@@ -124,14 +160,11 @@ const routerBack = () => router.back()
 
             <component :is="selectedPage.component" :key="selectedPage.id" class="full-content"
               @update:data="getProjectProgress" />
-
           </div>
-
         </div>
 
-        <!-- state.data?.progress == 0 -->
-        <ProjectProgreesDialog title="Add Your Own Data To Start Using System Easly " :index="6"
-          :visible="state.data?.progress == 0" />
+        <ProjectProgreesDialog title="Add Your Own Data To Start Using System Easily" :index="6"
+          :visible="state.data?.progress == 0 && !showOverlay && !startNextNote && !visited" @Gotit="setGotit" />
       </template>
 
       <template #loader>
@@ -141,16 +174,104 @@ const routerBack = () => router.back()
       <template #initial>
         <ProjectProgressLoader />
       </template>
-
     </DataStatus>
-
   </div>
 </template>
 
 <style scoped>
+.project-progress-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.container-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  z-index: 998;
+  pointer-events: all;
+}
+
+.highlight-active {
+  position: relative !important;
+  z-index: 999 !important;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.11);
+  pointer-events: all;
+}
+
+.overlay-note {
+  position: absolute;
+  width: 320px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.sidebar-note {
+  top: 20px;
+  left: 105%;
+}
+
+.content-tip {
+  top: 0%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+}
+
+.overlay-note h3 {
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.overlay-note p {
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.ok-btn {
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ok-btn:hover {
+  background: #1e40af;
+}
+
 .project-progress-body-content {
   margin-left: auto;
   margin-right: auto;
   padding: 50px;
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

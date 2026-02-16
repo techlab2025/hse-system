@@ -23,7 +23,7 @@ class FetchMyProjectApiService extends ServicesInterface {
       type: CrudType.FormData,
       auth: true,
       params: params,
-      showLoadingDialog: true,
+      // showLoadingDialog: true,
     })
   }
 }
