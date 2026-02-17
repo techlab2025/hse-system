@@ -94,6 +94,8 @@ const startNextNote = ref(false)
 const setGotit = () => {
   showOverlay.value = true
   startNextNote.value = false
+  localStorage.setItem("ProjectProgressVisited", "true")
+
 }
 
 const goToContentNote = () => {
@@ -108,7 +110,9 @@ const closeOnboarding = () => {
 const visited = ref(localStorage.getItem("ProjectProgressVisited"))
 onMounted(() => {
   visited.value = localStorage.getItem("ProjectProgressVisited")
-
+})
+watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
+  visited.value = localStorage.getItem("ProjectProgressVisited")
 })
 </script>
 

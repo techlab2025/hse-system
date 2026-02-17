@@ -67,6 +67,7 @@ const { user } = useUserStore()
     </div> -->
 
     <div class="sub-card flex gap-4">
+
       <img v-if="props.image" :src="props.image" alt="demo card" class="demo-img" />
       <img v-else src="@/assets/images/Rectangle 39931.png" alt="demo card" class="demo-img" />
 
@@ -131,3 +132,9 @@ const { user } = useUserStore()
     </div>
   </div>
 </template>
+<style scoped>
+.demo-img{
+  max-width: 90px !important;
+  max-height: 90px !important;
+}
+</style>

@@ -7,6 +7,12 @@
     background-color: #fafbfc;
     padding: $XsSize;
 
+    img {
+      width: 100px;
+      height: 100px;
+      max-height: 90px;
+      max-width: 90px;
+    }
     .texts {
       @include flex-column(nowrap, flex-start, flex-start);
       .title {
@@ -30,13 +36,19 @@
       border-radius: $XsSize;
       padding: $XsSize;
       margin-block: $XsSize;
+      img {
+        width: 100px;
+        height: 100px;
+        max-height: 90px;
+        max-width: 90px;
+      }
       .demo-img {
         border-radius: $XsSize;
         width: 100px;
         height: 100px;
         max-height: 90px;
         max-width: 90px;
-        
+        object-fit: cover;
       }
       .sub-card-body {
         width: 100%;
