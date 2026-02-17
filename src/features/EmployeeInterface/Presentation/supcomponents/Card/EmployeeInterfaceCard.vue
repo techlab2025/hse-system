@@ -95,8 +95,9 @@ const buttons = [{ title: 'Daily Inspection' }, { title: 'View Results' }]
         </div>
 
         <div class="actions-button">
+          <!-- v-if="action.show" -->
           <div v-for="(action, index) in card.actions" :key="index">
-            <button @click="$router.push(action.route)" v-if="action.show"
+            <button @click="$router.push(action.route)"
               :class="index === 0 ? 'button-main' : 'button-view'">
               {{ action.title }}
             </button>
