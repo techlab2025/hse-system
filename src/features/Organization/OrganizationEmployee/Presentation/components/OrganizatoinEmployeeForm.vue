@@ -145,8 +145,8 @@ const updateData = () => {
 }
 
 watch(
-  [() => props.data],
-  ([newData]) => {
+  () => props.data,
+  (newData) => {
     if (newData) {
       Name.value = newData.name
       Phone.value = newData.phone
