@@ -161,7 +161,7 @@ watch(
       console.log(Heirarchy.value, "newData.hierarchy[0]");
     }
   },
-  { immediate: true },
+  { immediate: true, deep: true },
 )
 
 const UpdateName = (data) => {
