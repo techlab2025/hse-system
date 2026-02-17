@@ -57,6 +57,7 @@ const { user } = useUserStore()
 </script>
 
 <template>
+  <!-- {{ props }} -->
   <div class="demo-card">
     <!-- <div class="texts">
       <h5 class="title">{{ cardType }} Card</h5>
@@ -72,13 +73,13 @@ const { user } = useUserStore()
       <div class="sub-card-body">
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
-          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment" :equipmentType="selectedequipmentType"
-            :BreadCramps="props.BreadCramps" :cardType="cardType" />
+          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment || equipmentName"
+            :equipmentType="selectedequipmentType" :BreadCramps="props.BreadCramps" :cardType="cardType" />
           <!-- <CertificateImageDialog :certificateImage="props.certificateImage" /> -->
         </div>
 
         <h3 class="demo-title">
-          {{ wordSlice(selctedequipment[1]?.title, 40) }}
+          {{ wordSlice(selctedequipment[1]?.title, 40) || equipmentName }}
         </h3>
 
         <div class="rent_expire">
