@@ -4,6 +4,7 @@ import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 import type InspectionModel from '../../../Data/models/InspectionModel'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { WithDayEnum } from '../../../Core/Enum/WithDayEnum'
 
 interface SessionCardProps {
   singleImage?: string
@@ -61,10 +62,18 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
       </h5> -->
     </div>
 
-    <div class="content-items" v-if="!isOnce">
+
+    <div class="content-items" v-if="!isOnce && data.periodSubType !== PeriodTypeEnum.DAILY">
       <span v-for="item in data.taskPeriods" :key="item.dayLabel">
-        
-        {{ item.dayLabel.slice(0, 3) || formatJoinDate(item.date)}}
+
+        <span v-if="item.counterType">
+          {{ item.counter }}
+          {{ WithDayEnum[item.counterType] }}
+        </span>
+        <span v-else>
+
+          {{ item.dayLabel.slice(0, 3) || formatJoinDate(item.date) }}
+        </span>
       </span>
     </div>
 

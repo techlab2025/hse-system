@@ -11,6 +11,7 @@ import { watch } from 'vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController';
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams';
 import { PeriodicDaysEnum } from '../../../Core/Enum/PeriodicDaysEnum';
+import { WithDayEnum } from '../../../Core/Enum/WithDayEnum';
 
 const emit = defineEmits(['update:data', 'change:btn'])
 
@@ -143,10 +144,10 @@ watch(SelectedPeriodType, () => {
 
 
 const WithDaysType = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Day' }),
-  new TitleInterface({ id: 2, title: 'Week' }),
-  new TitleInterface({ id: 3, title: 'Month' }),
-  new TitleInterface({ id: 4, title: 'Year' }),
+  new TitleInterface({ id: WithDayEnum.DAY, title: 'Day' }),
+  new TitleInterface({ id: WithDayEnum.WEEK, title: 'Week' }),
+  new TitleInterface({ id: WithDayEnum.MONTH, title: 'Month' }),
+  new TitleInterface({ id: WithDayEnum.YEAR, title: 'Year' }),
 ])
 
 const setWithDayesType = (data: TitleInterface) => {

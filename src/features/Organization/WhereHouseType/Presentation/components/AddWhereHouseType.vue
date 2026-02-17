@@ -9,6 +9,7 @@ import type AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypePar
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const emit = defineEmits(['update:data'])
 
 const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
@@ -17,6 +18,7 @@ const addWhereHouseType = async () => {
     params.value as AddWhereHouseTypeParams,
     router,
   )
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
