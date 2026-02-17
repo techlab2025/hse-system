@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type TitleInterface from '@/base/Data/Models/title_interface';
 import ArrowIcons from '../icons/ArrowIcons.vue'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
 
 const props = defineProps<{
   BreadCramps: { title: string; link: string }[]
@@ -10,6 +11,17 @@ const props = defineProps<{
   selctedequipment: TitleInterface
   isForm?: boolean
 }>()
+
+const getEquipmentTyep = (equipmentType: number) => {
+  switch (equipmentType) {
+    case EquipmentTypesEnum.DEVICE:
+      return 'Device'
+    case EquipmentTypesEnum.TOOL:
+      return 'Tool'
+    case EquipmentTypesEnum.EQUIPMENT:
+      return 'Equipment'
+  }
+}
 </script>
 
 <template>
@@ -19,7 +31,7 @@ const props = defineProps<{
   <div class="breadcrumbs">
     <ul>
       <li>
-        <span>{{ equipment || cardType }} </span>
+        <span>{{ equipment || cardType || getEquipmentTyep(equipmentType.type) }} </span>
         <ArrowIcons />
       </li>
       <p v-if="isForm">{{ equipmentType?.title }}</p>
