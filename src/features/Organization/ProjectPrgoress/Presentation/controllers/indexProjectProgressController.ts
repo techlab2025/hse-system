@@ -22,7 +22,7 @@ export default class IndexProjectProgressController extends SelectControllerInte
   async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
-    // this.setLoading()
+    this.setLoading()
     const dataState: DataState<ProjectProgressModel> =
       await this.IndexProjectProgressUseCase.call(params)
 

@@ -72,13 +72,8 @@ const { user } = useUserStore()
       <div class="sub-card-body">
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
-          <BreadCrumb
-            :isForm="isForm"
-            :selctedequipment="selctedequipment"
-            :equipmentType="selectedequipmentType"
-            :BreadCramps="props.BreadCramps"
-            :cardType="cardType"
-          />
+          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment" :equipmentType="selectedequipmentType"
+            :BreadCramps="props.BreadCramps" :cardType="cardType" />
           <!-- <CertificateImageDialog :certificateImage="props.certificateImage" /> -->
         </div>
 
@@ -87,13 +82,15 @@ const { user } = useUserStore()
         </h3>
 
         <div class="rent_expire">
-          <h2 class="expire_date">
+          <h2 class="expire_date" v-if="expiredate">
             Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span>
           </h2>
         </div>
         <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">
           <div class="date_rent">
-            <p class="rent"><Rent /> <span>Rent</span> |per {{ RentTypeEnum[rentType] }}</p>
+            <p class="rent">
+              <Rent /> <span>Rent</span> |per {{ RentTypeEnum[rentType] }}
+            </p>
             <h6 class="start_date">
               start date :
               <span>{{
@@ -106,7 +103,7 @@ const { user } = useUserStore()
               end date :
               <span>{{
                 rentType === RentTypeEnum.HOUR
-                  ? formatJoinDate(EndDate) + '  ' + formatTime(EndDate)
+                  ? formatJoinDate(EndDate) + ' ' + formatTime(EndDate)
                   : formatJoinDate(EndDate)
               }}</span>
             </h6>

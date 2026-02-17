@@ -7,7 +7,7 @@ import AddSerialForm from './AddSerialForm.vue'
   <div>
     <PagesHeader :title="$t('Serial Number Management')" />
     <div>
-      <AddSerialForm />
+      <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')" />
     </div>
   </div>
 </template>

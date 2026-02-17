@@ -12,7 +12,7 @@ const route = useRoute()
 const params = ref<Params | null>(null)
 
 const addEquipmentController = AddEquipmentController.getInstance()
-const emit = defineEmits(['update:data'])
+const emit = defineEmits(['update:data', 'close:dialog'])
 
 const addEquipment = async () => {
   console.log(params.value, 'params')
@@ -35,9 +35,9 @@ const setParams = (data: Params) => {
           <span>Cancel</span>
         </router-link>
 
-        <button v-else @click="$emit('close:dialog')" class="btn btn-danger w-30">
+        <!-- <button v-else @click.prevent="$emit('close:dialog')" class="btn btn-danger w-30">
           Cancel
-        </button>
+        </button> -->
         <button type="submit" class="btn btn-primary w-full">
           <span>Add Equipment</span>
         </button>

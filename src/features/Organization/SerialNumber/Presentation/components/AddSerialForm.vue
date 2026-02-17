@@ -14,7 +14,7 @@ import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
-
+const emit = defineEmits(['update:data', 'close:dialog'])
 const router = useRouter()
 
 const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
@@ -165,7 +165,7 @@ const fields = ref([
   },
 ])
 
-const sendData = () => {
+const sendData = async () => {
   fields.value.map((el) => {
     if (!el.prefix && !el.suffix && !el.start) {
       el.name = 0
@@ -173,7 +173,9 @@ const sendData = () => {
   })
 
   const params = new CreateCodingSystemParams(fields.value.filter((el) => el.name != 0))
-  SerialNumController.getInstance().addSerialNumber(params, router)
+  await SerialNumController.getInstance().addSerialNumber(params, router)
+  emit('close:dialog')
+  emit('update:data')
 }
 
 const ShowData = async () => {
