@@ -52,75 +52,42 @@ const { user } = useUserStore()
       <!-- <pre>{{ state.data }}</pre> -->
       <div class="show-equipment">
         <div class="show-equ-head">
-          
-          <div>
+
+          <div class="w-full">
             <CardEquipment :equipmentData="state.data!" />
           </div>
-
           <div class="Qr_EQUIPMENt">
-            <DemoCard
-              v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-              :equipmentName="state.data?.title"
-              :isForm="true"
-              :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
-              :image="state.data?.image"
-              :selctedequipment="state.data?.title"
-              :selectedequipmentType="state.data?.equipment_type"
-              :decommissioningDate="state.data?.date || ''"
-              :isBreadCramp="true"
-              :expiredate="state.data?.certificateExppiredDate"
-              :startDate="state.data?.checkinDate"
-              :EndDate="state.data?.date"
-              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
-              :deviceStatus="state.data?.status"
-            />
+            <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="state.data?.title"
+              :isForm="true" :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
+              :image="state.data?.image" :selctedequipment="state.data?.title"
+              :selectedequipmentType="state.data?.equipment_type" :decommissioningDate="state.data?.date || ''"
+              :isBreadCramp="true" :expiredate="state.data?.certificateExppiredDate"
+              :startDate="state.data?.checkinDate" :EndDate="state.data?.checkout_date"
+              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION" :deviceStatus="state.data?.status" />
             <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" />
           </div>
         </div>
         <div class="inspection-btn w-full flex">
-          <button
-            @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
-            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''"
-          >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
+            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectioBtn" alt="bg"
+              class="down-bg" />
             <span>Insepection</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Inspection" :src="InspectionTopBtn" alt="bg"
+              class="top-bg" />
           </button>
-          <button
-            @click="InspectionStatus = EquipmentInspectionEnum.Results"
-            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''"
-          >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
+          <button @click="InspectionStatus = EquipmentInspectionEnum.Results"
+            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''">
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectioBtn" alt="bg"
+              class="down-bg" />
             <span>Results</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <img v-if="InspectionStatus === EquipmentInspectionEnum.Results" :src="InspectionTopBtn" alt="bg"
+              class="top-bg" />
           </button>
         </div>
         <div class="history-qr">
-          <HistoryLog
-            :show_tasks="state.data?.tasks_without_result"
-            :result_tasks="state.data?.tasks_with_result"
-            :inspectionType="InspectionStatus"
-          />
+          <HistoryLog :show_tasks="state.data?.tasks_without_result" :result_tasks="state.data?.tasks_with_result"
+            :inspectionType="InspectionStatus" />
           <!-- <QrCode /> -->
         </div>
       </div>

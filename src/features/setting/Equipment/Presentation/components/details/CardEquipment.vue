@@ -91,7 +91,7 @@ const GetEquipmentType = (type: number) => {
 </script>
 
 <template>
-  <div class="card-equipment">
+  <div class="card-equipment ">
     <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
       class="img-equipment" />
 
@@ -180,9 +180,9 @@ const GetEquipmentType = (type: number) => {
         </div>
 
 
-                  <button @click="toggle" type="button">
-            <DropdownIcons />
-          </button>
+        <button @click="toggle" type="button">
+          <DropdownIcons />
+        </button>
       </div>
     </div>
   </div>
