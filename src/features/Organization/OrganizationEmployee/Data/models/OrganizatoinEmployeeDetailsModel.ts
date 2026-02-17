@@ -105,10 +105,14 @@ export default class OrganizatoinEmployeeDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
+    const title =
+      data.titles?.find((t: any) => t.locale === savedLocale)?.title ?? // try saved locale
+      data.titles?.find((t: any) => t.locale === 'en')?.title ?? // fallback to English
+      data.titles?.[0]?.title ?? // fallback to first available
+      data.title ?? // fallback to flat title field
+      '' // last resort empty string
+
+    return new TitleInterface({ id: data.id, title })
   }
 
   // =====================
