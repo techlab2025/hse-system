@@ -66,7 +66,10 @@ const isModuleFullyChecked = (module: any) =>
 
 // ✅ Event handlers
 const toggleGroupSelectAll = (group: any, event: Event) => {
-  const isChecked = (event.target as HTMLInputElement).checked
+  // When clicking the label, determine the new state based on current state
+  const isChecked = event.target instanceof HTMLInputElement
+    ? event.target.checked
+    : !isGroupFullyChecked(group)
   group.permissions.forEach((perm: any) => {
     perm.checked = isChecked
   })
@@ -74,7 +77,10 @@ const toggleGroupSelectAll = (group: any, event: Event) => {
 }
 
 const toggleModuleSelectAll = (module: any, event: Event) => {
-  const isChecked = (event.target as HTMLInputElement).checked
+  // When clicking the label, determine the new state based on current state
+  const isChecked = event.target instanceof HTMLInputElement
+    ? event.target.checked
+    : !isModuleFullyChecked(module)
   module.permissions.forEach((group: any) => {
     group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
   })
@@ -96,8 +102,9 @@ onMounted(() => {
     <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
       <div class="header">
         <!-- ✅ Module Select All auto-sync -->
-        <label class="select_all">
-          <input type="checkbox" :checked="isModuleFullyChecked(item)" @change="toggleModuleSelectAll(item, $event)" />
+        <label class="select_all"
+          @click.prevent="toggleModuleSelectAll(item, { target: { checked: !isModuleFullyChecked(item) } })">
+          <input type="checkbox" :checked="isModuleFullyChecked(item)" tabindex="-1" />
           <span class="checkmark"></span>
           <span>{{ item.label }}</span>
         </label>
@@ -109,9 +116,9 @@ onMounted(() => {
             <h5>{{ prem.label }}</h5>
 
             <!-- ✅ Group Select All auto-sync -->
-            <label class="select_all">
-              <input type="checkbox" :checked="isGroupFullyChecked(prem)"
-                @change="toggleGroupSelectAll(prem, $event)" />
+            <label class="select_all"
+              @click.prevent="toggleGroupSelectAll(prem, { target: { checked: !isGroupFullyChecked(prem) } })">
+              <input type="checkbox" :checked="isGroupFullyChecked(prem)" tabindex="-1" />
               <span class="checkmark"></span>
               <span>{{ $t('select_all') }}</span>
             </label>
