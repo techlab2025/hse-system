@@ -41,7 +41,9 @@ export default class AddWhereHouseTypeController extends ControllerInterface<Whe
           imageElement: successImage,
           messageContent: null,
         })
-        if (!draft) await router.push('/organization/where-house-type')
+        if (router.currentRoute.value.path.includes('where-house-type')) {
+          if (!draft) await router.push('/organization/where-house-type')
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

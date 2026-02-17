@@ -10,10 +10,13 @@ import type AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 const router = useRouter()
 const params = ref<Params | null>(null)
 
+const emit = defineEmits(['update:data', 'close:dialog'])
 const addWhereHouseController = AddWhereHouseController.getInstance()
 
 const addWhereHouse = async () => {
   await addWhereHouseController.addWhereHouse(params.value as AddWhereHouseParams, router)
+  emit('update:data')
+  emit('close:dialog')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -26,7 +29,7 @@ const setParams = (data: Params) => {
     <WhereHouseForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" @click="$emit(`update:data`)" class="btn btn-primary">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
     </div>
   </form>
 </template>

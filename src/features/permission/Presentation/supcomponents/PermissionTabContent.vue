@@ -97,11 +97,7 @@ onMounted(() => {
       <div class="header">
         <!-- ✅ Module Select All auto-sync -->
         <label class="select_all">
-          <input
-            type="checkbox"
-            :checked="isModuleFullyChecked(item)"
-            @change="toggleModuleSelectAll(item, $event)"
-          />
+          <input type="checkbox" :checked="isModuleFullyChecked(item)" @change="toggleModuleSelectAll(item, $event)" />
           <span class="checkmark"></span>
           <span>{{ item.label }}</span>
         </label>
@@ -114,11 +110,8 @@ onMounted(() => {
 
             <!-- ✅ Group Select All auto-sync -->
             <label class="select_all">
-              <input
-                type="checkbox"
-                :checked="isGroupFullyChecked(prem)"
-                @change="toggleGroupSelectAll(prem, $event)"
-              />
+              <input type="checkbox" :checked="isGroupFullyChecked(prem)"
+                @change="toggleGroupSelectAll(prem, $event)" />
               <span class="checkmark"></span>
               <span>{{ $t('select_all') }}</span>
             </label>
@@ -127,16 +120,8 @@ onMounted(() => {
           <hr />
 
           <div class="card-body">
-            <label
-              v-for="premAction in prem.permissions"
-              :key="premAction.code"
-              class="permission-item"
-            >
-              <input
-                type="checkbox"
-                v-model="premAction.checked"
-                @change="togglePermission(premAction, $event)"
-              />
+            <label v-for="premAction in prem.permissions" :key="premAction.code" class="permission-item">
+              <input type="checkbox" v-model="premAction.checked" @change="togglePermission(premAction, $event)" />
               <span>{{ premAction.label }}</span>
             </label>
           </div>

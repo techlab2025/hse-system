@@ -42,9 +42,9 @@ import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/com
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
 import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
-import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
 import OwnedIcon from '@/shared/icons/OwnedIcon.vue'
 import RentIcon from '@/shared/icons/RentIcon.vue'
+import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -614,6 +614,8 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
 
   }
 }
+
+const WarehouseDialog = ref(false)
 </script>
 
 <template>
@@ -721,9 +723,21 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
           placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
       </div>
       <div class="col-span-2 md:col-span-1" v-if="!data?.id">
-        <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
+        <!-- <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
-          @update:modelValue="setSelectedWhereHouse" />
+          @update:modelValue="setSelectedWhereHouse" /> -->
+
+
+        <UpdatedCustomInputSelect :controller="indexWhereHouseController" :params="indexWhereHouseParams"
+          :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
+          @update:modelValue="setSelectedWhereHouse" :isDialog="true" :dialogVisible="WarehouseDialog">
+          <template #LabelHeader>
+            <span class="add-dialog" @click="WarehouseDialog = true">New</span>
+          </template>
+          <template #Dialog>
+            <AddWhereHouse @update:data="WarehouseDialog = false" />
+          </template>
+        </UpdatedCustomInputSelect>
       </div>
 
       <div class="input-wrapper col-span-2 md:col-span-1" v-if="

@@ -9,6 +9,8 @@ import { useRoute } from 'vue-router'
 import IndexWhereHouseTypeController from '@/features/Organization/WhereHouseType/Presentation/controllers/indexWhereHouseTypeController'
 import IndexWhereHouseTypeParams from '@/features/Organization/WhereHouseType/Core/params/indexWhereHouseTypeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddWhereHouseType from '@/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -75,6 +77,7 @@ const setName = (data) => {
   Name.value = data.target.value
   updateData()
 }
+const WarehouseTypeDialog = ref<boolean>(false)
 </script>
 
 <template>
@@ -89,8 +92,19 @@ const setName = (data) => {
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
+    <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
-      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" />
+      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
+    <UpdatedCustomInputSelect :required="false" :modelValue="SelectedWhereHouseType"
+      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
+      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType"
+      :isDialog="true" :dialogVisible="WarehouseTypeDialog">
+      <template #LabelHeader>
+        <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>
+      </template>
+      <template #Dialog>
+        <AddWhereHouseType @update:data="WarehouseTypeDialog = false" />
+      </template>
+    </UpdatedCustomInputSelect>
   </div>
 </template>

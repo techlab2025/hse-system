@@ -365,6 +365,17 @@ const LocationRoutes = ref<Routes[]>([
       PermissionsEnum.PROJECT_ZONE_UPDATE,
     ],
   },
+  {
+    link: '/organization/ticket',
+    name: t('tickets'),
+    permissions: [
+      PermissionsEnum.TICKET_ALL,
+      PermissionsEnum.TICKET_CREATE,
+      PermissionsEnum.TICKET_DELETE,
+      PermissionsEnum.TICKET_FETCH,
+      PermissionsEnum.TICKET_UPDATE,
+    ],
+  },
 
 
 ])

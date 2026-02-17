@@ -35,6 +35,7 @@ import AddFullEquipment from '@/features/setting/Equipment/Presentation/componen
 import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue';
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue';
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue';
+import IndexSerial from '@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue';
 
 /* ---------------- Controller & State ---------------- */
 
@@ -58,7 +59,7 @@ const ActiveItem = ref(0)
 const GetActiveItem = (value: number) => ActiveItem.value = value
 
 const AllPagesToView = ref([
-  { id: ProjectProgressEnum.codingSystem, component: AddSerial, title: "Coding System", description: "Define Coding System structure" },
+  { id: ProjectProgressEnum.codingSystem, component: IndexSerial, title: "Coding System", description: "Define Coding System structure" },
   { id: ProjectProgressEnum.Certificate, component: AddCertificate, title: "Functional Certificate", description: "Define certificate structure and assign related project roles" },
   { id: ProjectProgressEnum.Tempalte, component: TemplateItemAdd, title: "Functional Template", description: "Define templates structure and assign related project roles" },
   { id: ProjectProgressEnum.Employee, component: AddOrganization, title: "Functional Employee", description: "Define employees structure and assign roles within the organization" },

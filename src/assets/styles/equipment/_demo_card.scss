@@ -34,6 +34,9 @@
         border-radius: $XsSize;
         width: 100px;
         height: 100px;
+        max-height: 90px;
+        max-width: 90px;
+        
       }
       .sub-card-body {
         width: 100%;

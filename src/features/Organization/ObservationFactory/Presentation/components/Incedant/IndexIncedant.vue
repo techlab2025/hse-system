@@ -232,7 +232,7 @@ const ShowDetails = ref<number[]>([])
         PermissionsEnum.ORG_INCEDANT_CREATE,
       ]">
         <div>
-          <IndexHazardHeader :title="'incedant'" :length="state?.pagination?.total || 0" :projects="Projects"
+          <IndexHazardHeader :title="'incedant'" :length="state?.data?.length" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
           <div class="flex items-center justify-between">
             <IndexFilter :filters="Filters" @update:data="ApplayFilter"
