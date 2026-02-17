@@ -28,8 +28,8 @@ export default class AddHazardController extends ControllerInterface<HazardModel
   }
 
   async addHazard(params: AddHazardParams, router: Router, draft: boolean = false) {
-    // useLoaderStore().setLoadingWithDialog();
     try {
+      this.setLoading()
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
