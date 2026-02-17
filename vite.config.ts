@@ -12,5 +12,5 @@ export default defineConfig(({ mode }) => ({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // esbuild: mode === 'production' ? { drop: ['console', 'debugger'] } : {},
+  esbuild: mode === 'production' ? { drop: ['console', 'debugger'] } : {},
 }))
