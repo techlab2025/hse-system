@@ -158,7 +158,7 @@ watch(
       EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Employee ? true : false
       booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       updateData()
-      console.log(EmployeeStatus.value, "EmployeeStatus.value");
+      console.log(Heirarchy.value, "newData.hierarchy[0]");
     }
   },
   { immediate: true },
