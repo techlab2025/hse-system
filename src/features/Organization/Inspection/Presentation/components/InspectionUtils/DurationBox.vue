@@ -50,7 +50,7 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
 
       <!-- && !isShow -->
       <h5 v-if="data.date">
-        {{ $t('start day') }}: <span>{{ data.date }}</span>
+        {{ $t('start day') }}: <span>{{ data.from_date || data.date }}</span>
       </h5>
       <!-- <h5 v-if="isShow">
         <p>
@@ -71,7 +71,6 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
           {{ WithDayEnum[item.counterType] }}
         </span>
         <span v-else>
-
           {{ item.dayLabel.slice(0, 3) || formatJoinDate(item.date) }}
         </span>
       </span>
