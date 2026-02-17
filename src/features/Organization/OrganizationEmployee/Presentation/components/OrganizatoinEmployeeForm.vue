@@ -151,7 +151,7 @@ watch(
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
-      Heirarchy.value = newData.hierarchy[0]
+      Heirarchy.value = new TitleInterface({ id: newData.hierarchy[0].id, title: newData.hierarchy[0].title })
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
