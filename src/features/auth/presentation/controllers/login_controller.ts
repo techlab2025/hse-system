@@ -30,6 +30,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
   async login(params: Params, router: any, activeType: number) {
     try {
+      this.setLoading()
       let dataState: DataState<UserModel>
 
       if (activeType === OrganizationTypeEnum.ADMIN) {
