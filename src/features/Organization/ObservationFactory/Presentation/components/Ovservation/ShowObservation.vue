@@ -26,7 +26,7 @@ import ObservationInvestigationDetails from '../FactoryUtils/ShowFactoryUtils/Ob
 const route = useRoute()
 const id = route.params?.id
 
-const showHazardController = ShowHazardController.getInstance() 
+const showHazardController = ShowHazardController.getInstance()
 const state = ref(showHazardController.state.value)
 
 const ShowData = async () => {
@@ -63,7 +63,7 @@ const GetHeader = (value: number) => {
       </div>
 
       <div class="show-observation-container top-card">
-        <ObservationCard :data="state.data" />
+        <ObservationCard :data="state.data" @update:data="ShowData" />
       </div>
       <div class="show-observation-container" v-if="state.data?.type != Observation.ObservationType">
 
@@ -85,16 +85,16 @@ const GetHeader = (value: number) => {
           :data="state.data?.capa" />
 
 
-          <!-- المصابين -->
+        <!-- المصابين -->
         <ObservationInjuriesShow v-if="state.data?.injuries?.length && state.data?.injuries?.length > 0"
           :data="state.data?.injuries" />
 
-          <!-- الشهادات -->
+        <!-- الشهادات -->
         <ObservationWitnessStatements
           v-if="state.data?.witnessStatements?.length && state.data?.witnessStatements?.length > 0"
           :data="state.data?.witnessStatements" />
 
-          <!-- الوفيات -->
+        <!-- الوفيات -->
         <ObservationDeths v-if="state.data?.deaths?.length && state.data?.deaths?.length > 0"
           :data="state.data?.deaths" />
 

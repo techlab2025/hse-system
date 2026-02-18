@@ -276,6 +276,15 @@ const toggleObservationWorkStopped = async (id: number) => {
   await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(toggleObservationWorkStoppedParams, router)
   await fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
+
+const GetObservationType = (type: number) => {
+  switch (type) {
+    case Observation.ObservationType:
+      return 'Observation'
+    case Observation.HazardType:
+      return 'Hazard'
+  }
+}
 </script>
 
 <template>
@@ -338,6 +347,10 @@ const toggleObservationWorkStopped = async (id: number) => {
                               {{ $t('Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
                             </p>
+                            <p class="label-item-secondary flex items-center gap-1">
+                              {{ $t('operation type') }} :
+                              <span>{{ GetObservationType(item.type) }}</span>
+                            </p>
                             <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
                               <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
@@ -354,6 +367,7 @@ const toggleObservationWorkStopped = async (id: number) => {
                               <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
                                 @update:checked="toggleObservationWorkStopped(item?.id)" />
                             </p>
+
                           </div>
                           <router-link :to="`observation/show/${item?.id}`" class="card-details">
                             <p class="title">

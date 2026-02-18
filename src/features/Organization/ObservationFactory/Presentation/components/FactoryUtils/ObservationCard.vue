@@ -1,8 +1,13 @@
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum';
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum';
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams';
 import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
+import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController';
+import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue';
+import { watch } from 'vue';
 
 const props = defineProps<{
   data: HazardDetailsModel
@@ -30,8 +35,30 @@ const GetHeader = (value: number) => {
 }
 
 const GetStatus = (status: ActionStatusEnum) => {
-  return ActionStatusEnum[status]
+  switch (status) {
+    case ActionStatusEnum.CLOSED:
+      return 'Closed'
+    case ActionStatusEnum.OPEN:
+      return 'Open'
+    default:
+      return 'Unknown'
+  }
 }
+const emit = defineEmits(['update:data'])
+const router = useRouter()
+const toggleObservationActionStatus = async (id: number) => {
+  const toggleObservationActionStatusParams = new ToggleObservationActionStatusParams(id)
+  await ToggleObservationActionStatusController.getInstance().toggleObservationActionStatus(toggleObservationActionStatusParams, router)
+}
+
+const ToogleStatus = async (id: number) => {
+  await toggleObservationActionStatus(id)
+  emit('update:data')
+}
+
+watch(() => props.data, () => {
+  toggleObservationActionStatus(props.data.id)
+})
 
 </script>
 <template>
@@ -56,6 +83,11 @@ const GetStatus = (status: ActionStatusEnum) => {
             data?.typeModel?.title
               }}</span></p>
           <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
+          <div class="flex items-center gap-2">
+            <p>{{ $t(`toggle status`) }}</p>
+            <CustomCheckboxToggle :index="data.id" title="" :checked="data.actionStatus == 1"
+              @update:checked="ToogleStatus(data.id)" />
+          </div>
         </div>
         <!-- <div class="card-details">
           <p class="subtitle">{{ data?.description }}</p>
@@ -70,6 +102,7 @@ const GetStatus = (status: ActionStatusEnum) => {
         <p>{{ $t('status') }}</p>
         <h6>{{ $t(`${GetStatus(data?.actionStatus)}`) }}</h6>
       </div>
+
 
       <!-- if we want add imge -->
       <!-- <div class="observer-container" v-if="data?.observer.name">
