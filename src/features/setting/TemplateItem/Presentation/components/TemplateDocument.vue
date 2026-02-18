@@ -20,10 +20,11 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import type TemplateItemTagModel from '@/features/setting/Template/Data/models/TemplateItemTagModel'
 
 
 const props = defineProps<{
-  allData: TemplateDetailsModel
+  allData: TemplateItemTagModel[]
   headerDisplay: boolean | true
   isActions?: boolean | true
 }>()
@@ -83,7 +84,7 @@ const DeleteTemplateItem = async (id: number) => {
     <div class="template-document-header" v-if="headerDisplay">
       <div class="template-header">
 
-        <!-- <pre>{{ allData }}</pre> -->
+        <pre>{{ allData }}</pre>
         <p class="header-title" v-if="allData.titles && allData?.titles?.length > 0">
           {{
             allData?.titles
@@ -93,7 +94,7 @@ const DeleteTemplateItem = async (id: number) => {
           }}
         </p>
 
-        <p class="header-title" v-else>{{ allData?.title }}</p>
+        <!-- <p class="header-title" v-else>{{ allData?.title }}</p> -->
         <div class="template-details">
           <p>
             Id : <span>{{ allData?.id }}</span>
@@ -105,25 +106,28 @@ const DeleteTemplateItem = async (id: number) => {
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
 
-        <div class="actions"
-          v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
-          <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
+      <div v-for="tag in allData" :key="tag?.id">
+        <p class="tag-title">{{ tag.title }}</p>
+        <div class="template-document-content" v-for="(item, index) in tag.templateItems" :key="index">
+          <div class="actions"
+            v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
+            <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
+          </div>
+
+          <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+            :tag="item.tag" />
+          <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+            :tag="item.tag" />
+          <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
+            :tag="item.tag" />
+          <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
+            :require_image="item.requiredImage" :tag="item.tag" />
+
         </div>
-
-        <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
-          :require_image="item.requiredImage" :tag="item.tag" />
-
       </div>
     </div>
     <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->
@@ -133,7 +137,19 @@ const DeleteTemplateItem = async (id: number) => {
 
 
 <style scoped>
+.tag-title {
+  color: #041953;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Regular";
+
+}
+
 .template-document-container {
   padding-inline: 25px;
+}
+
+.template-document-content-container {
+  z-index: 9999;
 }
 </style>

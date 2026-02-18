@@ -93,6 +93,7 @@ onMounted(() => {
     setVisited()
   }
 })
+const projectProgress = useProjectAppStatusStore()
 </script>
 <template>
   <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
@@ -185,7 +186,8 @@ onMounted(() => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <!-- /organization?setting=1 -->
-      <router-link :to="`/organization/project-progress`">
+      <router-link
+        :to="projectProgress.getProjectAppStatus()?.progress != 100 ? `/organization/project-progress` : '/organization/certificate'">
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>

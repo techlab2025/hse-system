@@ -4,13 +4,13 @@
 .show-template-document-checkbox {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
-  font-family: 'Regular';
+  font-family: 'Light';
   width: 100%;
   padding-inline: 20px;
   .title {
     color: #5e5e5e;
-    font-size: calc($MdSize + 1px);
-    font-weight: $BaseFontMediumWeight;
+    font-size: 14px;
+    font-weight: 600;
   }
   .options-container {
     width: 100%;

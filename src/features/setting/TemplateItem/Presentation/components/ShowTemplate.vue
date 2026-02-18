@@ -3,21 +3,23 @@ import EmployeeBg from '@/assets/images/EmployeeBg.png'
 import Yellowback from '@/assets/images/Yellowback.png'
 import ShowTemplateIcon from '@/shared/icons/ShowTemplateIcon.vue';
 import TemplateDocument from "./TemplateDocument.vue";
-import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController';
-import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams';
 import { useRoute } from 'vue-router';
 import { onMounted, ref, watch } from 'vue';
-import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel';
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
+import TemplateItemTagController from '@/features/setting/Template/Presentation/controllers/TemplateItemTagController';
+import TemplateItemTagParams from '@/features/setting/Template/Core/params/TemplateItemTagParams';
+import type TemplateItemTagModel from '@/features/setting/Template/Data/models/TemplateItemTagModel';
 const route = useRoute()
 const id = route.params.parent_id
-const AllDocument = ref<TemplateDetailsModel>()
-const showTemplateController = ShowTemplateController.getInstance()
-const state = ref(showTemplateController.state.value)
+const AllDocument = ref<TemplateItemTagModel[]>()
+const templateItemTagController = TemplateItemTagController.getInstance()
+const state = ref(templateItemTagController.state.value)
+
+
 const FetchTemplateDocument = async () => {
-  const showTemplateParams = new ShowTemplateParams(id)
-  const Response = await showTemplateController.showTemplate(showTemplateParams)
+  const templateItemTagParams = new TemplateItemTagParams(id)
+  const Response = await templateItemTagController.TemplateItemTag(templateItemTagParams)
   if (Response.value.data) {
     AllDocument.value = Response.value.data
   }
@@ -26,7 +28,7 @@ onMounted(() => {
   FetchTemplateDocument()
 })
 watch(
-  () => showTemplateController.state.value,
+  () => templateItemTagController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState;

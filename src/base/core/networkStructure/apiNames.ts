@@ -1541,6 +1541,9 @@ class ApiNames {
   public get ToggleObservationWorkStopped() {
     return this.prefix + 'toggle_observation_work_status'
   }
+  public get TemplateItemTag() {
+    return this.prefix + 'fetch_template_item_tags'
+  }
 }
 
 export { ApiNames }

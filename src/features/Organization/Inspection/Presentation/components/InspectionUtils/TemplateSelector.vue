@@ -6,8 +6,10 @@ import AccordionContent from 'primevue/accordioncontent';
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel';
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import RadioButton from 'primevue/radiobutton'
+import TemplateItemTagController from '@/features/setting/Template/Presentation/controllers/TemplateItemTagController';
+import TemplateItemTagParams from '@/features/setting/Template/Core/params/TemplateItemTagParams';
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -18,11 +20,34 @@ const props = defineProps<{
 const SelectedTemplate = ref<number>(props.selectedTemplates)
 const SetSelectedTemplate = (id: number) => {
   SelectedTemplate.value = id
+  fetchTemplateItemTag()
   emit('update:data', id)
 }
 watch(() => props.selectedTemplates, (newVal) => {
   SelectedTemplate.value = newVal
+  fetchTemplateItemTag()
 })
+const templateItemTagController = TemplateItemTagController.getInstance()
+const templateItemTagState = ref(templateItemTagController.state.value)
+
+const fetchTemplateItemTag = async () => {
+  const templateItemTagParams = new TemplateItemTagParams(SelectedTemplate.value)
+  await templateItemTagController.TemplateItemTag(templateItemTagParams)
+}
+onMounted(() => {
+  fetchTemplateItemTag()
+})
+
+watch(
+  () => templateItemTagController.state.value,
+  (newState) => {
+    if (newState) {
+      templateItemTagState.value = newState
+    }
+  },
+  { deep: true },
+)
+
 </script>
 
 <template>
