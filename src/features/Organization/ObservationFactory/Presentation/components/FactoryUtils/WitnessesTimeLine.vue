@@ -72,7 +72,7 @@ const ensureEmployee = (item: any) => {
 
             <div class="timeline-content">
               <div class=" input-wrapper">
-                <label for="wetness-text">{{ $t('Text') }}</label>
+                <label for="wetness-text">{{ $t('Statement') }}</label>
                 <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
                   @input="UpdateData" />
               </div>

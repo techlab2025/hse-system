@@ -701,8 +701,8 @@ const setRootCause = (data: TitleInterface[]) => {
           </div>
         </div>
 
-        <div class="col-span-12 md:col-span-12" v-show="showSolvedAndDescription">
-          <label class="radio-title">{{ $t('Status') }}</label>
+        <div class="col-span-12 md:col-span-12" v-if="ObservationFactoryType != Observation.AccidentsType">
+          <label class="radio-title">{{ $t('observation status') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
               <RadioButton id="closed" v-model="solved" name="solved" :value="ActionStatusEnum.CLOSED"
@@ -723,7 +723,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- Action Description -->
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="input-wrapper col-span-6 md:col-span-6"
       v-show="showSolvedAndDescription">
-      <label for="action">{{ $t('action') }}</label>
+      <label for="action">{{ $t('Immediate action') }}</label>
       <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
         placeholder="add your descripe"></textarea>
     </div>
