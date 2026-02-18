@@ -359,7 +359,7 @@ const updateData = () => {
       SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
-      serialNumber: SerialNumber.value?.SerialNumber,
+      serialNumber: SerialNumber.value,
     })
 
   emit('update:data', params)
@@ -523,7 +523,6 @@ const setVehicleKm = (data) => {
 }
 
 const isVehicle = ref(false)
-const projtecStateus = useProjectAppStatusStore()
 
 const fields = ref([
   {
@@ -531,10 +530,11 @@ const fields = ref([
     label: 'serial_number',
     placeholder: 'You can leave it (auto-generated)',
     value: SerialNumber.value,
-    enabled: projtecStateus.isSerialNumberAuto() ? true : false,
+    enabled: false,
   },
 ])
 
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
   SerialNumber.value = data.target.value
   updateData()
