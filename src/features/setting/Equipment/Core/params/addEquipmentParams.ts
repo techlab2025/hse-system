@@ -3,6 +3,7 @@ import type TranslationsParams from '@/base/core/params/translations_params'
 import type { EquipmentStatus } from '../enum/EquipmentStatus'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddEquipmentParams implements Params {
   translation!: TranslationsParams
@@ -95,7 +96,11 @@ export default class AddEquipmentParams implements Params {
     if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
     if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
-    if (this.serialNumber) data['serial_number'] = Number(this.serialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.serialNumber
+    } else {
+      data['serial'] = this.serialNumber
+    }
 
     return data
   }

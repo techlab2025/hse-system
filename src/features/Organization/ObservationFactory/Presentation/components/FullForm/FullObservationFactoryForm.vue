@@ -60,6 +60,7 @@ import IndexRootCausesController from '@/features/setting/RootCauses/Presentatio
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import RootCausesIdParams from '../../../Core/params/RootCausesIdParams'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
 //
@@ -193,7 +194,7 @@ const updateData = () => {
       HazardTypeId: HazardType.value?.id,
       HazardSubtypeId: SubHazardType.value?.id,
       actionstatus: solved.value,
-      code: SerialNumber.value?.SerialNumber,
+      code: SerialNumber.value,
       RootCausesId: rootCausesIdParams
     })
   emit('update:data', params)
@@ -276,8 +277,9 @@ const fields = ref([
   },
 ])
 
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -484,8 +486,10 @@ const setRootCause = (data: TitleInterface[]) => {
 
     <!-- Serial -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
-      <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-        @update:value="UpdateSerial" />
+      <label for="serialNumber">{{ $t('serial_number') }}</label>
+      <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+        :disabled="projtecStateus.isSerialNumberAuto()"
+        :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
     </div>
 
     <!-- Place -->
@@ -553,17 +557,18 @@ const setRootCause = (data: TitleInterface[]) => {
         :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause"
         :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" /> -->
 
-            <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-              :params="indexRootCaueseParams" :label="$t('select Root Cause')"  id="rootCause"  :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" 
-               @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
-              <template #LabelHeader>
-                <span class="add-dialog" @click="RootCausesDialog = true">New</span>
-              </template>
-              <template #Dialog>
-                <!-- <AddScope @update:data="RootCausesDialog = false" /> -->
-                 <AddRootCauses @close:data="RootCausesDialog = false" />
-              </template>
-            </UpdatedCustomInputSelect>
+      <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
+        :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause"
+        :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2"
+        @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
+        <template #LabelHeader>
+          <span class="add-dialog" @click="RootCausesDialog = true">New</span>
+        </template>
+        <template #Dialog>
+          <!-- <AddScope @update:data="RootCausesDialog = false" /> -->
+          <AddRootCauses @close:data="RootCausesDialog = false" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
     <div class="col-span-3 md:col-span-3 input-wrapper">

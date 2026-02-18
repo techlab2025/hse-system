@@ -94,7 +94,8 @@ const updateData = () => {
   console.log(translationsParams, 'langs')
   const params = props.data?.id
     ? new EditWhereHouseTypeParams(props.data.id, translationsParams)
-    : new AddWhereHouseTypeParams(translationsParams, SerialNumber.value?.SerialNumber)
+    : new AddWhereHouseTypeParams(translationsParams,
+      null)
 
   // console.log(params, 'params')
 
@@ -131,33 +132,29 @@ watch(
   { deep: true },
 )
 
-const UpdateSerial = (data) => {
-  SerialNumber.value = data
-  updateData()
-}
+// const UpdateSerial = (data) => {
+//   SerialNumber.value = data
+//   updateData()
+// }
 
-const SerialNumber = ref()
+// const SerialNumber = ref()
 
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
+// const fields = ref([
+//   {
+//     key: 'SerialNumber',
+//     label: 'serial_number',
+//     placeholder: 'You can leave it (auto-generated)',
+//     value: SerialNumber.value,
+//     enabled: props?.data?.id ? false : true,
+//   },
+// ])
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)"
-    />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -165,5 +162,5 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 </template>

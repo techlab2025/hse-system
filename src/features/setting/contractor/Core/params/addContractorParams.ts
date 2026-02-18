@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type ScopeIdParams from './AddscopesParams'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddContractorParams implements Params {
   Name: string
@@ -74,14 +75,18 @@ export default class AddContractorParams implements Params {
     data['name'] = this.Name
     data['phone'] = this.ContractorNumber
     if (this.Scope) data['scopes'] = this.Scope.map((scope) => scope.toMap())
-      if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
+    if (this.CompanyEmail) data['company_email'] = this.CompanyEmail
     if (this.CompanyAddress) data['company_address'] = this.CompanyAddress
     if (this.contactPerson) data['contact_person'] = this.contactPerson
     if (this.contactPersonEmail) data['contact_person_email'] = this.contactPersonEmail
     if (this.contactPersonPhone) data['contact_person_phone'] = this.contactPersonPhone
     if (this.SelectedStatus || this.SelectedStatus === 0) data['status'] = this.SelectedStatus
     if (this.date) data['expiry_date'] = formatJoinDate(this.date)
-    data['serial_number'] = Number(this.serialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.serialNumber
+    } else {
+      data['serial'] = this.serialNumber
+    }
 
     return data
   }

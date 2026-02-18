@@ -36,6 +36,7 @@ import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vu
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue';
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue';
 import IndexSerial from '@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue';
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus';
 
 /* ---------------- Controller & State ---------------- */
 
@@ -49,9 +50,15 @@ const getProjectProgress = async () => {
 
 onMounted(getProjectProgress)
 
+const progectStatus = useProjectAppStatusStore()
 watch(() => indexProjectProgressController.state.value, (newVal) => {
   state.value = newVal
-})
+  if (newVal.data) {
+    console.log(newVal.data, "ddd");
+    progectStatus.setProjectAppStatus(newVal.data)
+  }
+
+}, { deep: true })
 
 /* ---------------- Active Item Logic ---------------- */
 

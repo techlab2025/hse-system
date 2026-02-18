@@ -5,6 +5,7 @@ const props = defineProps<{
   title: string,
   subtitle?: string
   img?: string
+  actions?: boolean
 }>()
 </script>
 <template>
@@ -19,6 +20,9 @@ const props = defineProps<{
       <div class="header-text">
         <p class="title">{{ title }}</p>
         <p class="subtitle">{{ subtitle }}</p>
+      </div>
+      <div v-if="actions" class="actions-container">
+        <slot name="actions"></slot>
       </div>
     </div>
     <div class="right-header-background">

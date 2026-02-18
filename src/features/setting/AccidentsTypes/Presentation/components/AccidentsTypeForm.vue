@@ -30,6 +30,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
 
@@ -134,7 +135,7 @@ const updateData = () => {
       translationsParams,
       AllIndustry,
       industry.value?.map((item) => item.id),
-      SerialNumber.value?.SerialNumber,
+      SerialNumber.value,
       // id,
     )
 
@@ -175,7 +176,7 @@ watch(
 )
 
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -190,6 +191,8 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+const projtecStateus = useProjectAppStatusStore()
 </script>
 
 <template>
@@ -204,9 +207,11 @@ const fields = ref([
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">

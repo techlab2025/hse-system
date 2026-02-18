@@ -23,6 +23,7 @@ import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganization
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const toast = useToast()
 
@@ -136,7 +137,7 @@ const updateData = () => {
       [HeirarchyIds],
       RoleIds,
       EmployeeStatus.value || EmployeeStatusEnum.Employee,
-      SerialNumber.value?.SerialNumber,
+      SerialNumber.value,
 
       // Certificates.value.map((item) => item.id)
     )
@@ -205,8 +206,10 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+const projtecStateus = useProjectAppStatusStore()
+
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -217,9 +220,11 @@ const UpdateSerial = (data) => {
     <label for="name">{{ $t('name') }}</label>
     <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
-      @update:value="UpdateSerial" />
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('Phone') }}</label>

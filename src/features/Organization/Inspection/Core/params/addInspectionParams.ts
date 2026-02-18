@@ -3,6 +3,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum.ts'
 import TaskPeriodParams from '@/features/Organization/Inspection/Core/params/taskPeroidParams.ts'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddInspectionParams implements Params {
   public morphType: AssignToTypeEnum
@@ -80,7 +81,11 @@ export default class AddInspectionParams implements Params {
     if (this.projectZoneId) data['project_zone_id'] = this.projectZoneId
     data['is_in_library'] = this.isInLibrary
     data['equipment_id'] = this.EquipmentId
-    data['serial_number'] = Number(this.SerialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.SerialNumber
+    } else {
+      data['serial'] = this.SerialNumber
+    }
     return data
   }
 }

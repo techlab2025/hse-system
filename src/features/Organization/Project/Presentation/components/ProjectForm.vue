@@ -30,9 +30,10 @@ import ContructorSelectDialog from './SelectDialogs/ContructorSelectDialog.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
-const SerialNumber = ref()
+const SerialNumber = ref<string>('')
 
 const props = defineProps<{
   data?: ProjectDetailsModel
@@ -174,7 +175,7 @@ const updateData = () => {
         locationIds: location.value.map((l) => l.id),
         zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
         methodIds: EvaluatingMethod.value?.map((p) => p.id),
-        SerialNumber: SerialNumber.value?.SerialNumber,
+        SerialNumber: SerialNumber.value,
       }
     )
   console.log(params, "paramsparamsparams");
@@ -212,8 +213,8 @@ watch(
 
       SerialNumber.value = newData?.SerialNumber
       date.value = newData?.startDate || new Date()
-      fields.value[0].value = SerialNumber.value
-      fields.value[0].enabled = props?.data?.id ? false : true
+      // fields.value[0].value = SerialNumber.value
+      // fields.value[0].enabled = props?.data?.id ? false : true
       SelectedCountry.value = newData?.country ?? []
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -254,15 +255,16 @@ watch(
   { immediate: true },
 )
 
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
+
+// const fields = ref([
+//   {
+//     key: 'SerialNumber',
+//     label: 'serial_number',
+//     placeholder: 'You can leave it (auto-generated)',
+//     value: SerialNumber.value,
+//     enabled: projtecStateus.isSerialNumberAuto() ? true : false,
+//   },
+// ])
 
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
 
@@ -294,9 +296,9 @@ watch(
   },
   { deep: true, immediate: true },
 )
-
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 const UpdateDate = (date) => {
@@ -401,8 +403,12 @@ const ShowLocationDialog = () => {
       @update:modelValue="(val) => (langs = val)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
+    <!-- <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="true"
+      @update:value="UpdateSerial" /> -->
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date">

@@ -12,10 +12,14 @@ import Accordion from 'primevue/accordion'
 import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
+import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
 const emit = defineEmits(['update:data', 'close:dialog'])
 const router = useRouter()
+const props = defineProps<{
+  serialType: SertialNumberStatusEnum
+}>()
 
 const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   [SerialNumberEnum.EQUIPMENT]: 'Equipment',
@@ -24,14 +28,13 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   [SerialNumberEnum.AccidentsType]: 'Accidents Type',
   [SerialNumberEnum.CONTRACTOR]: 'Contractor',
   [SerialNumberEnum.HazardType]: 'Hazard Type',
-  [SerialNumberEnum.MACHINE]: 'Machine',
   [SerialNumberEnum.OBSERVATION]: 'Observation',
   [SerialNumberEnum.ObservationType]: 'Observation Type',
-  [SerialNumberEnum.PROJECTLOCATION]: 'Project Location',
-  [SerialNumberEnum.PROJECTZONE]: 'Project Zone',
+  // [SerialNumberEnum.PROJECTLOCATION]: 'Project Location',
+  // [SerialNumberEnum.PROJECTZONE]: 'Project Zone',
   [SerialNumberEnum.TASK]: 'Task',
   [SerialNumberEnum.WAREHOUSE]: 'Warehouse',
-  [SerialNumberEnum.ZONE]: 'Zone',
+  // [SerialNumberEnum.ZONE]: 'Zone',
 }
 const getTitle = (type: SerialNumberEnum) => SERIAL_TITLES[type]
 
@@ -90,15 +93,7 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 7,
-    serialNumberType: SerialNumberEnum.MACHINE,
-    name: SerialNumberEnum.MACHINE,
-    title: getTitle(SerialNumberEnum.MACHINE),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+
   {
     id: 8,
     serialNumberType: SerialNumberEnum.OBSERVATION,
@@ -117,24 +112,24 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 10,
-    serialNumberType: SerialNumberEnum.PROJECTLOCATION,
-    name: SerialNumberEnum.PROJECTLOCATION,
-    title: getTitle(SerialNumberEnum.PROJECTLOCATION),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
-  {
-    id: 11,
-    serialNumberType: SerialNumberEnum.PROJECTZONE,
-    name: SerialNumberEnum.PROJECTZONE,
-    title: getTitle(SerialNumberEnum.PROJECTZONE),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 10,
+  //   serialNumberType: SerialNumberEnum.PROJECTLOCATION,
+  //   name: SerialNumberEnum.PROJECTLOCATION,
+  //   title: getTitle(SerialNumberEnum.PROJECTLOCATION),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
+  // {
+  //   id: 11,
+  //   serialNumberType: SerialNumberEnum.PROJECTZONE,
+  //   name: SerialNumberEnum.PROJECTZONE,
+  //   title: getTitle(SerialNumberEnum.PROJECTZONE),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
 
   {
     id: 12,
@@ -145,15 +140,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 13,
-    serialNumberType: SerialNumberEnum.ZONE,
-    name: SerialNumberEnum.ZONE,
-    title: getTitle(SerialNumberEnum.ZONE),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 13,
+  //   serialNumberType: SerialNumberEnum.ZONE,
+  //   name: SerialNumberEnum.ZONE,
+  //   title: getTitle(SerialNumberEnum.ZONE),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   {
     id: 14,
     serialNumberType: SerialNumberEnum.WAREHOUSE,
@@ -172,7 +167,7 @@ const sendData = async () => {
     }
   })
 
-  const params = new CreateCodingSystemParams(fields.value.filter((el) => el.name != 0))
+  const params = new CreateCodingSystemParams(props.serialType == SertialNumberStatusEnum.AUTO ? fields.value.filter((el) => el.name != 0) : [], props.serialType)
   await SerialNumController.getInstance().addSerialNumber(params, router)
   emit('close:dialog')
   emit('update:data')
@@ -202,7 +197,9 @@ const route = useRoute()
 
 <template>
   <form @submit.prevent="sendData" class="serial-form container">
-    <div v-for="field in fields" :key="field.id" class="serial-form-section">
+    <div v-if="serialType == SertialNumberStatusEnum.MANUAL" class="serial-overlay"></div>
+    <div v-for="field in fields" :key="field.id" class="serial-form-section"
+      :class="serialType == SertialNumberStatusEnum.MANUAL ? 'opacity' : ''">
       <div class="serial-number-input-fields flex flex-col gap-5 w-full">
         <Accordion :value="field.id" class="w-full" expandIcon="null" collapseIcon="null" lazy>
           <AccordionPanel :value="1" :header="field.title" class="w-full">
