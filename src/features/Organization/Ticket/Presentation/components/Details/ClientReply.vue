@@ -10,18 +10,12 @@ const { history } = defineProps<{
 <template>
   <div class="attach-wrapp">
     <div class="attachments-part">
-      <!--
-                  <div class="title">
-                    {{ history.title }}
-                  </div>
-                -->
-
       <div class="description">
         <p>{{ history.description }}</p>
-        <MultiImagesDialog :images="history?.media || []">
+        <MultiImagesDialog :images="history?.media.map((img) => img.url) || []">
           <div class="imgs">
             <img
-              v-for="(img, i) in history?.media?.slice(0, 4)"
+              v-for="(img, i) in history?.media.slice(0, 2)"
               :key="i"
               :src="img.url"
               :class="'img-' + (i + 1)"
