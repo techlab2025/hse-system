@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch, computed, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
 import IndexProjectProgressController from '../controllers/indexProjectProgressController';
@@ -37,8 +37,26 @@ import AddRootCauses from '@/features/setting/RootCauses/Presentation/components
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue';
 import IndexSerial from '@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue';
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus';
+import ComplateData from "@/assets/lotties/Correct Checkmark on Document Checklist.json";
+import ComplateData2 from "@/assets/lotties/completed.json";
+import lottie from "lottie-web";
 
 /* ---------------- Controller & State ---------------- */
+
+// Lottie Start
+
+const lottieComplatedDataContainer = ref<HTMLDivElement | null>(null);
+const lottieComplatedDataContainer2 = ref<HTMLDivElement | null>(null);
+let animationComplatedData: any;
+let animationComplatedData2: any;
+// onMounted(() => {
+
+// })
+// Lottie End
+
+
+
+
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -48,13 +66,32 @@ const getProjectProgress = async () => {
   await indexProjectProgressController.getData(params)
 }
 
-onMounted(getProjectProgress)
+onMounted(async () => {
+  await getProjectProgress();
+  if (lottieComplatedDataContainer.value) {
+    animationComplatedData = lottie.loadAnimation({
+      container: lottieComplatedDataContainer.value,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: ComplateData,
+    });
+  }
+  if (lottieComplatedDataContainer2.value) {
+    animationComplatedData2 = lottie.loadAnimation({
+      container: lottieComplatedDataContainer2.value,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: ComplateData2,
+    });
+  }
+})
 
 const progectStatus = useProjectAppStatusStore()
 watch(() => indexProjectProgressController.state.value, (newVal) => {
   state.value = newVal
   if (newVal.data) {
-    console.log(newVal.data, "ddd");
     progectStatus.setProjectAppStatus(newVal.data)
   }
 
@@ -121,6 +158,10 @@ onMounted(() => {
 watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
   visited.value = localStorage.getItem("ProjectProgressVisited")
 })
+onBeforeUnmount(() => {
+  animationComplatedData?.destroy();
+  animationComplatedData2?.destroy();
+});
 </script>
 
 <template>
@@ -142,7 +183,7 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
         <div class="project-progress-body-container">
 
           <div class="project-progress-body-sidebar" :class="{ 'highlight-active': showOverlay && !startNextNote }">
-            <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" />
+            <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" :projectProgress="state.data?.progress" />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
               <h3>Step 2: The Roadmap</h3>
@@ -150,6 +191,15 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
                 correctly.</p>
               <button @click="goToContentNote" class="ok-btn">Next Tip</button>
             </div>
+          </div>
+
+          <div class="lottie-container" v-if="state.data?.progress == 100">
+            <div class="lottie-header">
+              <h2 class="title">Data Completed Successfully</h2>
+              <p class="text">You can now start using the system</p>
+              <!-- <router-link class="btn btn-primary" to="/organization">Home</router-link> -->
+            </div>
+            <div ref="lottieComplatedDataContainer" class="lottie"></div>
           </div>
 
           <div class="project-progress-body-content" v-if="selectedPage"
@@ -169,7 +219,8 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
             </div>
 
             <component :is="selectedPage.component" :key="selectedPage.id" class="full-content"
-              @update:data="getProjectProgress" />
+              @update:data="getProjectProgress" v-if="state.data?.progress != 100" />
+            <!-- animationComplatedData2 -->
           </div>
         </div>
 
@@ -189,6 +240,52 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
 </template>
 
 <style scoped>
+.lottie-container {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column-reverse;
+  align-items: center;
+  grid-column: span 9;
+  width: 100%;
+  margin-top: 30px;
+
+  .lottie-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .lottie {
+      /* width: 100%; */
+      width: 600px;
+      height: 600px;
+
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1d4ed8;
+    }
+
+    .text {
+      font-size: 16px;
+      font-weight: 400;
+
+      color: #6b7280;
+    }
+
+    .btn-primary {
+      width: 50%;
+    }
+
+  }
+
+
+}
+
 .project-progress-container {
   position: relative;
   min-height: 100vh;
@@ -208,7 +305,7 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
 
 .highlight-active {
   position: relative !important;
-  z-index: 999 !important;
+  z-index: 99999 !important;
   background: white;
   border-radius: 12px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.11);
@@ -222,13 +319,15 @@ watch(() => localStorage.getItem("ProjectProgressVisited"), () => {
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  z-index: 99999 !important;
   animation: fadeIn 0.4s ease-out;
 }
 
 .sidebar-note {
   top: 20px;
   left: 105%;
+  z-index: 99999 !important;
+
 }
 
 .content-tip {

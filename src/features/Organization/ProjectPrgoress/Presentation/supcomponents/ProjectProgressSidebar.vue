@@ -10,6 +10,7 @@ const emit = defineEmits(['update:ActiveItem'])
 const props = defineProps<{
   sidebarItems: ProjectProgressItemModel[]
   showblure: boolean
+  projectProgress: number
 }>()
 
 const ActiveItem = ref(props.sidebarItems.find((el) => !el.progress)?.id)
@@ -140,8 +141,8 @@ const AllPagesToView = ref([
 </script>
 <template>
   <!--  :class="ActiveItem == item?.id && !item.progress ? `` : `not-active`" -->
-  <div class="timeline-container">
-    <div v-if="showblure" class="overlay-focus"></div>
+  <div class="timeline-container" :class="projectProgress == 100 ? 'opacity' : ''">
+    <div v-if="showblure || projectProgress == 100" class="overlay-focus"></div>
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
 
@@ -222,5 +223,9 @@ const AllPagesToView = ref([
   height: 100%;
   width: 100%;
   z-index: 99999;
+}
+
+.opacity {
+  opacity: 0.5;
 }
 </style>
