@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddWhereHouseParams implements Params {
   warehouseTypeId: number
@@ -30,7 +31,11 @@ export default class AddWhereHouseParams implements Params {
 
     data['warehouse_type_id'] = this.warehouseTypeId
     data['name'] = this.name
-    data['serial_number'] = Number(this.serialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.serialNumber
+    } else {
+      data['serial'] = this.serialNumber
+    }
 
     return data
   }

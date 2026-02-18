@@ -22,6 +22,7 @@ import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFact
 import HazardFactorParams from '../../Core/params/FactorParams'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
 const indexFactoryController = IndexFactoryController.getInstance()
@@ -135,7 +136,7 @@ const updateData = () => {
       industry.value?.map((item) => item.id),
       HazaradFactor,
       Number(ParentId),
-      SerialNumber.value?.SerialNumber,
+      SerialNumber.value,
     )
 
   // console.log(params, 'params')
@@ -184,8 +185,9 @@ const setFactor = (data: TitleInterface[]) => {
   updateData()
 }
 
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -207,8 +209,10 @@ const fields = ref([
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">

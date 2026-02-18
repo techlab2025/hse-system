@@ -36,6 +36,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import AddEquipment from '@/features/_templateFeature/Presentation/components/AddEquipment.vue'
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 /* =========================
  * Route & Props
@@ -130,31 +131,31 @@ const updateData = () => {
   /* ---- Decide Add or Edit ---- */
   const params = props.data?.id
     ? new EditInspectionParams(
-        props.data.id,
-        SelectedAssigned.value,
-        DataParams.value?.morph?.id,
-        DataParams.value?.TempalteIds,
-        data.inspectionType,
-        data.periodType,
-        37,
-        periodTasks,
-      )
+      props.data.id,
+      SelectedAssigned.value,
+      DataParams.value?.morph?.id,
+      DataParams.value?.TempalteIds,
+      data.inspectionType,
+      data.periodType,
+      37,
+      periodTasks,
+    )
     : new AddInspectionParams(
-        id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
-        DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
-        DataParams.value?.TempalteIds || TempalteIds.value,
-        data.inspectionType || InspectionTypeEnum?.DAY,
-        data.periodType || PeriodTypeEnum?.DAILY,
-        DataParams.value?.ProjectId || null,
-        periodTasks,
-        data.onceday,
-        data.fromDate,
-        null,
-        DataParams.value?.ProjectZoneId,
-        IsInLibrary.value,
-        DataParams.value?.SelectedEquipment,
-        SerialNumber.value?.SerialNumber,
-      )
+      id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
+      DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
+      DataParams.value?.TempalteIds || TempalteIds.value,
+      data.inspectionType || InspectionTypeEnum?.DAY,
+      data.periodType || PeriodTypeEnum?.DAILY,
+      DataParams.value?.ProjectId || null,
+      periodTasks,
+      data.onceday,
+      data.fromDate,
+      null,
+      DataParams.value?.ProjectZoneId,
+      IsInLibrary.value,
+      DataParams.value?.SelectedEquipment,
+      SerialNumber.value,
+    )
 
   emit('update:data', params)
 }
@@ -192,14 +193,15 @@ const setEquipment = (data: TitleInterface) => {
 
 watch(
   () => props.data,
-  () => {},
+  () => { },
   { immediate: true },
 )
 const IsInLibrary = ref()
 const inspectionDoalouge = ref(false)
 
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -219,43 +221,30 @@ const fields = ref([
 <template>
   <!-- Page Header -->
   <div class="col-span-6 md:col-span-6">
-    <PagesHeader
-      :title="$t('Task Assignment Center')"
-      :subtitle="$t('Distribute responsibilities across users and zones to streamline project workflows')"
-    />
+    <PagesHeader :title="$t('Task Assignment Center')"
+      :subtitle="$t('Distribute responsibilities across users and zones to streamline project workflows')" />
   </div>
 
   <!-- Assign To Selector (only in create mode) -->
   <div class="col-span-6 md:col-span-6" v-if="!id">
-    <TaskAssignTo
-      :title="$t('Assign task to')"
-      :options="AssignToOptions"
-      @update:data="GetSelectedAssigned"
-    />
+    <TaskAssignTo :title="$t('Assign task to')" :options="AssignToOptions" @update:data="GetSelectedAssigned" />
   </div>
 
-  <div class="col-span-6 md:col-span-6" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
+  <div class="input-wrapper col-span-6 md:col-span-6" v-if="!data?.id">
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
 
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <!-- Main Inspection Details -->
-    <div
-      class="inspection-details grid grid-cols-6 gap-4"
-      :class="
-        SelectedAssigned === AssignToTypeEnum.ZONE ||
+    <div class="inspection-details grid grid-cols-6 gap-4" :class="SelectedAssigned === AssignToTypeEnum.ZONE ||
         id ||
         SelectedAssigned === AssignToTypeEnum.MACHINE
-          ? 'full-width'
-          : ''
-      "
-    >
+        ? 'full-width'
+        : ''
+      ">
       <!-- Machine Selection -->
 
       <!-- <CustomSelectInput
@@ -273,19 +262,10 @@ const fields = ref([
            placeholder="select your Machine"
             @update:modelValue="setEquipment" /> -->
 
-        <UpdatedCustomInputSelect
-          v-if="SelectedAssigned === AssignToTypeEnum.MACHINE"
-          class="input"
-          :modelValue="SelectedEquipment"
-          :controller="indexEquipmentController"
-          :params="indexEquipmentParams"
-          :label="$t('Equipment')"
-          :placeholder="$t('select your Machine')"
-          @update:modelValue="setEquipment"
-          :isDialog="true"
-          :dialogVisible="inspectionDoalouge"
-          @close="inspectionDoalouge = false"
-        >
+        <UpdatedCustomInputSelect v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
+          :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
+          :label="$t('Equipment')" :placeholder="$t('select your Machine')" @update:modelValue="setEquipment"
+          :isDialog="true" :dialogVisible="inspectionDoalouge" @close="inspectionDoalouge = false">
           <template #LabelHeader>
             <span class="add-dialog" @click="inspectionDoalouge = true">{{ $t('new') }}</span>
           </template>
@@ -296,48 +276,30 @@ const fields = ref([
       </div>
 
       <!-- Employee Form -->
-      <div
-        class="input-wrapper col-span-6 md:col-span-12"
-        v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id"
-      >
+      <div class="input-wrapper col-span-6 md:col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id">
         <InspectionEmployeeForm @update:data="UpdateFormData" />
       </div>
 
       <!-- Zones Form -->
 
-      <div
-        class="input-wrapper col-span-12"
-        v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id"
-      >
+      <div class="input-wrapper col-span-12" v-if="SelectedAssigned === AssignToTypeEnum.ZONE && !id">
         <InspectionZonesForm @update:data="UpdateFormData" />
       </div>
 
       <!-- Templates -->
-      <div
-        class="input-wrapper col-span-6 md:col-span-3"
-        v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
-      >
-        <InspectionTemplateDialog
-          @update:isInLibrary="IsInLibrary = $event"
-          @update:data="GetTemplateId"
-        />
+      <div class="input-wrapper col-span-6 md:col-span-3" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
+        <InspectionTemplateDialog @update:isInLibrary="IsInLibrary = $event" @update:data="GetTemplateId" />
       </div>
 
       <!-- General Inspection Data -->
-      <div
-        class="input-wrapper col-span-6"
-        v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
-      >
+      <div class="input-wrapper col-span-6" v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE">
         <InspectionGeneralForm @update:data="GetGeneralData" />
       </div>
     </div>
 
     <!-- Employee Tasks Preview -->
-    <EmployeeTasksCard
-      v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id"
-      :employee_id="DataParams?.morph?.id"
-      :employee_name="DataParams?.morph?.title"
-    />
+    <EmployeeTasksCard v-if="SelectedAssigned === AssignToTypeEnum.EMPLOYEE && !id" :employee_id="DataParams?.morph?.id"
+      :employee_name="DataParams?.morph?.title" />
   </div>
 </template>
 <style scoped>

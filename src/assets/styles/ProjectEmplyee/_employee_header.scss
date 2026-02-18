@@ -89,6 +89,12 @@
   .employee-header-text {
     @include flex-row(nowrap, flex-start, center);
     gap: 6px;
+    width: 100%;
+    z-index: 9999;
+    .actions-container {
+      margin-left: auto;
+      // margin-right: auto;
+    }
     img {
       max-width: 40px;
       max-height: 40px;

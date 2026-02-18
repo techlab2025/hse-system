@@ -4,32 +4,32 @@ import { ref } from 'vue'
 import type ProjectProgressModel from '@/features/Organization/ProjectPrgoress/Data/models/ProjectProgressModel'
 import { SertialNumberStatusEnum } from '@/features/Organization/SerialNumber/Core/Enums/SerialNumberStatusEnum'
 
-export const useProjectStatusStore = defineStore(
-  'projectStatus',
+export const useProjectAppStatusStore = defineStore(
+  'projectAppStatusStore',
   () => {
-    const projectStatus = ref<ProjectProgressModel | null>(null)
+    const projectAppStatus = ref<ProjectProgressModel | null>(null)
 
-    function setProjectStatus(newUser: ProjectProgressModel) {
-      projectStatus.value = newUser
+    function setProjectAppStatus(newUser: ProjectProgressModel) {
+      projectAppStatus.value = { ...newUser }
     }
 
-    function getProjectStatus() {
-      return projectStatus.value
+    function getProjectAppStatus() {
+      return projectAppStatus.value
     }
 
-    // function isSerialNumberAuto() {
-    //   return projectStatus.value?.codeSystemType === SertialNumberStatusEnum.AUTO
-    // }
+    function isSerialNumberAuto() {
+      return projectAppStatus.value?.codeSystemType == SertialNumberStatusEnum.AUTO
+    }
     return {
-      projectStatus,
-      setProjectStatus,
-      getProjectStatus,
-      // isSerialNumberAuto,
+      projectAppStatus,
+      setProjectAppStatus,
+      getProjectAppStatus,
+      isSerialNumberAuto,
     }
   },
   {
     persist: {
-      enabled: true,
+      storage: localStorage,
     },
   },
 )

@@ -45,6 +45,7 @@ import AddContractor from '@/features/setting/contractor/Presentation/components
 import OwnedIcon from '@/shared/icons/OwnedIcon.vue'
 import RentIcon from '@/shared/icons/RentIcon.vue'
 import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -522,6 +523,7 @@ const setVehicleKm = (data) => {
 }
 
 const isVehicle = ref(false)
+const projtecStateus = useProjectAppStatusStore()
 
 const fields = ref([
   {
@@ -529,12 +531,12 @@ const fields = ref([
     label: 'serial_number',
     placeholder: 'You can leave it (auto-generated)',
     value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
+    enabled: projtecStateus.isSerialNumberAuto() ? true : false,
   },
 ])
 
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
 
@@ -645,8 +647,10 @@ const WarehouseDialog = ref(false)
       </div>
 
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
-        <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
-          @update:value="UpdateSerial" />
+        <label for="serialNumber">{{ $t('serial_number') }}</label>
+        <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+          :disabled="projtecStateus.isSerialNumberAuto()"
+          :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
       </div>
 
       <div class="col-span-2 md:col-span-1">

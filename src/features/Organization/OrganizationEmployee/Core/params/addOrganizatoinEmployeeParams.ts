@@ -3,6 +3,7 @@ import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
@@ -71,7 +72,11 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles?.map((item) => item.toMap()) || []
     data['employee_type'] = Number(this.EmployeeStatus)
-    data['serial_number'] = Number(this.serialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.serialNumber
+    } else {
+      data['serial'] = this.serialNumber
+    }
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

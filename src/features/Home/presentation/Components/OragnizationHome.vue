@@ -31,6 +31,7 @@ import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/
 import HeaderCard from './HomeStatistics/HeaderCard.vue'
 import GenderStatistics from './HomeStatistics/GenderStatistics.vue'
 import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
@@ -52,18 +53,30 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 
 const ProgressValue = ref<number | null>(null)
 
+const ProjectAppStatusStore = useProjectAppStatusStore()
+
+const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const getProjectProgress = async () => {
-  const indexProjectProgressController = IndexProjectProgressController.getInstance()
   const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
   const response = await indexProjectProgressController.getData(indexProjectProgressParams)
   if (response.value?.data) {
+    console.log(response.value.data, "dadadad");
     ProgressValue.value = response.value?.data?.progress
+    ProjectAppStatusStore.setProjectAppStatus(response.value?.data)
     console.log(response.value?.data?.progress, "response.value?.data?.progress");
   }
 }
 
 onMounted(() => {
   getProjectProgress()
+})
+
+watch(() => indexProjectProgressController.state.value.data, (newVal) => {
+  if (newVal) {
+    console.log(newVal, "new ");
+    ProjectAppStatusStore.setProjectAppStatus(newVal)
+
+  }
 })
 
 const showOverlay = computed(() => {

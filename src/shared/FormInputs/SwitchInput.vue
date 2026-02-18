@@ -39,7 +39,7 @@ watch(props.fields, (newVal) => {
         </div>
       </div>
       <input :id="field.key" v-model="field.value" type="text" :placeholder="field.placeholder"
-        :disabled="switch_reverse ? field.enabled : !field.enabled" />
+        :disabled="field.enabled" />
     </div>
   </div>
 </template>

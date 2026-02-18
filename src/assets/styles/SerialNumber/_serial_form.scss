@@ -8,7 +8,19 @@
   // &:last-child {
   //   padding-bottom: 120px;
   // }
+  .serial-overlay {
+    position: absolute;
+    width: 100%;
+    height: 90%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    border-radius: 20px;
+  }
   .serial-form-section {
+    &.opacity {
+      opacity: 0.5;
+    }
     @include flex-column();
     gap: calc($XlSize2 + 4px);
     // padding: calc($XlSize3 + 4px) 0;
@@ -54,7 +66,6 @@
       gap: $XsSize4;
     }
   }
-
 }
 // .p-accordionheader-toggle-icon {
 //   display: none !important;

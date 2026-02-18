@@ -15,6 +15,8 @@ import ScopeIdParams from '../../Core/params/AddscopesParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+
 const emit = defineEmits(['update:data'])
 
 const indexScopeController = IndexScopeController.getInstance()
@@ -55,7 +57,7 @@ const updateData = () => {
       contactPersonPhone.value ? contactPersonPhone.value : ' ',
       SelectedStatus.value ? SelectedStatus.value?.id : 0,
       formatJoinDate(date.value),
-      SerialNumber.value?.SerialNumber,
+      SerialNumber.value,
     )
 
   console.log('params', params)
@@ -156,12 +158,11 @@ const setStatus = (data: TitleInterface) => {
 onMounted(() => {
   updateData()
 })
-
+const projtecStateus = useProjectAppStatusStore()
 const UpdateSerial = (data) => {
-  SerialNumber.value = data
+  SerialNumber.value = data.target.value
   updateData()
 }
-
 const SerialNumber = ref()
 
 const fields = ref([
@@ -181,8 +182,10 @@ const fields = ref([
     <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
     <label for="company_number">{{ $t('contractor_number') }}</label>

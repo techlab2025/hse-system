@@ -9,6 +9,7 @@ import type WitnessParams from './WitnessesParams'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import type { ActionStatusEnum } from '../Enums/ActionStatusEnum'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddHazardParams implements Params {
   public title: string | null
@@ -178,7 +179,11 @@ export default class AddHazardParams implements Params {
     if (this.HazardSubtypeId) data['hazard_sub_type_id'] = this.HazardSubtypeId
     if (this.RootCausesId) data['root_causes'] = this.RootCausesId
     if (this.actionstatus) data['action_status'] = this.actionstatus
-    if (this.code) data['serial_number'] = Number(this.code)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.code
+    } else {
+      data['serial'] = this.code
+    }
     return data
   }
 

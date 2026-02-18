@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 export default class AddProjectParams implements Params {
   translation: TranslationsParams
   ContractorIds: number[]
@@ -40,7 +41,11 @@ export default class AddProjectParams implements Params {
     data['translations'] = this.translation.toMap()
     data['contractor_ids'] = this.ContractorIds.map((id) => id)
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
-    if (this.SerialNumber) data['serial_number'] = Number(this.SerialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.SerialNumber
+    } else {
+      data['serial'] = this.SerialNumber
+    }
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds

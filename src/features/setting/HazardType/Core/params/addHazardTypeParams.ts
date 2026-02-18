@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type HazardFactorParams from './FactorParams'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddHazardTypeParams implements Params {
   translation: TranslationsParams
@@ -50,7 +51,11 @@ export default class AddHazardTypeParams implements Params {
     if (!this.allIndustries) data['industry_ids'] = this.industries
     if (this.FcatorIds) data['factories'] = this.FcatorIds.map((item) => item.toMap())
     if (this.ParentId) data['parent_id'] = this.ParentId
-    data['serial_number'] = Number(this.SerialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.SerialNumber
+    } else {
+      data['serial'] = this.SerialNumber
+    }
     return data
   }
   validate() {

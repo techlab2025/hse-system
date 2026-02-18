@@ -1,6 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddAccidentsTypeParams implements Params {
   translation: TranslationsParams
@@ -38,7 +39,11 @@ export default class AddAccidentsTypeParams implements Params {
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
-    data['serial_number'] = Number(this.serialNumber)
+    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+      data['serial_number'] = this.serialNumber
+    } else {
+      data['serial'] = this.serialNumber
+    }
 
     return data
   }
