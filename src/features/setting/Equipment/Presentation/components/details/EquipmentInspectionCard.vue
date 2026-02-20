@@ -37,11 +37,10 @@ const GetEquipmentType = (type: number) => {
 
 </script>
 <template>
-  <div class="inspection-card" >
+  <div class="inspection-card">
     <div class="inspection-history-container">
-      <div
-      style="box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 1px 0px"
-      class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
+      <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 1px 0px"
+        class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
 
         <img class="bg" :src="InspectionTaskbg" alt="" />
 
@@ -73,7 +72,7 @@ const GetEquipmentType = (type: number) => {
               <div class="info-box">
                 <p class="assigned-by">Assigned To :</p>
                 <h5 class="position">
-                  {{ GetMorohType(task?.morphType).slice(0, 3) }}_
+                  {{ GetMorohType(task?.morphType)?.slice(0, 3) }}_
                   <span>{{ task?.assigned_to?.name || task?.assigned_to?.title }}</span>
                 </h5>
               </div>

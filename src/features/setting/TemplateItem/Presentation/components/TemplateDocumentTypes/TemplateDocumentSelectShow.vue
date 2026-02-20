@@ -8,7 +8,6 @@ const props = defineProps<{
   title: string
   options: TitleInterface[]
   require_image: boolean
-  tag: TitleLocale
 
 }>()
 const Selected = ref()
@@ -18,7 +17,6 @@ const Selected = ref()
     <div class="options-container">
       <div class="input-wrapper">
         <label>{{ title }}</label>
-        <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
         <div class="col-span-4 md:col-span-2 input-wrapper">
           <CustomSelectInput :static-options="options" :modelValue="Selected" :placeholder="options[0]?.title" />
         </div>

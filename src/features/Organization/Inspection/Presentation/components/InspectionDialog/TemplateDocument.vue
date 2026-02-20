@@ -185,102 +185,113 @@ const getAnswerForItem = (templateItemId: number) => {
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container w-full">
+      <div v-for="(tag, index) in allData?.templateItemTags" :key="index">
 
-      <div class="template-document-content w-full" v-for="(item, index) in allData?.templateItems" :key="index">
-        <!-- <div class="overlay" v-if="isOverlay"></div> -->
 
-        <div class="w-full" v-if="item?.action == ActionsEnum.CHECKBOX">
-          <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
-            <TemplateDocumentCheckboxShowResult :key="index" :title="item.name" :item_id="item.id"
+        <div>
+          <p class="tag-title" v-if="tag.titles?.length > 0">{{tag.titles?.filter((item) => item.locale ===
+            'en').map((item) => item.title).join('')}}
+          </p>
+          <p class="tag-title" v-else>{{ tag.title }}</p>
+        </div>
+
+        <div class="template-document-content w-full" v-for="(item, index) in tag.templateItems" :key="index">
+          <!-- <div class="overlay" v-if="isOverlay"></div> -->
+
+          <div class="w-full" v-if="item?.action == ActionsEnum.CHECKBOX">
+            <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
+              <TemplateDocumentCheckboxShowResult :key="index" :title="item.name" :item_id="item.id"
+                :options="item.options" :require_image="item.requiredImage" @update:data="UpdateCheckBoxs"
+                :selected_data="task_results?.taskResultItems
+                  ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.CHECKBOX)
+                  .find(
+                    (resultItem, idx) =>
+                      tag.templateItems.filter((ti) => ti.action === ActionsEnum.CHECKBOX)[idx]
+                        ?.id === item.id
+                  )
+                  " />
+            </div>
+            <TemplateDocumentCheckboxShow v-else :key="index" :title="item.name" :item_id="item.id"
               :options="item.options" :require_image="item.requiredImage" @update:data="UpdateCheckBoxs" :selected_data="task_results?.taskResultItems
                 ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.CHECKBOX)
                 .find(
                   (resultItem, idx) =>
-                    allData.templateItems.filter((ti) => ti.action === ActionsEnum.CHECKBOX)[idx]
+                    tag.templateItems.filter((ti) => ti.action === ActionsEnum.CHECKBOX)[idx]
                       ?.id === item.id
                 )
                 " />
           </div>
-          <TemplateDocumentCheckboxShow v-else :key="index" :title="item.name" :item_id="item.id"
-            :options="item.options" :require_image="item.requiredImage" @update:data="UpdateCheckBoxs" :selected_data="task_results?.taskResultItems
-              ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.CHECKBOX)
-              .find(
-                (resultItem, idx) =>
-                  allData.templateItems.filter((ti) => ti.action === ActionsEnum.CHECKBOX)[idx]
-                    ?.id === item.id
-              )
-              " />
-        </div>
 
-        <div class="w-full" v-if="item?.action == ActionsEnum.RADIOBUTTON">
-          <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
-            <TemplateDocumentRadioShowResult :title="item.name" :item_id="item.id" :options="item.options"
+          <div class="w-full" v-if="item?.action == ActionsEnum.RADIOBUTTON">
+            <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
+              <TemplateDocumentRadioShowResult :title="item.name" :item_id="item.id" :options="item.options"
+                :require_image="item.requiredImage" @update:data="UpdateRadioButtons" :selected_data="task_results?.taskResultItems
+                  ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.RADIOBUTTON)
+                  .find(
+                    (resultItem, idx) =>
+                      tag.templateItems.filter((ti) => ti.action === ActionsEnum.RADIOBUTTON)[idx]
+                        ?.id === item.id
+                  )
+                  " />
+            </div>
+            <TemplateDocumentRadioButtonShow v-else :title="item.name" :item_id="item.id" :options="item.options"
               :require_image="item.requiredImage" @update:data="UpdateRadioButtons" :selected_data="task_results?.taskResultItems
                 ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.RADIOBUTTON)
                 .find(
                   (resultItem, idx) =>
-                    allData.templateItems.filter((ti) => ti.action === ActionsEnum.RADIOBUTTON)[idx]
+                    tag.templateItems.filter((ti) => ti.action === ActionsEnum.RADIOBUTTON)[idx]
                       ?.id === item.id
                 )
                 " />
           </div>
-          <TemplateDocumentRadioButtonShow v-else :title="item.name" :item_id="item.id" :options="item.options"
-            :require_image="item.requiredImage" @update:data="UpdateRadioButtons" :selected_data="task_results?.taskResultItems
-              ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.RADIOBUTTON)
-              .find(
-                (resultItem, idx) =>
-                  allData.templateItems.filter((ti) => ti.action === ActionsEnum.RADIOBUTTON)[idx]
-                    ?.id === item.id
-              )
-              " />
-        </div>
 
-        <div class="w-full" v-if="item?.action == ActionsEnum.DROPDOWN">
+          <div class="w-full" v-if="item?.action == ActionsEnum.DROPDOWN">
 
 
-          <div v-if="task_results?.taskResultItems?.length > 0" class="">
-            <TemplateDocumentSelectShowResult :title="item.name" :key="index" :item_id="item.id" :options="item.options"
-              :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
+            <div v-if="task_results?.taskResultItems?.length > 0" class="">
+              <TemplateDocumentSelectShowResult :title="item.name" :key="index" :item_id="item.id"
+                :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
+                  ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.DROPDOWN)
+                  .find(
+                    (resultItem, idx) =>
+                      tag.templateItems.filter((ti) => ti.action === ActionsEnum.DROPDOWN)[idx]
+                        ?.id === item.id
+                  )
+                  " />
+            </div>
+            <TemplateDocumentSelectShow v-else :title="item.name" :key="index" :item_id="item.id"
+              :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
                 ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.DROPDOWN)
                 .find(
                   (resultItem, idx) =>
-                    allData.templateItems.filter((ti) => ti.action === ActionsEnum.DROPDOWN)[idx]
+                    tag.templateItems.filter((ti) => ti.action === ActionsEnum.DROPDOWN)[idx]
                       ?.id === item.id
                 )
                 " />
-          </div>
-          <TemplateDocumentSelectShow v-else :title="item.name" :key="index" :item_id="item.id" :options="item.options"
-            :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
-              ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.DROPDOWN)
-              .find(
-                (resultItem, idx) =>
-                  allData.templateItems.filter((ti) => ti.action === ActionsEnum.DROPDOWN)[idx]
-                    ?.id === item.id
-              )
-              " />
 
-        </div>
-        <div class="w-full" v-if="item?.action == ActionsEnum.TEXTAREA">
-          <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
-            <TemplateDocumentTextAreaShowResult :title="item.name" :item_id="item.id"
+          </div>
+          <div class="w-full" v-if="item?.action == ActionsEnum.TEXTAREA">
+            <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
+              <TemplateDocumentTextAreaShowResult :title="item.name" :item_id="item.id"
+                :require_image="item.requiredImage" @update:data="UpdateTextAreas" :selected_data="task_results?.taskResultItems
+                  ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.TEXTAREA)
+                  .find(
+                    (resultItem, idx) =>
+                      tag.templateItems.filter((ti) => ti.action === ActionsEnum.TEXTAREA)[idx]
+                        ?.id === item.id
+                  )
+                  " />
+            </div>
+            <TemplateDocumentTextAreaShow v-else :title="item.name" :item_id="item.id"
               :require_image="item.requiredImage" @update:data="UpdateTextAreas" :selected_data="task_results?.taskResultItems
                 ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.TEXTAREA)
                 .find(
                   (resultItem, idx) =>
-                    allData.templateItems.filter((ti) => ti.action === ActionsEnum.TEXTAREA)[idx]
+                    tag.templateItems.filter((ti) => ti.action === ActionsEnum.TEXTAREA)[idx]
                       ?.id === item.id
                 )
                 " />
           </div>
-          <TemplateDocumentTextAreaShow v-else :title="item.name" :item_id="item.id" :require_image="item.requiredImage"
-            @update:data="UpdateTextAreas" :selected_data="task_results?.taskResultItems
-              ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.TEXTAREA)
-              .find(
-                (resultItem, idx) =>
-                  allData.templateItems.filter((ti) => ti.action === ActionsEnum.TEXTAREA)[idx]
-                    ?.id === item.id
-              )
-              " />
         </div>
       </div>
     </div>
@@ -295,5 +306,12 @@ const getAnswerForItem = (templateItemId: number) => {
   width: 100%;
   z-index: 9999;
   background-color: red;
+}
+
+.tag-title {
+  color: #041953;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: "Regular";
 }
 </style>

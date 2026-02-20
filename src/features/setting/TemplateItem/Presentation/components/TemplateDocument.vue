@@ -105,25 +105,26 @@ const DeleteTemplateItem = async (id: number) => {
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div class="template-document-content" v-for="(item, index) in allData?.templateItems" :key="index">
+      <div v-for="(tag, index) in allData?.templateItemTags" :key="index">
+        <p class="tag-title" v-if="tag.titles?.length > 0">{{tag.titles?.filter((item) => item.locale ===
+          'en').map((item) => item.title).join('')}}
+        </p>
+        <p class="tag-title" v-else>{{ tag.title }}</p>
+        <div class="template-document-content" v-for="(item, index) in tag?.templateItems" :key="index">
+          <div class="actions"
+            v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
+            <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
+          </div>
+          <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
+            :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea" />
+          <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
+            :require_image="item.requiredImage" />
 
-        <div class="actions"
-          v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
-          <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
         </div>
-
-        <TemplateDocumentCheckboxShow v-if="item?.action == ActionsEnum.CHECKBOX" :key="index" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentRadioButtonShow v-if="item?.action == ActionsEnum.RADIOBUTTON" :title="item.name"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentSelectShow v-if="item?.action == ActionsEnum.DROPDOWN" :title="item.name" :key="index"
-          :options="item.options" :require_image="item.requiredImage" :has_textarea="item.has_textarea"
-          :tag="item.tag" />
-        <TemplateDocumentTextAreaShow v-if="item?.action == ActionsEnum.TEXTAREA" :title="item.name"
-          :require_image="item.requiredImage" :tag="item.tag" />
-
       </div>
     </div>
     <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->
@@ -135,5 +136,12 @@ const DeleteTemplateItem = async (id: number) => {
 <style scoped>
 .template-document-container {
   padding-inline: 25px;
+}
+
+.tag-title {
+  color: #041953;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: "Regular";
 }
 </style>

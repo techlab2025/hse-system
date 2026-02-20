@@ -5,6 +5,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import { ActionsEnum } from '../../Core/Enum/ActionType'
 import TemplateItemDetailsModel from '@/features/setting/TemplateItem/Data/models/TemplateItemDetailsModel'
+import TemplateItemTagModel from './TemplateItemTagModel'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class TemplateDetailsModel {
@@ -21,7 +22,7 @@ export default class TemplateDetailsModel {
   public title: string | null = null
   public type: number
   public tag: TitleLocale[]
-
+  public templateItemTags: TemplateItemTagModel[]
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -39,6 +40,7 @@ export default class TemplateDetailsModel {
     title: string | null = null,
     type: number,
     tag: TitleLocale[],
+    templateItemTags: TemplateItemTagModel[],
   ) {
     this.id = id
     this.name = name
@@ -54,6 +56,7 @@ export default class TemplateDetailsModel {
     this.title = title
     this.type = type
     this.tag = tag
+    this.templateItemTags = templateItemTags
   }
 
   static fromMap(data: any): TemplateDetailsModel {
@@ -75,7 +78,8 @@ export default class TemplateDetailsModel {
       this.getTemplateItemsAction(data.action),
       data.title,
       data.type,
-      data.template_item_tag,
+      data.tag,
+      data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)),
     )
   }
 
