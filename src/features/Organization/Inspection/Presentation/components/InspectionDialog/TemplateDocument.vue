@@ -200,6 +200,7 @@ const getAnswerForItem = (templateItemId: number) => {
 
           <div class="w-full" v-if="item?.action == ActionsEnum.CHECKBOX">
             <div class="w-full" v-if="task_results?.taskResultItems?.length > 0">
+
               <TemplateDocumentCheckboxShowResult :key="index" :title="item.name" :item_id="item.id"
                 :options="item.options" :require_image="item.requiredImage" @update:data="UpdateCheckBoxs"
                 :selected_data="task_results?.taskResultItems
@@ -249,6 +250,7 @@ const getAnswerForItem = (templateItemId: number) => {
 
 
             <div v-if="task_results?.taskResultItems?.length > 0" class="">
+              aa
               <TemplateDocumentSelectShowResult :title="item.name" :key="index" :item_id="item.id"
                 :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
                   ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.DROPDOWN)

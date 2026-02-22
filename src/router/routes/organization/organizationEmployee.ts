@@ -44,4 +44,17 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'organization-employee/upload',
+    name: 'Upload Organization Employee',
+    component: () =>
+      import(
+        '@/features/Organization/OrganizationEmployee/Presentation/components/UploadOrganizationEmployee.vue'
+      ),
+    meta: {
+      breadcrumb: 'Upload Organization Employee',
+      parent: 'Organization Employee',
+      isSidebar: true,
+    },
+  },
 ]

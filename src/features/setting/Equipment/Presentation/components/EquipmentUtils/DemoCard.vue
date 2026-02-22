@@ -90,7 +90,7 @@ const { user } = useUserStore()
         </div>
         <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">
           <div class="date_rent">
-            <p class="rent">
+            <p class="rent" v-if="rentType">
               <Rent /> <span>Rent</span> |per {{ RentTypeEnum[rentType] }}
             </p>
             <h6 class="start_date">
@@ -133,7 +133,7 @@ const { user } = useUserStore()
   </div>
 </template>
 <style scoped>
-.demo-img{
+.demo-img {
   max-width: 90px !important;
   max-height: 90px !important;
 }

@@ -587,12 +587,12 @@ const setRootCause = (data: TitleInterface[]) => {
         :params="indexEquipmentParams" :label="$t('select machine (optional)')" id="machine"
         :placeholder="$t('select your machine')" @update:modelValue="setMachine" @close="machineDialogRef = false"
         :isDialog="true" :dialogVisible="machineDialogRef">
-        <template #LabelHeader>
+        <!-- <template #LabelHeader>
           <span class="add-dialog" @click="machineDialogRef = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddFullEquipment @close:dialog="machineDialogRef = false" @update:data="machineDialogRef = false" />
-        </template>
+        </template> -->
       </UpdatedCustomInputSelect>
     </div>
 
@@ -687,7 +687,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="hazard-type-container incedant col-span-6 md:col-span-6">
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
-          <label class="radio-title">{{ $t('take action') }}</label>
+          <label class="radio-title">{{ $t('immediate_action_taken') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
