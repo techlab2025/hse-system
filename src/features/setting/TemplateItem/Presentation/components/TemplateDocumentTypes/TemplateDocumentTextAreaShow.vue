@@ -5,7 +5,6 @@ import type { TitleLocale } from '@/base/core/params/translations_params';
 const { title } = defineProps<{
   title: string
   require_image: boolean
-  tag: TitleLocale
 
 }>()
 
@@ -15,7 +14,6 @@ const { title } = defineProps<{
     <div class="options-container">
       <div class="input-wrapper">
         <label for="">{{ title }}</label>
-        <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
         <textarea id="selec" :label="title" :disabled="true" class="input" />
       </div>
     </div>

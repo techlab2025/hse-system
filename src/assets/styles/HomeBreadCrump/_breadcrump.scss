@@ -11,6 +11,10 @@
   .breadcrump {
     width: 100%;
     @include flex-row(nowrap, center, center);
+    .info-dialog {
+      width: 30px;
+      height: 30px;
+    }
 
     // margin-bottom: $XlSize;
     .sidebar-back {

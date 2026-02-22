@@ -7,7 +7,6 @@ const props = defineProps<{
   title: string
   options: ItemModel[]
   require_image: boolean
-  tag: TitleLocale
 
 }>()
 
@@ -15,7 +14,6 @@ const props = defineProps<{
 <template>
   <div class="show-template-document-radio">
     <p class="title">{{ title }}</p>
-    <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
     <div class="options-container">
       <div class="options">
         <div class="options-box" v-for="(option, index) in options" :key="index">

@@ -3,6 +3,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 import TemplateItemDetailsModel from '@/features/setting/TemplateItem/Data/models/TemplateItemDetailsModel'
 import { ActionsEnum } from '../../Core/Enum/ActionType'
+import TemplateItemTagModel from './TemplateItemTagModel'
 
 export default class TemplateModel extends TitleInterface {
   public id: number
@@ -16,6 +17,7 @@ export default class TemplateModel extends TitleInterface {
   public templateItems: TemplateItemDetailsModel[]
   public requireImage: number
   public action: TitleInterface | null
+  public templateItemTags: TemplateItemTagModel[]
 
   constructor(
     id: number,
@@ -29,6 +31,7 @@ export default class TemplateModel extends TitleInterface {
     templateItems: TemplateItemDetailsModel[] = [],
     requireImage: number = 0,
     action: TitleInterface | null = null,
+    templateItemTags: TemplateItemTagModel[]
 
   ) {
     super({ id, title, subtitle })
@@ -42,6 +45,7 @@ export default class TemplateModel extends TitleInterface {
     this.templateItems = templateItems
     this.requireImage = requireImage
     this.action = action
+    this.templateItemTags = templateItemTags
   }
 
   static fromMap(data: any): TemplateModel {
@@ -59,6 +63,7 @@ export default class TemplateModel extends TitleInterface {
       data.template_items?.length > 0 ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item)) : [],
       data.require_image,
       this.getTemplateItemsAction(data.action),
+      data.template_item_tags?.map((el:any)=>TemplateItemTagModel.fromMap(el))
     )
   }
 

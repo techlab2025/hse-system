@@ -89,7 +89,7 @@ const GetEquipmentType = (type: number) => {
               <div class="info-box">
                 <p class="assigned-by">{{ $t('Assigned To') }} :</p>
                 <h5 class="position">
-                  {{ GetMorohType(task?.morphType).slice(0, 3) }}_
+                  {{ GetMorohType(task?.morphType)?.slice(0, 3) }}_
                   <span>{{ task?.assigned_to?.name || task?.assigned_to?.title }}</span>
                 </h5>
               </div>

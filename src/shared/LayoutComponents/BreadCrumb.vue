@@ -9,6 +9,8 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import HomeInfoIcon from '../icons/HomeInfoIcon.vue'
+import HomeDialogInfo from './HomeDialogInfo.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -129,6 +131,7 @@ const ShowBackBtn = computed(() => {
       </button>
 
       <Breadcrumb :model="items" />
+      <!-- <HomeDialogInfo /> -->
     </div>
 
     <!-- v-if="!IsHomeSetting" -->

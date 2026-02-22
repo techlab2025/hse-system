@@ -8,14 +8,12 @@ const { title, options } = defineProps<{
   options: ItemModel[]
   require_image: boolean
   has_textarea: number
-  tag: TitleLocale
 }>()
 
 </script>
 <template>
   <div class="show-template-document-checkbox">
     <p class="title">{{ title }}</p>
-    <p class="tag">{{ tag?.titles?.[0]?.title }}</p>
     <div class="options-container">
       <div class="options">
 

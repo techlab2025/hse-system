@@ -183,7 +183,8 @@ onBeforeUnmount(() => {
         <div class="project-progress-body-container">
 
           <div class="project-progress-body-sidebar" :class="{ 'highlight-active': showOverlay && !startNextNote }">
-            <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems" :projectProgress="state.data?.progress" />
+            <ProjectProgressSidebar @update:ActiveItem="GetActiveItem" :sidebarItems="state.data?.progressItems"
+              :projectProgress="state.data?.progress" />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
               <h3>Step 2: The Roadmap</h3>
@@ -225,7 +226,8 @@ onBeforeUnmount(() => {
         </div>
 
         <ProjectProgreesDialog title="Add Your Own Data To Start Using System Easily" :index="6"
-          :visible="state.data?.progress == 0 && !showOverlay && !startNextNote && !visited" @Gotit="setGotit" />
+          :visible="state.data?.progress == 0 && !showOverlay && !startNextNote && !visited && !state.data.progressItems.find((el) => el.progress)"
+          @Gotit="setGotit" />
       </template>
 
       <template #loader>
