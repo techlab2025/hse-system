@@ -244,8 +244,9 @@ const fields = ref([
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList" label="Status"
-      :reload="false" id="Status" placeholder="Select Status" @update:modelValue="setStatus" />
+    <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList"
+      :label="$t('contract_status')" :reload="false" id="Status" placeholder="Select Status"
+      @update:modelValue="setStatus" />
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">

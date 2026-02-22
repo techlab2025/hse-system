@@ -2,9 +2,11 @@
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import AddSerialForm from './AddSerialForm.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue';
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum';
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus';
+import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController';
+import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams';
 
 const projectStatus = useProjectAppStatusStore()
 const SerialType = ref<SertialNumberStatusEnum | null>(projectStatus.getProjectAppStatus()?.codeSystemType ?? SertialNumberStatusEnum.AUTO)
@@ -25,6 +27,15 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       return ''
   }
 }
+onMounted(async () => {
+  await IndexProjectProgressController.getInstance().getData(
+    new IndexProjectProgressParams('', 1, 10, 0),
+  )
+})
+
+watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
+  SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
+})
 </script>
 
 <template>
@@ -36,7 +47,7 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       </template>
     </PagesHeader>
     <div>
-      <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')"
+       <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')"
         :serialType="SerialType" />
     </div>
   </div>

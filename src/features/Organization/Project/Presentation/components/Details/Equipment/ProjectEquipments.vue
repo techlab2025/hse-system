@@ -12,6 +12,7 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum';
 import EmptyEquimentsProjectZones from '../PorjectUtils/EmptyEquimentsProjectZones.vue';
 import ProjectEquipmentCard from './ProjectEquipmentCard.vue';
+import PinIcons from '@/shared/icons/PinIcons.vue';
 
 const route = useRoute()
 const id = route.params.project_id
@@ -41,7 +42,12 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
       <PagesHeader :title="$t('Equipment_tools_&_devices_by_zone')"
         :subtitle="$t('view_and_manage_all_equipment_assigned_to_each_operational_zone')" />
       <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
-        <EmptyEquimentsProjectZones :zonesNumber="EmptyZones?.length" :zones="EmptyZones" />
+        <EmptyEquimentsProjectZones v-if="EmptyZones?.length > 0" :zonesNumber="EmptyZones?.length"
+          :zones="EmptyZones" />
+        <div v-else class="flex gap-2 items-center zoon-header">
+          <PinIcons />
+          <p class="zoon-title">{{ zones.title }}</p>
+        </div>
         <div class="project-equipment-card-container grid grid-cols-2 gap-4"
           v-for="(zone, index) in zones.locationZones" :key="index">
           <ProjectEquipmentCard v-for="(tool, index) in zone.projectZoonEquipments" :key="index" :tool="tool" />
@@ -67,3 +73,19 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
   </DataStatus>
 
 </template>
+<style scoped>
+.zoon-header {
+  margin-block: 10px;
+  width: 100%;
+  background-color: rgba(231, 227, 227, 0.301);
+  padding: 12px;
+  border-radius: 12px;
+
+  .zoon-title {
+    color: #121212;
+    font-size: 18px;
+    font-weight: 700;
+
+  }
+}
+</style>

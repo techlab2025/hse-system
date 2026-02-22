@@ -13,6 +13,8 @@ import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
+import IndexProjectProgressController from '../../../ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
+import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
 const emit = defineEmits(['update:data', 'close:dialog'])
@@ -168,9 +170,16 @@ const sendData = async () => {
   })
 
   const params = new CreateCodingSystemParams(props.serialType == SertialNumberStatusEnum.AUTO ? fields.value.filter((el) => el.name != 0) : [], props.serialType)
-  await SerialNumController.getInstance().addSerialNumber(params, router)
+  const state = await SerialNumController.getInstance().addSerialNumber(params, router)
+  if (state.value.data) {
+    await IndexProjectProgressController.getInstance().getData(
+      new IndexProjectProgressParams('', 1, 10, 0),
+    )
+  }
   emit('close:dialog')
   emit('update:data')
+  // location.reload()
+
 }
 
 const ShowData = async () => {
@@ -189,8 +198,11 @@ const ShowData = async () => {
   }
 }
 
-onMounted(() => {
-  ShowData()
+onMounted(async () => {
+  await ShowData()
+  await IndexProjectProgressController.getInstance().getData(
+    new IndexProjectProgressParams('', 1, 10, 0),
+  )
 })
 const route = useRoute()
 </script>

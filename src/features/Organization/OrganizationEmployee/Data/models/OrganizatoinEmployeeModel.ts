@@ -247,4 +247,22 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       [new TitleInterface({ id: 1, title: 'SEO' })],
     ),
   ]
+
+   static transformData(data: string[][]): OrganizatoinEmployeeModel[] {
+    return data.map(
+      (row, index) =>
+        new OrganizatoinEmployeeModel(
+          index + 1, // Generate unique ID (or use 0 if not needed)
+          row[0] || "", // Employee Name
+          row[1] || "", // Employee Code
+          row[2] || "", // Employee Phone
+          row[3] || "", // Employee Email
+          row[4] || 0, // Employee Is Master
+          row[5] || "", // Employee Image
+          row[6] || [], // Employee Certificates
+          row[7] || [], // Employee Hierarchy
+          row[8] || [], // Employee Employee Certificates
+        ),
+    );
+  }
 }

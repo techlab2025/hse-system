@@ -27,6 +27,7 @@ import DeleteOrganizatoinEmployeeController from '../controllers/deleteOrganizat
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
+import ExcelSheetUpload from '../supcomponents/ExcelSheetHandle/UploadFiles.vue'
 
 const { t } = useI18n()
 
@@ -184,6 +185,10 @@ watch(
           {{ $t('Add_OrganizatoinEmployee') }}
         </router-link>
       </PermissionBuilder>
+      <!-- <ExcelSheetUpload class="upload" /> -->
+      <!-- <router-link to="/organization/organization-employee/upload" class="btn btn-primary">
+        {{ $t('upload_excel') }}
+      </router-link> -->
     </div>
   </div>
 
@@ -263,4 +268,9 @@ watch(
   </PermissionBuilder>
 </template>
 
-<style scoped></style>
+<style scoped>
+.upload {
+  width: 100px;
+  height: 40px;
+}
+</style>
