@@ -186,9 +186,9 @@ watch(
         </router-link>
       </PermissionBuilder>
       <!-- <ExcelSheetUpload class="upload" /> -->
-      <router-link to="/organization/organization-employee/upload" class="btn btn-primary">
+      <!-- <router-link to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 

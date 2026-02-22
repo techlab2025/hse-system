@@ -24,19 +24,15 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(
-    params: AddOrganizatoinEmployeeParams,
-    router: Router,
-    draft: boolean = false,
-  ) {
+  async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+      // params.validate()
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<OrganizatoinEmployeeModel> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)

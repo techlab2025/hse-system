@@ -26,7 +26,7 @@ export default class AddTeamController extends ControllerInterface<TeamModel> {
     return this.instance
   }
 
-  async addTeam(params: AddTeamParams, router: Router, draft: boolean = false) {
+  async addTeam(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<TeamModel> = await this.addTeamUseCase.call(params)

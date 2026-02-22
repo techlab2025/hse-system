@@ -9,6 +9,7 @@ import AddOrganizatoinEmployeeController from '../controllers/addOrganizatoinEmp
 import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams';
 import { useRouter } from 'vue-router';
 import AddOrganizationEmployeeExcelParams from '../../Core/params/AddOrganizationEmployeeExcelParams';
+import AddTeamController from '@/features/setting/Teams/Presentation/controllers/addTeamController';
 
 const sheetData = ref<OrganizatoinEmployeeModel[] | null>(null);
 const File = ref<string>("");
@@ -61,7 +62,7 @@ const readExcelFile = (file: File): Promise<any[]> => {
   });
 };
 
-const SendData = ref<string[]>(['id', 'name', 'email']);
+const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'passwordConfirmation']);
 
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
@@ -83,21 +84,23 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 };
 const router = useRouter()
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
+
 const AddOrgEmployee = async () => {
-  const headers = mappedData.value?.[0] as string[]   // ['id', 'name', 'email']
-  const rows = mappedData.value?.slice(1)             // data rows
+  const headers = mappedData.value?.[0] as string[]
+  const rows = mappedData.value?.slice(1)
 
   const dataAsObjects = rows?.map((row: any[]) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      obj[key] = row[i]
+      if (key && key.trim() !== '') {  // ← skip empty keys
+        obj[key] = row[i]
+      }
     })
     return obj
   })
-  // dataAsObjects = [{ id: '1', name: 'John', email: 'john@mail.com' }, ...]
-  // AddOrganizationEmployeeExcelParams
-  const addOrganizatoinEmployeeParams = dataAsObjects.map((item) => new AddOrganizationEmployeeExcelParams(item))
-  console.log(addOrganizatoinEmployeeParams, "addOrganizatoinEmployeeParams")
+
+  const orgData = new AddOrganizationEmployeeExcelParams(dataAsObjects[0])
+  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router)
 }
 </script>
 
