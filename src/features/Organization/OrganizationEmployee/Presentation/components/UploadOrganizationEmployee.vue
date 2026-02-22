@@ -68,11 +68,6 @@ const readExcelFile = (file: File): Promise<any[]> => {
 };
 </script>
 <template>
-  <FileUpload
-    accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.csv"
-    @update:fileData="fileUpload" />
-  <!-- <divclass="mt-4 table-container"> -->
-  <!-- <h3 class="text-lg font-semibold mb-2">Uploaded Data Preview:</h3> -->
   <div v-if="Data && Data.length > 0" class="table-responsive table-container">
     <table class="main-table">
       <thead>
@@ -87,6 +82,12 @@ const readExcelFile = (file: File): Promise<any[]> => {
       </tbody>
     </table>
   </div>
+
+  <FileUpload v-else
+    accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.csv"
+    @update:fileData="fileUpload" />
+  <!-- <divclass="mt-4 table-container"> -->
+  <!-- <h3 class="text-lg font-semibold mb-2">Uploaded Data Preview:</h3> -->
 
 
 </template>
