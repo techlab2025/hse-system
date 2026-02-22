@@ -1,0 +1,13 @@
+@import '../variables';
+@import '../mixins/flex';
+.excel-seelect-dialog {
+  width: 100%;
+  .data-container {
+    width: 100%;
+    @include flex-row(nowrap, space-between, center);
+    gap: 10px;
+    .column-item {
+      width: 100%;
+    }
+  }
+}
