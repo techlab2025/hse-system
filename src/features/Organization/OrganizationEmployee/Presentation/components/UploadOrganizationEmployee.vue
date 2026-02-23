@@ -69,27 +69,10 @@ const readExcelFile = (file: File): Promise<any[]> => {
 
 const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'passwordConfirmation']);
 
-// If Sent All Columns
-// const onColumnMapping = (mapping: Record<string, string>) => {
-//   if (!Data.value || Data.value.length === 0) return;
 
-//   // Build reverse map: excelColumnName -> sentKey
-//   const reverseMapping: Record<string, string> = {};
-//   for (const [sentKey, excelCol] of Object.entries(mapping)) {
-//     if (excelCol) reverseMapping[excelCol] = sentKey;
-//   }
 
-//   // Deep clone data so we don't mutate the original
-//   const cloned: any[] = Data.value.map((row: any[]) => [...row]);
+const filterToSentData = ref(true) // true = only SendData keys | false = all columns
 
-//   // Rename header row
-//   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
-
-//   mappedData.value = cloned;
-//   sheetData.value = getBodyData(cloned);
-// };
-
-// If Sent Only Some Columns
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
 
@@ -101,22 +84,23 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   const cloned: any[] = Data.value.map((row: any[]) => [...row]);
   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
 
-  // ← Only keep columns that are in SendData
-  const allowedKeys = new Set(SendData.value)
-  const headerRow = cloned[0] as string[]
-  const allowedIndexes = headerRow
-    .map((key, i) => allowedKeys.has(key) ? i : -1)
-    .filter(i => i !== -1)
+  if (filterToSentData.value) {
+    const allowedKeys = new Set(SendData.value)
+    const headerRow = cloned[0] as string[]
+    const allowedIndexes = headerRow
+      .map((key, i) => allowedKeys.has(key) ? i : -1)
+      .filter(i => i !== -1)
 
-  // Filter every row to only allowed column indexes
-  const filteredData = cloned.map(row => allowedIndexes.map(i => row[i]))
-  // Rebuild header from allowed keys in SendData order
-  filteredData[0] = allowedIndexes.map(i => headerRow[i])
+    const filteredData = cloned.map(row => allowedIndexes.map(i => row[i]))
+    filteredData[0] = allowedIndexes.map(i => headerRow[i])
 
-  mappedData.value = filteredData
-  sheetData.value = getBodyData(filteredData)
+    mappedData.value = filteredData
+    sheetData.value = getBodyData(filteredData)
+  } else {
+    mappedData.value = cloned
+    sheetData.value = getBodyData(cloned)
+  }
 }
-
 const router = useRouter()
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
 
