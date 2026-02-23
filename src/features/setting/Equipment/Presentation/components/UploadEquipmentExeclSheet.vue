@@ -84,24 +84,37 @@ const SendData = ref<string[]>([
   "serial_number",
 ]);
 
+const filterToSentData = ref(true) // true = only SendData keys | false = all columns
+
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
 
-  // Build reverse map: excelColumnName -> sentKey
   const reverseMapping: Record<string, string> = {};
   for (const [sentKey, excelCol] of Object.entries(mapping)) {
     if (excelCol) reverseMapping[excelCol] = sentKey;
   }
 
-  // Deep clone data so we don't mutate the original
   const cloned: any[] = Data.value.map((row: any[]) => [...row]);
-
-  // Rename header row
   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
 
-  mappedData.value = cloned;
-  sheetData.value = getBodyData(cloned);
-};
+  if (filterToSentData.value) {
+    const allowedKeys = new Set(SendData.value)
+    const headerRow = cloned[0] as string[]
+    const allowedIndexes = headerRow
+      .map((key, i) => allowedKeys.has(key) ? i : -1)
+      .filter(i => i !== -1)
+
+    const filteredData = cloned.map(row => allowedIndexes.map(i => row[i]))
+    filteredData[0] = allowedIndexes.map(i => headerRow[i])
+
+    mappedData.value = filteredData
+    sheetData.value = getBodyData(filteredData)
+  } else {
+    mappedData.value = cloned
+    sheetData.value = getBodyData(cloned)
+  }
+}
+
 const router = useRouter()
 const addEquipmentController = AddEquipmentController.getInstance()
 
