@@ -2,26 +2,20 @@
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
 import { ref } from 'vue';
 import * as XLSX from 'xlsx';
-import FileUpload from '../supcomponents/ExcelSheetHandle/FileUpload.vue';
-import OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel';
-import ExcelSheetColumnsHandle from '../supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
-import AddOrganizatoinEmployeeController from '../controllers/addOrganizatoinEmployeeController';
-import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams';
 import { useRouter } from 'vue-router';
-import AddOrganizationEmployeeExcelParams from '../../Core/params/AddOrganizationEmployeeExcelParams';
-import AddTeamController from '@/features/setting/Teams/Presentation/controllers/addTeamController';
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
-import type TitleInterface from '@/base/Data/Models/title_interface';
-import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams';
-import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController';
+import EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel';
+import AddEquipmentController from '../controllers/addEquipmentController';
+import AddEquipmentExcelParams from '../../Core/params/AddEquipmentExcelParams';
+import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
+import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue';
 
-const sheetData = ref<OrganizatoinEmployeeModel[] | null>(null);
+const sheetData = ref<EquipmentDetailsModel[] | null>(null);
 const File = ref<string>("");
 const Data = ref<any[]>([]);
 const mappedData = ref<any[] | null>(null); // holds renamed data after confirm
 
 const getBodyData = (data: any[]) => {
-  return OrganizatoinEmployeeModel.transformData(data.slice(1));
+  return EquipmentDetailsModel.transformData(data.slice(1));
 };
 
 const fileUpload = async (file: File) => {
@@ -66,7 +60,29 @@ const readExcelFile = (file: File): Promise<any[]> => {
   });
 };
 
-const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'passwordConfirmation']);
+
+const SendData = ref<string[]>([
+  "name",
+  "date",
+  "status",
+  "inspection_duration",
+  "license_number",
+  "license_plate_number",
+  "image",
+  "certificate_image",
+  "all_industries",
+  "industry_ids",
+  "parent_id",
+  "contractor_id",
+  "description",
+  "period_type",
+  "period",
+  "checkin_date",
+  "checkout_date",
+  "kilometer",
+  "warehouse_id",
+  "serial_number",
+]);
 
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
@@ -87,7 +103,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   sheetData.value = getBodyData(cloned);
 };
 const router = useRouter()
-const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
+const addEquipmentController = AddEquipmentController.getInstance()
 
 const AddOrgEmployee = async () => {
   const headers = mappedData.value?.[0] as string[]
@@ -101,33 +117,33 @@ const AddOrgEmployee = async () => {
       }
     })
     // ← attach Heirarchy to every row
-    obj['hierarchy_id'] = Heirarchy.value?.id
+    // obj['hierarchy_id'] = Heirarchy.value?.id
     return obj
   })
 
   // const orgData = new AddOrganizationEmployeeExcelParams(dataAsObjects)
-  const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects })
+  const orgData = new AddEquipmentExcelParams({ data: dataAsObjects })
   console.log(orgData, 'orgData')
-  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router)
+  await addEquipmentController.addEquipment(orgData, router)
 }
 
-const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
-const Heirarchy = ref<TitleInterface>()
-const setHeirarchy = (data: TitleInterface) => {
-  Heirarchy.value = data
-  // updateData()
-}
+// const indexHerikalyController = IndexHerikalyController.getInstance()
+// const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
+// const Heirarchy = ref<TitleInterface>()
+// const setHeirarchy = (data: TitleInterface) => {
+//   Heirarchy.value = data
+//   // updateData()
+// }
 
 </script>
 
 <template>
-  <div class="grid grid-cols-6 gap-4 w-full mb-4">
+  <!-- <div class="grid grid-cols-6 gap-4 w-full mb-4">
     <div class="col-span-2 input-wrapper">
       <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
         :params="HerikalyParams" :label="$t('Job Type')" :placeholder="$t('Select Job Type')" />
     </div>
-  </div>
+  </div> -->
   <!-- Step 1: Upload -->
   <FileUpload v-if="!Data || Data.length === 0"
     accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.csv"

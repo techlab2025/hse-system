@@ -78,31 +78,19 @@ const getMappedSentKey = (colIndex: number): string => {
 
 <template>
   <div class="excel-select-dialog">
-    <Dialog
-      v-model:visible="visible"
-      modal
-      :dismissable-mask="true"
-      :style="{ width: '56rem' }"
-      header="Map Excel Columns"
-      @hide="onHide"
-    >
+    <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '56rem' }"
+      header="Map Excel Columns" @hide="onHide">
       <div class="instructions">
-        <span>Drag the <strong>Excel columns</strong> (right) to align them with the <strong>target fields</strong> (left).</span>
+        <span>Drag the <strong>Excel columns</strong> (right) to align them with the <strong>target fields</strong>
+          (left).</span>
       </div>
 
       <div class="mapping-container">
         <!-- Sent Data (target fields) -->
         <div class="column-list">
           <p class="column-list__title">Target Fields</p>
-          <div
-            class="column-list__items"
-            :style="{ gap: '12px' }"
-          >
-            <label
-              class="sent-columns"
-              v-for="(data, i) in sentData"
-              :key="data"
-            >
+          <div class="column-list__items" :style="{ gap: '12px' }">
+            <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
               {{ data }}
             </label>
           </div>
@@ -110,14 +98,10 @@ const getMappedSentKey = (colIndex: number): string => {
 
         <!-- Arrow indicator -->
         <div class="arrow-column">
-          <div
-            v-for="(_, i) in sentData"
-            :key="i"
-            class="arrow-row"
-          >
+          <div v-for="(_, i) in sentData" :key="i" class="arrow-row">
             <svg viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0" y1="8" x2="32" y2="8" stroke="#1D4ED8" stroke-width="2" stroke-dasharray="4 3"/>
-              <path d="M32 4L40 8L32 12V4Z" fill="#1D4ED8"/>
+              <line x1="0" y1="8" x2="32" y2="8" stroke="#1D4ED8" stroke-width="2" stroke-dasharray="4 3" />
+              <path d="M32 4L40 8L32 12V4Z" fill="#1D4ED8" />
             </svg>
           </div>
         </div>
@@ -126,21 +110,12 @@ const getMappedSentKey = (colIndex: number): string => {
         <div class="column-list">
           <p class="column-list__title">Excel Columns <span class="drag-hint">(drag to reorder)</span></p>
           <div class="column-list__items">
-            <label
-              v-for="(column, index) in orderedColumns"
-              :key="column"
-              class="excel-columns"
-              :class="{
-                'is-dragging': draggedIndex === index,
-                'is-drag-over': dragOverIndex === index && draggedIndex !== index,
-              }"
-              draggable="true"
-              @dragstart="onDragStart(index)"
-              @dragover="onDragOver($event, index)"
-              @drop="onDrop(index)"
-              @dragend="onDragEnd"
-              @dragleave="onDragLeave"
-            >
+            <label v-for="(column, index) in orderedColumns" :key="column" class="excel-columns" :class="{
+              'is-dragging': draggedIndex === index,
+              'is-drag-over': dragOverIndex === index && draggedIndex !== index,
+              'hide-column': column === ' ' || column === ''
+            }" draggable="true" @dragstart="onDragStart(index)" @dragover="onDragOver($event, index)"
+              @drop="onDrop(index)" @dragend="onDragEnd" @dragleave="onDragLeave">
               <span class="drag-handle">⠿</span>
               {{ column }}
             </label>
@@ -198,13 +173,15 @@ const getMappedSentKey = (colIndex: number): string => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-top: 33px; /* align with items (offset title height) */
+  padding-top: 33px;
+  /* align with items (offset title height) */
 }
 
 .arrow-row {
   display: flex;
   align-items: center;
-  height: 57px; /* match label height approx */
+  height: 57px;
+  /* match label height approx */
 }
 
 .arrow-row svg {
@@ -256,6 +233,10 @@ const getMappedSentKey = (colIndex: number): string => {
   background-color: #1D4ED81A;
   box-shadow: 0 0 0 2px #1D4ED8;
   transform: scale(1.02);
+}
+
+.excel-columns.hide-column {
+  display: none;
 }
 
 .drag-handle {

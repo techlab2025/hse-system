@@ -24,7 +24,11 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
+  async addOrganizatoinEmployee(
+    params: any,
+    router: Router,
+    draft: boolean = false,
+  ) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
     try {

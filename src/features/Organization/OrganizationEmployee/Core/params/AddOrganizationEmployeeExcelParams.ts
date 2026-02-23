@@ -1,26 +1,18 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
-
-export default class AddOrganizationEmployeeExcelParams implements Params {
+interface Data {
   name: string
   email: string
   phone: string
   password: string
   passwordConfirmation: string
-
+  hierarchy_id: number
+}
+export default class AddOrganizationEmployeeExcelParams implements Params {
+  public data: Data[] = []
   public static readonly validation = new ClassValidation().setRules({})
-  constructor(data: {
-    name: string
-    email: string
-    phone: string
-    password: string
-    passwordConfirmation: string
-  }) {
-    this.name = data.name
-    this.email = data.email
-    this.phone = data.phone
-    this.password = data.password
-    this.passwordConfirmation = data.passwordConfirmation
+  constructor(data: { data: Data[] }) {
+    this.data = data.data
   }
 
   toMap(): Record<
@@ -38,11 +30,7 @@ export default class AddOrganizationEmployeeExcelParams implements Params {
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
 
-    data['name'] = this.name
-    data['email'] = this.email
-    data['phone'] = this.phone
-    data['password'] = this.password
-    data['password_confirmation'] = this.passwordConfirmation
+    data['data'] = this.data
 
     return data
   }
