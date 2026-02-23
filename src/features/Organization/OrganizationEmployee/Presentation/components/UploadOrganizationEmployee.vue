@@ -14,6 +14,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import type TitleInterface from '@/base/Data/Models/title_interface';
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams';
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController';
+import HirarachyEmployeeParams from '../../Core/params/HirarchyParams';
 
 const sheetData = ref<OrganizatoinEmployeeModel[] | null>(null);
 const File = ref<string>("");
@@ -68,24 +69,54 @@ const readExcelFile = (file: File): Promise<any[]> => {
 
 const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'passwordConfirmation']);
 
+// If Sent All Columns
+// const onColumnMapping = (mapping: Record<string, string>) => {
+//   if (!Data.value || Data.value.length === 0) return;
+
+//   // Build reverse map: excelColumnName -> sentKey
+//   const reverseMapping: Record<string, string> = {};
+//   for (const [sentKey, excelCol] of Object.entries(mapping)) {
+//     if (excelCol) reverseMapping[excelCol] = sentKey;
+//   }
+
+//   // Deep clone data so we don't mutate the original
+//   const cloned: any[] = Data.value.map((row: any[]) => [...row]);
+
+//   // Rename header row
+//   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
+
+//   mappedData.value = cloned;
+//   sheetData.value = getBodyData(cloned);
+// };
+
+// If Sent Only Some Columns
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
 
-  // Build reverse map: excelColumnName -> sentKey
   const reverseMapping: Record<string, string> = {};
   for (const [sentKey, excelCol] of Object.entries(mapping)) {
     if (excelCol) reverseMapping[excelCol] = sentKey;
   }
 
-  // Deep clone data so we don't mutate the original
   const cloned: any[] = Data.value.map((row: any[]) => [...row]);
-
-  // Rename header row
   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
 
-  mappedData.value = cloned;
-  sheetData.value = getBodyData(cloned);
-};
+  // ← Only keep columns that are in SendData
+  const allowedKeys = new Set(SendData.value)
+  const headerRow = cloned[0] as string[]
+  const allowedIndexes = headerRow
+    .map((key, i) => allowedKeys.has(key) ? i : -1)
+    .filter(i => i !== -1)
+
+  // Filter every row to only allowed column indexes
+  const filteredData = cloned.map(row => allowedIndexes.map(i => row[i]))
+  // Rebuild header from allowed keys in SendData order
+  filteredData[0] = allowedIndexes.map(i => headerRow[i])
+
+  mappedData.value = filteredData
+  sheetData.value = getBodyData(filteredData)
+}
+
 const router = useRouter()
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
 
@@ -101,7 +132,7 @@ const AddOrgEmployee = async () => {
       }
     })
     // ← attach Heirarchy to every row
-    obj['hierarchy_id'] = Heirarchy.value?.id
+    obj['hierarchies'] = [new HirarachyEmployeeParams(Heirarchy.value?.id)]
     return obj
   })
 

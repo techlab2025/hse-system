@@ -1,12 +1,13 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type HirarachyEmployeeParams from './HirarchyParams'
 interface Data {
   name: string
   email: string
   phone: string
   password: string
   passwordConfirmation: string
-  hierarchy_id: number
+  hierarchies: HirarachyEmployeeParams[]
 }
 export default class AddOrganizationEmployeeExcelParams implements Params {
   public data: Data[] = []
@@ -30,7 +31,7 @@ export default class AddOrganizationEmployeeExcelParams implements Params {
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
 
-    data['data'] = this.data
+    data['employees_data'] = this.data
 
     return data
   }
