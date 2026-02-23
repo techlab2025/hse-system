@@ -201,7 +201,7 @@ watch(
           {{ $t('Add_Equipment') }}
         </router-link>
       </PermissionBuilder>
-      <PermissionBuilder :code="[
+      <!-- <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.EQUIPMENT_CREATE,
@@ -211,7 +211,7 @@ watch(
           }/equipment/upload-excel`" class="btn btn-primary">
           {{ $t('Upload_Equipment') }}
         </router-link>
-      </PermissionBuilder>
+      </PermissionBuilder> -->
     </div>
   </div>
 
