@@ -38,6 +38,7 @@ import FetchInspectionsResultsController from '../controllers/FetchInspectionsRe
 import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsResultsParams'
 import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import CardSkelaton from './SubComponent/CardSkelaton.vue'
 
 const { t } = useI18n()
 
@@ -352,10 +353,10 @@ watch(
               @countPerPage="handleInspectionFormCountPerPage" />
           </template>
           <template #loader>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #initial>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
@@ -389,10 +390,10 @@ watch(
               @countPerPage="handleDragInspectionCountPerPage" />
           </template>
           <template #loader>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #initial>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
@@ -427,10 +428,10 @@ watch(
               @changePage="handleInspectionResultsChangePage" @countPerPage="handleInspectionResultsCountPerPage" />
           </template>
           <template #loader>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #initial>
-            <TableLoader :cols="3" :rows="10" />
+            <CardSkelaton />
           </template>
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
