@@ -269,6 +269,32 @@ const AddOrgEmployee = async () => {
 
 <template>
   <div class="page-wrapper">
+    <div class="excel-warning w-full">
+      <div class="warning-header">
+        <span class="icon">⚠️</span>
+        <span class="title">Excel Data Formatting Rules</span>
+      </div>
+
+      <div class="rules flex space-between w-full">
+        <div class="rule-group">
+          <p class="rule-label">Status :</p>
+          <div class="chips">
+            <span class="chip"><kbd>1</kbd> Rent</span>
+            <span class="chip"><kbd>2</kbd> Owned</span>
+          </div>
+        </div>
+
+        <div class="rule-group">
+          <p class="rule-label">Period Type :</p>
+          <div class="chips">
+            <span class="chip"><kbd>1</kbd> Hour</span>
+            <span class="chip"><kbd>2</kbd> Day</span>
+            <span class="chip"><kbd>3</kbd> Month</span>
+            <span class="chip"><kbd>4</kbd> Year</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="grid grid-cols-6 gap-4 w-full mb-4 equipment-form">
       <Tabs class="col-span-6 w-full" @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
@@ -366,6 +392,95 @@ const AddOrgEmployee = async () => {
 </template>
 
 <style scoped>
+.excel-warning {
+  background-color: #fffaf0;
+  /* Light cream/amber */
+  border: 1px solid #fbd38d;
+  /* Amber border */
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 100%;
+  font-family: "Regular";
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.warning-header {
+  display: flex;
+  items-center: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px ridge #fbd38d;
+  padding-bottom: 10px;
+}
+
+.warning-header .title {
+  color: #c05621;
+  /* Deep amber/brown */
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.rules {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-group {
+  margin-bottom: 15px;
+}
+
+.rule-group:last-child {
+  margin-bottom: 0;
+}
+
+.rule-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #744210;
+  margin-bottom: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 4px 12px 4px 6px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e0;
+}
+
+/* The "Key" look for numbers */
+kbd {
+  background-color: #edf2f7;
+  border-radius: 3px;
+  border: 1px solid #cbd5e0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+  color: #2d3748;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 5px;
+  white-space: nowrap;
+}
+
 .page-wrapper {
   display: flex;
   flex-direction: column;
