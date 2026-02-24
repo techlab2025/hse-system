@@ -198,12 +198,12 @@ const ShowData = async () => {
   }
 }
 
-onMounted(async () => {
-  await ShowData()
-  await IndexProjectProgressController.getInstance().getData(
-    new IndexProjectProgressParams('', 1, 10, 0),
-  )
-})
+// onMounted(async () => {
+//   await ShowData()
+//   await IndexProjectProgressController.getInstance().getData(
+//     new IndexProjectProgressParams('', 1, 10, 0),
+//   )
+// })
 const route = useRoute()
 </script>
 

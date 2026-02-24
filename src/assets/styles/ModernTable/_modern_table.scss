@@ -239,6 +239,15 @@
   //     }
   //   }
   // }
+  &.home-static {
+    @include flex-row(nowrap, flex-start, flex-start);
+    overflow-x: auto;
+    gap: 24px; // اختياري
+    width: 100%;
+    a {
+      width: 100% !important;
+    }
+  }
 
   @include grid(
     2,
@@ -248,7 +257,10 @@
       768px: 1,
     )
   );
-  margin-top: 20px;
+  // margin-top: 20px;
+  // grid-auto-flow: column; // يخلي العناصر تمشي أفقي
+  // // grid-auto-columns: 1fr !important; // عرض كل كارت حسب محتواه
+  // overflow-x: auto;
 }
 
 .mt-2 {

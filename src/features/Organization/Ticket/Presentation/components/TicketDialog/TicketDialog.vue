@@ -50,7 +50,15 @@ const SubmitTicket = async () => {
 }
 const { user } = useUserStore()
 
+const CloseDialog = () => {
+  ticketStore.OpenTicketDialog = false
+  ticketStore.capturedImage = null
+  TicketType.value = undefined
+  description.value = ""
+  title.value = ""
+}
 </script>
+
 <template>
   <div class="ticket-dialog-conatiner">
     <!-- <button @click="visible = true"  -->
@@ -94,7 +102,7 @@ const { user } = useUserStore()
 
       </div>
       <div class="btn-container">
-        <button class="btn btn-close" @click.prevent="ticketStore.OpenTicketDialog = false">{{ $t('cancel') }}</button>
+        <button class="btn btn-close" @click.prevent="CloseDialog">{{ $t('cancel') }}</button>
         <button class="btn btn-primary" @click.prevent="SubmitTicket">{{ $t('send') }}</button>
       </div>
     </Dialog>
@@ -104,59 +112,60 @@ const { user } = useUserStore()
 
 <style scoped lang="scss">
 // .ticket-dialog-conatiner {
-.dialog-header {
-  .title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #202020;
-  }
+  .dialog-header {
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #202020;
+    }
 
-  .description {
-    font-size: 14px;
-    font-weight: 500;
-    color: #6B7280;
-  }
-}
-
-.dialog-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: space-between;
-
-  img {
-    border: 1px dashed #E5E5E5;
-    padding: 10px;
-    border-radius: 12px;
-    margin-left: auto;
-    width: 50%;
-  }
-
-  .input-wrapper {
-    /* margin-block: 12px;*/
-  }
-}
-
-.btn-container {
-  width: 100%;
-
-  .btn-close {
-    border: 1px dashed #E5E5E5;
-    border-radius: 15px;
-    padding: 12px;
-    width: 50%;
-    transition: 0.3s all linear;
-
-    &:hover {
-      background-color: #E5E5E5;
+    .description {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6B7280;
     }
   }
 
-  .btn-primary {
-    width: 50%;
+  .dialog-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: space-between;
 
+    img {
+      border: 1px dashed #E5E5E5;
+      padding: 10px;
+      border-radius: 12px;
+      margin-left: auto;
+      width: 50%;
+    }
+
+    .input-wrapper {
+      /* margin-block: 12px;*/
+    }
   }
-}
 
-// }</style>
+  .btn-container {
+    width: 100%;
+
+    .btn-close {
+      border: 1px dashed #E5E5E5;
+      border-radius: 15px;
+      padding: 12px;
+      width: 50%;
+      transition: 0.3s all linear;
+
+      &:hover {
+        background-color: #E5E5E5;
+      }
+    }
+
+    .btn-primary {
+      width: 50%;
+
+    }
+  }
+
+// }
+</style>

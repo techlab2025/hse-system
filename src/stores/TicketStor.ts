@@ -33,10 +33,20 @@ export const useTicketStore = defineStore(
         console.error('Error: ' + err)
       }
     }
+
+    const OpenDialog = () => {
+      OpenTicketDialog.value = true
+    }
+
+    const CloseDialog = () => {
+      OpenTicketDialog.value = false
+    }
     return {
       capturedImage,
       captureScreen,
-      OpenTicketDialog
+      OpenTicketDialog,
+      OpenDialog,
+      CloseDialog
     }
   },
   {

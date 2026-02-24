@@ -6,10 +6,11 @@ import TicketIcon from './shared/icons/TicketIcon.vue';
 import { ref } from 'vue';
 import { useTicketStore } from './stores/TicketStor';
 import TicketDialog from './features/Organization/Ticket/Presentation/components/TicketDialog/TicketDialog.vue';
+import { useRoute } from 'vue-router';
 
 
 const ticketStore = useTicketStore()
-
+const route = useRoute()
 </script>
 
 <template>
@@ -17,6 +18,6 @@ const ticketStore = useTicketStore()
   <MainDialog />
   <LoaderDialog />
   <RouterView />
-  <TicketIcon class="ticket-icon" @click="ticketStore.captureScreen" />
+  <TicketIcon v-if="!route.path.includes('ticket')" class="ticket-icon" @click="ticketStore.captureScreen" />
   <TicketDialog />
 </template>
