@@ -57,7 +57,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         })
 
         const { user } = useUserStore()
-        if (router.currentRoute.value.path.includes('equipment/add')) {
+        if (
+          router.currentRoute.value.path.includes('equipment/add') ||
+          router.currentRoute.value.path.includes('equipment/upload-excel')
+        ) {
           if (!draft)
             await router.push(
               `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
