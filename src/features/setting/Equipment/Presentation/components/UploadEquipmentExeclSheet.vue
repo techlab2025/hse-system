@@ -285,7 +285,7 @@ const deleteRow = (rowIndex: number) => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning w-full">
+    <!-- <div class="excel-warning w-full">
       <div class="warning-header">
         <span class="icon">⚠️</span>
         <span class="title">Excel Data Formatting Rules</span>
@@ -302,6 +302,50 @@ const deleteRow = (rowIndex: number) => {
 
         <div class="rule-group">
           <p class="rule-label">Period Type :</p>
+          <div class="chips">
+            <span class="chip"><kbd>1</kbd> Hour</span>
+            <span class="chip"><kbd>2</kbd> Day</span>
+            <span class="chip"><kbd>3</kbd> Month</span>
+            <span class="chip"><kbd>4</kbd> Year</span>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="excel-warning">
+      <div class="warning-header">
+        <span class="icon">📝</span>
+        <span class="title">Excel Import Instructions</span>
+      </div>
+
+      <div class="rule-group">
+        <p class="rule-label">Required Excel Columns (Exact Names):</p>
+        <div class="field-tags">
+          <span class="field-tag">name</span>
+          <span class="field-tag">date</span>
+          <span class="field-tag">license_plate_number</span>
+          <span class="field-tag">image</span>
+          <span class="field-tag">certificate_image</span>
+          <span class="field-tag">checkin_date</span>
+          <span class="field-tag">checkout_date</span>
+          <span class="field-tag">period</span>
+          <span class="field-tag">period_type</span>
+          <span class="field-tag">status</span>
+        </div>
+      </div>
+
+      <hr class="separator" />
+
+      <div class="rules">
+        <div class="rule-group">
+          <p class="rule-label">Status Mapping:</p>
+          <div class="chips">
+            <span class="chip"><kbd>1</kbd> Rent</span>
+            <span class="chip"><kbd>2</kbd> Owned</span>
+          </div>
+        </div>
+
+        <div class="rule-group">
+          <p class="rule-label">Period Type Mapping:</p>
           <div class="chips">
             <span class="chip"><kbd>1</kbd> Hour</span>
             <span class="chip"><kbd>2</kbd> Day</span>
@@ -415,21 +459,6 @@ const deleteRow = (rowIndex: number) => {
 </template>
 
 <style scoped>
-.btn-delete-row {
-  background: #FEF2F2;
-  color: #B91C1C;
-  border: 1px solid #FECACA;
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.btn-delete-row:hover {
-  background: #FEE2E2;
-  transform: scale(1.1);
-}
 .excel-warning {
   background-color: #fffaf0;
   /* Light cream/amber */
@@ -438,13 +467,13 @@ const deleteRow = (rowIndex: number) => {
   border-radius: 12px;
   padding: 20px;
   max-width: 100%;
-  font-family: "Regular";
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .warning-header {
   display: flex;
-  align-items: center;
+  items-center: center;
   gap: 10px;
   margin-bottom: 15px;
   border-bottom: 1px ridge #fbd38d;
@@ -456,13 +485,6 @@ const deleteRow = (rowIndex: number) => {
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
-}
-
-.rules {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .rule-group {
@@ -518,6 +540,60 @@ kbd {
   padding: 2px 5px;
   white-space: nowrap;
 }
+
+.field-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed #fbd38d;
+}
+
+.field-tag {
+  background: #f1f5f9;
+  color: #475569;
+  font-family: monospace;
+  /* Makes it look like code/field names */
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+/* A subtle line to separate headers from values */
+.separator {
+  border: 0;
+  border-top: 1px solid #fef3c7;
+  margin: 15px 0;
+}
+
+/* Ensure the rules container wraps nicely on small screens */
+@media (max-width: 600px) {
+  .rules {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+.btn-delete-row {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-delete-row:hover {
+  background: #FEE2E2;
+  transform: scale(1.1);
+}
+
 
 .page-wrapper {
   display: flex;
