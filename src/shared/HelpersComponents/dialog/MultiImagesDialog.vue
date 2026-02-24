@@ -27,29 +27,14 @@ const responsiveOptions = ref([
     </button>
     <Dialog v-model:visible="visible" modal maximizable dismissableMask :style="{ width: '70vw' }">
       <template #header>
-        <HeaderSection
-          :img="''"
-          :title="'All photos (10)'"
-          :subtitle="'you can add more or delete photo'"
-        />
+        <HeaderSection :img="''" :title="`All photos (${images.length})`"
+          :subtitle="'you can add more or delete photo'" />
       </template>
-      <Galleria
-        :value="images"
-        :responsiveOptions="responsiveOptions"
-        :numVisible="5"
-        :circular="true"
-        containerStyle="max-width: 100%"
-        :showItemNavigators="false"
-        :showThumbnails="false"
-        :showItemNavigatorsOnHover="false"
-        :showIndicators="true"
-      >
+      <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true"
+        containerStyle="max-width: 100%" :showItemNavigators="false" :showThumbnails="false"
+        :showItemNavigatorsOnHover="false" :showIndicators="true">
         <template #item="slotProps">
-          <img
-            :src="slotProps.item"
-            :alt="'image'"
-            style="width: 100%; height: 40rem; object-fit: contain"
-          />
+          <img :src="slotProps.item" :alt="'image'" style="width: 100%; height: 40rem; object-fit: contain" />
         </template>
         <template #thumbnail="slotProps">
           <img :src="slotProps.item" :alt="'image'" style="display: block" />

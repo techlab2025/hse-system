@@ -47,6 +47,17 @@ const ensureEmployee = (item: any) => {
     item.employee = new TitleInterface({ id: 0, title: '' })
   }
 }
+const toggleMode = (index: number, isManual: boolean) => {
+  // 1. Update the toggle state
+  isSelectHasContent.value[index] = isManual;
+
+  // 2. Reset the employee object to a clean slate
+  // This prevents the "Select" mode from holding onto old data
+  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' });
+
+  // 3. Notify parent
+  UpdateData();
+}
 </script>
 <template>
   <div class="template-container col-span-6">
@@ -83,7 +94,7 @@ const ensureEmployee = (item: any) => {
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
                   class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
-                  <template #reloadHeader>
+                  <!-- <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
@@ -92,6 +103,19 @@ const ensureEmployee = (item: any) => {
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
                         @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
                         }}</button>
+                    </div>
+                  </template> -->
+                  <template #reloadHeader>
+                    <div class="flex gap-2 items-center">
+                      <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
+                        @click.prevent="toggleMode(index, true)">
+                        {{ $t('name_of_witness') }}
+                      </button>
+
+                      <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
+                        @click.prevent="toggleMode(index, false)">
+                        {{ $t('select') }}
+                      </button>
                     </div>
                   </template>
                   <template #content>

@@ -134,6 +134,7 @@ const updateData = () => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
+      item.itemTag
     )
   })
 
@@ -195,6 +196,7 @@ const addTemplate = async (isInLibrary: number) => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
+      item.itemTag
     )
   })
   const params = new AddTemplateParams(

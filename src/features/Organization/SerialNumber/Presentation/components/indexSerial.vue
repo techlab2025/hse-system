@@ -27,15 +27,15 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       return ''
   }
 }
-onMounted(async () => {
-  await IndexProjectProgressController.getInstance().getData(
-    new IndexProjectProgressParams('', 1, 10, 0),
-  )
-})
+// onMounted(async () => {
+//   await IndexProjectProgressController.getInstance().getData(
+//     new IndexProjectProgressParams('', 1, 10, 0),
+//   )
+// })
 
-watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
-  SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
-})
+// watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
+//   SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
+// })
 </script>
 
 <template>
@@ -47,7 +47,7 @@ watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
       </template>
     </PagesHeader>
     <div>
-       <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')"
+      <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')"
         :serialType="SerialType" />
     </div>
   </div>

@@ -17,6 +17,7 @@ const props = defineProps<{
 const createNewAnswerObject = () => ({
   id: Math.random().toString(36).substring(2, 9),
   itemTitle: '',
+  itemTag: '',
   SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
   TemplateItems: [],
   isUpdloadImage: false,
@@ -99,11 +100,16 @@ watch(() => props.visable, (newVal) => {
                   <input type="text" v-model="item.itemTitle" class="input" :placeholder="$t('add your title')"
                     @input="UpdateData" />
                 </div>
+                <div class="timeline-content-text input-wrapper w-full">
+                  <label for="text">{{ $t('item_tag') }}</label>
+                  <input type="text" v-model="item.itemTag" class="input" :placeholder="$t('add your tag')"
+                    @input="UpdateData" />
+                </div>
 
                 <div class="input-wrapper type-select">
                   <CustomSelectInput :static-options="ActionsType" v-model="item.SelectedActionType"
-                    :placeholder="$t('select template type..')" class="mt-4 mr-2 input" :label="$t('type')" :reload="false"
-                    @update:modelValue="UpdateType" />
+                    :placeholder="$t('select template type..')" class="mt-4 mr-2 input" :label="$t('type')"
+                    :reload="false" @update:modelValue="UpdateType" />
                 </div>
               </div>
 

@@ -32,7 +32,13 @@ import HeaderCard from './HomeStatistics/HeaderCard.vue'
 import GenderStatistics from './HomeStatistics/GenderStatistics.vue'
 import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-
+import ProjectCard from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCard.vue'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCardSkelaton.vue'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -91,6 +97,31 @@ onMounted(() => {
   visited.value = localStorage.getItem("visited")
   if (visited.value) {
     setVisited()
+  }
+})
+
+
+// Project Statics Start
+const indexProjectController = IndexProjectController.getInstance()
+const ProjectStatics = ref(indexProjectController.state.value)
+
+const fetchProject = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 1
+) => {
+  const indexProjects = new IndexProjectParams(query, pageNumber, perPage, withPage)
+  await indexProjectController.getData(indexProjects)
+}
+
+onMounted(() => {
+  fetchProject()
+})
+
+watch(() => indexProjectController.state.value, (newVal) => {
+  if (newVal) {
+    ProjectStatics.value = newVal
   }
 })
 </script>
@@ -222,9 +253,11 @@ onMounted(() => {
 
   </div>
 
-  <div class="home-statistics gap-2">
+  <!-- <div class=statics>
+    <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
+  </div> -->
 
-    <!-- <ProjectsStatistics :projectStatistics="state?.data" />
+  <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
@@ -234,11 +267,15 @@ onMounted(() => {
     <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" />
     <MachineStatics class="col-span-12 md:col-span-3" />
     <GenderStatistics class="col-span-12 md:col-span-6" /> -->
-  </div>
+
   <!-- </div> -->
 </template>
 
 <style scoped>
+.statics{
+
+  margin-top: 20px;
+}
 .mb-5 {
   margin-block: 12px;
 }

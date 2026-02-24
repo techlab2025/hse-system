@@ -1541,6 +1541,9 @@ class ApiNames {
   public get ToggleObservationWorkStopped() {
     return this.prefix + 'toggle_observation_work_status'
   }
+  public get FetchProjectStaticsNumbers() {
+    return this.prefix + 'fetch_project_statics_numbers'
+  }
 }
 
 export { ApiNames }
