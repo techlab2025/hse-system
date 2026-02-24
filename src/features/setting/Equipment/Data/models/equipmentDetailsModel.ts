@@ -298,4 +298,46 @@ export default class EquipmentDetailsModel {
   //     ),
   //   ],
   // )
+    static transformData(data: string[][]): EquipmentDetailsModel[] {
+    return data.map(
+      (row, index) =>
+        new EquipmentDetailsModel(
+          index + 1, // Generate unique ID (or use 0 if not needed)
+          row[0] || "", // Equiomet
+          row[1] || "", // Serial Name
+          row[2] || "", // License Number
+          row[3] || "", // License Plate Number
+          row[4] || "", // Kilometer
+          row[5] || "", // Period Type
+          row[6] || "", // Period
+          row[7] || "", // Checkin Date
+          row[8] || "", // Checkout Date
+          row[9] || "", // Date
+          row[10] || "", // Inspection Duration
+          row[11] || "", // Status
+          row[12] || "", // Certificate Image
+          row[13] || "", // Certificate Expired Date
+          row[14] || "", // Has Certificate
+          row[15] || "", // All Industries
+          row[16] || "", // Industries
+          row[17] || "", // Equipment Type
+          row[18] || "", // Equipment Type ID
+          row[19] || "", // Warehouse
+          row[20] || "", // Contractor
+          row[21] || "", // Last Inspection Date
+          row[22] || "", // Last Inspection Result
+          row[23] || "", // Tasks Without Result
+          row[24] || "", // Tasks With Result
+          row[25] || "", // Inspections Count
+          row[26] || "", // Inspections With Result Count
+          row[27] || "", // Title
+          row[28] || "", // Image
+          row[29] || "", // Titles
+          row[30] || "", // Lastest Inspection Result
+          row[31] || "", // Serial Name
+          row[32] || "", // Checkout Date
+
+        ),
+    );
+  }
 }

@@ -176,6 +176,7 @@ const updateData = () => {
         zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
         methodIds: EvaluatingMethod.value?.map((p) => p.id),
         SerialNumber: SerialNumber.value,
+        endDate: endDate.value,
       }
     )
   console.log(params, "paramsparamsparams");
@@ -306,6 +307,12 @@ const UpdateDate = (date) => {
   updateData()
 }
 
+const endDate = ref()
+const UpdateEndDate = (date) => {
+  endDate.value = date
+  updateData()
+}
+
 // Location Handel Start
 
 const indexLocationCountriesController = IndexLocationController.getInstance()
@@ -415,6 +422,12 @@ const ShowLocationDialog = () => {
       {{ $t('start_date') }}
     </label>
     <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="end-date">
+      {{ $t('end_date') }}
+    </label>
+    <DatePicker v-model="endDate" @date-select="UpdateEndDate" id="end-date" :placeholder="`select the end date`" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">

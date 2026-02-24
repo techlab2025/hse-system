@@ -43,11 +43,12 @@ watch(
 )
 </script>
 <template>
-  <DataStatus :controller="state"> 
+  <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
-        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber" :serialName="state.data?.serialName"
-          :Projectdate="state.data?.startDate" :Contractors="state.data?.contractors?.length" />
+        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber"
+          :serialName="state.data?.serialName" :Projectdate="state.data?.startDate"
+          :Contractors="state.data?.contractors?.length" :endDate="state.data?.endDate" />
         <MainObjectivesSection :description="state.data?.description" />
 
         <!-- <div class="inspections-sections">

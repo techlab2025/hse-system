@@ -72,4 +72,15 @@ export const equipmentRoutes: RouteRecordRaw[] = [
       type: 'Shared',
     },
   },
+  {
+    path: 'equipment/upload-excel',
+    name: 'Upload Equipment Excel',
+    component: () =>
+      import('@/features/setting/Equipment/Presentation/components/UploadEquipmentExeclSheet.vue'),
+    meta: {
+      breadcrumb: 'Upload Equipment Excel',
+      parent: 'Equipment',
+      type: 'Shared',
+    },
+  },
 ]

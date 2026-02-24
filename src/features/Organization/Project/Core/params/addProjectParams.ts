@@ -10,6 +10,7 @@ export default class AddProjectParams implements Params {
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
+  endDate: string
   constructor(data: {
     translation: TranslationsParams
     ContractorIds: number[]
@@ -18,6 +19,7 @@ export default class AddProjectParams implements Params {
     locationIds: number[]
     zoonIds: number[]
     methodIds: number[]
+    endDate: string
   }) {
     this.translation = data.translation
     this.ContractorIds = data.ContractorIds
@@ -26,6 +28,7 @@ export default class AddProjectParams implements Params {
     this.locationIds = data.locationIds
     this.zoonIds = data.zoonIds
     this.methodIds = data.methodIds
+    this.endDate = data.endDate
   }
   toMap(): Record<
     string,
@@ -49,6 +52,7 @@ export default class AddProjectParams implements Params {
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
+    if (this.endDate) data['end_date'] = formatJoinDate(this.endDate)
     return data
   }
 }

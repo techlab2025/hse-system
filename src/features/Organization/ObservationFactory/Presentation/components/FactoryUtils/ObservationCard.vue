@@ -83,7 +83,7 @@ watch(() => props.data, () => {
             data?.typeModel?.title
               }}</span></p>
           <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" v-if="data?.type != Observation.ObservationType && data?.actionStatus">
             <p>{{ $t(`toggle status`) }}</p>
             <CustomCheckboxToggle :index="data.id" title="" :checked="data.actionStatus == 1"
               @update:checked="ToogleStatus(data.id)" />

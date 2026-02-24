@@ -20,6 +20,7 @@ const props = defineProps<{
   Projectdate: string
   Contractors: string
   serialName: string
+  endDate: string
 }>()
 
 const actionList = (id: number, deleteProject: (id: number) => void) => [
@@ -57,12 +58,9 @@ const deleteProject = async (id: number) => {
     <img class="bg-blue" :src="ShowProjectBlueHeader" alt="blue" />
     <div class="project-header">
       <div class="flex project-info">
-        <span class="serial"
-          >{{ t('serial') }} : <span>{{ serialName }}</span></span
-        >
-        <span class="date"
-          >{{ t('start in') }} : <span>{{ Projectdate }}</span></span
-        >
+        <span class="serial">{{ t('serial') }} : <span>{{ serialName }}</span></span>
+        <span class="date">{{ t('start in') }} : <span>{{ Projectdate }}</span></span>
+        <span class="date">{{ t('end in') }} : <span>{{ endDate }}</span></span>
       </div>
       <p class="project-name">{{ projectName }}</p>
       <div class="project-statics">
@@ -70,9 +68,6 @@ const deleteProject = async (id: number) => {
         <span class="contractor">{{ t('contractor') }} : {{ Contractors }}</span>
       </div>
     </div>
-    <DropList
-      :actionList="actionList(route.params.id, deleteProject)"
-      @delete="deleteProject(route.params.id)"
-    />
+    <DropList :actionList="actionList(route.params.id, deleteProject)" @delete="deleteProject(route.params.id)" />
   </div>
 </template>

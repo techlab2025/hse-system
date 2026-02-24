@@ -94,7 +94,7 @@ const ensureEmployee = (item: any) => {
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
-                          $t('employee_name')
+                          $t('name_of_the_deceased')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
                         @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
@@ -107,7 +107,7 @@ const ensureEmployee = (item: any) => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-                <label for="deth-text">{{ $t('Text') }}</label>
+                <label for="deth-text">{{ $t('description_of_the_death_case') }}</label>
                 <input type="text" id="deth-text" v-model="item.text" class="input" :placeholder="$t('add your title')"
                   @input="UpdateData" />
               </div>
