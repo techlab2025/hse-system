@@ -253,9 +253,9 @@ watch(() => indexProjectController.state.value, (newVal) => {
 
   </div>
 
-  <div class=statics>
+  <!-- <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
-  </div>
+  </div> -->
 
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
