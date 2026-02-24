@@ -265,6 +265,22 @@ const AddOrgEmployee = async () => {
   const orgData = new AddEquipmentExcelParams({ data: dataAsObjects });
   await addEquipmentController.addEquipment(orgData, router);
 };
+
+const deleteRow = (rowIndex: number) => {
+  if (!mappedData.value) return;
+
+  // Remove the data row (rowIndex + 1 because row 0 is the header)
+  mappedData.value = [
+    mappedData.value[0],
+    ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
+  ];
+
+  // Remove the two images belonging to this row
+  const imgBase = rowIndex * 2;
+  extractedImages.value = extractedImages.value.filter(
+    (_, i) => i !== imgBase && i !== imgBase + 1
+  );
+};
 </script>
 
 <template>
@@ -362,6 +378,7 @@ const AddOrgEmployee = async () => {
                   </th>
                   <th>Image</th>
                   <th>Certificate Image</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -376,6 +393,12 @@ const AddOrgEmployee = async () => {
                     <img v-if="extractedImages[(rowIndex * 2) + 1]" :src="extractedImages[(rowIndex * 2) + 1].base64"
                       class="row-thumb" />
                     <span v-else class="no-img-text">—</span>
+                  </td>
+
+                  <td>
+                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                      🗑
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -392,6 +415,21 @@ const AddOrgEmployee = async () => {
 </template>
 
 <style scoped>
+.btn-delete-row {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-delete-row:hover {
+  background: #FEE2E2;
+  transform: scale(1.1);
+}
 .excel-warning {
   background-color: #fffaf0;
   /* Light cream/amber */
