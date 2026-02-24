@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params'
 import TranslationsParams from '@/base/core/params/translations_params'
-import { EquipmentStatus } from '../enum/EquipmentStatus'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type { EquipmentStatus } from '../enum/equipmentStatus'
 
 interface Data {
   translation: TranslationsParams
