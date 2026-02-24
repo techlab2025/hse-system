@@ -53,10 +53,30 @@
     }
   }
 
-  .statistics-content{
+  .statistics-content {
     width: 100%;
-    @include flex-row(nowrap,flex-start , flex-start);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; /* Prevents cards from dropping to the next line */
+    justify-content: flex-start;
     gap: 15px;
-    overflow-x: scroll;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    padding-bottom: 10px; /* Optional: adds space for the scrollbar */
+
+    // Webkit scrollbar styling (optional, to make it look cleaner)
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    // Target the ProjectCard component
+    // Using :deep() if this is scoped CSS to ensure it hits the child component
+    :deep(.project-card),
+    > * {
+      flex: 0 0 calc(50% - 7.5px); /* Forces exactly 2 cards per view */
+      min-width: calc(50% - 7.5px);
+    }
+    .project-card-data{
+      gap: 50px;
+    }
   }
 }

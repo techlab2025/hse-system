@@ -109,7 +109,7 @@ const fetchProject = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1
+  withPage: number = 0
 ) => {
   const indexProjects = new IndexProjectParams(query, pageNumber, perPage, withPage)
   await indexProjectController.getData(indexProjects)
@@ -253,9 +253,9 @@ watch(() => indexProjectController.state.value, (newVal) => {
 
   </div>
 
-  <!-- <div class=statics>
+  <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
-  </div> -->
+  </div>
 
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
@@ -272,10 +272,11 @@ watch(() => indexProjectController.state.value, (newVal) => {
 </template>
 
 <style scoped>
-.statics{
+.statics {
 
   margin-top: 20px;
 }
+
 .mb-5 {
   margin-block: 12px;
 }

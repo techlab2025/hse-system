@@ -16,8 +16,6 @@ const props = defineProps<{
 
 </script>
 <template>
-
-
   <div class="project-statistics">
     <div class="header">
 
@@ -27,7 +25,7 @@ const props = defineProps<{
           <div class="content-info">
             <span class="title">{{ $t('all_projects') }}</span>
             <span class="count">{{ $t('total') }} : <span class="counter">{{ projectStatistics?.length
-                }}</span></span>
+            }}</span></span>
           </div>
           <span class="description">{{ $t('In short, project progress and task statuses') }}</span>
         </div>
@@ -43,7 +41,8 @@ const props = defineProps<{
       <ProjectStatisticsCard v-for="(project, index) in projectStatistics?.Projects" :key="index"
         :projectStatisticsCard="project" />
     </div> -->
-    <div class="modern-table-responsive statistics-content mt-2 ">
+    <!-- modern-table-responsive  -->
+    <div class="statistics-content mt-2 ">
       <ProjectCard v-for="item in projectStatistics" :key="item.id" :data="item" />
     </div>
   </div>

@@ -22,6 +22,7 @@
 
 <style scoped lang="scss">
 .skeleton-card {
+  margin-block: 14px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -43,8 +44,17 @@
   border-radius: 4px;
 }
 
-.title-pulse { width: 40%; height: 18px; margin-bottom: 8px; }
-.date-pulse { width: 20%; height: 12px; margin-left: auto; }
+.title-pulse {
+  width: 40%;
+  height: 18px;
+  margin-bottom: 8px;
+}
+
+.date-pulse {
+  width: 20%;
+  height: 12px;
+  margin-left: auto;
+}
 
 .skeleton-header {
   display: flex;
@@ -61,9 +71,25 @@
   margin-bottom: 15px;
 }
 
-.skeleton-box { flex: 1; height: 40px; background: #f8f9fa; border-radius: 6px; }
-.skeleton-arrow { width: 30px; height: 10px; background: #f0f0f0; }
-.skeleton-duration { flex: 1; height: 40px; background: #f8f9fa; border-radius: 6px; }
+.skeleton-box {
+  flex: 1;
+  height: 40px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.skeleton-arrow {
+  width: 30px;
+  height: 10px;
+  background: #f0f0f0;
+}
+
+.skeleton-duration {
+  flex: 1;
+  height: 40px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
 
 .skeleton-tool-box {
   width: 100%;
@@ -81,14 +107,22 @@
 }
 
 /* Shimmer Animation */
-.skeleton-item > div, .skeleton-box, .skeleton-text, .skeleton-button {
+.skeleton-item>div,
+.skeleton-box,
+.skeleton-text,
+.skeleton-button {
   background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 </style>
