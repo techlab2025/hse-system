@@ -156,7 +156,18 @@ const SendData = ref<string[]>([
   "period_type",
   "status"
 ]);
-
+const SendDataLabels: Record<string, string> = {
+  name: "Equipment Name",
+  date: "Certificate Expire Date",
+  license_plate_number: "License Plate",
+  image: "Equipment Image",
+  certificate_image: "Certificate Image",
+  checkin_date: "Rent Start Date",
+  checkout_date: "Rent End Date",
+  period: "Rental Period",
+  period_type: "Rent Type",
+  status: "Status",
+};
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
   const reverseMapping: Record<string, string> = {};
@@ -402,7 +413,7 @@ const deleteRow = (rowIndex: number) => {
 
     <template v-else>
       <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping" />
+        @update:columnMapping="onColumnMapping"  :sentDataLabels="SendDataLabels"  />
 
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">

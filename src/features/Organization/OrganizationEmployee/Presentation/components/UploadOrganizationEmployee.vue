@@ -159,6 +159,17 @@ const fileUpload = async (file: File) => {
 
 // , 'image'
 const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'password_confirmation']);
+
+const SendDataLabels: Record<string, string> = {
+  name: "Employee Name",
+  email: "Email",
+  phone: "Phone",
+  password: "Password",
+  password_confirmation: "Password Confirmation",
+
+};
+
+
 const filterToSentData = ref(false);
 
 const onColumnMapping = (mapping: Record<string, string>) => {
@@ -290,7 +301,7 @@ const deleteRow = (rowIndex: number) => {
 
       <!-- ── Step 2 : Column Mapping ────────────────────────── -->
       <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping" />
+        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" />
 
       <!-- ── Step 3 : Preview & Submit ─────────────────────── -->
       <template v-if="mappedData && mappedData.length > 0">

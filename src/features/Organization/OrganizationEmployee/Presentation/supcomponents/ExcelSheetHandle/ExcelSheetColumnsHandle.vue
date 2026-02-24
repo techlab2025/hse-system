@@ -6,8 +6,9 @@ const props = defineProps<{
   columns: string[]
   visable: boolean
   sentData: string[]
+  sentDataLabels?: Record<string, string>
 }>()
-
+const getLabel = (key: string) => props.sentDataLabels?.[key] ?? key
 const emit = defineEmits<{
   (e: 'update:columnMapping', mapping: Record<string, string>): void
   (e: 'close'): void
@@ -90,8 +91,11 @@ const getMappedSentKey = (colIndex: number): string => {
         <div class="column-list">
           <p class="column-list__title">Target Fields</p>
           <div class="column-list__items" :style="{ gap: '12px' }">
-            <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
+            <!-- <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
               {{ data }}
+            </label> -->
+            <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
+              {{ getLabel(data) }} 
             </label>
           </div>
         </div>
