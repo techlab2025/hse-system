@@ -157,7 +157,8 @@ const fileUpload = async (file: File) => {
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 
-const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'password_confirmation', 'image']);
+// , 'image'
+const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'password_confirmation']);
 const filterToSentData = ref(false);
 
 const onColumnMapping = (mapping: Record<string, string>) => {
@@ -237,6 +238,22 @@ const Heirarchy = ref<TitleInterface>();
 const setHeirarchy = (data: TitleInterface) => {
   Heirarchy.value = data;
 };
+
+const deleteRow = (rowIndex: number) => {
+  if (!mappedData.value) return;
+
+  // Remove the data row (rowIndex + 1 because row 0 is the header)
+  mappedData.value = [
+    mappedData.value[0],
+    ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
+  ];
+
+  // Remove the two images belonging to this row
+  const imgBase = rowIndex * 2;
+  extractedImages.value = extractedImages.value.filter(
+    (_, i) => i !== imgBase && i !== imgBase + 1
+  );
+};
 </script>
 
 <template>
@@ -315,6 +332,8 @@ const setHeirarchy = (data: TitleInterface) => {
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>
                   <!-- <th v-if="extractedImages.length > 0">Image</th> -->
+                  <th>Actions</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -325,6 +344,11 @@ const setHeirarchy = (data: TitleInterface) => {
                     <img v-if="extractedImages[rowIndex]" :src="extractedImages[rowIndex].base64" class="row-thumb"
                       :alt="`Row ${rowIndex + 1} image`" />
                     <span v-else class="no-img-text">—</span>
+                  </td>
+                  <td>
+                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                      🗑
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -347,6 +371,22 @@ const setHeirarchy = (data: TitleInterface) => {
 </template>
 
 <style scoped>
+.btn-delete-row {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-delete-row:hover {
+  background: #FEE2E2;
+  transform: scale(1.1);
+}
+
 /* ── Layout ─────────────────────────────────────────────── */
 .page-wrapper {
   display: flex;
