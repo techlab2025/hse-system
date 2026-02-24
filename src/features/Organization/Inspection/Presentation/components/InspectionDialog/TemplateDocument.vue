@@ -250,7 +250,6 @@ const getAnswerForItem = (templateItemId: number) => {
 
 
             <div v-if="task_results?.taskResultItems?.length > 0" class="">
-              aa
               <TemplateDocumentSelectShowResult :title="item.name" :key="index" :item_id="item.id"
                 :options="item.options" :require_image="item.requiredImage" @update:data="UpdateSelects" :selected_data="task_results?.taskResultItems
                   ?.filter((resultItem) => resultItem.templateItemAction === ActionsEnum.DROPDOWN)

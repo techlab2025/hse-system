@@ -351,11 +351,11 @@ const GetObservationType = (type: number) => {
                               {{ $t('operation type') }} :
                               <span>{{ GetObservationType(item.type) }}</span>
                             </p>
-                            <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
+                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
                               <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
                                 @update:checked="toggleObservationActionStatus(item?.id)" />
-                            </p>
+                            </p> -->
                             <p class="label-item-secondary flex items-center gap-1"
                               :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
                               {{ GetSaveStatus(item.saveStatus) }}

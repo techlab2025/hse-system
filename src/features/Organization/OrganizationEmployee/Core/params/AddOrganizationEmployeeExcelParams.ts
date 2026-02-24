@@ -8,6 +8,7 @@ interface Data {
   password: string
   passwordConfirmation: string
   hierarchies: HirarachyEmployeeParams[]
+  image: string
 }
 export default class AddOrganizationEmployeeExcelParams implements Params {
   public data: Data[] = []

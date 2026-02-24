@@ -1181,5 +1181,10 @@
   "template_item_tag": "Template Item Tag",
   "contract_status": "Contract Status",
   "immediate_action_taken": "Immediate action taken",
-  "statement":"Statement"
+  "statement": "Statement",
+  "name_of_witness": "Name of Witness",
+  "name_of_the_injured_person": "Name of the injured person",
+  "description_of_the_injury": "Description of the injury",
+  "name_of_the_deceased": "Name of the deceased",
+  "description_of_the_death_case": "Description of the death case"
 }

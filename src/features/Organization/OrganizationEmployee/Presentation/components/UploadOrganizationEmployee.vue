@@ -2,13 +2,13 @@
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
 import { ref } from 'vue';
 import * as XLSX from 'xlsx';
+import JSZip from 'jszip';
 import FileUpload from '../supcomponents/ExcelSheetHandle/FileUpload.vue';
 import OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel';
 import ExcelSheetColumnsHandle from '../supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
 import AddOrganizatoinEmployeeController from '../controllers/addOrganizatoinEmployeeController';
-import AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams';
-import { useRouter } from 'vue-router';
 import AddOrganizationEmployeeExcelParams from '../../Core/params/AddOrganizationEmployeeExcelParams';
+import { useRouter } from 'vue-router';
 import AddTeamController from '@/features/setting/Teams/Presentation/controllers/addTeamController';
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import type TitleInterface from '@/base/Data/Models/title_interface';
@@ -16,62 +16,149 @@ import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/in
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController';
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams';
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface ExtractedImage {
+  name: string;
+  base64: string; // full data-URI
+  mimeType: string;
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+
 const sheetData = ref<OrganizatoinEmployeeModel[] | null>(null);
-const File = ref<string>("");
+const File = ref<string>('');
 const Data = ref<any[]>([]);
-const mappedData = ref<any[] | null>(null); // holds renamed data after confirm
+const mappedData = ref<any[] | null>(null);
+const extractedImages = ref<ExtractedImage[]>([]);
+const isLoading = ref(false);
+const errorMsg = ref<string | null>(null);
 
-const getBodyData = (data: any[]) => {
-  return OrganizatoinEmployeeModel.transformData(data.slice(1));
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const MIME_MAP: Record<string, string> = {
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  gif: 'image/gif',
+  bmp: 'image/bmp',
+  webp: 'image/webp',
 };
 
-const fileUpload = async (file: File) => {
-  try {
-    if (!file) {
-      sheetData.value = null;
-      mappedData.value = null;
-    } else {
-      const data = await readExcelFile(file);
-      sheetData.value = getBodyData(data);
-      File.value = await filesToBase64(file);
-      mappedData.value = null; // reset on new file
-    }
-  } catch (error) {
-    console.error("Error processing file:", error);
-  }
+const getBodyData = (data: any[]) =>
+  OrganizatoinEmployeeModel.transformData(data.slice(1));
+
+// ─── Image Extraction ─────────────────────────────────────────────────────────
+
+/**
+ * Reads the xl/media/ folder of the xlsx (which is just a ZIP)
+ * and returns every image found as a base64 data-URI.
+ */
+const extractImagesFromExcel = async (file: File): Promise<ExtractedImage[]> => {
+  const arrayBuffer = await file.arrayBuffer();
+  const zip = await JSZip.loadAsync(arrayBuffer);
+  const images: ExtractedImage[] = [];
+
+  const mediaFolder = zip.folder('xl/media');
+  if (!mediaFolder) return images;
+
+  const promises: Promise<void>[] = [];
+
+  mediaFolder.forEach((relativePath, zipEntry) => {
+    if (zipEntry.dir) return;
+
+    const ext = relativePath.split('.').pop()?.toLowerCase() ?? '';
+    const mimeType = MIME_MAP[ext] ?? 'image/png';
+
+    promises.push(
+      zipEntry.async('base64').then((b64) => {
+        images.push({
+          name: relativePath,
+          base64: `data:${mimeType};base64,${b64}`,
+          mimeType,
+        });
+      })
+    );
+  });
+
+  await Promise.all(promises);
+  return images;
 };
 
-const readExcelFile = (file: File): Promise<any[]> => {
-  return new Promise((resolve, reject) => {
+// ─── base64 → Blob (for multipart/form-data backends) ────────────────────────
+
+const base64ToBlob = (dataURI: string): Blob => {
+  const [header, data] = dataURI.split(',');
+  const mimeType = header.match(/:(.*?);/)?.[1] ?? 'image/png';
+  const binary = atob(data);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new Blob([bytes], { type: mimeType });
+};
+
+// ─── File Reading ─────────────────────────────────────────────────────────────
+
+const readExcelFile = (file: File): Promise<any[]> =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const arrayBuffer = e.target?.result;
-        const workbook = XLSX.read(arrayBuffer, { type: "array" });
-        const worksheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[worksheetName];
-        const data = XLSX.utils.sheet_to_json(worksheet, {
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const data = XLSX.utils.sheet_to_json(sheet, {
           header: 1,
           raw: false,
-          defval: "",
+          defval: '',
           blankrows: false,
         });
         Data.value = data;
         resolve(data);
-      } catch (error) {
-        reject(error);
+      } catch (err) {
+        reject(err);
       }
     };
-    reader.onerror = (error) => reject(error);
+    reader.onerror = (err) => reject(err);
     reader.readAsArrayBuffer(file);
   });
+
+// ─── Upload Handler ───────────────────────────────────────────────────────────
+
+const fileUpload = async (file: File) => {
+  errorMsg.value = null;
+  try {
+    if (!file) {
+      sheetData.value = null;
+      mappedData.value = null;
+      extractedImages.value = [];
+      return;
+    }
+
+    isLoading.value = true;
+
+    const [data, images] = await Promise.all([
+      readExcelFile(file),
+      extractImagesFromExcel(file),
+    ]);
+
+    sheetData.value = getBodyData(data);
+    File.value = await filesToBase64(file);
+    mappedData.value = null; // reset on new file
+    extractedImages.value = images;
+
+    console.log(`✅ Extracted ${images.length} image(s) from Excel`, images);
+  } catch (error) {
+    console.error('Error processing file:', error);
+    errorMsg.value = 'Failed to process the file. Please try again.';
+  } finally {
+    isLoading.value = false;
+  }
 };
 
-const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'passwordConfirmation']);
+// ─── Column Mapping ───────────────────────────────────────────────────────────
 
-
-
-const filterToSentData = ref(true) // true = only SendData keys | false = all columns
+const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'password_confirmation', 'image']);
+const filterToSentData = ref(false);
 
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
@@ -85,109 +172,328 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
 
   if (filterToSentData.value) {
-    const allowedKeys = new Set(SendData.value)
-    const headerRow = cloned[0] as string[]
+    const allowedKeys = new Set(SendData.value);
+    const headerRow = cloned[0] as string[];
     const allowedIndexes = headerRow
-      .map((key, i) => allowedKeys.has(key) ? i : -1)
-      .filter(i => i !== -1)
+      .map((key, i) => (allowedKeys.has(key) ? i : -1))
+      .filter((i) => i !== -1);
 
-    const filteredData = cloned.map(row => allowedIndexes.map(i => row[i]))
-    filteredData[0] = allowedIndexes.map(i => headerRow[i])
+    const filteredData = cloned.map((row) => allowedIndexes.map((i) => row[i]));
+    filteredData[0] = allowedIndexes.map((i) => headerRow[i]);
 
-    mappedData.value = filteredData
-    sheetData.value = getBodyData(filteredData)
+    mappedData.value = filteredData;
+    sheetData.value = getBodyData(filteredData);
   } else {
-    mappedData.value = cloned
-    sheetData.value = getBodyData(cloned)
+    mappedData.value = cloned;
+    sheetData.value = getBodyData(cloned);
   }
-}
-const router = useRouter()
-const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
+};
+
+// ─── Submit ───────────────────────────────────────────────────────────────────
+
+const router = useRouter();
+const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance();
 
 const AddOrgEmployee = async () => {
-  const headers = mappedData.value?.[0] as string[]
-  const rows = mappedData.value?.slice(1)
+  if (!mappedData.value) return;
 
-  const dataAsObjects = rows?.map((row: any[]) => {
-    const obj: Record<string, any> = {}
+  const headers = mappedData.value[0] as string[];
+  const rows = mappedData.value.slice(1);
+
+  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
+    const obj: Record<string, any> = {};
+
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') {
-        obj[key] = row[i]
-      }
-    })
-    // ← attach Heirarchy to every row
-    obj['hierarchies'] = [new HirarachyEmployeeParams(Heirarchy.value?.id)]
-    return obj
-  })
+      if (key && key.trim() !== '') obj[key] = row[i];
+    });
 
-  // const orgData = new AddOrganizationEmployeeExcelParams(dataAsObjects)
-  const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects })
-  console.log(orgData, 'orgData')
-  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router)
-}
+    // Attach hierarchy
+    obj['hierarchies'] = [new HirarachyEmployeeParams(Heirarchy.value?.id)];
 
-const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
-const Heirarchy = ref<TitleInterface>()
+    // Attach image for this row (by index — sequential order)
+    const img = extractedImages.value[rowIndex];
+    if (img) {
+      // Option A: send as base64 string
+      obj['image'] = img.base64;
+
+      // Option B: send as Blob (for multipart/form-data) — uncomment if needed:
+      // obj['image'] = base64ToBlob(img.base64);
+    }
+
+    return obj;
+  });
+
+  const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects });
+  console.log('📤 Sending orgData:', orgData);
+  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router);
+};
+
+// ─── Hierarchy ────────────────────────────────────────────────────────────────
+
+const indexHerikalyController = IndexHerikalyController.getInstance();
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false);
+const Heirarchy = ref<TitleInterface>();
+
 const setHeirarchy = (data: TitleInterface) => {
-  Heirarchy.value = data
-  // updateData()
-}
-
+  Heirarchy.value = data;
+};
 </script>
 
 <template>
-  <div class="grid grid-cols-6 gap-4 w-full mb-4">
-    <div class="col-span-2 input-wrapper">
-      <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-        :params="HerikalyParams" :label="$t('Job Type')" :placeholder="$t('Select Job Type')" />
+  <div class="page-wrapper">
+
+    <!-- ── Hierarchy Select ─────────────────────────────────── -->
+    <div class="grid grid-cols-6 gap-4 w-full mb-4">
+      <div class="col-span-2 input-wrapper">
+        <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy"
+          :controller="indexHerikalyController" :params="HerikalyParams" :label="$t('Job Type')"
+          :placeholder="$t('Select Job Type')" />
+      </div>
     </div>
+
+    <!-- ── Error Banner ─────────────────────────────────────── -->
+    <div v-if="errorMsg" class="error-banner">
+      {{ errorMsg }}
+    </div>
+
+    <!-- ── Loading ──────────────────────────────────────────── -->
+    <div v-if="isLoading" class="loading-bar">
+      <span class="loading-dot" />
+      <span class="loading-dot" />
+      <span class="loading-dot" />
+      <span class="loading-label">Processing file…</span>
+    </div>
+
+    <!-- ── Step 1 : Upload ──────────────────────────────────── -->
+    <FileUpload v-if="!Data || Data.length === 0"
+      accept=".xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,.csv"
+      @update:fileData="fileUpload" />
+
+    <template v-else>
+
+      <!-- ── Step 2 : Column Mapping ────────────────────────── -->
+      <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
+        @update:columnMapping="onColumnMapping" />
+
+      <!-- ── Step 3 : Preview & Submit ─────────────────────── -->
+      <template v-if="mappedData && mappedData.length > 0">
+
+        <!-- Extracted Images Preview -->
+        <!-- <div v-if="extractedImages.length > 0" class="images-section">
+          <div class="images-header">
+            <span class="images-title">Extracted Images</span>
+            <span class="images-badge">{{ extractedImages.length }} image{{ extractedImages.length !== 1 ? 's' : ''
+              }}</span>
+          </div>
+          <div class="images-grid">
+            <div v-for="(img, index) in extractedImages" :key="index" class="image-card">
+              <img :src="img.base64" :alt="`Image ${index + 1}`" class="image-thumb" />
+              <span class="image-label">Row {{ index + 1 }}</span>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- No images notice -->
+        <!-- <div v-else class="no-images-notice">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" />
+          </svg>
+          No images found in this Excel file.
+        </div> -->
+
+        <!-- Data Table -->
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">Mapped Data Preview</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+          </div>
+          <div class="table-responsive">
+            <table class="main-table">
+              <thead>
+                <tr>
+                  <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>
+                  <!-- <th v-if="extractedImages.length > 0">Image</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
+                  <td v-for="(value, colIndex) in row" :key="colIndex">{{ value }}</td>
+                  <!-- Show thumbnail in table row if available -->
+                  <td v-if="extractedImages.length > 0">
+                    <img v-if="extractedImages[rowIndex]" :src="extractedImages[rowIndex].base64" class="row-thumb"
+                      :alt="`Row ${rowIndex + 1} image`" />
+                    <span v-else class="no-img-text">—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Confirm Button -->
+        <button @click="AddOrgEmployee" class="btn-confirm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Confirm & Submit
+        </button>
+
+      </template>
+    </template>
   </div>
-  <!-- Step 1: Upload -->
-  <FileUpload v-if="!Data || Data.length === 0"
-    accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,.csv"
-    @update:fileData="fileUpload" />
-
-  <template v-else>
-    <!-- Step 2: Mapping dialog (shown until mapping is confirmed) -->
-    <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-      @update:columnMapping="onColumnMapping" />
-
-    <!-- Step 3: Show mapped table after confirm -->
-    <div v-if="mappedData && mappedData.length > 0" class="table-container">
-      <div class="table-header">
-        <h3 class="table-title">Mapped Data Preview</h3>
-        <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
-      </div>
-      <div class="table-responsive">
-        <table class="main-table">
-          <thead>
-            <tr>
-              <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
-              <td v-for="(value, colIndex) in row" :key="colIndex">{{ value }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <button @click="AddOrgEmployee" class="btn btn-primary w-full">confirm</button>
-  </template>
 </template>
 
 <style scoped>
+/* ── Layout ─────────────────────────────────────────────── */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .mb-4 {
   margin-block: 5px;
 }
 
+/* ── Error banner ───────────────────────────────────────── */
+.error-banner {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Loading ────────────────────────────────────────────── */
+.loading-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #EFF6FF;
+  border-radius: 10px;
+  border: 1px solid #BFDBFE;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3B82F6;
+  animation: bounce 1s infinite alternate;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: .2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: .4s;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+    opacity: .6;
+  }
+
+  to {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.loading-label {
+  font-size: 13px;
+  color: #1D4ED8;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* ── Images section ─────────────────────────────────────── */
+.images-section {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 16px rgba(0, 0, 0, .06);
+}
+
+.images-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #fff;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.images-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.images-badge {
+  background: #F0FDF4;
+  color: #15803D;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.images-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.image-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.image-thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #E5E7EB;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+}
+
+.image-label {
+  font-size: 11px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+/* ── No images notice ───────────────────────────────────── */
+.no-images-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #FAFAFA;
+  border: 1px dashed #D1D5DB;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+/* ── Table ──────────────────────────────────────────────── */
 .table-container {
-  margin-block: 24px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 16px rgba(0, 0, 0, .06);
 }
 
 .table-header {
@@ -245,6 +551,7 @@ const setHeirarchy = (data: TitleInterface) => {
   color: #374151;
   border-bottom: 1px solid #F3F4F6;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .main-table tbody tr:hover {
@@ -253,5 +560,44 @@ const setHeirarchy = (data: TitleInterface) => {
 
 .main-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.row-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+}
+
+.no-img-text {
+  color: #9CA3AF;
+  font-size: 18px;
+}
+
+/* ── Confirm button ─────────────────────────────────────── */
+.btn-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: #1D4ED8;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+
+.btn-confirm:hover {
+  background: #1E40AF;
+}
+
+.btn-confirm:active {
+  transform: scale(.98);
 }
 </style>

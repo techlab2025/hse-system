@@ -29,6 +29,7 @@ export default class ShowProjectDetailsModel {
   public organization_employees: OrganizatoinEmployeeDetailsModel[] | null
   public project_locations: projectLocationModel[] | null
   public serialName: string
+  public endDate: string
 
   constructor(
     id: number,
@@ -51,6 +52,7 @@ export default class ShowProjectDetailsModel {
     organization_employees: OrganizatoinEmployeeDetailsModel[] | null,
     project_locations: projectLocationModel[] | null,
     serialName: string,
+    endDate: string,
   ) {
     this.id = id
     this.title = title
@@ -72,6 +74,7 @@ export default class ShowProjectDetailsModel {
     this.organization_employees = organization_employees
     this.project_locations = project_locations
     this.serialName = serialName
+    this.endDate = endDate
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -98,6 +101,7 @@ export default class ShowProjectDetailsModel {
       ),
       data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
       data.serial_name,
+      data.end_date,
     )
   }
 

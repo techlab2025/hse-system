@@ -87,7 +87,7 @@ const ensureEmployee = (item: any) => {
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
-                          $t('employee_name')
+                          $t('name_of_witness')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
                         @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')

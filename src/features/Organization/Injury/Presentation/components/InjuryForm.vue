@@ -157,7 +157,7 @@ const fields = ref([
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -165,5 +165,5 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 </template>

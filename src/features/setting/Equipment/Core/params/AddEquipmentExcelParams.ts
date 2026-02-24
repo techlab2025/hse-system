@@ -42,7 +42,7 @@ export default class AddEquipmentExcelParams implements Params {
   toMap(): Record<string, any> {
     const data: Record<string, any> = {}
 
-    data['data'] = this.data
+    data['equipments_data'] = this.data
 
     return data
   }

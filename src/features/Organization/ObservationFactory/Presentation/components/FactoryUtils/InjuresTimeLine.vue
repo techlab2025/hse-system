@@ -104,7 +104,7 @@ const InjuryVisable = ref(false)
             <!-- timeline-content -->
             <div class=" grid grid-cols-12 gap-2">
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <label for="">{{ $t('text') }}</label>
+                <label for="">{{ $t('description_of_the_injury') }}</label>
                 <input type="text" class="input " :placeholder="$t('add your title')" v-model="item.text"
                   @input="UpdateData">
               </div>
@@ -118,7 +118,7 @@ const InjuryVisable = ref(false)
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
-                          $t('employee_name')
+                          $t('name_of_the_injured_person')
                         }}</button>
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
                         @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
