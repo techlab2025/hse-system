@@ -406,7 +406,7 @@ const AddOrgEmployee = async () => {
 
 .warning-header {
   display: flex;
-  items-center: center;
+  align-items: center;
   gap: 10px;
   margin-bottom: 15px;
   border-bottom: 1px ridge #fbd38d;
