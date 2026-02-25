@@ -3,6 +3,7 @@
 @import '../mixins/grid';
 
 .most-incidat-factor {
+  margin-top: 20px;
   @include grid(
     4,
     $XsSize2,
