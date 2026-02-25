@@ -95,7 +95,7 @@ const getMappedSentKey = (colIndex: number): string => {
               {{ data }}
             </label> -->
             <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
-              {{ getLabel(data) }} 
+              {{ getLabel(data) }}
             </label>
           </div>
         </div>

@@ -394,6 +394,12 @@ const UpdateDeviceStatus = (data) => {
   deviceStatus.value = data.target.value
   updateData()
 }
+watch(() => deviceStatus.value, (newValue) => {
+  deviceStatus.value = newValue
+  updateData()
+
+  // console.log(newValue, "deviceStatus.value");
+})
 
 const getLocalizedTitleInterface = (titles: any[]) => {
   const locale = localStorage.getItem('lang') || 'en'

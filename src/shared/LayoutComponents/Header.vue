@@ -28,6 +28,7 @@ import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Co
 import { useIntegratedNotifications } from "@/composables/useIntegratedNotifications";
 import { useToast } from "primevue/usetoast";
 import wordSlice from '@/base/Presentation/utils/word_slice'
+import Notifications from './Notifications.vue'
 
 
 const route = useRoute()
@@ -111,31 +112,32 @@ const NOTIFICATION_SOUND_BASE64 =
   "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIF2W56+mmUBELTKXh8bllHAU2jdXvyn0tBSh+zPLaizsKGGS46Om1XBoFM4nU8c1+LgYngM3y3I4+ChlluOvpplARC0ul4fG5ZRwFNo3V78p9LQUofszy2os7ChhluevrpVERC0yn4fG3ZBwFOI7U8ct+LQUoftDy24k7ChZluujoplARDEul4e+3ZRwGOY/V8Mp/LgYpf9Dy3Ik7CxZluejpplARDEym4fG3ZBwFOI/V8cp+LQYoftDy24o7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuujqplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/";
 
 // Integrate new notification system
-const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
-  useIntegratedNotifications({
-    autoConnect: true,
-    token: userStore.user?.WebSocketToken,
-    userId: userStore.user?.id,
-    fetchNotifications: true,
-    userToken: userStore.user?.apiToken,
+// const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
+//   useIntegratedNotifications({
+//     autoConnect: true,
+//     token: userStore.user?.WebSocketToken,
+//     userId: userStore.user?.id,
+//     fetchNotifications: true,
+//     userToken: userStore.user?.apiToken,
 
-    onNotification: (notification) => {
-      console.log(notification);
-      // make ring sound
-      const audio = new Audio(NOTIFICATION_SOUND_BASE64);
-      audio.play();
 
-      // Show global toast
-      toast.add({
-        severity: "info",
-        summary: notification.title,
-        detail:
-          wordSlice(JSON.parse(notification?.body!)?.message, 35) ||
-          notification.body,
-        life: 5000,
-      });
-    },
-  });
+//     onNotification: (notification) => {
+//       console.log(notification);
+//       // make ring sound
+//       const audio = new Audio(NOTIFICATION_SOUND_BASE64);
+//       audio.play();
+
+//       // Show global toast
+//       toast.add({
+//         severity: "info",
+//         summary: notification.title,
+//         detail:
+//           wordSlice(JSON.parse(notification?.body!)?.message, 35) ||
+//           notification.body,
+//         life: 5000,
+//       });
+//     },
+//   });
 const op = ref();
 
 const toggle = (event: Event) => {
@@ -183,7 +185,8 @@ const toggle = (event: Event) => {
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
-
+        <Notifications />
+        <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />
         </div> -->
