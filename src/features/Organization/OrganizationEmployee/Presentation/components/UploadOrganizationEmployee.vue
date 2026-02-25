@@ -267,6 +267,15 @@ const deleteRow = (rowIndex: number) => {
     (_, i) => i !== imgBase && i !== imgBase + 1
   );
 };
+
+const onMappingClose = () => {
+  if (!mappedData.value) {
+    // Closed without confirming, reset to allow re-upload
+    Data.value = []
+    sheetData.value = null
+    extractedImages.value = []
+  }
+}
 </script>
 
 <template>
@@ -342,7 +351,7 @@ const deleteRow = (rowIndex: number) => {
 
       <!-- ── Step 2 : Column Mapping ────────────────────────── -->
       <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" />
+        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" @close="onMappingClose" />
 
       <!-- ── Step 3 : Preview & Submit ─────────────────────── -->
       <template v-if="mappedData && mappedData.length > 0">
