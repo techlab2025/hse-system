@@ -295,7 +295,14 @@ const deleteRow = (rowIndex: number) => {
   );
 };
 
-
+const onMappingClose = () => {
+  if (!mappedData.value) {
+    // Closed without confirming, reset to allow re-upload
+    Data.value = []
+    sheetData.value = null
+    extractedImages.value = []
+  }
+}
 </script>
 
 <template>
@@ -410,7 +417,7 @@ const deleteRow = (rowIndex: number) => {
 
     <template v-else>
       <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" />
+        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" @close="onMappingClose" />
 
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">

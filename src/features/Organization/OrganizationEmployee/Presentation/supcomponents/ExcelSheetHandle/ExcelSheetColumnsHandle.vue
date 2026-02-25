@@ -62,13 +62,35 @@ const onDragLeave = () => {
 }
 
 // When dialog closes, emit the mapping: sentData[i] -> orderedColumns[i]
-const onHide = () => {
+// const onHide = () => {
+//   const mapping: Record<string, string> = {}
+//   props.sentData.forEach((key, i) => {
+//     mapping[key] = orderedColumns.value[i] ?? ''
+//   })
+//   emit('update:columnMapping', mapping)
+//   emit('close')
+// }
+
+// Add a flag to track if confirmed
+const confirmed = ref(false)
+
+const onConfirm = () => {
+  confirmed.value = true
   const mapping: Record<string, string> = {}
   props.sentData.forEach((key, i) => {
     mapping[key] = orderedColumns.value[i] ?? ''
   })
   emit('update:columnMapping', mapping)
   emit('close')
+  visible.value = false
+}
+
+const onHide = () => {
+  if (!confirmed.value) {
+    // Closed without confirming — just emit close
+    emit('close')
+  }
+  confirmed.value = false
 }
 
 // Current mapping label for each row
@@ -128,7 +150,7 @@ const getMappedSentKey = (colIndex: number): string => {
       </div>
 
       <template #footer>
-        <button class="confirm-btn" @click="onHide">Confirm Mapping</button>
+        <button class="confirm-btn" @click="onConfirm">Confirm Mapping</button>
       </template>
     </Dialog>
   </div>
