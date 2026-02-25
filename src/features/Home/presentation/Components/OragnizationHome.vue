@@ -39,6 +39,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCardSkelaton.vue'
+import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -253,13 +254,95 @@ watch(() => indexProjectController.state.value, (newVal) => {
 
   </div>
 
-  <!-- <div class=statics>
+  <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
-  </div> -->
+    <div class="all-total-insedents">
+      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-one"  />
+      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('High Severity Events')}`"
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-two" />
+      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Inspection Compliance')}`"
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-three" />
+      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Open Corrective Actions')}`"
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-four"  />
+    </div>
+    <div class="most-incidat-factor">
+      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          label: `${$t('Inexperience')}`,
+          spanClass: 'ToatlInsedant-one',
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          label: `${$t('Needs maintenance')}`,
+          spanClass: 'ToatlInsedant-two'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Misconduct ?? 0,
+          label: `${$t('Misconduct')}`,
+          spanClass: 'ToatlInsedant-three'
+        }
+      ]" />
+      <MostIncidantFactor :title="$t('Employee certificates status')" :data="[
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          label: `${$t('Expired')}`,
+          spanClass: 'Expired',
+          divClass: 'ExpiredClass'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          label: `${$t('need to take')}`,
+          spanClass: 'more-time',
+          divClass: 'more-time-class'
+        },
+      ]" />
+      <MostIncidantFactor :title="$t('Inspections status')" :data="[
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          label: `${$t('finished')}`,
+          spanClass: 'finished',
+          divClass: 'finished-class'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          label: `${$t('in progress')}`,
+          spanClass: 'in-progress',
+          divClass: 'in-progress-class'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          label: `${$t('duration-ended')}`,
+          spanClass: 'duration-ended',
+          divClass: 'duration-ended-class'
+        },
+      ]" />
+      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          label: `${$t('Inexperience')}`,
+          spanClass: 'ToatlInsedant-one'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          label: `${$t('Needs maintenance')}`,
+          spanClass: 'ToatlInsedant-two'
+        },
+        {
+          value: ProjectStatics?.data?.incidantFactor?.Misconduct ?? 0,
+          label: `${$t('Misconduct')}`,
+          spanClass: 'ToatlInsedant-three'
+        }
+      ]" />
+    </div>
+  </div>
 
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+
+
 
     <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" />
     <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-8" />
