@@ -1,0 +1,65 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+
+.all-total-insedents {
+  @include grid(
+    4,
+    10px,
+    (
+      1000px: 2,
+      568px: 1,
+    )
+  );
+  // @include flex-row(nowrap, space-between, center);
+  // gap: $XlSize2;
+  border: 1px solid #f5f6f6;
+
+  .total-insedent-card {
+    @include flex-column(nowrap, center, center);
+    width: 100%;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-5px);
+    }
+    .title {
+      p {
+        font-size: $XlSize;
+        font-weight: $BaseFontWeightBold;
+        color: #000000;
+      }
+    }
+    .data {
+      @include flex-row(nowrap, center, center);
+      gap: 10px;
+      p {
+        font-size: 57px;
+        font-weight: 800;
+        color: #333;
+      }
+      h6 {
+        font-size: $XlSize;
+        font-weight: $BaseFontMediumWeight;
+        color: var(--subtitle-color);
+      }
+      .ToatlInsedant-one {
+        color: #ffbf52;
+      }
+      .ToatlInsedant-two {
+        color: #e23535;
+      }
+      .ToatlInsedant-three {
+        color: #4CAF50;
+      }
+      .ToatlInsedant-four {
+        color: #A457F5;
+      }
+    }
+  }
+}
