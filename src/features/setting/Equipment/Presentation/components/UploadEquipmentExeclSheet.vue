@@ -368,9 +368,9 @@ const deleteRow = (rowIndex: number) => {
 
       <div class="col-span-2 input-wrapper">
         <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType" :required="true"
-          :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
-          :label="`${GetEquipmentTitle(activeTab)} Type`" :id="`${GetEquipmentTitle(activeTab)} Type`"
-          :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`" @update:modelValue="setEquipmentType" />
+          :staticOptions="AllEquipmentTypes" :label="`${GetEquipmentTitle(activeTab)} Type`"
+          :id="`${GetEquipmentTitle(activeTab)} Type`" :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`"
+          @update:modelValue="setEquipmentType" />
       </div>
 
       <!-- <div class="col-span-2 input-wrapper">
