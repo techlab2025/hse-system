@@ -294,36 +294,13 @@ const deleteRow = (rowIndex: number) => {
     (_, i) => i !== imgBase && i !== imgBase + 1
   );
 };
+
+
 </script>
 
 <template>
   <div class="page-wrapper">
-    <!-- <div class="excel-warning w-full">
-      <div class="warning-header">
-        <span class="icon">⚠️</span>
-        <span class="title">Excel Data Formatting Rules</span>
-      </div>
 
-      <div class="rules flex space-between w-full">
-        <div class="rule-group">
-          <p class="rule-label">Status :</p>
-          <div class="chips">
-            <span class="chip"><kbd>1</kbd> Rent</span>
-            <span class="chip"><kbd>2</kbd> Owned</span>
-          </div>
-        </div>
-
-        <div class="rule-group">
-          <p class="rule-label">Period Type :</p>
-          <div class="chips">
-            <span class="chip"><kbd>1</kbd> Hour</span>
-            <span class="chip"><kbd>2</kbd> Day</span>
-            <span class="chip"><kbd>3</kbd> Month</span>
-            <span class="chip"><kbd>4</kbd> Year</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
         <!-- <span class="icon">📝</span> -->
@@ -385,6 +362,7 @@ const deleteRow = (rowIndex: number) => {
         </div>
       </div>
     </div>
+
     <div class="grid grid-cols-6 gap-4 w-full mb-4 equipment-form">
       <Tabs class="col-span-6 w-full" @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 

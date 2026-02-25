@@ -9,6 +9,7 @@ import type { Router } from 'vue-router'
 import AddOrganizatoinEmployeeUseCase from '../../Domain/useCase/addOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
 import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
   private static instance: AddOrganizatoinEmployeeController
@@ -24,13 +25,25 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(
-    params: any,
-    router: Router,
-    draft: boolean = false,
-  ) {
+  async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
+    if (params.data.length > 0) {
+      for (const el of params.data) {
+        if (!el.name) {
+          new OpenWarningDilaog('Name Is Required').openDialog()
+          return
+        }
+        if (el.password != el.password_confirmation) {
+          new OpenWarningDilaog('Password And Password Confirmation Not Matching').openDialog()
+          return
+        }
+        if (el.password.length < 8) {
+          new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
+          return
+        }
+      }
+    }
     try {
       // params.validate()
       // if (!params.validate().isValid) {

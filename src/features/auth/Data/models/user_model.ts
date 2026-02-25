@@ -107,7 +107,7 @@ export default class UserModel {
       map['permissions'],
       map['default_project'],
       map['organization_name'],
-      map['web_socket_token'],
+      map['notification_token'],
     )
   }
 }

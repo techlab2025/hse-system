@@ -15,6 +15,8 @@ import type TitleInterface from '@/base/Data/Models/title_interface';
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams';
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController';
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams';
+import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
+import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -270,6 +272,45 @@ const deleteRow = (rowIndex: number) => {
 <template>
   <div class="page-wrapper">
 
+    <div class="excel-warning">
+      <div class="warning-header flex item-center gap-2 justify-between w-full">
+        <!-- <span class="icon">📝</span> -->
+        <div class="flex item-center gap-2">
+          <ExcelSheetHeaderIcon />
+          <div class="title-container flex flex-col">
+            <span class="title">excel instuctions</span>
+            <span class="sub-title">A Step-by-Step Guide to Using the Spreadsheet</span>
+          </div>
+        </div>
+
+        <a href="/public/EmployeeFrom.xlsx" class="flex item-center gap-2 " download>
+          <ExcelSheetIcon class="icon" />
+          <span class="download-title">Download Excel Sheet</span>
+        </a>
+      </div>
+
+      <div class="rule-group">
+        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
+        <div class="field-tags">
+          <span class="field-tag">Employee Name</span>
+          <span class="field-tag">Email</span>
+          <span class="field-tag">Phone</span>
+          <span class="field-tag">Password</span>
+          <span class="field-tag">Password Confirmation</span>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
     <!-- ── Hierarchy Select ─────────────────────────────────── -->
     <div class="grid grid-cols-6 gap-4 w-full mb-4">
       <div class="col-span-2 input-wrapper">
@@ -382,6 +423,176 @@ const deleteRow = (rowIndex: number) => {
 </template>
 
 <style scoped>
+.title-container {
+
+  .title {
+    color: #1F41BB;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .sub-title {
+    color: #1E293B;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
+a {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+  width: fit-content;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  transition: 0.3s all linear;
+}
+
+a:hover {
+  background-color: #E5E7EB;
+}
+
+.download-title {
+  font-family: "Regular";
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.excel-warning {
+  /* background-color: #fffaf0; */
+  /* Light cream/amber */
+  /* border: 1px solid #fbd38d; */
+  /* Amber border */
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  /* border-bottom: 1px ridge #fbd38d; */
+  padding-bottom: 10px;
+}
+
+.warning-header .title {
+  color: #1F41BB;
+  /* Deep amber/brown */
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+
+.rule-group {
+  margin-bottom: 15px;
+}
+
+.rule-group:last-child {
+  margin-bottom: 0;
+}
+
+.rule-label {
+  font-size: 22px;
+  font-weight: 700;
+  color: #00057F;
+  font-family: "Regular";
+  /* margin-bottom: 8px; */
+}
+
+.rule-description {
+  font-size: 0.8rem;
+  color: #6B7280;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  background: #F4F6F9;
+  border: 1px solid #e2e8f0;
+  padding: 10px 38px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e0;
+}
+
+/* The "Key" look for numbers */
+kbd {
+  background-color: #1D4ED81A;
+  border-radius: 6px;
+  /* border: 1px solid #cbd5e0; */
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
+  color: #1F41BB;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.field-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  /* border: 1px dashed #fbd38d; */
+}
+
+.field-tag {
+  background: #F4F6F9;
+  color: #000000;
+  font-family: "Light";
+  /* Makes it look like code/field names */
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 12px;
+  /* border: 1px solid #e2e8f0; */
+}
+
+/* A subtle line to separate headers from values */
+.separator {
+  border: 0;
+  border-top: 1px solid #F1F3F5;
+  margin: 15px 0;
+}
+
+/* Ensure the rules container wraps nicely on small screens */
+@media (max-width: 600px) {
+  .rules {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .btn-delete-row {
   background: #FEF2F2;
   color: #B91C1C;

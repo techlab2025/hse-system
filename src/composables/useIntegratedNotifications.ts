@@ -6,7 +6,6 @@ import {
 import { pushNotificationService } from '@/services/PushNotificationService'
 import { websocketConfig, channelConfig } from '@/config/websocket'
 import { ChannelManager } from '@/utils/ChannelManager'
-
 export interface UseIntegratedNotificationsOptions {
   autoConnect?: boolean
   token?: string | null
@@ -21,11 +20,9 @@ export interface UseIntegratedNotificationsOptions {
   userToken?: string | null
   enableChat?: boolean
 }
-
 export function useIntegratedNotifications(options: UseIntegratedNotificationsOptions = {}) {
   const isProduction = import.meta.env.PROD
   const config = isProduction ? websocketConfig.production : websocketConfig.development
-
   const {
     autoConnect = true,
     token = null,
@@ -39,27 +36,22 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     enableChat = false,
     onChatMessage = null,
   } = options
-
   // State
   const wsConnected = computed(() => notificationService.connected.value)
   const wsError = computed(() => notificationService.error.value)
   const notifications = computed(() => notificationService.notifications.value)
   const logs = computed(() => notificationService.logs.value)
-
   const pushEnabled = ref(false)
   const pushPermission = ref(Notification.permission)
   const pushSubscription = ref(null)
   const setupInProgress = ref(false)
   const channelManager = new ChannelManager(notificationService)
-
   // Computed
   const fullyConnected = computed(() => wsConnected.value && pushEnabled.value)
   const unreadCount = computed(() => notificationService.unreadCount.value)
-
   if (fetchNotifications) {
     notificationService.fetchNotifications(userToken!)
   }
-
   /**
    * Setup WebSocket connection
    */
@@ -67,14 +59,13 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
    * Setup WebSocket connection
    */
   const setupWebSocket = async (authToken: string | null | undefined): Promise<boolean> => {
+    console.log(authToken, 'setupWebSocket called with token')
     if (!authToken) return false
     try {
       notificationService.configure({ brokerURL })
       await notificationService.connect(authToken)
-
       // Setup channels after connection
       setupChannels()
-
       console.log('✅ WebSocket connected')
       return true
     } catch (error) {
@@ -82,10 +73,8 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       return false
     }
   }
-
   const setupChannels = () => {
     const channels = []
-
     // Notifications channels
     channels.push(
       {
@@ -120,7 +109,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
         type: 'ack',
       },
     )
-
     // Chat channels if enabled
     if (enableChat) {
       channels.push(
@@ -132,10 +120,8 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
         },
       )
     }
-
     channelManager.subscribeToChannels(channels)
   }
-
   const handleChatMessage = (data: any) => {
     console.log('💬 New Chat Message:', data)
     if (onChatMessage) {
@@ -143,7 +129,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     }
     window.dispatchEvent(new CustomEvent('chat-message', { detail: data }))
   }
-
   /**
    * Setup Push Notifications
    */
@@ -152,27 +137,20 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     token: string | null | undefined,
   ) => {
     if (!userId || !token) return
-
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') throw new Error('Permission denied')
-
     const res = await fetch('/api/push/vapid-public-key')
     const { data } = await res.json()
-
     const registration = await navigator.serviceWorker.register('/sw.js')
-
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: pushNotificationService.urlBase64ToUint8Array(data.publicKey),
     })
-
     const p256dhKey = subscription.getKey('p256dh')
     const authKey = subscription.getKey('auth')
-
     if (!p256dhKey || !authKey) {
       throw new Error('Push subscription keys missing')
     }
-
     await fetch('/api/push/subscribe', {
       method: 'POST',
       headers: {
@@ -186,10 +164,8 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
         auth: btoa(String.fromCharCode(...new Uint8Array(authKey))),
       }),
     })
-
     return subscription
   }
-
   /**
    * Complete setup: WebSocket + Push Notifications
    */
@@ -197,30 +173,26 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     authToken: string | null | undefined,
     userIdentifier: string | number | null | undefined,
   ) => {
+    // console.warn('❌ Cannot setup notifications: missing token or userId')
     if (!authToken || !userIdentifier) {
       console.warn('❌ Cannot setup notifications: missing token or userId')
       return { wsSuccess: false, pushSuccess: false }
     }
-
     try {
       setupInProgress.value = true
-
       // Setup WebSocket
       const wsSuccess = await setupWebSocket(authToken)
-
       // Setup Push Notifications
       let pushSuccess = false
       if (enablePushNotifications) {
         const sub = await setupPushNotifications(userIdentifier, authToken)
         pushSuccess = !!sub
       }
-
       if (wsSuccess) {
         console.log('✅ Notifications fully configured')
         console.log(`   - WebSocket: ${wsSuccess ? '✓' : '✗'}`)
         console.log(`   - Push: ${pushSuccess ? '✓' : '✗'}`)
       }
-
       return { wsSuccess, pushSuccess }
     } catch (error) {
       console.error('❌ Notification setup failed:', error)
@@ -229,7 +201,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       setupInProgress.value = false
     }
   }
-
   /**
    * Request push notification permission
    */
@@ -237,18 +208,15 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     try {
       await pushNotificationService.requestPermission()
       pushPermission.value = Notification.permission
-
       if (pushPermission.value === 'granted' && token && userId) {
         await setupPushNotifications(userId, token)
       }
-
       return pushPermission.value === 'granted'
     } catch (error) {
       console.error('❌ Permission request failed:', error)
       return false
     }
   }
-
   /**
    * Disable push notifications
    */
@@ -267,11 +235,9 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       return false
     }
   }
-
   const acknowledgeNotification = (id: string) => {
     notificationService.acknowledgeNotification(id)
   }
-
   /**
    * Listen for notification clicks from service worker
    */
@@ -280,15 +246,12 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       navigator.serviceWorker.addEventListener('message', (event) => {
         if (event.data && event.data.type === 'NOTIFICATION_CLICKED') {
           console.log('Notification clicked in background:', event.data.data)
-
           // Handle the notification data
           const notificationData = event.data.data
-
           // Emit custom event or call callback
           if (onNotification) {
             onNotification(notificationData)
           }
-
           // You can also emit a custom event for components to listen to
           window.dispatchEvent(
             new CustomEvent('notification-clicked', {
@@ -299,7 +262,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       })
     }
   }
-
   /**
    * Setup WebSocket event handlers
    */
@@ -307,33 +269,27 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     // Handle new notifications
     notificationService.on('notification', (notification) => {
       console.log('📬 New notification via WebSocket:', notification)
-
       // Call user's callback for in-app handling (toasts, etc.)
       if (onNotification) {
         onNotification(notification)
       }
-
       // IMPORTANT: Show native browser notification if app is in background/hidden
       // This is DIFFERENT from app toasts - browser handles this
       if (document.hidden && Notification.permission === 'granted') {
         showNativeBrowserNotification(notification)
       }
     })
-
     // Connection status
     notificationService.on('connected', () => {
       console.log('✅ WebSocket connected')
     })
-
     notificationService.on('disconnected', () => {
       console.log('🔌 WebSocket disconnected')
     })
-
     notificationService.on('error', (error) => {
       console.error('❌ WebSocket error:', error)
     })
   }
-
   /**
    * When app is completely closed, Service Worker handles notifications via Push API
    */
@@ -341,10 +297,8 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     if (Notification.permission !== 'granted') {
       return
     }
-
     const audio = new Audio(NOTIFICATION_SOUND_BASE64)
     audio.play()
-
     // Create native browser notification using Notification API
     const notif = new Notification(notification.title || 'New Notification', {
       body: JSON.parse(notification?.body!)?.message || notification.body,
@@ -355,17 +309,13 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       requireInteraction: false,
       data: notification,
     } as NotificationOptions)
-
     // Handle click - bring app back to foreground
     notif.onclick = () => {
       window.focus()
       notif.close()
-
       const parsedBody =
         typeof notification.body === 'string' ? JSON.parse(notification.body) : notification.body
-
       const typeId = parsedBody?.data?.type_id || notification.data?.type_id
-
       if (typeId) {
         window.location.href = `/daily-work/${typeId}`
       } else if (notification.url) {
@@ -373,7 +323,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       }
     }
   }
-
   /**
    * Disconnect everything
    */
@@ -382,7 +331,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     notificationService.disconnect()
     console.log('🔌 Disconnected from notifications')
   }
-
   // Methods from WebSocket service
   const subscribe = (
     destination: string,
@@ -391,41 +339,34 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
   ) => {
     return notificationService.subscribe(destination, handler, channelType)
   }
-
   const unsubscribe = (destination: string) => {
     notificationService.unsubscribe(destination)
   }
-
   const clearNotifications = () => {
     notificationService.clearNotifications()
   }
-
   const removeNotification = (id: string | undefined) => {
     if (id) {
       notificationService.removeNotification(id)
     }
   }
-
   // Lifecycle
   onMounted(async () => {
     // Setup WebSocket handlers
     setupWebSocketHandlers()
-
     // Listen for notification clicks
     listenForNotificationClicks()
-
     // Auto-connect if enabled
+    // console.log('useIntegratedNotifications mounted with options:', { autoConnect, token, userId })
     if (autoConnect && token && userId) {
       await setupNotifications(token, userId)
     }
   })
-
   onUnmounted(() => {
     // Don't disconnect - keep connections alive across components
     // But maybe we want to unsubscribe if this component was the only one?
     // For now, consistent with original behavior, we don't auto-disconnect
   })
-
   return {
     // State
     wsConnected,
@@ -438,7 +379,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     fullyConnected,
     unreadCount,
     setupInProgress,
-
     // Methods
     setupNotifications,
     setupWebSocket,
@@ -451,7 +391,6 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     clearNotifications,
     removeNotification,
     acknowledgeNotification,
-
     // Services
     wsService: notificationService,
     pushService: pushNotificationService,

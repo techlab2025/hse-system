@@ -41,6 +41,26 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
           new OpenWarningDilaog('Equipment Type Is Required').openDialog()
           return
         }
+        if (!el.status) {
+          new OpenWarningDilaog('Status Is Required').openDialog()
+          return
+        }
+        if (el.status == EquipmentStatus.RENT && !el.period_type) {
+          new OpenWarningDilaog('Rent Type Is Required').openDialog()
+          return
+        }
+        if (el.status == EquipmentStatus.RENT && !el.period) {
+          new OpenWarningDilaog('Rent Period Is Required').openDialog()
+          return
+        }
+        if (el.status == EquipmentStatus.RENT && !el.checkin_date) {
+          new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
+          return
+        }
+        if (el.status == EquipmentStatus.RENT && !el.checkout_date) {
+          new OpenWarningDilaog('Rent End Date Is Required').openDialog()
+          return
+        }
       }
     }
     try {
