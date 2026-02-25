@@ -312,7 +312,7 @@ const deleteRow = (rowIndex: number) => {
           </div>
         </div>
 
-        <a href="/public/EquipmentFormUpload.xlsx" class="flex item-center gap-2 " download>
+        <a href="/public/EquipmentForm.xlsx" class="flex item-center gap-2 " download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>
@@ -450,7 +450,7 @@ const deleteRow = (rowIndex: number) => {
                   <!-- {{ row[7] }} -->
                   <td v-for="(value, colIndex) in row" :key="colIndex">
                     <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
-                    <span v-else-if="colIndex === 8">{{ RentTypes[value].title }}</span>
+                    <span v-else-if="colIndex === 8">{{ RentTypeEnum[value] }}</span>
                     <span v-else>{{ value }}</span>
                   </td>
 
