@@ -4,7 +4,7 @@ import { EquipmentStatus } from '../enum/EquipmentStatus'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 interface Data {
-  translation: TranslationsParams
+  name: string
   equipmentTypeId: number | null
   date: string | null
   status: EquipmentStatus
@@ -26,16 +26,15 @@ interface Data {
   serialNumber: string
   SelectedWhereHosue: number
 }
+
 export default class AddEquipmentExcelParams implements Params {
-  data: Data[] = []
+  data: any[] = []
 
   public static readonly validation = new ClassValidation().setRules({
-    // translation: { required: true, minLength: 2, maxLength: 100 },
-    // equipmentTypeId: { required: true },
-    // equipmentRentStartDate: { required: true },
+    // 'data.equipmentTypeId': { required: true },
   })
 
-  constructor(data: { data: Data[] }) {
+  constructor(data: { data: any[] }) {
     Object.assign(this, data)
   }
 

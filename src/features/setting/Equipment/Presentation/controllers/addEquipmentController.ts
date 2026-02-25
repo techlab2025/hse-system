@@ -30,14 +30,20 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
   async addEquipment(params: AddEquipmentParams | any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    console.log(params, 'params')
-    try {
-      params.validate()
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+    if (params.data.length > 0) {
+      for (const el of params.data) {
+        if (!el.name) {
+          new OpenWarningDilaog('Name Is Required').openDialog()
+          return
+        }
 
+        if (!el.equipment_type_id) {
+          new OpenWarningDilaog('Equipment Type Is Required').openDialog()
+          return
+        }
+      }
+    }
+    try {
       if (params?.status == EquipmentStatus.RENT && Number(params?.equipmentRentTime) < 1) {
         new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return

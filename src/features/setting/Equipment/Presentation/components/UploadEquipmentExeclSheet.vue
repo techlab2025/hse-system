@@ -23,6 +23,8 @@ import IndexContractorController from '@/features/setting/contractor/Presentatio
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams';
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController';
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams';
+import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
+import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
 
 interface ExtractedImage {
   name: string;
@@ -323,45 +325,62 @@ const deleteRow = (rowIndex: number) => {
       </div>
     </div> -->
     <div class="excel-warning">
-      <div class="warning-header">
-        <span class="icon">📝</span>
-        <span class="title">Excel Import Instructions</span>
+      <div class="warning-header flex item-center gap-2 justify-between w-full">
+        <!-- <span class="icon">📝</span> -->
+        <div class="flex item-center gap-2">
+          <ExcelSheetHeaderIcon />
+          <div class="title-container flex flex-col">
+            <span class="title">excel instuctions</span>
+            <span class="sub-title">A Step-by-Step Guide to Using the Spreadsheet</span>
+          </div>
+        </div>
+
+        <a href="/public/EquipmentFormUpload.xlsx" class="flex item-center gap-2 " download>
+          <ExcelSheetIcon class="icon" />
+          <span class="download-title">Download Excel Sheet</span>
+        </a>
       </div>
 
       <div class="rule-group">
-        <p class="rule-label">Required Excel Columns (Exact Names):</p>
+        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
-          <span class="field-tag">name</span>
-          <span class="field-tag">date</span>
-          <span class="field-tag">license_plate_number</span>
-          <span class="field-tag">image</span>
-          <span class="field-tag">certificate_image</span>
-          <span class="field-tag">checkin_date</span>
-          <span class="field-tag">checkout_date</span>
-          <span class="field-tag">period</span>
-          <span class="field-tag">period_type</span>
-          <span class="field-tag">status</span>
+          <span class="field-tag">Equipment name</span>
+          <span class="field-tag">Certificate Expiry date</span>
+          <span class="field-tag">License plate number</span>
+          <span class="field-tag">Equipment image</span>
+          <span class="field-tag">Certificate image</span>
+          <span class="field-tag">Rent Start date</span>
+          <span class="field-tag">Rent End date</span>
+          <span class="field-tag">Rent Period type</span>
+          <span class="field-tag">Rent Period</span>
+          <span class="field-tag">Status</span>
         </div>
       </div>
+
+
 
       <hr class="separator" />
 
       <div class="rules">
         <div class="rule-group">
-          <p class="rule-label">Status Mapping:</p>
+          <p class="rule-label">Status :</p>
+          <p class="rule-description">Use these values ​​in your file to match the original headings.</p>
+
           <div class="chips">
-            <span class="chip"><kbd>1</kbd> Rent</span>
-            <span class="chip"><kbd>2</kbd> Owned</span>
+            <span class="chip">Rent<kbd>1</kbd> </span>
+            <span class="chip">Owned<kbd>2</kbd> </span>
           </div>
         </div>
 
         <div class="rule-group">
-          <p class="rule-label">Period Type Mapping:</p>
+          <p class="rule-label">Period Type:</p>
+          <p class="rule-description">Use these values ​​in your file to match the original headings..</p>
+
           <div class="chips">
-            <span class="chip"><kbd>1</kbd> Hour</span>
-            <span class="chip"><kbd>2</kbd> Day</span>
-            <span class="chip"><kbd>3</kbd> Month</span>
-            <span class="chip"><kbd>4</kbd> Year</span>
+            <span class="chip">Hour<kbd>1</kbd> </span>
+            <span class="chip">Day<kbd>2</kbd> </span>
+            <span class="chip">Month<kbd>3</kbd> </span>
+            <span class="chip">Year<kbd>4</kbd> </span>
           </div>
         </div>
       </div>
@@ -370,7 +389,7 @@ const deleteRow = (rowIndex: number) => {
       <Tabs class="col-span-6 w-full" @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
       <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
+        <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType" :required="true"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
           :label="`${GetEquipmentTitle(activeTab)} Type`" :id="`${GetEquipmentTitle(activeTab)} Type`"
           :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`" @update:modelValue="setEquipmentType" />
@@ -413,7 +432,7 @@ const deleteRow = (rowIndex: number) => {
 
     <template v-else>
       <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping"  :sentDataLabels="SendDataLabels"  />
+        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" />
 
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
@@ -426,10 +445,22 @@ const deleteRow = (rowIndex: number) => {
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span v-if="item !== 'image' && item !== 'certificate_image'">
-
+                    <span v-if="item == 'checkin_date'">
+                      Rent Start Date
+                    </span>
+                    <span v-else-if="item == 'checkout_date'">
+                      Rent End Date
+                    </span>
+                    <span v-else-if="item == 'license_plate_number'">
+                      License Plate Number
+                    </span>
+                    <span v-else-if="item == 'period_type'">
+                      Period Type
+                    </span>
+                    <span v-else-if="item !== 'image' && item !== 'certificate_image'">
                       {{ item }}
                     </span>
+
                   </th>
                   <th>Image</th>
                   <th>Certificate Image</th>
@@ -438,7 +469,13 @@ const deleteRow = (rowIndex: number) => {
               </thead>
               <tbody>
                 <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
-                  <td v-for="(value, colIndex) in row" :key="colIndex">{{ value }}</td>
+                  <!-- {{ row[7] }} -->
+                  <td v-for="(value, colIndex) in row" :key="colIndex">
+                    <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
+                    <span v-else-if="colIndex === 8">{{ RentTypes[value].title }}</span>
+                    <span v-else>{{ value }}</span>
+                  </td>
+
                   <td>
                     <img v-if="extractedImages[rowIndex * 2]" :src="extractedImages[rowIndex * 2].base64"
                       class="row-thumb" />
@@ -470,10 +507,52 @@ const deleteRow = (rowIndex: number) => {
 </template>
 
 <style scoped>
+.title-container {
+
+  .title {
+    color: #1F41BB;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .sub-title {
+    color: #1E293B;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
+a {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+  width: fit-content;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  transition: 0.3s all linear;
+}
+
+a:hover {
+  background-color: #E5E7EB;
+}
+
+.download-title {
+  font-family: "Regular";
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .excel-warning {
-  background-color: #fffaf0;
+  /* background-color: #fffaf0; */
   /* Light cream/amber */
-  border: 1px solid #fbd38d;
+  /* border: 1px solid #fbd38d; */
   /* Amber border */
   border-radius: 12px;
   padding: 20px;
@@ -484,15 +563,15 @@ const deleteRow = (rowIndex: number) => {
 
 .warning-header {
   display: flex;
-  items-center: center;
+  align-items: center;
   gap: 10px;
   margin-bottom: 15px;
-  border-bottom: 1px ridge #fbd38d;
+  /* border-bottom: 1px ridge #fbd38d; */
   padding-bottom: 10px;
 }
 
 .warning-header .title {
-  color: #c05621;
+  color: #1F41BB;
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
@@ -507,24 +586,32 @@ const deleteRow = (rowIndex: number) => {
 }
 
 .rule-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #744210;
-  margin-bottom: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #00057F;
+  font-family: "Regular";
+  /* margin-bottom: 8px; */
+}
+
+.rule-description {
+  font-size: 0.8rem;
+  color: #6B7280;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 10px;
 }
 
 .chip {
-  background: #ffffff;
+  background: #F4F6F9;
   border: 1px solid #e2e8f0;
-  padding: 4px 12px 4px 6px;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  padding: 10px 38px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
   color: #4a5568;
   display: flex;
   align-items: center;
@@ -539,16 +626,16 @@ const deleteRow = (rowIndex: number) => {
 
 /* The "Key" look for numbers */
 kbd {
-  background-color: #edf2f7;
-  border-radius: 3px;
-  border: 1px solid #cbd5e0;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
-  color: #2d3748;
+  background-color: #1D4ED81A;
+  border-radius: 6px;
+  /* border: 1px solid #cbd5e0; */
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
+  color: #1F41BB;
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1;
-  padding: 2px 5px;
+  padding: 2px 6px;
   white-space: nowrap;
 }
 
@@ -559,24 +646,25 @@ kbd {
   background: rgba(255, 255, 255, 0.5);
   padding: 10px;
   border-radius: 8px;
-  border: 1px dashed #fbd38d;
+  /* border: 1px dashed #fbd38d; */
 }
 
 .field-tag {
-  background: #f1f5f9;
-  color: #475569;
-  font-family: monospace;
+  background: #F4F6F9;
+  color: #000000;
+  font-family: "Light";
   /* Makes it look like code/field names */
-  font-size: 0.8rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid #e2e8f0;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 12px;
+  /* border: 1px solid #e2e8f0; */
 }
 
 /* A subtle line to separate headers from values */
 .separator {
   border: 0;
-  border-top: 1px solid #fef3c7;
+  border-top: 1px solid #F1F3F5;
   margin: 15px 0;
 }
 

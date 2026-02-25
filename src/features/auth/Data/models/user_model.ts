@@ -28,6 +28,7 @@ export default class UserModel {
   public permission: string[] = []
   public Defaultproject?: TitleInterface
   public organizationName?: string
+  public WebSocketToken?: string
 
   constructor(
     id: number,
@@ -53,6 +54,7 @@ export default class UserModel {
     permission: string[] = [],
     Defaultproject?: TitleInterface,
     organizationName?: string,
+    WebSocketToken?: string,
   ) {
     this.id = id
     this.name = name
@@ -77,6 +79,7 @@ export default class UserModel {
     this.permission = permission
     this.Defaultproject = Defaultproject
     this.organizationName = organizationName
+    this.WebSocketToken = WebSocketToken
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
@@ -104,6 +107,7 @@ export default class UserModel {
       map['permissions'],
       map['default_project'],
       map['organization_name'],
+      map['web_socket_token'],
     )
   }
 }
