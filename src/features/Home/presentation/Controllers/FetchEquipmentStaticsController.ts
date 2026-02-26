@@ -1,10 +1,10 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type StatisticsMachineModel from '../../data/Model/StatisticsMachineModel'
 import FetchEquipmentStaticsUseCase from '../../domain/usecase/FetchEquipemntStaticsUseCase'
+import type EquipmentStaticsModel from '../../data/Model/EquipmentStaticsModel'
 
-export default class FetchEquipmentStaticsController extends SelectControllerInterface<StatisticsMachineModel> {
+export default class FetchEquipmentStaticsController extends SelectControllerInterface<EquipmentStaticsModel> {
   private static instance: FetchEquipmentStaticsController
   private constructor() {
     super()
@@ -22,7 +22,7 @@ export default class FetchEquipmentStaticsController extends SelectControllerInt
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<StatisticsMachineModel> =
+    const dataState: DataState<EquipmentStaticsModel> =
       await this.fetchEquipmentStaticsUseCase.call(params)
 
     this.setState(dataState)

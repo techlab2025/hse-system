@@ -185,7 +185,7 @@ const toggle = (event: Event) => {
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
-        <!-- <Notifications /> -->
+        <Notifications />
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />

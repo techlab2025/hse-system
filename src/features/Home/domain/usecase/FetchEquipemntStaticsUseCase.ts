@@ -5,16 +5,16 @@ import {
   type DataState,
 } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
-import StatisticsMachineModel from '../../data/Model/StatisticsMachineModel'
 import { FetchEquipmentStaticsRepo } from '../repositories/FetchEquipmentStaticsRepo'
+import EquipmentStaticsModel from '../../data/Model/EquipmentStaticsModel'
 
 export default class FetchEquipmentStaticsUseCase
-  implements UseCase<StatisticsMachineModel, Params>
+  implements UseCase<EquipmentStaticsModel, Params>
 {
-  async call(params: Params): Promise<DataState<StatisticsMachineModel>> {
+  async call(params: Params): Promise<DataState<EquipmentStaticsModel>> {
     return UseCaseHandler.instance().handle({
       onTest: () => {
-        return new DataSuccess({ data: StatisticsMachineModel.example })
+        return new DataSuccess({ data: EquipmentStaticsModel.example })
       },
       onDev: () => {
         return FetchEquipmentStaticsRepo.getInstance().call(params)

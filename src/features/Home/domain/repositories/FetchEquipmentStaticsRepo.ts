@@ -1,9 +1,9 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { FetchEqipmentStaticsApiService } from '../../data/ApiService/FetchEquipmentStaticsApiService'
-import StatisticsMachineModel from '../../data/Model/StatisticsMachineModel'
+import EquipmentStaticsModel from '../../data/Model/EquipmentStaticsModel'
 
-class FetchEquipmentStaticsRepo extends RepoInterface<StatisticsMachineModel> {
+class FetchEquipmentStaticsRepo extends RepoInterface<EquipmentStaticsModel> {
   private static instance: FetchEquipmentStaticsRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -22,8 +22,8 @@ class FetchEquipmentStaticsRepo extends RepoInterface<StatisticsMachineModel> {
     return true
   }
 
-  onParse(data: any): StatisticsMachineModel {
-    return StatisticsMachineModel.fromMap(data)
+  onParse(data: any): EquipmentStaticsModel {
+    return EquipmentStaticsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {

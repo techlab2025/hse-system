@@ -147,11 +147,17 @@ watch(() => indexProjectController.state.value, (newVal) => {
 })
 
 
+const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
+const EquipmentStatics = ref(fetchEquipmentStaticsController.state.value)
 const GetEquipmentStatics = async () => {
-  const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
   const fetchEquipmentStaticsParams = new FetchEquipmentStaticsParams()
   await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
 }
+watch(() => fetchEquipmentStaticsController.state.value, (newVal) => {
+  if (newVal) {
+    EquipmentStatics.value = newVal
+  }
+})
 onMounted(() => {
   GetEquipmentStatics()
 })
@@ -290,15 +296,17 @@ onMounted(() => {
     <div class="all-total-insedents">
 
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
-        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" link="/organization/equipment-mangement/incedant?isAll=1" />
+        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one"
+        link="/organization/equipment-mangement/incedant?isAll=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
-        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two" link="/organization/equipment-mangement/observation?isAll=1&type=2" />
+        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two"
+        link="/organization/equipment-mangement/observation?isAll=1&type=2" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
-        :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-three" link="/organization/equipment-mangement/inspection?inspectionType=1" />
+        :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-three"
+        link="/organization/equipment-mangement/inspection?inspectionType=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
         :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-four"  />
+        textClass="ToatlInsedant-four" />
 
     </div>
     <div class="most-incidat-factor">
@@ -378,7 +386,10 @@ onMounted(() => {
     </div>
   </div>
 
-  <!-- <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" /> -->
+  <div class="flex gap-4 statics">
+    <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
+    <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
+  </div>
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
 
