@@ -58,9 +58,9 @@ class WebSocketNotificationService {
     this.subscriptions = new Map()
     this.config = {
       brokerURL: 'wss://socket.techlabeg.com/ws',
-      reconnectDelay: 500,
-      heartbeatIncoming: 1000,
-      heartbeatOutgoing: 1000,
+      reconnectDelay: 5000,
+      heartbeatIncoming: 10000,
+      heartbeatOutgoing: 10000,
       debug: true,
       maxReconnectAttempts: 10,
       connectionTimeout: 30000,

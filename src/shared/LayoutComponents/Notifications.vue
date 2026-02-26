@@ -49,6 +49,9 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
     case NotificationEnum.INCIDENT: // PDSP
       router.push(typeId ? `/organization/equipment-mangement/incedant/show/${typeId}` : '/organization/equipment-mangement/incedant?isAll=1')
       break
+    case NotificationEnum.TASK: // PDSP
+      router.push(typeId ? '/organization/equipment-mangement/inspection?inspectionType=2' : '/organization/equipment-mangement/inspection?inspectionType=2')
+      break
 
     default:
       console.warn('Unknown notification type:', notificationType)
@@ -87,7 +90,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
               </p>
               <small v-if="notification.receivedAt">{{
                 notification.receivedAt.toLocaleTimeString()
-                }}</small>
+              }}</small>
             </button>
             <!-- <button @click="acknowledgeNotification(notification.id)" class="remove-btn">
               &times;

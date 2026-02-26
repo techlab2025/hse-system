@@ -426,16 +426,15 @@ onMounted(() => {
     </div>
   </div>
 
-
-
-    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
-    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
-
   <div class="flex gap-4 statics">
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
   </div>
-  <!--
+
+  <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+
+
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
 
 
