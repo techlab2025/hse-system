@@ -50,7 +50,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
       router.push(typeId ? `/organization/equipment-mangement/incedant/show/${typeId}` : '/organization/equipment-mangement/incedant?isAll=1')
       break
     case NotificationEnum.TASK: // PDSP
-      router.push(typeId ? '/organization/equipment-mangement/inspection?inspectionType=2' : '/organization/equipment-mangement/inspection?inspectionType=2')
+      router.push(typeId ? `/organization/equipment-mangement/inspection?inspectionType=2&typeId=${typeId}` : '/organization/equipment-mangement/inspection?inspectionType=2')
       break
 
     default:
