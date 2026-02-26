@@ -36,7 +36,17 @@ const GauideRoutes = ref<Routes[]>([
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
-
+  {
+    link: '/organization/certificate',
+    name: t('certificates'),
+    permissions: [
+      PermissionsEnum.CERTIFICATE_ALL,
+      PermissionsEnum.CERTIFICATE_CREATE,
+      PermissionsEnum.CERTIFICATE_DELETE,
+      PermissionsEnum.CERTIFICATE_FETCH,
+      PermissionsEnum.CERTIFICATE_UPDATE,
+    ],
+  },
   {
     link: '/organization/partner',
     name: t('partners'),
@@ -61,17 +71,7 @@ const OrganizationRoutes = ref<Routes[]>([
   //     PermissionsEnum.PROJECT_UPDATE,
   //   ],
   // },
-  {
-    link: '/organization/certificate',
-    name: t('certificates'),
-    permissions: [
-      PermissionsEnum.CERTIFICATE_ALL,
-      PermissionsEnum.CERTIFICATE_CREATE,
-      PermissionsEnum.CERTIFICATE_DELETE,
-      PermissionsEnum.CERTIFICATE_FETCH,
-      PermissionsEnum.CERTIFICATE_UPDATE,
-    ],
-  },
+
   // {
   //   link: '/organization/equipment-types',
   //   name: 'Equipment Types',
