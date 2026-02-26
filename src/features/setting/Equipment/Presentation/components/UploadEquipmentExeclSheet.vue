@@ -319,7 +319,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <a href="/public/EquipmentForm.xlsx" class="flex item-center gap-2 " download>
+        <a href="/EquipmentForm.xlsx" class="flex item-center gap-2 " download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>
