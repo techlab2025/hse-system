@@ -46,6 +46,7 @@ import ToggleObservationWorkStoppedController from '../../controllers/ToggleObse
 import ToggleObservationWorkStoppedParams from '../../../Core/params/ToggleObservationWorkStoppedParams'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
+import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -434,10 +435,12 @@ const GetObservationType = (type: number) => {
               @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
-            <TableLoader :cols="3" :rows="10" />
+             <CardSkelaton />
+            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #initial>
-            <TableLoader :cols="3" :rows="10" />
+             <CardSkelaton />
+            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
             <PermissionBuilder :code="[

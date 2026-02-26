@@ -35,6 +35,7 @@ import type MyZonesModel from '../../../Data/models/MyZonesModel'
 import FetchMyZonesController from '../../controllers/FetchMyZonesController'
 import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
+import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -324,10 +325,12 @@ const ShowDetails = ref<number[]>([])
               @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
-            <TableLoader :cols="3" :rows="10" />
+             <CardSkelaton />
+            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #initial>
-            <TableLoader :cols="3" :rows="10" />
+             <CardSkelaton />
+            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
             <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
