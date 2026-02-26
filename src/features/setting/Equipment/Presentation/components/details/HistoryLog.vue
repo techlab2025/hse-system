@@ -13,6 +13,8 @@ import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionE
 import { PeriodTypeEnum } from '@/features/Organization/Inspection/Core/Enum/PeriodTypeEnum'
 import InspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionCard.vue'
 import EquipmentInspectionCard from './EquipmentInspectionCard.vue'
+import EmptyInspection from "@/assets/images/EmptyInspection.png"
+import NoData from "@/assets/images/no-data.png"
 
 const props = defineProps<{
   show_tasks: InspectionModel[]
@@ -45,14 +47,42 @@ const Types = ref(['sunday', 'monday', 'tuesday'])
           :showresult="false" :isEquipment="true" />
       </template>
       <template v-else>
-
+        <div class="empty-inspection-container">
+          <img class="empty-inspection" :src="NoData" alt="equipemnt-inspection">
+        </div>
       </template>
       <!-- <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" :isEquipment="true" /> -->
     </div>
     <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
-      <EquipmentInspectionCard :tasks="result_tasks" :isEquipmentResult="true" />
+      <template v-if="result_tasks?.length > 0">
+
+        <EquipmentInspectionCard :tasks="result_tasks" :isEquipmentResult="true" />
+      </template>
+      <template v-else>
+        <div class="empty-inspection-container">
+          <img class="empty-inspection" :src="NoData" alt="equipemnt-inspection">
+        </div>
+      </template>
     </div>
 
     <!-- <PendingHistoryCard /> -->
   </div>
 </template>
+
+<style scoped>
+.empty-inspection-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 30%;
+    height: 40%;
+  }
+}
+
+.empty-inspection {
+  margin: auto;
+}
+</style>
