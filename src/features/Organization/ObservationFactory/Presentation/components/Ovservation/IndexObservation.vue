@@ -77,10 +77,12 @@ const fetchHazard = async (
     perPage,
     withPage,
     [Observation.ObservationType, Observation.HazardType],
-    [projectIds],
+    route.query.hazard ? null : [projectIds],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
+    null,
+    route.query.hazard ? route.query.hazard : null,
 
     // riskLevel,
     // saveStatus,
@@ -216,7 +218,7 @@ const ApplayFilter = (data: number[]) => {
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
   console.log(data, 'data')
-  fetchHazard('', 1, 10, 0, null, null, null, data)
+  fetchHazard('', 1, 10, 1, null, null, null, data)
   if (data) {
     FetchMyZones()
   }
