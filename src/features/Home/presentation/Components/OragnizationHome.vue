@@ -377,13 +377,15 @@ onMounted(() => {
           value: homeInspectionState?.data?.employeeCertificates?.expired,
           label: `${$t('Expired')}`,
           spanClass: 'Expired',
-          divClass: 'ExpiredClass'
+          divClass: 'ExpiredClass',
+          link: '/organization/employee-certificate'
         },
         {
           value: homeInspectionState?.data?.employeeCertificates?.inactive,
           label: `${$t('need to take')}`,
           spanClass: 'more-time',
-          divClass: 'more-time-class'
+          divClass: 'more-time-class',
+          link: '/organization/employee-certificate'
         },
       ]" />
       <MostIncidantFactor :title="$t('Inspections status')" :data="[
@@ -410,17 +412,22 @@ onMounted(() => {
         {
           value: homeInspectionState?.data?.MostUsed[0]?.count,
           label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-one'
+          spanClass: 'ToatlInsedant-one',
+          link: `/organization/equipment-mange  ment/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[0]?.id}`
         },
         {
           value: homeInspectionState?.data?.MostUsed[1]?.count,
           label: homeInspectionState?.data?.MostUsed[1]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-two'
+          spanClass: 'ToatlInsedant-two',
+          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[1]?.id}`
+
         },
         {
           value: homeInspectionState?.data?.MostUsed[2]?.count,
           label: homeInspectionState?.data?.MostUsed[2]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-three'
+          spanClass: 'ToatlInsedant-three',
+          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[2]?.id}`
+
         }
       ]" />
     </div>

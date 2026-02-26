@@ -16,6 +16,7 @@ export default class IndexHazardParams implements Params {
   public projectZoonIds?: number[]
   public projectLocationIds?: number[]
   public zoonIds?: number[] = []
+  public rootCauseId?: number
   public equipmentIds?: number[] = []
   public riskLevel?: number[] = []
   public saveStatus?: number[] = []
@@ -33,6 +34,7 @@ export default class IndexHazardParams implements Params {
     projectZoonIds?: number[],
     projectLocationIds?: number[],
     zoonIds?: number[],
+    rootCauseId?: number,
     equipmentIds?: number[],
     riskLevel?: number[],
     saveStatus?: number[],
@@ -51,6 +53,7 @@ export default class IndexHazardParams implements Params {
     this.projectZoonIds = projectZoonIds
     this.projectLocationIds = projectLocationIds
     this.zoonIds = zoonIds
+    this.rootCauseId = rootCauseId
     this.equipmentIds = equipmentIds
     this.riskLevel = riskLevel
     this.saveStatus = saveStatus
@@ -72,6 +75,7 @@ export default class IndexHazardParams implements Params {
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
+    if (this.rootCauseId) data['root_cause_id'] = this.rootCauseId
     if (this.equipmentIds) data['equipment_ids'] = this.equipmentIds
     if (this.riskLevel) data['risk_level'] = this.riskLevel
     if (this.saveStatus) data['save_status'] = this.saveStatus
