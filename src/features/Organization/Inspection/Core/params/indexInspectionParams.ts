@@ -11,7 +11,7 @@ export default class IndexInspectionParams implements Params {
   public zoneIds?: number[]
   public isOverDue?: boolean
   public projectIds?: number[]
-  // public code?: LangEnum
+  public taskId?: number
 
   constructor(
     word: string,
@@ -22,6 +22,7 @@ export default class IndexInspectionParams implements Params {
     zoneIds?: number[],
     isOverDue?: boolean,
     projectIds?: number[],
+    taskId?: number,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -32,6 +33,7 @@ export default class IndexInspectionParams implements Params {
     this.zoneIds = zoneIds
     this.isOverDue = isOverDue
     this.projectIds = projectIds
+    this.taskId = taskId
     // this.code = code
   }
 
@@ -45,6 +47,7 @@ export default class IndexInspectionParams implements Params {
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
     if (this.projectIds) data['project_ids'] = [this.projectIds]
+    if (this.taskId) data['task_id'] = this.taskId
     // if (this.code) data['code'] = this.code
     return data
   }

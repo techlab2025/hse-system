@@ -74,7 +74,9 @@ const fetchInspection = async (
     withPage,
     employeeId || null,
     zoneId || null,
-    selectedProjctesFilters.value || null
+    selectedProjctesFilters.value || null,
+    null,
+    route.query.typeId ? Number(route.query.typeId) : null
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
