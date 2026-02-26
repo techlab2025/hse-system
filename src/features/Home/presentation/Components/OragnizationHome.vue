@@ -217,7 +217,7 @@ watch(() => indexProjectController.state.value, (newVal) => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <!-- /organization?setting=1 -->
-      <router-link :to="`/organization/project-progress`">
+      <router-link :to="ProgressValue == 100 ? `/organization/certificate?type=1` : `/organization/project-progress`">
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
@@ -258,13 +258,13 @@ watch(() => indexProjectController.state.value, (newVal) => {
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
       <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-one"  />
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-one" />
       <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('High Severity Events')}`"
         :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-two" />
       <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Inspection Compliance')}`"
         :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-three" />
       <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Open Corrective Actions')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-four"  />
+        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-four" />
     </div>
     <div class="most-incidat-factor">
       <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
