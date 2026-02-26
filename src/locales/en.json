@@ -1186,5 +1186,6 @@
   "name_of_the_injured_person": "Name of the injured person",
   "description_of_the_injury": "Description of the injury",
   "name_of_the_deceased": "Name of the deceased",
-  "description_of_the_death_case": "Description of the death case"
+  "description_of_the_death_case": "Description of the death case",
+  "import_equipment": "Import Equipment"
 }

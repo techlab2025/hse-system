@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 // import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 // import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -175,6 +176,30 @@ watch(
     fetchEquipment()
   }
 )
+
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "id": it.id,
+        "Equipment Title": it.title || "N/A",
+        "Equipment Type Title": it.equipmentType?.title || "N/A",
+        "Contractor Name": it.contractor?.name || "N/A",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "Equipment.xlsx");
+};
 </script>
 
 <template>
@@ -189,6 +214,8 @@ watch(
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+
       <ExportPdf />
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
@@ -209,7 +236,7 @@ watch(
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/equipment/upload-excel`" class="btn btn-primary">
-          {{ $t('Upload_Equipment') }}
+          {{ $t('import_equipment') }}
         </router-link>
       </PermissionBuilder>
     </div>

@@ -5,6 +5,7 @@ import acc from '@/assets/images/acc.png'
 import EquipmentImg from '@/assets/images/EquipmentImg.jpg'
 import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
+import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
 
 export default class EquipmentModel extends TitleInterface {
   public id: number
@@ -23,6 +24,8 @@ export default class EquipmentModel extends TitleInterface {
   public projectZoon: ProjectZoon
   public certificateImage: string
 
+  public contractor: ContractorDetailsModel
+
   constructor(
     id: number,
     title: string,
@@ -39,6 +42,7 @@ export default class EquipmentModel extends TitleInterface {
     projectZoon: ProjectZoon,
     certificateImage: string,
     warehouse: WhereHouseDetailsModel,
+    contractor: ContractorDetailsModel,
   ) {
     super({ id, title, subtitle })
 
@@ -55,6 +59,7 @@ export default class EquipmentModel extends TitleInterface {
     this.projectZoon = projectZoon
     this.certificateImage = certificateImage
     this.warehouse = warehouse
+    this.contractor = contractor
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -77,6 +82,7 @@ export default class EquipmentModel extends TitleInterface {
       data.project_zone,
       data.certificate_image,
       data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
+      data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
     )
   }
 
