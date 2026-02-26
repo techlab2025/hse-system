@@ -1544,6 +1544,9 @@ class ApiNames {
   public get FetchProjectStaticsNumbers() {
     return this.prefix + 'fetch_project_statics_numbers'
   }
+  public get FetchHomeInspection() {
+    return this.prefix + 'fetch_home_inspection_and_observations_statices'
+  }
 }
 
 export { ApiNames }

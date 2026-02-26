@@ -2,7 +2,7 @@
 const props = defineProps<{
   title: string
   subTitle: string
-  totalInsedant: string
+  totalInsedant: number
   textClass: string
 }>()
 </script>
@@ -12,7 +12,7 @@ const props = defineProps<{
       <p>{{ props.title }}</p>
     </div>
     <div class="data">
-      <p :class="props.textClass">0</p>
+      <p :class="props.textClass">{{ props.totalInsedant }}</p>
       <h6>| {{ props.subTitle }}</h6>
     </div>
   </div>

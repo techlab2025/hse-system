@@ -40,6 +40,8 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCardSkelaton.vue'
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
+import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
+import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -52,6 +54,23 @@ const GetProjectStatistics = async () => {
 // onMounted(() => {
 //   GetProjectStatistics()
 // })
+
+// fetchHomeInspectionController
+const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
+const homeInspectionState = ref(fetchHomeInspectionController.state.value)
+const GetHomeInspection = async () => {
+  const fetchHomeInspectionParams = new FetchHomeInspectionParams()
+  await fetchHomeInspectionController.getData(fetchHomeInspectionParams)
+}
+onMounted(() => {
+  GetHomeInspection()
+})
+
+
+watch(() => fetchHomeInspectionController.state.value, (newState) => {
+  homeInspectionState.value = newState
+})
+
 
 
 watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
@@ -256,42 +275,51 @@ watch(() => indexProjectController.state.value, (newVal) => {
   <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
-      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-one" />
-      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('High Severity Events')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-two" />
-      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Inspection Compliance')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-three" />
-      <ToatlInsedant :totalInsedant="ProjectStatics?.data?.totalIncidents" :title="`${$t('Open Corrective Actions')}`"
-        :subTitle="`${$t('per_this_month')}`" textClass="ToatlInsedant-four" />
+
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
+        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" />
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
+        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two" />
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
+        :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`"
+        textClass="ToatlInsedant-three" />
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
+        :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
+        textClass="ToatlInsedant-four" />
+
     </div>
     <div class="most-incidat-factor">
       <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
         {
-          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
-          label: `${$t('Inexperience')}`,
+          value: homeInspectionState?.data?.Hazard[0]?.count,
+          label: homeInspectionState?.data?.Hazard[0]?.hazard_title,
           spanClass: 'ToatlInsedant-one',
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
-          label: `${$t('Needs maintenance')}`,
+          value: homeInspectionState?.data?.Hazard[1]?.count,
+          label: homeInspectionState?.data?.Hazard[1]?.hazard_title,
           spanClass: 'ToatlInsedant-two'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.Misconduct ?? 0,
-          label: `${$t('Misconduct')}`,
+          value: homeInspectionState?.data?.Hazard[2]?.count,
+          label: homeInspectionState?.data?.Hazard[2]?.hazard_title,
           spanClass: 'ToatlInsedant-three'
-        }
+        },
+        // {
+        //   value: homeInspectionState?.data?.Hazard[3]?.count,
+        //   label: homeInspectionState?.data?.Hazard[3]?.hazard_title,
+        //   spanClass: 'ToatlInsedant-three'
+        // }
       ]" />
       <MostIncidantFactor :title="$t('Employee certificates status')" :data="[
         {
-          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          value: homeInspectionState?.data?.employeeCertificates?.expired,
           label: `${$t('Expired')}`,
           spanClass: 'Expired',
           divClass: 'ExpiredClass'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          value: homeInspectionState?.data?.employeeCertificates?.inactive,
           label: `${$t('need to take')}`,
           spanClass: 'more-time',
           divClass: 'more-time-class'
@@ -299,19 +327,19 @@ watch(() => indexProjectController.state.value, (newVal) => {
       ]" />
       <MostIncidantFactor :title="$t('Inspections status')" :data="[
         {
-          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
+          value: homeInspectionState?.data?.Inspection?.completed,
           label: `${$t('finished')}`,
           spanClass: 'finished',
           divClass: 'finished-class'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          value: homeInspectionState?.data?.Inspection?.inProgress,
           label: `${$t('in progress')}`,
           spanClass: 'in-progress',
           divClass: 'in-progress-class'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
+          value: homeInspectionState?.data?.Inspection?.delayed,
           label: `${$t('duration-ended')}`,
           spanClass: 'duration-ended',
           divClass: 'duration-ended-class'
@@ -319,18 +347,18 @@ watch(() => indexProjectController.state.value, (newVal) => {
       ]" />
       <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
         {
-          value: ProjectStatics?.data?.incidantFactor?.Inexperience ?? 0,
-          label: `${$t('Inexperience')}`,
+          value: homeInspectionState?.data?.MostUsed[0]?.count,
+          label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
           spanClass: 'ToatlInsedant-one'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.NeedsMintenance ?? 0,
-          label: `${$t('Needs maintenance')}`,
+          value: homeInspectionState?.data?.MostUsed[1]?.count,
+          label: homeInspectionState?.data?.MostUsed[1]?.rootCauseTitle,
           spanClass: 'ToatlInsedant-two'
         },
         {
-          value: ProjectStatics?.data?.incidantFactor?.Misconduct ?? 0,
-          label: `${$t('Misconduct')}`,
+          value: homeInspectionState?.data?.MostUsed[2]?.count,
+          label: homeInspectionState?.data?.MostUsed[2]?.rootCauseTitle,
           spanClass: 'ToatlInsedant-three'
         }
       ]" />
