@@ -355,16 +355,19 @@ onMounted(() => {
           value: homeInspectionState?.data?.Hazard[0]?.count,
           label: homeInspectionState?.data?.Hazard[0]?.hazard_title,
           spanClass: 'ToatlInsedant-one',
+          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[0]?.hazard_id}`
         },
         {
           value: homeInspectionState?.data?.Hazard[1]?.count,
           label: homeInspectionState?.data?.Hazard[1]?.hazard_title,
-          spanClass: 'ToatlInsedant-two'
+          spanClass: 'ToatlInsedant-two',
+          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[1]?.hazard_id}`
         },
         {
           value: homeInspectionState?.data?.Hazard[2]?.count,
           label: homeInspectionState?.data?.Hazard[2]?.hazard_title,
-          spanClass: 'ToatlInsedant-three'
+          spanClass: 'ToatlInsedant-three',
+          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[2]?.hazard_id}`
         },
         // {
         //   value: homeInspectionState?.data?.Hazard[3]?.count,
@@ -413,7 +416,7 @@ onMounted(() => {
           value: homeInspectionState?.data?.MostUsed[0]?.count,
           label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
           spanClass: 'ToatlInsedant-one',
-          link: `/organization/equipment-mange  ment/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[0]?.id}`
+          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[0]?.id}`
         },
         {
           value: homeInspectionState?.data?.MostUsed[1]?.count,
