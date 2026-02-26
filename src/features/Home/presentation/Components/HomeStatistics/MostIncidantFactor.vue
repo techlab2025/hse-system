@@ -17,7 +17,7 @@ const props = defineProps<{
   <div class="incidant-factor-container">
     <div class="incidant-factor-header-container">
       <div class="incidant-factor-header">
-        <span class="static">static</span>
+        <span class="static">{{ $t('static') }}</span>
         <p class="static-title">{{ title }} </p>
       </div>
     </div>
