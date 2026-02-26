@@ -180,10 +180,22 @@ const GetEquipmentType = (type: number) => {
         </div>
 
 
-        <button @click="toggle" type="button">
+        <button @click="toggle" class="drop-down-btn" type="button">
           <DropdownIcons />
         </button>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.card-equipment {
+  position: relative;
+
+  .drop-down-btn {
+    position: absolute;
+    top: 5px;
+    right: 3px;
+  }
+}
+</style>
