@@ -30,7 +30,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
   async addEquipment(params: AddEquipmentParams | any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    if (params.data.length > 0) {
+    if (params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()

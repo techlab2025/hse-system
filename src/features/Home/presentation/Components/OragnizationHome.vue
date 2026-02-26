@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import CardProjectLogo from '@/assets/images/CardProjectLogo.png'
 import Operation from '@/assets/images/Operation.png'
 import DetectiveLogo from '@/assets/images/DetectiveLogo.png'
@@ -42,11 +41,9 @@ import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/co
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
 import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
-
 import OverviewHazardChartController from '../Controllers/OverviewHazardChartController'
 import OverviewHazardChartParams from '../../core/params/OverviewHazardChartParams'
 import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
-
 import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 
@@ -63,6 +60,10 @@ const GetProjectStatistics = async () => {
 //   GetProjectStatistics()
 // })
 
+const ProgressValue = ref<number | null>(null)
+const ProjectAppStatusStore = useProjectAppStatusStore()
+const visited = ref(localStorage.getItem("visited"))
+
 // fetchHomeInspectionController
 const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
 const homeInspectionState = ref(fetchHomeInspectionController.state.value)
@@ -70,24 +71,8 @@ const GetHomeInspection = async () => {
   const fetchHomeInspectionParams = new FetchHomeInspectionParams()
   await fetchHomeInspectionController.getData(fetchHomeInspectionParams)
 }
-onMounted(() => {
-  GetHomeInspection()
-})
 
 
-watch(() => fetchHomeInspectionController.state.value, (newState) => {
-  homeInspectionState.value = newState
-})
-
-
-
-watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
-  state.value = newState
-})
-
-const ProgressValue = ref<number | null>(null)
-
-const ProjectAppStatusStore = useProjectAppStatusStore()
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const getProjectProgress = async () => {
   const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
@@ -100,18 +85,6 @@ const getProjectProgress = async () => {
   }
 }
 
-onMounted(() => {
-  getProjectProgress()
-})
-
-watch(() => indexProjectProgressController.state.value.data, (newVal) => {
-  if (newVal) {
-    console.log(newVal, "new ");
-    ProjectAppStatusStore.setProjectAppStatus(newVal)
-
-  }
-})
-
 const showOverlay = computed(() => {
   return (ProgressValue.value == 0)
 })
@@ -119,13 +92,6 @@ const setVisited = () => {
   localStorage.setItem("visited", "true")
 }
 
-const visited = ref(localStorage.getItem("visited"))
-onMounted(() => {
-  visited.value = localStorage.getItem("visited")
-  if (visited.value) {
-    setVisited()
-  }
-})
 
 
 // Project Statics Start
@@ -142,15 +108,7 @@ const fetchProject = async (
   await indexProjectController.getData(indexProjects)
 }
 
-onMounted(() => {
-  fetchProject()
-})
 
-watch(() => indexProjectController.state.value, (newVal) => {
-  if (newVal) {
-    ProjectStatics.value = newVal
-  }
-})
 
 // overview hazard chart
 // const overviewHazardChartController = OverviewHazardChartController.getInstance()
@@ -192,15 +150,66 @@ const GetEquipmentStatics = async () => {
   const fetchEquipmentStaticsParams = new FetchEquipmentStaticsParams()
   await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
 }
+
+
+// onMounted(() => {
+//   GetEquipmentStatics()
+// })
+// onMounted(() => {
+//   fetchProject()
+// })
+// onMounted(() => {
+//   visited.value = localStorage.getItem("visited")
+//   if (visited.value) {
+//     setVisited()
+//   }
+// })
+// onMounted(() => {
+//   getProjectProgress()
+// })
+// onMounted(() => {
+//   GetHomeInspection()
+// })
+
+// Home OnMounted
+onMounted(() => {
+  GetEquipmentStatics()
+  fetchProject()
+  visited.value = localStorage.getItem("visited")
+  if (visited.value) {
+    setVisited()
+  }
+  getProjectProgress()
+  GetHomeInspection()
+})
+
+
+// Home Watchers
 watch(() => fetchEquipmentStaticsController.state.value, (newVal) => {
   if (newVal) {
     EquipmentStatics.value = newVal
   }
 })
-onMounted(() => {
-  GetEquipmentStatics()
+
+watch(() => indexProjectController.state.value, (newVal) => {
+  if (newVal) {
+    ProjectStatics.value = newVal
+  }
 })
 
+watch(() => indexProjectProgressController.state.value.data, (newVal) => {
+  if (newVal) {
+    ProjectAppStatusStore.setProjectAppStatus(newVal)
+  }
+})
+
+watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
+  state.value = newState
+})
+
+watch(() => fetchHomeInspectionController.state.value, (newState) => {
+  homeInspectionState.value = newState
+})
 
 </script>
 <template>
