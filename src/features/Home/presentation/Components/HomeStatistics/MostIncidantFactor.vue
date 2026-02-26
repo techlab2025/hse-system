@@ -12,6 +12,7 @@ const props = defineProps<{
   data: Data[]
 }>()
 
+
 </script>
 <template>
   <div class="incidant-factor-container">

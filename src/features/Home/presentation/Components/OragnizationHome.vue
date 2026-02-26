@@ -42,6 +42,9 @@ import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/co
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
 import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
+import OverviewHazardChartController from '../Controllers/OverviewHazardChartController'
+import OverviewHazardChartParams from '../../core/params/OverviewHazardChartParams'
+import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -143,6 +146,37 @@ watch(() => indexProjectController.state.value, (newVal) => {
     ProjectStatics.value = newVal
   }
 })
+// overview hazard chart
+// const overviewHazardChartController = OverviewHazardChartController.getInstance()
+// const OverviewHazardChart = ref(overviewHazardChartController.state.value)
+// const fetchOverviewHazardChart = async () => {
+//   const overviewHazardChartParams = new OverviewHazardChartParams()
+//   await overviewHazardChartController.getData(overviewHazardChartParams)
+// }
+// onMounted(() => {
+//   fetchOverviewHazardChart()
+// })
+// watch(() => overviewHazardChartController.state.value, (newVal) => {
+//   if (newVal) {
+//     OverviewHazardChart.value = newVal
+//   }
+// })
+// overview investigations chart
+// const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
+// const overviewInvestigationsChartstate = ref(overviewInvestigationsChartController.state.value)
+// const fetchoverviewInvestigationsCharts = async()=>{
+//   const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
+//   await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
+
+// }
+// onMounted(()=>{
+//   fetchoverviewInvestigationsCharts()
+// })
+// watch(()=>overviewInvestigationsChartController.state.value,(newVal)=>{
+//   if(newVal){
+//     overviewInvestigationsChartstate.value = newVal
+//   }
+// })
 </script>
 <template>
   <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
@@ -365,8 +399,8 @@ watch(() => indexProjectController.state.value, (newVal) => {
     </div>
   </div>
 
-  <!--
-    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+
+    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
 
