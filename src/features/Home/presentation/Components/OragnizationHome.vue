@@ -290,15 +290,15 @@ onMounted(() => {
     <div class="all-total-insedents">
 
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
-        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" />
+        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" link="/organization/equipment-mangement/incedant?isAll=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
-        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two" />
+        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two" link="/organization/equipment-mangement/observation?isAll=1&type=2" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
         :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-three" />
+        textClass="ToatlInsedant-three" link="/organization/equipment-mangement/inspection?inspectionType=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
         :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-four" />
+        textClass="ToatlInsedant-four"  />
 
     </div>
     <div class="most-incidat-factor">
@@ -358,7 +358,7 @@ onMounted(() => {
           divClass: 'duration-ended-class'
         },
       ]" />
-      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
+      <MostIncidantFactor :title="$t('most used root causes')" :data="[
         {
           value: homeInspectionState?.data?.MostUsed[0]?.count,
           label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
