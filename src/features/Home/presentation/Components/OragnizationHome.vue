@@ -80,7 +80,6 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 const ProgressValue = ref<number | null>(null)
 
 const ProjectAppStatusStore = useProjectAppStatusStore()
-
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const getProjectProgress = async () => {
   const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
@@ -236,7 +235,7 @@ watch(() => indexProjectController.state.value, (newVal) => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <!-- /organization?setting=1 -->
-      <router-link :to="`/organization/project-progress`">
+      <router-link :to="ProgressValue == 100 ? `/organization/certificate?type=1` : `/organization/project-progress`">
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('settings')}`"
           :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `" />
       </router-link>
@@ -276,6 +275,7 @@ watch(() => indexProjectController.state.value, (newVal) => {
   <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
+
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
         :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
@@ -286,6 +286,7 @@ watch(() => indexProjectController.state.value, (newVal) => {
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
         :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
         textClass="ToatlInsedant-four" />
+
     </div>
     <div class="most-incidat-factor">
       <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
