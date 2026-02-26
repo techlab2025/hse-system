@@ -42,9 +42,14 @@ import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/co
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
 import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
+
 import OverviewHazardChartController from '../Controllers/OverviewHazardChartController'
 import OverviewHazardChartParams from '../../core/params/OverviewHazardChartParams'
 import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
+
+import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
+import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
+
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -146,6 +151,7 @@ watch(() => indexProjectController.state.value, (newVal) => {
     ProjectStatics.value = newVal
   }
 })
+
 // overview hazard chart
 // const overviewHazardChartController = OverviewHazardChartController.getInstance()
 // const OverviewHazardChart = ref(overviewHazardChartController.state.value)
@@ -177,6 +183,25 @@ watch(() => indexProjectController.state.value, (newVal) => {
 //     overviewInvestigationsChartstate.value = newVal
 //   }
 // })
+
+
+
+const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
+const EquipmentStatics = ref(fetchEquipmentStaticsController.state.value)
+const GetEquipmentStatics = async () => {
+  const fetchEquipmentStaticsParams = new FetchEquipmentStaticsParams()
+  await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
+}
+watch(() => fetchEquipmentStaticsController.state.value, (newVal) => {
+  if (newVal) {
+    EquipmentStatics.value = newVal
+  }
+})
+onMounted(() => {
+  GetEquipmentStatics()
+})
+
+
 </script>
 <template>
   <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
@@ -311,15 +336,17 @@ watch(() => indexProjectController.state.value, (newVal) => {
     <div class="all-total-insedents">
 
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalIncidents" :title="`${$t('Total Incidents')}`"
-        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one" link="/organization/equipment-mangement/incedant?isAll=1" />
+        :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one"
+        link="/organization/equipment-mangement/incedant?isAll=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
-        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two" link="/organization/equipment-mangement/observation?isAll=1&type=2" />
+        :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two"
+        link="/organization/equipment-mangement/observation?isAll=1&type=2" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
-        :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-three" link="/organization/equipment-mangement/inspection?inspectionType=1" />
+        :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-three"
+        link="/organization/equipment-mangement/inspection?inspectionType=1" />
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
         :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
-        textClass="ToatlInsedant-four"  />
+        textClass="ToatlInsedant-four" />
 
     </div>
     <div class="most-incidat-factor">
@@ -400,8 +427,17 @@ watch(() => indexProjectController.state.value, (newVal) => {
   </div>
 
 
+
     <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+
+  <div class="flex gap-4 statics">
+    <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
+    <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
+  </div>
+  <!--
+    <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+
 
 
 

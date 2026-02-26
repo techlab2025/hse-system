@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Chart from 'primevue/chart';
+import { watch } from "vue";
 
+const props = defineProps<{
+  statics: { rent: number, owned: number }
+}>()
+// watch(() => props.statics, () => {
+//   chartData.value = setChartData();
+//   chartOptions.value = setChartOptions();
+// })
 onMounted(() => {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
 });
+const Rent = ref(props.statics?.rent)
+const Owned = ref(props.statics?.owned)
 
 const chartData = ref();
 const chartOptions = ref();
@@ -13,11 +23,12 @@ const chartOptions = ref();
 const setChartData = () => {
   const documentStyle = getComputedStyle(document.body);
 
+
   return {
     labels: ['rent', 'owned'],
     datasets: [
       {
-        data: [540, 325],
+        data: [Rent.value, Owned.value],
         backgroundColor: [documentStyle.getPropertyValue('--p-owned-500'), documentStyle.getPropertyValue('--p-rent-500')],
         hoverBackgroundColor: [documentStyle.getPropertyValue('--p-owned-500'), documentStyle.getPropertyValue('--p-rent-500')]
       }
@@ -40,6 +51,14 @@ const setChartOptions = () => {
     }
   };
 };
+
+watch(() => props.statics, (newVal) => {
+  console.log(newVal, "new ");
+  Rent.value = newVal.rent
+  Owned.value = newVal.owned
+  chartData.value = setChartData();
+  chartOptions.value = setChartOptions();
+})
 </script>
 <template>
 
