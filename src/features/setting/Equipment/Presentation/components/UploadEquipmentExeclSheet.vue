@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import { useRouter } from 'vue-router';
@@ -303,6 +303,9 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+onMounted(() => {
+  GetEquipmentType()
+})
 </script>
 
 <template>
