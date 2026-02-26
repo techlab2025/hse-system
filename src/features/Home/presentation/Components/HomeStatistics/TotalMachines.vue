@@ -13,12 +13,12 @@ const chartData = computed(() => {
       ? machine.statics
       : Object.values(machine.statics || {})
 
-    const total = staticsArray.reduce((sum, stat) => sum + stat.value, 0) || 1;
+    const total = staticsArray.reduce((sum, stat) => sum + stat.count, 0) || 1;
     return {
       name: machine.zoon,
       segments: staticsArray.map((stat: any) => ({
-        number: stat.value,
-        value: (stat.value / total) * 100,
+        number: stat.count,
+        value: (stat.count / total) * 100,
         color: stat.type === 1 ? '#3b82f6' : stat.type === 2 ? '#60a5fa' : '#93c5fd',
         type: stat.type
       }))
@@ -63,7 +63,7 @@ const chartData = computed(() => {
         </div>
 
 
-        <span class="text-slate-500 text-sm font-medium mt-2">
+        <span class="col-name text-slate-500 text-sm font-medium mt-2">
           {{ month.name }}
         </span>
       </div>
@@ -76,6 +76,11 @@ const chartData = computed(() => {
 
 
 <style scoped>
+.col-name {
+  max-height: 16px;
+  overflow: hidden;
+}
+
 .chart-container {
   max-width: 100%;
 
