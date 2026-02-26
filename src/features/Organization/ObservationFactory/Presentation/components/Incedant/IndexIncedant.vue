@@ -64,7 +64,8 @@ const fetchHazard = async (
   saveStatus?: number[],
   date?: string,
   equipmentTypeIds?: number[],
-  equipmentSubTypeIds?: number[]
+  equipmentSubTypeIds?: number[],
+  rootCauseId?: number
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -75,13 +76,16 @@ const fetchHazard = async (
     [projectIds],
     zoonIds,
     projectLocationIds || null,
-    projectZoneLozationId
+    projectZoneLozationId,
+    route.query.rootCause ? route.query.rootCause : null
+
     // equipmentIds,
     // riskLevel,
     // saveStatus,
     // date,
     // equipmentTypeIds,
     // equipmentSubTypeIds,
+
   )
   await indexHazardController.getData(params)
 }
@@ -114,7 +118,10 @@ const fetchHazard = async (
 // }
 
 onMounted(async () => {
-  fetchHazard()
+  if (selectedProjctesFilters.value) {
+
+    fetchHazard()
+  }
   FetchMyProjects()
 })
 
