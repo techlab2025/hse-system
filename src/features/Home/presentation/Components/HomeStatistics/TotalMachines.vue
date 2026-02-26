@@ -25,6 +25,17 @@ const chartData = computed(() => {
     };
   }) ?? [];
 });
+
+const GetEquipmentTypeTitle = (type: number) => {
+  switch (type) {
+    case 1:
+      return 'equipment'
+    case 2:
+      return 'device'
+    case 3:
+      return 'tool'
+  }
+}
 </script>
 <template>
   <div class="total-machines-container ">
@@ -51,8 +62,9 @@ const chartData = computed(() => {
           </div>
           <div class="info-container">
             <div v-for="segment in month.segments" class="data-column">
-              <span class="label" :class="segment.type === 1 ? 'tool' : segment.type === 2 ? 'equipment' : 'device'">{{
-                EquipmentTypeEnum[segment.type] }}</span>
+              <span class="label" :class="segment.type === 3 ? 'tool' : segment.type === 2 ? 'device' : 'equipment'">{{
+                GetEquipmentTypeTitle(segment.type)
+                }}</span>
               <span class="value">{{ segment.number }}</span>
             </div>
             <p class="total-value"><span>total:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
