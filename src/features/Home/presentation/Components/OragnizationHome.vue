@@ -42,6 +42,8 @@ import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/co
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
 import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
+import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
+import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -143,6 +145,17 @@ watch(() => indexProjectController.state.value, (newVal) => {
     ProjectStatics.value = newVal
   }
 })
+
+
+const GetEquipmentStatics = async () => {
+  const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
+  const fetchEquipmentStaticsParams = new FetchEquipmentStaticsParams()
+  await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
+}
+onMounted(() => {
+  GetEquipmentStatics()
+})
+
 </script>
 <template>
   <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
@@ -365,9 +378,9 @@ watch(() => indexProjectController.state.value, (newVal) => {
     </div>
   </div>
 
+  <!-- <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" /> -->
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
-    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
 
 

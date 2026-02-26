@@ -1,13 +1,13 @@
 export default class StatisticsMachineModel {
   public zoon: string
-  public statics: { type: number; value: number }[]
-  constructor(zoon: string, statics: { type: number; value: number }[]) {
+  public statics: SingleStatic[]
+  constructor(zoon: string, statics: SingleStatic[]) {
     this.zoon = zoon
     this.statics = statics
   }
 
   static fromMap(data: any): StatisticsMachineModel {
-    return new StatisticsMachineModel(data.zoon, data.statics)
+    return new StatisticsMachineModel(data.title, data.equipment_types)
   }
 
   static example: StatisticsMachineModel[] = [
@@ -25,4 +25,9 @@ export default class StatisticsMachineModel {
       { type: 2, value: 40 },
     ]),
   ]
+}
+
+interface SingleStatic {
+  type: number
+  value: number
 }
