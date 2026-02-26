@@ -61,7 +61,6 @@ watch(() => fetchPorjectStatisticsController.state.value, (newState) => {
 const ProgressValue = ref<number | null>(null)
 
 const ProjectAppStatusStore = useProjectAppStatusStore()
-ProjectAppStatusStore.setProjectAppStatus(response.value?.data)
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const getProjectProgress = async () => {
   const indexProjectProgressParams = new IndexProjectProgressParams("", 1, 10, 0)
