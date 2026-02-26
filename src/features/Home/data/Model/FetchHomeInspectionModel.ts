@@ -1,7 +1,7 @@
-import EmployeeCertificatesModel from './employeeCertificates'
-import HazardObservationModel from './hazardObservation'
-import InspectionModel from './Inspection'
-import MostUsedModel from './MostUsed'
+import EmployeeCertificatesModel from './employeeCertificatesModel'
+import HazardObservationModel from './hazardObservationModel'
+import InspectionModel from './InspectionModel'
+import MostUsedModel from './MostUsedModel'
 
 export default class FetchHomeInspectionModel {
   public totalIncidents: number

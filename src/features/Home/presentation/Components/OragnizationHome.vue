@@ -42,8 +42,14 @@ import ProjectCardSkelaton from '@/features/Organization/Project/Presentation/co
 import ToatlInsedant from './HomeStatistics/ToatlInsedant.vue'
 import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
 import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
+
+import OverviewHazardChartController from '../Controllers/OverviewHazardChartController'
+import OverviewHazardChartParams from '../../core/params/OverviewHazardChartParams'
+import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
+
 import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
+
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -146,6 +152,39 @@ watch(() => indexProjectController.state.value, (newVal) => {
   }
 })
 
+// overview hazard chart
+// const overviewHazardChartController = OverviewHazardChartController.getInstance()
+// const OverviewHazardChart = ref(overviewHazardChartController.state.value)
+// const fetchOverviewHazardChart = async () => {
+//   const overviewHazardChartParams = new OverviewHazardChartParams()
+//   await overviewHazardChartController.getData(overviewHazardChartParams)
+// }
+// onMounted(() => {
+//   fetchOverviewHazardChart()
+// })
+// watch(() => overviewHazardChartController.state.value, (newVal) => {
+//   if (newVal) {
+//     OverviewHazardChart.value = newVal
+//   }
+// })
+// overview investigations chart
+// const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
+// const overviewInvestigationsChartstate = ref(overviewInvestigationsChartController.state.value)
+// const fetchoverviewInvestigationsCharts = async()=>{
+//   const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
+//   await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
+
+// }
+// onMounted(()=>{
+//   fetchoverviewInvestigationsCharts()
+// })
+// watch(()=>overviewInvestigationsChartController.state.value,(newVal)=>{
+//   if(newVal){
+//     overviewInvestigationsChartstate.value = newVal
+//   }
+// })
+
+
 
 const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
 const EquipmentStatics = ref(fetchEquipmentStaticsController.state.value)
@@ -161,6 +200,7 @@ watch(() => fetchEquipmentStaticsController.state.value, (newVal) => {
 onMounted(() => {
   GetEquipmentStatics()
 })
+
 
 </script>
 <template>
@@ -386,12 +426,18 @@ onMounted(() => {
     </div>
   </div>
 
+
+
+    <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+    <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
+
   <div class="flex gap-4 statics">
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
   </div>
   <!--
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
+
 
 
 
