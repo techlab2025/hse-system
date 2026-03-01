@@ -1549,10 +1549,10 @@ class ApiNames {
   }
 
   public get OverviewHazardChart() {
-    return this.prefix + 'fetch_home_inspection_and_observations_statices'
+    return this.prefix + 'fetch_home_observation_types_with_zones_statices'
   }
   public get OverviewInvestigationsChart() {
-    return this.prefix + 'fetch_home_inspection_and_observations_statices'
+    return this.prefix + 'fetch_home_observations_investigations_statices'
   }
   public get FetchEqipmentStatics() {
     return this.prefix + 'fetch_home_equipments_statices'

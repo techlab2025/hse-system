@@ -1,44 +1,73 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import type OverviewHazardChartModel from "@/features/Home/data/Model/OverviewHazardChartModel";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-const chartData = ref();
-const chartOptions = ref();
+const chartData = ref<any>(null);
 let resizeObserver: ResizeObserver | null = null;
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0F', '#EF4444', '#8B5CF6', '#EC4899', '#14B8A6'];
+const props = defineProps<{
+  OverviewHazardChartstate: OverviewHazardChartModel[];
+}>();
 
-const setChartData = () => {
-  const documentStyle = getComputedStyle(document.documentElement);
-  return {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    datasets: [
-      {
-        label: 'Hazard',
-        backgroundColor: documentStyle.getPropertyValue('--hazard-color') || '#EF4444',
-        data: [25, 25, 30, 20, 10, 15, 35]
-      },
-      {
-        label: 'Observation',
-        backgroundColor: documentStyle.getPropertyValue('--observation-color') || '#10B981',
-        data: [35, 30, 25, 30, 20, 25, 40]
-      },
-      {
-        label: 'Incident',
-        backgroundColor: documentStyle.getPropertyValue('--incidant-color') || '#3B82F6',
-        data: [15, 20, 25, 15, 25, 20, 30]
-      },
-    ]
-  };
+const HazardValues = ref<number[]>([]);
+const Accidentsvalues = ref<number[]>([]);
+const Observationsvalues = ref<number[]>([]);
+const Zonetitle = ref<string[]>([]);
+
+const GetHazardChartData = () => {
+  Zonetitle.value = props.OverviewHazardChartstate?.map((z) => z.zoneTitle) ?? [];
+  HazardValues.value = props.OverviewHazardChartstate?.map((z) => z.allObservations.hazard) ?? [];
+  Accidentsvalues.value = props.OverviewHazardChartstate?.map((z) => z.allObservations.accidents) ?? [];
+  Observationsvalues.value = props.OverviewHazardChartstate?.map((z) => z.allObservations.observation) ?? [];
 };
 
-const shadeColor = (color: string, percent: number) => {
+const extractHexColor = (cssValue: string, fallback: string): string => {
+  const trimmed = cssValue.trim();
+  if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(trimmed)) return trimmed;
+  return fallback;
+};
+
+const shadeColor = (color: string, percent: number): string => {
+  if (!color.startsWith("#")) return color;
   const num = parseInt(color.replace("#", ""), 16);
+  if (isNaN(num)) return color;
   const amt = Math.round(2.55 * percent);
   const R = Math.min(255, Math.max(0, (num >> 16) + amt));
   const G = Math.min(255, Math.max(0, ((num >> 8) & 0x00ff) + amt));
   const B = Math.min(255, Math.max(0, (num & 0x0000ff) + amt));
   return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+};
+
+const setChartData = () => {
+  const documentStyle = getComputedStyle(document.documentElement);
+  const hazardColor = extractHexColor(documentStyle.getPropertyValue("--hazard-color"), "#D03737");
+  const observationColor = extractHexColor(documentStyle.getPropertyValue("--observation-color"), "#8137D0");
+  const incidentColor = extractHexColor(documentStyle.getPropertyValue("--incidant-color"), "#3762D0");
+
+  return {
+    labels:
+      Zonetitle.value.length > 0
+        ? Zonetitle.value.map((z) => z.slice(0, 6))
+        : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    datasets: [
+      {
+        label: "Hazard",
+        backgroundColor: hazardColor,
+        data: HazardValues.value.length > 0 ? HazardValues.value : [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        label: "Observation",
+        backgroundColor: observationColor,
+        data: Observationsvalues.value.length > 0 ? Observationsvalues.value : [0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        label: "Incident",
+        backgroundColor: incidentColor,
+        data: Accidentsvalues.value.length > 0 ? Accidentsvalues.value : [0, 0, 0, 0, 0, 0, 0],
+      },
+    ],
+  };
 };
 
 const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
@@ -48,112 +77,139 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   if (!ctx) return;
 
   const width = canvas.clientWidth;
-const height = canvas.clientHeight;
-
+  const height = canvas.clientHeight;
+  if (width <= 0 || height <= 0) return;
 
   ctx.clearRect(0, 0, width, height);
 
- const padding = Math.max(40, width * 0.07);
-
-  const chartWidth = width - padding * 2;
-  const chartHeight = height - padding * 2;
-
   const labels = chartData.value.labels;
   const datasets = chartData.value.datasets;
-  
-  // Find max value across all datasets
-  const allValues = datasets.flatMap((ds: any) => ds.data);
+  const numGroups = labels.length;
+  const numDatasets = datasets.length;
+
+  // ✅ Responsive scaling factor based on width
+  const scale = Math.min(1, width / 800);
+
+  // ✅ Responsive padding
+  const paddingLeft = Math.max(30, width * 0.06);
+  const paddingRight = Math.max(20, width * 0.04);
+  const paddingTop = Math.max(35, height * 0.08);
+  const paddingBottom = Math.max(30, height * 0.1);
+
+  const chartWidth = width - paddingLeft - paddingRight;
+  const chartHeight = height - paddingTop - paddingBottom;
+
+  const allValues: number[] = datasets.flatMap((ds: any) =>
+    ds.data.map((v: any) => (isFinite(v) && v >= 0 ? v : 0))
+  );
   const maxValue = Math.max(...allValues);
 
-  const groupWidth = chartWidth / labels.length;
-  const barGap = 15; // Gap between bars in the same group
-  const groupPadding = 20; // Padding on sides of each group
-  const availableWidth = groupWidth - (groupPadding * 2);
-  const totalGaps = (datasets.length - 1) * barGap;
-  const barWidth = (availableWidth - totalGaps) / datasets.length;
-  
-  // 3D isometric parameters (30 degree rotation)
-  const angle = Math.PI / 6; // 30 degrees
-  const depth = 25; // Increased depth for better 3D effect
+  if (!isFinite(maxValue) || maxValue <= 0) {
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = `${Math.max(11, 14 * scale)}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("No data available", width / 2, height / 2);
+    return;
+  }
+
+  const effectiveMax = maxValue * 1.15;
+
+  // ✅ All sizing is now derived from available space — fully responsive
+  const groupWidth = chartWidth / numGroups;
+  const groupPadding = Math.max(4, groupWidth * 0.1);
+  const availableForBars = groupWidth - groupPadding * 2;
+  const barGap = Math.max(2, availableForBars * 0.05);
+  const totalGaps = (numDatasets - 1) * barGap;
+  const barWidth = Math.max(4, (availableForBars - totalGaps) / numDatasets);
+
+  // ✅ depth is proportional to barWidth — never bigger than the bar
+  const depth = Math.max(6, Math.min(barWidth * 0.6, 22 * scale));
+  const angle = Math.PI / 6;
   const depthX = Math.cos(angle) * depth;
   const depthY = Math.sin(angle) * depth;
 
-  // Draw gridlines
+  // ✅ Responsive font sizes
+  const axisFontSize = Math.max(8, Math.round(11 * scale));
+  const valueFontSize = Math.max(7, Math.round(10 * scale));
+  const legendFontSize = Math.max(9, Math.round(12 * scale));
+
+  // ── Gridlines ──────────────────────────────────────────────────────────
   const gridLines = 5;
-  ctx.strokeStyle = "rgba(156, 163, 175, 0.15)";
+  ctx.strokeStyle = "rgba(156,163,175,0.2)";
   ctx.lineWidth = 1;
-  ctx.setLineDash([5, 5]);
-  
+  ctx.setLineDash([4, 4]);
+
   for (let i = 0; i <= gridLines; i++) {
-    const gridY = height - padding - (chartHeight / gridLines) * i;
+    const gridY = height - paddingBottom - (chartHeight / gridLines) * i;
     ctx.beginPath();
-    ctx.moveTo(padding, gridY);
-    ctx.lineTo(width - padding + depthX, gridY);
+    ctx.moveTo(paddingLeft, gridY);
+    ctx.lineTo(width - paddingRight + depthX, gridY);
     ctx.stroke();
-    
-    // Y-axis labels
+
     const gridValue = Math.round((maxValue / gridLines) * i);
     ctx.fillStyle = "#6b7280";
-    ctx.font = "11px sans-serif";
+    ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
-    ctx.fillText(gridValue.toString(), padding - 15, gridY);
+    ctx.fillText(gridValue.toString(), paddingLeft - 5, gridY);
   }
-  
   ctx.setLineDash([]);
 
-  // Draw bars for each group (draw from back to front for proper layering)
-  for (let groupIndex = labels.length - 1; groupIndex >= 0; groupIndex--) {
-    const label = labels[groupIndex];
-    const groupX = padding + groupIndex * groupWidth;
+  // ── Bars ───────────────────────────────────────────────────────────────
+  for (let gi = numGroups - 1; gi >= 0; gi--) {
+    const label = labels[gi];
+    const groupX = paddingLeft + gi * groupWidth;
 
-    // Draw bars within group from back to front
-    for (let datasetIndex = datasets.length - 1; datasetIndex >= 0; datasetIndex--) {
-      const dataset = datasets[datasetIndex];
-      const value = dataset.data[groupIndex];
-      const barHeight = (value / maxValue) * chartHeight;
-      
-      // Calculate x position with gaps
-      const baseX = groupX + groupPadding + (datasetIndex * (barWidth + barGap));
-      const baseY = height - padding - barHeight;
+    for (let di = numDatasets - 1; di >= 0; di--) {
+      const dataset = datasets[di];
+      const rawValue = dataset.data[gi];
+      const value = isFinite(rawValue) && rawValue >= 0 ? rawValue : 0;
+
+      const barHeight = (value / effectiveMax) * chartHeight;
+      if (!isFinite(barHeight) || barHeight < 0) continue;
+
+      const baseX = groupX + groupPadding + di * (barWidth + barGap);
+      const baseY = height - paddingBottom - barHeight;
+      if (!isFinite(baseX) || !isFinite(baseY)) continue;
 
       const baseColor = dataset.backgroundColor;
-      const topColor = shadeColor(baseColor, 30);
-      const sideColor = shadeColor(baseColor, -25);
-      const frontColor = baseColor;
+      const topColor = shadeColor(baseColor, 40);
+      const leftSideColor = shadeColor(baseColor, -28);
+      const rightSideColor = shadeColor(baseColor, -48);
 
-      // Enable shadow
-      ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-      ctx.shadowBlur = 10;
-      ctx.shadowOffsetX = 5;
-      ctx.shadowOffsetY = 5;
+      // Shadow
+      ctx.shadowColor = "rgba(0,0,0,0.18)";
+      ctx.shadowBlur = 6 * scale;
+      ctx.shadowOffsetX = 2 * scale;
+      ctx.shadowOffsetY = 2 * scale;
 
-      // Draw left side (depth along the angle)
-      ctx.fillStyle = sideColor;
+      // LEFT face
+      ctx.fillStyle = leftSideColor;
       ctx.beginPath();
       ctx.moveTo(baseX, baseY);
       ctx.lineTo(baseX + depthX, baseY - depthY);
-      ctx.lineTo(baseX + depthX, height - padding - depthY);
-      ctx.lineTo(baseX, height - padding);
+      ctx.lineTo(baseX + depthX, height - paddingBottom - depthY);
+      ctx.lineTo(baseX, height - paddingBottom);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.15)";
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(0,0,0,0.08)";
+      ctx.lineWidth = 0.5;
       ctx.stroke();
 
-      // Draw right side
-      ctx.fillStyle = shadeColor(sideColor, -10);
+      // RIGHT face
+      ctx.fillStyle = rightSideColor;
       ctx.beginPath();
       ctx.moveTo(baseX + barWidth, baseY);
       ctx.lineTo(baseX + barWidth + depthX, baseY - depthY);
-      ctx.lineTo(baseX + barWidth + depthX, height - padding - depthY);
-      ctx.lineTo(baseX + barWidth, height - padding);
+      ctx.lineTo(baseX + barWidth + depthX, height - paddingBottom - depthY);
+      ctx.lineTo(baseX + barWidth, height - paddingBottom);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.15)";
+      ctx.strokeStyle = "rgba(0,0,0,0.08)";
       ctx.stroke();
 
-      // Draw top face (parallelogram)
+      // TOP face
       ctx.fillStyle = topColor;
       ctx.beginPath();
       ctx.moveTo(baseX, baseY);
@@ -162,177 +218,176 @@ const height = canvas.clientHeight;
       ctx.lineTo(baseX + barWidth, baseY);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.15)";
+      ctx.strokeStyle = "rgba(0,0,0,0.08)";
       ctx.stroke();
 
-      // Draw front face with gradient
-      const gradient = ctx.createLinearGradient(baseX, baseY, baseX, height - padding);
-      gradient.addColorStop(0, shadeColor(frontColor, 10));
-      gradient.addColorStop(0.5, frontColor);
-      gradient.addColorStop(1, shadeColor(frontColor, -5));
-
-      ctx.fillStyle = gradient;
+      // FRONT face
+      ctx.shadowColor = "transparent";
+      if (barHeight > 0) {
+        try {
+          const gradient = ctx.createLinearGradient(baseX, baseY, baseX, height - paddingBottom);
+          gradient.addColorStop(0, shadeColor(baseColor, 18));
+          gradient.addColorStop(0.6, baseColor);
+          gradient.addColorStop(1, shadeColor(baseColor, -12));
+          ctx.fillStyle = gradient;
+        } catch {
+          ctx.fillStyle = baseColor;
+        }
+      } else {
+        ctx.fillStyle = baseColor;
+      }
       ctx.fillRect(baseX, baseY, barWidth, barHeight);
-      
-      // Add border to front
-      ctx.strokeStyle = "rgba(0,0,0,0.2)";
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(0,0,0,0.12)";
+      ctx.lineWidth = 0.5;
       ctx.strokeRect(baseX, baseY, barWidth, barHeight);
 
-      // Disable shadow for text
-      ctx.shadowColor = "transparent";
+      // Value label — only show if bar is wide/tall enough
+      const minBarWidthForLabel = 16;
+      const minBarHeightForLabel = 18;
+      if (barHeight > minBarHeightForLabel && barWidth > minBarWidthForLabel && value > 0) {
+        const displayText = value.toString();
+        ctx.font = `bold ${valueFontSize}px sans-serif`;
+        const tw = ctx.measureText(displayText).width;
+        const tp = 2;
+        const textX = baseX + barWidth / 2 + depthX / 2;
+        const textY = baseY - depthY - 9;
 
-      // Draw value on top
-      if (barHeight > 25) {
-        // Draw value background
-        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-        const textMetrics = ctx.measureText(value.toString());
-        const textPadding = 4;
-        ctx.fillRect(
-          baseX + barWidth / 2 + depthX / 2 - textMetrics.width / 2 - textPadding,
-          baseY - depthY - 20,
-          textMetrics.width + textPadding * 2,
-          16
-        );
-
-        ctx.fillStyle = "#1f2937";
-        ctx.font = "bold 11px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(value.toString(), baseX + barWidth / 2 + depthX / 2, baseY - depthY - 12);
+        if (textY > paddingTop) {
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.fillRect(textX - tw / 2 - tp, textY - 6, tw + tp * 2, 12);
+          ctx.fillStyle = "#111827";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(displayText, textX, textY);
+        }
       }
     }
 
-    // Draw group label
+    // X-axis label
+    ctx.shadowColor = "transparent";
     ctx.fillStyle = "#374151";
-    ctx.font = "12px sans-serif";
+    ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     const labelX = groupX + groupWidth / 2 + depthX / 2;
-    ctx.fillText(label, labelX, height - padding + 15);
+    ctx.fillText(label, labelX, height - paddingBottom + 6);
   }
 
-  // Disable shadow for axes
+  // ── Axes ───────────────────────────────────────────────────────────────
   ctx.shadowColor = "transparent";
-
-  // Draw 3D axes
-  ctx.strokeStyle = "#374151";
-  ctx.lineWidth = 2;
-  
-  // Y-axis (vertical)
-  ctx.beginPath();
-  ctx.moveTo(padding, padding);
-  ctx.lineTo(padding, height - padding);
-  ctx.stroke();
-
-  // X-axis (with depth)
-  ctx.beginPath();
-  ctx.moveTo(padding, height - padding);
-  ctx.lineTo(width - padding + depthX, height - padding);
-  ctx.stroke();
-
-  // Z-axis (depth line)
-  ctx.strokeStyle = "#6b7280";
+  ctx.strokeStyle = "#d1d5db";
   ctx.lineWidth = 1.5;
+
   ctx.beginPath();
-  ctx.moveTo(padding, height - padding);
-  ctx.lineTo(padding + depthX, height - padding - depthY);
+  ctx.moveTo(paddingLeft, paddingTop / 2);
+  ctx.lineTo(paddingLeft, height - paddingBottom);
   ctx.stroke();
 
-  // Draw legend
-  const legendY = 25;
-  let legendX = width - 220;
+  ctx.beginPath();
+  ctx.moveTo(paddingLeft, height - paddingBottom);
+  ctx.lineTo(width - paddingRight + depthX, height - paddingBottom);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(paddingLeft, height - paddingBottom);
+  ctx.lineTo(paddingLeft + depthX, height - paddingBottom - depthY);
+  ctx.stroke();
+
+  // ── Legend ─────────────────────────────────────────────────────────────
+  // ✅ Responsive legend: wraps or shrinks based on available width
+  const boxSize = Math.max(8, Math.round(13 * scale));
+  const legendItemWidth = Math.max(70, Math.round(105 * scale));
+  const totalLegendWidth = datasets.length * legendItemWidth;
+
+  // Center legend horizontally under chart
+  let legendStartX = paddingLeft + (chartWidth - totalLegendWidth) / 2;
+  const legendY = Math.max(10, paddingTop / 2 - boxSize / 2);
 
   datasets.forEach((dataset: any, index: number) => {
-    const boxSize = 16;
-    const legendItemY = legendY + index * 28;
+    const itemX = legendStartX + index * legendItemWidth;
+    const bDepth = Math.max(2, boxSize * 0.3);
+    const bAngle = Math.PI / 9;
+    const bDX = Math.cos(bAngle) * bDepth;
+    const bDY = Math.sin(bAngle) * bDepth;
 
-    // Draw color box with 3D effect
-    ctx.shadowColor = "rgba(0, 0, 0, 0.25)";
-    ctx.shadowBlur = 4;
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
-    
-    // Draw box with isometric effect
-    const boxDepth = 4;
-    const boxAngle = Math.PI / 9;
-    const boxDepthX = Math.cos(boxAngle) * boxDepth;
-    const boxDepthY = Math.sin(boxAngle) * boxDepth;
+    ctx.shadowColor = "rgba(0,0,0,0.15)";
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
 
     // Top face
-    ctx.fillStyle = shadeColor(dataset.backgroundColor, 25);
+    ctx.fillStyle = shadeColor(dataset.backgroundColor, 30);
     ctx.beginPath();
-    ctx.moveTo(legendX, legendItemY);
-    ctx.lineTo(legendX + boxDepthX, legendItemY - boxDepthY);
-    ctx.lineTo(legendX + boxSize + boxDepthX, legendItemY - boxDepthY);
-    ctx.lineTo(legendX + boxSize, legendItemY);
+    ctx.moveTo(itemX, legendY);
+    ctx.lineTo(itemX + bDX, legendY - bDY);
+    ctx.lineTo(itemX + boxSize + bDX, legendY - bDY);
+    ctx.lineTo(itemX + boxSize, legendY);
     ctx.closePath();
     ctx.fill();
 
     // Front face
     ctx.fillStyle = dataset.backgroundColor;
-    ctx.fillRect(legendX, legendItemY, boxSize, boxSize);
-    
-    ctx.shadowColor = "transparent";
+    ctx.fillRect(itemX, legendY, boxSize, boxSize);
 
-    // Draw label
+    ctx.shadowColor = "transparent";
     ctx.fillStyle = "#1f2937";
-    ctx.font = "13px sans-serif";
+    ctx.font = `${legendFontSize}px sans-serif`;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(dataset.label, legendX + boxSize + 10, legendItemY + boxSize / 2);
+    ctx.fillText(dataset.label, itemX + boxSize + 5, legendY + boxSize / 2);
   });
 };
 
 const resizeCanvas = () => {
   if (!canvasRef.value) return;
-
-  const container = canvasRef.value.closest('.chart-wrapper') as HTMLElement;
+  const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
   if (!container) return;
 
   const dpr = window.devicePixelRatio || 1;
-
   const width = container.offsetWidth;
   const height = container.offsetHeight;
+  if (width <= 0 || height <= 0) return;
 
   canvasRef.value.width = width * dpr;
   canvasRef.value.height = height * dpr;
-
   canvasRef.value.style.width = width + "px";
   canvasRef.value.style.height = height + "px";
 
   const ctx = canvasRef.value.getContext("2d");
-  if (ctx) {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   drawGroupedBarChart3D(canvasRef.value);
 };
 
+watch(
+  () => props.OverviewHazardChartstate,
+  (newVal) => {
+    if (newVal) {
+      GetHazardChartData();
+      chartData.value = setChartData();
+    }
+  },
+  { deep: true, immediate: true }
+);
 
+watch(chartData, () => {
+  if (canvasRef.value) resizeCanvas();
+});
 
 onMounted(() => {
-  chartData.value = setChartData();
-
   if (!canvasRef.value) return;
-
-  const container = canvasRef.value.closest('.chart-wrapper') as HTMLElement;
+  const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
   if (!container) return;
 
-  resizeObserver = new ResizeObserver(() => {
-    resizeCanvas();
-  });
-
+  resizeObserver = new ResizeObserver(() => resizeCanvas());
   resizeObserver.observe(container);
-
   resizeCanvas();
 });
 
-
-watch(chartData, () => {
-  if (canvasRef.value) {
-    drawGroupedBarChart3D(canvasRef.value);
-  }
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
 });
 </script>
 
@@ -343,29 +398,13 @@ watch(chartData, () => {
         <p class="static-title">Hazard & Observation & Incident Overview</p>
       </div>
     </div>
-    <div class="chart-wrapper" >
-      <canvas ref="canvasRef" ></canvas>
+    <div class="chart-wrapper">
+      <canvas ref="canvasRef"></canvas>
     </div>
   </div>
 </template>
 
 <style scoped>
-.chart-wrapper {
-  width: 100%;
-  height: 55vh;
-  max-height: 780px;
-  min-height: 400px;
-  position: relative;
-}
-
-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-
-
 .total-observation-container {
   width: 100%;
   background: white;
@@ -390,10 +429,16 @@ canvas {
 }
 
 .chart-wrapper {
+  width: 100%;
+  height: 55vh;
+  max-height: 780px;
+  min-height: 350px;
   position: relative;
 }
 
 canvas {
+  width: 100%;
+  height: 100%;
   display: block;
 }
 </style>

@@ -6,13 +6,14 @@ import { OverviewInvestigationsChartRepo } from '../repositories/OverviewInvesti
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
 
 export default class OverviewInvestigationsChartUseCase
-  implements UseCase<OverviewInvestigationsChartModel, Params>
+  implements UseCase<OverviewInvestigationsChartModel[], Params>
 {
-  async call(params: Params): Promise<DataState<OverviewInvestigationsChartModel>> {
+  async call(params: Params): Promise<DataState<OverviewInvestigationsChartModel[]>> {
     return UseCaseHandler.instance().handle({
 
       onTest: () => {
-        return new DataSuccess({ data: OverviewInvestigationsChartModel.fromMap({}) })
+
+        return new DataSuccess({ data: [OverviewInvestigationsChartModel.example()] })
       },
       onDev: () => {
         return OverviewInvestigationsChartRepo.getInstance().call(params)
