@@ -1218,5 +1218,6 @@
   "add_root_causes": "Add Root Causes",
   "required_inspection": "Required Inspection",
   "select_day": "Select Day",
-  "from_date": "From Date"
+  "from_date": "From Date",
+  "add_organizatoin_employee": "Add Organizatoin Employee"
 }
