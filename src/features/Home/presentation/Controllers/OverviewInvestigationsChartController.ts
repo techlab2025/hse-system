@@ -4,7 +4,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import OverviewInvestigationsChartUseCase from '../../domain/usecase/OverviewInvestigationsChartUseCase'
 import type OverviewInvestigationsChartModel from '../../data/Model/OverviewInvestigationsChartModel'
 
-export default class OverviewInvestigationsChartController extends SelectControllerInterface<OverviewInvestigationsChartModel> {
+export default class OverviewInvestigationsChartController extends SelectControllerInterface<OverviewInvestigationsChartModel[]> {
   private static instance: OverviewInvestigationsChartController
   private constructor() {
     super()
@@ -22,7 +22,7 @@ export default class OverviewInvestigationsChartController extends SelectControl
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<OverviewInvestigationsChartModel> =
+    const dataState: DataState<OverviewInvestigationsChartModel[]> =
       await this.overviewInvestigationsChartUseCase.call(params)
 
     this.setState(dataState)

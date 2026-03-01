@@ -6,13 +6,13 @@ import { OverviewHazardChartRepo } from '../repositories/OverviewHazardChartRepo
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
 
 export default class OverviewHazardChartUseCase
-  implements UseCase<OverviewHazardChartModel, Params>
+  implements UseCase<OverviewHazardChartModel[], Params>
 {
-  async call(params: Params): Promise<DataState<OverviewHazardChartModel>> {
+  async call(params: Params): Promise<DataState<OverviewHazardChartModel[]>> {
     return UseCaseHandler.instance().handle({
 
       onTest: () => {
-        return new DataSuccess({ data: OverviewHazardChartModel.fromMap({}) })
+        return new DataSuccess({ data: [OverviewHazardChartModel.example()] })
       },
       onDev: () => {
         return OverviewHazardChartRepo.getInstance().call(params)

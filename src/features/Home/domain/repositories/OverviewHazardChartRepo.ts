@@ -3,7 +3,7 @@ import type ServicesInterface from '@/base/Data/ApiService/api_service_interface
 import OverviewHazardChartModel from '../../data/Model/OverviewHazardChartModel'
 import { OverviewHazardChartApiService } from '../../data/ApiService/OverviewHazardChartApiService'
 
-class OverviewHazardChartRepo extends RepoInterface<OverviewHazardChartModel> {
+class OverviewHazardChartRepo extends RepoInterface<OverviewHazardChartModel[]> {
   private static instance: OverviewHazardChartRepo
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -22,8 +22,8 @@ class OverviewHazardChartRepo extends RepoInterface<OverviewHazardChartModel> {
     return true
   }
 
-  onParse(data: any): OverviewHazardChartModel {
-    return OverviewHazardChartModel.fromMap(data)
+  onParse(data: any): OverviewHazardChartModel[] {
+    return data.map((item: any) => OverviewHazardChartModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {

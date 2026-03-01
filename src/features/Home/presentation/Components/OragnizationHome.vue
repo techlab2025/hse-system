@@ -46,6 +46,7 @@ import OverviewHazardChartParams from '../../core/params/OverviewHazardChartPara
 import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
 import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
+import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
@@ -111,36 +112,37 @@ const fetchProject = async (
 
 
 // overview hazard chart
-// const overviewHazardChartController = OverviewHazardChartController.getInstance()
-// const OverviewHazardChart = ref(overviewHazardChartController.state.value)
-// const fetchOverviewHazardChart = async () => {
-//   const overviewHazardChartParams = new OverviewHazardChartParams()
-//   await overviewHazardChartController.getData(overviewHazardChartParams)
-// }
-// onMounted(() => {
-//   fetchOverviewHazardChart()
-// })
-// watch(() => overviewHazardChartController.state.value, (newVal) => {
-//   if (newVal) {
-//     OverviewHazardChart.value = newVal
-//   }
-// })
-// overview investigations chart
-// const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
-// const overviewInvestigationsChartstate = ref(overviewInvestigationsChartController.state.value)
-// const fetchoverviewInvestigationsCharts = async()=>{
-//   const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
-//   await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
+const overviewHazardChartController = OverviewHazardChartController.getInstance()
+const OverviewHazardChartstate = ref(overviewHazardChartController.state.value)
+const fetchOverviewHazardChart = async () => {
+  const overviewHazardChartParams = new OverviewHazardChartParams()
+  await overviewHazardChartController.getData(overviewHazardChartParams)
+}
+onMounted(() => {
+  fetchOverviewHazardChart()
+})
+watch(() => overviewHazardChartController.state.value, (newVal) => {
+  if (newVal) {
+    OverviewHazardChartstate.value = newVal
+  }
+})
 
-// }
-// onMounted(()=>{
-//   fetchoverviewInvestigationsCharts()
-// })
-// watch(()=>overviewInvestigationsChartController.state.value,(newVal)=>{
-//   if(newVal){
-//     overviewInvestigationsChartstate.value = newVal
-//   }
-// })
+// overview investigations chart
+const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
+const overviewInvestigationsChartstate = ref(overviewInvestigationsChartController.state.value)
+const fetchoverviewInvestigationsCharts = async()=>{
+  const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
+  await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
+
+}
+onMounted(()=>{
+  fetchoverviewInvestigationsCharts()
+})
+watch(()=>overviewInvestigationsChartController.state.value,(newVal)=>{
+  if(newVal){
+    overviewInvestigationsChartstate.value = newVal
+  }
+})
 
 
 
@@ -453,7 +455,12 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
   </div>
+<div class="Hazard-Investigation">
 
+  <ObservatoinFactoryStatistics :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
+  <InvestegationStatics  :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
+
+</div>
   <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
@@ -474,6 +481,17 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 </template>
 
 <style scoped>
+.Hazard-Investigation {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-top: 20px;
+}
+@media (max-width: 1200px) {
+  .Hazard-Investigation {
+    grid-template-columns: 1fr;
+  }
+}
 .statics {
 
   margin-top: 20px;

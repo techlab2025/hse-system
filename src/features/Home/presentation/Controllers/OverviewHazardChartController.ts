@@ -4,7 +4,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import OverviewHazardChartUseCase from '../../domain/usecase/OverviewHazardChartUseCase'
 import type OverviewHazardChartModel from '../../data/Model/OverviewHazardChartModel'
 
-export default class OverviewHazardChartController extends SelectControllerInterface<OverviewHazardChartModel> {
+export default class OverviewHazardChartController extends SelectControllerInterface<OverviewHazardChartModel[]> {
   private static instance: OverviewHazardChartController
   private constructor() {
     super()
@@ -22,7 +22,7 @@ export default class OverviewHazardChartController extends SelectControllerInter
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<OverviewHazardChartModel> =
+    const dataState: DataState<OverviewHazardChartModel[]> =
       await this.overviewHazardChartUseCase.call(params)
 
     this.setState(dataState)
@@ -32,6 +32,7 @@ export default class OverviewHazardChartController extends SelectControllerInter
       throw new Error('Error while addServices')
     }
     super.handleResponseDialogs()
+    console.log(this.state.value, "this.state.valuedsdddddddddddddddd");
     return this.state
   }
 }
