@@ -51,6 +51,7 @@ const props = defineProps<{
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  max-width: 32px;
   // padding-bottom: 10px;
 
 
