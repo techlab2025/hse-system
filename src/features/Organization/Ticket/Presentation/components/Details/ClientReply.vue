@@ -13,14 +13,9 @@ const { history } = defineProps<{
       <div class="description">
         <p>{{ history.description }}</p>
         <MultiImagesDialog :images="history?.media.map((img) => img.url) || []">
-          <div class="imgs">
-            <img
-              v-for="(img, i) in history?.media.slice(0, 2)"
-              :key="i"
-              :src="img.url"
-              :class="'img-' + (i + 1)"
-              alt="static"
-            />
+          <div class="imgs image-container">
+            <img v-for="(img, i) in history?.media.slice(0, 2)" :key="i" :src="img.url" :class="'img-' + (i + 1)"
+              alt="static" />
           </div>
         </MultiImagesDialog>
       </div>

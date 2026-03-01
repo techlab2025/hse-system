@@ -131,7 +131,7 @@ watch(
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
         <router-link :to="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
           class="btn btn-primary">
-          {{ $t('Add_Scope') }}
+          {{ $t('add_scope') }}
         </router-link>
       </PermissionBuilder>
     </div>

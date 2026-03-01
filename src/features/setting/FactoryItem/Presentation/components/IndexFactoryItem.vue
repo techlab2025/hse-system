@@ -165,7 +165,7 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/factory-item/add`" class="btn btn-primary">
-          {{ $t('Add_Factor_item') }}
+          {{ $t('add_hazard_factor_item') }}
         </router-link>
       </PermissionBuilder>
     </div>

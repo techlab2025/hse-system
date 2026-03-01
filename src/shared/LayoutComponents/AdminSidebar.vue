@@ -8,6 +8,7 @@ import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IconSetting from '@/shared/icons/IconSetting.vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 
@@ -16,11 +17,12 @@ interface Routes {
   name: string
   permissions: PermissionsEnum[]
 }
+const { t } = useI18n()
 
 const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/admins',
-    name: 'admins',
+    name: t('admins'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.ADMIN_ALL,
@@ -33,7 +35,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/languages',
-    name: 'languages',
+    name: t('languages'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LANGUAGE_ALL,
@@ -46,7 +48,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/industry',
-    name: 'industry',
+    name: t('industry'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.INDUSTRY_ALL,
@@ -58,7 +60,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/equipment-types',
-    name: 'Equipment Types',
+    name: t('equipment_types'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.EQUIPMENT_TYPE_ALL,
@@ -70,7 +72,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/equipments',
-    name: 'Equipments',
+    name: t('equipments'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.EQUIPMENT_ALL,
@@ -82,7 +84,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/hazard-type',
-    name: 'Hazard Types',
+    name: t('hazard_types'),
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_CREATE,
@@ -93,7 +95,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/observation-type',
-    name: 'observation_types',
+    name: t('observation_types'),
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
       PermissionsEnum.OBSERVATION_TYPE_CREATE,
@@ -117,7 +119,7 @@ const SettingsRoutes = ref<Routes[]>([
   // },
   {
     link: '/admin/accidents-type',
-    name: 'accidents_types',
+    name: t('incidant_types'),
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_CREATE,
@@ -128,7 +130,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factories-items',
-    name: 'factor_items',
+    name: t('hazard_factor_items'),
     permissions: [
       PermissionsEnum.FACTORY_ITEM_ALL,
       PermissionsEnum.FACTORY_ITEM_CREATE,
@@ -139,7 +141,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factory',
-    name: 'factors',
+    name: t('hazard_factors'),
     permissions: [
       PermissionsEnum.FACTORY_ALL,
       PermissionsEnum.FACTORY_CREATE,
@@ -150,7 +152,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/template',
-    name: 'Templates',
+    name: t('templates'),
     permissions: [
       PermissionsEnum.TEMPLATE_ALL,
       PermissionsEnum.TEMPLATE_CREATE,
@@ -159,20 +161,20 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.TEMPLATE_UPDATE,
     ],
   },
-  {
-    link: '/admin/project-types',
-    name: 'Project Types',
-    permissions: [
-      PermissionsEnum.PROJECT_TYPE_ALL,
-      PermissionsEnum.PROJECT_TYPE_CREATE,
-      PermissionsEnum.PROJECT_TYPE_DELETE,
-      PermissionsEnum.PROJECT_TYPE_FETCH,
-      PermissionsEnum.PROJECT_TYPE_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/admin/project-types',
+  //   name: t('project_types'),
+  //   permissions: [
+  //     PermissionsEnum.PROJECT_TYPE_ALL,
+  //     PermissionsEnum.PROJECT_TYPE_CREATE,
+  //     PermissionsEnum.PROJECT_TYPE_DELETE,
+  //     PermissionsEnum.PROJECT_TYPE_FETCH,
+  //     PermissionsEnum.PROJECT_TYPE_UPDATE,
+  //   ],
+  // },
   {
     link: '/admin/organization',
-    name: 'Organization',
+    name: t('organization'),
     permissions: [
       PermissionsEnum.ORGANIZATION_ALL,
       PermissionsEnum.ORGANIZATION_CREATE,
@@ -183,7 +185,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/role',
-    name: 'roles',
+    name: t('roles'),
     permissions: [
       PermissionsEnum.ROLE_ALL,
       PermissionsEnum.ROLE_CREATE,
@@ -194,7 +196,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ticket-type',
-    name: 'ticket_types',
+    name: t('ticket_types'),
     permissions: [
       PermissionsEnum.TICKET_TYPE_ALL,
       PermissionsEnum.TICKET_TYPE_CREATE,
@@ -205,7 +207,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ticket',
-    name: 'ticket',
+    name: t('ticket'),
     permissions: [
       PermissionsEnum.TICKET_ALL,
       PermissionsEnum.TICKET_CREATE,
@@ -214,9 +216,9 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.TICKET_UPDATE,
     ],
   },
-   {
+  {
     link: '/admin/catalog',
-    name: 'catalog',
+    name: t('catalog'),
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -225,9 +227,9 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.CATALOG_UPDATE,
     ],
   },
-   {
+  {
     link: '/admin/catalog-items',
-    name: 'catalog_items',
+    name: t('catalog_items'),
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -252,7 +254,7 @@ const SettingsRoutes = ref<Routes[]>([
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/countries',
-    name: 'country',
+    name: t('country'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LOCATION_ALL,
@@ -265,7 +267,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/states',
-    name: 'state',
+    name: t('state'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -277,7 +279,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/cities',
-    name: 'city',
+    name: t('city'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -289,7 +291,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/areas',
-    name: 'locations',
+    name: t('locations'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -304,7 +306,7 @@ const LocationRoutes = ref<Routes[]>([
 const SubscriptionTypeRoutes = ref<Routes[]>([
   {
     link: '/admin/subscription-types',
-    name: 'subscription_type',
+    name: t('subscription_type'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
@@ -330,7 +332,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
   // },
   {
     link: '/admin/subscription-application',
-    name: 'subscriptions_request',
+    name: t('subscriptions_request'),
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_APPLICATION_ALL,
@@ -347,7 +349,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
 const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/client-opinions',
-    name: 'client_opinion',
+    name: t('client_opinion'),
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.CLIENT_OPINION_ALL,
@@ -360,7 +362,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-contact-us',
-    name: 'home_contact_us',
+    name: t('home_contact_us'),
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.HOME_CONTACT_US_ALL,
@@ -373,7 +375,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/categories',
-    name: 'categories',
+    name: t('categories'),
     permissions: [
       PermissionsEnum.CATEGORY_ALL,
       PermissionsEnum.CATEGORY_CREATE,
@@ -384,7 +386,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/services',
-    name: 'services',
+    name: t('services'),
     permissions: [
       PermissionsEnum.SERVICE_ALL,
       PermissionsEnum.SERVICE_CREATE,
@@ -395,7 +397,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/hashtags',
-    name: 'hashtags',
+    name: t('hashtags'),
     permissions: [
       PermissionsEnum.HASHTAG_ALL,
       PermissionsEnum.HASHTAG_CREATE,
@@ -406,7 +408,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/term/add',
-    name: 'terms',
+    name: t('terms'),
     permissions: [
       PermissionsEnum.TERM_ALL,
       PermissionsEnum.TERM_CREATE_OR_UPDATE,
@@ -415,7 +417,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/headers',
-    name: 'headers',
+    name: t('headers'),
     permissions: [
       PermissionsEnum.HEADER_ALL,
       PermissionsEnum.HEADER_CREATE,
@@ -426,7 +428,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service-features',
-    name: 'service_features',
+    name: t('service_features'),
     permissions: [
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_CREATE,
@@ -437,7 +439,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service_section',
-    name: 'service_section',
+    name: t('service_section'),
     permissions: [
       PermissionsEnum.SERVICE_SECTION_ALL,
       PermissionsEnum.SERVICE_SECTION_CREATE,
@@ -448,7 +450,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/powerfull-features',
-    name: 'powerful_features',
+    name: t('powerful_features'),
     permissions: [
       PermissionsEnum.POWERFUL_FEATURE_ALL,
       PermissionsEnum.POWERFUL_FEATURE_CREATE,
@@ -459,7 +461,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system-works',
-    name: 'system_works',
+    name: t('system_works'),
     permissions: [
       PermissionsEnum.SYSTEM_WORK_ALL,
       PermissionsEnum.SYSTEM_WORK_CREATE,
@@ -470,7 +472,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/privacy/add',
-    name: 'privacy',
+    name: t('privacy'),
     permissions: [
       PermissionsEnum.PRIVACY_ALL,
       PermissionsEnum.PRIVACY_CREATE_OR_UPDATE,
@@ -479,7 +481,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-view-pricing',
-    name: 'homeViewPricing',
+    name: t('homeViewPricing'),
     permissions: [
       PermissionsEnum.HOME_VIEW_PRICING_ALL,
       PermissionsEnum.HOME_VIEW_PRICING_CREATE,
@@ -490,7 +492,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service_logs',
-    name: 'service_logs',
+    name: t('service_logs'),
     permissions: [
       PermissionsEnum.SERVICE_LOG_ALL,
       PermissionsEnum.SERVICE_LOG_CREATE,
@@ -501,7 +503,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/blog',
-    name: 'blogs',
+    name: t('blogs'),
     permissions: [
       PermissionsEnum.BLOG_ALL,
       PermissionsEnum.BLOG_CREATE,
@@ -512,7 +514,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-about-us',
-    name: 'home_about_us',
+    name: t('home_about_us'),
     permissions: [
       PermissionsEnum.HOME_ABOUT_US_ALL,
       PermissionsEnum.HOME_ABOUT_US_CREATE,
@@ -523,7 +525,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/about-us-features',
-    name: 'about_us_features',
+    name: t('about_us_features'),
     permissions: [
       PermissionsEnum.ABOUT_US_FEATURE_ALL,
       PermissionsEnum.ABOUT_US_FEATURE_CREATE,
@@ -534,7 +536,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/about-us-core',
-    name: 'about_us_core',
+    name: t('about_us_core'),
     permissions: [
       PermissionsEnum.ABOUT_US_CORE_ALL,
       PermissionsEnum.ABOUT_US_CORE_CREATE,
@@ -545,7 +547,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/faq',
-    name: 'faqs',
+    name: t('faqs'),
     permissions: [
       PermissionsEnum.FAQ_ALL,
       PermissionsEnum.FAQ_CREATE,
@@ -556,7 +558,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system-risk-management',
-    name: 'systemRiskManagement',
+    name: t('systemRiskManagement'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
@@ -567,7 +569,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/our-system-step',
-    name: 'ourSystemStep',
+    name: t('ourSystemStep'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
       PermissionsEnum.OUR_SYSTEM_STEP_CREATE,
@@ -578,7 +580,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_banner',
-    name: 'systemBanner',
+    name: t('systemBanner'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
       PermissionsEnum.OUR_SYSTEM_BANNER_CREATE,
@@ -589,7 +591,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_feature',
-    name: 'systemFeature',
+    name: t('systemFeature'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
       PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE,
@@ -600,7 +602,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_risk_type',
-    name: 'systemRiskType',
+    name: t('systemRiskType'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
@@ -611,7 +613,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_components',
-    name: 'systemComponents',
+    name: t('systemComponents'),
     permissions: [
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
       PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE,

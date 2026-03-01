@@ -241,7 +241,16 @@ const setOrganization = (data: TitleInterface) => {
       @update:modelValue="setOrganization" />
   </div>
 
-  <div class="col-span-4 md:col-span-4">
+  <div class="col-span-4 md:col-span-4 image-container">
     <MultiImagesInput :initialImages="images" @update:images="setImages" />
   </div>
 </template>
+
+<!-- <style scoped>
+.image-container {
+  img {
+
+    width: 90px;
+  }
+}
+</style> -->
