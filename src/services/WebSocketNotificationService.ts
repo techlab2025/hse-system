@@ -324,16 +324,6 @@ class WebSocketNotificationService {
     return new Promise((resolve, reject) => {
       this.addLog(`🔌 Connecting to WebSocket... (Attempt ${this.reconnectAttempts + 1})`)
 
-      // Set connection timeout
-      this.connectionTimeout = setTimeout(() => {
-        this.addLog('❌ Connection timeout')
-        this.error.value = 'Connection timeout'
-        if (this.client) {
-          this.client.deactivate()
-        }
-        reject(new Error('Connection timeout'))
-      }, this.config.connectionTimeout || 30000)
-
       this.client = new Client({
         brokerURL: this.config.brokerURL,
         connectHeaders: {
