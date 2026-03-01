@@ -28,7 +28,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
   async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
-    if (params.data.length > 0) {
+    if (params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()

@@ -624,6 +624,8 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
 }
 
 const WarehouseDialog = ref(false)
+import Checkbox from 'primevue/checkbox';
+import CheckboxGroup from 'primevue/checkboxgroup';
 </script>
 
 <template>
@@ -637,7 +639,9 @@ const WarehouseDialog = ref(false)
           <label for="vehicle">
             <p>Mark if this equipment is a <b>vehicle</b></p>
           </label>
-          <input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
+          <!-- <Checkbox v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" binary /> -->
+
+          <Input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
         </div>
       </div>
       <div class="input-wrapper w-1/2" v-if="isVehicle">
@@ -843,5 +847,13 @@ const WarehouseDialog = ref(false)
 .h-full {
   height: 100%;
   padding: 12px;
+}
+
+.check-box {
+  input {
+
+    width: 8px !important;
+    height: 8px !important;
+  }
 }
 </style>
