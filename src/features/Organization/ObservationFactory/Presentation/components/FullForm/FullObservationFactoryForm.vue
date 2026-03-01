@@ -260,7 +260,7 @@ const UpdateFatalities = (data: any) => {
 }
 const takeAction = ref<'yes' | 'no' | null>('no')
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
-const solved = ref<ActionStatusEnum | null>(ActionStatusEnum.CLOSED)
+const solved = ref<ActionStatusEnum | null>(ObservationFactoryType.value == Observation.AccidentsType ? ActionStatusEnum.OPEN : ActionStatusEnum.CLOSED)
 const preventive_action = ref<string>()
 
 const SelctedTime = ref<Date>(new Date())
