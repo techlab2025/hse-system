@@ -12,6 +12,7 @@ import AddHazardUseCase from '../../Domain/useCase/addHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import type AddHazardParams from '../../Core/params/addHazardParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddHazardController extends ControllerInterface<HazardModel> {
   private static instance: AddHazardController
@@ -28,6 +29,16 @@ export default class AddHazardController extends ControllerInterface<HazardModel
   }
 
   async addHazard(params: AddHazardParams, router: Router, draft: boolean = false) {
+    if (params.type == Observation.AccidentsType && !params.typeId) {
+      new OpenWarningDilaog('Incidant Type Is Required').openDialog()
+      return
+    } else if (params.type == Observation.HazardType && !params.typeId) {
+      new OpenWarningDilaog('Observation Type Is Required').openDialog()
+      return
+    } else if (params.type == Observation.ObservationType && !params.typeId) {
+      new OpenWarningDilaog('Observation Type Is Required').openDialog()
+      return
+    }
     try {
       this.setLoading()
       params.validate()
