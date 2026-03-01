@@ -93,7 +93,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
               </p>
               <small v-if="notification.receivedAt">{{
                 notification.receivedAt.toLocaleTimeString()
-                }}</small>
+              }}</small>
             </button>
             <!-- <button @click="acknowledgeNotification(notification.id)" class="remove-btn">
               &times;

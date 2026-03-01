@@ -40,6 +40,8 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import EquipmentLoader from '../supcomponents/EquipmentLoader.vue'
+import { formatJoinDate } from "@/base/Presentation/utils/date_format";
+import { filesToBase64 } from "@/base/Presentation/utils/file_to_base_64";
 
 const { t } = useI18n()
 
@@ -186,10 +188,16 @@ const exportExcel = () => {
     (item: Record<string, unknown>) => {
       const it = item as any;
       return {
-        "id": it.id,
-        "Equipment Title": it.title || "N/A",
-        "Equipment Type Title": it.equipmentType?.title || "N/A",
-        "Contractor Name": it.contractor?.name || "N/A",
+        "name": it.title || "N/A",
+        "CertificateExpireDate": it.date || null,
+        "LicenceNumber": it.license_plate_number || null,
+        "image": "*",
+        "Certificate Image": "*",
+        "StartDate": formatJoinDate(it.checkin_date),
+        "EndData": formatJoinDate(it.checkout_date),
+        "RentPeriod": it.period,
+        "RentType": it.period_type,
+        "status": it.status
       };
     },
   );
