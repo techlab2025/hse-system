@@ -28,6 +28,9 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 import ExcelSheetUpload from '../supcomponents/ExcelSheetHandle/UploadFiles.vue'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const { t } = useI18n()
 
@@ -165,6 +168,31 @@ watch(
     fetchOrganizatoinEmployee()
   },
 )
+
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "name": it.name || "N/A",
+        "email": it.email || null,
+        "phone": it.phone || null,
+        "password": "",
+        "password_confimation": "",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "Equipment.xlsx");
+};
 </script>
 
 <template>
@@ -180,6 +208,7 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
           {{ $t('add_organizatoin_employee') }}

@@ -17,14 +17,18 @@ export default class EquipmentModel extends TitleInterface {
   public titles: string
   public status: EquipmentStatus
   public warehouse: WhereHouseDetailsModel
-
   // public equipmentType: TitleModel
   public equipmentType?: EquipmentTypeDetailsModel
   public project: TitleInterface
   public projectZoon: ProjectZoon
   public certificateImage: string
-
   public contractor: ContractorDetailsModel
+  public period: number
+  public period_type: number
+  public checkin_date: string
+  public checkout_date: string
+  public license_plate_number: number
+  public date: string
 
   constructor(
     id: number,
@@ -43,6 +47,12 @@ export default class EquipmentModel extends TitleInterface {
     certificateImage: string,
     warehouse: WhereHouseDetailsModel,
     contractor: ContractorDetailsModel,
+    period: number,
+    period_type: number,
+    checkin_date: string,
+    checkout_date: string,
+    license_plate_number: number,
+    date: string,
   ) {
     super({ id, title, subtitle })
 
@@ -59,7 +69,12 @@ export default class EquipmentModel extends TitleInterface {
     this.projectZoon = projectZoon
     this.certificateImage = certificateImage
     this.warehouse = warehouse
-    this.contractor = contractor
+    this.period = period
+    this.period_type = period_type
+    this.checkin_date = checkin_date
+    this.checkout_date = checkout_date
+    this.license_plate_number = license_plate_number
+    this.date = date
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -83,6 +98,12 @@ export default class EquipmentModel extends TitleInterface {
       data.certificate_image,
       data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
       data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
+      data.period,
+      data.period_type,
+      data.checkin_date,
+      data.checkout_date,
+      data.license_plate_number,
+      data.date,
     )
   }
 
