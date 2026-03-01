@@ -130,7 +130,7 @@ watch(
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <router-link to="/organization/where-house-type/add" class="btn btn-primary">
-          {{ $t('add_where_house_type') }}
+          {{ $t('add_warehouse_type') }}
         </router-link>
       </PermissionBuilder>
     </div>

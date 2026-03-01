@@ -157,7 +157,7 @@ watch(
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
           class="btn btn-primary">
-          {{ $t('Add_Contractor') }}
+          {{ $t('add_contractor') }}
         </router-link>
       </permission-builder>
     </div>

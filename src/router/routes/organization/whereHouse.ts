@@ -3,30 +3,30 @@ import type { RouteRecordRaw } from '@/router/types'
 export const WhereHouseRoutes: RouteRecordRaw[] = [
   {
     path: 'where-house',
-    name: 'WhereHouse',
+    name: 'warehouse',
     component: () => import('@/views/Organization/WhereHouse/IndexWhereHouse.vue'),
     meta: {
-      breadcrumb: 'WhereHouse',
+      breadcrumb: 'warehouse',
       isSidebar: true,
     },
   },
   {
     path: 'where-house/add',
-    name: 'Add WhereHouse',
+    name: 'Add warehouse',
     component: () => import('@/views/Organization/WhereHouse/AddWhereHouse.vue'),
     meta: {
-      breadcrumb: 'Add WhereHouse',
-      parent: 'WhereHouse',
+      breadcrumb: 'Add warehouse',
+      parent: 'warehouse',
       isSidebar: true,
     },
   },
   {
     path: 'where-house/:id',
-    name: 'Edit WhereHouse',
+    name: 'Edit warehouse',
     component: () => import('@/views/Organization/WhereHouse/EditWhereHouse.vue'),
     meta: {
-      breadcrumb: 'Edit WhereHouse',
-      parent: 'WhereHouse',
+      breadcrumb: 'Edit warehouse',
+      parent: 'warehouse',
       isSidebar: true,
     },
   },

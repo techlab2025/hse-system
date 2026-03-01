@@ -340,6 +340,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
   </div>
 
+
   <div class=statics>
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
@@ -444,6 +445,9 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
       ]" />
     </div>
   </div>
+
+
+  <!-- end -->
 
   <div class="flex gap-4 statics">
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />

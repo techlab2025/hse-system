@@ -113,9 +113,8 @@ const actionList = (id: number, deleteTicket: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${
-      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-    }/root-causes/${id}`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/root-causes/${id}`,
     permission: [
       PermissionsEnum.TICKET_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
@@ -167,49 +166,37 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click=";((word = ''), searchTickets())">
+      <span class="icon-remove" @click="; ((word = ''), searchTickets())">
         <Search />
       </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchTickets"
-      />
+      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTickets" />
     </div>
 
     <div class="col-span-2 flex justify-end gap-2">
       <ExportPdf />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.TICKET_TYPE_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
-          class="btn btn-primary"
-        >
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.TICKET_TYPE_CREATE,
+      ]">
+        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
+          class="btn btn-primary">
           {{ $t('Add_Ticket') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.TICKET_TYPE_ALL,
-      PermissionsEnum.TICKET_TYPE_DELETE,
-      PermissionsEnum.TICKET_TYPE_FETCH,
-      PermissionsEnum.TICKET_TYPE_UPDATE,
-      PermissionsEnum.TICKET_TYPE_CREATE,
-      // PermissionsEnum.Ticket_Type,
-    ]"
-  >
+  <PermissionBuilder :code="[
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    PermissionsEnum.TICKET_TYPE_ALL,
+    PermissionsEnum.TICKET_TYPE_DELETE,
+    PermissionsEnum.TICKET_TYPE_FETCH,
+    PermissionsEnum.TICKET_TYPE_UPDATE,
+    PermissionsEnum.TICKET_TYPE_CREATE,
+    // PermissionsEnum.Ticket_Type,
+  ]">
     <DataStatus :controller="state">
       <template #success>
         <div class="tickets-cards-grid-system">
@@ -221,36 +208,33 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
                 </h6>
               </div>
             </div>
-            <router-link
-              :to="`/${user?.type == OrganizationTypeEnum.ADMIN || user?.type == OrganizationTypeEnum.ORGANIZATION ? 'admin' : 'organization'}/ticket/${ticket?.id}`"
-              class="card-info"
-            >
-              <div class="card-info-txt">
-                <p>
-                  {{ ticket?.ticketType?.title }}
-                </p>
-                <h2>
-                  {{ ticket?.title }}
-                </h2>
-              </div>
+
+            <div class="card-info">
+              <router-link
+                :to="`/${user?.type == OrganizationTypeEnum.ADMIN || user?.type == OrganizationTypeEnum.ORGANIZATION ? 'admin' : 'organization'}/ticket/${ticket?.id}`">
+
+                <div class="card-info-txt">
+                  <p>
+                    {{ ticket?.ticketType?.title }}
+                  </p>
+                  <h2>
+                    {{ ticket?.title }}
+                  </h2>
+                </div>
+              </router-link>
 
               <MultiImagesDialog :images="ticket?.media.map((img) => img.url) || []">
                 <div class="imgs">
-                  <img
-                    v-for="(img, i) in ticket?.media.slice(0, 2)"
-                    :key="i"
-                    :src="img.url"
-                    :class="'img-' + (i + 1)"
-                    alt="static"
-                  />
+                  <img v-for="(img, i) in ticket?.media.slice(0, 2)" :key="i" :src="img.url" :class="'img-' + (i + 1)"
+                    alt="static" />
                 </div>
               </MultiImagesDialog>
-            </router-link>
+            </div>
+
 
             <div class="card-footer">
               <RouterLink
-                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`"
-              >
+                :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`">
                 <div class="description">
                   <p>{{ ticket?.description }}</p>
                 </div>
@@ -259,11 +243,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
           </div>
         </div>
 
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -272,48 +252,34 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.TICKET_TYPE_CREATE,
-          ]"
-        >
-          <DataEmpty
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/ticket-type/add`"
-            addText="Add Ticket"
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.TICKET_TYPE_CREATE,
+        ]">
+          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/ticket-type/add`" addText="Add Ticket"
             description="Sorry .. You have no Tickets .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Tickets"
-          />
+            title="..ops! You have No Tickets" />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.TICKET_TYPE_CREATE,
-          ]"
-        >
-          <DataFailed
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/ticket-type/add`"
-            addText="Add Ticket"
+        <PermissionBuilder :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.TICKET_TYPE_CREATE,
+        ]">
+          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/ticket-type/add`" addText="Add Ticket"
             description="Sorry .. You have no Tickets .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Tickets"
-          />
+            title="..ops! You have No Tickets" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
-      />
+      <DataFailed addText="Have not  Permission"
+        description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

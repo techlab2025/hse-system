@@ -166,7 +166,7 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
         <router-link
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
           class="btn btn-primary">
-          {{ $t('Add_ObserverationType') }}
+          {{ $t('add_observeration_type') }}
         </router-link>
       </PermissionBuilder>
     </div>

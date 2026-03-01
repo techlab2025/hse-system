@@ -100,9 +100,9 @@ const WarehouseTypeDialog = ref<boolean>(false)
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
       id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
     <UpdatedCustomInputSelect :required="false" :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
-      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType"
-      :isDialog="true" :dialogVisible="WarehouseTypeDialog">
+      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('warehouse_type')"
+      id="Equipment" placeholder="Select Warehouse Type" @update:modelValue="setSelectedWhereHouseType" :isDialog="true"
+      :dialogVisible="WarehouseTypeDialog">
       <template #LabelHeader>
         <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>
       </template>

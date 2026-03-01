@@ -148,7 +148,7 @@ watch(() => route.params.parent_id, (newVal) => {
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
           class="btn btn-primary">
-          {{ $t('Add_Hazard') }}
+          {{ $t('add_hazard') }}
         </router-link>
       </PermissionBuilder>
     </div>
