@@ -430,7 +430,7 @@ onBeforeUnmount(() => {
 
 .chart-wrapper {
   width: 100%;
-  height: 55vh;
+  height: 25vh;
   max-height: 780px;
   min-height: 350px;
   position: relative;
