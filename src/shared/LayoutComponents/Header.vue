@@ -171,6 +171,10 @@ const toggle = (event: Event) => {
           <img :src="defaultLogo" alt="logo-img">
           <p class="logo">HSE.Cloud.Ai </p>
         </router-link>
+
+
+
+
       </div>
 
       <div class="input-wrapper" v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN">
