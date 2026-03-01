@@ -641,7 +641,7 @@ import CheckboxGroup from 'primevue/checkboxgroup';
           </label>
           <!-- <Checkbox v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" binary /> -->
 
-          <Input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
+          <input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
         </div>
       </div>
       <div class="input-wrapper w-1/2" v-if="isVehicle">
@@ -852,8 +852,25 @@ import CheckboxGroup from 'primevue/checkboxgroup';
 .check-box {
   input {
 
-    width: 8px !important;
-    height: 8px !important;
+    width: 15px !important;
+    height: 15px !important;
+    transform: translateY(8px);
+
+    &::before {
+      width: 15px !important;
+      height: 15px !important;
+    }
+
+    /* &::after {
+      width: 5px !important;
+      height: 5px !important;
+      top: 30% !important;
+      left: 30% !important;
+      transform: translate(-50%, -50%) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } */
   }
 }
 </style>
