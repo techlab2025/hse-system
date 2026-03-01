@@ -342,6 +342,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
 
   <div class=statics>
+    <!-- v-if="ProjectStatics?.data?.length > 0"  -->
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
 
