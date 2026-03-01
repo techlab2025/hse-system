@@ -130,16 +130,16 @@ watch(() => overviewHazardChartController.state.value, (newVal) => {
 // overview investigations chart
 const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
 const overviewInvestigationsChartstate = ref(overviewInvestigationsChartController.state.value)
-const fetchoverviewInvestigationsCharts = async()=>{
+const fetchoverviewInvestigationsCharts = async () => {
   const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
   await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
 
 }
-onMounted(()=>{
+onMounted(() => {
   fetchoverviewInvestigationsCharts()
 })
-watch(()=>overviewInvestigationsChartController.state.value,(newVal)=>{
-  if(newVal){
+watch(() => overviewInvestigationsChartController.state.value, (newVal) => {
+  if (newVal) {
     overviewInvestigationsChartstate.value = newVal
   }
 })
@@ -357,6 +357,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
         :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-three"
         link="/organization/equipment-mangement/inspection?inspectionType=1" />
+
       <ToatlInsedant :totalInsedant="homeInspectionState?.data?.openCorrectiveActions"
         :title="`${$t('Open Corrective Actions')}`" :subTitle="`${$t('per this month')}`"
         textClass="ToatlInsedant-four" />
@@ -456,12 +457,12 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
   </div>
-<div class="Hazard-Investigation">
+  <div class="Hazard-Investigation">
 
-  <ObservatoinFactoryStatistics :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
-  <InvestegationStatics  :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
+    <ObservatoinFactoryStatistics :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
+    <InvestegationStatics :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
 
-</div>
+  </div>
   <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
 
@@ -487,12 +488,15 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   grid-template-columns: 2fr 1fr;
   gap: 1rem;
   margin-top: 20px;
+  align-items: end;
 }
+
 @media (max-width: 1200px) {
   .Hazard-Investigation {
     grid-template-columns: 1fr;
   }
 }
+
 .statics {
 
   margin-top: 20px;

@@ -26,7 +26,7 @@ const props = defineProps<{
   display: flex;
   gap: 1rem;
   // height: 500px;
-  height: 60vh;
+  height: 35vh;
   position: relative;
   margin-bottom: 1rem;
 }
@@ -46,7 +46,7 @@ const props = defineProps<{
   position: relative;
   width: 100%;
   background-color: rgba(227, 239, 255, 1);
-  border-radius: 15px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -95,7 +95,7 @@ const props = defineProps<{
 
   .total_count_chart {
     background: linear-gradient(163.62deg, #789EFF 2.14%, #1D4ED8 97.96%);
-    border-radius: 15px;
+    border-radius: 12px;
     width: 100%;
     text-align: center;
     color: white;
@@ -105,6 +105,7 @@ const props = defineProps<{
     font-weight: bold;
     font-size: 13px;
     padding-bottom: 1rem;
+    z-index: 11;
   }
 }
 </style>
