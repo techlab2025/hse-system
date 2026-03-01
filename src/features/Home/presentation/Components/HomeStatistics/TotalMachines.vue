@@ -50,7 +50,6 @@ const GetEquipmentTypeTitle = (type: number) => {
         <p>device</p>
       </div>
     </div>
-
     <div class="chart-container flex items-end gap-4 p-8 bg-white rounded-xl font-sans">
       <div v-for="month in chartData" :key="month.name" class="month flex flex-col items-center gap-2">
         <div class="flex flex-col-reverse gap-1 w-12 h-48 precentage-container">
@@ -111,6 +110,8 @@ const GetEquipmentTypeTitle = (type: number) => {
   }
 
   .info-container {
+
+
     position: absolute;
     top: 50%;
     left: 60%;
@@ -178,6 +179,15 @@ const GetEquipmentTypeTitle = (type: number) => {
     }
   }
 
+
+
+}
+
+.month:first-child {
+  .info-container {
+    left: 100%;
+    transform: translateX(-40%);
+  }
 }
 
 .total-value {
