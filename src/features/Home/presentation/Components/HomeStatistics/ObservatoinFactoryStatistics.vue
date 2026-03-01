@@ -8,6 +8,8 @@ let resizeObserver: ResizeObserver | null = null;
 
 const props = defineProps<{
   OverviewHazardChartstate: OverviewHazardChartModel[];
+  chartHeight?: string; // e.g. "35vh" | "300px"  — default "35vh"
+  chartWidth?: string;  // e.g. "100%" | "600px"  — default "100%"
 }>();
 
 const HazardValues = ref<number[]>([]);
@@ -115,13 +117,20 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   const effectiveMax = maxValue * 1.15;
 
-  // ✅ All sizing is now derived from available space — fully responsive
-  const groupWidth = chartWidth / numGroups;
-  const groupPadding = Math.max(4, groupWidth * 0.1);
+  // ✅ Spacing & sizing controls — غيّر هنا براحتك
+  const GROUP_GAP = 10;       // مسافة بين مجموعات الأعمدة (px)
+  const MAX_BAR_WIDTH = 65;   // أقصى عرض لكل عمود (px)
+  const BAR_GAP_RATIO = 0.2;  // مسافة بين الأعمدة داخل المجموعة
+
+  const totalGroupGaps = (numGroups - 1) * GROUP_GAP;
+  const usableWidth = chartWidth - totalGroupGaps;
+  const groupWidth = usableWidth / numGroups;
+  const groupPadding = Math.max(4, groupWidth * 0.08);
   const availableForBars = groupWidth - groupPadding * 2;
-  const barGap = Math.max(2, availableForBars * 0.05);
+  const barGap = Math.max(2, availableForBars * BAR_GAP_RATIO);
   const totalGaps = (numDatasets - 1) * barGap;
-  const barWidth = Math.max(4, (availableForBars - totalGaps) / numDatasets);
+  const rawBarWidth = (availableForBars - totalGaps) / numDatasets;
+  const barWidth = Math.max(4, Math.min(rawBarWidth, MAX_BAR_WIDTH));
 
   // ✅ depth is proportional to barWidth — never bigger than the bar
   const depth = Math.max(6, Math.min(barWidth * 0.6, 22 * scale));
@@ -159,7 +168,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   // ── Bars ───────────────────────────────────────────────────────────────
   for (let gi = numGroups - 1; gi >= 0; gi--) {
     const label = labels[gi];
-    const groupX = paddingLeft + gi * groupWidth;
+    const groupX = paddingLeft + gi * (groupWidth + GROUP_GAP);
 
     for (let di = numDatasets - 1; di >= 0; di--) {
       const dataset = datasets[di];
@@ -398,7 +407,7 @@ onBeforeUnmount(() => {
         <p class="static-title">Hazard & Observation & Incident Overview</p>
       </div>
     </div>
-    <div class="chart-wrapper">
+    <div class="chart-wrapper" :style="{ height: chartHeight ?? '35vh', width: chartWidth ?? '100%' }">
       <canvas ref="canvasRef"></canvas>
     </div>
   </div>
@@ -429,10 +438,10 @@ onBeforeUnmount(() => {
 }
 
 .chart-wrapper {
-  width: 100%;
-  height: 25vh;
-  max-height: 780px;
-  min-height: 350px;
+  width: 100%;        /* ✅ يأخد كل العرض المتاح */
+  height: 35vh;       /* ✅ قلّلنا من 55vh لـ 35vh */
+  max-height: 400px;  /* ✅ قلّلنا من 780px لـ 400px */
+  min-height: 250px;  /* ✅ قلّلنا من 350px لـ 250px */
   position: relative;
 }
 
