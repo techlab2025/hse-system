@@ -139,7 +139,7 @@ const deleteEquipment = async (id: number) => {
               </span>
 
               <!-- <p class="title" v-if="tool?.equipment?.title">{{ tool?.equipment?.title }}</p> -->
-              <p class="title" v-if="tool.equipmenType.title"> {{ tool.equipmenType.title }}</p>
+              <p class="title" v-if="tool?.equipment_type?.title"> {{ tool?.equipment_type?.title }}</p>
 
             </div>
 

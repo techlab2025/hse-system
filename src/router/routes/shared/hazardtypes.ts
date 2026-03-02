@@ -60,4 +60,15 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'hazard-type/upload-excel',
+    name: 'Upload Hazard Type',
+    component: () => import('@/views/Admin/HazardType/UploadHazard.vue'),
+    meta: {
+      breadcrumb: 'Upload Hazard Type',
+      parent: 'Hazard Type',
+      type: 'Shared',
+      isSidebar: true,
+    },
+  },
 ]

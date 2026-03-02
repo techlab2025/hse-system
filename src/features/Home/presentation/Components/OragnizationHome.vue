@@ -454,9 +454,9 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
   <!-- end -->
 
-  <div class="flex gap-4 statics">
-    <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12 md:col-span-6" />
-    <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 md:col-span-3" />
+  <div class="flex gap-4 statics grid grid-cols-12">
+    <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12  xl:col-span-8" />
+    <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 xl:col-span-4" />
   </div>
   <div class="Hazard-Investigation">
 
@@ -466,20 +466,13 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   </div>
   <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
     <TotalMachines :totalMachines="state.data?.machines" class="col-span-12 md:col-span-6" />
-
-
     <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
-
-
-
-
     <MostIncidantFactor :incidantFactor="state.data?.incidantFactor" class="col-span-12 md:col-span-3" />
     <ObservatoinFactoryStatistics :totalMachines="state.data?.machines" class="col-span-12 md:col-span-8" />
     <InvestegationStatics class="col-span-12 md:col-span-4" />
     <NumberOfProjects :numberOfProjects="state.data?.numberOfProjects" class="col-span-12 md:col-span-3" />
     <MachineStatics class="col-span-12 md:col-span-3" />
     <GenderStatistics class="col-span-12 md:col-span-6" /> -->
-
   <!-- </div> -->
 </template>
 
@@ -501,6 +494,12 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 .statics {
 
   margin-top: 20px;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  /* flex-wrap: wrap; */
 }
 @media (max-width: 1050px) {
   .statics{

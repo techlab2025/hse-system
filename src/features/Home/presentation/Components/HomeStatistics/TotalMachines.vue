@@ -42,7 +42,7 @@ const GetEquipmentTypeTitle = (type: number) => {
     <div class="total-machines-header-container">
       <div class="total-machines-header">
         <span class="static">static</span>
-        <p class="static-title">most used incident factors </p>
+        <p class="static-title">most used Equipments </p>
       </div>
       <div class="static-data">
         <p>tool</p>
@@ -63,7 +63,7 @@ const GetEquipmentTypeTitle = (type: number) => {
             <div v-for="segment in month.segments" class="data-column">
               <span class="label" :class="segment.type === 3 ? 'tool' : segment.type === 2 ? 'device' : 'equipment'">{{
                 GetEquipmentTypeTitle(segment.type)
-                }}</span>
+              }}</span>
               <span class="value">{{ segment.number }}</span>
             </div>
             <p class="total-value"><span>total:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
@@ -199,11 +199,80 @@ const GetEquipmentTypeTitle = (type: number) => {
   color: black;
   margin-top: 8px;
 }
+
 @media (max-width: 800px) {
   .chart-container{
     overflow: scroll;
   }
 }
+
+
+.chart-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e2e8f0;
+    border-radius: 4px;
+  }
+
+  .month {
+    max-width: 45px;
+    min-width: 36px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem !important;
+    gap: 0.5rem !important;
+
+    .month {
+      max-width: 36px;
+      min-width: 28px;
+    }
+
+    .precentage-container {
+      width: 2rem !important;
+      height: 9rem !important;
+    }
+
+    .col-name {
+      font-size: 10px !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem !important;
+    gap: 0.35rem !important;
+
+    .month {
+      max-width: 28px;
+      min-width: 22px;
+    }
+
+    .precentage-container {
+      width: 1.5rem !important;
+      height: 7rem !important;
+    }
+
+    .col-name {
+      font-size: 9px !important;
+    }
+  }
+}
+
 /* .percentage-container {
   position: relative;
   overflow: hidden;

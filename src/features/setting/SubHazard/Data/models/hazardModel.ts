@@ -48,4 +48,19 @@ export default class HazardTypeModel extends TitleInterface {
       data.titles,
     )
   }
+  static transformData(data: string[][]): HazardTypeModel[] {
+    return data.map(
+      (row, index) =>
+        new HazardTypeModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2],
+          row[3],
+          [],
+          row[4] || [],
+          row[5] || ''
+        ),
+    )
+  }
 }

@@ -22,6 +22,8 @@ import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypePara
 import DeleteWhereHouseTypeParams from '../../Core/params/deleteWhereHouseTypeParams'
 import DeleteWhereHouseTypeController from '../controllers/deleteWhereHouseTypeController'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const { t } = useI18n()
 
@@ -113,6 +115,27 @@ watch(
     fetchWhereHouseType()
   },
 )
+
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "title": it.title || "N/A",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "WarehouseType.xlsx");
+};
 </script>
 
 <template>
@@ -128,9 +151,16 @@ watch(
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <router-link to="/organization/where-house-type/add" class="btn btn-primary">
           {{ $t('add_warehouse_type') }}
+        </router-link>
+      </PermissionBuilder>
+      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        <router-link to="/organization/where-house-type/upload" class="btn btn-primary">
+          {{ $t('import_warehouse') }}
         </router-link>
       </PermissionBuilder>
     </div>

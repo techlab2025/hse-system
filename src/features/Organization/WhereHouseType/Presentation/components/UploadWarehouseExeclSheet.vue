@@ -4,27 +4,25 @@ import { onMounted, ref } from 'vue';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import { useRouter } from 'vue-router';
-import EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel';
-import AddEquipmentController from '../controllers/addEquipmentController';
-import AddEquipmentExcelParams from '../../Core/params/AddEquipmentExcelParams';
+
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue';
 import TitleInterface from '@/base/Data/Models/title_interface';
-import { EquipmentStatus } from '../../Core/enum/equipmentStatus';
 import { useI18n } from 'vue-i18n';
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams';
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController';
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel';
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue';
-import Tabs from './tabs.vue';
-import { RentTypeEnum } from '../../Core/enum/RentTypeEnum';
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController';
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams';
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController';
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams';
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
+import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel';
+import AddWhereHouseTypeController from '../controllers/addWhereHouseTypeController';
+import AddWhereHouseTypeExcelParams from '../../Core/params/addWhereHouseTypeExcelParams';
 
 interface ExtractedImage {
   name: string;
@@ -33,7 +31,7 @@ interface ExtractedImage {
 }
 
 // ─── State ────────────────────────────────────────────────────────────────────
-const sheetData = ref<EquipmentDetailsModel[] | null>(null);
+const sheetData = ref<WhereHouseTypeModel[] | null>(null);
 const File = ref<string>('');
 const Data = ref<any[]>([]);
 const mappedData = ref<any[] | null>(null);
@@ -55,7 +53,7 @@ const MIME_MAP: Record<string, string> = {
 };
 
 const getBodyData = (data: any[]) =>
-  EquipmentDetailsModel.transformData(data.slice(1));
+  WhereHouseTypeModel.transformData(data.slice(1));
 
 // ─── Image Extraction ─────────────────────────────────────────────────────────
 const extractImagesFromExcel = async (file: File): Promise<ExtractedImage[]> => {
@@ -147,28 +145,12 @@ const fileUpload = async (file: File) => {
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>([
-  "name",
-  "date",
-  "license_plate_number",
-  "image",
-  "certificate_image",
-  "checkin_date",
-  "checkout_date",
-  "period",
-  "period_type",
-  "status"
+  "title",
+
 ]);
 const SendDataLabels: Record<string, string> = {
-  name: "Equipment Name",
-  date: "Certificate Expire Date",
-  license_plate_number: "License Plate",
-  image: "Equipment Image",
-  certificate_image: "Certificate Image",
-  checkin_date: "Rent Start Date",
-  checkout_date: "Rent End Date",
-  period: "Rental Period",
-  period_type: "Rent Type",
-  status: "Status",
+  title: "Warehouse Title",
+
 };
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return;
@@ -183,70 +165,11 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   sheetData.value = getBodyData(cloned);
 };
 
-// ─── Machine State & Dropdowns ────────────────────────────────────────────────
-const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT);
-const UpdateActiveTap = (data: EquipmentTypesEnum) => {
-  activeTab.value = data;
-  GetEquipmentType();
-};
-
-const deviceStatusOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
-]);
-
-const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance();
-const AllEquipmentTypes = ref<EquipmentTypeModel[]>([]);
-const indexEquipmentTypeParams = ref(new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value)));
-
-const GetEquipmentType = async () => {
-  const params = new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value));
-  const response = await indexEquipmentTypeController.getData(params);
-  if (response.value.data && response.value.data?.length > 0) {
-    AllEquipmentTypes.value = response.value.data;
-  } else {
-    AllEquipmentTypes.value = [];
-  }
-};
-
-const GetEquipmentTitle = (type: EquipmentTypesEnum) => {
-  switch (type) {
-    case EquipmentTypesEnum.EQUIPMENT: return t('Equipment');
-    case EquipmentTypesEnum.DEVICE: return t('Device');
-    case EquipmentTypesEnum.TOOL: return t('Tool');
-    default: return '';
-  }
-};
-
-const equipmentType = ref<TitleInterface | null>(null);
-const setEquipmentType = (data: TitleInterface) => { equipmentType.value = data; };
-
-const equipmentStatus = ref<TitleInterface>();
-const setEquipmentStataus = (data: TitleInterface) => { equipmentStatus.value = data; };
-
-const RentTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
-  new TitleInterface({ id: RentTypeEnum.DAY, title: 'Day' }),
-  new TitleInterface({ id: RentTypeEnum.MONTH, title: 'Month' }),
-  new TitleInterface({ id: RentTypeEnum.YEAR, title: 'Year' }),
-]);
-const SelectedRentType = ref<TitleInterface>(RentTypes.value[0]);
-const setRentType = (data: TitleInterface) => { SelectedRentType.value = data; };
-
-const indexContractorController = IndexContractorController.getInstance();
-const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false);
-const SelectedContractor = ref<TitleInterface>();
-const setContructor = (data: TitleInterface) => { SelectedContractor.value = data; };
-
-const indexWhereHouseController = IndexWhereHouseController.getInstance();
-const indexWhereHouseParams = new IndexWhereHouseParams('', 1, 10, 1, false);
-const SelectedWhereHosue = ref<TitleInterface>();
-const setSelectedWhereHouse = (data: TitleInterface) => { SelectedWhereHosue.value = data; };
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
-const addEquipmentController = AddEquipmentController.getInstance();
+const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
-const AddOrgEmployee = async () => {
+const AddWarehouseType = async () => {
   if (!mappedData.value) return;
   const headers = mappedData.value[0] as string[];
   const rows = mappedData.value.slice(1);
@@ -256,27 +179,11 @@ const AddOrgEmployee = async () => {
     headers.forEach((key, i) => {
       if (key && key.trim() !== '') obj[key] = row[i];
     });
-
-    obj['equipment_type_id'] = equipmentType.value?.id;
-    // obj['status'] = equipmentStatus.value?.id;
-    // obj['period_type'] = SelectedRentType.value?.id;
-    obj['contractor_id'] = SelectedContractor.value?.id;
-    obj['warehouse_id'] = SelectedWhereHosue.value?.id;
-
-    // Mapping images: row 0 uses index 0 & 1, row 1 uses index 2 & 3, etc.
-    const baseImgIdx = rowIndex * 2;
-    if (extractedImages.value[baseImgIdx]) {
-      obj['image'] = extractedImages.value[baseImgIdx].base64;
-    }
-    if (extractedImages.value[baseImgIdx + 1]) {
-      obj['certificate_image'] = extractedImages.value[baseImgIdx + 1].base64;
-    }
-
     return obj;
   });
 
-  const orgData = new AddEquipmentExcelParams({ data: dataAsObjects });
-  await addEquipmentController.addEquipment(orgData, router);
+  const orgData = new AddWhereHouseTypeExcelParams({ data: dataAsObjects });
+  await addWhereHouseTypeController.addWhereHouseType(orgData, router);
 };
 
 const deleteRow = (rowIndex: number) => {
@@ -304,7 +211,7 @@ const onMappingClose = () => {
   }
 }
 onMounted(() => {
-  GetEquipmentType()
+  AddWarehouseType()
 })
 </script>
 
@@ -322,7 +229,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <a href="/EquipmentForm.xlsx" class="flex item-center gap-2 " download>
+        <a href="/WarehousetypeExcel.xlsx" class="flex item-center gap-2 " download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>
@@ -331,81 +238,13 @@ onMounted(() => {
       <div class="rule-group">
         <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
-          <span class="field-tag">Equipment name</span>
-          <span class="field-tag">Certificate Expiry date</span>
-          <span class="field-tag">License plate number</span>
-          <span class="field-tag">Equipment image</span>
-          <span class="field-tag">Certificate image</span>
-          <span class="field-tag">Rent Start date</span>
-          <span class="field-tag">Rent End date</span>
-          <span class="field-tag">Rent Period type</span>
-          <span class="field-tag">Rent Period</span>
-          <span class="field-tag">Status</span>
+          <span class="field-tag">Warehouse Name</span>
         </div>
       </div>
-
-
-
       <hr class="separator" />
-
-      <div class="rules">
-        <div class="rule-group">
-          <p class="rule-label">Status :</p>
-          <p class="rule-description">Use these values ​​in your file to match the original headings.</p>
-
-          <div class="chips">
-            <span class="chip">Rent<kbd>1</kbd> </span>
-            <span class="chip">Owned<kbd>2</kbd> </span>
-          </div>
-        </div>
-
-        <div class="rule-group">
-          <p class="rule-label">Period Type:</p>
-          <p class="rule-description">Use these values ​​in your file to match the original headings..</p>
-
-          <div class="chips">
-            <span class="chip">Hour<kbd>1</kbd> </span>
-            <span class="chip">Day<kbd>2</kbd> </span>
-            <span class="chip">Month<kbd>3</kbd> </span>
-            <span class="chip">Year<kbd>4</kbd> </span>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <div class="grid grid-cols-6 gap-4 w-full mb-4 equipment-form">
-      <Tabs class="col-span-6 w-full" @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
-      <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType" :required="true"
-          :staticOptions="AllEquipmentTypes" :label="`${GetEquipmentTitle(activeTab)} Type`"
-          :id="`${GetEquipmentTitle(activeTab)} Type`" :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`"
-          @update:modelValue="setEquipmentType" />
-      </div>
-
-      <!-- <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect :modelValue="equipmentStatus" :staticOptions="deviceStatusOptions"
-          :label="`Equipment Status`" :id="`equipment_status`" :placeholder="`Select Equipment Status`"
-          @update:modelValue="setEquipmentStataus" :reload="false" />
-      </div> -->
-
-      <!-- <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type"
-          id="Rent Type" placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
-      </div> -->
-
-      <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect :modelValue="SelectedContractor" :controller="indexContractorController"
-          :params="indexContractorTypeParams" :label="`Contractor`" id="Contractor" :placeholder="`Select Contractor`"
-          @update:modelValue="setContructor" />
-      </div>
-
-      <div class="col-span-2 input-wrapper">
-        <UpdatedCustomInputSelect :controller="indexWhereHouseController" :params="indexWhereHouseParams"
-          :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
-          @update:modelValue="setSelectedWhereHouse" />
-      </div>
-    </div>
 
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
@@ -450,8 +289,7 @@ onMounted(() => {
                     </span>
 
                   </th>
-                  <th>Image</th>
-                  <th>Certificate Image</th>
+
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -459,22 +297,8 @@ onMounted(() => {
                 <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
                   <!-- {{ row[7] }} -->
                   <td v-for="(value, colIndex) in row" :key="colIndex">
-                    <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
-                    <span v-else-if="colIndex === 8">{{ RentTypeEnum[value] }}</span>
-                    <span v-else>{{ value }}</span>
+                    <span>{{ value }}</span>
                   </td>
-
-                  <td>
-                    <img v-if="extractedImages[rowIndex * 2]" :src="extractedImages[rowIndex * 2].base64"
-                      class="row-thumb" />
-                    <span v-else class="no-img-text">—</span>
-                  </td>
-                  <td>
-                    <img v-if="extractedImages[(rowIndex * 2) + 1]" :src="extractedImages[(rowIndex * 2) + 1].base64"
-                      class="row-thumb" />
-                    <span v-else class="no-img-text">—</span>
-                  </td>
-
                   <td>
                     <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
                       🗑
@@ -486,7 +310,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <button @click="AddOrgEmployee" class="btn-confirm">
+        <button @click="AddWarehouseType" class="btn-confirm">
           Confirm & Submit
         </button>
       </template>

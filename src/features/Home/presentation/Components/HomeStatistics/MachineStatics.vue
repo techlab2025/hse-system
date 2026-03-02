@@ -67,25 +67,29 @@ watch(() => props.statics, (newVal) => {
       <span class="static">static</span>
       <p class="static-title">Equipment & Devices & Tools</p>
     </div>
-    <div class="top-teams-container">
-      <div class="machine-statics">
-        <Chart style="max-height: 250px;" type="pie" :data="chartData" :options="chartOptions"
-          class="w-full md:w-[20rem]" />
-      </div>
+    <!-- <div class="top-teams-container"> -->
+    <div class="machine-statics">
+      <Chart style="max-height: 250px;" type="pie" :data="chartData" :options="chartOptions"
+        class="w-full md:w-[20rem]" />
     </div>
+    <!-- </div> -->
   </div>
 
 
 </template>
 
 <style lang="scss" scoped>
+.top-teams-container{
+  height: fit-content;
+//
+}
 .machine-statics {
   gap: 10px;
   padding: 10px;
   border-radius: 10px;
   // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: 400px;
+  // height: 400px;
 }
 .top-teams-container{
   @media (max-width: 1050px) {
