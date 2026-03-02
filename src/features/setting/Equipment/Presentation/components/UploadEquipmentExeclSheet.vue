@@ -732,6 +732,10 @@ kbd {
   background: #fff;
 }
 
+.table-header {
+  padding: 10px;
+}
+
 .main-table {
   width: 100%;
   border-collapse: collapse;
