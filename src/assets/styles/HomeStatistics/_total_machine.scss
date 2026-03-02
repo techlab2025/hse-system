@@ -2,6 +2,34 @@
 @import '../mixins/flex';
 @import '../mixins/grid';
 
+.total-machines-header-container {
+  @include flex-row(nowrap, space-between, center);
+  padding-right: 30px;
+  width: 90%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .static-data {
+    @include flex-row(wrap, flex-end, center); // wrap instead of nowrap
+    gap: $XsSize3;
+
+    @media (max-width: 480px) {
+      gap: 4px;
+
+      p {
+        font-size: 10px;
+        padding: 4px 10px;
+      }
+    }
+  }
+}
+
 .total-machines-container {
   margin-top: 12px;
   width: 100%;
