@@ -42,7 +42,7 @@ const GetEquipmentTypeTitle = (type: number) => {
     <div class="total-machines-header-container">
       <div class="total-machines-header">
         <span class="static">static</span>
-        <p class="static-title">most used incident factors </p>
+        <p class="static-title">most used Equipments </p>
       </div>
       <div class="static-data">
         <p>tool</p>

@@ -163,6 +163,7 @@ const ShowTemplate = ref(true)
   width: 95%;
   border-radius: 10px;
   margin: auto;
+  margin-bottom: 12px;
   /* margin-inline: 12px; */
 }
 </style>
