@@ -8,8 +8,8 @@ let resizeObserver: ResizeObserver | null = null;
 
 const props = defineProps<{
   OverviewHazardChartstate: OverviewHazardChartModel[];
-  chartHeight?: string; // e.g. "35vh" | "300px"  — default "35vh"
-  chartWidth?: string;  // e.g. "100%" | "600px"  — default "100%"
+  chartHeight?: string;
+  chartWidth?: string;
 }>();
 
 const HazardValues = ref<number[]>([]);
@@ -89,16 +89,14 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const numGroups = labels.length;
   const numDatasets = datasets.length;
 
-  // ✅ Responsive scaling factor based on width
+  // ✅ scale based on height only (width is now dynamic)
   const scale = Math.min(1, width / 800);
 
-  // ✅ Responsive padding
-  const paddingLeft = Math.max(30, width * 0.06);
-  const paddingRight = Math.max(20, width * 0.04);
+  const paddingLeft = Math.max(30, width * 0.04);
+  const paddingRight = Math.max(20, width * 0.03);
   const paddingTop = Math.max(35, height * 0.08);
   const paddingBottom = Math.max(30, height * 0.1);
 
-  const chartWidth = width - paddingLeft - paddingRight;
   const chartHeight = height - paddingTop - paddingBottom;
 
   const allValues: number[] = datasets.flatMap((ds: any) =>
@@ -117,14 +115,13 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   const effectiveMax = maxValue * 1.15;
 
-  // ✅ Spacing & sizing controls — غيّر هنا براحتك
-  const GROUP_GAP = 10;       // مسافة بين مجموعات الأعمدة (px)
-  const MAX_BAR_WIDTH = 65;   // أقصى عرض لكل عمود (px)
-  const BAR_GAP_RATIO = 0.2;  // مسافة بين الأعمدة داخل المجموعة
+  // ✅ FIXED group width — موحد بغض النظر عن عدد الـ groups
+  const GROUP_GAP = 10;
+  const FIXED_GROUP_WIDTH = 90;
+  const MAX_BAR_WIDTH = 65;
+  const BAR_GAP_RATIO = 0.2;
 
-  const totalGroupGaps = (numGroups - 1) * GROUP_GAP;
-  const usableWidth = chartWidth - totalGroupGaps;
-  const groupWidth = usableWidth / numGroups;
+  const groupWidth = FIXED_GROUP_WIDTH;
   const groupPadding = Math.max(4, groupWidth * 0.08);
   const availableForBars = groupWidth - groupPadding * 2;
   const barGap = Math.max(2, availableForBars * BAR_GAP_RATIO);
@@ -132,13 +129,11 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const rawBarWidth = (availableForBars - totalGaps) / numDatasets;
   const barWidth = Math.max(4, Math.min(rawBarWidth, MAX_BAR_WIDTH));
 
-  // ✅ depth is proportional to barWidth — never bigger than the bar
   const depth = Math.max(6, Math.min(barWidth * 0.6, 22 * scale));
   const angle = Math.PI / 6;
   const depthX = Math.cos(angle) * depth;
   const depthY = Math.sin(angle) * depth;
 
-  // ✅ Responsive font sizes
   const axisFontSize = Math.max(8, Math.round(11 * scale));
   const valueFontSize = Math.max(7, Math.round(10 * scale));
   const legendFontSize = Math.max(9, Math.round(12 * scale));
@@ -250,7 +245,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
       ctx.lineWidth = 0.5;
       ctx.strokeRect(baseX, baseY, barWidth, barHeight);
 
-      // Value label — only show if bar is wide/tall enough
+      // Value label
       const minBarWidthForLabel = 16;
       const minBarHeightForLabel = 18;
       if (barHeight > minBarHeightForLabel && barWidth > minBarWidthForLabel && value > 0) {
@@ -305,13 +300,10 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   ctx.stroke();
 
   // ── Legend ─────────────────────────────────────────────────────────────
-  // ✅ Responsive legend: wraps or shrinks based on available width
   const boxSize = Math.max(8, Math.round(13 * scale));
   const legendItemWidth = Math.max(70, Math.round(105 * scale));
   const totalLegendWidth = datasets.length * legendItemWidth;
-
-  // Center legend horizontally under chart
-  let legendStartX = paddingLeft + (chartWidth - totalLegendWidth) / 2;
+  const legendStartX = paddingLeft + (width - paddingLeft - paddingRight - totalLegendWidth) / 2;
   const legendY = Math.max(10, paddingTop / 2 - boxSize / 2);
 
   datasets.forEach((dataset: any, index: number) => {
@@ -349,15 +341,33 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   });
 };
 
+// ✅ resizeCanvas — يحسب العرض المطلوب ويمدد الـ canvas لو الأعمدة كتير
 const resizeCanvas = () => {
   if (!canvasRef.value) return;
   const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
   if (!container) return;
 
   const dpr = window.devicePixelRatio || 1;
-  const width = container.offsetWidth;
+  const containerWidth = container.offsetWidth;
   const height = container.offsetHeight;
-  if (width <= 0 || height <= 0) return;
+  if (height <= 0) return;
+
+  // ✅ احسب العرض المطلوب بناءً على عدد المجموعات
+  const FIXED_GROUP_WIDTH = 90;
+  const GROUP_GAP = 10;
+  const numGroups = chartData.value?.labels?.length ?? 0;
+  const paddingLeft = Math.max(30, containerWidth * 0.04);
+  const paddingRight = Math.max(20, containerWidth * 0.03);
+
+  const neededWidth =
+    numGroups * FIXED_GROUP_WIDTH +
+    (numGroups - 1) * GROUP_GAP +
+    paddingLeft +
+    paddingRight +
+    30; // buffer
+
+  // ✅ خد الأكبر: إما عرض الـ container أو العرض المطلوب
+  const width = Math.max(containerWidth, neededWidth);
 
   canvasRef.value.width = width * dpr;
   canvasRef.value.height = height * dpr;
@@ -407,8 +417,12 @@ onBeforeUnmount(() => {
         <p class="static-title">Hazard & Observation & Incident Overview</p>
       </div>
     </div>
-    <div class="chart-wrapper" :style="{ height: chartHeight ?? '35vh', width: chartWidth ?? '100%' }">
-      <canvas ref="canvasRef"></canvas>
+
+    <!-- ✅ scroll-wrapper يحتوي الـ canvas ويعمل scroll أفقي -->
+    <div class="chart-scroll-wrapper">
+      <div class="chart-wrapper" :style="{ height: chartHeight ?? '35vh' }">
+        <canvas ref="canvasRef"></canvas>
+      </div>
     </div>
   </div>
 </template>
@@ -437,17 +451,41 @@ onBeforeUnmount(() => {
   text-transform: capitalize;
 }
 
+/* ✅ الـ wrapper الخارجي: يحجز العرض الكامل ويعمل scroll أفقي */
+.chart-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Scrollbar styling — اختياري */
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+/* ✅ الـ chart-wrapper: عرضه 100% دايمًا — الـ canvas هو اللي بيتمدد */
 .chart-wrapper {
-  width: 100%;        /* ✅ يأخد كل العرض المتاح */
-  height: 35vh;       /* ✅ قلّلنا من 55vh لـ 35vh */
-  max-height: 400px;  /* ✅ قلّلنا من 780px لـ 400px */
-  min-height: 250px;  /* ✅ قلّلنا من 350px لـ 250px */
+  width: 100%;
+  height: 35vh;
+  max-height: 400px;
+  min-height: 250px;
   position: relative;
 }
 
 canvas {
-  width: 100%;
   height: 100%;
   display: block;
+  /* العرض بيتحكم فيه resizeCanvas بالـ JS — ممكن يكون أكبر من الـ wrapper فيظهر scroll */
 }
 </style>
