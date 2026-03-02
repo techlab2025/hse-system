@@ -457,13 +457,13 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   <!-- end -->
 
   <div class="flex gap-4 statics">
-    <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12  xl:col-span-8" />
+    <TotalMachines v-if="EquipmentStatics?.data?.statics?.length > 0" :totalMachines="EquipmentStatics.data?.statics" class="col-span-12  xl:col-span-8" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 xl:col-span-4" />
   </div>
   <div class="Hazard-Investigation">
 
-    <ObservatoinFactoryStatistics :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
-    <InvestegationStatics :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
+    <ObservatoinFactoryStatistics v-if="OverviewHazardChartstate?.data?.length > 0" :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
+    <InvestegationStatics v-if="overviewInvestigationsChartstate?.data?.length > 0" :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
 
   </div>
   <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
