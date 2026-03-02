@@ -33,7 +33,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import CertificateCard from '../supcomponents/CertificateCard.vue'
-
+import Image from "primevue/image";
 const { t } = useI18n()
 
 // import DialogChangeStatusCertificate from "@/features/setting/Certificateuages/Presentation/components/Certificate/DialogChangeStatusCertificate.vue";
@@ -264,7 +264,8 @@ const exportExcel = () => {
                   }}
                 </td>
                 <td data-label="image">
-                  <img v-if="item.image" :src="item.image" alt="" />
+                  <Image v-if="item.image" :src="item.image" alt="Image" preview />
+                  <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
                   <span v-else>---</span>
                 </td>
 
@@ -314,4 +315,15 @@ const exportExcel = () => {
   </PermissionBuilder>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.image .p-image-preview-mask:hover {
+  background: transparent !important;
+}
+.image .p-image-preview:hover > .p-image-preview-mask {
+  background: transparent !important;
+}
+.p-image-preview-mask:hover {
+  background: transparent !important;
+}
+</style>

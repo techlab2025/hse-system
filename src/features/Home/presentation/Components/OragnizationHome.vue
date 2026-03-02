@@ -353,7 +353,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
         :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-one"
         link="/organization/equipment-mangement/incedant?isAll=1" />
 
-      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspection"
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.hazardObservationsHigh"
         :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two"
         link="/organization/equipment-mangement/observation?isAll=1&type=2&risk_level=3" />
 
