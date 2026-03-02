@@ -199,7 +199,11 @@ const GetEquipmentTypeTitle = (type: number) => {
   color: black;
   margin-top: 8px;
 }
-
+@media (max-width: 800px) {
+  .chart-container{
+    overflow: scroll;
+  }
+}
 /* .percentage-container {
   position: relative;
   overflow: hidden;

@@ -1,4 +1,10 @@
 <template>
+
+<div class="investigations_container">
+  <div class="title">
+    <h6>Overview investigations</h6>
+    <p>These are the percentages of closed investigations for each month.</p>
+  </div>
   <div class="chart_container">
     <div class="chart_row" v-for="(value, index) in props.overviewInvestigationsChartstate" :key="index">
       <div class="span" v-for="i in 8" :key="i"></div>
@@ -6,6 +12,7 @@
       <p class="zone_title">{{ wordSlice(value.zoneTitle, 7) }}</p>
     </div>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +29,22 @@ const props = defineProps<{
 </script>
 
 <style lang="scss" scoped>
+.investigations_container{
+  .title{
+
+    h6{
+      font-size: 20px;
+      font-weight: 700;
+      color: #0C2058;
+    }
+    p{
+      font-size: 12px;
+      font-weight: 600;
+      color: #BCBCBC;
+    }
+    margin: 1.8rem 0;
+  }
+}
 .chart_container {
   display: flex;
   gap: 1rem;
@@ -29,20 +52,24 @@ const props = defineProps<{
   height: 35vh;
   position: relative;
   margin-bottom: 1rem;
+  overflow: hidden;
 }
-.chart_container p{
+
+.chart_container p {
   color: #B3BBCD;
   font-size: 12px;
   font-weight: 600;
 }
 
-.chart_container  .zone_title{
+.chart_container .zone_title {
   position: absolute;
   bottom: -30px;
 }
-.chart_container span{
+
+.chart_container span {
   z-index: 11;
 }
+
 .chart_row {
   position: relative;
   width: 100%;
@@ -111,14 +138,17 @@ const props = defineProps<{
     z-index: 11;
   }
 }
+
 @media (max-width: 600px) {
-  .chart_row{
+  .chart_row {
     max-width: 25px;
   }
-  .total_count_chart{
+
+  .total_count_chart {
     font-size: 12px !important;
   }
-  .chart_container{
+
+  .chart_container {
     overflow: scroll;
   }
 }

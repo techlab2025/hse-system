@@ -87,4 +87,9 @@ watch(() => props.statics, (newVal) => {
   width: 100%;
   height: 400px;
 }
+.top-teams-container{
+  @media (max-width: 1050px) {
+margin-bottom: 5rem;
+  }
+}
 </style>
