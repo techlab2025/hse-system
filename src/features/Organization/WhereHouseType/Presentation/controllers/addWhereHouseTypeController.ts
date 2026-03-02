@@ -7,6 +7,7 @@ import type { Router } from 'vue-router'
 import AddWhereHouseTypeteUseCase from '../../Domain/useCase/addWhereHouseTypeUseCase'
 import type AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypeParams'
 import type WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddWhereHouseTypeController extends ControllerInterface<WhereHouseTypeModel> {
   private static instance: AddWhereHouseTypeController
@@ -25,11 +26,20 @@ export default class AddWhereHouseTypeController extends ControllerInterface<Whe
   async addWhereHouseType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      // params.validate()
-      // if (!params.validate()?.isValid) {
-      //   params.validateOrThrow()
-      //   return
-      // }
+        if (params?.data?.length > 0) {
+           for (const el of params.data) {
+             if (!el.title) {
+               new OpenWarningDilaog('title Is Required').openDialog()
+               return
+             }
+           }
+         } else {
+           params.validate()
+           if (!params.validate().isValid) {
+             params.validateOrThrow()
+             return
+           }
+         }
       const dataState: DataState<WhereHouseTypeModel> =
         await this.AddWhereHouseTypeUseCase.call(params)
       this.setLoading()
