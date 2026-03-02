@@ -150,6 +150,7 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('wherehouse Type') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
@@ -160,6 +161,7 @@ watch(
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Wherehouse Type">{{ wordSlice(item?.warehouse_type?.title) }}</td>
                 <td data-label="Actions">
                   <DropList :actionList="actionList(item.id, deleteWhereHouse)" @delete="deleteWhereHouse(item.id)" />
                 </td>

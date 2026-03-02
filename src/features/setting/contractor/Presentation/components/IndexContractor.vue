@@ -200,7 +200,7 @@ watch(
                 <td data-label="Phone">{{ item?.phone }}</td>
                 <td data-label="Expire Date">{{ item?.expire_date }}</td>
                 <td data-label="Contract Status">
-                  <span :class="`badge badge-${item.status === ContractorStatusEnum.ACTIVE ? 'success' : 'danger'}`">
+                  <span :class="`badge badge-${item.status === ContractorStatusEnum.ACTIVE ? 'success' : 'danger'}`" :style="item.status === ContractorStatusEnum.ACTIVE ? 'color: #28a745;' : 'color: #dc3545;'">
                     {{ item.status === ContractorStatusEnum.ACTIVE ? t('valid') : t('invalid') }}
                   </span>
                 </td>
@@ -259,4 +259,6 @@ watch(
   </permission-builder>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
