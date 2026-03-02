@@ -367,32 +367,33 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
     </div>
     <div class="most-incidat-factor">
-      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" v-if="homeInspectionState?.data?.Hazard?.length > 0" :data="[
-        {
-          value: homeInspectionState?.data?.Hazard[0]?.count,
-          label: homeInspectionState?.data?.Hazard[0]?.hazard_title,
-          spanClass: 'ToatlInsedant-one',
-          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[0]?.hazard_id}`
-        },
-        {
-          value: homeInspectionState?.data?.Hazard[1]?.count,
-          label: homeInspectionState?.data?.Hazard[1]?.hazard_title,
-          spanClass: 'ToatlInsedant-two',
-          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[1]?.hazard_id}`
-        },
-        {
-          value: homeInspectionState?.data?.Hazard[2]?.count,
-          label: homeInspectionState?.data?.Hazard[2]?.hazard_title,
-          spanClass: 'ToatlInsedant-three',
-          link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[2]?.hazard_id}`
-        },
-        // {
-        //   value: homeInspectionState?.data?.Hazard[3]?.count,
-        //   label: homeInspectionState?.data?.Hazard[3]?.hazard_title,
-        //   spanClass: 'ToatlInsedant-three'
-        // }
-      ]" />
-      <MostIncidantFactor :title="$t('Employee certificates status')"   :data="[
+      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')"
+        v-if="homeInspectionState?.data?.Hazard?.length > 0" :data="[
+          {
+            value: homeInspectionState?.data?.Hazard[0]?.count,
+            label: homeInspectionState?.data?.Hazard[0]?.hazard_title,
+            spanClass: 'ToatlInsedant-one',
+            link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[0]?.hazard_id}`
+          },
+          {
+            value: homeInspectionState?.data?.Hazard[1]?.count,
+            label: homeInspectionState?.data?.Hazard[1]?.hazard_title,
+            spanClass: 'ToatlInsedant-two',
+            link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[1]?.hazard_id}`
+          },
+          {
+            value: homeInspectionState?.data?.Hazard[2]?.count,
+            label: homeInspectionState?.data?.Hazard[2]?.hazard_title,
+            spanClass: 'ToatlInsedant-three',
+            link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[2]?.hazard_id}`
+          },
+          // {
+          //   value: homeInspectionState?.data?.Hazard[3]?.count,
+          //   label: homeInspectionState?.data?.Hazard[3]?.hazard_title,
+          //   spanClass: 'ToatlInsedant-three'
+          // }
+        ]" />
+      <MostIncidantFactor :title="$t('Employee certificates status')" :data="[
         {
           value: homeInspectionState?.data?.employeeCertificates?.expired,
           label: `${$t('Expired')}`,
@@ -428,28 +429,29 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
           divClass: 'duration-ended-class'
         },
       ]" />
-      <MostIncidantFactor :title="$t('most used root causes')" v-if="homeInspectionState?.data?.MostUsed?.length > 0" :data="[
-        {
-          value: homeInspectionState?.data?.MostUsed[0]?.count,
-          label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-one',
-          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[0]?.id}`
-        },
-        {
-          value: homeInspectionState?.data?.MostUsed[1]?.count,
-          label: homeInspectionState?.data?.MostUsed[1]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-two',
-          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[1]?.id}`
+      <MostIncidantFactor :title="$t('most used root causes')" v-if="homeInspectionState?.data?.MostUsed?.length > 0"
+        :data="[
+          {
+            value: homeInspectionState?.data?.MostUsed[0]?.count,
+            label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
+            spanClass: 'ToatlInsedant-one',
+            link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[0]?.id}`
+          },
+          {
+            value: homeInspectionState?.data?.MostUsed[1]?.count,
+            label: homeInspectionState?.data?.MostUsed[1]?.rootCauseTitle,
+            spanClass: 'ToatlInsedant-two',
+            link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[1]?.id}`
 
-        },
-        {
-          value: homeInspectionState?.data?.MostUsed[2]?.count,
-          label: homeInspectionState?.data?.MostUsed[2]?.rootCauseTitle,
-          spanClass: 'ToatlInsedant-three',
-          link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[2]?.id}`
+          },
+          {
+            value: homeInspectionState?.data?.MostUsed[2]?.count,
+            label: homeInspectionState?.data?.MostUsed[2]?.rootCauseTitle,
+            spanClass: 'ToatlInsedant-three',
+            link: `/organization/equipment-mangement/incedant?isAll=1&rootCause=${homeInspectionState?.data?.MostUsed[2]?.id}`
 
-        }
-      ]" />
+          }
+        ]" />
     </div>
   </div>
 
@@ -457,13 +459,16 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   <!-- end -->
 
   <div class="flex gap-4 statics">
-    <TotalMachines v-if="EquipmentStatics?.data?.statics?.length > 0" :totalMachines="EquipmentStatics.data?.statics" class="col-span-12  xl:col-span-8" />
+    <TotalMachines v-if="EquipmentStatics?.data?.statics?.length > 0" :totalMachines="EquipmentStatics.data?.statics"
+      class="col-span-12  xl:col-span-8" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 xl:col-span-4" />
   </div>
   <div class="Hazard-Investigation">
 
-    <ObservatoinFactoryStatistics v-if="OverviewHazardChartstate?.data?.length > 0" :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
-    <InvestegationStatics v-if="overviewInvestigationsChartstate?.data?.length > 0" :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
+    <ObservatoinFactoryStatistics v-if="OverviewHazardChartstate?.data?.length > 0"
+      :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
+    <InvestegationStatics v-if="overviewInvestigationsChartstate?.data?.length > 0"
+      :overviewInvestigationsChartstate="overviewInvestigationsChartstate?.data" />
 
   </div>
   <!-- <TopTeams :topTeams="state.data?.topTeams" class="col-span-12 md:col-span-3" />
@@ -485,6 +490,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   gap: 1rem;
   margin-top: 20px;
   align-items: end;
+  overflow: hidden;
 }
 
 @media (max-width: 1200px) {
@@ -503,11 +509,13 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   align-items: center; */
   /* flex-wrap: wrap; */
 }
+
 @media (max-width: 1050px) {
-  .statics{
+  .statics {
     flex-direction: column;
   }
 }
+
 .mb-5 {
   margin-block: 12px;
 }

@@ -32,6 +32,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import { ContractorStatusEnum } from '../../Core/Enum/ContractorStatusEnum'
 
 const { t } = useI18n()
 
@@ -180,8 +181,11 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('phone') }}</th>
+                <th scope="col">{{ $t('expire Date') }}</th>
+                <th scope="col">{{ $t('Contract Status') }}</th>
 
-                <th scope="col">Actions</th>
+                <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -193,6 +197,13 @@ watch(
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item?.title) }}</td>
+                <td data-label="Phone">{{ item?.phone }}</td>
+                <td data-label="Expire Date">{{ item?.expire_date }}</td>
+                <td data-label="Contract Status">
+                  <span :class="`badge badge-${item.status === ContractorStatusEnum.ACTIVE ? 'success' : 'danger'}`">
+                    {{ item.status === ContractorStatusEnum.ACTIVE ? t('valid') : t('invalid') }}
+                  </span>
+                </td>
 
                 <td data-label="Actions">
                   <!--                <DialogChangeStatusContractorType-->

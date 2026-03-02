@@ -1,18 +1,18 @@
 <template>
 
-<div class="investigations_container">
-  <div class="title">
-    <h6>Overview investigations</h6>
-    <p>These are the percentages of closed investigations for each month.</p>
-  </div>
-  <div class="chart_container">
-    <div class="chart_row" v-for="(value, index) in props.overviewInvestigationsChartstate" :key="index">
-      <div class="span" v-for="i in 8" :key="i"></div>
-      <div class="total_count_chart" :style="{ height: value.total + '%' }"><span>+{{ value.total }}</span>%</div>
-      <p class="zone_title">{{ wordSlice(value.zoneTitle, 7) }}</p>
+  <div class="investigations_container">
+    <div class="title">
+      <h6>Overview investigations</h6>
+      <p>These are the percentages of closed investigations for each month.</p>
+    </div>
+    <div class="chart_container">
+      <div class="chart_row" v-for="(value, index) in props.overviewInvestigationsChartstate" :key="index">
+        <div class="span" v-for="i in 8" :key="i"></div>
+        <div class="total_count_chart" :style="{ height: value.total + '%' }"><span>+{{ value.total }}</span>%</div>
+        <p class="zone_title">{{ wordSlice(value.zoneTitle, 7) }}</p>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -29,22 +29,28 @@ const props = defineProps<{
 </script>
 
 <style lang="scss" scoped>
-.investigations_container{
-  .title{
+.investigations_container {
+  //  overflow: hidden;
+  padding-bottom: 30px;
 
-    h6{
+  .title {
+
+    h6 {
       font-size: 20px;
       font-weight: 700;
       color: #0C2058;
     }
-    p{
+
+    p {
       font-size: 12px;
       font-weight: 600;
       color: #BCBCBC;
     }
+
     margin: 1.8rem 0;
   }
 }
+
 .chart_container {
   display: flex;
   gap: 1rem;
@@ -52,13 +58,13 @@ const props = defineProps<{
   height: 35vh;
   position: relative;
   margin-bottom: 1rem;
-  overflow: hidden;
+
 }
 
 .chart_container p {
-  color: #B3BBCD;
+  color: #0C2058;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .chart_container .zone_title {
@@ -137,6 +143,7 @@ const props = defineProps<{
     // padding-bottom: 1rem;
     padding: 0 .5rem 1rem;
     z-index: 11;
+    text-shadow: 2px 2px 4px #000000;
   }
 }
 
