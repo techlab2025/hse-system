@@ -33,4 +33,16 @@ export const accidentsRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'accidents-type/upload-excel',
+    name: 'Upload Accidents Type Excel',
+    component: () => import('@/views/Admin/Accidents/UplaodIncedantType.vue'),
+    meta: {
+      breadcrumb: 'Upload incidents Type Excel',
+      parent: `Accidents Type`,
+      type: 'Shared',
+      isSidebar: true,
+    },
+  },
+
 ]

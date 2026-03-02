@@ -33,4 +33,15 @@ export const observerationRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'observation-type/upload-excel',
+    name: 'Import Observeration Type',
+    component: () => import('@/views/Admin/ObserverationType/UploadObserverationTypeExcel.vue'),
+    meta: {
+      breadcrumb: 'Import Observeration Type',
+      parent: 'Observeration Type',
+      type: 'Shared',
+      isSidebar: true,
+    },
+  },
 ]

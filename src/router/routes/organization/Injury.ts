@@ -30,4 +30,14 @@ export const InjuryRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'injury/upload-excel',
+    name: 'Upload Injury Excel',
+    component: () => import('@/views/Organization/Injury/UploadInjuryExcel.vue'),
+    meta: {
+      breadcrumb: 'Upload Injury Excel',
+      parent: 'Injury',
+      isSidebar: true,
+    },
+  },
 ]

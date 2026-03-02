@@ -12,6 +12,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import type AddRootCausesParams from '../../Core/params/addRootCausesParams'
 import AddRootCausesUseCase from '../../Domain/useCase/addRootCausesUseCase'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddRootCausesController extends ControllerInterface<RootCausesModel> {
   private static instance: AddRootCausesController
@@ -27,14 +28,22 @@ export default class AddRootCausesController extends ControllerInterface<RootCau
     return this.instance
   }
 
-  async addRootCauses(params: AddRootCausesParams, router: Router, draft: boolean = false) {
+  async addRootCauses(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
+      if (params?.data?.length > 0) {
+        for (const el of params.data) {
+          if (!el.title) {
+            new OpenWarningDilaog('title Is Required').openDialog()
+            return
+          }
+        }
+      } else {
+        params.validate()
+        if (!params.validate().isValid) {
+          params.validateOrThrow()
+          return
+        }
       }
       const dataState: DataState<RootCausesModel> = await this.AddRootCausesUseCase.call(params)
       this.setState(dataState)

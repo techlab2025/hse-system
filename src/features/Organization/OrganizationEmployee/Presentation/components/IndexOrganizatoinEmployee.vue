@@ -191,7 +191,7 @@ const exportExcel = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "Equipment.xlsx");
+  saveAs(data, "Employees.xlsx");
 };
 </script>
 
