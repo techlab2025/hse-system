@@ -240,6 +240,7 @@ const exportExcel = () => {
                   {{ $t('industries') }}
                 </th>
                 <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('requireExpiredDate') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -252,7 +253,7 @@ const exportExcel = () => {
                       index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
@@ -264,9 +265,14 @@ const exportExcel = () => {
                   }}
                 </td>
                 <td data-label="image">
+                 <div class="image_certificate_container">
                   <Image v-if="item.image" :src="item.image" alt="Image" preview />
                   <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
                   <span v-else>---</span>
+                 </div>
+                </td>
+                <td>
+                  {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
                 </td>
 
                 <td data-label="Actions">
@@ -315,15 +321,4 @@ const exportExcel = () => {
   </PermissionBuilder>
 </template>
 
-<style scoped>
 
-.image .p-image-preview-mask:hover {
-  background: transparent !important;
-}
-.image .p-image-preview:hover > .p-image-preview-mask {
-  background: transparent !important;
-}
-.p-image-preview-mask:hover {
-  background: transparent !important;
-}
-</style>

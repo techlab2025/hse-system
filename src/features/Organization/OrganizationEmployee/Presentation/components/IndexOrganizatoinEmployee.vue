@@ -251,7 +251,7 @@ const exportExcel = () => {
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
-                <td data-label="Hierarchy">{{item.hierarchy.map(el => el.title).join(' - ')}}</td>
+                <td data-label="Hierarchy">{{item.hierarchy.map(el => el.title).join(' - ') || 'N/A'}}</td>
                 <td data-label="Email">{{ item.email }}</td>
                 <td data-label="Phone">{{ item.phone }}</td>
                 <!-- <td data-label="images">
