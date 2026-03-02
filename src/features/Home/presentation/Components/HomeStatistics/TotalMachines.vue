@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import wordSlice from '@/base/Presentation/utils/word_slice';
 import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum';
 import type StatisticsMachineModel from '@/features/Home/data/Model/StatisticsMachineModel';
 import { computed } from 'vue';
@@ -75,7 +76,7 @@ const GetEquipmentTypeTitle = (type: number) => {
 
 
         <span class="col-name text-slate-500 text-sm font-medium mt-2">
-          {{ month.name }}
+          {{ wordSlice(month.name, 10) }}
         </span>
       </div>
     </div>
