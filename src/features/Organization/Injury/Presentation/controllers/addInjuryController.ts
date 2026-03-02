@@ -7,6 +7,7 @@ import type { Router } from 'vue-router'
 import type InjuryModel from '../../Data/models/InjuryModel'
 import AddInjuryteUseCase from '../../Domain/useCase/addInjuryUseCase'
 import type AddInjuryParams from '../../Core/params/addInjuryParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddInjuryController extends ControllerInterface<InjuryModel> {
   private static instance: AddInjuryController
@@ -22,13 +23,22 @@ export default class AddInjuryController extends ControllerInterface<InjuryModel
     return this.instance
   }
 
-  async addInjury(params: AddInjuryParams, router: Router, draft: boolean = false) {
+  async addInjury(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-      if (!params.validate()?.isValid) {
-        params.validateOrThrow()
-        return
+      if (params?.data?.length > 0) {
+        for (const el of params.data) {
+          if (!el.title) {
+            new OpenWarningDilaog('title Is Required').openDialog()
+            return
+          }
+        }
+      } else {
+        params.validate()
+        if (!params.validate().isValid) {
+          params.validateOrThrow()
+          return
+        }
       }
       const dataState: DataState<InjuryModel> = await this.AddInjuryUseCase.call(params)
       this.setState(dataState)

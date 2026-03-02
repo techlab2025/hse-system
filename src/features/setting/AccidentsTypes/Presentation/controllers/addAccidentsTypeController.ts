@@ -26,15 +26,15 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
     return this.instance
   }
 
-  async addAccidentsType(params: AddAccidentsTypeParams, router: Router, draft: boolean = false) {
+  async addAccidentsType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
+      // params.validate()
 
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<AccidentsTypeModel> =
         await this.addAccidentsTypeUseCase.call(params)
       this.setState(dataState)

@@ -1220,5 +1220,8 @@
   "select_day": "Select Day",
   "from_date": "From Date",
   "add_organizatoin_employee": "Add Organizatoin Employee",
-  "import_warehouse": "Import Warehouse"
+  "import_warehouse": "Import Warehouse",
+  "import_accidents_type":"Import Accidents Type",
+  "import_observeration_type":"Import Observeration Type",
+  "import_injury":"Import Injury"
 }

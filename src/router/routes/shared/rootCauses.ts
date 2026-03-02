@@ -36,4 +36,16 @@ export const RootCausesRoutes: RouteRecordRaw[] = [
 
     },
   },
+  {
+    path: 'root-causes/upload-excel',
+    name: 'Upload Root Causes Excel',
+    component: () => import('@/views/Organization/RootCaueses/UploadRootCausesExcel.vue'),
+    meta: {
+      breadcrumb: 'Upload Root Causes Excel',
+      parent: 'Root Causes',
+      type: 'Shared',
+      isSidebar: true,
+
+    },
+  },
 ]

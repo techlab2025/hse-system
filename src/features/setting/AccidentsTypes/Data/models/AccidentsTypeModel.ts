@@ -48,4 +48,19 @@ export default class AccidentsTypeModel extends TitleInterface {
       data.titles,
     )
   }
+  static transformData(data: string[][]): AccidentsTypeModel[] {
+    return data.map(
+      (row, index) =>
+        new AccidentsTypeModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2] ? parseInt(row[2]) : 0,
+          [],
+          row[3] ? parseInt(row[3]) : 0,
+          row[4] || '',
+          row[5] || '',
+        ),
+    )
+  }
 }

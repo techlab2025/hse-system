@@ -11,6 +11,7 @@ import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/model
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type AddEquipmentTypeParams from '../../Core/params/addEquipmentTypeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: AddEquipmentTypeController
@@ -26,14 +27,22 @@ export default class AddEquipmentTypeController extends ControllerInterface<Equi
     return this.instance
   }
 
-  async addEquipmentType(params: AddEquipmentTypeParams, router: Router, draft: boolean = false) {
+  async addEquipmentType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
+      if (params?.data?.length > 0) {
+        for (const el of params.data) {
+          if (!el.title) {
+            new OpenWarningDilaog('title Is Required').openDialog()
+            return
+          }
+        }
+      } else {
+        params.validate()
+        if (!params.validate().isValid) {
+          params.validateOrThrow()
+          return
+        }
       }
       const dataState: DataState<EquipmentTypeModel> =
         await this.AddEquipmentTypeUseCase.call(params)

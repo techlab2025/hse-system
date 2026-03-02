@@ -10,6 +10,7 @@ export default class EquipmentTypeModel extends TitleInterface {
   public parentId: number
   public image: string
   public titles: string
+  public type: number
 
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export default class EquipmentTypeModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
+    type: number,
   ) {
     super({ id, title, subtitle })
 
@@ -31,6 +33,7 @@ export default class EquipmentTypeModel extends TitleInterface {
     this.parentId = parentId
     this.image = image
     this.titles = titles
+    this.type = type
   }
 
   static fromMap(data: any): EquipmentTypeModel {
@@ -46,6 +49,24 @@ export default class EquipmentTypeModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
+      data.type,
+    )
+  }
+  static transformData(data: string[][]): EquipmentTypeModel[] {
+    return data.map(
+      (row, index) =>
+        new EquipmentTypeModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2] ? parseInt(row[2]) : 0,
+          [],
+          row[3] ? parseInt(row[3]) : 0,
+          row[4] || '',
+          row[5] || '',
+          row[6] || '',
+          row[7] || '',
+        ),
     )
   }
 }

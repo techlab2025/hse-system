@@ -30,7 +30,8 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const { t } = useI18n()
 
 // import DialogChangeStatusObserverationType from "@/features/setting/ObserverationType/Presentation/components/ObserverationType/DialogChangeStatusObserverationType.vue";
@@ -143,6 +144,27 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
     ],
   },
 ]
+
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "title": it.title || "N/A",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "observeration-type.xlsx");
+};
 </script>
 
 <template>
@@ -157,6 +179,8 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
+        <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -167,6 +191,18 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
           :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
           class="btn btn-primary">
           {{ $t('add_observeration_type') }}
+        </router-link>
+      </PermissionBuilder>
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.OBSERVATION_TYPE_CREATE,
+        PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+      ]">
+        <router-link
+         :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/upload-excel`"
+          class="btn btn-primary">
+          {{ $t('import_observeration_type') }}
         </router-link>
       </PermissionBuilder>
     </div>

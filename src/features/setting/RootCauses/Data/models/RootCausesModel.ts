@@ -34,4 +34,17 @@ export default class RootCausesModel extends TitleInterface {
         : [],
     )
   }
+  static transformData(data: string[][]): RootCausesModel[] {
+    return data.map(
+      (row, index) =>
+        new RootCausesModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2] ? parseInt(row[2]) : 0,
+          [],
+
+        ),
+    )
+  }
 }
