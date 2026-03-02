@@ -90,9 +90,11 @@ const GetEquipmentTypeTitle = (type: number) => {
 .col-name {
   max-height: 16px;
   overflow: hidden;
+  text-align: center;
 }
 
 .chart-container {
+  width: 100%;
   max-width: 100%;
 
   .month {

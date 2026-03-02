@@ -134,7 +134,8 @@ const props = defineProps<{
     justify-content: center;
     font-weight: bold;
     font-size: 13px;
-    padding-bottom: 1rem;
+    // padding-bottom: 1rem;
+    padding: 0 .5rem 1rem;
     z-index: 11;
   }
 }
