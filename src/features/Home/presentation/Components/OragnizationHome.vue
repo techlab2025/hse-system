@@ -367,7 +367,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
     </div>
     <div class="most-incidat-factor">
-      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" :data="[
+      <MostIncidantFactor :title="$t('high-risk hazards unmitigated')" v-if="homeInspectionState?.data?.Hazard?.length > 0" :data="[
         {
           value: homeInspectionState?.data?.Hazard[0]?.count,
           label: homeInspectionState?.data?.Hazard[0]?.hazard_title,
@@ -392,7 +392,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
         //   spanClass: 'ToatlInsedant-three'
         // }
       ]" />
-      <MostIncidantFactor :title="$t('Employee certificates status')" :data="[
+      <MostIncidantFactor :title="$t('Employee certificates status')"   :data="[
         {
           value: homeInspectionState?.data?.employeeCertificates?.expired,
           label: `${$t('Expired')}`,
@@ -428,7 +428,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
           divClass: 'duration-ended-class'
         },
       ]" />
-      <MostIncidantFactor :title="$t('most used root causes')" :data="[
+      <MostIncidantFactor :title="$t('most used root causes')" v-if="homeInspectionState?.data?.MostUsed?.length > 0" :data="[
         {
           value: homeInspectionState?.data?.MostUsed[0]?.count,
           label: homeInspectionState?.data?.MostUsed[0]?.rootCauseTitle,
