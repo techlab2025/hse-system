@@ -1219,5 +1219,6 @@
   "required_inspection": "Required Inspection",
   "select_day": "Select Day",
   "from_date": "From Date",
-  "add_organizatoin_employee": "Add Organizatoin Employee"
+  "add_organizatoin_employee": "Add Organizatoin Employee",
+  "import_warehouse": "Import Warehouse"
 }

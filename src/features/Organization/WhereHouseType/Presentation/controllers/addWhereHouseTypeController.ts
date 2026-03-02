@@ -22,14 +22,14 @@ export default class AddWhereHouseTypeController extends ControllerInterface<Whe
     return this.instance
   }
 
-  async addWhereHouseType(params: AddWhereHouseTypeParams, router: Router, draft: boolean = false) {
+  async addWhereHouseType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
-      if (!params.validate()?.isValid) {
-        params.validateOrThrow()
-        return
-      }
+      // params.validate()
+      // if (!params.validate()?.isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       const dataState: DataState<WhereHouseTypeModel> =
         await this.AddWhereHouseTypeUseCase.call(params)
       this.setLoading()

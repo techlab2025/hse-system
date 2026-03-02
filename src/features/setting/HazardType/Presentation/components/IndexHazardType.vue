@@ -32,6 +32,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const { t } = useI18n()
 const route = useRoute()
@@ -188,7 +190,26 @@ watch(() => route.params.parent_id, (newVal) => {
   // ParentId = newVal
   fetchHazardType('', currentPage.value, countPerPage.value, 1, route.params.parent_id, route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent)
 })
-
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "title": it.title || "N/A",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "Hazard-type.xlsx");
+};
 
 </script>
 
@@ -203,6 +224,8 @@ watch(() => route.params.parent_id, (newVal) => {
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -213,6 +236,19 @@ watch(() => route.params.parent_id, (newVal) => {
           :to="route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
           class="btn btn-primary">
           {{ route.params?.parent_id ? $t('Add_Hazard') : $t('Add_HazardType') }}
+        </router-link>
+      </PermissionBuilder>
+
+      <PermissionBuilder :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.HAZARD_TYPE_CREATE,
+        PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+      ]">
+        <router-link
+          :to="route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/upload-excel` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/upload-excel`"
+          class="btn btn-primary">
+          {{ $t('import_hazard_type') }}
         </router-link>
       </PermissionBuilder>
     </div>

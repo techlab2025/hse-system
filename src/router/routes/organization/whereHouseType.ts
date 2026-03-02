@@ -3,30 +3,43 @@ import type { RouteRecordRaw } from '@/router/types'
 export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
   {
     path: 'where-house-type',
-    name: 'WhereHouseType',
+    name: 'WarehouseType',
     component: () => import('@/views/Organization/WhereHouseType/IndexWhereHouseType.vue'),
     meta: {
-      breadcrumb: 'WhereHouseType',
+      breadcrumb: 'WarehouseType',
       isSidebar: true,
     },
   },
   {
     path: 'where-house-type/add',
-    name: 'Add WhereHouseType',
+    name: 'Add WarehouseType',
     component: () => import('@/views/Organization/WhereHouseType/AddWhereHouseType.vue'),
     meta: {
-      breadcrumb: 'Add WhereHouseType',
-      parent: 'WhereHouseType',
+      breadcrumb: 'Add WarehouseType',
+      parent: 'WarehouseType',
       isSidebar: true,
     },
   },
   {
     path: 'where-house-type/:id',
-    name: 'Edit WhereHouseType',
+    name: 'Edit WarehouseType',
     component: () => import('@/views/Organization/WhereHouseType/EditWhereHouseType.vue'),
     meta: {
-      breadcrumb: 'Edit WhereHouseType',
-      parent: 'WhereHouseType',
+      breadcrumb: 'Edit WarehouseType',
+      parent: 'WarehouseType',
+      isSidebar: true,
+    },
+  },
+  {
+    path: 'where-house-type/upload',
+    name: 'Upload WarehouseType',
+    component: () =>
+      import(
+        '@/features/Organization/WhereHouseType/Presentation/components/UploadWarehouseExeclSheet.vue'
+      ),
+    meta: {
+      breadcrumb: 'Upload WarehouseType',
+      parent: 'WarehouseType',
       isSidebar: true,
     },
   },

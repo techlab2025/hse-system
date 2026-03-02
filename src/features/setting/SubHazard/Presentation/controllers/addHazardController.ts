@@ -28,19 +28,19 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
   }
 
   async addHazardType(
-    params: AddHazardTypeParams,
+    params: any,
     router: Router,
     route: any,
     draft: boolean = false,
   ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      params.validate()
+      // params.validate()
 
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+      // if (!params.validate().isValid) {
+      //   params.validateOrThrow()
+      //   return
+      // }
       console.log(route?.path, 'route')
       if (route?.path?.includes('hazard/add') && !params?.ParentId) {
         console.log('inside')
