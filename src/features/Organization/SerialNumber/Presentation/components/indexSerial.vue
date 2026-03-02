@@ -27,14 +27,14 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       return ''
   }
 }
-onMounted(async () => {
-  const state = await IndexProjectProgressController.getInstance().getData(
-    new IndexProjectProgressParams('', 1, 10, 0),
-  )
-  if (state.value.data) {
-    SerialType.value = state.value.data.codeSystemType
-  }
-})
+// onMounted(async () => {
+//   const state = await IndexProjectProgressController.getInstance().getData(
+//     new IndexProjectProgressParams('', 1, 10, 0),
+//   )
+//   if (state.value.data) {
+//     SerialType.value = state.value.data.codeSystemType
+//   }
+// })
 
 // watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
 //   SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
