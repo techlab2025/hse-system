@@ -35,6 +35,7 @@ const props = defineProps<{
   font-size: 12px;
   font-weight: 600;
 }
+
 .chart_container  .zone_title{
   position: absolute;
   bottom: -30px;
@@ -96,6 +97,7 @@ const props = defineProps<{
 
   .total_count_chart {
     background: linear-gradient(163.62deg, #789EFF 2.14%, #1D4ED8 97.96%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     width: 100%;
     text-align: center;
@@ -107,6 +109,17 @@ const props = defineProps<{
     font-size: 13px;
     padding-bottom: 1rem;
     z-index: 11;
+  }
+}
+@media (max-width: 600px) {
+  .chart_row{
+    max-width: 25px;
+  }
+  .total_count_chart{
+    font-size: 12px !important;
+  }
+  .chart_container{
+    overflow: scroll;
   }
 }
 </style>
