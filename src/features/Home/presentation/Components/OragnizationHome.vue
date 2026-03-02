@@ -67,7 +67,8 @@ const visited = ref(localStorage.getItem("visited"))
 
 // fetchHomeInspectionController
 const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
-const homeInspectionState = ref(fetchHomeInspectionController.state.value)
+//const homeInspectionState = ref(fetchHomeInspectionController.state.value)
+const homeInspectionState = computed(() => fetchHomeInspectionController.state.value)
 const GetHomeInspection = async () => {
   const fetchHomeInspectionParams = new FetchHomeInspectionParams()
   await fetchHomeInspectionController.getData(fetchHomeInspectionParams)
