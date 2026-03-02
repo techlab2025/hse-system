@@ -18,8 +18,8 @@ export default class IndexHazardParams implements Params {
   public zoonIds?: number[] = []
   public rootCauseId?: number
   public hazardTypeId?: number
-  public equipmentIds?: number[] = []
   public riskLevel?: number[] = []
+  public equipmentIds?: number[] = []
   public saveStatus?: number[] = []
   public date?: string = ''
   public equipmentTypeIds?: number[] = []
@@ -37,8 +37,8 @@ export default class IndexHazardParams implements Params {
     zoonIds?: number[],
     rootCauseId?: number,
     hazardTypeId?: number,
-    equipmentIds?: number[],
     riskLevel?: number[],
+    equipmentIds?: number[],
     saveStatus?: number[],
     date?: string,
     equipmentTypeIds?: number[],
@@ -57,8 +57,8 @@ export default class IndexHazardParams implements Params {
     this.zoonIds = zoonIds
     this.rootCauseId = rootCauseId
     this.hazardTypeId = hazardTypeId
-    this.equipmentIds = equipmentIds
     this.riskLevel = riskLevel
+    this.equipmentIds = equipmentIds
     this.saveStatus = saveStatus
     this.date = date
     this.equipmentTypeIds = equipmentTypeIds
@@ -80,8 +80,8 @@ export default class IndexHazardParams implements Params {
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
     if (this.rootCauseId) data['root_cause_id'] = this.rootCauseId
     if (this.hazardTypeId) data['hazard_type_id'] = this.hazardTypeId
-    if (this.equipmentIds) data['equipment_ids'] = this.equipmentIds
     if (this.riskLevel) data['risk_level'] = this.riskLevel
+    if (this.equipmentIds) data['equipment_ids'] = this.equipmentIds
     if (this.saveStatus) data['save_status'] = this.saveStatus
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.equipmentTypeIds) data['equipment_type_ids'] = this.equipmentTypeIds
