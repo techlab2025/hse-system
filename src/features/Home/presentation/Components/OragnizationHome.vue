@@ -456,7 +456,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
 
   <!-- end -->
 
-  <div class="flex gap-4 statics grid grid-cols-12">
+  <div class="flex gap-4 statics">
     <TotalMachines :totalMachines="EquipmentStatics.data?.statics" class="col-span-12  xl:col-span-8" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 xl:col-span-4" />
   </div>
