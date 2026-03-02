@@ -43,13 +43,14 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
           return
         }
       }
+    } else {
+      params.validate()
+      if (!params.validate().isValid) {
+        params.validateOrThrow()
+        return
+      }
     }
     try {
-      // params.validate()
-      // if (!params.validate().isValid) {
-      //   params.validateOrThrow()
-      //   return
-      // }
       const dataState: DataState<OrganizatoinEmployeeModel> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)

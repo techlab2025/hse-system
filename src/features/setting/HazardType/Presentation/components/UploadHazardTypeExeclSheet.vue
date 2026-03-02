@@ -10,9 +10,9 @@ import FileUpload from '@/features/Organization/OrganizationEmployee/Presentatio
 import { useI18n } from 'vue-i18n';
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
-import AddHazardTypeController from '../../../SubHazard/Presentation/controllers/addHazardController';
 import HazardTypeModel from '@/features/setting/SubHazard/Data/models/hazardModel';
 import AddHazardTypeExcelParams from '../../Core/params/addHazardExcelParams';
+import AddHazardTypeController from '@/features/setting/SubHazard/Presentation/controllers/addHazardController';
 
 interface ExtractedImage {
   name: string;

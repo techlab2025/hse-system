@@ -92,6 +92,7 @@ export const equipmentRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Upload Equipment Type Excel',
       parent: 'Equipment Type',
       type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

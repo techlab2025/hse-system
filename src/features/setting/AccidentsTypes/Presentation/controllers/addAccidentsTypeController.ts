@@ -11,6 +11,7 @@ import AddAccidentsTypeUseCase from '../../Domain/useCase/addAccidentsTypeUseCas
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type AddAccidentsTypeParams from '../../Core/params/addAccidentsTypeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: AddAccidentsTypeController
@@ -29,12 +30,20 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
   async addAccidentsType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      // params.validate()
-
-      // if (!params.validate().isValid) {
-      //   params.validateOrThrow()
-      //   return
-      // }
+     if (params?.data?.length > 0) {
+             for (const el of params.data) {
+               if (!el.title) {
+                 new OpenWarningDilaog('title Is Required').openDialog()
+                 return
+               }
+             }
+           } else {
+             params.validate()
+             if (!params.validate().isValid) {
+               params.validateOrThrow()
+               return
+             }
+           }
       const dataState: DataState<AccidentsTypeModel> =
         await this.addAccidentsTypeUseCase.call(params)
       this.setState(dataState)

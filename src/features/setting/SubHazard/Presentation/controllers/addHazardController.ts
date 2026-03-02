@@ -27,20 +27,23 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
     return this.instance
   }
 
-  async addHazardType(
-    params: any,
-    router: Router,
-    route: any,
-    draft: boolean = false,
-  ) {
+  async addHazardType(params: any, router: Router, route: any, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      // params.validate()
-
-      // if (!params.validate().isValid) {
-      //   params.validateOrThrow()
-      //   return
-      // }
+      if (params?.data?.length > 0) {
+        for (const el of params.data) {
+          if (!el.title) {
+            new OpenWarningDilaog('title Is Required').openDialog()
+            return
+          }
+        }
+      } else {
+        params.validate()
+        if (!params.validate().isValid) {
+          params.validateOrThrow()
+          return
+        }
+      }
       console.log(route?.path, 'route')
       if (route?.path?.includes('hazard/add') && !params?.ParentId) {
         console.log('inside')
@@ -61,7 +64,12 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
         const { user } = useUserStore()
 
         const route = useRoute()
-        if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
+
+        if (router?.currentRoute?.value?.fullPath?.includes('/hazard-type/upload-excel?type=2')) {
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type?type=2`,
+          )
+        } else if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
           await router.push(
             `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
           )
