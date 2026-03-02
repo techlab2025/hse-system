@@ -501,7 +501,11 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   align-items: center; */
   /* flex-wrap: wrap; */
 }
-
+@media (max-width: 1050px) {
+  .statics{
+    flex-direction: column;
+  }
+}
 .mb-5 {
   margin-block: 12px;
 }

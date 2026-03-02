@@ -200,6 +200,13 @@ const GetEquipmentTypeTitle = (type: number) => {
   margin-top: 8px;
 }
 
+@media (max-width: 800px) {
+  .chart-container{
+    overflow: scroll;
+  }
+}
+
+
 .chart-container {
   max-width: 100%;
   overflow-x: auto;
