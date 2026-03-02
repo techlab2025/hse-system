@@ -1223,5 +1223,7 @@
   "import_warehouse": "Import Warehouse",
   "import_accidents_type":"Import Accidents Type",
   "import_observeration_type":"Import Observeration Type",
-  "import_injury":"Import Injury"
+  "import_injury":"Import Injury",
+  "import_hazard_type":"Import Hazard Type",
+  "import_root_causes":"Import Root Causes"
 }

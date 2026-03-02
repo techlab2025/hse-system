@@ -220,7 +220,7 @@ const exportExcel = () => {
         PermissionsEnum.ROOT_CAUSES_CREATE,
       ]">
         <router-link to="/organization/root-causes/upload-excel" class="btn btn-primary">
-          {{ $t('import_excel') }}
+          {{ $t('import_root_causes') }}
         </router-link>
       </PermissionBuilder>
     </div>
