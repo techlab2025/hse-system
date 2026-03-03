@@ -31,6 +31,7 @@ import ExcelSheetUpload from '../supcomponents/ExcelSheetHandle/UploadFiles.vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import IndexActions from '@/shared/HelpersComponents/IndexActions.vue'
 
 const { t } = useI18n()
 
@@ -193,6 +194,47 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "Employees.xlsx");
 };
+
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import ExportIcon from '@/shared/icons/ExportIcon.vue'
+
+const exportPDF = async () => {
+  const tableElement = document.querySelector('.table-responsive')
+
+  if (!tableElement) {
+    console.error('Table element not found.')
+    return
+  }
+
+  try {
+    // Capture the table as an image
+    const canvas = await html2canvas(tableElement, {
+      scale: 2, // Higher scale for better resolution
+    })
+
+    const imgData = canvas.toDataURL('image/png')
+
+    // Initialize jsPDF
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4',
+    })
+
+    // Calculate dimensions
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+    // Add image to PDF
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+    // Save the PDF
+    pdf.save('table.pdf')
+  } catch (error) {
+    console.error('Error generating PDF:', error)
+  }
+}
 </script>
 
 <template>
@@ -206,7 +248,13 @@ const exportExcel = () => {
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
+      <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
+        :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
+        :addLink="`/organization/organization-employee/add`"
+        :ImportexcelLink="`/organization/organization-employee/upload`" :addText="`add_organizatoin_employee`"
+        :addDescription="`add_employee`" :numberOfActions="4" /> -->
+
+
       <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
@@ -214,8 +262,7 @@ const exportExcel = () => {
           {{ $t('add_organizatoin_employee') }} 
         </router-link>
       </PermissionBuilder>
-      <!-- <ExcelSheetUpload class="upload" /> -->
-      <router-link to="/organization/organization-employee/upload" class="btn btn-secondary">
+      <router-link to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
       </router-link>
     </div>
