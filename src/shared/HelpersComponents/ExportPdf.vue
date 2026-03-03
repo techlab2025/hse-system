@@ -8,6 +8,7 @@ const exportPDF = async () => {
 
   if (!tableElement) {
     console.error('Table element not found.')
+    
     return
   }
 

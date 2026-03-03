@@ -80,7 +80,7 @@ const { user } = useUserStore()
         </div>
 
         <h3 class="demo-title">
-          {{ wordSlice(selctedequipment[1]?.title, 40) || equipmentName }}
+          {{ wordSlice(selctedequipment?.[1]?.title, 40) || equipmentName }}
         </h3>
 
         <div class="rent_expire">

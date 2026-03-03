@@ -214,6 +214,8 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   homeInspectionState.value = newState
 })
 
+
+
 </script>
 <template>
   <router-link @click="setVisited" to="/organization/project-progress" class="mb-5"
