@@ -43,15 +43,16 @@ const shadeColor = (color: string, percent: number): string => {
 
 const setChartData = () => {
   const documentStyle = getComputedStyle(document.documentElement);
-  const hazardColor = extractHexColor(documentStyle.getPropertyValue("--hazard-color"), "#D03737");
+  // ✅ Hazard = أزرق، Observation = بنفسجي، Incident = أحمر (مطابق للديزاين)
+  const hazardColor = extractHexColor(documentStyle.getPropertyValue("--hazard-color"), "#3762D0");
   const observationColor = extractHexColor(documentStyle.getPropertyValue("--observation-color"), "#8137D0");
-  const incidentColor = extractHexColor(documentStyle.getPropertyValue("--incidant-color"), "#3762D0");
+  const incidentColor = extractHexColor(documentStyle.getPropertyValue("--incidant-color"), "#D03737");
 
   return {
     labels:
       Zonetitle.value.length > 0
-        ? Zonetitle.value.map((z) => z.slice(0, 6))
-        : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        ? Zonetitle.value.map((z) => z)
+        : ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E", "Zone F", "Zone G"],
     datasets: [
       {
         label: "Hazard",
@@ -89,15 +90,14 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const numGroups = labels.length;
   const numDatasets = datasets.length;
 
-  // ✅ scale based on height only (width is now dynamic)
   const scale = Math.min(1, width / 800);
 
-  const paddingLeft = Math.max(30, width * 0.04);
+  const paddingLeft = Math.max(40, width * 0.05);
   const paddingRight = Math.max(20, width * 0.03);
-  const paddingTop = Math.max(35, height * 0.08);
-  const paddingBottom = Math.max(30, height * 0.1);
+  const paddingTop = Math.max(20, height * 0.05);
+  const paddingBottom = Math.max(35, height * 0.12);
 
-  const chartHeight = height - paddingTop - paddingBottom;
+  const chartAreaHeight = height - paddingTop - paddingBottom;
 
   const allValues: number[] = datasets.flatMap((ds: any) =>
     ds.data.map((v: any) => (isFinite(v) && v >= 0 ? v : 0))
@@ -113,96 +113,93 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
     return;
   }
 
-  const effectiveMax = maxValue * 1.15;
+  // ✅ Round max to nearest 10 for cleaner grid (مطابق للديزاين: 10, 20, 30, 40, 50, 60, 70)
+  const gridLines = Math.ceil(maxValue / 10);
+  const effectiveMax = gridLines * 10 * 1.1;
 
-  // ✅ FIXED group width — موحد بغض النظر عن عدد الـ groups
-  const GROUP_GAP = 10;
-  const FIXED_GROUP_WIDTH = 90;
-  const MAX_BAR_WIDTH = 65;
-  const BAR_GAP_RATIO = 0.2;
+  const GROUP_GAP = 12;
+  const FIXED_GROUP_WIDTH = 95;
+  const MAX_BAR_WIDTH = 22;
+  const BAR_GAP = 4;
 
   const groupWidth = FIXED_GROUP_WIDTH;
-  const groupPadding = Math.max(4, groupWidth * 0.08);
+  const groupPadding = Math.max(6, groupWidth * 0.08);
   const availableForBars = groupWidth - groupPadding * 2;
-  const barGap = Math.max(2, availableForBars * BAR_GAP_RATIO);
-  const totalGaps = (numDatasets - 1) * barGap;
+  const totalGaps = (numDatasets - 1) * BAR_GAP;
   const rawBarWidth = (availableForBars - totalGaps) / numDatasets;
-  const barWidth = Math.max(4, Math.min(rawBarWidth, MAX_BAR_WIDTH));
+  const barWidth = Math.max(8, Math.min(rawBarWidth, MAX_BAR_WIDTH));
 
-  const depth = Math.max(6, Math.min(barWidth * 0.6, 22 * scale));
-  const angle = Math.PI / 6;
+  const depth = Math.max(6, Math.min(barWidth * 0.55, 14));
+  const angle = Math.PI / 5;
   const depthX = Math.cos(angle) * depth;
   const depthY = Math.sin(angle) * depth;
 
-  const axisFontSize = Math.max(8, Math.round(11 * scale));
-  const valueFontSize = Math.max(7, Math.round(10 * scale));
-  const legendFontSize = Math.max(9, Math.round(12 * scale));
+  const axisFontSize = Math.max(10, Math.round(12 * scale));
+
+  // ── Background ─────────────────────────────────────────────────────────
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
 
   // ── Gridlines ──────────────────────────────────────────────────────────
-  const gridLines = 5;
-  ctx.strokeStyle = "rgba(156,163,175,0.2)";
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4, 4]);
+  const numGridLines = 7; // 0,10,20,30,40,50,60,70
+  ctx.setLineDash([]);
 
-  for (let i = 0; i <= gridLines; i++) {
-    const gridY = height - paddingBottom - (chartHeight / gridLines) * i;
+  for (let i = 0; i <= numGridLines; i++) {
+    const gridY = height - paddingBottom - (chartAreaHeight / numGridLines) * i;
+    const gridValue = Math.round((maxValue / numGridLines) * i);
+
+    // Horizontal grid line
+    ctx.strokeStyle = "rgba(209, 213, 219, 0.5)";
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(paddingLeft, gridY);
-    ctx.lineTo(width - paddingRight + depthX, gridY);
+    ctx.lineTo(width - paddingRight, gridY);
     ctx.stroke();
 
-    const gridValue = Math.round((maxValue / gridLines) * i);
-    ctx.fillStyle = "#6b7280";
+    // Y-axis labels
+    ctx.fillStyle = "#9ca3af";
     ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
-    ctx.fillText(gridValue.toString(), paddingLeft - 5, gridY);
+    ctx.fillText(gridValue.toString(), paddingLeft - 8, gridY);
   }
-  ctx.setLineDash([]);
 
   // ── Bars ───────────────────────────────────────────────────────────────
-  for (let gi = numGroups - 1; gi >= 0; gi--) {
+  for (let gi = 0; gi < numGroups; gi++) {
     const label = labels[gi];
     const groupX = paddingLeft + gi * (groupWidth + GROUP_GAP);
+    const groupCenterX = groupX + groupWidth / 2;
 
-    for (let di = numDatasets - 1; di >= 0; di--) {
+    for (let di = 0; di < numDatasets; di++) {
       const dataset = datasets[di];
       const rawValue = dataset.data[gi];
       const value = isFinite(rawValue) && rawValue >= 0 ? rawValue : 0;
 
-      const barHeight = (value / effectiveMax) * chartHeight;
+      const barHeight = (value / effectiveMax) * chartAreaHeight;
       if (!isFinite(barHeight) || barHeight < 0) continue;
 
-      const baseX = groupX + groupPadding + di * (barWidth + barGap);
+      // Center the bar group
+      const totalBarsWidth = numDatasets * barWidth + (numDatasets - 1) * BAR_GAP;
+      const barsStartX = groupCenterX - totalBarsWidth / 2;
+      const baseX = barsStartX + di * (barWidth + BAR_GAP);
       const baseY = height - paddingBottom - barHeight;
+
       if (!isFinite(baseX) || !isFinite(baseY)) continue;
 
       const baseColor = dataset.backgroundColor;
-      const topColor = shadeColor(baseColor, 40);
-      const leftSideColor = shadeColor(baseColor, -28);
-      const rightSideColor = shadeColor(baseColor, -48);
+      const topColor = shadeColor(baseColor, 35);
+      const sideColor = shadeColor(baseColor, -30);
+
+      if (barHeight <= 0) continue;
 
       // Shadow
-      ctx.shadowColor = "rgba(0,0,0,0.18)";
-      ctx.shadowBlur = 6 * scale;
-      ctx.shadowOffsetX = 2 * scale;
-      ctx.shadowOffsetY = 2 * scale;
+      ctx.shadowColor = "rgba(0,0,0,0.12)";
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
 
-      // LEFT face
-      ctx.fillStyle = leftSideColor;
-      ctx.beginPath();
-      ctx.moveTo(baseX, baseY);
-      ctx.lineTo(baseX + depthX, baseY - depthY);
-      ctx.lineTo(baseX + depthX, height - paddingBottom - depthY);
-      ctx.lineTo(baseX, height - paddingBottom);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.08)";
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
-
-      // RIGHT face
-      ctx.fillStyle = rightSideColor;
+      // SIDE face (right 3D effect)
+      ctx.fillStyle = sideColor;
       ctx.beginPath();
       ctx.moveTo(baseX + barWidth, baseY);
       ctx.lineTo(baseX + barWidth + depthX, baseY - depthY);
@@ -210,8 +207,6 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
       ctx.lineTo(baseX + barWidth, height - paddingBottom);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.08)";
-      ctx.stroke();
 
       // TOP face
       ctx.fillStyle = topColor;
@@ -222,126 +217,48 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
       ctx.lineTo(baseX + barWidth, baseY);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.08)";
-      ctx.stroke();
 
-      // FRONT face
+      // FRONT face (gradient)
       ctx.shadowColor = "transparent";
-      if (barHeight > 0) {
-        try {
-          const gradient = ctx.createLinearGradient(baseX, baseY, baseX, height - paddingBottom);
-          gradient.addColorStop(0, shadeColor(baseColor, 18));
-          gradient.addColorStop(0.6, baseColor);
-          gradient.addColorStop(1, shadeColor(baseColor, -12));
-          ctx.fillStyle = gradient;
-        } catch {
-          ctx.fillStyle = baseColor;
-        }
-      } else {
+      try {
+        const gradient = ctx.createLinearGradient(baseX, baseY, baseX, height - paddingBottom);
+        gradient.addColorStop(0, shadeColor(baseColor, 15));
+        gradient.addColorStop(1, baseColor);
+        ctx.fillStyle = gradient;
+      } catch {
         ctx.fillStyle = baseColor;
       }
       ctx.fillRect(baseX, baseY, barWidth, barHeight);
-      ctx.strokeStyle = "rgba(0,0,0,0.12)";
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(baseX, baseY, barWidth, barHeight);
-
-      // Value label
-      const minBarWidthForLabel = 16;
-      const minBarHeightForLabel = 18;
-      if (barHeight > minBarHeightForLabel && barWidth > minBarWidthForLabel && value > 0) {
-        const displayText = value.toString();
-        ctx.font = `bold ${valueFontSize}px sans-serif`;
-        const tw = ctx.measureText(displayText).width;
-        const tp = 2;
-        const textX = baseX + barWidth / 2 + depthX / 2;
-        const textY = baseY - depthY - 9;
-
-        if (textY > paddingTop) {
-          ctx.fillStyle = "rgba(255,255,255,0.9)";
-          ctx.fillRect(textX - tw / 2 - tp, textY - 6, tw + tp * 2, 12);
-          ctx.fillStyle = "#111827";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(displayText, textX, textY);
-        }
-      }
     }
 
     // X-axis label
     ctx.shadowColor = "transparent";
-    ctx.fillStyle = "#374151";
+    ctx.fillStyle = "#6b7280";
     ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    const labelX = groupX + groupWidth / 2 + depthX / 2;
-    ctx.fillText(label, labelX, height - paddingBottom + 6);
+    ctx.fillText(label, groupCenterX + depthX / 2, height - paddingBottom + 8);
   }
 
   // ── Axes ───────────────────────────────────────────────────────────────
   ctx.shadowColor = "transparent";
-  ctx.strokeStyle = "#d1d5db";
-  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 1;
 
+  // Y axis
   ctx.beginPath();
-  ctx.moveTo(paddingLeft, paddingTop / 2);
+  ctx.moveTo(paddingLeft, paddingTop);
   ctx.lineTo(paddingLeft, height - paddingBottom);
   ctx.stroke();
 
+  // X axis
   ctx.beginPath();
   ctx.moveTo(paddingLeft, height - paddingBottom);
-  ctx.lineTo(width - paddingRight + depthX, height - paddingBottom);
+  ctx.lineTo(width - paddingRight, height - paddingBottom);
   ctx.stroke();
-
-  ctx.strokeStyle = "#e5e7eb";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(paddingLeft, height - paddingBottom);
-  ctx.lineTo(paddingLeft + depthX, height - paddingBottom - depthY);
-  ctx.stroke();
-
-  // ── Legend ─────────────────────────────────────────────────────────────
-  const boxSize = Math.max(8, Math.round(13 * scale));
-  const legendItemWidth = Math.max(70, Math.round(105 * scale));
-  const totalLegendWidth = datasets.length * legendItemWidth;
-  const legendStartX = paddingLeft + (width - paddingLeft - paddingRight - totalLegendWidth) / 2;
-  const legendY = Math.max(10, paddingTop / 2 - boxSize / 2);
-
-  datasets.forEach((dataset: any, index: number) => {
-    const itemX = legendStartX + index * legendItemWidth;
-    const bDepth = Math.max(2, boxSize * 0.3);
-    const bAngle = Math.PI / 9;
-    const bDX = Math.cos(bAngle) * bDepth;
-    const bDY = Math.sin(bAngle) * bDepth;
-
-    ctx.shadowColor = "rgba(0,0,0,0.15)";
-    ctx.shadowBlur = 2;
-    ctx.shadowOffsetX = 1;
-    ctx.shadowOffsetY = 1;
-
-    // Top face
-    ctx.fillStyle = shadeColor(dataset.backgroundColor, 30);
-    ctx.beginPath();
-    ctx.moveTo(itemX, legendY);
-    ctx.lineTo(itemX + bDX, legendY - bDY);
-    ctx.lineTo(itemX + boxSize + bDX, legendY - bDY);
-    ctx.lineTo(itemX + boxSize, legendY);
-    ctx.closePath();
-    ctx.fill();
-
-    // Front face
-    ctx.fillStyle = dataset.backgroundColor;
-    ctx.fillRect(itemX, legendY, boxSize, boxSize);
-
-    ctx.shadowColor = "transparent";
-    ctx.fillStyle = "#1f2937";
-    ctx.font = `${legendFontSize}px sans-serif`;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.fillText(dataset.label, itemX + boxSize + 5, legendY + boxSize / 2);
-  });
 };
 
-// ✅ resizeCanvas — يحسب العرض المطلوب ويمدد الـ canvas لو الأعمدة كتير
+// ✅ resizeCanvas
 const resizeCanvas = () => {
   if (!canvasRef.value) return;
   const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
@@ -352,11 +269,10 @@ const resizeCanvas = () => {
   const height = container.offsetHeight;
   if (height <= 0) return;
 
-  // ✅ احسب العرض المطلوب بناءً على عدد المجموعات
-  const FIXED_GROUP_WIDTH = 90;
-  const GROUP_GAP = 10;
+  const FIXED_GROUP_WIDTH = 95;
+  const GROUP_GAP = 12;
   const numGroups = chartData.value?.labels?.length ?? 0;
-  const paddingLeft = Math.max(30, containerWidth * 0.04);
+  const paddingLeft = Math.max(40, containerWidth * 0.05);
   const paddingRight = Math.max(20, containerWidth * 0.03);
 
   const neededWidth =
@@ -364,9 +280,8 @@ const resizeCanvas = () => {
     (numGroups - 1) * GROUP_GAP +
     paddingLeft +
     paddingRight +
-    30; // buffer
+    40;
 
-  // ✅ خد الأكبر: إما عرض الـ container أو العرض المطلوب
   const width = Math.max(containerWidth, neededWidth);
 
   canvasRef.value.width = width * dpr;
@@ -412,13 +327,23 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="total-observation-container">
+    <!-- ✅ Header: عنوان يسار + legend يمين (مطابق للديزاين) -->
     <div class="total-observation-header-container">
-      <div class="total-observation-header">
-        <p class="static-title">Hazard & Observation & Incident Overview</p>
+      <p class="static-title">Hazard & Observation & Incident Overview</p>
+
+      <div class="legend-container">
+        <div
+          v-for="dataset in chartData?.datasets ?? []"
+          :key="dataset.label"
+          class="legend-item"
+        >
+          <span class="legend-dot" :style="{ backgroundColor: dataset.backgroundColor }"></span>
+          <span class="legend-label">{{ dataset.label }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- ✅ scroll-wrapper يحتوي الـ canvas ويعمل scroll أفقي -->
+    <!-- ✅ Chart scroll wrapper -->
     <div class="chart-scroll-wrapper">
       <div class="chart-wrapper" :style="{ height: chartHeight ?? '35vh' }">
         <canvas ref="canvasRef"></canvas>
@@ -431,32 +356,59 @@ onBeforeUnmount(() => {
 .total-observation-container {
   width: 100%;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding-bottom: 8px;
 }
 
+/* ✅ Header: flex row — عنوان يسار، legend يمين */
 .total-observation-header-container {
-  padding: 20px 20px 0;
-}
-
-.total-observation-header {
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 12px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .static-title {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: #1f2937;
   margin: 0;
-  text-transform: capitalize;
 }
 
-/* ✅ الـ wrapper الخارجي: يحجز العرض الكامل ويعمل scroll أفقي */
+/* ✅ Legend: أفقي، dots دائرية صغيرة */
+.legend-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ✅ Chart scroll wrapper */
 .chart-scroll-wrapper {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  /* Scrollbar styling — اختياري */
   scrollbar-width: thin;
   scrollbar-color: #d1d5db transparent;
 }
@@ -474,7 +426,6 @@ onBeforeUnmount(() => {
   border-radius: 4px;
 }
 
-/* ✅ الـ chart-wrapper: عرضه 100% دايمًا — الـ canvas هو اللي بيتمدد */
 .chart-wrapper {
   width: 100%;
   height: 35vh;
@@ -486,6 +437,5 @@ onBeforeUnmount(() => {
 canvas {
   height: 100%;
   display: block;
-  /* العرض بيتحكم فيه resizeCanvas بالـ JS — ممكن يكون أكبر من الـ wrapper فيظهر scroll */
 }
 </style>
