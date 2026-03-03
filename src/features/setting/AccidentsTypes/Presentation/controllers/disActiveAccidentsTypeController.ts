@@ -25,8 +25,7 @@ export default class disActiveAccidentsTypeController extends ControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<AccidentsTypeModel> =
-      await this.disAccidentsTypeUseCase.call(params)
+    const dataState: DataState<AccidentsTypeModel> = await this.disAccidentsTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -39,7 +38,7 @@ export default class disActiveAccidentsTypeController extends ControllerInterfac
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

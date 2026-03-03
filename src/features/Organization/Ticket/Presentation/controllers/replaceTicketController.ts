@@ -39,7 +39,7 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
       if (this.isDataSuccess()) {
         console.log('succsess')
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'successful',
           imageElement: successImage,
           messageContent: null,
@@ -68,7 +68,7 @@ export default class ReplaceTicketController extends ControllerInterface<TicketM
 
       console.log(this.state.value.message)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         // titleContent: 'adssddsasdadsa',
         imageElement: errorImage,

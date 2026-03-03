@@ -1,7 +1,9 @@
 @use '../../variables' as *;
-.dialog {
+.dialog,
+.dialog-success,
+.dialog-error {
   border: none;
-  padding: 20px ;
+  padding: 20px;
   border-radius: 16px;
   text-align: center;
   margin: auto;

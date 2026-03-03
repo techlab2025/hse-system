@@ -28,13 +28,11 @@ export default class AddMethodsController extends ControllerInterface<MethodsMod
   async addMethods(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
-      const dataState: DataState<MethodsModel> =
-        await this.AddMethodsUseCase.call(params)
+      const dataState: DataState<MethodsModel> = await this.AddMethodsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -42,8 +40,10 @@ export default class AddMethodsController extends ControllerInterface<MethodsMod
 
         const { user } = useUserStore()
 
-
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
@@ -56,7 +56,7 @@ export default class AddMethodsController extends ControllerInterface<MethodsMod
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

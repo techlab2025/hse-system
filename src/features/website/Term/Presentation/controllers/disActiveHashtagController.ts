@@ -25,8 +25,7 @@ export default class disActiveHashtagController extends ControllerInterface<Hash
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HashtagModel> =
-      await this.disActiveHashtagUseCase.call(params)
+    const dataState: DataState<HashtagModel> = await this.disActiveHashtagUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -39,7 +38,7 @@ export default class disActiveHashtagController extends ControllerInterface<Hash
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

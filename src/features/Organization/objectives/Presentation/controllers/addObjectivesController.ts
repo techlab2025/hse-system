@@ -26,17 +26,15 @@ export default class AddObjectivesController extends ControllerInterface<Objecti
   async addObjectives(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ObjectivesModel> =
-        await this.addObjectivesUseCase.call(params)
+      const dataState: DataState<ObjectivesModel> = await this.addObjectivesUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
         })
-
 
         if (!draft) await router.push(`/organization/objectives`)
 
@@ -51,7 +49,7 @@ export default class AddObjectivesController extends ControllerInterface<Objecti
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

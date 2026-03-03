@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type SystemRiskManagementModel from '../../Data/models/SystemRiskManagementModel'
 import ChangeStatusSystemRiskManagementUseCase from '../../Domain/useCase/changeStatusSystemRiskManagementUseCase'
 
-
-
-
 export default class ChangeStatusSystemRiskManagementController extends ControllerInterface<SystemRiskManagementModel> {
   private static instance: ChangeStatusSystemRiskManagementController
   private constructor() {
@@ -42,7 +39,7 @@ export default class ChangeStatusSystemRiskManagementController extends Controll
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

@@ -6,9 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type SystemRiskManagementModel from '../../Data/models/SystemRiskManagementModel'
 import DeleteSystemRiskManagementUseCase from '../../Domain/useCase/deleteSystemRiskManagementUseCase'
 
-
-
-
 export default class DeleteSystemRiskManagementController extends ControllerInterface<SystemRiskManagementModel> {
   private static instance: DeleteSystemRiskManagementController
   private constructor() {
@@ -39,7 +36,7 @@ export default class DeleteSystemRiskManagementController extends ControllerInte
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

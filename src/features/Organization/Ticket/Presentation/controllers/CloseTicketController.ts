@@ -38,13 +38,15 @@ export default class CloseTicketController extends ControllerInterface<TicketMod
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'successful',
           imageElement: successImage,
           messageContent: null,
         })
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket`,
+        )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
@@ -59,7 +61,7 @@ export default class CloseTicketController extends ControllerInterface<TicketMod
     } catch (error: any) {
       console.log(this.state.value.message)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         // titleContent: 'adssddsasdadsa',
         imageElement: errorImage,

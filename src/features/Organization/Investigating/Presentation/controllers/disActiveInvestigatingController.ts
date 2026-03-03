@@ -25,8 +25,7 @@ export default class disActiveHazardController extends ControllerInterface<Hazar
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HazardModel> =
-      await this.disActiveHazardUseCase.call(params)
+    const dataState: DataState<HazardModel> = await this.disActiveHazardUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -39,7 +38,7 @@ export default class disActiveHazardController extends ControllerInterface<Hazar
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

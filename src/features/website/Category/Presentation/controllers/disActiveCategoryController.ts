@@ -25,8 +25,7 @@ export default class disActiveCategoryController extends ControllerInterface<Cat
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<CategoryModel> =
-      await this.disActiveCategoryUseCase.call(params)
+    const dataState: DataState<CategoryModel> = await this.disActiveCategoryUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -39,7 +38,7 @@ export default class disActiveCategoryController extends ControllerInterface<Cat
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

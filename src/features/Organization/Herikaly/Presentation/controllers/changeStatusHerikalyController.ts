@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import ChangeStatusHerikalyUseCase from '../../Domain/useCase/changeStatusHerikalyUseCase'
 import type HerikalyModel from '../../Data/models/HerikalyModel'
 
-
-
-
 export default class ChangeStatusHerikalyController extends ControllerInterface<HerikalyModel> {
   private static instance: ChangeStatusHerikalyController
   private constructor() {
@@ -28,8 +25,7 @@ export default class ChangeStatusHerikalyController extends ControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HerikalyModel> =
-      await this.ChangeStatusHerikalyUseCase.call(params)
+    const dataState: DataState<HerikalyModel> = await this.ChangeStatusHerikalyUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -42,7 +38,7 @@ export default class ChangeStatusHerikalyController extends ControllerInterface<
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

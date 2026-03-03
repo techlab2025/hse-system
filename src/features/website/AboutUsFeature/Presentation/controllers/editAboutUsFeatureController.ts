@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type AboutUsFeatureModel from '../../Data/models/AboutUsFeatureModel'
 import EditAboutUsFeatureUseCase from '../../Domain/useCase/editAboutUsFeatureUseCase'
 
-
-
-
 export default class EditAboutUsFeatureController extends ControllerInterface<AboutUsFeatureModel> {
   private static instance: EditAboutUsFeatureController
 
@@ -30,12 +27,13 @@ export default class EditAboutUsFeatureController extends ControllerInterface<Ab
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<AboutUsFeatureModel> = await this.EditAboutUsFeatureUseCase.call(params)
+      const dataState: DataState<AboutUsFeatureModel> =
+        await this.EditAboutUsFeatureUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -52,7 +50,7 @@ export default class EditAboutUsFeatureController extends ControllerInterface<Ab
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

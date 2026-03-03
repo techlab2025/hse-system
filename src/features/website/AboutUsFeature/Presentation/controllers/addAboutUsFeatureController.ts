@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 import type AboutUsFeatureModel from '../../Data/models/AboutUsFeatureModel'
 import AddAboutUsFeatureUseCase from '../../Domain/useCase/addAboutUsFeatureUseCase'
 
-
-
 export default class AddAboutUsFeatureController extends ControllerInterface<AboutUsFeatureModel> {
   private static instance: AddAboutUsFeatureController
   private constructor() {
@@ -28,14 +26,13 @@ export default class AddAboutUsFeatureController extends ControllerInterface<Abo
   async addAboutUsFeature(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
       // console.log("Ssssssss")
       const dataState: DataState<AboutUsFeatureModel> =
         await this.AddAboutUsFeatureUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -53,7 +50,7 @@ export default class AddAboutUsFeatureController extends ControllerInterface<Abo
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

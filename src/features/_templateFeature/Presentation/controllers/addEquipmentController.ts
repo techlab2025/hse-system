@@ -28,12 +28,11 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
   async addEquipment(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<EquipmentModel> =
-        await this.addEquipmentUseCase.call(params)
+      const dataState: DataState<EquipmentModel> = await this.addEquipmentUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -41,12 +40,15 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
         const { user } = useUserStore()
 
-        if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
+        if (!draft)
+          await router.push(
+            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`,
+          )
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,
@@ -54,7 +56,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

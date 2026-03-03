@@ -32,7 +32,7 @@ export default class RejectSubscriptionApplicationController extends ControllerI
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Rejected',
           imageElement: successImage,
           messageContent: null,
@@ -46,7 +46,7 @@ export default class RejectSubscriptionApplicationController extends ControllerI
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

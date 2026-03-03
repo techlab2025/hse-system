@@ -30,15 +30,15 @@ export default class disActiveEmployeeController extends ControllerInterface<Emp
     this.setState(dataState)
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
-        dialogName: 'dialog',
-        titleContent: this.state.value.message,
+        dialogName: 'dialog-success',
+        titleContent: 'Deleted was successful',
         imageElement: successImage,
         messageContent: null,
       })
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

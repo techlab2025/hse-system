@@ -30,18 +30,19 @@ export default class EditCatalogItemsController extends ControllerInterface<Cata
   async editCatalogItems(params: editCatalogItemsParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
-     params.validate()
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
+    params.validate()
+    if (!params.validate().isValid) {
+      params.validateOrThrow()
+      return
+    }
     try {
-      const dataState: DataState<CatalogItemsModel> = await this.editCatalogItemsUseCase.call(params)
+      const dataState: DataState<CatalogItemsModel> =
+        await this.editCatalogItemsUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -49,7 +50,9 @@ export default class EditCatalogItemsController extends ControllerInterface<Cata
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
@@ -61,7 +64,7 @@ export default class EditCatalogItemsController extends ControllerInterface<Cata
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

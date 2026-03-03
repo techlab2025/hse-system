@@ -35,7 +35,7 @@ export default class AddAdminController extends ControllerInterface<AdminModel> 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -58,7 +58,7 @@ export default class AddAdminController extends ControllerInterface<AdminModel> 
     } catch (error: any) {
       console.log(this.state.value.message)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         // titleContent: 'adssddsasdadsa',
         imageElement: errorImage,

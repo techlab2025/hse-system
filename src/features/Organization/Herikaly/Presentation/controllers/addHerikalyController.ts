@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 import type HerikalyModel from '../../Data/models/HerikalyModel'
 import AddHerikalyUseCase from '../../Domain/useCase/addHerikalyUseCase'
 
-
-
 export default class AddHerikalyController extends ControllerInterface<HerikalyModel> {
   private static instance: AddHerikalyController
   private constructor() {
@@ -28,20 +26,18 @@ export default class AddHerikalyController extends ControllerInterface<HerikalyM
   async addHerikaly(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
       // console.log("Ssssssss")
-      const dataState: DataState<HerikalyModel> =
-        await this.AddHerikalyUseCase.call(params)
+      const dataState: DataState<HerikalyModel> = await this.AddHerikalyUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
         })
 
-        if(router?.currentRoute?.value?.fullPath.includes('herikaly')) {
+        if (router?.currentRoute?.value?.fullPath.includes('herikaly')) {
           if (!draft) await router.push('/organization/herikaly')
         }
 
@@ -56,7 +52,7 @@ export default class AddHerikalyController extends ControllerInterface<HerikalyM
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

@@ -38,7 +38,7 @@ export default class disActiveLangController extends ControllerInterface<LangMod
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title!,
         imageElement: errorImage,
         messageContent: null,

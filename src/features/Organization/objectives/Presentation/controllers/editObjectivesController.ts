@@ -32,13 +32,11 @@ export default class EditObjectivesController extends ControllerInterface<Object
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
         })
-
-
 
         await router.push(`/organization/objectives`)
         // console.log(this.state.value.data)
@@ -52,7 +50,7 @@ export default class EditObjectivesController extends ControllerInterface<Object
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

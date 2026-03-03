@@ -26,12 +26,11 @@ export default class AddProjectController extends ControllerInterface<ProjectMod
   async addProject(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ProjectModel> =
-        await this.AddProjectUseCase.call(params)
+      const dataState: DataState<ProjectModel> = await this.AddProjectUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +49,7 @@ export default class AddProjectController extends ControllerInterface<ProjectMod
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

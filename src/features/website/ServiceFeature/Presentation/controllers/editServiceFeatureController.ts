@@ -7,8 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import EditServiceFeatureUseCase from '../../Domain/useCase/editServiceFeatureUseCase'
 
-
-
 export default class EditServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
   private static instance: EditServiceFeatureController
 
@@ -29,12 +27,13 @@ export default class EditServiceFeatureController extends ControllerInterface<Se
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<ServiceFeatureModel> = await this.EditServiceFeatureUseCase.call(params)
+      const dataState: DataState<ServiceFeatureModel> =
+        await this.EditServiceFeatureUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -51,7 +50,7 @@ export default class EditServiceFeatureController extends ControllerInterface<Se
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

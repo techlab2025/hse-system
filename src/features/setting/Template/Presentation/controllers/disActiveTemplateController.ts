@@ -25,8 +25,7 @@ export default class disActiveTemplateController extends ControllerInterface<Tem
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<TemplateModel> =
-      await this.disActiveTemplateUseCase.call(params)
+    const dataState: DataState<TemplateModel> = await this.disActiveTemplateUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -39,7 +38,7 @@ export default class disActiveTemplateController extends ControllerInterface<Tem
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

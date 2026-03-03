@@ -7,10 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type FaqModel from '../../Data/models/FaqModel'
 import ChangeStatusFaqUseCase from '../../Domain/useCase/changeStatusFaqUseCase'
 
-
-
-
-
 export default class ChangeStatusFaqController extends ControllerInterface<FaqModel> {
   private static instance: ChangeStatusFaqController
   private constructor() {
@@ -29,8 +25,7 @@ export default class ChangeStatusFaqController extends ControllerInterface<FaqMo
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<FaqModel> =
-      await this.ChangeStatusFaqUseCase.call(params)
+    const dataState: DataState<FaqModel> = await this.ChangeStatusFaqUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -43,7 +38,7 @@ export default class ChangeStatusFaqController extends ControllerInterface<FaqMo
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

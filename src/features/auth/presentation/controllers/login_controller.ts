@@ -43,9 +43,11 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
       this.setState(dataState)
 
+      console.log(this.isDataSuccess(), 'this.isDataSuccess()')
       if (this.isDataSuccess()) {
+        console.log('succcccessssssssssssssss')
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Login Success',
           imageElement: successImage,
           messageContent: null,
@@ -76,12 +78,18 @@ export default class LoginController extends ControllerInterface<UserModel> {
           })
         }
       } else {
-        throw new Error(this.state.value.error?.title ?? 'Unknown login error')
+        DialogSelector.instance.failedDialog.openDialog({
+          dialogName: 'dialog-error',
+          titleContent: this.state.value.error?.title ?? 'Unknown login error',
+          imageElement: errorImage,
+          messageContent: null,
+        })
+        // throw new Error(this.state.value.error?.title ?? 'Unknown login error')
       }
     } catch (error: any) {
-      console.log(this.state.value.error, 'errorsssss')
+      console.log(error, 'errorsssss')
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: error?.message ?? String(error),
         imageElement: errorImage,
         messageContent: null,

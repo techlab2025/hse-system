@@ -30,11 +30,12 @@ export default class AddInvestigatingController extends ControllerInterface<Inve
     // useLoaderStore().setLoadingWithDialog();
     try {
       // console.log('Ssssssss')
-      const dataState: DataState<InvestigatingModel> = await this.AddInvestigatingUseCase.call(params)
+      const dataState: DataState<InvestigatingModel> =
+        await this.AddInvestigatingUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -44,11 +45,9 @@ export default class AddInvestigatingController extends ControllerInterface<Inve
 
         if (params.type == Observation.InvestigatingType) {
           await router.push(`/organization/investigating`)
-        }
-        else if (params.type == Observation.ObservationType) {
+        } else if (params.type == Observation.ObservationType) {
           await router.push(`/organization/observation`)
-        }
-        else if (params.type == Observation.AccidentsType) {
+        } else if (params.type == Observation.AccidentsType) {
           await router.push(`/organization/incedant`)
         }
 
@@ -63,7 +62,7 @@ export default class AddInvestigatingController extends ControllerInterface<Inve
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

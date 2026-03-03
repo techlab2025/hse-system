@@ -35,7 +35,7 @@ export default class CreateIndustryController extends ControllerInterface<Indust
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -56,7 +56,7 @@ export default class CreateIndustryController extends ControllerInterface<Indust
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title,
         imageElement: errorImage,
         messageContent: null,

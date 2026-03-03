@@ -35,7 +35,7 @@ export default class EditObserverationTypeController extends ControllerInterface
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -43,7 +43,7 @@ export default class EditObserverationTypeController extends ControllerInterface
 
         const { user } = useUserStore()
 
-        await router.push(  
+        await router.push(
           `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type`,
         )
         // console.log(this.state.value.data)
@@ -57,7 +57,7 @@ export default class EditObserverationTypeController extends ControllerInterface
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,
