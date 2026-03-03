@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type HeaderModel from '../../Data/models/HeaderModel'
 import EditHeaderUseCase from '../../Domain/useCase/editHeaderUseCase'
 
-
 export default class EditHeaderController extends ControllerInterface<HeaderModel> {
   private static instance: EditHeaderController
 
@@ -33,7 +32,7 @@ export default class EditHeaderController extends ControllerInterface<HeaderMode
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +49,7 @@ export default class EditHeaderController extends ControllerInterface<HeaderMode
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

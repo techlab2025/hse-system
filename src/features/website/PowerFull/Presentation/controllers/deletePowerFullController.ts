@@ -6,8 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type PowerFullModel from '../../Data/models/PowerFullModel'
 import DeletePowerFullUseCase from '../../Domain/useCase/deletePowerFullUseCase'
 
-
-
 export default class DeletePowerFullController extends ControllerInterface<PowerFullModel> {
   private static instance: DeletePowerFullController
   private constructor() {
@@ -26,8 +24,7 @@ export default class DeletePowerFullController extends ControllerInterface<Power
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<PowerFullModel> =
-        await this.DeletePowerFullUseCase.call(params)
+      const dataState: DataState<PowerFullModel> = await this.DeletePowerFullUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -38,7 +35,7 @@ export default class DeletePowerFullController extends ControllerInterface<Power
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

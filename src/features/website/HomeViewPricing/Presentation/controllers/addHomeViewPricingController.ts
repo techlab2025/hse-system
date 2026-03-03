@@ -9,10 +9,6 @@ import type { Router } from 'vue-router'
 import type HomeViewPricingModel from '../../Data/models/HomeViewPricingModel'
 import AddHomeViewPricingUseCase from '../../Domain/useCase/addHomeViewPricingUseCase'
 
-
-
-
-
 export default class AddHomeViewPricingController extends ControllerInterface<HomeViewPricingModel> {
   private static instance: AddHomeViewPricingController
   private constructor() {
@@ -30,14 +26,13 @@ export default class AddHomeViewPricingController extends ControllerInterface<Ho
   async addHomeViewPricing(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
       // console.log("Ssssssss")
       const dataState: DataState<HomeViewPricingModel> =
         await this.AddHomeViewPricingUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -55,7 +50,7 @@ export default class AddHomeViewPricingController extends ControllerInterface<Ho
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

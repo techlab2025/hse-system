@@ -6,7 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type HeaderModel from '../../Data/models/HeaderModel'
 import DeleteHeaderUseCase from '../../Domain/useCase/deleteHeaderUseCase'
 
-
 export default class DeleteHeaderController extends ControllerInterface<HeaderModel> {
   private static instance: DeleteHeaderController
   private constructor() {
@@ -25,8 +24,7 @@ export default class DeleteHeaderController extends ControllerInterface<HeaderMo
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HeaderModel> =
-        await this.DeleteHeaderUseCase.call(params)
+      const dataState: DataState<HeaderModel> = await this.DeleteHeaderUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -37,7 +35,7 @@ export default class DeleteHeaderController extends ControllerInterface<HeaderMo
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

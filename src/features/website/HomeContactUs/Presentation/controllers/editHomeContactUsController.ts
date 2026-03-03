@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type HomeContactUsModel from '../../Data/models/HomeContactUsModel'
 import EditHomeContactUsUseCase from '../../Domain/useCase/editHomeContactUsUseCase'
 
-
 export default class EditHomeContactUsController extends ControllerInterface<HomeContactUsModel> {
   private static instance: EditHomeContactUsController
 
@@ -28,12 +27,13 @@ export default class EditHomeContactUsController extends ControllerInterface<Hom
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HomeContactUsModel> = await this.EditHomeContactUsUseCase.call(params)
+      const dataState: DataState<HomeContactUsModel> =
+        await this.EditHomeContactUsUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +50,7 @@ export default class EditHomeContactUsController extends ControllerInterface<Hom
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

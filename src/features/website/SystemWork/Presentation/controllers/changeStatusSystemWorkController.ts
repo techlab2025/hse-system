@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type SystemWorkModel from '../../Data/models/SystemWorkModel'
 import ChangeStatusSystemWorkUseCase from '../../Domain/useCase/changeStatusSystemWorkUseCase'
 
-
-
-
 export default class ChangeStatusSystemWorkController extends ControllerInterface<SystemWorkModel> {
   private static instance: ChangeStatusSystemWorkController
   private constructor() {
@@ -42,7 +39,7 @@ export default class ChangeStatusSystemWorkController extends ControllerInterfac
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type PrivacyModel from '../../Data/models/PrivacyModel'
 import EditPrivacyUseCase from '../../Domain/useCase/editPrivacyUseCase'
 
-
 export default class EditPrivacyController extends ControllerInterface<PrivacyModel> {
   private static instance: EditPrivacyController
 
@@ -33,7 +32,7 @@ export default class EditPrivacyController extends ControllerInterface<PrivacyMo
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +49,7 @@ export default class EditPrivacyController extends ControllerInterface<PrivacyMo
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

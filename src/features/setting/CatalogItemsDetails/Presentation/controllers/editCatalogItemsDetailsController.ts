@@ -30,12 +30,13 @@ export default class EditCatalogItemsDetailsController extends ControllerInterfa
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<CatalogItemsModel> = await this.editCatalogItemsDetailsUseCase.call(params)
+      const dataState: DataState<CatalogItemsModel> =
+        await this.editCatalogItemsDetailsUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -43,7 +44,9 @@ export default class EditCatalogItemsDetailsController extends ControllerInterfa
 
         const { user } = useUserStore()
 
-        await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details`)
+        await router.push(
+          `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items-details`,
+        )
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
@@ -55,7 +58,7 @@ export default class EditCatalogItemsDetailsController extends ControllerInterfa
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

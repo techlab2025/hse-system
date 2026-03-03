@@ -6,9 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type HerikalyModel from '../../Data/models/HerikalyModel'
 import DeleteHerikalyUseCase from '../../Domain/useCase/deleteHerikalyUseCase'
 
-
-
-
 export default class DeleteHerikalyController extends ControllerInterface<HerikalyModel> {
   private static instance: DeleteHerikalyController
   private constructor() {
@@ -27,8 +24,7 @@ export default class DeleteHerikalyController extends ControllerInterface<Herika
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HerikalyModel> =
-        await this.DeleteHerikalyUseCase.call(params)
+      const dataState: DataState<HerikalyModel> = await this.DeleteHerikalyUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -39,7 +35,7 @@ export default class DeleteHerikalyController extends ControllerInterface<Herika
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

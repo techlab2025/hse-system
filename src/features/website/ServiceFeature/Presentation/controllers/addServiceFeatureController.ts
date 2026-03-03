@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import AddServiceFeatureUseCase from '../../Domain/useCase/addServiceFeatureUseCase'
 
-
-
 export default class AddServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
   private static instance: AddServiceFeatureController
   private constructor() {
@@ -33,7 +31,7 @@ export default class AddServiceFeatureController extends ControllerInterface<Ser
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -51,7 +49,7 @@ export default class AddServiceFeatureController extends ControllerInterface<Ser
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

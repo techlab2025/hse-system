@@ -7,8 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type PowerFullModel from '../../Data/models/PowerFullModel'
 import ChangeStatusPowerFullUseCase from '../../Domain/useCase/changeStatusPowerFullUseCase'
 
-
-
 export default class ChangeStatusPowerFullController extends ControllerInterface<PowerFullModel> {
   private static instance: ChangeStatusPowerFullController
   private constructor() {
@@ -41,7 +39,7 @@ export default class ChangeStatusPowerFullController extends ControllerInterface
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

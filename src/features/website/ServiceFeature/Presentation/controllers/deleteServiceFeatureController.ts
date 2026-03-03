@@ -6,9 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type ServiceFeatureModel from '../../Data/models/ServiceFeatureModel'
 import DeleteServiceFeatureUseCase from '../../Domain/useCase/deleteServiceFeatureUseCase'
 
-
-
-
 export default class DeleteServiceFeatureController extends ControllerInterface<ServiceFeatureModel> {
   private static instance: DeleteServiceFeatureController
   private constructor() {
@@ -39,7 +36,7 @@ export default class DeleteServiceFeatureController extends ControllerInterface<
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

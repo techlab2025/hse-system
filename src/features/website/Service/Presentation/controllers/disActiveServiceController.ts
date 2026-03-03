@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type ServiceModel from '../../Data/models/ServiceModel'
 import DisServiceUseCase from '../../Domain/useCase/disServiceUseCase'
 
-
 export default class disActiveServiceController extends ControllerInterface<ServiceModel> {
   private static instance: disActiveServiceController
   private constructor() {
@@ -26,8 +25,7 @@ export default class disActiveServiceController extends ControllerInterface<Serv
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<ServiceModel> =
-      await this.disActiveServiceUseCase.call(params)
+    const dataState: DataState<ServiceModel> = await this.disActiveServiceUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -40,7 +38,7 @@ export default class disActiveServiceController extends ControllerInterface<Serv
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

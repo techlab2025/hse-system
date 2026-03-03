@@ -27,12 +27,11 @@ export default class AddSystemBannerController extends ControllerInterface<Syste
     // useLoaderStore().setLoadingWithDialog();
     try {
       console.log('Ssssssss')
-      const dataState: DataState<SystemBannerModel> =
-        await this.addSystemBannerUseCase.call(params)
+      const dataState: DataState<SystemBannerModel> = await this.addSystemBannerUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +49,7 @@ export default class AddSystemBannerController extends ControllerInterface<Syste
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

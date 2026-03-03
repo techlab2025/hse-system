@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type SystemRiskManagementModel from '../../Data/models/SystemRiskManagementModel'
 import EditSystemRiskManagementUseCase from '../../Domain/useCase/editSystemRiskManagementUseCase'
 
-
-
-
 export default class EditSystemRiskManagementController extends ControllerInterface<SystemRiskManagementModel> {
   private static instance: EditSystemRiskManagementController
 
@@ -30,12 +27,13 @@ export default class EditSystemRiskManagementController extends ControllerInterf
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<SystemRiskManagementModel> = await this.EditSystemRiskManagementUseCase.call(params)
+      const dataState: DataState<SystemRiskManagementModel> =
+        await this.EditSystemRiskManagementUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -52,7 +50,7 @@ export default class EditSystemRiskManagementController extends ControllerInterf
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

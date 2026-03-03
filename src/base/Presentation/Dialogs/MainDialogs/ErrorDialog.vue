@@ -2,7 +2,7 @@
 import { onMounted } from "vue";
 
 const close = () => {
-  document.querySelector(".dialog-success")?.close();
+  document.querySelector(".dialog-error")?.close();
 };
 
 // Automatically close the dialog after 3 seconds once it's opened
@@ -22,7 +22,8 @@ const close = () => {
 </script>
 
 <template>
-  <dialog class="dialog-success" @click.self="close">
+  <dialog class="dialog-error" @click.self="close">
+    
     <div class="dialog-container">
       <img alt="" class="dialog-icon" src="" />
       <h4 class="dialog-title"></h4>

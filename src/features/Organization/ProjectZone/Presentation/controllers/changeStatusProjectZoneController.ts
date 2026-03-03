@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
 import ChangeStatusProjectZoneUseCase from '../../Domain/useCase/changeStatusProjectZoneUseCase'
 
-
-
-
 export default class ChangeStatusProjectZoneController extends ControllerInterface<ProjectZoneModel> {
   private static instance: ChangeStatusProjectZoneController
   private constructor() {
@@ -42,7 +39,7 @@ export default class ChangeStatusProjectZoneController extends ControllerInterfa
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

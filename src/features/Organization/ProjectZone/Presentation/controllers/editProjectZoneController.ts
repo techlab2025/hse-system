@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
 import EditProjectZoneUseCase from '../../Domain/useCase/editProjectZoneUseCase'
 
-
-
-
 export default class EditProjectZoneController extends ControllerInterface<ProjectZoneModel> {
   private static instance: EditProjectZoneController
 
@@ -35,7 +32,7 @@ export default class EditProjectZoneController extends ControllerInterface<Proje
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -52,7 +49,7 @@ export default class EditProjectZoneController extends ControllerInterface<Proje
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

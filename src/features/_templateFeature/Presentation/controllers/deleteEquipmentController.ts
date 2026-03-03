@@ -30,7 +30,7 @@ export default class DeleteEquipmentController extends ControllerInterface<Equip
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'deleted was successful',
           imageElement: successImage,
           messageContent: null,
@@ -43,7 +43,7 @@ export default class DeleteEquipmentController extends ControllerInterface<Equip
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

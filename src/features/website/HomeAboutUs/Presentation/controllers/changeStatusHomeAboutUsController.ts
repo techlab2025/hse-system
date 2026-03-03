@@ -7,7 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type HomeAboutUsModel from '../../Data/models/HomeAboutUsModel'
 import ChangeStatusHomeAboutUsUseCase from '../../Domain/useCase/changeStatusHomeAboutUsUseCase'
 
-
 export default class ChangeStatusHomeAboutUsController extends ControllerInterface<HomeAboutUsModel> {
   private static instance: ChangeStatusHomeAboutUsController
   private constructor() {
@@ -40,7 +39,7 @@ export default class ChangeStatusHomeAboutUsController extends ControllerInterfa
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

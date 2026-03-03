@@ -64,7 +64,7 @@ const GetEquipmentTypeTitle = (type: number) => {
             <div v-for="segment in month.segments" class="data-column">
               <span class="label" :class="segment.type === 3 ? 'tool' : segment.type === 2 ? 'device' : 'equipment'">{{
                 GetEquipmentTypeTitle(segment.type)
-              }}</span>
+                }}</span>
               <span class="value">{{ segment.number }}</span>
             </div>
             <p class="total-value"><span>total:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
@@ -97,6 +97,7 @@ const GetEquipmentTypeTitle = (type: number) => {
 .chart-container {
   width: 100%;
   max-width: 100%;
+  padding-inline: 10px;
 
   .month {
     max-width: 45px;
@@ -204,7 +205,7 @@ const GetEquipmentTypeTitle = (type: number) => {
 }
 
 @media (max-width: 800px) {
-  .chart-container{
+  .chart-container {
     overflow: scroll;
   }
 }
