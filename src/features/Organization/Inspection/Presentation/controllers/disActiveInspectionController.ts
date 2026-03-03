@@ -38,7 +38,7 @@ export default class disActiveInspectionController extends ControllerInterface<I
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+          dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,
