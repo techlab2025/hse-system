@@ -6,8 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type AboutUsCoreModel from '../../Data/models/AboutUsCoreModel'
 import DeleteAboutUsCoreUseCase from '../../Domain/useCase/deleteAboutUsCoreUseCase'
 
-
-
 export default class DeleteAboutUsCoreController extends ControllerInterface<AboutUsCoreModel> {
   private static instance: DeleteAboutUsCoreController
   private constructor() {
@@ -38,7 +36,7 @@ export default class DeleteAboutUsCoreController extends ControllerInterface<Abo
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

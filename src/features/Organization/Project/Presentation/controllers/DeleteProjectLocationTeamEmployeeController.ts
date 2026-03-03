@@ -55,7 +55,7 @@ export default class DeleteProjectLocationTeamEmployeeController extends Control
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

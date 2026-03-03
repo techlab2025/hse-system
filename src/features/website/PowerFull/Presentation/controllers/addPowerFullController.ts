@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 import type PowerFullModel from '../../Data/models/PowerFullModel'
 import AddPowerFullUseCase from '../../Domain/useCase/addPowerFullUseCase'
 
-
-
 export default class AddPowerFullController extends ControllerInterface<PowerFullModel> {
   private static instance: AddPowerFullController
   private constructor() {
@@ -28,14 +26,12 @@ export default class AddPowerFullController extends ControllerInterface<PowerFul
   async addPowerFull(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-
       // console.log("Ssssssss")
-      const dataState: DataState<PowerFullModel> =
-        await this.AddPowerFullUseCase.call(params)
+      const dataState: DataState<PowerFullModel> = await this.AddPowerFullUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -53,7 +49,7 @@ export default class AddPowerFullController extends ControllerInterface<PowerFul
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

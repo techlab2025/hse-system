@@ -6,10 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type HomeViewPricingModel from '../../Data/models/HomeViewPricingModel'
 import DeleteHomeViewPricingUseCase from '../../Domain/useCase/deleteHomeViewPricingUseCase'
 
-
-
-
-
 export default class DeleteHomeViewPricingController extends ControllerInterface<HomeViewPricingModel> {
   private static instance: DeleteHomeViewPricingController
   private constructor() {
@@ -40,7 +36,7 @@ export default class DeleteHomeViewPricingController extends ControllerInterface
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

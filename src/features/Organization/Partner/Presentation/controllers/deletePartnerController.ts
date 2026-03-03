@@ -24,8 +24,7 @@ export default class DeletePartnerController extends ControllerInterface<Partner
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<PartnerModel> =
-        await this.DeletePartnerUseCase.call(params)
+      const dataState: DataState<PartnerModel> = await this.DeletePartnerUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -36,7 +35,7 @@ export default class DeletePartnerController extends ControllerInterface<Partner
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

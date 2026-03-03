@@ -7,10 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type HomeViewPricingModel from '../../Data/models/HomeViewPricingModel'
 import ChangeStatusHomeViewPricingUseCase from '../../Domain/useCase/changeStatusHomeViewPricingUseCase'
 
-
-
-
-
 export default class ChangeStatusHomeViewPricingController extends ControllerInterface<HomeViewPricingModel> {
   private static instance: ChangeStatusHomeViewPricingController
   private constructor() {
@@ -43,7 +39,7 @@ export default class ChangeStatusHomeViewPricingController extends ControllerInt
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

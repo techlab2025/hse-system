@@ -24,8 +24,7 @@ export default class DeleteProjectController extends ControllerInterface<Project
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<ProjectModel> =
-        await this.DeleteProjectUseCase.call(params)
+      const dataState: DataState<ProjectModel> = await this.DeleteProjectUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -36,7 +35,7 @@ export default class DeleteProjectController extends ControllerInterface<Project
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

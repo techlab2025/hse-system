@@ -30,26 +30,26 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
   async addAccidentsType(params: any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-     if (params?.data?.length > 0) {
-             for (const el of params.data) {
-               if (!el.title) {
-                 new OpenWarningDilaog('title Is Required').openDialog()
-                 return
-               }
-             }
-           } else {
-             params.validate()
-             if (!params.validate().isValid) {
-               params.validateOrThrow()
-               return
-             }
-           }
+      if (params?.data?.length > 0) {
+        for (const el of params.data) {
+          if (!el.title) {
+            new OpenWarningDilaog('title Is Required').openDialog()
+            return
+          }
+        }
+      } else {
+        params.validate()
+        if (!params.validate().isValid) {
+          params.validateOrThrow()
+          return
+        }
+      }
       const dataState: DataState<AccidentsTypeModel> =
         await this.addAccidentsTypeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -83,7 +83,7 @@ export default class AddAccidentsTypeController extends ControllerInterface<Acci
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

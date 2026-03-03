@@ -40,7 +40,7 @@ export default class AddContractorController extends ControllerInterface<Contrac
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -68,7 +68,7 @@ export default class AddContractorController extends ControllerInterface<Contrac
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

@@ -6,9 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type SystemWorkModel from '../../Data/models/SystemWorkModel'
 import DeleteSystemWorkUseCase from '../../Domain/useCase/deleteSystemWorkUseCase'
 
-
-
-
 export default class DeleteSystemWorkController extends ControllerInterface<SystemWorkModel> {
   private static instance: DeleteSystemWorkController
   private constructor() {
@@ -27,8 +24,7 @@ export default class DeleteSystemWorkController extends ControllerInterface<Syst
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<SystemWorkModel> =
-        await this.DeleteSystemWorkUseCase.call(params)
+      const dataState: DataState<SystemWorkModel> = await this.DeleteSystemWorkUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -39,7 +35,7 @@ export default class DeleteSystemWorkController extends ControllerInterface<Syst
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

@@ -36,7 +36,7 @@ export default class EditHazardController extends ControllerInterface<HazardMode
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -46,13 +46,11 @@ export default class EditHazardController extends ControllerInterface<HazardMode
 
         if (params.type == Observation.HazardType) {
           await router.push(`/organization/investigating`)
-        }
-        else if (params.type == Observation.ObservationType) {
+        } else if (params.type == Observation.ObservationType) {
           await router.push(`/organization/observation`)
-        }
-        else if (params.type == Observation.AccidentsType) {
+        } else if (params.type == Observation.AccidentsType) {
           await router.push(`/organization/incedant`)
-        }        // console.log(this.state.value.data)
+        } // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
@@ -63,7 +61,7 @@ export default class EditHazardController extends ControllerInterface<HazardMode
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

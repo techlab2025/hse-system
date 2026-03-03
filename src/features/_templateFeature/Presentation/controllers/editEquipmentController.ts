@@ -34,8 +34,8 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.message,
+          dialogName: 'dialog-success',
+          titleContent: 'Edited was successful',
           imageElement: successImage,
           messageContent: null,
         })
@@ -46,7 +46,7 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,
@@ -54,7 +54,7 @@ export default class EditEquipmentController extends ControllerInterface<Equipme
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

@@ -7,9 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type AboutUsFeatureModel from '../../Data/models/AboutUsFeatureModel'
 import ChangeStatusAboutUsFeatureUseCase from '../../Domain/useCase/changeStatusAboutUsFeatureUseCase'
 
-
-
-
 export default class ChangeStatusAboutUsFeatureController extends ControllerInterface<AboutUsFeatureModel> {
   private static instance: ChangeStatusAboutUsFeatureController
   private constructor() {
@@ -42,7 +39,7 @@ export default class ChangeStatusAboutUsFeatureController extends ControllerInte
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

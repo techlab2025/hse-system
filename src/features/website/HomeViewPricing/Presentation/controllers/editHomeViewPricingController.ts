@@ -7,10 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type HomeViewPricingModel from '../../Data/models/HomeViewPricingModel'
 import EditHomeViewPricingUseCase from '../../Domain/useCase/editHomeViewPricingUseCase'
 
-
-
-
-
 export default class EditHomeViewPricingController extends ControllerInterface<HomeViewPricingModel> {
   private static instance: EditHomeViewPricingController
 
@@ -31,12 +27,13 @@ export default class EditHomeViewPricingController extends ControllerInterface<H
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<HomeViewPricingModel> = await this.EditHomeViewPricingUseCase.call(params)
+      const dataState: DataState<HomeViewPricingModel> =
+        await this.EditHomeViewPricingUseCase.call(params)
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: this.state.value.message,
           imageElement: successImage,
           messageContent: null,
@@ -53,7 +50,7 @@ export default class EditHomeViewPricingController extends ControllerInterface<H
       }
     } catch (error: any) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

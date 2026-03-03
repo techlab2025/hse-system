@@ -26,12 +26,11 @@ export default class AddBlogController extends ControllerInterface<BlogModel> {
   async addBlog(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<BlogModel> =
-        await this.AddBlogUseCase.call(params)
+      const dataState: DataState<BlogModel> = await this.AddBlogUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -49,7 +48,7 @@ export default class AddBlogController extends ControllerInterface<BlogModel> {
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,

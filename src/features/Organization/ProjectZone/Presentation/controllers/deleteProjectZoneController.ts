@@ -6,9 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type ProjectZoneModel from '../../Data/models/ProjectZoneModel'
 import DeleteProjectZoneUseCase from '../../Domain/useCase/deleteProjectZoneUseCase'
 
-
-
-
 export default class DeleteProjectZoneController extends ControllerInterface<ProjectZoneModel> {
   private static instance: DeleteProjectZoneController
   private constructor() {
@@ -39,7 +36,7 @@ export default class DeleteProjectZoneController extends ControllerInterface<Pro
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.message,
         imageElement: errorImage,
         messageContent: null,

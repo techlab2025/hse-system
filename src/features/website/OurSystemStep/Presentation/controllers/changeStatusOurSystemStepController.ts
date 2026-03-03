@@ -7,10 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type OurSystemStepModel from '../../Data/models/OurSystemStepModel'
 import ChangeStatusOurSystemStepUseCase from '../../Domain/useCase/changeStatusOurSystemStepUseCase'
 
-
-
-
-
 export default class ChangeStatusOurSystemStepController extends ControllerInterface<OurSystemStepModel> {
   private static instance: ChangeStatusOurSystemStepController
   private constructor() {
@@ -43,7 +39,7 @@ export default class ChangeStatusOurSystemStepController extends ControllerInter
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

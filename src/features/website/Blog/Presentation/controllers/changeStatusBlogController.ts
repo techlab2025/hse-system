@@ -7,10 +7,6 @@ import errorImage from '@/assets/images/error.png'
 import type BlogModel from '../../Data/models/BlogModel'
 import ChangeStatusBlogUseCase from '../../Domain/useCase/changeStatusBlogUseCase'
 
-
-
-
-
 export default class ChangeStatusBlogController extends ControllerInterface<BlogModel> {
   private static instance: ChangeStatusBlogController
   private constructor() {
@@ -29,8 +25,7 @@ export default class ChangeStatusBlogController extends ControllerInterface<Blog
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<BlogModel> =
-      await this.ChangeStatusBlogUseCase.call(params)
+    const dataState: DataState<BlogModel> = await this.ChangeStatusBlogUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -43,7 +38,7 @@ export default class ChangeStatusBlogController extends ControllerInterface<Blog
       // useLoaderStore().endLoadingWithDialog();
     } else {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title! ?? 'Ann Error Occurred',
         imageElement: errorImage,
         messageContent: null,

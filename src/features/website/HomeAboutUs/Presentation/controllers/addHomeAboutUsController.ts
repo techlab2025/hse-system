@@ -9,7 +9,6 @@ import type { Router } from 'vue-router'
 import type HomeAboutUsModel from '../../Data/models/HomeAboutUsModel'
 import AddHomeAboutUsUseCase from '../../Domain/useCase/addHomeAboutUsUseCase'
 
-
 export default class AddHomeAboutUsController extends ControllerInterface<HomeAboutUsModel> {
   private static instance: AddHomeAboutUsController
   private constructor() {
@@ -27,12 +26,11 @@ export default class AddHomeAboutUsController extends ControllerInterface<HomeAb
   async addHomeAboutUs(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<HomeAboutUsModel> =
-        await this.AddHomeAboutUsUseCase.call(params)
+      const dataState: DataState<HomeAboutUsModel> = await this.AddHomeAboutUsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
@@ -50,7 +48,7 @@ export default class AddHomeAboutUsController extends ControllerInterface<HomeAb
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),
         imageElement: errorImage,
         messageContent: null,
