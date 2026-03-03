@@ -211,7 +211,7 @@ const exportExcel = () => {
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
       <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
-          {{ $t('add_organizatoin_employee') }}
+          {{ $t('add_organizatoin_employee') }} 
         </router-link>
       </PermissionBuilder>
       <!-- <ExcelSheetUpload class="upload" /> -->
