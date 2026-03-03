@@ -30,7 +30,7 @@ export default class disActiveLangController extends ControllerInterface<LangMod
     this.setState(dataState)
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-success',
         titleContent: 'Client status changed successfully.',
         imageElement: successImage,
         messageContent: null,

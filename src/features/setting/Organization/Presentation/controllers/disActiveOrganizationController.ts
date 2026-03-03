@@ -30,7 +30,7 @@ export default class disActiveOrganizationController extends ControllerInterface
     this.setState(dataState)
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-success',
         titleContent: this.state.value.message,
         imageElement: successImage,
         messageContent: null,

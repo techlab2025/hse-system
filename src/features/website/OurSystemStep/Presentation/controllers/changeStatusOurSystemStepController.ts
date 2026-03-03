@@ -31,7 +31,7 @@ export default class ChangeStatusOurSystemStepController extends ControllerInter
     this.setState(dataState)
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
-        dialogName: 'dialog',
+        dialogName: 'dialog-success',
         titleContent: this.state.value.message,
         imageElement: successImage,
         messageContent: null,
