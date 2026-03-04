@@ -79,8 +79,10 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
+  // const width = canvas.clientWidth;
+  const width = canvas.width / (window.devicePixelRatio || 1);
+  // const height = canvas.clientHeight;
+  const height = canvas.height / (window.devicePixelRatio || 1);
   if (width <= 0 || height <= 0) return;
 
   ctx.clearRect(0, 0, width, height);
@@ -437,5 +439,6 @@ onBeforeUnmount(() => {
 canvas {
   height: 100%;
   display: block;
+
 }
 </style>
