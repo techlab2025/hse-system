@@ -6,6 +6,8 @@ import type CertificateModel from '@/features/setting/Certificate/Data/models/Ce
 import ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
 import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
+import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
+import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
 
 export default class OrganizatoinEmployeeDetailsModel {
   // =====================
@@ -29,6 +31,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public projects: ProjectModel[]
   public emplyeeStatus: EmployeeStatusEnum
   public serialName: string
+  public tasks: InspectionModel[]
 
   // =====================
   // Constructor
@@ -51,6 +54,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     showHierarchy: TitleInterface[],
     projects: ProjectModel[],
     emplyeeStatus: EmployeeStatusEnum,
+    tasks: InspectionModel[],
   ) {
     this.id = id
     this.name = name
@@ -69,6 +73,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.showHierarchy = showHierarchy
     this.projects = projects
     this.emplyeeStatus = emplyeeStatus
+    this.tasks = tasks
   }
 
   // =====================
@@ -94,7 +99,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.hierarchy,
       data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
       data?.employee_type,
-      // data.employee_tasks,
+      data.tasks,
       // data.employee_performance,
     )
   }

@@ -1,0 +1,95 @@
+@import '../variables';
+@import '../mixins/flex';
+@import '../mixins/grid';
+.employee-tasks-card {
+  background-color: #ffffff;
+  border: 1px solid #eef3fe;
+  padding: $MdSize;
+  border-radius: 16px;
+  margin-top: 1rem;
+  position: relative;
+  &::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 60%;
+    background-image: url('@/assets/images/Ellipse 1941.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  @include grid(
+    2,
+    10px,
+    (
+      1000px: 1,
+    )
+  );
+  .task-details {
+    .task-date {
+      h6 {
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+        color: var(--second-dark-color);
+        font-family: 'bold';
+      }
+      span {
+        font-size: $XsSize;
+        font-weight: $BaseFontMediumWeight;
+        color: #6b7280;
+        font-family: 'regular';
+      }
+    }
+    .project-name {
+      h6 {
+        font-size: $MdSize;
+        font-weight: $BaseFontMediumWeight;
+        color: var(--second-dark-color);
+        font-family: 'regular';
+      }
+      span {
+        font-size: $MdSize;
+        font-weight: $BaseFontMediumWeight;
+        color: var(--header-page-color);
+        font-family: 'regular';
+      }
+    }
+  }
+  .info-employee-task {
+    border: 1px solid #f9f9f9;
+    padding: $XsSize3;
+    background-color: #f9f9f9;
+    margin: 0 0 0 auto;
+    border-radius: 8px;
+    .back-ground {
+      background-color: white;
+      padding: $XsSize3;
+      border-radius: 8px;
+      @include flex(row, nowrap, end, center);
+      gap: 10px;
+      .imge {
+        object-fit: cover;
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .info {
+        h6 {
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          color: #0f1927;
+          font-family: 'regular';
+        }
+        p {
+          font-size: $MdSize;
+          font-weight: $BaseFontMediumWeight;
+          color: var(--subtitle-color);
+          font-family: 'regular';
+        }
+      }
+    }
+  }
+}
