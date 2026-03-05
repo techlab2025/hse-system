@@ -125,7 +125,10 @@ const updateData = () => {
   }
 
   if (data.periodType === PeriodTypeEnum.WITHDAY) {
+
     periodTasks.push(new TaskPeriodParams(null, null, null, data.WithDays, data.WithDaysType?.id))
+    console.log(periodTasks, "periodTasks");
+    console.log(data, "data");
   }
 
   /* ---- Decide Add or Edit ---- */
@@ -175,6 +178,7 @@ const UpdateFormData = (data: InspectionForm) => {
 
 const GetGeneralData = (data: any) => {
   date.value = data
+  console.log(data, "data");
   updateData()
 }
 
@@ -240,10 +244,10 @@ const fields = ref([
   <div class="inspection-form col-span-6 md:col-span-6 gap-4">
     <!-- Main Inspection Details -->
     <div class="inspection-details grid grid-cols-6 gap-4" :class="SelectedAssigned === AssignToTypeEnum.ZONE ||
-        id ||
-        SelectedAssigned === AssignToTypeEnum.MACHINE
-        ? 'full-width'
-        : ''
+      id ||
+      SelectedAssigned === AssignToTypeEnum.MACHINE
+      ? 'full-width'
+      : ''
       ">
       <!-- Machine Selection -->
 
