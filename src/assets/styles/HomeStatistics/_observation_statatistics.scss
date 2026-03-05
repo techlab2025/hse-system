@@ -21,10 +21,12 @@
       .static-title {
         color: #0c2058;
         font-size: $XlSize;
+        font-family: "bold";
         font-weight: $BaseFontWeightBold;
         span {
           color: #bcbcbc;
           font-size: $XsSize;
+          font-family: "regular";
           font-weight: $BaseFontMediumWeight;
         }
       }
