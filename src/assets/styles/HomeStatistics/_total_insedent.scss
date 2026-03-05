@@ -28,10 +28,11 @@
     &:hover {
       transform: translateY(-5px);
     }
-    .title {
+    .titlte {
       p {
         font-size: $XlSize;
         font-weight: $BaseFontWeightBold;
+        font-family: "bold";
         color: #000000;
       }
     }
@@ -47,6 +48,7 @@
         font-size: $XlSize;
         font-weight: $BaseFontMediumWeight;
         color: var(--subtitle-color);
+        font-family: "regular";
       }
       .ToatlInsedant-one {
         color: #ffbf52;

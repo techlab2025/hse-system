@@ -376,7 +376,8 @@ onBeforeUnmount(() => {
 .static-title {
   font-size: 17px;
   font-weight: 700;
-  color: #1f2937;
+  font-family: "bold";
+  color: #0C2058;
   margin: 0;
 }
 

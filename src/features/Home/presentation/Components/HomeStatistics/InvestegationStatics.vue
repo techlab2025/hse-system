@@ -44,12 +44,14 @@ const maxTotal = computed(() =>
     h6 {
       font-size: 20px;
       font-weight: 700;
+      font-family: "bold";
       color: #0C2058;
     }
 
     p {
       font-size: 12px;
       font-weight: 600;
+        font-family: "regular";
       color: #BCBCBC;
     }
 
