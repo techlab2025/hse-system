@@ -126,7 +126,7 @@ const maxTotal = computed(() =>
 
     .top-indicator {
       position: absolute;
-      top: -42px;
+      top: -35px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
