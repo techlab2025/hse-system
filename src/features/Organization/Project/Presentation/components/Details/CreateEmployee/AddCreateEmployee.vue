@@ -73,7 +73,8 @@ const handleAddAllEmployees = async () => {
     if (hierarchies.length === 0) return
     // console.log(hierarchies, "hierarchies")
 
-    const params = new AddHierarchyEmployeeParams(projectId, hierarchies)
+    // console.log(hierarchies.map((el) => el.employee_ids?.length > 0), "hierarchies");
+    const params = new AddHierarchyEmployeeParams(projectId, hierarchies.filter((el) => el.employee_ids.length > 0))
     await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
   } catch (error) {
     console.error('Error adding employees:', error)
