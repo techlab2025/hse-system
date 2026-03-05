@@ -107,7 +107,7 @@
   cursor: pointer;
   margin: 1rem 0;
   transform: scale(1);
-  transition: $TransitionFast;
+  transition:  all 0.4s ease-in-out;
   @include flex(row, nowrap, center, center);
   gap: 10px;
   &:hover{
