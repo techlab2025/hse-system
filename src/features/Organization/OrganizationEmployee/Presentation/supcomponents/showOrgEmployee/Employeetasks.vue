@@ -17,7 +17,7 @@ const props = defineProps<{
         <h6>{{ tasks.template.title }} <span>{{ tasks.date }}</span></h6>
       </div>
       <div class="project-name">
-        <h6>project name : <span>{{ tasks.project?.title }}</span></h6>
+        <h6>{{ $t("Project Name") }} : <span>{{ tasks.project?.title }}</span></h6>
       </div>
     </div>
     <div class="info-employee-task">
