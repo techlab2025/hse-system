@@ -145,6 +145,7 @@ const maxTotal = computed(() =>
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         text-shadow: none;
+          animation: floatIndicator 1.8s ease-in-out infinite;
       }
 
       .indicator-dot {
@@ -158,7 +159,17 @@ const maxTotal = computed(() =>
     }
   }
 }
-
+@keyframes floatIndicator {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 @media (max-width: 600px) {
   .chart_row {
     max-width: 25px;
