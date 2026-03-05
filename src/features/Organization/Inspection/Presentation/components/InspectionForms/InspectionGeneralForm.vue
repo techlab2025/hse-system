@@ -145,10 +145,10 @@ watch(SelectedPeriodType, () => {
 
 
 const WithDaysType = ref<TitleInterface[]>([
-  new TitleInterface({ id: WithDayEnum.DAY, title: 'Day' }),
-  new TitleInterface({ id: WithDayEnum.WEEK, title: 'Week' }),
-  new TitleInterface({ id: WithDayEnum.MONTH, title: 'Month' }),
-  new TitleInterface({ id: WithDayEnum.YEAR, title: 'Year' }),
+  new TitleInterface({ id: WithDayEnum.Day, title: 'Day' }),
+  new TitleInterface({ id: WithDayEnum.Week, title: 'Week' }),
+  new TitleInterface({ id: WithDayEnum.Month, title: 'Month' }),
+  new TitleInterface({ id: WithDayEnum.Year, title: 'Year' }),
 ])
 
 const setWithDayesType = (data: TitleInterface) => {
