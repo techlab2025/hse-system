@@ -7,6 +7,7 @@ const props = defineProps<{
   organizationEmployeeId: number
   is_expire_date: boolean
   status: CertificateStatusEnum
+  cert: any
 }>()
 
 const emit = defineEmits(['update:data'])
@@ -19,12 +20,7 @@ const updateData = () => {
     <div class="invalid">
       <span class="invalid-title">invalid</span>
     </div>
-    <CertificateImageDialog
-      @update:data="updateData"
-      :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId"
-      :is_expire_date="is_expire_date"
-      :status="status"
-    />
+    <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
+      :organizationEmployeeId="organizationEmployeeId" :is_expire_date="cert.require_expired_date" :status="status" />
   </div>
 </template>

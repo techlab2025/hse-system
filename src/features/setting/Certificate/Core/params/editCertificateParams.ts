@@ -61,8 +61,8 @@ export default class EditCertificateParams implements Params {
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image != null) data['image'] = this.image
     if (this.imageId) data['image_id'] = this.imageId
-    if (this.require_expired_date || this.require_expired_date === false)
-      data['require_expired_date'] = this.require_expired_date
+
+    data['require_expired_date'] = this.require_expired_date
     return data
   }
 }
