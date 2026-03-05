@@ -113,6 +113,7 @@ const updaetAdminStatus = (status: number) => {
 const updateData = () => {
   const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy?.value?.id)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
+  // console.log(booleanEmpStatus.value, "booleanEmpStatus");
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
       props?.data?.id,
@@ -123,7 +124,7 @@ const updateData = () => {
       ConfirmPassword.value,
       [HeirarchyIds],
       RoleIds,
-      EmployeeStatus.value || EmployeeStatusEnum.Employee
+      booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
 
 
       // Certificates.value.map((item) => item.id)
@@ -136,7 +137,7 @@ const updateData = () => {
       ConfirmPassword.value,
       [HeirarchyIds],
       RoleIds,
-      EmployeeStatus.value || EmployeeStatusEnum.Employee,
+      booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
       SerialNumber.value,
 
       // Certificates.value.map((item) => item.id)
@@ -152,7 +153,7 @@ watch(
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
-      Heirarchy.value = new TitleInterface({ id: newData.hierarchy[0].id, title: newData.hierarchy[0].title })
+      Heirarchy.value = new TitleInterface({ id: newData?.hierarchy?.[0]?.id, title: newData?.hierarchy?.[0]?.title })
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
