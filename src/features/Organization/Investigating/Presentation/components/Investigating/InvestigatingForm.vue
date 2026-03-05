@@ -53,8 +53,8 @@ const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
 const updateData = () => {
-  console.log(time?.value, "date?.value");
-  const meeting = (date?.value != undefined && time?.value != undefined) ? new MeetingParams(formatJoinDate(date?.value), time?.value || null, SelectedPlatform?.value?.id) : null
+  const meeting = (date?.value != undefined && time?.value != undefined) ? new MeetingParams(formatJoinDate(date?.value), formatTime(time?.value) || null, SelectedPlatform?.value?.id) : null
+  console.log(meeting, "meeting");
   const params = props.data?.id
     ? new EditInvestigatingParams(
       {
@@ -130,7 +130,7 @@ const handleInvestigatingData = (data: any) => {
   updateData()
 }
 
-watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
+watch([title, date, riskLevel, isNearMiss, saveStatus, time], () => {
   updateData()
 })
 
@@ -227,7 +227,7 @@ watch(() => showInvestigationResultController.state.value, (newState) => {
   </div>
   <div class="col-span-6 md:col-span-3 input-wrapper">
     <label for="time">Time</label>
-    <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" />
+    <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" @update:modelValue="updateData" />
   </div>
 
   <!-- <FactorInvestigating /> -->

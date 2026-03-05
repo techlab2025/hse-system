@@ -18,6 +18,7 @@ export default class InvestegationResultDetailsModel {
   public lastMeetingDate: string
   public lastMeetingTime: string
   public investigationMeetings: MeetingModel[]
+  public TeamLeader: { id: number; name: string }
 
   constructor(
     id: number,
@@ -34,6 +35,7 @@ export default class InvestegationResultDetailsModel {
     nextMeetingDate: string,
     nextMeetingTime: string,
     investigationMeetings: MeetingModel[],
+    TeamLeader: { id: number; name: string },
   ) {
     this.id = id
     this.title = title
@@ -49,6 +51,7 @@ export default class InvestegationResultDetailsModel {
     this.nextMeetingDate = nextMeetingDate
     this.nextMeetingTime = nextMeetingTime
     this.investigationMeetings = investigationMeetings
+    this.TeamLeader = TeamLeader
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -67,6 +70,7 @@ export default class InvestegationResultDetailsModel {
       data.last_meeting_date,
       data.last_meeting_time,
       data.investigation_meetings?.map((i: any) => MeetingModel.fromMap(i)),
+      data.investigation_team_leader,
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
