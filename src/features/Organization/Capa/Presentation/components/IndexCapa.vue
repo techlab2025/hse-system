@@ -17,36 +17,24 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import TitleInterface from '@/base/Data/Models/title_interface'
 import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
-
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import IndexHazardController from '../../controllers/indexHazardController'
-import IndexHazardParams from '../../../Core/params/indexHazardParams'
-import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
-import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
-import DeleteHazardController from '../../controllers/deleteHazardController'
-import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
-import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import FilterDialog from '../Hazard/HazardUtils/FilterDialog.vue'
-import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
-import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
-import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
-import type MyZonesModel from '../../../Data/models/MyZonesModel'
-import FetchMyZonesController from '../../controllers/FetchMyZonesController'
-import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
-import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
-import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
-import PinIcons from '@/shared/icons/PinIcons.vue'
-import HighLevel from '@/shared/icons/HighLevel.vue'
-import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
-import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
-import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams'
-import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController'
-import ToggleObservationWorkStoppedController from '../../controllers/ToggleObservationWorkStoppedController'
-import ToggleObservationWorkStoppedParams from '../../../Core/params/ToggleObservationWorkStoppedParams'
-import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
+import IndexCapaParams from '../../Core/params/indexCapaParams'
+import IndexCapaController from '../controllers/indexCapaController'
+import DeleteCapaParams from '../../Core/params/deleteCapaParams'
+import DeleteCapaController from '../controllers/deleteCapaController'
+import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
+import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
+import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
+import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+import { RiskLevelEnum } from '@/features/Organization/Investigating/Core/Enums/risk_level_enum'
+import { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
+import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
+import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
+import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
+import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
+import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -56,13 +44,13 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const indexHazardController = IndexHazardController.getInstance()
-const state = ref(indexHazardController.state.value)
+const indexCapaController = IndexCapaController.getInstance()
+const state = ref(indexCapaController.state.value)
 const route = useRoute()
 const id = route.params.parent_id
 // const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
-const fetchHazard = async (
+const fetchCapa = async (
   query = '',
   pageNumber = 1,
   perPage = 10,
@@ -72,7 +60,7 @@ const fetchHazard = async (
   zoonIds?: number[],
   projectIds?: number,
 ) => {
-  const params = new IndexHazardParams(
+  const params = new IndexCapaParams(
     query,
     pageNumber,
     perPage,
@@ -86,43 +74,41 @@ const fetchHazard = async (
     route.query.hazard ? route.query.hazard : null,
     route.query.risk_level ? [route.query.risk_level] : null,
 
-
   )
-  console.log(params, 'Params')
-  await indexHazardController.getData(params)
+  await indexCapaController.getData(params)
 }
 
 
 onMounted(() => {
   if (selectedProjctesFilters.value) {
-    fetchHazard()
+    fetchCapa()
   }
   FetchMyProjects()
 })
 
 const searchHazard = debounce(() => {
-  fetchHazard(word.value)
+  fetchCapa(word.value)
 })
 
-const deleteHazard = async (id: number) => {
-  const deleteHazardParams = new DeleteHazardParams(id)
-  await DeleteHazardController.getInstance().deleteHazard(deleteHazardParams)
-  await fetchHazard()
-}
+// const deleteHazard = async (id: number) => {
+//   const deleteCapaParams = new DeleteCapaParams(id)
+//   await DeleteCapaController.getInstance().deleteCapa(deleteCapaParams)
+//   await fetchCapa()
+// }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHazard('', currentPage.value, countPerPage.value)
+  fetchCapa('', currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHazard('', currentPage.value, countPerPage.value)
+  fetchCapa('', currentPage.value, countPerPage.value)
 }
 
 watch(
-  () => indexHazardController.state.value,
+  () => indexCapaController.state.value,
   (newState) => {
     if (newState) {
       console.log(newState)
@@ -136,29 +122,29 @@ watch(
 
 const { user } = useUserStore()
 
-const actionList = (id: number, deleteHazard: (id: number) => void) => [
-  {
-    text: t('edit'),
-    icon: IconEdit,
-    link: `/organization/equipment-mangement/observation/${id}`,
-    permission: [
-      PermissionsEnum.ORG_OBSERVATION_UPDATE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_OBSERVATION_ALL,
-      PermissionsEnum.ORG_OBSERVATION_DETAILS,
-    ],
-  },
-  {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteHazard(id),
-    permission: [
-      PermissionsEnum.ORG_OBSERVATION_DELETE,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_OBSERVATION_ALL,
-    ],
-  },
-]
+// const actionList = (id: number, deleteHazard: (id: number) => void) => [
+//   {
+//     text: t('edit'),
+//     icon: IconEdit,
+//     link: `/organization/equipment-mangement/observation/${id}`,
+//     permission: [
+//       PermissionsEnum.ORG_OBSERVATION_UPDATE,
+//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+//       PermissionsEnum.ORG_OBSERVATION_ALL,
+//       PermissionsEnum.ORG_OBSERVATION_DETAILS,
+//     ],
+//   },
+//   {
+//     text: t('delete'),
+//     icon: IconDelete,
+//     action: () => deleteHazard(id),
+//     permission: [
+//       PermissionsEnum.ORG_OBSERVATION_DELETE,
+//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+//       PermissionsEnum.ORG_OBSERVATION_ALL,
+//     ],
+//   },
+// ]
 const router = useRouter()
 const Projects = ref<MyProjectsModel[]>([])
 const FetchMyProjects = async () => {
@@ -184,13 +170,13 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+  fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
   console.log(data, 'data')
-  fetchHazard('', 1, 10, 1, null, null, null, data)
+  fetchCapa('', 1, 10, 1, null, null, null, data)
   if (data) {
     FetchMyZones()
   }
@@ -233,11 +219,7 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
 
 
 
-const toggleObservationWorkStopped = async (id: number) => {
-  const toggleObservationWorkStoppedParams = new ToggleObservationWorkStoppedParams(id)
-  await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(toggleObservationWorkStoppedParams, router)
-  await fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
-}
+
 
 const GetObservationType = (type: number) => {
   switch (type) {
@@ -251,7 +233,7 @@ const GetObservationType = (type: number) => {
 
 <template>
   <div class="grid grid-cols-12 gap-4">
-    <IndexEquipmentMangement class="col-span-2" />
+    <!-- <IndexEquipmentMangement class="col-span-2" /> -->
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder :code="[
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -278,14 +260,14 @@ const GetObservationType = (type: number) => {
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <PermissionBuilder :code="[
+              <!-- <PermissionBuilder :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]">
                 <router-link :to="`/organization/equipment-mangement/observation/add`">
                   <button class="btn btn-primary">{{ $t('Create observation') }}</button>
                 </router-link>
-              </PermissionBuilder>
+              </PermissionBuilder> -->
             </div>
           </div>
         </div>
@@ -323,15 +305,15 @@ const GetObservationType = (type: number) => {
                               {{ GetSaveStatus(item.saveStatus) }}
 
                             </p>
-                            <p class="label-item-secondary Negative flex items-center gap-1"
+                            <!-- <p class="label-item-secondary Negative flex items-center gap-1"
                               v-if="item.isWorkStopped == 1">
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
                               <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
                                 @update:checked="toggleObservationWorkStopped(item?.id)" />
-                            </p>
+                            </p> -->
 
                           </div>
-                          <router-link :to="`observation/show/${item?.id}`" class="card-details">
+                          <router-link :to="`equipment-mangement/observation/show/${item?.id}`" class="card-details">
                             <p class="title">
                               {{ item.observer.name }} <span>{{ '(observer)' }}</span>
                             </p>

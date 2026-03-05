@@ -328,7 +328,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
     </PermissionBuilder> -->
 
 
-    <!-- <PermissionBuilder :code="[
+    <PermissionBuilder :code="[
       PermissionsEnum.ORG_EMPLOYEE_ALL,
       PermissionsEnum.ORG_EMPLOYEE_CREATE,
       PermissionsEnum.ORG_EMPLOYEE_DELETE,
@@ -340,7 +340,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
         <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('capa')}`"
           :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `" />
       </router-link>
-    </PermissionBuilder> -->
+    </PermissionBuilder>
 
 
   </div>
