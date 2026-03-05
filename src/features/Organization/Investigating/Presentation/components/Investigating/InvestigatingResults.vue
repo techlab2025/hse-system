@@ -60,7 +60,7 @@ const AddEnvestigatingResult = async () => {
   const CheckWitnessIsFullyEmpty = viewersResults.value.map((el) => {
     return (el.organizationEmployeeId != null || el.employeeName != undefined) && el?.witnessesStatements?.length > 1
   })
-  const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value.map((el) => {
+  const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value.filter((el) => {
     return el?.tasks?.length > 0
   })
   // CheckWitnessIsFullyEmpty ? [] :
@@ -71,7 +71,7 @@ const AddEnvestigatingResult = async () => {
     investigationMeetingId: id,
     isActionCorrect: rateActions.value?.actionRate,
     isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
-    tasks: CheckInvestigationTasksIsFullyEmpty.find((el) => el) ? investigationTasks.value : [],
+    tasks: investigationTasks.value,
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: anotherMeeting?.value?.meetings,
     corrective: CauseOfAction.value?.description
@@ -93,7 +93,7 @@ const setCauseOfAction = (data) => {
 
 const investigationTasks = ref()
 const setInvestigationTasks = (data) => {
-  // console.log(data, "investigationTasks");
+  console.log(data, "investigationTasks");
   investigationTasks.value = data
 
 

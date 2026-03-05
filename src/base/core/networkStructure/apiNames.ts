@@ -1557,6 +1557,12 @@ class ApiNames {
   public get FetchEqipmentStatics() {
     return this.prefix + 'fetch_home_equipments_statices'
   }
+  public get IndexCapa() {
+    return this.prefix + 'fetch_capa_observations'
+  }
+  public get DeleteCapa() {
+    return this.prefix + 'delete_capa'
+  }
 }
 
 export { ApiNames }
