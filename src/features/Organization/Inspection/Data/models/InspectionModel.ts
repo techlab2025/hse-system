@@ -31,6 +31,7 @@ export default class InspectionModel {
   public task_id: number
   public inspectedBy: CreatedBy
   public from_date: string
+  public project?: TitleInterface
   constructor(
     id: number,
     template: TemplateDetailsModel,
@@ -55,6 +56,7 @@ export default class InspectionModel {
     task_id: number,
     inspectedBy: CreatedBy,
     from_date: string,
+    project?: TitleInterface,
   ) {
     this.id = id
     this.template = template
@@ -79,6 +81,7 @@ export default class InspectionModel {
     this.task_id = task_id
     this.inspectedBy = inspectedBy
     this.from_date = from_date
+    this.project = project
   }
 
   static fromMap(data: any): InspectionModel {
@@ -106,6 +109,7 @@ export default class InspectionModel {
       data.task_id,
       data.task_created_by,
       data.from_date,
+      data.project,
       // datadata.task_periods,
     )
   }

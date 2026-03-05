@@ -9,6 +9,7 @@ import PerformanceBox from '../supcomponents/showOrgEmployee/PerformanceBox.vue'
 import ProjectComp from '../supcomponents/showOrgEmployee/ProjectComp.vue'
 import { useRoute } from 'vue-router'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
+import Employeetasks from '../supcomponents/showOrgEmployee/Employeetasks.vue'
 const route = useRoute()
 const empDetastate = ref<OrganizatoinEmployeeDetailsModel>()
 const ShowEmployeeDetails = async () => {
@@ -31,6 +32,9 @@ onMounted(() => {
       <EmployeeProfileBox :state="empDetastate" />
       <!-- Pass Data to PerformanceBox -->
       <!-- <PerformanceBox :state="empDetastate" /> -->
+       <div class=" " v-for="task in empDetastate?.tasks" :key="task.id">
+         <Employeetasks :tasks="task" />
+       </div>
     </div>
 
     <div class="lg:col-span-1 space-y-6">
