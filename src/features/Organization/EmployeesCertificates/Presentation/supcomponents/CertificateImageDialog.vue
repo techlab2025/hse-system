@@ -87,7 +87,7 @@ const UploadCertificateImage = async () => {
   const addEmployeeCertificateParams = new AddEmployeeCertificateParams(
     props.certificateId,
     props.organizationEmployeeId,
-    SelectedData.value,
+    props.is_expire_date ? SelectedData.value : null,
     Notes.value,
     certificateImage.value,
     SelectedIssueData.value,
@@ -105,35 +105,20 @@ const UploadCertificateImage = async () => {
   <button class="invalid-date" @click="visible = true" v-if="notRequired">
     <Addcertificates />
   </button>
-  <button
-    class="not-required"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Invalid"
-  >
+  <button class="not-required" @click="visible = true" v-if="status === CertificateStatusEnum.Invalid">
     <InVaildIcon />
   </button>
-  <button
-    class="expired-certificate renew"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Expired"
-  >
+  <button class="expired-certificate renew" @click="visible = true" v-if="status === CertificateStatusEnum.Expired">
     {{ `Renew` }}
     <Repeaticon />
   </button>
-  <button
-    class="not-required"
-    @click="visible = true"
-    v-if="status === CertificateStatusEnum.Valid"
-  >
+  <button class="not-required" @click="visible = true" v-if="status === CertificateStatusEnum.Valid">
     {{ `Valid` }}
   </button>
   <Dialog v-model:visible="visible" :dismissable-mask="true" modal :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection
-        :img="Cert"
-        title="Add certification"
-        subtitle="Upload and assign a certification to this employee"
-      />
+      <HeaderSection :img="Cert" title="Add certification"
+        subtitle="Upload and assign a certification to this employee" />
     </template>
 
     <div class="certificate-dialog">
@@ -145,40 +130,21 @@ const UploadCertificateImage = async () => {
         </div>
         <div class="input-wrapper mt-10" v-if="is_expire_date">
           <label for="">{{ $t('select_expire_date') }}</label>
-          <DatePicker
-            v-model="SelectedData"
-            class="input"
-            label="select Expiry Date"
-            id="Day"
-            placeholder="select Expiry Date"
-            @update:modelValue="UpdateDate"
-          />
+          <DatePicker v-model="SelectedData" class="input" label="select Expiry Date" id="Day"
+            placeholder="select Expiry Date" @update:modelValue="UpdateDate" />
         </div>
         <div class="input-wrapper mt-10">
           <label for="">{{ $t('select_issue_date') }}</label>
-          <DatePicker
-            v-model="SelectedIssueData"
-            class="input"
-            label="select Issue Date"
-            id="Day"
-            placeholder="select Issue Date"
-            @update:modelValue="UpdateIssueDate"
-          />
+          <DatePicker v-model="SelectedIssueData" class="input" label="select Issue Date" id="Day"
+            placeholder="select Issue Date" @update:modelValue="UpdateIssueDate" />
         </div>
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
           <label class="flex justify-between flex-wrap">
             <p>{{ $t('Certification Image upload') }}</p>
           </label>
-          <SingleFileUpload
-            :returnType="`base64`"
-            v-model="certificateImage"
-            @update:modelValue="setCertificateImage"
-            label="Certification upload"
-            id="Certification upload"
-            index="2"
-            placeholder="Certification upload"
-          />
+          <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
+            label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
         </div>
       </div>
       <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>
