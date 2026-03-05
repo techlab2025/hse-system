@@ -54,6 +54,7 @@ export default class HazardDetailsModel {
   public isWorkStopped: boolean
   public actionStatus: ActionStatusEnum
   public serialName: string
+  public time: string
 
   constructor(
     id: number,
@@ -93,6 +94,7 @@ export default class HazardDetailsModel {
     isWorkStopped: boolean,
     actionStatus: ActionStatusEnum,
     serialName: string,
+    time: string,
   ) {
     this.id = id
     this.title = title
@@ -131,6 +133,7 @@ export default class HazardDetailsModel {
     this.isWorkStopped = isWorkStopped
     this.actionStatus = actionStatus
     this.serialName = serialName
+    this.time = time
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -172,6 +175,7 @@ export default class HazardDetailsModel {
       data?.is_work_stopped,
       data?.action_status,
       data?.serial_name,
+      data?.time,
     )
   }
 
@@ -210,5 +214,6 @@ export default class HazardDetailsModel {
     InspectionObservatioModel.example,
     [{ id: 1, title: 'title' }],
     InvestegationResultDetailsModel.example,
+    
   )
 }

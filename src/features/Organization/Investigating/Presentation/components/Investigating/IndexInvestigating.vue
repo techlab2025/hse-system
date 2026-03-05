@@ -205,7 +205,10 @@ const GetMediumObservationCount = (data: any): number => {
                         </div>
                         <div class="first-card-details">
                           <p class="label-item-secondary">
-                            Date & Time: <span>{{ item?.date }}</span>
+                            Date & Time: <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
+                            <div class="">
+
+                            </div>
                           </p>
                           <p class="title label-item-secondary" v-if="item?.observer?.name">
                             the victim : <span>{{ item?.observer?.name }}</span>

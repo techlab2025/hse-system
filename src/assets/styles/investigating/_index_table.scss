@@ -177,7 +177,7 @@
               .perview {
                 @include flex-center();
                 gap: 5px;
-                
+
                 span {
                   color: white;
                   font-size: $SmSize;
@@ -229,6 +229,7 @@
     color: #4c535f;
     font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
+
     img {
       width: 20px;
       height: 20px;
@@ -237,6 +238,7 @@
     span {
       color: #202020;
       font-weight: $BaseFontMediumWeight;
+      margin: 0 .2rem;
     }
   }
 
@@ -302,9 +304,12 @@
       opacity: 1;
       border-radius: 23px;
       border-width: 0.5px;
-      padding: 1.7rem 0;
-      background-color: rgba(4, 25, 83, 0.2);
+      padding: 1rem 0;
+      background-color: rgba(4, 25, 83, 0.09);
       color: rgba(4, 25, 83, 1);
+      font-family: "bold";
+      font-size: 16px;
+      border: 1px solid #04195380;
     }
 
     .btn-inprogress {

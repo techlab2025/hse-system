@@ -112,3 +112,10 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
     </div>
   </Dialog>
 </template>
+
+<!-- <style scoped>
+.investigation-show-details{
+  border-bottom: 2px dashed #E1E4ED;
+  padding-bottom: 1rem;
+}
+</style> -->
