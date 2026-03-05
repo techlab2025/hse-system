@@ -38,7 +38,7 @@ onMounted(() => {
     </div>
 
     <div class="lg:col-span-1 space-y-6">
-      <CertificateComp :state="empDetastate?.employee_certificates" />
+      <CertificateComp :state="empDetastate?.certificates" />
       <ProjectComp :state="empDetastate?.projects" />
     </div>
   </div>

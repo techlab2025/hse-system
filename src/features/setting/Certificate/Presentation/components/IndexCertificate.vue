@@ -239,8 +239,8 @@ const exportExcel = () => {
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('requireExpiredDate') }}</th>
+                <th scope="col">{{ $t('image') }}</th>
 
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -264,16 +264,17 @@ const exportExcel = () => {
                       : $t('no')
                   }}
                 </td>
-                <td data-label="image">
-                 <div class="image_certificate_container">
-                  <Image v-if="item.image" :src="item.image" alt="Image" preview />
-                  <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
-                  <span v-else>---</span>
-                 </div>
-                </td>
                 <td>
                   {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
                 </td>
+                <td data-label="image">
+                  <div class="image_certificate_container">
+                    <Image v-if="item.image" :src="item.image" alt="Image" preview />
+                    <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
+                    <span v-else>---</span>
+                  </div>
+                </td>
+
 
                 <td data-label="Actions">
 
@@ -320,5 +321,3 @@ const exportExcel = () => {
     </template>
   </PermissionBuilder>
 </template>
-
-

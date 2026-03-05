@@ -248,16 +248,18 @@ const GetEmployeeCertificationStatus = (
                     <NotValidCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id" v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid
-                      " :is_expire_date="cert?.requireExpiredDate" :status="getCertificateStatus(employee, cert.id)" />
+                      " :cert="cert" :is_expire_date="cert?.requireExpiredDate" :status="getCertificateStatus(employee, cert.id)" />
                     <ExpiredCertificate @update:data="fetchOrganizationEmployee" :certificateId="cert?.id"
                       :organizationEmployeeId="employee?.id" v-else-if="
                         getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
-                      " :is_expire_date="cert?.requireExpiredDate" :status="getCertificateStatus(employee, cert.id)" />
+
+                      " :cert="cert" :is_expire_date="cert?.requireExpiredDate" :status="getCertificateStatus(employee, cert.id)" />
 
                     <div v-else-if="
                       GetEmployeeCertificationStatus(employee, cert.id) ==
                       CertificateStatusEnum.Expired
                     ">
+
                       <div class="not-required">
                         <div class="expired-certificate">
                           <!-- <div class="expired">

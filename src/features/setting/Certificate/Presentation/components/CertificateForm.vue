@@ -158,7 +158,7 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
 
   // console.log(isBase64(image.value), "isBase64(image.value)");
-  // console.log(ImageCahnge.value, 'ImageCahnge.value')
+  console.log(expiredate.value, 'expiredate.value')
   const params = props.data?.id
     ? new EditCertificateParams(
       props.data.id,
@@ -170,6 +170,7 @@ const updateData = () => {
       // ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
       // firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
       ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value : firstImage.value == image.value ? null : '*',
+      null,
       expiredate.value,
     )
     : new AddCertificateParams(
@@ -266,8 +267,8 @@ const fields = ref([
   },
 ])
 
-const expiredate = ref<number>(0)
-const updateExpireDate = (data: number) => {
+const expiredate = ref<boolean>(false)
+const updateExpireDate = (data: boolean) => {
   expiredate.value = data
   console.log(expiredate.value, 'expiredate')
   updateData()

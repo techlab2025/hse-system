@@ -27,10 +27,16 @@
       .employee-info {
         @include flex-column();
         gap: 2px;
-        .employee-position {
+        .employee-serial {
           font-size: $SmSize;
           color: $PrimaryColor;
           font-weight: $BaseFontSemiBoldWeight;
+        }
+        .employee-position {
+          font-size: $SmSize;
+          color: rgba(128, 128, 128, 0.548);
+          font-weight: $BaseFontSemiBoldWeight;
+          font-family: 'Light';
         }
         .employee-name {
           font-size: $MdSize2;
