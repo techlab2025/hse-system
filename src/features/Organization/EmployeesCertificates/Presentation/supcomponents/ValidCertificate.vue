@@ -9,8 +9,8 @@ const props = defineProps<{
   <div class="valid-certificate">
     <div class="valid">
       <!-- <ValidIcon /> -->
-      <span class="valid-title" >valid</span>
+      <span class="valid-title">valid</span>
     </div>
-    <p class="valid-date">Exp :{{ expiry_date }}</p>
+    <p v-if="expiry_date" class="valid-date">Exp :{{ expiry_date }}</p>
   </div>
 </template>

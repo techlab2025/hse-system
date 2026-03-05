@@ -45,10 +45,10 @@ export default class AddEmployeeCertificateParams implements Params {
 
     data['certificate_id'] = this.certificateId
     data['organization_employee_id'] = this.organizationEmployeeId
-    data['expired_at'] = formatJoinDate(this.expiredAt)
+    if (this.expiredAt) data['expired_at'] = formatJoinDate(this.expiredAt)
     data['notes'] = this.notes
     data['certificate_image'] = this.certificate_image
-    data['issue_date'] = formatJoinDate(this  .issueDate)
+    data['issue_date'] = formatJoinDate(this.issueDate)
 
     return data
   }

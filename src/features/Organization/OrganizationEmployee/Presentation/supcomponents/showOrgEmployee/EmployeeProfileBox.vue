@@ -72,12 +72,12 @@ const deleteOrganizatoinEmployee = async (id: number) => {
     <div class="all-info">
       <div class="info-wrapper">
         <div class="employee-info">
-          <span class="employee-position employee-serial text-2xl">{{ state?.serial_name }}</span>
+          <span class="employee-serial employee-serial text-2xl">{{ state?.serial_name }}</span>
 
+          <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
           <div class="employee-position">
             {{ state?.showHierarchy?.map((el) => el.title).join(' - ') }}
           </div>
-          <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
         </div>
         <DropList
           :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
