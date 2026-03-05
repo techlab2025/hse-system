@@ -252,7 +252,7 @@ const GetMediumObservationCount = (data: any): number => {
 
                           <router-link :to="`/organization/investigating/add?id=${item?.Investegationid}`">
                             <button class="btn second-btn">
-                              <span>{{ $t('assign investigation team') }}</span>
+                              <span>{{ $t('assign_investigation_team') }}</span>
                             </button>
                           </router-link>
                         </div>

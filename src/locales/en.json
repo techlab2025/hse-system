@@ -1227,5 +1227,9 @@
   "import_hazard_type": "Import Hazard Type",
   "import_root_causes": "Import Root Causes",
   "select_issue_date": "Select Issue Date",
-  "select_expire_date": "Select Expire Date"
+  "select_expire_date": "Select Expire Date",
+  "add_meeting_result": "Add Meeting Result",
+  "view_results": "View Results",
+  "join_now": "Join Now",
+  "assign_investigation_team": "Assign Investigation Team"
 }

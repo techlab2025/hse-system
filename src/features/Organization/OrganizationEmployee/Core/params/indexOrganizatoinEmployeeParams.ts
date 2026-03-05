@@ -9,6 +9,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
   public pageNumber: number = 10
   public heirarchyId?: number
   public projectZoneId?: number
+  public returndeadonly?: number
 
   constructor(
     word: string,
@@ -17,6 +18,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     withPage: number = 1,
     heirarchyId?: number,
     projectZoneId?: number,
+    returndeadonly?: number,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -25,6 +27,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     this.perPage = perPage
     this.heirarchyId = heirarchyId
     this.projectZoneId = projectZoneId
+    this.returndeadonly = returndeadonly
     // this.code = code
   }
 
@@ -36,6 +39,9 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     data['limit'] = this.perPage
     if (this.heirarchyId) data['hierarchy_id'] = Number(this.heirarchyId)
     if (this.projectZoneId) data['project_zone_id'] = Number(this.projectZoneId)
+    if (this.returndeadonly || this.returndeadonly == false)
+      data['not_include_dead_employees'] = this.returndeadonly
+
     // if (this.code) data['code'] = this.code
     return data
   }
