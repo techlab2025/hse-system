@@ -51,7 +51,7 @@ const maxTotal = computed(() =>
     p {
       font-size: 12px;
       font-weight: 600;
-        font-family: "regular";
+      font-family: "regular";
       color: #BCBCBC;
     }
 
@@ -93,12 +93,35 @@ const maxTotal = computed(() =>
   align-items: center;
   max-width: 35px;
 
-  .span:nth-child(1) { bottom: 10%; transform: rotate(160deg) }
-  .span:nth-child(2) { bottom: 30%; transform: rotate(160deg) }
-  .span:nth-child(3) { bottom: 50%; transform: rotate(160deg) }
-  .span:nth-child(4) { bottom: 70%; transform: rotate(160deg) }
-  .span:nth-child(5) { bottom: 800%; transform: rotate(160deg) }
-  .span:nth-child(6) { bottom: 90%; transform: rotate(160deg) }
+  .span:nth-child(1) {
+    bottom: 10%;
+    transform: rotate(160deg)
+  }
+
+  .span:nth-child(2) {
+    bottom: 30%;
+    transform: rotate(160deg)
+  }
+
+  .span:nth-child(3) {
+    bottom: 50%;
+    transform: rotate(160deg)
+  }
+
+  .span:nth-child(4) {
+    bottom: 70%;
+    transform: rotate(160deg)
+  }
+
+  .span:nth-child(5) {
+    bottom: 800%;
+    transform: rotate(160deg)
+  }
+
+  .span:nth-child(6) {
+    bottom: 90%;
+    transform: rotate(160deg)
+  }
 
   .span {
     position: absolute;
@@ -145,7 +168,7 @@ const maxTotal = computed(() =>
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         text-shadow: none;
-          animation: floatIndicator 1.8s ease-in-out infinite;
+        animation: floatIndicator 1.8s ease-in-out infinite;
       }
 
       .indicator-dot {
@@ -159,17 +182,21 @@ const maxTotal = computed(() =>
     }
   }
 }
+
 @keyframes floatIndicator {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-6px);
   }
+
   100% {
     transform: translateY(0);
   }
 }
+
 @media (max-width: 600px) {
   .chart_row {
     max-width: 25px;
