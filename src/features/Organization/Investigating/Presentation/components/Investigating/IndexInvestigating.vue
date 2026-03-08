@@ -27,6 +27,7 @@ import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 import type InvestigatingModel from '../../../Data/models/investigatingModel'
+import Meeting from '@/shared/icons/meeting.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -252,7 +253,8 @@ const GetMediumObservationCount = (data: any): number => {
                             <div class="title">
                               <h6>Investigation Meeting</h6>
                               <div class="imge">
-                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" />
+                                <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
+                                 <Meeting />
                                 <p>Meeting Overview</p>
                               </div>
                             </div>
