@@ -359,7 +359,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
         :title="`${$t('High Severity Events')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-two"
         link="/organization/equipment-mangement/observation?isAll=1&type=2&risk_level=3" />
 
-      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.inspectionCompliancePercentage"
+      <ToatlInsedant :totalInsedant="homeInspectionState?.data?.totalInspectionSupposedOccuredThisMonth"
         :title="`${$t('Inspection Compliance')}`" :subTitle="`${$t('per this month')}`" textClass="ToatlInsedant-three"
         link="/organization/equipment-mangement/inspection?inspectionType=1" />
 
@@ -413,17 +413,17 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
       ]" />
       <MostIncidantFactor :title="$t('Inspections status')" :data="[
         {
-          value: homeInspectionState?.data?.Inspection?.completed,
+          value: homeInspectionState?.data?.totalFinishedInspectionsResults,
           label: `${$t('finished')}`,
           spanClass: 'finished',
           divClass: 'finished-class'
         },
-        {
-          value: homeInspectionState?.data?.Inspection?.inProgress,
-          label: `${$t('in progress')}`,
-          spanClass: 'in-progress',
-          divClass: 'in-progress-class'
-        },
+        // {
+        //   value: homeInspectionState?.data?.Inspection?.inProgress,
+        //   label: `${$t('in progress')}`,
+        //   spanClass: 'in-progress',
+        //   divClass: 'in-progress-class'
+        // },
         {
           value: homeInspectionState?.data?.Inspection?.delayed,
           label: `${$t('duration-ended')}`,
