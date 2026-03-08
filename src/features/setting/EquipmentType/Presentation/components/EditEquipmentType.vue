@@ -10,7 +10,7 @@ import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/com
 import type Params from '@/base/core/params/params'
 
 const route = useRoute()
-const router = useRouter()
+const router = useRouter() 
 const id = route.params.id
 const params = ref<Params | null>(null)
 
