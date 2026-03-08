@@ -1233,6 +1233,10 @@
   "add_meeting_result": "Add Meeting Result",
   "view_results": "View Results",
   "join_now": "Join Now",
-  "assign_investigation_team": "Assign Investigation Team"
-
+  "assign_investigation_team": "Assign Investigation Team",
+  "corrective_action": "Corrective Action",
+  "wrong_action": "Wrong Action",
+  "correct_action": "Correct Action",
+  "show_all_meetings": "Show All Meetings",
+  "show_all_tasks": "Show All Tasks"
 }

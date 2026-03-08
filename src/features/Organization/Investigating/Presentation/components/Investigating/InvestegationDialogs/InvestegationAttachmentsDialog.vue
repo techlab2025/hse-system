@@ -66,12 +66,12 @@ const updateTilte = (data: string) => {
         <input type="text" id="title" v-model="title" class="input" @input="updateTilte" />
       </div>
 
-      <FileUpload class="file-upload" label="Image" id="image" placeholder="Select image" :multiple="false"
+      <FileUpload class="file-upload" label="Image" id="image" placeholder="Select image" :multiable="true"
         :initialFileData="images" @update:fileData="setFiles" />
     </div>
 
     <button class="btn btn-primary w-full" @click="SendData">
-      Confirm 
+      Confirm
     </button>
   </Dialog>
 </template>

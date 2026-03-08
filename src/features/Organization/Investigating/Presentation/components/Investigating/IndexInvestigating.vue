@@ -157,7 +157,7 @@ const GetMediumObservationCount = (data: any): number => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      {{ console.log(state.data, 'state') }}
+      <!-- {{ console.log(state.data, 'state') }} -->
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
@@ -206,9 +206,9 @@ const GetMediumObservationCount = (data: any): number => {
                         <div class="first-card-details">
                           <p class="label-item-secondary">
                             Date & Time: <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
-                            <div class="">
+                          <div class="">
 
-                            </div>
+                          </div>
                           </p>
                           <p class="title label-item-secondary" v-if="item?.observer?.name">
                             the victim : <span>{{ item?.observer?.name }}</span>

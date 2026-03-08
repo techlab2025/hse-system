@@ -461,7 +461,7 @@ onMounted(() => {
                   <td v-for="(value, colIndex) in row" :key="colIndex">
                     <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
                     <span v-else-if="colIndex === 8">{{ RentTypeEnum[value] }}</span>
-                    <span v-else>{{ value }}</span>
+                    <span v-if="value != '*' && colIndex != 7 && colIndex != 8">{{ value }}</span>
                   </td>
 
                   <td>

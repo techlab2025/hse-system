@@ -21,6 +21,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import type InvestegationTasksParams from '../../../Core/params/investegationResult/InvestegationTasksParams'
 import InvestigationAttachmentsParams from '../../../Core/params/investegationResult/InvestegationAttachmentParams'
+import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -136,8 +137,9 @@ const setAnotherMeeting = (data) => {
 
         <!-- {{ state?.data?.observation?.serial }} -->
         <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
-          :victim="state?.data?.observation?.observer?.name" :date="state?.data?.date" :meetingDate="state?.data?.date"
-          :TeamLeader="state?.data?.TeamLeader.name" :TeamNumbers="state.data?.investigationEmployees?.length" />
+          :victim="state?.data?.observation?.observer?.name" :date="state?.data?.CreatedAt"
+          :meetingDate="state?.data?.date" :TeamLeader="state?.data?.TeamLeader.name"
+          :TeamNumbers="state.data?.investigationEmployees?.length" />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
@@ -149,7 +151,12 @@ const setAnotherMeeting = (data) => {
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
-          <img :src="investigationAttachments?.files?.[0]" alt="attachment" width="150">
+          <div class="image-container">
+            <div v-for="(image, index) in investigationAttachments?.files">
+              <DeleteIcon class="cursor-pointer" @click="investigationAttachments?.files.splice(index, 1)" />
+              <img :src="image" alt="attachment" width="150">
+            </div>
+          </div>
         </div>
 
         <ViewersResults @update:data="setViewersResults" />

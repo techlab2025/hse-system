@@ -337,7 +337,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <router-link :to="`/organization/capa`">
-        <HomeRoutesCard :icon="HomeSettingIcon" :title="`${$t('capa')}`"
+        <HomeRoutesCard :icon="InvisttigationIcon" :title="`${$t('capa')}`"
           :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `" />
       </router-link>
     </PermissionBuilder>

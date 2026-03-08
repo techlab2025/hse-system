@@ -41,36 +41,19 @@ onMounted(() => {
 </script>
 <template>
   <div class="template-container">
-    <div
-      class="timeline-item"
-      v-for="(item, index) in Answers"
-      :key="index"
-      :class="{ active: index === 0 }"
-      :style="{ animationDelay: `${index * 0.15}s` }"
-    >
+    <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
+      :style="{ animationDelay: `${index * 0.15}s` }">
       <div class="timeline-content">
         <div class="timeline-contect-select">
           <div class="input-wrapper">
-            <CustomSelectInput
-              :controller="fetchOriganizatioEmployeeController"
-              :params="fetchOrganizationEmployeeParams"
-              v-model="item.employee"
-              placeholder="Select Employee"
-              class="mt-4 mr-2 input"
-              label="Employee"
-              @update:model-value="UpdateData"
-            />
+            <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
+              :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
+              class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" />
           </div>
           <div class="timeline-content-text input-wrapper">
             <label for="result">result</label>
-            <textarea
-              type="result"
-              id="result"
-              v-model="item.result"
-              class="input"
-              placeholder="add your descripe"
-              @input="UpdateData"
-            ></textarea>
+            <textarea type="result" id="result" v-model="item.result" class="input" placeholder="add your descripe"
+              @input="UpdateData"></textarea>
           </div>
         </div>
         <!-- </div> -->
@@ -84,18 +67,15 @@ onMounted(() => {
           </div>
 
           <div class="tree-icon">
-            <DeleteItemAction
-              class="cursor-pointer"
-              v-if="index >= 0 && index !== Answers.length - 1"
-              @click="DeleteItem(index)"
-            />
+            <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
+              @click="DeleteItem(index)" />
             <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
             <!-- <span>aaaa</span> -->
           </div>
         </div>
-        <span class="add-text" v-if="!(index >= 0 && index !== Answers.length - 1)"
-          >Add another result</span
-        >
+        <span class="add-text cursor-pointer" @click="addNewAnswer"
+          v-if="!(index >= 0 && index !== Answers.length - 1)">Add another
+          result</span>
       </div>
     </div>
   </div>
