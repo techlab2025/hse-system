@@ -8,12 +8,14 @@
   width: 100%;
   background-color: #fffdfd;
   padding: $XsSize3;
+  // max-width: 150px;
+
   &.invalid-certificate-container {
     @include flex-column(nowrap, center, center);
     gap: $XsSize4;
     width: 100%;
-    background: #FFFDFD;
-    border: 1px solid #F2F2F233;
+    background: #fffdfd;
+    border: 1px solid #f2f2f233;
     border-radius: $XsSize2;
   }
   .invalid {

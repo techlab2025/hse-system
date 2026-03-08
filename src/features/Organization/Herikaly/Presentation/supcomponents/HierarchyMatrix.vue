@@ -21,10 +21,6 @@ import IndexCertificateParams from '@/features/setting/Certificate/Core/params/i
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
 import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
-import ValidCertificate from '../supcomponents/ValidCertificate.vue'
-import NotValidCertificate from '../supcomponents/NotValidCertificate.vue'
-import ExpiredCertificate from '../supcomponents/ExpiredCertificate.vue'
-import NotRequired from '../supcomponents/NotRequired.vue'
 
 import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
 import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
@@ -36,7 +32,6 @@ import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmplo
 const { t } = useI18n()
 const route = useRoute()
 
-/* ---------------------------------- STATE --------------------------------- */
 
 const word = ref('')
 const currentPage = ref(1)
@@ -48,7 +43,6 @@ const state = ref(indexEmployeeCertificateController.state.value)
 const indexCertificateController = IndexCertificateController.getInstance()
 const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
 
-/* ---------------------------------- FETCH ---------------------------------- */
 
 const fetchCertificates = async (
   query: string = '',
@@ -76,7 +70,6 @@ const fetchOrganizationEmployee = async (
   await indexEmployeeCertificateController.getData(params)
 }
 
-/* --------------------------------- MOUNTED --------------------------------- */
 
 onMounted(() => {
   fetchOrganizationEmployee()
@@ -86,13 +79,11 @@ onMounted(() => {
   }
 })
 
-/* ---------------------------------- SEARCH --------------------------------- */
 
 const searchEmployeeCertificate = debounce(() => {
   fetchOrganizationEmployee(word.value)
 })
 
-/* ------------------------------ PAGINATION --------------------------------- */
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
@@ -114,7 +105,6 @@ const handleCountPerPage = (count: number) => {
   }
 }
 
-/* ---------------------------------- WATCH ---------------------------------- */
 
 watch(
   () => indexEmployeeCertificateController.state.value,
@@ -132,7 +122,6 @@ watch(
   { deep: true }
 )
 
-/* --------------------------- CERTIFICATE STATUS ---------------------------- */
 
 const getCertificateStatus = (
   employee: OrganizatoinEmployeeModel,
@@ -153,7 +142,6 @@ const getEmployeeCertificationStatus = (
   return cert?.status
 }
 
-/* --------------------------- CERTIFICATES SOURCE --------------------------- */
 
 const AllCertificates = computed(() => {
   if (route.params.id && state.value?.data?.length) {
@@ -189,8 +177,7 @@ const AllCertificates = computed(() => {
           <table class="main-table">
             <thead>
               <tr>
-                <th class="w-fit">{{ $t('emp') }}</th>
-
+                <th class="w-fit">{{ $t('Hierarchy') }}</th>
                 <th v-for="cert in AllCertificates" :key="cert.id">
                   {{ cert.title }}
                 </th>
@@ -213,7 +200,7 @@ const AllCertificates = computed(() => {
                     getCertificateStatus(employee, cert.id) ==
                     CertificateStatusEnum.Valid
                   " :expiry_date="employee?.certificates?.find(el => el.id == cert.id)?.expired_at
-                      " :status="getCertificateStatus(employee, cert.id)" />
+                    " :status="getCertificateStatus(employee, cert.id)" />
 
                   <!-- INVALID -->
                   <NotValidCertificate v-else-if="

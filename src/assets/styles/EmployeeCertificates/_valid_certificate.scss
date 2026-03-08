@@ -10,6 +10,7 @@
   background: #fdfffd;
   border: 1px solid #6cb7651a;
   border-radius: $XsSize2;
+  // max-width: 150px;
   .valid {
     @include flex-center();
     gap: $XsSize4;
