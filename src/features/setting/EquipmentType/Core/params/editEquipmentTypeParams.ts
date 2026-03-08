@@ -3,6 +3,7 @@ import type Params from '@/base/core/params/params'
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import isBase64 from '@/base/Presentation/utils/isBase64'
 
 export default class EditEquipmentTypeParams implements Params {
   id: number
@@ -58,7 +59,9 @@ export default class EditEquipmentTypeParams implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     if (this.parentId) data['parent_id'] = this.parentId
-    data['image'] = this.image
+   if (this.image === '*' || (this.image && isBase64(this.image))) {
+  data['image'] = this.image
+}
     if (this.imageId) data['image_id'] = this.imageId
     if (this.type) data['type'] = this.type
 

@@ -27,6 +27,7 @@ import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 import type InvestigatingModel from '../../../Data/models/investigatingModel'
+import Meeting from '@/shared/icons/meeting.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -197,7 +198,7 @@ const GetMediumObservationCount = (data: any): number => {
                             }}
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serial || '_OBS-2025-0112'
-                              }}</span>
+                            }}</span>
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
@@ -205,14 +206,14 @@ const GetMediumObservationCount = (data: any): number => {
                         </div>
                         <div class="first-card-details">
                           <p class="label-item-secondary">
-                            Date & Time: <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
+                            {{ $t('Date & Time') }}: <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
                           <div class="">
 
                           </div>
                           </p>
                           <p class="title label-item-secondary" v-if="item?.observer?.name">
-                            the victim : <span>{{ item?.observer?.name }}</span>
-                            <span>(observer)</span>
+                            {{ $t('the victim') }} : <span>{{ item?.observer?.name }}</span>
+                            <span>({{ $t('observer') }})</span>
                           </p>
                         </div>
                       </div>
@@ -225,41 +226,42 @@ const GetMediumObservationCount = (data: any): number => {
                       <div class="card-header" v-if="item?.description">
                         <p class="label-item-secondary">{{ item?.description }}</p>
                       </div>
-
+                      {{ $t('take action') }}
                       <div class="card-details">
                         <div class="project-details">
                           <!-- <pre>{{ item?.observation }}</pre> -->
                           <p class="label-item-primary flex" v-if="item?.observation?.zoon">
                             <img :src="mark" alt="zone" />
-                            Zone: <span>{{ item?.observation?.zoon?.title }}</span>
+                            {{ $t('Zone') }}: <span>{{ item?.observation?.zoon?.title }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.equipment">
-                            Machine: <span>{{ item?.observation?.equipment?.title }}</span>
+                            {{ $t('Machine') }}: <span>{{ item?.observation?.equipment?.title }}</span>
                           </p>
                           <p class="label-item-primary">
-                            Status:
+                            {{ $t('Status') }}:
                             <span>{{
                               item?.observation?.saveStatus == 1 ? 'Solved' : 'Unsolved'
-                              }}</span>
+                            }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.isAction">
-                            take action:
+                            {{ $t('take action') }}:
                             <span>{{ item?.observation?.isAction == 1 ? 'true' : 'false' }}</span>
                           </p>
                         </div>
-                        <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS ">
+                        <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS">
                           <div class="show-investigation-meeting-details">
                             <div class="title">
-                              <h6>Investigation Meeting</h6>
+                              <h6>{{ $t('Investigation Meeting') }}</h6>
                               <div class="imge">
-                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" />
-                                <p>Meeting Overview</p>
+                                <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
+                                <Meeting />
+                                <p>{{ $t('Meeting Overview') }}</p>
                               </div>
                             </div>
                             <div class="dome-info">
-                              <p>Date & Time : <span>2025-11-05, 10:45 AM</span></p>
-                              <h6>Investigation team leader : <span>ali</span></h6>
-                              <h6>Num of team : <span>3</span></h6>
+                              <p>{{ $t('Date & Time') }} : <span> 2025-11-05, 10:45 AM</span></p>
+                              <h6>{{ $t('Investigation team leader') }} : <span> ali</span></h6>
+                              <h6>{{ $t('Num of team') }} : <span> 3</span></h6>
                             </div>
 
                           </div>
