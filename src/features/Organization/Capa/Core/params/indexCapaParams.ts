@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import type { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
 import type { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
@@ -17,6 +18,7 @@ export default class IndexCapaParams implements Params {
   public rootCauseId?: number
   public hazardTypeId?: number
   public riskLevel?: number[] = []
+  public capaStatus?: ActionStatusEnum
   public equipmentIds?: number[] = []
   public saveStatus?: number[] = []
   public date?: string = ''
@@ -36,6 +38,7 @@ export default class IndexCapaParams implements Params {
     rootCauseId?: number,
     hazardTypeId?: number,
     riskLevel?: number[],
+    capaStatus?: ActionStatusEnum,
     equipmentIds?: number[],
     saveStatus?: number[],
     date?: string,
@@ -54,6 +57,7 @@ export default class IndexCapaParams implements Params {
     this.rootCauseId = rootCauseId
     this.hazardTypeId = hazardTypeId
     this.riskLevel = riskLevel
+    this.capaStatus = capaStatus
     this.equipmentIds = equipmentIds
     this.saveStatus = saveStatus
     this.date = date
@@ -76,6 +80,7 @@ export default class IndexCapaParams implements Params {
     if (this.rootCauseId) data['root_cause_id'] = this.rootCauseId
     if (this.hazardTypeId) data['hazard_type_id'] = this.hazardTypeId
     if (this.riskLevel) data['risk_level'] = this.riskLevel
+    if (this.capaStatus) data['action_status'] = this.capaStatus
     if (this.equipmentIds) data['equipment_ids'] = this.equipmentIds
     if (this.saveStatus) data['save_status'] = this.saveStatus
     if (this.date) data['date'] = formatJoinDate(this.date)

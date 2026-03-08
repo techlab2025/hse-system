@@ -35,12 +35,15 @@ import { Observation } from '@/features/Organization/ObservationFactory/Core/Enu
 import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
-
+// ActionStatusEnum
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -73,6 +76,7 @@ const fetchCapa = async (
     null,
     route.query.hazard ? route.query.hazard : null,
     route.query.risk_level ? [route.query.risk_level] : null,
+    capaStatus?.value?.id,
 
   )
   await indexCapaController.getData(params)
@@ -217,7 +221,28 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
   }
 }
 
+// capa status filter
+const capaStatus = ref<TitleInterface | null>(null)
+const setCapaStatus = (data: TitleInterface) => {
+  capaStatus.value = data
+  fetchCapa("", 1, 10, 1, null, null, null, selectedProjctesFilters.value)
+}
+const ActionStatusList = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: ActionStatusEnum.OPEN,
+    title: 'Open',
+    subtitle: ''
+  }),
+  new TitleInterface({
+    id: ActionStatusEnum.CLOSED,
+    title: 'Closed',
+    subtitle: ''
+  }),
+])
 
+// watch(capaStatus, () => {
+//   fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+// })
 
 
 
@@ -229,6 +254,33 @@ const GetObservationType = (type: number) => {
       return 'Hazard'
   }
 }
+// export excel
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert("No data available to export");
+    return;
+  }
+  const worksheetData = state.value.data.map(
+    (item: Record<string, unknown>) => {
+      const it = item as any;
+      return {
+        "title": it.title || "N/A",
+        "serial": it.serial || "N/A",
+        "date": it.date || "N/A",
+        "description": it.description || "N/A",
+        "machine": it.equipment.title || "N/A",
+        "zone": it.zoon.title || "N/A",
+      };
+    },
+  );
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, "capa.xlsx");
+};
+
 </script>
 
 <template>
@@ -257,7 +309,8 @@ const GetObservationType = (type: number) => {
                 :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
             </PermissionBuilder>
 
-            <div class="btns-filter">
+
+            <!-- <div class="btns-filter"> -->
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
               <!-- <PermissionBuilder :code="[
@@ -268,7 +321,15 @@ const GetObservationType = (type: number) => {
                   <button class="btn btn-primary">{{ $t('Create observation') }}</button>
                 </router-link>
               </PermissionBuilder> -->
-            </div>
+            <!-- </div> -->
+            <!-- capaStatus -->
+             <div class="export-fillter">
+              <div class="select-cap-status">
+                 <CustomSelectInput :required="false" :modelValue="capaStatus" :static-options="ActionStatusList"
+                 label="Status" id="Severity" placeholder="Select Status" @update:modelValue="setCapaStatus" />
+              </div>
+              <div class=""> <button class="btn btn-secondary" @click="exportExcel">Export Excel</button></div>
+             </div>
           </div>
         </div>
         <DataStatus :controller="state">
@@ -413,4 +474,15 @@ const GetObservationType = (type: number) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.export-fillter{
+display: flex;
+align-items: end;
+justify-content: end;
+gap: 10px;
+width: 100%;
+}
+.select-cap-status{
+  width: 70%;
+}
+</style>

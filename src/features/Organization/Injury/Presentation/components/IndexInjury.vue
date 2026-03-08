@@ -162,7 +162,7 @@ const exportExcel = () => {
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button> 
 
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <router-link to="/organization/injury/add" class="btn btn-primary">
