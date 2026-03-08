@@ -82,12 +82,12 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
           :solvedTasks="state.data?.investigationTasks?.filter((task: any) => task.status === 1)?.length"
           :ToltalTasks="state.data?.investigationTasks?.length" :investegationType="state.data?.observation?.type" />
 
-        <CauseOfAccidantAnswer class="w-full" :Factors="state.data?.investigationFactors" />
-        <MeetingOverviewAnswer :meetings="state.data?.investigationMeetings" />
-        <InvestegationResultTasksAnswer :tasks="state.data?.investigationTasks" />
-        <InvestegationResultTakeActionAnswer :actions="state.data?.explainWhyText" />
-        <InvestegationResultAttachmentAnswer :attachments="state.data?.investigationDocumentations" />
-        <InvestegationResultViewersAnswer :viewers="state.data?.witnessStatements" />
+        <CauseOfAccidantAnswer v-if="state.data?.investigationFactors?.length > 0" class="w-full" :Factors="state.data?.investigationFactors" />
+        <MeetingOverviewAnswer v-if="state.data?.investigationMeetings?.length > 0" :meetings="state.data?.investigationMeetings" />
+        <InvestegationResultTasksAnswer v-if="state?.data?.investigationTasks?.length > 0" :tasks="state.data?.investigationTasks" />
+        <InvestegationResultTakeActionAnswer v-if="state.data?.explainWhyText?.length > 0" :actions="state.data?.explainWhyText" />
+        <InvestegationResultAttachmentAnswer v-if="state.data?.investigationDocumentations?.length > 0" :attachments="state.data?.investigationDocumentations" />
+        <InvestegationResultViewersAnswer v-if="state.data?.witnessStatements?.length > 0" :viewers="state.data?.witnessStatements" />
       </div>
     </template>
     <template #loader>

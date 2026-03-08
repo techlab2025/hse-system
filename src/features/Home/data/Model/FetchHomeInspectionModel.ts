@@ -13,6 +13,8 @@ export default class FetchHomeInspectionModel {
   public Inspection: InspectionModel
   public employeeCertificates: EmployeeCertificatesModel
   public Hazard: HazardObservationModel[]
+  public totalInspectionSupposedOccuredThisMonth: number
+  public totalFinishedInspectionsResults: number
 
   constructor(
     totalIncidents: number,
@@ -24,6 +26,8 @@ export default class FetchHomeInspectionModel {
     Inspection: InspectionModel,
     employeeCertificates: EmployeeCertificatesModel,
     Hazard: HazardObservationModel[],
+    totalInspectionSupposedOccuredThisMonth: number,
+    totalFinishedInspectionsResults: number,
   ) {
     this.totalIncidents = totalIncidents
     this.totalInspection = totalInspection
@@ -34,6 +38,8 @@ export default class FetchHomeInspectionModel {
     this.Inspection = Inspection
     this.employeeCertificates = employeeCertificates
     this.Hazard = Hazard
+    this.totalInspectionSupposedOccuredThisMonth = totalInspectionSupposedOccuredThisMonth
+    this.totalFinishedInspectionsResults = totalFinishedInspectionsResults
   }
 
   static fromMap(data: any): FetchHomeInspectionModel {
@@ -47,6 +53,8 @@ export default class FetchHomeInspectionModel {
       InspectionModel.fromMap(data.inspection_status),
       EmployeeCertificatesModel.fromMap( data.employee_certificates_status),
       data.hazard_with_high_risk_observations.map((item: any) => HazardObservationModel.fromMap(item)),
+      data.total_inspection_supposed_occured_this_month,
+      data.total_finished_inspections_results,
     )
   }
   static example = {
