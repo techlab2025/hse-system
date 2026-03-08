@@ -15,6 +15,9 @@
       @include flex-row(nowrap, space-between, center);
       width: 100%;
       gap: $XsSize3;
+      .input-wrapper {
+        padding: 0 !important;
+      }
 
       .select-type {
         @include flex-row(nowrap, center, center);
@@ -42,6 +45,7 @@
           transition: 0.3s all linear;
           width: 100%;
           cursor: pointer;
+          padding: 12px;
 
           span {
             color: #9ca3af;

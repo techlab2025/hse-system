@@ -12,8 +12,15 @@ const UpdateData = (data) => {
   Image.value = data.files.file
   const attachment = new InvestigationAttachmentsParams(
     data.title,
-    [data.files.file]
+    // [data.files.file]
+    data.files.map((el) => el.file)
   )
+  // alt
+  // :
+  // "no-data.png"
+  // file
+  // :
+  // "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQ
   emit('update:data', attachment)
 }
 </script>

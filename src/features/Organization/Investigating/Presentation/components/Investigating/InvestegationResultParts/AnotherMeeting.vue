@@ -65,8 +65,8 @@ watch(() => isAnotherMeeting.value, () => {
         <DatePicker v-model="date" class="mt-4 mr-2 input date-picker" placeholder="Select Date"
           @update:model-value="UpdateData" input-id="date" />
       </div>
-      <div class="input-wrapper col-span-1">
-        <CustomSelectInput :static-options="Platforms" v-model="SelectedPlatform" placeholder="Select meeting platform"
+      <div class="input-wrapper col-span-2">
+        <CustomSelectInput :reload="false" :static-options="Platforms" v-model="SelectedPlatform" placeholder="Select meeting platform"
           class="mt-4 mr-2 input" label="meeting platform" @update:model-value="setPlatform" />
       </div>
     </div>

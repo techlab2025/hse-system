@@ -16,38 +16,6 @@ import ShowInvestigatingParams from '../../../Core/params/showInvestigatingParam
 import { useRoute } from 'vue-router';
 
 
-// const Factors = ref([
-//   {
-//     mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
-//     subFactors: [
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//     ],
-//     correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
-//   },
-//   {
-//     mainFactor: "Lorem Ipsum is simply dummy text of the printing ",
-//     subFactors: [
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//       {
-//         factor: "Lorem Ipsum is simply dumm"
-//       },
-//     ],
-//     correctiveAnswer: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing "
-//   },
-// ])
 
 const route = useRoute()
 const id = route.params.id

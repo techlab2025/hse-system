@@ -104,7 +104,7 @@ function onFileChange(event: Event) {
   }
 
   // Reset input to allow selecting same files again
-  ;(event.target as HTMLInputElement).value = ''
+  ; (event.target as HTMLInputElement).value = ''
 }
 
 // Initialize from props
@@ -192,26 +192,16 @@ onUnmounted(() => {
         <span v-else>Attach a file no larger than 3.5MB.</span>
       </label>
 
-      <input
-        type="file"
-        :accept="accept"
-        :id="`images${index}`"
-        class="input"
-        :multiple="multiable"
-        @change="onFileChange"
-      />
+      <input type="file" :accept="accept" :id="`images${index}`" class="input" :multiple="multiable"
+        @change="onFileChange" />
     </div>
 
     <!-- Preview Images -->
 
     <div class="image-gallery" v-if="fileUrls.length > 0 || fileData.length > 0">
       <div class="image-item" v-for="(url, imgIndex) in fileUrls" :key="imgIndex">
-        <img
-          class="preview-img"
-          :src="url.file || url"
-          @error="handleImageError(imgIndex)"
-          :alt="`Preview ${imgIndex + 1}`"
-        />
+        <img class="preview-img" :src="url.file || url" @error="handleImageError(imgIndex)"
+          :alt="`Preview ${imgIndex + 1}`" />
         <div v-if="canDelete" class="overlay" @click="removeImage(imgIndex)">
           <TrashIcon />
           <span>Delete</span>

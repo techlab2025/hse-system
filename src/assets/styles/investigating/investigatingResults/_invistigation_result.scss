@@ -34,6 +34,13 @@
       border-radius: 12px;
       color: $PrimaryColor;
     }
+    .image-container {
+      @include flex-row(nowrap, center, center);
+      gap: 14px;
+      .cursor-pointer {
+        cursor: pointer;
+      }
+    }
     p {
       font-size: $MdSize;
     }

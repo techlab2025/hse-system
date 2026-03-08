@@ -70,6 +70,9 @@
     //   width: 100%;
     // }
     // background-color: white;
+    .mt-4 {
+      margin-top: 10px;
+    }
     @include grid(
       6,
       $MdSize,
@@ -80,8 +83,8 @@
         480px: 2,
       )
     );
-    .input-wrapper.custom{
-      label{
+    .input-wrapper.custom {
+      label {
         width: 100%;
         justify-content: space-between;
       }

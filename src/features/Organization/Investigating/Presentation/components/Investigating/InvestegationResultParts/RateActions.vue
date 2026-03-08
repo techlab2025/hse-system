@@ -4,7 +4,7 @@ import checkActions from '@/assets/images/checkActions.png'
 import { ref } from 'vue'
 import wrongAction from '@/assets/images/wrongAction.png'
 import conrrectAction from '@/assets/images/conrrectAction.png'
-const ActionRate = ref<number>()
+const ActionRate = ref<number>(1)
 const notes = ref<string>()
 
 const emit = defineEmits(['update:data'])
