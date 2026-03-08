@@ -340,6 +340,56 @@
       width: 100%;
     }
   }
+  .show-investigation-meeting-details{
+    margin: $MdSize 0;
+    .title{
+      @include flex-row(nowrap, flex-start, center);
+      gap: $SmSize;
+      h6{
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        font-family: "bold";
+        color: #000000;
+      }
+      .imge{
+        @include flex-row(nowrap, center, center);
+        gap: $XsSize4;
+        img{
+          width: 20px;
+          height: 20px;
+        }
+        p{
+          font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        font-family: "bold";
+          color: #000000;
+        }
+      }
+    }
+    .dome-info{
+      margin: $MdSize 0;
+      @include flex-row(nowrap, flex-start, flex-start);
+      gap: $XlSize3;
+      p{
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-family: "regular";
+        color: #AEAEB2;
+        span{
+          color: #1F41BB;
+        }
+      }
+       h6{
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        font-family: "regular";
+        color: #AEAEB2;
+        span{
+          color: #000000;
+        }
+      }
+    }
+  }
   .first-label-item-primary.high-observation {
     color: rgba(216, 0, 39, 1) !important;
   }

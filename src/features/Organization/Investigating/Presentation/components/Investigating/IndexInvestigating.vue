@@ -247,6 +247,23 @@ const GetMediumObservationCount = (data: any): number => {
                             <span>{{ item?.observation?.isAction == 1 ? 'true' : 'false' }}</span>
                           </p>
                         </div>
+                        <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS ">
+                          <div class="show-investigation-meeting-details">
+                            <div class="title">
+                              <h6>Investigation Meeting</h6>
+                              <div class="imge">
+                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" />
+                                <p>Meeting Overview</p>
+                              </div>
+                            </div>
+                            <div class="dome-info">
+                              <p>Date & Time : <span>2025-11-05, 10:45 AM</span></p>
+                              <h6>Investigation team leader : <span>ali</span></h6>
+                              <h6>Num of team : <span>3</span></h6>
+                            </div>
+
+                          </div>
+                        </div>
                       </div>
 
                       <div class="btns-container" style="margin-top: 20px">
