@@ -11,7 +11,7 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -202,6 +202,12 @@ const exportExcel = () => {
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import ExportIcon from '@/shared/icons/ExportIcon.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import AddOrganizatoinEmployeeToHierarchyController from '../controllers/addOrganizatoinEmployeeToHierarchyController'
+import AddEmployeeToHierarchyParams from '../../Core/params/AddEmployeesToHierarchyParams'
+import IndexOrganizatoinEmployeeToAddToHierarchyController from '../controllers/indexOrganizatoinEmployeeToAddToHierarchyController'
+import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHierarchyParams'
 
 const exportPDF = async () => {
   const tableElement = document.querySelector('.table-responsive')
@@ -239,6 +245,22 @@ const exportPDF = async () => {
     console.error('Error generating PDF:', error)
   }
 }
+
+const SelectedEmployees = ref<TitleInterface[]>()
+const indexEmployeeController = IndexOrganizatoinEmployeeToAddToHierarchyController.getInstance()
+const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 0)
+const setSelectedEmployees = (data: TitleInterface[]) => {
+  SelectedEmployees.value = data;
+}
+const router = useRouter()
+const AddEmployees = async () => {
+  const addOrganizatoinEmployeeToHierarchyController = AddOrganizatoinEmployeeToHierarchyController.getInstance()
+  const addEmployeeToHierarchyParams = new AddEmployeeToHierarchyParams(route.query.heirarchy_id, SelectedEmployees.value?.map((el) => new AddEmployeeIdToHierarchyParams(el.id)))
+  const state = await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(addEmployeeToHierarchyParams, router)
+  await fetchOrganizatoinEmployee()
+  SelectedEmployees.value = []
+
+}
 </script>
 
 <template>
@@ -270,6 +292,13 @@ const exportPDF = async () => {
         {{ $t('upload_excel') }}
       </router-link>
     </div>
+  </div>
+
+  <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
+      :controller="indexEmployeeController" :params="indexOrganizatoinEmployeeParams" :label="$t('Employees')" :type="2"
+      :placeholder="$t('Select Employees')" />
+    <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
   </div>
 
   <PermissionBuilder :code="[

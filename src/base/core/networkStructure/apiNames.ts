@@ -1563,6 +1563,9 @@ class ApiNames {
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
   }
+  public get AddOrganizationEmployeeToHierarchy() {
+    return this.prefix + 'sync_herikaly_employees'
+  }
 }
 
 export { ApiNames }

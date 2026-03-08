@@ -34,4 +34,15 @@ export const herikalyRoutes: RouteRecordRaw[] = [
       type: 'Shared',
     },
   },
+  {
+    path: 'herikaly/matrix',
+    name: 'Hierarchy Matrix',
+    component: () => import('@/views/Organization/Herikaly/HierarchyMatrix.vue'),
+    meta: {
+      breadcrumb: 'Hierarchy Matrix',
+      parent: 'Hierarchy',
+      isSidebar: true,
+      type: 'Shared',
+    },
+  },
 ]
