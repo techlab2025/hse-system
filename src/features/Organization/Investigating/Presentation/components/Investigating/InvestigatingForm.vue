@@ -225,7 +225,7 @@ watch(() => showInvestigationResultController.state.value, (newState) => {
     <label for="date">Date</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
-  <div class="col-span-6 md:col-span-3 input-wrapper">
+  <div class="col-span-6 mfinsd:col-span-3 input-wrapper">
     <label for="time">Time</label>
     <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" @update:modelValue="updateData" />
   </div>
