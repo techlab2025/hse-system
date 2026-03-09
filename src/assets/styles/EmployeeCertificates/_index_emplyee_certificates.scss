@@ -25,6 +25,7 @@
     &:last-of-type {
       @include flex-row(nowrap, center, center);
       margin-top: $XlSize;
+      text-align: center !important;
     }
   }
 }
