@@ -189,15 +189,15 @@ const exportExcel = () => {
       const it = item as any;
       return {
         "name": it.title || "N/A",
-        "CertificateExpireDate": it.date || null,
-        "LicenceNumber": it.license_plate_number || null,
+        "CertificateExpireDate": it.date || '--',
+        "LicenceNumber": it.license_plate_number || '--',
         "image": "*",
         "Certificate Image": "*",
-        "StartDate": formatJoinDate(it.checkin_date),
-        "EndData": formatJoinDate(it.checkout_date),
-        "RentPeriod": it.period,
-        "RentType": it.period_type,
-        "status": it.status
+        "StartDate": formatJoinDate(it.checkin_date) || '--',
+        "EndData": formatJoinDate(it.checkout_date) || '--',
+        "RentPeriod": it.period || '--',
+        "RentType": it.period_type || '--',
+        "status": it.status || '--'
       };
     },
   );

@@ -156,21 +156,25 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <!-- :Hierarchies="" -->
         <div class="mt-5">
 
-          <Panel header="Hierarchy Actions" class="mb-5">
+          <!-- <Panel header="Hierarchy Actions" class="mb-5">
             <div class="btn-container flex ">
               <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
                 <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:50%">
                   {{ $t('add_new_heirarchy') }}
                 </router-link>
               </PermissionBuilder>
-              
               <router-link style="width:50%" class="btn btn-secondary" to="/organization/herikaly/matrix"> {{
                 $t('hierarchy_matrix')
                 }}</router-link>
-
-              <!-- <button class="btn btn-secondary edit-btn">edit</button> -->
             </div>
-          </Panel>
+          </Panel> -->
+          <div class="btn-container flex ">
+            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
+              <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:100%">
+                {{ $t('add_new_heirarchy') }}
+              </router-link>
+            </PermissionBuilder>
+          </div>
         </div>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />

@@ -47,6 +47,7 @@ import OverviewInvestigationsChartController from '../Controllers/OverviewInvest
 import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
+import CapaIcon from '@/shared/icons/CapaIcon.vue'
 
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
@@ -337,7 +338,7 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ]">
       <router-link :to="`/organization/capa`">
-        <HomeRoutesCard :icon="InvisttigationIcon" :title="`${$t('capa')}`"
+        <HomeRoutesCard :icon="CapaIcon" :title="`${$t('capa')}`"
           :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `" />
       </router-link>
     </PermissionBuilder>
