@@ -32,6 +32,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import IndexActions from '@/shared/HelpersComponents/IndexActions.vue'
+import Panel from 'primevue/panel';
 
 const { t } = useI18n()
 
@@ -292,14 +293,18 @@ const AddEmployees = async () => {
         {{ $t('upload_excel') }}
       </router-link>
     </div>
+    <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper ">
+      <Panel :header="$t('add_employees_to_hierarchy')">
+        <div class="flex flex-col gap-2 ">
+          <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
+            :controller="indexEmployeeController" :params="indexOrganizatoinEmployeeParams" :label="$t('employees')"
+            :type="2" :placeholder="$t('select_employees')" />
+          <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
+        </div>
+      </Panel>
+    </div>
   </div>
 
-  <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
-      :controller="indexEmployeeController" :params="indexOrganizatoinEmployeeParams" :label="$t('Employees')" :type="2"
-      :placeholder="$t('Select Employees')" />
-    <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
-  </div>
 
   <PermissionBuilder :code="[
     PermissionsEnum.ADMIN,
