@@ -9,7 +9,9 @@ import type { Router } from 'vue-router'
 import FetchHierarchyCertificateUseCase from '../../Domain/useCase/FetchHierarachyCertificatesUseCase'
 import type HierarchyCertificateModel from '../../Data/models/HeirarchyCertificateModel'
 
-export default class HierarchyCertyificateController extends ControllerInterface<HierarchyCertificateModel[]> {
+export default class HierarchyCertyificateController extends ControllerInterface<
+  HierarchyCertificateModel[]
+> {
   private static instance: HierarchyCertyificateController
   private constructor() {
     super()
@@ -27,36 +29,35 @@ export default class HierarchyCertyificateController extends ControllerInterface
     // useLoaderStore().setLoadingWithDialog();
     try {
       // console.log("Ssssssss")
-      const dataState: DataState<HierarchyCertificateModel[]> = await this.fetchHierarchyCertificateUseCase.call(params)
+      const dataState: DataState<HierarchyCertificateModel[]> =
+        await this.fetchHierarchyCertificateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
-
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog-success',
+        //   titleContent: 'Added was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
         // if (router?.currentRoute?.value?.fullPath.includes('herikaly')) {
         //   if (!draft) await router.push('/organization/herikaly')
         // }
-
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.failedDialog.openDialog({
+        //   dialogName: 'dialog',
+        //   titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        //   imageElement: errorImage,
+        //   messageContent: null,
+        // })
       }
     } catch (error: unknown) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog-error',
-        titleContent: this.state.value.error?.title ?? (error as string),
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog-error',
+      //   titleContent: this.state.value.error?.title ?? (error as string),
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
 
     super.handleResponseDialogs()
