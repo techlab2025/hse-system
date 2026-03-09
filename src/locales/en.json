@@ -1238,5 +1238,8 @@
   "wrong_action": "Wrong Action",
   "correct_action": "Correct Action",
   "show_all_meetings": "Show All Meetings",
-  "show_all_tasks": "Show All Tasks"
+  "show_all_tasks": "Show All Tasks",
+  "hierarchy_matrix":"Hierarchy Matrix",
+  "select_employees":"Select Employees",
+  "add_employees_to_hierarchy":"Add Employees To Hierarchy"
 }

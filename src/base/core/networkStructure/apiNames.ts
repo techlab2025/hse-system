@@ -1566,6 +1566,9 @@ class ApiNames {
   public get AddOrganizationEmployeeToHierarchy() {
     return this.prefix + 'sync_herikaly_employees'
   }
+  public get FetchHierarchyCertificates() {
+    return this.prefix + 'fetch_hierarchies_certificates'
+  }
 }
 
 export { ApiNames }
