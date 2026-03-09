@@ -38,6 +38,7 @@ import IndexFilter from '@/features/Organization/ObservationFactory/Presentation
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import PinIcons from '@/shared/icons/PinIcons.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -293,7 +294,7 @@ const exportExcel = () => {
         PermissionsEnum.ORG_OBSERVATION_CREATE,
       ]">
         <div>
-          <IndexHazardHeader :title="`observation`" :length="state?.data?.length" :projects="Projects"
+          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
 
 
@@ -308,9 +309,9 @@ const exportExcel = () => {
 
 
             <!-- <div class="btns-filter"> -->
-              <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
+            <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <!-- <PermissionBuilder :code="[
+            <!-- <PermissionBuilder :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]">
@@ -320,7 +321,7 @@ const exportExcel = () => {
               </PermissionBuilder> -->
             <!-- </div> -->
             <!-- capaStatus -->
-             <!-- <div class="export-fillter">
+            <!-- <div class="export-fillter">
               <div class="select-cap-status">
                  <CustomSelectInput :required="false" :modelValue="capaStatus" :static-options="ActionStatusList"
                  label="Status" id="Severity" placeholder="Select Status" @update:modelValue="setCapaStatus" />
@@ -472,15 +473,16 @@ const exportExcel = () => {
 </template>
 
 <style scoped lang="scss">
-.export-fillter{
-display: flex;
-align-items: end;
-justify-content: end;
-gap: 10px;
-width: 100%;
-margin: 1rem 0;
+.export-fillter {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  gap: 10px;
+  width: 100%;
+  margin: 1rem 0;
 }
-.select-cap-status{
+
+.select-cap-status {
   width: 70%;
 }
 </style>

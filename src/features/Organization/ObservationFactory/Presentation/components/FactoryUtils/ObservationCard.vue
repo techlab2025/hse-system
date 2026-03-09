@@ -74,15 +74,18 @@ watch(() => props.data, () => {
             {{ $t('Serial') }} : <span>{{ data?.serialName }}</span>
           </p>
           <h6 class="label-item-secondary">
-            {{ $t('Date & Time') }} : <span>{{ data?.date }}</span>
+            {{ $t('Date & Time') }} : <span>{{ data?.date }} - {{ data?.time }}</span>
           </h6>
           <h6 class="label-item-secondary" v-if="data?.zoon?.title">
             {{ $t('Zone') }} : <span>{{ data?.zoon?.title }}</span>
           </h6>
+
+          <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
           <p class="label-item-primary">{{ $t(`${GetHeader(data.type)} Type`) }} : <span>{{
             data?.typeModel?.title
               }}</span></p>
-          <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
+
+
           <div class="flex items-center gap-2" v-if="data?.type != Observation.ObservationType && data?.actionStatus">
             <p>{{ $t(`toggle status`) }}</p>
             <CustomCheckboxToggle :index="data.id" title="" :checked="data.actionStatus == 1"

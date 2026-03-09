@@ -283,7 +283,7 @@ const GetObservationType = (type: number) => {
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]">
                 <router-link :to="`/organization/equipment-mangement/observation/add`">
-                  <button class="btn btn-primary">{{ $t('Create observation') }}</button>
+                  <button class="btn btn-primary">{{ $t('create_observation') }}</button>
                 </router-link>
               </PermissionBuilder>
             </div>
@@ -309,20 +309,22 @@ const GetObservationType = (type: number) => {
                               {{ $t('Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
                             </p>
-                            <p class="label-item-secondary flex items-center gap-1">
-                              {{ $t('operation type') }} :
-                              <span>{{ GetObservationType(item.type) }}</span>
+                            <p class="label-item-secondary flex items-center gap-1" >
+                              {{ $t('observation_type') }} :
+                              <!-- <span>{{ GetObservationType(item.type) }}</span> -->
+                              {{ GetSaveStatus(item.saveStatus) }}
+
                             </p>
                             <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
                               <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
                                 @update:checked="toggleObservationActionStatus(item?.id)" />
                             </p> -->
-                            <p class="label-item-secondary flex items-center gap-1"
+                            <!-- <p class="label-item-secondary flex items-center gap-1"
                               :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
                               {{ GetSaveStatus(item.saveStatus) }}
 
-                            </p>
+                            </p> -->
                             <p class="label-item-secondary Negative flex items-center gap-1"
                               v-if="item.isWorkStopped == 1">
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}

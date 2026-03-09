@@ -1238,16 +1238,13 @@
   "correct_action": "Correct Action",
   "show_all_meetings": "Show All Meetings",
   "show_all_tasks": "Show All Tasks",
-
-  "New_Ticket":"New Ticket",
-  "hierarchy_matrix":"Hierarchy Matrix",
-  "select_employees":"Select Employees",
-  "add_employees_to_hierarchy":"Add Employees To Hierarchy",
-
   "hierarchy_matrix": "Hierarchy Matrix",
   "select_employees": "Select Employees",
   "add_employees_to_hierarchy": "Add Employees To Hierarchy",
   "add_hierarchy": "Add Hierarchy",
+  "immediatly_action": "Immediatly Action",
+  "observation_status": "Observation Status",
+  "immediatly_action_taken": "Immediatly Action Taken",
+  "create_observation": "Create Observation",
   "New_Ticket": "New Ticket"
-
 }
