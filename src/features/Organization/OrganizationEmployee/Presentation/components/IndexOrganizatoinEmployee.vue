@@ -307,7 +307,7 @@ const setCertificateStatus = () => {
       </router-link>
 
     </div>
-    <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper ">
+    <!-- <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper ">
       <Panel :header="$t('add_employees_to_hierarchy')">
         <div class="flex flex-col gap-2 ">
           <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
@@ -322,7 +322,7 @@ const setCertificateStatus = () => {
         Certificate</button>
       <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
         Certificate</button>
-    </div>
+    </div> -->
   </div>
 
 

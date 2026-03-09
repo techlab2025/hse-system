@@ -323,13 +323,13 @@ const exportExcel = () => {
               </PermissionBuilder> -->
             <!-- </div> -->
             <!-- capaStatus -->
-             <div class="export-fillter">
+             <!-- <div class="export-fillter">
               <div class="select-cap-status">
                  <CustomSelectInput :required="false" :modelValue="capaStatus" :static-options="ActionStatusList"
                  label="Status" id="Severity" placeholder="Select Status" @update:modelValue="setCapaStatus" />
               </div>
               <div class=""> <button class="btn btn-secondary" @click="exportExcel">Export Excel</button></div>
-             </div>
+             </div> -->
           </div>
         </div>
         <DataStatus :controller="state">
