@@ -240,9 +240,6 @@ const ActionStatusList = ref<TitleInterface[]>([
   }),
 ])
 
-// watch(capaStatus, () => {
-//   fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
-// })
 
 
 
