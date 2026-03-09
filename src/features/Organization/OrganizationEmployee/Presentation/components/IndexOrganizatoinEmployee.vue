@@ -32,6 +32,18 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import IndexActions from '@/shared/HelpersComponents/IndexActions.vue'
+import Panel from 'primevue/panel';
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import ExportIcon from '@/shared/icons/ExportIcon.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import AddOrganizatoinEmployeeToHierarchyController from '../controllers/addOrganizatoinEmployeeToHierarchyController'
+import AddEmployeeToHierarchyParams from '../../Core/params/AddEmployeesToHierarchyParams'
+import IndexOrganizatoinEmployeeToAddToHierarchyController from '../controllers/indexOrganizatoinEmployeeToAddToHierarchyController'
+import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHierarchyParams'
+import { EmployeeCertificateStatus } from '../../Core/Enum/EmployeeTakeCertificateStatusEnum'
+
 
 const { t } = useI18n()
 
@@ -62,8 +74,9 @@ const fetchOrganizatoinEmployee = async (
     withPage,
     id,
     null,
-    false
-
+    false,
+    route.query.certificate_id ? route.query.certificate_id : null,
+    isEmployeeTakeCertificate.value ? isEmployeeTakeCertificate.value == EmployeeCertificateStatus.NotTake ? true : false : null
 
   )
   await indexOrganizatoinEmployeeController.getData(deleteOrganizatoinEmployeeParams)
@@ -199,15 +212,7 @@ const exportExcel = () => {
   saveAs(data, "Employees.xlsx");
 };
 
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import type TitleInterface from '@/base/Data/Models/title_interface'
-import AddOrganizatoinEmployeeToHierarchyController from '../controllers/addOrganizatoinEmployeeToHierarchyController'
-import AddEmployeeToHierarchyParams from '../../Core/params/AddEmployeesToHierarchyParams'
-import IndexOrganizatoinEmployeeToAddToHierarchyController from '../controllers/indexOrganizatoinEmployeeToAddToHierarchyController'
-import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHierarchyParams'
+
 
 const exportPDF = async () => {
   const tableElement = document.querySelector('.table-responsive')
@@ -248,7 +253,7 @@ const exportPDF = async () => {
 
 const SelectedEmployees = ref<TitleInterface[]>()
 const indexEmployeeController = IndexOrganizatoinEmployeeToAddToHierarchyController.getInstance()
-const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 0)
+const indexEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 0, null, null, null, null, null, false)
 const setSelectedEmployees = (data: TitleInterface[]) => {
   SelectedEmployees.value = data;
 }
@@ -259,6 +264,13 @@ const AddEmployees = async () => {
   const state = await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(addEmployeeToHierarchyParams, router)
   await fetchOrganizatoinEmployee()
   SelectedEmployees.value = []
+
+}
+const isEmployeeTakeCertificate = ref<EmployeeCertificateStatus>()
+watch(() => isEmployeeTakeCertificate.value, () => {
+  fetchOrganizatoinEmployee()
+})
+const setCertificateStatus = () => {
 
 }
 </script>
@@ -283,23 +295,36 @@ const AddEmployees = async () => {
 
       <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+      <PermissionBuilder v-if="!route.query.heirarchy_id && !route.query.certificate_id"
+        :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
           {{ $t('add_organizatoin_employee') }}
         </router-link>
       </PermissionBuilder>
-      <router-link to="/organization/organization-employee/upload" class="btn btn-primary">
+      <router-link v-if="!route.query.heirarchy_id && !route.query.certificate_id"
+        to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
       </router-link>
+
+    </div>
+    <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper ">
+      <Panel :header="$t('add_employees_to_hierarchy')">
+        <div class="flex flex-col gap-2 ">
+          <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
+            :controller="indexEmployeeController" :params="indexEmployeeParams" :label="$t('employees')" :type="2"
+            :placeholder="$t('select_employees')" />
+          <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
+        </div>
+      </Panel>
+    </div>
+    <div v-if="route.query.certificate_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper flex">
+      <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
+        Certificate</button>
+      <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
+        Certificate</button>
     </div>
   </div>
 
-  <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
-      :controller="indexEmployeeController" :params="indexOrganizatoinEmployeeParams" :label="$t('Employees')" :type="2"
-      :placeholder="$t('Select Employees')" />
-    <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
-  </div>
 
   <PermissionBuilder :code="[
     PermissionsEnum.ADMIN,

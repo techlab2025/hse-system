@@ -6,7 +6,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -22,12 +22,15 @@ import type CertificateModel from '@/features/setting/Certificate/Data/models/Ce
 import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 
-import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
-import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
+// import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
+// import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
 
 import RenewCertificateNotRequiredDialog from '../supcomponents/RenewCertificateNotRequiredDialog.vue'
 
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
+import HierarchyCertyificateController from '../controllers/HierarchyCertificateController'
+import FetchHierarchyCertificatesParams from '../../Core/params/FetchHierarchyCertificatesParams'
+import type HierarchyCertificateModel from '../../Data/models/HeirarchyCertificateModel'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -37,8 +40,8 @@ const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 
-const indexEmployeeCertificateController = IndexEmployeeCertificateController.getInstance()
-const state = ref(indexEmployeeCertificateController.state.value)
+const hierarchyCertyificateController = HierarchyCertyificateController.getInstance()
+const state = ref(hierarchyCertyificateController.state.value)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
@@ -53,26 +56,26 @@ const fetchCertificates = async (
   await indexCertificateController.getData(params)
 }
 
-const fetchOrganizationEmployee = async (
+const router = useRouter()
+const fetchHierarchyCertificate = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1
 ) => {
-  const params = new IndexEmployeeCertificateParams(
+  const params = new FetchHierarchyCertificatesParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    route.params.id ? Number(route.params.id) : null
   )
 
-  await indexEmployeeCertificateController.getData(params)
+  await hierarchyCertyificateController.FetchHerikalyCertificate(params, router)
 }
 
 
 onMounted(() => {
-  fetchOrganizationEmployee()
+  fetchHierarchyCertificate()
 
   if (!route.params.id) {
     fetchCertificates()
@@ -80,15 +83,15 @@ onMounted(() => {
 })
 
 
-const searchEmployeeCertificate = debounce(() => {
-  fetchOrganizationEmployee(word.value)
+const searchHierarchyCertificate = debounce(() => {
+  fetchHierarchyCertificate(word.value)
 })
 
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
 
-  fetchOrganizationEmployee('', currentPage.value, countPerPage.value)
+  fetchHierarchyCertificate('', currentPage.value, countPerPage.value)
 
   if (!route.params.id) {
     fetchCertificates('', currentPage.value, countPerPage.value)
@@ -98,7 +101,7 @@ const handleChangePage = (page: number) => {
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
 
-  fetchOrganizationEmployee('', currentPage.value, countPerPage.value)
+  fetchHierarchyCertificate('', currentPage.value, countPerPage.value)
 
   if (!route.params.id) {
     fetchCertificates('', currentPage.value, countPerPage.value)
@@ -107,8 +110,9 @@ const handleCountPerPage = (count: number) => {
 
 
 watch(
-  () => indexEmployeeCertificateController.state.value,
+  () => hierarchyCertyificateController.state.value,
   (newState) => {
+    console.log(newState, "newState");
     if (newState) state.value = newState
   },
   { deep: true }
@@ -123,23 +127,24 @@ watch(
 )
 
 
-const getCertificateStatus = (
-  employee: OrganizatoinEmployeeModel,
-  certificateId: number
-) => {
-  const cert = employee.certificates?.find((c: any) => c.id === certificateId)
-  return cert?.status
-}
+// const getCertificateStatus = (
+//   employee: OrganizatoinEmployeeModel,
+//   certificateId: number
+// ) => {
+//   const cert = employee.certificates?.find((c: any) => c.id === certificateId)
+//   return cert?.status
+// }
 
 const getEmployeeCertificationStatus = (
-  employee: OrganizatoinEmployeeModel,
-  certificateId: number
+  Hierarchy: HierarchyCertificateModel,
+  certificate: CertificateModel
 ) => {
-  const cert = employee.employee_certificates?.find(
-    (c: any) => c.certificate_id === certificateId
-  )
-
-  return cert?.status
+  if (Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)) {
+    return 'Required'
+  }
+  else {
+    return 'Not Required'
+  }
 }
 
 
@@ -155,11 +160,11 @@ const AllCertificates = computed(() => {
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
+      <span class="icon-remove" @click="((word = ''), searchHierarchyCertificate())">
         <Search />
       </span>
 
-      <input v-model="word" placeholder="search" class="input" type="text" @input="searchEmployeeCertificate" />
+      <input v-model="word" placeholder="search" class="input" type="text" @input="searchHierarchyCertificate" />
     </div>
   </div>
 
@@ -173,55 +178,33 @@ const AllCertificates = computed(() => {
   ]">
     <DataStatus :controller="state">
       <template #success>
+        <!-- {{ state.data }} -->
+
         <div class="table-responsive employee-certificates-matrix">
           <table class="main-table">
             <thead>
               <tr>
                 <th class="w-fit">{{ $t('Hierarchy') }}</th>
                 <th v-for="cert in AllCertificates" :key="cert.id">
-                  {{ cert.title }}
+                  <router-link :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`">
+                    {{ cert.title }}
+                  </router-link>
                 </th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="employee in state.data" :key="employee.id">
+              <tr v-for="hierarchy in state.data" :key="hierarchy.id">
                 <td class="employee-info-container">
-                  <div class="employee-info">
+                  <router-link :to="`/organization/employee-certificate/${hierarchy.id}`" class="employee-info">
                     <span class="name">
-                      {{ employee.name }}
+                      {{ hierarchy.title }}
                     </span>
-                  </div>
+                  </router-link>
                 </td>
 
                 <td v-for="cert in AllCertificates" :key="cert.id">
-                  <!-- VALID -->
-                  <ValidCertificate v-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Valid
-                  " :expiry_date="employee?.certificates?.find(el => el.id == cert.id)?.expired_at
-                    " :status="getCertificateStatus(employee, cert.id)" />
-
-                  <!-- INVALID -->
-                  <NotValidCertificate v-else-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Invalid
-                  " @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :cert="cert" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
-
-                  <!-- EXPIRED -->
-                  <ExpiredCertificate v-else-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Expired
-                  " @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :cert="cert" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
-
-                  <!-- NOT REQUIRED -->
-                  <NotRequired v-else @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
+                  {{ getEmployeeCertificationStatus(hierarchy, cert) }}
                 </td>
               </tr>
             </tbody>
@@ -240,12 +223,12 @@ const AllCertificates = computed(() => {
       </template>
 
       <template #empty>
-        <DataEmpty title="..ops! You have No Employee in this heirarchy"
+        <DataEmpty title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
 
       <template #failed>
-        <DataFailed title="..ops! You have No Employee in this heirarchy"
+        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
     </DataStatus>

@@ -34,6 +34,7 @@ import Heirarchy from '@/assets/images/Heirarchy.png'
 import Timeline from 'primevue/timeline'
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import TreeTimeLine from './TreeTimeLine.vue'
+import Panel from 'primevue/panel';
 
 const { t } = useI18n()
 
@@ -153,16 +154,25 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     <DataStatus :controller="state">
       <template #success>
         <!-- :Hierarchies="" -->
+        <div class="mt-5">
 
-        <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
-        <div class="btn-container">
-          <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
-            <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn ">
-              {{ $t('add_new_heirarchy') }}
-            </router-link>
-          </PermissionBuilder>
-          <!-- <button class="btn btn-secondary edit-btn">edit</button> -->
+          <Panel header="Hierarchy Actions" class="mb-5">
+            <div class="btn-container flex ">
+              <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
+                <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:50%">
+                  {{ $t('add_new_heirarchy') }}
+                </router-link>
+              </PermissionBuilder>
+              
+              <router-link style="width:50%" class="btn btn-secondary" to="/organization/herikaly/matrix"> {{
+                $t('hierarchy_matrix')
+                }}</router-link>
+
+              <!-- <button class="btn btn-secondary edit-btn">edit</button> -->
+            </div>
+          </Panel>
         </div>
+        <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
