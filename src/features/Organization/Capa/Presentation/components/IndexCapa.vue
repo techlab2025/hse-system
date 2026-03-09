@@ -240,9 +240,6 @@ const ActionStatusList = ref<TitleInterface[]>([
   }),
 ])
 
-// watch(capaStatus, () => {
-//   fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
-// })
 
 
 
@@ -481,6 +478,7 @@ align-items: end;
 justify-content: end;
 gap: 10px;
 width: 100%;
+margin: 1rem 0;
 }
 .select-cap-status{
   width: 70%;
