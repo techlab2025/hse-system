@@ -129,7 +129,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           <div class="card-actions flex items-center gap-2 flex-wrap">
             <RouterLink :to="`/organization/project-hierarchy/project/${id}?locationId=${location.locationId}`"
               class="btn btn-secondary">
-              {{ $t('Edit Hierarchy') }}
+              {{ $t('add_hierarchy') }}
             </RouterLink>
             <AddCreateTeam :ProjectLocationId="location?.projectLocationId" :LocationId="location.locationId"
               @update:data="GetProjectLocationsEmployes" />
