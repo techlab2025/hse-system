@@ -44,6 +44,7 @@ export default class AddHazardParams implements Params {
   public HazardSubtypeId: number
   public RootCausesId: number[]
   public actionstatus: ActionStatusEnum
+  public OpenNote: string
 
   public code: string
 
@@ -86,6 +87,7 @@ export default class AddHazardParams implements Params {
     RootCausesId: number[]
     actionstatus: ActionStatusEnum
     code: string
+    OpenNote: string
   }) {
     this.title = data.title
     this.description = data.description
@@ -120,6 +122,7 @@ export default class AddHazardParams implements Params {
     this.RootCausesId = data.RootCausesId
     this.actionstatus = data.actionstatus
     this.code = data.code
+    this.OpenNote = data.OpenNote
   }
 
   toMap(): Record<
@@ -184,6 +187,7 @@ export default class AddHazardParams implements Params {
     } else {
       data['serial'] = this.code
     }
+    if (this.OpenNote) data['open_note'] = this.OpenNote
     return data
   }
 
