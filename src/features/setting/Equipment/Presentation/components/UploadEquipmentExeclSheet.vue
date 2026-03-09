@@ -247,7 +247,7 @@ const setSelectedWhereHouse = (data: TitleInterface) => { SelectedWhereHosue.val
 const addEquipmentController = AddEquipmentController.getInstance();
 
 const AddOrgEmployee = async () => {
-  if (!mappedData.value) return;
+  // if (!mappedData.value) return;
   const headers = mappedData.value[0] as string[];
   const rows = mappedData.value.slice(1);
 
