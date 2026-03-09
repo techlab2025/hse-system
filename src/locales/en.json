@@ -1242,9 +1242,9 @@
   "select_employees": "Select Employees",
   "add_employees_to_hierarchy": "Add Employees To Hierarchy",
   "add_hierarchy": "Add Hierarchy",
-  "New_Ticket": "New Ticket",
   "immediatly_action": "Immediatly Action",
   "observation_status": "Observation Status",
   "immediatly_action_taken": "Immediatly Action Taken",
-  "create_observation": "Create Observation"
+  "create_observation": "Create Observation",
+  "New_Ticket": "New Ticket"
 }

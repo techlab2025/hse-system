@@ -1,0 +1,133 @@
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/border' as *;
+.forget-password-page {
+  position: relative;
+  padding: 0 1rem;
+  &::after {
+    content: '';
+    background-image: url('@/assets/images/Ellipse 1996.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+  }
+  &::before {
+    content: '';
+    background-image: url('@/assets/images/Ellipse 1995(1).png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    z-index: -10;
+  }
+  .forget-title {
+    @include flex(row, nowrap, start, center);
+    gap: $XsSize3;
+    h6 {
+      color: var(--third-color);
+      font-size: $XlSize3;
+      font-weight: $BaseFontWeightBold;
+      font-family: 'Bold';
+    }
+  }
+  .forget-form {
+    @include flex(row, nowrap, space-between, center);
+    form {
+      .title {
+        margin: $XlSize4 0;
+        h6 {
+          font-weight: 800;
+          font-size: 56px;
+          color: #000;
+          font-family: 'Bold';
+        }
+        p {
+          color: #a4a8ae;
+          font-size: $MdSize2;
+          font-family: 'regular';
+          font-weight: $BaseFontSemiBoldWeight;
+        }
+      }
+      .input-wrapper {
+        label {
+          color: black;
+          font-size: $MdSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          font-family: 'regular';
+        }
+        input {
+          color: #546881;
+          font-size: $SmSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          font-family: 'regular';
+          padding-left: 2rem !important;
+        }
+        .input-with-icon {
+          position: relative;
+          .key {
+            position: absolute;
+            left: 13px;
+            top: 15px;
+          }
+          .eye {
+            position: absolute;
+            right: 13px;
+            top: 12px;
+          }
+        }
+      }
+      .btn-forget-password {
+        margin: $XlSize4 0;
+        width: 100%;
+        background-color: #1f41bb;
+        box-shadow: 0px 8px 24px 0px #1f41bb4d;
+        color: #fff;
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        font-family: 'bold';
+        transition: all 0.3s ease-in-out;
+        &:hover {
+          background-color: white;
+          color: #1f41bb;
+          border: 1px solid #1f41bb;
+          box-shadow: none;
+          transform: translateY(-2px);
+        }
+      }
+    }
+    .imge {
+      animation: zoomFloat 5s ease-in-out infinite;
+      @media (max-width: 888px) {
+        svg{
+          width: 300px;
+        }
+        @media (max-width: 668px) {
+          svg{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes zoomFloat {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+
+  50% {
+    transform: scale(1.05) translateY(-10px);
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
