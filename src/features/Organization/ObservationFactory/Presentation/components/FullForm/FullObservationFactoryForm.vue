@@ -195,7 +195,8 @@ const updateData = () => {
       HazardSubtypeId: SubHazardType.value?.id,
       actionstatus: solved.value,
       code: SerialNumber.value,
-      RootCausesId: rootCausesIdParams
+      RootCausesId: rootCausesIdParams,
+      OpenNote: preventive_action_open.value
     })
   emit('update:data', params)
 }
@@ -259,9 +260,13 @@ const UpdateFatalities = (data: any) => {
   updateData()
 }
 const takeAction = ref<'yes' | 'no' | null>('no')
+const showAction = ref<'Open' | 'Closed' | null>('Open')
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
+const showObservationAndDescription = computed(() => showAction.value === 'Open')
 const solved = ref<ActionStatusEnum | null>(ObservationFactoryType.value == Observation.AccidentsType ? ActionStatusEnum.OPEN : ActionStatusEnum.CLOSED)
 const preventive_action = ref<string>()
+const preventive_action_open = ref<string>()
+
 
 const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
@@ -725,6 +730,14 @@ const setRootCause = (data: TitleInterface[]) => {
       v-show="showSolvedAndDescription">
       <label for="action">{{ $t('Immediate action') }}</label>
       <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
+        placeholder="add your descripe"></textarea>
+    </div>
+
+    <!--if ActionStatusEnum OPEN  -->
+    <div v-if="solved == ActionStatusEnum.OPEN " class="input-wrapper col-span-6 md:col-span-6"
+      v-show="showObservationAndDescription">
+      <label for="action">{{ $t('Open Note') }}</label>
+      <textarea id="action" class="input" v-model="preventive_action_open" @input="updateData"
         placeholder="add your descripe"></textarea>
     </div>
 
