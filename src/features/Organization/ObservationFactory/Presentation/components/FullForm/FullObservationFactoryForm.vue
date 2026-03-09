@@ -584,7 +584,7 @@ const setRootCause = (data: TitleInterface[]) => {
       /> -->
 
       <UpdatedCustomInputSelect :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-        :params="indexEquipmentParams" :label="$t('select machine (optional)')" id="machine"
+        :params="indexEquipmentParams" :label="$t('Select Equipment (optional)')" id="machine"
         :placeholder="$t('select your machine')" @update:modelValue="setMachine" @close="machineDialogRef = false"
         :isDialog="true" :dialogVisible="machineDialogRef">
         <!-- <template #LabelHeader>
@@ -687,7 +687,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="hazard-type-container incedant col-span-6 md:col-span-6">
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
-          <label class="radio-title">{{ $t('immediate_action_taken') }}</label>
+          <label class="radio-title">{{ $t('immediatly_action_taken') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
@@ -702,7 +702,7 @@ const setRootCause = (data: TitleInterface[]) => {
         </div>
 
         <div class="col-span-12 md:col-span-12" v-if="ObservationFactoryType != Observation.AccidentsType">
-          <label class="radio-title">{{ $t('observation status') }}</label>
+          <label class="radio-title">{{ $t('observation_status') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
               <RadioButton id="closed" v-model="solved" name="solved" :value="ActionStatusEnum.CLOSED"
@@ -723,7 +723,7 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- Action Description -->
     <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="input-wrapper col-span-6 md:col-span-6"
       v-show="showSolvedAndDescription">
-      <label for="action">{{ $t('Immediate action') }}</label>
+      <label for="action">{{ $t('immediatly_action') }}</label>
       <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
         placeholder="add your descripe"></textarea>
     </div>
