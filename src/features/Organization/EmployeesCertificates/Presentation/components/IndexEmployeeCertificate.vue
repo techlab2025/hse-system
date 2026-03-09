@@ -191,7 +191,7 @@ const AllCertificates = computed(() => {
               <tr>
                 <th class="w-fit">{{ $t('emp') }}</th>
 
-                <th v-for="cert in AllCertificates" :key="cert.id">
+                <th v-for="cert in AllCertificates" :key="cert.id" class="text-center">
                   {{ cert.title }}
                 </th>
               </tr>
@@ -213,7 +213,7 @@ const AllCertificates = computed(() => {
                     getCertificateStatus(employee, cert.id) ==
                     CertificateStatusEnum.Valid
                   " :expiry_date="employee?.certificates?.find(el => el.id == cert.id)?.expired_at
-                      " :status="getCertificateStatus(employee, cert.id)" />
+                    " :status="getCertificateStatus(employee, cert.id)" />
 
                   <!-- INVALID -->
                   <NotValidCertificate v-else-if="
@@ -253,12 +253,12 @@ const AllCertificates = computed(() => {
       </template>
 
       <template #empty>
-        <DataEmpty title="..ops! You have No Employee in this heirarchy"
+        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
 
       <template #failed>
-        <DataFailed title="..ops! You have No Employee in this heirarchy"
+        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
     </DataStatus>
@@ -272,5 +272,9 @@ const AllCertificates = computed(() => {
 <style scoped>
 .w-fit {
   width: fit-content;
+}
+
+.text-center {
+  text-align: center !important;
 }
 </style>

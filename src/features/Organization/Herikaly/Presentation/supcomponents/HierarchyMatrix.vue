@@ -139,10 +139,10 @@ const getEmployeeCertificationStatus = (
   Hierarchy: HierarchyCertificateModel,
   certificate: CertificateModel
 ) => {
-  if(Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)){
+  if (Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)) {
     return 'Required'
   }
-  else{
+  else {
     return 'Not Required'
   }
 }
@@ -186,7 +186,9 @@ const AllCertificates = computed(() => {
               <tr>
                 <th class="w-fit">{{ $t('Hierarchy') }}</th>
                 <th v-for="cert in AllCertificates" :key="cert.id">
-                  {{ cert.title }}
+                  <router-link :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`">
+                    {{ cert.title }}
+                  </router-link>
                 </th>
               </tr>
             </thead>
@@ -194,11 +196,11 @@ const AllCertificates = computed(() => {
             <tbody>
               <tr v-for="hierarchy in state.data" :key="hierarchy.id">
                 <td class="employee-info-container">
-                  <div class="employee-info">
+                  <router-link :to="`/organization/employee-certificate/${hierarchy.id}`" class="employee-info">
                     <span class="name">
                       {{ hierarchy.title }}
                     </span>
-                  </div>
+                  </router-link>
                 </td>
 
                 <td v-for="cert in AllCertificates" :key="cert.id">
@@ -221,12 +223,12 @@ const AllCertificates = computed(() => {
       </template>
 
       <template #empty>
-        <DataEmpty title="..ops! You have No Employee in this heirarchy"
+        <DataEmpty title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
 
       <template #failed>
-        <DataFailed title="..ops! You have No Employee in this heirarchy"
+        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
           description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
       </template>
     </DataStatus>
