@@ -478,6 +478,7 @@ align-items: end;
 justify-content: end;
 gap: 10px;
 width: 100%;
+margin: 1rem 0;
 }
 .select-cap-status{
   width: 70%;

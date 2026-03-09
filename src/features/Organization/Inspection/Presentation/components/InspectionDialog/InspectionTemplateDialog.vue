@@ -14,6 +14,7 @@ import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
 
 
 const visible = ref(false)
+const isConfirmed = ref(false)
 
 const indexTemplateController = IndexTemplateController.getInstance()
 const state = ref(indexTemplateController.state.value)
@@ -41,6 +42,7 @@ watch(
 
 const emit = defineEmits(['update:data', 'update:isInLibrary'])
 const sendTemplatesId = () => {
+  isConfirmed.value = true
   emit('update:data', selectedTemplates.value)
   emit('update:isInLibrary', isInLibrary.value)
   visible.value = false
@@ -80,12 +82,29 @@ const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teampl
   TemplateTitle.value = data.teamplateTitle
   emit('update:data', data.templateId)
   emit('update:isInLibrary', data.isInLibrary)
+  isConfirmed.value = true
   visible.value = false
   // ShowTemplate.value = true
   fetchTemplateItem()
 }
 
 const ShowTemplate = ref(true)
+// remove item if colse dialog
+const removeItem = () => {
+  selectedTemplates.value = undefined
+  TemplateId.value = undefined
+  emit('update:data', selectedTemplates.value || TemplateId.value)
+  emit('update:isInLibrary', isInLibrary.value)
+  visible.value = false
+  TemplateTitle.value = ''
+}
+
+const handleDialogHide = () => {
+  if (!isConfirmed.value) {
+    removeItem()
+  }
+  isConfirmed.value = false
+}
 </script>
 
 <template>
@@ -98,7 +117,7 @@ const ShowTemplate = ref(true)
         <ImportantIcon />
       </div>
 
-      <button type="button" @click="visible = true" class="inspection-template-button">
+      <button type="button" @click="visible = true" class="inspection-template-button" >
         {{ $t('select inspection template') }}
       </button>
 
@@ -111,7 +130,7 @@ const ShowTemplate = ref(true)
         <p class="header-title">
           {{
             TemplateTitle || selectedTemplateHeader?.title
-          }}
+          }}add-equipment-header
         </p>
         <img :src="DocumnetHeader" alt="header" />
 
@@ -119,13 +138,13 @@ const ShowTemplate = ref(true)
     </div>
 
 
-    <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog">
+    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
+      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog" >
 
       <template #header>
         <div class="add-equipment-header">
           <HeaderSection :img="InspectionTemplateImage" :title="$t('inspection template')"
-            :subtitle="$t('Select from the available templates.')" />
+            :subtitle="$t('Select from the available templates.')"  />
         </div>
       </template>
 

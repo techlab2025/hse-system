@@ -181,7 +181,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
       ]">
         <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
           class="btn btn-primary">
-          {{ $t('Add_Ticket') }}
+          {{ $t('New_Ticket') }}
         </router-link>
       </PermissionBuilder>
     </div>
@@ -218,7 +218,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
                     {{ ticket?.ticketType?.title }}
                   </p>
                   <h2>
-                    {{ ticket?.title }}
+                    {{ wordSlice(ticket?.title, 20) }}
                   </h2>
                 </div>
               </router-link>
@@ -236,7 +236,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
               <RouterLink
                 :to="`${ticket.status == StatusEnum.SOLVED || ticket.status == StatusEnum.RESOLVED || ticket.status == StatusEnum.CLOSED ? `/ticket/${ticket?.id}` : ''}`">
                 <div class="description">
-                  <p>{{ ticket?.description }}</p>
+                  <p>{{ wordSlice(ticket?.description , 20) }}</p>
                 </div>
               </RouterLink>
             </div>
