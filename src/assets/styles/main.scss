@@ -169,6 +169,7 @@
 @use './EmployeeInterface/employee_Int_imports';
 @use './Certificates/certificate_import';
 @use './ExcelSheet/excel_imports';
+@use './SystemDialogs/system_dialog';
 
 html {
   scroll-behavior: smooth;

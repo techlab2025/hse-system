@@ -6,6 +6,7 @@ const props = defineProps<{
   certificateId: number
   organizationEmployeeId: number
   notRequired: boolean
+  is_expire_date: boolean
 }>()
 
 const emit = defineEmits(['update:data'])
@@ -19,11 +20,7 @@ const updateData = () => {
       <!-- <NotValidIcon /> -->
       <span class="not-req-span">Not Required</span>
     </div>
-    <CertificateImageDialog
-      @update:data="updateData"
-      :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId"
-      :notRequired="true"
-    />
+    <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
+      :organizationEmployeeId="organizationEmployeeId" :notRequired="is_expire_date" :is_expire_date="is_expire_date" />
   </div>
 </template>

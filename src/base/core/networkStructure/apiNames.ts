@@ -1569,6 +1569,9 @@ class ApiNames {
   public get FetchHierarchyCertificates() {
     return this.prefix + 'fetch_hierarchies_certificates'
   }
+  public get AddWarehouseClones() {
+    return this.prefix + 'clone_warehouse_type_types'
+  }
 }
 
 export { ApiNames }

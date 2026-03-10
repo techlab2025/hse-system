@@ -191,7 +191,7 @@ const AllCertificates = computed(() => {
               <tr>
                 <th class="w-fit">{{ $t('emp') }}</th>
 
-                <th v-for="cert in AllCertificates" :key="cert.id" class="text-center">
+                <th v-for="cert in AllCertificates" :key="cert.id">
                   {{ cert.title }}
                 </th>
               </tr>
