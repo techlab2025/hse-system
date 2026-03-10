@@ -181,7 +181,28 @@
     &:last-of-type {
       vertical-align: bottom !important;
       text-align: center !important;
+    }
+  }
 
+  .cert_required {
+    .cert-status {
+      color: $PrimaryColor !important;
+      font-size: $MdSize !important;
+      font-weight: $BaseFontMediumWeight !important;
+      padding: 14px !important;
+      background-color: #fcfcfc !important;
+      margin: 0 !important;
+      text-align: center;
+    }
+  }
+  .cert_not_required {
+    .cert-status {
+      color: #7f8188 !important;
+      font-size: $MdSize !important;
+      font-weight: $BaseFontMediumWeight !important;
+      padding: 14px !important;
+      background-color: #fcfcfc !important;
+      text-align: center;
     }
   }
 }

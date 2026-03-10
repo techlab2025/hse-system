@@ -156,24 +156,25 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <!-- :Hierarchies="" -->
         <div class="mt-5">
 
-          <!-- <Panel header="Hierarchy Actions" class="mb-5">
+          <!-- <Panel header="Hierarchy Actions" class="mb-5"> -->
             <div class="btn-container flex ">
               <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
-                <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:50%">
+                <!-- add-btn -->
+                <router-link to="/organization/herikaly/add" class="btn btn-primary  " style="width:75%">
                   {{ $t('add_new_heirarchy') }}
                 </router-link>
               </PermissionBuilder>
-              <router-link style="width:50%" class="btn btn-secondary" to="/organization/herikaly/matrix"> {{
+              <router-link style="width:25%" class="btn btn-secondary" to="/organization/herikaly/matrix"> {{
                 $t('hierarchy_matrix')
-                }}</router-link>
+              }}</router-link>
             </div>
-          </Panel> -->
+          <!-- </Panel> -->
           <div class="btn-container flex ">
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
+            <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
               <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:100%">
                 {{ $t('add_new_heirarchy') }}
               </router-link>
-            </PermissionBuilder>
+            </PermissionBuilder> -->
           </div>
         </div>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
