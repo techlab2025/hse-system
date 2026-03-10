@@ -35,7 +35,6 @@ import { Observation } from '@/features/Organization/ObservationFactory/Core/Enu
 import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import PinIcons from '@/shared/icons/PinIcons.vue'
@@ -224,7 +223,7 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
 
 // capa status filter
 const capaStatus = ref<TitleInterface | null>(null)
-const setCapaStatus = (data: TitleInterface) => {
+const setCapaStatus = (data: TitleInterface | null) => {
   capaStatus.value = data
   fetchCapa("", 1, 10, 1, null, null, null, selectedProjctesFilters.value)
 }
@@ -303,6 +302,7 @@ const exportExcel = () => {
               PermissionsEnum?.ORGANIZATION_EMPLOYEE,
               PermissionsEnum?.ORG_OBSERVATION_CREATE,
             ]">
+
               <IndexFilter :filters="Filters" @update:data="ApplayFilter"
                 :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
             </PermissionBuilder>
@@ -321,13 +321,19 @@ const exportExcel = () => {
               </PermissionBuilder> -->
             <!-- </div> -->
             <!-- capaStatus -->
-            <!-- <div class="export-fillter">
-              <div class="select-cap-status">
-                 <CustomSelectInput :required="false" :modelValue="capaStatus" :static-options="ActionStatusList"
-                 label="Status" id="Severity" placeholder="Select Status" @update:modelValue="setCapaStatus" />
+            <div class="export-fillter">
+              <div class="fillter-radio-btn">
+                <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
+                  <input type="radio" name="capaStatus"  :id="`status-${status.id}`" :value="status" v-model="capaStatus" @change="setCapaStatus(status)">
+                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{ status.title }}</label>
+                </div>
+                <div class="radio-btn">
+                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus" @change="setCapaStatus(null)">
+                  <label for="status-all" :class="capaStatus == null ? 'active' : ''">All</label>
+                </div>
               </div>
               <div class=""> <button class="btn btn-secondary" @click="exportExcel">Export Excel</button></div>
-             </div> -->
+            </div>
           </div>
         </div>
         <DataStatus :controller="state">
@@ -447,9 +453,9 @@ const exportExcel = () => {
               PermissionsEnum?.ORGANIZATION_EMPLOYEE,
               PermissionsEnum?.ORG_OBSERVATION_CREATE,
             ]">
-              <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
-                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+              <DataEmpty
+                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No CAPA" />
             </PermissionBuilder>
           </template>
           <template #failed>
@@ -457,9 +463,9 @@ const exportExcel = () => {
               PermissionsEnum?.ORGANIZATION_EMPLOYEE,
               PermissionsEnum?.ORG_OBSERVATION_CREATE,
             ]">
-              <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
-                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+              <DataFailed
+                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                title="..ops! You have No CAPA" />
             </PermissionBuilder>
           </template>
         </DataStatus>
@@ -475,14 +481,48 @@ const exportExcel = () => {
 <style scoped lang="scss">
 .export-fillter {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: end;
-  gap: 10px;
+  gap: 15px;
   width: 100%;
   margin: 1rem 0;
+
+  input[type="radio"] {
+    display: none;
+}
 }
 
-.select-cap-status {
-  width: 70%;
+.fillter-radio-btn {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #F5F5F5;
+  padding: .5rem 1rem;
+  border-radius: 40px;
+  .active{
+    background-color: #F4F6FF;
+    border: 1px solid #1F41BB33;
+    padding: .5rem 1rem;
+    color: #1F41BB;
+    font-weight: 700;
+    border-radius: 40px;
+    font-family: "bold";
+  }
+  .radio-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    label {
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+  }
 }
 </style>
