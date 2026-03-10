@@ -146,6 +146,17 @@ const getEmployeeCertificationStatus = (
     return 'Not Required'
   }
 }
+const getEmployeeCertificationclass = (
+  Hierarchy: HierarchyCertificateModel,
+  certificate: CertificateModel
+) => {
+  if (Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)) {
+    return 'cert_required'
+  }
+  else {
+    return 'cert_not_required'
+  }
+}
 
 
 const AllCertificates = computed(() => {
@@ -203,8 +214,11 @@ const AllCertificates = computed(() => {
                   </router-link>
                 </td>
 
-                <td v-for="cert in AllCertificates" :key="cert.id">
-                  {{ getEmployeeCertificationStatus(hierarchy, cert) }}
+                <td v-for="cert in AllCertificates" :key="cert.id"
+                  :class="getEmployeeCertificationclass(hierarchy, cert)">
+                  <p class="cert-status">
+                    {{ getEmployeeCertificationStatus(hierarchy, cert) }}
+                  </p>
                 </td>
               </tr>
             </tbody>
@@ -243,4 +257,13 @@ const AllCertificates = computed(() => {
 .w-fit {
   width: fit-content;
 }
+
+.employee-info {
+  padding: 10px !important;
+  text-align: center;
+}
+
+
+
+
 </style>

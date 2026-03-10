@@ -381,7 +381,7 @@ input {
 
 // p-multiselect p-component p-inputwrapper p-multiselect-display-chip input-select w-full
 // p-multiselect p-component p-inputwrapper p-multiselect-display-chip p-inputwrapper-filled input-select w-full
-.mt-5{
+.mt-5 {
   margin-top: 10px !important;
 }
 
@@ -391,7 +391,16 @@ input {
 // .p-panel-header{
 //   background-color: #f5f6f7 !important;
 // }
-.p-panel.p-component{
+.p-panel.p-component {
   // background-color: #f5f6f7 !important;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+.p-selectbutton {
+  width: 100% !important;
+  margin-block: 8px !important;
+  // background-color: $PrimaryColor !important;
+}
+.p-togglebutton {
+  background-color: #1d4ed80f !important;
+  width: 50% !important;
 }

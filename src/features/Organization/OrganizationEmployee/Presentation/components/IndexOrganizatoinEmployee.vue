@@ -44,6 +44,8 @@ import IndexOrganizatoinEmployeeToAddToHierarchyController from '../controllers/
 import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHierarchyParams'
 import { EmployeeCertificateStatus } from '../../Core/Enum/EmployeeTakeCertificateStatusEnum'
 
+import SelectButton from 'primevue/selectbutton';
+
 
 const { t } = useI18n()
 
@@ -270,14 +272,41 @@ const isEmployeeTakeCertificate = ref<EmployeeCertificateStatus>()
 watch(() => isEmployeeTakeCertificate.value, () => {
   fetchOrganizatoinEmployee()
 })
-const setCertificateStatus = () => {
 
+const setCertificateStatus = () => {
+  if (value.value === 'Taken Certificates') {
+    isEmployeeTakeCertificate.value = EmployeeCertificateStatus.Take
+  } else {
+    isEmployeeTakeCertificate.value = EmployeeCertificateStatus.NotTake
+  }
 }
+
+
+
+const value = ref();
+const options = ref(['Taken Certificates', 'Not Taken Certificates']);
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
 
+    <div v-if="route.query.certificate_id" class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex">
+      <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
+        Certificate</button>
+      <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
+        Certificate</button> -->
+      <SelectButton v-model="value" :options="options" @change="setCertificateStatus" />
+    </div>
+    <div v-if="route.query.heirarchy_id" class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy ">
+      <div class="flex gap-2 input-wrapper" style="width: 80%;margin-block: 8px;">
+        <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
+          :controller="indexEmployeeController" :params="indexEmployeeParams" :label="$t('employees')" :type="2"
+          :placeholder="$t('select_employees')" />
+      </div>
+      <button class="btn btn-primary" style="width: 20%;height: fit-content;padding: 12px;margin-top: 35px;"
+        @click="AddEmployees">Add
+        Employees</button>
+    </div>
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
@@ -307,22 +336,8 @@ const setCertificateStatus = () => {
       </router-link>
 
     </div>
-    <!-- <div v-if="route.query.heirarchy_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper ">
-      <Panel :header="$t('add_employees_to_hierarchy')">
-        <div class="flex flex-col gap-2 ">
-          <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
-            :controller="indexEmployeeController" :params="indexEmployeeParams" :label="$t('employees')" :type="2"
-            :placeholder="$t('select_employees')" />
-          <button class="btn btn-primary" @click="AddEmployees">Add Employees</button>
-        </div>
-      </Panel>
-    </div>
-    <div v-if="route.query.certificate_id" class="col-span-4 md:col-span-4 mt-5 input-wrapper flex">
-      <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
-        Certificate</button>
-      <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
-        Certificate</button>
-    </div> -->
+
+
   </div>
 
 
@@ -406,5 +421,12 @@ const setCertificateStatus = () => {
 .upload {
   width: 100px;
   height: 40px;
+}
+
+.add-emplyee-hierarchy {
+  display: flex !important;
+  justify-content: space-between;
+  width: 100% !important;
+  align-items: center;
 }
 </style>
