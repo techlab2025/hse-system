@@ -270,6 +270,7 @@ const GetMediumObservationCount = (data: any): number => {
 
                       <div class="btns-container" style="margin-top: 20px">
                         <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
+                          
                           <ShowInvestegationDetailsDialog :item="item" class="first-btn" />
 
                           <router-link :to="`/organization/investigating/add?id=${item?.Investegationid}`">

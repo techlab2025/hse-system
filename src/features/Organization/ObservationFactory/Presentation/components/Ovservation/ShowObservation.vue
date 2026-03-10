@@ -26,11 +26,15 @@ import ObservationInvestigationDetails from '../FactoryUtils/ShowFactoryUtils/Ob
 const route = useRoute()
 const id = route.params?.id
 
+const props = defineProps<{
+  ObservationIdFromInvestegation?: number
+}>()
+
 const showHazardController = ShowHazardController.getInstance()
 const state = ref(showHazardController.state.value)
 
 const ShowData = async () => {
-  const showHazardParams = new ShowHazardParams(id, true)
+  const showHazardParams = new ShowHazardParams(props.ObservationIdFromInvestegation ? props.ObservationIdFromInvestegation : id, true)
   await showHazardController.showHazard(showHazardParams)
 }
 

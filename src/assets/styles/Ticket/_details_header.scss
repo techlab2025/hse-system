@@ -103,6 +103,8 @@
           height: calc(var(--line-height) * 2em);
           line-height: var(--line-height);
           --line-height: 1.5;
+            word-break: break-word;
+    overflow-wrap: anywhere;
         }
 
         p {
@@ -144,6 +146,8 @@
           color: #6b7280;
           font-size: 18px;
           width: 70%;
+            word-break: break-word;
+    overflow-wrap: anywhere;
         }
         div.imgs {
           @include flex(row, nowrap, center, center);
@@ -269,6 +273,10 @@
             color: #909dad;
             font-family: 'Regular';
             font-weight: 600;
+          }
+          h4 {
+           word-break: break-word;
+           overflow-wrap: anywhere;
           }
 
           p {

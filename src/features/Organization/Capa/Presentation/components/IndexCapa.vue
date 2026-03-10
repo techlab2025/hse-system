@@ -497,7 +497,7 @@ const exportExcel = () => {
   align-items: center;
   gap: 15px;
   background-color: #F5F5F5;
-  padding: .5rem 1rem;
+  padding: .4rem 1rem;
   border-radius: 40px;
   .active{
     background-color: #F4F6FF;
@@ -507,6 +507,7 @@ const exportExcel = () => {
     font-weight: 700;
     border-radius: 40px;
     font-family: "bold";
+    font-size: 15px;
   }
   .radio-btn {
     display: flex;
