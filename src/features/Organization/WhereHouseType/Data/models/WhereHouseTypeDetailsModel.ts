@@ -4,15 +4,31 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 export default class WhereHouseTypeDetailsModel {
   public id: number
   public titles: TitleLocale[]
+  public allIndustries: number
+  public industries: TitleInterface[]
 
-  constructor(id: number, titles: TitleLocale[]) {
+  constructor(
+    id: number,
+    titles: TitleLocale[],
+    allIndustries: number,
+    industries: TitleInterface[],
+  ) {
     this.id = id
     this.titles = titles
+    this.allIndustries = allIndustries
+    this.industries = industries
   }
 
   static fromMap(data: any): WhereHouseTypeDetailsModel {
     console.log(data, 'inside model')
-    return new WhereHouseTypeDetailsModel(data.id, TranslationsParams.fromMap(data.titles).titles)
+    return new WhereHouseTypeDetailsModel(
+      data.id,
+      TranslationsParams.fromMap(data.titles).titles,
+      data.all_industries,
+      data.industries?.length > 0
+        ? data.industries?.map((industry) => this.getTitle(industry))
+        : [],
+    )
   }
 
   static getTitle(data: any) {

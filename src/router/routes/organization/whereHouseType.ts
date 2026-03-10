@@ -8,6 +8,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'WarehouseType',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -18,6 +19,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add WarehouseType',
       parent: 'WarehouseType',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -28,6 +30,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit WarehouseType',
       parent: 'WarehouseType',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -41,6 +44,7 @@ export const WhereHouseTypeRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Upload WarehouseType',
       parent: 'WarehouseType',
       isSidebar: true,
+      type: 'Shared',
     },
   },
 ]

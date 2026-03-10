@@ -42,7 +42,7 @@ const langs = ref<{ locale: string; title: string }[]>([
   },
 ])
 
-const allIndustries = ref<number>(0)
+// const allIndustries = ref<number>()
 
 // industry
 const industry = ref<TitleInterface>()
@@ -146,6 +146,13 @@ watch(
   },
   { immediate: true },
 )
+
+const allIndustries = ref<boolean>(false)
+const updateAllIndustries = (data: boolean) => {
+  allIndustries.value = data
+  console.log(allIndustries.value, 'allIndustries')
+  updateData()
+}
 </script>
 
 <template>
@@ -156,7 +163,7 @@ watch(
   <!-- all industry -->
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="allIndustries = $event" />
+      @update:checked="updateAllIndustries" />
   </div>
   <!--industry  -->
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">

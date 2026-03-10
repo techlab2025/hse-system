@@ -30,10 +30,10 @@ export default class AddWarehouseTypeClonesParams implements Params {
   }
 
   validate() {
-    return AddClonesParams.validation.validate(this)
+    return AddWarehouseTypeClonesParams.validation.validate(this)
   }
 
   validateOrThrow() {
-    return AddClonesParams.validation.validateOrThrow(this)
+    return AddWarehouseTypeClonesParams.validation.validateOrThrow(this)
   }
 }

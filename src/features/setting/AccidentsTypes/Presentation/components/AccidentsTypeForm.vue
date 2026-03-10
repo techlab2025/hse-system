@@ -144,14 +144,12 @@ const updateData = () => {
 }
 
 const setIndustry = (data: TitleInterface[]) => {
-  // console.log(data, 'data')
   industry.value = data
   updateData()
 }
 
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
-
   updateData()
 }
 
@@ -168,7 +166,8 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      allIndustries.value = newData?.allIndustries! ?? false
+
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
       industry.value = newData?.industries!
     }
   },
@@ -193,6 +192,11 @@ const fields = ref([
 ])
 
 const projtecStateus = useProjectAppStatusStore()
+
+const updateAllIndustries = (data) => {
+  allIndustries.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -205,7 +209,8 @@ const projtecStateus = useProjectAppStatusStore()
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="updateAllIndustries" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
