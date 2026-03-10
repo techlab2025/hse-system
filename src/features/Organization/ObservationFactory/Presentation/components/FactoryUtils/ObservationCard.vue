@@ -59,18 +59,22 @@ const ToogleStatus = async (id: number) => {
 watch(() => props.data, () => {
   toggleObservationActionStatus(props.data.id)
 })
-
+const GoToShowPage = () => {
+  if (props.data.id) {
+    router.push(`/organization/equipment-mangement/incedant/show/${props.data.id}`)
+  }
+}
 </script>
 <template>
   <div class="observation-card">
     <div class="header-container">
       <div class="card-content">
-        <div class="title_observation">
+        <div class="title_observation" @click="GoToShowPage">
           <p class="observation-title">{{ data?.title }}</p>
           <p class="Description">{{ data?.description }}</p>
         </div>
         <div class="card-header">
-          <p class="label-item-primary">
+          <p class="label-item-primary cursor-pointer" @click="GoToShowPage">
             {{ $t('Serial') }} : <span>{{ data?.serialName }}</span>
           </p>
           <h6 class="label-item-secondary">
@@ -130,3 +134,9 @@ watch(() => props.data, () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.cursor-pointer{
+  cursor: pointer;
+}
+</style>
