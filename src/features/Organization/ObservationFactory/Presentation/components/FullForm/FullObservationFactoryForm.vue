@@ -548,7 +548,7 @@ const setRootCause = (data: TitleInterface[]) => {
       /> -->
 
       <UpdatedCustomInputSelect :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-        :params="indexAccidentsTypeParams" :label="$t('incident Type')" id="incident" placeholder="Select Incident Type"
+        :params="indexAccidentsTypeParams" :label="$t('incident Category')" id="incident" placeholder="Select Incident Type"
         @update:modelValue="setAccidentsType" @close="acedentDialogRef = false" :isDialog="true"
         :dialogVisible="acedentDialogRef">
         <template #LabelHeader>
