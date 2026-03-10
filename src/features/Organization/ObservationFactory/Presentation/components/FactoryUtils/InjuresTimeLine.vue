@@ -116,7 +116,7 @@ const toggleMode = (index: number, isManual: boolean) => {
             <!-- timeline-content -->
             <div class=" grid grid-cols-12 gap-2">
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <label for="">{{ $t('description_of_the_injury') }}</label>
+                <label for="">{{ $t('Nature of injury & body part') }}</label>
                 <input type="text" class="input " :placeholder="$t('add your title')" v-model="item.text"
                   @input="UpdateData">
               </div>
@@ -141,7 +141,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="toggleMode(index, true)">
-                        {{ $t('name_of_the_injured_person') }}
+                        {{ $t('injured person name /id') }}
                       </button>
 
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
@@ -162,8 +162,8 @@ const toggleMode = (index: number, isManual: boolean) => {
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
 
                 <UpdatedCustomInputSelect :modelValue="item.infectionTypeId" class="input"
-                  :controller="indexInjuryController" :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
-                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)"
+                  :controller="indexInjuryController" :params="indexInjuryParams" :label="$t('injury Classification')" id="injury"
+                  :placeholder="$t('select your injury Classification')" @update:modelValue="UpdateInjury($event, index)"
                   @close="InjuryVisable = false" :isDialog="true" :dialogVisible="InjuryVisable">
                   <template #LabelHeader>
                     <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>

@@ -34,7 +34,7 @@ watch(() => isAnotherMeeting.value, (newVal) => {
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage :title="`Are there witnesses?`" :subtitle="`Were there any witnesses present at this incident?`"
+      <HeaderPage :title="`Are there witnesses?`" :subtitle="`Please Record the statements of those present at the scene .`"
         :img="people" class="title-header" />
       <div class="meeting-status">
         <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
