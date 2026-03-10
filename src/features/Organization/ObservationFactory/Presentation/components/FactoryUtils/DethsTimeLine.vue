@@ -100,7 +100,7 @@ const toggleMode = (index: number, isManual: boolean) => {
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
+                  class="mt-4 mr-2 input" :label="$t('Name & personnel type')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
                   <!-- <template #reloadHeader>
                     <div class="flex gap-2 items-center">
@@ -132,12 +132,12 @@ const toggleMode = (index: number, isManual: boolean) => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-                <label for="deth-text">{{ $t('description_of_the_death_case') }}</label>
+                <label for="deth-text">{{ $t('circumstances of fatality') }}</label>
                 <input type="text" id="deth-text" v-model="item.text" class="input" :placeholder="$t('add your title')"
                   @input="UpdateData" />
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('upload image') }}</label>
+                <label for="">{{ $t('sensitive content - legal evidence only') }}</label>
                 <MultiImagesInput :initialImages="item.images" @update:images="setImages($event, index)"
                   :index="index + 1000" />
               </div>

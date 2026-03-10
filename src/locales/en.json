@@ -1246,5 +1246,21 @@
   "observation_status": "Observation Status",
   "immediatly_action_taken": "Immediatly Action Taken",
   "create_observation": "Create Observation",
-  "New_Ticket": "New Ticket"
+  "New_Ticket": "New Ticket",
+  "Equipment / Tag No": "Equipment / Tag No",
+  "Observation Category":"Observation Category",
+  "Observation Ref":"Observation Ref",
+  "Work Area / Facility":"Work Area / Facility",
+  "Observation title":"Observation title",
+  "Report":"Report",
+  "Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace":"Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace",
+  "Immediate Apparent Cause":"Immediate Apparent Cause",
+  "action_taken":"Action Taken",
+  "Did this incident result in any physical injuries":"Did this incident result in any physical injuries",
+  "Nature of injury & body part":"Nature of injury & body part",
+  "injured person name /id":"injured person name /id",
+  "fatality repoting":"fatality repoting",
+  "Name & personnel type":"Name & personnel type",
+  "circumstances of fatality":"circumstances of fatality",
+  "sensitive content - legal evidence only":"sensitive content - legal evidence only"
 }
