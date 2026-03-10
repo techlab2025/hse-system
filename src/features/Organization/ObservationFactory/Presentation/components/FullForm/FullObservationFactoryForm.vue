@@ -739,7 +739,7 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!--if ActionStatusEnum OPEN  -->
-    <div v-if="solved == ActionStatusEnum.OPEN" class="input-wrapper col-span-6 md:col-span-6"
+    <div v-if="solved == ActionStatusEnum.OPEN && saveStatus == SaveStatusEnum.Saved" class="input-wrapper col-span-6 md:col-span-6"
       v-show="showObservationAndDescription">
       <label for="action">{{ $t('Open Note') }}</label>
       <textarea id="action" class="input" v-model="preventive_action_open" @input="updateData"
