@@ -21,6 +21,6 @@ const updateData = () => {
       <span class="invalid-title">invalid</span>
     </div>
     <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId" :is_expire_date="cert.require_expired_date" :status="status" />
+      :organizationEmployeeId="organizationEmployeeId" :is_expire_date="cert.requireExpiredDate" :status="status" />
   </div>
 </template>

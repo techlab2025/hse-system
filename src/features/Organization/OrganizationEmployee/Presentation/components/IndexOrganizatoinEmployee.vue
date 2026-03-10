@@ -283,7 +283,7 @@ const setCertificateStatus = () => {
 
 
 
-const value = ref();
+const value = ref('Not Taken Certificates');
 const options = ref(['Taken Certificates', 'Not Taken Certificates']);
 </script>
 
@@ -397,22 +397,22 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
-            description="Sorry .. You have no OrganizatoinEmployeeuages .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployeeuages" />
+            description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No OrganizatoinEmployee" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
-            description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployeeuages" />
+            description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No OrganizatoinEmployee" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed link="/organization" addText="Have not  Permission"
-        description="Sorry .. You have no OrganizatoinEmployeeuage .. All your joined customers will appear here when you add your customer data" />
+        description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -24,6 +24,7 @@ import DeleteWhereHouseTypeController from '../controllers/deleteWhereHouseTypeC
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import SystemWarehouseTypes from '../supcomponents/SystemWarehouseTypes.vue'
 
 const { t } = useI18n()
 
@@ -162,6 +163,9 @@ const exportExcel = () => {
         <router-link to="/organization/where-house-type/upload" class="btn btn-primary">
           {{ $t('import_warehouse') }}
         </router-link>
+      </PermissionBuilder>
+      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        <SystemWarehouseTypes />
       </PermissionBuilder>
     </div>
   </div>

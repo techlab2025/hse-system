@@ -305,13 +305,13 @@ const updateData = () => {
   // })
   const certificateImagePayload = resolveCertificateImage()
   const imagePayload = resolveImage()
-
+// deviceStatus.value == EquipmentStatus.OWN ? null :
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
       translation: translationsParams,
       equipmentTypeId: equipmentType.value?.id,
-      date: deviceStatus.value == EquipmentStatus.OWN ? null : decommissioningDate.value,
+      date: decommissioningDate.value,
       status: deviceStatus.value,
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
