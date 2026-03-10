@@ -5,6 +5,7 @@ import mark from '@/assets/images/mark.png'
 import type InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
 import Galleria from 'primevue/galleria'
 import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
+import ShowObservation from '@/features/Organization/ObservationFactory/Presentation/components/Ovservation/ShowObservation.vue'
 
 const visible = ref(false)
 
@@ -42,7 +43,7 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
     show details
   </button>
 
-  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '60rem' }">
+  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '85rem' }">
     <template #header>
       <div class="show-investigation-dialog-header">
         <h3>{{ staticData?.title }}</h3>
@@ -50,66 +51,7 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
       </div>
     </template>
     <!-- <pre>{{ item }} </pre> -->
-
-    <div class="investigation-show-details">
-      <div class="dialog-content">
-        <div class="all-text-content">
-          <div class="observer-info">
-            <div class="name">
-              <h4>{{ item?.observation?.observer?.name }} <span>( observer )</span></h4>
-            </div>
-            <p>
-              {{ item?.observation?.title }}
-            </p>
-            <div class="info-row">
-              <div class="info-item">
-                <img :src="mark" alt="zone" class="zone-img" />
-                <h5>Zone :</h5>
-                <span>{{ item?.observation?.zoon?.title }}</span>
-              </div>
-              <div class="info-item">
-                <h5>Machine :</h5>
-                <span>{{ item?.observation?.equipment?.title }}</span>
-              </div>
-              <div class="info-item">
-                <h5>Status :</h5>
-                <span>{{ ReturnStatusTitle(item?.status) }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="description" v-if="item?.action || item?.action != null">
-            <h4>preventive action:</h4>
-            <p>
-              {{ item?.action }}
-            </p>
-          </div>
-          <!-- <router-link to="/organization"> show the observation </router-link> -->
-        </div>
-
-        <div class="img-side" v-if="item?.image?.length > 0">
-          <img :src="item?.image" alt="investegation-image" loading="lazy" />
-
-          <!-- <Galleria
-            :value="item?.files"
-            :responsiveOptions="responsiveOptions"
-            :numVisible="5"
-            :circular="true"
-            containerStyle="max-width: 100% "
-            :showItemNavigators="false"
-            :showThumbnails="false"
-            :showItemNavigatorsOnHover="false"
-            :showIndicators="true"
-          >
-            <template #item="slotProps">
-              <img :src="slotProps.item.img" alt="investigation image" loading="lazy" />
-            </template>
-            <template #thumbnail="slotProps">
-              <img :src="slotProps.item.img" :alt="'image'" style="display: block" />
-            </template>
-          </Galleria> -->
-        </div>
-      </div>
-    </div>
+    <ShowObservation :ObservationIdFromInvestegation="item.observation.id" />
   </Dialog>
 </template>
 
