@@ -13,6 +13,12 @@ import EditWhereHouseTypeParams from '../../Core/params/editWhereHouseTypeParams
 import AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypeParams'
 import type WhereHouseTypeDetailsModel from '../../Data/models/WhereHouseTypeDetailsModel'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 
 const emit = defineEmits(['update:data'])
 
@@ -81,6 +87,7 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
+const allIndustries = ref<boolean>(false)
 
 // ---------- Emit update ----------
 const updateData = () => {
@@ -90,12 +97,14 @@ const updateData = () => {
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   console.log(translationsParams, 'langs')
   const params = props.data?.id
-    ? new EditWhereHouseTypeParams(props.data.id, translationsParams)
+    ? new EditWhereHouseTypeParams(props.data.id, translationsParams, AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],)
     : new AddWhereHouseTypeParams(translationsParams,
-      null)
+      null, AllIndustry,
+      industry.value?.map((item) => item.id) ?? [],)
 
   // console.log(params, 'params')
 
@@ -119,7 +128,8 @@ watch(
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
-
+      allIndustries.value = newData?.allIndustries == 1 ? true : false
+      industry.value = newData?.industries!
       updateData()
     }
   },
@@ -149,11 +159,38 @@ watch(
 //     enabled: props?.data?.id ? false : true,
 //   },
 // ])
+
+const industry = ref<TitleInterface[]>([])
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
+const industryController = IndexIndustryController.getInstance()
+
+
+const setIndustry = (data: TitleInterface[]) => {
+  industry.value = data
+  updateData()
+}
+
+const setLangs = (data: { locale: string; title: string }[]) => {
+  langs.value = data
+  updateData()
+}
+const updateAllIndustries = (data) => {
+  allIndustries.value = data
+  updateData()
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+  </div>
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="updateAllIndustries" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput

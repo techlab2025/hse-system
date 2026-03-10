@@ -32,6 +32,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   ...CatalogRoutes,
   ...CatalogItemsRoutes,
   ...CatalogItemsDetailsRoutes,
+
   {
     path: 'permission/:id',
     name: 'Permission Admin',

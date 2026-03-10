@@ -302,6 +302,91 @@ const LocationRoutes = ref<Routes[]>([
     ],
   },
 ])
+const LockUpsRoutes = ref<Routes[]>([
+  {
+    link: '/admin/where-house-type',
+    name: t('warehouse_types'),
+    permissions: [
+      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/admin/hazard-type',
+    name: t('hazard_type'),
+    permissions: [
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_FETCH,
+      PermissionsEnum.HAZARD_TYPE_DETAILS,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/admin/accidents-type',
+    name: t('incident_types'),
+    permissions: [
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ACCIDENTS_TYPE_DETAILS,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/admin/observation-type',
+    name: t('observation_type'),
+    permissions: [
+      PermissionsEnum.OBSERVATION_TYPE_ALL,
+      PermissionsEnum.OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.OBSERVATION_TYPE_DETAILS,
+      PermissionsEnum.OBSERVATION_TYPE_CREATE,
+      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.OBSERVATION_TYPE_DELETE,
+
+    ],
+  },
+  {
+    link: '/admin/equipment-types',
+    name: t('equipment_types'),
+    permissions: [
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/admin/root-causes',
+    name: t('root_causes'),
+    permissions: [
+      PermissionsEnum.ROOT_CAUSES_ALL,
+      PermissionsEnum.ROOT_CAUSES_CREATE,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
+      PermissionsEnum.ROOT_CAUSES_FETCH,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
+    ],
+  },
+  {
+    link: '/admin/injury',
+    name: t('injury'),
+    permissions: [
+      PermissionsEnum.INJURY_ALL,
+      PermissionsEnum.INJURY_CREATE,
+      PermissionsEnum.INJURY_DELETE,
+      PermissionsEnum.INJURY_FETCH,
+      PermissionsEnum.INJURY_UPDATE,
+    ],
+  },
+])
 
 const SubscriptionTypeRoutes = ref<Routes[]>([
   {
@@ -344,6 +429,8 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
     ],
   },
 ])
+
+
 
 
 const WebsiteRoutes = ref<Routes[]>([
@@ -628,6 +715,7 @@ const SelectedSettingsRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
 const SelectedWebsiteRoute = ref<string>('')
 const SelectedSubscriptionTypeRoute = ref<string>('')
+const SelectedLockupsRoute = ref<string>('')
 
 watch(
   () => route.path,
@@ -636,6 +724,7 @@ watch(
     SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name || ''
     SelectedWebsiteRoute.value = WebsiteRoutes.value.find(item => item.link === newPath)?.name || ''
     SelectedSubscriptionTypeRoute.value = SubscriptionTypeRoutes.value.find(item => item.link === newPath)?.name || ''
+    SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name || ''
   }
 )
 
@@ -643,6 +732,10 @@ const settingsAccordion = ref<string | null>('0')
 const locationAccordion = ref<string | null>('1')
 const websiteAccordion = ref<string | null>('2')
 const subscriptionTypeAccordion = ref<string | null>('3')
+const LoackupsAccordion = ref<string | null>('4')
+watch(LoackupsAccordion, (val) => {
+  LoackupsAccordion.value = val
+})
 </script>
 
 <template>
@@ -799,6 +892,33 @@ const subscriptionTypeAccordion = ref<string | null>('3')
       </AccordionPanel>
       <AccordionPanel class="active-panel-out" v-if="SelectedWebsiteRoute && !websiteAccordion">
         <span>{{ SelectedWebsiteRoute }}</span>
+      </AccordionPanel>
+    </Accordion>
+  </PermissionBuilder>
+  <PermissionBuilder :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+    <Accordion v-model:value="LoackupsAccordion">
+      <AccordionPanel value="4">
+        <AccordionHeader>
+          <div class="links-header">
+            <GeerIcon />
+            {{ $t('Lockups') }}
+          </div>
+        </AccordionHeader>
+
+        <AccordionContent>
+          <ul>
+            <PermissionBuilder v-for="(orgroute, index) in LockUpsRoutes" :key="index" :code="orgroute?.permissions">
+              <li>
+                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                  <span>{{ $t(orgroute.name) }}</span>
+                </router-link>
+              </li>
+            </PermissionBuilder>
+          </ul>
+        </AccordionContent>
+      </AccordionPanel>
+      <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
+        <span>{{ SelectedLockupsRoute }}</span>
       </AccordionPanel>
     </Accordion>
   </PermissionBuilder>

@@ -8,6 +8,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Injury',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -18,6 +19,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Add Injury',
       parent: 'Injury',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -28,6 +30,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Edit Injury',
       parent: 'Injury',
       isSidebar: true,
+      type: 'Shared',
     },
   },
   {
@@ -38,6 +41,7 @@ export const InjuryRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Upload Injury Excel',
       parent: 'Injury',
       isSidebar: true,
+      type: 'Shared',
     },
   },
 ]

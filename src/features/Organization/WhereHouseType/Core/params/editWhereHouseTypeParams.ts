@@ -4,16 +4,19 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 export default class EditWhereHouseTypeParams implements Params {
   id: number
   translation: TranslationsParams
-
+  allIndustries: boolean | null
+  industries: number[]
 
   constructor(
     id: number,
     translation: TranslationsParams,
-
+    allIndustries: boolean | null,
+    industries: number[],
   ) {
     this.id = id
     this.translation = translation
-
+    this.allIndustries = allIndustries
+    this.industries = industries
   }
 
   toMap(): Record<
@@ -30,7 +33,8 @@ export default class EditWhereHouseTypeParams implements Params {
 
     data['warehouse_type_id'] = this.id
     data['translations'] = this.translation.toMap()
-
+    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (!this.allIndustries) data['industry_ids'] = this.industries
 
     return data
   }
