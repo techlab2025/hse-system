@@ -12,6 +12,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddSystemEquipmentTypeUseCase from '../../Domain/useCase/addSystemEquipmentTypeUseCase'
+import IndexSystemEquipmentTypeController from './indexSystemEquipmentTypeController'
+import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 
 export default class AddSystemEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {
   private static instance: AddSystemEquipmentTypeController
@@ -56,6 +58,10 @@ export default class AddSystemEquipmentTypeController extends ControllerInterfac
         })
 
         const { user } = useUserStore()
+
+        await IndexSystemEquipmentTypeController.getInstance().getData(
+          new IndexObserverationTypeParams('', 1, 10, 1,undefined,true),
+        )
 
         if (!draft)
           if (
