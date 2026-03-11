@@ -35,6 +35,11 @@ import { saveAs } from "file-saver";
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import SysteminjuryTypes from '../supcomponents/SysteminjuryTypes.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
 
 const { t } = useI18n()
 
@@ -156,6 +161,39 @@ const exportExcel = () => {
 
 const { user } = useUserStore()
 
+const IndexInjuryactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+    ],
+  },
+  {
+    text: t('Add_Injury'),
+    link: '/organization/injury/add',
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.INJURY_CREATE
+    ],
+  },
+  {
+    text: t('import_injury'),
+    type: ActionItemsTypeEnum.Warning,
+    link: '/organization/injury/upload-excel',
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.INJURY_CREATE
+    ],
+  },
+]
 </script>
 
 <template>
@@ -169,7 +207,7 @@ const { user } = useUserStore()
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
@@ -186,7 +224,13 @@ const { user } = useUserStore()
         <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="5">
+        <template #custom>
+          <SysteminjuryTypes />
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
   </div>
 

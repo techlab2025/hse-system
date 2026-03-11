@@ -33,6 +33,11 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import SystemRootCausesTypes from '../supcomponents/SystemRootCausesTypes.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusRootCauses from "@/features/setting/RootCausess/Presentation/components/RootCauses/DialogChangeStatusRootCauses.vue";
@@ -188,6 +193,39 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "root-causes.xlsx");
 };
+const IndexRootCausesactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.ROOT_CAUSES_DETAILS,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ROOT_CAUSES_ALL,
+    ],
+  },
+  {
+    text: t('add_root_causes'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/root-causes/add`,
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ROOT_CAUSES_CREATE
+    ],
+  },
+  {
+    text: t('import_root_causes'),
+    type: ActionItemsTypeEnum.Warning,
+    link: '/organization/root-causes/upload-excel',
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ROOT_CAUSES_CREATE
+    ],
+  },
+]
 </script>
 
 <template>
@@ -202,7 +240,7 @@ const exportExcel = () => {
 
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[
@@ -227,7 +265,13 @@ const exportExcel = () => {
       <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemRootCausesTypes />
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+        <ActionsList :show-actions="true" :actionList="IndexRootCausesactionList()" :actionsNumber="5">
+        <template #custom>
+          <SystemRootCausesTypes />
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
   </div>
 
