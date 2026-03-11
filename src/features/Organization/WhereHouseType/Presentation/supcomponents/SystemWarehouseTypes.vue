@@ -60,13 +60,14 @@
     }
   })
 
-  const router = useRouter()
-  const SubmitData = async () => {
-    const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-    const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-    const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
-    // visible.value = false
-  }
+
+const router = useRouter()
+const SubmitData = async () => {
+  const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
+  const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
+  const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router) 
+  // visible.value = false
+}
 </script>
 <template>
   <li class="list-item cursor-pointer" @click="visible = true">

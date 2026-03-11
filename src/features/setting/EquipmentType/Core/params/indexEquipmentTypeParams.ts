@@ -10,6 +10,8 @@ export default class IndexEquipmentTypeParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public type?: EquipmentTypesEnum
+    public isSystemOnly?: boolean
+
   // public code?: LangEnum
 
   constructor(
@@ -19,6 +21,7 @@ export default class IndexEquipmentTypeParams implements Params {
     withPage: number = 1,
     id?: number,
     type?: EquipmentTypesEnum,
+    isSystemOnly?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +30,7 @@ export default class IndexEquipmentTypeParams implements Params {
     this.perPage = perPage
     this.id = id
     this.type = type
+    this.isSystemOnly = isSystemOnly
     // this.code = code
   }
 
@@ -38,6 +42,7 @@ export default class IndexEquipmentTypeParams implements Params {
     if (this.perPage) data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
     if (this.type) data['type'] = `${this.type}`
+    if (this.isSystemOnly || this.isSystemOnly === false) data['is_system_only'] = this.isSystemOnly
     // if (this.code) data['code'] = this.code
     return data
   }

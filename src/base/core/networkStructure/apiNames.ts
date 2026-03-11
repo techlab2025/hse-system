@@ -577,6 +577,9 @@ class ApiNames {
   public get CreateEquipmentType() {
     return this.prefix + 'create_equipment_type'
   }
+  public get AddSystemEquipmentType() {
+    return this.prefix + 'add_system_equipment_type'
+  }
   public get IndexEquipmentType() {
     return this.prefix + 'fetch_equipment_types'
   }
@@ -1307,6 +1310,9 @@ class ApiNames {
   public get CreateInjury() {
     return this.prefix + 'create_injury_type'
   }
+  public get CreateInjuryClones() {
+    return this.prefix + 'create_injury_type_clones'
+  }
   public get IndexInjury() {
     return this.prefix + 'fetch_injury_types'
   }
@@ -1437,6 +1443,9 @@ class ApiNames {
   }
   public get CreateRootCauses() {
     return this.prefix + 'create_root_cause'
+  }
+  public get AddSystemRootCauses() {
+    return this.prefix + 'create_system_root_cause'
   }
 
   public get CreateCapaResult() {

@@ -31,8 +31,11 @@ import DeleteInjuryController from '../controllers/deleteInjuryController'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+
 import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import SysteminjuryTypes from '../supcomponents/SysteminjuryTypes.vue'
+
 const { t } = useI18n()
 
 // import DialogChangeStatusInjury from "@/features/setting/Injuryuages/Presentation/components/Injury/DialogChangeStatusInjury.vue";
@@ -152,6 +155,7 @@ const exportExcel = () => {
 };
 
 const { user } = useUserStore()
+
 </script>
 
 <template>
@@ -178,6 +182,10 @@ const { user } = useUserStore()
         <router-link :to="`/organization/injury/upload-excel`" class="btn btn-primary">
           {{ $t('import_injury') }}
         </router-link>
+      </PermissionBuilder>
+        <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
+        <SysteminjuryTypes />
       </PermissionBuilder>
     </div>
   </div>

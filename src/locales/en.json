@@ -1267,5 +1267,8 @@
   "system_observation_types": "System Observation Types",
   "actions_list": "Actions List",
   "export_excel": "Export Excel",
-  "system_data": "System Data"
+  "system_data": "System Data",
+  "system_root_causes_types": "System Root Causes Types",
+  "system_injury_types": "System Injury Types"
+
 }
