@@ -3,34 +3,30 @@ import HeaderSection from '@/features/Organization/Project/Presentation/componen
 import Dialog from 'primevue/dialog';
 import DialogSystem from '@/assets/images/DialogSystem.png'
 import { onMounted, ref, watch } from "vue";
-import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
-import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice';
-import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
-import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
-import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
+import IndexSystemInjuryController from '../controllers/indexSystemInjuryController';
 import { useRouter } from 'vue-router';
+import IndexInjuryParams from '../../Core/params/indexInjuryParams';
+import AddInjurycloneController from '../controllers/addInjurycloneController';
+import AddinjuryClonesParams from '../../Core/params/AddinjuryCloneParams';
 
 
 const visible = ref(false);
 
-const indexWhereHouseTypeController = IndexSystemWhereHouseTypeController.getInstance()
-const state = ref(indexWhereHouseTypeController.state.value)
+const indexInjuryController = IndexSystemInjuryController.getInstance()
+const state = ref(indexInjuryController.state.value)
 const fetchWhereHouseType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteWhereHouseTypeParams = new IndexWhereHouseTypeParams(query, pageNumber, perPage, withPage, null, true)
-  await indexWhereHouseTypeController.getData(deleteWhereHouseTypeParams)
+  const deleteinjuryParams = new IndexInjuryParams(query, pageNumber, perPage, withPage, true)
+  await indexInjuryController.getData(deleteinjuryParams)
 }
 
 watch(
-  () => indexWhereHouseTypeController.state.value,
+  () => indexInjuryController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -61,9 +57,9 @@ watch(() => visible.value, (newVal) => {
 
 const router = useRouter()
 const SubmitData = async () => {
-  const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-  const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-  const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router) 
+  const addInjurycloneController = AddInjurycloneController.getInstance()
+  const addinjuryClonesParams = new AddinjuryClonesParams({ clonesIds: selectedIds.value })
+  const dataState = await addInjurycloneController.addInjuryclone(addinjuryClonesParams, router)
   // visible.value = false
 }
 </script>

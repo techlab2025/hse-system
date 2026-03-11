@@ -112,7 +112,7 @@ const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
 ]
 
 watch(
-  () => route?.params?.id,
+  () => route?.params?.id, 
   (Newvalue) => {
     // id = Newvalue
     fetchWhereHouseType()
