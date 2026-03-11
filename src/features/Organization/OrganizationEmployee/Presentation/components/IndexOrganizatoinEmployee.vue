@@ -315,14 +315,14 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
+      <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
         :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
         :addLink="`/organization/organization-employee/add`"
         :ImportexcelLink="`/organization/organization-employee/upload`" :addText="`add_organizatoin_employee`"
-        :addDescription="`add_employee`" :numberOfActions="4" /> -->
+        :addDescription="`add_employee`" :numberOfActions="4" />
 
 
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
       <PermissionBuilder v-if="!route.query.heirarchy_id && !route.query.certificate_id"
         :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
@@ -333,7 +333,7 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
       <router-link v-if="!route.query.heirarchy_id && !route.query.certificate_id"
         to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
-      </router-link>
+      </router-link> -->
 
     </div>
 
