@@ -32,6 +32,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import SystemEquipmentTypes from '../supcomponents/SystemEquipmentTypes.vue'
 
 const { t } = useI18n()
 
@@ -233,6 +234,10 @@ const exportExcel = () => {
           }/equipment-type/upload-excel`" class="btn btn-primary">
           {{ $t('upload_excel') }}
         </router-link>
+      </PermissionBuilder>
+        <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        <SystemEquipmentTypes />
       </PermissionBuilder>
     </div>
   </div>

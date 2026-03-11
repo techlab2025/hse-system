@@ -6,28 +6,28 @@ import { onMounted, ref, watch } from "vue";
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import { useRouter } from 'vue-router';
 
-import IndexSystemRootCausesController from '../controllers/indexSystemRootCausesController';
-import IndexRootCausesParams from '../../Core/params/indexRootCausesParams';
-import AddSystemRootCausesController from '../controllers/addSystemRootCausesController';
-import AddSystemRootCausesParams from '../../Core/params/AddStstemRootCausesParams';
+import IndexSystemEquipmentTypeController from '../controllers/indexSystemEquipmentTypeController';
+import IndexEquipmentTypeParams from '../../Core/params/indexEquipmentTypeParams';
+import AddSystemEquipmentTypeController from '../controllers/addSystemEquipmentTypeController';
+import AddSystemEquipmentParams from '../../Core/params/AddSystemEquipmentParams';
 
 
 const visible = ref(false);
 
-const indexSystemRootCausesController = IndexSystemRootCausesController.getInstance()
-const state = ref(indexSystemRootCausesController.state.value)
+const indexSystemEquipmentTypeController = IndexSystemEquipmentTypeController.getInstance()
+const state = ref(indexSystemEquipmentTypeController.state.value)
 const fetchWhereHouseType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteRootCausesParams = new IndexRootCausesParams(query, pageNumber, perPage, withPage,undefined ,undefined,true)
-  await indexSystemRootCausesController.getData(deleteRootCausesParams)
+  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage,undefined,undefined,true)
+  await indexSystemEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
 
 watch(
-  () => indexSystemRootCausesController.state.value,
+  () => indexSystemEquipmentTypeController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -58,9 +58,9 @@ watch(() => visible.value, (newVal) => {
 
 const router = useRouter()
 const SubmitData = async () => {
-  const addSystemRootCausesController = AddSystemRootCausesController.getInstance()
-  const addSystemRootCausesParams = new AddSystemRootCausesParams({ clonesIds: selectedIds.value })
-  const dataState = await addSystemRootCausesController.addSystemRootCauses(addSystemRootCausesParams, router)
+  const addSystemEquipmentTypeController = AddSystemEquipmentTypeController.getInstance()
+  const addSystemEquipmentParams = new AddSystemEquipmentParams({ clonesIds: selectedIds.value })
+  const dataState = await addSystemEquipmentTypeController.addSystemEquipmentType(addSystemEquipmentParams, router)
   // visible.value = false
 }
 </script>
