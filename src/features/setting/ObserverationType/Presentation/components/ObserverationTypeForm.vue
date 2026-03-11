@@ -193,6 +193,10 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+const updateAllIndustries = (data) => {
+  allIndustries.value = data
+  updateData()
+}
 </script>
 
 <template>
@@ -226,13 +230,21 @@ const fields = ref([
       @change="updateData"
     />
   </div> -->
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
     <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
       id="ObserverationType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  </div> -->
+  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
+      @update:checked="updateAllIndustries" />
+  </div>
+  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->

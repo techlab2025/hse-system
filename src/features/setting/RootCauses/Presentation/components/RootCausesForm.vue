@@ -21,6 +21,7 @@ import EditRootCausesParams from '../../Core/params/editRootCausesParams'
 import type RootCausesDetailsModel from '../../Data/models/RootCausesDetailsModel'
 
 const emit = defineEmits(['update:data', 'close:data'])
+const allIndustries = ref<boolean>(false)
 
 const props = defineProps<{
   data?: RootCausesDetailsModel
@@ -43,9 +44,8 @@ const langs = ref<{ locale: string; title: string }[]>([
 ])
 
 // const allIndustries = ref<number>()
-
 // industry
-const industry = ref<TitleInterface>()
+const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
@@ -105,18 +105,18 @@ const updateData = () => {
     ? new EditRootCausesParams(
       props.data?.id! ?? 0,
       translationsParams,
-      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      AllIndustry,
       industry.value?.map((item) => item.id),
     )
     : new AddRootCausesParams(
       translationsParams,
-      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+      AllIndustry,
       industry.value?.map((item) => item.id),
     )
   emit('update:data', params)
 }
 
-const setIndustry = (data: TitleInterface) => {
+const setIndustry = (data: TitleInterface[]) => {
   industry.value = data
   updateData()
 }
@@ -143,11 +143,13 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
     }
+
+    allIndustries.value = newData?.allIndustries == 1 ? true : false
+    industry.value = newData?.industries!
   },
   { immediate: true },
 )
 
-const allIndustries = ref<boolean>(false)
 const updateAllIndustries = (data: boolean) => {
   allIndustries.value = data
   console.log(allIndustries.value, 'allIndustries')

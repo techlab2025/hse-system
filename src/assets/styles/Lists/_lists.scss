@@ -1,4 +1,6 @@
 @import '../variables';
+@import '../mixins/flex';
+
 .list-trigger {
   background-color: var(--table-header-bg);
   width: 30px;
@@ -9,6 +11,24 @@
   justify-content: center;
   cursor: pointer;
   color: black;
+}
+.action-list-trigger {
+  background-color: #1d4ed80d;
+  padding: $MdSize;
+  border-radius: calc($XlSize2 + 4px);
+  width: 250px;
+  @include flex-row(nowrap, space-between, center);
+  .action-icon {
+    color: #1f41bb;
+    font-size: $MdSize;
+    font-weight: $BaseFontWeightBold;
+    span {
+      background-color: #1f41bb33;
+      margin-inline: $XsSize4;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+  }
 }
 
 .p-popover:after,
@@ -74,7 +94,6 @@
       gap: 8px;
       width: 100%;
       padding: $XsSize2 $XsSize;
-
     }
     &:hover {
       // color: var(--primary-color);

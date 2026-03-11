@@ -1263,5 +1263,9 @@
   "Name & personnel type": "Name & personnel type",
   "circumstances of fatality": "circumstances of fatality",
   "sensitive content - legal evidence only": "sensitive content - legal evidence only",
-  "system_warehouse_types": "System Warehouse Types"
+  "system_warehouse_types": "System Warehouse Types",
+  "system_observation_types": "System Observation Types",
+  "actions_list": "Actions List",
+  "export_excel": "Export Excel",
+  "system_data": "System Data"
 }

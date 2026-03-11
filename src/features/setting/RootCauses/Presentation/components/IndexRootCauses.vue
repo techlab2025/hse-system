@@ -218,8 +218,8 @@ const exportExcel = () => {
         PermissionsEnum.ADMIN,
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.ROOT_CAUSES_CREATE,
-      ]">
-        <router-link to="/organization/root-causes/upload-excel" class="btn btn-primary">
+      ]" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
+        <router-link :to="`/organization/root-causes/upload-excel`" class="btn btn-primary">
           {{ $t('import_root_causes') }}
         </router-link>
       </PermissionBuilder>

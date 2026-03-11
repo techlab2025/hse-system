@@ -228,9 +228,9 @@ const exportExcel = () => {
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.EQUIPMENT_TYPE_CREATE,
         PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment-type/upload-excel`" class="btn btn-primary">
+      ]" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
+        <router-link :to="`/organization
+          /equipment-type/upload-excel`" class="btn btn-primary">
           {{ $t('upload_excel') }}
         </router-link>
       </PermissionBuilder>
