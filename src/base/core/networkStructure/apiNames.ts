@@ -1307,6 +1307,9 @@ class ApiNames {
   public get CreateInjury() {
     return this.prefix + 'create_injury_type'
   }
+  public get CreateInjuryClones() {
+    return this.prefix + 'create_injury_type_clones'
+  }
   public get IndexInjury() {
     return this.prefix + 'fetch_injury_types'
   }
