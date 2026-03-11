@@ -62,7 +62,7 @@ const SubmitData = async () => {
   const addSystemRootCausesController = AddSystemRootCausesController.getInstance()
   const addSystemRootCausesParams = new AddSystemRootCausesParams({ clonesIds: selectedIds.value })
   const dataState = await addSystemRootCausesController.addSystemRootCauses(addSystemRootCausesParams, router)
-  // visible.value = false
+  visible.value = false
 }
 </script>
 <template>

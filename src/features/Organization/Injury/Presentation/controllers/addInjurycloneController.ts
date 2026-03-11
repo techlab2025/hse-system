@@ -7,6 +7,8 @@ import type { Router } from 'vue-router'
 import type InjuryModel from '../../Data/models/InjuryModel'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddInjuryclonesUseCase from '../../Domain/useCase/addInjurycloneUseCase'
+import IndexInjuryController from './indexInjuryController'
+import IndexInjuryParams from '../../Core/params/indexInjuryParams'
 
 export default class AddInjurycloneController extends ControllerInterface<InjuryModel> {
   private static instance: AddInjurycloneController
@@ -48,6 +50,8 @@ export default class AddInjurycloneController extends ControllerInterface<Injury
           messageContent: null,
         })
 
+        await IndexInjuryController.getInstance().getData(new IndexInjuryParams('', 1, 10, 1))
+        
         if (router.currentRoute.value.path.includes('injury')) {
           if (!draft) await router.push('/organization/injury')
         }

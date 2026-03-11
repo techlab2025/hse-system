@@ -14,6 +14,8 @@ import type AddRootCausesParams from '../../Core/params/addRootCausesParams'
 import AddRootCausesUseCase from '../../Domain/useCase/addRootCausesUseCase'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddSystemRootCausesUseCase from '../../Domain/useCase/addSystemRootCausesUseCase'
+import IndexRootCausesController from './indexRootCausesController'
+import IndexRootCausesParams from '../../Core/params/indexRootCausesParams'
 
 export default class AddSystemRootCausesController extends ControllerInterface<RootCausesModel> {
   private static instance: AddSystemRootCausesController
@@ -46,7 +48,8 @@ export default class AddSystemRootCausesController extends ControllerInterface<R
           return
         }
       }
-      const dataState: DataState<RootCausesModel> = await this.AddSystemRootCausesUseCase.call(params)
+      const dataState: DataState<RootCausesModel> =
+        await this.AddSystemRootCausesUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -57,6 +60,10 @@ export default class AddSystemRootCausesController extends ControllerInterface<R
         })
 
         const { user } = useUserStore()
+
+        await IndexRootCausesController.getInstance().getData(
+          new IndexRootCausesParams('', 1, 10, 1),
+        )
 
         if (!draft)
           if (router.currentRoute?.value.fullPath.includes('root-causes')) {
