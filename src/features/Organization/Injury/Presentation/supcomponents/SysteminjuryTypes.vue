@@ -65,17 +65,17 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-    <li class="list-item cursor-pointer" @click="visible = true">
+  <li class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_injury_types')
       }}
     </button>
   </li>
- <!-- <li>
+  <!-- <li>
    <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>
  </li> -->
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />

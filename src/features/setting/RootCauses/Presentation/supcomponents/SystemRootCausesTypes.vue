@@ -23,7 +23,7 @@ const fetchWhereHouseType = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteRootCausesParams = new IndexRootCausesParams(query, pageNumber, perPage, withPage,undefined ,undefined,true)
+  const deleteRootCausesParams = new IndexRootCausesParams(query, pageNumber, perPage, withPage, undefined, undefined, true)
   await indexSystemRootCausesController.getData(deleteRootCausesParams)
 }
 
@@ -66,14 +66,14 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-    <li class="list-item cursor-pointer" @click="visible = true">
+  <li class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_data')
       }}
     </button>
   </li>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />
@@ -81,7 +81,6 @@ const SubmitData = async () => {
     <DataStatus :controller="state">
       <template #success>
         <div class="system-dialog-content-container">
-
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
               <label :for="`${item.title}-${item.id}`" class="title">

@@ -23,7 +23,7 @@ const fetchWhereHouseType = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteSystemEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage,undefined,undefined,true)
+  const deleteSystemEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage, undefined, undefined, true)
   await indexSystemEquipmentTypeController.getData(deleteSystemEquipmentTypeParams)
 }
 
@@ -66,6 +66,7 @@ const SubmitData = async () => {
 }
 </script>
 <template>
+
       <li class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
@@ -73,7 +74,7 @@ const SubmitData = async () => {
       }}
     </button>
   </li>
-  <!-- <button @click="visible = true" class="btn btn-primary">{{ $t('system_equipment_types') }}</button> -->
+
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

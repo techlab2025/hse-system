@@ -81,7 +81,7 @@ const SubmitData = async () => {
       }}
     </button>
   </li>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />

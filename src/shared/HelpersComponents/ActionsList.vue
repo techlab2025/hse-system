@@ -55,7 +55,7 @@ const isVisible = computed(() => {
     <button class="action-icon"><span>{{ actionsNumber }}</span>{{ $t('actions_list') }}</button>
     <ActionListArrow v-show="!isVisible" />
     <CloseArrowActios v-show="isVisible" />
-  </div>  
+  </div>
 
   <Popover ref="actions">
     <div class="action-list-body">
