@@ -22,8 +22,8 @@ const fetchWhereHouseType = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage,undefined,undefined,true)
-  await indexSystemEquipmentTypeController.getData(deleteEquipmentTypeParams)
+  const deleteSystemEquipmentTypeParams = new IndexEquipmentTypeParams(query, pageNumber, perPage, withPage,undefined,undefined,true)
+  await indexSystemEquipmentTypeController.getData(deleteSystemEquipmentTypeParams)
 }
 
 watch(
@@ -65,7 +65,7 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_root_causes_types') }}</button>
+  <button @click="visible = true" class="btn btn-primary">{{ $t('system_equipment_types') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

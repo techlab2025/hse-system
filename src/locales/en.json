@@ -1265,5 +1265,6 @@
   "sensitive content - legal evidence only": "sensitive content - legal evidence only",
   "system_warehouse_types": "System Warehouse Types",
   "system_root_causes_types": "System Root Causes Types",
-  "system_injury_types": "System Injury Types"
+  "system_injury_types": "System Injury Types",
+  "system_equipment_types": "System Equipment Types"
 }

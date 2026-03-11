@@ -236,7 +236,7 @@ const exportExcel = () => {
         </router-link>
       </PermissionBuilder>
         <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_ALL]">
         <SystemEquipmentTypes />
       </PermissionBuilder>
     </div>
