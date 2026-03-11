@@ -7,6 +7,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type ObserverationTypeModel from '@/features/setting/ObserverationType/Data/models/observerationTypeModel'
 import AddSystemObserverationTypeUseCase from '../../Domain/useCase/addSystemObserverationTypeUseCase'
+import IndexSystemObserverationTypeController from './indexSystemObserverationTypeController'
+import IndexObserverationTypeParams from '../../Core/params/indexObserverationTypeParams'
 
 export default class AddSystemObserverationTypeController extends ControllerInterface<ObserverationTypeModel> {
   private static instance: AddSystemObserverationTypeController
@@ -34,6 +36,9 @@ export default class AddSystemObserverationTypeController extends ControllerInte
           imageElement: successImage,
           messageContent: null,
         })
+         await IndexSystemObserverationTypeController.getInstance().getData(
+                  new IndexObserverationTypeParams('', 1, 10, 1,undefined,true),
+                )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
