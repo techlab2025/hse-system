@@ -164,9 +164,9 @@ const exportExcel = () => {
           {{ $t('import_warehouse') }}
         </router-link>
       </PermissionBuilder>
-      <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
-      </PermissionBuilder> -->
+      </PermissionBuilder>
     </div>
   </div>
 
