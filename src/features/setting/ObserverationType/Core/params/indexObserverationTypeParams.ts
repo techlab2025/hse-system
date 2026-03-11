@@ -1,6 +1,4 @@
 import type Params from '@/base/core/params/params'
-// import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
-// import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
 export default class IndexObserverationTypeParams implements Params {
   public word: string
@@ -8,7 +6,7 @@ export default class IndexObserverationTypeParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
-  // public code?: LangEnum
+  public isSystemOnly?: boolean
 
   constructor(
     word: string,
@@ -16,14 +14,14 @@ export default class IndexObserverationTypeParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
-    // code?: LangEnum,
+    isSystemOnly?: boolean,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
-    // this.code = code
+    this.isSystemOnly = isSystemOnly
   }
 
   toMap(): Record<string, string | number | number[] | null> {
@@ -33,7 +31,7 @@ export default class IndexObserverationTypeParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
-    // if (this.code) data['code'] = this.code
+    if (this.isSystemOnly) data['is_system_only'] = this.isSystemOnly
     return data
   }
 }

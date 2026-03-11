@@ -27,6 +27,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import SystemIncidantTypes from '../supcomponents/SystemIncidantTypes.vue'
 const { t } = useI18n()
 
 const { user } = useUserStore()
@@ -162,9 +163,14 @@ const exportExcel = () => {
           }/accidents-type/add`" class="btn btn-primary">
           {{ $t('add_incident_type') }}
         </router-link>
-        <router-link to="/organization/accidents-type/upload-excel" class="btn btn-primary">
+        <router-link v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+          :to="`/organization/accidents-type/upload-excel`" class="btn btn-primary">
           {{ $t('import_accidents_type') }}
         </router-link>
+        <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE]">
+          <SystemIncidantTypes />
+        </PermissionBuilder>
       </div>
     </PermissionBuilder>
 
