@@ -1582,7 +1582,7 @@ class ApiNames {
     return this.prefix + 'clone_warehouse_type_types'
   }
   public get CreateSystemHazardType() {
-    return this.prefix + 'clone_hazard_type_types'
+    return this.prefix + 'clone_hazard_types'
   }
   public get CreateSystemAccidentsType() {
     return this.prefix + 'clone_accidant_type_types'

@@ -9,7 +9,7 @@ export default class AddWarehouseTypeClonesParams implements Params {
   })
 
   constructor(data: { clonesIds: number[] }) {
-    this.clonesIds = data.clonesIds 
+    this.clonesIds = data.clonesIds
   }
 
   toMap(): Record<
