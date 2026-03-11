@@ -28,6 +28,11 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import SystemIncidantTypes from '../supcomponents/SystemIncidantTypes.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 const { t } = useI18n()
 
 const { user } = useUserStore()
@@ -143,6 +148,40 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "incidant-type.xlsx");
 };
+
+const IndexIncidantTypeactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+    ],
+  },
+  {
+    text: t('add_incident_type'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+      }/accidents-type/add`,
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('import_accidents_type'),
+    type: ActionItemsTypeEnum.Warning,
+    link: `/organization/accidents-type/upload-excel`,
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
+    ],
+  },
+]
 </script>
 
 <template>
@@ -153,9 +192,8 @@ const exportExcel = () => {
       </span>
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchAccidentType" />
     </div>
-    <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
+    <!-- <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
       <div class="col-span-2 flex justify-end gap-2">
-        <!-- <ExportExcel :data="state.data" /> -->
         <ExportPdf />
         <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
@@ -172,8 +210,16 @@ const exportExcel = () => {
           <SystemIncidantTypes />
         </PermissionBuilder>
       </div>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
+    <div class="col-span-2 flex justify-end gap-2">
 
+      <ActionsList :show-actions="true" :actionList="IndexIncidantTypeactionList()" :actionsNumber="5">
+        <template #custom>
+          <SystemIncidantTypes />
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
+    </div>
   </div>
 
   <PermissionBuilder :code="[

@@ -9,11 +9,13 @@ import IndexAccidentsTypeParams from '../../Core/params/indexAccidentsTypeParams
 import AddSystemAccidentsTypeController from '../controllers/addSystemAccidentsTypeController';
 import AddSystemAccidentsTypeParams from '../../Core/params/addSystemAccidentsTypeParams';
 import IndexAccidentsTypeController from '../controllers/indexAccidentsTypeController';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+import IndexSystemAccidentsTypeController from '../controllers/indexSystemAccidentsTypeController';
 
 const visible = ref(false);
 const route = useRoute()
 
-const indexAccidentsTypeController = IndexAccidentsTypeController.getInstance()
+const indexAccidentsTypeController = IndexSystemAccidentsTypeController.getInstance()
 const state = ref(indexAccidentsTypeController.state.value)
 const fetchAccidentsType = async (
   query: string = '',
@@ -71,7 +73,14 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_incidant_types') }}</button>
+  <!-- <button @click="visible = true" class="btn btn-primary">{{ $t('system_incidant_types') }}</button> -->
+  <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_incidant_types')
+      }}
+    </button>
+  </li>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
