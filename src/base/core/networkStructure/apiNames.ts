@@ -577,6 +577,9 @@ class ApiNames {
   public get CreateEquipmentType() {
     return this.prefix + 'create_equipment_type'
   }
+  public get AddSystemEquipmentType() {
+    return this.prefix + 'add_system_equipment_type'
+  }
   public get IndexEquipmentType() {
     return this.prefix + 'fetch_equipment_types'
   }
