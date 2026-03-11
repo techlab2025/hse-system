@@ -69,7 +69,7 @@ const SubmitData = async () => {
   const addSystemHazardTypeController = AddSystemHazardTypeController.getInstance()
   const addSystemHazardParams = new AddSystemHazardParams({ cloneIds: selectedIds.value })
   const dataState = await addSystemHazardTypeController.addSystemHazardType(addSystemHazardParams, router)
-  // visible.value = false
+  visible.value = false
 }
 </script>
 <template>

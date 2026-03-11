@@ -6,6 +6,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
 import AddWhereHouseTypeCloneUseCase from '../../Domain/useCase/addWhereHouseTypeCloneUseCase'
+import IndexWhereHouseTypeController from './indexWhereHouseTypeController'
+import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams'
 
 export default class AddWhereHouseTypeCloneController extends ControllerInterface<WhereHouseTypeModel> {
   private static instance: AddWhereHouseTypeCloneController
@@ -45,6 +47,10 @@ export default class AddWhereHouseTypeCloneController extends ControllerInterfac
         // }
 
         // useLoaderStore().endLoadingWithDialog();
+        await IndexWhereHouseTypeController.getInstance().getData(
+          new IndexWhereHouseTypeParams('', 1, 10, 1),
+        )
+
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',

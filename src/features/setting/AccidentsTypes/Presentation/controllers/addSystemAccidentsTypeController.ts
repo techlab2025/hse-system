@@ -6,6 +6,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import AddSystemAccidentsTypeUseCase from '../../Domain/useCase/addSystemAccidentsTypeUseCase'
+import IndexAccidentsTypeParams from '../../Core/params/indexAccidentsTypeParams'
+import IndexAccidentsTypeController from './indexAccidentsTypeController'
 
 export default class AddSystemAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {
   private static instance: AddSystemAccidentsTypeController
@@ -38,6 +40,9 @@ export default class AddSystemAccidentsTypeController extends ControllerInterfac
           imageElement: successImage,
           messageContent: null,
         })
+        await IndexAccidentsTypeController.getInstance().getData(
+          new IndexAccidentsTypeParams('', 1, 10, 1),
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
