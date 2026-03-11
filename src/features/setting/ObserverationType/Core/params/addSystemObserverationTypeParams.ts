@@ -19,7 +19,7 @@ export default class AddSystemObserverationTypeParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['clone_ids'] = this.cloneIds
+    data['clones_ids'] = this.cloneIds
 
     return data
   }

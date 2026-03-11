@@ -26,7 +26,7 @@ export default class AddSystemHazardParams implements Params {
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
 
-    data['clone_ids'] = this.cloneIds
+    data['clones_ids'] = this.cloneIds
     return data
   }
   validate() {
