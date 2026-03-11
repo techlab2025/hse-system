@@ -10,6 +10,7 @@ import IndexSystemRootCausesController from '../controllers/indexSystemRootCause
 import IndexRootCausesParams from '../../Core/params/indexRootCausesParams';
 import AddSystemRootCausesController from '../controllers/addSystemRootCausesController';
 import AddSystemRootCausesParams from '../../Core/params/AddStstemRootCausesParams';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 
 
 const visible = ref(false);
@@ -65,7 +66,13 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_root_causes_types') }}</button>
+    <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_root_causes_types')
+      }}
+    </button>
+  </li>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router';
 import IndexInjuryParams from '../../Core/params/indexInjuryParams';
 import AddInjurycloneController from '../controllers/addInjurycloneController';
 import AddinjuryClonesParams from '../../Core/params/AddinjuryCloneParams';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 
 
 const visible = ref(false);
@@ -64,7 +65,16 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>
+    <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_injury_types')
+      }}
+    </button>
+  </li>
+ <!-- <li>
+   <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>
+ </li> -->
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
