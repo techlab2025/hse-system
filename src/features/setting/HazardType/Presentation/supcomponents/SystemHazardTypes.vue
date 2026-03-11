@@ -9,21 +9,20 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice';
-import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
-import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
-import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
 import { useRoute, useRouter } from 'vue-router';
 import IndexHazardTypeController from '../controllers/indexHazardTypeController';
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum';
 import IndexHazardTypeParams from '../../Core/params/indexHazardTypeParams';
 import AddSystemHazardTypeController from '../controllers/addSystemHazardTypeController';
 import AddSystemHazardParams from '../../Core/params/addSystemHazardParams';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+import IndexSystemHazardTypeController from '../controllers/indexSystemHazardTypeController';
 
 
 const visible = ref(false);
 const route = useRoute()
 
-const indexHazardTypeController = IndexHazardTypeController.getInstance()
+const indexHazardTypeController = IndexSystemHazardTypeController.getInstance()
 const state = ref(indexHazardTypeController.state.value)
 const fetchHazardType = async (
   query: string = '',
@@ -74,7 +73,13 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_hazard_types') }}</button>
+  <!-- <button @click="visible = true" class="btn btn-primary">{{ $t('system_hazard_types') }}</button> -->
+  <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_hazard_types') }}
+    </button>
+  </li>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

@@ -10,7 +10,7 @@ export default class IndexEquipmentTypeParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public type?: EquipmentTypesEnum
-    public isSystemOnly?: boolean
+  public isSystemOnly?: boolean
 
   // public code?: LangEnum
 
@@ -37,7 +37,7 @@ export default class IndexEquipmentTypeParams implements Params {
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
     if (this.word) data['word'] = this.word
-    if (this.withPage) data['paginate'] = this.withPage
+    data['paginate'] = this.withPage
     if (this.pageNumber) data['page'] = this.pageNumber
     if (this.perPage) data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
