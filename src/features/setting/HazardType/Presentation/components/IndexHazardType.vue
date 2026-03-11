@@ -34,6 +34,7 @@ import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -250,6 +251,10 @@ const exportExcel = () => {
           class="btn btn-primary">
           {{ $t('import_hazard_type') }}
         </router-link>
+      </PermissionBuilder>
+      <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        <SystemHazardTypes />
       </PermissionBuilder>
     </div>
   </div>

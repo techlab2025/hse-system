@@ -12,25 +12,31 @@ import wordSlice from '@/base/Presentation/utils/word_slice';
 import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
 import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
 import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import IndexHazardTypeController from '../controllers/indexHazardTypeController';
+import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum';
+import IndexHazardTypeParams from '../../Core/params/indexHazardTypeParams';
+import AddSystemHazardTypeController from '../controllers/addSystemHazardTypeController';
+import AddSystemHazardParams from '../../Core/params/addSystemHazardParams';
 
 
 const visible = ref(false);
+const route = useRoute()
 
-const indexWhereHouseTypeController = IndexSystemWhereHouseTypeController.getInstance()
-const state = ref(indexWhereHouseTypeController.state.value)
-const fetchWhereHouseType = async (
+const indexHazardTypeController = IndexHazardTypeController.getInstance()
+const state = ref(indexHazardTypeController.state.value)
+const fetchHazardType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 0,
+  withPage: number = 1,
+  parent_type?: HazardTypeParentEnum.Parent,
 ) => {
-  const deleteWhereHouseTypeParams = new IndexWhereHouseTypeParams(query, pageNumber, perPage, withPage, null, true)
-  await indexWhereHouseTypeController.getData(deleteWhereHouseTypeParams)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, null, parent_type, true)
+  await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
-
 watch(
-  () => indexWhereHouseTypeController.state.value,
+  () => indexHazardTypeController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -55,20 +61,20 @@ const ChangeStatus = (id: number) => {
 watch(() => visible.value, (newVal) => {
   if (visible.value) {
 
-    fetchWhereHouseType()
+    fetchHazardType()
   }
 })
 
 const router = useRouter()
 const SubmitData = async () => {
-  const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-  const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-  const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
+  const addSystemHazardTypeController = AddSystemHazardTypeController.getInstance()
+  const addSystemHazardParams = new AddSystemHazardParams({ cloneIds: selectedIds.value })
+  const dataState = await addSystemHazardTypeController.addSystemHazardType(addSystemHazardParams, router)
   // visible.value = false
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_warehouse_types') }}</button>
+  <button @click="visible = true" class="btn btn-primary">{{ $t('system_hazard_types') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

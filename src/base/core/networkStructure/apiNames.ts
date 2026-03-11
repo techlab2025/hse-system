@@ -1572,6 +1572,9 @@ class ApiNames {
   public get AddWarehouseClones() {
     return this.prefix + 'clone_warehouse_type_types'
   }
+  public get CreateSystemHazardType() {
+    return this.prefix + 'clone_hazard_type_types'
+  }
 }
 
 export { ApiNames }
