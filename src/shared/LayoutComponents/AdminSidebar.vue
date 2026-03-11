@@ -58,18 +58,18 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.INDUSTRY_UPDATE,
     ],
   },
-  {
-    link: '/admin/equipment-types',
-    name: t('equipment_types'),
-    permissions: [
-      PermissionsEnum?.ADMIN,
-      PermissionsEnum.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/admin/equipment-types',
+  //   name: t('equipment_types'),
+  //   permissions: [
+  //     PermissionsEnum?.ADMIN,
+  //     PermissionsEnum.EQUIPMENT_TYPE_ALL,
+  //     PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+  //     PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+  //     PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+  //     PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+  //   ],
+  // },
   {
     link: '/admin/equipments',
     name: t('equipments'),
@@ -82,29 +82,29 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.EQUIPMENT_UPDATE,
     ],
   },
-  {
-    link: '/admin/hazard-type',
-    name: t('hazard_types'),
-    permissions: [
-      PermissionsEnum.HAZARD_TYPE_ALL,
-      PermissionsEnum.HAZARD_TYPE_CREATE,
-      PermissionsEnum.HAZARD_TYPE_DELETE,
-      PermissionsEnum.HAZARD_TYPE_FETCH,
-      PermissionsEnum.HAZARD_TYPE_UPDATE,
-    ],
-  },
-  {
-    link: '/admin/observation-type',
-    name: t('observation_types'),
-    permissions: [
-      PermissionsEnum.OBSERVATION_TYPE_ALL,
-      PermissionsEnum.OBSERVATION_TYPE_CREATE,
-      PermissionsEnum.OBSERVATION_TYPE_DELETE,
-      PermissionsEnum.OBSERVATION_TYPE_FETCH,
-      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-      PermissionsEnum.ADMIN,
-    ],
-  },
+  // {
+  //   link: '/admin/hazard-type',
+  //   name: t('hazard_types'),
+  //   permissions: [
+  //     PermissionsEnum.HAZARD_TYPE_ALL,
+  //     PermissionsEnum.HAZARD_TYPE_CREATE,
+  //     PermissionsEnum.HAZARD_TYPE_DELETE,
+  //     PermissionsEnum.HAZARD_TYPE_FETCH,
+  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
+  //   ],
+  // },
+  // {
+  //   link: '/admin/observation-type',
+  //   name: t('observation_types'),
+  //   permissions: [
+  //     PermissionsEnum.OBSERVATION_TYPE_ALL,
+  //     PermissionsEnum.OBSERVATION_TYPE_CREATE,
+  //     PermissionsEnum.OBSERVATION_TYPE_DELETE,
+  //     PermissionsEnum.OBSERVATION_TYPE_FETCH,
+  //     PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+  //     PermissionsEnum.ADMIN,
+  //   ],
+  // },
   // {
   //   link: '/admin/health-conditions',
   //   name: 'health_conditions',
@@ -117,17 +117,17 @@ const SettingsRoutes = ref<Routes[]>([
   //     PermissionsEnum.ADMIN,
   //   ],
   // },
-  {
-    link: '/admin/accidents-type',
-    name: t('incidant_types'),
-    permissions: [
-      PermissionsEnum.ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-    ],
-  },
+  // {
+  //   link: '/admin/accidents-type',
+  //   name: t('incidant_types'),
+  //   permissions: [
+  //     PermissionsEnum.ACCIDENTS_TYPE_ALL,
+  //     PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+  //     PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+  //     PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+  //     PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+  //   ],
+  // },
   {
     link: '/admin/factories-items',
     name: t('hazard_factor_items'),
@@ -917,7 +917,7 @@ watch(LoackupsAccordion, (val) => {
           </ul>
         </AccordionContent>
       </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
+      <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !LoackupsAccordion">
         <span>{{ SelectedLockupsRoute }}</span>
       </AccordionPanel>
     </Accordion>

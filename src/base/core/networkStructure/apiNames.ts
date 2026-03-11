@@ -1584,6 +1584,12 @@ class ApiNames {
   public get CreateSystemHazardType() {
     return this.prefix + 'clone_hazard_type_types'
   }
+  public get CreateSystemAccidentsType() {
+    return this.prefix + 'clone_accidant_type_types'
+  }
+  public get CreateSystemObserverationType() {
+    return this.prefix + 'clone_observation_type_types'
+  }
 }
 
 export { ApiNames }

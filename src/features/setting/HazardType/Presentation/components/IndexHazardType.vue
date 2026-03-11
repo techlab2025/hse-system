@@ -245,15 +245,13 @@ const exportExcel = () => {
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.HAZARD_TYPE_CREATE,
         PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-      ]">
-        <router-link
-          :to="route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/upload-excel` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/upload-excel`"
-          class="btn btn-primary">
+      ]" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
+        <router-link :to="`/organization/hazard-type/upload-excel`" class="btn btn-primary">
           {{ $t('import_hazard_type') }}
         </router-link>
       </PermissionBuilder>
       <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE]">
         <SystemHazardTypes />
       </PermissionBuilder>
     </div>

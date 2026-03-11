@@ -31,9 +31,11 @@ import DeleteInjuryController from '../controllers/deleteInjuryController'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import SysteminjuryTypes from '../supcomponents/SysteminjuryTypes.vue'
+
 const { t } = useI18n()
 
 // import DialogChangeStatusInjury from "@/features/setting/Injuryuages/Presentation/components/Injury/DialogChangeStatusInjury.vue";
@@ -151,8 +153,9 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "injury.xlsx");
 };
-// const route = useRoute()
-const {user} = useUserStore()
+
+const { user } = useUserStore()
+
 </script>
 
 <template>
@@ -174,8 +177,9 @@ const {user} = useUserStore()
           {{ $t('Add_Injury') }}
         </router-link>
       </PermissionBuilder>
-      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
-        <router-link to="/organization/injury/upload-excel" class="btn btn-primary">
+      <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
+        <router-link :to="`/organization/injury/upload-excel`" class="btn btn-primary">
           {{ $t('import_injury') }}
         </router-link>
       </PermissionBuilder>

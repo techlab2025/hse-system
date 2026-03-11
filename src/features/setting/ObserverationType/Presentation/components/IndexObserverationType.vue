@@ -32,6 +32,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import SystemObservationTypes from '../supcomponents/SystemObservationTypes.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusObserverationType from "@/features/setting/ObserverationType/Presentation/components/ObserverationType/DialogChangeStatusObserverationType.vue";
@@ -179,7 +180,7 @@ const exportExcel = () => {
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-        <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[
         PermissionsEnum.ADMIN,
@@ -198,12 +199,14 @@ const exportExcel = () => {
         PermissionsEnum.ORGANIZATION_EMPLOYEE,
         PermissionsEnum.OBSERVATION_TYPE_CREATE,
         PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-      ]">
-        <router-link
-         :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/upload-excel`"
-          class="btn btn-primary">
+      ]" v-if="user?.type == OrganizationTypeEnum.ORGANIZATION">
+        <router-link :to="`/organization/observation-type/upload-excel`" class="btn btn-primary">
           {{ $t('import_observeration_type') }}
         </router-link>
+      </PermissionBuilder>
+      <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
+        <SystemObservationTypes />
       </PermissionBuilder>
     </div>
   </div>
