@@ -1441,6 +1441,9 @@ class ApiNames {
   public get CreateRootCauses() {
     return this.prefix + 'create_root_cause'
   }
+  public get AddSystemRootCauses() {
+    return this.prefix + 'create_system_root_cause'
+  }
 
   public get CreateCapaResult() {
     return this.prefix + 'set_capa_result'

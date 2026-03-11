@@ -4,29 +4,30 @@ import Dialog from 'primevue/dialog';
 import DialogSystem from '@/assets/images/DialogSystem.png'
 import { onMounted, ref, watch } from "vue";
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import IndexSystemInjuryController from '../controllers/indexSystemInjuryController';
 import { useRouter } from 'vue-router';
-import IndexInjuryParams from '../../Core/params/indexInjuryParams';
-import AddInjurycloneController from '../controllers/addInjurycloneController';
-import AddinjuryClonesParams from '../../Core/params/AddinjuryCloneParams';
+
+import IndexSystemRootCausesController from '../controllers/indexSystemRootCausesController';
+import IndexRootCausesParams from '../../Core/params/indexRootCausesParams';
+import AddSystemRootCausesController from '../controllers/addSystemRootCausesController';
+import AddSystemRootCausesParams from '../../Core/params/AddRootCausesParams';
 
 
 const visible = ref(false);
 
-const indexInjuryController = IndexSystemInjuryController.getInstance()
-const state = ref(indexInjuryController.state.value)
+const indexSystemRootCausesController = IndexSystemRootCausesController.getInstance()
+const state = ref(indexSystemRootCausesController.state.value)
 const fetchWhereHouseType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  const deleteinjuryParams = new IndexInjuryParams(query, pageNumber, perPage, withPage, true)
-  await indexInjuryController.getData(deleteinjuryParams)
+  const deleteRootCausesParams = new IndexRootCausesParams(query, pageNumber, perPage, withPage,undefined ,undefined,true)
+  await indexSystemRootCausesController.getData(deleteRootCausesParams)
 }
 
 watch(
-  () => indexInjuryController.state.value,
+  () => indexSystemRootCausesController.state.value,
   (newState) => {
     if (newState) {
       state.value = newState
@@ -57,14 +58,14 @@ watch(() => visible.value, (newVal) => {
 
 const router = useRouter()
 const SubmitData = async () => {
-  const addInjurycloneController = AddInjurycloneController.getInstance()
-  const addinjuryClonesParams = new AddinjuryClonesParams({ clonesIds: selectedIds.value })
-  const dataState = await addInjurycloneController.addInjuryclone(addinjuryClonesParams, router)
+  const addSystemRootCausesController = AddSystemRootCausesController.getInstance()
+  const addSystemRootCausesParams = new AddSystemRootCausesParams({ clonesIds: selectedIds.value })
+  const dataState = await addSystemRootCausesController.addSystemRootCauses(addSystemRootCausesParams, router)
   // visible.value = false
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>
+  <button @click="visible = true" class="btn btn-primary">{{ $t('system_root_causes_types') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
