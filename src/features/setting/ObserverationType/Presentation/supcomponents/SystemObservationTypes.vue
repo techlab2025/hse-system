@@ -68,7 +68,7 @@ const SubmitData = async () => {
 </script>
 <template>
   <button @click="visible = true" class="btn btn-primary">{{ $t('system_observation_types') }}</button>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />

@@ -61,13 +61,13 @@
   })
 
 
-const router = useRouter()
-const SubmitData = async () => {
-  const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-  const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-  const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router) 
-  // visible.value = false
-}
+  const router = useRouter()
+  const SubmitData = async () => {
+    const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
+    const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
+    const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
+    // visible.value = false
+  }
 </script>
 <template>
   <li class="list-item cursor-pointer" @click="visible = true">
@@ -77,7 +77,7 @@ const SubmitData = async () => {
       }}
     </button>
   </li>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />
