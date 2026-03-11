@@ -10,6 +10,7 @@ import IndexSystemEquipmentTypeController from '../controllers/indexSystemEquipm
 import IndexEquipmentTypeParams from '../../Core/params/indexEquipmentTypeParams';
 import AddSystemEquipmentTypeController from '../controllers/addSystemEquipmentTypeController';
 import AddSystemEquipmentParams from '../../Core/params/AddSystemEquipmentParams';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 
 
 const visible = ref(false);
@@ -65,7 +66,15 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_equipment_types') }}</button>
+
+      <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_data')
+      }}
+    </button>
+  </li>
+
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

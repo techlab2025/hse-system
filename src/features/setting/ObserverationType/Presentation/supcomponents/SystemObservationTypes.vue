@@ -11,6 +11,7 @@ import IndexObserverationTypeParams from '../../Core/params/indexObserverationTy
 import IndexSystemObserverationTypeController from '../controllers/indexSystemObserverationTypeController';
 import AddSystemObserverationTypeController from '../controllers/addSystemObserverationTypeController';
 import AddSystemObserverationTypeParams from '../../Core/params/addSystemObserverationTypeParams';
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 
 const visible = ref(false);
 const route = useRoute()
@@ -67,8 +68,15 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <button @click="visible = true" class="btn btn-primary">{{ $t('system_observation_types') }}</button>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+
+  <li class="list-item cursor-pointer" @click="visible = true">
+    <button>
+      <SystemAddIcon />
+      {{ $t('system_data')
+      }}
+    </button>
+  </li>
+  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }">
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
         subtitle="select the types you need and add it to your types" />
