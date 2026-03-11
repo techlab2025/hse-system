@@ -61,7 +61,7 @@ const SubmitData = async () => {
   const addInjurycloneController = AddInjurycloneController.getInstance()
   const addinjuryClonesParams = new AddinjuryClonesParams({ clonesIds: selectedIds.value })
   const dataState = await addInjurycloneController.addInjuryclone(addinjuryClonesParams, router)
-  // visible.value = false
+  visible.value = false
 }
 </script>
 <template>
