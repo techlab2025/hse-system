@@ -13,6 +13,9 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type AddHazardTypeParams from '../../Core/params/addHazardTypeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddSystemHazardTypeUseCase from '../../Domain/useCase/addSystemHazardTypeUseCase'
+import IndexHazardTypeController from './indexHazardTypeController'
+import IndexHazardTypeParams from '../../Core/params/indexHazardTypeParams'
+import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 
 export default class AddSystemHazardTypeController extends ControllerInterface<HazardTypeModel> {
   private static instance: AddSystemHazardTypeController
@@ -60,6 +63,9 @@ export default class AddSystemHazardTypeController extends ControllerInterface<H
               : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type`,
           )
         }
+        await IndexHazardTypeController.getInstance().getData(
+          new IndexHazardTypeParams('', 1, 10, 1, null, HazardTypeParentEnum.Parent),
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog',
