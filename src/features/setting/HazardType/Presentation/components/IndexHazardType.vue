@@ -35,6 +35,11 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -212,6 +217,39 @@ const exportExcel = () => {
   saveAs(data, "Hazard-type.xlsx");
 };
 
+const IndexHazardTypeactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+    ],
+  },
+  {
+    text: t(`${route.params?.parent_id ? t('Add_Hazard') : t('Add_HazardType')}`),
+    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HAZARD_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('import_hazard_type'),
+    type: ActionItemsTypeEnum.Warning,
+    link: `/organization/hazard-type/upload-excel`,
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HAZARD_TYPE_CREATE
+    ],
+  },
+]
 </script>
 
 <template>
@@ -224,7 +262,7 @@ const exportExcel = () => {
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[
@@ -253,7 +291,14 @@ const exportExcel = () => {
       <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE]">
         <SystemHazardTypes />
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+
+      <ActionsList :show-actions="true" :actionList="IndexHazardTypeactionList()" :actionsNumber="5">
+        <template #custom>
+          <SystemHazardTypes />
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
   </div>
 

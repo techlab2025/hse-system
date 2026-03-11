@@ -1270,6 +1270,8 @@
   "system_data": "System Data",
   "system_root_causes_types": "System Root Causes Types",
   "system_injury_types": "System Injury Types",
+  "system_hazard_types": "System Hazard Types",
+  "system_incidant_types": "System Incidant Types",
   "system_equipment_types": "System Equipment Types",
   "system_injury_types": "System Injury Types"
 
