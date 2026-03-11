@@ -10,6 +10,7 @@ export default class IndexHazardTypeParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public parent_type?: HazardTypeParentEnum
+  public isSystemOnly?: boolean
   // public code?: LangEnum
 
   constructor(
@@ -19,6 +20,7 @@ export default class IndexHazardTypeParams implements Params {
     withPage: number = 1,
     id?: number,
     parent_type?: HazardTypeParentEnum,
+    isSystemOnly?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +29,7 @@ export default class IndexHazardTypeParams implements Params {
     this.perPage = perPage
     this.id = id
     this.parent_type = parent_type
+    this.isSystemOnly = isSystemOnly
     // this.code = code
   }
 
@@ -38,6 +41,7 @@ export default class IndexHazardTypeParams implements Params {
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
     if (this.parent_type) data['parent_type'] = this.parent_type
+    if (this.isSystemOnly || this.isSystemOnly == false) data['is_system_only'] = this.isSystemOnly
     // if (this.code) data['code'] = this.code
     return data
   }
