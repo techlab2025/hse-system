@@ -33,6 +33,11 @@ import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import SystemEquipmentTypes from '../supcomponents/SystemEquipmentTypes.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 
 const { t } = useI18n()
 
@@ -196,6 +201,40 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "Equipment-type.xlsx");
 };
+
+const IndexEquipmentTypeactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.ROOT_CAUSES_DETAILS,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ROOT_CAUSES_ALL,
+    ],
+  },
+  {
+    text: t('add_equipment_type'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization' }/equipment-type/add`,
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('upload_excel'),
+    type: ActionItemsTypeEnum.Warning,
+    link: `/organization/equipment-type/upload-excel`,
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
+    ],
+  },
+]
 </script>
 
 <template>
@@ -210,7 +249,7 @@ const exportExcel = () => {
 
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[
@@ -238,7 +277,14 @@ const exportExcel = () => {
         <PermissionBuilder v-if="user?.type == OrganizationTypeEnum.ORGANIZATION"
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_ALL]">
         <SystemEquipmentTypes />
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+
+       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="5">
+        <template #custom>
+          <SystemEquipmentTypes />
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
   </div>
 

@@ -69,7 +69,7 @@ const SubmitData = async () => {
     <li class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
-      {{ $t('system_root_causes_types')
+      {{ $t('system_data')
       }}
     </button>
   </li>
