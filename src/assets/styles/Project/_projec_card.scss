@@ -32,8 +32,8 @@
         }
         .serial {
           color: #1d4fd891;
-          font-size: $SmSize;
-          font-weight: $BaseFontMediumWeight;
+          font-size: $MdSize2;
+          font-weight: $BaseFontSemiBoldWeight;
           background-color: #1f41bb05;
           // border: 1px solid $PrimaryColor;
           padding: 5px;
@@ -44,7 +44,7 @@
         color: #121212;
         font-size: $XlSize;
         font-weight: $BaseFontWeightBold;
-        font-family: 'Light';
+        font-family: 'bold';
       }
     }
 
@@ -53,6 +53,9 @@
       background-color: #fbfbfb;
       padding: $XsSize;
       border-radius: $XsSize;
+      font-size: $MdSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      font-family: "Regular";
       span {
         color: $PrimaryColor;
       }
@@ -63,10 +66,15 @@
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XlSize3;
 
+    .update-locations{
+      @include flex-row(nowrap, center, center);
+      gap: 5px;
+    }
     .locations {
       color: #b7beca;
       font-size: $MdSize;
       font-weight: $BaseFontMediumWeight;
+
       span {
         font-family: 'Regular';
         color: $PrimaryColor;
@@ -81,14 +89,15 @@
       gap: 4px;
       .info-title {
         color: #b7beca;
-        font-size: $SmSize;
-        font-weight: $BaseFontWeight;
-        font-family: 'Light';
+        font-size: $MdSize;
+        font-weight: $BaseFontWeightBold;
+        font-family: 'Regular';
       }
       .info-count {
         color: $PrimaryColor;
-        font-size: $SmSize;
-        font-weight: $BaseFontWeight;
+        font-size: $MdSize;
+        font-family: "bold";
+        font-weight: 800;
         &.warn {
           color: #ffbf52;
         }

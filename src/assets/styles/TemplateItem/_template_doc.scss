@@ -7,17 +7,19 @@
   font-family: 'Light';
   // height: 50vh;
   border: 1px solid #f8f8f8;
-  margin-top: $XlSize2;
+  // margin-top: $XlSize2;
   border-radius: $XlSize;
 
   .template-document-header {
-    background-color: #f8f8f8;
+    // background-color: #f8f8f8;
+    background-color: #E6E8EA;
     border-top-left-radius: $XlSize;
     border-top-right-radius: $XlSize;
     width: 100%;
     position: relative;
     z-index: 9999;
     padding: $MdSize;
+
 
     @include flex-row(nowrap, space-between, center);
     @media (max-width: 768px) {

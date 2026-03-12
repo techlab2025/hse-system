@@ -105,6 +105,10 @@ const handleDialogHide = () => {
   }
   isConfirmed.value = false
 }
+
+// 1 my template
+// 2 system template
+const SelectedTemplateType = ref(1)
 </script>
 
 <template>
@@ -117,7 +121,7 @@ const handleDialogHide = () => {
         <ImportantIcon />
       </div>
 
-      <button type="button" @click="visible = true" class="inspection-template-button" >
+      <button type="button" @click="visible = true" class="inspection-template-button">
         {{ $t('select inspection template') }}
       </button>
 
@@ -138,13 +142,14 @@ const handleDialogHide = () => {
     </div>
 
 
-    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog" >
+    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true"
+      :style="{ width: '70vw', height: '80vh' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      class="inspection-template-dialog">
 
       <template #header>
         <div class="add-equipment-header">
           <HeaderSection :img="InspectionTemplateImage" :title="$t('inspection template')"
-            :subtitle="$t('Select from the available templates.')"  />
+            :subtitle="$t('Select from the available templates.')" />
         </div>
       </template>
 
@@ -163,6 +168,18 @@ const handleDialogHide = () => {
             <span>{{ $t('my templates') }}</span>
           </div>
         </div> -->
+        <div class="fillter-system-templets">
+          <div @click="SelectedTemplateType = 1" class="system-templets"
+            :class="SelectedTemplateType == 1 ? 'active' : ''">
+            <input type="radio" name="system-templets" id="system-templets">
+            <label for="system-templets">{{ $t('system templets') }}</label>
+          </div>
+          <div @click="SelectedTemplateType = 2" class="system-templets"
+            :class="SelectedTemplateType == 2 ? 'active' : ''">
+            <input type="radio" name="system-templets" v-model="SelectedTemplateType" id="my-templets">
+            <label for="my-templets">{{ $t('my templets') }}</label>
+          </div>
+        </div>
 
         <div class="inspection-templates-items">
           <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
