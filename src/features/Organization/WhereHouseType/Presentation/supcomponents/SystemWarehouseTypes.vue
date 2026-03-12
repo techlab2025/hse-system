@@ -14,7 +14,11 @@
   import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
   import { useRouter } from 'vue-router';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+  import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
 
+  const props = defineProps<{
+    isHeaderTap?: boolean
+  }>()
 
   const visible = ref(false);
 
@@ -70,13 +74,21 @@
   }
 </script>
 <template>
-  <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_data')
       }}
     </button>
   </li>
+  <button v-if="isHeaderTap" @click="visible = true" class="system-data-add col-span-3">
+    <AddSystemHeaderData class="icon" />
+
+    <div class="system-data-content">
+      <h2>Add System Data</h2>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. .</p>
+    </div>
+  </button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
@@ -108,6 +120,51 @@
   </Dialog>
 </template>
 <style scoped>
+.system-data-add {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  background-color: #1d4ed80d;
+  padding: 10px;
+  margin-top: 12px;
+  border-radius: 12px;
+
+  .icon {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .system-data-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    h2 {
+      text-align: start;
+      width: 100%;
+      color: #1d4ed8;
+      font-family: "Regular";
+
+    }
+
+    p {
+      width: 100%;
+      color: gray;
+      text-align: start;
+
+    }
+  }
+
+}
+
 .export-pdf-btn {
   font-family: 'Regular';
   width: 100%;

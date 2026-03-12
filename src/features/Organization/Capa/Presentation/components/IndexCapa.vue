@@ -69,7 +69,7 @@ const fetchCapa = async (
     perPage,
     withPage,
     [Observation.ObservationType, Observation.HazardType],
-    route.query.hazard || route.query.risk_level ? null : [projectIds],
+    route.query.hazard || route.query.risk_level ? null : projectIds ? [projectIds] : [],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
@@ -84,9 +84,9 @@ const fetchCapa = async (
 
 
 onMounted(() => {
-  if (selectedProjctesFilters.value) {
-    fetchCapa()
-  }
+  // if (selectedProjctesFilters.value) {
+  fetchCapa()
+  // }
   FetchMyProjects()
 })
 
@@ -179,9 +179,8 @@ const ApplayFilter = (data: number[]) => {
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
-  console.log(data, 'data')
-  fetchCapa('', 1, 10, 1, null, null, null, data)
   if (data) {
+    fetchCapa('', 1, 10, 1, null, null, null, data)
     FetchMyZones()
   }
 }
@@ -293,7 +292,7 @@ const exportExcel = () => {
         PermissionsEnum.ORG_OBSERVATION_CREATE,
       ]">
         <div>
-          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length" :projects="Projects"
+          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length || 0" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
 
 
@@ -324,11 +323,14 @@ const exportExcel = () => {
             <div class="export-fillter">
               <div class="fillter-radio-btn">
                 <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
-                  <input type="radio" name="capaStatus"  :id="`status-${status.id}`" :value="status" v-model="capaStatus" @change="setCapaStatus(status)">
-                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{ status.title }}</label>
+                  <input type="radio" name="capaStatus" :id="`status-${status.id}`" :value="status" v-model="capaStatus"
+                    @change="setCapaStatus(status)">
+                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{
+                    status.title }}</label>
                 </div>
                 <div class="radio-btn">
-                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus" @change="setCapaStatus(null)">
+                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus"
+                    @change="setCapaStatus(null)">
                   <label for="status-all" :class="capaStatus == null ? 'active' : ''">All</label>
                 </div>
               </div>
@@ -489,7 +491,7 @@ const exportExcel = () => {
 
   input[type="radio"] {
     display: none;
-}
+  }
 }
 
 .fillter-radio-btn {
@@ -499,7 +501,8 @@ const exportExcel = () => {
   background-color: #F5F5F5;
   padding: .4rem 1rem;
   border-radius: 40px;
-  .active{
+
+  .active {
     background-color: #F4F6FF;
     border: 1px solid #1F41BB33;
     padding: .5rem 1rem;
@@ -509,6 +512,7 @@ const exportExcel = () => {
     font-family: "bold";
     font-size: 15px;
   }
+
   .radio-btn {
     display: flex;
     align-items: center;
