@@ -216,11 +216,14 @@ const IndexWhereHouseTypeactionList = () => [
       </PermissionBuilder> -->
       <ActionsList :show-actions="true" :actionList="IndexWhereHouseTypeactionList()" :actionsNumber="5">
         <template #custom>
-          <SystemWarehouseTypes />
+          <SystemWarehouseTypes :isHeaderTap="false" />
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
+
+
     </div>
+    <SystemWarehouseTypes  :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[
