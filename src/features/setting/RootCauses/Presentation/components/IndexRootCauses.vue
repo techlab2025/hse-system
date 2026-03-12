@@ -266,13 +266,14 @@ const IndexRootCausesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemRootCausesTypes />
       </PermissionBuilder> -->
-        <ActionsList :show-actions="true" :actionList="IndexRootCausesactionList()" :actionsNumber="5">
+        <ActionsList :show-actions="true" :actionList="IndexRootCausesactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemRootCausesTypes />
+          <!-- <SystemRootCausesTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    <SystemRootCausesTypes :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

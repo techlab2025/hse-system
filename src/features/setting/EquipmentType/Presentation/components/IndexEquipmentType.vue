@@ -279,13 +279,14 @@ const IndexEquipmentTypeactionList = () => [
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
 
-       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="5">
+       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemEquipmentTypes />
+          <!-- <SystemEquipmentTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    <SystemEquipmentTypes :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

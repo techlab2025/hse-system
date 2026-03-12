@@ -214,16 +214,16 @@ const IndexWhereHouseTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexWhereHouseTypeactionList()" :actionsNumber="5">
+      <ActionsList :show-actions="true" :actionList="IndexWhereHouseTypeactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemWarehouseTypes :isHeaderTap="false" />
+          <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
 
 
     </div>
-    <SystemWarehouseTypes  :isHeaderTap="true" />
+    <SystemWarehouseTypes :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

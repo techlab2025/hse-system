@@ -247,13 +247,15 @@ const IndexObservationTypesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
         <SystemObservationTypes />
       </PermissionBuilder> -->
-        <ActionsList :show-actions="true" :actionList="IndexObservationTypesactionList()" :actionsNumber="5">
+      <ActionsList :show-actions="true" :actionList="IndexObservationTypesactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemObservationTypes />
+          <!-- <SystemObservationTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    <SystemObservationTypes :isHeaderTap="true" />
+
   </div>
 
   <PermissionBuilder :code="[
