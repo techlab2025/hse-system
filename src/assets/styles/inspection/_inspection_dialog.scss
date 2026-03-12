@@ -245,14 +245,13 @@
         background-color: #f9fafb;
         padding: 10px;
         border-radius: 14px;
-        &.active{
-            border: 1px solid #1D4ED833;
-            background-color: #1d4ed80a;
+        &.active {
+          border: 1px solid #1d4ed833;
+          background-color: #1d4ed80a;
+          color: #1f41bb;
+          label {
             color: #1f41bb;
-            label{
-              color: #1f41bb;
-            }
-
+          }
         }
 
         cursor: pointer;
@@ -271,13 +270,18 @@
   }
 }
 
-
-  .show-more-btn{
+.show-more-btn {
   width: 100%;
-  background: linear-gradient(135deg, #1F41BB, #3A5BDB);
-  color: white;
+  // background: linear-gradient(135deg, #1F41BB, #3A5BDB);
+  color: black;
   padding: 10px;
   border-radius: 35px;
   margin: 1rem 0;
   transition: all 0.3s ease;
+  @include flex-row(nowrap, flex-start, center);
+  gap: 10px;
+  .rotate {
+    transform: rotate(180deg);
+    transition: all 0.3s ease;
   }
+}

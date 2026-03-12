@@ -10,6 +10,7 @@ import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
 import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
+import { TemplateTypeEnum } from '../../../Core/Enum/TemplateTypeEnum'
 
 
 
@@ -22,7 +23,7 @@ const state = ref(indexTemplateController.state.value)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async () => {
-  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 1000, 1, null, true)
+  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 10, 0, null, true, SelectedTemplateType.value)
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
@@ -109,6 +110,9 @@ const handleDialogHide = () => {
 // 1 my template
 // 2 system template
 const SelectedTemplateType = ref(1)
+watch(() => SelectedTemplateType.value, () => {
+  fetchTemplateItem()
+})
 </script>
 
 <template>
@@ -134,7 +138,7 @@ const SelectedTemplateType = ref(1)
         <p class="header-title">
           {{
             TemplateTitle || selectedTemplateHeader?.title
-          }}add-equipment-header
+          }}
         </p>
         <img :src="DocumnetHeader" alt="header" />
 
@@ -169,14 +173,14 @@ const SelectedTemplateType = ref(1)
           </div>
         </div> -->
         <div class="fillter-system-templets">
-          <div @click="SelectedTemplateType = 1" class="system-templets"
-            :class="SelectedTemplateType == 1 ? 'active' : ''">
-            <input type="radio" name="system-templets" id="system-templets">
+          <div @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate" class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.SystemTemplate ? 'active' : ''">
+            <input type="radio" name="system-templets">
             <label for="system-templets">{{ $t('system templets') }}</label>
           </div>
-          <div @click="SelectedTemplateType = 2" class="system-templets"
-            :class="SelectedTemplateType == 2 ? 'active' : ''">
-            <input type="radio" name="system-templets" v-model="SelectedTemplateType" id="my-templets">
+          <div @click="SelectedTemplateType = TemplateTypeEnum.MyTemplate" class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.MyTemplate ? 'active' : ''">
+            <input type="radio" name="system-templets" v-model="SelectedTemplateType">
             <label for="my-templets">{{ $t('my templets') }}</label>
           </div>
         </div>

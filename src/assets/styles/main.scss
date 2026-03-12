@@ -423,8 +423,20 @@ input {
 }
 
 .p-accordion div.panel-acc {
-
- border: 2px dashed #e6e8ea !important;
+  border: 2px dashed #e6e8ea !important;
   border-radius: 22px;
-  background-color: #FAFAFA66;
+  background-color: #fafafa66;
+}
+
+.p-accordion div.panel-acc {
+  position: relative;
+}
+
+.p-accordion div.panel-acc::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

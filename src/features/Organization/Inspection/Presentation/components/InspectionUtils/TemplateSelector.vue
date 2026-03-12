@@ -9,6 +9,7 @@ import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import { ref, watch } from 'vue';
 import RadioButton from 'primevue/radiobutton'
 import wordSlice from '@/base/Presentation/utils/word_slice';
+import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue';
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -21,23 +22,27 @@ const SetSelectedTemplate = (id: number) => {
   SelectedTemplate.value = id
   emit('update:data', id)
 }
+
 watch(() => props.selectedTemplates, (newVal) => {
   SelectedTemplate.value = newVal
 })
-// hidden contant
+
 const showMore = ref(false)
 const activeaccordion = ref<string | null>(null)
+
+const toggleAccordion = (id: string) => {
+  activeaccordion.value = activeaccordion.value === id ? null : id
+}
 </script>
 
 <template>
   <div class="template-selector">
-    <Accordion v-model:value="activeaccordion" :multiple="false">
+    <Accordion value="0" :multiple="false">
       <div class="template-selector-container-AccordionPanel">
-
-        <AccordionPanel class="panel-acc"  :value="String(template.id)" v-for="(template, index) in (showMore ? data : data.slice(0, 2))"
+        <AccordionPanel @click="SetSelectedTemplate(template.id)" class="panel-acc"
+          :class="SelectedTemplate == template.id ? 'active' : ''" value="0" v-for="(template, index) in data"
           :key="index">
-          <AccordionHeader>
-            <!-- :class="SelectedTemplate == template.id ? 'active' : ''" -->
+          <AccordionHeader @click.prevent="toggleAccordion(String(template.id))">
             <div class="template-document-container">
               <div class="template-document-header">
                 <div class="template-header">
@@ -49,26 +54,21 @@ const activeaccordion = ref<string | null>(null)
                         .join('')
                     }}
                   </p>
-
                   <p class="header-title" v-else>{{ wordSlice(template?.title, 20) }}</p>
                   <div class="template-details">
-
                     <p>
                       {{ $t('id') }} : <span>{{ template?.id }}</span>
                     </p>
-                    <!-- <p>{{ $t('location') }} :<span>{{ $t('example') }}</span></p>
-                    <p>{{ $t('zone') }} :<span>{{ $t('example') }}</span></p> -->
                   </div>
                 </div>
                 <div class="header-select">
-                  <div class="template-checkbox" :class="SelectedTemplate == template.id ? 'active' : ''">
-                    <RadioButton @change="SetSelectedTemplate(template.id)" :inputId="`${template.id}`" name="template"
-                      v-model="SelectedTemplate" :value="template.id" />
+                  <div class="template-checkbox">
+                    <RadioButton :inputId="`${template.id}`" name="template" v-model="SelectedTemplate"
+                      :value="template.id" />
                     <label :for="`${template.id}`">{{ $t('select') }}</label>
                   </div>
                   <img :src="DocumnetHeader" alt="header" />
                 </div>
-
               </div>
             </div>
           </AccordionHeader>
@@ -77,12 +77,11 @@ const activeaccordion = ref<string | null>(null)
           </AccordionContent>
         </AccordionPanel>
       </div>
-      <button class="show-more-btn" v-if="data.length > 2" @click="showMore = !showMore">
-        {{ showMore ? 'Show Less' : 'Show More' }}
-      </button>
 
-
-
+      <!-- <button class="show-more-btn" v-if="data.length > 2" @click="showMore = !showMore">
+        <span>{{ showMore ? 'Show Less' : 'Show More' }}</span>
+        <IconArrowDownNav :class="showMore ? 'rotate' : ''" />
+      </button> -->
     </Accordion>
   </div>
 </template>
