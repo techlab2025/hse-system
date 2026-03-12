@@ -11,6 +11,7 @@ import IndexEquipmentTypeParams from '../../Core/params/indexEquipmentTypeParams
 import AddSystemEquipmentTypeController from '../controllers/addSystemEquipmentTypeController';
 import AddSystemEquipmentParams from '../../Core/params/AddSystemEquipmentParams';
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
 
 
 const visible = ref(false);
@@ -62,18 +63,21 @@ const SubmitData = async () => {
   const addSystemEquipmentTypeController = AddSystemEquipmentTypeController.getInstance()
   const addSystemEquipmentParams = new AddSystemEquipmentParams({ clonesIds: selectedIds.value })
   const dataState = await addSystemEquipmentTypeController.addSystemEquipmentType(addSystemEquipmentParams, router)
-  // visible.value = false
+  visible.value = false
 }
+const props = defineProps<{ isHeaderTap?: boolean }>()
+
 </script>
 <template>
 
-      <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_data')
       }}
     </button>
   </li>
+  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

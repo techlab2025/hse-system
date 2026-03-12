@@ -17,13 +17,15 @@ import AddSystemHazardTypeController from '../controllers/addSystemHazardTypeCon
 import AddSystemHazardParams from '../../Core/params/addSystemHazardParams';
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 import IndexSystemHazardTypeController from '../controllers/indexSystemHazardTypeController';
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
 
-
+const props = defineProps<{ isHeaderTap?: boolean }>()
 const visible = ref(false);
 const route = useRoute()
 
 const indexHazardTypeController = IndexSystemHazardTypeController.getInstance()
 const state = ref(indexHazardTypeController.state.value)
+
 const fetchHazardType = async (
   query: string = '',
   pageNumber: number = 1,
@@ -74,12 +76,13 @@ const SubmitData = async () => {
 </script>
 <template>
   <!-- <button @click="visible = true" class="btn btn-primary">{{ $t('system_hazard_types') }}</button> -->
-  <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_hazard_types') }}
     </button>
   </li>
+  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

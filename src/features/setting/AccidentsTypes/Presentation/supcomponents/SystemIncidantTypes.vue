@@ -11,6 +11,7 @@ import AddSystemAccidentsTypeParams from '../../Core/params/addSystemAccidentsTy
 import IndexAccidentsTypeController from '../controllers/indexAccidentsTypeController';
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 import IndexSystemAccidentsTypeController from '../controllers/indexSystemAccidentsTypeController';
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
 
 const visible = ref(false);
 const route = useRoute()
@@ -71,16 +72,19 @@ const SubmitData = async () => {
   const dataState = await addSystemAccidentsTypeController.addSystemAccidentsType(addSystemAccidentsTypeParams, router)
   visible.value = false
 }
+const props = defineProps<{ isHeaderTap?: boolean }>()
 </script>
 <template>
   <!-- <button @click="visible = true" class="btn btn-primary">{{ $t('system_incidant_types') }}</button> -->
-  <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_incidant_types')
       }}
     </button>
   </li>
+  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
