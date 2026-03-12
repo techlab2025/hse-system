@@ -429,12 +429,14 @@ input {
 }
 
 .p-accordion div.panel-acc {
-  position: relative;
 }
 
-.p-accordion div.panel-acc::after {
+.p-accordionpanel{
+  position: relative;
+}
+.p-accordionpanel::after {
   content: '';
-  position: absolute;
+  position: absolute; 
   top: 0;
   left: 0;
   width: 100%;
