@@ -66,7 +66,7 @@
     const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
     const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
     const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
-    // visible.value = false
+    visible.value = false
   }
 </script>
 <template>
