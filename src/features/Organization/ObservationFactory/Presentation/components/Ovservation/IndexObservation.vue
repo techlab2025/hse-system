@@ -78,7 +78,7 @@ const fetchHazard = async (
     perPage,
     withPage,
     [Observation.ObservationType, Observation.HazardType],
-    route.query.hazard || route.query.risk_level ? null : [projectIds],
+    route.query.hazard || route.query.risk_level ? null : projectIds ? [projectIds] : [],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
@@ -94,9 +94,9 @@ const fetchHazard = async (
 
 
 onMounted(() => {
-  if (selectedProjctesFilters.value) {
-    fetchHazard()
-  }
+  // if (selectedProjctesFilters.value) {
+  fetchHazard()
+  // }
   FetchMyProjects()
 })
 
@@ -189,9 +189,8 @@ const ApplayFilter = (data: number[]) => {
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
-  console.log(data, 'data')
-  fetchHazard('', 1, 10, 1, null, null, null, data)
   if (data) {
+    fetchHazard('', 1, 10, 1, null, null, null, data)
     FetchMyZones()
   }
 }
@@ -262,7 +261,7 @@ const GetObservationType = (type: number) => {
         PermissionsEnum.ORG_OBSERVATION_CREATE,
       ]">
         <div>
-          <IndexHazardHeader :title="`observation`" :length="state?.data?.length" :projects="Projects"
+          <IndexHazardHeader :title="`observation`" :length="state?.data?.length || 0" :projects="Projects"
             @update:data="setSelectedProjectFilter" />
 
 
@@ -309,7 +308,7 @@ const GetObservationType = (type: number) => {
                               {{ $t('Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
                             </p>
-                            <p class="label-item-secondary flex items-center gap-1" >
+                            <p class="label-item-secondary flex items-center gap-1">
                               {{ $t('observation_type') }} :
                               <!-- <span>{{ GetObservationType(item.type) }}</span> -->
                               {{ GetSaveStatus(item.saveStatus) }}

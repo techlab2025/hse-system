@@ -74,7 +74,7 @@ const fetchHazard = async (
     perPage,
     withPage,
     [Observation.AccidentsType],
-    route.query.rootCause ? null : [projectIds],
+    route.query.rootCause ? null : projectIds ? [projectIds] : [],
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
@@ -119,10 +119,10 @@ const fetchHazard = async (
 // }
 
 onMounted(async () => {
-  if (selectedProjctesFilters.value) {
+  // if (selectedProjctesFilters.value) {
 
-    fetchHazard("" , 1 , 12 , 1)
-  }
+  fetchHazard("", 1, 12, 1)
+  // }
   FetchMyProjects()
 })
 
@@ -217,8 +217,8 @@ const ApplayFilter = (data: number[]) => {
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
-  fetchHazard("", 1, 10, 1, null, null, null, data)
   if (data) {
+    fetchHazard("", 1, 10, 1, null, null, null, data)
     FetchMyZones()
   }
 }
@@ -325,11 +325,11 @@ const ShowDetails = ref<number[]>([])
               @countPerPage="handleCountPerPage" />
           </template>
           <template #loader>
-             <CardSkelaton />
+            <CardSkelaton />
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #initial>
-             <CardSkelaton />
+            <CardSkelaton />
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>

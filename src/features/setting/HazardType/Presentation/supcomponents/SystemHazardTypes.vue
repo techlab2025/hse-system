@@ -88,7 +88,6 @@ const SubmitData = async () => {
     <DataStatus :controller="state">
       <template #success>
         <div class="system-dialog-content-container">
-
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
               <label :for="`${item.title}-${item.id}`" class="title">
