@@ -406,3 +406,37 @@ input {
   background-color: #1d4ed80f !important;
   width: 50% !important;
 }
+
+.p-accordionpanel {
+  width: 100% !important;
+}
+.template-selector-container-AccordionPanel {
+  width: 100% !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 20px;
+}
+.template-selector-container-AccordionPanel {
+  .p-accordionpanel {
+    border: 1px solid green !important;
+  }
+}
+
+.p-accordion div.panel-acc {
+  border: 2px dashed #e6e8ea !important;
+  border-radius: 22px;
+  background-color: #fafafa66;
+}
+
+.p-accordion div.panel-acc {
+  position: relative;
+}
+
+.p-accordion div.panel-acc::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

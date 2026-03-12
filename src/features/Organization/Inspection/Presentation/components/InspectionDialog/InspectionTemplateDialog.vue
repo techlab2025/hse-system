@@ -10,6 +10,7 @@ import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
 import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
+import { TemplateTypeEnum } from '../../../Core/Enum/TemplateTypeEnum'
 
 
 
@@ -22,7 +23,7 @@ const state = ref(indexTemplateController.state.value)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async () => {
-  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 1000, 1, null, true)
+  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 10, 0, null, true, SelectedTemplateType.value)
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
@@ -105,6 +106,13 @@ const handleDialogHide = () => {
   }
   isConfirmed.value = false
 }
+
+// 1 my template
+// 2 system template
+const SelectedTemplateType = ref(1)
+watch(() => SelectedTemplateType.value, () => {
+  fetchTemplateItem()
+})
 </script>
 
 <template>
@@ -117,7 +125,7 @@ const handleDialogHide = () => {
         <ImportantIcon />
       </div>
 
-      <button type="button" @click="visible = true" class="inspection-template-button" >
+      <button type="button" @click="visible = true" class="inspection-template-button">
         {{ $t('select inspection template') }}
       </button>
 
@@ -130,7 +138,7 @@ const handleDialogHide = () => {
         <p class="header-title">
           {{
             TemplateTitle || selectedTemplateHeader?.title
-          }}add-equipment-header
+          }}
         </p>
         <img :src="DocumnetHeader" alt="header" />
 
@@ -138,13 +146,14 @@ const handleDialogHide = () => {
     </div>
 
 
-    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="inspection-template-dialog" >
+    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true"
+      :style="{ width: '70vw', height: '80vh' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      class="inspection-template-dialog">
 
       <template #header>
         <div class="add-equipment-header">
           <HeaderSection :img="InspectionTemplateImage" :title="$t('inspection template')"
-            :subtitle="$t('Select from the available templates.')"  />
+            :subtitle="$t('Select from the available templates.')" />
         </div>
       </template>
 
@@ -164,6 +173,18 @@ const handleDialogHide = () => {
             <span>{{ $t('my templates') }}</span>
           </div>
         </div> -->
+        <div class="fillter-system-templets">
+          <div @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate" class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.SystemTemplate ? 'active' : ''">
+            <input type="radio" name="system-templets">
+            <label for="system-templets">{{ $t('system templets') }}</label>
+          </div>
+          <div @click="SelectedTemplateType = TemplateTypeEnum.MyTemplate" class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.MyTemplate ? 'active' : ''">
+            <input type="radio" name="system-templets" v-model="SelectedTemplateType">
+            <label for="my-templets">{{ $t('my templets') }}</label>
+          </div>
+        </div>
 
         <div class="inspection-templates-items">
           <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />

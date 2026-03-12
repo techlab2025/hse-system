@@ -20,6 +20,7 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue'
 
 
 const props = defineProps<{
@@ -77,6 +78,7 @@ const DeleteTemplateItem = async (id: number) => {
   await deleteTemplateItemController.deleteTemplateItem(deleteTemplateItemParams)
   emit("update:data")
 }
+const showMore = ref(false)
 </script>
 <template>
   <div class="template-document-container">
@@ -105,12 +107,14 @@ const DeleteTemplateItem = async (id: number) => {
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div v-for="(tag, index) in allData?.templateItemTags" :key="index">
+      <div v-for="(tag, index) in showMore ? allData?.templateItemTags : allData?.templateItemTags.slice(0, 1)"
+        :key="index">
         <p class="tag-title" v-if="tag.titles?.length > 0">{{tag.titles?.filter((item) => item.locale ===
           'en').map((item) => item.title).join('')}}
         </p>
         <p class="tag-title" v-else>{{ tag.title }}</p>
-        <div class="template-document-content" v-for="(item, index) in tag?.templateItems" :key="index">
+        <div class="template-document-content"
+          v-for="(item, index) in showMore ? tag?.templateItems : tag?.templateItems.slice(0, 2)" :key="index">
           <div class="actions"
             v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
             <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
@@ -126,6 +130,10 @@ const DeleteTemplateItem = async (id: number) => {
 
         </div>
       </div>
+      <button class="show-more-btn" v-if="allData?.templateItemTags.length > 1" @click="showMore = !showMore">
+        <span>{{ showMore ? 'Show Less' : 'Show More' }}</span>
+        <IconArrowDownNav :class="showMore ? 'rotate' : ''" />
+      </button>
     </div>
     <!-- <DeleteItemDialog @update:data="DeleteTemplateItem(item?.id)" /> -->
 

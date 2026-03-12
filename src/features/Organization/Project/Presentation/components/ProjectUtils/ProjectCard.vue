@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type ProjectModel from '../../../Data/models/ProjectModel';
+import Stopcard from '@/shared/icons/stopcard.vue';
 
 const props = defineProps<{
   data: ProjectModel
@@ -21,8 +22,8 @@ const props = defineProps<{
         <p class="project-employees">{{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span></p>
       </div>
       <div class="project-card-info">
-        <p class="locations">{{ $t('locations') }} : <span>{{ data?.locations?.length }}</span></p>
-        <p class="locations">{{ $t('zones') }} :<span>{{ data?.zoons?.length }}</span></p>
+        <p class="locations update-locations">{{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard/></p>
+        <p class="locations update-locations">{{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard/></p>
       </div>
       <hr style="height:1px;width:100%;border-width:1px;color:#b7beca2c ;background-color:#F5F6F7">
       <div class="project-card-data">
@@ -36,7 +37,7 @@ const props = defineProps<{
         </div>
         <div class="data-info">
           <span class="info-title">{{ $t('incident') }} :</span>
-          <span class="info-count">{{ data?.observation_accidents_count }}</span>
+          <span class="info-count">{{ data?.olocationsbservation_accidents_count }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">{{ $t('Investigation') }} :</span>

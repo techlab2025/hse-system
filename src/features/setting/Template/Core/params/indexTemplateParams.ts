@@ -9,6 +9,7 @@ export default class IndexTemplateParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public isPaginate?: boolean = false
+  public isSystemOnly?: boolean = false
   // public code?: LangEnum
 
   constructor(
@@ -18,6 +19,7 @@ export default class IndexTemplateParams implements Params {
     withPage: number = 1,
     id?: number,
     isPaginate?: boolean,
+    isSystemOnly?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -26,6 +28,7 @@ export default class IndexTemplateParams implements Params {
     this.perPage = perPage
     this.id = id
     this.isPaginate = isPaginate
+    this.isSystemOnly = isSystemOnly
     // this.code = code
   }
 
@@ -36,6 +39,8 @@ export default class IndexTemplateParams implements Params {
     if (this.isPaginate) data['page'] = this.pageNumber
     if (this.isPaginate) data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+   data['is_system_only'] = this.isSystemOnly
+
     // if (this.code) data['code'] = this.code
     return data
   }
