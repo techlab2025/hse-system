@@ -57,5 +57,6 @@ export default class InvestegationTasksModel {
     'Mohab',
     12,
     'Thickening the electrical wires and reinforcing them with an insulating material',
+    []
   )
 }

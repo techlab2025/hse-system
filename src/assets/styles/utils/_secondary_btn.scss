@@ -1,17 +1,22 @@
 @use '../variables' as *;
 
 .btn-secondary {
-  background-color: #1d4ed80f;
-  border: 1px solid $PrimaryColor;
-  color: $PrimaryColor;
+  // background-color: #1d4ed80f;
+  background-color: #ffffff;
+  // border: 1px solid $PrimaryColor;
+  border: 1px solid #dde2ed;
+  // color: $PrimaryColor;
+  color: #3d4c5e;
   font-weight: $BaseFontSemiBoldWeight;
   font-size: $XsSize;
   //padding: 0 10px;
   font-family: 'Regular';
   // padding: 0;
   &:hover {
-    background-color: $PrimaryColor;
+    // background-color: $PrimaryColor;
+    background-color: #3d4c5e;
     color: white;
-    border-color: $PrimaryColor;
+    // border-color: $PrimaryColor;
+    border-color: #3d4c5e;
   }
 }
