@@ -416,16 +416,12 @@ input {
   grid-template-columns: 1fr 1fr !important;
   gap: 20px;
 }
-.template-selector-container-AccordionPanel {
-  .p-accordionpanel {
-    border: 1px solid green !important;
-  }
-}
 
-.p-accordion div.panel-acc {
+.template-selector .panel-acc {
   border: 2px dashed #e6e8ea !important;
   border-radius: 22px;
   background-color: #fafafa66;
+  padding: 1rem;
 }
 
 // .p-accordion div.panel-acc {
@@ -443,5 +439,4 @@ input {
 //   height: 100%;
 // }
 
- 
 
