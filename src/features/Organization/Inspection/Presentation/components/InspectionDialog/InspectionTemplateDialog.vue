@@ -171,7 +171,7 @@ watch(() => SelectedTemplateType.value, () => {
           <div class="title">
             <ArrowsLeft />
             <span>{{ $t('my templates') }}</span>
-          </div>
+          </div> 
         </div> -->
         <div class="fillter-system-templets">
           <div @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate" class="system-templets"
