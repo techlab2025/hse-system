@@ -5,6 +5,7 @@ import type InvestigationFactorParams from './InvestegationFactorParams'
 import type InvestigationAttachmentsParams from './InvestegationAttachmentParams'
 import type InvestegationWitnessesParams from './InvestegationWitnessesParams'
 import type InvestegationAnotherMeetingParams from './InvestegationAnotherMeetingParams'
+import type InvestigationFiveQuestionParams from './InvestegationFiveQuestoinsParams'
 
 export default class AddInvestigationResultParams implements Params {
   public investigationMeetingId: number
@@ -20,6 +21,10 @@ export default class AddInvestigationResultParams implements Params {
   public explainWhyText?: string
   public meeting?: InvestegationAnotherMeetingParams
   public corrective?: string
+  public preventive?: string
+  public RootCauses?: number[]
+  public investegaionLevel?: number
+  public FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
 
   constructor(data: {
     investigationMeetingId: number
@@ -35,6 +40,10 @@ export default class AddInvestigationResultParams implements Params {
     explainWhyText?: string
     meeting?: InvestegationAnotherMeetingParams
     corrective?: string
+    preventive?: string
+    RootCauses?: number[]
+    investegaionLevel?: number
+    FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -49,6 +58,10 @@ export default class AddInvestigationResultParams implements Params {
     this.explainWhyText = data.explainWhyText
     this.meeting = data.meeting
     this.corrective = data.corrective
+    this.preventive = data.preventive
+    this.RootCauses = data.RootCauses
+    this.investegaionLevel = data.investegaionLevel
+    this.FiveWhyQuestionsData = data.FiveWhyQuestionsData
   }
 
   toMap(): Record<string, number | string | any> {
@@ -67,6 +80,10 @@ export default class AddInvestigationResultParams implements Params {
     if (this.explainWhyText) data['explain_why_text'] = this.explainWhyText
     if (this.meeting) data['meeting'] = this.meeting
     if (this.corrective) data['corrective'] = this.corrective
+    if (this.preventive) data['preventive'] = this.preventive
+    if (this.RootCauses) data['root_causes'] = this.RootCauses
+    if (this.investegaionLevel) data['investegaion_level'] = this.investegaionLevel
+    if (this.FiveWhyQuestionsData) data['five_why_questions_data'] = this.FiveWhyQuestionsData
     return data
   }
 }

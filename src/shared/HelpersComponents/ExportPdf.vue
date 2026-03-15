@@ -46,7 +46,7 @@ const exportPDF = async () => {
 
 <template>
   <button :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'" type="button" @click="exportPDF">
-    <PdefActionIcon />
+    <PdefActionIcon v-if="isDropList" />
     Export PDF
   </button>
 </template>

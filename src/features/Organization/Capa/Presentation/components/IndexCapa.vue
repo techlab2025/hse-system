@@ -39,6 +39,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import PinIcons from '@/shared/icons/PinIcons.vue'
 import HighLevel from '@/shared/icons/HighLevel.vue'
+import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -278,6 +279,16 @@ const exportExcel = () => {
   saveAs(data, "capa.xlsx");
 };
 
+const SelectCapaStatus = (data: number) => {
+  switch (data) {
+    case CapaStatusEnum.PreventiveandCorrective:
+      return "Preventive And Corrective"
+    case CapaStatusEnum.onlyCorrective:
+      return " Corrective"
+    case CapaStatusEnum.onlyPreventive:
+      return "Preventive"
+  }
+}
 </script>
 
 <template>
@@ -371,8 +382,11 @@ const exportExcel = () => {
                             <p class="label-item-secondary flex items-center gap-1"
                               :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
                               {{ GetSaveStatus(item.saveStatus) }}
-
                             </p>
+
+                            <!-- <p class="label-item-secondary flex items-center gap-1">
+                              {{ SelectCapaStatus(1) }}
+                            </p> -->
                             <!-- <p class="label-item-secondary Negative flex items-center gap-1"
                               v-if="item.isWorkStopped == 1">
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
@@ -482,18 +496,22 @@ const exportExcel = () => {
 </template>
 
 <style scoped lang="scss">
-.label-item-secondary{
+.label-item-secondary {
   font-family: "regular";
-  span{
+
+  span {
     font-family: "bold";
   }
 }
-.label-item-primary{
-    font-family: "regular";
-  span{
+
+.label-item-primary {
+  font-family: "regular";
+
+  span {
     font-family: "bold";
   }
 }
+
 .export-fillter {
   display: flex;
   align-items: center;

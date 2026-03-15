@@ -13,6 +13,7 @@ import InvestigationFactorParams from '@/features/Organization/Investigating/Cor
 import InvestigationFactorItemParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationFactorItemParams'
 
 const descripe = ref<string>('')
+// const Preventive = ref<string>('')
 
 const emit = defineEmits(['update:data'])
 
@@ -20,6 +21,7 @@ const emit = defineEmits(['update:data'])
 const UpdateData = () => {
   const payload = {
     description: descripe.value,
+    // preventive: Preventive.value,
     factors: SelctedFactors.value.map(factor => ({
       factory_id: factor.factoryId,
       items: factor.items.map(item => ({
@@ -88,9 +90,14 @@ const GetSelectedFactors = (data: any[]) => {
 
       <div class="input-wrapper">
         <label for="corrective_action">{{ $t('corrective_action') }}</label>
-        <textarea id="corrective_action" class="input" placeholder="add your descripe" v-model="descripe"
+        <textarea id="corrective_action" class="input" placeholder="add your corrective action" v-model="descripe"
           @input="UpdateData"></textarea>
       </div>
+      <!-- <div class="input-wrapper">
+        <label for="description">{{ $t('description') }}</label>
+        <textarea id="description" class="input" placeholder="add your description" v-model="Preventive"
+          @input="UpdateData"></textarea>
+      </div> -->
     </div>
   </div>
 </template>
