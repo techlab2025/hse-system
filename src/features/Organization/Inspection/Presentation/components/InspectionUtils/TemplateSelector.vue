@@ -85,3 +85,12 @@ const toggleAccordion = (id: string) => {
     </Accordion>
   </div>
 </template>
+
+
+
+<style lang="scss" scoped>
+.template-selector-container-AccordionPanel .active.panel-acc{
+  border: 2px dashed rgba(52,67,198,.6) !important;
+  background-color: rgba(165, 174, 253, 0.06);
+}
+</style>
