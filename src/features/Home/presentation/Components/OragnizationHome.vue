@@ -48,6 +48,7 @@ import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStatic
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import CapaIcon from '@/shared/icons/CapaIcon.vue'
+import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
 
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
@@ -347,7 +348,8 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
   </div>
 
 
-  <div class=statics>
+  <HomeSkelaton v-if="!ProjectStatics?.data" />
+  <div class="statics" v-if="ProjectStatics?.data">
     <!-- v-if="ProjectStatics?.data?.length > 0"  -->
     <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
     <div class="all-total-insedents">
@@ -457,16 +459,12 @@ watch(() => fetchHomeInspectionController.state.value, (newState) => {
         ]" />
     </div>
   </div>
-
-
-  <!-- end -->
-
-  <div class="flex gap-4 statics">
+  <div class="flex gap-4 statics" v-if="ProjectStatics?.data">
     <TotalMachines v-if="EquipmentStatics?.data?.statics?.length > 0" :totalMachines="EquipmentStatics.data?.statics"
       class="col-span-12  xl:col-span-8" />
     <MachineStatics :statics="EquipmentStatics.data?.rentEquipments" class="col-span-12 xl:col-span-4" />
   </div>
-  <div class="Hazard-Investigation">
+  <div class="Hazard-Investigation" v-if="ProjectStatics?.data">
 
     <ObservatoinFactoryStatistics v-if="OverviewHazardChartstate?.data?.length > 0"
       :OverviewHazardChartstate="OverviewHazardChartstate?.data" />
