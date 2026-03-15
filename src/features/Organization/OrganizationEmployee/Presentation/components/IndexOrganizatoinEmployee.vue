@@ -261,10 +261,13 @@ const setSelectedEmployees = (data: TitleInterface[]) => {
 }
 const router = useRouter()
 const AddEmployees = async () => {
-  const addOrganizatoinEmployeeToHierarchyController = AddOrganizatoinEmployeeToHierarchyController.getInstance()
-  const addEmployeeToHierarchyParams = new AddEmployeeToHierarchyParams(route.query.heirarchy_id, SelectedEmployees.value?.map((el) => new AddEmployeeIdToHierarchyParams(el.id)))
-  const state = await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(addEmployeeToHierarchyParams, router)
-  await fetchOrganizatoinEmployee()
+  if (SelectedEmployees.value?.length > 0) {
+
+    const addOrganizatoinEmployeeToHierarchyController = AddOrganizatoinEmployeeToHierarchyController.getInstance()
+    const addEmployeeToHierarchyParams = new AddEmployeeToHierarchyParams(route.query.heirarchy_id, SelectedEmployees.value?.map((el) => new AddEmployeeIdToHierarchyParams(el.id)))
+    const state = await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(addEmployeeToHierarchyParams, router)
+    await fetchOrganizatoinEmployee()
+  }
   SelectedEmployees.value = []
 
 }

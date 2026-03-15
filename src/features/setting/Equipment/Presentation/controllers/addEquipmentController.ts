@@ -30,7 +30,13 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
 
   async addEquipment(params: AddEquipmentParams | any, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
-    if (params?.data?.length > 0) {
+    if (Array.isArray(params.data)) {
+      if (params.data.length === 0) {
+        new OpenWarningDilaog('Excel file contains no data').openDialog()
+        // console.log('emptyyyy')
+        return
+      }
+
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
@@ -41,29 +47,33 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
           new OpenWarningDilaog('Equipment Type Is Required').openDialog()
           return
         }
+
         if (!el.status) {
           new OpenWarningDilaog('Status Is Required').openDialog()
           return
         }
+
         if (el.status == EquipmentStatus.RENT && !el.period_type) {
           new OpenWarningDilaog('Rent Type Is Required').openDialog()
           return
         }
+
         if (el.status == EquipmentStatus.RENT && !el.period) {
           new OpenWarningDilaog('Rent Period Is Required').openDialog()
           return
         }
+
         if (el.status == EquipmentStatus.RENT && !el.checkin_date) {
           new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
           return
         }
+
         if (el.status == EquipmentStatus.RENT && !el.checkout_date) {
           new OpenWarningDilaog('Rent End Date Is Required').openDialog()
           return
         }
       }
-    }
-    try {
+    } else {
       if (params?.status == EquipmentStatus.RENT && Number(params?.equipmentRentTime) < 1) {
         new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return
@@ -72,6 +82,8 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
         return
       }
+    }
+    try {
       const dataState: DataState<EquipmentModel> = await this.addEquipmentUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
