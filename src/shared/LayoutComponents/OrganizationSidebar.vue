@@ -9,6 +9,7 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import GeerIcon from '../icons/GeerIcon.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import Sidebarlocation from '../icons/sidebarlocation.vue'
 
 const route = useRoute()
 interface Routes {
@@ -711,7 +712,7 @@ watch(GauideAccordion, (val) => {
       <AccordionPanel value="2">
         <AccordionHeader>
           <div class="links-header">
-            <GeerIcon />
+            <Sidebarlocation />
             {{ $t('location') }}
           </div>
         </AccordionHeader>

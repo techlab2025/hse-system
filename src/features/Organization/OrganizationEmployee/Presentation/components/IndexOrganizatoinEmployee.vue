@@ -45,6 +45,7 @@ import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHi
 import { EmployeeCertificateStatus } from '../../Core/Enum/EmployeeTakeCertificateStatusEnum'
 
 import SelectButton from 'primevue/selectbutton';
+import DataEmployee from '../supcomponents/DataEmployee.vue'
 
 
 const { t } = useI18n()
@@ -293,6 +294,8 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
 
+    <!-- ... -->
+     <DataEmployee/>
     <div v-if="route.query.certificate_id" class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex">
       <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
         Certificate</button>
@@ -310,14 +313,14 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
         @click="AddEmployees">Add
         Employees</button>
     </div>
-    <div class="input-search col-span-1">
+    <div class="input-search col-span-1" v-if="!route.query.heirarchy_id && !route.query.certificate_id">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
         <Search />
       </span>
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
+    <div class="col-span-2 flex justify-end gap-2" v-if="!route.query.heirarchy_id && !route.query.certificate_id">
       <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
         :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
         :addLink="`/organization/organization-employee/add`"
@@ -374,7 +377,7 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
-                <td data-label="Hierarchy">{{item.hierarchy.map(el => el.title).join(' - ') || 'N/A'}}</td>
+                <td data-label="Hierarchy" class="table-Hierarchy">{{item.hierarchy.map(el => el.title).join(' - ') || 'N/A'}}</td>
                 <td data-label="Email">{{ item.email }}</td>
                 <td data-label="Phone">{{ item.phone }}</td>
                 <!-- <td data-label="images">
@@ -431,5 +434,8 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
   justify-content: space-between;
   width: 100% !important;
   align-items: center;
+}
+.table-Hierarchy{
+  color: #1F41BB !important;
 }
 </style>

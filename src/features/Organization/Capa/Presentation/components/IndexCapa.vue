@@ -38,6 +38,7 @@ import IndexFilter from '@/features/Organization/ObservationFactory/Presentation
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import PinIcons from '@/shared/icons/PinIcons.vue'
+import HighLevel from '@/shared/icons/HighLevel.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -481,6 +482,18 @@ const exportExcel = () => {
 </template>
 
 <style scoped lang="scss">
+.label-item-secondary{
+  font-family: "regular";
+  span{
+    font-family: "bold";
+  }
+}
+.label-item-primary{
+    font-family: "regular";
+  span{
+    font-family: "bold";
+  }
+}
 .export-fillter {
   display: flex;
   align-items: center;
