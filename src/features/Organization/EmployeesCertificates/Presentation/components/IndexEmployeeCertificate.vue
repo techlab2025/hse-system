@@ -274,7 +274,27 @@ const AllCertificates = computed(() => {
   width: fit-content;
 }
 
-.text-center {
+/* .text-center {
   text-align: center !important;
+} */
+
+.table-responsive table.main-table thead tr th {
+  text-align: center !important;
+}
+
+.table-responsive table.main-table thead tr th:first-child {
+  text-align: start !important;
+}
+
+.table-responsive table.main-table thead tr th:last-child {
+  justify-content: center !important;
+}
+
+.employee-certificates-matrix .main-table td {
+  text-align: center !important;
+}
+
+.employee-certificates-matrix .main-table td:first-child {
+  text-align: start !important;
 }
 </style>

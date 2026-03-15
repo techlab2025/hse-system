@@ -22,6 +22,13 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import type InvestegationTasksParams from '../../../Core/params/investegationResult/InvestegationTasksParams'
 import InvestigationAttachmentsParams from '../../../Core/params/investegationResult/InvestegationAttachmentParams'
 import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
+import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue'
+import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
+import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -75,7 +82,11 @@ const AddEnvestigatingResult = async () => {
     tasks: investigationTasks.value,
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: anotherMeeting?.value?.meetings,
-    corrective: CauseOfAction.value?.description
+    corrective: CauseOfAction.value?.description,
+    preventive: recommendation.value,
+    RootCauses: RootCauses.value.map((el) => el.id),
+    investegaionLevel: SelectedLevel.value?.id,
+    FiveWhyQuestionsData: FiveWhyQuestionsData.value
   });
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, router)
@@ -94,17 +105,12 @@ const setCauseOfAction = (data) => {
 
 const investigationTasks = ref()
 const setInvestigationTasks = (data) => {
-  console.log(data, "investigationTasks");
   investigationTasks.value = data
-
-
 }
 
 const rateActions = ref()
 const setRateAction = (data) => {
   rateActions.value = data
-
-  // console.log(rateActions.value, "rateActions");
 }
 
 const investigationAttachments = ref()
@@ -116,14 +122,36 @@ const setInvestigationAttachments = (data) => {
 const viewersResults = ref()
 const setViewersResults = (data) => {
   viewersResults.value = data
-
-
+}
+const FiveWhyQuestionsData = ref()
+const setFiveWhyQuestions = (data) => {
+  FiveWhyQuestionsData.value = data
 }
 
 const anotherMeeting = ref()
 const setAnotherMeeting = (data) => {
   anotherMeeting.value = data
-  console.log(data);
+}
+const indexRootCaueseController = IndexRootCausesController.getInstance()
+const indexRootCaueseParams = new IndexRootCausesParams('', 1, 10, 0)
+const RootCauses = ref<TitleInterface[]>([])
+const setRootCause = (data: TitleInterface[]) => {
+  RootCauses.value = data
+}
+const RootCausesDialog = ref<boolean>(false)
+
+const InvestigationLevel = ref<TitleInterface[]>([
+  new TitleInterface({ id: 1, title: "low" }),
+  new TitleInterface({ id: 2, title: "meduim" }),
+  new TitleInterface({ id: 3, title: "high" }),
+])
+const SelectedLevel = ref<TitleInterface>()
+const setSelectedLevel = (data: TitleInterface) => {
+  SelectedLevel.value = data
+}
+const recommendation = ref<string>()
+const updateRecommendation = (data) => {
+  recommendation.value = data.target.value
 }
 
 </script>
@@ -145,7 +173,33 @@ const setAnotherMeeting = (data) => {
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>
         </div>
+        <!-- <div class="flex w-full gap-2">
+          <div class="input-wrapper w-50">
+            <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
+              :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
+              :placeholder="$t('select your Immediate Apparent Cause')" @update:modelValue="setRootCause" :type="2"
+              @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
+              <template #LabelHeader>
+                <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
+              </template>
+              <template #Dialog>
+                <AddRootCauses @close:data="RootCausesDialog = false" />
+              </template>
+            </UpdatedCustomInputSelect>
+
+          </div>
+          <div class="input-wrapper w-50">
+            <UpdatedCustomInputSelect :modelValue="SelectedLevel" class="input" :staticOptions="InvestigationLevel"
+              :label="$t('Investegation Level')" id="investegation-level" :placeholder="$t('select your Level')"
+              @update:modelValue="setSelectedLevel" />
+          </div>
+        </div> -->
         <CauseOfAccidant @update:data="setCauseOfAction" />
+        <!-- <div class="input-wrapper w-full reccomendation">
+          <label for="recommendation">{{ $t('recommendation') }}</label>
+          <textarea id="recommendation" class="input" placeholder="add your recommendation" v-model="recommendation"
+            @input="updateRecommendation"></textarea>
+        </div> -->
         <InvestigationTasks @update:data="setInvestigationTasks" />
         <RateActions @update:data="setRateAction" />
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
@@ -159,10 +213,12 @@ const setAnotherMeeting = (data) => {
           </div>
         </div>
 
+        <!-- <FiveWhyQuestions @update:data="setFiveWhyQuestions" /> -->
         <ViewersResults @update:data="setViewersResults" />
         <AnotherMeeting @update:data="setAnotherMeeting" />
         <!-- <TimeLine :items="item" /> -->
         <div class="btns">
+          <!-- <CloseInvestegaionDialog /> -->
           <router-link to="/organization/investigating" class="btn btn-cancel ">{{ $t('cancel') }}</router-link>
           <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
         </div>
@@ -193,3 +249,13 @@ const setAnotherMeeting = (data) => {
 
 
 </template>
+
+<style scoped>
+.w-50 {
+  width: 50%;
+}
+
+.reccomendation {
+  padding-inline: 10px;
+}
+</style>

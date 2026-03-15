@@ -1,23 +1,14 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch } from 'vue'
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import ViewIcon from '@/shared/icons/ViewIcon.vue'
-import Image from 'primevue/image'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import IndexFilter from './InvestigatingUtils/IndexFilter.vue'
-import FilterDialog from './InvestigatingUtils/FilterDialog.vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestigatingSidebar from './InvestigatingSidebar.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 // import { link } from 'fs'
 import LiveLink from '@/assets/images/LiveLink.png'
 import LiveIcon from '@/assets/images/LiveIcon.png'
-import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
 import IndexInvestigationResultParams from '../../../Core/params/investegationResult/indexInvestigationResultParams'
-import IndexInvestigatingResultController from '../../controllers/investegationResult/IndexInvestigatingResultController'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
@@ -25,8 +16,6 @@ import mark from '@/assets/images/mark.png'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
-import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
-import type InvestigatingModel from '../../../Data/models/investigatingModel'
 import Meeting from '@/shared/icons/meeting.vue'
 
 const word = ref('')
@@ -198,7 +187,7 @@ const GetMediumObservationCount = (data: any): number => {
                             }}
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serial || '_OBS-2025-0112'
-                            }}</span>
+                              }}</span>
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
@@ -226,7 +215,7 @@ const GetMediumObservationCount = (data: any): number => {
                       <div class="card-header" v-if="item?.description">
                         <p class="label-item-secondary">{{ item?.description }}</p>
                       </div>
-                      {{ $t('take action') }}
+                      <!-- {{ $t('take action') }} -->
                       <div class="card-details">
                         <div class="project-details">
                           <!-- <pre>{{ item?.observation }}</pre> -->
@@ -241,7 +230,7 @@ const GetMediumObservationCount = (data: any): number => {
                             {{ $t('Status') }}:
                             <span>{{
                               item?.observation?.saveStatus == 1 ? 'Solved' : 'Unsolved'
-                            }}</span>
+                              }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.isAction">
                             {{ $t('take action') }}:
@@ -270,7 +259,7 @@ const GetMediumObservationCount = (data: any): number => {
 
                       <div class="btns-container" style="margin-top: 20px">
                         <div class="unsolved-btns gap-2" v-if="item?.status == InvestegationStatusEnum.NEW">
-                          
+
                           <ShowInvestegationDetailsDialog :item="item" class="first-btn" />
 
                           <router-link :to="`/organization/investigating/add?id=${item?.Investegationid}`">

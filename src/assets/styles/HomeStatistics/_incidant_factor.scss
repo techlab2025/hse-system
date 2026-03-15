@@ -36,9 +36,9 @@
   }
   .finished-class {
     background-color: #8ff98f24 !important;
-    color: #004b00 !important;
+    color: #004B00 !important;
     .finished {
-      color: #004b00 !important;
+      color: #4CAF50 !important;
     }
   }
   .in-progress-class {
@@ -104,8 +104,8 @@
         @include flex-row(nowrap, flex-start, center);
         gap: 8px;
         color: #9ca3af;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
+        font-size: $MdSize;
+        font-weight: $BaseFontSemiBoldWeight;
         background-color: #fcfcfc;
         padding: $XsSize3;
         width: 100%;
