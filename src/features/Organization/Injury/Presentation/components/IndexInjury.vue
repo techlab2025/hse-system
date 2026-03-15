@@ -225,13 +225,14 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="5">
+      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="4">
         <template #custom>
-          <SysteminjuryTypes />
+          <!-- <SysteminjuryTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    <SysteminjuryTypes :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

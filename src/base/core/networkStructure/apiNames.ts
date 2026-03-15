@@ -1579,7 +1579,7 @@ class ApiNames {
     return this.prefix + 'fetch_hierarchies_certificates'
   }
   public get AddWarehouseClones() {
-    return this.prefix + 'clone_warehouse_type_types'
+    return this.prefix + 'clone_warehouse_types'
   }
   public get CreateSystemHazardType() {
     return this.prefix + 'clone_hazard_types'
@@ -1588,7 +1588,7 @@ class ApiNames {
     return this.prefix + 'clone_accidant_type_types'
   }
   public get CreateSystemObserverationType() {
-    return this.prefix + 'clone_observation_type_types'
+    return this.prefix + 'clone_observation_types'
   }
 }
 

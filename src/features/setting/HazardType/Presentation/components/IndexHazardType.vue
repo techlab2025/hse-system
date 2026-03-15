@@ -34,12 +34,13 @@ import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import SystemWarehouseTypes from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemWarehouseTypes.vue'
+import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -293,13 +294,16 @@ const IndexHazardTypeactionList = () => [
         <SystemHazardTypes />
       </PermissionBuilder> -->
 
-      <ActionsList :show-actions="true" :actionList="IndexHazardTypeactionList()" :actionsNumber="5">
+      <ActionsList :show-actions="true" :actionList="IndexHazardTypeactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemHazardTypes />
+          <!-- <SystemHazardTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    
+    <SystemHazardTypes :isHeaderTap="true" />
+
   </div>
 
   <PermissionBuilder :code="[

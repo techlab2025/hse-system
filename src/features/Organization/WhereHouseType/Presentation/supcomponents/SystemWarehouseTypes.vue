@@ -14,7 +14,12 @@
   import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
   import { useRouter } from 'vue-router';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+  import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
+  import SystemDataHeader from './SystemDataHeader.vue';
 
+  const props = defineProps<{
+    isHeaderTap?: boolean
+  }>()
 
   const visible = ref(false);
 
@@ -66,17 +71,18 @@
     const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
     const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
     const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
-    // visible.value = false
+    visible.value = false
   }
 </script>
 <template>
-  <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_data')
       }}
     </button>
   </li>
+  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"

@@ -213,13 +213,15 @@ const IndexIncidantTypeactionList = () => [
     </PermissionBuilder> -->
     <div class="col-span-2 flex justify-end gap-2">
 
-      <ActionsList :show-actions="true" :actionList="IndexIncidantTypeactionList()" :actionsNumber="5">
+      <ActionsList :show-actions="true" :actionList="IndexIncidantTypeactionList()" :actionsNumber="4">
         <template #custom>
-          <SystemIncidantTypes />
+          <!-- <SystemIncidantTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
+    <SystemIncidantTypes :isHeaderTap="true" />
+
   </div>
 
   <PermissionBuilder :code="[

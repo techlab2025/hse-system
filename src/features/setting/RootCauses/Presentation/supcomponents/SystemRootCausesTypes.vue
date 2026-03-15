@@ -11,9 +11,11 @@ import IndexRootCausesParams from '../../Core/params/indexRootCausesParams';
 import AddSystemRootCausesController from '../controllers/addSystemRootCausesController';
 import AddSystemRootCausesParams from '../../Core/params/AddStstemRootCausesParams';
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
 
 
 const visible = ref(false);
+const props = defineProps<{ isHeaderTap?: boolean }>()
 
 const indexSystemRootCausesController = IndexSystemRootCausesController.getInstance()
 const state = ref(indexSystemRootCausesController.state.value)
@@ -66,13 +68,15 @@ const SubmitData = async () => {
 }
 </script>
 <template>
-  <li class="list-item cursor-pointer" @click="visible = true">
+  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
       {{ $t('system_data')
       }}
     </button>
   </li>
+  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" title="add system types"
