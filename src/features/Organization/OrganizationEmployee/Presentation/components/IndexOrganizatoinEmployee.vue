@@ -45,7 +45,15 @@ import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHi
 import { EmployeeCertificateStatus } from '../../Core/Enum/EmployeeTakeCertificateStatusEnum'
 
 import SelectButton from 'primevue/selectbutton';
+
 import DataEmployee from '../supcomponents/DataEmployee.vue'
+
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+
 
 
 const { t } = useI18n()
@@ -286,9 +294,40 @@ const setCertificateStatus = () => {
 }
 
 
-
 const value = ref('Not Taken Certificates');
 const options = ref(['Taken Certificates', 'Not Taken Certificates']);
+const IndexOrganizationEmployeectionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ],
+  },
+  {
+    text: t('add_employee'),
+    link: '/organization/organization-employee/add',
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum?.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum?.ADMIN
+    ],
+  },
+  {
+    text: t('upload_excel'),
+    type: ActionItemsTypeEnum.Warning,
+    link: '/organization/organization-employee/upload',
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum?.ADMIN
+    ],
+  },
+]
 </script>
 
 <template>
@@ -303,6 +342,8 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
         Certificate</button> -->
       <SelectButton v-model="value" :options="options" @change="setCertificateStatus" />
     </div>
+
+
     <div v-if="route.query.heirarchy_id" class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy ">
       <div class="flex gap-2 input-wrapper" style="width: 80%;margin-block: 8px;">
         <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
@@ -328,18 +369,27 @@ const options = ref(['Taken Certificates', 'Not Taken Certificates']);
         :addDescription="`add_employee`" :numberOfActions="4" /> -->
 
 
-      <ExportPdf />
+      <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+
       <PermissionBuilder v-if="!route.query.heirarchy_id && !route.query.certificate_id"
         :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
           {{ $t('add_organizatoin_employee') }}
         </router-link>
+
+
       </PermissionBuilder>
       <router-link v-if="!route.query.heirarchy_id && !route.query.certificate_id"
         to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
-      </router-link>
+      </router-link> -->
+      <ActionsList :show-actions="true" :actionList="IndexOrganizationEmployeectionList()" :actionsNumber="4">
+        <template #custom>
+          <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
 
     </div>
 
