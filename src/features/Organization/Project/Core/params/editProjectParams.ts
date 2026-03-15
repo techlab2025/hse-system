@@ -13,6 +13,7 @@ export default class EditProjectParams implements Params {
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
+  endDate: string
 
   constructor(
     id: number,
@@ -22,6 +23,7 @@ export default class EditProjectParams implements Params {
     locationIds: number[],
     zoonIds: number[],
     methodIds: number[],
+    endDate: string,
   ) {
     this.id = id
     this.translation = translation
@@ -30,6 +32,7 @@ export default class EditProjectParams implements Params {
     this.locationIds = locationIds
     this.zoonIds = zoonIds
     this.methodIds = methodIds
+    this.endDate = endDate
   }
 
   toMap(): Record<
@@ -53,6 +56,7 @@ export default class EditProjectParams implements Params {
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
+    if (this.endDate) data['end_date'] = formatJoinDate(this.endDate)
 
     return data
   }

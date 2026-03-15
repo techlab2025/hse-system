@@ -166,6 +166,7 @@ const updateData = () => {
       location.value.map((l) => l.id),
       ZoneIds.value.filter((z): z is number => typeof z === 'number'),
       EvaluatingMethod.value?.map((p) => p.id),
+      endDate.value,
     )
     : new AddProjectParams(
       {
@@ -250,6 +251,7 @@ watch(
       EvaluatingMethod.value = newData?.methods ?? []
       ContractorIds.value = newData?.contractors ?? []
       SelectedZones.value = newData?.Zones ?? []
+      endDate.value = newData?.endDate
       updateData()
     }
   },

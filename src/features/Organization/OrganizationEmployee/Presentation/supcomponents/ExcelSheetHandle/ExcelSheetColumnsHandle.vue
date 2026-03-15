@@ -101,7 +101,7 @@ const getMappedSentKey = (colIndex: number): string => {
 
 <template>
   <div class="excel-select-dialog">
-    <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '56rem' }"
+    <Dialog v-model:visible="visible" modal :dismissable-mask="false" :style="{ width: '56rem' }"
       header="Map Excel Columns" @hide="onHide">
       <div class="instructions">
         <span>Drag the <strong>Excel columns</strong> (right) to align them with the <strong>target fields</strong>

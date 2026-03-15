@@ -9,10 +9,10 @@ export class OpenWarningDilaog extends Error {
 
   openDialog() {
     DialogSelector.instance.failedDialog.openDialog({
-      dialogName: 'dialog',
+      dialogName: 'dialog-error',
       titleContent: ``, //Validation failed
       imageElement: warning,
-      messageContent: `  ${this.errorMessage}`,
+      messageContent: `${this.errorMessage}`,
     })
   }
 }

@@ -457,7 +457,7 @@ const exportExcel = () => {
             ]">
               <DataEmpty
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No CAPA" />
+                :link="`/organization`" title="..ops! You have No CAPA" />
             </PermissionBuilder>
           </template>
           <template #failed>
@@ -467,7 +467,7 @@ const exportExcel = () => {
             ]">
               <DataFailed
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No CAPA" />
+                :link="`/organization`" title="..ops! You have No CAPA" />
             </PermissionBuilder>
           </template>
         </DataStatus>

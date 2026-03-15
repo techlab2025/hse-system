@@ -22,6 +22,7 @@ export default class ProjectDetailsModel {
   public Zones: SohwProjectZoonModel[] | null
   public methods: TitleInterface | null
   public contractors: TitleInterface | null
+  public endDate: string | null
 
   constructor(
     id: number,
@@ -38,6 +39,7 @@ export default class ProjectDetailsModel {
     Zones: SohwProjectZoonModel[] | null,
     methods: TitleInterface | null,
     contractors: TitleInterface | null,
+    endDate: string,
   ) {
     this.id = id
     this.titles = titles
@@ -53,6 +55,7 @@ export default class ProjectDetailsModel {
     this.Zones = Zones
     this.methods = methods
     this.contractors = contractors
+    this.endDate = endDate
   }
 
   static fromMap(data: any): ProjectDetailsModel {
@@ -72,6 +75,7 @@ export default class ProjectDetailsModel {
       data.locations,
       data.methods.map((item: any) => this.getTitle(item)),
       data.contractors.map((item: any) => this.getTitle(item)),
+      data.end_date,
     )
   }
 
@@ -82,7 +86,10 @@ export default class ProjectDetailsModel {
 
     return new TitleInterface({
       id: data?.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title || data.name || data.location_title,
+      title:
+        data.titles?.find((title: any) => title.locale === savedLocale)?.title ||
+        data.name ||
+        data.location_title,
     })
   }
 
