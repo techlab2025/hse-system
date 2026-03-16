@@ -1,6 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones'
-import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
+import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 import acc from '@/assets/images/acc.png'
 
@@ -12,7 +12,7 @@ export default class LocationDetailsModel extends TitleInterface {
   public type: number
   public status: number
   public image: string
-  public zoons :SohwProjectZoonModel[]
+  public zoons: SohwProjectZoonModel[]
 
   constructor(
     id: number,
@@ -22,7 +22,7 @@ export default class LocationDetailsModel extends TitleInterface {
     type: number,
     status: number,
     image: string,
-    zoons: SohwProjectZoonModel[]
+    zoons: SohwProjectZoonModel[],
   ) {
     super({ id: 0, title: '', subtitle: '' })
     this.id = id
@@ -44,7 +44,7 @@ export default class LocationDetailsModel extends TitleInterface {
       data.type,
       data.status,
       data.image,
-      data.zoons
+      data.zoons,
     )
   }
   static getTitle(data: any) {
@@ -59,11 +59,21 @@ export default class LocationDetailsModel extends TitleInterface {
   static example: LocationDetailsModel = new LocationDetailsModel(
     1,
     'test',
-    "20",
+    '20',
     null,
     1,
     1,
     acc,
-    []
+    [],
+  )
+  static example2: LocationDetailsModel = new LocationDetailsModel(
+    2,
+    'test2',
+    '21',
+    null,
+    1,
+    1,
+    acc,
+    [SohwProjectZoonModel.example , SohwProjectZoonModel.example],
   )
 }

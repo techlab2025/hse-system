@@ -70,4 +70,16 @@ export default class SohwProjectZoonModel {
     [],
     1,
   )
+  static example2: SohwProjectZoonModel = new SohwProjectZoonModel(
+    1,
+    10,
+    'zoon',
+    [ProjectLocationEquipmentModel.example,ProjectLocationEquipmentModel.example],
+    { id: 1, title: 'location' },
+    1,
+    [projectLocationZoonsModel.example ,projectLocationZoonsModel.example],
+    [{locale: 'en', title: 'zoon en'}, {locale: 'ar', title: 'zoon ar'}],
+    [{id: 1, title: 'zoon1'}, {id: 2, title: 'zoon2'}],
+    1,
+  )
 }

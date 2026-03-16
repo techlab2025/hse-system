@@ -8,6 +8,7 @@ import type Params from '@/base/core/Params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 import PlusIcon from '../icons/PlusIcon.vue'
+import StarRequiredInput from '../icons/StarRequiredInput.vue'
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -176,8 +177,10 @@ const updateSlot = (data: any) => {
     </span>
 
     <div class="label-container flex justify-center items-center gap-2">
-      <label :class="{ required: required }" class="input-label">
-        <span v-if="required" class="text-red-500">*</span>
+      <label :class="{ required: required }" class="input-label flex items-center gap-2" >
+        <span v-if="required" class="text-red-500">
+          <StarRequiredInput />
+        </span>
         {{ $t(label ?? '') }}
       </label>
 

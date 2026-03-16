@@ -106,25 +106,25 @@ const deleteZone = (index: number) => {
 <template>
   <div class="input-wrapper">
     <div class="zones input" @click="visible = true">
-      <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop>
+      <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop  v-if="currentZoneTitles.length > 0">
         {{ zone }}
         <CloseDelete class="delete" @click.stop="deleteZone(index)" />
+      </div>
+      <div v-else>
+        <span class="placeholder">at least 1 zone required</span>
       </div>
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', height: '59%' }">
+  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection :img="ZoneDialog" :title="$t('Select Zones')" :subtitle="$t('At least 1 zone required for every location')" />
+      <HeaderSection :img="ZoneDialog" :title="$t('Select Zones')"
+        :subtitle="$t('At least 1 zone required for every location')" />
     </template>
 
     <div v-if="locations.length > 0" class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-      <ZoneDialogForm
-        :locations="locations"
-        @update:data="GetData"
-        :selectedZones="mergedSelectedZones"
-      />
+      <ZoneDialogForm :locations="locations" @update:data="GetData" :selectedZones="mergedSelectedZones" />
     </div>
 
     <div v-else class="empty">
@@ -132,3 +132,11 @@ const deleteZone = (index: number) => {
     </div>
   </Dialog>
 </template>
+
+<style scoped>
+.placeholder{
+  color:#9CA3AF;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>

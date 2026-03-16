@@ -1,4 +1,4 @@
-import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 
 export default class projectLocationModel {
   public employees: OrganizatoinEmployeeDetailsModel[]
@@ -30,4 +30,11 @@ export default class projectLocationModel {
       data.project_location_id,
     )
   }
+  static example = new projectLocationModel(
+    [OrganizatoinEmployeeDetailsModel.example],
+    1,
+    'Main Office',
+    1,
+    1,
+   )
 }

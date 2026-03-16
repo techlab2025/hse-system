@@ -1,8 +1,6 @@
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type OrganizationLocationModel from '@/features/Organization/OrganizationLocation/Data/models/OrganizationLocationModel'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
 export default class ProjectZoneDetailsModel {
   public id: number
@@ -39,6 +37,14 @@ export default class ProjectZoneDetailsModel {
     )
   }
 
+  static example: ProjectZoneDetailsModel = new ProjectZoneDetailsModel(
+    1,
+    ['Zone 1', 'المنطقة 1'],
+    null,
+    null,
+    '24.7136',
+    '46.6753',
+  )
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
