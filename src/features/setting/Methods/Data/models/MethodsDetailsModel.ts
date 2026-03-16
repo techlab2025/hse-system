@@ -1,24 +1,18 @@
-// import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-// import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class MethodsDetailsModel {
   public id: number
   public titles: TitleLocale[]
-  // public hasCertificate: number
   public allIndustries: number
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
-  // public descriptions: DescriptionLocale[]
 
   constructor(
     id: number,
     titles: TitleLocale[],
-    // hasCertificate: number,
     allIndustries: number,
     industries: TitleModel<string>[] = [],
     parentId: number,
@@ -26,7 +20,6 @@ export default class MethodsDetailsModel {
   ) {
     this.id = id
     this.titles = titles
-    // this.hasCertificate = hasCertificate
     this.allIndustries = allIndustries
     this.industries = industries
     this.parentId = parentId
@@ -37,7 +30,6 @@ export default class MethodsDetailsModel {
     return new MethodsDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      // data.has_certificate,
       data.all_industries,
       data.industries?.length > 0
         ? data.industries?.map((industry) => this.getTitle(industry))
@@ -46,6 +38,23 @@ export default class MethodsDetailsModel {
       data.image,
     )
   }
+  static example: MethodsDetailsModel = new MethodsDetailsModel(
+    1,
+    [
+      {
+        locale: 'en',
+        title: 'Method 1',
+      },
+      {
+        locale: 'ar',
+        title: 'الطريقة 1',
+      },
+    ],
+    1,
+    [new TitleModel<string>(1, 'Industry 1', 'en')],
+    0,
+    '',
+  )
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')

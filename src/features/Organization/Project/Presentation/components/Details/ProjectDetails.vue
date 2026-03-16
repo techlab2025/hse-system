@@ -12,9 +12,6 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import InspectionsSections from './Inspection/InspectionsSections.vue'
-import zoneInspectionTasks from '@/assets/images/check-list.png'
-import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()

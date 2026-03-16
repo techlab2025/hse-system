@@ -6,15 +6,16 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
   width: 100%;
-  border: 1px solid #1f41bb0a;
+  // border: 1px solid #1f41bb0a;
+  border: 1px solid #1F41BB0A;
   border-radius: $XsSize;
   padding: $SmSize;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   transition: 0.3s all linear;
-  &:hover {
-    scale: 1.02;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  }
+  // &:hover {
+  //   scale: 1.02;
+  //   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  // }
   .project-card-header-container {
     width: 100%;
     @include flex-row(nowrap, space-between, center);
@@ -22,7 +23,7 @@
       @include flex-column(nowrap, flex-start, flex-start);
       gap: $XsSize4;
       .project-header {
-        @include flex-row(nowrap, flex-start, flex-start);
+        @include flex-row(nowrap, flex-start, center);
         gap: $XsSize4;
 
         .status {
@@ -30,14 +31,27 @@
           font-size: $MdSize;
           font-weight: $BaseFontWeightBold;
         }
-        .serial {
-          color: #1d4fd891;
-          font-size: $MdSize2;
-          font-weight: $BaseFontSemiBoldWeight;
-          background-color: #1f41bb05;
-          // border: 1px solid $PrimaryColor;
-          padding: 5px;
-          border-radius: 8px;
+
+        // .serial {
+        //   color: #1d4fd891;
+        //   font-size: $MdSize2;
+        //   font-weight: $BaseFontSemiBoldWeight;
+        //   background-color: #1f41bb05;
+        //   // border: 1px solid $PrimaryColor;
+        //   padding: 5px;
+        //   border-radius: 8px;
+        // }
+        .serial{
+          color:#C4CCDA;
+          font-weight: $BaseFontMediumWeight;
+          font-size: $MdSize;
+          // border-left: 1px solid #C4CCDA;
+          // padding-left: 5px;
+          &.serial-border{
+            border-left: 1px solid #C4CCDA;
+            padding-left: 5px;
+          }
+
         }
       }
       .project-title {

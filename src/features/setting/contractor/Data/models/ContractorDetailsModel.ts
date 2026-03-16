@@ -54,4 +54,18 @@ export default class ContractorDetailsModel {
       data.expiry_date,
     )
   }
+
+  static example: ContractorDetailsModel = new ContractorDetailsModel(
+    1,
+    'Contractor 1',
+    '1234567890',
+    [ContractorScopeModel.example],
+    'Oxk4T@example.com',
+    '123 Main St',
+    'John Doe',
+    'Oxk4T@example.com',
+    '1234567890',
+    1,
+    '2022-01-01',
+  )
 }

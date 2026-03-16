@@ -17,6 +17,8 @@ export default class ContractorScopeModel extends TitleInterface {
     return new ContractorScopeModel(data.all_industries, data.id, data.titles ?? [])
   }
 
+  static example: ContractorScopeModel = new ContractorScopeModel(false, 1, [])
+
   static getTitle(data: ContractorScopeModel) {
     const savedLocale = localStorage.getItem('lang') || 'en'
 

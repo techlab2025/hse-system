@@ -8,6 +8,7 @@ import type CheckListDetailsModel from '../../Data/models/CheckListModel'
 import AddCheckListUseCase from '../../Domain/useCase/addCheckListUseCase'
 import IndexWhereHouseTypeController from './indexCheckListController'
 import IndexWhereHouseTypeParams from '../../Core/params/indexCheckListParams'
+import type AddCheckListParams from '../../Core/params/addCheckListParams'
 
 export default class AddCheckListController extends ControllerInterface<CheckListDetailsModel> {
   private static instance: AddCheckListController
@@ -23,14 +24,14 @@ export default class AddCheckListController extends ControllerInterface<CheckLis
     return this.instance
   }
 
-  async addCheckList(params: any, router: Router, draft: boolean = false) {
+  async addCheckList(params: AddCheckListParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+    params.validate()
+    if (!params.validate().isValid) {
+      params.validateOrThrow()
+      return
+    }
     try {
-      params.validate()
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
       const dataState: DataState<CheckListDetailsModel> =
         await this.addCheckListUseCase.call(params)
       this.setLoading()

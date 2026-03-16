@@ -1,18 +1,18 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
-import type ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
+import PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
+import ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
-import type ContractorModel from '@/features/setting/contractor/Data/models/ContractorModel'
-import type LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
-import type MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
+import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
+import MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
+import { ProjectStatusEnum } from '../../Core/Enums/ProjectStatusEnum'
 
 export default class ProjectModel extends TitleInterface {
   public id: number
   public title: string
   public partner: PartnerModel
-  public locations: LocationDetailsModel
-  public methods: MethodsDetailsModel
-  public zoons: ProjectZoneDetailsModel
+  public locations: LocationDetailsModel[]
+  public methods: MethodsDetailsModel[]
+  public zoons: ProjectZoneDetailsModel[]
   public start_date: string
   public serial_number: string
   public contractor: ContractorDetailsModel[]
@@ -25,14 +25,15 @@ export default class ProjectModel extends TitleInterface {
   public assigned_zones_count: number
   public assigned_employees_count: number
   public serialName: string
+  public status: ProjectStatusEnum
 
   constructor(
     id: number,
     title: string,
     partner: PartnerModel,
-    locations: LocationDetailsModel,
-    methods: MethodsDetailsModel,
-    zoons: ProjectZoneDetailsModel,
+    locations: LocationDetailsModel[],
+    methods: MethodsDetailsModel[],
+    zoons: ProjectZoneDetailsModel[],
     start_date: string,
     serial_number: string,
     contractor: ContractorDetailsModel[],
@@ -45,6 +46,7 @@ export default class ProjectModel extends TitleInterface {
     assigned_zones_count: number,
     assigned_employees_count: number,
     serialName: string,
+    status: ProjectStatusEnum,
   ) {
     super({ id, title })
     this.id = id
@@ -65,10 +67,10 @@ export default class ProjectModel extends TitleInterface {
     this.assigned_zones_count = assigned_zones_count
     this.assigned_employees_count = assigned_employees_count
     this.serialName = serialName
+    this.status = status
   }
 
   static fromMap(data: any): ProjectModel {
-    // console.log('ProjectModel data:', data)
     return new ProjectModel(
       data.id,
       data.title,
@@ -78,7 +80,6 @@ export default class ProjectModel extends TitleInterface {
       data.zoons,
       data.start_date,
       data.serial_number,
-      // ContractorDetailsModel.fromMap(data.contractor),
       data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)) || [],
       data.observations_count,
       data.observation_hazards_count,
@@ -89,6 +90,29 @@ export default class ProjectModel extends TitleInterface {
       data.assigned_zones_count,
       data.assigned_employees_count,
       data.serial_name,
+      data.status,
     )
   }
+
+  static example: ProjectModel = new ProjectModel(
+    1,
+    'Eco-friendly / Sustainability-oriented Names',
+    PartnerModel.example,
+    [LocationDetailsModel.example ,LocationDetailsModel.example,LocationDetailsModel.example ],
+    [MethodsDetailsModel.example ,  MethodsDetailsModel.example ,  MethodsDetailsModel.example],
+    [ProjectZoneDetailsModel.example , ProjectZoneDetailsModel.example , ProjectZoneDetailsModel.example],
+    '2022-01-01',
+    'SN001',
+    [ContractorDetailsModel.example, ContractorDetailsModel.example],
+    100,
+    40,
+    20,
+    4,
+    4,
+    25,
+    15,
+    20,
+    '585145',
+    ProjectStatusEnum.active
+  )
 }

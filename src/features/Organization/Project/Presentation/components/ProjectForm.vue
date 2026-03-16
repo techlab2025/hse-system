@@ -31,6 +31,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import StarRequiredInput from '@/shared/icons/StarRequiredInput.vue'
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
@@ -420,33 +421,40 @@ const ShowLocationDialog = () => {
       :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="date">
+    <label for="date" class="flex gap-2 items-center">
       {{ $t('start_date') }}
+      <StarRequiredInput />
+
     </label>
     <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="end-date">
+    <label for="end-date" class="flex gap-2 items-center">
       {{ $t('end_date') }}
+      <StarRequiredInput />
+
     </label>
     <DatePicker v-model="endDate" @date-select="UpdateEndDate" id="end-date" :placeholder="`select the end date`" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
+    <CustomSelectInput :required="false" :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
       :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
       placeholder="contractors" :onclick="ShowContructorDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="location" @update:modelValue="SetAreaSelection"
+    <CustomSelectInput :required="true" :modelValue="location" @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
       placeholder="location" :type="2" :onclick="ShowLocationDialog" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="zone" class="flex flex-start item-center gap-2">
-      <span>{{ $t('zones') }}</span>
+      <span class="flex items-center gap-2">
+        <span>{{ $t('zones') }}</span>
+        <StarRequiredInput />
+      </span>
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
 

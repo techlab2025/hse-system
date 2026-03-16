@@ -102,16 +102,14 @@ const updateData = () => {
   const params = props.data?.id
     ? new EditCheckListParams(props.data.id, translationsParams, AllIndustry,
       industry.value?.map((item) => item.id) ?? [],)
-    : new AddCheckListParams(translationsParams)
+    : new AddCheckListParams({ translation: translationsParams })
 
-  // console.log(params, 'params')
 
 
   emit('update:data', params)
 }
 
 // ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
