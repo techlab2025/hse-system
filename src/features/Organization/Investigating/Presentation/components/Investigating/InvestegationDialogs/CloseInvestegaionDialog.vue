@@ -2,23 +2,14 @@
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
   import DialogSystem from '@/assets/images/DialogSystem.png'
-  import { onMounted, ref, watch } from "vue";
-  import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
-  import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
+  import { ref, watch } from "vue";
   import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-  import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-  import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-  import wordSlice from '@/base/Presentation/utils/word_slice';
-  import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
-  import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
-  import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
   import { useRouter } from 'vue-router';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-  import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
-  import SystemDataHeader from './SystemDataHeader.vue';
   import IndexCheckListController from '@/features/Organization/CheckList/Presentation/controllers/indexCheckListController';
   import IndexCheckListParams from '@/features/Organization/CheckList/Core/params/indexCheckListParams';
-import { useI18n } from 'vue-i18n';
+  import { useI18n } from 'vue-i18n';
+  import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
 
   const props = defineProps<{
     isHeaderTap?: boolean
@@ -71,26 +62,23 @@ import { useI18n } from 'vue-i18n';
 
   const router = useRouter()
   const SubmitData = async () => {
-    const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-    const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-    const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
+    // const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
+    // const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
+    // const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
     visible.value = false
   }
-const {locale} = useI18n()
+  const { locale } = useI18n()
 </script>
 <template>
-  <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
-    <button>
-      <SystemAddIcon />
-      {{ $t('system_data')
-      }}
-    </button>
-  </li>
+  <button class="btn btn-secondary" @click="visible = true">
+    {{ $t('close_investegation') }}
+  </button>
   <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
-      <HeaderSection :img="DialogSystem" title="add system types"
-        subtitle="select the types you need and add it to your types" />
+      <!-- :img="DialogSystem" -->
+      <HeaderSection  title="are you sure?"
+        subtitle="If you want to close the investigations, then you have completed all the steps shown in the task list." />
     </template>
     <DataStatus :controller="state">
       <template #success>
@@ -98,10 +86,10 @@ const {locale} = useI18n()
 
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
-              <label :for="`${item.titles.find((el)=>el.locale === locale)?.title}-${item.id}`" class="title">
-                {{ item.titles.find((el)=>el.locale === locale)?.title }}
+              <label :for="`${item.title}-${item.id}`" class="title">
+                {{ item.title }}
               </label>
-              <input :id="`${ item.titles.find((el)=>el.locale === locale)?.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
+              <input :id="`${item.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
                 @click.stop="ChangeStatus(item.id)" />
             </div>
           </div>

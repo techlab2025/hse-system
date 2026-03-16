@@ -87,7 +87,9 @@ const GetAllProjects = async () => {
   }
 }
 onMounted(() => {
-  GetAllProjects()
+  if(user?.type == OrganizationTypeEnum.ORGANIZATION) {
+    GetAllProjects()
+  }
 })
 
 
