@@ -19,6 +19,7 @@ class IndexCheckListRepo extends RepoInterface<CheckListDetailsModel[]> {
   }
 
   override get hasPagination(): boolean {
+
     return true
   }
 
@@ -29,6 +30,7 @@ class IndexCheckListRepo extends RepoInterface<CheckListDetailsModel[]> {
   get serviceInstance(): ServicesInterface {
     return IndexCheckListApiService.getInstance()
   }
+
 }
 
 export { IndexCheckListRepo }

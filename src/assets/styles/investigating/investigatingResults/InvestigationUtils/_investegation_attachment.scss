@@ -3,7 +3,7 @@
 @import '../../../mixins/grid';
 
 .investegation-attachment {
-  width: 100%;
+  width: 100%; 
   @include flex-column(nowrap, flex-start, flex-start);
 
 }
