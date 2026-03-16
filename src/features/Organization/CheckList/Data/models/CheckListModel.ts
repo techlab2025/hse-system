@@ -39,5 +39,6 @@ export default class CheckListDetailsModel {
     })
   }
 
+
   static example: CheckListDetailsModel = new CheckListDetailsModel(1, 'title', 1, [])
 }
