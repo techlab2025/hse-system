@@ -31,7 +31,7 @@ export default class EditCheckListParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['warehouse_type_id'] = this.id
+    data['investigation_checklist_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries

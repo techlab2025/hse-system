@@ -6,8 +6,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type CheckListDetailsModel from '../../Data/models/CheckListModel'
 import AddCheckListUseCase from '../../Domain/useCase/addCheckListUseCase'
-import IndexWhereHouseTypeController from './indexCheckListController'
-import IndexWhereHouseTypeParams from '../../Core/params/indexCheckListParams'
+import IndexCheckListController from './indexCheckListController'
+import IndexCheckListParams from '../../Core/params/indexCheckListParams'
 import type AddCheckListParams from '../../Core/params/addCheckListParams'
 
 export default class AddCheckListController extends ControllerInterface<CheckListDetailsModel> {
@@ -43,13 +43,14 @@ export default class AddCheckListController extends ControllerInterface<CheckLis
           imageElement: successImage,
           messageContent: null,
         })
-        // if (router.currentRoute.value.path.includes('where-house-type')) {
-        //   if (!draft) await router.push('/organization/where-house-type')
+        await router.push('/organization/check-list')
+        // if (router.currentRoute.value.path.includes('checklist')) {
+        //   if (!draft) await router.push('/organization/checklist')
         // }
 
         // useLoaderStore().endLoadingWithDialog();
-        await IndexWhereHouseTypeController.getInstance().getData(
-          new IndexWhereHouseTypeParams('', 1, 10, 1),
+        await IndexCheckListController.getInstance().getData(
+          new IndexCheckListParams('', 1, 10, 1),
         )
 
       } else {
