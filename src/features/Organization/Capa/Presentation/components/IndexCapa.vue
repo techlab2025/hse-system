@@ -42,6 +42,9 @@ import HighLevel from '@/shared/icons/HighLevel.vue'
 import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import Observdetails from '@/shared/icons/observdetails.vue'
+import Capa from '@/views/Organization/Capa/Capa.vue'
+import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -291,6 +294,20 @@ const SelectCapaStatus = (data: number) => {
       return "Preventive"
   }
 }
+
+const GetCapaStataus = (capa: CapaModel) => {
+
+  if (String(capa.corrective).length > 0 && String(capa.preventive).length > 0) {
+    return "Preventive And Corrective"
+  }
+  if (String(capa.corrective).length > 0 && String(capa.preventive).length == 0) {
+    return "Corrective"
+  }
+  if (String(capa.corrective).length == 0 && String(capa.preventive).length > 0) {
+    return "Preventive"
+  }
+
+}
 </script>
 
 <template>
@@ -366,30 +383,12 @@ const SelectCapaStatus = (data: number) => {
                         <div class="card-content" style="flex: 1">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
+                              {{ $t('Serial') }} : <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              {{ $t('observation Date & Time') }} :
-                              <span>{{ item.date }} & {{ item.time }}</span>
-                            </p>
-                            <p class="label-item-secondary">
-                              {{ $t('CAPA Date & Time') }} :
+                              {{ $t('capa date') }} :
                               <span>{{ formatJoinDate(item.createdAt) }} & {{ formatTime(item.createdAt) }} </span>
                             </p>
-                            <p class="label-item-secondary flex items-center gap-1">
-                              {{ $t('operation type') }} :
-                              <span>{{ GetObservationType(item.type) }}</span>
-                            </p>
-                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
-                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
-                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
-                                @update:checked="toggleObservationActionStatus(item?.id)" />
-                            </p> -->
-                            <p class="label-item-secondary flex items-center gap-1"
-                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
-                              {{ GetSaveStatus(item.saveStatus) }}
-                            </p>
-
                             <!-- <p class="label-item-secondary flex items-center gap-1">
                               {{ SelectCapaStatus(1) }}
                             </p> -->
@@ -401,34 +400,82 @@ const SelectCapaStatus = (data: number) => {
                             </p> -->
 
                           </div>
-                          <router-link :to="`equipment-mangement/observation/show/${item?.id}`" class="card-details">
-                            <p class="title">
-                              {{ item.observer.name }} <span>{{ '(observer)' }}</span>
-                            </p>
+                          <div class="sup-title">
                             <p class="subtitle">{{ item.title }}</p>
+                            <p class="description"> {{ item.description }}</p>
+                          </div>
+
+                          <div class="card-details">
+                            <div class="name">
+                              <p class="title">
+                                {{ item.observer.name }} <span>{{ '(observer)' }}</span>
+                              </p>
+                            </div>
+
+                            <div class="location-observation">
+                              <div class="location">
+                                <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
+                                  <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
+                                </p>
+                                <p class="label-item-primary" v-if="item.equipment?.title">
+                                  {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
+                                </p>
+                                <p class="label-item-secondary">
+                                  {{ $t('observation Date & Time') }} :
+                                  <span>{{ item.date }} & {{ item.time }}</span>
+                                </p>
+                                <p class="label-item-secondary flex items-center gap-1">
+                                  {{ $t('operation type') }} :
+                                  <span>{{ GetObservationType(item.type) }}</span>
+                                </p>
+                                <div class="label-item-secondary">
+                                <p>capa status <span>{{ GetCapaStataus(item.capa) }}</span></p>
+                              </div>
+                              </div>
+
+                              <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
+                              <div class="observation-details">
+                                <p>observation <span>details
+                                    <Observdetails />
+                                  </span></p>
+                              </div>
+                              </router-link>
+
+                            </div>
+
+                            <!-- <p class="label-item-secondary flex items-center gap-1">
+                              {{ $t('operation type') }} :
+                              <span>{{ GetObservationType(item.type) }}</span>
+                            </p> -->
+                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
+                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
+                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
+                                @update:checked="toggleObservationActionStatus(item?.id)" />
+                            </p> -->
+                            <!-- <p class="label-item-secondary flex items-center gap-1"
+                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
+                              {{ GetSaveStatus(item.saveStatus) }}
+                            </p> -->
                             <!-- <p class="subtitle">{{ item.description }}</p> -->
-                            <div class="project-details">
-                              <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
-                                <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
-                              </p>
-                              <p class="label-item-primary" v-if="item.equipment?.title">
-                                {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
-                              </p>
-                              <!-- <p class="label-item-primary" v-if="item.status">
+                            <!-- <div class="project-details"> -->
+
+
+                            <!-- <p class="label-item-primary" v-if="item.status">
                                 Status : <span>{{ item?.status }}</span>
                               </p> -->
-                            </div>
-                          </router-link>
+                            <!-- </div> -->
+                          </div>
                         </div>
 
-                        <div class="card-info">
+                        <!-- imge and level -->
+                        <!-- <div class="card-info">
                           <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
                             class="observation-risk-level flex items-center gap-1"
                             :class="GetRiskLevel(item.riskLevel)">
                             {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
                             <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
                           </span>
-                          <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
+
                           <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
                             <template #previewicon>
                               <div class="perview">
@@ -436,14 +483,15 @@ const SelectCapaStatus = (data: number) => {
                                 <ViewIcon />
                               </div>
                             </template>
-                          </Image>
-                          <!-- <img v-else src="@/assets/images/logo.svg" alt=""> -->
-                        </div>
+</Image>
+
+</div> -->
                       </div>
                     </div>
                   </div>
 
-                  <div class="observation-dwspcription-more">
+                  <!-- description -->
+                  <!-- <div class="observation-dwspcription-more">
                     <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                       <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
                       <span v-else>{{ $t('Show More') }}</span>
@@ -456,7 +504,7 @@ const SelectCapaStatus = (data: number) => {
                         {{ item.description }}
                       </p>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -502,6 +550,70 @@ const SelectCapaStatus = (data: number) => {
 </template>
 
 <style scoped lang="scss">
+.card-content {
+  .sup-title {
+    margin-bottom: 1rem;
+
+    p {
+      font-family: 'Regular';
+      font-weight: 600;
+      font-size: 15px;
+      color: #6a717d;
+    }
+  }
+
+  .card-details {
+    background-color: #1F41BB0A;
+    padding: .7rem;
+    border-radius: 20px;
+    width: 100%;
+
+    .location-observation {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .location {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: .5rem 0;
+
+      p {
+        color: #9CA3AF;
+        font-weight: 600;
+        font-size: 14px;
+
+        span {
+          color: #505050;
+        }
+      }
+    }
+  }
+
+  .observation-details {
+    p {
+      display: flex;
+      flex-direction: column;
+      font-family: 'bold';
+      font-weight: 700;
+      font-size: 16px;
+      color: #1F41BB;
+
+      span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: .5rem;
+      }
+    }
+  }
+}
+
 .label-item-secondary {
   font-family: "regular";
 
