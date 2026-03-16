@@ -1273,5 +1273,6 @@
   "system_incidant_types": "System Incidant Types",
   "system_equipment_types": "System Equipment Types",
   "system_injury_types": "System Injury Types",
-  "close_investegation": "Close Investegation"
+  "close_investegation": "Close Investegation",
+  "investigation_category":"Investigation Category"
 }

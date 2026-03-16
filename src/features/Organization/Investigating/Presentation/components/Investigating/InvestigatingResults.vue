@@ -173,7 +173,7 @@ const updateRecommendation = (data) => {
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>
         </div>
-        <!-- <div class="flex w-full gap-2">
+        <div class="flex w-full gap-2">
           <div class="input-wrapper w-50">
             <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
               :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
@@ -190,16 +190,18 @@ const updateRecommendation = (data) => {
           </div>
           <div class="input-wrapper w-50">
             <UpdatedCustomInputSelect :modelValue="SelectedLevel" class="input" :staticOptions="InvestigationLevel"
-              :label="$t('Investegation Level')" id="investegation-level" :placeholder="$t('select your Level')"
+              :label="$t('investigation_category')" id="investegation-level" :placeholder="$t('select your Level')"
               @update:modelValue="setSelectedLevel" />
           </div>
-        </div> -->
-        <CauseOfAccidant @update:data="setCauseOfAction" />
-        <!-- <div class="input-wrapper w-full reccomendation">
+        </div>
+        <div class="input-wrapper w-full reccomendation">
           <label for="recommendation">{{ $t('recommendation') }}</label>
           <textarea id="recommendation" class="input" placeholder="add your recommendation" v-model="recommendation"
             @input="updateRecommendation"></textarea>
-        </div> -->
+        </div>
+        <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
+
+        <CauseOfAccidant @update:data="setCauseOfAction" />
         <InvestigationTasks @update:data="setInvestigationTasks" />
         <RateActions @update:data="setRateAction" />
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
@@ -213,7 +215,6 @@ const updateRecommendation = (data) => {
           </div>
         </div>
 
-        <!-- <FiveWhyQuestions @update:data="setFiveWhyQuestions" /> -->
         <ViewersResults @update:data="setViewersResults" />
         <AnotherMeeting @update:data="setAnotherMeeting" />
         <!-- <TimeLine :items="item" /> -->
@@ -256,6 +257,6 @@ const updateRecommendation = (data) => {
 }
 
 .reccomendation {
-  padding-inline: 10px;
+  /* padding-inline: 10px; */
 }
 </style>
