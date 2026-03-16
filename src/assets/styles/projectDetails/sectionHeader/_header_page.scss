@@ -9,6 +9,7 @@
   border-radius: calc($XlSize + 3px);
   font-family: 'Regular';
   // margin-block: $SmSize;
+ 
 
   .section-header-page {
     @include flex-row(wrap, flex-start, center);
@@ -20,6 +21,9 @@
     @media (max-width: 768px) {
       justify-content: center;
     }
+     &.no-bg{
+    background: transparent;
+  }
 
     .section-img-page {
       width: 50px;
