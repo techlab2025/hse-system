@@ -219,7 +219,7 @@ const updateRecommendation = (data) => {
         <AnotherMeeting @update:data="setAnotherMeeting" />
         <!-- <TimeLine :items="item" /> -->
         <div class="btns">
-          <!-- <CloseInvestegaionDialog /> -->
+          <CloseInvestegaionDialog />
           <router-link to="/organization/investigating" class="btn btn-cancel ">{{ $t('cancel') }}</router-link>
           <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
         </div>

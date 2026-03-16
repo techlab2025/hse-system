@@ -40,7 +40,10 @@ export default class CheckListDetailsModel {
     })
   }
 
-  static example: CheckListDetailsModel = new CheckListDetailsModel(1, [
-    { title: 'title', locale: 'en' },
-  ], 1, [])
+  static example: CheckListDetailsModel = new CheckListDetailsModel(
+    1,
+    [{ title: 'title', locale: 'en' }],
+    1,
+    [],
+  )
 }
