@@ -82,7 +82,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.corrective) data['corrective'] = this.corrective
     if (this.preventive) data['preventive'] = this.preventive
     if (this.RootCauses) data['root_causes'] = this.RootCauses
-    if (this.investegaionLevel) data['investegaion_level'] = this.investegaionLevel
+    if (this.investegaionLevel) data['investigation_category'] = this.investegaionLevel
     if (this.FiveWhyQuestionsData) data['five_why_questions_data'] = this.FiveWhyQuestionsData
     return data
   }
