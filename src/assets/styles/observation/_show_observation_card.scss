@@ -15,7 +15,7 @@
     // background: linear-gradient( to right, #E8D5B5 0%,#1D4ED8 10%,white 100%);
     border-radius: 12px;
     position: relative;
-    &::after{
+    &::after {
       position: absolute;
       content: '';
       top: 0;
@@ -26,14 +26,14 @@
       opacity: 0.1;
       border-radius: $XsSize;
     }
-      &::before{
+    &::before {
       position: absolute;
       content: '';
       // top: 0;
       left: 0;
       width: 15px;
       height: 100%;
-      background-color: #E8D5B5;
+      background-color: #e8d5b5;
       opacity: 0.1;
       border-radius: $XsSize;
     }
@@ -54,7 +54,7 @@
             color: var(--second-dark-color);
             font-size: $XlSize2;
             font-weight: $BaseFontWeightBold;
-              margin-bottom: $XsSize;
+            margin-bottom: $XsSize;
           }
           .Description {
             color: #aab1bd;
@@ -70,8 +70,9 @@
           .label-item-secondary,
           .label-item-primary {
             span {
-              font-family: 'Regular';
-              font-weight: $BaseFontSemiBoldWeight;
+              font-family: 'bold';
+              font-weight: $BaseFontWeightBold;
+              font-size: $MdSize;
             }
           }
         }
@@ -178,7 +179,6 @@
               color: white;
               font-size: $SmSize;
               font-weight: $BaseFontSemiBoldWeight;
-
             }
           }
         }
@@ -263,6 +263,7 @@
 .observation-dwspcription-more {
   width: 100%;
   @include flex-row-reverse(nowrap, space-between, center);
+
   .show-more {
     @include flex-row(nowrap, flex-end, center);
     gap: 4px;
