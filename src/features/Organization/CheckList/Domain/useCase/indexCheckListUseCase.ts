@@ -11,7 +11,7 @@ export default class IndexCheckListUseCase
   async call(params: Params): Promise<DataState<CheckListDetailsModel[]>> {
     return UseCaseHandler.instance().handle({
       onTest: () => {
-        return new DataSuccess({ data: CheckListDetailsModel.example })
+        return new DataSuccess({ data: [CheckListDetailsModel.example] })
       },
       onDev: () => {
         return IndexCheckListRepo.getInstance().call(params)

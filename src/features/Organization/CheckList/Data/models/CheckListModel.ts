@@ -3,31 +3,30 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class CheckListDetailsModel {
   public id: number
-  public titles: TitleLocale[]
-  public allIndustries: number
-  public industries: TitleInterface[]
+  public title: string
+  public phone: number
+  titles: TitleLocale[]
+
 
   constructor(
     id: number,
+    title: string,
+    phone: number,
     titles: TitleLocale[],
-    allIndustries: number,
-    industries: TitleInterface[],
   ) {
     this.id = id
+    this.title = title
+    this.phone = phone
     this.titles = titles
-    this.allIndustries = allIndustries
-    this.industries = industries
   }
 
   static fromMap(data: any): CheckListDetailsModel {
     console.log(data, 'inside model')
     return new CheckListDetailsModel(
       data.id,
+      data.title,
+      data.phone,
       TranslationsParams.fromMap(data.titles).titles,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => this.getTitle(industry))
-        : [],
     )
   }
 
@@ -40,7 +39,5 @@ export default class CheckListDetailsModel {
     })
   }
 
-  static example: CheckListDetailsModel = new CheckListDetailsModel(1, [
-    { title: 'title', locale: 'en' },
-  ], 1, [])
+  static example: CheckListDetailsModel = new CheckListDetailsModel(1, 'title', 1, [])
 }

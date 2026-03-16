@@ -8,7 +8,7 @@ export default class DeleteCheckListParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["warehouse_type_id"] = this.id;
+    data["investigation_checklist_id"] = this.id;
     return data;
   }
 }

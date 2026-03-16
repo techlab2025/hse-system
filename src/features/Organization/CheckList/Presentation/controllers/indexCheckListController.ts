@@ -35,6 +35,7 @@ export default class IndexCheckListController extends SelectControllerInterface<
     } else {
       throw new Error('Error while addServices')
     }
+    console.log('bbbbbbbbbbbbbbbbbbbbtate',this.state.value.data)
     super.handleResponseDialogs()
     return this.state
   }
