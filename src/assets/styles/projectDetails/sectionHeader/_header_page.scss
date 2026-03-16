@@ -17,6 +17,9 @@
     width: 100%;
     padding: $SmSize $MdSize;
     border-radius: calc($XlSize + 3px);
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
 
     .section-img-page {
       width: 50px;
@@ -41,17 +44,25 @@
 
     .header-text-page {
       @include flex-column(nowrap, flex-start, flex-start);
+      @media (max-width: 768px) {
+        align-items: center;
+      }
 
       .title-page {
         font-weight: $BaseFontWeightBold;
         font-size: calc($XlSize + 2px);
         color: var(--header-page-color);
+        font-family: 'Bold';
       }
 
       .subtitle-page {
         color: $SubtitleColor;
         font-weight: $BaseFontMediumWeight;
         font-size: $SmSize;
+        font-family: 'Regular';
+          @media (max-width: 768px) {
+        text-align: center;
+      }
       }
     }
   }

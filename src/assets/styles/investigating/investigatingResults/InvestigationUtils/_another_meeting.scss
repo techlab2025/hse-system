@@ -29,6 +29,11 @@
   }
   .another-meeting-header {
     @include flex-row(nowrap, space-between, center);
+    @media (max-width: 668px) {
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 0.7rem;
+    }
     width: 100%;
     .title-header {
       background-color: #fbfbfb !important;
