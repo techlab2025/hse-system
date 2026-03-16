@@ -6,6 +6,7 @@ import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   projects: MyProjectsModel[]
+  isForm?: boolean
 }>()
 const ActiveTap = ref(props.projects?.[0]?.id)
 const AllProjects = ref(props.projects)
@@ -14,16 +15,19 @@ const UpdateData = (Id: number) => {
   ActiveTap.value = Id
   emit('update:data', ActiveTap.value)
 }
-// watch(
-//   () => props.projects,
-//   (newVal) => {
-//     if (newVal && newVal.length > 0) {
-//       ActiveTap.value = newVal[0].id
-//       emit('update:data', ActiveTap.value)
-//     }
-//   },
-//   // { immediate: true }
-// )
+watch(
+  () => props.projects,
+  (newVal) => {
+    if (newVal && newVal.length > 0) {
+      if(props.isForm){
+
+        ActiveTap.value = newVal[0].id
+        emit('update:data', ActiveTap.value)
+      }
+    }
+  },
+  // { immediate: true }
+)
 
 watch(() => props.projects, (newVal) => {
   AllProjects.value = newVal

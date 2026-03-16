@@ -1606,6 +1606,9 @@ class ApiNames {
   public get DeleteCheckList() {
     return this.prefix + 'delete_investigation_checklist'
   }
+  public get CloseInvestigating() {
+    return this.prefix + 'close_investigation'
+  }
 }
 
 export { ApiNames }
