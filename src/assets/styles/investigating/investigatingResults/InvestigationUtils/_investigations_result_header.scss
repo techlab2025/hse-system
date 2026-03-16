@@ -17,6 +17,7 @@
     .title {
       font-size: $MdSize2;
       font-weight: $BaseFontWeightBold;
+      font-family: 'Bold';
       color: $PrimaryColor;
     }
     span {
@@ -29,6 +30,10 @@
   .investigating-info {
     @include flex-row(nowrap, flex-start, center);
     gap: $XlSize4;
+    @media (max-width: 768px) {
+     flex-wrap: wrap;
+     gap: 10px;
+    }
     p {
       color: #aeaeb2;
       font-size: $SmSize;
@@ -36,12 +41,14 @@
       span {
         color: #202020;
         font-weight: $BaseFontWeightBold;
+        font-family: 'Bold';
       }
     }
   }
   .meeting-info-container {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize3;
+
     width: 100%;
     .metting-info-header-container {
       @include flex-row(nowrap, flex-start, center);
@@ -50,6 +57,7 @@
         color: #202020;
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
+        font-family: 'Bold';
       }
       .meeting-hr {
         // flex-grow: 1;
@@ -63,6 +71,10 @@
     .meeting-info {
       @include flex-row(nowrap, flex-start, center);
       gap: $XlSize4;
+          @media (max-width: 768px) {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
       p {
         color: #aeaeb2;
         font-size: $SmSize;
@@ -70,6 +82,7 @@
         span {
           color: #202020;
           font-weight: $BaseFontWeightBold;
+          font-family: 'Bold';
           &.meet-date {
             color: #1f41bb;
           }

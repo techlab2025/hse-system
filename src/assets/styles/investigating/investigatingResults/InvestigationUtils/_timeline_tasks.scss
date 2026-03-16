@@ -27,6 +27,10 @@
       .timeline-contect-select {
         @include flex-row(nowrap, space-between, center);
         width: 100%;
+        @media (max-width: 768px) {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
         gap: 20px;
         &.timeline-templateitem-contect-select {
           @include grid(

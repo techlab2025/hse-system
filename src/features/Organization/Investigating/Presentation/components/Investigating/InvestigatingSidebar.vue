@@ -21,7 +21,7 @@ const selectRisk = (value: RiskLevelEnum | null) => {
   <div class="col-span-3">
     <div class="sidebar-container">
       <div class="sidebar-card">
-        <div class="sidebar-card-header">
+        <div class="sidebar-card-header"> 
           <div class="sidebar-header">
             <p class="sidebar-label-item-primary">Investigation</p>
             <img :src="booksImage" alt="books" class="sidebar-img" />

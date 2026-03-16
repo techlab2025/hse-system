@@ -15,6 +15,7 @@
       color: #170f49;
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
+      font-family: 'Bold';
       span {
         color: #1f41bb;
         font-size: $SmSize;
@@ -46,6 +47,9 @@
   .radio-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(200px, 1fr));
+    @media (max-width: 668px) {
+      grid-template-columns: repeat(1, minmax(100px, 1fr)) !important;
+    }
 
     gap: 20px;
   }
@@ -101,6 +105,7 @@
   p {
     font-weight: $BaseFontWeightBold;
     font-size: $MdSize2;
+    font-family: 'Bold';
   }
   .meeting-icon {
     width: 32px;

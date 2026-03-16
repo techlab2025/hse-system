@@ -115,9 +115,11 @@
     color: rgba(174, 174, 178, 1);
     font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
+    font-family: 'Regular';
     span {
       color: rgba(32, 32, 32, 1);
       font-weight: $BaseFontMediumWeight;
+      font-family: 'Regular';
     }
   }
 
