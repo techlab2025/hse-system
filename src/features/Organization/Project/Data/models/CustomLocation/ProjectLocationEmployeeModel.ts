@@ -41,4 +41,15 @@ export default class ProjectLocationEmployeeModel {
       data.hierarchy,
     )
   }
+
+  static example = new ProjectLocationEmployeeModel(
+    1,
+    1,
+    1,
+    'John Doe',
+    'zE9YQ@example.com',
+    '',
+    1,
+    [],
+  )
 }

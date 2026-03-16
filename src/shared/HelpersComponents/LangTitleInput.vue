@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import Editor from 'primevue/editor'
+import StarRequiredInput from '../icons/StarRequiredInput.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -299,9 +300,12 @@ watch(hasAtLeastOneValue, (isValid) => {
 <template>
   <div class="input-wrapper">
     <div class="label-wrapper">
-      <label>
+      <label class="flex items-center gap-2">
         {{ $t(label) }}
-        <span class="text-red-500" v-if="required">*</span>
+        <!-- <span class="text-red-500" v-if="required">*</span> -->
+        <span class="text-red-500" v-if="required">
+          <StarRequiredInput />
+        </span>
       </label>
 
       <!-- Dynamic Languages -->

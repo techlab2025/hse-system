@@ -334,7 +334,7 @@ const IndexOrganizationEmployeectionList = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
 
     <!-- ... -->
-     <DataEmployee/>
+     <DataEmployee v-if="route.query.heirarchy_id"/>
     <div v-if="route.query.certificate_id" class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex">
       <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
         Certificate</button>
