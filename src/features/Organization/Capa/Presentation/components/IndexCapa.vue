@@ -40,6 +40,8 @@ import { saveAs } from "file-saver";
 import PinIcons from '@/shared/icons/PinIcons.vue'
 import HighLevel from '@/shared/icons/HighLevel.vue'
 import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { formatTime } from '@/base/Presentation/utils/time_format'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -367,8 +369,12 @@ const SelectCapaStatus = (data: number) => {
                               {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              {{ $t('Date & Time') }} :
+                              {{ $t('observation Date & Time') }} :
                               <span>{{ item.date }} & {{ item.time }}</span>
+                            </p>
+                            <p class="label-item-secondary">
+                              {{ $t('CAPA Date & Time') }} :
+                              <span>{{ formatJoinDate(item.createdAt) }} & {{ formatTime(item.createdAt) }} </span>
                             </p>
                             <p class="label-item-secondary flex items-center gap-1">
                               {{ $t('operation type') }} :

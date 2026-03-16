@@ -3,14 +3,15 @@ const props = defineProps<{
   img?: string
   number?: number
   title: string
-  subtitle?: string
   showAll: boolean
+  subtitle?: string
+  Nobg?: boolean
 }>()
 </script>
 <template>
   <div class="section-header-page-container">
 
-      <div class="section-header-page">
+    <div class="section-header-page" :class="Nobg ? 'no-bg' : ''">
       <img class="section-img-page" :src="img" alt="objective logo" v-if="img" />
       <div class="section-number-page" v-if="number">
         <span>{{ number }}</span>
