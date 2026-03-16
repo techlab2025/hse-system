@@ -88,11 +88,11 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
+const actionList = (id: number, deleteCheckList: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/organization/where-house-type/${id}`,
+    link: `/organization/check-list/${id}`,
     permission: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
       PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
@@ -104,7 +104,7 @@ const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deleteWhereHouseType(id),
+    action: () => deleteCheckList(id),
     permission: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -142,9 +142,9 @@ const exportExcel = () => {
   saveAs(data, "WarehouseType.xlsx");
 };
 
-const { user } = useUserStore()
 
-const IndexWhereHouseTypeactionList = () => [
+
+const IndexActionList = () => [
   {
     text: t('export_excel'),
     icon: ExceIcon,
@@ -157,8 +157,8 @@ const IndexWhereHouseTypeactionList = () => [
     ],
   },
   {
-    text: t('add_warehouse_type'),
-    link: '/organization/where-house-type/add',
+    text: t('add_check_list'),
+    link: '/organization/check-list/add',
     icon: ActionsListAddIcon,
     type: ActionItemsTypeEnum.Info,
     permission: [
@@ -167,9 +167,9 @@ const IndexWhereHouseTypeactionList = () => [
     ],
   },
   {
-    text: t('import_warehouse'),
+    text: t('import_check_list'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/where-house-type/upload',
+    link: '/organization/check-list/upload',
     icon: UploadExcelIcon,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -211,7 +211,7 @@ const IndexWhereHouseTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexWhereHouseTypeactionList()" :actionsNumber="4">
+      <ActionsList :show-actions="true" :actionList="IndexActionList()" :actionsNumber="4">
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
@@ -245,7 +245,7 @@ const IndexWhereHouseTypeactionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/where-house-type/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/check-list/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -268,24 +268,24 @@ const IndexWhereHouseTypeactionList = () => [
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
-          <DataEmpty :link="`/organization/where-house-type/add`" addText="Add WhereHouseType"
-            description="Sorry .. You have no WhereHouseType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouseType" />
+          <DataEmpty :link="`/organization/check-list/add`" addText="Add CheckList"
+            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No CheckList" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
-          <DataFailed :link="`/organization/where-house-type/add`" addText="Add WhereHouseType"
-            description="Sorry .. You have no WhereHouseType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouseType" />
+          <DataFailed :link="`/organization/check-list/add`" addText="Add CheckList"
+            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No CheckList" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no WhereHouseType .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

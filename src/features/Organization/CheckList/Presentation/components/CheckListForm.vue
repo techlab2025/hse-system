@@ -18,6 +18,7 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import EditCheckListParams from '../../Core/params/editCheckListParams'
 import AddCheckListParams from '../../Core/params/addCheckListParams'
 import type CheckListDetailsModel from '../../Data/models/CheckListModel'
+import { title } from 'process'
 
 const emit = defineEmits(['update:data'])
 
@@ -65,9 +66,9 @@ const fetchLang = async (
     return
   }
   const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexWhereHouseTypeController = await IndexLangController.getInstance().getData(params)
+  const indexCheckListController = await IndexLangController.getInstance().getData(params)
 
-  const response = indexWhereHouseTypeController.value
+  const response = indexCheckListController.value
 
   if (response?.data?.length) {
     langDefault.value = response.data.map((item: any) => ({
@@ -101,9 +102,7 @@ const updateData = () => {
   const params = props.data?.id
     ? new EditCheckListParams(props.data.id, translationsParams, AllIndustry,
       industry.value?.map((item) => item.id) ?? [],)
-    : new AddCheckListParams(translationsParams,
-      null, AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],)
+    : new AddCheckListParams(translationsParams)
 
   // console.log(params, 'params')
 

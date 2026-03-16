@@ -20,7 +20,7 @@ class ShowCheckListApiService extends ServicesInterface {
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.ShowWhereHouseType,
+      url: ApiNames.instance.ShowCheckList,
       type: CrudType.FormData,
       auth: true,
       params: params,

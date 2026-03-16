@@ -21,7 +21,7 @@ class AddCheckListApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.AddWarehouseClones,
+      url: ApiNames.instance.AddCheckList,
       type: CrudType.POST,
       auth: true,
       params: params,
