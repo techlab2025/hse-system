@@ -20,7 +20,7 @@ class EditCheckListApiService extends ServicesInterface {
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.EditWhereHouseType,
+      url: ApiNames.instance.EditCheckList,
       type: CrudType.POST,
       auth: true,
       params: params,

@@ -39,7 +39,7 @@ export default class EditCheckListController extends ControllerInterface<CheckLi
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/where-house-type')
+        await router.push('/organization/check-list')
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({

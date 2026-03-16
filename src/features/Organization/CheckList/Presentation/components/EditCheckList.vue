@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import WhereHouseTypeForm from '@/features/Organization/WhereHouseType/Presentation/components/WhereHouseTypeForm.vue'
+import CheckListForm from '@/features/Organization/CheckList/Presentation/components/CheckListForm.vue'
 import type Params from '@/base/core/params/params'
 import ShowCheckListController from '../controllers/showCheckListController'
 import ShowCheckListParams from '../../Core/params/showCheckListParams'
@@ -57,7 +57,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editCheckList">
-        <WhereHouseTypeForm @update:data="setParams" :data="state.data!" />
+        <CheckListForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('edit') }}</button>
         </div>

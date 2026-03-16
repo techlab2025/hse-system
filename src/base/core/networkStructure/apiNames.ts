@@ -1590,6 +1590,22 @@ class ApiNames {
   public get CreateSystemObserverationType() {
     return this.prefix + 'clone_observation_types'
   }
+  // CheckList
+  public get IndexCheckList() {
+    return this.prefix + 'fetch_check_lists'
+  }
+  public get AddCheckList() {
+    return this.prefix + 'create_check_list'
+  }
+  public get ShowCheckList() {
+    return this.prefix + 'fetch_check_list_details'
+  }
+  public get EditCheckList() {
+    return this.prefix + 'update_check_list'
+  }
+  public get DeleteCheckList() {
+    return this.prefix + 'delete_check_list'
+  }
 }
 
 export { ApiNames }

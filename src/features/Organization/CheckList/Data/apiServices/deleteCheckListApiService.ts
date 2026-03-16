@@ -21,7 +21,7 @@ class DeleteCheckListApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DeleteWhereHouseType,
+      url: ApiNames.instance.DeleteCheckList,
       type: CrudType.FormData,
       auth: true,
       params: params,

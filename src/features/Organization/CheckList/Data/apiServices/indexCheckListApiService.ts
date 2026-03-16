@@ -21,7 +21,7 @@ class IndexCheckListApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.IndexWhereHouseType,
+      url: ApiNames.instance.IndexCheckList,
       type: CrudType.POST,
       auth: true,
       params: params,
