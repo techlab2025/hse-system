@@ -10,9 +10,13 @@
   import IndexCheckListParams from '@/features/Organization/CheckList/Core/params/indexCheckListParams';
   import { useI18n } from 'vue-i18n';
   import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
+  import CloseInvestegationController from '../../../controllers/CloseInvestigatingController';
+  import CloseInvestegationParams from '@/features/Organization/Investigating/Core/params/CloseInvestigationParams';
+  import InvestegationChecklistParams from '@/features/Organization/Investigating/Core/params/InvestegationChecklistParams';
 
   const props = defineProps<{
     isHeaderTap?: boolean
+    investegationId?: number
   }>()
 
   const visible = ref(false);
@@ -62,9 +66,10 @@
 
   const router = useRouter()
   const SubmitData = async () => {
-    // const addWhereHouseTypeCloneController = AddWhereHouseTypeCloneController.getInstance()
-    // const addWarehouseTypeClonesParams = new AddWarehouseTypeClonesParams({ clonesIds: selectedIds.value })
-    // const dataState = await addWhereHouseTypeCloneController.addWhereHouseTypeClone(addWarehouseTypeClonesParams, router)
+    const closeInvestegationController = CloseInvestegationController.getInstance()
+    const ChecklistParams = selectedIds.value.map((el) => new InvestegationChecklistParams({checklist_id: el}))
+    const closeInvestegationParams = new CloseInvestegationParams(props.investegationId!, ChecklistParams)
+    const dataState = await closeInvestegationController.CloseInvestigating(closeInvestegationParams)
     visible.value = false
   }
   const { locale } = useI18n()
@@ -77,7 +82,7 @@
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <!-- :img="DialogSystem" -->
-      <HeaderSection  title="are you sure?"
+      <HeaderSection title="are you sure?"
         subtitle="If you want to close the investigations, then you have completed all the steps shown in the task list." />
     </template>
     <DataStatus :controller="state">

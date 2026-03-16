@@ -454,7 +454,7 @@ const setRootCause = (data: TitleInterface[]) => {
       <HeaderPage :title="`New ${GetHeader(ObservationFactoryType)} Report`"
         :subtitle="ObservationFactoryType == Observation.ObservationType ?  $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace') : 'Accurately document the accident details and immediate response actions taken'"
         :img="ObservationImage" />
-      <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
+      <HeaderProjectsFilter class="colored" :projects="Projects" :isForm="true" @update:data="GetProjectId" />
     </div>
 
     <div class="col-span-6 md:col-span-6">
