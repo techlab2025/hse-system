@@ -42,6 +42,9 @@
         @include flex-row(nowrap, center, center);
         width: 100%;
         background-color: #f8f9fb;
+        @media (max-width: 468px) {
+          flex-wrap: wrap;
+        }
         .p-breadcrumb-item {
           .p-breadcrumb-item-link {
             .p-breadcrumb-item-label {

@@ -5,14 +5,15 @@
 .meeting-overview-answer {
   font-family: 'Regular';
   width: 100%;
-
-  font-family: 'Regular';
   padding-top: 25px;
   .header {
     @include flex-row(nowrap, space-between, center);
     width: 100%;
     // padding-top: 20px;
     border-top: 5px solid #f8f9fb;
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+    }
     .answer-header {
       padding: 0;
       background-color: white !important;

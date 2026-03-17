@@ -173,7 +173,7 @@ const updateRecommendation = (data) => {
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>
         </div>
-        <div class="flex w-full gap-2">
+        <div class="flex w-full gap-2 investigation-result-inputs">
           <div class="input-wrapper w-50">
             <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
               :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
@@ -219,7 +219,7 @@ const updateRecommendation = (data) => {
         <AnotherMeeting @update:data="setAnotherMeeting" />
         <!-- <TimeLine :items="item" /> -->
         <div class="btns">
-          <CloseInvestegaionDialog :investegationId="state.data?.id"/>
+          <CloseInvestegaionDialog :investegationId="state.data?.id" />
           <router-link to="/organization/investigating" class="btn btn-cancel ">{{ $t('cancel') }}</router-link>
           <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
         </div>
@@ -251,12 +251,22 @@ const updateRecommendation = (data) => {
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .w-50 {
   width: 50%;
 }
 
 .reccomendation {
   /* padding-inline: 10px; */
+}
+
+.investigation-result-inputs {
+  @media (max-width: 568px) {
+    flex-wrap: wrap;
+
+    .input-wrapper {
+      width: 100%;
+    }
+  }
 }
 </style>
