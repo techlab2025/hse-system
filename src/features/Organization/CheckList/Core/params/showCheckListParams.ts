@@ -9,7 +9,7 @@ export default class ShowCheckListParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['investigation_checklist_id'] = this.id
+    data['checklist_id'] = this.id
     return data
   }
 }

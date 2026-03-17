@@ -1275,5 +1275,7 @@
   "system_injury_types": "System Injury Types",
   "close_investegation": "Close Investegation",
   "investigation_category":"Investigation Category",
-  "capa date":"CAPA Date"
+  "capa date":"CAPA Date",
+  "import_check_list":"Import Check List",
+  "add_check_list":"Add Check List"
 }
