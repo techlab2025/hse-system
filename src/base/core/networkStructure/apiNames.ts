@@ -1592,19 +1592,19 @@ class ApiNames {
   }
   // CheckList
   public get IndexCheckList() {
-    return this.prefix + 'fetch_investigation_checklists'
+    return this.prefix + 'fetch_checklists'
   }
   public get AddCheckList() {
-    return this.prefix + 'create_investigation_checklist'
+    return this.prefix + 'create_checklist'
   }
   public get ShowCheckList() {
-    return this.prefix + 'fetch_investigation_checklists_details'
+    return this.prefix + 'fetch_checklist_details'
   }
   public get EditCheckList() {
-    return this.prefix + 'update_investigation_checklist'
+    return this.prefix + 'update_checklist'
   }
   public get DeleteCheckList() {
-    return this.prefix + 'delete_investigation_checklist'
+    return this.prefix + 'delete_checklist'
   }
   public get CloseInvestigating() {
     return this.prefix + 'close_investigation'
