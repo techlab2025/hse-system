@@ -29,6 +29,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue'
 import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
 import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
+import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 
 const route = useRoute()
 const id = route.params.id
@@ -72,6 +73,8 @@ const AddEnvestigatingResult = async () => {
     return el?.tasks?.length > 0
   })
   // CheckWitnessIsFullyEmpty ? [] :
+  const RootCausesIds = RootCauses.value.map((el) => new RootCausesIdParams({ root_cause_id: el.id }))
+
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
@@ -84,7 +87,7 @@ const AddEnvestigatingResult = async () => {
     meeting: anotherMeeting?.value?.meetings,
     corrective: CauseOfAction.value?.description,
     preventive: recommendation.value,
-    RootCauses: RootCauses.value.map((el) => el.id),
+    RootCauses: RootCausesIds,
     investegaionLevel: SelectedLevel.value?.id,
     FiveWhyQuestionsData: FiveWhyQuestionsData.value
   });

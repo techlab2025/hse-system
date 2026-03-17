@@ -6,6 +6,7 @@ import type InvestigationAttachmentsParams from './InvestegationAttachmentParams
 import type InvestegationWitnessesParams from './InvestegationWitnessesParams'
 import type InvestegationAnotherMeetingParams from './InvestegationAnotherMeetingParams'
 import type InvestigationFiveQuestionParams from './InvestegationFiveQuestoinsParams'
+import type RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 
 export default class AddInvestigationResultParams implements Params {
   public investigationMeetingId: number
@@ -22,7 +23,7 @@ export default class AddInvestigationResultParams implements Params {
   public meeting?: InvestegationAnotherMeetingParams
   public corrective?: string
   public preventive?: string
-  public RootCauses?: number[]
+  public RootCauses?: RootCausesIdParams[]
   public investegaionLevel?: number
   public FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
 
@@ -41,7 +42,7 @@ export default class AddInvestigationResultParams implements Params {
     meeting?: InvestegationAnotherMeetingParams
     corrective?: string
     preventive?: string
-    RootCauses?: number[]
+    RootCauses?: RootCausesIdParams[]
     investegaionLevel?: number
     FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
   }) {
