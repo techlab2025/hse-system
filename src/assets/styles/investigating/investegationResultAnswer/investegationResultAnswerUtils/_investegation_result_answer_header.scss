@@ -7,6 +7,10 @@
   @include flex-row(nowrap, space-between, center);
   background-color: #fbfbfb;
   font-family: 'Regular';
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
   .investigating-answer-data {
     @include flex-column(nowrap, flex-start, flex-start);
@@ -60,6 +64,10 @@
     .investigating-info {
       @include flex-row(nowrap, flex-start, center);
       gap: $XlSize4;
+      @media (max-width: 768px) {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
       p {
         color: #aeaeb2;
         font-size: $SmSize;
@@ -81,6 +89,10 @@
       .meeting-info {
         @include flex-row(nowrap, flex-start, center);
         gap: $XlSize4;
+        @media (max-width: 768px) {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
         p {
           @include flex-column(nowrap, flex-start, flex-start);
           color: #1f41bb4d;

@@ -9,6 +9,9 @@
     width: 100%;
     // padding-top: 20px;
     border-top: 5px solid #f8f9fb;
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+    }
     .answer-header {
       padding: 0;
       background-color: white !important;
