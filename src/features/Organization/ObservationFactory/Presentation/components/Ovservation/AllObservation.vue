@@ -5,7 +5,7 @@ import Political from "@/assets/images/Political.png"
 import ALERT from "@/assets/images/ALERT.png"
 import PoliceLine from "@/assets/images/PoliceLine.png"
 import ToDoLogo from "@/assets/images/ToDoLogo.png"
-import { InspectionPageType, InspectionType } from '../../../Core/Enums/InspectionTypeEnum'
+import { InspectionPageType } from '../../../Core/Enums/InspectionTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 
