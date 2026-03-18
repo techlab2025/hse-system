@@ -120,7 +120,7 @@ const InspectionsResultsTasks = async (
 }
 
 onMounted(() => {
-  if (selectedProjctesFilters.value) {
+  // if (selectedProjctesFilters.value) {
     if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
       fetchInspection()
     }
@@ -130,7 +130,7 @@ onMounted(() => {
     else {
       InspectionsResultsTasks()
     }
-  }
+  // }
   FetchMyProjects()
 })
 

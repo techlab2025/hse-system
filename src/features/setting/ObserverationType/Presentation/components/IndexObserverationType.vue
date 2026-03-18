@@ -100,6 +100,18 @@ watch(
     deep: true,
   },
 )
+const indexSystemObserverationTypeController = IndexSystemObserverationTypeController.getInstance()
+watch(
+  () => indexSystemObserverationTypeController.state.value,
+  (newState) => {
+    if (newState) {
+      state.value = newState
+    }
+  },
+  {
+    deep: true,
+  },
+)
 
 const { user } = useUserStore()
 
