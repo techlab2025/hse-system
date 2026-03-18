@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import { ProjectStatusEnum } from '../../../Core/Enums/ProjectStatusEnum';
-import type ProjectModel from '../../../Data/models/ProjectModel';
-import Stopcard from '@/shared/icons/stopcard.vue';
+import { ProjectStatusEnum } from '../../../Core/Enums/ProjectStatusEnum'
+import type ProjectModel from '../../../Data/models/ProjectModel'
+import Stopcard from '@/shared/icons/stopcard.vue'
+import CustomPopover from '../../supcomponents/CustomPopover.vue'
 
 const props = defineProps<{
   data: ProjectModel
 }>()
 
-const GetProjectStatus = (status : ProjectStatusEnum) =>{
+const GetProjectStatus = (status: ProjectStatusEnum) => {
   switch (status) {
     case ProjectStatusEnum.active:
       return 'active'
@@ -28,20 +29,49 @@ const GetProjectStatus = (status : ProjectStatusEnum) =>{
       <div class="project-card-header-container">
         <div class="project-card-header">
           <div class="project-header flex items-center">
-            <span class="status" :class="String(data?.status).toLowerCase()" v-if="data?.status">{{ GetProjectStatus( data?.status) }}</span>
-            <span class="serial" :class="data?.status ? 'serial-border':''"> #{{ data?.serialName }} </span>
-
+            <span class="status" :class="String(data?.status).toLowerCase()" v-if="data?.status">{{
+              GetProjectStatus(data?.status)
+            }}</span>
+            <span class="serial" :class="data?.status ? 'serial-border' : ''">
+              #{{ data?.serialName }}
+            </span>
           </div>
           <p class="project-title">{{ data?.title }}</p>
         </div>
 
-        <p class="project-employees">{{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span></p>
+        <p class="project-employees">
+          {{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span>
+        </p>
       </div>
       <div class="project-card-info">
-        <p class="locations update-locations">{{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard/></p>
-        <p class="locations update-locations">{{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard/></p>
+        <custom-popover>
+          <template #btn>
+            <p class="locations update-locations">
+              {{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard />
+            </p>
+          </template>
+          <template #content>
+            <div class="flex flex-col gap-2 location-data">
+              <p v-for="location in data?.locations" :key="location.id">
+                {{ location.title }}
+              </p>
+            </div>
+          </template>
+        </custom-popover>
+
+        <p class="locations update-locations">
+          {{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard />
+        </p>
       </div>
-      <hr style="height:1px;width:100%;border-width:1px;color:#b7beca2c ;background-color:#F5F6F7">
+      <hr
+        style="
+          height: 1px;
+          width: 100%;
+          border-width: 1px;
+          color: #b7beca2c;
+          background-color: #f5f6f7;
+        "
+      />
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">{{ $t('observation') }} :</span>
@@ -66,5 +96,24 @@ const GetProjectStatus = (status : ProjectStatusEnum) =>{
       </div>
     </div>
   </router-link>
-
 </template>
+
+<style scoped>
+.location-data {
+  position: relative;
+  padding-left: 20px;
+  padding: 10px;
+}
+
+.location-data::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translateY(-50%);
+  background-color: #1d4ed8;
+  border-radius: 50%;
+}
+</style>

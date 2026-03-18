@@ -9,7 +9,6 @@
   border-radius: calc($XlSize + 3px);
   font-family: 'Regular';
   // margin-block: $SmSize;
- 
 
   .section-header-page {
     @include flex-row(wrap, flex-start, center);
@@ -21,9 +20,9 @@
     @media (max-width: 768px) {
       justify-content: center;
     }
-     &.no-bg{
-    background: transparent;
-  }
+    &.no-bg {
+      background: transparent;
+    }
 
     .section-img-page {
       width: 50px;
@@ -49,7 +48,8 @@
     .header-text-page {
       @include flex-column(nowrap, flex-start, flex-start);
       @media (max-width: 768px) {
-        align-items: center;
+        // align-items: center;
+        align-items: flex-start;
       }
 
       .title-page {
@@ -64,9 +64,9 @@
         font-weight: $BaseFontMediumWeight;
         font-size: $SmSize;
         font-family: 'Regular';
-          @media (max-width: 768px) {
-        text-align: center;
-      }
+        @media (max-width: 768px) {
+          text-align: center;
+        }
       }
     }
   }

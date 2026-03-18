@@ -7,27 +7,29 @@ import InvestegationWitnessesParams from '@/features/Organization/Investigating/
 import InvestigationFiveQuestionParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationFiveQuestoinsParams'
 import FiveWhyQuestionTree from '../InvestigatingResultsUtils/FiveWhyQuestionTree.vue'
 
-
 const emit = defineEmits(['update:data'])
 
 const UpdateData = (data) => {
-  const witnesses = data.map(item =>
-    new InvestigationFiveQuestionParams(
-      {
+  const witnesses = data.map(
+    (item) =>
+      new InvestigationFiveQuestionParams({
         answer: item.answer,
-        question: item.question || null
-      }
-    )
+        question: item.question || null,
+      }),
   )
 
   emit('update:data', witnesses)
 }
 </script>
 <template>
-  <div class="viwers-result ">
-    <HeaderPage :Nobg="true" :title="`5 why questions`"
-      :subtitle="`Lorem Ipsum is simply dummy text of the printing and typesetting industry`" :img="why"
-      class="title-header" />
+  <div class="viwers-result five-why">
+    <HeaderPage
+      :Nobg="true"
+      :title="`5 why questions`"
+      :subtitle="`Lorem Ipsum is simply dummy text of the printing and typesetting industry`"
+      :img="why"
+      class="title-header"
+    />
     <FiveWhyQuestionTree @update:data="UpdateData" />
   </div>
 </template>
@@ -37,3 +39,4 @@ const UpdateData = (data) => {
   margin-bottom: 12px;
 }
 </style>
+
