@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
+// import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 // import InvestigatingIcon from '@/shared/icons/InvestigatingIcon.vue'
 import DatePicker from 'primevue/datepicker'
 
@@ -23,12 +22,11 @@ import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/
 import ObservationLevel from '../../../../ObservationFactory/Presentation/components/Ovservation/ObservationLevel.vue'
 import HazerdType from '../../../../ObservationFactory/Presentation/components/Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
-import FactorInvestigating from './FactorInvestigating.vue'
 import meetingImage from '../../../../../../assets/images/meeting.png'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
-  data?: ShowInvestigatingTypeModel
+  data?: any
 }>()
 const text = ref<string>('')
 const date = ref<Date>(new Date())
