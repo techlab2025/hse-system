@@ -24,6 +24,8 @@ export default class WhereHouseTypeModel extends TitleInterface {
     new WhereHouseTypeModel(10, 'New House 5', 10),
   ]
   static transformData(data: string[][]): WhereHouseTypeModel[] {
-    return data.map((row, index) => new WhereHouseTypeModel(index + 1, row[0] || '', row[1] || ''))
+    return data.map(
+      (row, index) => new WhereHouseTypeModel(index + 1, row[0] || '', Number(row[1]) || 0),
+    )
   }
 }
