@@ -162,11 +162,6 @@ const updateRecommendation = (data) => {
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <!-- <pre>
-          {{ state.data }}
-        </pre> -->
-
-        <!-- {{ state?.data?.observation?.serial }} -->
         <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
           :victim="state?.data?.observation?.observer?.name" :date="state?.data?.CreatedAt"
           :meetingDate="state?.data?.date" :TeamLeader="state?.data?.TeamLeader.name"

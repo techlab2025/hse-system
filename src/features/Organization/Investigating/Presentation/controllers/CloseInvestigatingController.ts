@@ -5,6 +5,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import type HazardModel from '../../Data/models/investigatingModel'
 import CloseInvestigatingUseCase from '../../Domain/useCase/CloseInvestigatingUseCase'
+import type { Router } from 'vue-router'
 
 export default class CloseInvestegationController extends ControllerInterface<HazardModel> {
   private static instance: CloseInvestegationController
@@ -20,7 +21,7 @@ export default class CloseInvestegationController extends ControllerInterface<Ha
     return this.instance
   }
 
-  async CloseInvestigating(params: Params) {
+  async CloseInvestigating(params: Params , router:Router) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -29,9 +30,14 @@ export default class CloseInvestegationController extends ControllerInterface<Ha
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
+        console.log('success')
       } else {
+        console.log('error')
+
         throw new Error('Error while addServices')
       }
+        await router.push('/organization/investigating')
+
     } catch (error: any) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({

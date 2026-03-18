@@ -35,8 +35,8 @@ import { Observation } from '@/features/Organization/ObservationFactory/Core/Enu
 import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import PinIcons from '@/shared/icons/PinIcons.vue'
 import HighLevel from '@/shared/icons/HighLevel.vue'
 import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
@@ -45,6 +45,7 @@ import { formatTime } from '@/base/Presentation/utils/time_format'
 import Observdetails from '@/shared/icons/observdetails.vue'
 import Capa from '@/views/Organization/Capa/Capa.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
+import CapaDialog from '../supcomponents/CapaDialog.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -84,11 +85,9 @@ const fetchCapa = async (
     route.query.hazard ? route.query.hazard : null,
     route.query.risk_level ? [route.query.risk_level] : null,
     capaStatus?.value?.id,
-
   )
   await indexCapaController.getData(params)
 }
-
 
 onMounted(() => {
   // if (selectedProjctesFilters.value) {
@@ -213,7 +212,6 @@ const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
       return 'Open'
     case ActionStatusEnum.CLOSED:
       return 'Closed'
-
   }
 }
 
@@ -223,7 +221,6 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
       return 'Positive'
     case SaveStatusEnum.NotSaved:
       return 'Negative'
-
   }
 }
 
@@ -231,23 +228,20 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
 const capaStatus = ref<TitleInterface | null>(null)
 const setCapaStatus = (data: TitleInterface | null) => {
   capaStatus.value = data
-  fetchCapa("", 1, 10, 1, null, null, null, selectedProjctesFilters.value)
+  fetchCapa('', 1, 10, 1, null, null, null, selectedProjctesFilters.value)
 }
 const ActionStatusList = ref<TitleInterface[]>([
   new TitleInterface({
     id: ActionStatusEnum.OPEN,
     title: 'Open',
-    subtitle: ''
+    subtitle: '',
   }),
   new TitleInterface({
     id: ActionStatusEnum.CLOSED,
     title: 'Closed',
-    subtitle: ''
+    subtitle: '',
   }),
 ])
-
-
-
 
 const GetObservationType = (type: number) => {
   switch (type) {
@@ -260,53 +254,49 @@ const GetObservationType = (type: number) => {
 // export excel
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-        "serial": it.serial || "N/A",
-        "date": it.date || "N/A",
-        "description": it.description || "N/A",
-        "machine": it.equipment.title || "N/A",
-        "zone": it.zoon.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "capa.xlsx");
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+      serial: it.serial || 'N/A',
+      date: it.date || 'N/A',
+      description: it.description || 'N/A',
+      machine: it.equipment.title || 'N/A',
+      zone: it.zoon.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'capa.xlsx')
+}
 
 const SelectCapaStatus = (data: number) => {
   switch (data) {
     case CapaStatusEnum.PreventiveandCorrective:
-      return "Preventive And Corrective"
+      return 'Preventive And Corrective'
     case CapaStatusEnum.onlyCorrective:
-      return " Corrective"
+      return ' Corrective'
     case CapaStatusEnum.onlyPreventive:
-      return "Preventive"
+      return 'Preventive'
   }
 }
 
 const GetCapaStataus = (capa: CapaModel) => {
-
   if (String(capa.corrective).length > 0 && String(capa.preventive).length > 0) {
-    return "Preventive And Corrective"
+    return 'Preventive And Corrective'
   }
   if (String(capa.corrective).length > 0 && String(capa.preventive).length == 0) {
-    return "Corrective"
+    return 'Corrective'
   }
   if (String(capa.corrective).length == 0 && String(capa.preventive).length > 0) {
-    return "Preventive"
+    return 'Preventive'
   }
-
 }
 </script>
 
@@ -314,29 +304,38 @@ const GetCapaStataus = (capa: CapaModel) => {
   <div class="grid grid-cols-12 gap-4">
     <!-- <IndexEquipmentMangement class="col-span-2" /> -->
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_OBSERVATION_ALL,
-        PermissionsEnum.ORG_OBSERVATION_DELETE,
-        PermissionsEnum.ORG_OBSERVATION_FETCH,
-        PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        PermissionsEnum.ORG_OBSERVATION_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
-
+          <IndexHazardHeader
+            :title="`CAPA`"
+            :length="state?.data?.length || 0"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
 
           <div class="flex items-center justify-between">
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-
-              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <IndexFilter
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/observation/add'"
+                :linkText="'Create Observation'"
+              />
             </PermissionBuilder>
-
 
             <!-- <div class="btns-filter"> -->
             <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
@@ -354,18 +353,35 @@ const GetCapaStataus = (capa: CapaModel) => {
             <div class="export-fillter">
               <div class="fillter-radio-btn">
                 <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
-                  <input type="radio" name="capaStatus" :id="`status-${status.id}`" :value="status" v-model="capaStatus"
-                    @change="setCapaStatus(status)">
-                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{
-                    status.title }}</label>
+                  <input
+                    type="radio"
+                    name="capaStatus"
+                    :id="`status-${status.id}`"
+                    :value="status"
+                    v-model="capaStatus"
+                    @change="setCapaStatus(status)"
+                  />
+                  <label
+                    :for="`status-${status.id}`"
+                    :class="status.id == capaStatus?.id ? 'active' : ''"
+                    >{{ status.title }}</label
+                  >
                 </div>
                 <div class="radio-btn">
-                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus"
-                    @change="setCapaStatus(null)">
+                  <input
+                    type="radio"
+                    name="capaStatus"
+                    id="status-all"
+                    :value="null"
+                    v-model="capaStatus"
+                    @change="setCapaStatus(null)"
+                  />
                   <label for="status-all" :class="capaStatus == null ? 'active' : ''">All</label>
                 </div>
               </div>
-              <div class=""> <button class="btn btn-secondary" @click="exportExcel">Export Excel</button></div>
+              <div class="">
+                <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+              </div>
             </div>
           </div>
         </div>
@@ -373,9 +389,12 @@ const GetCapaStataus = (capa: CapaModel) => {
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container">
-                <div class="index-table-card" style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);"
-                  v-for="(item, index) in state.data" :key="index">
-
+                <div
+                  class="index-table-card"
+                  style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1)"
+                  v-for="(item, index) in state.data"
+                  :key="index"
+                >
                   <!-- :to="`observation/show/${item?.id}`" -->
                   <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -383,11 +402,15 @@ const GetCapaStataus = (capa: CapaModel) => {
                         <div class="card-content" style="flex: 1">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              {{ $t('Serial') }} : <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
+                              {{ $t('Serial') }} :
+                              <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
                             </p>
                             <p class="label-item-secondary">
                               {{ $t('capa date') }} :
-                              <span>{{ formatJoinDate(item.createdAt) }} & {{ formatTime(item.createdAt) }} </span>
+                              <span
+                                >{{ formatJoinDate(item.createdAt) }} &
+                                {{ formatTime(item.createdAt) }}
+                              </span>
                             </p>
                             <!-- <p class="label-item-secondary flex items-center gap-1">
                               {{ SelectCapaStatus(1) }}
@@ -398,11 +421,10 @@ const GetCapaStataus = (capa: CapaModel) => {
                               <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
                                 @update:checked="toggleObservationWorkStopped(item?.id)" />
                             </p> -->
-
                           </div>
                           <div class="sup-title">
                             <p class="subtitle">{{ item.title }}</p>
-                            <p class="description"> {{ item.description }}</p>
+                            <p class="description">{{ item.description }}</p>
                           </div>
 
                           <div class="card-details">
@@ -414,8 +436,12 @@ const GetCapaStataus = (capa: CapaModel) => {
 
                             <div class="location-observation">
                               <div class="location">
-                                <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
-                                  <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
+                                <p
+                                  class="label-item-primary flex items-center gap-1"
+                                  v-if="item.zoon?.title"
+                                >
+                                  <PinIcons /> {{ $t('Zone') }} :
+                                  <span>{{ item.zoon?.title }}</span>
                                 </p>
                                 <p class="label-item-primary" v-if="item.equipment?.title">
                                   {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
@@ -429,10 +455,11 @@ const GetCapaStataus = (capa: CapaModel) => {
                                   <span>{{ GetObservationType(item.type) }}</span>
                                 </p>
                                 <div class="label-item-secondary">
-                                  <p>capa status <span>{{ GetCapaStataus(item.capa) }}</span></p>
+                                  <p>
+                                    capa status <span>{{ GetCapaStataus(item.capa) }}</span>
+                                  </p>
                                 </div>
                               </div>
-
                             </div>
                             <div class="btn-investegation-observation">
                               <!-- <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
@@ -442,9 +469,12 @@ const GetCapaStataus = (capa: CapaModel) => {
                                   </span></p>
                               </div>
                               </router-link> -->
+                              <CapaDialog :observationId="item?.id" />
                               <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
                                 <div class="observation-details">
-                                  <p>observation details<Observdetails /></p>
+                                  <p>
+                                    {{ GetObservationType(item.type) }} details<Observdetails />
+                                  </p>
                                 </div>
                               </router-link>
                               <!-- investegation -->
@@ -470,7 +500,6 @@ const GetCapaStataus = (capa: CapaModel) => {
                             </p> -->
                             <!-- <p class="subtitle">{{ item.description }}</p> -->
                             <!-- <div class="project-details"> -->
-
 
                             <!-- <p class="label-item-primary" v-if="item.status">
                                 Status : <span>{{ item?.status }}</span>
@@ -520,8 +549,11 @@ const GetCapaStataus = (capa: CapaModel) => {
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -532,29 +564,39 @@ const GetCapaStataus = (capa: CapaModel) => {
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataEmpty
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                :link="`/organization`"
+                title="..ops! You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataFailed
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                :link="`/organization`"
+                title="..ops! You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>
@@ -568,7 +610,6 @@ const GetCapaStataus = (capa: CapaModel) => {
   // align-items: left;
   justify-content: right;
   gap: 10px;
-
 }
 
 .card-content {
@@ -580,12 +621,17 @@ const GetCapaStataus = (capa: CapaModel) => {
       font-weight: 600;
       font-size: 15px;
       color: #6a717d;
+      &.description {
+        font-family: 'Light';
+        font-weight: 400;
+        font-size: 14px;
+      }
     }
   }
 
   .card-details {
-    background-color: #1F41BB0A;
-    padding: .7rem;
+    background-color: #1f41bb0a;
+    padding: 0.7rem;
     border-radius: 20px;
     width: 100%;
 
@@ -602,10 +648,10 @@ const GetCapaStataus = (capa: CapaModel) => {
       align-items: center;
       flex-wrap: wrap;
       gap: 20px;
-      margin: .5rem 0;
+      margin: 0.5rem 0;
 
       p {
-        color: #9CA3AF;
+        color: #9ca3af;
         font-weight: 600;
         font-size: 14px;
 
@@ -616,27 +662,25 @@ const GetCapaStataus = (capa: CapaModel) => {
     }
   }
 
-   .observation-details {
+  .observation-details {
     background-color: rgba(72, 110, 246, 0.1);
-    padding: .6rem .8rem;
+    padding: 0.6rem 0.8rem;
     border-radius: 20px;
 
-    border-bottom: 2px solid #1F41BB;
-    
-    &:hover{
+    border-bottom: 2px solid #1f41bb;
 
-     cursor: pointer;
+    &:hover {
+      cursor: pointer;
     }
     p {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: .5rem;
+      gap: 0.5rem;
       font-family: 'bold';
       font-weight: 700;
       font-size: 16px;
-      color: #1F41BB;
-
+      color: #1f41bb;
     }
   }
   // .observation-details {
@@ -661,18 +705,18 @@ const GetCapaStataus = (capa: CapaModel) => {
 }
 
 .label-item-secondary {
-  font-family: "regular";
+  font-family: 'regular';
 
   span {
-    font-family: "bold";
+    font-family: 'bold';
   }
 }
 
 .label-item-primary {
-  font-family: "regular";
+  font-family: 'regular';
 
   span {
-    font-family: "bold";
+    font-family: 'bold';
   }
 }
 
@@ -684,7 +728,7 @@ const GetCapaStataus = (capa: CapaModel) => {
   width: 100%;
   margin: 1rem 0;
 
-  input[type="radio"] {
+  input[type='radio'] {
     display: none;
   }
 }
@@ -693,18 +737,18 @@ const GetCapaStataus = (capa: CapaModel) => {
   display: flex;
   align-items: center;
   gap: 15px;
-  background-color: #F5F5F5;
-  padding: .4rem 1rem;
+  background-color: #f5f5f5;
+  padding: 0.4rem 1rem;
   border-radius: 40px;
 
   .active {
-    background-color: #F4F6FF;
-    border: 1px solid #1F41BB33;
-    padding: .5rem 1rem;
-    color: #1F41BB;
+    background-color: #f4f6ff;
+    border: 1px solid #1f41bb33;
+    padding: 0.5rem 1rem;
+    color: #1f41bb;
     font-weight: 700;
     border-radius: 40px;
-    font-family: "bold";
+    font-family: 'bold';
     font-size: 15px;
   }
 
@@ -718,7 +762,7 @@ const GetCapaStataus = (capa: CapaModel) => {
       cursor: pointer;
     }
 
-    input[type="radio"] {
+    input[type='radio'] {
       cursor: pointer;
       width: 16px;
       height: 16px;

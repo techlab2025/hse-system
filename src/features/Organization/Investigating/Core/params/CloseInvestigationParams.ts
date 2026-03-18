@@ -11,7 +11,7 @@ export default class CloseInvestegationParams implements Params {
 
   toMap(): Record<string, number | string> {
     const data: Record<string, number | string | any> = {}
-    data['investegation_id'] = this.InvestegationId
+    data['investigation_id'] = this.InvestegationId
     data['checklist_ids'] = this.ChecklistIds
     return data
   }

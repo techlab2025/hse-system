@@ -6,11 +6,24 @@
   width: 100%;
   @include flex-column(nowrap, flex-start, flex-start);
 
+  &.five-why{
+
+   .section-header-page{
+      padding: 0 !important;
+      img{
+        width: 40px;
+        height: 40px;
+
+      }
+    }
+
+  }
   .template-container {
     background-color: #fcfcfc;
     padding: $XlSize;
     border-radius: $XlSize2;
     position: relative;
+
 
     .timeline-content-text {
       margin-top: 20px;
