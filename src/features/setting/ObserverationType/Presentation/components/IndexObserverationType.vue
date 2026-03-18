@@ -38,6 +38,7 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import IndexSystemObserverationTypeController from '../controllers/indexSystemObserverationTypeController'
 const { t } = useI18n()
 
 // import DialogChangeStatusObserverationType from "@/features/setting/ObserverationType/Presentation/components/ObserverationType/DialogChangeStatusObserverationType.vue";

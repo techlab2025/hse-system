@@ -288,13 +288,13 @@ const SelectCapaStatus = (data: number) => {
 }
 
 const GetCapaStataus = (capa: CapaModel) => {
-  if (String(capa.corrective).length > 0 && String(capa.preventive).length > 0) {
+  if (String(capa?.corrective)?.length > 0 && String(capa?.preventive)?.length > 0) {
     return 'Preventive And Corrective'
   }
-  if (String(capa.corrective).length > 0 && String(capa.preventive).length == 0) {
+  if (String(capa?.corrective)?.length > 0 && String(capa?.preventive)?.length == 0) {
     return 'Corrective'
   }
-  if (String(capa.corrective).length == 0 && String(capa.preventive).length > 0) {
+  if (String(capa?.corrective)?.length == 0 && String(capa?.preventive)?.length > 0) {
     return 'Preventive'
   }
 }

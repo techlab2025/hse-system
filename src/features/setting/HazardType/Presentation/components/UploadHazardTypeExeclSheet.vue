@@ -219,7 +219,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <a href="/WarehousetypeExcel.xlsx" class="flex item-center gap-2 " download>
+        <a href="/ExcelForm.xlsx" class="flex item-center gap-2 " download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>
