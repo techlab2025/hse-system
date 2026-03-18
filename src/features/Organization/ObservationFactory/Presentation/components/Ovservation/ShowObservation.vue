@@ -85,7 +85,7 @@ const GetHeader = (value: number) => {
         <ObservationFactoryInspection v-if="state?.data?.taskResultItemAnswer"
           :data="state?.data?.taskResultItemAnswer" />
 
-        <ObservationCapaDestails v-if="state?.data?.capa && state?.data?.type == Observation.HazardType"
+        <ObservationCapaDestails v-if="state?.data?.capa && state?.data?.type == Observation.HazardType" 
           :data="state.data?.capa" />
 
 

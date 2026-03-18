@@ -36,9 +36,9 @@ export default class AddSystemObserverationTypeController extends ControllerInte
           imageElement: successImage,
           messageContent: null,
         })
-         await IndexSystemObserverationTypeController.getInstance().getData(
-                  new IndexObserverationTypeParams('', 1, 10, 1,undefined,true),
-                )
+        await IndexSystemObserverationTypeController.getInstance().getData(
+          new IndexObserverationTypeParams('', 1, 10, 1, undefined, true),
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
