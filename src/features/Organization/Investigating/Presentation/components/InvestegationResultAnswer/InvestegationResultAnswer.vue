@@ -44,7 +44,7 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
       <div class="investegation-result-answer-container">
         <InvestigatingResultAnswerHedaer :meetingsNumber="state.data?.investigationMeetings?.length"
           :victim="state.data?.investigationTeamLeader?.Name" :date="state.data?.date"
-          :meetingDate="state?.data?.investigationMeetings[state?.data?.investigationMeetings?.length - 1].date"
+          :meetingDate="state?.data?.investigationMeetings[state?.data?.investigationMeetings?.length - 1]?.date"
           :TeamLeader="state.data?.investigationTeamLeader" :createdAt="state.data?.date"
           :TeamNumbers="state.data?.investigationEmployees?.length"
           :solvedTasks="state.data?.investigationTasks?.filter((task: any) => task.status === 1)?.length"

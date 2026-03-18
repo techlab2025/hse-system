@@ -69,7 +69,7 @@
     const closeInvestegationController = CloseInvestegationController.getInstance()
     const ChecklistParams = selectedIds.value.map((el) => new InvestegationChecklistParams({checklist_id: el}))
     const closeInvestegationParams = new CloseInvestegationParams(props.investegationId!, ChecklistParams)
-    const dataState = await closeInvestegationController.CloseInvestigating(closeInvestegationParams)
+    const dataState = await closeInvestegationController.CloseInvestigating(closeInvestegationParams, router)
     visible.value = false
   }
   const { locale } = useI18n()
