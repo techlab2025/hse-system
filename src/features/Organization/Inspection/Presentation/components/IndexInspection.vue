@@ -26,7 +26,7 @@ import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Co
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-import MyProjectsModel from '../../../ObservationFactory/Data/models/MyProjectsModel'
+// import MyProjectsModel from '../../../ObservationFactory/Data/models/MyProjectsModel'
 import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import InspectionFormPage from './InspectionPages/InspectionFormPage.vue'
 import { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
@@ -196,7 +196,7 @@ const actionList = (id: number, deleteInspection: (id: number) => void) => [
   },
 ]
 
-const Projects = ref<MyProjectsModel[]>([])
+const Projects = ref<any[]>([])
 const FetchMyProjects = async () => {
   const fetchMyProjectsParams = new FetchMyProjectsParams()
   const fetchMyProjectsController = FetchMyProjectsController.getInstance()
