@@ -65,7 +65,7 @@ const fetchInspection = async (
   perPage: number = 10,
   withPage: number = 1,
   employeeId?: number[],
-  zoneId?: number[]
+  zoneId?: number[],
 ) => {
   const deleteInspectionParams = new IndexInspectionParams(
     query,
@@ -76,7 +76,7 @@ const fetchInspection = async (
     zoneId || null,
     selectedProjctesFilters.value || null,
     null,
-    route.query.typeId ? Number(route.query.typeId) : null
+    route.query.typeId ? Number(route.query.typeId) : null,
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
@@ -86,7 +86,7 @@ const InspectionFormTasks = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  filter?: number[]
+  filter?: number[],
 ) => {
   const fetchAllTasksParams = new FetchAllTasksParams(
     query,
@@ -94,7 +94,7 @@ const InspectionFormTasks = async (
     perPage,
     withPage,
     filter?.length > 0 ? filter : null,
-    selectedProjctesFilters.value || null
+    selectedProjctesFilters.value || null,
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
@@ -103,8 +103,7 @@ const InspectionsResultsTasks = async (
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 1,
-  filter?: number[]
-
+  filter?: number[],
 ) => {
   const fetchInspectionsResultsParams = new FetchInspectionsResultsParams(
     query,
@@ -112,24 +111,20 @@ const InspectionsResultsTasks = async (
     perPage,
     withPage,
     filter?.length > 0 ? filter : null,
-    selectedProjctesFilters.value || null
-
-
+    selectedProjctesFilters.value || null,
   )
   const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
 }
 
 onMounted(() => {
   // if (selectedProjctesFilters.value) {
-    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-      fetchInspection()
-    }
-    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-      InspectionFormTasks()
-    }
-    else {
-      InspectionsResultsTasks()
-    }
+  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+    fetchInspection()
+  } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    InspectionFormTasks()
+  } else {
+    InspectionsResultsTasks()
+  }
   // }
   FetchMyProjects()
 })
@@ -154,7 +149,6 @@ const handleInspectionFormCountPerPage = (count: number) => {
   InspectionFormTasks('', currentPage.value, countPerPage.value)
 }
 
-
 // Drag Inspection Form
 const handleDragInspectionChangePage = (page: number) => {
   currentPage.value = page
@@ -174,8 +168,6 @@ const handleInspectionResultsCountPerPage = (count: number) => {
   countPerPage.value = count
   fetchInspection('', currentPage.value, countPerPage.value)
 }
-
-
 
 const { user } = useUserStore()
 
@@ -236,18 +228,14 @@ const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
 
   if (data) {
-
     if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
       fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
-    }
-    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
       InspectionFormTasks('', 1, 10, 1, SelectedZonesFilter.value)
-    }
-    else {
+    } else {
       InspectionsResultsTasks('', 1, 10, 1, SelectedZonesFilter.value)
     }
   }
-
 }
 
 const setSelectedProjectFilter = (data) => {
@@ -258,14 +246,11 @@ const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
 
   if (data) {
-
     if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
       fetchInspection()
-    }
-    else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+    } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
       InspectionFormTasks()
-    }
-    else {
+    } else {
       InspectionsResultsTasks()
     }
   }
@@ -275,16 +260,16 @@ const setSelectedProjectFilter = (data) => {
   }
 }
 
-
-
-watch(() => fetchAllTasksController.state.value, (newState) => {
-  if (newState) {
-    console.log(newState)
-    AllTasksState.value = newState
-    // SelectedController()
-  }
-})
-
+watch(
+  () => fetchAllTasksController.state.value,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+      AllTasksState.value = newState
+      // SelectedController()
+    }
+  },
+)
 
 watch(
   () => indexInspectionController.state.value,
@@ -296,7 +281,7 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
 
 watch(
@@ -309,50 +294,76 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
-
 </script>
 
 <template>
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum?.ORG_INSPECTION_ALL,
-        PermissionsEnum?.ORG_INSPECTION_CREATE,
-        PermissionsEnum?.ORG_INSPECTION_UPDATE,
-        PermissionsEnum?.ORG_INSPECTION_DETAILS,
-        PermissionsEnum?.ORG_INSPECTION_DELETE,
-        PermissionsEnum?.ORG_INSPECTION_FETCH,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum?.ORG_INSPECTION_ALL,
+          PermissionsEnum?.ORG_INSPECTION_CREATE,
+          PermissionsEnum?.ORG_INSPECTION_UPDATE,
+          PermissionsEnum?.ORG_INSPECTION_DETAILS,
+          PermissionsEnum?.ORG_INSPECTION_DELETE,
+          PermissionsEnum?.ORG_INSPECTION_FETCH,
+        ]"
+      >
         <div>
-          <IndexInspectionHeader :title="`Inspection`"
-            :length="state?.pagination?.total || AllTasksState?.pagination?.total || InspectionsResultsState?.pagination?.total || 0"
-            :projects="Projects" @update:data="setSelectedProjectFilter" />
+          <IndexInspectionHeader
+            :title="`Inspection`"
+            :length="
+              state?.pagination?.total ||
+              AllTasksState?.pagination?.total ||
+              InspectionsResultsState?.pagination?.total ||
+              0
+            "
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
 
-          <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-            <IndexFilter :SelectdProject="selectedProjctesFilters" :filters="Filters" @update:data="ApplayFilter"
-              :link="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm) ? '/organization/equipment-mangement/inspection/add' : ''"
-              :linkTitle="'Create Inspection'" />
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]"
+          >
+            <IndexFilter
+              :SelectdProject="selectedProjctesFilters"
+              :filters="Filters"
+              @update:data="ApplayFilter"
+              :link="
+                String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)
+                  ? '/organization/equipment-mangement/inspection/add'
+                  : ''
+              "
+              :linkTitle="'Create Inspection'"
+            />
           </PermissionBuilder>
         </div>
-        <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
-          :controller="AllTasksState">
+        <DataStatus
+          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
+          :controller="AllTasksState"
+        >
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
                 <div class="header-container w-full">
-
-                  <InspectionFormPage v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
-                    class="w-full" :data="AllTasksState?.data" />
+                  <InspectionFormPage
+                    v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
+                    class="w-full"
+                    :data="AllTasksState?.data"
+                  />
                 </div>
               </div>
             </div>
-            <Pagination :pagination="AllTasksState.pagination" @changePage="handleInspectionFormChangePage"
-              @countPerPage="handleInspectionFormCountPerPage" />
+            <Pagination
+              :pagination="AllTasksState.pagination"
+              @changePage="handleInspectionFormChangePage"
+              @countPerPage="handleInspectionFormCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -361,35 +372,57 @@ watch(
             <CardSkelaton />
           </template>
           <template #empty>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/inspection/add`"
+                addText="Add Inspection"
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" />
+                title="..ops! You have No Inspection"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/inspection/add`"
+                addText="Add Inspection"
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" />
+                title="..ops! You have No Inspection"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
-        <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
-          :controller="state">
+        <DataStatus
+          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
+          :controller="state"
+        >
           <template #success>
-
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
                 <div class="header-container w-full">
-                  <InspectionDragPage v-if="String(inspectionType) == String(InspectionPageType.DragInspection)"
-                    class="w-full" :data="state?.data" />
+                  <InspectionDragPage
+                    v-if="String(inspectionType) == String(InspectionPageType.DragInspection)"
+                    class="w-full"
+                    :data="state?.data"
+                  />
                 </div>
-
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleDragInspectionChangePage"
-              @countPerPage="handleDragInspectionCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleDragInspectionChangePage"
+              @countPerPage="handleDragInspectionCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -398,34 +431,55 @@ watch(
             <CardSkelaton />
           </template>
           <template #empty>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
               <DataEmpty
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" :link="`/organization`" />
+                title="..ops! You have No Inspection"
+                :link="`/organization`"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
               <DataFailed
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" :link="`/organization`" />
+                title="..ops! You have No Inspection"
+                :link="`/organization`"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
-        <DataStatus v-if="String(route?.query?.inspectionType) == String(InspectionPageType.Result)"
-          :controller="InspectionsResultsState">
+        <DataStatus
+          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.Result)"
+          :controller="InspectionsResultsState"
+        >
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container-inspection">
                 <div class="header-container w-full">
-                  <InspectionsResultsPage v-if="String(inspectionType) == String(InspectionPageType.Result)"
-                    class="w-full" :data="InspectionsResultsState?.data" />
+                  <InspectionsResultsPage
+                    v-if="String(inspectionType) == String(InspectionPageType.Result)"
+                    class="w-full"
+                    :data="InspectionsResultsState?.data"
+                  />
                 </div>
-
               </div>
             </div>
-            <Pagination :pagination="InspectionsResultsState?.pagination"
-              @changePage="handleInspectionResultsChangePage" @countPerPage="handleInspectionResultsCountPerPage" />
+            <Pagination
+              :pagination="InspectionsResultsState?.pagination"
+              @changePage="handleInspectionResultsChangePage"
+              @countPerPage="handleInspectionResultsCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -434,26 +488,42 @@ watch(
             <CardSkelaton />
           </template>
           <template #empty>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-
-              <DataEmpty :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <DataEmpty
+                :link="`/organization/equipment-mangement/inspection/add`"
+                addText="Add Inspection"
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" />
+                title="..ops! You have No Inspection"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]">
-
-              <DataFailed :link="`/organization/equipment-mangement/inspection/add`" addText="Add Inspection"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/inspection/add`"
+                addText="Add Inspection"
                 description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection" />
+                title="..ops! You have No Inspection"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
 
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>

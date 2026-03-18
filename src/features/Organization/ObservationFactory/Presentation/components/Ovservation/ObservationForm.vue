@@ -37,7 +37,7 @@ import type MyProjectsModel from '@/features/Organization/ObservationFactory/Dat
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
 import HeaderProjectsFilter from '../Hazard/HazardUtils/HeaderProjectsFilter.vue'
-import { Severity, SeverityEnum } from '../../../Core/Enums/SeverityEnum'
+import { SeverityEnum } from '../../../Core/Enums/SeverityEnum'
 import { LikelihoodEnum } from '../../../Core/Enums/LikelihoodEnum'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
@@ -140,27 +140,26 @@ const updateData = () => {
 
   const params: AddHazardParams | EditHazardParams = props.data?.id
     ? new EditHazardParams(
-      props.data.id,
-      title.value,
-      description.value,
-      image.value?.map((el) => el.file),
-      type_id.value,
-      type.value,
-      equipmentId.value,
-      zoneId.value,
-      37,
-      isResult.value,
-      riskLevel.value,
-      saveStatus.value,
-      preventiveAction.value,
-      isNearMiss.value,
-      null,
-      date.value,
-      null,
-      isAction.value,
-    )
-    : new AddHazardParams(
-      {
+        props.data.id,
+        title.value,
+        description.value,
+        image.value?.map((el) => el.file),
+        type_id.value,
+        type.value,
+        equipmentId.value,
+        zoneId.value,
+        37,
+        isResult.value,
+        riskLevel.value,
+        saveStatus.value,
+        preventiveAction.value,
+        isNearMiss.value,
+        null,
+        date.value,
+        null,
+        isAction.value,
+      )
+    : new AddHazardParams({
         title: title.value,
         description: description.value,
         image: image.value?.map((el) => el.file),
@@ -188,9 +187,8 @@ const updateData = () => {
         Likelihood: SelectedLikelihood?.value?.id,
         time: SelctedTime.value,
         code: SerialNumber.value?.SerialNumber,
-        place: PlaceText.value
-      }
-    )
+        place: PlaceText.value,
+      })
   emit('update:data', params)
 }
 
@@ -242,16 +240,15 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   updateData()
 })
 
-
 const setImages = async (data: string[]) => {
   image.value = typeof data === 'string' ? data : await filesToBase64(data)
-  console.log(image.value, "image.value");
+  console.log(image.value, 'image.value')
   updateData()
 }
 
 const UpdateSelectedZone = (data) => {
   zoneId.value = data
-  updateData();
+  updateData()
 }
 
 const Projects = ref<MyProjectsModel[]>([])
@@ -270,7 +267,7 @@ onMounted(() => {
 const SelectedProjectId = ref<number>()
 const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
-  updateData();
+  updateData()
 }
 
 const SelectedSeverity = ref<TitleInterface>()
@@ -290,7 +287,6 @@ const LikelihoodList = ref<TitleInterface[]>([
   new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: 'L5 - Almost Certain' }),
 ])
 
-
 const setSeverity = (data: TitleInterface) => {
   SelectedSeverity.value = data
   updateData()
@@ -305,7 +301,13 @@ const PlaceText = ref<string>()
 const SerialNumber = ref()
 
 const fields = ref([
-  { key: 'SerialNumber', label: 'serial_number', placeholder: 'You can leave it (auto-generated)', value: SerialNumber.value, enabled: props?.data?.id ? false : true },
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
 ])
 
 const UpdateSerial = (data) => {
@@ -314,7 +316,7 @@ const UpdateSerial = (data) => {
 }
 
 const indexObservatioTyepController = IndexObserverationTypeController.getInstance()
-const indexObservationTypeParams = new IndexObserverationTypeParams("", 1, 10, 1)
+const indexObservationTypeParams = new IndexObserverationTypeParams('', 1, 10, 1)
 const SelectedObservationType = ref<TitleInterface>()
 const setSelectedObservationType = (data: TitleInterface) => {
   SelectedObservationType.value = data
@@ -325,12 +327,19 @@ const setSelectedObservationType = (data: TitleInterface) => {
 <template>
   <!-- <pre>{{ data }}</pre> -->
   <div class="observation-form col-span-6 md:col-span-6">
-    <HeaderPage :title="$t('create Observations')" subtitle="Document what you observe to improve workplace safety"
-      :img="ToDoList" />
+    <HeaderPage
+      :title="$t('create Observations')"
+      subtitle="Document what you observe to improve workplace safety"
+      :img="ToDoList"
+    />
     <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
 
     <!-- zoneId = $event -->
-    <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="UpdateSelectedZone" />
+    <TabsSelection
+      v-if="SelectedProjectId"
+      :ProjectId="SelectedProjectId"
+      @update:data="UpdateSelectedZone"
+    />
 
     <p class="first-section-par">
       <component :is="FormPen" />
@@ -341,7 +350,9 @@ const setSelectedObservationType = (data: TitleInterface) => {
     <!-- first section -->
     <div class="first-section lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
       <!-- Date -->
-      <div class="date-picker-container flex flex-col gap-2 input-wrapper col-span-4 md:grid-cols-12">
+      <div
+        class="date-picker-container flex flex-col gap-2 input-wrapper col-span-4 md:grid-cols-12"
+      >
         <label for="date">
           {{ $t('date') }}
           <span class="text-red-500">*</span>
@@ -352,54 +363,102 @@ const setSelectedObservationType = (data: TitleInterface) => {
       <!-- Time -->
       <div class="input-wrapper col-span-4 md:grid-cols-12">
         <label for="time">{{ $t('time') }}</label>
-        <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" :placeholder="$t('Select time')"
-          @update:model-value="updateData" input-id="time" :time-only="true" />
+        <DatePicker
+          v-model="SelctedTime"
+          class="mt-4 mr-2 input date-picker"
+          :placeholder="$t('Select time')"
+          @update:model-value="updateData"
+          input-id="time"
+          :time-only="true"
+        />
       </div>
 
-
       <!-- Serial -->
-      <div class="col-span-4 md:grid-cols-12" v-if="!(data?.id)">
-        <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-          @update:value="UpdateSerial" />
+      <div class="col-span-4 md:grid-cols-12" v-if="!data?.id">
+        <SwitchInput
+          :fields="fields"
+          :switch_title="$t('auto')"
+          :switch_reverse="true"
+          :is-auto="true"
+          @update:value="UpdateSerial"
+        />
       </div>
 
       <!-- Place -->
       <div class="input-wrapper col-span-6 md:grid-cols-12">
         <label for="time">{{ $t('place') }}</label>
-        <input type="text" v-model="PlaceText" @input="updateData" :placeholder="$t('Enter Place')">
+        <input
+          type="text"
+          v-model="PlaceText"
+          @input="updateData"
+          :placeholder="$t('Enter Place')"
+        />
       </div>
-
 
       <!-- Observation Type -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="SelectedObservationType"
-          :controller="indexObservatioTyepController" :params="indexObservationTypeParams" :label="$t('Observation Type')"
-          id="Equipment" :placeholder="$t('Select Observation Type')" @update:modelValue="setSelectedObservationType" />
+        <CustomSelectInput
+          :required="false"
+          :modelValue="SelectedObservationType"
+          :controller="indexObservatioTyepController"
+          :params="indexObservationTypeParams"
+          :label="$t('Observation Type')"
+          id="Equipment"
+          :placeholder="$t('Select Observation Type')"
+          @update:modelValue="setSelectedObservationType"
+        />
       </div>
 
       <!-- Description -->
       <div class="input-wrapper col-span-12 md:grid-cols-12">
         <label for="text">{{ $t('description') }}</label>
-        <input class="input" :placeholder="$t('add your description')" type="text" id="title" v-model="title" />
+        <input
+          class="input"
+          :placeholder="$t('add your description')"
+          type="text"
+          id="title"
+          v-model="title"
+        />
       </div>
 
       <!-- Sevarity -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList"
-          :label="$t('severity')" id="Severity" :placeholder="$t('Select Severity')" @update:modelValue="setSeverity" />
+        <CustomSelectInput
+          :required="false"
+          :modelValue="SelectedSeverity"
+          :static-options="SeverityList"
+          :label="$t('severity')"
+          id="Severity"
+          :placeholder="$t('Select Severity')"
+          @update:modelValue="setSeverity"
+        />
       </div>
 
       <!-- Likelihood -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-          :label="$t('likelihood')" id="Likelihood" :placeholder="$t('Select Likelihood')" @update:modelValue="setLikelihood" />
+        <CustomSelectInput
+          :required="false"
+          :modelValue="SelectedLikelihood"
+          :static-options="LikelihoodList"
+          :label="$t('likelihood')"
+          id="Likelihood"
+          :placeholder="$t('Select Likelihood')"
+          @update:modelValue="setLikelihood"
+        />
       </div>
 
       <!-- Equipemt -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput :required="false" :modelValue="equipment" :controller="equipmentController"
-          :params="equipmentParams" :label="$t('Equipment')" id="Equipment" :placeholder="$t('Select Equipment')"
-          @update:modelValue="setEquipment" />
+        <CustomSelectInput
+          :required="false"
+          :modelValue="equipment"
+          :controller="equipmentController"
+          :params="equipmentParams"
+          :label="$t('Equipment')"
+          id="Equipment"
+          :placeholder="$t('Select Equipment')"
+          @update:modelValue="setEquipment"
+        />
       </div>
 
       <!-- Image -->
@@ -407,22 +466,26 @@ const setSelectedObservationType = (data: TitleInterface) => {
         <div class="flex flex-col gap-2 input-wrapper">
           <label>{{ $t('upload image') }}</label>
 
-
           <MultiImagesInput :initialImages="image" @update:images="setImages" />
         </div>
       </div>
-
-
     </div>
-
-
 
     <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="saveStatus = $event" />
 
-    <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss" @update:data="handleObservationLevel" />
-    <HazerdType :riskLevel="riskLevel" :is_near_miss="isNearMiss" :modelTakeAction="isAction ? 'yes' : 'no'"
-      :modelSolved="isResult ? 'yes' : 'no'" :modelAction="actionText"
+    <ObservationLevel
+      :modelRiskLevel="riskLevel"
+      :modelIsNearMiss="isNearMiss"
+      @update:data="handleObservationLevel"
+    />
+    <HazerdType
+      :riskLevel="riskLevel"
+      :is_near_miss="isNearMiss"
+      :modelTakeAction="isAction ? 'yes' : 'no'"
+      :modelSolved="isResult ? 'yes' : 'no'"
+      :modelAction="actionText"
       :modelHazerdType="props.data?.type_model ? markRaw(props.data.type_model) : null"
-      @update:data="handleHazardData" />
+      @update:data="handleHazardData"
+    />
   </div>
 </template>
