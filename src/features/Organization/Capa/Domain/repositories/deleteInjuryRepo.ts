@@ -1,7 +1,7 @@
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import  InjuryModel from '../../Data/models/InjuryModel'
-import { DeleteInjuryApiService } from '../../Data/apiServices/deleteCapaApiService'
+import { DeleteInjuryApiService } from '@/features/Organization/Injury/Data/apiServices/deleteInjuryApiService'
+import InjuryModel from '@/features/Organization/Injury/Data/models/InjuryModel'
 
 class DeleteInjuryRepo extends RepoInterface<InjuryModel> {
   private static instance: DeleteInjuryRepo

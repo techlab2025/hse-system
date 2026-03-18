@@ -5,8 +5,7 @@ import DialogSystem from '@/assets/images/DialogSystem.png'
 import { onMounted, ref, watch } from "vue";
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import { useRoute, useRouter } from 'vue-router';
-import AddSystemAccidentsTypeController from '../controllers/addSystemAccidentsTypeController';
-import AddSystemAccidentsTypeParams from '../../Core/params/addSystemAccidentsTypeParams';
+
 import IndexObserverationTypeParams from '../../Core/params/indexObserverationTypeParams';
 import IndexSystemObserverationTypeController from '../controllers/indexSystemObserverationTypeController';
 import AddSystemObserverationTypeController from '../controllers/addSystemObserverationTypeController';
