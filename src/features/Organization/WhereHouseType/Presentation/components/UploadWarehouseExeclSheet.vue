@@ -7,17 +7,8 @@ import { useRouter } from 'vue-router';
 
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue';
-import TitleInterface from '@/base/Data/Models/title_interface';
 import { useI18n } from 'vue-i18n';
-import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams';
-import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
-import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController';
-import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel';
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue';
-import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController';
-import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams';
-import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController';
-import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams';
+
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
 import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel';

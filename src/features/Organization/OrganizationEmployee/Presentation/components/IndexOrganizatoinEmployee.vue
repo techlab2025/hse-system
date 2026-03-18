@@ -6,20 +6,14 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-// import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexOrganizatoinEmployeeController from '../controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '../../Core/params/indexOrganizatoinEmployeeParams'
 import DeleteOrganizatoinEmployeeParams from '../../Core/params/deleteOrganizatoinEmployeeParams'
@@ -27,16 +21,10 @@ import DeleteOrganizatoinEmployeeController from '../controllers/deleteOrganizat
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
-import ExcelSheetUpload from '../supcomponents/ExcelSheetHandle/UploadFiles.vue'
-import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
-import IndexActions from '@/shared/HelpersComponents/IndexActions.vue'
-import Panel from 'primevue/panel';
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import AddOrganizatoinEmployeeToHierarchyController from '../controllers/addOrganizatoinEmployeeToHierarchyController'
 import AddEmployeeToHierarchyParams from '../../Core/params/AddEmployeesToHierarchyParams'
@@ -44,7 +32,7 @@ import IndexOrganizatoinEmployeeToAddToHierarchyController from '../controllers/
 import AddEmployeeIdToHierarchyParams from '../../Core/params/AddEmployeesIdToHierarchyParams'
 import { EmployeeCertificateStatus } from '../../Core/Enum/EmployeeTakeCertificateStatusEnum'
 
-import SelectButton from 'primevue/selectbutton';
+import SelectButton from 'primevue/selectbutton'
 
 import DataEmployee from '../supcomponents/DataEmployee.vue'
 
@@ -53,8 +41,7 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
-
-
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 const { t } = useI18n()
 
@@ -87,8 +74,11 @@ const fetchOrganizatoinEmployee = async (
     null,
     false,
     route.query.certificate_id ? route.query.certificate_id : null,
-    isEmployeeTakeCertificate.value ? isEmployeeTakeCertificate.value == EmployeeCertificateStatus.NotTake ? true : false : null
-
+    isEmployeeTakeCertificate.value
+      ? isEmployeeTakeCertificate.value == EmployeeCertificateStatus.NotTake
+        ? true
+        : false
+      : null,
   )
   await indexOrganizatoinEmployeeController.getData(deleteOrganizatoinEmployeeParams)
 }
@@ -200,30 +190,26 @@ watch(
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "name": it.name || "N/A",
-        "email": it.email || null,
-        "phone": it.phone || null,
-        "password": "",
-        "password_confimation": "",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "Employees.xlsx");
-};
-
-
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      name: it.name || 'N/A',
+      email: it.email || null,
+      phone: it.phone || null,
+      password: '',
+      password_confimation: '',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'Employees.xlsx')
+}
 
 const exportPDF = async () => {
   const tableElement = document.querySelector('.table-responsive')
@@ -264,26 +250,46 @@ const exportPDF = async () => {
 
 const SelectedEmployees = ref<TitleInterface[]>()
 const indexEmployeeController = IndexOrganizatoinEmployeeToAddToHierarchyController.getInstance()
-const indexEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 0, null, null, null, null, null, false)
+const indexEmployeeParams = new IndexOrganizatoinEmployeeParams(
+  '',
+  1,
+  10,
+  0,
+  null,
+  null,
+  null,
+  null,
+  null,
+  false,
+)
 const setSelectedEmployees = (data: TitleInterface[]) => {
-  SelectedEmployees.value = data;
+  SelectedEmployees.value = data
 }
 const router = useRouter()
 const AddEmployees = async () => {
   if (SelectedEmployees.value?.length > 0) {
-
-    const addOrganizatoinEmployeeToHierarchyController = AddOrganizatoinEmployeeToHierarchyController.getInstance()
-    const addEmployeeToHierarchyParams = new AddEmployeeToHierarchyParams(route.query.heirarchy_id, SelectedEmployees.value?.map((el) => new AddEmployeeIdToHierarchyParams(el.id)))
-    const state = await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(addEmployeeToHierarchyParams, router)
+    const addOrganizatoinEmployeeToHierarchyController =
+      AddOrganizatoinEmployeeToHierarchyController.getInstance()
+    const addEmployeeToHierarchyParams = new AddEmployeeToHierarchyParams(
+      route.query.heirarchy_id,
+      SelectedEmployees.value?.map((el) => new AddEmployeeIdToHierarchyParams(el.id)),
+    )
+    const state =
+      await addOrganizatoinEmployeeToHierarchyController.addOrganizatoinEmployeeToHiearcrhy(
+        addEmployeeToHierarchyParams,
+        router,
+      )
     await fetchOrganizatoinEmployee()
   }
   SelectedEmployees.value = []
-
 }
 const isEmployeeTakeCertificate = ref<EmployeeCertificateStatus>()
-watch(() => isEmployeeTakeCertificate.value, () => {
-  fetchOrganizatoinEmployee()
-})
+watch(
+  () => isEmployeeTakeCertificate.value,
+  () => {
+    fetchOrganizatoinEmployee()
+  },
+)
 
 const setCertificateStatus = () => {
   if (value.value === 'Taken Certificates') {
@@ -293,49 +299,41 @@ const setCertificateStatus = () => {
   }
 }
 
-
-const value = ref('Not Taken Certificates');
-const options = ref(['Taken Certificates', 'Not Taken Certificates']);
+const value = ref('Not Taken Certificates')
+const options = ref(['Taken Certificates', 'Not Taken Certificates'])
 const IndexOrganizationEmployeectionList = () => [
   {
     text: t('export_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum.ORG_EMPLOYEE_FETCH,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    ],
+    permission: [PermissionsEnum.ORG_EMPLOYEE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     text: t('add_employee'),
     link: '/organization/organization-employee/add',
     icon: ActionsListAddIcon,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORG_EMPLOYEE_CREATE,
-      PermissionsEnum?.ADMIN
-    ],
+    permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
   {
     text: t('upload_excel'),
     type: ActionItemsTypeEnum.Warning,
     link: '/organization/organization-employee/upload',
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORG_EMPLOYEE_CREATE,
-      PermissionsEnum?.ADMIN
-    ],
+    permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
 ]
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
     <!-- ... -->
-     <DataEmployee v-if="route.query.heirarchy_id"/>
-    <div v-if="route.query.certificate_id" class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex">
+    <DataEmployee v-if="route.query.heirarchy_id" />
+    <div
+      v-if="route.query.certificate_id"
+      class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex"
+    >
       <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
         Certificate</button>
       <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
@@ -343,31 +341,54 @@ const IndexOrganizationEmployeectionList = () => [
       <SelectButton v-model="value" :options="options" @change="setCertificateStatus" />
     </div>
 
-
-    <div v-if="route.query.heirarchy_id" class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy ">
-      <div class="flex gap-2 input-wrapper" style="width: 80%;margin-block: 8px;">
-        <CustomSelectInput :modelValue="SelectedEmployees" @update:modelValue="setSelectedEmployees"
-          :controller="indexEmployeeController" :params="indexEmployeeParams" :label="$t('employees')" :type="2"
-          :placeholder="$t('select_employees')" />
+    <div
+      v-if="route.query.heirarchy_id"
+      class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy"
+    >
+      <div class="flex gap-2 input-wrapper" style="width: 80%; margin-block: 8px">
+        <CustomSelectInput
+          :modelValue="SelectedEmployees"
+          @update:modelValue="setSelectedEmployees"
+          :controller="indexEmployeeController"
+          :params="indexEmployeeParams"
+          :label="$t('employees')"
+          :type="2"
+          :placeholder="$t('select_employees')"
+        />
       </div>
-      <button class="btn btn-primary" style="width: 20%;height: fit-content;padding: 12px;margin-top: 35px;"
-        @click="AddEmployees">Add
-        Employees</button>
+      <button
+        class="btn btn-primary"
+        style="width: 20%; height: fit-content; padding: 12px; margin-top: 35px"
+        @click="AddEmployees"
+      >
+        Add Employees
+      </button>
     </div>
-    <div class="input-search col-span-1" v-if="!route.query.heirarchy_id && !route.query.certificate_id">
+    <div
+      class="input-search col-span-1"
+      v-if="!route.query.heirarchy_id && !route.query.certificate_id"
+    >
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizatoinEmployee" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchOrganizatoinEmployee"
+      />
     </div>
-    <div class="col-span-2 flex justify-end gap-2" v-if="!route.query.heirarchy_id && !route.query.certificate_id">
+    <div
+      class="col-span-2 flex justify-end gap-2"
+      v-if="!route.query.heirarchy_id && !route.query.certificate_id"
+    >
       <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
         :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
         :addLink="`/organization/organization-employee/add`"
         :ImportexcelLink="`/organization/organization-employee/upload`" :addText="`add_organizatoin_employee`"
         :addDescription="`add_employee`" :numberOfActions="4" /> -->
-
 
       <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
@@ -384,27 +405,29 @@ const IndexOrganizationEmployeectionList = () => [
         to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
       </router-link> -->
-      <ActionsList :show-actions="true" :actionList="IndexOrganizationEmployeectionList()" :actionsNumber="4">
+      <ActionsList
+        :show-actions="true"
+        :actionList="IndexOrganizationEmployeectionList()"
+        :actionsNumber="4"
+      >
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
-
     </div>
-
-
   </div>
 
-
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORG_EMPLOYEE_ALL,
-    PermissionsEnum.ORG_EMPLOYEE_DELETE,
-    PermissionsEnum.ORG_EMPLOYEE_FETCH,
-    PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-    PermissionsEnum.ORG_EMPLOYEE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -423,11 +446,14 @@ const IndexOrganizationEmployeectionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/organization-employee/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/organization-employee/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ item.name }}</td>
-                <td data-label="Hierarchy" class="table-Hierarchy">{{item.hierarchy.map(el => el.title).join(' - ') || 'N/A'}}</td>
+                <td data-label="Hierarchy" class="table-Hierarchy">
+                  {{ item.hierarchy.map((el) => el.title).join(' - ') || 'N/A' }}
+                </td>
                 <td data-label="Email">{{ item.email }}</td>
                 <td data-label="Phone">{{ item.phone }}</td>
                 <!-- <td data-label="images">
@@ -435,14 +461,20 @@ const IndexOrganizationEmployeectionList = () => [
                 </td> -->
 
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
-                    @delete="deleteOrganizatoinEmployee(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
+                    @delete="deleteOrganizatoinEmployee(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -452,23 +484,32 @@ const IndexOrganizationEmployeectionList = () => [
       </template>
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-          <DataEmpty :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+          <DataEmpty
+            :link="`/organization/organization-employee/add`"
+            addText="Add OrganizatoinEmployee"
             description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployee" />
+            title="..ops! You have No OrganizatoinEmployee"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-          <DataFailed :link="`/organization/organization-employee/add`" addText="Add OrganizatoinEmployee"
+          <DataFailed
+            :link="`/organization/organization-employee/add`"
+            addText="Add OrganizatoinEmployee"
             description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployee" />
+            title="..ops! You have No OrganizatoinEmployee"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed link="/organization" addText="Have not  Permission"
-        description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        link="/organization"
+        addText="Have not  Permission"
+        description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>
@@ -485,7 +526,7 @@ const IndexOrganizationEmployeectionList = () => [
   width: 100% !important;
   align-items: center;
 }
-.table-Hierarchy{
-  color: #1F41BB !important;
+.table-Hierarchy {
+  color: #1f41bb !important;
 }
 </style>
