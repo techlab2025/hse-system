@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
-import Dialog from 'primevue/dialog';
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
+import Dialog from 'primevue/dialog'
 import DialogSystem from '@/assets/images/DialogSystem.png'
-import { onMounted, ref, watch } from "vue";
-import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
-import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
+import { onMounted, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice';
-import { useRoute, useRouter } from 'vue-router';
-import IndexHazardTypeController from '../controllers/indexHazardTypeController';
-import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum';
-import IndexHazardTypeParams from '../../Core/params/indexHazardTypeParams';
-import AddSystemHazardTypeController from '../controllers/addSystemHazardTypeController';
-import AddSystemHazardParams from '../../Core/params/addSystemHazardParams';
-import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-import IndexSystemHazardTypeController from '../controllers/indexSystemHazardTypeController';
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
+import { useRoute, useRouter } from 'vue-router'
+import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
+import IndexHazardTypeParams from '../../Core/params/indexHazardTypeParams'
+import AddSystemHazardTypeController from '../controllers/addSystemHazardTypeController'
+import AddSystemHazardParams from '../../Core/params/addSystemHazardParams'
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
+import IndexSystemHazardTypeController from '../controllers/indexSystemHazardTypeController'
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 
 const props = defineProps<{ isHeaderTap?: boolean }>()
-const visible = ref(false);
+const visible = ref(false)
 const route = useRoute()
 
 const indexHazardTypeController = IndexSystemHazardTypeController.getInstance()
@@ -33,7 +27,15 @@ const fetchHazardType = async (
   withPage: number = 1,
   parent_type?: HazardTypeParentEnum.Parent,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, null, parent_type, true)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    null,
+    parent_type,
+    true,
+  )
   await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 watch(
@@ -59,18 +61,23 @@ const ChangeStatus = (id: number) => {
     selectedIds.value.push(id)
   }
 }
-watch(() => visible.value, (newVal) => {
-  if (visible.value) {
-
-    fetchHazardType()
-  }
-})
+watch(
+  () => visible.value,
+  (newVal) => {
+    if (visible.value) {
+      fetchHazardType()
+    }
+  },
+)
 
 const router = useRouter()
 const SubmitData = async () => {
   const addSystemHazardTypeController = AddSystemHazardTypeController.getInstance()
   const addSystemHazardParams = new AddSystemHazardParams({ cloneIds: selectedIds.value })
-  const dataState = await addSystemHazardTypeController.addSystemHazardType(addSystemHazardParams, router)
+  const dataState = await addSystemHazardTypeController.addSystemHazardType(
+    addSystemHazardParams,
+    router,
+  )
   visible.value = false
 }
 </script>
@@ -85,30 +92,39 @@ const SubmitData = async () => {
   <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
-      <HeaderSection :img="DialogSystem" title="add system types"
-        subtitle="select the types you need and add it to your types" />
+      <HeaderSection
+        :img="DialogSystem"
+        title="add system types"
+        subtitle="select the types you need and add it to your types"
+      />
     </template>
     <DataStatus :controller="state">
       <template #success>
         <div class="system-dialog-content-container">
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
-            <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
+            <div
+              class="row-content"
+              :class="{ active: selectedIds.includes(item.id) }"
+              @click="ChangeStatus(item.id)"
+            >
               <label :for="`${item.title}-${item.id}`" class="title">
                 {{ item.title }}
               </label>
-              <input :id="`${item.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
-                @click.stop="ChangeStatus(item.id)" />
+              <input
+                :id="`${item.title}-${item.id}`"
+                type="checkbox"
+                :checked="selectedIds.includes(item.id)"
+                @click.stop="ChangeStatus(item.id)"
+              />
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">
+          {{ $t('confirm') }}
+        </button>
       </template>
-      <template #loader>
-      </template>
-      <template #failed>
-      </template>
+      <template #loader> </template>
+      <template #failed> </template>
     </DataStatus>
-
-
   </Dialog>
 </template>
