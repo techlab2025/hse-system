@@ -11,30 +11,15 @@ import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import Search from '@/shared/icons/Search.vue'
-
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
-
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
-import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
-
-
-// import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
-// import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
-
-import RenewCertificateNotRequiredDialog from '../supcomponents/RenewCertificateNotRequiredDialog.vue'
-
-import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 import HierarchyCertyificateController from '../controllers/HierarchyCertificateController'
 import FetchHierarchyCertificatesParams from '../../Core/params/FetchHierarchyCertificatesParams'
 import type HierarchyCertificateModel from '../../Data/models/HeirarchyCertificateModel'
 
 const { t } = useI18n()
 const route = useRoute()
-
 
 const word = ref('')
 const currentPage = ref(1)
@@ -46,11 +31,10 @@ const state = ref(hierarchyCertyificateController.state.value)
 const indexCertificateController = IndexCertificateController.getInstance()
 const Certificatestate = ref<CertificateModel[]>(indexCertificateController.state.value)
 
-
 const fetchCertificates = async (
   query: string = '',
   pageNumber: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
 ) => {
   const params = new IndexCertificateParams(query, pageNumber, perPage, 0)
   await indexCertificateController.getData(params)
@@ -61,18 +45,12 @@ const fetchHierarchyCertificate = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1
+  withPage: number = 1,
 ) => {
-  const params = new FetchHierarchyCertificatesParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-  )
+  const params = new FetchHierarchyCertificatesParams(query, pageNumber, perPage, withPage)
 
   await hierarchyCertyificateController.FetchHerikalyCertificate(params, router)
 }
-
 
 onMounted(() => {
   fetchHierarchyCertificate()
@@ -82,11 +60,9 @@ onMounted(() => {
   }
 })
 
-
 const searchHierarchyCertificate = debounce(() => {
   fetchHierarchyCertificate(word.value)
 })
-
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
@@ -108,14 +84,13 @@ const handleCountPerPage = (count: number) => {
   }
 }
 
-
 watch(
   () => hierarchyCertyificateController.state.value,
   (newState) => {
-    console.log(newState, "newState");
+    console.log(newState, 'newState')
     if (newState) state.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 watch(
@@ -123,9 +98,8 @@ watch(
   (newState) => {
     if (newState) Certificatestate.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
-
 
 // const getCertificateStatus = (
 //   employee: OrganizatoinEmployeeModel,
@@ -137,27 +111,24 @@ watch(
 
 const getEmployeeCertificationStatus = (
   Hierarchy: HierarchyCertificateModel,
-  certificate: CertificateModel
+  certificate: CertificateModel,
 ) => {
   if (Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)) {
     return 'Required'
-  }
-  else {
+  } else {
     return 'Not Required'
   }
 }
 const getEmployeeCertificationclass = (
   Hierarchy: HierarchyCertificateModel,
-  certificate: CertificateModel
+  certificate: CertificateModel,
 ) => {
   if (Hierarchy.certificates.find((c: CertificateModel) => c.id === certificate.id)) {
     return 'cert_required'
-  }
-  else {
+  } else {
     return 'cert_not_required'
   }
 }
-
 
 const AllCertificates = computed(() => {
   if (route.params.id && state.value?.data?.length) {
@@ -175,18 +146,26 @@ const AllCertificates = computed(() => {
         <Search />
       </span>
 
-      <input v-model="word" placeholder="search" class="input" type="text" @input="searchHierarchyCertificate" />
+      <input
+        v-model="word"
+        placeholder="search"
+        class="input"
+        type="text"
+        @input="searchHierarchyCertificate"
+      />
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+      PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <!-- {{ state.data }} -->
@@ -197,7 +176,9 @@ const AllCertificates = computed(() => {
               <tr>
                 <th class="w-fit">{{ $t('Hierarchy') }}</th>
                 <th v-for="cert in AllCertificates" :key="cert.id">
-                  <router-link :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`">
+                  <router-link
+                    :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`"
+                  >
                     {{ cert.title }}
                   </router-link>
                 </th>
@@ -207,15 +188,21 @@ const AllCertificates = computed(() => {
             <tbody>
               <tr v-for="hierarchy in state.data" :key="hierarchy.id">
                 <td class="employee-info-container">
-                  <router-link :to="`/organization/employee-certificate/${hierarchy.id}`" class="employee-info">
+                  <router-link
+                    :to="`/organization/employee-certificate/${hierarchy.id}`"
+                    class="employee-info"
+                  >
                     <span class="name">
                       {{ hierarchy.title }}
                     </span>
                   </router-link>
                 </td>
 
-                <td v-for="cert in AllCertificates" :key="cert.id"
-                  :class="getEmployeeCertificationclass(hierarchy, cert)">
+                <td
+                  v-for="cert in AllCertificates"
+                  :key="cert.id"
+                  :class="getEmployeeCertificationclass(hierarchy, cert)"
+                >
                   <p class="cert-status">
                     {{ getEmployeeCertificationStatus(hierarchy, cert) }}
                   </p>
@@ -225,7 +212,11 @@ const AllCertificates = computed(() => {
           </table>
         </div>
 
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
 
       <template #loader>
@@ -237,13 +228,19 @@ const AllCertificates = computed(() => {
       </template>
 
       <template #empty>
-        <DataEmpty title="..ops! You have No Employee in this heirarchy" link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
+        <DataEmpty
+          title="..ops! You have No Employee in this heirarchy"
+          link="/organization"
+          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+        />
       </template>
 
       <template #failed>
-        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
+        <DataFailed
+          title="..ops! You have No Employee in this heirarchy"
+          link="/organization"
+          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+        />
       </template>
     </DataStatus>
 
@@ -262,8 +259,4 @@ const AllCertificates = computed(() => {
   padding: 10px !important;
   text-align: center;
 }
-
-
-
-
 </style>
