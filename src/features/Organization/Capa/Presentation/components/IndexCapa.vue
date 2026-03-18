@@ -429,18 +429,30 @@ const GetCapaStataus = (capa: CapaModel) => {
                                   <span>{{ GetObservationType(item.type) }}</span>
                                 </p>
                                 <div class="label-item-secondary">
-                                <p>capa status <span>{{ GetCapaStataus(item.capa) }}</span></p>
-                              </div>
+                                  <p>capa status <span>{{ GetCapaStataus(item.capa) }}</span></p>
+                                </div>
                               </div>
 
-                              <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
+                            </div>
+                            <div class="btn-investegation-observation">
+                              <!-- <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
                               <div class="observation-details">
                                 <p>observation <span>details
                                     <Observdetails />
                                   </span></p>
                               </div>
+                              </router-link> -->
+                              <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
+                                <div class="observation-details">
+                                  <p>observation details<Observdetails /></p>
+                                </div>
                               </router-link>
-
+                              <!-- investegation -->
+                              <router-link to="">
+                                <div class="observation-details">
+                                  <p>investegation details<Observdetails /></p>
+                                </div>
+                              </router-link>
                             </div>
 
                             <!-- <p class="label-item-secondary flex items-center gap-1">
@@ -550,6 +562,15 @@ const GetCapaStataus = (capa: CapaModel) => {
 </template>
 
 <style scoped lang="scss">
+.btn-investegation-observation {
+  width: 100%;
+  display: flex;
+  // align-items: left;
+  justify-content: right;
+  gap: 10px;
+
+}
+
 .card-content {
   .sup-title {
     margin-bottom: 1rem;
@@ -595,23 +616,48 @@ const GetCapaStataus = (capa: CapaModel) => {
     }
   }
 
-  .observation-details {
+   .observation-details {
+    background-color: rgba(72, 110, 246, 0.1);
+    padding: .6rem .8rem;
+    border-radius: 20px;
+
+    border-bottom: 2px solid #1F41BB;
+    
+    &:hover{
+
+     cursor: pointer;
+    }
     p {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
+      gap: .5rem;
       font-family: 'bold';
       font-weight: 700;
       font-size: 16px;
       color: #1F41BB;
 
-      span {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: .5rem;
-      }
     }
   }
+  // .observation-details {
+  //   p {
+  //     display: flex;
+  //     flex-direction: row;
+  //     align-items: center;
+  //     gap: .5rem;
+  //     font-family: 'bold';
+  //     font-weight: 700;
+  //     font-size: 16px;
+  //     color: #1F41BB;
+
+  //     span {
+  //       display: flex;
+  //       flex-direction: row;
+  //       align-items: center;
+  //       gap: .5rem;
+  //     }
+  //   }
+  // }
 }
 
 .label-item-secondary {
