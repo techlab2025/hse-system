@@ -11,9 +11,7 @@ import { useI18n } from 'vue-i18n';
 
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
-import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel';
-import AddWhereHouseTypeController from '../controllers/addWhereHouseTypeController';
-import AddWhereHouseTypeExcelParams from '../../Core/params/addWhereHouseTypeExcelParams';
+
 import AccidentsTypeModel from '../../Data/models/AccidentsTypeModel';
 import AddAccidentsTypeController from '../controllers/addAccidentsTypeController';
 import AddAccidentsTypeExcelParams from '../../Core/params/AddAccidentsTypeExcelParams';

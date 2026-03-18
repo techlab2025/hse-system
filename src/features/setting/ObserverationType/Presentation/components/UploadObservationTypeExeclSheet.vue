@@ -1,43 +1,38 @@
 <script setup lang="ts">
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
-import { onMounted, ref } from 'vue';
-import * as XLSX from 'xlsx';
-import JSZip from 'jszip';
-import { useRouter } from 'vue-router';
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import { onMounted, ref } from 'vue'
+import * as XLSX from 'xlsx'
+import JSZip from 'jszip'
+import { useRouter } from 'vue-router'
 
-import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
-import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue';
-import { useI18n } from 'vue-i18n';
+import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
+import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
+import { useI18n } from 'vue-i18n'
 
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
-import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel';
-import AddWhereHouseTypeController from '../controllers/addWhereHouseTypeController';
-import AddWhereHouseTypeExcelParams from '../../Core/params/addWhereHouseTypeExcelParams';
-import AccidentsTypeModel from '../../Data/models/AccidentsTypeModel';
-import AddAccidentsTypeController from '../controllers/addAccidentsTypeController';
-import AddAccidentsTypeExcelParams from '../../Core/params/AddAccidentsTypeExcelParams';
-import ObserverationTypeModel from '../../Data/models/observerationTypeModel';
-import AddObserverationTypeController from '../controllers/addObserverationTypeController';
-import AddObserverationTypeExcelParams from '../../Core/params/AddObserverationTypeExcelParams';
+import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
+import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
+
+import ObserverationTypeModel from '../../Data/models/observerationTypeModel'
+import AddObserverationTypeController from '../controllers/addObserverationTypeController'
+import AddObserverationTypeExcelParams from '../../Core/params/AddObserverationTypeExcelParams'
 
 interface ExtractedImage {
-  name: string;
-  base64: string;
-  mimeType: string;
+  name: string
+  base64: string
+  mimeType: string
 }
 
 // ─── State ────────────────────────────────────────────────────────────────────
-const sheetData = ref<ObserverationTypeModel[] | null>(null);
-const File = ref<string>('');
-const Data = ref<any[]>([]);
-const mappedData = ref<any[] | null>(null);
-const extractedImages = ref<ExtractedImage[]>([]);
-const isLoading = ref(false);
-const errorMsg = ref<string | null>(null);
+const sheetData = ref<ObserverationTypeModel[] | null>(null)
+const File = ref<string>('')
+const Data = ref<any[]>([])
+const mappedData = ref<any[] | null>(null)
+const extractedImages = ref<ExtractedImage[]>([])
+const isLoading = ref(false)
+const errorMsg = ref<string | null>(null)
 
-const { t } = useI18n();
-const router = useRouter();
+const { t } = useI18n()
+const router = useRouter()
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const MIME_MAP: Record<string, string> = {
@@ -47,25 +42,24 @@ const MIME_MAP: Record<string, string> = {
   gif: 'image/gif',
   bmp: 'image/bmp',
   webp: 'image/webp',
-};
+}
 
-const getBodyData = (data: any[]) =>
-  ObserverationTypeModel.transformData(data.slice(1));
+const getBodyData = (data: any[]) => ObserverationTypeModel.transformData(data.slice(1))
 
 // ─── Image Extraction ─────────────────────────────────────────────────────────
 const extractImagesFromExcel = async (file: File): Promise<ExtractedImage[]> => {
-  const arrayBuffer = await file.arrayBuffer();
-  const zip = await JSZip.loadAsync(arrayBuffer);
-  const images: ExtractedImage[] = [];
-  const mediaFolder = zip.folder('xl/media');
+  const arrayBuffer = await file.arrayBuffer()
+  const zip = await JSZip.loadAsync(arrayBuffer)
+  const images: ExtractedImage[] = []
+  const mediaFolder = zip.folder('xl/media')
 
-  if (!mediaFolder) return images;
+  if (!mediaFolder) return images
 
-  const promises: Promise<void>[] = [];
+  const promises: Promise<void>[] = []
   mediaFolder.forEach((relativePath, zipEntry) => {
-    if (zipEntry.dir) return;
-    const ext = relativePath.split('.').pop()?.toLowerCase() ?? '';
-    const mimeType = MIME_MAP[ext] ?? 'image/png';
+    if (zipEntry.dir) return
+    const ext = relativePath.split('.').pop()?.toLowerCase() ?? ''
+    const mimeType = MIME_MAP[ext] ?? 'image/png'
 
     promises.push(
       zipEntry.async('base64').then((b64) => {
@@ -73,131 +67,121 @@ const extractImagesFromExcel = async (file: File): Promise<ExtractedImage[]> => 
           name: relativePath,
           base64: `data:${mimeType};base64,${b64}`,
           mimeType,
-        });
-      })
-    );
-  });
+        })
+      }),
+    )
+  })
 
-  await Promise.all(promises);
+  await Promise.all(promises)
 
   // Sort images numerically (image1.png, image2.png...) to maintain row order
   return images.sort((a, b) => {
-    const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-    const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
-    return numA - numB;
-  });
-};
+    const numA = parseInt(a.name.replace(/\D/g, '')) || 0
+    const numB = parseInt(b.name.replace(/\D/g, '')) || 0
+    return numA - numB
+  })
+}
 
 // ─── File Reading ─────────────────────────────────────────────────────────────
 const readExcelFile = (file: File): Promise<any[]> =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e) => {
       try {
-        const arrayBuffer = e.target?.result;
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const arrayBuffer = e.target?.result
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' })
+        const sheet = workbook.Sheets[workbook.SheetNames[0]]
         const data = XLSX.utils.sheet_to_json(sheet, {
           header: 1,
           raw: false,
           defval: '',
           blankrows: false,
-        });
-        Data.value = data;
-        resolve(data);
+        })
+        Data.value = data
+        resolve(data)
       } catch (err) {
-        reject(err);
+        reject(err)
       }
-    };
-    reader.onerror = (err) => reject(err);
-    reader.readAsArrayBuffer(file);
-  });
+    }
+    reader.onerror = (err) => reject(err)
+    reader.readAsArrayBuffer(file)
+  })
 
 // ─── Upload Handler ───────────────────────────────────────────────────────────
 const fileUpload = async (file: File) => {
-  errorMsg.value = null;
+  errorMsg.value = null
   try {
     if (!file) {
-      sheetData.value = null;
-      mappedData.value = null;
-      extractedImages.value = [];
-      return;
+      sheetData.value = null
+      mappedData.value = null
+      extractedImages.value = []
+      return
     }
-    isLoading.value = true;
-    const [data, images] = await Promise.all([
-      readExcelFile(file),
-      extractImagesFromExcel(file),
-    ]);
-    sheetData.value = getBodyData(data);
-    File.value = await filesToBase64(file);
-    mappedData.value = null;
-    extractedImages.value = images;
+    isLoading.value = true
+    const [data, images] = await Promise.all([readExcelFile(file), extractImagesFromExcel(file)])
+    sheetData.value = getBodyData(data)
+    File.value = await filesToBase64(file)
+    mappedData.value = null
+    extractedImages.value = images
   } catch (error) {
-    console.error('Error processing file:', error);
-    errorMsg.value = 'Failed to process the file.';
+    console.error('Error processing file:', error)
+    errorMsg.value = 'Failed to process the file.'
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>([
-  "title",
-
-]);
+const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: "Observation Type Title",
-
-};
+  title: 'Observation Type Title',
+}
 const onColumnMapping = (mapping: Record<string, string>) => {
-  if (!Data.value || Data.value.length === 0) return;
-  const reverseMapping: Record<string, string> = {};
+  if (!Data.value || Data.value.length === 0) return
+  const reverseMapping: Record<string, string> = {}
   for (const [sentKey, excelCol] of Object.entries(mapping)) {
-    if (excelCol) reverseMapping[excelCol] = sentKey;
+    if (excelCol) reverseMapping[excelCol] = sentKey
   }
-  const cloned: any[] = Data.value.map((row: any[]) => [...row]);
-  cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col);
+  const cloned: any[] = Data.value.map((row: any[]) => [...row])
+  cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col)
 
-  mappedData.value = cloned;
-  sheetData.value = getBodyData(cloned);
-};
-
+  mappedData.value = cloned
+  sheetData.value = getBodyData(cloned)
+}
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addObserverationTypeController = AddObserverationTypeController.getInstance()
 
 const AddObserverationType = async () => {
-  if (!mappedData.value) return;
-  const headers = mappedData.value[0] as string[];
-  const rows = mappedData.value.slice(1);
+  if (!mappedData.value) return
+  const headers = mappedData.value[0] as string[]
+  const rows = mappedData.value.slice(1)
 
   const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
-    const obj: Record<string, any> = {};
+    const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i];
-    });
-    return obj;
-  });
+      if (key && key.trim() !== '') obj[key] = row[i]
+    })
+    return obj
+  })
 
-  const orgData = new AddObserverationTypeExcelParams({ data: dataAsObjects });
-  await addObserverationTypeController.addObserverationType(orgData, router);
-};
+  const orgData = new AddObserverationTypeExcelParams({ data: dataAsObjects })
+  await addObserverationTypeController.addObserverationType(orgData, router)
+}
 
 const deleteRow = (rowIndex: number) => {
-  if (!mappedData.value) return;
+  if (!mappedData.value) return
 
   // Remove the data row (rowIndex + 1 because row 0 is the header)
   mappedData.value = [
     mappedData.value[0],
     ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
-  ];
+  ]
 
   // Remove the two images belonging to this row
-  const imgBase = rowIndex * 2;
-  extractedImages.value = extractedImages.value.filter(
-    (_, i) => i !== imgBase && i !== imgBase + 1
-  );
-};
+  const imgBase = rowIndex * 2
+  extractedImages.value = extractedImages.value.filter((_, i) => i !== imgBase && i !== imgBase + 1)
+}
 
 const onMappingClose = () => {
   if (!mappedData.value) {
@@ -214,7 +198,6 @@ onMounted(() => {
 
 <template>
   <div class="page-wrapper">
-
     <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
         <!-- <span class="icon">📝</span> -->
@@ -226,7 +209,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <a href="/ExcelForm.xlsx" class="flex item-center gap-2 " download>
+        <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>
@@ -241,8 +224,6 @@ onMounted(() => {
       <hr class="separator" />
     </div>
 
-
-
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
     <div v-if="isLoading" class="loading-bar">
@@ -252,11 +233,22 @@ onMounted(() => {
       <span class="loading-label">Processing file and images…</span>
     </div>
 
-    <FileUpload v-if="!Data || Data.length === 0" accept=".xls,.xlsx" @update:fileData="fileUpload" />
+    <FileUpload
+      v-if="!Data || Data.length === 0"
+      accept=".xls,.xlsx"
+      @update:fileData="fileUpload"
+    />
 
     <template v-else>
-      <ExcelSheetColumnsHandle v-if="!mappedData" :visable="true" :columns="Data[0]" :sentData="SendData"
-        @update:columnMapping="onColumnMapping" :sentDataLabels="SendDataLabels" @close="onMappingClose" />
+      <ExcelSheetColumnsHandle
+        v-if="!mappedData"
+        :visable="true"
+        :columns="Data[0]"
+        :sentData="SendData"
+        @update:columnMapping="onColumnMapping"
+        :sentDataLabels="SendDataLabels"
+        @close="onMappingClose"
+      />
 
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
@@ -272,7 +264,6 @@ onMounted(() => {
                     <span>
                       {{ item }}
                     </span>
-
                   </th>
 
                   <th>Actions</th>
@@ -295,9 +286,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <button @click="AddObserverationType" class="btn-confirm">
-          Confirm & Submit
-        </button>
+        <button @click="AddObserverationType" class="btn-confirm">Confirm & Submit</button>
       </template>
     </template>
   </div>
@@ -305,15 +294,14 @@ onMounted(() => {
 
 <style scoped>
 .title-container {
-
   .title {
-    color: #1F41BB;
+    color: #1f41bb;
     font-size: 20px;
     font-weight: 600;
   }
 
   .sub-title {
-    color: #1E293B;
+    color: #1e293b;
     font-size: 16px;
     font-weight: 500;
   }
@@ -331,17 +319,17 @@ a {
   padding: 12px;
   border-radius: 6px;
   width: fit-content;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
   cursor: pointer;
   transition: 0.3s all linear;
 }
 
 a:hover {
-  background-color: #E5E7EB;
+  background-color: #e5e7eb;
 }
 
 .download-title {
-  font-family: "Regular";
+  font-family: 'Regular';
   font-size: 14px;
   font-weight: 500;
 }
@@ -368,7 +356,7 @@ a:hover {
 }
 
 .warning-header .title {
-  color: #1F41BB;
+  color: #1f41bb;
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
@@ -385,14 +373,14 @@ a:hover {
 .rule-label {
   font-size: 22px;
   font-weight: 700;
-  color: #00057F;
-  font-family: "Regular";
+  color: #00057f;
+  font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
 
 .rule-description {
   font-size: 0.8rem;
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .chips {
@@ -403,7 +391,7 @@ a:hover {
 }
 
 .chip {
-  background: #F4F6F9;
+  background: #f4f6f9;
   border: 1px solid #e2e8f0;
   padding: 10px 38px;
   border-radius: 12px;
@@ -423,11 +411,11 @@ a:hover {
 
 /* The "Key" look for numbers */
 kbd {
-  background-color: #1D4ED81A;
+  background-color: #1d4ed81a;
   border-radius: 6px;
   /* border: 1px solid #cbd5e0; */
   /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
-  color: #1F41BB;
+  color: #1f41bb;
   display: inline-block;
   font-size: 1rem;
   font-weight: 700;
@@ -447,9 +435,9 @@ kbd {
 }
 
 .field-tag {
-  background: #F4F6F9;
+  background: #f4f6f9;
   color: #000000;
-  font-family: "Light";
+  font-family: 'Light';
   /* Makes it look like code/field names */
   font-size: 18px;
   font-weight: 600;
@@ -461,7 +449,7 @@ kbd {
 /* A subtle line to separate headers from values */
 .separator {
   border: 0;
-  border-top: 1px solid #F1F3F5;
+  border-top: 1px solid #f1f3f5;
   margin: 15px 0;
 }
 
@@ -473,23 +461,23 @@ kbd {
   }
 }
 
-
 .btn-delete-row {
-  background: #FEF2F2;
-  color: #B91C1C;
-  border: 1px solid #FECACA;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
   font-size: 14px;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 
 .btn-delete-row:hover {
-  background: #FEE2E2;
+  background: #fee2e2;
   transform: scale(1.1);
 }
-
 
 .page-wrapper {
   display: flex;
@@ -498,9 +486,9 @@ kbd {
 }
 
 .error-banner {
-  background: #FEF2F2;
-  color: #B91C1C;
-  border: 1px solid #FECACA;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
   border-radius: 10px;
   padding: 12px 16px;
 }
@@ -510,7 +498,7 @@ kbd {
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #EFF6FF;
+  background: #eff6ff;
   border-radius: 10px;
 }
 
@@ -518,14 +506,14 @@ kbd {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3B82F6;
+  background: #3b82f6;
   animation: bounce 1s infinite alternate;
 }
 
 @keyframes bounce {
   from {
     transform: translateY(0);
-    opacity: .6;
+    opacity: 0.6;
   }
 
   to {
@@ -537,7 +525,7 @@ kbd {
 .table-container {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   background: #fff;
 }
 
@@ -554,13 +542,13 @@ kbd {
 .main-table th {
   padding: 12px 16px;
   text-align: left;
-  color: #1D4ED8;
-  border-bottom: 2px solid #E5E7EB;
+  color: #1d4ed8;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .main-table td {
   padding: 12px 16px;
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .row-thumb {
@@ -568,13 +556,13 @@ kbd {
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
 }
 
 .btn-confirm {
   width: 100%;
   padding: 14px;
-  background: #1D4ED8;
+  background: #1d4ed8;
   color: #fff;
   border-radius: 12px;
   cursor: pointer;
@@ -583,6 +571,6 @@ kbd {
 }
 
 .no-img-text {
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 </style>

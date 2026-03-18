@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { ref, watch } from "vue";
-import ExcelIcon from "@/assets/images/excel.png";
-import PdfIcon from "@/assets/images/pdf.png";
-import WordIcon from "@/assets/images/word.png";
-import DwgIcon from "@/assets/images/dwg-file.png";
-import RarIcon from "@/assets/images/rar-file.png";
-import ExcelSheetIcon from "@/shared/icons/ExcelSheetIcon.vue";
-import IconDeleteAttachment from "@/shared/icons/IconDeleteAttachment.vue";
+import { ref, watch } from 'vue'
+import ExcelIcon from '@/assets/images/excel.png'
+import PdfIcon from '@/assets/images/pdf.png'
+import WordIcon from '@/assets/images/word.png'
+import DwgIcon from '@/assets/images/dwg-file.png'
+import RarIcon from '@/assets/images/rar-file.png'
+import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
 
 const props = defineProps({
   initialFileData: String,
@@ -17,16 +16,16 @@ const props = defineProps({
   },
   accept: {
     type: String,
-    default: "/*",
+    default: '/*',
   },
-});
+})
 
 const emit = defineEmits<{
-  (e: "update:fileData", file: File | null, index?: number): void;
-}>();
+  (e: 'update:fileData', file: File | null, index?: number): void
+}>()
 
-const pdfUrl = ref<string>(props.initialFileData || "");
-const fileData = ref<File | null>(null);
+const pdfUrl = ref<string>(props.initialFileData || '')
+const fileData = ref<File | null>(null)
 
 const placeholderIcons = {
   pdf: PdfIcon,
@@ -37,70 +36,70 @@ const placeholderIcons = {
   // audio: IconAudio,
   dwg: DwgIcon,
   rar: RarIcon,
-};
+}
 
 function getPlaceholder(file: File): string {
   // console.log(file, "ss");
-  const extension = file.type;
+  const extension = file.type
   switch (extension) {
-    case "application/pdf":
-      return placeholderIcons.pdf;
-    case "application/doc":
-    case "application/docx":
-      return placeholderIcons.word;
-    case "application/xls":
-    case "application/xlsx":
-      return placeholderIcons.excel;
-    case "application/mp4":
-      return placeholderIcons.video;
-    case "application/mp3":
-      return placeholderIcons.audio;
-    case "application/rar":
-    case "application/zip":
-      return placeholderIcons.rar;
+    case 'application/pdf':
+      return placeholderIcons.pdf
+    case 'application/doc':
+    case 'application/docx':
+      return placeholderIcons.word
+    case 'application/xls':
+    case 'application/xlsx':
+      return placeholderIcons.excel
+    case 'application/mp4':
+      return placeholderIcons.video
+    case 'application/mp3':
+      return placeholderIcons.audio
+    case 'application/rar':
+    case 'application/zip':
+      return placeholderIcons.rar
     default:
-      return URL.createObjectURL(file);
+      return URL.createObjectURL(file)
   }
 }
 
 function onFileChange(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0] || null;
+  const file = (event.target as HTMLInputElement).files?.[0] || null
 
   if (file) {
     // const fileUrl = URL.createObjectURL(file);
-    fileData.value = getPlaceholder(file);
-    emit("update:fileData", file, props.index);
+    fileData.value = getPlaceholder(file)
+    emit('update:fileData', file, props.index)
   } else {
-    fileData.value = null;
-    emit("update:fileData", null, props.index);
+    fileData.value = null
+    emit('update:fileData', null, props.index)
   }
 }
 
 watch(
   () => props.initialFileData,
   (newValue) => {
-    pdfUrl.value = newValue || "";
+    pdfUrl.value = newValue || ''
   },
-);
+)
 const deleteImage = () => {
-  pdfUrl.value = "";
-  fileData.value = null;
-  emit("update:fileData", null);
-};
+  pdfUrl.value = ''
+  fileData.value = null
+  emit('update:fileData', null)
+}
 
 const handleImageError = (url: string) => {
   if (url) {
-    pdfUrl.value = url;
+    pdfUrl.value = url
   } else {
-    pdfUrl.value = "";
+    pdfUrl.value = ''
   }
-};
+}
 
 const removeImage = () => {
-  pdfUrl.value = "";
-  fileData.value = null;
-  emit("update:fileData", null);
-};
+  pdfUrl.value = ''
+  fileData.value = null
+  emit('update:fileData', null)
+}
 </script>
 
 <template>
@@ -117,7 +116,13 @@ const removeImage = () => {
         <p class="title">Upload Your File</p>
         <p class="description">Drag & drop or click to upload your document securely</p>
       </label>
-      <input :id="`images${index}`" :accept="accept" class="input" type="file" @change="onFileChange" />
+      <input
+        :id="`images${index}`"
+        :accept="accept"
+        class="input"
+        type="file"
+        @change="onFileChange"
+      />
     </div>
 
     <!-- Preview Images -->
@@ -162,6 +167,6 @@ const removeImage = () => {
 .description {
   font-size: 18px;
   font-weight: 600;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 </style>
