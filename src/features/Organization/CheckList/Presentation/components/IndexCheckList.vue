@@ -166,16 +166,16 @@ const IndexActionList = () => [
       PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
     ],
   },
-  {
-    text: t('import_check_list'),
-    type: ActionItemsTypeEnum.Warning,
-    link: '/organization/check-list/upload',
-    icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
-    ],
-  },
+  //{
+    // text: t('import_check_list'),
+    // type: ActionItemsTypeEnum.Warning,
+    // link: '/organization/check-list/upload',
+    // icon: UploadExcelIcon,
+    // permission: [
+    //   PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+    //   PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
+    // ],
+  // },
 ]
 </script>
 
@@ -211,7 +211,7 @@ const IndexActionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexActionList()" :actionsNumber="4">
+      <ActionsList :show-actions="true" :actionList="IndexActionList()" :actionsNumber="3">
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
