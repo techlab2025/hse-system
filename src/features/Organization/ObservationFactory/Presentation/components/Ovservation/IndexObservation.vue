@@ -311,7 +311,7 @@ const GetObservationType = (type: number) => {
                             <p class="label-item-secondary flex items-center gap-1">
                               {{ $t('observation_type') }} :
                               <!-- <span>{{ GetObservationType(item.type) }}</span> -->
-                              {{ GetSaveStatus(item.saveStatus) }}
+                              {{ GetSaveStatus(item.saveStatus) || 'N/A' }}
 
                             </p>
                             <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
@@ -327,7 +327,7 @@ const GetObservationType = (type: number) => {
                             <p class="label-item-secondary Negative flex items-center gap-1"
                               v-if="item.isWorkStopped == 1">
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
+                              <CustomCheckboxToggle class="text-black" :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
                                 @update:checked="toggleObservationWorkStopped(item?.id)" />
                             </p>
 
@@ -432,4 +432,18 @@ const GetObservationType = (type: number) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.card-header-container {
+  .Negative {
+    background-color: #AAADB41A;
+    padding: 10px;
+    border-radius: 10px;
+    color: #737787 !important;
+    .text-black{
+      .switch-track {
+        background-color: #737787 !important;
+      }
+    }
+  }
+}
+</style>

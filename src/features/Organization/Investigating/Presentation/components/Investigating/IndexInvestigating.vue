@@ -213,7 +213,7 @@ const GetMediumObservationCount = (data: any): number => {
                   <div class="header-container">
                     <div class="card-content">
                       <div class="card-header" v-if="item?.description">
-                        <p class="label-item-secondary">{{ item?.description }}</p>
+                        <p class="label-item-secondary">{{ item?.description || 'N/A' }}</p>
                       </div>
                       <!-- {{ $t('take action') }} -->
                       <div class="card-details">
@@ -221,10 +221,10 @@ const GetMediumObservationCount = (data: any): number => {
                           <!-- <pre>{{ item?.observation }}</pre> -->
                           <p class="label-item-primary flex" v-if="item?.observation?.zoon">
                             <img :src="mark" alt="zone" />
-                            {{ $t('Zone') }}: <span>{{ item?.observation?.zoon?.title }}</span>
+                            {{ $t('Zone') }}: <span>{{ item?.observation?.zoon?.title || 'N/A' }}</span>
                           </p>
                           <p class="label-item-primary" v-if="item?.observation?.equipment">
-                            {{ $t('Machine') }}: <span>{{ item?.observation?.equipment?.title }}</span>
+                            {{ $t('Machine') }}: <span>{{ item?.observation?.equipment?.title || 'N/A' }}</span>
                           </p>
                           <p class="label-item-primary">
                             {{ $t('Status') }}:
@@ -340,3 +340,13 @@ const GetMediumObservationCount = (data: any): number => {
     </template>
   </DataStatus>
 </template>
+
+<style lang="scss" scoped>
+.header-container{
+  .label-item-primary{
+    span{
+      color: #202020 !important;
+    }
+  }
+}
+</style>

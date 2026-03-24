@@ -69,6 +69,7 @@ const props = defineProps<{
 .hidden-input:checked+.switch-label .switch-track {
   background-color: #3b82f6;
   /* On color (Blue) */
+  /* background-color: #D2D5DA !important; */
 }
 
 .switch-thumb {

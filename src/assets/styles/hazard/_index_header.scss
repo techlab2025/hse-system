@@ -152,6 +152,8 @@
       &.active {
         color: white;
         background-color: $PrimaryColor;
+        border: 1px solid $PrimaryColor;
+         border-radius: 40px;
       }
     }
   }

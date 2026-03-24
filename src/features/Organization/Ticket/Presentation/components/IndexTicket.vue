@@ -4,7 +4,6 @@ import IndexRootCausesController from '@/features/setting/RootCauses/Presentatio
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
-import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -13,8 +12,6 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/deleteRootCausesController'
-import DeleteRootCausesParams from '@/features/setting/RootCauses/Core/params/deleteRootCausesParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -22,11 +19,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexTicketController from '../controllers/indexTicketController'
@@ -35,7 +28,6 @@ import DeleteTicketController from '../controllers/deleteTicketController'
 import DeleteTicketParams from '../../Core/params/deleteTicketParams'
 import { StatusEnum } from '../../Core/Enums/statusEnum'
 import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
-import CloseTicketDialog from './Dialog/CloseTicketDialog.vue'
 
 const { t } = useI18n()
 
@@ -149,7 +141,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
     case StatusEnum.PENDING:
       return 'pending'
     case StatusEnum.OPEN:
-      return 'open'
+      return 'opened'
     case StatusEnum.SOLVED:
       return 'solved'
     case StatusEnum.RESOLVED:
