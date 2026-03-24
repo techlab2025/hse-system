@@ -35,6 +35,9 @@ import Timeline from 'primevue/timeline'
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import TreeTimeLine from './TreeTimeLine.vue'
 import Panel from 'primevue/panel';
+import AddMatrix from '@/shared/icons/AddMatrix.vue'
+import AddHerikaly from './AddHerikaly.vue'
+import AddHerikly from '@/shared/icons/AddHerikly.vue'
 
 const { t } = useI18n()
 
@@ -140,8 +143,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 </script>
 
 <template>
-  <PagesHeader :title="$t('functional_hierarchy')"
-    :subtitle="$t(`define_the_hierarchy_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
+
 
   <PermissionBuilder :code="[
     PermissionsEnum.WEBSITE,
@@ -157,17 +159,22 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <div class="mt-5">
 
           <!-- <Panel header="Hierarchy Actions" class="mb-5"> -->
+          <div class="functional_hierarchy_parent">
+            <PagesHeader :title="$t('functional_hierarchy')"
+              :subtitle="$t(`define_the_hierarchy_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
             <div class="btn-container flex ">
               <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
                 <!-- add-btn -->
-                <router-link to="/organization/herikaly/add" class="btn btn-primary  " style="width:75%">
+                <router-link to="/organization/herikaly/add" class="btn btn-primary  ">
+                  <AddHerikly />
                   {{ $t('add_new_heirarchy') }}
                 </router-link>
               </PermissionBuilder>
-              <router-link style="width:25%" class="btn btn-secondary" to="/organization/herikaly/matrix"> {{
+              <router-link class="btn btn-secondary" to="/organization/herikaly/matrix"> <AddMatrix /> {{
                 $t('hierarchy_matrix')
               }}</router-link>
             </div>
+          </div>
           <!-- </Panel> -->
           <div class="btn-container flex ">
             <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
@@ -191,7 +198,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
 
           <DataEmpty :link="`/organization/herikaly/add`" addText="Add Herikaly"
-            description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
+            description="Sorry .. You have no Herikaly .. All your j   <AddHerikaly />oined customers will appear here when you add your customer data"
             title="..ops! You have No Herikaly" />
         </PermissionBuilder>
       </template>
@@ -214,11 +221,26 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   </PermissionBuilder>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 /* .btn-container {
   position: fixed;
-  bottom: 0;
+  bottom: 0;   <AddHerikaly />
   width: 72%;
   padding-block: 1rem;
 } */
+.functional_hierarchy_parent {
+  position: relative;
+  .btn-container{
+    position: absolute;
+    top: 10px;
+    right:5px;
+    z-index: 11111;
+    @media (max-width: 1050px) {
+    position: relative;
+    justify-content: end;
+    }
+    .btn-secondary{
+    }
+  }
+}
 </style>
