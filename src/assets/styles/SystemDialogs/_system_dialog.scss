@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../mixins/flex';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 .system-dialog-content-container {
   height: 60vh;
   overflow: auto;

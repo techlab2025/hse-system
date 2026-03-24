@@ -1,6 +1,6 @@
-@import '../../../variables';
-@import '../../../mixins/flex';
-@import '../../../mixins/grid';
+@use '../../../variables' as *;
+@use '../../../mixins/flex' as *;
+@use '../../../mixins/grid' as *;
 
 .another-meeting {
   width: 100%;
@@ -9,16 +9,14 @@
   padding: $MdSize2 $MdSize;
   border-radius: calc($XlSize + 2px);
   margin-top: $MdSize;
-  @media(max-width:768px){
-
+  @media (max-width: 768px) {
     .meeting-status {
       width: 100%;
 
-      button{
+      button {
         width: 50%;
       }
     }
-
   }
   &.not-colored {
     // .another-meeting-header {

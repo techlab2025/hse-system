@@ -34,4 +34,13 @@ export default class ProjectLocationTeamModel extends TitleModel {
       data.team_title || data.title,
     )
   }
+
+  static example: ProjectLocationTeamModel = new ProjectLocationTeamModel(
+    1,
+    'Team 1',
+    [ProjectLocationEmployeeModel.example],
+    1,
+    20,
+    'Team',
+  )
 }

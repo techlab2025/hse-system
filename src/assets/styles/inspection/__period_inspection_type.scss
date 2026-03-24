@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .period-type-container {
   @include flex-column(nowrap, flex-start, flex-start);
@@ -42,7 +42,7 @@
       border-radius: calc($XlSize + 2px);
       transition: 0.2s all linear;
       cursor: pointer;
-      border: 1px solid #D9DBE9;
+      border: 1px solid #d9dbe9;
       &.active {
         background-color: $PrimaryColor;
         border: 1px solid $PrimaryColor;

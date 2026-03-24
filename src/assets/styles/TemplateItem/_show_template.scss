@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .show-template-container {
   position: relative;
@@ -46,7 +46,7 @@
 
   .template-title {
     @include flex-center();
-    @media(max-width:768px){
+    @media (max-width: 768px) {
       @include flex-column-reverse(nowrap, center, center);
     }
     gap: 4px;

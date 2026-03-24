@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .performance-box {
   @include flex-column(nowrap, start, center);
@@ -74,7 +74,6 @@
       }
     }
   }
-
 
   .per-wrapper {
     @include flex-row(nowrap, start, start);

@@ -1,6 +1,6 @@
-@import '../../variables';
-@import '../../mixins/flex';
-@import '../../mixins/grid';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
 
 .equipment-card {
   @include flex-column(nowrap, flex-start, flex-start);
@@ -9,7 +9,7 @@
   background-color: white;
   border-radius: $XlSize;
   padding: $XsSize;
-  border: 1px solid #F4F4F4;
+  border: 1px solid #f4f4f4;
   margin-block: 12px;
 
   .equipment-card-header-container {
@@ -67,7 +67,7 @@
     gap: 10px;
   }
 
-  .empty-tools{
+  .empty-tools {
     text-align: center;
     // opacity: 0.1;
     font-size: 24px;

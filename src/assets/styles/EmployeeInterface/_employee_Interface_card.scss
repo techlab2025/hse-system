@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .employee-interface-wrapper {
   @include flex-column();
@@ -81,7 +81,7 @@
     /* ================= Incident ================= */
     &.Incident {
       &::before {
-        background: #ce1515; 
+        background: #ce1515;
       }
 
       .card-title {
@@ -90,7 +90,7 @@
 
       .button-main {
         background: #ce1515;
-        border-color: #ce1515; 
+        border-color: #ce1515;
       }
 
       .button-view {

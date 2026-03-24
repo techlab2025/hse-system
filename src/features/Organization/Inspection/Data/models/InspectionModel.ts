@@ -113,6 +113,47 @@ export default class InspectionModel {
       // datadata.task_periods,
     )
   }
+
+  static example: InspectionModel = new InspectionModel(
+    1,
+    TemplateDetailsModel.example,
+    '2026-03-15',
+    1,
+    1,
+    1,
+    null,
+    'INS-001',
+    'SERIAL-001',
+    0,
+    1,
+    1,
+    null,
+    {
+      id: 1,
+      organization_employee_id: 12,
+      name: 'Ahmed Hassan',
+      hierarchy: [],
+    },
+    false,
+    [],
+    null,
+    [],
+    '2026-03-15',
+    {
+      id: 1,
+      name: 'Inspector',
+      organization_employee_id: '12',
+      title: 'Inspector',
+    },
+    100,
+    {
+      id: 1,
+      organization_employee_id: 12,
+      name: 'Ahmed Hassan',
+      hierarchy: [],
+    },
+    '2026-03-15',
+  )
 }
 
 interface CreatedBy {

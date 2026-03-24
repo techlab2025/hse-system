@@ -1,6 +1,6 @@
-@import '../../variables';
-@import '../../mixins/flex';
-@import '../../mixins/grid';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
 
 .project-header-container {
   width: 100%;
@@ -23,6 +23,7 @@
     top: 0;
     opacity: 0.1;
   }
+  
 
   .project-header {
     @include flex-column(nowrap, flex-start, flex-start);

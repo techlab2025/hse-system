@@ -1,11 +1,11 @@
-@import '../../variables';
-@import '../../mixins/flex';
-@import '../../mixins/grid';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
+@use '../../mixins/grid' as *;
 
 .section-header {
   @include flex-row(nowrap, flex-start, center);
   gap: calc($XsSize4 + 1px);
-  font-family: "Regular";
+  font-family: 'Regular';
   .section-img {
     width: 50px;
     height: 50px;
@@ -27,4 +27,3 @@
     }
   }
 }
-

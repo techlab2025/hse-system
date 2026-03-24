@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .Subscription_card {
   @include grid(
@@ -72,8 +72,7 @@
       top: 0;
     }
     @media screen and (max-width: 800px) {
-      display: none; 
+      display: none;
     }
-  } 
+  }
 }
- 

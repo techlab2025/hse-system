@@ -1,5 +1,5 @@
-@import '../../../variables';
-@import '../../../mixins/flex';
+@use '../../../variables' as *;
+@use '../../../mixins/flex' as *;
 
 .investegaion-viewers-card-conatiner {
   font-family: 'Regular';

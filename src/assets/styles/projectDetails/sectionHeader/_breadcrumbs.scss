@@ -1,4 +1,5 @@
-@import '../../mixins/flex';
+@use '../../mixins/flex' as *;
+@use '../../variables' as *;
 
 .breadcrumbs-project {
   @include flex(row, nowrap, flex-start, center);

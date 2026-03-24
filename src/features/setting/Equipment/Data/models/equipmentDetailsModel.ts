@@ -44,8 +44,8 @@ export default class EquipmentDetailsModel {
   public inspections_count: number
   public inspections_with_result_count: number
   public last_inspection: LastInspectionModel
-  public serial_name : string
-  public checkout_date : string
+  public serial_name: string
+  public checkout_date: string
 
   constructor(
     id: number,
@@ -78,8 +78,8 @@ export default class EquipmentDetailsModel {
     inspections_count: number,
     inspections_with_result_count: number,
     last_inspection: LastInspectionModel,
-    serial_name : string,
-    checkout_date : string
+    serial_name: string,
+    checkout_date: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -155,8 +155,8 @@ export default class EquipmentDetailsModel {
       data.lastest_inspection_result
         ? LastInspectionModel.fromMap(data.lastest_inspection_result)
         : null,
-        data.serial_name,
-        data.checkout_date
+      data.serial_name,
+      data.checkout_date,
     )
   }
 
@@ -298,46 +298,79 @@ export default class EquipmentDetailsModel {
   //     ),
   //   ],
   // )
-    static transformData(data: string[][]): EquipmentDetailsModel[] {
+  static example: EquipmentDetailsModel = new EquipmentDetailsModel(
+    1, // id
+    1, // allIndustries
+    acc, // certificateImage
+    '2026-03-10', // date
+    '30', // inspectionDuration
+    'LIC-77821', // licenseNumber
+    'PLATE-4455', // licensePlateNumber
+    EquipmentStatus.RENT, // status
+    [{ locale: 'en', title: 'CAT 320 Excavator' }], // titles
+    1, // hasCertificate
+    0, // parentId
+    acc, // image
+    [], // industries
+    5, // equipmentTypeId
+    EquipmentTypeDetailsModel.example,
+    '15000', // kilometer
+    '2026-03-01', // checkinDate
+    'daily', // RentType
+    '8', // RentTime
+    1, // wareHouse
+    ContractorDetailsModel.example,
+    new WhereHouseDetailsModel(1, 'Central Warehouse', 'WH-001', null),
+    '2026-03-15', // lastInspectoinDate
+    [InspectionModel.example, InspectionModel.example],
+    [InspectionModel.example, InspectionModel.example],
+    '2027-03-01', // certificateExppiredDate
+    'CAT 320 Excavator', // title
+    4, // inspections_count
+    2, // inspections_with_result_count
+    LastInspectionModel.example,
+    'CAT320-EX-2026', // serial_name
+    '2026-03-20', // checkout_date
+  )
+  static transformData(data: string[][]): EquipmentDetailsModel[] {
     return data.map(
       (row, index) =>
         new EquipmentDetailsModel(
           index + 1, // Generate unique ID (or use 0 if not needed)
-          row[0] || "", // Equiomet
-          row[1] || "", // Serial Name
-          row[2] || "", // License Number
-          row[3] || "", // License Plate Number
-          row[4] || "", // Kilometer
-          row[5] || "", // Period Type
-          row[6] || "", // Period
-          row[7] || "", // Checkin Date
-          row[8] || "", // Checkout Date
-          row[9] || "", // Date
-          row[10] || "", // Inspection Duration
-          row[11] || "", // Status
-          row[12] || "", // Certificate Image
-          row[13] || "", // Certificate Expired Date
-          row[14] || "", // Has Certificate
-          row[15] || "", // All Industries
-          row[16] || "", // Industries
-          row[17] || "", // Equipment Type
-          row[18] || "", // Equipment Type ID
-          row[19] || "", // Warehouse
-          row[20] || "", // Contractor
-          row[21] || "", // Last Inspection Date
-          row[22] || "", // Last Inspection Result
-          row[23] || "", // Tasks Without Result
-          row[24] || "", // Tasks With Result
-          row[25] || "", // Inspections Count
-          row[26] || "", // Inspections With Result Count
-          row[27] || "", // Title
-          row[28] || "", // Image
-          row[29] || "", // Titles
-          row[30] || "", // Lastest Inspection Result
-          row[31] || "", // Serial Name
-          row[32] || "", // Checkout Date
-
+          row[0] || '', // Equiomet
+          row[1] || '', // Serial Name
+          row[2] || '', // License Number
+          row[3] || '', // License Plate Number
+          row[4] || '', // Kilometer
+          row[5] || '', // Period Type
+          row[6] || '', // Period
+          row[7] || '', // Checkin Date
+          row[8] || '', // Checkout Date
+          row[9] || '', // Date
+          row[10] || '', // Inspection Duration
+          row[11] || '', // Status
+          row[12] || '', // Certificate Image
+          row[13] || '', // Certificate Expired Date
+          row[14] || '', // Has Certificate
+          row[15] || '', // All Industries
+          row[16] || '', // Industries
+          row[17] || '', // Equipment Type
+          row[18] || '', // Equipment Type ID
+          row[19] || '', // Warehouse
+          row[20] || '', // Contractor
+          row[21] || '', // Last Inspection Date
+          row[22] || '', // Last Inspection Result
+          row[23] || '', // Tasks Without Result
+          row[24] || '', // Tasks With Result
+          row[25] || '', // Inspections Count
+          row[26] || '', // Inspections With Result Count
+          row[27] || '', // Title
+          row[28] || '', // Image
+          row[29] || '', // Titles
+          row[30] || '', // Lastest Inspection Result
+          row[31] || '', // Serial Name
+          row[32] || '', // Checkout Date
         ),
-    );
+    )
   }
 }

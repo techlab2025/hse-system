@@ -2,14 +2,14 @@ import TitleModel from '@/base/core/Models/title_model'
 import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
 
 export default class ProjectLocationHierarchyModel extends TitleModel {
-  public Employees: TitleModel[]
+  public Employees: ProjectLocationEmployeeModel[]
   public projectLocationHierarchyId: number
 
   constructor(
     title: string,
     id: number,
     projectLocationHierarchyId: number,
-    Employees: TitleModel[],
+    Employees: ProjectLocationEmployeeModel[],
   ) {
     super(title, id)
     this.projectLocationHierarchyId = projectLocationHierarchyId
@@ -27,4 +27,10 @@ export default class ProjectLocationHierarchyModel extends TitleModel {
       // data.project_location_id,
     )
   }
+  static example: ProjectLocationHierarchyModel = new ProjectLocationHierarchyModel(
+    'Hierarchy',
+    1,
+    1,
+    [ProjectLocationEmployeeModel.example],
+  )
 }

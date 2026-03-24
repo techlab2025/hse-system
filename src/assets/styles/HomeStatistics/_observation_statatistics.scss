@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .total-observation-container {
   margin-top: 12px;
@@ -21,12 +21,12 @@
       .static-title {
         color: #0c2058;
         font-size: $XlSize;
-        font-family: "bold";
+        font-family: 'bold';
         font-weight: $BaseFontWeightBold;
         span {
           color: #bcbcbc;
           font-size: $XsSize;
-          font-family: "regular";
+          font-family: 'regular';
           font-weight: $BaseFontMediumWeight;
         }
       }

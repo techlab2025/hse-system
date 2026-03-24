@@ -1,13 +1,11 @@
-@import './project_statistics';
-@import './home_statistics';
-@import './project_statistics_card';
-@import './top_teams';
-@import './total_machine';
-@import './incidant_factor';
-@import './observation_statatistics';
-
-@import './header_card';
-
-@import './number_of_projects';
-@import './total_insedent';
+@use './project_statistics' as *;
+@use './home_statistics' as *;
+@use './project_statistics_card' as *;
+@use './top_teams' as *;
+@use './total_machine' as *;
+@use './incidant_factor' as *;
+@use './observation_statatistics' as *;
+@use './header_card' as *;
+@use './number_of_projects' as *;
+@use './total_insedent' as *;
 

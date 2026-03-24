@@ -1,5 +1,5 @@
-@import "./investigation_meeting_section";
-@import "./index_header";
-@import "./index_filter";
-@import "./index_table";
-@import "./investigation_meeting_sidebar";
+@use './investigation_meeting_section' as *;
+@use './index_header' as *;
+@use './index_filter' as *;
+@use './index_table' as *;
+@use './investigation_meeting_sidebar' as *;

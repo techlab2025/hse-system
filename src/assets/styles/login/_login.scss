@@ -1,6 +1,6 @@
-@import '../mixins/grid';
-@import '../mixins/flex';
-@import '../variables';
+@use '../variables' as *;
+@use '../mixins/grid' as *;
+@use '../mixins/flex' as *;
 
 .login {
   @include grid(2, 1fr, 10px);
@@ -12,6 +12,7 @@
     @include flex(column-reverse, wrap, center, center);
     gap: $MdSize;
     padding: $MdSize;
+    
   }
 
   .images {

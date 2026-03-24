@@ -1,6 +1,6 @@
-@import "./hazard_section";
-@import "./index_header";
-@import "./index_filter";
-@import "./index_table";
-@import "./employee_selections";
-@import "./all_observation_form";
+@use './hazard_section' as *;
+@use './index_header' as *;
+@use './index_filter' as *;
+@use './index_table' as *;
+@use './employee_selections' as *;
+@use './all_observation_form' as *;

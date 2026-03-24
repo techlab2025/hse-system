@@ -1,9 +1,9 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .radio-btns {
-  @include flex-row(  wrap, flex-start, center);
+  @include flex-row(wrap, flex-start, center);
   margin-top: $XlSize;
   gap: $XsSize;
   font-family: 'Light';

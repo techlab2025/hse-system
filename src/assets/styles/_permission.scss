@@ -1,5 +1,5 @@
-@import './mixins/grid';
-@import './mixins/flex';
+@use './mixins/grid' as *;
+@use './mixins/flex' as *;
 
 .permission {
   width: 100%;

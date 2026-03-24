@@ -3,6 +3,7 @@ import ProjectLocationEquipmentModel from './CustomLocation/ProjectLocationEquip
 import TitleModel from '@/base/core/Models/title_model'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params'
 import projectLocationZoonsModel from './projectLocationZoons'
+import EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 
 export default class SohwProjectZoonModel {
   public projectZoonId: number
@@ -62,7 +63,10 @@ export default class SohwProjectZoonModel {
     1,
     10,
     'zoon',
-    [],
+    [
+      { ...ProjectLocationEquipmentModel.example, equipment: { ...EquipmentDetailsModel.example, title: 'Car' } },
+      ProjectLocationEquipmentModel.example,
+    ],
     { id: 1, title: 'location' },
     1,
     [],
@@ -74,12 +78,18 @@ export default class SohwProjectZoonModel {
     1,
     10,
     'zoon',
-    [ProjectLocationEquipmentModel.example,ProjectLocationEquipmentModel.example],
+    [ProjectLocationEquipmentModel.example, ProjectLocationEquipmentModel.example],
     { id: 1, title: 'location' },
     1,
-    [projectLocationZoonsModel.example ,projectLocationZoonsModel.example],
-    [{locale: 'en', title: 'zoon en'}, {locale: 'ar', title: 'zoon ar'}],
-    [{id: 1, title: 'zoon1'}, {id: 2, title: 'zoon2'}],
+    [projectLocationZoonsModel.example, projectLocationZoonsModel.example],
+    [
+      { locale: 'en', title: 'zoon en' },
+      { locale: 'ar', title: 'zoon ar' },
+    ],
+    [
+      { id: 1, title: 'zoon1' },
+      { id: 2, title: 'zoon2' },
+    ],
     1,
   )
 }

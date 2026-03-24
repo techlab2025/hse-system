@@ -1,6 +1,6 @@
-@import '../../variables';
-@import '../../mixins/flex';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
 
-.type-select{
+.type-select {
   width: 100%;
 }
