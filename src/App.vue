@@ -16,7 +16,7 @@ const route = useRoute()
 
 <template>
   <Toast />
-  <MainDialog />
+  <MainDialog />  
   <ErrorDialog />
   <LoaderDialog />
   <RouterView />
