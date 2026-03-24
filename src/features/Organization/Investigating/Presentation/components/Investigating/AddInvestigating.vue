@@ -27,8 +27,8 @@ const setParams = (data: Params) => {
 
     <div class="col-span-6 button-wrapper flex gap-2">
       <router-link to="/organization/investigating" @click.prevent="" class="btn btn-cancel "
-        style="width:30%  ">Cancel</router-link>
-      <button type="submit" class="btn btn-primary " style="width: 70%;">Add</button>
+        style="width:30%  ">{{ $t('Cancel') }}</router-link>
+      <button type="submit" class="btn btn-primary " style="width: 70%;">{{ $t('Confirm') }}</button>
     </div>
   </form>
 </template>

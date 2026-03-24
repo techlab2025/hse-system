@@ -218,15 +218,15 @@ watch(() => showInvestigationResultController.state.value, (newState) => {
   <div class="meeting-investigation col-span-6 md:col-span-6">
     <img :src="meetingImage" alt="" class="meeting-icon" />
 
-    <p>Investigation Meeting</p>
+    <p>{{ $t('Investigation Meeting') }}</p>
   </div>
 
   <div class="col-span-6 md:col-span-3 input-wrapper">
-    <label for="date">Date</label>
+    <label for="date">{{ $t('Date') }}</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
   <div class="col-span-6 mfinsd:col-span-3 input-wrapper">
-    <label for="time">Time</label>
+    <label for="time">{{ $t('Time') }}</label>
     <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" @update:modelValue="updateData" />
   </div>
 

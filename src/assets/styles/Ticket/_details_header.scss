@@ -103,8 +103,8 @@
           height: calc(var(--line-height) * 2em);
           line-height: var(--line-height);
           --line-height: 1.5;
-            word-break: break-word;
-    overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow-wrap: anywhere;
         }
 
         p {
@@ -129,7 +129,7 @@
       background: #fdfdfd;
       border-radius: 25px;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1000px) {
         width: 100%;
       }
 
@@ -146,16 +146,17 @@
           color: #6b7280;
           font-size: 18px;
           width: 70%;
-            word-break: break-word;
-    overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow-wrap: anywhere;
         }
         div.imgs {
           @include flex(row, nowrap, center, center);
           position: relative;
           height: calc($XlSize3 + 10px);
+          margin-bottom: 1.5rem;
           img {
-            width: calc($XlSize3 + 5px);
-            height: calc($XlSize3 + 5px);
+            width: 70px;
+            height: 70px;
             border-radius: $XsSize2;
             object-fit: cover;
             border: 2px solid $White;
@@ -197,7 +198,7 @@
       border-radius: 25px;
       border: 1px solid #22c19733;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1000px) {
         width: 100%;
       }
 
@@ -275,8 +276,8 @@
             font-weight: 600;
           }
           h4 {
-           word-break: break-word;
-           overflow-wrap: anywhere;
+            word-break: break-word;
+            overflow-wrap: anywhere;
           }
 
           p {
