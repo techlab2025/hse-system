@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .template-types-container {
   margin-top: $XlSize;
@@ -31,7 +31,7 @@
     font-size: $SmSize;
     font-weight: $BaseFontSemiBoldWeight;
     width: 100%;
-    @media (max-width:1000px) {
+    @media (max-width: 1000px) {
       grid-column: span 2;
     }
 

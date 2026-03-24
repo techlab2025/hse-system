@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .template-document-container {
   width: 100%;
@@ -12,14 +12,13 @@
 
   .template-document-header {
     // background-color: #f8f8f8;
-    background-color: #E6E8EA;
+    background-color: #e6e8ea;
     border-top-left-radius: $XlSize;
     border-top-right-radius: $XlSize;
     width: 100%;
     position: relative;
     z-index: 9999;
     padding: $MdSize;
-
 
     @include flex-row(nowrap, space-between, center);
     @media (max-width: 768px) {

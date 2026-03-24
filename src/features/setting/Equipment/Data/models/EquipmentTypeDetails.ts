@@ -2,6 +2,7 @@ import TitleModel from '@/base/core/Models/title_model'
 import type { TitleLocale } from '@/base/core/params/translations_params'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import acc from '@/assets/images/acc.png'
 
 export default class EquipmentTypeDetailsModel extends TitleInterface {
   public id: number
@@ -63,4 +64,18 @@ export default class EquipmentTypeDetailsModel extends TitleInterface {
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+
+  static example: EquipmentTypeDetailsModel = new EquipmentTypeDetailsModel(
+    5,
+    'Excavator',
+    'Heavy equipment',
+    1,
+    1,
+    null,
+    0,
+    acc,
+    [{ locale: 'en', title: 'Excavator' }],
+    1,
+    10,
+  )
 }

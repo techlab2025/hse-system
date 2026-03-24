@@ -1,2 +1,2 @@
-@import './certificate_card';
-@import './certificate_index';
+@use './certificate_card' as *;
+@use './certificate_index' as *;

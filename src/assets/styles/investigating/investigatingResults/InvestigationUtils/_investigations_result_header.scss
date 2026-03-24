@@ -1,12 +1,12 @@
-@import '../../../variables';
-@import '../../../mixins/flex';
-@import '../../../mixins/grid';
+@use '../../../variables' as *;
+@use '../../../mixins/flex' as *;
+@use '../../../mixins/grid' as *;
 
 .investigating-header-container {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $MdSize2;
   font-family: 'Regular';
-  background-color: #F7F9FC;
+  background-color: #f7f9fc;
   padding: $MdSize;
   border-radius: calc($XlSize + 2px);
   width: 100%;
@@ -31,8 +31,8 @@
     @include flex-row(nowrap, flex-start, center);
     gap: $XlSize4;
     @media (max-width: 768px) {
-     flex-wrap: wrap;
-     gap: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     p {
       color: #aeaeb2;
@@ -71,10 +71,10 @@
     .meeting-info {
       @include flex-row(nowrap, flex-start, center);
       gap: $XlSize4;
-          @media (max-width: 768px) {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+      @media (max-width: 768px) {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
       p {
         color: #aeaeb2;
         font-size: $SmSize;

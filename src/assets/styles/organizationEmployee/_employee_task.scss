@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 .employee-tasks-card {
   background-color: #ffffff;
   border: 1px solid #eef3fe;
@@ -8,7 +8,7 @@
   border-radius: 16px;
   margin-top: 1rem;
   position: relative;
-  &::after{
+  &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -24,7 +24,7 @@
     2,
     10px,
     (
-    600px: 1,
+      600px: 1,
     )
   );
   .task-details {
@@ -93,8 +93,8 @@
     }
   }
 }
-.view-all-tasks{
-  background-color: #1D4ED80D;
+.view-all-tasks {
+  background-color: #1d4ed80d;
   color: #041953;
   padding: $XsSize3;
   border-radius: 8px;
@@ -107,15 +107,15 @@
   cursor: pointer;
   margin: 1rem 0;
   transform: scale(1);
-  transition:  all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
   @include flex(row, nowrap, center, center);
   gap: 10px;
-  &:hover{
+  &:hover {
     background-color: #041953;
     color: white;
     transform: scale(1.02);
-    svg{
-      path{
+    svg {
+      path {
         fill: white;
       }
     }

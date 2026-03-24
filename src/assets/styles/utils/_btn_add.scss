@@ -1,7 +1,7 @@
-@import '../variables';
-@import '../mixins/flex';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 .add-btn {
-  font-family: "Light";
+  font-family: 'Light';
 
   background-color: #041953;
   color: white;

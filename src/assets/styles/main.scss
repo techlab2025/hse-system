@@ -13,6 +13,7 @@
 @use './utils/popover';
 @use './utils/btn_add';
 @use './utils/btn_cancel';
+
 @use './utils/breadCrumb';
 @use './utils/tabs_selections';
 @use './utils/custom_checkbox';
@@ -277,6 +278,7 @@ body {
   height: 20px;
   svg {
     margin-left: auto;
+
     margin-right: auto;
     width: 18px;
     height: 18px;

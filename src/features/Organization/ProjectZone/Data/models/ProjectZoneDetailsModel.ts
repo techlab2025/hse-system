@@ -9,6 +9,7 @@ export default class ProjectZoneDetailsModel {
   public location: OrganizationLocationModel
   public lat: string
   public lng: string
+  public title: string
 
   constructor(
     id: number,
@@ -17,6 +18,7 @@ export default class ProjectZoneDetailsModel {
     location: OrganizationLocationModel,
     lat: string,
     lng: string,
+    title: string,
   ) {
     this.id = id
     this.titles = titles
@@ -24,6 +26,7 @@ export default class ProjectZoneDetailsModel {
     this.location = location
     this.lat = lat
     this.lng = lng
+    this.title = title
   }
 
   static fromMap(data: any): ProjectZoneDetailsModel {
@@ -34,6 +37,7 @@ export default class ProjectZoneDetailsModel {
       data?.location ? this.getTitle(data.location) : null,
       data.lat,
       data.lng,
+      data.title,
     )
   }
 
@@ -44,6 +48,7 @@ export default class ProjectZoneDetailsModel {
     null,
     '24.7136',
     '46.6753',
+    'Zoon1',
   )
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')

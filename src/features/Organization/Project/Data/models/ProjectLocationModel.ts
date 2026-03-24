@@ -31,10 +31,29 @@ export default class projectLocationModel {
     )
   }
   static example = new projectLocationModel(
-    [OrganizatoinEmployeeDetailsModel.example],
+    [
+      {
+        ...OrganizatoinEmployeeDetailsModel.example,
+        name: 'Mohab',
+        image:
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      },
+      {
+        ...OrganizatoinEmployeeDetailsModel.example,
+        name: 'Mohamed',
+        image:
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      },
+      {
+        ...OrganizatoinEmployeeDetailsModel.example,
+        name: 'Ahmed',
+        image:
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      },
+    ],
     1,
     'Main Office',
     1,
     1,
-   )
+  )
 }

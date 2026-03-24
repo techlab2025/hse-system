@@ -18,7 +18,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public phone: string
   public email: string
   public is_master: number
-  public image: null
+  public image: string | null
   public hierarchy: TitleInterface[]
   public roles: RoleDetailsModel[]
   public organization_employee_id: number
@@ -42,7 +42,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     phone: string,
     email: string,
     is_master: number,
-    image: null,
+    image: string | null,
     hierarchy: TitleInterface[],
     roles: RoleDetailsModel[],
     organization_employee_id: number,
@@ -124,7 +124,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   // Example Data
   // =====================
   static example: OrganizatoinEmployeeDetailsModel = new OrganizatoinEmployeeDetailsModel(
-    10,
+    1,
     'Mohab',
     '01007599132',
     'Mohab@gmail.com',
@@ -133,7 +133,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     [
       {
         id: 1,
-        title: 'Egypt',
+        title: 'Manger',
       },
     ],
     [],
@@ -141,5 +141,11 @@ export default class OrganizatoinEmployeeDetailsModel {
     1,
     'EMP',
     '0001',
+    [],
+    [],
+    [],
+    [],
+    1,
+    [],
   )
 }

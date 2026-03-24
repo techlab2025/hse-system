@@ -10,7 +10,7 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   ProjectLocationId: number,
   LocationId: number,
-  isShow: boolean
+  isShow?: boolean
 }>()
 const visible = ref(false)
 

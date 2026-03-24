@@ -1,5 +1,6 @@
-@import '../../../variables';
-@import '../../../mixins/flex';
+@use '../../../variables' as *;
+@use '../../../mixins/flex' as *;
+@use '../../../mixins/grid' as *;
 
 .take-action-answer {
   font-family: 'Regular';

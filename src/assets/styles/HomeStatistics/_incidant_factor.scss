@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .most-incidat-factor {
   margin-top: 20px;
@@ -36,9 +36,9 @@
   }
   .finished-class {
     background-color: #8ff98f24 !important;
-    color: #004B00 !important;
+    color: #004b00 !important;
     .finished {
-      color: #4CAF50 !important;
+      color: #4caf50 !important;
     }
   }
   .in-progress-class {
@@ -81,7 +81,7 @@
         .static-title {
           color: #0c2058;
           font-size: $XlSize;
-          font-family: "bold";
+          font-family: 'bold';
           font-weight: $BaseFontWeightBold;
           min-height: 50px;
           span {

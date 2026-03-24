@@ -1,5 +1,5 @@
-@import '../../variables';
-@import '../../mixins/flex';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
 
 .observation-genral-info-conatiner {
   background-color: white;
@@ -16,8 +16,8 @@
 
       width: 100%;
       @include flex-row(nowrap, space-between, center);
-      .image-container{
-        .grid{
+      .image-container {
+        .grid {
           display: flex;
           width: 100%;
         }
@@ -86,19 +86,19 @@
       .root-causes {
         @include flex-column(nowrap, flex-start, flex-start);
         gap: $XsSize;
-        .icon_title{
-          @include flex(row,nowrap, space-between, flex-start);
-            gap: $XsSize2;
+        .icon_title {
+          @include flex(row, nowrap, space-between, flex-start);
+          gap: $XsSize2;
         }
         .root-causes-title {
           @include flex-column(nowrap, flex-start, flex-start);
           // gap: $XsSize4;
-          margin-bottom:$MdSize ;
+          margin-bottom: $MdSize;
           color: #202020;
           font-weight: $BaseFontWeightBold;
           font-size: $MdSize2;
           position: relative;
-          span{
+          span {
             color: var(--subtitle-color);
             font-size: $SmSize;
             font-weight: $BaseFontMediumWeight;
@@ -181,52 +181,52 @@
     padding-bottom: $MdSize;
     // border-top: 1px dashed #efefef;
     .card_status {
-        background-color: #1D4ED808;
-        padding: $XlSize $XlSize4 $XlSize $SmSize;
-        border-radius: $SmSize;
-        position: relative;
-        span{
-          position: absolute;
-          top: 50%;
-          right: 0;
-          transform: translateY(-50%);
-          width: 15px;
-          height: 15px;
-          background-color: #4070f334;
-          border-radius: 50%;
-        }
-        &::after {
-          position: absolute;
-          content: '';
-          width: 20px;
-          height: 20px;
-           border-bottom-left-radius: 50px;
-          top: 0;
-          right: 0;
-          background-color: #4070f334;
-        }
-        &::before {
-          position: absolute;
-          content: '';
-          width: 20px;
-          height: 20px;
-           border-top-left-radius: 50px;
-          bottom: 0;
-          right: 0;
-          background-color: #4070f334;
-        }
-        p {
-          color: #BEC3CF;
-          font-size: $SmSize;
-          font-weight: $BaseFontSemiBoldWeight;
-          position: relative;
-        }
-        h6 {
-          color: var(--PrimaryColor);
-          font-size: $MdSize2;
-          font-weight: $BaseFontWeightBold;
-        }
+      background-color: #1d4ed808;
+      padding: $XlSize $XlSize4 $XlSize $SmSize;
+      border-radius: $SmSize;
+      position: relative;
+      span {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        background-color: #4070f334;
+        border-radius: 50%;
       }
+      &::after {
+        position: absolute;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-bottom-left-radius: 50px;
+        top: 0;
+        right: 0;
+        background-color: #4070f334;
+      }
+      &::before {
+        position: absolute;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-top-left-radius: 50px;
+        bottom: 0;
+        right: 0;
+        background-color: #4070f334;
+      }
+      p {
+        color: #bec3cf;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        position: relative;
+      }
+      h6 {
+        color: var(--PrimaryColor);
+        font-size: $MdSize2;
+        font-weight: $BaseFontWeightBold;
+      }
+    }
 
     @include flex-row(nowrap, space-between, center);
     .action-container {

@@ -1,3 +1,3 @@
-@import './index_project_progress';
-@import './project_progress_header';
-@import './project_progress_loader';
+@use './index_project_progress' as *;
+@use './project_progress_header' as *;
+@use './project_progress_loader' as *;

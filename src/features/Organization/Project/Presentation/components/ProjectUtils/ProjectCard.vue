@@ -3,6 +3,8 @@ import { ProjectStatusEnum } from '../../../Core/Enums/ProjectStatusEnum'
 import type ProjectModel from '../../../Data/models/ProjectModel'
 import Stopcard from '@/shared/icons/stopcard.vue'
 import CustomPopover from '../../supcomponents/CustomPopover.vue'
+import { useI18n } from 'vue-i18n'
+import PinIcons from '@/shared/icons/PinIcons.vue'
 
 const props = defineProps<{
   data: ProjectModel
@@ -22,6 +24,8 @@ const GetProjectStatus = (status: ProjectStatusEnum) => {
       return ''
   }
 }
+
+const { locale } = useI18n()
 </script>
 <template>
   <router-link :to="`/organization/project-details/${data?.id}?type=1`">
@@ -51,17 +55,40 @@ const GetProjectStatus = (status: ProjectStatusEnum) => {
             </p>
           </template>
           <template #content>
-            <div class="flex flex-col gap-2 location-data">
-              <p v-for="location in data?.locations" :key="location.id">
+            <div class="flex flex-col gap-2">
+              <p class="location-data" v-for="location in data?.locations" :key="location.id">
                 {{ location.title }}
               </p>
             </div>
           </template>
         </custom-popover>
 
-        <p class="locations update-locations">
+        <!-- <p class="locations update-locations">
           {{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard />
-        </p>
+        </p> -->
+        <custom-popover>
+          <template #btn>
+            <!-- <p class="locations update-locations">
+              {{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard />
+            </p> -->
+            <p class="locations update-locations">
+              {{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard />
+            </p>
+          </template>
+          <template #content>
+            <div class="flex flex-col gap-2">
+              <p
+                class="zoon-data flex gap-1 items-center"
+                v-for="zoon in data?.zoons"
+                :key="zoon.id"
+              >
+                <pin-icons />
+                <span>{{ zoon?.title }}</span>
+                <!-- {{ zoon.titles.find((el) => el.locale === locale)?.title }} -->
+              </p>
+            </div>
+          </template>
+        </custom-popover>
       </div>
       <hr
         style="
@@ -101,14 +128,18 @@ const GetProjectStatus = (status: ProjectStatusEnum) => {
 <style scoped>
 .location-data {
   position: relative;
-  padding-left: 20px;
-  padding: 10px;
+  padding: 6px;
+  padding-left: 15px;
+}
+.zoon-data {
+  position: relative;
+  padding: 6px;
 }
 
 .location-data::before {
   content: '';
   position: absolute;
-  left: 1px;
+  left: 4px;
   top: 50%;
   width: 7px;
   height: 7px;

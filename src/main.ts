@@ -1,19 +1,16 @@
 import './assets/styles/main.min.css'
-import './assets/styles/main.min.css'
+// import './assets/styles/main.css'
 import './assets/styles/tailwind.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import ToastService from 'primevue/toastservice'
-
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import router from './router'
 import { createI18n } from 'vue-i18n'
 // import * as Sentry from '@sentry/vue'
-
 import ar from './locales/ar.json'
 import en from './locales/en.json'
 

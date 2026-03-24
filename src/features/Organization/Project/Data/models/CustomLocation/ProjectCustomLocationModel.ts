@@ -46,4 +46,32 @@ export default class ProjectCustomLocationModel extends TitleModel {
       data.project_location_equipments,
     )
   }
+
+  static example: ProjectCustomLocationModel = new ProjectCustomLocationModel(
+    1,
+    1,
+    'Location',
+    [SohwProjectZoonModel.example],
+    [ProjectLocationHierarchyModel.example],
+    [
+      {
+        ...ProjectLocationEmployeeModel.example,
+        name: 'ahmed hawam',
+        hierarchy: [ProjectLocationHierarchyModel.example],
+      },
+      {
+        ...ProjectLocationEmployeeModel.example,
+        name: 'omar hussien',
+        hierarchy: [ProjectLocationHierarchyModel.example],
+      },
+    ],
+    [
+      ProjectLocationTeamModel.example,
+      {
+        ...ProjectLocationTeamModel.example,
+        Employees: [ProjectLocationEmployeeModel.example, ProjectLocationEmployeeModel.example],
+      },
+    ],
+    [ProjectLocationEquipmentModel.example],
+  )
 }

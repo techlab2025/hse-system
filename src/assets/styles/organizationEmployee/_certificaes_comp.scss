@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 // _certifications.scss
 .certifications-section {
@@ -51,7 +51,6 @@
     background: #8a38f5;
     box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
   }
-
 }
 
 .status-dot.success {

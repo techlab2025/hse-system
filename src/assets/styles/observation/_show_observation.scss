@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .is-work-stopped {
   @include flex-row(nowrap, flex-start, center);
@@ -80,9 +80,9 @@
       border-bottom: 1px dashed #efefef;
       padding: 10px;
       .death_name_note {
-        .death_all_card{
+        .death_all_card {
           @media (max-width: 650px) {
-            border-bottom: 3px solid rgba(31,65,187,0.1019607843);
+            border-bottom: 3px solid rgba(31, 65, 187, 0.1019607843);
           }
         }
         @include grid(
@@ -95,14 +95,14 @@
         );
         .death_user {
           @include flex-row(nowrap, center, center);
-        background-color: #1f41bb2f;
-        padding: $XsSize4;
-        border-radius: $XsSize3;
-        span{
-          color: #1F41BB;
-          font-size: $MdSize;
-          font-weight: $BaseFontSemiBoldWeight;
-        }
+          background-color: #1f41bb2f;
+          padding: $XsSize4;
+          border-radius: $XsSize3;
+          span {
+            color: #1f41bb;
+            font-size: $MdSize;
+            font-weight: $BaseFontSemiBoldWeight;
+          }
 
           img {
             width: 40px;
@@ -116,7 +116,7 @@
           // overflow: anywhere;
           overflow-wrap: anywhere;
           padding-bottom: $XsSize2;
-          color: #5C5C5C;
+          color: #5c5c5c;
           font-weight: $BaseFontMediumWeight;
           font-size: $MdSize;
         }
@@ -245,7 +245,7 @@
         @include flex-row(nowrap, flex-start, center);
         gap: $XsSize;
         @media (max-width: 650px) {
-          border-bottom: 3px solid rgba(31,65,187,0.1019607843);
+          border-bottom: 3px solid rgba(31, 65, 187, 0.1019607843);
           padding-bottom: $XsSize2;
         }
         .employee-name {
@@ -525,7 +525,7 @@
     padding: $XsSize;
     @media (max-width: 800px) {
       flex-wrap: wrap !important;
-      .root-causes{
+      .root-causes {
         margin-bottom: $XsSize2;
       }
     }

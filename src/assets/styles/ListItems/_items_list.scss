@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../mixins/flex';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 
 .items-list-container {
   border-radius: $XlSize;
