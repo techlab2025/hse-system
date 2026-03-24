@@ -26,4 +26,8 @@ export default class TeamLocation {
       data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)),
     )
   }
+
+  static example: TeamLocation = new TeamLocation(1, 1, 'Project Location', [
+    ProjectLocationTeamModel.example,
+  ])
 }

@@ -1,2 +1,2 @@
-@import "./equipment_mangement_home";
-@import "./equipment_mangement_sidebar";
+@use './equipment_mangement_home' as *;
+@use './equipment_mangement_sidebar' as *;

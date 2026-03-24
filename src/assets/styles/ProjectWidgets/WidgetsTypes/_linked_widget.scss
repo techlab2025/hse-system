@@ -1,5 +1,5 @@
-@import '../../variables';
-@import '../../mixins/flex';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
 
 .selctors-container {
   @include flex-column(nowrap, flex-start, flex-start);
@@ -13,7 +13,7 @@
   }
   .setting-form {
     @include flex-justify();
-    @media(max-width:768px){
+    @media (max-width: 768px) {
       flex-direction: column;
       gap: 10px;
     }

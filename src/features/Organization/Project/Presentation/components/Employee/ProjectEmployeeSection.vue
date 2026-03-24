@@ -12,8 +12,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../controllers/ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
-import DeleteProjectlocationTeamEmployeeParams from '../../../Core/params/deleteProjectlocationTeamEmployeeParams'
-import DeleteProjectLocationTeamEmployeeController from '../../controllers/DeleteProjectLocationTeamEmployeeController'
+
 import DeleteProjectlocationHierarchyEmployeeParams from '../../../Core/params/deleteProjectlocationHierarchyEmployeeParams'
 import DeleteProjectLocationHeirarchyEmployeeController from '../../controllers/DeleteProjectLocationHeirarchyEmployeeController'
 

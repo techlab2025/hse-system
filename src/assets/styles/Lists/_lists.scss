@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../mixins/flex';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
 
 .list-trigger {
   background-color: var(--table-header-bg);

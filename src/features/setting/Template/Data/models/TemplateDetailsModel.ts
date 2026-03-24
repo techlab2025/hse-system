@@ -108,4 +108,21 @@ export default class TemplateDetailsModel {
         })
     }
   }
+
+  static example: TemplateDetailsModel = new TemplateDetailsModel(
+    1,
+    'Template 1',
+    [{ locale: 'en', title: 'Template 1' }],
+    1,
+    [],
+    1,
+    '',
+    [],
+    0,
+    null,
+    null,
+    1,
+    [],
+    [],
+  )
 }

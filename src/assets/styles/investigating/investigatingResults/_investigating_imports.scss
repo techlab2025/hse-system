@@ -1,9 +1,9 @@
-@import "./InvestigationUtils/investigations_result_header";
-@import "./InvestigationUtils/cause_of_accidant";
-@import "./InvestigationUtils/timeline_tasks";
-@import "./InvestigationUtils/rate_of_actions";
-@import "./InvestigationUtils/investegation_attachment";
-@import "./InvestigationUtils/viwers_results";
-@import "./InvestigationUtils/another_meeting";
-@import "./InvestigationUtils/attachment_dialog";
-@import "./invistigation_result";
+@use './InvestigationUtils/investigations_result_header' as *;
+@use './InvestigationUtils/cause_of_accidant' as *;
+@use './InvestigationUtils/timeline_tasks' as *;
+@use './InvestigationUtils/rate_of_actions' as *;
+@use './InvestigationUtils/investegation_attachment' as *;
+@use './InvestigationUtils/viwers_results' as *;
+@use './InvestigationUtils/another_meeting' as *;
+@use './InvestigationUtils/attachment_dialog' as *;
+@use './invistigation_result' as *;

@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 .index-investigationMeeting {
   .sidebar-container {
     background-color: #f5f5f5;
@@ -39,7 +39,7 @@
       position: relative;
       padding-left: 18px;
       margin-bottom: 6px;
-      font-family: "regular";
+      font-family: 'regular';
       font-size: $MdSize;
       color: rgba(174, 177, 188, 1);
       font-weight: $BaseFontMediumWeight;

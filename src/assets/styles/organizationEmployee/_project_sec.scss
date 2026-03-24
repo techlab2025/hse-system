@@ -1,7 +1,7 @@
 // _projects.scss
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 .projects-section {
   background: #f9f9f9;
   border-radius: $XlSize;

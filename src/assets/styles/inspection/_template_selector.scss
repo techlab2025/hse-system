@@ -1,7 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
-
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .template-selector {
   width: 100%;
@@ -14,11 +13,11 @@
   }
 
   .template-document-container {
-//     .template-document-header{
-//  border: 2px dashed #E6E8EA !important;
-//       border-radius: 22px;
-//       background-color: #FAFAFA66;
-//     }
+    //     .template-document-header{
+    //  border: 2px dashed #E6E8EA !important;
+    //       border-radius: 22px;
+    //       background-color: #FAFAFA66;
+    //     }
 
     .p-accordioncontent {
       padding-inline: 25px;
@@ -33,7 +32,7 @@
         // gap: 5px;
         display: none;
       }
-      .active{
+      .active {
         border: 10px solid red !important;
       }
       .p-radiobutton-checked .p-radiobutton-box {
@@ -48,8 +47,8 @@
   }
 }
 
-.new-border-AccordionPanel{
-   border: 2px dashed #E6E8EA !important;
-      border-radius: 22px;
-      background-color: #FAFAFA66;
+.new-border-AccordionPanel {
+  border: 2px dashed #e6e8ea !important;
+  border-radius: 22px;
+  background-color: #fafafa66;
 }

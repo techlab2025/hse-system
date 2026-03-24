@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 .project-statistics {
   grid-column: span 12;
   @include flex-column(nowrap, flex-start, center);
@@ -75,7 +75,7 @@
       flex: 0 0 calc(50% - 7.5px); /* Forces exactly 2 cards per view */
       min-width: calc(50% - 7.5px);
     }
-    .project-card-data{
+    .project-card-data {
       gap: 50px;
     }
   }

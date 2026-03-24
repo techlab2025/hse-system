@@ -1,12 +1,12 @@
-@import '../../variables';
-@import '../../mixins/flex';
+@use '../../variables' as *;
+@use '../../mixins/flex' as *;
 
 .p-dialog {
   font-family: 'Regular';
   .add-equipment-header {
     width: 100%;
   }
-  .add-asset{
+  .add-asset {
     color: #121212;
     font-size: 16px;
     font-weight: 700;

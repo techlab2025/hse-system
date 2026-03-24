@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .index-investigating {
   // second card
@@ -32,7 +32,7 @@
         color: $PrimaryColor;
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
-        font-family: "bold";
+        font-family: 'bold';
         &.high {
           color: #d80027;
         }
@@ -46,13 +46,13 @@
           color: rgba(202, 205, 219, 1);
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
-          font-family: "regular";
+          font-family: 'regular';
         }
       }
       .status {
         font-weight: $BaseFontMediumWeight;
         font-size: $MdSize;
-        font-family: "bold";
+        font-family: 'bold';
         &.New {
           color: rgba(76, 175, 80, 1);
           &::before {
@@ -232,7 +232,7 @@
     color: #4c535f;
     font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
-    font-family: "regular";
+    font-family: 'regular';
 
     img {
       width: 20px;
@@ -242,7 +242,7 @@
     span {
       color: #202020;
       font-weight: $BaseFontMediumWeight;
-      margin: 0 .2rem;
+      margin: 0 0.2rem;
     }
   }
 
@@ -250,7 +250,7 @@
     color: #aeaeb2;
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
-    font-family: "regular";
+    font-family: 'regular';
     span {
       font-weight: $BaseFontSemiBoldWeight;
       color: #000000;
@@ -312,7 +312,7 @@
       padding: 1rem 0;
       background-color: rgba(4, 25, 83, 0.09);
       color: rgba(4, 25, 83, 1);
-      font-family: "bold";
+      font-family: 'bold';
       font-size: 16px;
       border: 1px solid #04195380;
     }
@@ -343,60 +343,60 @@
     }
     .solved-btn {
       width: 100%;
-      button{
+      button {
         font-size: $MdSize;
-      font-weight: $BaseFontWeightBold;
-      font-family: "bold";
+        font-weight: $BaseFontWeightBold;
+        font-family: 'bold';
       }
     }
   }
-  .show-investigation-meeting-details{
+  .show-investigation-meeting-details {
     margin: $MdSize 0;
-    .title{
+    .title {
       @include flex-row(nowrap, flex-start, center);
       gap: $SmSize;
 
-      h6{
+      h6 {
         font-size: $MdSize;
         font-weight: $BaseFontWeightBold;
-        font-family: "bold";
+        font-family: 'bold';
         color: #000000;
       }
-      .imge{
+      .imge {
         @include flex-row(nowrap, center, center);
         gap: $XsSize4;
-        img{
+        img {
           width: 20px;
           height: 20px;
         }
-        p{
+        p {
           font-size: $MdSize;
-        font-weight: $BaseFontWeightBold;
-        font-family: "bold";
+          font-weight: $BaseFontWeightBold;
+          font-family: 'bold';
           color: #000000;
         }
       }
     }
-    .dome-info{
+    .dome-info {
       margin: $MdSize 0;
       @include flex-row(nowrap, flex-start, flex-start);
       gap: $XlSize3;
-      p{
+      p {
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
-        font-family: "regular";
-        color: #4C535F;
-        span{
-          color: #1F41BB;
+        font-family: 'regular';
+        color: #4c535f;
+        span {
+          color: #1f41bb;
         }
       }
-       h6{
+      h6 {
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
-        font-family: "regular";
+        font-family: 'regular';
         // color: #AEAEB2;
-        color: #4C535F;
-        span{
+        color: #4c535f;
+        span {
           color: #000000;
         }
       }
@@ -408,9 +408,8 @@
 
   .first-label-item-primary.medium-observation {
     color: rgba(255, 191, 82, 1) !important;
-
   }
-  .label-item-primary{
-    color: #4C535F !important;
+  .label-item-primary {
+    color: #4c535f !important;
   }
 }

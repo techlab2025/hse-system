@@ -1,6 +1,6 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .total-machines-header-container {
   @include flex-row(nowrap, space-between, center);
@@ -56,7 +56,7 @@
       .static-title {
         color: #0c2058;
         font-size: $XlSize;
-        font-family: "bold";
+        font-family: 'bold';
         font-weight: $BaseFontWeightBold;
         span {
           color: #bcbcbc;

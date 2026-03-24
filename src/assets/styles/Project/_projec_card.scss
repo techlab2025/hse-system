@@ -1,13 +1,13 @@
-@import '../variables';
-@import '../mixins/flex';
-@import '../mixins/grid';
+@use '../variables' as *;
+@use '../mixins/flex' as *;
+@use '../mixins/grid' as *;
 
 .project-card-container {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize4;
   width: 100%;
   // border: 1px solid #1f41bb0a;
-  border: 1px solid #1F41BB0A;
+  border: 1px solid #1f41bb0a;
   border-radius: $XsSize;
   padding: $SmSize;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -41,17 +41,16 @@
         //   padding: 5px;
         //   border-radius: 8px;
         // }
-        .serial{
-          color:#C4CCDA;
+        .serial {
+          color: #c4ccda;
           font-weight: $BaseFontMediumWeight;
           font-size: $MdSize;
           // border-left: 1px solid #C4CCDA;
           // padding-left: 5px;
-          &.serial-border{
-            border-left: 1px solid #C4CCDA;
+          &.serial-border {
+            border-left: 1px solid #c4ccda;
             padding-left: 5px;
           }
-
         }
       }
       .project-title {
@@ -69,7 +68,7 @@
       border-radius: $XsSize;
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
-      font-family: "Regular";
+      font-family: 'Regular';
       span {
         color: $PrimaryColor;
       }
@@ -80,7 +79,7 @@
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XlSize3;
 
-    .update-locations{
+    .update-locations {
       @include flex-row(nowrap, center, center);
       gap: 5px;
     }
@@ -110,7 +109,7 @@
       .info-count {
         color: $PrimaryColor;
         font-size: $MdSize;
-        font-family: "bold";
+        font-family: 'bold';
         font-weight: 800;
         &.warn {
           color: #ffbf52;
