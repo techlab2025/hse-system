@@ -1,57 +1,69 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 <template>
   <div class="skeleton-wrapper">
     <!-- Progress bar skeleton -->
-    <div class="sk" style="height: 64px; margin-bottom: 20px; border-radius: 12px;"></div>
+    <div class="sk" style="height: 120px; margin-bottom: 20px; border-radius: 12px"></div>
 
     <!-- ProjectsStatistics skeleton -->
     <div class="projects-stats-sk">
       <div class="sk-card" v-for="i in 4" :key="i">
-        <div class="sk" style="height: 12px; width: 60%; margin-bottom: 10px;"></div>
-        <div class="sk" style="height: 28px; width: 40%;"></div>
+        <div class="sk" style="height: 12px; width: 60%; margin-bottom: 10px"></div>
+        <div class="sk" style="height: 28px; width: 40%"></div>
       </div>
     </div>
 
     <!-- Total incidents row -->
     <div class="incidents-sk">
       <div class="sk-card" v-for="i in 4" :key="i">
-        <div class="sk" style="height: 11px; width: 55%; margin-bottom: 14px;"></div>
+        <div class="sk" style="height: 11px; width: 55%; margin-bottom: 14px"></div>
         <div v-for="j in 3" :key="j" class="incident-row-sk">
-          <div class="sk" style="height: 32px; width: 40px; flex-shrink: 0;"></div>
-          <div class="sk" style="height: 10px; flex: 1;"></div>
+          <div class="sk" style="height: 32px; width: 40px; flex-shrink: 0"></div>
+          <div class="sk" style="height: 10px; flex: 1"></div>
         </div>
       </div>
     </div>
 
     <!-- Equipment + machines row -->
     <div class="equipment-sk">
-      <div class="sk-card" style="flex: 2;">
-        <div class="sk" style="height: 11px; width: 40%; margin-bottom: 16px;"></div>
+      <div class="sk-card" style="flex: 2">
+        <div class="sk" style="height: 11px; width: 40%; margin-bottom: 16px"></div>
         <div class="bar-chart-sk">
-          <div class="sk bar" v-for="(h, i) in [60, 90, 50, 75, 40, 85, 65, 100]" :key="i" :style="{ height: h + '%' }">
-          </div>
+          <div
+            class="sk bar"
+            v-for="(h, i) in [60, 90, 50, 75, 40, 85, 65, 100]"
+            :key="i"
+            :style="{ height: h + '%' }"
+          ></div>
         </div>
       </div>
-      <div class="sk-card" style="flex: 1;">
-        <div class="sk" style="height: 11px; width: 55%; margin-bottom: 16px;"></div>
-        <div class="sk" v-for="i in 4" :key="i" style="height: 14px; margin-bottom: 10px;"></div>
+      <div class="sk-card" style="flex: 1">
+        <div class="sk" style="height: 11px; width: 55%; margin-bottom: 16px"></div>
+        <div class="sk" v-for="i in 4" :key="i" style="height: 14px; margin-bottom: 10px"></div>
       </div>
     </div>
 
     <!-- Hazard + Investigation row -->
     <div class="hazard-sk">
-      <div class="sk-card" style="flex: 2;">
-        <div class="sk" style="height: 11px; width: 40%; margin-bottom: 16px;"></div>
+      <div class="sk-card" style="flex: 2">
+        <div class="sk" style="height: 11px; width: 40%; margin-bottom: 16px"></div>
         <div class="bar-chart-sk">
-          <div class="sk bar" v-for="(h, i) in [80, 55, 95, 65, 45, 70, 100, 60, 85]" :key="i"
-            :style="{ height: h + '%' }">
-          </div>
+          <div
+            class="sk bar"
+            v-for="(h, i) in [80, 55, 95, 65, 45, 70, 100, 60, 85]"
+            :key="i"
+            :style="{ height: h + '%' }"
+          ></div>
         </div>
       </div>
-      <div class="sk-card" style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-        <div class="sk" style="height: 11px; width: 55%; margin-bottom: 16px; align-self: flex-start;"></div>
-        <div class="sk" style="width: 110px; height: 110px; border-radius: 50%;"></div>
+      <div
+        class="sk-card"
+        style="flex: 1; display: flex; flex-direction: column; align-items: center"
+      >
+        <div
+          class="sk"
+          style="height: 11px; width: 55%; margin-bottom: 16px; align-self: flex-start"
+        ></div>
+        <div class="sk" style="width: 110px; height: 110px; border-radius: 50%"></div>
       </div>
     </div>
   </div>
@@ -73,10 +85,12 @@
 }
 
 .sk {
-  background: linear-gradient(90deg,
-      var(--color-bg-secondary, #f0f0f0) 25%,
-      var(--color-bg-tertiary, #e0e0e0) 50%,
-      var(--color-bg-secondary, #f0f0f0) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-secondary, #f0f0f0) 25%,
+    var(--color-bg-tertiary, #e0e0e0) 50%,
+    var(--color-bg-secondary, #f0f0f0) 75%
+  );
   background-size: 600px 100%;
   animation: shimmer 1.6s infinite;
   border-radius: 8px;
