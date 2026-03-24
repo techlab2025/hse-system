@@ -45,7 +45,6 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
       console.log(this.isDataSuccess(), 'this.isDataSuccess()')
       if (this.isDataSuccess()) {
-        console.log('succcccessssssssssssssss')
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
           titleContent: 'Login Success',
@@ -62,20 +61,19 @@ export default class LoginController extends ControllerInterface<UserModel> {
           localStorage.setItem('token', JSON.stringify(apiToken))
           localStorage.setItem('user', JSON.stringify(this.state.value.data))
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
-          ProjectSelector.setProjectId(this.state.value.data.Defaultproject)
-        }
-
-        if (!ConditionHandler.getInstance().isOrganizationEmployee()) {
-          await router.push({
-            path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
-          })
-        } else {
-          // await router.push({
-          //   path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
-          // })
-          await router.push({
-            path: '/organization/employee-interface',
-          })
+          ProjectSelector.setProjectId(this.state?.value?.data?.Defaultproject)
+          if (!ConditionHandler.getInstance().isOrganizationEmployee()) {
+            await router.push({
+              path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
+            })
+          } else {
+            // await router.push({
+            //   path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
+            // })
+            await router.push({
+              path: '/organization/employee-interface',
+            })
+          }
         }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
