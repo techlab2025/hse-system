@@ -10,6 +10,7 @@ import GeerIcon from '../icons/GeerIcon.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Sidebarlocation from '../icons/sidebarlocation.vue'
+import Locaps from '../icons/locaps.vue'
 
 const route = useRoute()
 interface Routes {
@@ -815,7 +816,7 @@ watch(GauideAccordion, (val) => {
       <AccordionPanel value="4">
         <AccordionHeader>
           <div class="links-header">
-            <GeerIcon />
+            <Locaps />
             {{ $t('Lockups') }}
           </div>
         </AccordionHeader>
