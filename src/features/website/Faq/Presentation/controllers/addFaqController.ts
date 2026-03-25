@@ -40,7 +40,7 @@ export default class AddFaqController extends ControllerInterface<FaqModel> {
 
       if (!hasQuestion || !hasAnswer) {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: 'Please fill both Question and Answer',
           imageElement: errorImage,
           messageContent: null,
@@ -63,7 +63,7 @@ export default class AddFaqController extends ControllerInterface<FaqModel> {
         if (!draft) await router.push('/admin/faq')
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'An Error Occurred',
           imageElement: errorImage,
           messageContent: null,

@@ -54,7 +54,7 @@ export default class AddObserverationTypeController extends ControllerInterface<
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,

@@ -60,7 +60,7 @@ export default class AddSystemEquipmentTypeController extends ControllerInterfac
         const { user } = useUserStore()
 
         await IndexSystemEquipmentTypeController.getInstance().getData(
-          new IndexObserverationTypeParams('', 1, 10, 1,undefined,true),
+          new IndexObserverationTypeParams('', 1, 10, 1, undefined, true),
         )
 
         if (!draft)
@@ -77,7 +77,7 @@ export default class AddSystemEquipmentTypeController extends ControllerInterfac
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,

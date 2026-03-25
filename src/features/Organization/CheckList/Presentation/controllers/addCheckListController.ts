@@ -49,13 +49,10 @@ export default class AddCheckListController extends ControllerInterface<CheckLis
         // }
 
         // useLoaderStore().endLoadingWithDialog();
-        await IndexCheckListController.getInstance().getData(
-          new IndexCheckListParams('', 1, 10, 1),
-        )
-
+        await IndexCheckListController.getInstance().getData(new IndexCheckListParams('', 1, 10, 1))
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,

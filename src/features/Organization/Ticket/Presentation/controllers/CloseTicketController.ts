@@ -51,7 +51,7 @@ export default class CloseTicketController extends ControllerInterface<TicketMod
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'An Error Occurred',
           imageElement: errorImage,
           messageContent: null,
