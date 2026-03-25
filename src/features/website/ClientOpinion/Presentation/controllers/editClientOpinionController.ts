@@ -42,7 +42,7 @@ export default class EditClientOpinionController extends ControllerInterface<Cli
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,

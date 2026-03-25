@@ -51,7 +51,7 @@ export default class AddInjurycloneController extends ControllerInterface<Injury
         })
 
         await IndexInjuryController.getInstance().getData(new IndexInjuryParams('', 1, 10, 1))
-        
+
         if (router.currentRoute.value.path.includes('injury')) {
           if (!draft) await router.push('/organization/injury')
         }
@@ -59,7 +59,7 @@ export default class AddInjurycloneController extends ControllerInterface<Injury
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,

@@ -47,7 +47,7 @@ export default class EditAdminController extends ControllerInterface<AdminModel>
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.message,
           imageElement: errorImage,
           messageContent: null,

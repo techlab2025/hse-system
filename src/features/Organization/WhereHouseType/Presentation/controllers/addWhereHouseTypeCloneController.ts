@@ -50,10 +50,9 @@ export default class AddWhereHouseTypeCloneController extends ControllerInterfac
         await IndexWhereHouseTypeController.getInstance().getData(
           new IndexWhereHouseTypeParams('', 1, 10, 1),
         )
-
       } else {
         DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog',
+          dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
           imageElement: errorImage,
           messageContent: null,
