@@ -5,14 +5,19 @@
       <p>These are the percentages of closed investigations for each month.</p>
     </div>
     <div class="chart_container">
-      <div class="chart_row" v-for="(value, index) in props.overviewInvestigationsChartstate" :key="index">
+      <div
+        class="chart_row"
+        v-for="(value, index) in props.overviewInvestigationsChartstate"
+        :key="index"
+      >
         <div class="span" v-for="i in 8" :key="i"></div>
         <div class="total_count_chart" :style="{ height: value.total + '%' }">
           <div class="top-indicator" v-if="value.total === maxTotal">
             <span class="indicator-label">{{ value.total }}</span>
             <span class="indicator-dot"></span>
           </div>
-          <span>+{{ value.total }}</span>%
+          <span>+{{ value.total }}</span
+          >%
         </div>
         <p class="zone_title">{{ wordSlice(value.zoneTitle, 7) }}</p>
       </div>
@@ -21,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import wordSlice from '@/base/Presentation/utils/word_slice';
-import OverviewInvestigationsChartModel from '@/features/Home/data/Model/OverviewInvestigationsChartModel';
+import wordSlice from '@/base/Presentation/utils/word_slice'
+import OverviewInvestigationsChartModel from '@/features/Home/data/Model/OverviewInvestigationsChartModel'
 import { ref, computed } from 'vue'
 
 const data = ref([65, 59, 80, 81, 56])
@@ -32,7 +37,7 @@ const props = defineProps<{
 }>()
 
 const maxTotal = computed(() =>
-  Math.max(...props.overviewInvestigationsChartstate.map(v => v.total))
+  Math.max(...props.overviewInvestigationsChartstate.map((v) => v.total)),
 )
 </script>
 
@@ -44,15 +49,15 @@ const maxTotal = computed(() =>
     h6 {
       font-size: 20px;
       font-weight: 700;
-      font-family: "bold";
-      color: #0C2058;
+      font-family: 'bold';
+      color: #0c2058;
     }
 
     p {
       font-size: 12px;
       font-weight: 600;
-      font-family: "regular";
-      color: #BCBCBC;
+      font-family: 'regular';
+      color: #bcbcbc;
     }
 
     margin: 1.8rem 0;
@@ -66,9 +71,14 @@ const maxTotal = computed(() =>
   position: relative;
   margin-bottom: 1rem;
 }
+@media (max-width: 900px) {
+  .chart_container {
+    height: 15vh;
+  }
+}
 
 .chart_container p {
-  color: #0C2058;
+  color: #0c2058;
   font-size: 12px;
   font-weight: 700;
 }
@@ -95,32 +105,32 @@ const maxTotal = computed(() =>
 
   .span:nth-child(1) {
     bottom: 10%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span:nth-child(2) {
     bottom: 30%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span:nth-child(3) {
     bottom: 50%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span:nth-child(4) {
     bottom: 70%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span:nth-child(5) {
     bottom: 800%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span:nth-child(6) {
     bottom: 90%;
-    transform: rotate(160deg)
+    transform: rotate(160deg);
   }
 
   .span {
@@ -132,7 +142,7 @@ const maxTotal = computed(() =>
 
   .total_count_chart {
     position: relative;
-    background: linear-gradient(163.62deg, #789EFF 2.14%, #1D4ED8 97.96%);
+    background: linear-gradient(163.62deg, #789eff 2.14%, #1d4ed8 97.96%);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     width: 100%;
@@ -143,7 +153,7 @@ const maxTotal = computed(() =>
     justify-content: center;
     font-weight: bold;
     font-size: 13px;
-    padding: 0 .5rem 1rem;
+    padding: 0 0.5rem 1rem;
     z-index: 11;
     text-shadow: 2px 2px 4px #000000;
 
@@ -160,7 +170,7 @@ const maxTotal = computed(() =>
 
       .indicator-label {
         background: white;
-        color: #1D4ED8;
+        color: #1d4ed8;
         font-size: 11px;
         font-weight: 700;
         padding: 3px 8px;
@@ -174,7 +184,7 @@ const maxTotal = computed(() =>
       .indicator-dot {
         width: 10px;
         height: 10px;
-        background: #3B82F6;
+        background: #3b82f6;
         border: 2px solid white;
         border-radius: 50%;
         box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5);

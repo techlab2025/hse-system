@@ -478,11 +478,11 @@ const GetCapaStataus = (capa: CapaModel) => {
                                 </div>
                               </router-link>
                               <!-- investegation -->
-                              <router-link to="">
+                              <!-- <router-link to="">
                                 <div class="observation-details">
                                   <p>investegation details<Observdetails /></p>
                                 </div>
-                              </router-link>
+                              </router-link> -->
                             </div>
 
                             <!-- <p class="label-item-secondary flex items-center gap-1">
