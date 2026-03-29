@@ -37,7 +37,7 @@ import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import PinIcons from '@/shared/icons/PinIcons.vue'
-import HighLevel from '@/shared/icons/HighLevel.vue'
+import HighLevel from '@/shared/icons/highlevel.vue'
 import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams'
@@ -327,7 +327,8 @@ const GetObservationType = (type: number) => {
                             <p class="label-item-secondary Negative flex items-center gap-1"
                               v-if="item.isWorkStopped == 1">
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle class="text-black" :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
+                              <CustomCheckboxToggle class="text-black" :index="item.id + 100" title=""
+                                :checked="item.isWorkStopped == 1"
                                 @update:checked="toggleObservationWorkStopped(item?.id)" />
                             </p>
 
@@ -439,7 +440,8 @@ const GetObservationType = (type: number) => {
     padding: 10px;
     border-radius: 10px;
     color: #737787 !important;
-    .text-black{
+
+    .text-black {
       .switch-track {
         background-color: #737787 !important;
       }

@@ -107,14 +107,16 @@ const showMore = ref(false)
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
-      <div v-for="(tag, index) in showMore ? allData?.templateItemTags : allData?.templateItemTags.slice(0, 1)"
+      <div
+        v-for="(tag, index) in route.path.includes('equipment-mangement/inspection/add') ? showMore ? allData?.templateItemTags : allData?.templateItemTags.slice(0, 1) : allData?.templateItemTags"
         :key="index">
         <p class="tag-title" v-if="tag.titles?.length > 0">{{tag.titles?.filter((item) => item.locale ===
           'en').map((item) => item.title).join('')}}
         </p>
         <p class="tag-title" v-else>{{ tag.title }}</p>
         <div class="template-document-content"
-          v-for="(item, index) in showMore ? tag?.templateItems : tag?.templateItems.slice(0, 1)" :key="index">
+          v-for="(item, index) in route.path.includes('equipment-mangement/inspection/add') ? showMore ? tag?.templateItems : tag?.templateItems.slice(0, 1) : tag?.templateItems"
+          :key="index">
           <div class="actions"
             v-if="(!route.path.includes('equipment-show') && !route.path.includes('template-item')) && isActions">
             <DropList :actionList="actionList(item.id, DeleteTemplateItem)" @delete="DeleteTemplateItem(item.id)" />
@@ -130,7 +132,9 @@ const showMore = ref(false)
 
         </div>
       </div>
-      <button class="show-more-btn" v-if="allData?.templateItemTags.length > 1" @click="showMore = !showMore">
+      <button class="show-more-btn"
+        v-if="allData?.templateItemTags.length > 1 && route.path.includes('equipment-mangement/inspection/add')"
+        @click="showMore = !showMore">
         <span>{{ showMore ? 'Show Less' : 'Show More' }}</span>
         <IconArrowDownNav :class="showMore ? 'rotate' : ''" />
       </button>
