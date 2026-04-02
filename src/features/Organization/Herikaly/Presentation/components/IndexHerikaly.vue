@@ -34,13 +34,14 @@ import Heirarchy from '@/assets/images/Heirarchy.png'
 import Timeline from 'primevue/timeline'
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import TreeTimeLine from './TreeTimeLine.vue'
-import Panel from 'primevue/panel';
+import Panel from 'primevue/panel'
 import AddMatrix from '@/shared/icons/AddMatrix.vue'
 import AddHerikaly from './AddHerikaly.vue'
 import AddHerikly from '@/shared/icons/AddHerikly.vue'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 const { t } = useI18n()
-
 
 const word = ref('')
 const currentPage = ref(1)
@@ -138,45 +139,57 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
     ],
   },
 ]
-
-
+const { user } = useUserStore()
 </script>
 
 <template>
-
-
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.HERIKALY_ALL,
-    PermissionsEnum.HERIKALY_DELETE,
-    PermissionsEnum.HERIKALY_FETCH,
-    PermissionsEnum.HERIKALY_UPDATE,
-    PermissionsEnum.HERIKALY_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.HERIKALY_ALL,
+      PermissionsEnum.HERIKALY_DELETE,
+      PermissionsEnum.HERIKALY_FETCH,
+      PermissionsEnum.HERIKALY_UPDATE,
+      PermissionsEnum.HERIKALY_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <!-- :Hierarchies="" -->
         <div class="mt-5">
-
           <!-- <Panel header="Hierarchy Actions" class="mb-5"> -->
           <div class="functional_hierarchy_parent">
-            <PagesHeader :title="$t('functional_position')"
-              :subtitle="$t(`define_the_position_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
-            <div class="btn-container flex ">
-              <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
+            <PagesHeader
+              :title="$t('functional_position')"
+              :subtitle="$t(`define_the_position_and_assign_roles_for_your_project_team`)"
+              :img="Heirarchy"
+            />
+            <div class="btn-container flex">
+              <PermissionBuilder
+                :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]"
+              >
                 <!-- add-btn -->
-                <router-link to="/organization/herikaly/add" class="btn btn-primary  ">
+                <router-link to="/organization/herikaly/add" class="btn btn-primary">
                   <AddHerikly />
                   {{ $t('add_new_position') }}
                 </router-link>
               </PermissionBuilder>
-              <router-link class="btn btn-secondary" to="/organization/herikaly/matrix"> <AddMatrix /> {{
-                $t('competency_matrix')
-              }}</router-link>
+              <router-link class="btn btn-secondary" to="/organization/herikaly/matrix">
+                <AddMatrix /> {{ $t('competency_matrix') }}</router-link
+              >
+
+              <router-link
+                :to="`/${
+                  user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                }/herikaly/upload-excel`"
+                class="btn btn-primary"
+              >
+                {{ $t('import_position') }}
+              </router-link>
             </div>
           </div>
           <!-- </Panel> -->
-          <div class="btn-container flex ">
+          <div class="btn-container flex">
             <!-- <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
               <router-link to="/organization/herikaly/add" class="btn btn-primary add-btn " style="width:100%">
                 {{ $t('add_new_heirarchy') }}
@@ -185,7 +198,11 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
           </div>
         </div>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -194,29 +211,36 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
-
-          <DataEmpty :link="`/organization/herikaly/add`" addText="Add Herikaly"
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/herikaly/add`"
+            addText="Add Herikaly"
             description="Sorry .. You have no Herikaly .. All your j   <AddHerikaly />oined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly" />
+            title="..ops! You have No Herikaly"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-
-
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
-          <DataFailed :link="`/organization/herikaly/add`" addText="Add Herikaly"
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/herikaly/add`"
+            addText="Add Herikaly"
             description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly" />
+            title="..ops! You have No Herikaly"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>
@@ -230,16 +254,16 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 } */
 .functional_hierarchy_parent {
   position: relative;
-  .btn-container{
+  .btn-container {
     position: absolute;
     top: 10px;
-    right:5px;
+    right: 5px;
     z-index: 11111;
     @media (max-width: 1050px) {
-    position: relative;
-    justify-content: end;
+      position: relative;
+      justify-content: end;
     }
-    .btn-secondary{
+    .btn-secondary {
     }
   }
 }

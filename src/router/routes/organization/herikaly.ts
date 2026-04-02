@@ -45,4 +45,18 @@ export const herikalyRoutes: RouteRecordRaw[] = [
       type: 'Shared',
     },
   },
+  {
+    path: 'herikaly/upload-excel',
+    name: 'Upload Hierarchy Excel',
+    component: () =>
+      import(
+        '@/features/Organization/Herikaly/Presentation/components/UploadHierarachyExeclSheet.vue'
+      ),
+    meta: {
+      breadcrumb: 'Upload Position Excel',
+      parent: 'Hierarchy',
+      isSidebar: true,
+      type: 'Shared',
+    },
+  },
 ]
