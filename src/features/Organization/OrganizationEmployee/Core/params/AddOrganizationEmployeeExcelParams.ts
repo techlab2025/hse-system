@@ -6,7 +6,7 @@ interface Data {
   email: string
   phone: string
   password: string
-  passwordConfirmation: string
+  // passwordConfirmation: string
   hierarchies: HirarachyEmployeeParams[]
   image: string
 }

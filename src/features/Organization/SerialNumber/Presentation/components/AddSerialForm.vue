@@ -253,7 +253,7 @@ const route = useRoute()
           $t('cancel')
         }}</router-link>
       <button type="submit" class="btn btn-primary"
-        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'">{{ $t('Add') }}</button>
+        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

@@ -9,7 +9,6 @@ export const certificateRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Certificates',
       type: 'Shared',
       isSidebar: true,
-
     },
   },
   {
@@ -21,7 +20,6 @@ export const certificateRoutes: RouteRecordRaw[] = [
       parent: 'Certificates',
       type: 'Shared',
       isSidebar: true,
-
     },
   },
   {
@@ -33,7 +31,17 @@ export const certificateRoutes: RouteRecordRaw[] = [
       parent: 'Certificates',
       type: 'Shared',
       isSidebar: true,
-
+    },
+  },
+  {
+    path: 'certificate/import-excel',
+    name: 'Import Certificate',
+    component: () => import('@/views/Admin/Certificate/UploadCertificate.vue'),
+    meta: {
+      breadcrumb: 'Import certificate',
+      parent: 'Certificates',
+      type: 'Shared',
+      isSidebar: true,
     },
   },
 ]

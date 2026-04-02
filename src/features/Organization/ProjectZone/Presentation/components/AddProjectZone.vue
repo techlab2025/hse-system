@@ -28,7 +28,7 @@ const setParams = (data: Params) => {
     <ProjectZoneForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">{{ $t('Add') }}</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

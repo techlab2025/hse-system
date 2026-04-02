@@ -26,7 +26,7 @@ const setParams = (data: Params) => {
     <CertificateForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

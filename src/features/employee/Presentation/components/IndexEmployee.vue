@@ -206,7 +206,8 @@ watch(
                 <th scope="col">{{ $t('industries') }}</th>
                 <th scope="col">{{ $t('EmployeeType') }}</th>
 
-                <th scope="col">Actions</th>
+                <!-- <th scope="col">Actions</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

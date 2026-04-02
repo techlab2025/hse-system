@@ -198,7 +198,8 @@ const GetProjectStatus = (status: number) => {
                 <th scope="col">{{ $t('admin_name') }}</th>
                 <th scope="col">{{ $t('organization_name') }}</th>
                 <th scope="col">{{ $t('status_name') }}</th>
-                <th scope="col">Actions</th>
+                <!-- <th scope="col">Actions</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

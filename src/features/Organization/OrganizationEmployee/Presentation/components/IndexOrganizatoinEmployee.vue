@@ -200,7 +200,6 @@ const exportExcel = () => {
       email: it.email || null,
       phone: it.phone || null,
       password: '',
-      password_confimation: '',
     }
   })
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
@@ -439,7 +438,8 @@ const IndexOrganizationEmployeectionList = () => [
                 <th scope="col">{{ $t('hierarchy') }}</th>
                 <th scope="col">{{ $t('email') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
               </tr>
             </thead>

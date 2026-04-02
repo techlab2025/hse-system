@@ -182,7 +182,8 @@ const changeStatusServiceLog = async (id: number) => {
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

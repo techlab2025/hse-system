@@ -167,7 +167,6 @@ const SendDataLabels: Record<string, string> = {
   email: "Email",
   phone: "Phone",
   password: "Password",
-  password_confirmation: "Password Confirmation",
 
 };
 
@@ -305,7 +304,6 @@ const onMappingClose = () => {
           <span class="field-tag">Email</span>
           <span class="field-tag">Phone</span>
           <span class="field-tag">Password</span>
-          <span class="field-tag">Password Confirmation</span>
         </div>
       </div>
 

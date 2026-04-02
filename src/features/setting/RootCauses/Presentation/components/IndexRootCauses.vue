@@ -301,7 +301,8 @@ const IndexRootCausesactionList = () => [
                   {{ $t('industries') }}
                 </th>
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

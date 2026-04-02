@@ -57,6 +57,10 @@ export default class CertificateDetailsModel {
     )
   }
 
+  static transformData(data: any[]): CertificateDetailsModel[] {
+    return data.map((item) => this.fromMap(item))
+  }
+
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 

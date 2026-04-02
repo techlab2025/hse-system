@@ -175,7 +175,8 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                 <th scope="col">{{ $t('industries') }}</th>
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>
