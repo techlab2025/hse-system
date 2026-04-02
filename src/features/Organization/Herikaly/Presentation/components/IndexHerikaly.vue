@@ -160,18 +160,18 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
 
           <!-- <Panel header="Hierarchy Actions" class="mb-5"> -->
           <div class="functional_hierarchy_parent">
-            <PagesHeader :title="$t('functional_hierarchy')"
-              :subtitle="$t(`define_the_hierarchy_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
+            <PagesHeader :title="$t('functional_position')"
+              :subtitle="$t(`define_the_position_and_assign_roles_for_your_project_team`)" :img="Heirarchy" />
             <div class="btn-container flex ">
               <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]">
                 <!-- add-btn -->
                 <router-link to="/organization/herikaly/add" class="btn btn-primary  ">
                   <AddHerikly />
-                  {{ $t('add_new_heirarchy') }}
+                  {{ $t('add_new_position') }}
                 </router-link>
               </PermissionBuilder>
               <router-link class="btn btn-secondary" to="/organization/herikaly/matrix"> <AddMatrix /> {{
-                $t('hierarchy_matrix')
+                $t('competency_matrix')
               }}</router-link>
             </div>
           </div>

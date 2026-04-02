@@ -165,7 +165,8 @@ watch(
                 <th scope="col">{{ $t('email') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

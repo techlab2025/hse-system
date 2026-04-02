@@ -70,7 +70,6 @@ const fetchLang = async (
 }
 
 onMounted(async () => {
-
   await fetchLang()
 })
 
@@ -96,27 +95,26 @@ const updateData = () => {
 
   const params = id
     ? new EditOrganizationParams(
-      String(id),
-      name.value,
-      Phone.value,
-      email.value,
-      image.value,
-      Url.value,
-      industry.value?.id,
-      lang.value?.map((l) => l.id),
-      SelectedCountry.value?.map((l) => l.id),
-
-    )
+        String(id),
+        name.value,
+        Phone.value,
+        email.value,
+        image.value,
+        Url.value,
+        industry.value?.id,
+        lang.value?.map((l) => l.id),
+        SelectedCountry.value?.map((l) => l.id),
+      )
     : new AddOrganizationParams(
-      name.value,
-      Phone.value,
-      email.value,
-      image.value,
-      Url.value,
-      industry.value?.id,
-      lang.value?.map((l) => l.id),
-      SelectedCountry.value?.map((l) => l.id),
-    )
+        name.value,
+        Phone.value,
+        email.value,
+        image.value,
+        Url.value,
+        industry.value?.id,
+        lang.value?.map((l) => l.id),
+        SelectedCountry.value?.map((l) => l.id),
+      )
 
   emit('update:data', params)
 }
@@ -182,51 +180,108 @@ const indexLocationCountriesController = IndexLocationController.getInstance()
 const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
 const setCountry = (data: TitleInterface[]) => {
   SelectedCountry.value = data
-  updateData();
+  updateData()
 }
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">Name</label>
-    <input type="text" @input="updateData" id="name" v-model="name" class="input" placeholder="Enter Your Name" />
+    <label for="name">Organization Name</label>
+    <input
+      type="text"
+      @input="updateData"
+      id="name"
+      v-model="name"
+      class="input"
+      placeholder="Enter Your Name"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="email">Email</label>
-    <input type="email" id="email" @input="updateData" v-model="email" class="input" placeholder="Enter Your Email" />
+    <label for="email">Organization Email</label>
+    <input
+      type="email"
+      id="email"
+      @input="updateData"
+      v-model="email"
+      class="input"
+      placeholder="Enter Your Email"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="Phone">Phone</label>
-    <input type="phone" id="Phone" @input="updateData" v-model="Phone" class="input" placeholder="Enter Your Phone" />
+    <label for="Phone">Organization Phone</label>
+    <input
+      type="phone"
+      id="Phone"
+      @input="updateData"
+      v-model="Phone"
+      class="input"
+      placeholder="Enter Your Phone"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="Industry"
-      id="Organization" placeholder="Select industry" @update:modelValue="setIndustry" />
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="Industry"
+      id="Organization"
+      placeholder="Select industry"
+      @update:modelValue="setIndustry"
+    />
   </div>
 
   <!-- Language select -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="lang" :controller="indexLangController" :params="indexLangParams" label="Language"
-      id="lang" :type="2" placeholder="Select Language" @update:modelValue="setLang" :required="true" />
+    <CustomSelectInput
+      :modelValue="lang"
+      :controller="indexLangController"
+      :params="indexLangParams"
+      label="Language"
+      id="lang"
+      :type="2"
+      placeholder="Select Language"
+      @update:modelValue="setLang"
+      :required="true"
+    />
   </div>
 
   <!-- Country select -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country" id="Country" :type="2" placeholder="Select Country"
-      @update:modelValue="setCountry" :required="true" />
+    <CustomSelectInput
+      :modelValue="SelectedCountry"
+      :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams"
+      label="Country"
+      id="Country"
+      :type="2"
+      placeholder="Select Country"
+      @update:modelValue="setCountry"
+      :required="true"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Url">Url</label>
-    <input type="url" id="Url" v-model="Url" @change="updateData" class="input" placeholder="Enter Your Url" />
+    <input
+      type="url"
+      id="Url"
+      v-model="Url"
+      @change="updateData"
+      class="input"
+      placeholder="Enter Your Url"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <SingleFileUpload :modelValue="image" @update:modelValue="setImage" label="Image" id="image"
-      placeholder="Select image" />
+    <SingleFileUpload
+      :modelValue="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
   </div>
 </template>

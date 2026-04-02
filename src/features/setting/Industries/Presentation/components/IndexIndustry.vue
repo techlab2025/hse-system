@@ -150,7 +150,8 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                 <th scope="col">#</th>
                 <th scope="col">title</th>
 
-                <th scope="col">Actions</th>
+                <!-- <th scope="col">Actions</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

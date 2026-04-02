@@ -60,7 +60,11 @@ export default class AddLocationController extends ControllerInterface<LocationM
 
         const { user } = useUserStore()
         const route = useRoute()
-        if (!router.currentRoute.value.fullPath.includes('project-progress')) {
+       
+        if (
+          !router.currentRoute.value.fullPath.includes('project-progress') &&
+          !router.currentRoute.value.fullPath.includes('/organization/project/add')
+        ) {
           await router.push(LocationRouterHandler.LocationRouter(params.type, user, route))
         }
 

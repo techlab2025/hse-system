@@ -33,6 +33,9 @@ export default class HerikalyDetailsModel {
     )
   }
 
+  static transformData(data: any[]): HerikalyDetailsModel[] {
+    return data.map((item: any) => HerikalyDetailsModel.fromMap(item))
+  }
   // static getTitle(data: any) {
   //   const savedLocale = localStorage.getItem('lang')
 

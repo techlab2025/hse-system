@@ -187,7 +187,8 @@ watch(
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
 
-                <th scope="col">{{ $t('Actions') }}</th>
+                <!-- <th scope="col">{{ $t('Actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

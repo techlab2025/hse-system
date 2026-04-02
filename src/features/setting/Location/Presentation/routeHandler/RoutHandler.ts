@@ -3,7 +3,7 @@ import { LocationEnum } from '../../Core/Enum/LocationEnum'
 import { useRouter } from 'vue-router'
 
 export default class LocationRouterHandler {
-  public static LocationRouter(location: LocationEnum, user) {
+  public static LocationRouter(location: LocationEnum, user: any) {
     const router = useRouter()
     switch (location) {
       case LocationEnum.COUNTRY:

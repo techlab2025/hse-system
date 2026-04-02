@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -33,7 +33,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import CertificateCard from '../supcomponents/CertificateCard.vue'
-import Image from "primevue/image";
+import Image from 'primevue/image'
 const { t } = useI18n()
 
 // import DialogChangeStatusCertificate from "@/features/setting/Certificateuages/Presentation/components/Certificate/DialogChangeStatusCertificate.vue";
@@ -140,31 +140,27 @@ watch(
   },
 )
 
-
 // Export To Excel Sheet
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "id": it.id,
-        "Certificate Title": it.title || "N/A",
-
-
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "certificate.xlsx");
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      'Certificate Title': it.title || 'N/A',
+      'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
+      'Image': '*',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'certificate.xlsx')
+}
 
 // const IndexAction = () => [
 //   {
@@ -191,7 +187,6 @@ const exportExcel = () => {
 //     ],
 //   },
 // ]
-
 </script>
 
 <template>
@@ -201,7 +196,13 @@ const exportExcel = () => {
       <span class="icon-remove" @click="((word = ''), searchCertificate())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCertificate" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchCertificate"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -209,25 +210,40 @@ const exportExcel = () => {
 
       <ExportPdf />
       <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          class="btn btn-primary">
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Certificate') }}
+        </router-link>
+      </PermissionBuilder>
+
+      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+        <router-link
+          :to="`/${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+          }/certificate/import-excel`"
+          class="btn btn-primary"
+        >
+          {{ $t('import_certificate') }}
         </router-link>
       </PermissionBuilder>
       <!-- <DropList :actionList="actionList"  /> -->
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.CERTIFICATE_ALL,
-    PermissionsEnum.CERTIFICATE_DELETE,
-    PermissionsEnum.CERTIFICATE_FETCH,
-    PermissionsEnum.CERTIFICATE_UPDATE,
-    PermissionsEnum.CERTIFICATE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.CERTIFICATE_ALL,
+      PermissionsEnum.CERTIFICATE_DELETE,
+      PermissionsEnum.CERTIFICATE_FETCH,
+      PermissionsEnum.CERTIFICATE_UPDATE,
+      PermissionsEnum.CERTIFICATE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive mt-2 ">
+        <div class="table-responsive mt-2">
           <table class="main-table">
             <thead>
               <tr>
@@ -242,15 +258,16 @@ const exportExcel = () => {
                 <th scope="col">{{ $t('requireExpiredDate') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`">{{
-                      index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item?.title) }}</td>
@@ -275,21 +292,24 @@ const exportExcel = () => {
                   </div>
                 </td>
 
-
                 <td data-label="Actions">
-
-
-                  <DropList :actionList="actionList(item.id, deleteCertificate)" @delete="deleteCertificate(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteCertificate)"
+                    @delete="deleteCertificate(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
-
         </div>
         <!-- <div class="index-certificate-container">
           <CertificateCard v-for="(certificate, index) in state.data" :key="index" :cerificate="certificate" />
         </div> -->
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -299,25 +319,31 @@ const exportExcel = () => {
       </template>
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
             addText="Add certificate"
             description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate" />
+            title="..ops! You have No Certificate"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
             addText="Add Certificate"
             description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate" />
+            title="..ops! You have No Certificate"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

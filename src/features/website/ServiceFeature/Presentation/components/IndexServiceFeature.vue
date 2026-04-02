@@ -191,7 +191,8 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
                 <th scope="col">{{ $t('subtitle') }}</th>
                 <th scope="col">{{ $t('status') }}</th>
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

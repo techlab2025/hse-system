@@ -24,6 +24,7 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { DashboardAccessEnum } from '../../Core/Enum/DashboardAccess'
 
 const toast = useToast()
 
@@ -100,7 +101,9 @@ onMounted(async () => {
 const Heirarchy = ref<TitleInterface>()
 const role = ref<TitleInterface[]>()
 const EmployeeStatus = ref()
-const booleanEmpStatus = ref(false)
+const dashAccessStatus = ref()
+const booleanEmpStatus = ref(true)
+const booleandashAccessStatus = ref(true)
 const updaetAdminStatus = (status: number) => {
   booleanEmpStatus.value = status == EmployeeStatusEnum.Admin ? true : false
   if (status) {
@@ -110,38 +113,47 @@ const updaetAdminStatus = (status: number) => {
   }
   updateData()
 }
+const updaetdashAccessStatus = (status: number) => {
+  booleandashAccessStatus.value = status == EmployeeStatusEnum.Admin ? true : false
+  if (status) {
+    dashAccessStatus.value = EmployeeStatusEnum.Admin
+  } else {
+    dashAccessStatus.value = EmployeeStatusEnum.Employee
+  }
+  updateData()
+}
 const updateData = () => {
   const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy?.value?.id)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   // console.log(booleanEmpStatus.value, "booleanEmpStatus");
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
-      props?.data?.id,
-      Name.value,
-      Phone.value,
-      Email.value,
-      Password.value,
-      ConfirmPassword.value,
-      [HeirarchyIds],
-      RoleIds,
-      booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
-
-
-      // Certificates.value.map((item) => item.id)
-    )
+        props?.data?.id,
+        Name.value,
+        Phone.value,
+        Email.value,
+        Password.value,
+        ConfirmPassword.value,
+        [HeirarchyIds],
+        RoleIds,
+        booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
+        booleandashAccessStatus.value ? DashboardAccessEnum.Yes : DashboardAccessEnum.No,
+        // Certificates.value.map((item) => item.id)
+      )
     : new AddOrganizatoinEmployeeParams(
-      Name.value,
-      Phone.value,
-      Email.value,
-      Password.value,
-      ConfirmPassword.value,
-      [HeirarchyIds],
-      RoleIds,
-      booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
-      SerialNumber.value,
+        Name.value,
+        Phone.value,
+        Email.value,
+        Password.value,
+        ConfirmPassword.value,
+        [HeirarchyIds],
+        RoleIds,
+        booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
+        SerialNumber.value,
+        dashAccessStatus.value ? DashboardAccessEnum.Yes : DashboardAccessEnum.No,
 
-      // Certificates.value.map((item) => item.id)
-    )
+        // Certificates.value.map((item) => item.id)
+      )
   // console.log(params, "params");
   emit('update:data', params)
 }
@@ -153,14 +165,17 @@ watch(
       Name.value = newData.name
       Phone.value = newData.phone
       Email.value = newData.email
-      Heirarchy.value = new TitleInterface({ id: newData?.hierarchy?.[0]?.id, title: newData?.hierarchy?.[0]?.title })
+      Heirarchy.value = new TitleInterface({
+        id: newData?.hierarchy?.[0]?.id,
+        title: newData?.hierarchy?.[0]?.title,
+      })
       role.value = newData.roles.map((el) => {
         return new TitleInterface({ id: el.id, title: el.title })
       })
       EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Employee ? true : false
       booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       updateData()
-      console.log(Heirarchy.value, "test");
+      console.log(Heirarchy.value, 'test')
     }
   },
   { immediate: true, deep: true },
@@ -213,46 +228,91 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data.target.value
   updateData()
 }
-
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">{{ $t('name') }}</label>
-    <input id="name" type="text" v-model="Name" @input="UpdateName" :placeholder="$t('enter your name')" />
+    <label for="name">{{ $t('employee_name') }}</label>
+    <input
+      id="name"
+      type="text"
+      v-model="Name"
+      @input="UpdateName"
+      :placeholder="$t('enter your name')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="phone">{{ $t('Phone') }}</label>
-    <input id="phone" type="tel" v-model="Phone" @input="UpdatePhone" :placeholder="$t('enter your phone')" />
+    <label for="phone">{{ $t('employee_phone') }}</label>
+    <input
+      id="phone"
+      type="tel"
+      v-model="Phone"
+      @input="UpdatePhone"
+      :placeholder="$t('enter your phone')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="email">{{ $t('Email') }}</label>
-    <input id="email" type="email" v-model="Email" @input="UpdateEmail" :placeholder="$t('enter your email')" />
+    <label for="email">{{ $t('employee_email') }}</label>
+    <input
+      id="email"
+      type="email"
+      v-model="Email"
+      @input="UpdateEmail"
+      :placeholder="$t('enter your email')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
-    <input id="password" type="text" min="8" v-model="Password" @input="UpdatePassword"
-      :placeholder="$t('enter your password')" />
+    <input
+      id="password"
+      type="text"
+      min="8"
+      v-model="Password"
+      @input="UpdatePassword"
+      :placeholder="$t('enter your password')"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <!--<div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password_confirmation">{{ $t('confirm_password') }}</label>
     <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
       :placeholder="$t('enter your confirm password')" />
-  </div>
+  </div>-->
   <!-- :type="2" -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="Heirarchy" @update:modelValue="setHeirarchy" :controller="indexHerikalyController"
-      :params="HerikalyParams" :label="$t('Job Type')" :placeholder="$t('Select Job Type')" />
+    <CustomSelectInput
+      :modelValue="Heirarchy"
+      @update:modelValue="setHeirarchy"
+      :controller="indexHerikalyController"
+      :params="HerikalyParams"
+      :label="$t('position')"
+      :placeholder="$t('select_position')"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="role" @update:modelValue="setRole" :controller="indexRoleController"
-      :params="indexRoleParams" :label="$t('permissions')" :type="2" :placeholder="$t('Select Role')" />
+    <CustomSelectInput
+      :modelValue="role"
+      @update:modelValue="setRole"
+      :controller="indexRoleController"
+      :params="indexRoleParams"
+      :label="$t('permissions')"
+      :type="2"
+      :placeholder="$t('Select Role')"
+    />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox :index="5" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
@@ -260,8 +320,20 @@ const UpdateSerial = (data) => {
   </div> -->
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomCheckbox :index="3" :title="`admin_status`" :checked="booleanEmpStatus"
-      @update:checked="updaetAdminStatus" />
+    <CustomCheckbox
+      :index="3"
+      :title="`super_admin`"
+      :checked="booleanEmpStatus"
+      @update:checked="updaetAdminStatus"
+    />
+  </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomCheckbox
+      :index="4"
+      :title="`dashboard_access`"
+      :checked="booleandashAccessStatus"
+      @update:checked="updaetdashAccessStatus"
+    />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"

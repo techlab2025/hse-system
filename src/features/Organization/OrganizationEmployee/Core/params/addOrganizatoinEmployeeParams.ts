@@ -4,6 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
@@ -15,6 +16,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   roles: RolesOrganizationEmployeeParams[]
   EmployeeStatus: EmployeeStatusEnum
   serialNumber: string
+  dashAccessStatus: DashboardAccessEnum
   // certificateId: number[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -22,7 +24,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
     password: { required: true, minLength: 2, maxLength: 100 },
-    passwordConfirmation: { required: true, minLength: 2, maxLength: 100 },
+    // passwordConfirmation: { required: true, minLength: 2, maxLength: 100 },
   })
 
   constructor(
@@ -35,6 +37,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
     serialNumber: string,
+    dashAccessStatus: DashboardAccessEnum,
     // certificateId: number[],
   ) {
     this.name = name
@@ -46,6 +49,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.roles = roles
     this.EmployeeStatus = EmployeeStatus
     this.serialNumber = serialNumber
+    this.dashAccessStatus = dashAccessStatus
     // this.certificateId = certificateId
   }
 
@@ -77,6 +81,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
+    data['dashboard_access'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

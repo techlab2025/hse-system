@@ -203,7 +203,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
                 <th scope="col">{{ $t('factor') }}</th>
                 <!--                <th scope="col">{{ $t('image') }}</th>-->
 
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>

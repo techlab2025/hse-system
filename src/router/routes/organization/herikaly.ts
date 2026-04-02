@@ -7,7 +7,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     name: 'Hierarchy',
     component: () => import('@/views/Organization/Herikaly/IndexHerikaly.vue'),
     meta: {
-      breadcrumb: 'Hierarchy',
+      breadcrumb: 'Positions',
       isSidebar: true,
       type: 'Shared',
     },
@@ -17,7 +17,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     name: 'Edit Hierarchy',
     component: () => import('@/views/Organization/Herikaly/EditHerikaly.vue'),
     meta: {
-      breadcrumb: 'Edit Hierarchy',
+      breadcrumb: 'Edit Position',
       parent: 'Hierarchy',
       isSidebar: true,
       type: 'Shared',
@@ -28,7 +28,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     name: 'Add Hierarchy',
     component: () => import('@/views/Organization/Herikaly/AddHerikaly.vue'),
     meta: {
-      breadcrumb: 'Add Hierarchy',
+      breadcrumb: 'Add Position',
       parent: 'Hierarchy',
       isSidebar: true,
       type: 'Shared',
@@ -39,7 +39,7 @@ export const herikalyRoutes: RouteRecordRaw[] = [
     name: 'Hierarchy Matrix',
     component: () => import('@/views/Organization/Herikaly/HierarchyMatrix.vue'),
     meta: {
-      breadcrumb: 'Hierarchy Matrix',
+      breadcrumb: 'Competency Matrix',
       parent: 'Hierarchy',
       isSidebar: true,
       type: 'Shared',

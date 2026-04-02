@@ -25,7 +25,7 @@ const setParams = (data: Params) => {
     <InspectionForm @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

@@ -3,6 +3,7 @@ import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
+import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class EditOrganizatoinEmployeeParams implements Params {
   id: number
@@ -15,7 +16,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   roles: RolesOrganizationEmployeeParams[]
   serialNumber: string
   EmployeeStatus: EmployeeStatusEnum
-
+  dashAccessStatus: DashboardAccessEnum
   // certificateId: number[]
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
@@ -32,6 +33,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
+    dashAccessStatus: DashboardAccessEnum,
 
     // certificateId: number[],
   ) {
@@ -44,6 +46,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.hierarchies = hierarchies
     this.roles = roles
     this.EmployeeStatus = EmployeeStatus
+    this.dashAccessStatus = dashAccessStatus
 
     // this.certificateId = certificateId
   }
@@ -63,7 +66,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
     data['employee_type'] = Number(this.EmployeeStatus)
-
+    data['dashboard_access'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

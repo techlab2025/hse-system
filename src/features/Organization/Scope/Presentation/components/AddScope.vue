@@ -25,7 +25,7 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addScope">
     <ScopeForm @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('add') }}</button>
+      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

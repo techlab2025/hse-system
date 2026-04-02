@@ -251,7 +251,8 @@ const IndexIncidantTypeactionList = () => [
                 <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('actions') }}</th>
+                <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                <th class="empty"></th>
               </tr>
             </thead>
             <tbody>
