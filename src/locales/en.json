@@ -1290,5 +1290,6 @@
   "import_certificate": "Import Certificate",
   "add_new_position": "Add New Position",
   "functional_position": "Functional Position",
-  "define_the_position_and_assign_roles_for_your_project_team": "Define the position and assign roles for your project team"
+  "define_the_position_and_assign_roles_for_your_project_team": "Define the position and assign roles for your project team",
+  "import_position": "Import Position"
 }

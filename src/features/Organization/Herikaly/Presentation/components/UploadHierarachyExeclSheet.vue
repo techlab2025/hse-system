@@ -129,10 +129,9 @@ const fileUpload = async (file: File) => {
 }
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>(['title', 'require_expired_date', 'image'])
+const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
   title: 'Title',
-
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -215,7 +214,6 @@ const onMappingClose = () => {
         <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
           <span class="field-tag">title</span>
-
         </div>
       </div>
 
