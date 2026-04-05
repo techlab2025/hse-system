@@ -33,6 +33,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public tasks: InspectionModel[]
   public projectLocationHierarchyEmployeeId: number
   public projectLocationTeamEmployeeId: number
+  public canAccessDashboard: boolean
 
   // =====================
   // Constructor
@@ -58,6 +59,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     tasks: InspectionModel[],
     projectLocationHierarchyEmployeeId: number,
     projectLocationTeamEmployeeId: number,
+    canAccessDashboard: boolean,
   ) {
     this.id = id
     this.name = name
@@ -79,6 +81,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.tasks = tasks
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
+    this.canAccessDashboard = canAccessDashboard
   }
 
   // =====================
@@ -107,6 +110,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.tasks,
       data.project_location_hierarchy_employee_id,
       data.project_location_team_employee_id,
+      data.can_access_dashboard,
       // data.employee_performance,
     )
   }
