@@ -1301,5 +1301,7 @@
   "Upload_photo": "Upload photo",
   "inspections_records": "Inspections Records",
   "Get OTP": "Get OTP",
-  "change_password": "Change Password"
+  "change_password": "Change Password",
+  "contractor_name": "Contractor Name",
+  "contractor_phone": "Contractor Phone"
 }

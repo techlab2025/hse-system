@@ -47,35 +47,37 @@ const route = useRoute()
 const id = route.query?.id
 
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams("", 1, 10, 1)
-
+const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
 const updateData = () => {
-  const meeting = (date?.value != undefined && time?.value != undefined) ? new MeetingParams(formatJoinDate(date?.value), formatTime(time?.value) || null, SelectedPlatform?.value?.id) : null
-  console.log(meeting, "meeting");
+  const meeting =
+    date?.value != undefined && time?.value != undefined
+      ? new MeetingParams(
+          formatJoinDate(date?.value),
+          formatTime(time?.value) || null,
+          SelectedPlatform?.value?.id,
+        )
+      : null
+  console.log(meeting, 'meeting')
   const params = props.data?.id
-    ? new EditInvestigatingParams(
-      {
+    ? new EditInvestigatingParams({
         id: props.data?.id,
         observationId: id as number,
         employees: Employees.value,
         meetings: meeting,
-      }
-    )
-    : new AddInvestigatingParams(
-      {
+      })
+    : new AddInvestigatingParams({
         observationId: id as number,
         employees: Employees.value,
         meetings: meeting,
-      }
-    )
+      })
 
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 // const indexInvestigatingTypeParams = new IndexInvestigatingTypeParams('', 1, 10, 1)
 // const indexInvestigatingTypeController = IndexInvestigatingTypeController.getInstance()
@@ -137,14 +139,16 @@ watch([title, date, riskLevel, isNearMiss, saveStatus, time], () => {
 const SelectedTeam = ref<TitleInterface[]>([])
 const setTeams = (data: TitleInterface[]) => {
   SelectedTeam.value = data
-  Employees.value = data.map(el => (new InvestigatingEmployeeParams(el.id!, false)))
+  Employees.value = data.map((el) => new InvestigatingEmployeeParams(el.id!, false))
   updateData()
 }
 
 const SelectedTeamLeader = ref<TitleInterface>(null)
 const setTeamLeader = (data: TitleInterface) => {
   SelectedTeamLeader.value = data
-  Employees.value = Employees.value.map(el => el.organization_employee_id === data.id ? { ...el, is_leader: true } : el)
+  Employees.value = Employees.value.map((el) =>
+    el.organization_employee_id === data.id ? { ...el, is_leader: true } : el,
+  )
   updateData()
 }
 
@@ -173,28 +177,38 @@ onMounted(() => {
   ShoeInvestegationResultDetails()
 })
 
-watch(() => showInvestigationResultController.state.value, (newState) => {
-  if (newState) {
-    state.value = newState
-    date.value = newState?.data?.investigationMeetings?.[newState.data.investigationMeetings.length - 1]?.date
-    time.value = newState?.data?.investigationMeetings?.[newState.data.investigationMeetings.length - 1]?.time
-    SelectedPlatform.value = new TitleInterface({ id: newState.data?.type, title: MeetingPlatforms.value.find(el => el.id === newState.data?.type)?.title })
-    // Employees.value = newState?.data?.employees?.map(el => new InvestigatingEmployeeParams(el.id!, el.is_leader))
-    // SelectedTeam.value = newState?.data?.employees?.map(el => new TitleInterface({ id: el.id!, title: el.name }))
-    // SelectedTeamLeader.value = newState?.data?.employees?.find(el => el.is_leader)?.id
-
-
-  }
-})
-
-
-
+watch(
+  () => showInvestigationResultController.state.value,
+  (newState) => {
+    if (newState) {
+      state.value = newState
+      date.value =
+        newState?.data?.investigationMeetings?.[
+          newState.data.investigationMeetings.length - 1
+        ]?.date
+      time.value =
+        newState?.data?.investigationMeetings?.[
+          newState.data.investigationMeetings.length - 1
+        ]?.time
+      SelectedPlatform.value = new TitleInterface({
+        id: newState.data?.type,
+        title: MeetingPlatforms.value.find((el) => el.id === newState.data?.type)?.title,
+      })
+      // Employees.value = newState?.data?.employees?.map(el => new InvestigatingEmployeeParams(el.id!, el.is_leader))
+      // SelectedTeam.value = newState?.data?.employees?.map(el => new TitleInterface({ id: el.id!, title: el.name }))
+      // SelectedTeamLeader.value = newState?.data?.employees?.find(el => el.is_leader)?.id
+    }
+  },
+)
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6">
-    <HeaderPage :title="'start investigating'" :subtitle="'Document what you observe to improve workplace safety'"
-      :img="detectiveImage" />
+    <HeaderPage
+      :title="'start investigating'"
+      :subtitle="'Document what you observe to improve workplace safety'"
+      :img="detectiveImage"
+    />
   </div>
   <!-- <div class="col-span-6 md:col-span-6">
     <TabsSelection :LocationIds="[137]" @update:data="GetZones" />
@@ -206,13 +220,28 @@ watch(() => showInvestigationResultController.state.value, (newState) => {
   </div>
 
   <div class="col-span-6 md:col-span-4 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedTeam" class="input" :controller="indexOrganizatoinEmployeeController"
-      :params="indexOrganizatoinEmployeeParams" label="Investigation team" :type="2" id="machine"
-      placeholder="select your team" @update:modelValue="setTeams" />
+    <CustomSelectInput
+      :modelValue="SelectedTeam"
+      class="input"
+      :controller="indexOrganizatoinEmployeeController"
+      :params="indexOrganizatoinEmployeeParams"
+      label="Investigation team"
+      :type="2"
+      id="machine"
+      placeholder="select your team"
+      @update:modelValue="setTeams"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedTeamLeader" class="input" :staticOptions="SelectedTeam"
-      label="assign leader " id="leader" placeholder="select your leader" @update:modelValue="setTeamLeader" />
+    <CustomSelectInput
+      :modelValue="SelectedTeamLeader"
+      class="input"
+      :staticOptions="SelectedTeam"
+      label="assign leader "
+      id="leader"
+      placeholder="select your leader"
+      @update:modelValue="setTeamLeader"
+    />
   </div>
 
   <div class="meeting-investigation col-span-6 md:col-span-6">
@@ -225,15 +254,27 @@ watch(() => showInvestigationResultController.state.value, (newState) => {
     <label for="date">{{ $t('Date') }}</label>
     <DatePicker v-model="date" placeholder="Add your date" />
   </div>
-  <div class="col-span-6 mfinsd:col-span-3 input-wrapper">
+  <div class="col-span-6 md:col-span-3 input-wrapper">
     <label for="time">{{ $t('Time') }}</label>
-    <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" @update:modelValue="updateData" />
+    <DatePicker
+      v-model="time"
+      timeOnly
+      hourFormat="24"
+      placeholder="Add your time"
+      @update:modelValue="updateData"
+    />
   </div>
 
   <!-- <FactorInvestigating /> -->
   <div class="col-span-6 md:col-span-6 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedPlatform" class="input" :staticOptions="MeetingPlatforms"
-      label="meeting platform " id="machine" placeholder="select meeting platform"
-      @update:modelValue="setSelectedPlatform" />
+    <CustomSelectInput
+      :modelValue="SelectedPlatform"
+      class="input"
+      :staticOptions="MeetingPlatforms"
+      label="meeting platform "
+      id="machine"
+      placeholder="select meeting platform"
+      @update:modelValue="setSelectedPlatform"
+    />
   </div>
 </template>

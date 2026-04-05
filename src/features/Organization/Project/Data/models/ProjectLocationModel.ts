@@ -1,3 +1,4 @@
+import TitleInterface from '@/base/Data/Models/title_interface'
 import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 
 export default class projectLocationModel {
@@ -6,19 +7,21 @@ export default class projectLocationModel {
   public locationTitle: string
   public projectId: number
   public projectLocationId: number
-
+  public hierarchy: TitleInterface
   constructor(
     employees: OrganizatoinEmployeeDetailsModel[],
     locationId: number,
     locationTitle: string,
     projectId: number,
     projectLocationId: number,
+    hierarchy: TitleInterface,
   ) {
     this.employees = employees
     this.locationId = locationId
     this.locationTitle = locationTitle
     this.projectId = projectId
     this.projectLocationId = projectLocationId
+    this.hierarchy = hierarchy
   }
 
   static fromMap(data: any): projectLocationModel {
@@ -28,6 +31,7 @@ export default class projectLocationModel {
       data.location_title,
       data.project_id,
       data.project_location_id,
+      data.hierarchy,
     )
   }
   static example = new projectLocationModel(
@@ -55,5 +59,6 @@ export default class projectLocationModel {
     'Main Office',
     1,
     1,
+    new TitleInterface({ id: 0, title: 'Main Office' }),
   )
 }

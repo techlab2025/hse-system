@@ -47,6 +47,8 @@ export default class AddHazardParams implements Params {
   public OpenNote: string
 
   public code: string
+  public OragnizationemployeeName: string
+  public OragnizationemployeeId: number
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -88,6 +90,8 @@ export default class AddHazardParams implements Params {
     actionstatus: ActionStatusEnum
     code: string
     OpenNote: string
+    OragnizationemployeeName: string
+    OragnizationemployeeId: number
   }) {
     this.title = data.title
     this.description = data.description
@@ -123,6 +127,8 @@ export default class AddHazardParams implements Params {
     this.actionstatus = data.actionstatus
     this.code = data.code
     this.OpenNote = data.OpenNote
+    this.OragnizationemployeeName = data.OragnizationemployeeName
+    this.OragnizationemployeeId = data.OragnizationemployeeId
   }
 
   toMap(): Record<
@@ -188,6 +194,9 @@ export default class AddHazardParams implements Params {
       data['serial'] = this.code
     }
     if (this.OpenNote) data['open_note'] = this.OpenNote
+    if (this.OragnizationemployeeName != null) data['employee_name'] = this.OragnizationemployeeName
+    if (this.OragnizationemployeeId != null)
+      data['organization_employee_id'] = this.OragnizationemployeeId
     return data
   }
 

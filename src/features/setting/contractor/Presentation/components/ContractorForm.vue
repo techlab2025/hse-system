@@ -178,7 +178,7 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">{{ $t('name') }}</label>
+    <label for="name">{{ $t('contractor_name') }}</label>
     <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
@@ -188,9 +188,9 @@ const fields = ref([
       :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
-    <label for="company_number">{{ $t('contractor_number') }}</label>
+    <label for="company_number">{{ $t('contractor_phone') }}</label>
     <input type="text" id="company_number" min="1" class="input" v-model="phoneNumber" @input="setPhoneNumber"
-      placeholder="Enter contractor Number " />
+      placeholder="Enter contractor Phone " />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
