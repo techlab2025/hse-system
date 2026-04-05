@@ -33,8 +33,6 @@ import DeleteProjectLocationHeirarchyEmployeeController from '../../../controlle
 import ShowProjectDetailsController from '../../../controllers/ShowProjectDetailsController'
 import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
-import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
-
 
 const route = useRoute()
 const id = route.params.id
@@ -54,7 +52,6 @@ const GetProjectLocationsEmployes = async () => {
     ProjectCustomLocationEnum.EMPLOYEE,
   ])
   await projectCustomLocationController.getData(projectCustomLocationParams)
-
 }
 
 const GetTeamsMembers = () => {
@@ -68,11 +65,9 @@ const GetTeamsMembers = () => {
   return AllEmployees.value
 }
 
-
 onMounted(() => {
   GetTeamsMembers()
 })
-
 
 const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(
@@ -98,7 +93,7 @@ const GetSelectedLocation = (locationId: number) => {
 }
 
 watch(
-  () => props.location,
+  () => location,
   () => {
     ShowProjectDetailsController.getInstance().showProjectDetails(
       new ShowProjectDetailsParams(Number(route.params?.id)),
@@ -125,7 +120,6 @@ onMounted(() => {
             <div class="flex flex-col items-start gap-0">
               <!-- <p class="location-title">{{ location?.location_title }}</p> -->
               <p class="location-title">
-
                 {{ GetSelectedLocation(location?.locationId!)?.locationTitle }}
               </p>
               <div class="location-info-statics flex items-center gap-2">
@@ -149,7 +143,6 @@ onMounted(() => {
           <div class="card-actions flex items-center gap-2 flex-wrap">
             <RouterLink
               :to="`/organization/project-hierarchy/project/${id}?locationId=${location?.locationId}`"
-
               class="btn btn-secondary"
             >
               {{ $t('add_hierarchy') }}

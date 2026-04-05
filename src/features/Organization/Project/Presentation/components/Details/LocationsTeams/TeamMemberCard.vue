@@ -7,7 +7,6 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DeleteEmployeeDialog from './DeleteEmployeeDialog.vue'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
-import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
 import { computed } from 'vue'
 
 const emit = defineEmits(['update:data'])
@@ -25,7 +24,8 @@ const UpdateData = (id: number) => {
 <template>
   <router-link
     :to="`/organization/organization-employee/show/${member?.organization_employee_id}?type=3`"
-    class="member-card">
+    class="member-card"
+  >
     <DeleteEmployeeDialog
       @delete="
         UpdateData(
@@ -43,7 +43,6 @@ const UpdateData = (id: number) => {
         </span>
       </p>
       <span> {{ hierarchy?.hierarchy?.map((p) => p.title).join(', ') }}</span>
-
     </div>
   </router-link>
 </template>
