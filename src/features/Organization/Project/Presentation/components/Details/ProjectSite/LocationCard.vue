@@ -1,15 +1,14 @@
 <script setup lang="ts">
-// import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones';
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
-
-import EmptyZoon from '@/assets/images/EmptyZoon.png'
 import ProjectLocationZoonDialog from './ProjectLocationZoonDialog.vue'
-const props = defineProps<{
-  title: string
-  zone: SohwProjectZoonModel[]
-  zoons: SohwProjectZoonModel[]
-  LocationId: number
-  projectId: number
+import EmptyZoons from './EmptyZoons.vue'
+
+const { title, zoneLength, zoons, LocationId, projectId } = defineProps<{
+  title: string | undefined
+  zoneLength: number | undefined
+  zoons: SohwProjectZoonModel[] | undefined
+  LocationId: number | undefined
+  projectId: number | undefined
 }>()
 </script>
 
@@ -20,40 +19,25 @@ const props = defineProps<{
         <div class="location-header">
           <p class="title">{{ title }}</p>
           <p class="zone">
-            <span>{{ zone }}</span> {{ $t('zone') }}
+            <span>{{ zoneLength }}</span> {{ $t('zone') }}
           </p>
         </div>
         <ProjectLocationZoonDialog :LocationId="LocationId" :projectId="projectId" />
-
-        <!-- <button class="add-zone">{{ $t('add Zone') }}</button> -->
       </div>
-      <!-- <p class="location">{{ location }}</p> -->
     </div>
+
     <hr class="card-hr" />
+
     <div class="locations">
-      <!-- {{ zoons }} -->
       <p
-        v-if="zoons.length > 0"
         class="location-title"
-        v-for="(location, index) in zoons"
+        v-if="zoons && zoons?.length > 0"
+        v-for="(zoon, index) in zoons"
         :key="index"
       >
-        {{ location.title || location.zoonTitle }}
+        {{ zoon.title || zoon.zoonTitle }}
       </p>
-
-      <div class="empty-zoon" v-else>
-        <div class="empty-zoon-info">
-          <p class="no-zoon">{{ $t('No Zoons Yet') }}</p>
-          <p class="no-zoon-description">
-            {{
-              $t(
-                'No Zoons has been assigned to this location yet. You can add new areas at any time',
-              )
-            }}
-          </p>
-        </div>
-        <img :src="EmptyZoon" alt="empty-zoon" />
-      </div>
+      <EmptyZoons v-else />
     </div>
   </div>
 </template>

@@ -21,5 +21,5 @@ export default class CreateProjectLocationTeamEmployeeParams implements Params {
 interface ProjectTeams {
   project_location_id: number
   team_id: number
-  employee_ids: number
+  employee_ids: number[]
 }

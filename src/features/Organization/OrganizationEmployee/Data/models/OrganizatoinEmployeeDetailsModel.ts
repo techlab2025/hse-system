@@ -23,7 +23,6 @@ export default class OrganizatoinEmployeeDetailsModel {
   public roles: RoleDetailsModel[]
   public organization_employee_id: number
   public organization_id: number
-  public serial_name: string
   public serial_number: string
   public certificates: CertificateModel[]
   public employee_certificates: CertificateModel[]
@@ -32,6 +31,8 @@ export default class OrganizatoinEmployeeDetailsModel {
   public emplyeeStatus: EmployeeStatusEnum
   public serialName: string
   public tasks: InspectionModel[]
+  public projectLocationHierarchyEmployeeId: number
+  public projectLocationTeamEmployeeId: number
 
   // =====================
   // Constructor
@@ -47,7 +48,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     roles: RoleDetailsModel[],
     organization_employee_id: number,
     organization_id: number,
-    serial_name: string,
+    serialName: string,
     serial_number: string,
     certificates: CertificateModel[],
     employee_certificates: CertificateModel[],
@@ -55,6 +56,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     projects: ProjectModel[],
     emplyeeStatus: EmployeeStatusEnum,
     tasks: InspectionModel[],
+    projectLocationHierarchyEmployeeId: number,
+    projectLocationTeamEmployeeId: number,
   ) {
     this.id = id
     this.name = name
@@ -66,7 +69,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.roles = roles
     this.organization_employee_id = organization_employee_id
     this.organization_id = organization_id
-    this.serial_name = serial_name
+    this.serialName = serialName
     this.serial_number = serial_number
     this.certificates = certificates
     this.employee_certificates = employee_certificates
@@ -74,6 +77,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.projects = projects
     this.emplyeeStatus = emplyeeStatus
     this.tasks = tasks
+    this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
+    this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
   }
 
   // =====================
@@ -100,6 +105,8 @@ export default class OrganizatoinEmployeeDetailsModel {
       data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
       data?.employee_type,
       data.tasks,
+      data.project_location_hierarchy_employee_id,
+      data.project_location_team_employee_id,
       // data.employee_performance,
     )
   }
@@ -147,5 +154,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     [],
     1,
     [],
+    1,
+    1,
   )
 }

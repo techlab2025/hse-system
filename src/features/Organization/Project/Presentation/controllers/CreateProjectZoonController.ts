@@ -25,7 +25,7 @@ export default class CreateProjectZoonController extends ControllerInterface<Pro
     return this.instance
   }
 
-  async CreateProjectZoon(params: Params, route: Router, draft: boolean = false) {
+  async CreateProjectZoon(params: Params, projectId: number) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<ProjectModel> = await this.createProjectZoonUseCase.call(params)
@@ -42,7 +42,7 @@ export default class CreateProjectZoonController extends ControllerInterface<Pro
 
         // useLoaderStore().endLoadingWithDialog();
         await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route.params?.id)),
+          new ShowProjectDetailsParams(projectId),
         )
       } else {
         DialogSelector.instance.failedDialog.openDialog({

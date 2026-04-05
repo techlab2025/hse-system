@@ -23,7 +23,7 @@ export default class projectLocationModel {
 
   static fromMap(data: any): projectLocationModel {
     return new projectLocationModel(
-      data.employees,
+      data.employees.map((item: any) => OrganizatoinEmployeeDetailsModel.fromMap(item)),
       data.location_id,
       data.location_title,
       data.project_id,

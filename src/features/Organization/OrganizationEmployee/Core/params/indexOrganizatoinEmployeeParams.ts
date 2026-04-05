@@ -1,13 +1,11 @@
 import type Params from '@/base/core/params/params'
-// import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
-// import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
 export default class IndexOrganizatoinEmployeeParams implements Params {
   public word: string
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
-  public heirarchyId?: number
+  public heirarchyId?: number | null
   public projectZoneId?: number
   public returndeadonly?: number
   public CertificateId?: number
@@ -19,7 +17,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
-    heirarchyId?: number,
+    heirarchyId?: number | null,
     projectZoneId?: number,
     returndeadonly?: number,
     CertificateId?: number,

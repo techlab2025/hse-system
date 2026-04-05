@@ -13,6 +13,7 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
+// import InspectionsSections from './Inspection/InspectionsSections.vue'
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = ref(showProjectDetailsController.state.value)
@@ -66,9 +67,10 @@ watch(
         </div> -->
 
         <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
+
         <LocationsTeamsSection
           :teamLocations="state.data?.TeamLocations"
-          :project_locations="state.data?.project_locations"
+          :projectLocations="state.data?.project_locations"
           :hierarchy="state.data?.hierarchies"
         />
         <EquipmentSection :project_zoons="state.data?.projectZoons" />
