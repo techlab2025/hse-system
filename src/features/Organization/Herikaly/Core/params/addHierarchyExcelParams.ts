@@ -6,8 +6,8 @@ interface Data {
 export default class AddHierarchyExcelParams implements Params {
   data: Data[]
 
-  constructor(data: Data[]) {
-    this.data = data
+  constructor(data: { data: Data[] }) {
+    this.data = data.data
   }
 
   toMap(): Record<string, unknown> {

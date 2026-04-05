@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
-import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum';
-import { Observation } from '../../../Core/Enums/ObservationTypeEnum';
+import { useRouter } from 'vue-router'
+import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
-import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams';
+import ToggleObservationActionStatusParams from '../../../Core/params/ToggleObservationActionStatusParams'
 import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
-import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController';
-import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue';
-import { watch } from 'vue';
+import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController'
+import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
+import { watch } from 'vue'
 
 const props = defineProps<{
   data: HazardDetailsModel
@@ -48,7 +48,10 @@ const emit = defineEmits(['update:data'])
 const router = useRouter()
 const toggleObservationActionStatus = async (id: number) => {
   const toggleObservationActionStatusParams = new ToggleObservationActionStatusParams(id)
-  await ToggleObservationActionStatusController.getInstance().toggleObservationActionStatus(toggleObservationActionStatusParams, router)
+  await ToggleObservationActionStatusController.getInstance().toggleObservationActionStatus(
+    toggleObservationActionStatusParams,
+    router,
+  )
 }
 
 const ToogleStatus = async (id: number) => {
@@ -56,9 +59,12 @@ const ToogleStatus = async (id: number) => {
   emit('update:data')
 }
 
-watch(() => props.data, () => {
-  toggleObservationActionStatus(props.data.id)
-})
+watch(
+  () => props.data,
+  () => {
+    toggleObservationActionStatus(props.data.id)
+  },
+)
 const GoToShowPage = () => {
   if (props.data.id) {
     router.push(`/organization/equipment-mangement/incedant/show/${props.data.id}`)
@@ -75,25 +81,34 @@ const GoToShowPage = () => {
         </div>
         <div class="card-header">
           <p class="label-item-primary cursor-pointer" @click="GoToShowPage">
-            {{ $t('Serial') }} : <span>{{ data?.serialName }}</span>
+            <span>{{ $t('Serial') }} : </span> <span>{{ data?.serialName }}</span>
           </p>
           <h6 class="label-item-secondary">
-            {{ $t('Date & Time') }} : <span>{{ data?.date }} - {{ data?.time }}</span>
+            <span>{{ $t('Date & Time') }} :</span> <span>{{ data?.date }} - {{ data?.time }}</span>
           </h6>
           <h6 class="label-item-secondary" v-if="data?.zoon?.title">
-            {{ $t('Zone') }} : <span>{{ data?.zoon?.title }}</span>
+            <span>{{ $t('Zone') }} :</span><span>{{ data?.zoon?.title }}</span>
           </h6>
 
-          <p class="label-employee"> {{ $t('employee') }} : <span>{{ data?.observer?.name }}</span></p>
-          <p class="label-item-primary">{{ $t(`${GetHeader(data.type)} Type`) }} : <span>{{
-            data?.typeModel?.title
-              }}</span></p>
+          <p class="label-employee">
+            <span>{{ $t('employee') }} :</span> <span>{{ data?.observer?.name }}</span>
+          </p>
+          <p class="label-item-primary">
+            <span>{{ $t(`${GetHeader(data.type)} Type`) }} :</span>
+            <span>{{ data?.typeModel?.title }}</span>
+          </p>
 
-
-          <div class="flex items-center gap-2" v-if="data?.type != Observation.ObservationType && data?.actionStatus">
+          <div
+            class="flex flex-col items-start gap-2"
+            v-if="data?.type != Observation.ObservationType && data?.actionStatus"
+          >
             <p>{{ $t(`toggle status`) }}</p>
-            <CustomCheckboxToggle :index="data.id" title="" :checked="data.actionStatus == 1"
-              @update:checked="ToogleStatus(data.id)" />
+            <CustomCheckboxToggle
+              :index="data.id"
+              title=""
+              :checked="data.actionStatus == 1"
+              @update:checked="ToogleStatus(data.id)"
+            />
           </div>
         </div>
         <!-- <div class="card-details">
@@ -105,11 +120,13 @@ const GoToShowPage = () => {
           </div>
         </div> -->
       </div>
-      <div class="card_status" v-if="data?.type != Observation.ObservationType && data?.actionStatus">
+      <div
+        class="card_status"
+        v-if="data?.type != Observation.ObservationType && data?.actionStatus"
+      >
         <p>{{ $t('status') }}</p>
         <h6>{{ $t(`${GetStatus(data?.actionStatus)}`) }}</h6>
       </div>
-
 
       <!-- if we want add imge -->
       <!-- <div class="observer-container" v-if="data?.observer.name">
@@ -136,7 +153,7 @@ const GoToShowPage = () => {
 </template>
 
 <style scoped>
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 </style>

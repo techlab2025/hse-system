@@ -8,13 +8,9 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
-import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
-import HazardImage from '@/assets/images/alert 2.png'
 import ObservationCard from '../FactoryUtils/ObservationCard.vue';
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum';
 import WarningIcon from '@/shared/icons/WarningIcon.vue';
-
-
 import ObservationFactoryGenralInfo from '../FactoryUtils/ShowFactoryUtils/ObservationFactoryGenralInfo.vue';
 import ObservationFactoryInspection from '../FactoryUtils/ShowFactoryUtils/ObservationFactoryInspection.vue';
 import ObservationCapaDestails from '../FactoryUtils/ShowFactoryUtils/ObservationCapaDestails.vue';

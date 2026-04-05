@@ -40,7 +40,8 @@ import AddHerikaly from './AddHerikaly.vue'
 import AddHerikly from '@/shared/icons/AddHerikly.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
-
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 const { t } = useI18n()
 
 const word = ref('')
@@ -140,6 +141,25 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   },
 ]
 const { user } = useUserStore()
+
+const exportExcel = () => {
+  if (!state.value.data || state.value.data.length === 0) {
+    alert('No data available to export')
+    return
+  }
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'hierarchy.xlsx')
+}
 </script>
 
 <template>
@@ -186,6 +206,7 @@ const { user } = useUserStore()
               >
                 {{ $t('import_position') }}
               </router-link>
+              <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
             </div>
           </div>
           <!-- </Panel> -->

@@ -220,7 +220,7 @@ const onMappingClose = () => {
       <hr class="separator" />
     </div>
 
-    <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
+    <!-- <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div> -->
 
     <div v-if="isLoading" class="loading-bar">
       <span class="loading-dot" />
@@ -261,6 +261,7 @@ const onMappingClose = () => {
                       {{ item }}
                     </span>
                   </th>
+                  <th class="empty"></th>
                 </tr>
               </thead>
               <tbody>

@@ -4,6 +4,8 @@
 .forget-password-page {
   position: relative;
   padding: 0 1rem;
+  height: 100vh;
+  padding: 20px;
   &::after {
     content: '';
     background-image: url('@/assets/images/Ellipse 1996.png');
@@ -39,6 +41,11 @@
   }
   .forget-form {
     @include flex(row, nowrap, space-between, center);
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
+    padding: 36px;
+
     form {
       .title {
         margin: $XlSize4 0;
@@ -105,11 +112,11 @@
     .imge {
       animation: zoomFloat 5s ease-in-out infinite;
       @media (max-width: 888px) {
-        svg{
+        svg {
           width: 300px;
         }
         @media (max-width: 668px) {
-          svg{
+          svg {
             display: none;
           }
         }

@@ -6,6 +6,7 @@ import { sharedRoutes } from './routes/shared'
 import { addSuffix } from './helpers'
 import { authGuard } from './guards'
 import NotFountPage from '@/views/NotFountPage.vue'
+import { ForgetPasswordRoutes } from './routes/organization/ForgetPassword'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'Not Found',
       component: NotFountPage,
+    },
+    {
+      path: '/forget-password',
+      name: 'forget-password',
+      component: () => import('@/views/Organization/ForgetPassword/ForgetPassword.vue'),
     },
   ],
 })

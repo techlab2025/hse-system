@@ -32,6 +32,7 @@ import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStatics
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import CapaIcon from '@/shared/icons/CapaIcon.vue'
 import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
+import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = ref(fetchPorjectStatisticsController.state.value)
@@ -238,17 +239,7 @@ watch(
         />
       </router-link>
     </PermissionBuilder>
-    <!-- <PermissionBuilder :code="[
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-      PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
-    ]">
-      <router-link to="/organization/equipment-mangement/all-observatin">
-        <HomeRoutesCard :img-src="DetectiveLogo" :title="`investigation`" :description="`meetings . tasks . create`" />
-      </router-link>
-    </PermissionBuilder> -->
+
 
     <PermissionBuilder
       :code="[
@@ -312,7 +303,9 @@ watch(
         />
       </router-link>
     </PermissionBuilder>
-    <!-- <PermissionBuilder :code="[
+
+
+    <PermissionBuilder :code="[
       PermissionsEnum.ORG_EMPLOYEE_ALL,
       PermissionsEnum.ORG_EMPLOYEE_CREATE,
       PermissionsEnum.ORG_EMPLOYEE_DELETE,
@@ -324,7 +317,7 @@ watch(
         <HomeRoutesCard :icon="InvisttigationIcon" :title="`${$t('investigation')}`"
           :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `" />
       </router-link>
-    </PermissionBuilder> -->
+    </PermissionBuilder>
 
     <PermissionBuilder
       :code="[

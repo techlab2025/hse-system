@@ -24,7 +24,7 @@ const GauideRoutes = ref<Routes[]>([
   {
     link: '/organization/project-progress',
     name: t('overview'),
-    permissions: []
+    permissions: [],
     // permissions: [
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -34,7 +34,6 @@ const GauideRoutes = ref<Routes[]>([
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
     // ],
   },
-
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
@@ -134,7 +133,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/herikaly',
-    name: t('hierarchy'),
+    name: t('positions'),
     permissions: [
       PermissionsEnum.HERIKALY_ALL,
       PermissionsEnum.HERIKALY_CREATE,
@@ -267,8 +266,8 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: "/organization/hazard",
-    name: t("hazard"),
+    link: '/organization/hazard',
+    name: t('hazard'),
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,
       PermissionsEnum.ORG_HAZARD_CREATE,
@@ -279,8 +278,8 @@ const OrganizationRoutes = ref<Routes[]>([
   },
 
   {
-    link: "/organization/factory",
-    name: t("Hazard factor"),
+    link: '/organization/factory',
+    name: t('Hazard factor'),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
       PermissionsEnum.ORG_FACTORY_CREATE,
@@ -290,8 +289,8 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: "/organization/factories-items",
-    name: t("Hazard factor item"),
+    link: '/organization/factories-items',
+    name: t('Hazard factor item'),
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
       PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
@@ -300,8 +299,17 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
     ],
   },
-
-
+  {
+    link: '/organization/ticket',
+    name: t('tickets'),
+    permissions: [
+      PermissionsEnum.TICKET_ALL,
+      PermissionsEnum.TICKET_CREATE,
+      PermissionsEnum.TICKET_DELETE,
+      PermissionsEnum.TICKET_FETCH,
+      PermissionsEnum.TICKET_UPDATE,
+    ],
+  },
 ])
 const LocationRoutes = ref<Routes[]>([
   {
@@ -367,19 +375,6 @@ const LocationRoutes = ref<Routes[]>([
       PermissionsEnum.PROJECT_ZONE_UPDATE,
     ],
   },
-  {
-    link: '/organization/ticket',
-    name: t('tickets'),
-    permissions: [
-      PermissionsEnum.TICKET_ALL,
-      PermissionsEnum.TICKET_CREATE,
-      PermissionsEnum.TICKET_DELETE,
-      PermissionsEnum.TICKET_FETCH,
-      PermissionsEnum.TICKET_UPDATE,
-    ],
-  },
-
-
 ])
 const OperationRoutesRoutes = ref<Routes[]>([
   {
@@ -488,9 +483,6 @@ const OperationRoutesRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_OBSERVATION_UPDATE,
     ],
   },
-
-
-
 ])
 const LockUpsRoutes = ref<Routes[]>([
   {
@@ -539,7 +531,6 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.OBSERVATION_TYPE_CREATE,
       PermissionsEnum.OBSERVATION_TYPE_UPDATE,
       PermissionsEnum.OBSERVATION_TYPE_DELETE,
-
     ],
   },
   {
@@ -586,13 +577,14 @@ const SelectedGauideRoutes = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
-    SelectedOrgRoute.value = OrganizationRoutes.value.find(item => item.link === newPath)?.name
-    SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name
-    SelectedOperationRoute.value = OperationRoutesRoutes.value.find(item => item.link === newPath)?.name
-    SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name
-    SelectedGauideRoutes.value = GauideRoutes.value.find(item => item.link === newPath)?.name
-
-  }
+    SelectedOrgRoute.value = OrganizationRoutes.value.find((item) => item.link === newPath)?.name
+    SelectedLocationRoute.value = LocationRoutes.value.find((item) => item.link === newPath)?.name
+    SelectedOperationRoute.value = OperationRoutesRoutes.value.find(
+      (item) => item.link === newPath,
+    )?.name
+    SelectedLockupsRoute.value = LockUpsRoutes.value.find((item) => item.link === newPath)?.name
+    SelectedGauideRoutes.value = GauideRoutes.value.find((item) => item.link === newPath)?.name
+  },
 )
 
 const orgAccordion = ref<string | null>('1')
@@ -600,7 +592,6 @@ const locationAccordion = ref<string | null>('2')
 const OperationAccordion = ref<string | null>('3')
 const LoackupsAccordion = ref<string | null>('4')
 const GauideAccordion = ref<string | null>('5')
-
 
 watch(orgAccordion, (val) => {
   orgAccordion.value = val
@@ -617,13 +608,12 @@ watch(LoackupsAccordion, (val) => {
 watch(GauideAccordion, (val) => {
   GauideAccordion.value = val
 })
-
 </script>
 
 <template>
-
-
-  <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+  <PermissionBuilder
+    :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+  >
     <Accordion v-model:value="GauideAccordion">
       <AccordionPanel value="5">
         <AccordionHeader>
@@ -635,9 +625,16 @@ watch(GauideAccordion, (val) => {
 
         <AccordionContent>
           <ul>
-            <PermissionBuilder v-for="(guideroute, index) in GauideRoutes" :key="index" :code="guideroute?.permissions">
+            <PermissionBuilder
+              v-for="(guideroute, index) in GauideRoutes"
+              :key="index"
+              :code="guideroute?.permissions"
+            >
               <li>
-                <router-link :to="guideroute.link" :class="route?.fullPath?.includes(guideroute.link) ? '' : ''">
+                <router-link
+                  :to="guideroute.link"
+                  :class="route?.fullPath?.includes(guideroute.link) ? '' : ''"
+                >
                   <span>{{ $t(guideroute.name) }}</span>
                 </router-link>
               </li>
@@ -651,8 +648,9 @@ watch(GauideAccordion, (val) => {
     </Accordion>
   </PermissionBuilder>
 
-
-  <PermissionBuilder :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+  <PermissionBuilder
+    :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+  >
     <Accordion v-model:value="orgAccordion">
       <AccordionPanel value="1">
         <AccordionHeader>
@@ -664,10 +662,16 @@ watch(GauideAccordion, (val) => {
 
         <AccordionContent>
           <ul>
-            <PermissionBuilder v-for="(orgroute, index) in OrganizationRoutes" :key="index"
-              :code="orgroute?.permissions">
+            <PermissionBuilder
+              v-for="(orgroute, index) in OrganizationRoutes"
+              :key="index"
+              :code="orgroute?.permissions"
+            >
               <li>
-                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                <router-link
+                  :to="orgroute.link"
+                  :class="route?.fullPath?.includes(orgroute.link) ? '' : ''"
+                >
                   <span>{{ $t(orgroute.name) }}</span>
                 </router-link>
               </li>
@@ -795,7 +799,11 @@ watch(GauideAccordion, (val) => {
               </li>
             </PermissionBuilder> -->
 
-            <PermissionBuilder v-for="(route, index) in LocationRoutes" :key="index" :code="route.permissions">
+            <PermissionBuilder
+              v-for="(route, index) in LocationRoutes"
+              :key="index"
+              :code="route.permissions"
+            >
               <li>
                 <router-link :to="route.link">
                   <span>{{ $t(route.name) }}</span>
@@ -811,7 +819,9 @@ watch(GauideAccordion, (val) => {
     </Accordion>
   </PermissionBuilder>
 
-  <PermissionBuilder :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+  <PermissionBuilder
+    :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+  >
     <Accordion v-model:value="LoackupsAccordion">
       <AccordionPanel value="4">
         <AccordionHeader>
@@ -823,9 +833,16 @@ watch(GauideAccordion, (val) => {
 
         <AccordionContent>
           <ul>
-            <PermissionBuilder v-for="(orgroute, index) in LockUpsRoutes" :key="index" :code="orgroute?.permissions">
+            <PermissionBuilder
+              v-for="(orgroute, index) in LockUpsRoutes"
+              :key="index"
+              :code="orgroute?.permissions"
+            >
               <li>
-                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
+                <router-link
+                  :to="orgroute.link"
+                  :class="route?.fullPath?.includes(orgroute.link) ? '' : ''"
+                >
                   <span>{{ $t(orgroute.name) }}</span>
                 </router-link>
               </li>
