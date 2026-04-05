@@ -7,14 +7,16 @@ export default class projectLocationModel {
   public locationTitle: string
   public projectId: number
   public projectLocationId: number
-  public hierarchy: TitleInterface
+  public hierarchy: TitleInterface | undefined | null
+
   constructor(
     employees: OrganizatoinEmployeeDetailsModel[],
     locationId: number,
     locationTitle: string,
     projectId: number,
     projectLocationId: number,
-    hierarchy: TitleInterface,
+    hierarchy: TitleInterface | undefined | null,
+
   ) {
     this.employees = employees
     this.locationId = locationId
@@ -26,7 +28,7 @@ export default class projectLocationModel {
 
   static fromMap(data: any): projectLocationModel {
     return new projectLocationModel(
-      data.employees,
+      data.employees.map((item: any) => OrganizatoinEmployeeDetailsModel.fromMap(item)),
       data.location_id,
       data.location_title,
       data.project_id,
@@ -59,6 +61,6 @@ export default class projectLocationModel {
     'Main Office',
     1,
     1,
-    new TitleInterface({ id: 0, title: 'Main Office' }),
+    new TitleInterface({ id: 1, title: 'asd' }),
   )
 }

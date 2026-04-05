@@ -10,11 +10,13 @@ import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import AccordArrowDown from '@/shared/icons/AccordArrowDown.vue'
 import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
+
 import type ProjectCustomLocationModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectCustomLocationModel'
 import TeamMemberCard from './TeamMemberCard.vue'
 import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationTeamEmployeeParams'
@@ -23,45 +25,54 @@ import ProjectEmployeeIcon from '@/shared/icons/ProjectEmployeeIcon.vue'
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue'
 import AddEmployeeDialog from './AddEmployeeDialog.vue'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+
 import type projectLocationModel from '@/features/Organization/Project/Data/models/ProjectLocationModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import DeleteProjectlocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationHierarchyEmployeeParams'
 import DeleteProjectLocationHeirarchyEmployeeController from '../../../controllers/DeleteProjectLocationHeirarchyEmployeeController'
 import ShowProjectDetailsController from '../../../controllers/ShowProjectDetailsController'
 import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
+import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
+import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+
 
 const route = useRoute()
 const id = route.params.id
-const props = defineProps<{
-  location: TeamLocation
-  projectLocation: projectLocationModel[]
-  hierarchy: TitleInterface[]
-}>()
-
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const OpenAccordion = ref<string[]>([])
+
+const { location, projectLocation, hierarchy, employeesHierarchy } = defineProps<{
+  location: TeamLocation | null | undefined
+  projectLocation: projectLocationModel[] | null | undefined
+  hierarchy: TitleInterface[] | null | undefined
+  employeesHierarchy: OrganizatoinEmployeeDetailsModel[] | null | undefined
+}>()
 
 const GetProjectLocationsEmployes = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(id, [
     ProjectCustomLocationEnum.TEAM_EMPLOYEE,
     ProjectCustomLocationEnum.EMPLOYEE,
   ])
-  const response = await projectCustomLocationController.getData(projectCustomLocationParams)
+  await projectCustomLocationController.getData(projectCustomLocationParams)
+
 }
 
 const GetTeamsMembers = () => {
-  const AllEmployees = ref<ProjectCustomLocationModel[]>([])
-  props.location.projectLocationTeams?.map((team) => {
-    team.Employees?.map((employee) => {
-      AllEmployees.value.push(employee)
+  const AllEmployees = ref<ProjectLocationEmployeeModel[]>([])
+  location &&
+    location.projectLocationTeams?.map((team) => {
+      team.Employees?.map((employee) => {
+        AllEmployees.value.push(employee)
+      })
     })
-  })
   return AllEmployees.value
 }
+
 
 onMounted(() => {
   GetTeamsMembers()
 })
+
 
 const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(
@@ -74,23 +85,16 @@ const DeleteTeamMember = async (id: number) => {
     route,
   )
   GetProjectLocationsEmployes()
+
   // location.reload()
 }
-// const DeleteTeamMember = async (id: number) => {
-//   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
-//   const deleteProjectLocationTeamEmployeeController = DeleteProjectLocationTeamEmployeeController.getInstance();
-//   await deleteProjectLocationTeamEmployeeController.deleteProjectLocationTeamEmployee(deleteProjectLocationTeamEmployeeparams, route)
-//   if (route.path.includes("employee-details")) {
-//     GetProjectLocationsEmployes()
-//   }
-// }
 
-const updatetabValue = (value) => {
+const updatetabValue = (value: any) => {
   OpenAccordion.value = value
 }
 
 const GetSelectedLocation = (locationId: number) => {
-  return props.projectLocation?.find((p) => p.locationId === locationId)
+  return projectLocation?.find((p) => p.locationId === locationId)
 }
 
 watch(
@@ -102,8 +106,12 @@ watch(
   },
 )
 const CheckThatAtLeastOneEmployeeInTeams = () => {
-  return props.location?.projectLocationTeams?.some((team) => team.Employees?.length > 0)
+  return location?.projectLocationTeams?.some((team) => team.Employees?.length > 0)
 }
+
+onMounted(() => {
+  GetTeamsMembers()
+})
 </script>
 
 <template>
@@ -117,11 +125,13 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
             <div class="flex flex-col items-start gap-0">
               <!-- <p class="location-title">{{ location?.location_title }}</p> -->
               <p class="location-title">
-                {{ GetSelectedLocation(location.locationId)?.locationTitle }}
+
+                {{ GetSelectedLocation(location?.locationId!)?.locationTitle }}
               </p>
               <div class="location-info-statics flex items-center gap-2">
                 <p>
-                  {{ GetSelectedLocation(location.locationId)?.employees?.length || 0 }}
+                  {{ GetSelectedLocation(location?.locationId!)?.employees?.length || 0 }}
+
                   <span>{{ $t('Employees') }}</span>
                 </p>
                 <p>
@@ -138,19 +148,20 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           <div></div>
           <div class="card-actions flex items-center gap-2 flex-wrap">
             <RouterLink
-              :to="`/organization/project-hierarchy/project/${id}?locationId=${location.locationId}`"
+              :to="`/organization/project-hierarchy/project/${id}?locationId=${location?.locationId}`"
+
               class="btn btn-secondary"
             >
               {{ $t('add_hierarchy') }}
             </RouterLink>
             <AddCreateTeam
-              :ProjectLocationId="location?.projectLocationId"
-              :LocationId="location.locationId"
+              :ProjectLocationId="location?.projectLocationId!"
+              :LocationId="location?.locationId!"
               @update:data="GetProjectLocationsEmployes"
             />
             <AddEmployeeDialog
               :hierarchy="hierarchy"
-              :ProjectLocation="location.projectLocationId"
+              :ProjectLocation="location?.projectLocationId!"
             />
           </div>
         </div>
@@ -158,7 +169,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
       <AccordionContent>
         <div
           class="all-employees"
-          v-if="GetSelectedLocation(location.locationId)?.employees?.length > 0"
+          v-if="GetSelectedLocation(location?.locationId!)?.employees?.length! > 0"
         >
           <div class="all-employees-header-container">
             <div class="flex items-center gap-2">
@@ -166,31 +177,31 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
               <div class="all-employees-header flex flex-col">
                 <p class="employee">{{ $t('Employees') }}</p>
                 <p class="employee-count">
-                  {{ GetSelectedLocation(location.locationId)?.employees?.length || 0 }}
+                  {{ GetSelectedLocation(location?.locationId!)?.employees?.length || 0 }}
                   {{ $t('Employees') }}
                 </p>
               </div>
             </div>
             <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"
               >{{ $t('View all employees') }} ({{
-                GetSelectedLocation(location.locationId)?.employees?.length || 0
+                GetSelectedLocation(location?.locationId!)?.employees?.length || 0
               }})</router-link
             >
           </div>
           <div class="team-members">
             <TeamMemberCard
-              v-for="(member, index) in GetSelectedLocation(location.locationId)?.employees"
+              v-for="(member, index) in GetSelectedLocation(location?.locationId!)?.employees"
               :key="index"
               :member="member"
-              :hierarchy="GetSelectedLocation(location.locationId)?.hierarchy"
               @update:data="DeleteTeamMember"
+              :hierarchy="employeesHierarchy?.find((h) => h.id === member.organization_employee_id)"
             />
           </div>
         </div>
 
         <div
           class="teams-container"
-          v-if="location?.projectLocationTeams?.length > 0 && CheckThatAtLeastOneEmployeeInTeams()"
+          v-if="location?.projectLocationTeams?.length! > 0 && CheckThatAtLeastOneEmployeeInTeams()"
         >
           <div class="all-employees-header-container">
             <div class="flex items-center gap-2">
@@ -211,7 +222,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
           <div class="teams">
             <TeamCard
               :isShow="true"
-              v-for="(team, index) in location.projectLocationTeams"
+              v-for="(team, index) in location?.projectLocationTeams"
               :key="index"
               :team="team"
             />
@@ -219,7 +230,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
         </div>
         <div
           class="empty-teams"
-          v-if="GetSelectedLocation(location.locationId)?.employees?.length < 1"
+          v-if="GetSelectedLocation(location?.locationId!)?.employees?.length! < 1"
         >
           <EmptyData
             :img="EmptyFolder"
@@ -227,7 +238,7 @@ const CheckThatAtLeastOneEmployeeInTeams = () => {
             :subtitle="
               $t('You haven’t added any employees to this team. Start building your crew now!')
             "
-            :link="`/organization/project-employee/project/${id}?locationId=${location.locationId}`"
+            :link="`/organization/project-employee/project/${id}?locationId=${location?.locationId}`"
             linkText=" Start building your crew now!"
           />
         </div>

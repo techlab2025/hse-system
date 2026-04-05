@@ -13,57 +13,31 @@ import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue'
 import ProjectEquipmentCard from './ProjectEquipmentCard.vue'
 import AddNewEquipmentEmptyDialog from './AddNewEquipmentEmptyDialog.vue'
 
+const { project_zoons } = defineProps<{
+  project_zoons: SohwProjectZoonModel[] | undefined
+}>()
 const route = useRoute()
 const id = route.params.id
-const props = defineProps<{
-  project_zoons: SohwProjectZoonModel[]
-}>()
+const ProjectZones = ref(project_zoons)
+const OpenAccordion = ref<string[]>([])
+const CheckEquipemtnsEmpty = computed(
+  () =>
+    project_zoons?.map((p) => p?.projectZoonEquipments?.length).reduce((a, b) => a + b, 0) === 0,
+)
 
-const ProjectZones = ref(props.project_zoons)
+const updatetabValue = (value: any) => {
+  OpenAccordion.value = value
+}
+
 watch(
-  () => props.project_zoons,
+  () => project_zoons,
   (newValue) => {
     ProjectZones.value = newValue
   },
 )
-const OpenAccordion = ref<string[]>([])
-
-const CheckEquipemtnsEmpty = computed(
-  () =>
-    props.project_zoons?.map((p) => p?.projectZoonEquipments?.length).reduce((a, b) => a + b, 0) ===
-    0,
-)
-const updatetabValue = (value) => {
-  OpenAccordion.value = value
-}
-
-// const GetEquipmentTotalCount = computed(() => props.project_zoons?.map((p) => p?.projectZoonEquipments?.length).reduce((a, b) => a + b, 0))
 </script>
 
 <template>
-  <!-- <div class="equipment-section">
-    <div class="equipment-section-header">
-      <HeaderSection :img="Equipment" title="Equipment , tools & Devices by Site "
-        subtitle="View and manage all equipment assigned to each operational zone" />
-      <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">Show all</router-link>
-    </div>
-
-    <div class="equipments-sections w-full" v-if="ProjectZones?.length > 0 && !CheckEquipemtnsEmpty">
-      <div v-for="(Equipment, index) in ProjectZones" :key="index" class="w-full">
-        <EquipmentCard :zones="Equipment" v-if="Equipment?.projectZoonEquipments?.length > 0" />
-
-      </div>
-    </div>
-
-    <div class="empty-teams" v-else>
-
-      <AddEquipmentDialog :project_zoons="ProjectZones" />
-    </div>
-
-
-
-  </div> -->
-
   <div class="equipment-section">
     <div class="equipment-section-header">
       <HeaderSection
@@ -77,11 +51,15 @@ const updatetabValue = (value) => {
     </div>
 
     <Accordion :value="OpenAccordion" multiple @update:value="updatetabValue">
-      <AccordionPanel v-for="(zone, index) in ProjectZones.slice(0, 2)" :key="index" :value="index">
+      <AccordionPanel
+        v-for="(zone, index) in ProjectZones?.slice(0, 2)"
+        :key="index"
+        :value="index"
+      >
         <AccordionHeader>
           <div class="location-container w-full flex items-center gap-2 justify-between">
             <div class="location flex items-start">
-              <AccordArrowDown v-if="OpenAccordion.includes(index)" class="arrow-accord" />
+              <AccordArrowDown v-if="OpenAccordion.includes(String(index))" class="arrow-accord" />
               <AccordArrowRight v-else class="arrow-right" />
               <div class="flex flex-col items-start gap-0">
                 <p class="location-title">{{ zone?.zoonTitle }}</p>
@@ -94,36 +72,11 @@ const updatetabValue = (value) => {
               </div>
               <div></div>
             </div>
-            <!-- <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" /> -->
             <AddNewEquipmentEmptyDialog :project_zone_id="zone?.projectZoonId" :isEmpty="false" />
-            <!-- <div> -->
-            <!-- <div class="card-actions flex item-center gap-2">
-              <AddCreateTeam :isShow="true" :ProjectLocationId="location.id" :LocationId="location.id"
-                @update:data="GetProjectLocationsEmployes" />
-              <AddEmployeeDialog />
-            </div> -->
-            <!-- </div>/ -->
           </div>
-          <!-- <AddEquipmentIcon class="add-equipment-icon" /> -->
         </AccordionHeader>
         <AccordionContent>
           <div class="teams-container equipment" v-if="zone?.projectZoonEquipments?.length > 0">
-            <!-- <div class="all-employees-header-container">
-              <div class="flex items-center gap-2">
-                <TeamsIcon class="icon" />
-                <div class="all-employees-header flex flex-col">
-                  <p class="employee">team</p>
-                  <p class="employee-count">{{ location?.projectLocationTeams?.length }} team</p>
-                </div>
-              </div>
-              <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view">View all teams ({{
-                location?.projectLocationTeams?.length }})</router-link>
-            </div>
-            <div class="teams">
-              <TeamCard :isShow="true" v-for="(team, index) in location.projectLocationTeams" :key="index"
-                :team="team" />
-            </div> -->
-            <!-- @delete:data="deleteEquipment" -->
             <div class="project-equipment-card-container grid grid-cols-2 gap-4">
               <ProjectEquipmentCard
                 v-for="(tool, index) in zone?.projectZoonEquipments.slice(0, 4)"
@@ -133,12 +86,7 @@ const updatetabValue = (value) => {
             </div>
           </div>
           <div class="empty-teams" v-else>
-            <!-- <AddEquipmentDialog :project_zoons="ProjectZones" :ZoonId="zone.projectZoonId" :isEmpty="true" /> -->
-
             <AddNewEquipmentEmptyDialog :project_zone_id="zone?.projectZoonId" :isEmpty="true" />
-            <!-- <EmptyData :img="EquimentFolderEmpty" title="No Equipment Yet"
-              subtitle="You haven’t added any equipment to this project. Start building your crew now!"
-              linkText=" Start adding equipment now!" :link="`/organization/project-equipment/project/${id}`" /> -->
           </div>
         </AccordionContent>
       </AccordionPanel>
