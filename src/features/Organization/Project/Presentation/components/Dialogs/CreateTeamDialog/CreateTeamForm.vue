@@ -11,9 +11,10 @@ import CreateProjectLocationTeamEmployeeController from '../../../controllers/Cr
 import CreateProjectLocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/CreateProjectLocationTeamEmployeeParams'
 
 const emit = defineEmits(['update:data'])
-const { ProjectLocationId, LocationId } = defineProps<{
+const { ProjectLocationId, LocationId, teamId } = defineProps<{
   ProjectLocationId: number | undefined
   LocationId: number | undefined
+  teamId?: number | undefined
 }>()
 const route = useRoute()
 const id = Number(route.params.project_id || route.params.id)
@@ -37,16 +38,16 @@ const setEmployees = (data: TitleInterface[]) => {
 }
 
 const CreateProjectLocationTeamEmployee = async () => {
-  if (!TeamType.value || Employees.value.length === 0) {
-    return
-  }
+  // if (!TeamType.value || Employees.value.length === 0) {
+  //   return
+  // }
 
   const employeeIds = Employees.value.map((emp) => emp.id)
 
   const teams = [
     {
       project_location_id: ProjectLocationId!,
-      team_id: TeamType.value.id,
+      team_id: teamId ? teamId : TeamType.value?.id,
       employee_ids: employeeIds,
     },
   ]
@@ -68,7 +69,7 @@ const CreateProjectLocationTeamEmployee = async () => {
   <div class="equipment-form">
     <form @submit.prevent="CreateProjectLocationTeamEmployee">
       <div class="input-container">
-        <div class="input-wrapper">
+        <div class="input-wrapper" v-if="!teamId">
           <CustomSelectInput
             :modelValue="TeamType"
             :controller="indexTeamController"
