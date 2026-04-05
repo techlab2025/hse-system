@@ -61,6 +61,9 @@ import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/ind
 import RootCausesIdParams from '../../../Core/params/RootCausesIdParams'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import { OrganizationEmployeeDefaultProjectApiService } from '@/features/auth/Data/api_services/OrganizationEmployeeDefaultProjectApiService'
 
 const emit = defineEmits(['update:data'])
 //
@@ -211,6 +214,8 @@ const updateData = () => {
         code: SerialNumber.value,
         RootCausesId: rootCausesIdParams,
         OpenNote: preventive_action_open.value,
+        OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
+        OragnizationemployeeId: !isSelectHasContent.value ? Oragnizationemployee.value?.id : null,
       })
   emit('update:data', params)
 }
@@ -468,9 +473,28 @@ const setRootCause = (data: TitleInterface[]) => {
   updateData()
 }
 
-// const WorkStopedHandle = ()=>{
+const WorkStopedHandle = () => {
+  isWorkStopped.value = !isWorkStopped.value
+  updateData()
+}
+const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
-// }
+const Oragnizationemployee = ref<TitleInterface | null>(null)
+const setOragnizationemployee = (data: TitleInterface) => {
+  Oragnizationemployee.value = data
+  updateData()
+}
+const isSelectHasContent = ref<boolean>(false)
+
+const toggleMode = (isManual: boolean) => {
+  isSelectHasContent.value = isManual
+}
+const OragnizationemployeeName = ref<string>('')
+const setOragnizationemployeeName = (data: Event) => {
+  OragnizationemployeeName.value = data?.target?.value
+  updateData()
+}
 </script>
 
 <template>
@@ -701,12 +725,48 @@ const setRootCause = (data: TitleInterface[]) => {
         :isDialog="true"
         :dialogVisible="machineDialogRef"
       >
-        <!-- <template #LabelHeader>
-          <span class="add-dialog" @click="machineDialogRef = true">{{ $t('New') }}</span>
+      </UpdatedCustomInputSelect>
+    </div>
+    <div class="col-span-3 md:col-span-3 input-wrapper">
+      <UpdatedCustomInputSelect
+        :controller="fetchOriganizatioEmployeeController"
+        :params="fetchOrganizationEmployeeParams"
+        v-model="Oragnizationemployee"
+        placeholder="Select Employee"
+        class="mt-4 mr-2 input"
+        :label="$t('employee name')"
+        @update:model-value="setOragnizationemployee"
+        :hascontent="isSelectHasContent"
+        :reload="false"
+      >
+        <template #reloadHeader>
+          <div class="flex gap-2 items-center">
+            <button
+              :class="isSelectHasContent ? 'active' : ''"
+              class="emp-name"
+              @click.prevent="toggleMode(true)"
+            >
+              {{ $t('employee_name') }}
+            </button>
+
+            <button
+              :class="isSelectHasContent ? '' : 'active'"
+              class="emp-select"
+              @click.prevent="toggleMode(false)"
+            >
+              {{ $t('select') }}
+            </button>
+          </div>
         </template>
-        <template #Dialog>
-          <AddFullEquipment @close:dialog="machineDialogRef = false" @update:data="machineDialogRef = false" />
-        </template> -->
+        <template #content>
+          <input
+            type="text"
+            v-model="OragnizationemployeeName"
+            class="input"
+            placeholder="Select Employee"
+            @input="setOragnizationemployeeName"
+          />
+        </template>
       </UpdatedCustomInputSelect>
     </div>
 
@@ -843,11 +903,10 @@ const setRootCause = (data: TitleInterface[]) => {
     <div
       v-if="saveStatus == SaveStatusEnum.NotSaved"
       class="col-span-6 md:col-span-6 w-full is-stopped"
-      @click="
-        isWorkStopped = !isWorkStopped
-        updateData()
-      "
+      @click="WorkStopedHandle"
     >
+      <!-- isWorkStopped = !isWorkStopped;
+      updateData() -->
       <label class="w-full" for="is_stopedd">{{ $t('is_work_stopped') }}</label>
       <Checkbox
         binary

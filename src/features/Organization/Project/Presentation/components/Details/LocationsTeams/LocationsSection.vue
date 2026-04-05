@@ -10,15 +10,22 @@ import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import AccordArrowDown from '@/shared/icons/AccordArrowDown.vue'
 import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue'
-import { onMounted, ref, watch } from 'vue'
+
+import { computed, onMounted, ref, watch } from 'vue'
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
+
+import type ProjectCustomLocationModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectCustomLocationModel'
 import TeamMemberCard from './TeamMemberCard.vue'
+import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationTeamEmployeeParams'
+import DeleteProjectLocationTeamEmployeeController from '../../../controllers/DeleteProjectLocationTeamEmployeeController'
 import ProjectEmployeeIcon from '@/shared/icons/ProjectEmployeeIcon.vue'
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue'
 import AddEmployeeDialog from './AddEmployeeDialog.vue'
+import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+
 import type projectLocationModel from '@/features/Organization/Project/Data/models/ProjectLocationModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import DeleteProjectlocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationHierarchyEmployeeParams'
@@ -27,6 +34,7 @@ import ShowProjectDetailsController from '../../../controllers/ShowProjectDetail
 import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+
 
 const route = useRoute()
 const id = route.params.id
@@ -46,6 +54,7 @@ const GetProjectLocationsEmployes = async () => {
     ProjectCustomLocationEnum.EMPLOYEE,
   ])
   await projectCustomLocationController.getData(projectCustomLocationParams)
+
 }
 
 const GetTeamsMembers = () => {
@@ -59,6 +68,12 @@ const GetTeamsMembers = () => {
   return AllEmployees.value
 }
 
+
+onMounted(() => {
+  GetTeamsMembers()
+})
+
+
 const DeleteTeamMember = async (id: number) => {
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(
     id,
@@ -70,6 +85,8 @@ const DeleteTeamMember = async (id: number) => {
     route,
   )
   GetProjectLocationsEmployes()
+
+  // location.reload()
 }
 
 const updatetabValue = (value: any) => {
@@ -81,14 +98,13 @@ const GetSelectedLocation = (locationId: number) => {
 }
 
 watch(
-  () => location,
+  () => props.location,
   () => {
     ShowProjectDetailsController.getInstance().showProjectDetails(
       new ShowProjectDetailsParams(Number(route.params?.id)),
     )
   },
 )
-
 const CheckThatAtLeastOneEmployeeInTeams = () => {
   return location?.projectLocationTeams?.some((team) => team.Employees?.length > 0)
 }
@@ -109,11 +125,13 @@ onMounted(() => {
             <div class="flex flex-col items-start gap-0">
               <!-- <p class="location-title">{{ location?.location_title }}</p> -->
               <p class="location-title">
+
                 {{ GetSelectedLocation(location?.locationId!)?.locationTitle }}
               </p>
               <div class="location-info-statics flex items-center gap-2">
                 <p>
                   {{ GetSelectedLocation(location?.locationId!)?.employees?.length || 0 }}
+
                   <span>{{ $t('Employees') }}</span>
                 </p>
                 <p>
@@ -131,6 +149,7 @@ onMounted(() => {
           <div class="card-actions flex items-center gap-2 flex-wrap">
             <RouterLink
               :to="`/organization/project-hierarchy/project/${id}?locationId=${location?.locationId}`"
+
               class="btn btn-secondary"
             >
               {{ $t('add_hierarchy') }}

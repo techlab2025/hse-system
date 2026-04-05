@@ -16,6 +16,7 @@ export default class projectLocationModel {
     projectId: number,
     projectLocationId: number,
     hierarchy: TitleInterface | undefined | null,
+
   ) {
     this.employees = employees
     this.locationId = locationId

@@ -17499,6 +17499,28 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
   fill: white !important;
   display: block !important;
 }
+.full-observation-form .emp-name {
+  font-family: "Regular";
+  color: #bfc3d0;
+  font-size: var(--md-size);
+  font-weight: 500;
+  cursor: pointer;
+}
+.full-observation-form .emp-name.active {
+  color: var(--PrimaryColor);
+  text-decoration: underline;
+}
+.full-observation-form .emp-select {
+  font-family: "Regular";
+  color: #bfc3d0;
+  font-size: var(--md-size);
+  font-weight: 500;
+  cursor: pointer;
+}
+.full-observation-form .emp-select.active {
+  color: var(--PrimaryColor);
+  text-decoration: underline;
+}
 
 /*</editor-fold>*/
 /*<editor-fold desc="equipment_sidebar">*/
