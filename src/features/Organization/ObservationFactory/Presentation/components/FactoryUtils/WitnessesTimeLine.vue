@@ -94,17 +94,6 @@ const toggleMode = (index: number, isManual: boolean) => {
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Witness name"
                   class="mt-4 mr-2 input" :label="$t('Witness name')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
-                  <!-- <template #reloadHeader>
-                    <div class="flex gap-2 items-center">
-                      <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
-                          $t('name_of_witness')
-                        }}</button>
-                      <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="isSelectHasContent[index] = false; item.employee.title = ''">{{ $t('select')
-                        }}</button>
-                    </div>
-                  </template> -->
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"

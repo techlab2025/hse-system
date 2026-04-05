@@ -25,4 +25,28 @@
     fill: white !important;
     display: block !important;
   }
+  .emp-name {
+    font-family: 'Regular';
+    color: #bfc3d0;
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    cursor: pointer;
+
+    &.active {
+      color: $PrimaryColor;
+      text-decoration: underline;
+    }
+  }
+  .emp-select {
+    font-family: 'Regular';
+    color: #bfc3d0;
+    font-size: $MdSize;
+    font-weight: $BaseFontMediumWeight;
+    cursor: pointer;
+
+    &.active {
+      color: $PrimaryColor;
+      text-decoration: underline;
+    }
+  }
 }
