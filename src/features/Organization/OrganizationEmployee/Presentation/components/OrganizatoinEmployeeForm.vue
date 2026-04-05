@@ -115,17 +115,12 @@ const updaetAdminStatus = (status: number) => {
 }
 const updaetdashAccessStatus = (status: number) => {
   booleandashAccessStatus.value = status == EmployeeStatusEnum.Admin ? true : false
-  if (status) {
-    dashAccessStatus.value = EmployeeStatusEnum.Admin
-  } else {
-    dashAccessStatus.value = EmployeeStatusEnum.Employee
-  }
   updateData()
 }
 const updateData = () => {
   const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy?.value?.id)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
-  // console.log(booleanEmpStatus.value, "booleanEmpStatus");
+  console.log(booleandashAccessStatus.value, 'booleandashAccessStatus')
   const params = props.data?.id
     ? new EditOrganizatoinEmployeeParams(
         props?.data?.id,
@@ -137,7 +132,7 @@ const updateData = () => {
         [HeirarchyIds],
         RoleIds,
         booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
-        booleandashAccessStatus.value ? DashboardAccessEnum.Yes : DashboardAccessEnum.No,
+        booleandashAccessStatus.value,
         // Certificates.value.map((item) => item.id)
       )
     : new AddOrganizatoinEmployeeParams(
@@ -150,7 +145,7 @@ const updateData = () => {
         RoleIds,
         booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
         SerialNumber.value,
-        dashAccessStatus.value ? DashboardAccessEnum.Yes : DashboardAccessEnum.No,
+        booleandashAccessStatus.value,
 
         // Certificates.value.map((item) => item.id)
       )
@@ -174,6 +169,7 @@ watch(
       })
       EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Employee ? true : false
       booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
+      booleandashAccessStatus.value = newData.canAccessDashboard
       updateData()
       console.log(Heirarchy.value, 'test')
     }

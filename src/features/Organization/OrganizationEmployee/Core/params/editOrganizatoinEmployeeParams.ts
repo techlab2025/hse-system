@@ -16,7 +16,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   roles: RolesOrganizationEmployeeParams[]
   serialNumber: string
   EmployeeStatus: EmployeeStatusEnum
-  dashAccessStatus: DashboardAccessEnum
+  dashAccessStatus: boolean
   // certificateId: number[]
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
@@ -33,7 +33,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     hierarchies: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
-    dashAccessStatus: DashboardAccessEnum,
+    dashAccessStatus: boolean,
 
     // certificateId: number[],
   ) {
@@ -66,7 +66,8 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
     data['employee_type'] = Number(this.EmployeeStatus)
-    data['dashboard_access'] = Number(this.dashAccessStatus)
+    if (this.dashAccessStatus || this.dashAccessStatus == false)
+      data['can_access_dashboard'] = this.dashAccessStatus
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data

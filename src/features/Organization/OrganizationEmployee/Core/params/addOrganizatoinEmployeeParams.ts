@@ -16,7 +16,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   roles: RolesOrganizationEmployeeParams[]
   EmployeeStatus: EmployeeStatusEnum
   serialNumber: string
-  dashAccessStatus: DashboardAccessEnum
+  dashAccessStatus: boolean
   // certificateId: number[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -37,7 +37,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
     serialNumber: string,
-    dashAccessStatus: DashboardAccessEnum,
+    dashAccessStatus: boolean,
     // certificateId: number[],
   ) {
     this.name = name
@@ -57,6 +57,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     string,
     | number
     | string
+    | boolean
     | number[]
     | Record<string, string | any | number[] | number | Record<string, string>>
   > {
@@ -64,6 +65,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
       string,
       | number
       | string
+      | boolean
       | number[]
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
@@ -81,7 +83,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
-    data['dashboard_access'] = Number(this.dashAccessStatus)
+    if (this.dashAccessStatus || this.dashAccessStatus == false) data['can_access_dashboard'] = this.dashAccessStatus
     // data['certificate_id'] = this.certificateId.map((id) => id)
 
     return data
