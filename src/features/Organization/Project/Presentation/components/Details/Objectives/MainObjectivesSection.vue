@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import ObjectivesDetails from './ObjectivesDetails.vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ObjectiveImg from '@/assets/images/objective.png'
 
 const props = defineProps<{
-  description: string
+  description: string | undefined
 }>()
 </script>
 

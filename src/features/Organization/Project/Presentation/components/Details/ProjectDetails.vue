@@ -19,9 +19,9 @@ const state = ref(showProjectDetailsController.state.value)
 
 const route = useRoute()
 const id = route.params.id
-const ProjectDetails = ref<ShowProjectDetailsModel>(null)
+const ProjectDetails = ref<ShowProjectDetailsModel | null>(null)
 const GetProjectDetails = async () => {
-  const showProjectDetailsParams = new ShowProjectDetailsParams(id)
+  const showProjectDetailsParams = new ShowProjectDetailsParams(Number(id))
   const state = await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
   if (state.value.data) {
     ProjectDetails.value = state.value.data
@@ -43,9 +43,15 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
-        <ProjectHeader :projectName="state.data?.title" :SerialNumber="state.data?.SerialNumber"
-          :serialName="state.data?.serialName" :Projectdate="state.data?.startDate"
-          :Contractors="state.data?.contractors?.length" :endDate="state.data?.endDate" />
+        <ProjectHeader
+          :projectName="state.data?.title"
+          :SerialNumber="state.data?.SerialNumber"
+          :serialName="state.data?.serialName"
+          :Projectdate="state.data?.startDate"
+          :Contractors="state.data?.contractors?.length"
+          :endDate="state.data?.endDate"
+        />
+
         <MainObjectivesSection :description="state.data?.description" />
 
         <!-- <div class="inspections-sections">
@@ -59,10 +65,12 @@ watch(
             :showArrowLink="false" :isAssign="false" />
         </div> -->
 
-
         <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
-        <LocationsTeamsSection :teamLocations="state.data?.TeamLocations"
-          :project_locations="state.data?.project_locations" :hierarchy="state.data?.hierarchies" />
+        <LocationsTeamsSection
+          :teamLocations="state.data?.TeamLocations"
+          :project_locations="state.data?.project_locations"
+          :hierarchy="state.data?.hierarchies"
+        />
         <EquipmentSection :project_zoons="state.data?.projectZoons" />
       </div>
     </template>
@@ -73,14 +81,20 @@ watch(
       <TableLoader :cols="8" :rows="10" />
     </template>
     <template #empty>
-      <DataEmpty :link="`/organization/project/add`" addText="Add Project"
+      <DataEmpty
+        :link="`/organization/project/add`"
+        addText="Add Project"
         description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project" />
+        title="..ops! You have No Project"
+      />
     </template>
     <template #failed>
-      <DataFailed :link="`/organization/project/add`" addText="Add Project"
+      <DataFailed
+        :link="`/organization/project/add`"
+        addText="Add Project"
         description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project" />
+        title="..ops! You have No Project"
+      />
     </template>
   </DataStatus>
 </template>

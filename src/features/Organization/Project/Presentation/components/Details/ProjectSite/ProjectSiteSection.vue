@@ -2,7 +2,6 @@
 import Location from "@/assets/images/Location.png";
 import HeaderSection from "../DetailsHeader/HeaderSection.vue";
 import LocationCard from "./LocationCard.vue";
-import { ref } from "vue";
 import type LocationDetailsModel from "@/features/setting/Location/Data/models/LocationModel";
 import ShowAllZonesDialog from "./ShowAllZonesDialog.vue";
 
