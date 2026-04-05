@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
 const props = defineProps<{
-  object_details: string
+  object_details: string | undefined
 }>()
 </script>
 
@@ -16,9 +15,8 @@ const props = defineProps<{
   word-break: break-word;
   overflow-wrap: anywhere;
   grid-column: span 3;
-  p{
-  grid-column: span 3;
-
+  p {
+    grid-column: span 3;
   }
 }
 </style>

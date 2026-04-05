@@ -36,7 +36,7 @@ const isPasswordVisible = ref()
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-forget-password">{{ $t('Get OTP') }}</button>
+        <button type="submit" class="btn btn-primary btn-forget-password">{{ $t('change_password') }}</button>
       </form>
       <div class="imge">
         <ForgetImge />

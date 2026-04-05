@@ -1291,5 +1291,15 @@
   "add_new_position": "Add New Position",
   "functional_position": "Functional Position",
   "define_the_position_and_assign_roles_for_your_project_team": "Define the position and assign roles for your project team",
-  "import_position": "Import Position"
+  "import_position": "Import Position",
+  "project_scope_of_work": "Project Scope of Work",
+  "itme_tag": "Item Tag",
+  "Multiple Choice": "Multiple Choice",
+  "Single Choice": "Single Choice",
+  "Text": "Text",
+  "item_tag": "Item Tag",
+  "Upload_photo": "Upload photo",
+  "inspections_records": "Inspections Records",
+  "Get OTP": "Get OTP",
+  "change_password": "Change Password"
 }

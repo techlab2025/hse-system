@@ -162,7 +162,9 @@
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
     font-family: 'Regular';
-    span {
+    // @include flex-column(nowrap, flex-start, flex-start);
+    // gap: 3px;
+    span:last-child {
       color: $PrimaryColor;
       font-family: 'Regular';
       font-weight: $BaseFontSemiBoldWeight;

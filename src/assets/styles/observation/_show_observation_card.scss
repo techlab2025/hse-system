@@ -80,7 +80,9 @@
           color: #aeaeb2;
           font-size: $SmSize;
           font-weight: $BaseFontWeightBold;
-          span {
+          @include flex-column(nowrap, flex-start, flex-start);
+          gap: 3px;
+          span:last-child {
             border-bottom: 1px solid #1f41bb;
             color: #1f41bb;
           }
@@ -242,7 +244,9 @@
     color: #aeaeb2;
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
-    span {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 3px;
+    span:last-child {
       color: $PrimaryColor;
       font-family: 'Regular';
       font-weight: $BaseFontSemiBoldWeight;
@@ -252,7 +256,9 @@
     color: #aeaeb2;
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
-    span {
+    @include flex-column(nowrap, flex-start, flex-start);
+    gap: 3px;
+    span:last-child {
       color: #000000;
       font-family: 'Regular';
       font-weight: $BaseFontSemiBoldWeight;

@@ -90,118 +90,132 @@ const updateData = () => {
     return new RootCausesIdParams({ root_cause_id: item.id })
   })
 
-  console.log(Accidents.value?.accidentsData?.map((item: any) => item), "loop");
+  console.log(
+    Accidents.value?.accidentsData?.map((item: any) => item),
+    'loop',
+  )
   const isThereanyDatainAccidents = Accidents.value?.accidentsData?.map((item: any) => {
-    console.log((item?.employee?.id));
-    if ((item?.employee?.id == 0 && item?.employee?.title.length == 0) && item?.employeeName.length > 0 && item?.images?.length > 0 && item?.infectionTypeId?.id == 0
-      && item?.text) {
-
+    console.log(item?.employee?.id)
+    if (
+      item?.employee?.id == 0 &&
+      item?.employee?.title.length == 0 &&
+      item?.employeeName.length > 0 &&
+      item?.images?.length > 0 &&
+      item?.infectionTypeId?.id == 0 &&
+      item?.text
+    ) {
       return false
     }
     return true
   })
-  console.log(Fatalities.value, "Fatalities");
+  console.log(Fatalities.value, 'Fatalities')
   const params = props.data?.id
     ? new EditHazardParams(
-      props.data?.id! ?? 0,
-      text.value,
-      descripe.value,
-      image.value?.map((el) => el?.file),
-      0,
-      ObservationFactoryType.value,
-      SelectedMachine.value?.id ?? null,
-      ZoneIds.value ?? 0,
-      SelectedProjectId.value,
-      0,
-      0,
-      0,
-      '',
-      0,
-      0,
-      date.value ?? '',
-      [],
-      0,
-    )
+        props.data?.id! ?? 0,
+        text.value,
+        descripe.value,
+        image.value?.map((el) => el?.file),
+        0,
+        ObservationFactoryType.value,
+        SelectedMachine.value?.id ?? null,
+        ZoneIds.value ?? 0,
+        SelectedProjectId.value,
+        0,
+        0,
+        0,
+        '',
+        0,
+        0,
+        date.value ?? '',
+        [],
+        0,
+      )
     : new AddHazardParams({
-      title: ObservationTitle.value ?? '',
-      description: text.value ?? null,
-      image: image.value?.map((el) => el?.file) ?? null,
-      typeId:
-        ObservationFactoryType.value == Observation.ObservationType
-          ? SelectedObservationType.value?.id
-          : ObservationFactoryType.value == Observation.AccidentsType
-            ? AccidentsType.value?.id
-            : HazardType.value?.id,
-      type: ObservationFactoryType.value,
-      equipmentId: SelectedMachine.value?.id ?? null,
-      zoonId: ZoneIds.value ?? null,
-      projectId: SelectedProjectId.value ?? null,
-      isResult: 0,
-      riskLevel: riskLevel.value,
-      saveStatus: saveStatus.value,
-      action: preventive_action.value ?? null,
-      isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? (isNearMiss.value ? 1 : 0) : 0,
-      capaStatus: 0,
-      date: date.value ?? null,
-      capa: [],
-      isAction: takeAction.value === 'yes' ? 1 : 0,
-      isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
-      isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
-      isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
-      Injury:
-        Accidents?.value?.isAnotherMeeting === 1 ?
-          Accidents.value?.accidentsData?.map((item: any) => {
-            return new InjuryParams(
-              item?.employee?.id || 0,
-              item?.employee?.title || '',
-              item?.text || null,
-              item?.infectionTypeId?.id || 0,
-              item?.isWorkStopped ? 1 : 0,
-              item?.images.map((el: any) => el.file) || [],
-            )
-          })
-          : [],
-      deaths:
-        Fatalities?.value?.isAnotherMeeting === 1
-          ? Fatalities?.value.DethsData?.map((item: any) => {
-            return new DethParams(
-              item?.employee?.title || '',
-              item?.text || null,
-              item?.employee?.id || 0,
-              item?.images.map((el: any) => el.file) || [],
-            )
-          })
-          // ? [
-          //   new DethParams(
-          //     Fatalities?.value?.text || '',
-          //     Fatalities?.value?.SelectedEmployee || 0,
-          //     Fatalities?.value?.img || [],
-          //   ),
-          // ]
-          : [],
-      witnesses:
-        witnesses?.value?.isAnotherMeeting === 1
-          ? witnesses?.value?.AllWitnessesData?.map(
-            (w: any) => new WitnessParams(w?.employee?.title ? w?.employee?.title : '', w?.text || [], w?.employee?.id || '', null),
-          )
-          : [],
+        title: ObservationTitle.value ?? '',
+        description: text.value ?? null,
+        image: image.value?.map((el) => el?.file) ?? null,
+        typeId:
+          ObservationFactoryType.value == Observation.ObservationType
+            ? SelectedObservationType.value?.id
+            : ObservationFactoryType.value == Observation.AccidentsType
+              ? AccidentsType.value?.id
+              : HazardType.value?.id,
+        type: ObservationFactoryType.value,
+        equipmentId: SelectedMachine.value?.id ?? null,
+        zoonId: ZoneIds.value ?? null,
+        projectId: SelectedProjectId.value ?? null,
+        isResult: 0,
+        riskLevel: riskLevel.value,
+        saveStatus: saveStatus.value,
+        action: preventive_action.value ?? null,
+        isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? (isNearMiss.value ? 1 : 0) : 0,
+        capaStatus: 0,
+        date: date.value ?? null,
+        capa: [],
+        isAction: takeAction.value === 'yes' ? 1 : 0,
+        isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
+        isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
+        isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
+        Injury:
+          Accidents?.value?.isAnotherMeeting === 1
+            ? Accidents.value?.accidentsData?.map((item: any) => {
+                return new InjuryParams(
+                  item?.employee?.id || 0,
+                  item?.employee?.title || '',
+                  item?.text || null,
+                  item?.infectionTypeId?.id || 0,
+                  item?.isWorkStopped ? 1 : 0,
+                  item?.images.map((el: any) => el.file) || [],
+                )
+              })
+            : [],
+        deaths:
+          Fatalities?.value?.isAnotherMeeting === 1
+            ? Fatalities?.value.DethsData?.map((item: any) => {
+                return new DethParams(
+                  item?.employee?.title || '',
+                  item?.text || null,
+                  item?.employee?.id || 0,
+                  item?.images.map((el: any) => el.file) || [],
+                )
+              })
+            : // ? [
+              //   new DethParams(
+              //     Fatalities?.value?.text || '',
+              //     Fatalities?.value?.SelectedEmployee || 0,
+              //     Fatalities?.value?.img || [],
+              //   ),
+              // ]
+              [],
+        witnesses:
+          witnesses?.value?.isAnotherMeeting === 1
+            ? witnesses?.value?.AllWitnessesData?.map(
+                (w: any) =>
+                  new WitnessParams(
+                    w?.employee?.title ? w?.employee?.title : '',
+                    w?.text || [],
+                    w?.employee?.id || '',
+                    null,
+                  ),
+              )
+            : [],
 
-      severity: SelectedSeverity.value?.id,
-      Likelihood: SelectedLikelihood.value?.id,
-      time: SelctedTime.value,
-      place: PlaceText.value,
-      isWorkStopped: isWorkStopped.value ? 1 : 0,
-      HazardTypeId: HazardType.value?.id,
-      HazardSubtypeId: SubHazardType.value?.id,
-      actionstatus: solved.value,
-      code: SerialNumber.value,
-      RootCausesId: rootCausesIdParams,
-      OpenNote: preventive_action_open.value
-    })
+        severity: SelectedSeverity.value?.id,
+        Likelihood: SelectedLikelihood.value?.id,
+        time: SelctedTime.value,
+        place: PlaceText.value,
+        isWorkStopped: isWorkStopped.value ? 1 : 0,
+        HazardTypeId: HazardType.value?.id,
+        HazardSubtypeId: SubHazardType.value?.id,
+        actionstatus: solved.value,
+        code: SerialNumber.value,
+        RootCausesId: rootCausesIdParams,
+        OpenNote: preventive_action_open.value,
+      })
   emit('update:data', params)
 }
 
-watch([() => props.data], ([newData]) => { }, { immediate: true })
+watch([() => props.data], ([newData]) => {}, { immediate: true })
 
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
 const indexEquipmentController = IndexEquipmentController.getInstance()
@@ -263,10 +277,13 @@ const takeAction = ref<'yes' | 'no' | null>('no')
 const showAction = ref<'Open' | 'Closed' | null>('Open')
 const showSolvedAndDescription = computed(() => takeAction.value === 'yes')
 const showObservationAndDescription = computed(() => showAction.value === 'Open')
-const solved = ref<ActionStatusEnum | null>(ObservationFactoryType.value == Observation.AccidentsType ? ActionStatusEnum.OPEN : ActionStatusEnum.CLOSED)
+const solved = ref<ActionStatusEnum | null>(
+  ObservationFactoryType.value == Observation.AccidentsType
+    ? ActionStatusEnum.OPEN
+    : ActionStatusEnum.CLOSED,
+)
 const preventive_action = ref<string>()
 const preventive_action_open = ref<string>()
-
 
 const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
@@ -288,7 +305,9 @@ const UpdateSerial = (data) => {
   updateData()
 }
 
-const SelectedSeverity = ref<TitleInterface>(new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }))
+const SelectedSeverity = ref<TitleInterface>(
+  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
+)
 const SeverityList = ref<TitleInterface[]>([
   new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
   new TitleInterface({ id: SeverityEnum.Major, title: 'b - Major' }),
@@ -296,7 +315,9 @@ const SeverityList = ref<TitleInterface[]>([
   new TitleInterface({ id: SeverityEnum.Moderate, title: 'd - Moderate' }),
   new TitleInterface({ id: SeverityEnum.Minor, title: 'e - Minor' }),
 ])
-const SelectedLikelihood = ref<TitleInterface>(new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }))
+const SelectedLikelihood = ref<TitleInterface>(
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
+)
 const LikelihoodList = ref<TitleInterface[]>([
   new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
   new TitleInterface({ id: LikelihoodEnum.Unlikely, title: '2 - Unlikely' }),
@@ -446,19 +467,38 @@ const setRootCause = (data: TitleInterface[]) => {
   RootCauses.value = data
   updateData()
 }
+
+// const WorkStopedHandle = ()=>{
+
+// }
 </script>
 
 <template>
   <div class="full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4">
     <div class="col-span-6 md:col-span-6">
-      <HeaderPage :title="`New ${GetHeader(ObservationFactoryType)} Report`"
-        :subtitle="ObservationFactoryType == Observation.ObservationType ?  $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace') : 'Accurately document the accident details and immediate response actions taken'"
-        :img="ObservationImage" />
-      <HeaderProjectsFilter class="colored" :projects="Projects" :isForm="true" @update:data="GetProjectId" />
+      <HeaderPage
+        :title="`New ${GetHeader(ObservationFactoryType)} Report`"
+        :subtitle="
+          ObservationFactoryType == Observation.ObservationType
+            ? $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace')
+            : 'Accurately document the accident details and immediate response actions taken'
+        "
+        :img="ObservationImage"
+      />
+      <HeaderProjectsFilter
+        class="colored"
+        :projects="Projects"
+        :isForm="true"
+        @update:data="GetProjectId"
+      />
     </div>
 
     <div class="col-span-6 md:col-span-6">
-      <TabsSelection v-if="SelectedProjectId" :ProjectId="SelectedProjectId" @update:data="GetZones" />
+      <TabsSelection
+        v-if="SelectedProjectId"
+        :ProjectId="SelectedProjectId"
+        @update:data="GetZones"
+      />
     </div>
 
     <div class="Hazard-form col-span-6 md:col-span-6">
@@ -474,8 +514,13 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- title -->
     <div class="input-wrapper col-span-6">
       <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
-      <input type="text" id="title" v-model="ObservationTitle" @input="updateData"
-        :placeholder="$t('Enter Observation title')" />
+      <input
+        type="text"
+        id="title"
+        v-model="ObservationTitle"
+        @input="updateData"
+        :placeholder="$t('Enter Observation title')"
+      />
     </div>
 
     <!-- Date -->
@@ -487,27 +532,50 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12">
       <label for="time">{{ $t('time') }}</label>
-      <DatePicker v-model="SelctedTime" class="mt-4 mr-2 input date-picker" :placeholder="$t('Select time')"
-        @update:model-value="updateData" input-id="time" :time-only="true" />
+      <DatePicker
+        v-model="SelctedTime"
+        class="mt-4 mr-2 input date-picker"
+        :placeholder="$t('Select time')"
+        @update:model-value="updateData"
+        input-id="time"
+        :time-only="true"
+      />
     </div>
 
     <!-- Serial -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
       <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`Ref`) }}.</label>
-      <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+      <input
+        type="text"
+        v-model="SerialNumber"
+        @input="UpdateSerial"
+        id="serialNumber"
         :disabled="projtecStateus.isSerialNumberAuto()"
-        :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+        :placeholder="
+          projtecStateus.isSerialNumberAuto()
+            ? 'You can leave it (auto-generated)'
+            : 'Enter Your Serial Number'
+        "
+      />
     </div>
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12">
       <label for="place">{{ $t('Work Area / Facility') }}</label>
-      <input type="text" id="place" v-model="PlaceText" @input="updateData"
-        :placeholder="$t('Enter Work Area / Facility')" />
+      <input
+        type="text"
+        id="place"
+        v-model="PlaceText"
+        @input="updateData"
+        :placeholder="$t('Enter Work Area / Facility')"
+      />
     </div>
 
     <!-- Observation Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.ObservationType">
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="ObservationFactoryType == Observation.ObservationType"
+    >
       <!-- <CustomSelectInput
       :required="false" :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
@@ -520,11 +588,19 @@ const setRootCause = (data: TitleInterface[]) => {
                  New Update => Custom input Select inspection Observisoon Form
         /> -->
 
-      <UpdatedCustomInputSelect :required="false" :modelValue="SelectedObservationType"
-        :controller="indexObservatioTyepController" :params="indexObservationTypeParams"
-        :label="$t('Observation Category')" id="Equipment" :placeholder="$t('Select Observation Category')"
-        @update:modelValue="setSelectedObservationType" @close="observationTypeDialog = false" :isDialog="true"
-        :dialogVisible="observationTypeDialog">
+      <UpdatedCustomInputSelect
+        :required="false"
+        :modelValue="SelectedObservationType"
+        :controller="indexObservatioTyepController"
+        :params="indexObservationTypeParams"
+        :label="$t('Observation Category')"
+        id="Equipment"
+        :placeholder="$t('Select Observation Category')"
+        @update:modelValue="setSelectedObservationType"
+        @close="observationTypeDialog = false"
+        :isDialog="true"
+        :dialogVisible="observationTypeDialog"
+      >
         <template #LabelHeader>
           <span class="add-dialog" @click="observationTypeDialog = true">{{ $t('New') }}</span>
         </template>
@@ -535,7 +611,10 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- Incedant Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="ObservationFactoryType == Observation.AccidentsType"
+    >
       <!-- <CustomSelectInput
         :modelValue="AccidentsType"
         class="input"
@@ -547,10 +626,19 @@ const setRootCause = (data: TitleInterface[]) => {
         @update:modelValue="setAccidentsType"
       /> -->
 
-      <UpdatedCustomInputSelect :modelValue="AccidentsType" class="input" :controller="indexAccidentsTypeController"
-        :params="indexAccidentsTypeParams" :label="$t('incident Category')" id="incident" placeholder="Select Incident Type"
-        @update:modelValue="setAccidentsType" @close="acedentDialogRef = false" :isDialog="true"
-        :dialogVisible="acedentDialogRef">
+      <UpdatedCustomInputSelect
+        :modelValue="AccidentsType"
+        class="input"
+        :controller="indexAccidentsTypeController"
+        :params="indexAccidentsTypeParams"
+        :label="$t('incident Category')"
+        id="incident"
+        placeholder="Select Incident Type"
+        @update:modelValue="setAccidentsType"
+        @close="acedentDialogRef = false"
+        :isDialog="true"
+        :dialogVisible="acedentDialogRef"
+      >
         <template #LabelHeader>
           <span class="add-dialog" @click="acedentDialogRef = true">{{ $t('New') }}</span>
         </template>
@@ -561,24 +649,32 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- Root Cause -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="ObservationFactoryType == Observation.AccidentsType">
-      <!-- <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-        :params="indexRootCaueseParams" :label="$t('select Root Cause')" id="rootCause"
-        :placeholder="$t('select your root cause')" @update:modelValue="setRootCause" :type="2" /> -->
-
-      <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-        :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
-        :placeholder="$t('select your Immediate Apparent Cause')" @update:modelValue="setRootCause" :type="2"
-        @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
+    <!-- <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="ObservationFactoryType == Observation.AccidentsType"
+    >
+      <UpdatedCustomInputSelect
+        :modelValue="RootCauses"
+        class="input"
+        :controller="indexRootCaueseController"
+        :params="indexRootCaueseParams"
+        :label="$t('Immediate Apparent Cause')"
+        id="rootCause"
+        :placeholder="$t('select your Immediate Apparent Cause')"
+        @update:modelValue="setRootCause"
+        :type="2"
+        @close="RootCausesDialog = false"
+        :isDialog="true"
+        :dialogVisible="RootCausesDialog"
+      >
         <template #LabelHeader>
           <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
-          <!-- <AddScope @update:data="RootCausesDialog = false" /> -->
           <AddRootCauses @close:data="RootCausesDialog = false" />
         </template>
       </UpdatedCustomInputSelect>
-    </div>
+    </div> -->
 
     <div class="col-span-3 md:col-span-3 input-wrapper">
       <!-- <CustomSelectInput
@@ -592,10 +688,19 @@ const setRootCause = (data: TitleInterface[]) => {
         @update:modelValue="setMachine"
       /> -->
 
-      <UpdatedCustomInputSelect :modelValue="SelectedMachine" class="input" :controller="indexEquipmentController"
-        :params="indexEquipmentParams" :label="$t('Equipment / Tag No')" id="machine"
-        :placeholder="$t('select Equipment')" @update:modelValue="setMachine" @close="machineDialogRef = false"
-        :isDialog="true" :dialogVisible="machineDialogRef">
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedMachine"
+        class="input"
+        :controller="indexEquipmentController"
+        :params="indexEquipmentParams"
+        :label="$t('Equipment / Tag No')"
+        id="machine"
+        :placeholder="$t('select Equipment')"
+        @update:modelValue="setMachine"
+        @close="machineDialogRef = false"
+        :isDialog="true"
+        :dialogVisible="machineDialogRef"
+      >
         <!-- <template #LabelHeader>
           <span class="add-dialog" @click="machineDialogRef = true">{{ $t('New') }}</span>
         </template>
@@ -608,8 +713,14 @@ const setRootCause = (data: TitleInterface[]) => {
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper">
       <label for="description">{{ $t('description') }}</label>
-      <input :placeholder="$t('Add your description')" type="text" class="input" id="description" v-model="text"
-        @input="updateData" />
+      <input
+        :placeholder="$t('Add your description')"
+        type="text"
+        class="input"
+        id="description"
+        v-model="text"
+        @input="updateData"
+      />
     </div>
 
     <!-- Image -->
@@ -625,66 +736,127 @@ const setRootCause = (data: TitleInterface[]) => {
     </div> -->
 
     <!-- Save Status Positive or Negative -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full"
-      v-if="ObservationFactoryType != Observation.AccidentsType">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="ObservationFactoryType != Observation.AccidentsType"
+    >
       <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="UpdateSaveStatus" />
     </div>
     <!-- Sevarity -->
-    <div class="col-span-3 md:col-span-3" v-if="
-      ObservationFactoryType != Observation?.AccidentsType &&
-      saveStatus == SaveStatusEnum.NotSaved
-    ">
-      <CustomSelectInput :required="false" :modelValue="SelectedSeverity" :static-options="SeverityList" :reload="false"
-        :label="$t('Consequence Severity')" id="Severity" :placeholder="$t('Select Consequence Severity')"
-        @update:modelValue="setSeverity" />
+    <div
+      class="col-span-3 md:col-span-3"
+      v-if="
+        ObservationFactoryType != Observation?.AccidentsType &&
+        saveStatus == SaveStatusEnum.NotSaved
+      "
+    >
+      <CustomSelectInput
+        :required="false"
+        :modelValue="SelectedSeverity"
+        :static-options="SeverityList"
+        :reload="false"
+        :label="$t('Consequence Severity')"
+        id="Severity"
+        :placeholder="$t('Select Consequence Severity')"
+        @update:modelValue="setSeverity"
+      />
     </div>
 
     <!-- Likelihood -->
-    <div class="col-span-3 md:col-span-3" v-if="
-      ObservationFactoryType != Observation?.AccidentsType &&
-      saveStatus == SaveStatusEnum.NotSaved
-    ">
-      <CustomSelectInput :required="false" :modelValue="SelectedLikelihood" :static-options="LikelihoodList"
-        :reload="false" :label="$t('Probability of Occurrence')" id="Likelihood"
-        :placeholder="$t('Select Probability of Occurrence')" @update:modelValue="setLikelihood" />
+    <div
+      class="col-span-3 md:col-span-3"
+      v-if="
+        ObservationFactoryType != Observation?.AccidentsType &&
+        saveStatus == SaveStatusEnum.NotSaved
+      "
+    >
+      <CustomSelectInput
+        :required="false"
+        :modelValue="SelectedLikelihood"
+        :static-options="LikelihoodList"
+        :reload="false"
+        :label="$t('Probability of Occurrence')"
+        id="Likelihood"
+        :placeholder="$t('Select Probability of Occurrence')"
+        @update:modelValue="setLikelihood"
+      />
     </div>
 
     <!-- Observation Level -->
 
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full overlay-container" v-if="
-      saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
-    ">
-      <div class="section-overlay">
-
-      </div>
-      <ObservationLevel :modelRiskLevel="riskLevel" :modelIsNearMiss="isNearMiss"
-        @update:data="handleObservationLevel" />
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full overlay-container"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
+      "
+    >
+      <div class="section-overlay"></div>
+      <ObservationLevel
+        :modelRiskLevel="riskLevel"
+        :modelIsNearMiss="isNearMiss"
+        @update:data="handleObservationLevel"
+      />
     </div>
     <!-- Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper" v-if="
-      saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
-    ">
-      <CustomSelectInput :modelValue="HazardType" class="input" :controller="indexHazardTypeController"
-        :params="indexHazardTypeParams" :label="$t('Hazard Classification')" id="HazardType"
-        :placeholder="$t('Select Hazard Classification')" @update:modelValue="setHazardType" />
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
+      "
+    >
+      <CustomSelectInput
+        :modelValue="HazardType"
+        class="input"
+        :controller="indexHazardTypeController"
+        :params="indexHazardTypeParams"
+        :label="$t('Hazard Classification')"
+        id="HazardType"
+        :placeholder="$t('Select Hazard Classification')"
+        @update:modelValue="setHazardType"
+      />
     </div>
 
     <!--Sub Hazard Type -->
-    <div class="col-span-3 md:col-span-3 input-wrapper"
-      v-if="HazardType && ObservationFactoryType != Observation.AccidentsType && saveStatus == SaveStatusEnum.NotSaved">
-      <CustomSelectInput :modelValue="SubHazardType" class="input" :controller="indexSubHazardTypeController"
-        :params="indexSubHazardTypeParams" :label="$t('Hazard')" id="Hazard" :placeholder="$t('Select Hazard')"
-        @update:modelValue="setSubHazardType" />
+    <div
+      class="col-span-3 md:col-span-3 input-wrapper"
+      v-if="
+        HazardType &&
+        ObservationFactoryType != Observation.AccidentsType &&
+        saveStatus == SaveStatusEnum.NotSaved
+      "
+    >
+      <CustomSelectInput
+        :modelValue="SubHazardType"
+        class="input"
+        :controller="indexSubHazardTypeController"
+        :params="indexSubHazardTypeParams"
+        :label="$t('Hazard')"
+        id="Hazard"
+        :placeholder="$t('Select Hazard')"
+        @update:modelValue="setSubHazardType"
+      />
     </div>
 
     <!-- IsWorkStopped -->
     <!-- isWorkStopped = !isWorkStopped -->
     <!-- input-wrapper -->
-    <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="col-span-6 md:col-span-6  w-full is-stopped"
-      @click="isWorkStopped = !isWorkStopped; updateData()">
+    <div
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      class="col-span-6 md:col-span-6 w-full is-stopped"
+      @click="
+        isWorkStopped = !isWorkStopped
+        updateData()
+      "
+    >
       <label class="w-full" for="is_stopedd">{{ $t('is_work_stopped') }}</label>
-      <Checkbox binary disabled :modelValue="isWorkStopped" @change="UpdateWorkStatus" inputId="is_stoped"
-        :name="`is_stopedd`" />
+      <Checkbox
+        binary
+        disabled
+        :modelValue="isWorkStopped"
+        @change="UpdateWorkStatus"
+        inputId="is_stoped"
+        :name="`is_stopedd`"
+      />
     </div>
     <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped">
       <label class="w-full" for="is_stopedd" @click="isWorkStopped = !isWorkStopped">{{ $t('is_there_work_days_lost')
@@ -694,35 +866,63 @@ const setRootCause = (data: TitleInterface[]) => {
     </div> -->
 
     <!-- Take Action -->
-    <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="hazard-type-container incedant col-span-6 md:col-span-6">
+    <div
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      class="hazard-type-container incedant col-span-6 md:col-span-6"
+    >
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
           <label class="radio-title">{{ $t('action_taken') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
-              <RadioButton v-model="takeAction" name="takeAction" value="yes" @update:model-value="updateData" />
-              <label>{{ $t('Yes') }}</label>
+              <RadioButton
+                inputId="yes"
+                v-model="takeAction"
+                name="takeAction"
+                value="yes"
+                @update:model-value="updateData"
+              />
+              <label for="yes">{{ $t('Yes') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
-              <RadioButton v-model="takeAction" name="takeAction" value="no" @update:model-value="updateData" />
-              <label>{{ $t('No') }}</label>
+              <RadioButton
+                inputId="no"
+                v-model="takeAction"
+                name="takeAction"
+                value="no"
+                @update:model-value="updateData"
+              />
+              <label for="no">{{ $t('No') }}</label>
             </div>
           </div>
         </div>
 
-        <div class="col-span-12 md:col-span-12" v-if="ObservationFactoryType != Observation.AccidentsType">
+        <div
+          class="col-span-12 md:col-span-12"
+          v-if="ObservationFactoryType != Observation.AccidentsType"
+        >
           <label class="radio-title">{{ $t('observation_status') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
-              <RadioButton id="closed" v-model="solved" name="solved" :value="ActionStatusEnum.CLOSED"
-                @update:model-value="updateData" />
+              <RadioButton
+                inputId="closed"
+                v-model="solved"
+                name="solved"
+                :value="ActionStatusEnum.CLOSED"
+                @update:model-value="updateData"
+              />
               <label for="closed">{{ $t('Closed') }}</label>
             </div>
 
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.OPEN }">
-              <RadioButton id="open" v-model="solved" name="solved" :value="ActionStatusEnum.OPEN"
-                @update:model-value="updateData" />
+              <RadioButton
+                inputId="open"
+                v-model="solved"
+                name="solved"
+                :value="ActionStatusEnum.OPEN"
+                @update:model-value="updateData"
+              />
               <label for="open">{{ $t('Open') }}</label>
             </div>
           </div>
@@ -731,45 +931,70 @@ const setRootCause = (data: TitleInterface[]) => {
     </div>
 
     <!-- Action Description -->
-    <div v-if="saveStatus == SaveStatusEnum.NotSaved" class="input-wrapper col-span-6 md:col-span-6"
-      v-show="showSolvedAndDescription">
+    <div
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      class="input-wrapper col-span-6 md:col-span-6"
+      v-show="showSolvedAndDescription"
+    >
       <label for="action">{{ $t('immediatly_action_taken') }}</label>
-      <textarea id="action" class="input" v-model="preventive_action" @input="updateData"
-        placeholder="add your descripe"></textarea>
+      <textarea
+        id="action"
+        class="input"
+        v-model="preventive_action"
+        @input="updateData"
+        placeholder="add your descripe"
+      ></textarea>
     </div>
 
     <!--if ActionStatusEnum OPEN  -->
-    <div v-if="solved == ActionStatusEnum.OPEN && saveStatus == SaveStatusEnum.Saved" class="input-wrapper col-span-6 md:col-span-6"
-      v-show="showObservationAndDescription">
+    <div
+      v-if="solved == ActionStatusEnum.OPEN && saveStatus == SaveStatusEnum.NotSaved"
+      class="input-wrapper col-span-6 md:col-span-6"
+      v-show="showObservationAndDescription"
+    >
       <label for="action">{{ $t('Open Note') }}</label>
-      <textarea id="action" class="input" v-model="preventive_action_open" @input="updateData"
-        placeholder="add your descripe"></textarea>
+      <textarea
+        id="action"
+        class="input"
+        v-model="preventive_action_open"
+        @input="updateData"
+        placeholder="add your descripe"
+      ></textarea>
     </div>
 
     <!-- Factorywitnesses -->
 
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="
-      saveStatus == SaveStatusEnum.NotSaved &&
-      ObservationFactoryType != Observation?.ObservationType
-    ">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved &&
+        ObservationFactoryType != Observation?.ObservationType
+      "
+    >
       <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
     </div>
 
     <!-- FactoryAccidents -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="
-      saveStatus == SaveStatusEnum.NotSaved &&
-      ObservationFactoryType != Observation?.ObservationType
-    ">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved &&
+        ObservationFactoryType != Observation?.ObservationType
+      "
+    >
       <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
     </div>
 
     <!-- FactoryFatalities -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
-    <div class="col-span-6 md:col-span-6 input-wrapper w-full" v-if="
-      saveStatus == SaveStatusEnum.NotSaved &&
-      ObservationFactoryType != Observation?.ObservationType
-    ">
+    <div
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved &&
+        ObservationFactoryType != Observation?.ObservationType
+      "
+    >
       <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
     </div>
   </div>

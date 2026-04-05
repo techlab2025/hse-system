@@ -91,7 +91,7 @@ onMounted(() => {
             </div>
           </div>
           <div class="input-wrapper checkbox flex items-center col-span-12 md:col-span-2">
-            <label :for="`Uplaod-${index}-${itemindex}`">{{ $t('Uplaod') }}</label>
+            <label :for="`Uplaod-${index}-${itemindex}`">{{ $t('Upload_photo') }}</label>
             <input type="checkbox" :id="`Uplaod-${index}-${itemindex}`" v-model="item.isUplaod" class="input"
               @input="UpdateData" />
           </div>

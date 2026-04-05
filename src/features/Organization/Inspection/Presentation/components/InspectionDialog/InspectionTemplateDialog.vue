@@ -13,7 +13,6 @@ import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
 import { TemplateTypeEnum } from '../../../Core/Enum/TemplateTypeEnum'
 
 
-
 const visible = ref(false)
 const isConfirmed = ref(false)
 
@@ -163,16 +162,6 @@ watch(() => SelectedTemplateType.value, () => {
         <div class="add-new-template">
           <AddNewTemplateDialog :visible="visible" @update:templateId="GetTemplateInfo" />
         </div>
-
-
-
-
-        <!-- <div class="my-template-selection">
-          <div class="title">
-            <ArrowsLeft />
-            <span>{{ $t('my templates') }}</span>
-          </div> 
-        </div> -->
         <div class="fillter-system-templets">
           <div @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate" class="system-templets"
             :class="SelectedTemplateType == TemplateTypeEnum.SystemTemplate ? 'active' : ''">
@@ -189,7 +178,6 @@ watch(() => SelectedTemplateType.value, () => {
         <div class="inspection-templates-items">
           <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
         </div>
-
 
       </div>
       <button class="confirm-btn btn btn-primary w-full !mt-4" @click="sendTemplatesId">

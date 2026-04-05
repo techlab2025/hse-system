@@ -49,10 +49,10 @@ onMounted(() => {
 })
 
 const ActionsType = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.RADIOBUTTON, title: 'Radio', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Multiple Choice', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.RADIOBUTTON, title: 'Single Choice', subtitle: '' }),
   new TitleInterface({ id: ActionsEnum.DROPDOWN, title: 'Dropdown', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'TextArea', subtitle: '' }),
+  new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'Text', subtitle: '' }),
 ])
 
 const UpdateType = () => {

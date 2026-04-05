@@ -20,41 +20,51 @@ const RouterBack = () => {
 }
 
 const IsHome = computed(
-  () => route.path === '/organization' || route.path === '/admin' || route.path === '/organization/employee-interface'
+  () =>
+    route.path === '/organization' ||
+    route.path === '/admin' ||
+    route.path === '/organization/employee-interface',
 )
 const IsHomeSetting = computed(
-  () => route.path === '/organization/setting' || route.path === '/admin' || route.path === '/organization'
+  () =>
+    route.path === '/organization/setting' ||
+    route.path === '/admin' ||
+    route.path === '/organization',
 )
-
 
 // const items = computed(() =>
 //   buildBreadcrumb(route, router)
 // )
 const getUrlWithParams = () => {
-  if (route.path.includes("add")) {
+  if (route.path.includes('add')) {
     const Params = Object.values(route.params)[0]
     return Params
-  }
-  else {
+  } else {
     const Params = Object.values(route.query)[1]
     return Params
-
   }
 }
 const items = computed(() => {
   const breadcrumb = buildBreadcrumb(route, router)
+  if (route.path.includes('/organization/equipment-mangement/inspection/add')) {
+    const inspectionItem = breadcrumb.find((b) => b.label === 'Inspection')
+
+    if (inspectionItem) {
+      inspectionItem.url = '/organization/equipment-mangement/inspection?inspectionType=1'
+    }
+  }
 
   // If Route Type Shared
   if (route.meta.type === 'Shared') {
     // If Shared But Special Hazard Routes
     // Make Parent SubParent Not Parent
     if (route.meta.subType && (route.params.parent_id || route.query.hazard == 1)) {
-
       const parentRoute = allRoutes.find(
         (pr) =>
           pr.name ===
-          `${route.meta.subParent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
-          }`
+          `${route.meta.subParent} ${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
+          }`,
       )
       if (parentRoute) {
         breadcrumb.splice(breadcrumb.length - 1, 0, {
@@ -70,8 +80,9 @@ const items = computed(() => {
       const parentRoute = allRoutes.find(
         (pr) =>
           pr.name ===
-          `${route.meta.parent} ${user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
-          }`
+          `${route.meta.parent} ${
+            user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'
+          }`,
       )
       if (parentRoute) {
         breadcrumb.splice(breadcrumb.length - 1, 0, {
@@ -85,7 +96,6 @@ const items = computed(() => {
   return breadcrumb
 })
 
-
 const allRoutes = router.getRoutes()
 
 const { user } = useUserStore()
@@ -94,39 +104,47 @@ const HandleSharedRoutes = () => {
   const parentRoute = allRoutes.find(
     (pr) =>
       pr.name ===
-      (route.meta.parent as string) + " " +
-      (user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'),
+      (route.meta.parent as string) +
+        ' ' +
+        (user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization'),
   )
-
 
   items.value.push({
     label: parentRoute?.meta?.breadcrumb as string,
     url: parentRoute?.path as string,
   })
-
 }
 
-
-watch(() => route, () => {
-  // if (route.meta.type == 'Shared') {
-  // console.log(route.meta.type, "route.meta.type")
-  // HandleSharedRoutes()
-  // }
-  // else {
-  buildBreadcrumb(route, router)
-  // }
-}, { immediate: true, deep: true })
+watch(
+  () => route,
+  () => {
+    // if (route.meta.type == 'Shared') {
+    // console.log(route.meta.type, "route.meta.type")
+    // HandleSharedRoutes()
+    // }
+    // else {
+    buildBreadcrumb(route, router)
+    // }
+  },
+  { immediate: true, deep: true },
+)
 
 const ShowBackBtn = computed(() => {
-  return user?.type == OrganizationTypeEnum.ORGANIZATION && user?.employeeType == EmployeeStatusEnum.Employee
+  return (
+    user?.type == OrganizationTypeEnum.ORGANIZATION &&
+    user?.employeeType == EmployeeStatusEnum.Employee
+  )
 })
 </script>
 
 <template>
   <div class="breadcrump-container">
     <div class="breadcrump">
-      <button class="sidebar-back" @click="RouterBack"
-        v-if="(!IsHome || !ShowBackBtn) && route.path != '/admin' && route.path != '/organization'">
+      <button
+        class="sidebar-back"
+        @click="RouterBack"
+        v-if="(!IsHome || !ShowBackBtn) && route.path != '/admin' && route.path != '/organization'"
+      >
         <BackIcon class="icon" />
         <span>{{ $t('back') }}</span>
       </button>

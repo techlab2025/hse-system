@@ -464,9 +464,9 @@ const ShowLocationDialog = () => {
 
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput label="project_objectives" :langs="langDefault" :modelValue="langsDescription"
+    <LangTitleInput label="project_scope_of_work" :langs="langDefault" :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`What are the project objectives?`" :required="false" />
+      :placeholder="`What is the project scope of work?`" :required="false" />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />

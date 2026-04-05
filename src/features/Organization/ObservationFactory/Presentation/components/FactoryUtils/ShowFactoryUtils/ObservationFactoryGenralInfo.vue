@@ -70,7 +70,6 @@ const UpdateImg = (data: string) => {
   UpdateData()
 }
 
-
 const GetStatus = (status: ActionStatusEnum) => {
   return ActionStatusEnum[status]
 }
@@ -79,20 +78,27 @@ const GetStatus = (status: ActionStatusEnum) => {
   <div class="observation-genral-info-conatiner">
     <div class="genral-info-content">
       <div class="observation-genral-info">
-        <p class="like_lihood-container flex flex-col"
-          v-if="props.data?.type == Observation.HazardType && props.data?.like_lihood">
+        <p
+          class="like_lihood-container flex flex-col"
+          v-if="props.data?.type == Observation.HazardType && props.data?.like_lihood"
+        >
           <span class="like_lihood-title">{{ $t('Likelihood') }}</span>
           <span class="like_lihood">{{ GetLikelyHood(props.data?.like_lihood) }}</span>
         </p>
 
-        <div class="severity-container flex flex-col"
-          v-if="props.data?.type == Observation.HazardType && props.data?.severity">
+        <div
+          class="severity-container flex flex-col"
+          v-if="props.data?.type == Observation.HazardType && props.data?.severity"
+        >
           <span class="severity-title">{{ $t('Severity') }}</span>
           <span class="severity">{{ GetSeverity(props.data?.severity) }}</span>
         </div>
 
-        <span v-if="props.data?.riskLevel && props.data?.type == Observation.HazardType"
-          class="observation-risk-level flex items-center gap-2" :class="GetRiskLevel(props.data?.riskLevel)">
+        <span
+          v-if="props.data?.riskLevel && props.data?.type == Observation.HazardType"
+          class="observation-risk-level flex items-center gap-2"
+          :class="GetRiskLevel(props.data?.riskLevel)"
+        >
           <WarningIcon v-if="props.data?.riskLevel == RiskLevelEnum.High" />
           {{ GetRiskLevel(props.data?.riskLevel) }} {{ $t('Level') }}
         </span>
@@ -103,7 +109,7 @@ const GetStatus = (status: ActionStatusEnum) => {
             <span>{{ props.data?.typeModel?.title }}</span>
           </p> -->
 
-          <div class="root-causes" v-if="props.data?.rootCauses && props.data?.rootCauses.length > 0">
+          <!-- <div class="root-causes" v-if="props.data?.rootCauses && props.data?.rootCauses.length > 0">
             <div class="icon_title">
               <RootCase />
 
@@ -119,14 +125,16 @@ const GetStatus = (status: ActionStatusEnum) => {
                 {{ root?.title }}
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="image-container">
           <div class="" v-if="props?.data?.media && props?.data?.media.length > 0">
-            <UploadMultiImage @update:images="UpdateImg" class="image-upload"
-              :initialImages="props?.data?.media?.map((el) => el.url) || []" />
-
+            <UploadMultiImage
+              @update:images="UpdateImg"
+              class="image-upload"
+              :initialImages="props?.data?.media?.map((el) => el.url) || []"
+            />
           </div>
           <!-- <Image  :src="value?.url" alt="Image" preview>
             <template #previewicon>
@@ -139,10 +147,14 @@ const GetStatus = (status: ActionStatusEnum) => {
         </div>
       </div>
 
-      <div class="hazard-info w-full flex items-center justify-between gap-2"
-        v-if="props.data?.type == Observation.HazardType">
-        <div class="severity-container flex flex-col"
-          v-if="props.data?.type == Observation.HazardType && props.data?.typeModel?.title">
+      <div
+        class="hazard-info w-full flex items-center justify-between gap-2"
+        v-if="props.data?.type == Observation.HazardType"
+      >
+        <div
+          class="severity-container flex flex-col"
+          v-if="props.data?.type == Observation.HazardType && props.data?.typeModel?.title"
+        >
           <span class="severity-title">{{ $t('Hazard Type') }}</span>
           <p class="severity">{{ props.data?.typeModel?.title }}</p>
         </div>
