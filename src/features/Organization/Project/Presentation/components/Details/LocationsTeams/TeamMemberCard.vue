@@ -5,12 +5,14 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import DeleteEmployeeDialog from './DeleteEmployeeDialog.vue'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
+import { computed } from 'vue'
 
 const emit = defineEmits(['update:data'])
 
-const { member } = defineProps<{
+const { member, hierarchy } = defineProps<{
   // member: ProjectLocationEmployeeModel
-  member: OrganizatoinEmployeeDetailsModel |ProjectLocationEmployeeModel
+  member: OrganizatoinEmployeeDetailsModel | ProjectLocationEmployeeModel
+  hierarchy?: OrganizatoinEmployeeDetailsModel | null
 }>()
 
 const UpdateData = (id: number) => {
@@ -19,8 +21,10 @@ const UpdateData = (id: number) => {
 }
 </script>
 <template>
-  <!-- {{ member }} -->
-  <div class="member-card">
+  <router-link
+    :to="`/organization/organization-employee/show/${member?.organization_employee_id}?type=3`"
+    class="member-card"
+  >
     <DeleteEmployeeDialog
       @delete="
         UpdateData(
@@ -37,8 +41,11 @@ const UpdateData = (id: number) => {
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>
       <p class="position" v-if="member.hierarchy?.length > 0">
-        {{ member.hierarchy?.map((p) => p.title).join(', ') }}
+        <span>
+          {{ member.hierarchy?.map((p) => p.title).join(', ') }}
+        </span>
       </p>
+      <span> {{ hierarchy?.hierarchy?.map((p) => p.title).join(', ') }}</span>
     </div>
-  </div>
+  </router-link>
 </template>

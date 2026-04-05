@@ -26,16 +26,18 @@ import DeleteProjectLocationHeirarchyEmployeeController from '../../../controlle
 import ShowProjectDetailsController from '../../../controllers/ShowProjectDetailsController'
 import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
+import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 
 const route = useRoute()
 const id = route.params.id
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const OpenAccordion = ref<string[]>([])
 
-const { location, projectLocation, hierarchy } = defineProps<{
+const { location, projectLocation, hierarchy, employeesHierarchy } = defineProps<{
   location: TeamLocation | null | undefined
   projectLocation: projectLocationModel[] | null | undefined
   hierarchy: TitleInterface[] | null | undefined
+  employeesHierarchy: OrganizatoinEmployeeDetailsModel[] | null | undefined
 }>()
 
 const GetProjectLocationsEmployes = async () => {
@@ -173,6 +175,7 @@ onMounted(() => {
               :key="index"
               :member="member"
               @update:data="DeleteTeamMember"
+              :hierarchy="employeesHierarchy?.find((h) => h.id === member.organization_employee_id)"
             />
           </div>
         </div>

@@ -72,6 +72,7 @@ watch(
           :teamLocations="state.data?.TeamLocations"
           :projectLocations="state.data?.project_locations"
           :hierarchy="state.data?.hierarchies"
+          :orgganizationEmployeeWithHierarchy="state.data?.organization_employees"
         />
         <EquipmentSection :project_zoons="state.data?.projectZoons" />
       </div>

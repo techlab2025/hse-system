@@ -9,6 +9,7 @@ export default class ProjectLocationEmployeeModel {
   public image: string
   public projectLocationTeamEmployeeId: number
   public hierarchy: TitleInterface[]
+  public organization_employee_id: number
   constructor(
     projectLocationHierarchyEmployeeId: number,
     projectLocationId: number,
@@ -18,6 +19,7 @@ export default class ProjectLocationEmployeeModel {
     image: string,
     projectLocationTeamEmployeeId: number,
     hierarchy: TitleInterface[],
+    organization_employee_id: number,
   ) {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationId = projectLocationId
@@ -27,6 +29,7 @@ export default class ProjectLocationEmployeeModel {
     this.image = image
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
     this.hierarchy = hierarchy
+    this.organization_employee_id = organization_employee_id
   }
 
   static fromMap(data: any): ProjectLocationEmployeeModel {
@@ -39,6 +42,7 @@ export default class ProjectLocationEmployeeModel {
       data.image,
       data.project_location_team_employee_id,
       data.hierarchy,
+      data.organization_employee_id,
     )
   }
 
@@ -51,5 +55,6 @@ export default class ProjectLocationEmployeeModel {
     '',
     1,
     [],
+    1,
   )
 }

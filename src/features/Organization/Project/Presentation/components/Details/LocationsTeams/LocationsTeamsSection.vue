@@ -9,15 +9,18 @@ import type TeamLocation from '@/features/Organization/Project/Data/models/TeamL
 import { computed } from 'vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import type projectLocationModel from '@/features/Organization/Project/Data/models/ProjectLocationModel'
+import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 
 const route = useRoute()
 const id = route.params.id
 
-const { teamLocations, projectLocations, hierarchy } = defineProps<{
-  teamLocations: TeamLocation[] | undefined
-  projectLocations: projectLocationModel[] | undefined | null
-  hierarchy: TitleInterface[] | undefined | null
-}>()
+const { teamLocations, projectLocations, hierarchy, orgganizationEmployeeWithHierarchy } =
+  defineProps<{
+    teamLocations: TeamLocation[] | undefined
+    projectLocations: projectLocationModel[] | undefined | null
+    hierarchy: TitleInterface[] | undefined | null
+    orgganizationEmployeeWithHierarchy: OrganizatoinEmployeeDetailsModel[] | undefined | null
+  }>()
 
 const CheckProjectLocationEmployeeEmpty = computed(
   () =>
@@ -46,6 +49,7 @@ const CheckProjectLocationEmployeeEmpty = computed(
         :location="location"
         :projectLocation="projectLocations"
         :hierarchy="hierarchy"
+        :employeesHierarchy="orgganizationEmployeeWithHierarchy"
       />
     </div>
     <div class="empty-teams" v-else>
