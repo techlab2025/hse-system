@@ -23,7 +23,7 @@ const UpdateData = (id: number) => {
 </script>
 <template>
   <router-link
-    :to="`/organization/organization-employee/show/${member?.organization_employee_id}?type=3`"
+    :to="`/organization/organization-employee/show/${member?.organization_employee_id || member.employeeId}?type=3`"
     class="member-card"
   >
     <DeleteEmployeeDialog

@@ -20,11 +20,9 @@ import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
 import IndexRoleController from '@/features/Organization/Role/Presentation/controllers/indexRoleController'
 import IndexRoleParams from '@/features/Organization/Role/Core/params/indexRoleParams'
 import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganizationEmployeeParams'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import { DashboardAccessEnum } from '../../Core/Enum/DashboardAccess'
 
 const toast = useToast()
 
@@ -41,7 +39,7 @@ const ConfirmPassword = ref<string>()
 const SerialNumber = ref()
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
-const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false, null)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const deleteCertificateParams = new IndexCertificateParams('', 0, 0, 0)
