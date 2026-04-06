@@ -9,10 +9,16 @@ import ProjectCustomLocationParams from '@/features/Organization/Project/Core/pa
 import { useRoute, useRouter } from 'vue-router'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import TeamIcon from '@/shared/icons/TeamIcon.vue'
+import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
+import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
 
 const props = defineProps<{
   team: ProjectLocationTeamModel
   isShow?: boolean
+  location?: TeamLocation | null | undefined
+  teamId?: number
+  LocationId?: number
+  ProjectLocationId?: number
 }>()
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
@@ -63,6 +69,14 @@ const DeleteTeamMember = async (id: number) => {
         :key="index"
         :member="member"
         @update:data="DeleteTeamMember"
+      />
+
+      <AddCreateTeam
+        :ProjectLocationId="location?.projectLocationId! || ProjectLocationId"
+        :LocationId="location?.locationId! || LocationId"
+        @update:data="GetProjectLocationsEmployes"
+        :teamId="team.teamId! || teamId"
+        :isInCard="true"
       />
     </div>
   </div>

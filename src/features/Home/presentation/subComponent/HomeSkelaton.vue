@@ -22,7 +22,6 @@
         </div>
       </div>
     </div>
-npm
     <!-- Equipment + machines row -->
     <div class="equipment-sk">
       <div class="sk-card" style="flex: 2">

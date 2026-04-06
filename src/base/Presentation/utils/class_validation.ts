@@ -167,7 +167,7 @@ export class ValidationError extends Error {
 
   openDialog() {
     DialogSelector.instance.failedDialog.openDialog({
-      dialogName: 'dialog',
+      dialogName: 'dialog-error',
       titleContent: ``, //Validation failed
       imageElement: warning,
       messageContent: `  ${this.errors.map((e) => `${e.field}: ${e.message}`).join(' - ')}`,

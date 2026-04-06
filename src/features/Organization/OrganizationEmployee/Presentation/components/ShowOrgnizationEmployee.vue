@@ -28,33 +28,44 @@ onMounted(() => {
 })
 const isShowAllTasks = ref(false)
 const viewAllTasks = () => {
- isShowAllTasks.value = true
+  isShowAllTasks.value = true
 }
 const viewLessTasks = () => {
- isShowAllTasks.value = false
+  isShowAllTasks.value = false
+}
+const printPage = () => {
+  window.print()
 }
 </script>
 <template>
+  <button class="print-btn" @click="printPage">Print Page</button>
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <div class="lg:col-span-3 space-y-6">
       <EmployeeProfileBox :state="empDetastate" />
       <!-- Pass Data to PerformanceBox -->
       <!-- <PerformanceBox :state="empDetastate" /> -->
-       <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(0, 1)" :key="task.id">
-         <Employeetasks :tasks="task" />
+      <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(0, 1)" :key="task.id">
+        <Employeetasks :tasks="task" />
+      </div>
+
+      <button
+        class="view-all-tasks"
+        @click="viewAllTasks()"
+        v-if="!isShowAllTasks && empDetastate?.tasks?.length! > 1"
+      >
+        View All Tasks <Emptask />
+      </button>
+
+      <template v-if="isShowAllTasks && empDetastate?.tasks?.length! > 1">
+        <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(1)" :key="task.id">
+          <Employeetasks :tasks="task" />
         </div>
 
-        <button class="view-all-tasks" @click="viewAllTasks()" v-if="!isShowAllTasks">View All Tasks <Emptask /></button>
-
-        <template v-if="isShowAllTasks">
-
-          <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(1)" :key="task.id">
-            <Employeetasks :tasks="task" />
-          </div>
-
-          <button class="view-all-tasks" @click="viewLessTasks()" v-if="isShowAllTasks">View Less Tasks <Emptask /></button>
-
-        </template>
+        <button class="view-all-tasks" @click="viewLessTasks()" v-if="isShowAllTasks">
+          View Less Tasks
+          <Emptask />
+        </button>
+      </template>
     </div>
 
     <div class="lg:col-span-1 space-y-6">
@@ -63,3 +74,5 @@ const viewLessTasks = () => {
     </div>
   </div>
 </template>
+
+

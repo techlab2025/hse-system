@@ -147,6 +147,7 @@ onMounted(() => {
             >
               {{ $t('add_hierarchy') }}
             </RouterLink>
+
             <AddCreateTeam
               :ProjectLocationId="location?.projectLocationId!"
               :LocationId="location?.locationId!"
@@ -218,6 +219,7 @@ onMounted(() => {
               v-for="(team, index) in location?.projectLocationTeams"
               :key="index"
               :team="team"
+              :location="location"
             />
           </div>
         </div>

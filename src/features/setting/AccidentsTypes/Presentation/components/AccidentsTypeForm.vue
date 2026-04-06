@@ -126,18 +126,18 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   const params = props.data?.id
     ? new EditAccidentsTypeParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+      )
     : new AddAccidentsTypeParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      SerialNumber.value,
-      // id,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        SerialNumber.value,
+        // id,
+      )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -165,7 +165,6 @@ watch(
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
-
 
       allIndustries.value = newData?.allIndustries == 1 ? true : false
       industry.value = newData?.industries!
@@ -208,19 +207,46 @@ const updateAllIndustries = (data) => {
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="updateAllIndustries" />
+  <div
+    class="input-wrapper col-span-4 md:col-span-2"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomCheckbox
+      :index="3"
+      :title="`all_industries`"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="AccidentsType"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
   </div>
 </template>

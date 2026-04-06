@@ -123,21 +123,21 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditHazardTypeParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],
-      HazaradFactor,
-      Number(ParentIdEdit),
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+        HazaradFactor,
+        Number(ParentIdEdit),
+      )
     : new AddHazardTypeParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      HazaradFactor,
-      Number(ParentId),
-      SerialNumber.value,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        HazaradFactor,
+        Number(ParentId),
+        SerialNumber.value,
+      )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -213,27 +213,62 @@ const updateAllIndustries = (data) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div> -->
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="updateAllIndustries" />
+  <div
+    class="input-wrapper col-span-4 md:col-span-2"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomCheckbox
+      :index="3"
+      :title="`all_industries`"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="AccidentsType"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
-    <CustomSelectInput :modelValue="Factor" :controller="indexFactoryController" :params="indexFactoryParams"
-      label="Factor" id="factor" placeholder="Select Factor" :type="2" @update:modelValue="setFactor" />
+    <CustomSelectInput
+      :modelValue="Factor"
+      :controller="indexFactoryController"
+      :params="indexFactoryParams"
+      label="Factor"
+      id="factor"
+      placeholder="Select Factor"
+      :type="2"
+      @update:modelValue="setFactor"
+    />
   </div>
 </template>

@@ -1302,6 +1302,18 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        {
+          key: PermissionsEnum.PROJECT_PROGRESS_ALL,
+          code: PermissionsEnum.PROJECT_PROGRESS_ALL,
+          label: 'Project Progress',
+          permissions: [
+            {
+              key: PermissionsEnum.PROJECT_PROGRESS_ALL,
+              code: PermissionsEnum.PROJECT_PROGRESS_ALL,
+              label: 'All',
+            },
+          ],
+        },
       ],
     },
   ],

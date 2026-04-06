@@ -235,7 +235,7 @@ const fields = ref([
   </div>
 
   <div class="input-wrapper col-span-6 md:col-span-6" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
     <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
       :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />

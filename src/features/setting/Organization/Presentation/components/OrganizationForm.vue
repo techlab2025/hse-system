@@ -263,7 +263,7 @@ const setCountry = (data: TitleInterface[]) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="Url">Url</label>
     <input
       type="url"
@@ -273,7 +273,7 @@ const setCountry = (data: TitleInterface[]) => {
       class="input"
       placeholder="Enter Your Url"
     />
-  </div>
+  </div> -->
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <SingleFileUpload

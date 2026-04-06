@@ -236,7 +236,7 @@ const UpdateSerial = (data) => {
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"
@@ -316,7 +316,7 @@ const UpdateSerial = (data) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox
       :index="3"
-      :title="`super_admin`"
+      :title="`admin_permission`"
       :checked="booleanEmpStatus"
       @update:checked="updaetAdminStatus"
     />

@@ -6,9 +6,9 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect'
 export default class IndexLocationHierarchyEmployeeParams implements Params {
   public projectId?: number = 1
   public locationId?: number = 1
-  public hierarchyId?: number = 1
+  public hierarchyId?: number | null
 
-  constructor(projectId: number = 1, locationId: number = 1, hierarchyId: number = 1) {
+  constructor(projectId: number = 1, locationId: number = 1, hierarchyId?: number | null) {
     this.projectId = projectId
     this.locationId = locationId
     this.hierarchyId = hierarchyId

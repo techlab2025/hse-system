@@ -16,6 +16,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -34,31 +36,33 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editContractorParams(
-      props.data?.id! ?? 0,
-      Name.value,
-      phoneNumber.value,
-      Scopes,
-      CompanyEmail.value,
-      CompanyAddress.value,
-      contactPerson.value,
-      contactPersonEmail.value,
-      contactPersonPhone.value,
-      SelectedStatus.value ? SelectedStatus.value?.id : null,
-      formatJoinDate(date.value),
-    )
+        props.data?.id! ?? 0,
+        Name.value,
+        phoneNumber.value,
+        Scopes,
+        CompanyEmail.value,
+        CompanyAddress.value,
+        contactPerson.value,
+        contactPersonEmail.value,
+        contactPersonPhone.value,
+        SelectedStatus.value ? SelectedStatus.value?.id : null,
+        formatJoinDate(date.value),
+        UploadedFiles.value[0],
+      )
     : new AddContractorParams(
-      Name.value,
-      phoneNumber.value,
-      Scopes,
-      CompanyEmail.value ? CompanyEmail.value : ' ',
-      CompanyAddress.value ? CompanyAddress.value : ' ',
-      contactPerson.value ? contactPerson.value : ' ',
-      contactPersonEmail.value ? contactPersonEmail.value : ' ',
-      contactPersonPhone.value ? contactPersonPhone.value : ' ',
-      SelectedStatus.value ? SelectedStatus.value?.id : 0,
-      formatJoinDate(date.value),
-      SerialNumber.value,
-    )
+        Name.value,
+        phoneNumber.value,
+        Scopes,
+        CompanyEmail.value ? CompanyEmail.value : ' ',
+        CompanyAddress.value ? CompanyAddress.value : ' ',
+        contactPerson.value ? contactPerson.value : ' ',
+        contactPersonEmail.value ? contactPersonEmail.value : ' ',
+        contactPersonPhone.value ? contactPersonPhone.value : ' ',
+        SelectedStatus.value ? SelectedStatus.value?.id : 0,
+        formatJoinDate(date.value),
+        SerialNumber.value,
+        UploadedFiles.value[0],
+      )
 
   console.log('params', params)
   emit('update:data', params)
@@ -174,48 +178,159 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+interface PreviewFile {
+  id: string
+  name: string
+  type: string
+  size: string
+  url: string
+}
+
+const files = ref<PreviewFile[]>([])
+
+const handleFileUpload = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (!input.files?.length) return
+
+  for (const file of Array.from(input.files)) {
+    const base64 = await filesToBase64(file)
+    console.log(base64.file)
+
+    files.value.push({
+      id: crypto.randomUUID(),
+      name: file.name,
+      type: file.type,
+      size: formatFileSize(file.size),
+      url: URL.createObjectURL(file),
+    })
+  }
+
+  // Reset input so same file can be re-added
+  input.value = ''
+}
+
+const downloadFile = (file: PreviewFile) => {
+  const a = document.createElement('a')
+  a.href = file.url
+  a.download = file.name
+  a.click()
+}
+
+const removeFile = (id: string) => {
+  const index = files.value.findIndex((f) => f.id === id)
+  if (index !== -1) {
+    URL.revokeObjectURL(files.value[index].url)
+    files.value.splice(index, 1)
+  }
+}
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+const UploadedFiles = ref<string[]>([])
+const handleFilesChange = (files: any) => {
+  UploadedFiles.value = files.map((f: any) => f.base64)
+  updateData()
+  console.log(UploadedFiles.value)
+}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('contractor_name') }}</label>
-    <input type="text" id="name" class="input" v-model="Name" @input="setName" placeholder="Enter Name " />
+    <input
+      type="text"
+      id="name"
+      class="input"
+      v-model="Name"
+      @input="setName"
+      placeholder="Enter Name "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2">
-    <label for="company_number">{{ $t('contractor_phone') }}</label>
-    <input type="text" id="company_number" min="1" class="input" v-model="phoneNumber" @input="setPhoneNumber"
-      placeholder="Enter contractor Phone " />
+    <label for="company_number">{{ $t('contractor_phone_number') }}</label>
+    <input
+      type="text"
+      id="company_number"
+      min="1"
+      class="input"
+      v-model="phoneNumber"
+      @input="setPhoneNumber"
+      placeholder="Enter contractor Phone "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
-    <input type="email" id="company_email" class="input" v-model="CompanyEmail" @input="setCompanyEmail"
-      placeholder="Enter contractor Email " />
+    <input
+      type="email"
+      id="company_email"
+      class="input"
+      v-model="CompanyEmail"
+      @input="setCompanyEmail"
+      placeholder="Enter contractor Email "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_address">{{ $t('contractor_address') }}</label>
-    <input type="text" id="company_address" class="input" v-model="CompanyAddress" @input="setCompanyAddress"
-      placeholder="Enter contractor Adress " />
+    <input
+      type="text"
+      id="company_address"
+      class="input"
+      v-model="CompanyAddress"
+      @input="setCompanyAddress"
+      placeholder="Enter contractor Adress "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person">{{ $t('contact_person') }}</label>
-    <input type="text" id="contact_person" class="input" v-model="contactPerson" @input="setcontactPerson"
-      placeholder="Enter Contact Person " />
+    <input
+      type="text"
+      id="contact_person"
+      class="input"
+      v-model="contactPerson"
+      @input="setcontactPerson"
+      placeholder="Enter Contact Person "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_email">{{ $t('contact_person_email') }}</label>
-    <input type="text" id="contact_person_email" class="input" v-model="contactPersonEmail"
-      @input="setcontactPersonEmail" placeholder="Enter Contact Person Email" />
+    <input
+      type="text"
+      id="contact_person_email"
+      class="input"
+      v-model="contactPersonEmail"
+      @input="setcontactPersonEmail"
+      placeholder="Enter Contact Person Email"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
-    <input type="text" id="contact_person_phone" class="input" v-model="contactPersonPhone"
-      @input="setcontactPersonPhone" placeholder="Enter Contact Person Phone" />
+    <input
+      type="text"
+      id="contact_person_phone"
+      class="input"
+      v-model="contactPersonPhone"
+      @input="setcontactPersonPhone"
+      placeholder="Enter Contact Person Phone"
+    />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <!-- <CustomSelectInput
@@ -231,9 +346,20 @@ const fields = ref([
 
         /> -->
 
-    <UpdatedCustomInputSelect :modelValue="Scope" class="input" :controller="indexScopeController"
-      :params="indexScopeParams" label="Scope" id="Scope" placeholder="Select Scope" @update:modelValue="setScope"
-      :type="2" @close="scopeDialogRef = false" :isDialog="true" :dialogVisible="scopeDialogRef">
+    <UpdatedCustomInputSelect
+      :modelValue="Scope"
+      class="input"
+      :controller="indexScopeController"
+      :params="indexScopeParams"
+      label="Scope"
+      id="Scope"
+      placeholder="Select Scope"
+      @update:modelValue="setScope"
+      :type="2"
+      @close="scopeDialogRef = false"
+      :isDialog="true"
+      :dialogVisible="scopeDialogRef"
+    >
       <template #LabelHeader>
         <span class="add-dialog" @click="scopeDialogRef = true">New</span>
       </template>
@@ -244,14 +370,46 @@ const fields = ref([
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="SelectedStatus" class="input" :static-options="StatusList"
-      :label="$t('contract_status')" :reload="false" id="Status" placeholder="Select Status"
-      @update:modelValue="setStatus" />
+    <CustomSelectInput
+      :modelValue="SelectedStatus"
+      class="input"
+      :static-options="StatusList"
+      :label="$t('contract_status')"
+      :reload="false"
+      id="Status"
+      placeholder="Select Status"
+      @update:modelValue="setStatus"
+    />
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
-    <DatePicker :modelValue="date" class="input" label="Date" id="expiry_date" placeholder="Contruct Expiry Date"
-      @update:modelValue="setExpiryDate" />
+    <DatePicker
+      :modelValue="date"
+      class="input"
+      label="Date"
+      id="expiry_date"
+      placeholder="Contruct Expiry Date"
+      @update:modelValue="setExpiryDate"
+    />
+  </div>
+  <div class="col-span-6 md:col-span-2">
+    <HandleFIlesUpload
+      :label="$t('contract')"
+      accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+      :max-files="1"
+      :multiple="false"
+      @change="handleFilesChange"
+      className="input-file"
+    />
   </div>
 </template>
+
+<style scoped>
+:deep(.input-file) {
+  border: 1px solid #d9dbe9 !important;
+  padding: 11px;
+  border-radius: 20px !important;
+  cursor: pointer;
+}
+</style>

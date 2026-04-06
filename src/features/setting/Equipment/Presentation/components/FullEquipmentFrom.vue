@@ -657,7 +657,7 @@ import CheckboxGroup from 'primevue/checkboxgroup';
       </div>
 
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
-        <label for="serialNumber">{{ $t('serial_number') }}</label>
+        <label for="serialNumber">{{ $t('refrence_number') }}</label>
         <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
           :disabled="projtecStateus.isSerialNumberAuto()"
           :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />

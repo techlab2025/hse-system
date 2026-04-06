@@ -26,11 +26,7 @@ const Name = ref<string>()
 const updateData = () => {
   const params = props.data?.id
     ? new EditWhereHouseParams(props.data.id, SelectedWhereHouseType?.value?.id, Name.value)
-    : new AddWhereHouseParams(
-      SelectedWhereHouseType?.value?.id,
-      Name.value,
-      SerialNumber.value,
-    )
+    : new AddWhereHouseParams(SelectedWhereHouseType?.value?.id, Name.value, SerialNumber.value)
 
   // console.log(SerialNumber, 'SerialNumber')
   emit('update:data', params)
@@ -60,12 +56,13 @@ watch(
     console.log(newData, 'newData')
     Name.value = newData?.name
     const savedLocale = localStorage.getItem('lang')
-    SelectedWhereHouseType.value = new TitleInterface({ id: newData?.warehouse_type?.id, title: newData?.warehouse_type?.titles })
-
+    SelectedWhereHouseType.value = new TitleInterface({
+      id: newData?.warehouse_type?.id,
+      title: newData?.warehouse_type?.titles,
+    })
   },
   { immediate: true },
 )
-
 
 const indexWhereHouseTypeController = IndexWhereHouseTypeController.getInstance()
 const indexWhereHouseTypeParams = new IndexWhereHouseTypeParams('', 1, 10, 1, false)
@@ -85,24 +82,48 @@ const WarehouseTypeDialog = ref<boolean>(false)
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="name">{{ $t('name') }}</label>
-    <input type="text" id="name" class="input" v-model="Name" @input="setName" :placeholder="$t('Enter Name')" />
+    <input
+      type="text"
+      id="name"
+      class="input"
+      v-model="Name"
+      @input="setName"
+      :placeholder="$t('Enter Name')"
+    />
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
       id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
-    <UpdatedCustomInputSelect :required="false" :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('warehouse_type')"
-      id="Equipment" placeholder="Select Warehouse Type" @update:modelValue="setSelectedWhereHouseType" :isDialog="true"
-      :dialogVisible="WarehouseTypeDialog">
+    <UpdatedCustomInputSelect
+      :required="false"
+      :modelValue="SelectedWhereHouseType"
+      :controller="indexWhereHouseTypeController"
+      :params="indexWhereHouseTypeParams"
+      :label="$t('warehouse_type')"
+      id="Equipment"
+      placeholder="Select Warehouse Type"
+      @update:modelValue="setSelectedWhereHouseType"
+      :isDialog="true"
+      :dialogVisible="WarehouseTypeDialog"
+    >
       <template #LabelHeader>
         <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>
       </template>
