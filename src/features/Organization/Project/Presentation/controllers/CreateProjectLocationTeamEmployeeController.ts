@@ -43,7 +43,7 @@ export default class CreateProjectLocationTeamEmployeeController extends Control
         // await router.push('/organization/projects')
         // console.log(this.state.value.data)
         await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route?.params?.id)),
+          new ShowProjectDetailsParams(Number(route?.params?.id || route?.params?.project_id)),
         )
       } else {
         // DialogSelector.instance.failedDialog.openDialog({

@@ -45,8 +45,7 @@ const UpdateData = () => {
     </template>
     <div class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-     
-      
+
       <CreateTeamForm
         :ProjectLocationId="ProjectLocationId!"
         :LocationId="LocationId!"

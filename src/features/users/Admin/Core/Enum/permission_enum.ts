@@ -975,4 +975,8 @@ export enum PermissionsEnum {
   CATALOG_DETAILS_CREATE = 'CATD03',
   CATALOG_DETAILS_UPDATE = 'CATD04',
   CATALOG_DETAILS_DELETE = 'CATD05',
+
+  // Project Progress
+  PROJECT_PROGRESS_ALL = 'PP00',
+
 }

@@ -11,6 +11,8 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Sidebarlocation from '../icons/sidebarlocation.vue'
 import Locaps from '../icons/locaps.vue'
+import { useUserStore } from '@/stores/user'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const route = useRoute()
 interface Routes {
@@ -24,7 +26,7 @@ const GauideRoutes = ref<Routes[]>([
   {
     link: '/organization/project-progress',
     name: t('overview'),
-    permissions: [],
+    permissions: [PermissionsEnum.ADMIN ,PermissionsEnum.PROJECT_PROGRESS_ALL, PermissionsEnum.ORGANIZATION_ALL, PermissionsEnum.ORGANIZATION_EMPLOYEE],
     // permissions: [
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -608,11 +610,13 @@ watch(LoackupsAccordion, (val) => {
 watch(GauideAccordion, (val) => {
   GauideAccordion.value = val
 })
+const { user } = useUserStore()
 </script>
 
 <template>
   <PermissionBuilder
     :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+    v-if="user?.employeeType == EmployeeStatusEnum.Admin"
   >
     <Accordion v-model:value="GauideAccordion">
       <AccordionPanel value="5">

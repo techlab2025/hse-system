@@ -16,6 +16,9 @@ const props = defineProps<{
   team: ProjectLocationTeamModel
   isShow?: boolean
   location?: TeamLocation | null | undefined
+  teamId?: number
+  LocationId?: number
+  ProjectLocationId?: number
 }>()
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
@@ -67,11 +70,12 @@ const DeleteTeamMember = async (id: number) => {
         :member="member"
         @update:data="DeleteTeamMember"
       />
+
       <AddCreateTeam
-        :ProjectLocationId="location?.projectLocationId!"
-        :LocationId="location?.locationId!"
+        :ProjectLocationId="location?.projectLocationId! || ProjectLocationId"
+        :LocationId="location?.locationId! || LocationId"
         @update:data="GetProjectLocationsEmployes"
-        :teamId="team.teamId!"
+        :teamId="team.teamId! || teamId"
         :isInCard="true"
       />
     </div>

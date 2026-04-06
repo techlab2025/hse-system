@@ -100,6 +100,9 @@ watch(
             v-for="(team, index) in locationTeam.locationTeams"
             :key="index"
             :team="team"
+            :teamId="team.teamId"
+            :LocationId="locationTeam.id"
+            :ProjectLocationId="locationTeam.projectLocationId"
           />
         </div>
       </div>
