@@ -25,7 +25,7 @@ const setParams = (data: Params) => {
     <OrganizationForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
 </template>

@@ -270,7 +270,8 @@ const UpdateSerial = (data) => {
       :placeholder="$t('enter your email')"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div v-if="booleandashAccessStatus"
+   class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
     <input
       id="password"

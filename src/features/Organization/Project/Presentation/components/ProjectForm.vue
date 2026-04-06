@@ -256,16 +256,6 @@ watch(
   { immediate: true },
 )
 
-// const fields = ref([
-//   {
-//     key: 'SerialNumber',
-//     label: 'serial_number',
-//     placeholder: 'You can leave it (auto-generated)',
-//     value: SerialNumber.value,
-//     enabled: projtecStateus.isSerialNumberAuto() ? true : false,
-//   },
-// ])
-
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
 
 const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
@@ -296,10 +286,7 @@ watch(
   { deep: true, immediate: true },
 )
 const projtecStateus = useProjectAppStatusStore()
-const UpdateSerial = (data) => {
-  SerialNumber.value = data.target.value
-  updateData()
-}
+
 const UpdateDate = (date) => {
   date.value = date || new Date()
   updateData()
@@ -397,6 +384,21 @@ const LocationVisible = ref(false)
 const ShowLocationDialog = () => {
   LocationVisible.value = true
 }
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
+const UpdateSerial = (data) => {
+  SerialNumber.value = data.SerialNumber
+  console.log(SerialNumber.value, 'data')
+  updateData()
+}
 </script>
 
 <template>
@@ -412,9 +414,14 @@ const ShowLocationDialog = () => {
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <!-- <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="true"
-      @update:value="UpdateSerial" /> -->
-    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :isAuto="true"
+      :switch_reverse="true"
+      @update:value="UpdateSerial"
+    />
+    <!-- <label for="serialNumber">{{ $t('refrence_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"
@@ -426,7 +433,7 @@ const ShowLocationDialog = () => {
           ? 'You can leave it (auto-generated)'
           : 'Enter Your Serial Number'
       "
-    />
+    /> -->
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date" class="flex gap-2 items-center">
@@ -461,8 +468,8 @@ const ShowLocationDialog = () => {
       :type="2"
       :controller="indexContractorController"
       :params="indexContractorTypeParams"
-      label="contractors"
-      placeholder="contractors"
+      label="sub_contractors"
+      placeholder="sub_contractors"
       :onclick="ShowContructorDialog"
     />
   </div>

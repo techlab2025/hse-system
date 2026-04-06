@@ -10,6 +10,7 @@ export default class EditOrganizationParams implements Params {
   industry_id: number[]
   language_ids: number[]
   location_ids: number[]
+  getDataFromAdmin: boolean
   constructor(
     id: number,
     name: string,
@@ -20,6 +21,7 @@ export default class EditOrganizationParams implements Params {
     industry_id: number[],
     language_ids: number[],
     location_ids: number[],
+    getDataFromAdmin: boolean,
   ) {
     this.id = id
     this.name = name
@@ -30,6 +32,7 @@ export default class EditOrganizationParams implements Params {
     this.industry_id = industry_id
     this.language_ids = language_ids
     this.location_ids = location_ids
+    this.getDataFromAdmin = getDataFromAdmin
   }
 
   toMap(): Record<
@@ -46,6 +49,8 @@ export default class EditOrganizationParams implements Params {
     data['industry_id'] = this.industry_id
     data['language_ids'] = this.language_ids
     data['location_ids'] = this.location_ids
+    data['get_data_from_admin'] = this.getDataFromAdmin
+
     console.log(data, 'data params')
 
     return data
