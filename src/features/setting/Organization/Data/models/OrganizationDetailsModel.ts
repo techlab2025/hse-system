@@ -10,6 +10,7 @@ export default class OrganizationDetailsModel {
   public industry: TitleInterface
   public languages: TitleInterface[]
   public locations: TitleInterface
+  public getDataFromAdmin: boolean
 
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export default class OrganizationDetailsModel {
     industry: TitleInterface,
     languages: TitleInterface[],
     locations: TitleInterface,
+    getDataFromAdmin: boolean,
   ) {
     this.id = id
     this.name = name
@@ -31,6 +33,7 @@ export default class OrganizationDetailsModel {
     this.industry = industry
     this.languages = languages
     this.locations = locations
+    this.getDataFromAdmin = data.getDataFromAdmin
   }
 
   static fromMap(data: any): OrganizationDetailsModel {
@@ -45,6 +48,7 @@ export default class OrganizationDetailsModel {
       this.getTitle(data.industry),
       data.languages.length > 0 ? data.languages?.map((language) => this.getTitle(language)) : [],
       data.locations.length > 0 ? data.locations?.map((location) => this.getTitle(location)) : [],
+      data.get_data_from_admin,
     )
   }
 

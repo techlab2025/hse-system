@@ -20,6 +20,8 @@ import { useRoute } from 'vue-router'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
@@ -104,6 +106,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
+        booleanAdminData.value
       )
     : new AddOrganizationParams(
         name.value,
@@ -114,6 +117,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
+        booleanAdminData.value
       )
 
   emit('update:data', params)
@@ -148,6 +152,7 @@ watch(
       lang.value = newData?.languages
       image.value = newData?.image
       SelectedCountry.value = newData?.locations
+      booleanAdminData.value = newData?.getDataFromAdmin
     }
   },
   { immediate: true },
@@ -180,6 +185,12 @@ const indexLocationCountriesController = IndexLocationController.getInstance()
 const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
 const setCountry = (data: TitleInterface[]) => {
   SelectedCountry.value = data
+  updateData()
+}
+
+const booleanAdminData = ref(false)
+const updateAdminData = (status: boolean) => {
+  booleanAdminData.value = status
   updateData()
 }
 </script>
@@ -274,7 +285,14 @@ const setCountry = (data: TitleInterface[]) => {
       placeholder="Enter Your Url"
     />
   </div> -->
-
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomCheckbox
+      :index="4"
+      :title="`dashboard_access`"
+      :checked="booleanAdminData"
+      @update:checked="updateAdminData"
+    />
+  </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <SingleFileUpload
       :modelValue="image"

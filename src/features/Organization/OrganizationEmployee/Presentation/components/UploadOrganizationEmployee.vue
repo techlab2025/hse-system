@@ -160,13 +160,12 @@ const fileUpload = async (file: File) => {
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 
 // , 'image'
-const SendData = ref<string[]>(['name', 'email', 'phone', 'password', 'password_confirmation']);
+const SendData = ref<string[]>(['name', 'email', 'phone']);
 
 const SendDataLabels: Record<string, string> = {
   name: "Employee Name",
   email: "Email",
   phone: "Phone",
-  password: "Password",
 
 };
 
