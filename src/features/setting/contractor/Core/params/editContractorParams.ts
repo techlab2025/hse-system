@@ -14,6 +14,7 @@ export default class EditContractorParams implements Params {
   contactPersonPhone?: string
   SelectedStatus?: number
   date?: string
+  contract_file?: string
   public static readonly validation = new ClassValidation().setRules({
     Name: { required: true, minLength: 2, maxLength: 100 },
     phoneNumber: { required: true, minLength: 11, maxLength: 20, pattern: /^\+?\d[\d\s\-()]{4,}$/ },
@@ -30,6 +31,7 @@ export default class EditContractorParams implements Params {
     contactPersonPhone?: string,
     SelectedStatus?: number,
     date?: string,
+    contract_file?: string,
   ) {
     this.id = id
     this.Name = Name
@@ -42,6 +44,7 @@ export default class EditContractorParams implements Params {
     this.contactPersonPhone = contactPersonPhone
     this.SelectedStatus = SelectedStatus
     this.date = date
+    this.contract_file = contract_file
   }
 
   toMap(): Record<
@@ -72,6 +75,7 @@ export default class EditContractorParams implements Params {
     if (this.contactPersonPhone) data['contact_person_phone'] = this.contactPersonPhone
     if (this.SelectedStatus || this.SelectedStatus === 0) data['status'] = this.SelectedStatus
     if (this.date) data['expiry_date'] = this.date
+    if (this.contract_file) data['contract_file'] = this.contract_file
 
     return data
   }

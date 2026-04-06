@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n'
 import DeleteOrganizatoinEmployeeParams from '../../../Core/params/deleteOrganizatoinEmployeeParams'
 import DeleteOrganizatoinEmployeeController from '../../controllers/deleteOrganizatoinEmployeeController'
 import { useRouter } from 'vue-router'
+import PrintIcon from '@/shared/icons/PrintIcon.vue'
 // import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
 
 const { state } = defineProps<{
@@ -51,6 +52,16 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
       PermissionsEnum.ORG_EMPLOYEE_ALL,
     ],
   },
+  {
+    text: t('print'),
+    icon: PrintIcon,
+    action: () => window.print(),
+    permission: [
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+    ],
+  },
 ]
 const router = useRouter()
 const deleteOrganizatoinEmployee = async (id: number) => {
@@ -80,6 +91,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
           </div>
         </div>
         <DropList
+          class="print-btn"
           :actionList="actionList(state?.id, deleteOrganizatoinEmployee)"
           @delete="deleteOrganizatoinEmployee(state?.id)"
         />
@@ -101,3 +113,19 @@ const deleteOrganizatoinEmployee = async (id: number) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@media print {
+  .print-btn {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>

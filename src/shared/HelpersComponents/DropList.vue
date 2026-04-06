@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, watch, computed } from 'vue'
+import { ref, computed } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
 import ActionsIcon from '../icons/ActionsIcon.vue'
@@ -21,14 +21,13 @@ defineOptions({ inheritAttrs: false })
 const op = ref()
 const ActionIconsToggle = ref(false)
 
-
 const isVisible = computed(() => {
-  return op.value?.visible;
-});
+  return op.value?.visible
+})
 
 const toggle = (event: Event) => {
-  op.value.toggle(event);
-};
+  op.value.toggle(event)
+}
 const { actionList = [], showActions = true } = defineProps<{
   actionList: ActionItem[]
   showActions?: boolean
@@ -38,13 +37,10 @@ const { actionList = [], showActions = true } = defineProps<{
 const permittedActions = computed(() =>
   showActions
     ? actionList.filter((a) =>
-      a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
-    )
+        a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
+      )
     : [],
 )
-
-
-
 </script>
 
 <template>
@@ -59,13 +55,17 @@ const permittedActions = computed(() =>
         <li class="list-item cursor-pointer" v-for="action in permittedActions" :key="action.text">
           <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
             <component :is="action.icon" />
-            <span>{{ action.text }}</span>
+            <span @click="op.hide()">{{ action.text }}</span>
           </router-link>
 
-          <button v-else-if="action.action && action.text != $t('delete')" @click="action.action"
-            class="flex items-center gap-sm">
+          <button
+            v-else-if="action.action && action.text != $t('delete')"
+            @click="action.action"
+            class="flex items-center gap-sm"
+          >
             <component :is="action.icon" />
-            <span>{{ action.text }}</span>
+            <!-- when click close popover -->
+            <span @click="op.hide()">{{ action.text }}</span>
           </button>
 
           <DeleteDialog v-else-if="action.text == $t('delete')" @delete="action.action" />

@@ -26,7 +26,12 @@ const GauideRoutes = ref<Routes[]>([
   {
     link: '/organization/project-progress',
     name: t('overview'),
-    permissions: [PermissionsEnum.ADMIN ,PermissionsEnum.PROJECT_PROGRESS_ALL, PermissionsEnum.ORGANIZATION_ALL, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PROJECT_PROGRESS_ALL,
+      PermissionsEnum.ORGANIZATION_ALL,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ],
     // permissions: [
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
     //   PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -122,6 +127,17 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/herikaly',
+    name: t('positions'),
+    permissions: [
+      PermissionsEnum.HERIKALY_ALL,
+      PermissionsEnum.HERIKALY_CREATE,
+      PermissionsEnum.HERIKALY_DELETE,
+      PermissionsEnum.HERIKALY_FETCH,
+      PermissionsEnum.HERIKALY_UPDATE,
+    ],
+  },
+  {
     link: '/organization/organization-employee',
     name: t('employees'),
     permissions: [
@@ -133,17 +149,7 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ],
   },
-  {
-    link: '/organization/herikaly',
-    name: t('positions'),
-    permissions: [
-      PermissionsEnum.HERIKALY_ALL,
-      PermissionsEnum.HERIKALY_CREATE,
-      PermissionsEnum.HERIKALY_DELETE,
-      PermissionsEnum.HERIKALY_FETCH,
-      PermissionsEnum.HERIKALY_UPDATE,
-    ],
-  },
+
   // {
   //   link: '/organization/methods',
   //   name: 'methods',

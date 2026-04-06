@@ -1303,5 +1303,8 @@
   "Get OTP": "Get OTP",
   "change_password": "Change Password",
   "contractor_name": "Contractor Name",
-  "contractor_phone": "Contractor Phone"
+  "contractor_phone": "Contractor Phone",
+  "admin_permission": "Admin Permission",
+  "contractor_phone_number": "Contractor Phone Number",
+  "refrence_number": "Refrence Number"
 }

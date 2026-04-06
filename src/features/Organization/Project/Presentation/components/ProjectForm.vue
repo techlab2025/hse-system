@@ -149,7 +149,6 @@ const date = ref(new Date())
 
 // ---------- Emit update ----------
 const updateData = () => {
-
   const translationsParams = new TranslationsParams()
   // titles
   langs.value.forEach((lang) => {
@@ -160,17 +159,16 @@ const updateData = () => {
   })
   const params = props.data?.id
     ? new EditProjectParams(
-      props.data.id,
-      translationsParams,
-      ContractorIds.value?.map((p) => p.id),
-      date.value,
-      location.value.map((l) => l.id),
-      ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-      EvaluatingMethod.value?.map((p) => p.id),
-      endDate.value,
-    )
-    : new AddProjectParams(
-      {
+        props.data.id,
+        translationsParams,
+        ContractorIds.value?.map((p) => p.id),
+        date.value,
+        location.value.map((l) => l.id),
+        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+        EvaluatingMethod.value?.map((p) => p.id),
+        endDate.value,
+      )
+    : new AddProjectParams({
         translation: translationsParams,
         ContractorIds: ContractorIds.value?.map((p) => p.id),
         startDate: date.value,
@@ -179,9 +177,8 @@ const updateData = () => {
         methodIds: EvaluatingMethod.value?.map((p) => p.id),
         SerialNumber: SerialNumber.value,
         endDate: endDate.value,
-      }
-    )
-  console.log(params, "paramsparamsparams");
+      })
+  console.log(params, 'paramsparamsparams')
   emit('update:data', params)
 }
 
@@ -259,7 +256,6 @@ watch(
   { immediate: true },
 )
 
-
 // const fields = ref([
 //   {
 //     key: 'SerialNumber',
@@ -273,7 +269,6 @@ watch(
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
 
 const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
-
   ZoneIds.value = data.flatMap((item) => item.ZoneIds || [])
   // console.log('ZoneIds.value', ZoneIds.value)
   updateData()
@@ -409,44 +404,81 @@ const ShowLocationDialog = () => {
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
-      @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput
+      :label="`Project Name`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <!-- <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="false" :switch_reverse="true"
       @update:value="UpdateSerial" /> -->
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
       :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="date" class="flex gap-2 items-center">
       {{ $t('start_date') }}
       <StarRequiredInput />
-
     </label>
-    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
+    <DatePicker
+      v-model="date"
+      @date-select="UpdateDate"
+      id="date"
+      :placeholder="`select the date`"
+    />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="end-date" class="flex gap-2 items-center">
       {{ $t('end_date') }}
       <StarRequiredInput />
-
     </label>
-    <DatePicker v-model="endDate" @date-select="UpdateEndDate" id="end-date" :placeholder="`select the end date`" />
+    <DatePicker
+      v-model="endDate"
+      @date-select="UpdateEndDate"
+      id="end-date"
+      :placeholder="`select the end date`"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :required="false" :modelValue="ContractorIds" @update:modelValue="setContractorIds" :type="2"
-      :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
-      placeholder="contractors" :onclick="ShowContructorDialog" />
+    <CustomSelectInput
+      :required="false"
+      :modelValue="ContractorIds"
+      @update:modelValue="setContractorIds"
+      :type="2"
+      :controller="indexContractorController"
+      :params="indexContractorTypeParams"
+      label="contractors"
+      placeholder="contractors"
+      :onclick="ShowContructorDialog"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :required="true" :modelValue="location" @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
-      placeholder="location" :type="2" :onclick="ShowLocationDialog" />
+    <CustomSelectInput
+      :required="true"
+      :modelValue="location"
+      @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams"
+      label="location"
+      placeholder="location"
+      :type="2"
+      :onclick="ShowLocationDialog"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -458,15 +490,25 @@ const ShowLocationDialog = () => {
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
 
-
-    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
-      :selectedZones="SelectedZones" />
-
+    <AddZoneDialog
+      id="zone"
+      class="input"
+      :locations="location"
+      @update:data="UpdateZones"
+      :selectedZones="SelectedZones"
+    />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput label="project_scope_of_work" :langs="langDefault" :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea"
-      :placeholder="`What is the project scope of work?`" :required="false" />
+    <LangTitleInput
+      label="project_scope_of_work"
+      :langs="langDefault"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+      :placeholder="`What is the project scope of work?`"
+      :required="false"
+    />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />

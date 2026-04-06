@@ -16,7 +16,7 @@ export default class AddContractorParams implements Params {
   SelectedStatus?: number
   date?: string
   serialNumber?: string
-
+  contract_file?: string
   public static readonly validation = new ClassValidation().setRules({
     Name: { required: true, minLength: 2, maxLength: 100 },
     ContractorNumber: {
@@ -42,6 +42,7 @@ export default class AddContractorParams implements Params {
     SelectedStatus?: number,
     date?: string,
     serialNumber?: string,
+    contract_file?: string,
   ) {
     this.Name = Name
     this.ContractorNumber = ContractorNumber
@@ -54,6 +55,7 @@ export default class AddContractorParams implements Params {
     this.SelectedStatus = SelectedStatus
     this.date = date
     this.serialNumber = serialNumber
+    this.contract_file = contract_file
   }
 
   toMap(): Record<
@@ -87,6 +89,7 @@ export default class AddContractorParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
+    if (this.contract_file) data['contract_file'] = this.contract_file
 
     return data
   }
