@@ -8,7 +8,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -28,7 +28,6 @@ import { useUserStore } from '@/stores/user'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 
-
 const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
@@ -36,6 +35,7 @@ const countPerPage = ref(10)
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const state = ref(indexHerikalyController.state.value)
 const route = useRoute()
+const router = useRouter()
 
 const fetchHerikaly = async (
   query: string = '',
@@ -43,7 +43,9 @@ const fetchHerikaly = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HerikalyParams = new IndexHerikalyParams(query, pageNumber, perPage, withPage, true, null)
+  const HerikalyParams = new IndexHerikalyParams(query,
+  route.query.page ? Number(route.query.page) : pageNumber
+  , perPage, withPage, true, null)
   await indexHerikalyController.getData(HerikalyParams)
 }
 
@@ -52,8 +54,20 @@ onMounted(() => {
 })
 
 const searchHerikaly = debounce(() => {
+  router.push({
+    query: {
+      ...route.query,
+      page: Number(route.query.page ?? 1),
+      word: word.value || undefined,
+    },
+  })
+
   fetchHerikaly(word.value)
 })
+
+// const searchHerikaly = debounce(() => {
+//   fetchHerikaly(word.value)
+// })
 
 const deleteHerikaly = async (id: number) => {
   const deleteHerikalyParams = new DeleteHerikalyParams(id)
@@ -72,6 +86,13 @@ const changeStatusHerikaly = async (id: number) => {
 const handleChangePage = (page: number) => {
   currentPage.value = page
   fetchHerikaly('', currentPage.value, countPerPage.value)
+  router.push({
+    query: {
+      ...route.query,
+      page: String(page),
+      word: word.value,
+    },
+  })
 }
 
 // Handle count per page change
@@ -195,9 +216,7 @@ const exportExcel = () => {
               <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
             </div>
           </div>
-          <div class="btn-container flex">
-  
-          </div>
+          <div class="btn-container flex"></div>
         </div>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <Pagination

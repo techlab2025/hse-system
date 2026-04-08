@@ -9,22 +9,14 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
-
-// import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-// import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-// import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexCertificateController from '../controllers/indexCertificateController'
 import IndexCertificateParams from '../../Core/params/indexCertificateParams'
 import DeleteCertificateParams from '../../Core/params/deleteCertificateParams'
@@ -32,23 +24,17 @@ import DeleteCertificateController from '../controllers/deleteCertificateControl
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import CertificateCard from '../supcomponents/CertificateCard.vue'
 import Image from 'primevue/image'
+
 const { t } = useI18n()
-
-// import DialogChangeStatusCertificate from "@/features/setting/Certificateuages/Presentation/components/Certificate/DialogChangeStatusCertificate.vue";
-// const route = useRoute()
-
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexCertificateController = IndexCertificateController.getInstance()
 const state = ref(indexCertificateController.state.value)
 const route = useRoute()
-
+const router = useRouter()
 const id = ref(route.params.parent_id)
-
-// const type = ref<CertificateStatusEnum>(CertificateStatusEnum[route.params.type as keyof typeof CertificateStatusEnum])
 
 const fetchCertificate = async (
   query: string = '',
@@ -58,19 +44,32 @@ const fetchCertificate = async (
 ) => {
   const deleteCertificateParams = new IndexCertificateParams(
     query,
-    pageNumber,
+    route.query.page ? Number(route.query.page) : pageNumber,
     perPage,
     withPage,
     // id.value?? '',
   )
   await indexCertificateController.getData(deleteCertificateParams)
 }
-
-onMounted(() => {
-  fetchCertificate()
+onMounted(async () => {
+  if (route.query.word) {
+    word.value = String(route.query.word)
+  }
+  await fetchCertificate(
+    word.value,
+    route.query.page ? Number(route.query.page) : 1,
+    countPerPage.value,
+  )
 })
 
 const searchCertificate = debounce(() => {
+  router.push({
+    query: {
+      ...route.query,
+      page: Number(route.query.page ?? 1),
+      word: word.value || undefined,
+    },
+  })
   fetchCertificate(word.value)
 })
 
@@ -83,6 +82,13 @@ const deleteCertificate = async (id: number) => {
 const handleChangePage = (page: number) => {
   currentPage.value = page
   fetchCertificate('', currentPage.value, countPerPage.value)
+  router.push({
+    query: {
+      ...route.query,
+      page: String(page),
+      word: word.value,
+    },
+  })
 }
 
 // Handle count per page change
@@ -151,7 +157,7 @@ const exportExcel = () => {
     return {
       'Certificate Title': it.title || 'N/A',
       'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
-      'Image': '*',
+      Image: '*',
     }
   })
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)

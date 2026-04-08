@@ -1007,7 +1007,11 @@ const setOragnizationemployeeName = (data: Event) => {
 
     <!--if ActionStatusEnum OPEN  -->
     <div
-      v-if="solved == ActionStatusEnum.OPEN && saveStatus == SaveStatusEnum.NotSaved"
+      v-if="
+        solved == ActionStatusEnum.OPEN &&
+        saveStatus == SaveStatusEnum.NotSaved &&
+        ObservationFactoryType != Observation.AccidentsType
+      "
       class="input-wrapper col-span-6 md:col-span-6"
       v-show="showObservationAndDescription"
     >
