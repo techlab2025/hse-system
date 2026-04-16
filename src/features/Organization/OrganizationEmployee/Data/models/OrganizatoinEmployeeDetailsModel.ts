@@ -34,6 +34,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public projectLocationHierarchyEmployeeId: number
   public projectLocationTeamEmployeeId: number
   public canAccessDashboard: boolean
+  public is_leader: number
 
   // =====================
   // Constructor
@@ -60,6 +61,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     projectLocationHierarchyEmployeeId: number,
     projectLocationTeamEmployeeId: number,
     canAccessDashboard: boolean,
+    is_leader: number,
   ) {
     this.id = id
     this.name = name
@@ -82,6 +84,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
     this.canAccessDashboard = canAccessDashboard
+    this.is_leader = is_leader
   }
 
   // =====================
@@ -111,6 +114,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.project_location_hierarchy_employee_id,
       data.project_location_team_employee_id,
       data.can_access_dashboard,
+      data.is_leader,
       // data.employee_performance,
     )
   }
@@ -158,6 +162,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     [],
     1,
     [],
+    1,
+    1,
     1,
     1,
   )

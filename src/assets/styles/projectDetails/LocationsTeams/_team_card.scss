@@ -88,6 +88,11 @@
     // scroll-snap-align: start;
     flex: 0 0 auto;
     width: 100%;
+    background-color: #8080801b;
+    padding: 5px !important;
+    &.isLeader {
+      border: 1px solid $PrimaryColor;
+    }
   }
 
   // &::-webkit-scrollbar {
@@ -101,3 +106,4 @@
   //   background-color: transparent;
   // }
 }
+ 
