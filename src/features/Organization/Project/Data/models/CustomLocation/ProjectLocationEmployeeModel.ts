@@ -10,6 +10,7 @@ export default class ProjectLocationEmployeeModel {
   public projectLocationTeamEmployeeId: number
   public hierarchy: TitleInterface[]
   public organization_employee_id: number
+  public is_leader: boolean
   constructor(
     projectLocationHierarchyEmployeeId: number,
     projectLocationId: number,
@@ -20,6 +21,7 @@ export default class ProjectLocationEmployeeModel {
     projectLocationTeamEmployeeId: number,
     hierarchy: TitleInterface[],
     organization_employee_id: number,
+    is_leader: boolean,
   ) {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationId = projectLocationId
@@ -30,6 +32,7 @@ export default class ProjectLocationEmployeeModel {
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
     this.hierarchy = hierarchy
     this.organization_employee_id = organization_employee_id
+    this.is_leader = is_leader
   }
 
   static fromMap(data: any): ProjectLocationEmployeeModel {
@@ -43,6 +46,7 @@ export default class ProjectLocationEmployeeModel {
       data.project_location_team_employee_id,
       data.hierarchy,
       data.organization_employee_id,
+      data.is_leader,
     )
   }
 
@@ -56,5 +60,6 @@ export default class ProjectLocationEmployeeModel {
     1,
     [],
     1,
+    true,
   )
 }
