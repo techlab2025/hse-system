@@ -12762,6 +12762,7 @@ body {
 .members-section .member-card {
   flex: 0 0 auto;
   width: 100%;
+  background-color: rgba(128, 128, 128, 0.1058823529);
 }
 
 .member-card {
@@ -12800,7 +12801,7 @@ body {
 }
 .member-card .card-delete {
   position: absolute;
-  top: 0;
+  top: 5px;
   right: 10px;
   cursor: pointer;
 }
@@ -14155,6 +14156,9 @@ body {
   border-color: #dce3ef;
 }
 .emoloyees-details .employees-section {
+  background: rgba(128, 128, 128, 0.1019607843);
+  padding: 10px;
+  border-radius: 12px 12px 0 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
@@ -14183,6 +14187,7 @@ body {
 .emoloyees-details .employees-section .member-card {
   flex: 0 0 auto;
   width: 100%;
+  background-color: rgba(128, 128, 128, 0.1058823529);
 }
 .emoloyees-details .project-teams-cards {
   padding-top: 10px;
@@ -14192,6 +14197,9 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   gap: var(--md-size-2);
+  background: rgba(128, 128, 128, 0.1019607843);
+  padding: 10px;
+  border-radius: 0 0 12px 12px;
 }
 
 .employee-header {
