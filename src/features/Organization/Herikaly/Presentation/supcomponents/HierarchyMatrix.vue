@@ -137,6 +137,10 @@ const AllCertificates = computed(() => {
 
   return Certificatestate.value?.data || []
 })
+
+const ChangeCertificatioRequired = (CertificateId:number , HieararchyId:number)=>{
+
+}
 </script>
 
 <template>
@@ -174,7 +178,7 @@ const AllCertificates = computed(() => {
           <table class="main-table">
             <thead>
               <tr>
-                <th class="w-fit">{{ $t('Hierarchy') }}</th>
+                <th class="w-fit">{{ $t('positions') }}</th>
                 <th v-for="cert in AllCertificates" :key="cert.id">
                   <router-link
                     :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`"
@@ -205,6 +209,10 @@ const AllCertificates = computed(() => {
                 >
                   <p class="cert-status">
                     {{ getEmployeeCertificationStatus(hierarchy, cert) }}
+                    <input
+                      type="checkbox"
+                      @change="ChangeCertificatioRequired(cert.id , hierarchy.id)"
+                    />
                   </p>
                 </td>
               </tr>
