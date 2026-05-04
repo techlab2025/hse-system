@@ -17,6 +17,10 @@ import type CertificateModel from '@/features/setting/Certificate/Data/models/Ce
 import HierarchyCertyificateController from '../controllers/HierarchyCertificateController'
 import FetchHierarchyCertificatesParams from '../../Core/params/FetchHierarchyCertificatesParams'
 import type HierarchyCertificateModel from '../../Data/models/HeirarchyCertificateModel'
+import AddCErtificateToHierarachyController from '../controllers/addCertificateToHieararchyController'
+import AddCertificateToHierarchyParams from '../../Core/params/addCertificateToHierarchyParams'
+import DeleteCErtificateToHierarachyController from '../controllers/deleteCertificateToHieararchyController'
+import DeleteCertificateToHierarchyParams from '../../Core/params/deleteCertificateToHierarchyParams'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -45,10 +49,9 @@ const fetchHierarchyCertificate = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1,
+  withPage: number = 0,
 ) => {
   const params = new FetchHierarchyCertificatesParams(query, pageNumber, perPage, withPage)
-
   await hierarchyCertyificateController.FetchHerikalyCertificate(params, router)
 }
 
@@ -138,8 +141,34 @@ const AllCertificates = computed(() => {
   return Certificatestate.value?.data || []
 })
 
-const ChangeCertificatioRequired = (CertificateId:number , HieararchyId:number)=>{
-
+// DeleteCErtificateToHierarachyController
+const ChangeCertificatioRequired = async (
+  event: any,
+  CertificateId: number,
+  HieararchyId: number,
+) => {
+  if (event.target.checked) {
+    const addCErtificateToHierarachyController = AddCErtificateToHierarachyController.getInstance()
+    const addCertificateToHierarchyParams = new AddCertificateToHierarchyParams({
+      certificateId: CertificateId,
+      hieararchyId: HieararchyId,
+    })
+    await addCErtificateToHierarachyController.addCertificateToHieararchy(
+      addCertificateToHierarchyParams,
+      router,
+    )
+  } else {
+    const deleteCErtificateToHierarachyController =
+      DeleteCErtificateToHierarachyController.getInstance()
+    const deleteCertificateToHierarchyParams = new DeleteCertificateToHierarchyParams({
+      certificateId: CertificateId,
+      hieararchyId: HieararchyId,
+    })
+    await deleteCErtificateToHierarachyController.deleteCertificateToHieararchy(
+      deleteCertificateToHierarchyParams,
+      router,
+    )
+  }
 }
 </script>
 
@@ -211,7 +240,8 @@ const ChangeCertificatioRequired = (CertificateId:number , HieararchyId:number)=
                     {{ getEmployeeCertificationStatus(hierarchy, cert) }}
                     <input
                       type="checkbox"
-                      @change="ChangeCertificatioRequired(cert.id , hierarchy.id)"
+                      :checked="hierarchy.certificates.find((el) => el.id == cert.id)"
+                      @change="ChangeCertificatioRequired($event, cert.id, hierarchy.id)"
                     />
                   </p>
                 </td>
