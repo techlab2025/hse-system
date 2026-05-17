@@ -9,8 +9,8 @@ export default class CreateProjectLocationTeamEmployeeParams implements Params {
     this.teams = teams
   }
 
-  toMap(): Record<string, number | any[]> {
-    const data: Record<string, number | any[]> = {}
+  toMap(): Record<string, number | null | any[]> {
+    const data: Record<string, number | null | any[]> = {}
     if (this.id || useProjectSelectStore().getProjectId())
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
     data['teams'] = this.teams
@@ -21,5 +21,5 @@ export default class CreateProjectLocationTeamEmployeeParams implements Params {
 interface ProjectTeams {
   project_location_id: number
   team_id: number
-  employee_ids: number[]
+  employees: { emp_id: number; is_leader: boolean }[]
 }

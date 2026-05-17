@@ -1307,5 +1307,7 @@
   "admin_permission": "Admin Permission",
   "contractor_phone_number": "Contractor Phone Number",
   "refrence_number": "Refrence Number",
-  "sub_contractors": "Sub Contractors"
+  "sub_contractors": "Sub Contractors",
+  "team_leader": "Team Leader",
+  "team_type": "Team Type"
 }

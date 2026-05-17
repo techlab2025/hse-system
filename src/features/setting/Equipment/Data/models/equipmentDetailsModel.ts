@@ -118,13 +118,13 @@ export default class EquipmentDetailsModel {
 
   static fromMap(data: any): EquipmentDetailsModel {
     return new EquipmentDetailsModel(
-      data.id,
-      data.all_industries,
-      data.certificate_image,
-      data.date,
-      data.inspection_duration,
-      data.license_number,
-      data.license_plate_number,
+      data?.id,
+      data?.all_industries,
+      data?.certificate_image,
+      data?.date,
+      data?.inspection_duration,
+      data?.license_number,
+      data?.license_plate_number,
       // this.getStatus(data.status),
       data.status,
       TranslationsParams.fromMap(data.titles).titles,

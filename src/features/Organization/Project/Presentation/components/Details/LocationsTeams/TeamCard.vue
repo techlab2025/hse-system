@@ -77,6 +77,15 @@ const DeleteTeamMember = async (id: number) => {
         @update:data="GetProjectLocationsEmployes"
         :teamId="team.teamId! || teamId"
         :isInCard="true"
+        mode="leader"
+      />
+      <AddCreateTeam
+        :ProjectLocationId="location?.projectLocationId! || ProjectLocationId"
+        :LocationId="location?.locationId! || LocationId"
+        @update:data="GetProjectLocationsEmployes"
+        :teamId="team.teamId! || teamId"
+        :isInCard="true"
+        mode="employee"
       />
     </div>
   </div>

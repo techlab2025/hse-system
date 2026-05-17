@@ -6,7 +6,6 @@ import { FetchHirarchyCertificatesApiService } from '../../Data/apiServices/Fetc
 
 class HierarchyCertificateRepo extends RepoInterface<HierarchyCertificateModel[]> {
   private static instance: HierarchyCertificateRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
     super()
   }
@@ -17,13 +16,9 @@ class HierarchyCertificateRepo extends RepoInterface<HierarchyCertificateModel[]
     return this.instance
   }
 
-  // override get responseType(): ResponseType {
-  //   return ResponseType.withoutData
-  // }
 
   onParse(data: any): HierarchyCertificateModel[] {
-    // console.log(data , "daaaatattat");
-    return data.data.map((el:any)=>HierarchyCertificateModel.fromMap(el)) 
+    return data.map((el: any) => HierarchyCertificateModel.fromMap(el))
   }
 
   get serviceInstance(): ServicesInterface {
