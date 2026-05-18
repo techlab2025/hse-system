@@ -35,20 +35,20 @@ export default class DeleteCErtificateToHierarachyController extends ControllerI
           messageContent: null,
         })
       } else {
-        DialogSelector.instance.failedDialog.openDialog({
-          dialogName: 'dialog-error',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
-          imageElement: errorImage,
+        DialogSelector.instance.successDialog.openDialog({
+          dialogName: 'dialog-success',
+          titleContent: 'deleted was successful',
+          imageElement: successImage,
           messageContent: null,
         })
       }
     } catch (error: unknown) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog-error',
-        titleContent: this.state.value.error?.title ?? (error as string),
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      // DialogSelector.instance.failedDialog.openDialog({
+      //   dialogName: 'dialog-error',
+      //   titleContent: this.state.value.error?.title ?? (error as string),
+      //   imageElement: errorImage,
+      //   messageContent: null,
+      // })
     }
 
     super.handleResponseDialogs()
