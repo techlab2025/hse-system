@@ -169,7 +169,7 @@ const ChangeCertificatioRequired = async (
       router,
     )
   }
-    fetchHierarchyCertificate()
+  fetchHierarchyCertificate()
 
   if (!route.params.id) {
     fetchCertificates()
@@ -242,8 +242,11 @@ const ChangeCertificatioRequired = async (
                   :class="getEmployeeCertificationclass(hierarchy, cert)"
                 >
                   <p class="cert-status">
-                    {{ getEmployeeCertificationStatus(hierarchy, cert) }}
+                    <label :for="`cert-${cert.id}-hierarchy-${hierarchy.id}`">
+                      {{ getEmployeeCertificationStatus(hierarchy, cert) }}</label
+                    >
                     <input
+                      :id="`cert-${cert.id}-hierarchy-${hierarchy.id}`"
                       type="checkbox"
                       :checked="hierarchy.certificates.find((el) => el.id == cert.id)"
                       @change="ChangeCertificatioRequired($event, cert.id, hierarchy.id)"
