@@ -11,10 +11,11 @@ import CreateProjectLocationTeamEmployeeController from '../../../controllers/Cr
 import CreateProjectLocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/CreateProjectLocationTeamEmployeeParams'
 
 const emit = defineEmits(['update:data'])
-const { ProjectLocationId, LocationId, teamId } = defineProps<{
+const { ProjectLocationId, LocationId, teamId, mode } = defineProps<{
   ProjectLocationId: number | undefined
   LocationId: number | undefined
   teamId?: number | undefined
+  mode?: 'leader' | 'employee' | 'both'
 }>()
 const route = useRoute()
 const id = Number(route.params.project_id || route.params.id)
@@ -23,6 +24,7 @@ const indexTeamController = IndexTeamController.getInstance()
 const indexTeamsParams = new IndexTeamParams('', 1, 10, 1)
 const TeamType = ref<TitleInterface | null>(null)
 const Employees = ref<TitleInterface[]>([])
+const TeamLeader = ref<TitleInterface | null>(null)
 const indexHierarchyEmployeeController = IndexHierarchyEmployeeController.getInstance()
 const indexLocationHierarchyEmployeeParams = new IndexLocationHierarchyEmployeeParams(
   id,
@@ -35,6 +37,13 @@ const setTeamType = (data: TitleInterface) => {
 
 const setEmployees = (data: TitleInterface[]) => {
   Employees.value = data
+  if (TeamLeader.value && !data.find((e) => e.id === TeamLeader.value?.id)) {
+    TeamLeader.value = null
+  }
+}
+
+const setTeamLeader = (data: TitleInterface) => {
+  TeamLeader.value = data
 }
 
 const CreateProjectLocationTeamEmployee = async () => {
@@ -42,13 +51,16 @@ const CreateProjectLocationTeamEmployee = async () => {
   //   return
   // }
 
-  const employeeIds = Employees.value.map((emp) => emp.id)
+  const employees = Employees.value.map((emp) => ({
+    employee_id: emp.id,
+    is_leader: mode === 'leader' ? true : (mode === 'employee' ? false : emp.id === TeamLeader.value?.id),
+  }))
 
   const teams = [
     {
       project_location_id: ProjectLocationId!,
-      team_id: teamId ? teamId : TeamType.value?.id,
-      employee_ids: employeeIds,
+      team_id: (teamId ? teamId : TeamType.value?.id) as number,
+      employees,
     },
   ]
 
@@ -93,6 +105,18 @@ const CreateProjectLocationTeamEmployee = async () => {
             :type="2"
             :placeholder="$t('employee')"
             @update:modelValue="setEmployees"
+          />
+        </div>
+
+        <div class="input-wrapper" v-if="mode !== 'leader' && mode !== 'employee'">
+          <CustomSelectInput
+            :modelValue="TeamLeader"
+            class="input"
+            :staticOptions="Employees"
+            :label="$t('team_leader')"
+            id="team-leader"
+            :placeholder="$t('team_leader')"
+            @update:modelValue="setTeamLeader"
           />
         </div>
       </div>

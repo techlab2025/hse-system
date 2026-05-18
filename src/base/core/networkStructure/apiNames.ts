@@ -1609,6 +1609,13 @@ class ApiNames {
   public get CloseInvestigating() {
     return this.prefix + 'close_investigation'
   }
+
+  public get addCertificateToHierarchy() {
+    return this.prefix + 'create_certificate_hierarchy'
+  }
+  public get deleteCertificateToHierarchy() {
+    return this.prefix + 'delete_hierarchy_certificate'
+  }
 }
 
 export { ApiNames }

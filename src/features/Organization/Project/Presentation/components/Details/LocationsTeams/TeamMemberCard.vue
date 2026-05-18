@@ -25,6 +25,7 @@ const UpdateData = (id: number) => {
   <router-link
     :to="`/organization/organization-employee/show/${member?.organization_employee_id || member.employeeId}?type=3`"
     class="member-card"
+    :class="{ isLeader: member.is_leader == 1 }"
   >
     <DeleteEmployeeDialog
       @delete="
