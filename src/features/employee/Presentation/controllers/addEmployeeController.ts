@@ -40,10 +40,8 @@ export default class AddEmployeeController extends ControllerInterface<EmployeeM
         })
 
         const { user } = useUserStore()
-
         if (!draft) await router.push(`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipments`)
 
-        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
