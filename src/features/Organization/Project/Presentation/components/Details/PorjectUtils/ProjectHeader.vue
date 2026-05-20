@@ -59,7 +59,7 @@ const actionList = (id: number) => [
       <p class="project-name">{{ projectName }}</p>
       <div class="project-statics">
         <ContractorIcon class="icon" />
-        <span class="contractor">{{ t('contractor') }} : {{ Contractors }}</span>
+        <span class="contractor">{{ t('sub_contractors') }} : {{ Contractors }}</span>
       </div>
     </div>
     <DropList :actionList="actionList(Number(route.params.id))" />

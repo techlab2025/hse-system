@@ -29,21 +29,19 @@ const state = ref(projectCustomLocationController.state.value)
 
 const hierarchies = ref<Record<number, TitleInterface[]>>({})
 
-
-
 const GetProjectLocationsHirarchy = async () => {
-  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [ProjectCustomLocationEnum.HIERARCHY])
+  const projectCustomLocationParams = new ProjectCustomLocationParams(id, [
+    ProjectCustomLocationEnum.HIERARCHY,
+  ])
   const response = await projectCustomLocationController.getData(projectCustomLocationParams)
 }
 
-onMounted(
-  async () => {
-    await GetProjectLocationsHirarchy();
-  }
-)
+onMounted(async () => {
+  await GetProjectLocationsHirarchy()
+})
 
 const handleHierarchyUpdate = (projectLocationId: number, value: TitleInterface[]) => {
-  console.log({ projectLocationId: projectLocationId, value: value });
+  console.log({ projectLocationId: projectLocationId, value: value })
   hierarchies.value[projectLocationId] = value || []
 }
 
@@ -59,16 +57,18 @@ const handleAddAllHierarchies = async () => {
 
     const params = new AddLocationHierarchyParams(+route.params.project_id, hierarchyList)
     await addHierarchyController.addLocationHierarchy(params, router, id, LocatioId)
-
   } catch (error) {
     console.error('Error adding hierarchies:', error)
   }
 }
 
-watch(() => projectCustomLocationController.state.value, (newState) => {
-  if (!newState) return
-  state.value = newState
-})
+watch(
+  () => projectCustomLocationController.state.value,
+  (newState) => {
+    if (!newState) return
+    state.value = newState
+  },
+)
 
 // const
 </script>
@@ -77,8 +77,11 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
   <!-- <pre>{{ state.data }}</pre> -->
   <div class="add-hierarchy">
     <!-- <Breadcrumbs /> -->
-    <HeaderPage :title="$t('Add your hierarchy')" :subtitle="$t('Select your hierarchy for each location from your main hierarchy')"
-      :number="1" />
+    <HeaderPage
+      :title="$t('Add your Position')"
+      :subtitle="$t('Select your hierarchy for each location from your main Position')"
+      :number="1"
+    />
     <DataStatus :controller="state">
       <template #success>
         <div v-for="(item, index) in state.data" :key="index">
@@ -87,13 +90,19 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
               <LocationColor />
               <h5>{{ item.title }}</h5>
             </div>
-            <CreateHierarchyForm @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)"
-              :selectedHirarchy="item.locationHierarchy" v-if="item.id == LocatioId" />
+            <CreateHierarchyForm
+              @update:herikaly="(value) => handleHierarchyUpdate(item.projectLocationId, value)"
+              :selectedHirarchy="item.locationHierarchy"
+              v-if="item.id == LocatioId"
+            />
           </div>
         </div>
 
         <div class="submit-btn">
-          <RouterLink :to="`/organization/employee-details/${route.params.project_id}`" class="btn btn-cancel">
+          <RouterLink
+            :to="`/organization/employee-details/${route.params.project_id}`"
+            class="btn btn-cancel"
+          >
             {{ $t('cancel') }}
           </RouterLink>
 
@@ -109,14 +118,20 @@ watch(() => projectCustomLocationController.state.value, (newState) => {
         <TableLoader :cols="8" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/project/add`" addText="Add Project"
+        <DataEmpty
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/project/add`" addText="Add Project"
+        <DataFailed
+          :link="`/organization/project/add`"
+          addText="Add Project"
           description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Project" />
+          title="..ops! You have No Project"
+        />
       </template>
     </DataStatus>
   </div>

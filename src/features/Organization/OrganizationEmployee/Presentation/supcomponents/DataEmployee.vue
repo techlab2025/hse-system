@@ -8,7 +8,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
   <button class="system-data-add col-span-3">
     <Handemployee class="icon" />
     <div class="system-data-content">
-      <h2>Add Employee to the Hierarchy</h2>
+      <h2>Add Employee to the Position</h2>
       <p>Assign the employee to the UI team and define their role in the organizational structure.</p>
     </div>
   </button>

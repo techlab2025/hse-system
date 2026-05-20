@@ -1309,5 +1309,8 @@
   "refrence_number": "Refrence Number",
   "sub_contractors": "Sub Contractors",
   "team_leader": "Team Leader",
-  "team_type": "Team Type"
+  "team_type": "Team Type",
+  "sub_contractor": "Sub Contractor",
+  "add_position":"Add Position"
 }
+

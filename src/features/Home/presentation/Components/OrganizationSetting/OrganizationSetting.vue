@@ -313,7 +313,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
     id: RouterEnum.EMPLOYEES,
     title: "employees",
     icon: HomeSettingEmployeeIcon,
-    description: "organization employee . hierarchy . team",
+    description: "organization employee . position . team",
     routes: [
       {
         route: "/organization/organization-employee",
@@ -329,7 +329,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: "/organization/herikaly",
-        Name: "hierarchy",
+        Name: "Position",
         permissions: [
           PermissionsEnum.HERIKALY_ALL,
           PermissionsEnum.HERIKALY_CREATE,

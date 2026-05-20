@@ -55,7 +55,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'Project Hierarchy',
     component: () => import('@/views/Organization/Project/Hierarchy/addHierarchy.vue'),
     meta: {
-      breadcrumb: 'Project Hierarchy',
+      breadcrumb: 'Project Position',
       parent: 'Project Details',
       isSidebar: false,
     },

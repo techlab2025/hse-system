@@ -7,7 +7,6 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationHierarchyModel'
 import HeirarchySelectDialog from '../../SelectDialogs/HeirarchySelectDialog.vue'
 
-
 const props = defineProps<{
   selectedHirarchy: TitleInterface[]
 }>()
@@ -17,7 +16,10 @@ const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
 
 const emit = defineEmits(['update:herikaly'])
 
-const herikaly = ref<TitleInterface[]>(props.selectedHirarchy?.map((item) => new TitleInterface({ id: item?.id, title: item?.title })) || [])
+const herikaly = ref<TitleInterface[]>(
+  props.selectedHirarchy?.map((item) => new TitleInterface({ id: item?.id, title: item?.title })) ||
+    [],
+)
 
 const updateHerikaly = (value: TitleInterface[]) => {
   herikaly.value = value || []
@@ -32,10 +34,13 @@ const ShowHeirarchyDialog = () => {
 onMounted(() => {
   updateHerikaly(herikaly.value)
 })
-watch(() => props.selectedHirarchy, (newvalue) => {
-  herikaly.value = newvalue || []
-  // updateHerikaly(herikaly.value)
-})
+watch(
+  () => props.selectedHirarchy,
+  (newvalue) => {
+    herikaly.value = newvalue || []
+    // updateHerikaly(herikaly.value)
+  },
+)
 </script>
 
 <template>
@@ -43,10 +48,18 @@ watch(() => props.selectedHirarchy, (newvalue) => {
     <form>
       <div class="input-container">
         <div class="input-wrapper">
-          <CustomSelectInput :modelValue="herikaly" :params="HerikalyParams" :controller="indexHerikalyController"
-            class="input" :label="$t('functional Hierarchy')" id="herikaly" :type="2"
-            :placeholder="$t('functional Hierarchy')" @update:modelValue="updateHerikaly"
-            :onclick="ShowHeirarchyDialog" />
+          <CustomSelectInput
+            :modelValue="herikaly"
+            :params="HerikalyParams"
+            :controller="indexHerikalyController"
+            class="input"
+            :label="$t('functional Positions')"
+            id="herikaly"
+            :type="2"
+            :placeholder="$t('functional Positions')"
+            @update:modelValue="updateHerikaly"
+            :onclick="ShowHeirarchyDialog"
+          />
         </div>
       </div>
       <HeirarchySelectDialog v-model:visible="HeirarchyVisable" />

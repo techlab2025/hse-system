@@ -31,7 +31,7 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeProjectIcon"
           :title="`${$t('project')}`"
-          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('hierarchy')}`"
+          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('positions')}`"
         />
       </router-link>
     </PermissionBuilder>
@@ -113,7 +113,7 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeSettingIcon"
           :title="`${$t('settings')}`"
-          :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `"
+          :description="`${$t('position')} . ${$t('theme')} . ${$t('charts')} `"
         />
       </router-link>
     </PermissionBuilder>

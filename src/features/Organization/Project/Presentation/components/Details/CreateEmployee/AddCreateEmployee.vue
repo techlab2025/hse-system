@@ -166,14 +166,14 @@ const IsThereAnyLocationHierarchy = computed(() =>
         <div v-else class="hierarchy-empty">
           <EmptyData
             :img="EmptyFolder"
-            :title="$t('No Hierarchy Yet')"
+            :title="$t('No Poistion Yet')"
             :subtitle="
               $t(
-                'You haven’t added any Hierarchy to this project. Start building your Hierarchy now!',
+                'You haven’t added any Poistion to this project. Start building your Hierarchy now!',
               )
             "
             :link="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId}`"
-            linkText=" Start building your Hierarchy now!"
+            linkText=" Start building your Poistion now!"
           />
         </div>
       </template>

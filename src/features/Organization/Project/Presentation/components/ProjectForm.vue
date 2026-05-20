@@ -469,7 +469,7 @@ const UpdateSerial = (data) => {
       :controller="indexContractorController"
       :params="indexContractorTypeParams"
       label="sub_contractors"
-      placeholder="sub_contractors"
+      :placeholder="$t('sub_contractors')"
       :onclick="ShowContructorDialog"
     />
   </div>
