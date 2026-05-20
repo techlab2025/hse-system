@@ -74,6 +74,7 @@ const fetchInspection = async (
     withPage,
     employeeId || null,
     zoneId || null,
+    null,
     selectedProjctesFilters.value || null,
     null,
     route.query.typeId ? Number(route.query.typeId) : null,
