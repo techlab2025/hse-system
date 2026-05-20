@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Checkbox from 'primevue/checkbox'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
-import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import { ref, watch, computed, nextTick } from 'vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
@@ -23,15 +22,9 @@ const SelectedValues = ref<number[]>([])
 
 /* ================= computed ================= */
 const showTextArea = computed(() => {
-  return props.options.some(option => {
-    if (!SelectedValues.value.includes(option.id)) return false
-
-    const status = option.TextAreaType || option.kpi
-    return (
-      String(status) === String(TextAreaStatusEnum.required) ||
-      String(status) === String(TextAreaStatusEnum.optional)
-    )
-  })
+  return props.options
+    .filter(option => SelectedValues.value.includes(option.id))
+    .some(option => !!option.decodedData || option.kpi === '2')
 })
 
 const UpdateImg = (data: string) => {
@@ -130,7 +123,7 @@ watch(
     </div>
   </div>
 
-  <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in mt-4">
+  <div v-if="showTextArea " class="input-wrapper w-full animate-fade-in mt-4">
     <label for="notes" class="block mb-1 text-sm font-medium">
       {{ $t('Notes') }}
     </label>

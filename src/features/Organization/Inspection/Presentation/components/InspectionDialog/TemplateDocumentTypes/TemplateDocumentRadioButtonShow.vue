@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
-import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import RadioButton from 'primevue/radiobutton'
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -79,14 +78,10 @@ watch(
   { immediate: true }
 )
 
-const showTextArea = () => {
+const showTextArea = computed(() => {
   if (!SelectedOption.value) return false
-
-  // Checking both TextAreaType and kpi as per your second example
-  const status = SelectedOption.value?.TextAreaType || SelectedOption.value?.kpi
-  return String(status) === String(TextAreaStatusEnum.required) ||
-    String(status) === String(TextAreaStatusEnum.optional)
-}
+  return !!SelectedOption.value.decodedData || SelectedOption.value.kpi === '2'
+})
 </script>
 
 <template>
@@ -105,7 +100,7 @@ const showTextArea = () => {
         </div>
       </div>
 
-      <div v-if="showTextArea()" class="input-wrapper w-full animate-fade-in mt-4">
+      <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in mt-4">
         <label for="notes" class="block mb-1 text-sm font-medium">{{ $t('Notes') }}</label>
         <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
           :placeholder="$t('Please enter details...')"></textarea>

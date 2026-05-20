@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ItemModel extends TitleInterface {
-  // public isDanger: number
+  is_upload: boolean
 
   constructor(
     id: number,
@@ -9,6 +9,7 @@ export default class ItemModel extends TitleInterface {
     isDanger: number,
     textareaType: string,
     hasObservation: number,
+    isUpload: number,
   ) {
     super({
       id: id,
@@ -17,7 +18,7 @@ export default class ItemModel extends TitleInterface {
       kpi: String(textareaType),
       decodedData: String(hasObservation),
     })
-    // this.isDanger = isDanger
+    this.is_upload = !!isUpload
   }
 
   static fromMap(data: any): ItemModel {
@@ -26,7 +27,8 @@ export default class ItemModel extends TitleInterface {
       data.title,
       data.is_danger,
       data.textarea_type,
-      data.has_observation,
+      data.has_auto_observation,
+      data.is_upload,
     )
   }
 }

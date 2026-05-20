@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
-import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 
 const emit = defineEmits(['update:data', 'update:images'])
 
@@ -30,12 +29,7 @@ const UpdateImg = (data: string) => {
 const SetSelectedOption = (data: any) => {
   if (data) {
     SelectedOption.value = data
-
-    // Use nextTick to ensure the ref has updated
-    nextTick(() => {
-      showTextArea()
-      UpdateData()
-    })
+    nextTick(() => UpdateData())
   }
 }
 
@@ -84,11 +78,10 @@ watch(
 )
 
 
-const showTextArea = () => {
-  const status = Number(SelectedOption.value?.kpi)
-  return (SelectedOption.value?.kpi != 0) && (String(status) === String(TextAreaStatusEnum.required) ||
-    String(status) === String(TextAreaStatusEnum.optional))
-}
+const showTextArea = computed(() => {
+  if (!SelectedOption.value) return false
+  return !!SelectedOption.value.decodedData || SelectedOption.value.kpi === '2'
+})
 </script>
 
 <template>
@@ -111,7 +104,7 @@ const showTextArea = () => {
 
   </div>
 
-  <div v-if="showTextArea()" class="input-wrapper w-full animate-fade-in">
+  <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in">
     <label for="notes" class="block mb-1 text-sm font-medium">{{ $t('Notes') }}</label>
     <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
       :placeholder="$t('Please enter details...')"></textarea>
