@@ -69,7 +69,7 @@ watch(
               :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
               class="edit-btn"
             >
-              {{ $t('Add Hierarchy') }}
+              {{ $t('Add Position') }}
             </RouterLink>
             <AddCreateTeam
               :ProjectLocationId="locationTeam.projectLocationId"

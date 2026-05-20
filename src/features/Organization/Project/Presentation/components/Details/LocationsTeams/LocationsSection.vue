@@ -145,7 +145,7 @@ onMounted(() => {
               :to="`/organization/project-hierarchy/project/${id}?locationId=${location?.locationId}`"
               class="btn btn-secondary"
             >
-              {{ $t('add_hierarchy') }}
+              {{ $t('add_position') }}
             </RouterLink>
 
             <AddCreateTeam

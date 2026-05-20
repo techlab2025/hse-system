@@ -435,7 +435,7 @@ const IndexOrganizationEmployeectionList = () => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('name') }}</th>
-                <th scope="col">{{ $t('hierarchy') }}</th>
+                <th scope="col">{{ $t('position') }}</th>
                 <th scope="col">{{ $t('email') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->

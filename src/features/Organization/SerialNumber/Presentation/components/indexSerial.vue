@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import AddSerialForm from './AddSerialForm.vue'
-import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue';
-import { onMounted, ref, watch } from 'vue';
-import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum';
-import { useProjectAppStatusStore } from '@/stores/ProjectStatus';
-import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController';
-import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams';
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { onMounted, ref, watch } from 'vue'
+import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
+import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 
 const projectStatus = useProjectAppStatusStore()
-const SerialType = ref<SertialNumberStatusEnum | null>(projectStatus.getProjectAppStatus()?.codeSystemType ?? SertialNumberStatusEnum.AUTO)
+const SerialType = ref<SertialNumberStatusEnum | null>(
+  projectStatus.getProjectAppStatus()?.codeSystemType ?? SertialNumberStatusEnum.AUTO,
+)
 const updateSerialType = (type: boolean) => {
   if (type) {
     SerialType.value = SertialNumberStatusEnum.AUTO
@@ -43,15 +45,34 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
 
 <template>
   <div>
-    <PagesHeader :title="$t('Serial Number Management')" :actions="true">
+    <PagesHeader
+      :title="$t('Serial Number Management')"
+      :subtitle="
+        SerialType === SertialNumberStatusEnum.AUTO
+          ? $t('You Must Fill Serial Configuration First')
+          : $t('Now You Can Fill Serial Number Manually')
+      "
+      :actions="true"
+    >
+      <!-- <span v-if="SerialType === SertialNumberStatusEnum.AUTO" class="subtitle">{{
+        $t('You Must Fill Serial Configuration First')
+      }}</span>
+      <span v-else class="subtitle">{{ $t('Now You Can Fill Serial Number Manually') }}</span> -->
       <template #actions>
-        <CustomCheckbox :index="6" :title="GetSerialTypeTitle(SerialType!)" @update:checked="updateSerialType"
-          :checked="SerialType === SertialNumberStatusEnum.AUTO" />
+        <CustomCheckbox
+          :index="6"
+          :title="GetSerialTypeTitle(SerialType!)"
+          @update:checked="updateSerialType"
+          :checked="SerialType === SertialNumberStatusEnum.AUTO"
+        />
       </template>
     </PagesHeader>
     <div>
-      <AddSerialForm @update:data="$emit('update:data')" @close:dialog="$emit('close:dialog')"
-        :serialType="SerialType" />
+      <AddSerialForm
+        @update:data="$emit('update:data')"
+        @close:dialog="$emit('close:dialog')"
+        :serialType="SerialType"
+      />
     </div>
   </div>
 </template>
@@ -60,5 +81,11 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
 .checkbox-toggle-wrapper {
   border: none !important;
   margin-top: 0 !important;
+}
+.subtitle {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-top: 8px;
+  display: block;
 }
 </style>
