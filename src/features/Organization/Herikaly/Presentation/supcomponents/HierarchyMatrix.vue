@@ -169,6 +169,11 @@ const ChangeCertificatioRequired = async (
       router,
     )
   }
+    fetchHierarchyCertificate()
+
+  if (!route.params.id) {
+    fetchCertificates()
+  }
 }
 </script>
 
