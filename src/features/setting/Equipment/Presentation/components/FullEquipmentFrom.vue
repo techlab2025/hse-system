@@ -80,6 +80,7 @@ const setEquipmentStatus = (data: TitleInterface) => {
 
 const image = ref<string | null>(null)
 const decommissioningDate = ref<string | null>(null)
+const decommissioningDateObj = ref<Date | null>(null)
 const certificateImage = ref<string | null>(null)
 const langTitleValid = ref(false)
 
@@ -285,7 +286,9 @@ const updateData = () => {
   const StartDateFormat = StartDate.value
     ? formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
     : null
-  const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
+  const EndDateFormat = EndDate.value
+    ? formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
+    : null
 
   console.log(certificateImage.value, 'certificateImage.value')
   // if (certificateImage.value?.length < 1) {
@@ -439,6 +442,7 @@ watch(
       deviceStatus.value = newData?.status
       image.value = newData?.image
       decommissioningDate.value = newData?.date || null
+      decommissioningDateObj.value = newData?.date ? new Date(newData.date) : null
       certificateImage.value = newData?.certificateImage
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
@@ -511,9 +515,9 @@ const setRentTime = (time: string) => {
   updateData()
 }
 
-const setDecoDate = (date) => {
-  decommissioningDate.value = formatJoinDate(date)
-  console.log(decommissioningDate.value, 'decommissioningDate.value')
+const setDecoDate = (date: Date | null) => {
+  decommissioningDateObj.value = date
+  decommissioningDate.value = date ? formatJoinDate(date) : null
   updateData()
 }
 
@@ -739,7 +743,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label>{{ $t('certification / Inspection expiry date') }}</label>
         <DatePicker
-          :model-value="decommissioningDate!"
+          :model-value="decommissioningDateObj"
           id="Date of Decommissioning"
           placeholder="certification expiry date"
           @update:modelValue="setDecoDate"
