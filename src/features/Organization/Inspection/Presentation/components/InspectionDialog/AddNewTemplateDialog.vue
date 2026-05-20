@@ -28,15 +28,12 @@ import { useRouter } from 'vue-router'
 import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
 // import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
 
-
-
 const visible = ref(false)
 const emit = defineEmits(['update:data', 'update:templateId'])
 
 // Translations
 const langs = ref<{ locale: string; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
 
 const ActionsSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
@@ -80,29 +77,26 @@ const fetchLang = async () => {
 
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
+        locale: item.code,
+        title: '',
+        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+      }))
     : [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
+        { locale: 'en', icon: USA, title: '' },
+        { locale: 'ar', icon: SA, title: '' },
+      ]
 
   if (!items.value.length) {
     items.value.push(createNewItem())
   }
 }
 
-onMounted(
-  () => {
-    fetchLang();
-
-  }
-)
+onMounted(() => {
+  fetchLang()
+})
 interface items {
   title: string
-  isDanger: boolean
+  is_upload: boolean
   isTextAreaRequired: boolean
   textarea_type: number
   has_auto_observation: boolean
@@ -111,11 +105,11 @@ interface items {
 const buildOptions = (templateItems: any[]): items[] => {
   return templateItems.map((item) => ({
     title: item.text,
-    isDanger: item.isUplaod,
+    is_upload: item.isUplaod,
     isTextAreaRequired: item.isTextarea,
     textarea_type: item.textareaType ?? 0,
     has_auto_observation: item.isObservation,
-    normal_textarea: true
+    normal_textarea: true,
   }))
 }
 const updateData = () => {
@@ -124,8 +118,7 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-
-  console.log(TemplateData.value, "TemplateData.value")
+  console.log(TemplateData.value, 'TemplateData.value')
   const items = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
       null,
@@ -134,7 +127,7 @@ const updateData = () => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
-      item.itemTag
+      item.itemTag,
     )
   })
 
@@ -145,8 +138,10 @@ const updateData = () => {
     image.value || null,
     null,
     items,
-    SelectedTemplateType?.value?.id
+    SelectedTemplateType?.value?.id,
   )
+  
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -154,7 +149,6 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
 }
-
 
 const SelectedTemplateType = ref<TitleInterface | null>(null)
 const TemplateTypes = ref<TitleInterface[]>([
@@ -171,22 +165,18 @@ const setTemplateType = (data: TitleInterface) => {
 const TemplateData = ref()
 const GetTemplateData = (data) => {
   TemplateData.value = data
-  console.log(TemplateData.value, "TemplateData.value")
+  console.log(TemplateData.value, 'TemplateData.value')
 }
-
 
 const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
 
 const addTemplate = async (isInLibrary: number) => {
-
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
-
-
 
   const items = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
@@ -196,7 +186,7 @@ const addTemplate = async (isInLibrary: number) => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
-      item.itemTag
+      item.itemTag,
     )
   })
   const params = new AddTemplateParams(
@@ -207,34 +197,34 @@ const addTemplate = async (isInLibrary: number) => {
     null,
     items,
     SelectedTemplateType?.value?.id,
-    isInLibrary
+    isInLibrary,
   )
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
   if (state?.value.data) {
     emit('update:templateId', {
       templateId: state?.value.data.id,
       teamplateTitle: state?.value.data.title,
-      isInLibrary: isInLibrary
+      isInLibrary: isInLibrary,
     })
   }
   visible.value = false
 }
 
-watch(() => visible.value, (newVal) => {
-  console.log(newVal, "Newval");
-  if (!newVal) {
-    TemplateData.value = []
-    langs.value = []
-    SelectedTemplateType.value = null
-    image.value = null
-
-  }
-})
+watch(
+  () => visible.value,
+  (newVal) => {
+    console.log(newVal, 'Newval')
+    if (!newVal) {
+      TemplateData.value = []
+      langs.value = []
+      SelectedTemplateType.value = null
+      image.value = null
+    }
+  },
+)
 </script>
 
 <template>
-
-
   <div class="add-new-template-btn flex gap-2" @click="visible = true">
     <AddNewTemplateIcon />
     <div class="add-new-template-header">
@@ -242,12 +232,24 @@ watch(() => visible.value, (newVal) => {
         <span class="title">{{ $t('new_template') }}</span>
         <NewTemplateArrowIcon />
       </div>
-      <p class="descripetion">{{ $t('you can customize a new templet from here and you can use it once or save it to your collection') }}</p>
+      <p class="descripetion">
+        {{
+          $t(
+            'you can customize a new templet from here and you can use it once or save it to your collection',
+          )
+        }}
+      </p>
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dissmissible-mask="true" :style="{ width: '70vw', height: '80vh' }"
-    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="add-new-template-dialog-container">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dissmissible-mask="true"
+    :style="{ width: '70vw', height: '80vh' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    class="add-new-template-dialog-container"
+  >
     <template #header>
       <div class="add-new-template-dialog-header">
         <p class="title">{{ $t('create new template') }}</p>
@@ -265,9 +267,15 @@ watch(() => visible.value, (newVal) => {
         </div>
 
         <div class="col-span-4 md:col-span-2">
-          <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
-            :label="$t('Template Type')" id="TemplateType" :placeholder="$t('Select Template Type')"
-            @update:modelValue="setTemplateType" />
+          <CustomSelectInput
+            :modelValue="SelectedTemplateType"
+            :staticOptions="TemplateTypes"
+            :required="true"
+            :label="$t('Template Type')"
+            id="TemplateType"
+            :placeholder="$t('Select Template Type')"
+            @update:modelValue="setTemplateType"
+          />
         </div>
 
         <TemplateTimeLine :visable="visible" @update:data="GetTemplateData" />
@@ -284,5 +292,4 @@ watch(() => visible.value, (newVal) => {
       </button>
     </div>
   </Dialog>
-
 </template>
