@@ -57,10 +57,10 @@ export default class AddTemplateItemParams implements Params {
       data['options'] = this.answers.map((item) => ({
         title: item.title,
         is_upload: item.is_upload ? 1 : 0,
-        textarea_type: item?.normal_textarea
+        textarea_type: item?.normal_textarea || item.has_auto_observation
           ? item?.textarea_type
-          : item?.isTextAreaRequired
-            ? item.textarea_type
+          : item?.isTextAreaRequired || item.has_auto_observation
+            ? item.textarea_type || item.has_auto_observation
               ? TextAreaStatusEnum.required
               : TextAreaStatusEnum.optional
             : 0,
