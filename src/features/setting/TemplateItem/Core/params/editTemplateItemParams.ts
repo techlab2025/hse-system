@@ -62,7 +62,7 @@ export default class implements Params {
       has_auto_observation: item.has_auto_observation ? 1 : 0,
     }))
     data['require_image'] = this.isImageRequired
-    data['required_type'] = this.imageType
+    data['required_type'] = Number(this.imageType)
     data['tag'] = this.tag || ''
 
     return data

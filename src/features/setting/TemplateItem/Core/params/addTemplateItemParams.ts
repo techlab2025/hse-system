@@ -69,7 +69,7 @@ export default class AddTemplateItemParams implements Params {
         has_auto_observation: item.has_auto_observation ? 1 : 0,
       }))
     data['require_image'] = this.isImageRequired || 0
-    data['required_type'] = this.imageType || 0
+    data['required_type'] = Number(this.imageType) || 0
     data['template_item_tag'] = this.tag || ''
     return data
   }
