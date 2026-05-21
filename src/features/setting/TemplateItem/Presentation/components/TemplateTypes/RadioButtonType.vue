@@ -8,6 +8,8 @@ import TextAreaRequiredIcon from '@/shared/icons/TextAreaRequiredIcon.vue';
 import TextAreaRequiredSelectedIcon from '@/shared/icons/TextAreaRequiredSelectedIcon.vue';
 import { onMounted, ref } from 'vue';
 import { TextAreaStatusEnum } from '../../../Core/Enum/TextAreaStatusEnum';
+import UploadImageTemplateIcon from '@/shared/icons/UploadImageTemplateIcon.vue';
+import ActiveUploadImage from '@/shared/icons/ActiveUploadImage.vue';
 
 const emit = defineEmits(['update:data'])
 const Answers = ref([
@@ -100,9 +102,9 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-col gap-2">
                   <div class="flex gap-2">
-                    <DangerIcon class="icon cursor-pointer" v-if="!Answers[index].is_upload"
+                    <UploadImageTemplateIcon class="icon cursor-pointer" v-if="!Answers[index].is_upload"
                       @click="Answers[index].is_upload = true; UpdateData()" />
-                    <RedDangerIcon class="icon cursor-pointer" v-if="Answers[index].is_upload"
+                    <ActiveUploadImage class="icon cursor-pointer" v-if="Answers[index].is_upload"
                       @click="Answers[index].is_upload = false; UpdateData()" />
                     <TextAreaRequiredIcon class="icon cursor-pointer" v-if="!Answers[index].isTextAreaRequired"
                       @click="Answers[index].isTextAreaRequired = true; UpdateData()" />
