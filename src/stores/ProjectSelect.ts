@@ -29,7 +29,7 @@ export const useProjectSelectStore = defineStore(
       return project.value
     }
 
-    function SelectedProjectId(projectId: number) {
+    function SelectedProjectId(projectId: number |number[]) {
       if (projectId) {
         return projectId
       }

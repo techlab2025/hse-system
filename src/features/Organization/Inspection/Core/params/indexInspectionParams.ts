@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -46,7 +47,9 @@ export default class IndexInspectionParams implements Params {
     if (this.id) data['employee_ids'] = this.id
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
-    if (this.projectIds) data['project_ids'] = [this.projectIds]
+    // if (this.projectIds) data['project_ids'] = [this.projectIds]
+    if (this.projectIds || useProjectSelectStore().getProjectId())
+      data['project_ids'] = [useProjectSelectStore().SelectedProjectId(this.projectIds!)]
     if (this.taskId) data['task_id'] = this.taskId
     // if (this.code) data['code'] = this.code
     return data
