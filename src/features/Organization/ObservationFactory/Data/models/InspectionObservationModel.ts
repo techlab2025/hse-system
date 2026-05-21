@@ -12,6 +12,8 @@ export default class InspectionObservatioModel {
   public morphType: number
   public morphId: number
   public templateTitle: string
+  public templateId: number
+
   public templateItemTitle: string
   public taskResultItemId: number
   public media: FilesModel[]
@@ -32,6 +34,7 @@ export default class InspectionObservatioModel {
     media: FilesModel[],
     taskResultItemAnswerTextReply: string,
     answers: ItemModel[],
+    templateId: number,
   ) {
     this.taskId = taskId
     this.serialNumber = serialNumber
@@ -47,6 +50,7 @@ export default class InspectionObservatioModel {
     this.media = media
     this.taskResultItemAnswerTextReply = taskResultItemAnswerTextReply
     this.answers = answers
+    this.templateId = templateId
   }
 
   static fromMap(data: any): InspectionObservatioModel {
@@ -65,6 +69,7 @@ export default class InspectionObservatioModel {
       data.media,
       data.task_result_item_answer_text_reply,
       data.answers,
+      data.template_id,
     )
   }
 }

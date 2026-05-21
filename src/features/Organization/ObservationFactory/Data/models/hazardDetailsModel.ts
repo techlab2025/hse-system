@@ -55,7 +55,8 @@ export default class HazardDetailsModel {
   public actionStatus: ActionStatusEnum
   public serialName: string
   public time: string
-
+  public lastest_inspection_result: InspectionObservatioModel
+  public task: any
   constructor(
     id: number,
     title: string,
@@ -95,6 +96,8 @@ export default class HazardDetailsModel {
     actionStatus: ActionStatusEnum,
     serialName: string,
     time: string,
+    lastest_inspection_result: InspectionObservatioModel,
+    task:any,
   ) {
     this.id = id
     this.title = title
@@ -134,6 +137,8 @@ export default class HazardDetailsModel {
     this.actionStatus = actionStatus
     this.serialName = serialName
     this.time = time
+    this.lastest_inspection_result = lastest_inspection_result
+    this.task = task
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -176,6 +181,8 @@ export default class HazardDetailsModel {
       data?.action_status,
       data?.serial_name,
       data?.time,
+      data?.lastest_inspection_result?InspectionObservatioModel.fromMap(data?.lastest_inspection_result):null,
+    data?.task
     )
   }
 
@@ -214,6 +221,6 @@ export default class HazardDetailsModel {
     InspectionObservatioModel.example,
     [{ id: 1, title: 'title' }],
     InvestegationResultDetailsModel.example,
-    
+
   )
 }

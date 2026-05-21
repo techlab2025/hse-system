@@ -20,12 +20,13 @@ import ShowResultIcon from '@/shared/icons/ShowResultIcon.vue'
 
 const visible = ref(false)
 
-const { templateId, taskId } = defineProps<{
+const { templateId, taskId, autoObservation } = defineProps<{
   templateId: number
   taskId: number
   status: number
   lastinspection?: boolean
   showResult?: boolean
+  autoObservation?: boolean
 }>()
 
 const router = useRouter()
@@ -184,7 +185,7 @@ const TaskResults = ref<TaskFullResponseModel>()
 const fetchTaskResultController = FetchTaskResultController.getInstance()
 
 const GetTaskDetails = async () => {
-  const fetchTaskResultParams = new FetchTaskResultParams(taskId)
+  const fetchTaskResultParams = new FetchTaskResultParams(taskId, templateId)
   const result = await fetchTaskResultController.getData(fetchTaskResultParams)
   if (result.value.data) {
     TaskResults.value = result.value.data
@@ -213,28 +214,55 @@ watch(
 
 <template>
   <div class="inspection-start card w-full flex justify-center">
-    <button class="show-button" style="z-index: 999" @click="GetData"
-      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection && !showResult">
+    <button
+      class="show-button"
+      style="z-index: 999"
+      @click="GetData"
+      v-if="status == InspectionStatus.NOT_FINISHED && !lastinspection && !showResult"
+    >
       <div class="button-text">
         <h5 class="">{{ $t('Add results') }}</h5>
       </div>
     </button>
-    <button class="show-button" style="z-index: 999" @click="GetData"
-      v-if="status == InspectionStatus.FINISHED && !lastinspection && !showResult">
+    <button
+      class="show-button"
+      style="z-index: 999"
+      @click="GetData"
+      v-if="status == InspectionStatus.FINISHED && !lastinspection && !showResult"
+    >
       <div class="button-text">
         <h5 class="">{{ $t('Show results') }}</h5>
       </div>
     </button>
 
-
-    <button class="show-result-btn flex gap-1" v-if="lastinspection" style="z-index: 999" @click="GetData">
+    <button
+      class="show-result-btn flex gap-1"
+      v-if="lastinspection"
+      style="z-index: 999"
+      @click="GetData"
+    >
       <span>{{ $t('show Result') }}</span>
       <!-- <ShowResultIcon /> -->
     </button>
 
-    <button class="show-button  " v-if="showResult" style="z-index: 999" @click="GetData">
+    <button
+      class="show-button"
+      v-if="showResult && !autoObservation"
+      style="z-index: 999"
+      @click="GetData"
+    >
+      <div class="observation-inspection-card">
+        <div class="observation-inspection-card-header">
+          <p class="inspection-auto">{{ $t('View inspection results') }}</p>
+        </div>
+      </div>
+    </button>
+
+    <!-- autoObservation -->
+
+    <button class="show-button" v-if="autoObservation" style="z-index: 999" @click="GetData">
       <div class="button-text">
-        <h5 class="">{{ $t('Show results') }}</h5>
+        <h5 class="">{{ $t('View inspection results ') }}</h5>
       </div>
       <!-- <ShowResultIcon /> -->
     </button>
@@ -244,19 +272,33 @@ watch(
       <span> show inspection details </span>
       <ArrowDetails />
     </button> -->
-    <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
+    <Dialog
+      v-model:visible="visible"
+      :header="title"
+      modal
+      :dismissable-mask="true"
+      :style="{ width: '60vw' }"
+    >
       <!-- <div :class="status == InspectionStatus.FINISHED ? 'overlay' : ''"> -->
 
       <!-- {{ console.log(TaskResults?.taskResults[TaskResults?.taskResults], "resullllttt") }} -->
       <!-- {{ console.log(TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1], "resullllttt") }} -->
-      <TemplateDocument :isOverlay="status == InspectionStatus.FINISHED" :allData="AllDocument"
-        @update:data="UpdateData" :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" />
+      <TemplateDocument
+        :isOverlay="status == InspectionStatus.FINISHED"
+        :allData="AllDocument"
+        @update:data="UpdateData"
+        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]"
+      />
 
-      <button v-if="
-        status == InspectionStatus.NOT_FINISHED &&
-        route?.query?.inspectionType != InspectionPageType.InspectionForm &&
-        route?.query?.inspectionType != InspectionPageType.Result
-      " class="btn btn-primary w-full mt-4" @click="CreateAnswer">
+      <button
+        v-if="
+          status == InspectionStatus.NOT_FINISHED &&
+          route?.query?.inspectionType != InspectionPageType.InspectionForm &&
+          route?.query?.inspectionType != InspectionPageType.Result
+        "
+        class="btn btn-primary w-full mt-4"
+        @click="CreateAnswer"
+      >
         {{ $t('confirm') }}
       </button>
       <!-- </div> -->
@@ -269,6 +311,6 @@ watch(
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
+
 </style>
