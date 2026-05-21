@@ -493,6 +493,7 @@ html[dir=rtl] .input-search .icon-remove {
 }
 .data-empty .data-empty-content .data-empty-content-text {
   width: 100%;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -511,6 +512,7 @@ html[dir=rtl] .input-search .icon-remove {
 }
 .data-empty .data-empty-content .data-empty-content-text .oops-message {
   width: 100%;
+  margin-top: 25px;
   font-size: var(--xl-size-3);
   font-weight: 700;
   color: var(--PrimaryColor);
@@ -21413,4 +21415,8 @@ input.py {
 
 .table-responsive table.main-table thead tr th:last-of-type.empty {
   display: table-cell !important;
+}
+
+.table-responsive table.main-table thead tr th:last-of-type {
+  justify-content: center !important;
 }/*# sourceMappingURL=main.css.map */

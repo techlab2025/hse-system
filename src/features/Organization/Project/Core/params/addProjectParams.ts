@@ -11,6 +11,7 @@ export default class AddProjectParams implements Params {
   zoonIds: number[]
   methodIds: number[]
   endDate: string
+  serial?: string
   constructor(data: {
     translation: TranslationsParams
     ContractorIds: number[]
@@ -20,6 +21,7 @@ export default class AddProjectParams implements Params {
     zoonIds: number[]
     methodIds: number[]
     endDate: string
+    serial?: string
   }) {
     this.translation = data.translation
     this.ContractorIds = data.ContractorIds
@@ -29,6 +31,7 @@ export default class AddProjectParams implements Params {
     this.zoonIds = data.zoonIds
     this.methodIds = data.methodIds
     this.endDate = data.endDate
+    this.serial = data.serial
   }
   toMap(): Record<
     string,
@@ -44,15 +47,16 @@ export default class AddProjectParams implements Params {
     data['translations'] = this.translation.toMap()
     data['contractor_ids'] = this.ContractorIds.map((id) => id)
     if (this.startDate) data['start_date'] = formatJoinDate(this.startDate)
-    if (useProjectAppStatusStore().isSerialNumberAuto()) {
+    if (useProjectAppStatusStore().isSerialNumberAuto() || !this.serial) {
       data['serial_number'] = this.SerialNumber
     } else {
-      data['serial'] = this.SerialNumber
+      data['serial'] = this.serial || this.SerialNumber
     }
     if (this.locationIds?.length > 0) data['location_ids'] = this.locationIds
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
     if (this.endDate) data['end_date'] = formatJoinDate(this.endDate)
+
     return data
   }
 }

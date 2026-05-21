@@ -52,8 +52,8 @@ const AllPagesToView = ref([
   },
   {
     id: ProjectProgressEnum.Heirarchy,
-    title: "Functional Hierarchy",
-    description: "Define the hierarchy and assign roles for your project team",
+    title: "Positions",
+    description: "Define positions structure and assign related project roles",
     link: "/organization/herikaly?type=3"
   },
   {

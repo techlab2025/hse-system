@@ -25,6 +25,8 @@ const GetProjectLocationsEmployes = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(id, [
     ProjectCustomLocationEnum.TEAM_EMPLOYEE,
     ProjectCustomLocationEnum.EMPLOYEE,
+    ProjectCustomLocationEnum.HIERARCHY,
+    ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
   ])
   const response = await projectCustomLocationController.getData(projectCustomLocationParams)
   console.log(response.value.data, 'response.va')
@@ -75,10 +77,15 @@ watch(
               :ProjectLocationId="locationTeam.projectLocationId"
               :LocationId="locationTeam.id"
               @update:data="GetProjectLocationsEmployes"
+              v-if="
+                locationTeam?.locationHierarchies?.length! > 0 &&
+                locationTeam.locationEmplyees?.length! > 0
+              "
             />
             <RouterLink
               :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
               class="add-btn"
+              v-if="locationTeam?.locationHierarchies?.length! > 0"
             >
               {{ $t('Add Employee') }}
             </RouterLink>

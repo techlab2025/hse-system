@@ -305,4 +305,20 @@ const ChangeCertificatioRequired = async (
   padding: 10px !important;
   text-align: center;
 }
+.cert-status {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+th {
+  text-align: center !important;
+}
+th:last-of-type {
+  text-align: center !important;
+}
+
+.employee-certificates-matrix .employee-info-container .employee-info {
+  width: 100% !important;
+  justify-content: center !important;
+}
 </style>

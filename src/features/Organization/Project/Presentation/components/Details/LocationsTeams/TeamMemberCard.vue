@@ -47,3 +47,9 @@ const UpdateData = (id: number) => {
     </div>
   </router-link>
 </template>
+
+<style scoped>
+.isLeader {
+  border: 1px solid #1d4ed8 !important;
+}
+</style>

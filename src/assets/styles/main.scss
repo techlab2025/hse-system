@@ -443,3 +443,9 @@ input {
 .table-responsive table.main-table thead tr th:last-of-type.empty {
   display: table-cell !important;
 }
+
+
+  .table-responsive table.main-table thead tr th:last-of-type{
+    justify-content:center !important;
+  }
+

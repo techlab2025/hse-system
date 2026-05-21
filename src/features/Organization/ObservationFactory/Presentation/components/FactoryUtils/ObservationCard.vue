@@ -102,7 +102,7 @@ const GoToShowPage = () => {
             class="flex flex-col items-start gap-2"
             v-if="data?.type != Observation.ObservationType && data?.actionStatus"
           >
-            <p>{{ $t(`toggle status`) }}</p>
+            <p>{{ $t(`convert status to ${data.actionStatus == 1 ? 'Close' : 'Open'} `) }}</p>
             <CustomCheckboxToggle
               :index="data.id"
               title=""

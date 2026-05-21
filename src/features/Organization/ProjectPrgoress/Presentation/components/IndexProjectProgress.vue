@@ -107,7 +107,7 @@ const AllPagesToView = ref([
   { id: ProjectProgressEnum.Certificate, component: AddCertificate, title: "Functional Certificate", description: "Define certificate structure and assign related project roles" },
   { id: ProjectProgressEnum.Tempalte, component: TemplateItemAdd, title: "Functional Template", description: "Define templates structure and assign related project roles" },
   { id: ProjectProgressEnum.Employee, component: AddOrganization, title: "Functional Employee", description: "Define employees structure and assign roles within the organization" },
-  { id: ProjectProgressEnum.Heirarchy, component: AddHerikaly, title: "Functional Hierarchy", description: "Define the hierarchy and assign roles for your project team" },
+  { id: ProjectProgressEnum.Heirarchy, component: AddHerikaly, title: "Positions", description: "Define positions structure and assign related project roles" },
   { id: ProjectProgressEnum.Country, component: AddCountry, title: "Functional Country", description: "Define country structure and assign roles across locations" },
   { id: ProjectProgressEnum.State, component: AddState, title: "Functional State", description: "Define state structure and assign roles within each country" },
   { id: ProjectProgressEnum.City, component: AddCity, title: "Functional City", description: "Define city structure and assign roles within each state" },

@@ -33,7 +33,7 @@ const UpdateData = () => {
   </button>
   <button class="pluse-icon-container" v-else @click="visible = true">
     <PlusIcon class="pluse-icon" />
-    <span v-if="mode === 'leader'" class="btn-text">{{ $t('add_team_leader') }}</span>
+    <span v-if="mode === 'leader'" class="btn-text">{{ $t('change_team_leader') }}</span>
     <span v-else-if="mode === 'employee'" class="btn-text">{{ $t('add_employee') }}</span>
   </button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
@@ -41,7 +41,7 @@ const UpdateData = () => {
       <div class="add-equipment-header">
         <HeaderSection
           :img="CreateTeam"
-          :title="mode === 'leader' ? $t('add_team_leader') : (mode === 'employee' ? $t('add_employee') : $t('create_team'))"
+          :title="mode === 'leader' ? $t('change_team_leader') : (mode === 'employee' ? $t('add_employee') : $t('create_team'))"
           :subtitle="$t('select your team type & add your employee from the location')"
         />
       </div>

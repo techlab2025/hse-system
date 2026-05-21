@@ -177,8 +177,8 @@ const updateData = () => {
         methodIds: EvaluatingMethod.value?.map((p) => p.id),
         SerialNumber: SerialNumber.value,
         endDate: endDate.value,
+        serial: !fields.value[0].enabled? SerialNumber.value : undefined,
       })
-  console.log(params, 'paramsparamsparams')
   emit('update:data', params)
 }
 

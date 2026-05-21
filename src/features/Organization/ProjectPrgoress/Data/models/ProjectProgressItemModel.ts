@@ -22,7 +22,7 @@ export default class ProjectProgressItemModel {
     new ProjectProgressItemModel(ProjectProgressEnum.Certificate, 'Certificate', true),
     new ProjectProgressItemModel(ProjectProgressEnum.Tempalte, 'Tempalte', false),
     new ProjectProgressItemModel(ProjectProgressEnum.Employee, 'Employee', false),
-    new ProjectProgressItemModel(ProjectProgressEnum.Heirarchy, 'Heirarchy', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.Heirarchy, 'Positions', false),
     new ProjectProgressItemModel(ProjectProgressEnum.Country, 'Country', false),
     new ProjectProgressItemModel(ProjectProgressEnum.State, 'State', false),
     new ProjectProgressItemModel(ProjectProgressEnum.City, 'City', false),
