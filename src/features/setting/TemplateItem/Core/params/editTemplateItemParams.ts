@@ -54,10 +54,11 @@ export default class implements Params {
     data['items'] = this.answers.map((item) => ({
       title: item.title,
       is_danger: item.is_danger ? 1 : 0,
-      textarea_type:
-        item.textarea_type || item.has_auto_observation
-          ? TextAreaStatusEnum?.required
-          : TextAreaStatusEnum?.optional,
+      textarea_type: item.has_auto_observation
+        ? TextAreaStatusEnum.required
+        : item.textarea_type
+          ? TextAreaStatusEnum.required
+          : TextAreaStatusEnum.optional,
       has_auto_observation: item.has_auto_observation ? 1 : 0,
     }))
     data['require_image'] = this.isImageRequired
