@@ -27,7 +27,10 @@ const createNewAnswerObject = () => ({
 const Answers = ref([createNewAnswerObject()])
 
 const addNewAnswer = () => {
-  Answers.value.push(createNewAnswerObject())
+  const lastTag = Answers.value.length > 0 ? Answers.value[Answers.value.length - 1].itemTag : ''
+  const newAnswer = createNewAnswerObject()
+  newAnswer.itemTag = lastTag
+  Answers.value.push(newAnswer)
   UpdateData()
 }
 

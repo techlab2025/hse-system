@@ -17,6 +17,7 @@ import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionE
 import DemoCard from '../EquipmentUtils/DemoCard.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import { usePrint } from '@/stores/PrintPart'
 
 const route = useRoute()
 const controller = ShowEquipmentController.getInstance()
@@ -44,6 +45,9 @@ watch(
 
 const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
 const { user } = useUserStore()
+const { printArea, print } = usePrint()
+
+
 </script>
 
 <template>
@@ -56,7 +60,8 @@ const { user } = useUserStore()
           <div class="w-full">
             <CardEquipment :equipmentData="state.data!" />
           </div>
-          <div class="Qr_EQUIPMENt">
+          <div class="Qr_EQUIPMENt printable-area" ref="printArea">
+            <span class="print-icon" @click="print">{{ $t('Print') }}</span>
             <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="state.data?.title"
               :isForm="true" :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
               :image="state.data?.image" :selctedequipment="state.data?.title"
@@ -109,6 +114,16 @@ const { user } = useUserStore()
   align-items: center;
   justify-content: center;
   gap: 20px;
+  position: relative;
+}
+.print-icon{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #1d4ed8;
+  text-decoration: underline;
+  font-family: 'Regular';
 }
 
 .add-dialog {
@@ -133,5 +148,28 @@ const { user } = useUserStore()
 .h-full {
   height: 100%;
   padding: 12px;
+}
+
+
+@media print {
+  /* Hide everything */
+  body * {
+    visibility: hidden;
+    display: none;
+  }
+
+  /* Show only the target and its children */
+  .printable-area,
+  .printable-area * {
+    visibility: visible;
+  }
+
+  /* Position it to fill the page */
+  .printable-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }
 </style>
