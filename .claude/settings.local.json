@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx sass *)",
+      "Bash(not exist *)",
+      "Bash(git rm *)",
+      "Bash(echo \"\")",
+      "Bash(echo \"# Windows reserved device name \\(created accidentally\\)\")",
+      "Bash(echo \"nul\")"
+    ]
+  }
+}

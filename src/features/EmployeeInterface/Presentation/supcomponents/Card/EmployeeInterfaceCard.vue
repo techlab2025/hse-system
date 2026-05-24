@@ -34,7 +34,7 @@ const cards: EmpCard[] = [
         show: useprojectSelectStore.AllProjects?.length > 0,
       },
       {
-        title: 'Inspection Results',
+        title: 'Inspection logs',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
         show: true
       },
@@ -78,7 +78,7 @@ const cards: EmpCard[] = [
   },
 ]
 
-const buttons = [{ title: 'Daily Inspection' }, { title: 'View Results' }]
+const buttons = [{ title: 'Daily Inspection' }, { title: 'View Inspection Logs' }]
 </script>
 <template>
   <div class="employee-interface-wrapper">

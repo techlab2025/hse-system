@@ -29,3 +29,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Windows reserved device name (created accidentally)
+nul

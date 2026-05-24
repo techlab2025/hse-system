@@ -48,7 +48,7 @@ export default class IndexInspectionParams implements Params {
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
     // if (this.projectIds) data['project_ids'] = [this.projectIds]
-    if (this.projectIds || useProjectSelectStore().getProjectId())
+    if ((this.projectIds || useProjectSelectStore().getProjectId()) && useProjectSelectStore().SelectedProjectId(this.projectIds!) != null)
       data['project_ids'] = [useProjectSelectStore().SelectedProjectId(this.projectIds!)]
     if (this.taskId) data['task_id'] = this.taskId
     // if (this.code) data['code'] = this.code

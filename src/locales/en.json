@@ -1315,5 +1315,10 @@
   "add_city": "Add City",
   "add_location": "Add Location",
   "add_zone": "Add Zone",
-  "change_team_leader": "Change Team Leader"
+  "change_team_leader": "Change Team Leader",
+  "inspection_exemined_title": "Inspection Exemined Title",
+  "inspection_exemined_tag": "Inspection Exemined Tag",
+  "result_type": "Result Type",
+  "add_template_item": "Add Template Item",
+  "add_to_template": "Add to Template"
 }

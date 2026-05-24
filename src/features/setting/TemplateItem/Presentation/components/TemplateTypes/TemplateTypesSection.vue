@@ -14,7 +14,7 @@ const UpdateData = () => {
 </script>
 <template>
   <div class="template-types-container">
-    <p class="template-title">Type</p>
+    <p class="template-title">{{ $t('result_type') }}</p>
     <div class="action-box drop-down" :class="{ selected: SelectedAction == ActionsEnum.DROPDOWN }">
       <label for="drop-down">
         <span>drop-down select</span>

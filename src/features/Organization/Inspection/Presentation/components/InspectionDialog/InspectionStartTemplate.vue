@@ -241,7 +241,7 @@ watch(
       style="z-index: 999"
       @click="GetData"
     >
-      <span>{{ $t('show Result') }}</span>
+      <span>{{ $t('show Log') }}</span>
       <!-- <ShowResultIcon /> -->
     </button>
 
@@ -253,7 +253,7 @@ watch(
     >
       <div class="observation-inspection-card">
         <div class="observation-inspection-card-header">
-          <p class="inspection-auto">{{ $t('View inspection results') }}</p>
+          <p class="inspection-auto">{{ $t('View inspection logs') }}</p>
         </div>
       </div>
     </button>
@@ -262,7 +262,7 @@ watch(
 
     <button class="show-button" v-if="autoObservation" style="z-index: 999" @click="GetData">
       <div class="button-text">
-        <h5 class="">{{ $t('View inspection results ') }}</h5>
+        <h5 class="">{{ $t('View inspection logs ') }}</h5>
       </div>
       <!-- <ShowResultIcon /> -->
     </button>

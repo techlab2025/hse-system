@@ -150,7 +150,7 @@ const GetEquipmentType = (type: number) => {
         <router-link v-if="!isDrag && !showresult && !isEquipment" class="show-button w-full mt"
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`">
           <div class="button-text">
-            <h5>{{ $t('Show all results') }}</h5>
+            <h5>{{ $t('Show all logs') }}</h5>
             <!-- <span>20</span> -->
           </div>
           <ButtonArrow />
