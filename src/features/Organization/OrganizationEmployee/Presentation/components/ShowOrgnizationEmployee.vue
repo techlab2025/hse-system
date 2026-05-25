@@ -38,7 +38,7 @@ const printPage = () => {
 }
 </script>
 <template>
-  <button class="print-btn" @click="printPage">Print Page</button>
+  <!-- <button class="print-btn" @click="printPage">Print Page</button> -->
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <div class="lg:col-span-3 space-y-6">
       <EmployeeProfileBox :state="empDetastate" />

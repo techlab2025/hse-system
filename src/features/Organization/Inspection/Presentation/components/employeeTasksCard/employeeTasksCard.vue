@@ -5,12 +5,13 @@ import IndexInspectionParams from '../../../Core/params/indexInspectionParams';
 import EmployeeIconCard from '@/shared/icons/employeeIconCard.vue';
 import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum';
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import FetchAllTasksController from '../../controllers/FetchAllTasksController';
 
 const props = defineProps<{
   employee_id: number
   employee_name: string
 }>()
-const indexInspectionController = IndexInspectionController.getInstance()
+const indexInspectionController =  FetchAllTasksController.getInstance();
 const state = ref(indexInspectionController.state.value)
 
 const GetEmployeeInspection = async () => {
