@@ -15,6 +15,7 @@ import AccordionContent from 'primevue/accordioncontent'
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
 import IndexProjectProgressController from '../../../ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
+import PathSerial from '@/shared/icons/pathSerial.vue'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
 const emit = defineEmits(['update:data', 'close:dialog'])
@@ -27,11 +28,11 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   [SerialNumberEnum.EQUIPMENT]: 'Equipment',
   [SerialNumberEnum.PROJECT]: 'Project',
   [SerialNumberEnum.EMPLOYEE]: 'Employee',
-  [SerialNumberEnum.AccidentsType]: 'Accidents Type',
+  [SerialNumberEnum.AccidentsType]: 'Incident Type',
   [SerialNumberEnum.CONTRACTOR]: 'Contractor',
-  [SerialNumberEnum.HazardType]: 'Hazard Type',
+  // [SerialNumberEnum.HazardType]: 'Hazard Type',
   [SerialNumberEnum.OBSERVATION]: 'Observation',
-  [SerialNumberEnum.ObservationType]: 'Observation Type',
+  // [SerialNumberEnum.ObservationType]: 'Observation Type',
   // [SerialNumberEnum.PROJECTLOCATION]: 'Project Location',
   // [SerialNumberEnum.PROJECTZONE]: 'Project Zone',
   [SerialNumberEnum.TASK]: 'Task',
@@ -86,15 +87,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 6,
-    serialNumberType: SerialNumberEnum.HazardType,
-    name: SerialNumberEnum.HazardType,
-    title: getTitle(SerialNumberEnum.HazardType),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 6,
+  //   serialNumberType: SerialNumberEnum.HazardType,
+  //   name: SerialNumberEnum.HazardType,
+  //   title: getTitle(SerialNumberEnum.HazardType),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
 
   {
     id: 8,
@@ -105,15 +106,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 9,
-    serialNumberType: SerialNumberEnum.ObservationType,
-    name: SerialNumberEnum.ObservationType,
-    title: getTitle(SerialNumberEnum.ObservationType),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 9,
+  //   serialNumberType: SerialNumberEnum.ObservationType,
+  //   name: SerialNumberEnum.ObservationType,
+  //   title: getTitle(SerialNumberEnum.ObservationType),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   // {
   //   id: 10,
   //   serialNumberType: SerialNumberEnum.PROJECTLOCATION,
@@ -244,6 +245,19 @@ const route = useRoute()
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
+        <div class="generated-serial " v-if="field.serialNumberType == SerialNumberEnum.EQUIPMENT">
+          <div class="icon-text">
+            <PathSerial/>
+            <p>Generated Serial number Example:</p>
+          </div>
+          <div class="cards">
+
+              <p>prefix: <span class="text">EQ</span></p>
+              <p>suffix: <span class="text">HSE</span></p>
+              <p>start: <span class="text">1001</span></p>
+
+          </div>
+        </div>
       </div>
     </div>
 
@@ -257,3 +271,47 @@ const route = useRoute()
     </div>
   </form>
 </template>
+
+<style lang="scss" scoped>
+.generated-serial{
+  background-color: rgba(249, 249, 252, 1);
+  border-radius: 24px;
+  padding: 1rem;
+
+  //  display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 1.1rem;
+  .icon-text{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    p{
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: "regular";
+      color: rgba(32, 32, 32, 1);
+    }
+  }
+  .cards{
+    // display: flex;
+    // gap: 1rem;
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+    display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+   p{
+      font-size: .8rem;
+      font-weight: 600;
+      font-family: "regular";
+      color: rgba(130, 130, 139, 1);
+      span{
+        color: rgba(32, 32, 32, 1);
+      }
+    }
+  }
+}
+
+</style>
