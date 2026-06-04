@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref, defineEmits } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
+const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
@@ -130,11 +131,21 @@ const fileUpload = async (file: File) => {
   }
 }
 
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title', 'require_expired_date'])
 const SendDataLabels: Record<string, string> = {
-  title: 'Title',
-  require_expired_date: 'Require Expired Date',
+  title: t('title'),
+  require_expired_date: t('require_expired_date'),
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -160,7 +171,7 @@ const AddOrgEmployee = async () => {
   const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
+      if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i]
     })
     obj.require_expired_date =
       String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
@@ -201,33 +212,27 @@ const onMappingClose = () => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
-      <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
+    <!-- <div class="excel-warning"> -->
+    <!-- <div class="warning-header flex item-center gap-2 justify-between w-full">
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
             <span class="title">excel instuctions</span>
             <span class="sub-title">A Step-by-Step Guide to Using the Spreadsheet</span>
           </div>
-        </div>
+        </div> -->
 
-        <!-- <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
-          <ExcelSheetIcon class="icon" />
-          <span class="download-title">Download Excel Sheet</span>
-        </a> -->
-      </div>
+    <!-- </div> -->
 
-      <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
+    <!-- <div class="rule-group">
         <div class="field-tags">
           <span class="field-tag">Certificate title</span>
           <span class="field-tag">has Expiry date</span>
         </div>
-      </div>
+      </div> -->
 
-      <hr class="separator" />
-    </div>
+    <!-- <hr class="separator" /> -->
+    <!-- </div> -->
 
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
@@ -266,10 +271,9 @@ const onMappingClose = () => {
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span>
-                      {{ item }}
-                    </span>
+                    <span>{{ SendDataLabels[item] ?? item }}</span>
                   </th>
+                  <th class="last"></th>
                 </tr>
               </thead>
               <tbody>
@@ -298,6 +302,9 @@ const onMappingClose = () => {
 </template>
 
 <style scoped>
+.last {
+  display: table-cell !important;
+}
 .title-container {
   .title {
     color: #1f41bb;
