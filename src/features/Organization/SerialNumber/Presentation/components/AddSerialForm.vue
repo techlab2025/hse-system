@@ -245,16 +245,17 @@ const route = useRoute()
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
-        <div class="generated-serial " v-if="field.serialNumberType == SerialNumberEnum.EQUIPMENT">
+        <div class="generated-serial ">
           <div class="icon-text">
-            <PathSerial/>
+            <PathSerial />
             <p>Generated Serial number Example:</p>
           </div>
           <div class="cards">
 
-              <p>prefix: <span class="text">EQ</span></p>
+            <!-- <p>prefix: <span class="text">EQ</span></p>
               <p>suffix: <span class="text">HSE</span></p>
-              <p>start: <span class="text">1001</span></p>
+              <p>start: <span class="text">1001</span></p> -->
+            <p>{{ field.prefix }}-{{ field.start }}-{{ field.suffix }}</p>
 
           </div>
         </div>
@@ -273,45 +274,58 @@ const route = useRoute()
 </template>
 
 <style lang="scss" scoped>
-.generated-serial{
+.generated-serial {
   background-color: rgba(249, 249, 252, 1);
   border-radius: 24px;
   padding: 1rem;
 
-  //  display: flex;
-  //   align-items: center;
-  //   justify-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+   display: flex;
+    align-items: end;
+    gap: .5rem;
+    // justify-content: space-between;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
   margin: 0 1.1rem;
-  .icon-text{
+
+  .icon-text {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    p{
+
+    p {
       font-size: 1rem;
       font-weight: 600;
       font-family: "regular";
       color: rgba(32, 32, 32, 1);
     }
   }
-  .cards{
+
+  .cards {
     // display: flex;
     // gap: 1rem;
     // flex-wrap: wrap;
     // justify-content: space-between;
-    display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-   p{
+    // display: grid;
+    // grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    // @media (max-width: 1100px) {
+    //   grid-template-columns: 1fr 1fr 1fr;
+    // }
+
+    // @media (max-width: 768px) {
+    //   grid-template-columns: 1fr 1fr;
+    // }
+
+    p {
       font-size: .8rem;
       font-weight: 600;
       font-family: "regular";
       color: rgba(130, 130, 139, 1);
-      span{
+
+      span {
         color: rgba(32, 32, 32, 1);
       }
     }
   }
 }
-
 </style>
