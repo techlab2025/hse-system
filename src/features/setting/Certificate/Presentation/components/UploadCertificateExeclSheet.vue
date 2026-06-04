@@ -142,10 +142,10 @@ watch(
 )
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>(['title', t('require_expired_date')])
+const SendData = ref<string[]>(['title', 'require_expired_date'])
 const SendDataLabels: Record<string, string> = {
-  title: 'Title',
-  hasexpireddate: t('require_expired_date'),
+  title: t('title'),
+  require_expired_date: t('require_expired_date'),
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -171,7 +171,7 @@ const AddOrgEmployee = async () => {
   const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
+      if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i]
     })
     obj.require_expired_date =
       String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
@@ -271,9 +271,7 @@ const onMappingClose = () => {
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span>
-                      {{ item }}
-                    </span>
+                    <span>{{ SendDataLabels[item] ?? item }}</span>
                   </th>
                   <th class="last"></th>
                 </tr>
