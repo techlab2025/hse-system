@@ -10,6 +10,7 @@ import EmployeeInterfaceCard from '@/features/EmployeeInterface/Presentation/sup
 const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 
 const addEquipmentController = AddEquipmentController.getInstance()
 const emit = defineEmits(['update:data', 'close:dialog'])
@@ -19,6 +20,15 @@ const addEquipment = async () => {
   await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router)
   emit('update:data')
 }
+
+const saveAndAdd = async () => {
+  const state = await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router, true)
+  if (!state.value.error) {
+    params.value = null
+    formKey.value++
+  }
+}
+
 const setParams = (data: Params) => {
   params.value = data
 }
@@ -26,7 +36,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addEquipment">
-    <FullEquipmentFrom @update:data="setParams" />
+    <FullEquipmentFrom :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <div class="flex items-center gap-2 !mt-4">
@@ -34,16 +44,34 @@ const setParams = (data: Params) => {
           class="btn btn-danger w-30">
           <span>Cancel</span>
         </router-link>
-
-        <!-- <button v-else @click.prevent="$emit('close:dialog')" class="btn btn-danger w-30">
-          Cancel
-        </button> -->
-        <button type="submit" class="btn btn-primary w-full">
-          <span>Add Equipment</span>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
+        >
+          <span>{{ $t('save') }}</span>
+        </button>
+        <button
+          v-if="route.path.includes('project-progress')"
+          @click.prevent="saveAndAdd"
+          class="btn btn-primary w-1/2"
+        >
+          {{ $t('save and add') }}
         </button>
       </div>
     </div>
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row !important;
+  width: 100% !important;
+  button {
+    &.w-full { width: 100%; }
+    &.w-1\/2 { width: 50%; }
+  }
+}
+</style>

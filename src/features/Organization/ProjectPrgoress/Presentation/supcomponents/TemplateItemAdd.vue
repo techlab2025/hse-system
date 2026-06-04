@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import { markRaw, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { TemplateType } from '@/features/setting/Template/Core/Enum/TemplateTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
@@ -14,13 +15,12 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
-import { useRouter } from 'vue-router'
 import TemplateTimeLine from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateTimeLine.vue'
-// import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
 
 
 
 const visible = ref(false)
+const formKey = ref(0)
 const emit = defineEmits(['update:data', 'update:templateId'])
 
 // Translations
@@ -156,15 +156,15 @@ const GetTemplateData = (data) => {
 const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
+const route = useRoute()
 
-const addTemplate = async (isInLibrary: number) => {
-
+const buildParams = (isInLibrary: number): AddTemplateParams => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const items = TemplateData.value.map((item) => {
+  const templateItems = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
       null,
       item.itemTitle,
@@ -175,16 +175,28 @@ const addTemplate = async (isInLibrary: number) => {
       item.itemTag
     )
   })
-  const params = new AddTemplateParams(
+
+  return new AddTemplateParams(
     translationsParams,
     null,
     null ?? [],
     image.value || null,
     null,
-    items,
+    templateItems,
     SelectedTemplateType?.value?.id,
     isInLibrary
   )
+}
+
+const resetForm = () => {
+  langs.value = []
+  SelectedTemplateType.value = null
+  TemplateData.value = undefined
+  formKey.value++
+}
+
+const addTemplate = async (isInLibrary: number) => {
+  const params = buildParams(isInLibrary)
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
   if (state?.value.data) {
     emit('update:templateId', {
@@ -193,6 +205,15 @@ const addTemplate = async (isInLibrary: number) => {
       isInLibrary: isInLibrary
     })
     emit('update:data')
+  }
+  visible.value = false
+}
+
+const saveAndAdd = async () => {
+  const params = buildParams(1)
+  const state = await addTemplateController.addTemplate(params as AddTemplateParams, router, true)
+  if (!state?.value.error) {
+    resetForm()
   }
   visible.value = false
 }
@@ -216,9 +237,6 @@ watch(
 </script>
 
 <template>
-
-
-
   <div class="add-new-template-dialog-container">
     <!-- BODY -->
     <div class="dialog-body">
@@ -226,28 +244,48 @@ watch(
         <hr class="inspection-template-dialog-divider col-span-4" />
 
         <div class="col-span-4 md:col-span-2">
-          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+          <LangTitleInput :key="formKey" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
         </div>
 
         <div class="col-span-4 md:col-span-2">
-          <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+          <CustomSelectInput :key="formKey" :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
             :label="$t('Template Type')" id="TemplateType" :placeholder="$t('Select Template Type')"
             @update:modelValue="setTemplateType" />
         </div>
 
-        <TemplateTimeLine :visable="visible" @update:data="GetTemplateData" />
+        <TemplateTimeLine :key="formKey" :visable="visible" @update:data="GetTemplateData" />
       </div>
     </div>
 
     <!-- FOOTER FIXED -->
-    <div class="dialog-footer">
-      <button class="btn btn-primary w-full" @click="addTemplate(1)">
+    <div class="dialog-footer button-wrapper">
+      <button
+        class="btn btn-primary"
+        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
+        @click="addTemplate(1)"
+      >
         {{ $t('confirm') }}
       </button>
-      <!-- <button class="btn btn-secondary" @click="addTemplate(0)">
-        {{ $t('use only this time') }}
-      </button> -->
+      <button
+        v-if="route.path.includes('project-progress')"
+        class="btn btn-primary w-1/2"
+        @click="saveAndAdd"
+      >
+        {{ $t('save and add') }}
+      </button>
     </div>
   </div>
-
 </template>
+
+<style scoped>
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row !important;
+  width: 100% !important;
+  button {
+    &.w-full { width: 100%; }
+    &.w-1\/2 { width: 50%; }
+  }
+}
+</style>

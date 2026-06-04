@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
 import CertificateForm from './CertificateForm.vue'
 import type Params from '@/base/core/params/params'
@@ -22,12 +22,17 @@ const setParams = (data: Params) => {
 }
 
 const addcertificate = async () => {
-  const state = await addCertificateController.addCertificate(params.value as AddCertificateParams, router, true)
+  const state = await addCertificateController.addCertificate(
+    params.value as AddCertificateParams,
+    router,
+    true,
+  )
   if (!state.value.error) {
     params.value = null
     formKey.value++
   }
 }
+const route = useRoute()
 </script>
 
 <template>
@@ -35,8 +40,20 @@ const addcertificate = async () => {
     <CertificateForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
-      <button @click.prevent="addcertificate" class="btn btn-primary">{{ $t('save and add  ') }}</button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :class="route.path.includes('/project-progress') ? 'w-1/2' : 'w-full'"
+      >
+        {{ $t('save') }}
+      </button>
+      <button
+        v-if="route.path.includes('project-progress')"
+        @click.prevent="addcertificate"
+        class="btn btn-primary w-1/2"
+      >
+        {{ $t('save and add  ') }}
+      </button>
     </div>
   </form>
 </template>
@@ -49,6 +66,12 @@ const addcertificate = async () => {
   width: 100% !important;
   button {
     width: 50%;
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>
