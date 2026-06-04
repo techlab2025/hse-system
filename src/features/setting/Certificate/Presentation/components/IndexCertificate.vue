@@ -119,6 +119,16 @@ watch(
 
 const { user } = useUserStore()
 const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
   {
@@ -178,8 +188,8 @@ const exportExcel = () => {
 
 const DownloadExample = () => {
   const worksheetData = [
-    { 'Certificate title': 'Example Certificate', 'has Expiry date': 'Yes' },
-    { 'Certificate title': 'Example Certificate 2', 'has Expiry date': 'No' },
+    { title: 'Example Certificate', require_expired_date: 'Yes' },
+    { title: 'Example Certificate 2', require_expired_date: 'No' },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
@@ -200,9 +210,7 @@ const IndexOrganizationEmployeectionList = () => [
   {
     text: t('upload_certificate_sheet'),
     icon: ActionsListAddIcon,
-    action: () => {
-      showUploadDialog.value = true
-    },
+    action: () => fileInputRef.value?.click(),
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
@@ -382,6 +390,17 @@ const IndexOrganizationEmployeectionList = () => [
     :header="$t('upload_certificate_sheet')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadCertificateExeclSheet @uploaded="showUploadDialog = false; fetchCertificate()" />
+    <UploadCertificateExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="showUploadDialog = false; pendingFile = null; fetchCertificate()"
+    />
   </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
