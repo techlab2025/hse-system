@@ -55,19 +55,19 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.CERTIFICATE_UPDATE,
     ],
   },
-  {
-    link: '/organization/partner',
-    name: t('partners'),
-    permissions: [
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.PARTNER_ALL,
-      PermissionsEnum.PARTNER_CREATE,
-      PermissionsEnum.PARTNER_UPDATE,
-      PermissionsEnum.PARTNER_DETAILS,
-      PermissionsEnum.PARTNER_DELETE,
-      PermissionsEnum.PARTNER_FETCH,
-    ],
-  },
+  // {
+  //   link: '/organization/partner',
+  //   name: t('partners'),
+  //   permissions: [
+  //     PermissionsEnum.WEBSITE,
+  //     PermissionsEnum.PARTNER_ALL,
+  //     PermissionsEnum.PARTNER_CREATE,
+  //     PermissionsEnum.PARTNER_UPDATE,
+  //     PermissionsEnum.PARTNER_DETAILS,
+  //     PermissionsEnum.PARTNER_DELETE,
+  //     PermissionsEnum.PARTNER_FETCH,
+  //   ],
+  // },
   // {
   //   link: '/organization/projects',
   //   name: 'Projects',

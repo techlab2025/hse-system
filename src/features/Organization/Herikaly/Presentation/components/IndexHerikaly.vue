@@ -237,9 +237,9 @@ const exportExcel = () => {
         >
           <DataEmpty
             :link="`/organization/herikaly/add`"
-            addText="Add Herikaly"
-            description="Sorry .. You have no Herikaly .. All your j   <AddHerikaly />oined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly"
+            addText="Add Position   "
+            description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
+            title="..ops! You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -249,9 +249,9 @@ const exportExcel = () => {
         >
           <DataFailed
             :link="`/organization/herikaly/add`"
-            addText="Add Herikaly"
-            description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly"
+            addText="Add Position   "
+            description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
+            title="..ops! You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -260,7 +260,7 @@ const exportExcel = () => {
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
+        description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
       />
     </template>
   </PermissionBuilder>
