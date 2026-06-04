@@ -382,6 +382,6 @@ const IndexOrganizationEmployeectionList = () => [
     :header="$t('upload_certificate_sheet')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadCertificateExeclSheet @uploaded="showUploadDialog = false" />
+    <UploadCertificateExeclSheet @uploaded="showUploadDialog = false; fetchCertificate()" />
   </Dialog>
 </template>

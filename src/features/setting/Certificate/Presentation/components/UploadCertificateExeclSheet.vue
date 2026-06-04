@@ -162,7 +162,8 @@ const AddOrgEmployee = async () => {
     headers.forEach((key, i) => {
       if (key && key.trim() !== '') obj[key] = row[i]
     })
-    obj.require_expired_date = String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
+    obj.require_expired_date =
+      String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
 
     return obj
   })
@@ -211,10 +212,10 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
+        <!-- <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
-        </a>
+        </a> -->
       </div>
 
       <div class="rule-group">
