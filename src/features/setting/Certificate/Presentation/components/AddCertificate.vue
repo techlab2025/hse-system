@@ -9,6 +9,7 @@ import AddCertificateController from '../controllers/addCertificateController'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 const emit = defineEmits(['update:data'])
 const addCertificateController = AddCertificateController.getInstance()
 
@@ -19,16 +20,35 @@ const addCertificate = async () => {
 const setParams = (data: Params) => {
   params.value = data
 }
+
+const addcertificate = async () => {
+  const state = await addCertificateController.addCertificate(params.value as AddCertificateParams, router, true)
+  if (!state.value.error) {
+    params.value = null
+    formKey.value++
+  }
+}
 </script>
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCertificate">
-    <CertificateForm @update:data="setParams" />
+    <CertificateForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
+      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button @click.prevent="addcertificate" class="btn btn-primary">{{ $t('save and add  ') }}</button>
     </div>
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row !important;
+  width: 100% !important;
+  button {
+    width: 50%;
+  }
+}
+</style>
