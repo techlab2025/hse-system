@@ -188,8 +188,8 @@ const exportExcel = () => {
 
 const DownloadExample = () => {
   const worksheetData = [
-    { title: 'Example Certificate', require_expired_date: 'Yes' },
-    { title: 'Example Certificate 2', require_expired_date: 'No' },
+    { title: 'NEBOSH', require_expired_date: 'Yes' },
+    { title: 'OSHA', require_expired_date: 'Yes' },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
@@ -392,7 +392,11 @@ const IndexOrganizationEmployeectionList = () => [
   >
     <UploadCertificateExeclSheet
       :initial-file="pendingFile"
-      @uploaded="showUploadDialog = false; pendingFile = null; fetchCertificate()"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchCertificate()
+      "
     />
   </Dialog>
 
