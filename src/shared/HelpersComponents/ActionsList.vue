@@ -34,6 +34,7 @@ const { actionList = [], showActions = true, actionsNumber = 0 } = defineProps<{
   actionList: ActionItem[]
   showActions?: boolean
   actionsNumber?: number
+  buttonTitle?: string
 }>()
 
 // ✅ Filter actions by permission
@@ -52,7 +53,7 @@ const isVisible = computed(() => {
 
 <template>
   <div class="action-list-trigger" @click.stop="toggle">
-    <button class="action-icon"><span>{{ actionsNumber }}</span>{{ $t('actions_list') }}</button>
+    <button class="action-icon"><span>{{ actionsNumber }}</span>{{ buttonTitle ? $t(buttonTitle) : $t('actions_list') }}</button>
     <ActionListArrow v-show="!isVisible" />
     <CloseArrowActios v-show="isVisible" />
   </div>

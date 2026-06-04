@@ -25,6 +25,13 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import Image from 'primevue/image'
+import Dialog from 'primevue/dialog'
+import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadCertificateExeclSheet from './UploadCertificateExeclSheet.vue'
 
 const { t } = useI18n()
 const word = ref('')
@@ -111,6 +118,7 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
 
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
   {
@@ -168,37 +176,42 @@ const exportExcel = () => {
   saveAs(data, 'certificate.xlsx')
 }
 
-// const IndexAction = () => [
-//   {
-//     text: t('edit'),
-//     icon: ActionsTableEdit,
-//     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${id}`,
-//     permission: [
-//       PermissionsEnum.CERTIFICATE_UPDATE,
-//       PermissionsEnum.ADMIN,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.CERTIFICATE_ALL,
-//     ],
-//   },
+const DownloadExample = () => {
+  const worksheetData = [
+    { 'Certificate title': 'Example Certificate', 'has Expiry date': 'Yes' },
+    { 'Certificate title': 'Example Certificate 2', 'has Expiry date': 'No' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Certificates')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'certificate_form.xlsx')
+}
 
-//   {
-//     text: t('delete'),
-//     icon: IconDelete,
-//     action: () => deleteCertificate(id),
-//     permission: [
-//       PermissionsEnum.CERTIFICATE_DELETE,
-//       PermissionsEnum.ADMIN,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.CERTIFICATE_ALL,
-//     ],
-//   },
-// ]
+const IndexOrganizationEmployeectionList = () => [
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [PermissionsEnum.CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    text: t('upload_certificate_sheet'),
+    icon: ActionsListAddIcon,
+    action: () => {
+      showUploadDialog.value = true
+    },
+    type: ActionItemsTypeEnum.Info,
+    permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
+  },
+]
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchCertificate())">
         <Search />
       </span>
@@ -211,7 +224,6 @@ const exportExcel = () => {
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <ExportPdf />
@@ -224,7 +236,7 @@ const exportExcel = () => {
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+      <!-- <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
         <router-link
           :to="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
@@ -233,7 +245,17 @@ const exportExcel = () => {
         >
           {{ $t('import_certificate') }}
         </router-link>
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+      <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
+        <ExcelSheetIcon class="icon" />
+        <span class="download-title">Excel Sheet</span>
+      </a> -->
+      <ActionsList
+        :show-actions="true"
+        :actionList="IndexOrganizationEmployeectionList()"
+        :actionsNumber="2"
+        buttonTitle="certificate_sheet"
+      />
       <!-- <DropList :actionList="actionList"  /> -->
     </div>
   </div>
@@ -352,4 +374,14 @@ const exportExcel = () => {
       />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_certificate_sheet')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadCertificateExeclSheet @uploaded="showUploadDialog = false" />
+  </Dialog>
 </template>

@@ -1320,5 +1320,8 @@
   "inspection_exemined_tag": "Inspection Exemined Tag",
   "result_type": "Result Type",
   "add_template_item": "Add Template Item",
-  "add_to_template": "Add to Template"
+  "add_to_template": "Add to Template",
+  "certificate_sheet": "Certificate Sheet",
+  "download_form_example": "Download Form Example",
+  "upload_certificate_sheet": "Upload Certificate Sheet"
 }

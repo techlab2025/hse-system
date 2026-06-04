@@ -6,7 +6,8 @@
       "Bash(git rm *)",
       "Bash(echo \"\")",
       "Bash(echo \"# Windows reserved device name \\(created accidentally\\)\")",
-      "Bash(echo \"nul\")"
+      "Bash(echo \"nul\")",
+      "Bash(xargs ls -la)"
     ]
   }
 }

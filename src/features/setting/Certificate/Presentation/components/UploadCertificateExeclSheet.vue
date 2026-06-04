@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, defineEmits } from 'vue'
+
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
@@ -129,10 +131,9 @@ const fileUpload = async (file: File) => {
 }
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>(['title', 'require_expired_date', 'image'])
+const SendData = ref<string[]>(['title', 'require_expired_date'])
 const SendDataLabels: Record<string, string> = {
   title: 'Title',
-  image: 'Image',
   require_expired_date: 'Require Expired Date',
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
@@ -161,14 +162,16 @@ const AddOrgEmployee = async () => {
     headers.forEach((key, i) => {
       if (key && key.trim() !== '') obj[key] = row[i]
     })
-    console.log(obj.require_expired_date, 'obj.require_expired_date')
-    obj.require_expired_date = obj.require_expired_date == 'Yes' ? 1 : 0
+    obj.require_expired_date = String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
 
     return obj
   })
 
   const orgData = new AddCertificateExcelParams({ data: dataAsObjects })
   await addCertificateController.addCertificate(orgData, router)
+  if (addCertificateController.isDataSuccess()) {
+    emit('uploaded')
+  }
 }
 
 const deleteRow = (rowIndex: number) => {
@@ -219,7 +222,6 @@ const onMappingClose = () => {
         <div class="field-tags">
           <span class="field-tag">Certificate title</span>
           <span class="field-tag">has Expiry date</span>
-          <span class="field-tag">Certificate image</span>
         </div>
       </div>
 
