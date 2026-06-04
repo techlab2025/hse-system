@@ -236,7 +236,7 @@ const route = useRoute()
                   <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
                 </div>
                 <div class="input-wrapper star">
-                  <label>{{ $t('start') }}
+                  <label>{{ $t('start number') }}
                     <ImportantIcon />
                   </label>
                   <input type="text" v-model="field.start" placeholder="Enter your start" />
