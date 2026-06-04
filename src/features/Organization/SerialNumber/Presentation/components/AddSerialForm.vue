@@ -241,24 +241,20 @@ const route = useRoute()
                   </label>
                   <input type="text" v-model="field.start" placeholder="Enter your start" />
                 </div>
+                <div class="generated-serial ">
+                  <div class="icon-text">
+                    <PathSerial />
+                    <p>Generated Serial number Example:</p>
+                  </div>
+                  <div class="cards">
+                    <p>{{ field.prefix }}-{{ field.start }}-{{ field.suffix }}</p>
+                  </div>
+                </div>
               </div>
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
-        <div class="generated-serial ">
-          <div class="icon-text">
-            <PathSerial />
-            <p>Generated Serial number Example:</p>
-          </div>
-          <div class="cards">
 
-            <!-- <p>prefix: <span class="text">EQ</span></p>
-              <p>suffix: <span class="text">HSE</span></p>
-              <p>start: <span class="text">1001</span></p> -->
-            <p>{{ field.prefix }}-{{ field.start }}-{{ field.suffix }}</p>
-
-          </div>
-        </div>
       </div>
     </div>
 
@@ -278,11 +274,13 @@ const route = useRoute()
   background-color: rgba(249, 249, 252, 1);
   border-radius: 24px;
   padding: 1rem;
+  width: 100%;
+  grid-column: span 3;
 
-   display: flex;
-    align-items: end;
-    gap: .5rem;
-    // justify-content: space-between;
+  display: flex;
+  align-items: end;
+  gap: .5rem;
+  // justify-content: space-between;
   // display: grid;
   // grid-template-columns: 1fr 1fr;
   margin: 0 1.1rem;
