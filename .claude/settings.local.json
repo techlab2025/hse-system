@@ -14,7 +14,13 @@
       "Bash(sudo docker ps)",
       "Bash(sudo -n docker ps)",
       "Bash(awk '{print $1}')",
-      "Bash(npx vue-tsc *)"
+      "Bash(npx vue-tsc *)",
+      "Bash(grep -i \"\\\\.vue$\")",
+      "Bash(git -C /home/techlab/projects/hse-system/.claude/worktrees/agent-a2db261cf3994f430 diff --stat)",
+      "Bash(git checkout *)",
+      "Bash(git -C .claude/worktrees/agent-a2db261cf3994f430 status --porcelain)",
+      "Bash(git commit -m ' *)",
+      "Bash(git merge *)"
     ]
   }
 }
