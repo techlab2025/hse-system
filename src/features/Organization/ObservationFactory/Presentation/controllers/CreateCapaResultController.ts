@@ -29,7 +29,7 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
     return this.instance
   }
 
-  async createCapaResult(params: CapaParams, route: any, draft: boolean = false) {
+  async createCapaResult(params: CapaParams, route: any, draft: boolean = false, router?: Router) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       // params.validate()
@@ -58,7 +58,11 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
         //   await router.push(`/organization/equipment-mangement/incedant`)
         // }
 
-        ShowHazardController.getInstance().showHazard(new ShowHazardParams(route.params?.id, true))
+        if (!router!.currentRoute?.value.fullPath.includes('organization/capa')) {
+          ShowHazardController.getInstance().showHazard(
+            new ShowHazardParams(route.params?.id, true),
+          )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

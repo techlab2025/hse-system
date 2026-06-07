@@ -5,7 +5,7 @@ import CapaParams from '@/features/Organization/ObservationFactory/Core/params/C
 import CapaArrows from '@/assets/images/CapaArrows.png'
 import Editor from 'primevue/editor'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const props = defineProps<{
   data: CapaModel
 }>()
@@ -13,14 +13,15 @@ const route = useRoute()
 const corrective = ref(props.data?.corrective)
 const preventive = ref(props.data?.preventive)
 const emit = defineEmits(['close'])
+const router = useRouter()
 const CreatCapaResult = async () => {
   const createCapaResultController = CreateCapaResultController.getInstance()
   const createCapaResultParams = new CapaParams(
     preventive.value,
     corrective.value,
-    Number(props.data?.observation_id),
+    Number(route.params?.id) || Number(props.data?.observation_id),
   )
-  await createCapaResultController.createCapaResult(createCapaResultParams, route)
+  await createCapaResultController.createCapaResult(createCapaResultParams, route, false, router)
   corrective.value = ''
   preventive.value = ''
   emit('close')
