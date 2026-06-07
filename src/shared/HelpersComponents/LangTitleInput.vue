@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import Editor from 'primevue/editor'
-import StarRequiredInput from '../icons/StarRequiredInput.vue';
+import StarRequiredInput from '../icons/StarRequiredInput.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -38,15 +38,15 @@ const props = withDefaults(
     required?: boolean
     disabled?: boolean
     fieldType?:
-    | 'title'
-    | 'subtitle'
-    | 'description'
-    | 'button_title'
-    | 'answer'
-    | 'question'
-    | 'old'
-    | 'new'
-    | 'feature'
+      | 'title'
+      | 'subtitle'
+      | 'description'
+      | 'button_title'
+      | 'answer'
+      | 'question'
+      | 'old'
+      | 'new'
+      | 'feature'
   }>(),
   {
     langs: () => [],
@@ -304,20 +304,30 @@ watch(hasAtLeastOneValue, (isValid) => {
         {{ $t(label) }}
         <!-- <span class="text-red-500" v-if="required">*</span> -->
         <span class="text-red-500" v-if="required">
-          <StarRequiredInput />
+          <!-- <StarRequiredInput /> -->
+          *
         </span>
       </label>
 
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang"
-            :required="props.required" />
+          <input
+            type="radio"
+            :id="`${label}-${l.locale}`"
+            :name="label"
+            :value="l.locale"
+            v-model="lang"
+            :required="props.required"
+          />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->
-            <span v-if="getFieldValue(titles.find((t) => t.locale === l.locale))" class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`">
+            <span
+              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
+              class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`"
+            >
               ✓
             </span>
           </label>
@@ -326,10 +336,24 @@ watch(hasAtLeastOneValue, (isValid) => {
     </div>
 
     <!-- Title Input -->
-    <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
+    <textarea
+      v-if="isTextarea"
+      v-model="fieldValue"
+      :rows="rows"
+      v-bind="inputAttrs"
+      editorStyle="max-height: 320px"
+      style="max-height: 180px"
+    ></textarea>
 
     <!-- Regular Input -->
-    <input class="lang-input" v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" :required="props.required" />
+    <input
+      class="lang-input"
+      v-else
+      :type="type"
+      v-model="fieldValue"
+      v-bind="inputAttrs"
+      :required="props.required"
+    />
 
     <!-- Selected Language Info -->
     <span class="select-lang">

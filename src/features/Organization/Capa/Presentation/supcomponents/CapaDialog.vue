@@ -22,10 +22,6 @@ const ShowData = async () => {
   await showHazardController.showHazard(showHazardParams)
 }
 
-// onMounted(() => {
-//   ShowData()
-// })
-
 watch(
   () => showHazardController.state.value,
   (newVal) => {
@@ -53,6 +49,7 @@ const GetCapaDetails = () => {
             class="show-observation-container"
             v-if="state?.data?.capa && state?.data?.type == Observation.HazardType"
             :data="state.data?.capa"
+            @close="visible = false"
           />
         </div>
       </template>

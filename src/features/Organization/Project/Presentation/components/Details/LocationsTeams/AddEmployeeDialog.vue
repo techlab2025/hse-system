@@ -92,7 +92,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <button @click.prevent="visible = true" class="add-btn">{{ $t('add_employee') }}</button>
+  <button @click.prevent="visible = true" class="btn btn-primary">{{ $t('add_employee') }}</button>
   <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
     <template #header>
       <HeaderSection
@@ -133,6 +133,12 @@ onMounted(() => {
 
 <style scoped>
 .btn-primary {
-  margin-top: 10px;
+  background-color: #041953;
+  &:hover {
+    color: #041953;
+    background-color: white;
+    border: 1px solid #041953;
+  }
+  /* margin-top: 10px; */
 }
 </style>

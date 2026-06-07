@@ -26,6 +26,7 @@ import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/Equipm
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import isBase64 from '@/base/Presentation/utils/isBase64'
 import type ProjectTypeDetailsModel from '@/features/setting/ProjectType/Data/models/projectTypeDetailsModel'
+import Tabs from '@/features/setting/Equipment/Presentation/components/tabs.vue'
 
 const emit = defineEmits(['update:data', 'close:data'])
 
@@ -115,25 +116,25 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditEquipmentTypeParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      hasCertificate.value,
-      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-      industry.value?.map((item) => item.id),
-      +parent_id.value,
-      image.value.length > 0 ? image.value : '*',
-      null,
-      EquipmentType.value?.id,
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        hasCertificate.value,
+        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+        industry.value?.map((item) => item.id),
+        +parent_id.value,
+        image.value.length > 0 ? image.value : '*',
+        null,
+        EquipmentType.value?.id || activeTab.value,
+      )
     : new AddEquipmentTypeParams(
-      translationsParams,
-      hasCertificate.value,
-      user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
-      industry.value?.map((item) => item.id),
-      +parent_id.value,
-      image.value,
-      EquipmentType.value?.id,
-    )
+        translationsParams,
+        hasCertificate.value,
+        user.user?.type == OrganizationTypeEnum?.ADMIN ? AllIndustry : null,
+        industry.value?.map((item) => item.id),
+        +parent_id.value,
+        image.value,
+        EquipmentType.value?.id || activeTab.value,
+      )
 
   console.log(params, 'params')
   emit('update:data', params)
@@ -173,7 +174,7 @@ watch(
       EquipmentType.value = EquipmentsTypes.value.find((item) => item.id === newData?.type) || null
       image.value = newData?.image
       industry.value = newData?.industries!
-
+      activeTab.value = EquipmentType.value?.id! || EquipmentTypesEnum.EQUIPMENT
     }
   },
   { immediate: true },
@@ -207,9 +208,22 @@ const UpdateHasCertificate = (data) => {
   hasCertificate.value = data
   updateData()
 }
+
+const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
+
+const UpdateActiveTap = (data) => {
+  activeTab.value = data
+  EquipmentType.value = EquipmentsTypes.value.find((item) => item.id === data) || null
+  activeTab.value = EquipmentType.value?.id!
+  console.log(EquipmentType.value, ' EquipmentType.value ')
+  updateData()
+}
 </script>
 
 <template>
+  <div class="w-full col-span-6 equipment-form">
+    <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
+  </div>
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
@@ -225,10 +239,16 @@ const UpdateHasCertificate = (data) => {
   </div> -->
 
   <!-- Equipment Selection -->
-  <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="EquipmentType" :static-options="EquipmentsTypes" label="Category" id="Type"
-      placeholder="Select Type" @update:modelValue="setEquipmentType" />
-  </div>
+  <!-- <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="EquipmentType"
+      :static-options="EquipmentsTypes"
+      label="Category"
+      id="Type"
+      placeholder="Select Type"
+      @update:modelValue="setEquipmentType"
+    />
+  </div> -->
 
   <!-- all_industries -->
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
@@ -240,22 +260,41 @@ const UpdateHasCertificate = (data) => {
   <!-- all industry -->
 
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="allIndustries = $event" />
+    <CustomCheckbox
+      :index="3"
+      :title="`all_industries`"
+      :checked="allIndustries"
+      @update:checked="allIndustries = $event"
+    />
   </div>
 
   <!--industry  -->
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
-      label="Select Industry" id="EquipmentType" placeholder="Select industry" :type="2"
-      @update:modelValue="setIndustry" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="Select Industry"
+      id="EquipmentType"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
   </div>
 
   <!-- image -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <label for="image">Image</label>
-    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image"
-      placeholder="Select image" />
+    <SingleFileUpload
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
   </div>
 
   <!-- <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button> -->

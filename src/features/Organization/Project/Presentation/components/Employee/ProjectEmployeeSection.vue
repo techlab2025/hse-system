@@ -84,7 +84,7 @@ watch(
             />
             <RouterLink
               :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
-              class="add-btn"
+              class="add-btn btn"
               v-if="locationTeam?.locationHierarchies?.length! > 0"
             >
               {{ $t('Add Employee') }}

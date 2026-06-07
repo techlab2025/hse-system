@@ -12,18 +12,19 @@ const props = defineProps<{
 const route = useRoute()
 const corrective = ref(props.data?.corrective)
 const preventive = ref(props.data?.preventive)
+const emit = defineEmits(['close'])
 const CreatCapaResult = async () => {
   const createCapaResultController = CreateCapaResultController.getInstance()
   const createCapaResultParams = new CapaParams(
     preventive.value,
     corrective.value,
-    Number(route.params?.id),
+    Number(props.data?.observation_id),
   )
   await createCapaResultController.createCapaResult(createCapaResultParams, route)
   corrective.value = ''
   preventive.value = ''
+  emit('close')
 }
-
 </script>
 <template>
   <div class="capa-container">
@@ -31,7 +32,9 @@ const CreatCapaResult = async () => {
       <p class="capa-title">{{ $t('Expected Safety Measures') }}</p>
     </div>
     <div class="capa-content-container">
-      <p class="capa-content-title">{{ $t('Corrective And Preventive Actions') }} <span>(CAPA)</span></p>
+      <p class="capa-content-title">
+        {{ $t('Corrective And Preventive Actions') }} <span>(CAPA)</span>
+      </p>
       <img :src="CapaArrows" alt="capa_arrows" />
       <div class="capa-actions-container">
         <div class="capa-action" v-if="!data?.corrective">
@@ -41,7 +44,9 @@ const CreatCapaResult = async () => {
             editorStyle="height: 320px"
             :placeholder="'enter What action should have been taken immediately'"
           />
-          <button @click.prevent="CreatCapaResult" class="corrective-button">{{ $t('submit') }}</button>
+          <button @click.prevent="CreatCapaResult" class="corrective-button">
+            {{ $t('submit') }}
+          </button>
         </div>
 
         <div class="capa-action" v-else>
@@ -57,7 +62,9 @@ const CreatCapaResult = async () => {
             :placeholder="'enter What action should have been taken immediately'"
             style="max-width: 100% !important"
           />
-          <button @click.prevent="CreatCapaResult" class="corrective-button">{{ $t('submit') }}</button>
+          <button @click.prevent="CreatCapaResult" class="corrective-button">
+            {{ $t('submit') }}
+          </button>
         </div>
 
         <div class="capa-action preventive" v-else>
