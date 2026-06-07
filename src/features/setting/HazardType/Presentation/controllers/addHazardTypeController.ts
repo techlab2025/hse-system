@@ -51,7 +51,10 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const route = useRoute()
 
-        if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
+        if (
+          !router?.currentRoute?.value?.fullPath?.includes('project-progress') &&
+          !router?.currentRoute?.value?.fullPath?.includes('equipment-mangement/observation')
+        ) {
           await router.push(
             params?.ParentId
               ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${params?.ParentId}/hazards`

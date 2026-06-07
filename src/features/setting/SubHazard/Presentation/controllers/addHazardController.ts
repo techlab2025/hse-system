@@ -69,7 +69,10 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
           await router.push(
             `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type?type=2`,
           )
-        } else if (!router?.currentRoute?.value?.fullPath?.includes('project-progress')) {
+        } else if (
+          !router?.currentRoute?.value?.fullPath?.includes('project-progress') &&
+          !router?.currentRoute?.value?.fullPath?.includes('equipment-mangement/observation')
+        ) {
           await router.push(
             `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
           )

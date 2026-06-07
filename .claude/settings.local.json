@@ -7,7 +7,13 @@
       "Bash(echo \"\")",
       "Bash(echo \"# Windows reserved device name \\(created accidentally\\)\")",
       "Bash(echo \"nul\")",
-      "Bash(xargs ls -la)"
+      "Bash(xargs ls -la)",
+      "Bash(docker --version)",
+      "Bash(systemctl status *)",
+      "Read(//run/**)",
+      "Bash(sudo docker ps)",
+      "Bash(sudo -n docker ps)",
+      "Bash(awk '{print $1}')"
     ]
   }
 }

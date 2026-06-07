@@ -10,6 +10,10 @@ const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
+
+const props = defineProps<{
+  hazardTypeId?: number
+}>()
 const emit = defineEmits(['update:data'])
 const addHazardTypeController = AddHazardTypeController.getInstance()
 
@@ -19,7 +23,12 @@ const addHazardType = async () => {
 }
 
 const saveAndAdd = async () => {
-  const state = await addHazardTypeController.addHazardType(params.value as AddHazardTypeParams, router, route, true)
+  const state = await addHazardTypeController.addHazardType(
+    params.value as AddHazardTypeParams,
+    router,
+    route,
+    true,
+  )
   if (!state.value.error) {
     params.value = null
     formKey.value++
@@ -33,7 +42,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHazardType">
-    <HazardForm :key="formKey" @update:data="setParams" />
+    <HazardForm :hazardTypeId="hazardTypeId" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button
@@ -61,8 +70,12 @@ const setParams = (data: Params) => {
   flex-direction: row !important;
   width: 100% !important;
   button {
-    &.w-full { width: 100%; }
-    &.w-1\/2 { width: 50%; }
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>

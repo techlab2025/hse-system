@@ -507,7 +507,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard-type',
-    name: t('hazard_type'),
+    name: t('hazard_classifications'),
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,

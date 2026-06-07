@@ -63,7 +63,7 @@ import AddRootCauses from '@/features/setting/RootCauses/Presentation/components
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-import { OrganizationEmployeeDefaultProjectApiService } from '@/features/auth/Data/api_services/OrganizationEmployeeDefaultProjectApiService'
+import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddHazard.vue'
 
 const emit = defineEmits(['update:data'])
 //
@@ -495,6 +495,9 @@ const setOragnizationemployeeName = (data: Event) => {
   OragnizationemployeeName.value = data?.target?.value
   updateData()
 }
+
+const HazardTypeDialog = ref(false)
+const HazardDialog = ref(false)
 </script>
 
 <template>
@@ -864,7 +867,7 @@ const setOragnizationemployeeName = (data: Event) => {
         saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
       "
     >
-      <CustomSelectInput
+      <UpdatedCustomInputSelect
         :modelValue="HazardType"
         class="input"
         :controller="indexHazardTypeController"
@@ -873,7 +876,16 @@ const setOragnizationemployeeName = (data: Event) => {
         id="HazardType"
         :placeholder="$t('Select Hazard Classification')"
         @update:modelValue="setHazardType"
-      />
+        :isDialog="true"
+        :dialogVisible="HazardTypeDialog"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="HazardTypeDialog = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddHazardType @update:data="HazardTypeDialog = false" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
     <!--Sub Hazard Type -->
@@ -885,7 +897,7 @@ const setOragnizationemployeeName = (data: Event) => {
         saveStatus == SaveStatusEnum.NotSaved
       "
     >
-      <CustomSelectInput
+      <UpdatedCustomInputSelect
         :modelValue="SubHazardType"
         class="input"
         :controller="indexSubHazardTypeController"
@@ -894,7 +906,16 @@ const setOragnizationemployeeName = (data: Event) => {
         id="Hazard"
         :placeholder="$t('Select Hazard')"
         @update:modelValue="setSubHazardType"
-      />
+        :isDialog="true"
+        :dialogVisible="HazardDialog"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="HazardDialog = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddHazard @update:data="HazardDialog = false" :hazardTypeId="HazardType.id" />
+        </template>
+      </UpdatedCustomInputSelect>
     </div>
 
     <!-- IsWorkStopped -->
