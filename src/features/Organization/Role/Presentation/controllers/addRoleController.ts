@@ -39,10 +39,12 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
         })
 
         const { user } = useUserStore()
-        if (user?.type === OrganizationTypeEnum.ADMIN) {
-          router.push('/admin/role')
-        } else {
-          router.push('/organization/role')
+        if (!router.currentRoute.value.fullPath.includes('organization-employee')) {
+          if (user?.type === OrganizationTypeEnum.ADMIN) {
+            router.push('/admin/role')
+          } else {
+            router.push('/organization/role')
+          }
         }
 
         // useLoaderStore().endLoadingWithDialog();

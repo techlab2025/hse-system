@@ -23,6 +23,8 @@ import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganization
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddRole from '@/features/Organization/Role/Presentation/components/AddRole.vue'
 
 const toast = useToast()
 
@@ -222,6 +224,7 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data.target.value
   updateData()
 }
+const RoleDialog = ref(false)
 </script>
 
 <template>
@@ -270,8 +273,7 @@ const UpdateSerial = (data) => {
       :placeholder="$t('enter your email')"
     />
   </div>
-  <div v-if="booleandashAccessStatus"
-   class="col-span-4 md:col-span-2 input-wrapper">
+  <div v-if="booleandashAccessStatus" class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password">{{ $t('Password') }}</label>
     <input
       id="password"
@@ -299,7 +301,7 @@ const UpdateSerial = (data) => {
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="role"
       @update:modelValue="setRole"
       :controller="indexRoleController"
@@ -307,7 +309,16 @@ const UpdateSerial = (data) => {
       :label="$t('permissions')"
       :type="2"
       :placeholder="$t('Select Role')"
-    />
+      :isDialog="true"
+      :dialogVisible="RoleDialog"
+    >
+      <template #LabelHeader>
+        <span class="add-dialog" @click="RoleDialog = true">New</span>
+      </template>
+      <template #Dialog>
+        <AddRole @update:data="RoleDialog = false" />
+      </template>
+    </UpdatedCustomInputSelect>
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox :index="5" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
