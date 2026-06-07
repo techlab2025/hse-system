@@ -42,6 +42,8 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import Dialog from 'primevue/dialog'
+import UploadOrganizationEmployee from './UploadOrganizationEmployee.vue'
 
 const { t } = useI18n()
 
@@ -300,6 +302,32 @@ const setCertificateStatus = () => {
 
 const value = ref('Not Taken Certificates')
 const options = ref(['Taken Certificates', 'Not Taken Certificates'])
+
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { name: 'Example Employee', email: 'employee@example.com', phone: '0100000000' },
+    { name: 'Example Employee 2', email: 'employee2@example.com', phone: '0100000001' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Employees')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'employee_form.xlsx')
+}
+
 const IndexOrganizationEmployeectionList = () => [
   {
     text: t('export_excel'),
@@ -318,8 +346,15 @@ const IndexOrganizationEmployeectionList = () => [
   {
     text: t('upload_excel'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/organization-employee/upload',
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
 ]
@@ -407,7 +442,7 @@ const IndexOrganizationEmployeectionList = () => [
       <ActionsList
         :show-actions="true"
         :actionList="IndexOrganizationEmployeectionList()"
-        :actionsNumber="4"
+        :actionsNumber="5"
       >
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
@@ -512,6 +547,31 @@ const IndexOrganizationEmployeectionList = () => [
       />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_excel')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadOrganizationEmployee
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchOrganizatoinEmployee()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped>

@@ -198,9 +198,8 @@ onMounted(() => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
+    <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
@@ -216,13 +215,12 @@ onMounted(() => {
       </div>
 
       <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
           <span class="field-tag">Injury Title</span>
         </div>
       </div>
       <hr class="separator" />
-    </div>
+    </div> -->
 
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
@@ -262,7 +260,7 @@ onMounted(() => {
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i"></th>
 
-                  <th>Actions</th>
+                  <th class="last"></th>
                 </tr>
               </thead>
               <tbody>
@@ -289,6 +287,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.last {
+  display: table-cell !important;
+}
 .title-container {
   .title {
     color: #1f41bb;

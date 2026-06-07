@@ -261,7 +261,7 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="4">
+      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="5">
         <template #custom>
           <!-- <SysteminjuryTypes /> -->
           <ExportPdf :isDropList="true" />

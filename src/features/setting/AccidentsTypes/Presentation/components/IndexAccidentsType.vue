@@ -25,8 +25,8 @@ import DeleteAccidentsTypeController from '../controllers/deleteAccidentsTypeCon
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import SystemIncidantTypes from '../supcomponents/SystemIncidantTypes.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
@@ -61,14 +61,14 @@ const fetchAccidentsType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1
+  withPage: number = 1,
 ) => {
   const indexAccidentsTypeParams = new IndexAccidentsTypeParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id
+    id,
   )
   await indexAccidentsTypeController.getData(indexAccidentsTypeParams)
 }
@@ -108,15 +108,16 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
 
 const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/accidents-type/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/accidents-type/${id}`,
     permission: [
       PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
       PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
@@ -143,36 +144,31 @@ const actionList = (id: number, deleteAccidentType: (id: number) => void) => [
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "incidant-type.xlsx");
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'incidant-type.xlsx')
+}
 
 const DownloadExample = () => {
-  const worksheetData = [
-    { title: 'Example Accident Type' },
-    { title: 'Example Accident Type 2' },
-  ]
+  const worksheetData = [{ title: 'Example Accident Type' }, { title: 'Example Accident Type 2' }]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'AccidentsTypes')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'accidents_type_form.xlsx')
+  saveAs(blob, 'incidant_type_form.xlsx')
 }
 
 const IndexIncidantTypeactionList = () => [
@@ -181,41 +177,30 @@ const IndexIncidantTypeactionList = () => [
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-    ],
+    permission: [PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ACCIDENTS_TYPE_CREATE],
   },
   {
     text: t('add_incident_type'),
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/accidents-type/add`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/accidents-type/add`,
     icon: ActionsListAddIcon,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE],
   },
   {
     text: t('import_accidents_type'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE],
   },
   {
     text: t('download_form_example'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE],
   },
 ]
 </script>
@@ -223,10 +208,16 @@ const IndexIncidantTypeactionList = () => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="; (word = ''), searchAccidentType()">
+      <span class="icon-remove" @click=";((word = ''), searchAccidentType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchAccidentType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchAccidentType"
+      />
     </div>
     <!-- <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
       <div class="col-span-2 flex justify-end gap-2">
@@ -248,8 +239,11 @@ const IndexIncidantTypeactionList = () => [
       </div>
     </PermissionBuilder> -->
     <div class="col-span-2 flex justify-end gap-2">
-
-      <ActionsList :show-actions="true" :actionList="IndexIncidantTypeactionList()" :actionsNumber="4">
+      <ActionsList
+        :show-actions="true"
+        :actionList="IndexIncidantTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemIncidantTypes /> -->
           <ExportPdf :isDropList="true" />
@@ -257,22 +251,23 @@ const IndexIncidantTypeactionList = () => [
       </ActionsList>
     </div>
     <SystemIncidantTypes :isHeaderTap="true" />
-
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-    PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
-    PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-    PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
-    PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
-    PermissionsEnum.ACCIDENTS_TYPE_ALL,
-    PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-    PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-    PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-    PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -294,8 +289,11 @@ const IndexIncidantTypeactionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                    }/accidents-type/${item.id}`">{{ index + 1 }}
+                  <router-link
+                    :to="`/${
+                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                    }/accidents-type/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -311,14 +309,20 @@ const IndexIncidantTypeactionList = () => [
                 </td>
 
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteAccidentsType)"
-                    @delete="deleteAccidentsType(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteAccidentsType)"
+                    @delete="deleteAccidentsType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -327,26 +331,40 @@ const IndexIncidantTypeactionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/accidents-type/add`" addText="Add AccidentType"
+        <PermissionBuilder
+          :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
+        >
+          <DataEmpty
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/accidents-type/add`"
+            addText="Add AccidentType"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No AccidentType" />
+            title="..ops! You have No AccidentType"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/accidents-type/add`" addText="Add AccidentType"
+        <PermissionBuilder
+          :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
+        >
+          <DataFailed
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/accidents-type/add`"
+            addText="Add AccidentType"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No AccidentType" />
+            title="..ops! You have No AccidentType"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 

@@ -209,9 +209,8 @@ const onMappingClose = () => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
+    <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
@@ -227,16 +226,14 @@ const onMappingClose = () => {
       </div>
 
       <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
           <span class="field-tag">title</span>
         </div>
       </div>
 
       <hr class="separator" />
-    </div>
+    </div> -->
 
-    <!-- <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div> -->
 
     <div v-if="isLoading" class="loading-bar">
       <span class="loading-dot" />
@@ -277,7 +274,8 @@ const onMappingClose = () => {
                       {{ item }}
                     </span>
                   </th>
-                  <th class="empty"></th>
+                  <th class="last"></th>
+                  <!-- <th class="empty"></th> -->
                 </tr>
               </thead>
               <tbody>
@@ -306,6 +304,9 @@ const onMappingClose = () => {
 </template>
 
 <style scoped>
+.last {
+  display: table-cell !important;
+}
 .title-container {
   .title {
     color: #1f41bb;

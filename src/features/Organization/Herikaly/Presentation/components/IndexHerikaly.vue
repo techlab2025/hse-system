@@ -29,6 +29,10 @@ import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import Dialog from 'primevue/dialog'
 import UploadHierarachyExeclSheet from './UploadHierarachyExeclSheet.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 
 const { t } = useI18n()
 const word = ref('')
@@ -180,6 +184,42 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(data, 'hierarchy.xlsx')
 }
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Position' },
+    { title: 'Example Position 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Positions')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'position_form.xlsx')
+}
+
+const IndexHerikalyactionList = () => [
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HERIKALY_CREATE,
+    ],
+  },
+  {
+    text: t('import_position'),
+    icon: UploadExcelIcon,
+    action: () => fileInputRef.value?.click(),
+    type: ActionItemsTypeEnum.Warning,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HERIKALY_CREATE,
+    ],
+  },
+]
 </script>
 
 <template>
@@ -218,14 +258,13 @@ const exportExcel = () => {
                 <AddMatrix /> {{ $t('competency_matrix') }}</router-link
               >
 
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="fileInputRef?.click()"
-              >
-                {{ $t('import_position') }}
-              </button>
               <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+              <ActionsList
+                :show-actions="true"
+                :actionList="IndexHerikalyactionList()"
+                :actionsNumber="2"
+                buttonTitle="position_sheet"
+              />
             </div>
           </div>
           <div class="btn-container flex"></div>

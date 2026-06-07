@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import FileUpload from '../supcomponents/ExcelSheetHandle/FileUpload.vue';
@@ -17,6 +17,9 @@ import IndexHerikalyController from '@/features/Organization/Herikaly/Presentati
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams';
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue';
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue';
+
+const props = defineProps<{ initialFile?: File | null }>();
+const emit = defineEmits<{ (e: 'uploaded'): void }>();
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -157,6 +160,16 @@ const fileUpload = async (file: File) => {
   }
 };
 
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return;
+    await fileUpload(file);
+    mappedData.value = Data.value;
+  },
+  { immediate: true },
+);
+
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 
 // , 'image'
@@ -238,6 +251,9 @@ const AddOrgEmployee = async () => {
   const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects });
   console.log('📤 Sending orgData:', orgData);
   await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router);
+  if (addOrganizatoinEmployeeController.isDataSuccess()) {
+    emit('uploaded');
+  }
 };
 
 // ─── Hierarchy ────────────────────────────────────────────────────────────────
