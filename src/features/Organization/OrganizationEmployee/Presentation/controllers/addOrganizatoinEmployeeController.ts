@@ -34,11 +34,12 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
           new OpenWarningDilaog('Name Is Required').openDialog()
           return
         }
-        if (el.password != el.password_confirmation) {
+        if (el.password_confirmation && el.password != el.password_confirmation) {
           new OpenWarningDilaog('Password And Password Confirmation Not Matching').openDialog()
           return
         }
-        if (el.password.length < 8) {
+        //
+        if (el.password && el.password?.length < 8) {
           new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
           return
         }

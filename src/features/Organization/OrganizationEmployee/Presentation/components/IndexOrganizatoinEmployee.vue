@@ -317,8 +317,18 @@ const onFileSelected = (e: Event) => {
 
 const DownloadExample = () => {
   const worksheetData = [
-    { name: 'Example Employee', email: 'employee@example.com', phone: '0100000000' },
-    { name: 'Example Employee 2', email: 'employee2@example.com', phone: '0100000001' },
+    {
+      name: 'Example Employee',
+      email: 'employee@example.com',
+      phone: '0100000000',
+      password: '123123123',
+    },
+    {
+      name: 'Example Employee 2',
+      email: 'employee2@example.com',
+      phone: '0100000001',
+      password: '123123123',
+    },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
