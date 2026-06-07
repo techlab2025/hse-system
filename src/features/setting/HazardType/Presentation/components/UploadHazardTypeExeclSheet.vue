@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64';
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import { useRoute, useRouter } from 'vue-router';
+
+const props = defineProps<{ initialFile?: File | null }>()
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
 
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue';
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue';
@@ -133,6 +136,16 @@ const fileUpload = async (file: File) => {
   }
 };
 
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>([
   "title",
@@ -167,13 +180,16 @@ const AddHazardType = async () => {
   const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
     const obj: Record<string, any> = {};
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i];
+      if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i];
     });
     return obj;
   });
 
   const orgData = new AddHazardTypeExcelParams({ data: dataAsObjects });
   await addHazardTypeController.addHazardType(orgData, router, route);
+  if (addHazardTypeController.isDataSuccess()) {
+    emit('uploaded')
+  }
 };
 
 const deleteRow = (rowIndex: number) => {
@@ -200,9 +216,6 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
-onMounted(() => {
-  AddHazardType()
-})
 </script>
 
 <template>

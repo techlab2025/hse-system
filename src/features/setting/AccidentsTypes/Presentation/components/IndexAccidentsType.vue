@@ -33,9 +33,22 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import Dialog from 'primevue/dialog'
+import UploadIncidantTypeExeclSheet from './UploadIncidantTypeExeclSheet.vue'
 const { t } = useI18n()
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -149,6 +162,19 @@ const exportExcel = () => {
   saveAs(data, "incidant-type.xlsx");
 };
 
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Accident Type' },
+    { title: 'Example Accident Type 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'AccidentsTypes')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'accidents_type_form.xlsx')
+}
+
 const IndexIncidantTypeactionList = () => [
   {
     text: t('export_excel'),
@@ -174,8 +200,18 @@ const IndexIncidantTypeactionList = () => [
   {
     text: t('import_accidents_type'),
     type: ActionItemsTypeEnum.Warning,
-    link: `/organization/accidents-type/upload-excel`,
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ACCIDENTS_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.ACCIDENTS_TYPE_CREATE
@@ -313,6 +349,31 @@ const IndexIncidantTypeactionList = () => [
         description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_accidents_type')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadIncidantTypeExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchAccidentsType()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

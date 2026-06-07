@@ -27,6 +27,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import Dialog from 'primevue/dialog'
+import UploadHierarachyExeclSheet from './UploadHierarachyExeclSheet.vue'
 
 const { t } = useI18n()
 const word = ref('')
@@ -148,6 +150,17 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   },
 ]
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
@@ -205,14 +218,13 @@ const exportExcel = () => {
                 <AddMatrix /> {{ $t('competency_matrix') }}</router-link
               >
 
-              <router-link
-                :to="`/${
-                  user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                }/herikaly/upload-excel`"
+              <button
+                type="button"
                 class="btn btn-primary"
+                @click="fileInputRef?.click()"
               >
                 {{ $t('import_position') }}
-              </router-link>
+              </button>
               <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
             </div>
           </div>
@@ -264,6 +276,31 @@ const exportExcel = () => {
       />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_position')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadHierarachyExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchHerikaly()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped lang="scss">

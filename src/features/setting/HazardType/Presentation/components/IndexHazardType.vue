@@ -41,6 +41,8 @@ import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import SystemWarehouseTypes from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemWarehouseTypes.vue'
 import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
+import Dialog from 'primevue/dialog'
+import UploadHazardTypeExeclSheet from './UploadHazardTypeExeclSheet.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -110,8 +112,19 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
 
-const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void) => [
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const HazardTypeactionList =(id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
@@ -218,6 +231,19 @@ const exportExcel = () => {
   saveAs(data, "Hazard-type.xlsx");
 };
 
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Hazard Type' },
+    { title: 'Example Hazard Type 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardTypes')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'hazard_type_form.xlsx')
+}
+
 const IndexHazardTypeactionList = () => [
   {
     text: t('export_excel'),
@@ -243,8 +269,18 @@ const IndexHazardTypeactionList = () => [
   {
     text: t('import_hazard_type'),
     type: ActionItemsTypeEnum.Warning,
-    link: `/organization/hazard-type/upload-excel`,
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HAZARD_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.HAZARD_TYPE_CREATE
@@ -418,6 +454,31 @@ const IndexHazardTypeactionList = () => [
         description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_hazard_type')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadHazardTypeExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchHazardType()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>
