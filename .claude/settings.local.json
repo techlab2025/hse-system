@@ -13,7 +13,8 @@
       "Read(//run/**)",
       "Bash(sudo docker ps)",
       "Bash(sudo -n docker ps)",
-      "Bash(awk '{print $1}')"
+      "Bash(awk '{print $1}')",
+      "Bash(npx vue-tsc *)"
     ]
   }
 }

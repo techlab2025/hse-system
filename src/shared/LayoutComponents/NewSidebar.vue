@@ -29,10 +29,10 @@ const RouterBack = () => router.back()
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
-          <AdminSidebar />
+          <AdminSidebar :open="open" />
         </template>
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ORGANIZATION">
-          <OrganizationSidebar />
+          <OrganizationSidebar :open="open" />
         </template>
       </div>
     </div>
@@ -40,11 +40,18 @@ const RouterBack = () => router.back()
 </template>
 
 <style scoped>
+.close .sidebar-wrapper {
+  gap: 5px;
+}
 .close .sidebar-toggle {
   right: 0px;
+  position: relative;
 }
 .open .sidebar-toggle {
   rotate: 180deg;
+}
+.close .links {
+  overflow-y: hidden;
 }
 .sidebar-toggle {
   display: flex;
@@ -68,8 +75,7 @@ const RouterBack = () => router.back()
   background: rgba(0, 0, 0, 0.08);
 }
 
-.sidebar.close .sidebar-back,
-.sidebar.close .links {
+.sidebar.close .sidebar-back {
   display: none;
 }
 </style>
