@@ -99,6 +99,12 @@ watch(
         </div>
 
         <div class="submit-btn">
+          <router-link
+            class="back-btn btn btn-primary"
+            :to="`/organization/project-details/${route.params.project_id}`"
+          >
+            {{ $t('Back to details') }}
+          </router-link>
           <RouterLink
             :to="`/organization/employee-details/${route.params.project_id}`"
             class="btn btn-cancel"
@@ -106,7 +112,7 @@ watch(
             {{ $t('cancel') }}
           </RouterLink>
 
-          <button class="btn btn-primary" @click="handleAddAllHierarchies">
+          <button class="btn btn-secondary" @click="handleAddAllHierarchies">
             {{ $t('confirm') }}
           </button>
         </div>
@@ -136,3 +142,16 @@ watch(
     </DataStatus>
   </div>
 </template>
+<style scoped>
+.submit-btn {
+  .btn-secondary {
+    width: 32%;
+  }
+  .btn-primary {
+    width: 32%;
+  }
+  .btn-cancel {
+    width: 32%;
+  }
+}
+</style>

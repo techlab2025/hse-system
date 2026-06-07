@@ -13352,20 +13352,7 @@ body {
   align-items: center;
   gap: var(--xs-size);
 }
-.add-employee .submit-btn .btn {
-  padding: var(--md-size);
-  flex: 1;
-  color: #fff;
-  background-color: var(--PrimaryColor);
-  border-radius: 36px;
-  text-align: center;
-  transition: background-color 0.2s ease;
-}
-.add-employee .submit-btn .btn:hover {
-  background-color: var(--PrimaryColor);
-}
 .add-employee .submit-btn .btn.btn-cancel {
-  flex: 0.25;
   border: 1px solid rgba(226, 53, 53, 0.4);
   background: rgba(226, 53, 53, 0.1);
   color: var(--danger-color);
@@ -21300,7 +21287,7 @@ body div {
   right: 20px;
   width: 60px;
   height: 60px;
-  z-index: 99999;
+  z-index: 999999;
   cursor: pointer;
   transition: 0.3s all linear;
   animation: moveTicketIcon 2s ease-in-out infinite;

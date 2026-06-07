@@ -150,6 +150,12 @@ const IsThereAnyLocationHierarchy = computed(() =>
               />
             </div>
             <div class="submit-btn" v-if="item.id == locationId">
+              <router-link
+                class="back-btn btn btn-secondary"
+                :to="`/organization/project-details/${route.params.project_id}`"
+              >
+                {{ $t('Back to details') }}
+              </router-link>
               <RouterLink
                 :to="`/organization/employee-details/${projectId}`"
                 class="btn btn-cancel"
@@ -209,3 +215,20 @@ const IsThereAnyLocationHierarchy = computed(() =>
     </DataStatus>
   </div>
 </template>
+
+<style scoped>
+.submit-btn {
+  .back-btn {
+    width: 20% !important;
+  }
+  .btn-secondary {
+    width: 25% !important;
+  }
+  .btn-primary {
+    width: 40% !important;
+  }
+  .btn-cancel {
+    width: 40% !important;
+  }
+}
+</style>
