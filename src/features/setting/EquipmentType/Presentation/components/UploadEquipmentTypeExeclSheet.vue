@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
+
+const props = defineProps<{ initialFile?: File | null }>()
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
+
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
@@ -149,6 +153,16 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   sheetData.value = getBodyData(cloned)
 }
 
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
 
@@ -157,17 +171,20 @@ const AddEquipmentType = async () => {
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
+  const dataAsObjects = rows.map((row: any[]) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
-      obj['type'] = EquipmentType.value?.id
+      if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i]
     })
+    obj['type'] = EquipmentType.value?.id
     return obj
   })
 
   const orgData = new AddEquipmentTypeExcelParams({ data: dataAsObjects })
   await addEquipmentTypeController.addEquipmentType(orgData, router)
+  if (addEquipmentTypeController.isDataSuccess()) {
+    emit('uploaded')
+  }
 }
 
 const deleteRow = (rowIndex: number) => {
@@ -192,9 +209,6 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
-onMounted(() => {
-  AddEquipmentType()
-})
 
 const EquipmentsTypes = ref([
   new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: 'Device', subtitle: '' }),

@@ -40,6 +40,8 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadInjuryExeclSheet from './UploadInjuryExeclSheet.vue'
 
 const { t } = useI18n()
 
@@ -160,6 +162,30 @@ const exportExcel = () => {
 };
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Injury' },
+    { title: 'Example Injury 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Injuries')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'injury_form.xlsx')
+}
 
 const IndexInjuryactionList = () => [
   {
@@ -186,8 +212,18 @@ const IndexInjuryactionList = () => [
   {
     text: t('import_injury'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/injury/upload-excel',
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.INJURY_CREATE
+    ],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.INJURY_CREATE
@@ -314,6 +350,31 @@ const IndexInjuryactionList = () => [
         link="" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_injury')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadInjuryExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchInjury()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

@@ -38,6 +38,8 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadRootCausesExeclSheet from './UploadRootCausesExeclSheet.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusRootCauses from "@/features/setting/RootCausess/Presentation/components/RootCauses/DialogChangeStatusRootCauses.vue";
@@ -109,6 +111,17 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const actionList = (id: number, deleteRootCauses: (id: number) => void) => [
   {
@@ -193,6 +206,20 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "root-causes.xlsx");
 };
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Root Cause' },
+    { title: 'Example Root Cause 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'RootCauses')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'root_causes_form.xlsx')
+}
+
 const IndexRootCausesactionList = () => [
   {
     text: t('export_excel'),
@@ -218,8 +245,18 @@ const IndexRootCausesactionList = () => [
   {
     text: t('import_root_causes'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/root-causes/upload-excel',
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.ROOT_CAUSES_CREATE
+    ],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.ROOT_CAUSES_CREATE
@@ -374,6 +411,31 @@ const IndexRootCausesactionList = () => [
         description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_root_causes')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadRootCausesExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchRootCauses()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>
