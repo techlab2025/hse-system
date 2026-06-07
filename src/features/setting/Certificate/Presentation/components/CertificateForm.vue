@@ -24,6 +24,7 @@ import { isNull } from 'util'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import RadioButton from 'primevue/radiobutton'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -176,6 +177,7 @@ const updateData = () => {
             : '*',
         null,
         expiredate.value,
+        certificateType.value.id,
       )
     : new AddCertificateParams(
         translationsParams,
@@ -183,6 +185,7 @@ const updateData = () => {
         industry.value?.map((item) => item.id),
         isBase64(image.value) && image.value.length > 0 ? image.value : null,
         expiredate.value,
+        certificateType.value.id,
       )
 
   console.log(params, 'params')
@@ -220,6 +223,7 @@ watch(
       image.value = newData?.image ? newData?.image : ''
       firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
+      certificateType.value = newData?.certificateType ?? ''
     }
   },
   { immediate: true },
@@ -280,6 +284,32 @@ const updateExpireDate = (data: boolean) => {
   console.log(expiredate.value, 'expiredate')
   updateData()
 }
+
+const certificateTypes = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: CertificateTypeEnum.SCALE,
+    title: 'scale',
+  }),
+  new TitleInterface({
+    id: CertificateTypeEnum.AWARENESS,
+    title: 'awareness',
+  }),
+  new TitleInterface({
+    id: CertificateTypeEnum.KNOWLEDGE,
+    title: 'knowledge',
+  }),
+])
+const certificateType = ref<TitleInterface>(
+  new TitleInterface({
+    id: CertificateTypeEnum.SCALE,
+    title: 'scale',
+  }),
+)
+const updateCertificateType = (data: TitleInterface) => {
+  certificateType.value = data
+  console.log(certificateType.value, 'certificateType')
+  updateData()
+}
 </script>
 
 <template>
@@ -305,6 +335,17 @@ const updateExpireDate = (data: boolean) => {
       @update:checked="updateExpireDate"
     />
   </div>
+
+  <!-- <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="certificateType"
+      :static-options="certificateTypes"
+      :label="$t('certificate_type')"
+      id="certificate_type"
+      placeholder="Select certificate type"
+      @update:modelValue="updateCertificateType"
+    />
+  </div> -->
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput

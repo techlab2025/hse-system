@@ -1325,5 +1325,6 @@
   "download_form_example": "Download Form Example",
   "upload_certificate_sheet": "Upload Certificate Sheet",
   "require_expired_date": "Require Expired Date",
-  "start number": "Start Number"
+  "start number": "Start Number",
+  "certificate_type": "Certificate Type"
 }

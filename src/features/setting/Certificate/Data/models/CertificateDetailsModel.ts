@@ -18,6 +18,7 @@ export default class CertificateDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public requireExpiredDate: boolean
+  public certificateType: TitleInterface
 
   constructor(
     id: number,
@@ -29,6 +30,7 @@ export default class CertificateDetailsModel {
     parentId: number,
     image: string,
     requireExpiredDate: boolean,
+    certificateType: TitleInterface,
   ) {
     this.id = id
     this.titles = titles
@@ -39,6 +41,7 @@ export default class CertificateDetailsModel {
     this.parentId = parentId
     this.image = image
     this.requireExpiredDate = requireExpiredDate
+    this.certificateType = certificateType
   }
 
   static fromMap(data: any): CertificateDetailsModel {
@@ -54,6 +57,7 @@ export default class CertificateDetailsModel {
       data.parent_id,
       data.image,
       data.require_expired_date,
+      this.getTitle(data.certificate_type),
     )
   }
 

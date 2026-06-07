@@ -13,6 +13,7 @@ export default class EditCertificateParams implements Params {
   image: string | null
   imageId?: number
   require_expired_date?: boolean
+  certificate_type?: number
 
   constructor(
     id: number,
@@ -24,6 +25,7 @@ export default class EditCertificateParams implements Params {
     image: string | null,
     imageId?: number,
     require_expired_date?: boolean,
+    certificate_type?: number,
   ) {
     this.id = id
     this.translation = translation
@@ -34,6 +36,7 @@ export default class EditCertificateParams implements Params {
     this.image = image
     this.imageId = imageId
     this.require_expired_date = require_expired_date
+    this.certificate_type = certificate_type
   }
 
   toMap(): Record<
@@ -63,6 +66,7 @@ export default class EditCertificateParams implements Params {
     if (this.imageId) data['image_id'] = this.imageId
 
     data['require_expired_date'] = this.require_expired_date
+    if (this.certificate_type) data['certificate_type'] = this.certificate_type
     return data
   }
 }
