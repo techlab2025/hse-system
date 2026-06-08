@@ -80,7 +80,7 @@ const WarehouseTypeDialog = ref<boolean>(false)
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="name">{{ $t('name') }}</label>
     <input
       type="text"
@@ -113,7 +113,7 @@ const WarehouseTypeDialog = ref<boolean>(false)
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
       id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
     <UpdatedCustomInputSelect
-      :required="false"
+      :required="true"
       :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController"
       :params="indexWhereHouseTypeParams"

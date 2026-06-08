@@ -21420,4 +21420,11 @@ html[dir=rtl] .actions-container {
 html[dir=ltr] .actions-container {
   margin-right: 0 !important;
   margin-left: auto !important;
+}
+
+.field-required label::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+  margin-left: 4px;
 }/*# sourceMappingURL=main.css.map */

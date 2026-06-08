@@ -239,16 +239,15 @@ const handleFilesChange = (files: any) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="name">{{ $t('contractor_name') }}</label>
     <input
       type="text"
       id="name"
-      class="input field-required"
+      class="input"
       v-model="Name"
       @input="setName"
       placeholder="Enter Name "
-
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
@@ -266,7 +265,7 @@ const handleFilesChange = (files: any) => {
       "
     />
   </div>
-  <div class="input-wrapper col-span-4 md:col-span-2">
+  <div class="input-wrapper col-span-4 md:col-span-2 field-required">
     <label for="company_number">{{ $t('contractor_phone_number') }}</label>
     <input
       type="text"
@@ -322,7 +321,7 @@ const handleFilesChange = (files: any) => {
       placeholder="Enter Contact Person Email"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
     <input
       type="text"

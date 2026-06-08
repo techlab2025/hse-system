@@ -69,8 +69,8 @@ export default class CertificateDetailsModel {
     const savedLocale = localStorage.getItem('lang')
 
     return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      id: data?.id ? data?.id : null,
+      title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
 }

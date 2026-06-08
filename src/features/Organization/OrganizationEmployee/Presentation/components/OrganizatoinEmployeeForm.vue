@@ -228,7 +228,7 @@ const RoleDialog = ref(false)
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="name">{{ $t('employee_name') }}</label>
     <input
       id="name"
@@ -253,7 +253,7 @@ const RoleDialog = ref(false)
       "
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="phone">{{ $t('employee_phone') }}</label>
     <input
       id="phone"
@@ -263,7 +263,7 @@ const RoleDialog = ref(false)
       :placeholder="$t('enter your phone')"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="email">{{ $t('employee_email') }}</label>
     <input
       id="email"
@@ -273,7 +273,7 @@ const RoleDialog = ref(false)
       :placeholder="$t('enter your email')"
     />
   </div>
-  <div v-if="booleandashAccessStatus" class="col-span-4 md:col-span-2 input-wrapper">
+  <div v-if="booleandashAccessStatus" class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="password">{{ $t('Password') }}</label>
     <input
       id="password"

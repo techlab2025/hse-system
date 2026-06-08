@@ -129,7 +129,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_FACTORY_ALL,
           code: PermissionsEnum.ORG_FACTORY_ALL,
-          label: 'Factory',
+          label: 'Factor',
           permissions: [
             {
               key: PermissionsEnum.ORG_FACTORY_ALL,
@@ -203,11 +203,11 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
 
-        // HiRikaly
+        // Position
         {
           key: PermissionsEnum.HERIKALY_ALL,
           code: PermissionsEnum.HERIKALY_ALL,
-          label: 'HiRikaly',
+          label: 'Position',
           permissions: [
             { key: PermissionsEnum.HERIKALY_ALL, code: PermissionsEnum.HERIKALY_ALL, label: 'All' },
             {
@@ -502,11 +502,11 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
 
-        // Accidents Type
+        // Incidents Type
         {
           key: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
           code: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-          label: 'Accidents Type',
+          label: 'Incidents Type',
           permissions: [
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,

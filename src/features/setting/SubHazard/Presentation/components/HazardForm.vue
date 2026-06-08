@@ -35,6 +35,7 @@ import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/ind
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import { routeLocationKey, useRoute } from 'vue-router'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 /* ================= props & emits ================= */
 
@@ -284,10 +285,11 @@ const fields = ref([
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!route.params.parent_id && !props.hazardTypeId"
   >
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="HazardType"
       :controller="indexHazardTypeController"
       :params="indexHazardTypeParams"
+      :required="true"
       label="Hazard Type"
       id="hazard type"
       placeholder="Select Hazrd Type"

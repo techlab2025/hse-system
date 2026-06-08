@@ -170,7 +170,12 @@ const sendData = async () => {
     }
   })
 
-  const params = new CreateCodingSystemParams(props.serialType == SertialNumberStatusEnum.AUTO ? fields.value.filter((el) => el.name != 0) : [], props.serialType)
+  const params = new CreateCodingSystemParams(
+    props.serialType == SertialNumberStatusEnum.AUTO
+      ? fields.value.filter((el) => el.name != 0)
+      : [],
+    props.serialType,
+  )
   const state = await SerialNumController.getInstance().addSerialNumber(params, router)
   if (state.value.data) {
     await IndexProjectProgressController.getInstance().getData(
@@ -180,7 +185,6 @@ const sendData = async () => {
   emit('close:dialog')
   emit('update:data')
   // location.reload()
-
 }
 
 const ShowData = async () => {
@@ -211,8 +215,12 @@ const route = useRoute()
 <template>
   <form @submit.prevent="sendData" class="serial-form container">
     <div v-if="serialType == SertialNumberStatusEnum.MANUAL" class="serial-overlay"></div>
-    <div v-for="field in fields" :key="field.id" class="serial-form-section"
-      :class="serialType == SertialNumberStatusEnum.MANUAL ? 'opacity' : ''">
+    <div
+      v-for="field in fields"
+      :key="field.id"
+      class="serial-form-section"
+      :class="serialType == SertialNumberStatusEnum.MANUAL ? 'opacity' : ''"
+    >
       <div class="serial-number-input-fields flex flex-col gap-5 w-full">
         <Accordion :value="field.id" class="w-full" expandIcon="null" collapseIcon="null" lazy>
           <AccordionPanel :value="1" :header="field.title" class="w-full">
@@ -223,25 +231,28 @@ const route = useRoute()
             </AccordionHeader>
             <AccordionContent>
               <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-4">
-                <div class="input-wrapper star">
-                  <label>{{ $t('prefix') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('prefix') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.prefix" placeholder="Enter your prefix" />
                 </div>
-                <div class="input-wrapper star">
-                  <label>{{ $t('suffix') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('suffix') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
                 </div>
-                <div class="input-wrapper star">
-                  <label>{{ $t('start number') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('start number') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.start" placeholder="Enter your start" />
                 </div>
-                <div class="generated-serial ">
+                <div class="generated-serial">
                   <div class="icon-text">
                     <PathSerial />
                     <p>Generated Serial number Example:</p>
@@ -254,17 +265,24 @@ const route = useRoute()
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
-
       </div>
     </div>
 
     <div class="form-sticky-button flex gap-2">
-      <router-link v-if="!route.path.includes('project-progress')" to="/organization" class="btn btn-cancel"
-        style="width: 15%">{{
-          $t('cancel')
-        }}</router-link>
-      <button type="submit" class="btn btn-primary"
-        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'">{{ $t('save') }}</button>
+      <router-link
+        v-if="!route.path.includes('project-progress')"
+        to="/organization"
+        class="btn btn-cancel"
+        style="width: 15%"
+        >{{ $t('cancel') }}</router-link
+      >
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'"
+      >
+        {{ $t('save') }}
+      </button>
     </div>
   </form>
 </template>
@@ -279,7 +297,7 @@ const route = useRoute()
 
   display: flex;
   align-items: end;
-  gap: .5rem;
+  gap: 0.5rem;
   // justify-content: space-between;
   // display: grid;
   // grid-template-columns: 1fr 1fr;
@@ -293,7 +311,7 @@ const route = useRoute()
     p {
       font-size: 1rem;
       font-weight: 600;
-      font-family: "regular";
+      font-family: 'regular';
       color: rgba(32, 32, 32, 1);
     }
   }
@@ -315,9 +333,9 @@ const route = useRoute()
     // }
 
     p {
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      font-family: "regular";
+      font-family: 'regular';
       color: rgba(130, 130, 139, 1);
 
       span {

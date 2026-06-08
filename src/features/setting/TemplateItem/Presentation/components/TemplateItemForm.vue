@@ -134,12 +134,12 @@ const ClearTitle = () => {
       subtitle="add your items one by one to the templet and you can see them" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <div class="col-span-4 md:col-span-2 input-wrapper">
+    <div class="col-span-4 md:col-span-2 input-wrapper field-required">
       <label for="item-title">{{ $t('inspection_exemined_title') }}</label>
       <input type="text" id="item-title" v-model="title" class="input" placeholder="add your title here.."
         @input="updateData">
     </div>
-    <div class="col-span-4 md:col-span-2 input-wrapper mt-6">
+    <div class="col-span-4 md:col-span-2 input-wrapper mt-6 field-required">
       <label for="item-category">{{ $t('inspection_exemined_tag') }}</label>
       <input type="text" id="item-category" v-model="category" class="input"
         placeholder="add your tepmlate item category.." @input="updateData">

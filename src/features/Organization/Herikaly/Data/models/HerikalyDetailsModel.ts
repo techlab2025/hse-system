@@ -29,7 +29,7 @@ export default class HerikalyDetailsModel {
       data.titles,
       data.parent_id,
       data.children,
-      data.certificates.map((item: any) => CertificateDetailsModel.fromMap(item)),
+      data?.certificates?.map((item: any) => CertificateDetailsModel.fromMap(item)),
     )
   }
 
