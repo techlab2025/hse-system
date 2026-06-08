@@ -25,11 +25,11 @@ import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Param
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
-import { useIntegratedNotifications } from "@/composables/useIntegratedNotifications";
-import { useToast } from "primevue/usetoast";
+import { useIntegratedNotifications } from '@/composables/useIntegratedNotifications'
+import { useToast } from 'primevue/usetoast'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notifications from './Notifications.vue'
-import Ring from "@/assets/Ring/Ring.txt"
+import Ring from '@/assets/Ring/Ring.txt'
 
 const route = useRoute()
 // console.log(route.name)
@@ -55,8 +55,7 @@ const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
     window.location.href = '/login/admin'
-  }
-  else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
+  } else if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
@@ -75,7 +74,12 @@ const toggleDropMenu = () => {
 const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
-const SelectProject = ref<TitleInterface>(new TitleInterface({ id: ProjectSelector.getProject()?.id, title: ProjectSelector.getProject()?.title }))
+const SelectProject = ref<TitleInterface>(
+  new TitleInterface({
+    id: ProjectSelector.getProject()?.id,
+    title: ProjectSelector.getProject()?.title,
+  }),
+)
 const indexProjectController = FetchMyProjectsController.getInstance()
 
 const GetAllProjects = async () => {
@@ -87,16 +91,22 @@ const GetAllProjects = async () => {
   }
 }
 onMounted(() => {
-  if(user?.type == OrganizationTypeEnum.ORGANIZATION) {
+  if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
     GetAllProjects()
   }
 })
 
-
 const setSelectedProject = async (project: TitleInterface) => {
-  const organizationEmployeeDefaultProjectRepoController = OrganizationEmployeeDefaultProjectRepoController.getInstance()
-  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(user?.id, project?.id == -1 ? null : project?.id)
-  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(organizationEmployeeDefaultProjectParams, router)
+  const organizationEmployeeDefaultProjectRepoController =
+    OrganizationEmployeeDefaultProjectRepoController.getInstance()
+  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(
+    user?.id,
+    project?.id == -1 ? null : project?.id,
+  )
+  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(
+    organizationEmployeeDefaultProjectParams,
+    router,
+  )
   // SelectProject.value = project
   ProjectSelector.setProjectId(project)
   // location.reload()
@@ -104,11 +114,12 @@ const setSelectedProject = async (project: TitleInterface) => {
 
 const showProjectSelect = ref<boolean>(false)
 onMounted(() => {
-  showProjectSelect.value = user?.type == OrganizationTypeEnum.ADMIN || user?.employeeType == EmployeeStatusEnum.Employee
+  showProjectSelect.value =
+    user?.type == OrganizationTypeEnum.ADMIN || user?.employeeType == EmployeeStatusEnum.Employee
 })
 
 const userStore = useUserStore()
-const toast = useToast();
+const toast = useToast()
 
 // const NOTIFICATION_SOUND_BASE64 =
 //   "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIF2W56+mmUBELTKXh8bllHAU2jdXvyn0tBSh+zPLaizsKGGS46Om1XBoFM4nU8c1+LgYngM3y3I4+ChlluOvpplARC0ul4fG5ZRwFNo3V78p9LQUofszy2os7ChhluevrpVERC0yn4fG3ZBwFOI7U8ct+LQUoftDy24k7ChZluujoplARDEul4e+3ZRwGOY/V8Mp/LgYpf9Dy3Ik7CxZluejpplARDEym4fG3ZBwFOI/V8cp+LQYoftDy24o7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuujqplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/";
@@ -122,7 +133,6 @@ const toast = useToast();
 //     userId: userStore.user?.id,
 //     fetchNotifications: true,
 //     userToken: userStore.user?.apiToken,
-
 
 //     onNotification: (notification) => {
 //       console.log(notification);
@@ -141,20 +151,17 @@ const toast = useToast();
 //       });
 //     },
 //   });
-const op = ref();
+const op = ref()
 
 const toggle = (event: Event) => {
-  op.value.toggle(event);
-};
-
-
+  op.value.toggle(event)
+}
 </script>
 
 <template>
   <header class="header minmize">
     <nav class="nav">
       <div class="menu">
-
         <!-- Add the new icon to open the sidebar -->
         <!-- <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
           <IconMenu />
@@ -168,22 +175,35 @@ const toggle = (event: Event) => {
           </h1>
           <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
         </div> -->
-        <router-link class="flex items-center gap-2"
-          :to="user?.type == OrganizationTypeEnum?.ADMIN ? '/admin' : user?.employeeType == EmployeeStatusEnum.Employee ? '/organization/employee-interface' : '/organization'">
-          <img :src="defaultLogo" alt="logo-img">
-          <p class="logo">HSE.Cloud.Ai </p>
+        <router-link
+          class="flex items-center gap-2"
+          :to="
+            user?.type == OrganizationTypeEnum?.ADMIN
+              ? '/admin'
+              : user?.employeeType == EmployeeStatusEnum.Employee
+                ? '/organization/employee-interface'
+                : '/organization'
+          "
+        >
+          <img :src="defaultLogo" alt="logo-img" />
+          <p class="logo">HSE.Cloud.Ai</p>
         </router-link>
-
-
-
-
       </div>
 
-      <div class="input-wrapper" v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN">
+      <div
+        class="input-wrapper"
+        v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN"
+      >
         <!-- label="Project" -->
-        <CustomSelectInput :modelValue="SelectProject" class="input" :staticOptions="ProjectSelector.AllProjects"
-          id="project" placeholder="select your project" @update:modelValue="setSelectedProject" :reload="false" />
-
+        <CustomSelectInput
+          :modelValue="SelectProject"
+          class="input"
+          :staticOptions="ProjectSelector.AllProjects"
+          id="project"
+          placeholder="select your project"
+          @update:modelValue="setSelectedProject"
+          :reload="false"
+        />
       </div>
       <!-- <div class="search">
         <SearchIcon />
@@ -192,7 +212,7 @@ const toggle = (event: Event) => {
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
-        <Notifications />
+        <!-- <Notifications />  server error-->
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />

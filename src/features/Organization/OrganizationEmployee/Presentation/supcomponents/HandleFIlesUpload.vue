@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
-interface UploadedFile {
+export interface UploadedFile {
   id: string
   name: string
   type: string
   size: string
   url: string
   base64: string
+  file?: File
 }
 
 interface Props {
@@ -16,11 +17,41 @@ interface Props {
   maxFiles?: number
   className?: string
   multiple?: boolean
+  index?: number
+  haveContent?: boolean
+  file?: string | string[]
+  base64File?: string | string[]
+  hidepreview?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   label: 'Upload Files',
-  accept: '*',
+  accept: [
+    // Images
+    'image/*',
+    // Documents
+    '.pdf',
+    '.doc',
+    '.docx',
+    '.xls',
+    '.xlsx',
+    '.ppt',
+    '.pptx',
+    '.txt',
+    '.csv',
+    '.rtf',
+    // Archives
+    '.zip',
+    '.rar',
+    '.7z',
+    '.tar',
+    '.gz',
+    // Code / misc
+    '.json',
+    '.xml',
+    '.yaml',
+    '.yml',
+  ].join(','),
   maxFiles: Infinity,
   multiple: false,
 })
@@ -31,10 +62,109 @@ const emit = defineEmits<{
 
 const files = ref<UploadedFile[]>([])
 
+// ─── MIME type map for preloaded files (by extension) ──────────────────────
+const EXT_MIME_MAP: Record<string, string> = {
+  // Images
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  gif: 'image/gif',
+  webp: 'image/webp',
+  svg: 'image/svg+xml',
+  // Documents
+  pdf: 'application/pdf',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  txt: 'text/plain',
+  csv: 'text/csv',
+  rtf: 'application/rtf',
+  // Archives
+  zip: 'application/zip',
+  rar: 'application/vnd.rar',
+  '7z': 'application/x-7z-compressed',
+  tar: 'application/x-tar',
+  gz: 'application/gzip',
+  // Code / misc
+  json: 'application/json',
+  xml: 'application/xml',
+  yaml: 'text/yaml',
+  yml: 'text/yaml',
+}
+
+// ─── Icon map: extension → emoji/label for non-image previews ─────────────
+const EXT_ICON_MAP: Record<string, string> = {
+  pdf: '📄',
+  doc: '📝',
+  docx: '📝',
+  xls: '📊',
+  xlsx: '📊',
+  ppt: '📑',
+  pptx: '📑',
+  zip: '🗜️',
+  rar: '🗜️',
+  '7z': '🗜️',
+  tar: '🗜️',
+  gz: '🗜️',
+  txt: '📃',
+  csv: '📃',
+  rtf: '📃',
+  json: '{ }',
+  xml: '</>',
+  yaml: '⚙️',
+  yml: '⚙️',
+}
+
+const initFilesFromProps = (
+  file: string | string[] | undefined,
+  base64File: string | string[] | undefined,
+) => {
+  if (!file && !base64File) return
+
+  const fileList = Array.isArray(file) ? file : file ? [file] : []
+  const base64List = Array.isArray(base64File) ? base64File : base64File ? [base64File] : []
+
+  files.value = fileList.map((url, i) => {
+    let name = 'file'
+    let ext = ''
+    if (url.startsWith('data:')) {
+      const match = url.match(/^data:([^;]+);/)
+      const mime = match ? match[1] : ''
+      ext = mime?.split('/').pop() ?? ''
+      name = `file.${ext}`
+    } else {
+      name = url.split('/').pop() ?? 'file'
+      ext = name.split('.').pop()?.toLowerCase() ?? ''
+    }
+    const type = EXT_MIME_MAP[ext] ?? 'application/octet-stream'
+
+    return {
+      id: Math.random().toString(36).substring(2),
+      name,
+      type,
+      size: '',
+      url,
+      base64: base64List[i] ?? (url.startsWith('data:') ? url : ''),
+    }
+  })
+}
+
+onMounted(() => initFilesFromProps(props.file, props.base64File))
+
+watch(
+  () => props.file,
+  (newFile) => initFilesFromProps(newFile, props.base64File),
+)
+
+const isMaxReached = computed(() => files.value.length >= props.maxFiles)
+
 const fileToBase64 = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => resolve((reader.result as string).split(',')[1])
+    reader.onload = () => resolve(reader.result as string)
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
@@ -46,21 +176,39 @@ const handleFileUpload = async (event: Event) => {
   const remaining = props.maxFiles - files.value.length
   const incoming = Array.from(input.files).slice(0, remaining)
 
-  for (const file of incoming) {
-    const base64 = await fileToBase64(file)
+  const newFiles: UploadedFile[] = await Promise.all(
+    incoming.map(async (file) => {
+      const base64 = await fileToBase64(file)
+      return {
+        id: Math.random().toString(36).substring(2),
+        name: file.name,
+        type: file.type || resolveMime(file.name), // fallback for OS edge cases
+        size: formatFileSize(file.size),
+        url: URL.createObjectURL(file),
+        base64,
+        file,
+      }
+    }),
+  )
 
-    files.value.push({
-      id: crypto.randomUUID(),
-      name: file.name,
-      type: file.type,
-      size: formatFileSize(file.size),
-      url: URL.createObjectURL(file),
-      base64,
-    })
-  }
-
+  files.value = [...files.value, ...newFiles]
   emit('change', files.value)
   input.value = ''
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────
+
+const resolveMime = (name: string): string => {
+  const ext = name.split('.').pop()?.toLowerCase() ?? ''
+  return EXT_MIME_MAP[ext] ?? 'application/octet-stream'
+}
+
+const isImage = (file: UploadedFile): boolean => file.type.startsWith('image/')
+
+/** Returns an emoji icon or the uppercased extension label */
+const getFileIcon = (file: UploadedFile): string => {
+  const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
+  return EXT_ICON_MAP[ext] ?? (ext.toUpperCase() || 'FILE')
 }
 
 const downloadFile = (file: UploadedFile) => {
@@ -71,12 +219,10 @@ const downloadFile = (file: UploadedFile) => {
 }
 
 const removeFile = (id: string) => {
-  const index = files.value.findIndex((f) => f.id === id)
-  if (index !== -1) {
-    URL.revokeObjectURL(files.value[index].url)
-    files.value.splice(index, 1)
-    emit('change', files.value)
-  }
+  const target = files.value.find((f) => f.id === id)
+  if (target?.url.startsWith('blob:')) URL.revokeObjectURL(target.url)
+  files.value = files.value.filter((f) => f.id !== id)
+  emit('change', files.value)
 }
 
 const formatFileSize = (bytes: number): string => {
@@ -85,9 +231,7 @@ const formatFileSize = (bytes: number): string => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-const getFileExt = (name: string): string => name.split('.').pop()?.toUpperCase() ?? 'FILE'
-
-const isMaxReached = () => files.value.length >= props.maxFiles
+const inputId = `file-upload-${props.index ?? Math.random().toString(36).substring(2)}`
 </script>
 
 <template>
@@ -95,53 +239,68 @@ const isMaxReached = () => files.value.length >= props.maxFiles
     <label class="upload-label">{{ label }}</label>
 
     <label
-      :class="{
-        disabled: isMaxReached(),
-        [className]: className || 'upload-area',
-      }"
-      for="file-upload-input"
+      v-if="!haveContent"
+      :for="inputId"
+      :class="[className ?? 'upload-area', { disabled: isMaxReached }]"
     >
       <span class="upload-icon">↑</span>
       <span class="upload-text">
-        {{ isMaxReached() ? `Max ${maxFiles} files reached` : 'Click to upload' }}
+        {{ isMaxReached ? `Max ${maxFiles} files reached` : 'Click to upload' }}
       </span>
       <input
-        id="file-upload-input"
+        :id="inputId"
         type="file"
         :accept="accept"
-        :disabled="isMaxReached()"
+        :disabled="isMaxReached"
+        :multiple="multiple"
+        hidden
+        @change="handleFileUpload"
+      />
+    </label>
+    <label v-else :for="inputId" :class="[className ?? 'upload-area', { disabled: isMaxReached }]">
+      <slot name="content"></slot>
+      <input
+        :id="inputId"
+        type="file"
+        :accept="accept"
+        :disabled="isMaxReached"
         :multiple="multiple"
         hidden
         @change="handleFileUpload"
       />
     </label>
 
-    <div v-if="files.length" class="preview-grid">
+    <div v-if="files.length && !hidepreview" class="preview-grid">
       <div
-        v-for="file in files"
-        :key="file.id"
+        v-for="fileItem in files"
+        :key="fileItem.id"
         class="preview-item"
         title="Click to download"
-        @click="downloadFile(file)"
+        @click="downloadFile(fileItem)"
       >
-        <template v-if="file.type.startsWith('image/')">
-          <img :src="file.url" :alt="file.name" class="preview-thumb" />
+        <template v-if="isImage(fileItem)">
+          <img :src="fileItem.url" :alt="fileItem.name" class="preview-thumb" />
         </template>
 
         <template v-else>
           <div class="preview-icon">
-            {{ getFileExt(file.name) }}
+            {{ getFileIcon(fileItem) }}
           </div>
         </template>
 
         <div class="preview-overlay">
-          <span class="preview-filename">{{ file.name }}</span>
-          <span class="preview-size">{{ file.size }}</span>
+          <span class="preview-filename">{{ fileItem.name }}</span>
+          <span class="preview-size">{{ fileItem.size }}</span>
         </div>
 
         <div class="download-badge">↓</div>
 
-        <button type="button" class="remove-btn" title="Remove" @click.stop="removeFile(file.id)">
+        <button
+          type="button"
+          class="remove-btn"
+          title="Remove"
+          @click.stop="removeFile(fileItem.id)"
+        >
           ✕
         </button>
       </div>
@@ -157,9 +316,9 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 }
 
 .upload-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+  color: var(--gray-5);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .upload-area {
@@ -169,18 +328,18 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   justify-content: center;
   gap: 6px;
   padding: 20px;
-  border: 1.5px dashed #d1d5db;
+  border: 1.5px dashed var(--gray-300);
   border-radius: 10px;
   cursor: pointer;
   transition:
     border-color 0.15s,
     background 0.15s;
-  background: #fafafa;
+  background: var(--bg-section);
 }
 
 .upload-area:hover:not(.disabled) {
-  border-color: #6366f1;
-  background: #f5f3ff;
+  border-color: var(--PrimaryColor);
+  background: var(--PrimaryColor-light);
 }
 
 .upload-area.disabled {
@@ -190,12 +349,12 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 
 .upload-icon {
   font-size: 16px;
-  color: #9ca3af;
+  color: var(--gray-400);
 }
 
 .upload-text {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--gray-500);
 }
 
 .preview-grid {
@@ -209,10 +368,10 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   width: 100px;
   height: 100px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-200);
   overflow: hidden;
   cursor: pointer;
-  background: #f3f4f6;
+  background: var(--gray-100);
   flex-shrink: 0;
   transition:
     border-color 0.15s,
@@ -220,7 +379,7 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 }
 
 .preview-item:hover {
-  border-color: #6366f1;
+  border-color: var(--PrimaryColor);
   transform: translateY(-2px);
 }
 
@@ -239,7 +398,7 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   justify-content: center;
   font-size: 12px;
   font-weight: 700;
-  color: #6b7280;
+  color: var(--gray-500);
   letter-spacing: 0.05em;
 }
 
@@ -248,7 +407,7 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+  background: linear-gradient(transparent, var(--black-alpha-60));
   padding: 20px 6px 5px;
   display: flex;
   flex-direction: column;
@@ -263,7 +422,7 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 
 .preview-filename {
   font-size: 10px;
-  color: #fff;
+  color: var(--BgWhite);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -272,7 +431,7 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 
 .preview-size {
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--white-alpha-75);
 }
 
 .download-badge {
@@ -282,8 +441,8 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgba(99, 102, 241, 0.85);
-  color: #fff;
+  background: var(--PrimaryColor);
+  color: var(--BgWhite);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -304,8 +463,8 @@ const isMaxReached = () => files.value.length >= props.maxFiles
   height: 20px;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
+  background: var(--black-alpha-45);
+  color: var(--BgWhite);
   font-size: 10px;
   cursor: pointer;
   display: flex;
@@ -323,7 +482,6 @@ const isMaxReached = () => files.value.length >= props.maxFiles
 }
 
 .remove-btn:hover {
-  background: #ef4444;
+  background: var(--danger);
 }
-
 </style>

@@ -244,10 +244,11 @@ const handleFilesChange = (files: any) => {
     <input
       type="text"
       id="name"
-      class="input"
+      class="input field-required"
       v-model="Name"
       @input="setName"
       placeholder="Enter Name "
+
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
@@ -411,5 +412,29 @@ const handleFilesChange = (files: any) => {
   padding: 11px;
   border-radius: 20px !important;
   cursor: pointer;
+  color: #202020;
+  font-family: 'Light';
+}
+
+:deep(.upload-label) {
+  width: -moz-fit-content;
+  width: fit-content;
+  text-align: start;
+  font-weight: 600;
+  font-size: var(--md-size);
+  color: #202020;
+  font-family: 'Light';
+}
+:deep(.file-upload-wrapper) {
+  gap: 4px !important;
 }
 </style>
+
+<!-- :label="`upload image`"
+              accept="image/*"
+              :multiple="false"
+              :index="1"
+              :file="UploadedImage"
+              :have-content="true"
+              :class="`image-input`"
+              @change="handleImageChange" -->
