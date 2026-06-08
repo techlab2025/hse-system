@@ -1354,5 +1354,6 @@
   "add_hazard_classification": "Add Hazard Classification",
   "add_ticket": "Add Ticket",
   "warehouse": "warehouse",
-  "tickets": "tickets"
+  "tickets": "tickets",
+  "injury": "injury"
 }
