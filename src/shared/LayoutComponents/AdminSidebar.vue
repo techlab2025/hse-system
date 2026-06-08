@@ -717,12 +717,17 @@ const SelectedLockupsRoute = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
-    SelectedSettingsRoute.value = SettingsRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedWebsiteRoute.value = WebsiteRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedSubscriptionTypeRoute.value = SubscriptionTypeRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name || ''
-  }
+    SelectedSettingsRoute.value =
+      SettingsRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedLocationRoute.value =
+      LocationRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedWebsiteRoute.value =
+      WebsiteRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedSubscriptionTypeRoute.value =
+      SubscriptionTypeRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedLockupsRoute.value =
+      LockUpsRoutes.value.find((item) => item.link === newPath)?.name || ''
+  },
 )
 
 const settingsAccordion = ref<string | null>('0')
@@ -739,51 +744,31 @@ watch(LoackupsAccordion, (val) => {
   <!-- Icon strip shown when sidebar is closed -->
   <template v-if="!open">
     <div class="icon-strip">
-      <PermissionBuilder
-        v-for="r in SettingsRoutes"
-        :key="r.link"
-        :code="r.permissions"
-      >
+      <PermissionBuilder v-for="r in SettingsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder
-        v-for="r in LocationRoutes"
-        :key="r.link"
-        :code="r.permissions"
-      >
+      <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder
-        v-for="r in SubscriptionTypeRoutes"
-        :key="r.link"
-        :code="r.permissions"
-      >
+      <PermissionBuilder v-for="r in SubscriptionTypeRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder
-        v-for="r in WebsiteRoutes"
-        :key="r.link"
-        :code="r.permissions"
-      >
+      <PermissionBuilder v-for="r in WebsiteRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder
-        v-for="r in LockUpsRoutes"
-        :key="r.link"
-        :code="r.permissions"
-      >
+      <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
@@ -793,21 +778,23 @@ watch(LoackupsAccordion, (val) => {
 
   <!-- Full accordion view when sidebar is open -->
   <template v-else>
-    <PermissionBuilder :code="[
-      PermissionsEnum?.ADMIN_ALL,
-      PermissionsEnum?.LANGUAGE_ALL,
-      PermissionsEnum?.INDUSTRY_ALL,
-      PermissionsEnum?.EQUIPMENT_TYPE_ALL,
-      PermissionsEnum?.EQUIPMENT_ALL,
-      PermissionsEnum?.HAZARD_TYPE_ALL,
-      PermissionsEnum?.ACCIDENTS_TYPE_ALL,
-      PermissionsEnum?.FACTORY_ITEM_ALL,
-      PermissionsEnum?.FACTORY_ALL,
-      PermissionsEnum?.CERTIFICATE_ALL,
-      PermissionsEnum?.TEMPLATE_ALL,
-      PermissionsEnum?.PROJECT_TYPE_ALL,
-      PermissionsEnum?.ORGANIZATION_ALL,
-    ]">
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.ADMIN_ALL,
+        PermissionsEnum?.LANGUAGE_ALL,
+        PermissionsEnum?.INDUSTRY_ALL,
+        PermissionsEnum?.EQUIPMENT_TYPE_ALL,
+        PermissionsEnum?.EQUIPMENT_ALL,
+        PermissionsEnum?.HAZARD_TYPE_ALL,
+        PermissionsEnum?.ACCIDENTS_TYPE_ALL,
+        PermissionsEnum?.FACTORY_ITEM_ALL,
+        PermissionsEnum?.FACTORY_ALL,
+        PermissionsEnum?.CERTIFICATE_ALL,
+        PermissionsEnum?.TEMPLATE_ALL,
+        PermissionsEnum?.PROJECT_TYPE_ALL,
+        PermissionsEnum?.ORGANIZATION_ALL,
+      ]"
+    >
       <Accordion v-model:value="settingsAccordion">
         <AccordionPanel value="0">
           <AccordionHeader>
@@ -819,10 +806,14 @@ watch(LoackupsAccordion, (val) => {
 
           <AccordionContent>
             <ul>
-              <PermissionBuilder v-for="(r, index) in SettingsRoutes" :key="index" :code="r.permissions">
+              <PermissionBuilder
+                v-for="(r, index) in SettingsRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -847,10 +838,14 @@ watch(LoackupsAccordion, (val) => {
           </AccordionHeader>
           <AccordionContent>
             <ul>
-              <PermissionBuilder v-for="(r, index) in LocationRoutes" :key="index" :code="r.permissions">
+              <PermissionBuilder
+                v-for="(r, index) in LocationRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -864,14 +859,16 @@ watch(LoackupsAccordion, (val) => {
       </Accordion>
     </PermissionBuilder>
 
-    <PermissionBuilder :code="[
-      PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
-      PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
-      PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
-      PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
-      PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
-      PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
-    ]">
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
+      ]"
+    >
       <Accordion v-model:value="subscriptionTypeAccordion">
         <AccordionPanel value="3">
           <AccordionHeader>
@@ -882,10 +879,14 @@ watch(LoackupsAccordion, (val) => {
           </AccordionHeader>
           <AccordionContent>
             <ul>
-              <PermissionBuilder v-for="(r, index) in SubscriptionTypeRoutes" :key="index" :code="r.permissions">
+              <PermissionBuilder
+                v-for="(r, index) in SubscriptionTypeRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -893,39 +894,44 @@ watch(LoackupsAccordion, (val) => {
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion">
+        <AccordionPanel
+          class="active-panel-out"
+          v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion"
+        >
           <span>{{ SelectedSubscriptionTypeRoute }}</span>
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>
 
-    <PermissionBuilder :code="[
-      PermissionsEnum?.WEBSITE,
-      PermissionsEnum?.CLIENT_OPINION_ALL,
-      PermissionsEnum?.HOME_CONTACT_US_ALL,
-      PermissionsEnum?.CATEGORY_ALL,
-      PermissionsEnum?.SERVICE_ALL,
-      PermissionsEnum?.HASHTAG_ALL,
-      PermissionsEnum?.TERM_ALL,
-      PermissionsEnum?.HEADER_ALL,
-      PermissionsEnum?.SERVICE_FEATURE_ALL,
-      PermissionsEnum?.SERVICE_SECTION_ALL,
-      PermissionsEnum?.POWERFUL_FEATURE_ALL,
-      PermissionsEnum?.SYSTEM_WORK_ALL,
-      PermissionsEnum?.PRIVACY_ALL,
-      PermissionsEnum?.HOME_VIEW_PRICING_ALL,
-      PermissionsEnum?.SERVICE_LOG_ALL,
-      PermissionsEnum?.BLOG_ALL,
-      PermissionsEnum?.HOME_ABOUT_US_ALL,
-      PermissionsEnum?.ABOUT_US_FEATURE_ALL,
-      PermissionsEnum?.ABOUT_US_CORE_ALL,
-      PermissionsEnum?.FAQ_ALL,
-      PermissionsEnum?.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
-      PermissionsEnum?.OUR_SYSTEM_STEP_ALL,
-      PermissionsEnum?.OUR_SYSTEM_FEATURE_ALL,
-      PermissionsEnum?.OUR_SYSTEM_RISK_TYPE_ALL,
-      PermissionsEnum?.OUR_SYSTEM_COMPONENT_ALL,
-    ]">
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.WEBSITE,
+        PermissionsEnum?.CLIENT_OPINION_ALL,
+        PermissionsEnum?.HOME_CONTACT_US_ALL,
+        PermissionsEnum?.CATEGORY_ALL,
+        PermissionsEnum?.SERVICE_ALL,
+        PermissionsEnum?.HASHTAG_ALL,
+        PermissionsEnum?.TERM_ALL,
+        PermissionsEnum?.HEADER_ALL,
+        PermissionsEnum?.SERVICE_FEATURE_ALL,
+        PermissionsEnum?.SERVICE_SECTION_ALL,
+        PermissionsEnum?.POWERFUL_FEATURE_ALL,
+        PermissionsEnum?.SYSTEM_WORK_ALL,
+        PermissionsEnum?.PRIVACY_ALL,
+        PermissionsEnum?.HOME_VIEW_PRICING_ALL,
+        PermissionsEnum?.SERVICE_LOG_ALL,
+        PermissionsEnum?.BLOG_ALL,
+        PermissionsEnum?.HOME_ABOUT_US_ALL,
+        PermissionsEnum?.ABOUT_US_FEATURE_ALL,
+        PermissionsEnum?.ABOUT_US_CORE_ALL,
+        PermissionsEnum?.FAQ_ALL,
+        PermissionsEnum?.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+        PermissionsEnum?.OUR_SYSTEM_STEP_ALL,
+        PermissionsEnum?.OUR_SYSTEM_FEATURE_ALL,
+        PermissionsEnum?.OUR_SYSTEM_RISK_TYPE_ALL,
+        PermissionsEnum?.OUR_SYSTEM_COMPONENT_ALL,
+      ]"
+    >
       <Accordion v-model:value="websiteAccordion">
         <AccordionPanel value="2">
           <AccordionHeader>
@@ -937,10 +943,14 @@ watch(LoackupsAccordion, (val) => {
 
           <AccordionContent>
             <ul>
-              <PermissionBuilder v-for="(r, index) in WebsiteRoutes" :key="index" :code="r.permissions">
+              <PermissionBuilder
+                v-for="(r, index) in WebsiteRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -954,7 +964,9 @@ watch(LoackupsAccordion, (val) => {
       </Accordion>
     </PermissionBuilder>
 
-    <PermissionBuilder :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
+    <PermissionBuilder
+      :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+    >
       <Accordion v-model:value="LoackupsAccordion">
         <AccordionPanel value="4">
           <AccordionHeader>
@@ -966,10 +978,14 @@ watch(LoackupsAccordion, (val) => {
 
           <AccordionContent>
             <ul>
-              <PermissionBuilder v-for="(r, index) in LockUpsRoutes" :key="index" :code="r?.permissions">
+              <PermissionBuilder
+                v-for="(r, index) in LockUpsRoutes"
+                :key="index"
+                :code="r?.permissions"
+              >
                 <li>
                   <router-link :to="r.link" :class="route?.fullPath?.includes(r.link) ? '' : ''">
-                    <component :is="r.icon" class="route-icon" />
+                    <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -1009,7 +1025,9 @@ watch(LoackupsAccordion, (val) => {
   height: 38px;
   border-radius: 8px;
   color: #aaaaaa;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
   position: relative;
   text-decoration: none;
   flex-shrink: 0;

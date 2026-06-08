@@ -6,6 +6,8 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type PermissionModel from '../../Data/models/PermissionModel'
 import EditPermissionUseCase from '../../Domain/useCase/editPermissionUseCase'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 export default class EditPermissionController extends ControllerInterface<PermissionModel> {
   private static instance: EditPermissionController
@@ -37,7 +39,12 @@ export default class EditPermissionController extends ControllerInterface<Permis
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/organization-employee')
+        const { user } = useUserStore()
+        if (user?.type == OrganizationTypeEnum.ADMIN) {
+          await router.push('/admin/admins')
+        } else {
+          await router.push('/organization/organization-employee')
+        }
         // console.log(this.state.value.data)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
