@@ -1352,5 +1352,7 @@
   "add_coding_system": "Add Coding System",
   "edit_coding_system": "Edit Coding System",
   "add_hazard_classification": "Add Hazard Classification",
-  "add_ticket": "Add Ticket"
+  "add_ticket": "Add Ticket",
+  "warehouse": "warehouse",
+  "tickets": "tickets"
 }

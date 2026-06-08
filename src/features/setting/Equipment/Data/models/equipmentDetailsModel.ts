@@ -46,6 +46,7 @@ export default class EquipmentDetailsModel {
   public last_inspection: LastInspectionModel
   public serial_name: string
   public checkout_date: string
+  public qr_code_image: string
 
   constructor(
     id: number,
@@ -80,6 +81,7 @@ export default class EquipmentDetailsModel {
     last_inspection: LastInspectionModel,
     serial_name: string,
     checkout_date: string,
+    qr_code_image: string
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -113,6 +115,7 @@ export default class EquipmentDetailsModel {
     this.last_inspection = last_inspection
     this.serial_name = serial_name
     this.checkout_date = checkout_date
+    this.qr_code_image = qr_code_image
     // this.type = type
   }
 
@@ -157,6 +160,7 @@ export default class EquipmentDetailsModel {
         : null,
       data.serial_name,
       data.checkout_date,
+      data.qr_code_image
     )
   }
 

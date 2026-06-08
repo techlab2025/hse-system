@@ -967,7 +967,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
             :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
             :deviceStatus="deviceStatus"
           />
-          <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" />
+          <!-- <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" /> -->
         </div>
       </div>
       <!-- <QrCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" /> -->
