@@ -18,6 +18,7 @@ import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import { ValidationStatusEnum } from '../../Core/Enum/ValidationStatusEnum'
+import { DataInitial } from '@/base/core/networkStructure/Resources/dataState/data_state'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -127,10 +128,17 @@ const readExcelFile = (file: File): Promise<any[]> =>
     reader.readAsArrayBuffer(file)
   })
 
+// ─── Submit controller (declared early — fileUpload below resets its state) ──
+
+const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
+const Datastate = computed(() => addOrganizatoinEmployeeController.state.value)
+
 // ─── Upload Handler ───────────────────────────────────────────────────────────
 
 const fileUpload = async (file: File) => {
   errorMsg.value = null
+  // Clear previous validation results so a new file always starts from a clean preview
+  addOrganizatoinEmployeeController.setState(new DataInitial<OrganizatoinEmployeeModel[]>(null))
   try {
     if (!file) {
       sheetData.value = null
@@ -225,8 +233,6 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 // ─── Submit ───────────────────────────────────────────────────────────────────
 
 const router = useRouter()
-const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
-const Datastate = computed(() => addOrganizatoinEmployeeController.state.value)
 
 const AddOrgEmployee = async () => {
   if (!mappedData.value) return
