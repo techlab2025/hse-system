@@ -34,6 +34,16 @@ import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue'
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
+
+import CertificateActionsButtons from '@/features/setting/Certificate/Presentation/components/CertificateActionsButtons.vue'
+import HerikalyActionsButtons from '@/features/Organization/Herikaly/Presentation/components/HerikalyActionsButtons.vue'
+import OrganizationEmployeeActionsButtons from '@/features/Organization/OrganizationEmployee/Presentation/components/OrganizationEmployeeActionsButtons.vue'
+import ObserverationTypeActionsButtons from '@/features/setting/ObserverationType/Presentation/components/ObserverationTypeActionsButtons.vue'
+import AccidentsTypeActionsButtons from '@/features/setting/AccidentsTypes/Presentation/components/AccidentsTypeActionsButtons.vue'
+import EquipmentTypeActionsButtons from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeActionsButtons.vue'
+import HazardTypeActionsButtons from '@/features/setting/HazardType/Presentation/components/HazardTypeActionsButtons.vue'
+import RootCausesActionsButtons from '@/features/setting/RootCauses/Presentation/components/RootCausesActionsButtons.vue'
+
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue'
 import IndexSerial from '@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
@@ -111,6 +121,7 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.Certificate,
     component: AddCertificate,
+    actionsComponent: CertificateActionsButtons,
     title: 'Functional Certificate',
     description: 'Define certificate structure and assign related project roles',
   },
@@ -123,12 +134,14 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.Employee,
     component: AddOrganization,
+    actionsComponent: OrganizationEmployeeActionsButtons,
     title: 'Functional Employee',
     description: 'Define employees structure and assign roles within the organization',
   },
   {
     id: ProjectProgressEnum.Heirarchy,
     component: AddHerikaly,
+    actionsComponent: HerikalyActionsButtons,
     title: 'Positions',
     description: 'Define positions structure and assign related project roles',
   },
@@ -165,18 +178,21 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.ObservationType,
     component: AddObserverationType,
+    actionsComponent: ObserverationTypeActionsButtons,
     title: 'Functional Observation Type',
     description: 'Define observation types and assign related project roles',
   },
   {
     id: ProjectProgressEnum.IncidantType,
     component: AddAccidentsType,
+    actionsComponent: AccidentsTypeActionsButtons,
     title: 'Functional Incident Type',
     description: 'Define incident types and assign related project roles',
   },
   {
     id: ProjectProgressEnum.HazardType,
     component: AddHazardType,
+    actionsComponent: HazardTypeActionsButtons,
     title: 'Functional Hazard Type',
     description: 'Define hazard types and assign related project roles',
   },
@@ -189,6 +205,7 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.EquipmentType,
     component: AddEquipmentType,
+    actionsComponent: EquipmentTypeActionsButtons,
     title: 'Functional Equipment Type',
     description: 'Define equipment types and assign roles for asset management',
   },
@@ -207,6 +224,7 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.RootCause,
     component: AddRootCauses,
+    actionsComponent: RootCausesActionsButtons,
     title: 'Functional Root Cause',
     description: 'Define root cause and assign roles for asset management',
   },
@@ -315,9 +333,12 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="content-header">
-              <div class="flex items-center gap-2">
-                <h2 class="title">{{ selectedPage.title }}</h2>
-                <ProgressPageHeaderIcon />
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <h2 class="title">{{ selectedPage.title }}</h2>
+                  <ProgressPageHeaderIcon />
+                </div>
+                <component :is="selectedPage.actionsComponent" v-if="selectedPage.actionsComponent" />
               </div>
               <p class="description">{{ selectedPage.description }}</p>
             </div>

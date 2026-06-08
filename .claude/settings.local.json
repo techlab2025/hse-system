@@ -20,7 +20,10 @@
       "Bash(git checkout *)",
       "Bash(git -C .claude/worktrees/agent-a2db261cf3994f430 status --porcelain)",
       "Bash(git commit -m ' *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(sed -n '201,225p' \"features/Organization/Herikaly/Presentation/components/IndexHerikaly.vue\")",
+      "Bash(sed -n '202,225p' \"features/setting/Certificate/Presentation/components/IndexCertificate.vue\")",
+      "Bash(sed -n '272,310p' \"features/setting/HazardType/Presentation/components/IndexHazardType.vue\")"
     ]
   }
 }

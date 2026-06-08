@@ -1355,5 +1355,6 @@
   "add_ticket": "Add Ticket",
   "warehouse": "warehouse",
   "tickets": "tickets",
-  "injury": "injury"
+  "injury": "injury",
+  "import_incidents_type": "Import Incidents Type"
 }
