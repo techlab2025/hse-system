@@ -444,8 +444,20 @@ input {
   display: table-cell !important;
 }
 
+.table-responsive table.main-table thead tr th:last-of-type {
+  justify-content: center !important;
+}
 
-  .table-responsive table.main-table thead tr th:last-of-type{
-    justify-content:center !important;
-  }
+html[dir='ltr'] :deep(.actions-switch) {
+  margin-left: auto;
+}
 
+html[dir='rtl'] .actions-container {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+html[dir='ltr'] .actions-container {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+}

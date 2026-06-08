@@ -59,12 +59,14 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       }}</span>
       <span v-else class="subtitle">{{ $t('Now You Can Fill Serial Number Manually') }}</span> -->
       <template #actions>
-        <CustomCheckbox
-          :index="6"
-          :title="GetSerialTypeTitle(SerialType!)"
-          @update:checked="updateSerialType"
-          :checked="SerialType === SertialNumberStatusEnum.AUTO"
-        />
+        <div class="actions-switch">
+          <CustomCheckbox
+            :index="6"
+            :title="GetSerialTypeTitle(SerialType!)"
+            @update:checked="updateSerialType"
+            :checked="SerialType === SertialNumberStatusEnum.AUTO"
+          />
+        </div>
       </template>
     </PagesHeader>
     <div>
@@ -88,4 +90,5 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
   margin-top: 8px;
   display: block;
 }
+
 </style>

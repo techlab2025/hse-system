@@ -124,8 +124,8 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     >
       <ProjectProgressHeader :progressValue="ProgressValue" style="margin-block: 20px" />
       <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
-        <h3>Step 1: Click Here To Start Adding Your Data</h3>
-        <p>Fill All Data From this page</p>
+        <h3>{{ $t('Step_1_Click_Here_To_Start_Adding_Your_Data') }}</h3>
+        <p>{{ $t('Fill_All_Data_From_this_page') }}</p>
       </div>
     </router-link>
 

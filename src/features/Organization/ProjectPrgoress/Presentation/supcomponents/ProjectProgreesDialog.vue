@@ -47,7 +47,7 @@ const Gotit = () => {
       <button class="info-btn" @click.stop="openHelp">?</button>
     </div> -->
 
-    <Dialog v-model:visible="visible" :dismissable-mask="true" modal header="Project Progress Guide"
+    <Dialog v-model:visible="visible" :dismissable-mask="true" modal :header="$t('Project Progress Guide')"
       :style="{ width: '60rem', height: 'fit-content' }" :breakpoints="{ '960px': '75vw', '641px': '90vw' }">
       <div class="dialog-content">
         <div class="gif-container">
@@ -55,18 +55,18 @@ const Gotit = () => {
         </div>
 
         <div class="text-section">
-          <h3>Track Your Milestones</h3>
-          <p>This is the <strong>Projects Progress Page</strong>. To use the system effectively, ensure you:</p>
+          <h3>{{ $t('Track Your Milestones') }}</h3>
+          <p>{{ $t('This is the Projects Progress Page. To use the system effectively, ensure you:') }}</p>
 
           <ul class="guide-list">
-            <li><span>1</span> Fill in All Data You Want To Track.</li>
-            <li><span>2</span> Link your Employees to the project.</li>
-            <li><span>3</span> Toggle the status switch to "Active" to start tracking.</li>
+            <li><span>1</span> {{ $t('Fill in All Data You Want To Track.') }}</li>
+            <li><span>2</span> {{ $t('Link your Employees to the project.') }}</li>
+            <li><span>3</span> {{ $t('Toggle the status switch to "Active" to start tracking.') }}</li>
           </ul>
         </div>
 
         <div class="dialog-footer">
-          <button class="close-btn" @click="Gotit">Got it!</button>
+          <button class="close-btn" @click="Gotit">{{ $t('Got it!') }}</button>
         </div>
       </div>
     </Dialog>
