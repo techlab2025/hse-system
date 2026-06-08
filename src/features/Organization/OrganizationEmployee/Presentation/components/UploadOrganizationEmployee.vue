@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import FileUpload from '../supcomponents/ExcelSheetHandle/FileUpload.vue'
@@ -17,6 +17,7 @@ import IndexHerikalyController from '@/features/Organization/Herikaly/Presentati
 import HirarachyEmployeeParams from '../../Core/params/HirarchyParams'
 import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
 import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
+import { ValidationStatusEnum } from '../../Core/Enum/ValidationStatusEnum'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -166,6 +167,19 @@ watch(
   { immediate: true },
 )
 
+// ─── Validation Status (returned after submitting the excel) ─────────────────
+
+const VALIDATION_STATUS_LABELS: Record<number, string> = {
+  [ValidationStatusEnum.VALID]: 'Valid',
+  [ValidationStatusEnum.PHONE_INVALID]: 'Invalid Phone',
+  [ValidationStatusEnum.EMAIL_INVALID]: 'Invalid Email',
+}
+
+const getValidationStatusLabel = (status: number) => VALIDATION_STATUS_LABELS[status] ?? 'Unknown'
+
+const getValidationStatusClass = (status: number) =>
+  status === ValidationStatusEnum.VALID ? 'status-valid' : 'status-invalid'
+
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 
 // , 'image'
@@ -212,6 +226,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 
 const router = useRouter()
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
+const Datastate = computed(() => addOrganizatoinEmployeeController.state.value)
 
 const AddOrgEmployee = async () => {
   if (!mappedData.value) return
@@ -245,7 +260,7 @@ const AddOrgEmployee = async () => {
   const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects })
   console.log('📤 Sending orgData:', orgData)
   await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router)
-  if (addOrganizatoinEmployeeController.isDataSuccess()) {
+  if (Datastate.value.data?.every((el) => el.status === ValidationStatusEnum.VALID)) {
     emit('uploaded')
   }
 }
@@ -391,15 +406,60 @@ const onMappingClose = () => {
         <!-- Data Table -->
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
+            <h3 class="table-title">
+              {{ Datastate.data ? 'Validation Results' : 'Mapped Data Preview' }}
+            </h3>
             <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
           </div>
           <div class="table-responsive">
-            <table class="main-table">
+            <!-- ── Validation results (returned after submitting) ──────── -->
+            <table v-if="Datastate.data" class="main-table">
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                  <th class="last"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(employee, rowIndex) in Datastate.data" :key="rowIndex">
+                  <td>{{ employee.name }}</td>
+                  <td
+                    :class="{
+                      'cell-invalid': employee.status === ValidationStatusEnum.EMAIL_INVALID,
+                    }"
+                  >
+                    {{ employee.email }}
+                  </td>
+                  <td
+                    :class="{
+                      'cell-invalid': employee.status === ValidationStatusEnum.PHONE_INVALID,
+                    }"
+                  >
+                    {{ employee.phone }}
+                  </td>
+                  <td>
+                    <span class="status-badge" :class="getValidationStatusClass(employee.status)">
+                      {{ getValidationStatusLabel(employee.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                      🗑
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- ── Raw mapped-data preview (before submitting) ─────────── -->
+            <table v-else class="main-table">
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>
-                  <!-- <th v-if="extractedImages.length > 0">Image</th> -->
+                  <th v-if="extractedImages.length > 0">Image</th>
                   <th class="last"></th>
                 </tr>
               </thead>
@@ -867,6 +927,33 @@ kbd {
 .no-img-text {
   color: #9ca3af;
   font-size: 18px;
+}
+
+/* ── Validation status ──────────────────────────────────── */
+.cell-invalid {
+  color: #b91c1c;
+  background: #fef2f2;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.status-valid {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.status-badge.status-invalid {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 /* ── Confirm button ─────────────────────────────────────── */

@@ -1103,6 +1103,9 @@ class ApiNames {
   public get CreateOrganizatoinEmployee() {
     return this.prefix + 'create_organization_employee'
   }
+  public get CreateOrganizatoinEmployeeExcel() {
+    return this.prefix + 'validate_bulk_employees'
+  }
   public get IndexOrganizatoinEmployee() {
     return this.prefix + 'fetch_organization_employees'
   }

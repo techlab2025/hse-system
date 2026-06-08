@@ -11,7 +11,9 @@ import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmploy
 import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-export default class AddOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
+export default class AddOrganizatoinEmployeeController extends ControllerInterface<
+  OrganizatoinEmployeeModel[]
+> {
   private static instance: AddOrganizatoinEmployeeController
   private constructor() {
     super()
@@ -52,21 +54,23 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
       }
     }
     try {
-      const dataState: DataState<OrganizatoinEmployeeModel> =
+      const dataState: DataState<OrganizatoinEmployeeModel[]> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
-        if (
-          router.currentRoute.value.fullPath.includes('organization-employee') &&
-          !router.currentRoute.value.fullPath.includes('project-progress')
-        ) {
-          if (!draft) await router.push('/organization/organization-employee')
+        if (!params.data) {
+          DialogSelector.instance.successDialog.openDialog({
+            dialogName: 'dialog-success',
+            titleContent: 'Added was successful',
+            imageElement: successImage,
+            messageContent: null,
+          })
+          if (
+            router.currentRoute.value.fullPath.includes('organization-employee') &&
+            !router.currentRoute.value.fullPath.includes('project-progress')
+          ) {
+            if (!draft) await router.push('/organization/organization-employee')
+          }
         }
 
         // useLoaderStore().endLoadingWithDialog();
@@ -88,6 +92,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     }
 
     super.handleResponseDialogs()
+    console.log(this.state.value, 'this.stat')
     return this.state
   }
 }
