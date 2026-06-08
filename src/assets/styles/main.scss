@@ -467,7 +467,10 @@ html[dir='ltr'] .actions-container {
     content: '*';
     color: red;
     margin-left: 4px;
-    margin-left: 4px;
-
+    margin-top: 4px;
   }
+}
+
+.w-1\/2 {
+  width: 50% !important;
 }

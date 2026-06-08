@@ -24,7 +24,6 @@ const fetchLocationDetails = async () => {
   const showLocationParams = new ShowLocationParams(Number(id))
 
   const state = await showLocationController.showLocation(showLocationParams)
-
 }
 
 onMounted(() => {
@@ -70,7 +69,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditLocation">
         <LocationAreaForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

@@ -86,24 +86,24 @@ watch(
   ([newData]) => {
     if (newData) {
       console.log(newData.scopes, 'newData.scopes')
-      Scope.value = newData.scopes.map(
+      Scope.value = newData?.scopes?.map(
         (item) =>
           new TitleInterface({
-            id: item.id,
-            title: item.titles?.[0]?.title,
+            id: item?.id,
+            title: item?.titles?.[0]?.title,
           }),
       )
 
-      Name.value = newData.name
-      phoneNumber.value = newData.phone
+      Name.value = newData?.name
+      phoneNumber.value = newData?.phone
       // Scope.value = newData.scopes
-      CompanyEmail.value = newData.companyEmail
-      CompanyAddress.value = newData.CompanyAddress
-      contactPerson.value = newData.contactPerson
-      contactPersonEmail.value = newData.contactPersonEmail
-      contactPersonPhone.value = newData.contactPersonPhone
-      SelectedStatus.value = StatusList.value.find((item) => item?.id == newData.SelectedStatus)
-      date.value = newData.date
+      CompanyEmail.value = newData?.companyEmail
+      CompanyAddress.value = newData?.CompanyAddress
+      contactPerson.value = newData?.contactPerson
+      contactPersonEmail.value = newData?.contactPersonEmail
+      contactPersonPhone.value = newData?.contactPersonPhone
+      SelectedStatus.value = StatusList.value.find((item) => item?.id == newData?.SelectedStatus)
+      date.value = newData?.date ? new Date(newData.date) : new Date()
     }
   },
   { immediate: true },
