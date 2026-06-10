@@ -533,9 +533,9 @@ onMounted(() => {
                 <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
                   <!-- {{ row[7] }} -->
                   <td v-for="(value, colIndex) in row" :key="colIndex">
-                    <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
-                    <span v-else-if="colIndex === 8">{{ RentTypeEnum[value] }}</span>
-                    <span v-if="value != '*' && colIndex != 7 && colIndex != 8">{{ value }}</span>
+                    <span v-if="colIndex === 9">{{ EquipmentStatus[value] }}</span>
+                    <span v-else-if="colIndex === 7">{{ RentTypeEnum[value] }}</span>
+                    <span v-if="value != '*' && colIndex != 7 && colIndex != 9">{{ value }}</span>
                   </td>
 
                   <td>
