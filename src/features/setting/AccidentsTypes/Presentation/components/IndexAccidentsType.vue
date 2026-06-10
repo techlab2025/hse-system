@@ -250,7 +250,7 @@ const IndexIncidantTypeactionList = () => [
         </template>
       </ActionsList>
     </div>
-    <SystemIncidantTypes :isHeaderTap="true" />
+    <SystemIncidantTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder
@@ -380,7 +380,7 @@ const IndexIncidantTypeactionList = () => [
       @uploaded="
         showUploadDialog = false;
         pendingFile = null;
-        fetchAccidentsType()
+        fetchAccidentsType();
       "
     />
   </Dialog>

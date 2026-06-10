@@ -56,7 +56,13 @@ const fetchSubscriptionApplication = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteSubscriptionApplicationParams = new IndexSubscriptionApplicationParams(query, pageNumber, perPage, withPage, id)
+  const deleteSubscriptionApplicationParams = new IndexSubscriptionApplicationParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexSubscriptionApplicationController.getData(deleteSubscriptionApplicationParams)
 }
 
@@ -134,18 +140,29 @@ watch(
   },
 )
 const router = useRouter()
-const approveSubscriptionApplicationController = ApproveSubscriptionApplicationController.getInstance()
+const approveSubscriptionApplicationController =
+  ApproveSubscriptionApplicationController.getInstance()
 const approveSubscriptionApplication = async (id: number) => {
-  const approveSubscriptionApplicationParams = new ApproveSubscriptionApplicationParams({ SubscriptionApplicationId: id })
-  await approveSubscriptionApplicationController.approveSubscriptionApplication(approveSubscriptionApplicationParams, router)
+  const approveSubscriptionApplicationParams = new ApproveSubscriptionApplicationParams({
+    SubscriptionApplicationId: id,
+  })
+  await approveSubscriptionApplicationController.approveSubscriptionApplication(
+    approveSubscriptionApplicationParams,
+    router,
+  )
   fetchSubscriptionApplication()
-
 }
 
-const rejectSubscriptionApplicationController = RejectSubscriptionApplicationController.getInstance()
+const rejectSubscriptionApplicationController =
+  RejectSubscriptionApplicationController.getInstance()
 const rejectSubscriptionApplication = async (id: number) => {
-  const rejectSubscriptionApplicationParams = new RejectSubscriptionApplicationParams({ SubscriptionApplicationId: id })
-  await rejectSubscriptionApplicationController.rejectSubscriptionApplication(rejectSubscriptionApplicationParams, router)
+  const rejectSubscriptionApplicationParams = new RejectSubscriptionApplicationParams({
+    SubscriptionApplicationId: id,
+  })
+  await rejectSubscriptionApplicationController.rejectSubscriptionApplication(
+    rejectSubscriptionApplicationParams,
+    router,
+  )
   fetchSubscriptionApplication()
 }
 
@@ -156,15 +173,20 @@ const GetProjectStatus = (status: number) => {
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchSubscriptionApplication())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchSubscriptionApplication" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchSubscriptionApplication"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> 
+      <!-- <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
@@ -178,16 +200,17 @@ const GetProjectStatus = (status: number) => {
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
-    PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
-    PermissionsEnum.SUBSCRIPTION_APPLICATION_FETCH,
-    PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
-    PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_FETCH,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
+      PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -205,24 +228,37 @@ const GetProjectStatus = (status: number) => {
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/subscription-application/edit/${item.id}`">{{ index + 1 }}</router-link>
+                  <span> {{ index + 1 }}</span>
                 </td>
                 <td data-label="organization_name">{{ wordSlice(item?.admin_email) }}</td>
                 <td data-label="organization_name">{{ wordSlice(item?.name) }}</td>
-                <td class="status" :class="GetProjectStatus(item?.request_status)" data-label="status_name">{{
-                  wordSlice(item?.status_name) }}</td>
-                <td class="flex gap-2 " v-if="item?.request_status === SubscriptionStatusEnum.PENDING">
-                  <button class="btn btn-primary" @click="approveSubscriptionApplication(item.id)">{{ $t('approved')
-                  }}</button>
-                  <button class="btn btn-secondary" @click="rejectSubscriptionApplication(item.id)">{{ $t('reject')
-                  }}</button>
+                <td
+                  class="status"
+                  :class="GetProjectStatus(item?.request_status)"
+                  data-label="status_name"
+                >
+                  {{ wordSlice(item?.status_name) }}
                 </td>
-
+                <td
+                  class="flex gap-2"
+                  v-if="item?.request_status === SubscriptionStatusEnum.PENDING"
+                >
+                  <button class="btn btn-primary" @click="approveSubscriptionApplication(item.id)">
+                    {{ $t('approved') }}
+                  </button>
+                  <button class="btn btn-secondary" @click="rejectSubscriptionApplication(item.id)">
+                    {{ $t('reject') }}
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -231,37 +267,51 @@ const GetProjectStatus = (status: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-        ]">
-          <DataEmpty :link="`/admin/subscription-application/add`" addText="Add SubscriptionApplication"
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/admin/subscription-application/add`"
+            addText="Add SubscriptionApplication"
             description="Sorry .. You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionApplication" />
+            title="..ops! You have No SubscriptionApplication"
+          />
         </permission-builder>
       </template>
       <template #failed>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-        ]">
-          <DataFailed :link="`/admin/subscription-application/add`" addText="Add SubscriptionApplication"
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/admin/subscription-application/add`"
+            addText="Add SubscriptionApplication"
             description="Sorry .. You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionApplication" />
+            title="..ops! You have No SubscriptionApplication"
+          />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-      ]">
-        <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data" />
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+        ]"
+      >
+        <DataFailed
+          addText="Have not  Permission"
+          description="Sorry .. You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
+        />
       </permission-builder>
     </template>
   </permission-builder>
@@ -269,7 +319,6 @@ const GetProjectStatus = (status: number) => {
 
 <style scoped>
 .status {
-
   &.PENDING {
     color: black;
   }

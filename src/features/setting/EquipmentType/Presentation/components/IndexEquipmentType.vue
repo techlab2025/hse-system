@@ -271,6 +271,7 @@ const IndexEquipmentTypeactionList = () => [
     ],
   },
 ]
+
 </script>
 
 <template>
@@ -322,7 +323,7 @@ const IndexEquipmentTypeactionList = () => [
         </template>
       </ActionsList>
     </div>
-    <SystemEquipmentTypes :isHeaderTap="true" />
+    <SystemEquipmentTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

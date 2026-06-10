@@ -366,7 +366,7 @@ const IndexHazardTypeactionList = () => [
       </ActionsList>
     </div>
 
-    <SystemHazardTypes :isHeaderTap="true" />
+    <SystemHazardTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder

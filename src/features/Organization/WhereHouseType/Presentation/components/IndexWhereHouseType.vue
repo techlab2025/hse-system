@@ -259,7 +259,7 @@ const IndexWhereHouseTypeactionList = () => [
 
 
     </div>
-    <SystemWarehouseTypes :isHeaderTap="true" />
+    <SystemWarehouseTypes v-if="user?.type != OrganizationTypeEnum.ADMIN":isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

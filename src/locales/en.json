@@ -1357,5 +1357,13 @@
   "warehouse": "warehouse",
   "tickets": "tickets",
   "injury": "injury",
-  "import_incidents_type": "Import Incidents Type"
+  "import_incidents_type": "Import Incidents Type",
+  "add_permission": "Add Permission",
+  "add_inspection": "Add Inspection",
+  "is_active": "Is Active",
+  "is_default": "Is Default",
+  "is_free": "Is Free",
+  "support_days": "Support Days",
+  "support_price": "Support Price",
+  "is_support_exists": "Is Support Exists"
 }

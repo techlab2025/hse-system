@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type PermissionModel from '../../Data/models/PermissionModel'
 import AddPermissionteUseCase from '../../Domain/useCase/addPermissionUseCase'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { useUserStore } from '@/stores/user'
 
 export default class AddPermissionController extends ControllerInterface<PermissionModel> {
   private static instance: AddPermissionController
@@ -36,8 +38,13 @@ export default class AddPermissionController extends ControllerInterface<Permiss
           messageContent: null,
         })
         // if (!draft) await router.push('/organization/permission')
-        await router.push('/organization/organization-employee')
-
+        // await router.push('/organization/organization-employee')
+        const { user } = useUserStore();
+        if (user?.type == OrganizationTypeEnum.ADMIN) {
+          await router.push('/admin/admins')
+        } else {
+          await router.push('/organization/organization-employee')
+        }
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

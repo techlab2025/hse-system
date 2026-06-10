@@ -268,7 +268,7 @@ const IndexInjuryactionList = () => [
         </template>
       </ActionsList>
     </div>
-    <SysteminjuryTypes :isHeaderTap="true" />
+    <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[

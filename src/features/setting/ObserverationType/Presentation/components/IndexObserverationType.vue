@@ -303,7 +303,7 @@ const IndexObservationTypesactionList = () => [
         </template>
       </ActionsList>
     </div>
-    <SystemObservationTypes :isHeaderTap="true" />
+    <SystemObservationTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
 
   </div>
 
