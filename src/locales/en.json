@@ -1368,5 +1368,13 @@
   "support_price": "Support Price",
   "is_support_exists": "Is Support Exists",
   "Add_Admin": "Add Admin",
-  "Add_subscription_type":"Add subscription type"
+  "Add_subscription_type": "Add subscription type",
+  "Enter Your Mail": "Enter Your Mail",
+  "Enter Password": "Enter Password",
+  "Log in now": "Log in now",
+  "Please enter your email and password to log in": "Please enter your email and password to log in",
+  "See your entire safety operation at a glance": "See your entire safety operation at a glance",
+  "Real-time data. One powerful dashboard": "Real-time data. One powerful dashboard",
+  "Work from the field — even offline": "Work from the field — even offline",
+  "Submit reports, inspections & observations anytime, anywhere": "Submit reports, inspections & observations anytime, anywhere",
 }
