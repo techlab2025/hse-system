@@ -1367,5 +1367,6 @@
   "support_days": "Support Days",
   "support_price": "Support Price",
   "is_support_exists": "Is Support Exists",
-  "Add_Admin": "Add Admin"
+  "Add_Admin": "Add Admin",
+  "Add_subscription_type":"Add subscription type"
 }
