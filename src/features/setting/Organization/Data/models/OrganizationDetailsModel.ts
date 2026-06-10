@@ -33,7 +33,7 @@ export default class OrganizationDetailsModel {
     this.industry = industry
     this.languages = languages
     this.locations = locations
-    this.getDataFromAdmin = data.getDataFromAdmin
+    this.getDataFromAdmin = getDataFromAdmin
   }
 
   static fromMap(data: any): OrganizationDetailsModel {
