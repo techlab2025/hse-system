@@ -181,7 +181,7 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</router-link>
+                  <span :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Actions">

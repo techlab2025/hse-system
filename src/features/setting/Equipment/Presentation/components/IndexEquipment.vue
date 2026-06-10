@@ -42,6 +42,13 @@ import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import EquipmentLoader from '../supcomponents/EquipmentLoader.vue'
 import { formatJoinDate } from "@/base/Presentation/utils/date_format";
 import { filesToBase64 } from "@/base/Presentation/utils/file_to_base_64";
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadEquipmentExeclSheet from './UploadEquipmentExeclSheet.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 
 const { t } = useI18n()
 
@@ -208,6 +215,92 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(data, "Equipment.xlsx");
 };
+
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const DownloadExample = () => {
+  const worksheetData = [
+    {
+      'Equipment name': 'Example Equipment',
+      'Certificate Expiry date': '2026-12-31',
+      'License plate number': '1234 ABC',
+      'Equipment image': '*',
+      'Certificate image': '*',
+      'Rent Start date': '2026-06-01',
+      'Rent End date': '2026-06-30',
+      'Rent Period type': '3',
+      'Rent Period': '1',
+      'Status': '1',
+    }
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Equipment')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'EquipmentForm.xlsx')
+}
+
+const IndexEquipmentactionList = () => [
+  {
+    text: t('export_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_ALL,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ADMIN,
+    ],
+  },
+  {
+    text: t('Add_Equipment'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`,
+    icon: ActionsListAddIcon,
+    type: ActionItemsTypeEnum.Info,
+    permission: [
+      PermissionsEnum.EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ADMIN,
+    ],
+  },
+  {
+    text: t('import_equipment'),
+    type: ActionItemsTypeEnum.Warning,
+    action: () => fileInputRef.value?.click(),
+    icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum.EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ADMIN,
+    ],
+  },
+  {
+    text: t('download_form_example'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.EQUIPMENT_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_CREATE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ADMIN,
+    ],
+  },
+]
 </script>
 
 <template>
@@ -221,32 +314,11 @@ const exportExcel = () => {
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEquipmentType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
-
-      <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.EQUIPMENT_CREATE,
-        PermissionsEnum.ORG_EQUIPMENT_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment/add`" class="btn btn-primary">
-          {{ $t('Add_Equipment') }}
-        </router-link>
-      </PermissionBuilder>
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.EQUIPMENT_CREATE,
-        PermissionsEnum.ORG_EQUIPMENT_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment/upload-excel`" class="btn btn-primary">
-          {{ $t('import_equipment') }}
-        </router-link>
-      </PermissionBuilder>
+      <ActionsList :show-actions="true" :actionList="IndexEquipmentactionList()" :actionsNumber="5">
+        <template #custom>
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
   </div>
 
@@ -310,6 +382,31 @@ const exportExcel = () => {
         description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_equipment')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadEquipmentExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchEquipment()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

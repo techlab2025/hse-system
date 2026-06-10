@@ -41,6 +41,7 @@ import OrganizationEmployeeActionsButtons from '@/features/Organization/Organiza
 import ObserverationTypeActionsButtons from '@/features/setting/ObserverationType/Presentation/components/ObserverationTypeActionsButtons.vue'
 import AccidentsTypeActionsButtons from '@/features/setting/AccidentsTypes/Presentation/components/AccidentsTypeActionsButtons.vue'
 import EquipmentTypeActionsButtons from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeActionsButtons.vue'
+import EquipmentActionsButtons from '@/features/setting/Equipment/Presentation/components/EquipmentActionsButtons.vue'
 import HazardTypeActionsButtons from '@/features/setting/HazardType/Presentation/components/HazardTypeActionsButtons.vue'
 import RootCausesActionsButtons from '@/features/setting/RootCauses/Presentation/components/RootCausesActionsButtons.vue'
 
@@ -212,6 +213,7 @@ const AllPagesToView = ref([
   {
     id: ProjectProgressEnum.Equipment,
     component: AddFullEquipment,
+    actionsComponent: EquipmentActionsButtons,
     title: 'Functional Equipment',
     description: 'Define equipment and assign roles for asset management',
   },

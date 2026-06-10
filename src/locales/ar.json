@@ -880,5 +880,7 @@
   "observation_type": "أنواع الملاحظات",
   "equipment_types": "أنواع المعدات",
   "root_causes": "الأسباب الجذرية",
-  "injury": "الإصابات"
+  "injury": "الإصابات",
+  "import_equipment": "استيراد المعدات",
+  "import_equipment_type": "استيراد أنواع المعدات"
 }

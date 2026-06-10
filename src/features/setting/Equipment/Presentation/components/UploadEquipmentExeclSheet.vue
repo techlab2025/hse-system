@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+
+const props = defineProps<{ initialFile?: File | null }>()
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
@@ -255,6 +258,20 @@ const setSelectedWhereHouse = (data: TitleInterface) => {
   SelectedWhereHosue.value = data
 }
 
+// ─── Excel Header → API Key Mapping ───────────────────────────────────────────
+const EXCEL_HEADER_TO_API_KEY: Record<string, string> = {
+  'Equipment name': 'name',
+  'Certificate Expiry date': 'date',
+  'License plate number': 'license_plate_number',
+  'Equipment image': 'image',
+  'Certificate image': 'certificate_image',
+  'Rent Start date': 'checkin_date',
+  'Rent End date': 'checkout_date',
+  'Rent Period type': 'period_type',
+  'Rent Period': 'period',
+  'Status': 'status',
+}
+
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addEquipmentController = AddEquipmentController.getInstance()
 
@@ -266,7 +283,10 @@ const AddOrgEmployee = async () => {
   const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
+      if (key && key.trim() !== '') {
+        const apiKey = EXCEL_HEADER_TO_API_KEY[key.trim()] ?? key
+        obj[apiKey] = row[i]
+      }
     })
 
     obj['equipment_type_id'] = equipmentType.value?.id
@@ -289,6 +309,9 @@ const AddOrgEmployee = async () => {
 
   const orgData = new AddEquipmentExcelParams({ data: dataAsObjects })
   await addEquipmentController.addEquipment(orgData, router)
+  if (addEquipmentController.isDataSuccess()) {
+    emit('uploaded')
+  }
 }
 
 const deleteRow = (rowIndex: number) => {
@@ -313,6 +336,17 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 onMounted(() => {
   GetEquipmentType()
 })
@@ -320,9 +354,8 @@ onMounted(() => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
+    <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
@@ -338,7 +371,6 @@ onMounted(() => {
       </div>
 
       <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
           <span class="field-tag">Equipment name</span>
           <span class="field-tag">Certificate Expiry date</span>
@@ -382,7 +414,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="grid grid-cols-6 gap-4 w-full mb-4 equipment-form">
       <Tabs
@@ -481,7 +513,14 @@ onMounted(() => {
                     <span v-else-if="item == 'checkout_date'"> Rent End Date </span>
                     <span v-else-if="item == 'license_plate_number'"> License Plate Number </span>
                     <span v-else-if="item == 'period_type'"> Period Type </span>
-                    <span v-else-if="item !== 'image' && item !== 'certificate_image'">
+                    <span
+                      v-else-if="
+                        String(item).toLocaleLowerCase() !==
+                          String('Equipment image').toLocaleLowerCase() &&
+                        String(item).toLocaleLowerCase() !==
+                          String('Certificate Image').toLocaleLowerCase()
+                      "
+                    >
                       {{ item }}
                     </span>
                   </th>

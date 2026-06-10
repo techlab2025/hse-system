@@ -38,6 +38,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       }
 
       for (const el of params.data) {
+        console.log(params.data, ' params.data')
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
           return

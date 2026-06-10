@@ -1189,6 +1189,7 @@
   "name_of_the_deceased": "Name of the deceased",
   "description_of_the_death_case": "Description of the death case",
   "import_equipment": "Import Equipment",
+  "import_equipment_type": "Import Equipment Type",
   "equipments": "Equipments",
   "hazard_factor_items": "Hazard Factor Items",
   "templates": "Templates",
@@ -1365,5 +1366,6 @@
   "is_free": "Is Free",
   "support_days": "Support Days",
   "support_price": "Support Price",
-  "is_support_exists": "Is Support Exists"
+  "is_support_exists": "Is Support Exists",
+  "Add_Admin": "Add Admin"
 }

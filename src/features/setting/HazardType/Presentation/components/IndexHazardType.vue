@@ -409,10 +409,10 @@ const IndexHazardTypeactionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
+                  <span
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
                     >{{ index + 1 }}
-                  </router-link>
+                  </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
