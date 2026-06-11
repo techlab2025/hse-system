@@ -6,7 +6,7 @@ export const ticketRoutes: RouteRecordRaw[] = [
     name: 'Ticket',
     component: () => import('@/views/Organization/Ticket/IndexTicket.vue'),
     meta: {
-      breadcrumb: 'Ticket',
+      breadcrumb: 'Support',
       isSidebar: true,
     },
   },
@@ -15,7 +15,7 @@ export const ticketRoutes: RouteRecordRaw[] = [
     name: 'Create Ticket',
     component: () => import('@/views/Organization/Ticket/AddTicket.vue'),
     meta: {
-      breadcrumb: 'Create Ticket',
+      breadcrumb: 'Add Support',
       isSidebar: true,
     },
   },

@@ -44,12 +44,13 @@ import HierarchyIco from '../icons/HierarchyIco.vue'
 import EmployeeIconSidebar from '../icons/EmployeeIconSidebar.vue'
 import RolesIcon from '../icons/RolesIcon.vue'
 import WareHouseIconSidebar from '../icons/WareHouseIconSidebar.vue'
+import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum.ts'
 
 const props = defineProps<{ open: boolean }>()
 
 const route = useRoute()
 interface Routes {
-  link: string
+  link: string | {}
   name: string
   permissions: PermissionsEnum[]
   icon: Component
@@ -67,6 +68,39 @@ const GauideRoutes = ref<Routes[]>([
       PermissionsEnum.ORGANIZATION_ALL,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
     ],
+  },
+])
+
+const OperationsRoutes = ref<Routes[]>([
+  {
+    link: '/organization/equipment-mangement/all-observatin?type=2',
+    name: t('operations'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/projects',
+    name: t('Projects'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/equipments',
+    name: t('equipments'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/Investigating',
+    name: t('Investigating'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/capa',
+    name: t('capa'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 ])
 
@@ -158,7 +192,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/scope',
-    name: t('scope'),
+    name: t('contractor_scope'),
     icon: IconScopes,
     permissions: [
       PermissionsEnum.SCOPE_ALL,
@@ -240,9 +274,11 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
     ],
   },
+])
+const TicketRoutes = ref<Routes[]>([
   {
     link: '/organization/ticket',
-    name: t('tickets'),
+    name: t('support'),
     icon: TicketIcon,
     permissions: [
       PermissionsEnum.TICKET_ALL,
@@ -421,6 +457,9 @@ const SelectedOrgRoute = ref<string>('')
 const SelectedLocationRoute = ref<string>('')
 const SelectedLockupsRoute = ref<string>('')
 const SelectedGauideRoutes = ref<string>('')
+const SelectedOperationsRoutes = ref<string>('')
+const SelectedTicketRoutes = ref<string>('')
+
 watch(
   () => route.path,
   (newPath) => {
@@ -428,6 +467,10 @@ watch(
     SelectedLocationRoute.value = LocationRoutes.value.find((item) => item.link === newPath)?.name
     SelectedLockupsRoute.value = LockUpsRoutes.value.find((item) => item.link === newPath)?.name
     SelectedGauideRoutes.value = GauideRoutes.value.find((item) => item.link === newPath)?.name
+    SelectedOperationsRoutes.value = OperationsRoutes.value.find(
+      (item) => item.link === newPath,
+    )?.name
+    SelectedTicketRoutes.value = TicketRoutes.value.find((item) => item.link === newPath)?.name
   },
 )
 
@@ -435,6 +478,8 @@ const orgAccordion = ref<string | null>('1')
 const locationAccordion = ref<string | null>('2')
 const LoackupsAccordion = ref<string | null>('4')
 const GauideAccordion = ref<string | null>('5')
+const OperationsAccordion = ref<string | null>('6')
+const TicketAccordion = ref<string | null>('7')
 
 watch(orgAccordion, (val) => {
   orgAccordion.value = val
@@ -447,6 +492,12 @@ watch(LoackupsAccordion, (val) => {
 })
 watch(GauideAccordion, (val) => {
   GauideAccordion.value = val
+})
+watch(OperationsAccordion, (val) => {
+  OperationsAccordion.value = val
+})
+watch(TicketAccordion, (val) => {
+  TicketAccordion.value = val
 })
 
 const { user } = useUserStore()
@@ -465,6 +516,18 @@ const { user } = useUserStore()
       </template>
 
       <PermissionBuilder v-for="r in OrganizationRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+          <component :is="r.icon" class="strip-icon" />
+        </router-link>
+      </PermissionBuilder>
+
+      <PermissionBuilder v-for="r in TicketRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+          <component :is="r.icon" class="strip-icon" />
+        </router-link>
+      </PermissionBuilder>
+
+      <PermissionBuilder v-for="r in OperationsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
           <component :is="r.icon" class="strip-icon" />
         </router-link>
@@ -522,6 +585,49 @@ const { user } = useUserStore()
         </AccordionPanel>
         <AccordionPanel class="active-panel-out" v-if="SelectedGauideRoutes && !GauideAccordion">
           <span>{{ SelectedGauideRoutes }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder
+      :code="OperationsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+    >
+      <Accordion v-model:value="OperationsAccordion">
+        <AccordionPanel value="6">
+          <AccordionHeader>
+            <div class="links-header">
+              <GeerIcon />
+              {{ $t('project managment') }}
+            </div>
+          </AccordionHeader>
+
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(operation, index) in OperationsRoutes"
+                :key="index"
+                :code="operation?.permissions"
+              >
+                <li>
+                  <router-link
+                    :to="operation.link"
+                    :title="$t(operation.name)"
+                    :data-title="$t(operation.name)"
+                  >
+                    <component v-if="!open" :is="operation.icon" class="route-icon" />
+                    <span>{{ $t(operation.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel
+          class="active-panel-out"
+          v-if="SelectedOperationsRoutes && !OperationsAccordion"
+          :value="6"
+        >
+          <span>{{ SelectedOperationsRoutes }}</span>
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>
@@ -634,6 +740,45 @@ const { user } = useUserStore()
         </AccordionPanel>
         <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
           <span>{{ SelectedLockupsRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder
+      :code="TicketRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+    >
+      <Accordion v-model:value="TicketAccordion">
+        <AccordionPanel value="1">
+          <AccordionHeader>
+            <div class="links-header">
+              <GeerIcon />
+              {{ $t('support') }}
+            </div>
+          </AccordionHeader>
+
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(ticketroute, index) in TicketRoutes"
+                :key="index"
+                :code="ticketroute?.permissions"
+              >
+                <li>
+                  <router-link
+                    :to="ticketroute.link"
+                    :title="$t(ticketroute.name)"
+                    :data-title="$t(ticketroute.name)"
+                  >
+                    <component v-if="!open" :is="ticketroute.icon" class="route-icon" />
+                    <span>{{ $t(ticketroute.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel class="active-panel-out" v-if="SelectedTicketRoutes && !TicketAccordion">
+          <span>{{ SelectedTicketRoutes }}</span>
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>

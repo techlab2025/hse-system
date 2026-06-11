@@ -2,7 +2,6 @@
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -12,7 +11,6 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import { useRoute } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
-
 import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
 import EditProjectParams from '../../Core/params/editProjectParams'
@@ -39,8 +37,15 @@ const SerialNumber = ref<string>('')
 const props = defineProps<{
   data?: ProjectDetailsModel
 }>()
+const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
+const indexLocationCityParams = ref<IndexLocationParams | null>(null)
+const indexLocationAreasController = IndexLocationController.getInstance()
+const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
+const SelectedCountry = ref<TitleInterface[]>()
+const SelectedState = ref<TitleInterface[]>()
+const SelectedCity = ref<TitleInterface[]>()
+const SelectedArea = ref<TitleInterface[]>()
 const EvaluatingMethod = ref<TitleInterface[] | null>([])
-
 const ContractorIds = ref<TitleInterface[]>([])
 const location = ref<TitleInterface[]>([])
 const setContractorIds = (data: TitleInterface[]) => {
@@ -69,8 +74,6 @@ const langsDescription = ref<
     description: string
   }[]
 >([])
-
-// default available langs from backend
 const langDefault = ref<
   {
     locale: string
@@ -90,14 +93,12 @@ const langDefaultDescription = ref<
 const user = useUserStore()
 const ZoneIds = ref<number[]>([])
 
-// ---------- Fetch available languages ----------
 const fetchLang = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  // console.log(user.user, 'user')
   if (user?.user?.languages.length) {
     langDefault.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
@@ -147,10 +148,8 @@ onMounted(async () => {
 })
 const date = ref(new Date())
 
-// ---------- Emit update ----------
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-  // titles
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
@@ -177,18 +176,15 @@ const updateData = () => {
         methodIds: EvaluatingMethod.value?.map((p) => p.id),
         SerialNumber: SerialNumber.value,
         endDate: endDate.value,
-        serial: !fields.value[0].enabled? SerialNumber.value : undefined,
+        serial: !fields.value[0].enabled ? SerialNumber.value : undefined,
       })
   emit('update:data', params)
 }
 
-// ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
   ([newData, newDefault, newDefaultDesc]) => {
     if (newDefault.length) {
-      // titles
       if (newData?.titles?.length) {
         langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
@@ -198,7 +194,6 @@ watch(
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
 
-      // descriptions
       if (newData?.descriptions?.length) {
         langsDescription.value = newDefaultDesc.map((l) => {
           const existing = newData.descriptions.find((t) => t.locale === l.locale)
@@ -213,8 +208,6 @@ watch(
 
       SerialNumber.value = newData?.SerialNumber
       date.value = newData?.startDate || new Date()
-      // fields.value[0].value = SerialNumber.value
-      // fields.value[0].enabled = props?.data?.id ? false : true
       SelectedCountry.value = newData?.country ?? []
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -245,33 +238,31 @@ watch(
         null,
         null,
       )
+
+      console.log(newData?.area, 'newData?.area')
       location.value = newData?.area ?? []
       EvaluatingMethod.value = newData?.methods ?? []
       ContractorIds.value = newData?.contractors ?? []
       SelectedZones.value = newData?.Zones ?? []
       endDate.value = newData?.endDate
+      console.log('data', newData)
       updateData()
     }
   },
-  { immediate: true },
+  { immediate: true, deep: true },
 )
 
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
-
 const UpdateZones = (data: { locationId: number; ZoneIds: number[] }[]) => {
   ZoneIds.value = data.flatMap((item) => item.ZoneIds || [])
-  // console.log('ZoneIds.value', ZoneIds.value)
   updateData()
 }
 
-// Watch to maintain SelectedZones when data comes from backend
 watch(
   () => props.data?.Zones,
   (newZones) => {
     if (newZones) {
       SelectedZones.value = newZones
-
-      // Also update ZoneIds from the zones
       const zoneIdsFromProps: number[] = []
       newZones.forEach((location) => {
         if (location.zoons) {
@@ -287,8 +278,8 @@ watch(
 )
 const projtecStateus = useProjectAppStatusStore()
 
-const UpdateDate = (date) => {
-  date.value = date || new Date()
+const UpdateDate = (newDate) => {
+  date.value = newDate || new Date()
   updateData()
 }
 
@@ -298,65 +289,6 @@ const UpdateEndDate = (date) => {
   updateData()
 }
 
-// Location Handel Start
-
-const indexLocationCountriesController = IndexLocationController.getInstance()
-const indexLocationCountriesParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
-
-const indexLocationStatesController = IndexLocationController.getInstance()
-const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
-
-const indexLocationCityController = IndexLocationController.getInstance()
-const indexLocationCityParams = ref<IndexLocationParams | null>(null)
-
-const indexLocationAreasController = IndexLocationController.getInstance()
-const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
-
-const SelectedCountry = ref<TitleInterface[]>()
-const SetCountrySelection = (data: TitleInterface[]) => {
-  SelectedCountry.value = data
-  indexLocationStatesParams.value = new IndexLocationParams(
-    '',
-    0,
-    0,
-    0,
-    LocationEnum.STATE,
-    null,
-    data.map((c) => c.id),
-  )
-  updateData()
-}
-const SelectedState = ref<TitleInterface[]>()
-const SetStateSelection = (data: TitleInterface[]) => {
-  SelectedState.value = data
-  indexLocationCityParams.value = new IndexLocationParams(
-    '',
-    0,
-    0,
-    0,
-    LocationEnum.CITY,
-    null,
-    data.map((c) => c.id),
-  )
-  updateData()
-}
-
-const SelectedCity = ref<TitleInterface[]>()
-const SetCitySelection = (data: TitleInterface[]) => {
-  SelectedCity.value = data
-  indexLocationAreasParams.value = new IndexLocationParams(
-    '',
-    0,
-    0,
-    0,
-    LocationEnum.AREA,
-    null,
-    null,
-  )
-  updateData()
-}
-
-const SelectedArea = ref<TitleInterface[]>()
 const SetAreaSelection = (data: TitleInterface[]) => {
   SelectedArea.value = data
   location.value = data

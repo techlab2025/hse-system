@@ -57,21 +57,22 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
       const dataState: DataState<OrganizatoinEmployeeModel[]> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)
-      if (this.isDataSuccess()) {
-        if (!params.data) {
-          DialogSelector.instance.successDialog.openDialog({
-            dialogName: 'dialog-success',
-            titleContent: 'Added was successful',
-            imageElement: successImage,
-            messageContent: null,
-          })
-          if (
-            router.currentRoute.value.fullPath.includes('organization-employee') &&
-            !router.currentRoute.value.fullPath.includes('project-progress')
-          ) {
-            if (!draft) await router.push('/organization/organization-employee')
-          }
+
+      if (this.state.value.error?.title.includes('successfully') || this.isDataSuccess()) {
+        // if (!params.data) {
+        DialogSelector.instance.successDialog.openDialog({
+          dialogName: 'dialog-success',
+          titleContent: 'Added was successful',
+          imageElement: successImage,
+          messageContent: null,
+        })
+        if (
+          router.currentRoute.value.fullPath.includes('organization-employee') &&
+          !router.currentRoute.value.fullPath.includes('project-progress')
+        ) {
+          if (!draft) await router.push('/organization/organization-employee')
         }
+        // }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

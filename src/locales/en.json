@@ -1376,5 +1376,9 @@
   "See your entire safety operation at a glance": "See your entire safety operation at a glance",
   "Real-time data. One powerful dashboard": "Real-time data. One powerful dashboard",
   "Work from the field — even offline": "Work from the field — even offline",
-  "Submit reports, inspections & observations anytime, anywhere": "Submit reports, inspections & observations anytime, anywhere"
+  "Submit reports, inspections & observations anytime, anywhere": "Submit reports, inspections & observations anytime, anywhere",
+  "contact_person_name": "Contact Person Name",
+  "scope_contractor": "Scope Contractor",
+  "contractor_scope": "Contractor Scope",
+  "training_matrix": "Training Matrix"
 }

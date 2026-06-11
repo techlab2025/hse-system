@@ -141,7 +141,7 @@ const deleteHierarchy = async (Id: number) => {
                     <router-link
                       :to="`/organization/employee-certificate/${item.id}`"
                       class="btn add-btn"
-                      >{{ $t('certificates') }}</router-link
+                      >{{ $t('training_matrix') }}</router-link
                     >
                   </PermissionBuilder>
                   <PermissionBuilder

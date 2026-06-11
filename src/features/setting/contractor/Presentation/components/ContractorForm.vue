@@ -77,8 +77,8 @@ const CompanyEmail = ref<string>('')
 const SelectedStatus = ref<TitleInterface>()
 
 const StatusList = ref<TitleInterface[]>([
-  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'Valid' }),
-  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'InValid' }),
+  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'active' }),
+  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'inactive' }),
 ])
 
 watch(
@@ -300,7 +300,7 @@ const handleFilesChange = (files: any) => {
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="contact_person">{{ $t('contact_person') }}</label>
+    <label for="contact_person">{{ $t('contact_person_name') }}</label>
     <input
       type="text"
       id="contact_person"
@@ -351,7 +351,7 @@ const handleFilesChange = (files: any) => {
       class="input"
       :controller="indexScopeController"
       :params="indexScopeParams"
-      label="Scope"
+      :label="$t('scope_contractor')"
       id="Scope"
       placeholder="Select Scope"
       @update:modelValue="setScope"

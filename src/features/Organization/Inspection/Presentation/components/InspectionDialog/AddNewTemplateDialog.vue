@@ -140,7 +140,7 @@ const updateData = () => {
     items,
     SelectedTemplateType?.value?.id,
   )
-  
+
   console.log(params, 'params')
   emit('update:data', params)
 }
@@ -155,6 +155,7 @@ const TemplateTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: TemplateType.Equipment, title: 'Equipment', subtitle: '' }),
   new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
   new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.PermitToWork, title: 'Permit To Work', subtitle: '' }),
 ])
 
 const setTemplateType = (data: TitleInterface) => {

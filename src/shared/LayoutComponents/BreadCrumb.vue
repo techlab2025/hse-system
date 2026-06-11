@@ -73,6 +73,15 @@ const items = computed(() => {
         })
       }
     }
+    if (route.name?.toString().includes('WarehouseType')) {
+      const warehouseItems = breadcrumb.filter((b) => b.label === 'WarehouseType')
+
+      if (warehouseItems.length > 1) {
+        const firstIndex = breadcrumb.findIndex((b) => b.label === 'WarehouseType')
+
+        breadcrumb.splice(firstIndex, 1)
+      }
+    }
 
     // If Shared But Normal Routes
     // Parent Is Parent

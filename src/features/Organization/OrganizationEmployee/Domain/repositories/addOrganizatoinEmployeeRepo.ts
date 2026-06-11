@@ -21,6 +21,7 @@ class AddOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeMode
   // }
 
   onParse(data: any): OrganizatoinEmployeeModel[] {
+    
     return data.map((item: any) => OrganizatoinEmployeeModel.fromMap(item))
   }
 

@@ -180,7 +180,7 @@
         color: #000057 !important;
         font-size: $SmSize;
         font-weight: $BaseFontWeightBold;
-        font-family: "bold";
+        font-family: 'bold';
         margin-inline: $MdSize2;
         border-radius: $MdSize $MdSize 0 0 !important;
         border: none !important;
@@ -199,7 +199,7 @@
         position: relative;
         font-weight: $BaseFontWeightBold;
         font-size: $SmSize;
-        padding-left: 25px;
+        padding-left: 15px;
         transition: all 0.3s ease-in-out;
         span {
           padding-left: 20px;

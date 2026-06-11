@@ -15,13 +15,13 @@ export default class ProjectDetailsModel {
   public locations: LocationDetailsModel[]
   public SerialNumber: string
   public startDate: string
-  public country: TitleInterface | null
-  public state: TitleInterface | null
-  public city: TitleInterface | null
-  public area: TitleInterface | null
+  public country: TitleInterface[]
+  public state: TitleInterface[]
+  public city: TitleInterface[]
+  public area: TitleInterface[]
   public Zones: SohwProjectZoonModel[] | null
-  public methods: TitleInterface | null
-  public contractors: TitleInterface | null
+  public methods: TitleInterface[]
+  public contractors: TitleInterface[]
   public endDate: string | null
 
   constructor(
@@ -32,13 +32,13 @@ export default class ProjectDetailsModel {
     locations: LocationDetailsModel[],
     SerialNumber: string,
     startDate: string,
-    country: TitleInterface | null,
-    state: TitleInterface | null,
-    city: TitleInterface | null,
-    area: TitleInterface | null,
+    country: TitleInterface[],
+    state: TitleInterface[],
+    city: TitleInterface[],
+    area: TitleInterface[],
     Zones: SohwProjectZoonModel[] | null,
-    methods: TitleInterface | null,
-    contractors: TitleInterface | null,
+    methods: TitleInterface[],
+    contractors: TitleInterface[],
     endDate: string,
   ) {
     this.id = id
@@ -71,10 +71,9 @@ export default class ProjectDetailsModel {
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
       data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
-      // data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
-      data.locations,
-      data.methods.map((item: any) => this.getTitle(item)),
-      data.contractors.map((item: any) => this.getTitle(item)),
+      data.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
+      data.methods?.map((item: any) => this.getTitle(item)) ?? [],
+      data.contractors?.map((item: any) => this.getTitle(item)) ?? [],
       data.end_date,
     )
   }

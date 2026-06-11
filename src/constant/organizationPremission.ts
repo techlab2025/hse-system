@@ -34,18 +34,18 @@ export const OrgPermissions: PermissionItem = {
         // },
 
         // Permission
-        {
-          key: PermissionsEnum.CREATE_PERMISSION,
-          code: PermissionsEnum.CREATE_PERMISSION,
-          label: 'Permission',
-          permissions: [
-            {
-              key: PermissionsEnum.CREATE_PERMISSION,
-              code: PermissionsEnum.CREATE_PERMISSION,
-              label: 'Create',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.CREATE_PERMISSION,
+        //   code: PermissionsEnum.CREATE_PERMISSION,
+        //   label: 'Permission',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.CREATE_PERMISSION,
+        //       code: PermissionsEnum.CREATE_PERMISSION,
+        //       label: 'Create',
+        //     },
+        //   ],
+        // },
 
         // Equipment Type
         {
@@ -242,7 +242,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
           code: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
-          label: 'Factory Item',
+          label: 'Factor Item',
           permissions: [
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
@@ -1302,18 +1302,18 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
-        {
-          key: PermissionsEnum.PROJECT_PROGRESS_ALL,
-          code: PermissionsEnum.PROJECT_PROGRESS_ALL,
-          label: 'Project Progress',
-          permissions: [
-            {
-              key: PermissionsEnum.PROJECT_PROGRESS_ALL,
-              code: PermissionsEnum.PROJECT_PROGRESS_ALL,
-              label: 'All',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
+        //   code: PermissionsEnum.PROJECT_PROGRESS_ALL,
+        //   label: 'Project Progress',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.PROJECT_PROGRESS_ALL,
+        //       code: PermissionsEnum.PROJECT_PROGRESS_ALL,
+        //       label: 'All',
+        //     },
+        //   ],
+        // },
       ],
     },
   ],

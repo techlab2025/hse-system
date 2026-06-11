@@ -6,7 +6,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
     name: 'Scope',
     component: () => import('@/views/Organization/Scope/IndexScope.vue'),
     meta: {
-      breadcrumb: 'Scope',
+      breadcrumb: 'COntractor Scope',
       type: 'Shared',
       isSidebar: true,
     },
@@ -16,7 +16,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
     name: 'Edit Scope',
     component: () => import('@/views/Organization/Scope/EditScope.vue'),
     meta: {
-      breadcrumb: 'Edit Scope',
+      breadcrumb: 'Edit Contractor Scope',
       parent: 'Scope',
       type: 'Shared',
       isSidebar: true,
@@ -27,7 +27,7 @@ export const ScopeRoutes: RouteRecordRaw[] = [
     name: 'Add Scope',
     component: () => import('@/views/Organization/Scope/AddScope.vue'),
     meta: {
-      breadcrumb: 'Add Scope',
+      breadcrumb: 'Add Contractor Scope',
       parent: 'Scope',
       type: 'Shared',
       isSidebar: true,

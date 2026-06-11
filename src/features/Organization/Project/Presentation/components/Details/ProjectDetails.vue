@@ -44,6 +44,7 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
+        <p class="text-xl font-bold mb-4">{{ $t('projectDetails') }}</p>
         <ProjectHeader
           :projectName="state.data?.title"
           :SerialNumber="state.data?.SerialNumber"
