@@ -400,7 +400,7 @@ const UpdateSerial = (data) => {
       :type="2"
       :controller="indexContractorController"
       :params="indexContractorTypeParams"
-      label="sub_contractors"
+      label="contractors"
       :placeholder="$t('sub_contractors')"
       :onclick="ShowContructorDialog"
     />

@@ -9,6 +9,8 @@ import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/Hie
 import IndexLocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeParams'
 import CreateProjectLocationTeamEmployeeController from '../../../controllers/CreateProjectLocationTeamEmployeeController'
 import CreateProjectLocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/CreateProjectLocationTeamEmployeeParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue'
 
 const emit = defineEmits(['update:data'])
 const { ProjectLocationId, LocationId, teamId, mode } = defineProps<{
@@ -53,7 +55,8 @@ const CreateProjectLocationTeamEmployee = async () => {
 
   const employees = Employees.value.map((emp) => ({
     employee_id: emp.id,
-    is_leader: mode === 'leader' ? true : (mode === 'employee' ? false : emp.id === TeamLeader.value?.id),
+    is_leader:
+      mode === 'leader' ? true : mode === 'employee' ? false : emp.id === TeamLeader.value?.id,
   }))
 
   const teams = [
@@ -75,6 +78,8 @@ const CreateProjectLocationTeamEmployee = async () => {
     loading.value = false
   }
 }
+
+const TeamDialog = ref(false)
 </script>
 
 <template>
@@ -82,7 +87,7 @@ const CreateProjectLocationTeamEmployee = async () => {
     <form @submit.prevent="CreateProjectLocationTeamEmployee">
       <div class="input-container">
         <div class="input-wrapper" v-if="!teamId">
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="TeamType"
             :controller="indexTeamController"
             :params="indexTeamsParams"
@@ -91,7 +96,16 @@ const CreateProjectLocationTeamEmployee = async () => {
             id="team-type"
             :placeholder="$t('team_type')"
             @update:modelValue="setTeamType"
-          />
+            :isDialog="true"
+            :dialogVisible="TeamDialog"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="TeamDialog = true">{{ $t('New') }}</span>
+            </template>
+            <template #Dialog>
+              <AddTeam @update:data="TeamDialog = false" />
+            </template>
+          </UpdatedCustomInputSelect>
         </div>
 
         <div class="input-wrapper">

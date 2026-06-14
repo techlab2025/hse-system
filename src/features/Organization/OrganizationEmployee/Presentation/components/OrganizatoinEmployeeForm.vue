@@ -39,6 +39,7 @@ const Email = ref(props.data?.email)
 const Password = ref('')
 const ConfirmPassword = ref<string>()
 const SerialNumber = ref()
+const AllPermissions = ref<boolean | null>(false)
 
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false, null)
@@ -133,6 +134,8 @@ const updateData = () => {
         RoleIds,
         booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
         booleandashAccessStatus.value,
+        AllPermissions.value,
+
         // Certificates.value.map((item) => item.id)
       )
     : new AddOrganizatoinEmployeeParams(
@@ -146,6 +149,7 @@ const updateData = () => {
         booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
         SerialNumber.value,
         booleandashAccessStatus.value,
+        AllPermissions.value,
 
         // Certificates.value.map((item) => item.id)
       )
@@ -170,6 +174,7 @@ watch(
       EmployeeStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Employee ? true : false
       booleanEmpStatus.value = newData.emplyeeStatus == EmployeeStatusEnum.Admin ? true : false
       booleandashAccessStatus.value = newData.canAccessDashboard
+      AllPermissions.value = newData.allPermissions
       updateData()
       console.log(Heirarchy.value, 'test')
     }
@@ -225,6 +230,11 @@ const UpdateSerial = (data) => {
   updateData()
 }
 const RoleDialog = ref(false)
+
+const updaetAllPermissions = (status: number) => {
+  AllPermissions.value = status == 1 ? true : false
+  updateData()
+}
 </script>
 
 <template>
@@ -301,6 +311,14 @@ const RoleDialog = ref(false)
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
+    <CustomCheckbox
+      :index="5"
+      :title="`all_permissions`"
+      :checked="AllPermissions"
+      @update:checked="updaetAllPermissions"
+    />
+  </div>
+  <div v-if="!AllPermissions" class="col-span-4 md:col-span-2 input-wrapper">
     <UpdatedCustomInputSelect
       :modelValue="role"
       @update:modelValue="setRole"

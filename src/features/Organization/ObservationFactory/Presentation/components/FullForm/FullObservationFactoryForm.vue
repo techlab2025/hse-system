@@ -620,9 +620,9 @@ const HazardDialog = ref(false)
         :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
-        :label="$t('Observation Category')"
+        :label="$t('Observation Type')"
         id="Equipment"
-        :placeholder="$t('Select Observation Category')"
+        :placeholder="$t('Select Observation Type')"
         @update:modelValue="setSelectedObservationType"
         @close="observationTypeDialog = false"
         :isDialog="true"
@@ -978,7 +978,32 @@ const HazardDialog = ref(false)
           </div>
         </div>
 
-        <div
+
+      </div>
+    </div>
+
+    <!-- Action Description -->
+    <div
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      class="input-wrapper col-span-6 md:col-span-6"
+      v-show="showSolvedAndDescription"
+    >
+      <label for="action">{{ $t('immediatly_action_taken') }}</label>
+      <textarea
+        id="action"
+        class="input"
+        v-model="preventive_action"
+        @input="updateData"
+        placeholder="add your descripe"
+      ></textarea>
+    </div>
+
+    <div
+      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      class="hazard-type-container incedant col-span-6 md:col-span-6"
+    >
+      <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
+  <div
           class="col-span-12 md:col-span-12"
           v-if="ObservationFactoryType != Observation.AccidentsType"
         >
@@ -1007,23 +1032,9 @@ const HazardDialog = ref(false)
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Action Description -->
-    <div
-      v-if="saveStatus == SaveStatusEnum.NotSaved"
-      class="input-wrapper col-span-6 md:col-span-6"
-      v-show="showSolvedAndDescription"
-    >
-      <label for="action">{{ $t('immediatly_action_taken') }}</label>
-      <textarea
-        id="action"
-        class="input"
-        v-model="preventive_action"
-        @input="updateData"
-        placeholder="add your descripe"
-      ></textarea>
+
+      </div>
     </div>
 
     <!--if ActionStatusEnum OPEN  -->

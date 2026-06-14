@@ -1,56 +1,10 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import { ref, watch } from 'vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import RIP from '@/assets/images/RIP.png'
-import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-import people from '@/assets/images/people.png'
 import DethsTimeLine from './DethsTimeLine.vue'
 
-// const emit = defineEmits(['update:data'])
 
-// const isAnotherMeeting = ref(0)
-// const updateData = () => {
-//   emit('update:data', {
-//     isAnotherMeeting: isAnotherMeeting.value,
-//     SelectedEmployee: SelectedEmployee.value?.id,
-//     text: text.value,
-//     img: image.value,
-//   })
-// }
-
-// const text = ref<string>('')
-// const SelectedEmployee = ref<TitleInterface>()
-// const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-// const indexEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
-
-// const setEmployee = (data: TitleInterface) => {
-//   SelectedEmployee.value = data
-//   updateData()
-// }
-// const image = ref([])
-
-// const setImages = async (data: string[]) => {
-//   image.value = typeof data === 'string' ? data : await filesToBase64(data)
-//   updateData()
-// }
-
-// watch(() => isAnotherMeeting.value, (newVal) => {
-//   if (newVal == 1) {
-//     updateData()
-//   } else {
-//     emit('update:data', {
-//       isAnotherMeeting: isAnotherMeeting.value,
-//     })
-//     image.value = []
-//     text.value = ''
-//     SelectedEmployee.value = undefined
-//   }
-// })
 
 
 const emit = defineEmits(['update:data'])

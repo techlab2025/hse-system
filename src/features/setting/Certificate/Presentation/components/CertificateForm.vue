@@ -288,7 +288,7 @@ const updateExpireDate = (data: boolean) => {
 const certificateTypes = ref<TitleInterface[]>([
   new TitleInterface({
     id: CertificateTypeEnum.SCALE,
-    title: 'scale',
+    title: 'skill',
   }),
   new TitleInterface({
     id: CertificateTypeEnum.AWARENESS,
@@ -336,7 +336,7 @@ const updateCertificateType = (data: TitleInterface) => {
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2">
+  <!-- <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="certificateType"
       :static-options="certificateTypes"
@@ -345,7 +345,7 @@ const updateCertificateType = (data: TitleInterface) => {
       placeholder="Select certificate type"
       @update:modelValue="updateCertificateType"
     />
-  </div>
+  </div> -->
 
   <div class="col-span-4 md:col-span-4">
     <LangTitleInput

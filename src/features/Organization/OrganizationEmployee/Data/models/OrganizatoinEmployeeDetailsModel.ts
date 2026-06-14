@@ -35,6 +35,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public projectLocationTeamEmployeeId: number
   public canAccessDashboard: boolean
   public is_leader: number
+  public allPermissions: boolean
 
   // =====================
   // Constructor
@@ -62,6 +63,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     projectLocationTeamEmployeeId: number,
     canAccessDashboard: boolean,
     is_leader: number,
+    allPermissions: boolean,
   ) {
     this.id = id
     this.name = name
@@ -85,6 +87,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
     this.canAccessDashboard = canAccessDashboard
     this.is_leader = is_leader
+    this.allPermissions = allPermissions
   }
 
   // =====================
@@ -115,6 +118,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.project_location_team_employee_id,
       data.can_access_dashboard,
       data.is_leader,
+      data.allow_all_permissions,
       // data.employee_performance,
     )
   }

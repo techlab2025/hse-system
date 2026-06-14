@@ -17,6 +17,8 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   EmployeeStatus: EmployeeStatusEnum
   serialNumber: string
   dashAccessStatus: boolean
+  allPermissions: boolean
+
   // certificateId: number[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -38,6 +40,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     EmployeeStatus: EmployeeStatusEnum,
     serialNumber: string,
     dashAccessStatus: boolean,
+    allPermissions: boolean,
     // certificateId: number[],
   ) {
     this.name = name
@@ -50,6 +53,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.EmployeeStatus = EmployeeStatus
     this.serialNumber = serialNumber
     this.dashAccessStatus = dashAccessStatus
+    this.allPermissions = allPermissions
     // this.certificateId = certificateId
   }
 
@@ -83,8 +87,10 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
-    if (this.dashAccessStatus || this.dashAccessStatus == false) data['can_access_dashboard'] = this.dashAccessStatus
+    if (this.dashAccessStatus || this.dashAccessStatus == false)
+      data['can_access_dashboard'] = this.dashAccessStatus
     // data['certificate_id'] = this.certificateId.map((id) => id)
+    data['allow_all_permissions'] = this.allPermissions
 
     return data
   }

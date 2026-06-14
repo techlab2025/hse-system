@@ -72,12 +72,12 @@ const GauideRoutes = ref<Routes[]>([
 ])
 
 const OperationsRoutes = ref<Routes[]>([
-  {
-    link: '/organization/equipment-mangement/all-observatin?type=2',
-    name: t('operations'),
-    icon: ProjectProgressIcon,
-    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  },
+  // {
+  //   link: '/organization/equipment-mangement/all-observatin?type=2',
+  //   name: t('operations'),
+  //   icon: ProjectProgressIcon,
+  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  // },
   {
     link: '/organization/projects',
     name: t('Projects'),
@@ -92,13 +92,31 @@ const OperationsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/Investigating',
-    name: t('Investigating'),
+    name: t('investigations'),
     icon: ProjectProgressIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/capa',
     name: t('capa'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/equipment-mangement/incedant?isAll=1',
+    name: t('Incidents'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/equipment-mangement/observation?isAll=1&type=2',
+    name: t('observations'),
+    icon: ProjectProgressIcon,
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/equipment-mangement/inspection?inspectionType=1',
+    name: t('Inspection'),
     icon: ProjectProgressIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },

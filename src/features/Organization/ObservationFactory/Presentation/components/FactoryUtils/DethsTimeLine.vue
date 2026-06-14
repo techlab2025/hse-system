@@ -100,7 +100,7 @@ const toggleMode = (index: number, isManual: boolean) => {
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" :label="$t('Name & personnel type')" @update:model-value="UpdateData"
+                  class="mt-4 mr-2 input" :label="$t('Name ')" @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]">
                   <!-- <template #reloadHeader>
                     <div class="flex gap-2 items-center">

@@ -1380,5 +1380,6 @@
   "contact_person_name": "Contact Person Name",
   "scope_contractor": "Scope Contractor",
   "contractor_scope": "Contractor Scope",
-  "training_matrix": "Training Matrix"
+  "training_matrix": "Training Matrix",
+  "all_permissions": "All Permissions"
 }
