@@ -234,7 +234,17 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 
 const router = useRouter()
 
+const isCurrentlyAllValid = computed(() => {
+  return (
+    Datastate.value.data &&
+    Datastate.value.data.length > 0 &&
+    Datastate.value.data.every((el) => el.status === ValidationStatusEnum.VALID)
+  )
+})
+
+const counter = ref(0)
 const AddOrgEmployee = async () => {
+  counter.value += 1
   if (!mappedData.value) return
 
   const headers = mappedData.value[0] as string[]
@@ -263,10 +273,16 @@ const AddOrgEmployee = async () => {
     return obj
   })
 
-  const orgData = new AddOrganizationEmployeeExcelParams({ data: dataAsObjects })
+  const wasAllValidBeforeRequest = !!isCurrentlyAllValid.value
+
+  const orgData = new AddOrganizationEmployeeExcelParams({
+    data: dataAsObjects,
+    isValid: wasAllValidBeforeRequest,
+  })
   console.log('📤 Sending orgData:', orgData)
   await addOrganizatoinEmployeeController.addOrganizatoinEmployee(orgData, router)
-  if (Datastate.value.data?.every((el) => el.status === ValidationStatusEnum.VALID)) {
+
+  if (wasAllValidBeforeRequest && addOrganizatoinEmployeeController.isDataSuccess()) {
     emit('uploaded')
   }
 }
@@ -289,6 +305,11 @@ const deleteRow = (rowIndex: number) => {
     mappedData.value[0],
     ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
   ]
+
+  // Also remove the row from the validation results in controller state so the table updates
+  if (addOrganizatoinEmployeeController.state.value.data) {
+    addOrganizatoinEmployeeController.state.value.data = addOrganizatoinEmployeeController.state.value.data.filter((_, i) => i !== rowIndex)
+  }
 
   // Remove the two images belonging to this row
   const imgBase = rowIndex * 2
@@ -506,7 +527,7 @@ const onMappingClose = () => {
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          Confirm & Submit
+          {{ isCurrentlyAllValid ? 'Confirm & Create' : 'Validate Data' }}
         </button>
       </template>
     </template>

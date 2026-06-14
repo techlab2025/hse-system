@@ -18,8 +18,9 @@ class AddOrganizatoinEmployeeApiService extends ServicesInterface {
   }
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
+    const isExcelValidation = 'isValid' in params && !(params as any).isValid
     return await super.call({
-      url: (params as any)?.data
+      url: isExcelValidation
         ? ApiNames.instance.CreateOrganizatoinEmployeeExcel
         : ApiNames.instance.CreateOrganizatoinEmployee,
       type: CrudType.POST,

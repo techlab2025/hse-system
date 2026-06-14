@@ -58,22 +58,23 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)
 
-      if (this.state.value.error?.title.includes('successfully') || this.isDataSuccess()) {
-        // if (!params.data) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
-        if (
-          router.currentRoute.value.fullPath.includes('organization-employee') &&
-          !router.currentRoute.value.fullPath.includes('project-progress')
-        ) {
-          if (!draft) await router.push('/organization/organization-employee')
-        }
-        // }
+      const isExcelValidation = 'isValid' in params && !params.isValid
 
+      if (this.state.value.error?.title.includes('successfully') || this.isDataSuccess()) {
+        if (!isExcelValidation) {
+          DialogSelector.instance.successDialog.openDialog({
+            dialogName: 'dialog-success',
+            titleContent: 'Added was successful',
+            imageElement: successImage,
+            messageContent: null,
+          })
+          if (
+            router.currentRoute.value.fullPath.includes('organization-employee') &&
+            !router.currentRoute.value.fullPath.includes('project-progress')
+          ) {
+            if (!draft) await router.push('/organization/organization-employee')
+          }
+        }
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
