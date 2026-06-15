@@ -29,7 +29,12 @@ const saveAndAdd = async () => {
     router,
     true,
   )
-  if (!state.value.error) {
+  const isSuccess =
+    state &&
+    (state.value.error?.title?.includes('successfully') ||
+      addOrganizatoinEmployeeController.isDataSuccess())
+
+  if (isSuccess) {
     params.value = null
     formKey.value++
   }

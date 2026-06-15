@@ -83,7 +83,10 @@ const deleteOrganizatoinEmployee = async (id: number) => {
     <div class="all-info">
       <div class="info-wrapper">
         <div class="employee-info">
-          <span class="employee-serial employee-serial text-2xl">{{ state?.serial_name }}</span>
+          <!-- {{ state?.serial_number }} -->
+          <span class="employee-serial employee-serial text-2xl">{{
+            state?.serialName || state?.serial_number
+          }}</span>
 
           <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
           <div class="employee-position">

@@ -89,9 +89,9 @@ watch(() => props.visable, (newVal) => {
                 <!-- <DeleteItemAction v-if="Answers.length > 1" class="cursor-pointer" @click="DeleteItem(index)" />
                 <AddAnswer v-if="index === Answers.length - 1" @click="addNewAnswer" class="cursor-pointer ml-2" /> -->
                 <div class="timeline-icon">
-                  <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
+                  <DeleteItemAction class="cursor-pointer"
                     @click="DeleteItem(index)" />
-                  <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
+                  <AddAnswer v-if="index === Answers.length - 1" @click="addNewAnswer" class="cursor-pointer" />
                 </div>
               </div>
             </div>
