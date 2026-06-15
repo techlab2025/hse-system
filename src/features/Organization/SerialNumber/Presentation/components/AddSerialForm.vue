@@ -164,24 +164,32 @@ const fields = ref([
 ])
 
 const sendData = async () => {
-  fields.value.map((el) => {
-    if (!el.prefix && !el.suffix && !el.start) {
-      el.name = 0
-    }
-  })
+  const codes = fields.value
+    .filter((field) => field.prefix || field.suffix || field.start)
+    .map(
+      (field) =>
+        new AddSerialNumberParams(
+          field.serialNumberType,
+          field.prefix,
+          field.suffix,
+          field.start,
+          field.title,
+        ),
+    )
 
   const params = new CreateCodingSystemParams(
-    props.serialType == SertialNumberStatusEnum.AUTO
-      ? fields.value.filter((el) => el.name != 0)
-      : [],
+    props.serialType == SertialNumberStatusEnum.AUTO ? codes : [],
     props.serialType,
   )
-  const state = await SerialNumController.getInstance().addSerialNumber(params, router)
-  if (state.value.data) {
-    await IndexProjectProgressController.getInstance().getData(
-      new IndexProjectProgressParams('', 1, 10, 0),
-    )
-  }
+  const serialNumController = SerialNumController.getInstance()
+  await serialNumController.addSerialNumber(params, router)
+
+  if (!serialNumController.isDataSuccess()) return
+
+  await IndexProjectProgressController.getInstance().getData(
+    new IndexProjectProgressParams('', 1, 10, 0),
+  )
+
   emit('close:dialog')
   emit('update:data')
   // location.reload()

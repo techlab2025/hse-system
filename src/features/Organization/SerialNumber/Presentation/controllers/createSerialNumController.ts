@@ -27,7 +27,7 @@ export default class SerialNumController extends ControllerInterface<SerialNumbe
   }
 
   async addSerialNumber(params: Params, router: Router) {
-    // useLoaderStore().setLoadingWithDialog();
+    this.setLoading()
     try {
       const dataState: DataState<SerialNumberModel> = await this.AddSerialNumberUseCase.call(params)
       this.setState(dataState)
