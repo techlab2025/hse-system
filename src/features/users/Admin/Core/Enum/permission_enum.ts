@@ -979,4 +979,12 @@ export enum PermissionsEnum {
   // Project Progress
   PROJECT_PROGRESS_ALL = 'PP00',
 
+
+  CAPA_ALL='CA00',
+  CAPA_FETCH = 'CA01',
+  CAPA_UPDATE = 'CA04',
+  CAPA_CREATE = 'CA03',
+  CAPA_DELETE = 'CA05',
+  CAPA_DETAILS = 'CA02'
+
 }

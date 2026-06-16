@@ -35,9 +35,13 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   // [SerialNumberEnum.ObservationType]: 'Observation Type',
   // [SerialNumberEnum.PROJECTLOCATION]: 'Project Location',
   // [SerialNumberEnum.PROJECTZONE]: 'Project Zone',
-  [SerialNumberEnum.TASK]: 'Task',
+  // [SerialNumberEnum.TASK]: 'Task',
   [SerialNumberEnum.WAREHOUSE]: 'Warehouse',
   // [SerialNumberEnum.ZONE]: 'Zone',
+  [SerialNumberEnum.INVESTIGATION]: 'Investigation',
+  [SerialNumberEnum.CAPA]: 'CAPA',
+  [SerialNumberEnum.INCIDANT]: 'Incident'
+
 }
 const getTitle = (type: SerialNumberEnum) => SERIAL_TITLES[type]
 
@@ -134,15 +138,15 @@ const fields = ref([
   //   start: '',
   // },
 
-  {
-    id: 12,
-    serialNumberType: SerialNumberEnum.TASK,
-    name: SerialNumberEnum.TASK,
-    title: getTitle(SerialNumberEnum.TASK),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+    // {
+    //   id: 12,
+    //   serialNumberType: SerialNumberEnum.TASK,
+    //   name: SerialNumberEnum.TASK,
+    //   title: getTitle(SerialNumberEnum.TASK),
+    //   prefix: '',
+    //   suffix: '',
+    //   start: '',
+    // },
   // {
   //   id: 13,
   //   serialNumberType: SerialNumberEnum.ZONE,
@@ -157,6 +161,33 @@ const fields = ref([
     serialNumberType: SerialNumberEnum.WAREHOUSE,
     name: SerialNumberEnum.WAREHOUSE,
     title: getTitle(SerialNumberEnum.WAREHOUSE),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 15,
+    serialNumberType: SerialNumberEnum.INVESTIGATION,
+    name: SerialNumberEnum.INVESTIGATION,
+    title: getTitle(SerialNumberEnum.INVESTIGATION),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 16,
+    serialNumberType: SerialNumberEnum.CAPA,
+    name: SerialNumberEnum.CAPA,
+    title: getTitle(SerialNumberEnum.CAPA),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 17,
+    serialNumberType: SerialNumberEnum.INCIDANT,
+    name: SerialNumberEnum.INCIDANT,
+    title: getTitle(SerialNumberEnum.INCIDANT),
     prefix: '',
     suffix: '',
     start: '',

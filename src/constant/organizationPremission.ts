@@ -61,7 +61,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
@@ -87,43 +87,43 @@ export const OrgPermissions: PermissionItem = {
         },
 
         // Objective
-        {
-          key: PermissionsEnum.OBJECTIVE_ORG_ALL,
-          code: PermissionsEnum.OBJECTIVE_ORG_ALL,
-          label: 'Objective',
-          permissions: [
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_ALL,
-              code: PermissionsEnum.OBJECTIVE_ORG_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_FETCH,
-              code: PermissionsEnum.OBJECTIVE_ORG_FETCH,
-              label: 'Fetch',
-            },
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
-              code: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_CREATE,
-              code: PermissionsEnum.OBJECTIVE_ORG_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-              code: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.OBJECTIVE_ORG_DELETE,
-              code: PermissionsEnum.OBJECTIVE_ORG_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.OBJECTIVE_ORG_ALL,
+        //   code: PermissionsEnum.OBJECTIVE_ORG_ALL,
+        //   label: 'Objective',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_ALL,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_FETCH,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_CREATE,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.OBJECTIVE_ORG_DELETE,
+        //       code: PermissionsEnum.OBJECTIVE_ORG_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
 
         // Factory
         {
@@ -139,7 +139,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_FACTORY_FETCH,
               code: PermissionsEnum.ORG_FACTORY_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_FACTORY_DETAILS,
@@ -178,7 +178,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.PROJECT_ZONE_FETCH,
               code: PermissionsEnum.PROJECT_ZONE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_DETAILS,
@@ -213,7 +213,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.HERIKALY_FETCH,
               code: PermissionsEnum.HERIKALY_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.HERIKALY_DETAILS,
@@ -252,7 +252,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
               code: PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_DETAILS,
@@ -291,7 +291,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_TEMPLATE_FETCH,
               code: PermissionsEnum.ORG_TEMPLATE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_DETAILS,
@@ -329,7 +329,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.TEMPLATE_ITEM_FETCH,
               code: PermissionsEnum.TEMPLATE_ITEM_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_DETAILS,
@@ -368,7 +368,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
               code: PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_DETAILS,
@@ -394,39 +394,39 @@ export const OrgPermissions: PermissionItem = {
         },
 
         // PARTNER
-        {
-          key: PermissionsEnum.PARTNER_ALL,
-          code: PermissionsEnum.PARTNER_ALL,
-          label: 'Partner',
-          permissions: [
-            { key: PermissionsEnum.PARTNER_ALL, code: PermissionsEnum.PARTNER_ALL, label: 'All' },
-            {
-              key: PermissionsEnum.PARTNER_FETCH,
-              code: PermissionsEnum.PARTNER_FETCH,
-              label: 'Fetch',
-            },
-            {
-              key: PermissionsEnum.PARTNER_DETAILS,
-              code: PermissionsEnum.PARTNER_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.PARTNER_CREATE,
-              code: PermissionsEnum.PARTNER_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.PARTNER_UPDATE,
-              code: PermissionsEnum.PARTNER_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.PARTNER_DELETE,
-              code: PermissionsEnum.PARTNER_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.PARTNER_ALL,
+        //   code: PermissionsEnum.PARTNER_ALL,
+        //   label: 'Partner',
+        //   permissions: [
+        //     { key: PermissionsEnum.PARTNER_ALL, code: PermissionsEnum.PARTNER_ALL, label: 'All' },
+        //     {
+        //       key: PermissionsEnum.PARTNER_FETCH,
+        //       code: PermissionsEnum.PARTNER_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.PARTNER_DETAILS,
+        //       code: PermissionsEnum.PARTNER_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.PARTNER_CREATE,
+        //       code: PermissionsEnum.PARTNER_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.PARTNER_UPDATE,
+        //       code: PermissionsEnum.PARTNER_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.PARTNER_DELETE,
+        //       code: PermissionsEnum.PARTNER_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
 
         // Projects
         {
@@ -438,7 +438,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.PROJECT_FETCH,
               code: PermissionsEnum.PROJECT_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.PROJECT_DETAILS,
@@ -477,7 +477,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.CERTIFICATE_FETCH,
               code: PermissionsEnum.CERTIFICATE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.CERTIFICATE_DETAILS,
@@ -516,7 +516,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_DETAILS,
@@ -555,7 +555,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_EQUIPMENT_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_DETAILS,
@@ -594,7 +594,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.LOCATION_ORG_FETCH,
               code: PermissionsEnum.LOCATION_ORG_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.LOCATION_ORG_DETAILS,
@@ -619,43 +619,43 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
         // methods
-        {
-          key: PermissionsEnum.ORG_METHOD_ALL,
-          code: PermissionsEnum.ORG_METHOD_ALL,
-          label: 'Method',
-          permissions: [
-            {
-              key: PermissionsEnum.ORG_METHOD_ALL,
-              code: PermissionsEnum.ORG_METHOD_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.ORG_METHOD_FETCH,
-              code: PermissionsEnum.ORG_METHOD_FETCH,
-              label: 'Fetch',
-            },
-            {
-              key: PermissionsEnum.ORG_METHOD_DETAILS,
-              code: PermissionsEnum.ORG_METHOD_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.ORG_METHOD_CREATE,
-              code: PermissionsEnum.ORG_METHOD_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.ORG_METHOD_UPDATE,
-              code: PermissionsEnum.ORG_METHOD_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.ORG_METHOD_DELETE,
-              code: PermissionsEnum.ORG_METHOD_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.ORG_METHOD_ALL,
+        //   code: PermissionsEnum.ORG_METHOD_ALL,
+        //   label: 'Method',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_ALL,
+        //       code: PermissionsEnum.ORG_METHOD_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_FETCH,
+        //       code: PermissionsEnum.ORG_METHOD_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_DETAILS,
+        //       code: PermissionsEnum.ORG_METHOD_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_CREATE,
+        //       code: PermissionsEnum.ORG_METHOD_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_UPDATE,
+        //       code: PermissionsEnum.ORG_METHOD_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ORG_METHOD_DELETE,
+        //       code: PermissionsEnum.ORG_METHOD_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
         // team
         {
           key: PermissionsEnum.ORG_TEAM_ALL,
@@ -666,7 +666,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_TEAM_FETCH,
               code: PermissionsEnum.ORG_TEAM_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_TEAM_DETAILS,
@@ -705,7 +705,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_EMPLOYEE_FETCH,
               code: PermissionsEnum.ORG_EMPLOYEE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_DETAILS,
@@ -744,7 +744,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_CONTRACTOR_FETCH,
               code: PermissionsEnum.ORG_CONTRACTOR_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_DETAILS,
@@ -783,7 +783,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DETAILS,
@@ -816,7 +816,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_ROLE_FETCH,
               code: PermissionsEnum.ORG_ROLE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_ROLE_DETAILS,
@@ -855,7 +855,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_INSPECTION_FETCH,
               code: PermissionsEnum.ORG_INSPECTION_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_DETAILS,
@@ -903,7 +903,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_HAZARD_FETCH,
               code: PermissionsEnum.ORG_HAZARD_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_HAZARD_DETAILS,
@@ -941,7 +941,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_INCEDANT_FETCH,
               code: PermissionsEnum.ORG_INCEDANT_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_DETAILS,
@@ -979,7 +979,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_OBSERVATION_FETCH,
               code: PermissionsEnum.ORG_OBSERVATION_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_DETAILS,
@@ -1017,7 +1017,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.SCOPE_FETCH,
               code: PermissionsEnum.SCOPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.SCOPE_DETAILS,
@@ -1055,7 +1055,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_DETAILS,
@@ -1088,7 +1088,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_DETAILS,
@@ -1126,7 +1126,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.WHIERE_HOUSE_FETCH,
               code: PermissionsEnum.WHIERE_HOUSE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_DETAILS,
@@ -1164,7 +1164,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
@@ -1202,7 +1202,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.INJURY_FETCH,
               code: PermissionsEnum.INJURY_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.INJURY_DETAILS,
@@ -1240,7 +1240,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ROOT_CAUSES_FETCH,
               code: PermissionsEnum.ROOT_CAUSES_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_DETAILS,
@@ -1278,7 +1278,7 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.CODING_SYSTEM_FETCH,
               code: PermissionsEnum.CODING_SYSTEM_FETCH,
-              label: 'Fetch',
+              label: 'Table',
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_DETAILS,
@@ -1298,6 +1298,82 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.CODING_SYSTEM_UPDATE,
               code: PermissionsEnum.CODING_SYSTEM_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Investigation
+        {
+          key: PermissionsEnum.INVESTIGATION_ALL,
+          code: PermissionsEnum.INVESTIGATION_ALL,
+          label: 'Investigation',
+          permissions: [
+            {
+              key: PermissionsEnum.INVESTIGATION_ALL,
+              code: PermissionsEnum.INVESTIGATION_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.INVESTIGATION_FETCH,
+              code: PermissionsEnum.INVESTIGATION_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.INVESTIGATION_DETAILS,
+              code: PermissionsEnum.INVESTIGATION_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.INVESTIGATION_DELETE,
+              code: PermissionsEnum.INVESTIGATION_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.INVESTIGATION_CREATE,
+              code: PermissionsEnum.INVESTIGATION_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.INVESTIGATION_UPDATE,
+              code: PermissionsEnum.INVESTIGATION_UPDATE,
+              label: 'update',
+            },
+          ],
+        },
+        // Capa
+         {
+          key: PermissionsEnum.CAPA_ALL,
+          code: PermissionsEnum.CAPA_ALL,
+          label: 'Capa',
+          permissions: [
+            {
+              key: PermissionsEnum.CAPA_ALL,
+              code: PermissionsEnum.CAPA_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.CAPA_FETCH,
+              code: PermissionsEnum.CAPA_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.CAPA_DETAILS,
+              code: PermissionsEnum.CAPA_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.CAPA_DELETE,
+              code: PermissionsEnum.CAPA_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.CAPA_CREATE,
+              code: PermissionsEnum.CAPA_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.CAPA_UPDATE,
+              code: PermissionsEnum.CAPA_UPDATE,
               label: 'update',
             },
           ],

@@ -180,11 +180,12 @@ const GetMediumObservationCount = (data: any): number => {
                         <div class="header">
                           <p class="first-label-item-primary"
                             :class="GetObservationRiskLevel(item?.observation?.riskLevel)">
-                            {{
+                            <!-- {{
                               GetObservationRiskLevel(item?.observation?.riskLevel) +
                               ' ' +
                               GetInvestigationType(item?.observation?.type)
-                            }}
+                            }} -->
+                              incident Report
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serial || '_OBS-2025-0112'
                               }}</span>
@@ -247,10 +248,11 @@ const GetMediumObservationCount = (data: any): number => {
                                 <p>{{ $t('Meeting Overview') }}</p>
                               </div>
                             </div>
+
                             <div class="dome-info">
-                              <p>{{ $t('Date & Time') }} : <span> 2025-11-05, 10:45 AM</span></p>
-                              <h6>{{ $t('Investigation team leader') }} : <span> ali</span></h6>
-                              <h6>{{ $t('Num of team') }} : <span> 3</span></h6>
+                              <p>{{ $t('Date & Time') }} : <span> {{ item.date }}</span></p>
+                              <h6>{{ $t('Investigation team leader') }} : <span> {{ item.investigationTeamLeader?.Name }}</span></h6>
+                              <h6>{{ $t('Num of team') }} : <span> {{ item.teamNumebr || '--'}} |</span></h6>
                             </div>
 
                           </div>

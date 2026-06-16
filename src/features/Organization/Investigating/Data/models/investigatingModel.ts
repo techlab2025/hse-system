@@ -8,6 +8,7 @@ import InvestegationObservationModel from './InvestigationHelperModels/Investega
 import acc from '@/assets/images/acc.png'
 import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnum'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
+import TeamLeaderModel from './TeamLeaderModel'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string
@@ -37,6 +38,8 @@ export default class InvestigatingModel {
   public observation: HazardDetailsModel
   public LatestInvestigatingMeetingId: number
   public hasResults: boolean
+  public investigationTeamLeader: TeamLeaderModel|undefined
+  public teamNumebr : number
 
   constructor(
     Investegationid: number,
@@ -67,6 +70,8 @@ export default class InvestigatingModel {
     observation: HazardDetailsModel,
     LatestInvestigatingMeetingId: number,
     hasResults: boolean,
+    investigationTeamLeader:TeamLeaderModel |undefined,
+    teamNumebr : number
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -96,6 +101,8 @@ export default class InvestigatingModel {
     this.observation = observation
     this.LatestInvestigatingMeetingId = LatestInvestigatingMeetingId
     this.hasResults = hasResults
+    this.investigationTeamLeader = investigationTeamLeader
+    this.teamNumebr = teamNumebr
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -130,6 +137,8 @@ export default class InvestigatingModel {
       HazardDetailsModel?.fromMap(data.observation),
       data.latest_investigation_meeting_id,
       data.has_results,
+      data.investigation_team_leader ? TeamLeaderModel?.fromMap(data.investigation_team_leader) : undefined,
+      data.team_member_number
     )
   }
 

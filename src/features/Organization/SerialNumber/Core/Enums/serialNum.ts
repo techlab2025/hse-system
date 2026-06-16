@@ -13,4 +13,7 @@ export enum SerialNumberEnum {
   OBSERVATION = 12,
   TASK = 13,
   CONTRACTOR = 14,
+  INVESTIGATION = 20,
+  INCIDANT = 21,
+  CAPA = 18
 }

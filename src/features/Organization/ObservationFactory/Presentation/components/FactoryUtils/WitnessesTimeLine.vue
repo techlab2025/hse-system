@@ -82,12 +82,7 @@ const toggleMode = (index: number, isManual: boolean) => {
             </div>
 
             <div class="timeline-content">
-              <div class=" input-wrapper">
-                <label for="wetness-text">{{ $t('Witness statement') }}</label>
-                <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
-                  @input="UpdateData" />
-              </div>
-              <div class="input-wrapper">
+               <div class="input-wrapper">
 
 
                 <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
@@ -114,6 +109,12 @@ const toggleMode = (index: number, isManual: boolean) => {
 
 
               </div>
+              <div class=" input-wrapper">
+                <label for="wetness-text">{{ $t('Witness statement') }}</label>
+                <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
+                  @input="UpdateData" />
+              </div>
+
             </div>
           </div>
         </div>
