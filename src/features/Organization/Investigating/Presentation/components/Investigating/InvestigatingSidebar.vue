@@ -30,7 +30,7 @@ const selectRisk = (value: RiskLevelEnum | null) => {
           <div class="sidebar-card-details">
             <ul class="sidebar-list">
               <li @click="selectRisk(null)" :class="{ active: ObservationRiskLevel === null }">
-                All Incidents
+                All Incident
                 <!-- <span>({{ props.highObservationCount + props.mediumObservationCount }})</span> -->
                 <span>({{ allIncident }})</span>
               </li>

@@ -40,6 +40,8 @@ export default class InvestigatingModel {
   public hasResults: boolean
   public investigationTeamLeader: TeamLeaderModel|undefined
   public teamNumebr : number
+  public investigation_meeting_date?: string
+  public investigation_meeting_time?: string
 
   constructor(
     Investegationid: number,
@@ -71,7 +73,9 @@ export default class InvestigatingModel {
     LatestInvestigatingMeetingId: number,
     hasResults: boolean,
     investigationTeamLeader:TeamLeaderModel |undefined,
-    teamNumebr : number
+    teamNumebr : number,
+    investigation_meeting_date?: string,
+    investigation_meeting_time?: string
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -103,6 +107,8 @@ export default class InvestigatingModel {
     this.hasResults = hasResults
     this.investigationTeamLeader = investigationTeamLeader
     this.teamNumebr = teamNumebr
+    this.investigation_meeting_date = investigation_meeting_date
+    this.investigation_meeting_time = investigation_meeting_time
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -138,7 +144,10 @@ export default class InvestigatingModel {
       data.latest_investigation_meeting_id,
       data.has_results,
       data.investigation_team_leader ? TeamLeaderModel?.fromMap(data.investigation_team_leader) : undefined,
-      data.team_member_number
+      data.investigation_team_members_count,
+      data.investigation_meeting_date,
+      data.investigation_meeting_time,
+
     )
   }
 

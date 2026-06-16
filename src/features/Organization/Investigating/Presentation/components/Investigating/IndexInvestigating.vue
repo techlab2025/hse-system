@@ -251,9 +251,9 @@ const GetMediumObservationCount = (data: any): number => {
                             </div>
 
                             <div class="dome-info">
-                              <p>{{ $t('Date & Time') }} : <span> {{ item.date }}</span></p>
+                              <p>{{ $t('Date & Time') }} : <span> {{ item.investigation_meeting_date }} {{ item.investigation_meeting_time }}</span></p>
                               <h6>{{ $t('Investigation team leader') }} : <span> {{ item.investigationTeamLeader?.Name }}</span></h6>
-                              <h6>{{ $t('Num of team') }} : <span> {{ item.teamNumebr || '--'}} |</span></h6>
+                              <h6>{{ $t('Num of team') }} : <span> {{ item.teamNumebr || '--'}} </span></h6>
                             </div>
 
                           </div>
