@@ -122,7 +122,7 @@ const WarehouseTypeDialog = ref<boolean>(false)
       placeholder="Select Warehouse Type"
       @update:modelValue="setSelectedWhereHouseType"
       :isDialog="true"
-      :dialogVisible="WarehouseTypeDialog"
+      v-model:dialogVisible="WarehouseTypeDialog"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>

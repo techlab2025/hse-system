@@ -269,7 +269,7 @@ const fields = ref([
         <UpdatedCustomInputSelect v-if="SelectedAssigned === AssignToTypeEnum.MACHINE" class="input"
           :modelValue="SelectedEquipment" :controller="indexEquipmentController" :params="indexEquipmentParams"
           :label="$t('Equipment')" :placeholder="$t('select your Machine')" @update:modelValue="setEquipment"
-          :isDialog="true" :dialogVisible="inspectionDoalouge" @close="inspectionDoalouge = false">
+          :isDialog="true" v-model:dialogVisible="inspectionDoalouge" @close="inspectionDoalouge = false">
           <template #LabelHeader>
             <span class="add-dialog" @click="inspectionDoalouge = true">{{ $t('new') }}</span>
           </template>

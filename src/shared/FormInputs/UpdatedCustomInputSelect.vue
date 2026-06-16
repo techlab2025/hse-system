@@ -33,7 +33,8 @@ interface Props {
   onclick?: () => void
 }
 
-const emit = defineEmits(['update:modelValue', 'update:slot'])
+// const emit = defineEmits(['update:modelValue', 'update:slot'])
+const emit = defineEmits(['update:modelValue', 'update:slot', 'update:dialogVisible', 'close'])
 const props = withDefaults(defineProps<Props>(), {
   type: 1,
   required: false,
@@ -161,19 +162,18 @@ async function reloadData(): Promise<void> {
   normalizedValue.value = isMultiselect.value ? [] : null
 }
 
-const DialogVisable = ref(props.dialogVisible)
-watch(
-  () => props.dialogVisible,
-  (newVal) => {
-    DialogVisable.value = newVal
-    if (!newVal) {
+const DialogVisable = computed({
+  get() {
+    return props.dialogVisible
+  },
+  set(val) {
+    emit('update:dialogVisible', val)
+    if (!val) {
       reloadData()
     }
-  },
-)
-
+  }
+})
 const closeDailog = () => {
-  // reloadData()
   emit('close', false)
 }
 </script>

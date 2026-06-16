@@ -97,7 +97,7 @@ const TeamDialog = ref(false)
             :placeholder="$t('team_type')"
             @update:modelValue="setTeamType"
             :isDialog="true"
-            :dialogVisible="TeamDialog"
+            v-model:dialogVisible="TeamDialog"
           >
             <template #LabelHeader>
               <span class="add-dialog" @click="TeamDialog = true">{{ $t('New') }}</span>

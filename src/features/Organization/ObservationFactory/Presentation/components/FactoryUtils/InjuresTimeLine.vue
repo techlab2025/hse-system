@@ -164,7 +164,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                 <UpdatedCustomInputSelect :modelValue="item.infectionTypeId" class="input"
                   :controller="indexInjuryController" :params="indexInjuryParams" :label="$t('injury Classification')" id="injury"
                   :placeholder="$t('select your injury Classification')" @update:modelValue="UpdateInjury($event, index)"
-                  @close="InjuryVisable = false" :isDialog="true" :dialogVisible="InjuryVisable">
+                  @close="InjuryVisable = false" :isDialog="true" v-model:dialogVisible="InjuryVisable">
                   <template #LabelHeader>
                     <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>
                   </template>

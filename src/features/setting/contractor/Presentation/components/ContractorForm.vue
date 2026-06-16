@@ -358,7 +358,7 @@ const handleFilesChange = (files: any) => {
       :type="2"
       @close="scopeDialogRef = false"
       :isDialog="true"
-      :dialogVisible="scopeDialogRef"
+      v-model:dialogVisible="scopeDialogRef"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="scopeDialogRef = true">New</span>

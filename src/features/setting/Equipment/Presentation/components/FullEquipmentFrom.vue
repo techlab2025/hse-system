@@ -700,7 +700,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`"
           @update:modelValue="setEquipmentType"
           :isDialog="true"
-          :dialogVisible="EquipmentTypeDialog"
+          v-model:dialogVisible="EquipmentTypeDialog"
         >
           <template #LabelHeader>
             <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>
@@ -797,7 +797,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           :placeholder="`Select Contructor`"
           @update:modelValue="setContructor"
           :isDialog="true"
-          :dialogVisible="ContractorDialog"
+          v-model:dialogVisible="ContractorDialog"
         >
           <template #LabelHeader>
             <span class="add-dialog" @click="ContractorDialog = true">New</span>
@@ -837,7 +837,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse"
           :isDialog="true"
-          :dialogVisible="WarehouseDialog"
+          v-model:dialogVisible="WarehouseDialog"
         >
           <template #LabelHeader>
             <span class="add-dialog" @click="WarehouseDialog = true">New</span>

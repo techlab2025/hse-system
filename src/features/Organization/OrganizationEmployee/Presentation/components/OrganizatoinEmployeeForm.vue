@@ -311,7 +311,7 @@ const PositionDialog = ref(false)
       :label="$t('position')"
       :placeholder="$t('select_position')"
     :isDialog="true"
-      :dialogVisible="PositionDialog"
+     v-model:dialogVisible="PositionDialog"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="PositionDialog = true">New</span>
@@ -340,7 +340,7 @@ const PositionDialog = ref(false)
       :type="2"
       :placeholder="$t('Select Role')"
       :isDialog="true"
-      :dialogVisible="RoleDialog"
+        v-model:dialogVisible="RoleDialog"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="RoleDialog = true">New</span>

@@ -176,7 +176,7 @@ const updateRecommendation = (data) => {
             <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
               :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
               :placeholder="$t('select your Immediate Apparent Cause')" @update:modelValue="setRootCause" :type="2"
-              @close="RootCausesDialog = false" :isDialog="true" :dialogVisible="RootCausesDialog">
+              @close="RootCausesDialog = false" :isDialog="true" v-model:dialogVisible="RootCausesDialog">
               <template #LabelHeader>
                 <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
               </template>

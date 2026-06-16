@@ -626,7 +626,7 @@ const HazardDialog = ref(false)
         @update:modelValue="setSelectedObservationType"
         @close="observationTypeDialog = false"
         :isDialog="true"
-        :dialogVisible="observationTypeDialog"
+        v-model:dialogVisible="observationTypeDialog"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="observationTypeDialog = true">{{ $t('New') }}</span>
@@ -664,7 +664,7 @@ const HazardDialog = ref(false)
         @update:modelValue="setAccidentsType"
         @close="acedentDialogRef = false"
         :isDialog="true"
-        :dialogVisible="acedentDialogRef"
+       v-model:dialogVisible="acedentDialogRef"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="acedentDialogRef = true">{{ $t('New') }}</span>
@@ -726,7 +726,7 @@ const HazardDialog = ref(false)
         @update:modelValue="setMachine"
         @close="machineDialogRef = false"
         :isDialog="true"
-        :dialogVisible="machineDialogRef"
+        v-model:dialogVisible="machineDialogRef"
       >
       </UpdatedCustomInputSelect>
     </div>
@@ -877,7 +877,7 @@ const HazardDialog = ref(false)
         :placeholder="$t('Select Hazard Classification')"
         @update:modelValue="setHazardType"
         :isDialog="true"
-        :dialogVisible="HazardTypeDialog"
+        v-model:dialogVisible="HazardTypeDialog"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="HazardTypeDialog = true">New</span>
@@ -907,7 +907,7 @@ const HazardDialog = ref(false)
         :placeholder="$t('Select Hazard')"
         @update:modelValue="setSubHazardType"
         :isDialog="true"
-        :dialogVisible="HazardDialog"
+        v-model:dialogVisible="HazardDialog"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="HazardDialog = true">New</span>
