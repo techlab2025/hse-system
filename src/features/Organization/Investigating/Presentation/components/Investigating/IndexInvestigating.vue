@@ -153,7 +153,8 @@ const GetMediumObservationCount = (data: any): number => {
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
         <InvestigatingSidebar :selectedRiskLevel="observationRiskLevel"
           :highObservationCount="GethighObservationCount(state.data)" @update:data="GetRiskLevel"
-          :mediumObservationCount="GetMediumObservationCount(state.data)" />
+          :mediumObservationCount="GetMediumObservationCount(state.data)"
+          :allIncident="state.pagination?.total" />
 
         <!-- Main content (Cards) -->
         <div class="col-span-9">
