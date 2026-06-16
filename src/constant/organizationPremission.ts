@@ -1367,8 +1367,8 @@ export const OrgPermissions: PermissionItem = {
               label: 'Delete',
             },
             {
-              key: PermissionsEnum.CAPA_CREATE,
-              code: PermissionsEnum.CAPA_CREATE,
+              key: PermissionsEnum.CAPA_CAREATE,
+              code: PermissionsEnum.CAPA_CAREATE,
               label: 'Create',
             },
             {
