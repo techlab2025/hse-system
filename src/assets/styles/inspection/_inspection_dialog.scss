@@ -116,6 +116,7 @@
   .inspection-template-dialog-data {
     height: 75vh;
     overflow-y: scroll;
+    width: 100%;
 
     .add-new-template {
       @include flex-row(wrap, flex-start, center);

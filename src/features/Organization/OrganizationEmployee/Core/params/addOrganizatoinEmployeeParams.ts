@@ -12,7 +12,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   email: string
   password: string
   passwordConfirmation: string
-  hierarchies: HirarachyEmployeeParams[]
+  positions: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
   EmployeeStatus: EmployeeStatusEnum
   serialNumber: string
@@ -23,6 +23,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
 
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
+    positions: { required: true },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
     password: { required: true, minLength: 2, maxLength: 100 },
@@ -35,7 +36,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     email: string,
     password: string,
     passwordConfirmation: string,
-    hierarchies: HirarachyEmployeeParams[],
+    positions: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
     serialNumber: string,
@@ -48,7 +49,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.email = email
     this.password = password
     this.passwordConfirmation = passwordConfirmation
-    this.hierarchies = hierarchies
+    this.positions = positions
     this.roles = roles
     this.EmployeeStatus = EmployeeStatus
     this.serialNumber = serialNumber
@@ -79,7 +80,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['email'] = this.email
     data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation
-    data['hierarchies'] = this.hierarchies
+    data['hierarchies'] = this.positions
     data['roles'] = this.roles?.map((item) => item.toMap()) || []
     data['employee_type'] = Number(this.EmployeeStatus)
     if (useProjectAppStatusStore().isSerialNumberAuto()) {

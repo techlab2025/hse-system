@@ -241,7 +241,8 @@ watch(
   <div class="add-new-template-dialog-container">
     <!-- BODY -->
     <div class="dialog-body">
-      <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
+      <!-- grid-cols-4 gap-4   -->
+      <div class="inspection-template-dialog-data grid ">
         <hr class="inspection-template-dialog-divider col-span-4" />
 
         <div class="col-span-4 md:col-span-2">
@@ -288,5 +289,8 @@ watch(
     &.w-full { width: 100%; }
     &.w-1\/2 { width: 50%; }
   }
+}
+.inspection-template-dialog-data > div{
+  padding:10px;
 }
 </style>

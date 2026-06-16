@@ -40,6 +40,7 @@ export default class HazardModel {
   public actionStatus: ActionStatusEnum
   public isWorkStopped: number
   public createdAt: string
+  public updatedAt: string
 
   constructor(
     id: number,
@@ -72,6 +73,7 @@ export default class HazardModel {
     actionStatus: ActionStatusEnum,
     isWorkStopped: number,
     createdAt: string,
+    updatedAt: string,
   ) {
     this.id = id
     this.title = title
@@ -103,6 +105,8 @@ export default class HazardModel {
     this.actionStatus = actionStatus
     this.isWorkStopped = isWorkStopped
     this.createdAt = createdAt
+    this.updatedAt = updatedAt
+
   }
 
   static fromMap(data: any): HazardModel {
@@ -137,6 +141,7 @@ export default class HazardModel {
       data.action_status,
       data?.is_work_stopped,
       data?.created_at,
+      data?.updated_at,
     )
   }
 

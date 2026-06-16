@@ -25,6 +25,7 @@ import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddRole from '@/features/Organization/Role/Presentation/components/AddRole.vue'
+import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
 
 const toast = useToast()
 
@@ -235,6 +236,7 @@ const updaetAllPermissions = (status: number) => {
   AllPermissions.value = status == 1 ? true : false
   updateData()
 }
+const PositionDialog = ref(false)
 </script>
 
 <template>
@@ -301,14 +303,24 @@ const updaetAllPermissions = (status: number) => {
   </div>-->
   <!-- :type="2" -->
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="Heirarchy"
       @update:modelValue="setHeirarchy"
       :controller="indexHerikalyController"
       :params="HerikalyParams"
       :label="$t('position')"
       :placeholder="$t('select_position')"
-    />
+    :isDialog="true"
+      :dialogVisible="PositionDialog"
+    >
+      <template #LabelHeader>
+        <span class="add-dialog" @click="PositionDialog = true">New</span>
+      </template>
+      <template #Dialog>
+        <AddHerikaly @update:data="PositionDialog = false" />
+      </template>
+    </UpdatedCustomInputSelect>
+
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox

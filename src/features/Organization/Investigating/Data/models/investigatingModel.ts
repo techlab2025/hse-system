@@ -132,7 +132,7 @@ export default class InvestigatingModel {
       data.action,
       data.is_near_miss,
       data.capa_status,
-      data.date,
+      data.investigation_date,
       data.serial,
       // OvserverModel.fromMap(data.observer),
       // OvserverModel.fromMap(data.creator),

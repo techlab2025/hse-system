@@ -27,10 +27,10 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
+  async addOrganizatoinEmployee(params: any , router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
-    if (params?.data?.length > 0) {
+    if (params.data!= undefined && params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
@@ -47,6 +47,10 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
         }
       }
     } else {
+      if(params.positions.map((item: any) => item.hierarchy_id).includes(undefined)){
+        new OpenWarningDilaog('Please Select Position For All Employees').openDialog();
+        return ;
+      }
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()

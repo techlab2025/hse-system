@@ -36,6 +36,8 @@ import FetchMyZonesController from '../../controllers/FetchMyZonesController'
 import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
+import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 
@@ -273,7 +275,7 @@ const ShowDetails = ref<number[]>([])
                               {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              {{ $t('Date & Time') }} : <span>{{ item.date }}</span>
+                              {{ $t('Date & Time') }} : <span>{{item.updatedAt  ? formatJoinDate(item.updatedAt) : '--' }} & {{   item.updatedAt ? formatTime(item.updatedAt)  : '--' }}</span>
                             </p>
                           </div>
                           <div class="card-details">

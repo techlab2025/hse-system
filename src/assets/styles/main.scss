@@ -474,3 +474,9 @@ html[dir='ltr'] .actions-container {
 .w-1\/2 {
   width: 50% !important;
 }
+
+.project-progress-body-content {
+  @media (max-width: 768px) {
+    padding: 10px !important;
+  }
+}

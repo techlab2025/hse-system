@@ -29,7 +29,6 @@ const addNewAnswer = () => {
     textareaType: 0,
     isUplaod: false,
     isObservation: false,
-
   })
   UpdateData()
 }
@@ -54,55 +53,101 @@ onMounted(() => {
 </script>
 <template>
   <div class="template-container tempalte-item-conatainer">
-
     <div class="flex flex-col md:flex-row w-full items-center add-answer">
       <p class="items-title">{{ $t('add your answers') }}</p>
-      <hr class="w-full ">
+      <hr class="w-full" />
     </div>
-    <div class="timeline-item" v-for="(item, index) in (isRadio ? Answers.slice(0, 3) : Answers)" :key="index"
-      :class="{ active: index === 0 }" :style="{ animationDelay: `${index * 0.15}s` }" style="margin-bottom: 0px;">
-      <div class="timeline-content ">
-
-        <div class="timeline-contect-select timeline-templateitem-contect-select ">
+    <div
+      class="timeline-item"
+      v-for="(item, index) in isRadio ? Answers.slice(0, 3) : Answers"
+      :key="index"
+      :class="{ active: index === 0 }"
+      :style="{ animationDelay: `${index * 0.15}s` }"
+      style="margin-bottom: 0px"
+    >
+      <div class="timeline-content">
+        <div class="timeline-contect-select timeline-templateitem-contect-select">
           <div class="input-wrapper col-span-12 md:col-span-5 text-input">
             <!-- <label for="result">result</label> -->
-            <input type="text" id="result" v-model="item.text" class="input" placeholder="add your Item"
-              @input="UpdateData" />
+            <input
+              type="text"
+              id="result"
+              v-model="item.text"
+              class="input"
+              placeholder="add your Item"
+              @input="UpdateData"
+            />
           </div>
-          <div class="text-area-type-container flex flex-col col-span-12 md:col-span-2"
-            :class="item.isTextarea ? 'active' : ''">
-            <div class="input-wrapper text-required  flex items-center">
-              <label :for="`textarea-${index}-${itemindex}`">{{ $t('typing text') }}</label>
-              <input type="checkbox" :id="`textarea-${index}-${itemindex}`" v-model="item.isTextarea" class="input"
-                :placeholder="$t('add your Item')" @input="UpdateData" />
-            </div>
+          <div class="answer-options">
+            <div
+              class="text-area-type-container flex flex-col col-span-12 md:col-span-2"
+              :class="item.isTextarea ? 'active' : ''"
+            >
+              <div class="input-wrapper text-required flex items-center">
+                <label :for="`textarea-${index}-${itemindex}`">{{ $t('typing text') }}</label>
+                <input
+                  type="checkbox"
+                  :id="`textarea-${index}-${itemindex}`"
+                  v-model="item.isTextarea"
+                  class="input"
+                  :placeholder="$t('add your Item')"
+                  @input="UpdateData"
+                />
+              </div>
 
-            <div v-if="item?.isTextarea" class="text-area-type">
-              <div class="input-wrapper" :class="item.textareaType == 2 ? 'active' : ''">
-                <label :for="`required-${index}-${itemindex}`">{{ $t('required') }}</label>
-                <input type="radio" :id="`required-${index}-${itemindex}`" v-model="item.textareaType" :value=2
-                  @input="UpdateData">
-              </div>
-              <div class="input-wrapper" :class="item.textareaType == 1 ? 'active' : ''">
-                <label :for="`optional-${index}-${itemindex}`">{{ $t('optional') }}</label>
-                <input type="radio" :id="`optional-${index}-${itemindex}`" v-model="item.textareaType" :value=1
-                  @input="UpdateData">
+              <div v-if="item?.isTextarea" class="text-area-type">
+                <div class="input-wrapper" :class="item.textareaType == 2 ? 'active' : ''">
+                  <label :for="`required-${index}-${itemindex}`">{{ $t('required') }}</label>
+                  <input
+                    type="radio"
+                    :id="`required-${index}-${itemindex}`"
+                    v-model="item.textareaType"
+                    :value="2"
+                    @input="UpdateData"
+                  />
+                </div>
+                <div class="input-wrapper" :class="item.textareaType == 1 ? 'active' : ''">
+                  <label :for="`optional-${index}-${itemindex}`">{{ $t('optional') }}</label>
+                  <input
+                    type="radio"
+                    :id="`optional-${index}-${itemindex}`"
+                    v-model="item.textareaType"
+                    :value="1"
+                    @input="UpdateData"
+                  />
+                </div>
               </div>
             </div>
+            <div class="input-wrapper checkbox flex items-center col-span-12 md:col-span-2">
+              <label :for="`Uplaod-${index}-${itemindex}`">{{ $t('Upload_photo') }}</label>
+              <input
+                type="checkbox"
+                :id="`Uplaod-${index}-${itemindex}`"
+                v-model="item.isUplaod"
+                class="input"
+                @input="UpdateData"
+              />
+            </div>
+            <div class="input-wrapper checkbox flex items-center col-span-12 md:col-span-2">
+              <label :for="`observation-${index}-${itemindex}`">{{ $t('observation') }}</label>
+              <input
+                type="checkbox"
+                :id="`observation-${index}-${itemindex}`"
+                v-model="item.isObservation"
+                class="input"
+                @input="UpdateData"
+              />
+            </div>
           </div>
-          <div class="input-wrapper checkbox flex items-center col-span-12 md:col-span-2">
-            <label :for="`Uplaod-${index}-${itemindex}`">{{ $t('Upload_photo') }}</label>
-            <input type="checkbox" :id="`Uplaod-${index}-${itemindex}`" v-model="item.isUplaod" class="input"
-              @input="UpdateData" />
-          </div>
-          <div class="input-wrapper checkbox flex items-center col-span-12 md:col-span-2">
-            <label :for="`observation-${index}-${itemindex}`">{{ $t('observation') }}</label>
-            <input type="checkbox" :id="`observation-${index}-${itemindex}`" v-model="item.isObservation" class="input"
-              @input="UpdateData" />
-          </div>
+
           <!-- && index !== Answers.length - 1 -->
-          <button class="remove" @click.prevent="DeleteItem(index)"
-            v-if="Answers?.length != 0 && Answers?.length != 1">{{ $t('Remove') }}</button>
+          <button
+            class="remove"
+            @click.prevent="DeleteItem(index)"
+            v-if="Answers?.length != 0 && Answers?.length != 1"
+          >
+            {{ $t('Remove') }}
+          </button>
         </div>
       </div>
 
@@ -117,13 +162,39 @@ onMounted(() => {
             <!-- <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
               @click="DeleteItem(index)" /> -->
             <!-- v-else -->
-            <AddAnswer v-if="!(index >= 0 && index !== Answers.length - 1) " @click="addNewAnswer"
-              class="cursor-pointer" />
+            <AddAnswer
+              v-if="!(index >= 0 && index !== Answers.length - 1) &&  !(isRadio && Answers?.length == 3 )"
+              @click="addNewAnswer"
+              class="cursor-pointer"
+            />
             <!-- <span>aaaa</span> -->
           </div>
         </div>
-        <span class="add-text" v-if="!(index >= 0 && index !== Answers.length - 1)" @click="addNewAnswer">{{ $t('Add another result') }}</span>
+        <span
+          class="add-text"
+          v-if="!(index >= 0 && index !== Answers.length - 1) &&  !(isRadio && Answers?.length == 3 )"
+          @click="addNewAnswer"
+          >{{ $t('Add another result') }}</span
+        >
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.answer-options{
+  grid-column: span 7 / span 7;
+  display:flex;
+  flex-direction:row;
+}
+@media (max-width: 768px) {
+  .answer-options{
+    grid-column: span 12 / span 12;
+    display:flex;
+    flex-direction:column;
+  }
+}
+.timeline-content{
+  width:100% !important;
+}
+</style>

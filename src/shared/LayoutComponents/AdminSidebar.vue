@@ -224,6 +224,18 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.CATALOG_UPDATE,
     ],
   },
+  // {
+  //   link: '/admin/certificate',
+  //   name: t('certificates'),
+  //   icon: ItemsIcon,
+  //   permissions: [
+  //     PermissionsEnum.CERTIFICATE_ALL,
+  //     PermissionsEnum.CERTIFICATE_CREATE,
+  //     PermissionsEnum.CERTIFICATE_DELETE,
+  //     PermissionsEnum.CERTIFICATE_FETCH,
+  //     PermissionsEnum.CERTIFICATE_UPDATE,
+  //   ],
+  // },
 ])
 
 const LocationRoutes = ref<Routes[]>([

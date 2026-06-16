@@ -8,11 +8,12 @@ import RoleForm from './RoleForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
-
+const emit = defineEmits(['update:data'])
 const addRoleController = AddRoleController.getInstance()
 
 const addRole = async () => {
   await addRoleController.addRole(params.value as AddRoleParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -24,7 +25,7 @@ const setParams = (data: Params) => {
     <RoleForm @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button type="submit" class="btn btn-primary" >{{ $t('save') }}</button>
     </div>
   </form>
 </template>
