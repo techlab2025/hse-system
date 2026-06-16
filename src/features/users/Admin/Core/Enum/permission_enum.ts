@@ -962,7 +962,7 @@ export enum PermissionsEnum {
   CATALOG_UPDATE = 'CAT04',
   CATALOG_DELETE = 'CAT05',
 
-   // catalogItems
+  // catalogItems
   // CATALOG_ITEMS_ALL = 'CATI00',
   // CATALOG_ITEMS_FETCH = 'CATI01',
   // CATALOG_ITEMS_DETAILS = 'CATI02',
@@ -979,12 +979,17 @@ export enum PermissionsEnum {
   // Project Progress
   PROJECT_PROGRESS_ALL = 'PP00',
 
+  // CAPA_ALL='CA00',
+  // CAPA_FETCH = 'CA01',
+  // CAPA_UPDATE = 'CA04',
+  // CAPA_CREATE = 'CA03',
+  // CAPA_DELETE = 'CA05',
+  // CAPA_DETAILS = 'CA02'
 
-  CAPA_ALL='CA00',
-  CAPA_FETCH = 'CA01',
-  CAPA_UPDATE = 'CA04',
-  CAPA_CREATE = 'CA03',
-  CAPA_DELETE = 'CA05',
-  CAPA_DETAILS = 'CA02'
-
+  CAPA_ALL = 'CAPA00',
+  CAPA_FETCH = 'CAPA03',
+  CAPA_CAREATE = 'CAPA04',
+  CAPA_DETAILS = 'CAPA05',
+  CAPA_UPDATE = 'CAPA06',
+  CAPA_DELETE = 'CAPA07',
 }
