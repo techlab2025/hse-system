@@ -106,7 +106,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
-        booleanAdminData.value
+        booleanAdminData.value,
       )
     : new AddOrganizationParams(
         name.value,
@@ -117,7 +117,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
-        booleanAdminData.value
+        booleanAdminData.value,
       )
 
   emit('update:data', params)
@@ -285,14 +285,14 @@ const updateAdminData = (status: boolean) => {
       placeholder="Enter Your Url"
     />
   </div> -->
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox
       :index="4"
       :title="`dashboard_access`"
       :checked="booleanAdminData"
       @update:checked="updateAdminData"
     />
-  </div>
+  </div> -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <SingleFileUpload
       :modelValue="image"
