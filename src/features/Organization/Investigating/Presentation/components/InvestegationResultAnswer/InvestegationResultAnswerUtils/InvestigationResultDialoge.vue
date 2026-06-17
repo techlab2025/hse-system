@@ -21,7 +21,12 @@ const props = defineProps({
   <button label="Show" @click="visible = true" class="investigation-show-result-btn">
     view details
   </button>
-  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '60rem' }">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissableMask="true"
+    :style="{ width: '90vw', maxWidth: '60rem' }"
+  >
     <template #header>
       <div class="show-result-dialog-header">
         <h3>{{ staticData.title }}</h3>
@@ -29,6 +34,7 @@ const props = defineProps({
       </div>
     </template>
 
+    <!-- <pre>{{ item }}</pre> -->
     <div class="investigation-show-result">
       <div class="dialog-content">
         <div class="all-text-content">
@@ -39,11 +45,11 @@ const props = defineProps({
             <div class="info-row">
               <div class="info-item">
                 <h5>due date :</h5>
-                <span> {{ item?.date }}</span>
+                <span> {{ item?.due_date || item?.date  }}</span>
               </div>
               <div class="info-item">
                 <h5>Responsible :</h5>
-                <span> {{ item?.responablePerson?.title }}</span>
+                <span> {{ item?.responable_person?.name || item?.responablePerson?.name }}</span>
               </div>
             </div>
           </div>
@@ -60,7 +66,7 @@ const props = defineProps({
           <img src="@/assets/images/user-assign.png" alt="" />
           <div class="name">
             <span>assigned to :</span>
-            <p>{{ item?.assignedTo?.name }}</p>
+            <p>{{ item?.assigned_to?.name || item?.assignedTo?.name }}</p>
           </div>
         </div>
       </div>

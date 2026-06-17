@@ -22,10 +22,10 @@ const RouterBack = () => router.back()
         <SIdebarOpenIcon />
       </button>
 
-      <button class="sidebar-back" @click="RouterBack">
+      <!-- <button class="sidebar-back" @click="RouterBack">
         <BackIcon class="icon" />
         <span>back</span>
-      </button>
+      </button> -->
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
@@ -40,6 +40,9 @@ const RouterBack = () => router.back()
 </template>
 
 <style scoped>
+.sidebar {
+  padding-top: 20px;
+}
 .close .sidebar-wrapper {
   gap: 5px;
 }

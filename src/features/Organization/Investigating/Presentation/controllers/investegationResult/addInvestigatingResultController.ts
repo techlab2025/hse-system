@@ -37,7 +37,7 @@ export default class AddInvestigatingResultController extends ControllerInterfac
           imageElement: successImage,
           messageContent: null,
         })
-        await router.push('/organization/investigating')
+        // await router.push('/organization/investigating')
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

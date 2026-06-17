@@ -5421,6 +5421,7 @@ ul {
 .inspection-template-dialog .inspection-template-dialog-data {
   height: 75vh;
   overflow-y: scroll;
+  width: 100%;
 }
 .inspection-template-dialog .inspection-template-dialog-data .add-new-template {
   display: flex;
@@ -21435,4 +21436,10 @@ html[dir=ltr] .actions-container {
 
 .w-1\/2 {
   width: 50% !important;
+}
+
+@media (max-width: 768px) {
+  .project-progress-body-content {
+    padding: 10px !important;
+  }
 }/*# sourceMappingURL=main.css.map */

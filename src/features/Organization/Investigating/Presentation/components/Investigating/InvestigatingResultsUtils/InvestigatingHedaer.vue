@@ -26,11 +26,11 @@ const props = defineProps<{
     <div class="meeting-info-container">
       <div class="metting-info-header-container">
         <p class="metting-info-header">{{ $t('investigation_meeting') }}</p>
-        <hr class="meeting-hr">
+        <hr class="meeting-hr" />
       </div>
       <div class="meeting-info">
         <p>
-          Date & Time : <span class="meet-date">{{ meetingDate }}</span>
+          Date & Time : <span class="meet-date">{{ date }}</span>
         </p>
         <p>
           Investigation team leader : <span class="team-leader">{{ TeamLeader }}</span>

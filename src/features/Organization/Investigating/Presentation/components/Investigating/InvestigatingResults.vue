@@ -30,6 +30,7 @@ import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue'
 import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
 import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
+import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -41,39 +42,37 @@ interface items {
   title: string
   isDanger: boolean
 }
-const item = ref<items[]>([{
-  title: 'High observation',
-  isDanger: true
-}])
-
-// const Details = ref({
-//   id: 3,
-//   title: 'Medium observation',
-//   serial: 'Third card dummy text',
-//   date: '2025-03-15 09:45 AM',
-//   observer: { name: 'Khaled Samir' },
-//   description: 'Electrical issue near main control panel.',
-//   zoon: { title: 'Zone C' },
-//   equipment: { title: 'Crane Liebherr' },
-//   status: InvestegationStatusEnum.CLOSED,
-//   image: 'https://picsum.photos/222/150',
-//   link: '',
-// })
+const item = ref<items[]>([
+  {
+    title: 'High observation',
+    isDanger: true,
+  },
+])
 
 const ShoeInvestegationResultDetails = () => {
   const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
   showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, router)
 }
-
+const openDialog = ref(false)
 const AddEnvestigatingResult = async () => {
   const CheckWitnessIsFullyEmpty = viewersResults.value.map((el) => {
-    return (el.organizationEmployeeId != null || el.employeeName != undefined) && el?.witnessesStatements?.length > 1
+    return (
+      (el.organizationEmployeeId != null || el.employeeName != undefined) &&
+      el?.witnessesStatements?.length > 1
+    )
   })
   const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value.filter((el) => {
     return el?.tasks?.length > 0
   })
   // CheckWitnessIsFullyEmpty ? [] :
-  const RootCausesIds = RootCauses.value.map((el) => new RootCausesIdParams({ root_cause_id: el.id }))
+  const RootCausesIds = RootCauses.value.map(
+    (el) => new RootCausesIdParams({ root_cause_id: el.id }),
+  )
+
+  // if (anotherMeeting?.value?.isAnother == 0) {
+  //   openDialog.value = true
+  //   return;
+  // }
 
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
@@ -89,17 +88,27 @@ const AddEnvestigatingResult = async () => {
     preventive: recommendation.value,
     RootCauses: RootCausesIds,
     investegaionLevel: SelectedLevel.value?.id,
-    FiveWhyQuestionsData: FiveWhyQuestionsData.value
-  });
+    FiveWhyQuestionsData: FiveWhyQuestionsData.value,
+  })
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
-  const res = await addInvestigatingResultController.addInvestigatingResult(addInvestigationResultParams, router)
+  const res = await addInvestigatingResultController.addInvestigatingResult(
+    addInvestigationResultParams,
+    router,
+  )
+  if (res.value.error == null) {
+    openDialog.value = true
+  }
+  // console.log(res.value.error, 'error')
 }
 onMounted(() => {
   ShoeInvestegationResultDetails()
 })
-watch(() => showInvestigationResultController.state.value, (newState) => {
-  if (newState) state.value = newState
-})
+watch(
+  () => showInvestigationResultController.state.value,
+  (newState) => {
+    if (newState) state.value = newState
+  },
+)
 
 const CauseOfAction = ref()
 const setCauseOfAction = (data) => {
@@ -119,7 +128,6 @@ const setRateAction = (data) => {
 const investigationAttachments = ref()
 const setInvestigationAttachments = (data) => {
   investigationAttachments.value = data
-
 }
 
 const viewersResults = ref()
@@ -144,9 +152,9 @@ const setRootCause = (data: TitleInterface[]) => {
 const RootCausesDialog = ref<boolean>(false)
 
 const InvestigationLevel = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: "low" }),
-  new TitleInterface({ id: 2, title: "meduim" }),
-  new TitleInterface({ id: 3, title: "high" }),
+  new TitleInterface({ id: 1, title: 'low' }),
+  new TitleInterface({ id: 2, title: 'meduim' }),
+  new TitleInterface({ id: 3, title: 'high' }),
 ])
 const SelectedLevel = ref<TitleInterface>()
 const setSelectedLevel = (data: TitleInterface) => {
@@ -156,72 +164,112 @@ const recommendation = ref<string>()
 const updateRecommendation = (data) => {
   recommendation.value = data.target.value
 }
-
+const CloseCapa = async () => {
+  openDialog.value = false
+  router.push('/organization/investigating')
+}
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <InvestigatingHedaer :title="state?.data?.observation?.title" :serial="state?.data?.observation?.serial"
-          :victim="state?.data?.observation?.observer?.name" :date="state?.data?.CreatedAt"
-          :meetingDate="state?.data?.date" :TeamLeader="state?.data?.TeamLeader.name"
-          :TeamNumbers="state.data?.investigationEmployees?.length" />
+        <InvestigatingHedaer
+          :title="state?.data?.observation?.title"
+          :serial="state?.data?.observation?.serial_name"
+          :victim="state?.data?.observation?.observer?.name"
+          :date="state?.data?.investigationMeetingDate"
+          :meetingDate="state?.data?.date"
+          :TeamLeader="state?.data?.TeamLeader.name"
+          :TeamNumbers="state.data?.investigationEmployees?.length"
+        />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>
         </div>
         <div class="flex w-full gap-2 investigation-result-inputs">
-          <div class="input-wrapper w-50">
-            <UpdatedCustomInputSelect :modelValue="RootCauses" class="input" :controller="indexRootCaueseController"
-              :params="indexRootCaueseParams" :label="$t('Immediate Apparent Cause')" id="rootCause"
-              :placeholder="$t('select your Immediate Apparent Cause')" @update:modelValue="setRootCause" :type="2"
-              @close="RootCausesDialog = false" :isDialog="true" v-model:dialogVisible="RootCausesDialog">
-              <template #LabelHeader>
-                <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
-              </template>
-              <template #Dialog>
-                <AddRootCauses @close:data="RootCausesDialog = false" />
-              </template>
-            </UpdatedCustomInputSelect>
-
-          </div>
-          <div class="input-wrapper w-50">
-            <UpdatedCustomInputSelect :modelValue="SelectedLevel" class="input" :staticOptions="InvestigationLevel"
-              :label="$t('investigation_category')" id="investegation-level" :placeholder="$t('select your Level')"
-              @update:modelValue="setSelectedLevel" />
-          </div>
+          <!-- <div class="input-wrapper w-50">
+            <UpdatedCustomInputSelect
+              :modelValue="SelectedLevel"
+              class="input"
+              :staticOptions="InvestigationLevel"
+              :label="$t('investigation_category')"
+              id="investegation-level"
+              :placeholder="$t('select your Level')"
+              @update:modelValue="setSelectedLevel"
+            />
+          </div> -->
         </div>
-        <div class="input-wrapper w-full reccomendation">
+        <!-- <div class="input-wrapper w-full reccomendation">
           <label for="recommendation">{{ $t('recommendation') }}</label>
-          <textarea id="recommendation" class="input" placeholder="add your recommendation" v-model="recommendation"
-            @input="updateRecommendation"></textarea>
-        </div>
+          <textarea
+            id="recommendation"
+            class="input"
+            placeholder="add your recommendation"
+            v-model="recommendation"
+            @input="updateRecommendation"
+          ></textarea>
+        </div> -->
         <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
-
+        <div class="input-wrapper w-50">
+          <UpdatedCustomInputSelect
+            :modelValue="RootCauses"
+            class="input"
+            :controller="indexRootCaueseController"
+            :params="indexRootCaueseParams"
+            :label="$t('Immediate Apparent Cause')"
+            id="rootCause"
+            :placeholder="$t('select your Immediate Apparent Cause')"
+            @update:modelValue="setRootCause"
+            :type="2"
+            @close="RootCausesDialog = false"
+            :isDialog="true"
+            v-model:dialogVisible="RootCausesDialog"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
+            </template>
+            <template #Dialog>
+              <AddRootCauses @close:data="RootCausesDialog = false" />
+            </template>
+          </UpdatedCustomInputSelect>
+        </div>
+        <RateActions @update:data="setRateAction" />
         <CauseOfAccidant @update:data="setCauseOfAction" />
         <InvestigationTasks @update:data="setInvestigationTasks" />
-        <RateActions @update:data="setRateAction" />
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
           <div class="image-container">
             <div v-for="(image, index) in investigationAttachments?.files">
-              <DeleteIcon class="cursor-pointer" @click="investigationAttachments?.files.splice(index, 1)" />
-              <img :src="image" alt="attachment" width="150">
+              <DeleteIcon
+                class="cursor-pointer"
+                @click="investigationAttachments?.files.splice(index, 1)"
+              />
+              <img :src="image" alt="attachment" width="150" />
             </div>
           </div>
         </div>
 
         <ViewersResults @update:data="setViewersResults" />
         <AnotherMeeting @update:data="setAnotherMeeting" />
+
         <!-- <TimeLine :items="item" /> -->
         <div class="btns">
-          <CloseInvestegaionDialog :investegationId="state.data?.id" />
-          <router-link to="/organization/investigating" class="btn btn-cancel ">{{ $t('cancel') }}</router-link>
-          <button @click="AddEnvestigatingResult" class="btn btn-primary">{{ $t('confirm') }}</button>
+          <!-- <CloseInvestegaionDialog :investegationId="state.data?.id" /> -->
+          <router-link to="/organization/investigating" class="btn btn-cancel">{{
+            $t('cancel')
+          }}</router-link>
+          <button @click="AddEnvestigatingResult" class="btn btn-primary">
+            {{ $t('confirm') }}
+          </button>
         </div>
       </div>
+      <InvestigationCapaDialog
+        v-model:visible="openDialog"
+        :observationId="Number(state?.data?.observation?.id)"
+        @close="CloseCapa"
+      />
     </template>
     <template #loader>
       <TableLoader :cols="3" :rows="10" />
@@ -232,26 +280,31 @@ const updateRecommendation = (data) => {
     <template #empty>
       <DataEmpty
         description="Sorry .. You have no Investegation Result .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Investegation Result" />
+        title="..ops! You have No Investegation Result"
+      />
     </template>
     <template #failed>
       <DataFailed
         description="Sorry .. You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Investegation Result Data" />
+        title="..ops! You have No Investegation Result Data"
+      />
     </template>
 
     <template #notPermitted>
-      <DataFailed addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not Permission"
+        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </DataStatus>
-
-
 </template>
 
 <style scoped lang="scss">
 .w-50 {
   width: 50%;
+}
+.btn-cancel {
+  width: 20%;
 }
 
 .reccomendation {

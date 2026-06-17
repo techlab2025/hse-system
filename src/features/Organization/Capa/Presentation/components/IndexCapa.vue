@@ -84,7 +84,7 @@ const fetchCapa = async (
     null,
     route.query.hazard ? route.query.hazard : null,
     route.query.risk_level ? [route.query.risk_level] : null,
-    capaStatus?.value?.id,
+    2,
   )
   await indexCapaController.getData(params)
 }
@@ -304,25 +304,37 @@ const GetCapaStataus = (capa: CapaModel) => {
   <div class="grid grid-cols-12 gap-4">
     <!-- <IndexEquipmentMangement class="col-span-2" /> -->
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_OBSERVATION_ALL,
-        PermissionsEnum.ORG_OBSERVATION_DELETE,
-        PermissionsEnum.ORG_OBSERVATION_FETCH,
-        PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        PermissionsEnum.ORG_OBSERVATION_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
+          <IndexHazardHeader
+            :title="`CAPA`"
+            :length="state?.data?.length || 0"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
 
           <div class="flex items-center justify-between">
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <IndexFilter
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/observation/add'"
+                :linkText="'Create Observation'"
+              />
             </PermissionBuilder>
 
             <!-- <div class="btns-filter"> -->
@@ -338,7 +350,7 @@ const GetCapaStataus = (capa: CapaModel) => {
               </PermissionBuilder> -->
             <!-- </div> -->
             <!-- capaStatus -->
-            <div class="export-fillter">
+            <!-- <div class="export-fillter">
               <div class="fillter-radio-btn">
                 <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
                   <input type="radio" name="capaStatus" :id="`status-${status.id}`" :value="status" v-model="capaStatus"
@@ -355,15 +367,19 @@ const GetCapaStataus = (capa: CapaModel) => {
               <div class="">
                 <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <DataStatus :controller="state">
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container">
-                <div class="index-table-card" style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1)"
-                  v-for="(item, index) in state.data" :key="index">
+                <div
+                  class="index-table-card"
+                  style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1)"
+                  v-for="(item, index) in state.data"
+                  :key="index"
+                >
                   <!-- :to="`observation/show/${item?.id}`" -->
                   <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -376,7 +392,8 @@ const GetCapaStataus = (capa: CapaModel) => {
                             </p>
                             <p class="label-item-secondary">
                               {{ $t('capa date') }} :
-                              <span>{{ formatJoinDate(item.createdAt) }} &
+                              <span
+                                >{{ formatJoinDate(item.createdAt) }} &
                                 {{ formatTime(item.createdAt) }}
                               </span>
                             </p>
@@ -404,7 +421,10 @@ const GetCapaStataus = (capa: CapaModel) => {
 
                             <div class="location-observation">
                               <div class="location">
-                                <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
+                                <p
+                                  class="label-item-primary flex items-center gap-1"
+                                  v-if="item.zoon?.title"
+                                >
                                   <PinIcons /> {{ $t('Zone') }} :
                                   <span>{{ item.zoon?.title }}</span>
                                 </p>
@@ -515,8 +535,11 @@ const GetCapaStataus = (capa: CapaModel) => {
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -527,29 +550,39 @@ const GetCapaStataus = (capa: CapaModel) => {
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataEmpty
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                :link="`/organization`"
+                title="..ops! You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataFailed
                 description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                :link="`/organization`"
+                title="..ops! You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>
