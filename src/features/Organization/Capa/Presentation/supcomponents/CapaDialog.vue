@@ -36,7 +36,7 @@ const GetCapaDetails = () => {
 </script>
 <template>
   <button class="observation-details" @click="GetCapaDetails">
-    <p>{{ $t('capa_result') }}</p>
+    <p>{{ $t('show_capa') }}</p>
   </button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

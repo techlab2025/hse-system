@@ -1381,5 +1381,6 @@
   "scope_contractor": "Scope Contractor",
   "contractor_scope": "Contractor Scope",
   "training_matrix": "Training Matrix",
-  "all_permissions": "All Permissions"
+  "all_permissions": "All Permissions",
+  "show_capa": "Show CAPA"
 }
