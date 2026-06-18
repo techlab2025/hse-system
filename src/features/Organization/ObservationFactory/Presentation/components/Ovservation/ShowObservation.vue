@@ -86,10 +86,10 @@ const GetHeader = (value: number) => {
           :taskId="state?.data?.task?.task_id"
         />
 
-        <ObservationCapaDestails
+        <!-- <ObservationCapaDestails
           v-if="state?.data?.capa || state?.data?.type == Observation.HazardType"
           :data="state.data?.capa"
-        />
+        /> -->
 
         <!-- المصابين -->
         <ObservationInjuriesShow

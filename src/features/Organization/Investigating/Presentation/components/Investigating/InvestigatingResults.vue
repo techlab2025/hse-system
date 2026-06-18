@@ -106,9 +106,13 @@ const AddEnvestigatingResult = async () => {
   )
   if (res.value.error == null && addInvestigationResultParams.meeting == null) {
     openDialog.value = true
-  } else {
+  }
+  else if (addInvestigationResultParams.meeting?.isAnother == 1) {
     router.push('/organization/investigating')
   }
+  // else {
+  //   router.push('/organization/investigating')
+  // }
   // console.log(res.value.error, 'error')
 }
 onMounted(() => {

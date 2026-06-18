@@ -1570,7 +1570,9 @@ class ApiNames {
     return this.prefix + 'fetch_home_equipments_statices'
   }
   public get IndexCapa() {
-    return this.prefix + 'fetch_capa_observations'
+    // return this.prefix + 'fetch_capa_observations'
+    return this.prefix + 'fetch_capas'
+
   }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
