@@ -85,7 +85,7 @@ export default class AddInvestigationResultParams implements Params {
     data['witness_statements'] = this.witnesses?.map((item) => item.toMap())
     if (this.isActionCorrect) data['is_action_correct'] = this.isActionCorrect == 1 ? false : true
     if (this.explainWhyText) data['explain_why_text'] = this.explainWhyText
-    if (this.meeting) data['meeting'] = this.meeting
+    if (this.meeting) data['meeting'] = this.meeting.toMap()
     if (this.corrective) data['corrective'] = this.corrective
     if (this.preventive) data['preventive'] = this.preventive
     if (this.RootCauses) data['root_causes'] = this.RootCauses

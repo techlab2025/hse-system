@@ -32,6 +32,7 @@ import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDia
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
 import Editor from 'primevue/editor'
+import InvestegationAnotherMeetingParams from '../../../Core/params/investegationResult/InvestegationAnotherMeetingParams.ts'
 
 const route = useRoute()
 const id = route.params.id
@@ -84,7 +85,12 @@ const AddEnvestigatingResult = async () => {
     isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
     tasks: investigationTasks.value,
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
-    meeting: anotherMeeting?.value?.meetings,
+    meeting: new InvestegationAnotherMeetingParams(
+      anotherMeeting?.value?.date,
+      anotherMeeting?.value?.time,
+      anotherMeeting?.value?.type,
+      anotherMeeting?.value?.isAnother,
+    ),
     corrective: CauseOfAction.value?.description,
     RootCauses: RootCausesIds,
     investegaionLevel: SelectedLevel.value?.id,
@@ -92,6 +98,7 @@ const AddEnvestigatingResult = async () => {
     IncidantDescription: IncidantDescription.value,
     recommendation: recommendation.value,
   })
+  console.log(addInvestigationResultParams, 'addInvestigationResultParams')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(
     addInvestigationResultParams,
