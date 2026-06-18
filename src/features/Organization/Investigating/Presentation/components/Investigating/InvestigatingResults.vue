@@ -31,6 +31,7 @@ import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
 import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
+import Editor from 'primevue/editor'
 
 const route = useRoute()
 const id = route.params.id
@@ -85,18 +86,21 @@ const AddEnvestigatingResult = async () => {
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: anotherMeeting?.value?.meetings,
     corrective: CauseOfAction.value?.description,
-    preventive: recommendation.value,
     RootCauses: RootCausesIds,
     investegaionLevel: SelectedLevel.value?.id,
     FiveWhyQuestionsData: FiveWhyQuestionsData.value,
+    IncidantDescription: IncidantDescription.value,
+    recommendation: recommendation.value,
   })
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(
     addInvestigationResultParams,
     router,
   )
-  if (res.value.error == null) {
+  if (res.value.error == null && addInvestigationResultParams.meeting == null) {
     openDialog.value = true
+  } else {
+    router.push('/organization/investigating')
   }
   // console.log(res.value.error, 'error')
 }
@@ -168,6 +172,7 @@ const CloseCapa = async () => {
   openDialog.value = false
   router.push('/organization/investigating')
 }
+const IncidantDescription = ref<string>()
 </script>
 <template>
   <DataStatus :controller="state">
@@ -200,18 +205,20 @@ const CloseCapa = async () => {
             />
           </div> -->
         </div>
-        <!-- <div class="input-wrapper w-full reccomendation">
-          <label for="recommendation">{{ $t('recommendation') }}</label>
-          <textarea
-            id="recommendation"
-            class="input"
-            placeholder="add your recommendation"
-            v-model="recommendation"
-            @input="updateRecommendation"
-          ></textarea>
-        </div> -->
+
+        <div class="input-wrapper w-full">
+          <label for="incidant_description">{{ $t('incidant_description') }}</label>
+          <Editor
+            id="incidant_description"
+            v-model="IncidantDescription"
+            editorStyle="height: 320px"
+            :placeholder="'What happened? (in detail)'"
+          />
+        </div>
+        <RateActions @update:data="setRateAction" />
+
         <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
-        <div class="input-wrapper w-50">
+        <div class="input-wrapper w-full">
           <UpdatedCustomInputSelect
             :modelValue="RootCauses"
             class="input"
@@ -234,9 +241,18 @@ const CloseCapa = async () => {
             </template>
           </UpdatedCustomInputSelect>
         </div>
-        <RateActions @update:data="setRateAction" />
         <CauseOfAccidant @update:data="setCauseOfAction" />
         <InvestigationTasks @update:data="setInvestigationTasks" />
+        <div class="input-wrapper w-full reccomendation">
+          <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
+          <textarea
+            id="recommendation"
+            class="input"
+            placeholder="add your recommendation for capa"
+            v-model="recommendation"
+            @input="updateRecommendation"
+          ></textarea>
+        </div>
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>

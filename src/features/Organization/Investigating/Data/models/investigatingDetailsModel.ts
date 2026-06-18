@@ -65,7 +65,7 @@ export default class InvestigatingDetailsModel {
     return new InvestigatingDetailsModel(
       data.id,
       data.investigation_id,
-      data.date,
+      data.investigation_date,
       data.status,
       data.type,
       data.latest_investigation_meeting_id,

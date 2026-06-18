@@ -22,12 +22,12 @@ const UpdateData = () => {
   const payload = {
     description: descripe.value,
     // preventive: Preventive.value,
-    factors: SelctedFactors.value.map(factor => ({
+    factors: SelctedFactors.value.map((factor) => ({
       factory_id: factor.factoryId,
-      items: factor.items.map(item => ({
-        factory_item_id: item.factoryItemId
-      }))
-    }))
+      items: factor.items.map((item) => ({
+        factory_item_id: item.factoryItemId,
+      })),
+    })),
   }
   emit('update:data', payload)
 }
@@ -36,7 +36,7 @@ const UpdateData = () => {
 const AllFactors = ref<FactoryModel[]>([])
 const SelectedFactor = ref<number>()
 const GetAllFators = async () => {
-  const indexFactorParams = new IndexFactoryParams("", 1, 10, 0)
+  const indexFactorParams = new IndexFactoryParams('', 1, 10, 0)
   const indexFactorController = IndexFactoryController.getInstance()
   const state = await indexFactorController.getData(indexFactorParams)
   if (state.value?.data) {
@@ -47,7 +47,7 @@ const GetAllFators = async () => {
 // Fetch factor items by selected factor
 const AllFactorItems = ref<FactoryItemModel[]>()
 const GetFatorItems = async (Id?: number) => {
-  const indexFactorItemParams = new IndexFactoryItemParams("", 1, 10, 0, Id ?? SelectedFactor.value)
+  const indexFactorItemParams = new IndexFactoryItemParams('', 1, 10, 0, Id ?? SelectedFactor.value)
   const indexFactorItemController = IndexFactoryItemController.getInstance()
   const state = await indexFactorItemController.getData(indexFactorItemParams)
   if (state.value?.data) {
@@ -61,38 +61,50 @@ onMounted(() => {
 })
 
 // Watch selected factor to fetch its items
-watch(() => SelectedFactor.value, (NewValue) =>
-  GetFatorItems(NewValue)
+watch(
+  () => SelectedFactor.value,
+  (NewValue) => GetFatorItems(NewValue),
 )
 
 // Selected factors with subitems
 const SelctedFactors = ref<InvestigationFactorParams[]>([])
 const GetSelectedFactors = (data: any[]) => {
   SelctedFactors.value = []
-  data?.forEach(item => {
-    const itemSubs = item.subs.map(el => new InvestigationFactorItemParams(el))
+  data?.forEach((item) => {
+    const itemSubs = item.subs.map((el) => new InvestigationFactorItemParams(el))
     SelctedFactors.value.push(new InvestigationFactorParams(item.factor, itemSubs))
   })
   UpdateData()
 }
-
 </script>
 
 <template>
   <div class="cause-of-accidant">
-    <HeaderPage :title="`Causes of the accident`"
-      :subtitle="`Choose the reasons for the incident and write how to prevent it from happening again`" :img="factor"
-      class="title-header" />
+    <HeaderPage
+      :title="`investigation findings and contributing factors`"
+      :subtitle="`Choose the reasons for the incident and write how to prevent it from happening again`"
+      :img="factor"
+      class="title-header"
+    />
 
     <div class="cause-of-accidant-content">
-      <FactorInvestigating :factors="AllFactors" @update:sub-factors="SelectedFactor = $event"
-        :subfactors="AllFactorItems" @update:data="GetSelectedFactors" />
+      <FactorInvestigating
+        :factors="AllFactors"
+        @update:sub-factors="SelectedFactor = $event"
+        :subfactors="AllFactorItems"
+        @update:data="GetSelectedFactors"
+      />
 
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <label for="corrective_action">{{ $t('corrective_action') }}</label>
-        <textarea id="corrective_action" class="input" placeholder="add your corrective action" v-model="descripe"
-          @input="UpdateData"></textarea>
-      </div>
+        <textarea
+          id="corrective_action"
+          class="input"
+          placeholder="add your corrective action"
+          v-model="descripe"
+          @input="UpdateData"
+        ></textarea>
+      </div> -->
       <!-- <div class="input-wrapper">
         <label for="description">{{ $t('description') }}</label>
         <textarea id="description" class="input" placeholder="add your description" v-model="Preventive"

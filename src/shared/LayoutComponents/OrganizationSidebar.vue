@@ -72,12 +72,6 @@ const GauideRoutes = ref<Routes[]>([
 ])
 
 const OperationsRoutes = ref<Routes[]>([
-  // {
-  //   link: '/organization/equipment-mangement/all-observatin?type=2',
-  //   name: t('operations'),
-  //   icon: ProjectProgressIcon,
-  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  // },
   {
     link: '/organization/projects',
     name: t('Projects'),
@@ -498,6 +492,28 @@ const LoackupsAccordion = ref<string | null>('4')
 const GauideAccordion = ref<string | null>('5')
 const OperationsAccordion = ref<string | null>('6')
 const TicketAccordion = ref<string | null>('7')
+const activeTooltip = ref<{
+  title: string
+  top: number
+  left?: number
+  right?: number
+} | null>(null)
+
+const showTooltip = (event: MouseEvent, title: string) => {
+  const target = event.currentTarget as HTMLElement
+  const rect = target.getBoundingClientRect()
+  const isRtl = document.documentElement.dir === 'rtl'
+
+  activeTooltip.value = {
+    title,
+    top: rect.top + rect.height / 2,
+    ...(isRtl ? { right: window.innerWidth - rect.left + 10 } : { left: rect.right + 10 }),
+  }
+}
+
+const hideTooltip = () => {
+  activeTooltip.value = null
+}
 
 watch(orgAccordion, (val) => {
   orgAccordion.value = val
@@ -527,42 +543,106 @@ const { user } = useUserStore()
     <div class="icon-strip">
       <template v-if="user?.employeeType == EmployeeStatusEnum.Admin">
         <PermissionBuilder v-for="r in GauideRoutes" :key="r.link" :code="r.permissions">
-          <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+          <router-link
+            :to="r.link"
+            class="icon-item"
+            :data-title="$t(r.name)"
+            @mouseenter="showTooltip($event, $t(r.name))"
+            @mouseleave="hideTooltip"
+            @focus="showTooltip($event, $t(r.name))"
+            @blur="hideTooltip"
+          >
             <component :is="r.icon" class="strip-icon" />
           </router-link>
         </PermissionBuilder>
       </template>
 
       <PermissionBuilder v-for="r in OrganizationRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+        <router-link
+          :to="r.link"
+          class="icon-item"
+          :data-title="$t(r.name)"
+          @mouseenter="showTooltip($event, $t(r.name))"
+          @mouseleave="hideTooltip"
+          @focus="showTooltip($event, $t(r.name))"
+          @blur="hideTooltip"
+        >
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in TicketRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+        <router-link
+          :to="r.link"
+          class="icon-item"
+          :data-title="$t(r.name)"
+          @mouseenter="showTooltip($event, $t(r.name))"
+          @mouseleave="hideTooltip"
+          @focus="showTooltip($event, $t(r.name))"
+          @blur="hideTooltip"
+        >
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in OperationsRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+        <router-link
+          :to="r.link"
+          class="icon-item"
+          :data-title="$t(r.name)"
+          @mouseenter="showTooltip($event, $t(r.name))"
+          @mouseleave="hideTooltip"
+          @focus="showTooltip($event, $t(r.name))"
+          @blur="hideTooltip"
+        >
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+        <router-link
+          :to="r.link"
+          class="icon-item"
+          :data-title="$t(r.name)"
+          @mouseenter="showTooltip($event, $t(r.name))"
+          @mouseleave="hideTooltip"
+          @focus="showTooltip($event, $t(r.name))"
+          @blur="hideTooltip"
+        >
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
 
-      <PermissionBuilder v-for="r in LockUpsRoutes" :kesy="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="$t(r.name)" :title="$t(r.name)">
+      <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
+        <router-link
+          :to="r.link"
+          class="icon-item"
+          :data-title="$t(r.name)"
+          @mouseenter="showTooltip($event, $t(r.name))"
+          @mouseleave="hideTooltip"
+          @focus="showTooltip($event, $t(r.name))"
+          @blur="hideTooltip"
+        >
           <component :is="r.icon" class="strip-icon" />
         </router-link>
       </PermissionBuilder>
     </div>
+
+    <Teleport to="body">
+      <Transition name="hover-tooltip-fade">
+        <div
+          v-if="activeTooltip"
+          class="hover-tooltip"
+          :style="{
+            top: activeTooltip.top + 'px',
+            left: activeTooltip.left ? activeTooltip.left + 'px' : undefined,
+            right: activeTooltip.right ? activeTooltip.right + 'px' : undefined,
+          }"
+        >
+          {{ activeTooltip.title }}
+        </div>
+      </Transition>
+    </Teleport>
   </template>
 
   <!-- Full accordion view when sidebar is open -->
@@ -588,11 +668,7 @@ const { user } = useUserStore()
                 :code="guideroute?.permissions"
               >
                 <li>
-                  <router-link
-                    :to="guideroute.link"
-                    :title="$t(guideroute.name)"
-                    :data-title="$t(guideroute.name)"
-                  >
+                  <router-link :to="guideroute.link" :data-title="$t(guideroute.name)">
                     <component v-if="!open" :is="guideroute.icon" class="route-icon" />
                     <span>{{ $t(guideroute.name) }}</span>
                   </router-link>
@@ -627,11 +703,7 @@ const { user } = useUserStore()
                 :code="operation?.permissions"
               >
                 <li>
-                  <router-link
-                    :to="operation.link"
-                    :title="$t(operation.name)"
-                    :data-title="$t(operation.name)"
-                  >
+                  <router-link :to="operation.link" :data-title="$t(operation.name)">
                     <component v-if="!open" :is="operation.icon" class="route-icon" />
                     <span>{{ $t(operation.name) }}</span>
                   </router-link>
@@ -670,11 +742,7 @@ const { user } = useUserStore()
                 :code="orgroute?.permissions"
               >
                 <li>
-                  <router-link
-                    :to="orgroute.link"
-                    :title="$t(orgroute.name)"
-                    :data-title="$t(orgroute.name)"
-                  >
+                  <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
                     <component v-if="!open" :is="orgroute.icon" class="route-icon" />
                     <span>{{ $t(orgroute.name) }}</span>
                   </router-link>
@@ -707,7 +775,7 @@ const { user } = useUserStore()
                 :code="r.permissions"
               >
                 <li>
-                  <router-link :to="r.link" :title="$t(r.name)" :data-title="$t(r.name)">
+                  <router-link :to="r.link" :data-title="$t(r.name)">
                     <component v-if="!open" :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
@@ -742,12 +810,7 @@ const { user } = useUserStore()
                 :code="orgroute?.permissions"
               >
                 <li>
-                  <router-link
-                    :to="orgroute.link"
-                    :class="route?.fullPath?.includes(orgroute.link) ? '' : ''"
-                    :title="$t(orgroute.name)"
-                    :data-title="$t(orgroute.name)"
-                  >
+                  <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
                     <component v-if="!open" :is="orgroute.icon" class="route-icon" />
                     <span>{{ $t(orgroute.name) }}</span>
                   </router-link>
@@ -766,7 +829,7 @@ const { user } = useUserStore()
       :code="TicketRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
     >
       <Accordion v-model:value="TicketAccordion">
-        <AccordionPanel value="1">
+        <AccordionPanel value="7">
           <AccordionHeader>
             <div class="links-header">
               <GeerIcon />
@@ -782,11 +845,7 @@ const { user } = useUserStore()
                 :code="ticketroute?.permissions"
               >
                 <li>
-                  <router-link
-                    :to="ticketroute.link"
-                    :title="$t(ticketroute.name)"
-                    :data-title="$t(ticketroute.name)"
-                  >
+                  <router-link :to="ticketroute.link" :data-title="$t(ticketroute.name)">
                     <component v-if="!open" :is="ticketroute.icon" class="route-icon" />
                     <span>{{ $t(ticketroute.name) }}</span>
                   </router-link>
@@ -841,30 +900,6 @@ const { user } = useUserStore()
   color: var(--PrimaryColor);
 }
 
-.icon-item::after {
-  content: attr(data-title);
-  position: absolute;
-  inset-inline-start: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: #2c2c2c;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  font-size: 12px;
-  font-family: 'Regular', sans-serif;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-  z-index: 9999;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.icon-item:hover::after {
-  opacity: 1;
-}
-
 .strip-icon {
   width: 20px;
   height: 20px;
@@ -875,5 +910,103 @@ const { user } = useUserStore()
   height: 16px;
   flex-shrink: 0;
   opacity: 0.7;
+}
+
+/* ---------------------------------------------------------------- */
+/* Custom popover tooltip (replaces native `title` attribute)        */
+/* Driven entirely by `data-title`, fully styleable & themeable.     */
+/* ---------------------------------------------------------------- */
+
+.icon-item::before,
+.icon-item::after {
+  pointer-events: none;
+  opacity: 0;
+  position: absolute;
+  inset-inline-start: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  transition-delay: 0s;
+  z-index: 999;
+}
+
+/* Tooltip bubble */
+.icon-item::after {
+  content: attr(data-title);
+  background: #1f1f1f;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: 'Regular', sans-serif;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Arrow pointing back at the icon */
+.icon-item::before {
+  content: '';
+  inset-inline-start: calc(100% + 4px);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-inline-end: 6px solid #1f1f1f;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.icon-item:hover::after,
+.icon-item:hover::before {
+  opacity: 0;
+  transform: translateY(-50%) translateX(0);
+  transition-delay: 0.25s;
+}
+
+.hover-tooltip {
+  position: fixed;
+  transform: translateY(-50%);
+  background: #1f1f1f;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: 'Regular', sans-serif;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.hover-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 0;
+  height: 0;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 6px solid #1f1f1f;
+}
+
+.hover-tooltip-fade-enter-active,
+.hover-tooltip-fade-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.hover-tooltip-fade-enter-from,
+.hover-tooltip-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-50%) translateX(-4px);
 }
 </style>

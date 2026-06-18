@@ -43,7 +43,7 @@ watch(() => showInvestigatingController.state.value, (newVal) => {
     <template #success>
       <div class="investegation-result-answer-container">
         <InvestigatingResultAnswerHedaer :meetingsNumber="state.data?.investigationMeetings?.length"
-          :victim="state.data?.investigationTeamLeader?.Name" :date="state.data?.date"
+          :victim="state.data?.investigationTeamLeader?.Name" :date="state.data?.created_at"
           :meetingDate="state?.data?.investigationMeetings[state?.data?.investigationMeetings?.length - 1]?.date"
           :TeamLeader="state.data?.investigationTeamLeader" :createdAt="state.data?.date"
           :TeamNumbers="state.data?.investigationEmployees?.length"
