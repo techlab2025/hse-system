@@ -89,8 +89,8 @@ const AddEnvestigatingResult = async () => {
       anotherMeeting?.value?.date,
       anotherMeeting?.value?.time,
       anotherMeeting?.value?.type,
-      anotherMeeting?.value?.isAnother,
     ),
+    isAnotherMeeting: anotherMeeting?.value?.isAnother,
     corrective: CauseOfAction.value?.description,
     RootCauses: RootCausesIds,
     investegaionLevel: SelectedLevel.value?.id,
@@ -104,10 +104,9 @@ const AddEnvestigatingResult = async () => {
     addInvestigationResultParams,
     router,
   )
-  if (res.value.error == null && addInvestigationResultParams.meeting == null) {
+  if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 0) {
     openDialog.value = true
-  }
-  else if (addInvestigationResultParams.meeting?.isAnother == 1) {
+  } else if (addInvestigationResultParams.isAnotherMeeting == 1) {
     router.push('/organization/investigating')
   }
   // else {

@@ -27,6 +27,7 @@ export default class AddInvestigationResultParams implements Params {
   public investegaionLevel?: number
   public FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
   public IncidantDescription?: string
+  public isAnotherMeeting?: number
   public recommendation?: string
 
   constructor(data: {
@@ -49,6 +50,7 @@ export default class AddInvestigationResultParams implements Params {
     FiveWhyQuestionsData?: InvestigationFiveQuestionParams[]
     IncidantDescription?: string
     recommendation?: string
+    isAnotherMeeting?: number
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -69,6 +71,7 @@ export default class AddInvestigationResultParams implements Params {
     this.FiveWhyQuestionsData = data.FiveWhyQuestionsData
     this.IncidantDescription = data.IncidantDescription
     this.recommendation = data.recommendation
+    this.isAnotherMeeting = data.isAnotherMeeting
   }
 
   toMap(): Record<string, number | string | any> {
@@ -93,6 +96,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.FiveWhyQuestionsData) data['questions'] = this.FiveWhyQuestionsData
     if (this.IncidantDescription) data['incidant_description'] = this.IncidantDescription
     if (this.recommendation) data['recommendation'] = this.recommendation
+    if (this.isAnotherMeeting) data['is_another_meeting'] = this.isAnotherMeeting
     return data
   }
 }
