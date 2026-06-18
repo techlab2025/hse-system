@@ -6,6 +6,7 @@ import AdminSidebar from './AdminSidebar.vue'
 import BackIcon from '../icons/BackIcon.vue'
 import { useRouter } from 'vue-router'
 import SIdebarOpenIcon from '../icons/SIdebarOpenIcon.vue'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
@@ -22,10 +23,13 @@ const RouterBack = () => router.back()
         <SIdebarOpenIcon />
       </button>
 
-      <!-- <button class="sidebar-back" @click="RouterBack">
+      <router-link
+        :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
+        class="sidebar-back"
+      >
         <BackIcon class="icon" />
-        <span>back</span>
-      </button> -->
+        <span>Home</span>
+      </router-link>
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
