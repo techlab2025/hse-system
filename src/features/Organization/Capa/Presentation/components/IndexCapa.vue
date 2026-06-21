@@ -193,37 +193,6 @@ const setSelectedProjectFilter = (data) => {
 
 const ShowDetails = ref<number[]>([])
 
-const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
-  switch (riskLevel) {
-    case RiskLevelEnum.Low:
-      return 'Low'
-    case RiskLevelEnum.Medium:
-      return 'Medium'
-    case RiskLevelEnum.High:
-      return 'High'
-    default:
-      return 'Unknown'
-  }
-}
-
-const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
-  switch (actionStatus) {
-    case ActionStatusEnum.OPEN:
-      return 'Open'
-    case ActionStatusEnum.CLOSED:
-      return 'Closed'
-  }
-}
-
-const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
-  switch (saveStatus) {
-    case SaveStatusEnum.Saved:
-      return 'Positive'
-    case SaveStatusEnum.NotSaved:
-      return 'Negative'
-  }
-}
-
 // capa status filter
 const capaStatus = ref<TitleInterface | null>(null)
 const setCapaStatus = (data: TitleInterface | null) => {
@@ -249,41 +218,6 @@ const GetObservationType = (type: number) => {
       return 'Observation'
     case Observation.HazardType:
       return 'Hazard'
-  }
-}
-// export excel
-const exportExcel = () => {
-  if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
-    return
-  }
-  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
-    const it = item as any
-    return {
-      title: it.title || 'N/A',
-      serial: it.serial || 'N/A',
-      date: it.date || 'N/A',
-      description: it.description || 'N/A',
-      machine: it.equipment.title || 'N/A',
-      zone: it.zoon.title || 'N/A',
-    }
-  })
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'capa.xlsx')
-}
-
-const SelectCapaStatus = (data: number) => {
-  switch (data) {
-    case CapaStatusEnum.PreventiveandCorrective:
-      return 'Preventive And Corrective'
-    case CapaStatusEnum.onlyCorrective:
-      return ' Corrective'
-    case CapaStatusEnum.onlyPreventive:
-      return 'Preventive'
   }
 }
 
@@ -397,15 +331,6 @@ const GetCapaStataus = (capa: CapaModel) => {
                                 {{ formatTime(item.createdAt) }}
                               </span>
                             </p>
-                            <!-- <p class="label-item-secondary flex items-center gap-1">
-                              {{ SelectCapaStatus(1) }}
-                            </p> -->
-                            <!-- <p class="label-item-secondary Negative flex items-center gap-1"
-                              v-if="item.isWorkStopped == 1">
-                              {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
-                                @update:checked="toggleObservationWorkStopped(item?.id)" />
-                            </p> -->
                           </div>
                           <div class="sup-title">
                             <p class="subtitle">{{ item.title }}</p>
@@ -447,13 +372,6 @@ const GetCapaStataus = (capa: CapaModel) => {
                               </div>
                             </div>
                             <div class="btn-investegation-observation">
-                              <!-- <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
-                              <div class="observation-details">
-                                <p>observation <span>details
-                                    <Observdetails />
-                                  </span></p>
-                              </div>
-                              </router-link> -->
                               <CapaDialog :observationId="item?.id" />
                               <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
                                 <div class="observation-details">
@@ -463,75 +381,12 @@ const GetCapaStataus = (capa: CapaModel) => {
                                   </p>
                                 </div>
                               </router-link>
-                              <!-- investegation -->
-                              <!-- <router-link to="">
-                                <div class="observation-details">
-                                  <p>investegation details<Observdetails /></p>
-                                </div>
-                              </router-link> -->
                             </div>
-
-                            <!-- <p class="label-item-secondary flex items-center gap-1">
-                              {{ $t('operation type') }} :
-                              <span>{{ GetObservationType(item.type) }}</span>
-                            </p> -->
-                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
-                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
-                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
-                                @update:checked="toggleObservationActionStatus(item?.id)" />
-                            </p> -->
-                            <!-- <p class="label-item-secondary flex items-center gap-1"
-                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
-                              {{ GetSaveStatus(item.saveStatus) }}
-                            </p> -->
-                            <!-- <p class="subtitle">{{ item.description }}</p> -->
-                            <!-- <div class="project-details"> -->
-
-                            <!-- <p class="label-item-primary" v-if="item.status">
-                                Status : <span>{{ item?.status }}</span>
-                              </p> -->
-                            <!-- </div> -->
                           </div>
                         </div>
-
-                        <!-- imge and level -->
-                        <!-- <div class="card-info">
-                          <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
-                            class="observation-risk-level flex items-center gap-1"
-                            :class="GetRiskLevel(item.riskLevel)">
-                            {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
-                            <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
-                          </span>
-
-                          <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
-                            <template #previewicon>
-                              <div class="perview">
-                                <span>{{ $t('View') }}</span>
-                                <ViewIcon />
-                              </div>
-                            </template>
-</Image>
-
-</div> -->
                       </div>
                     </div>
                   </div>
-
-                  <!-- description -->
-                  <!-- <div class="observation-dwspcription-more">
-                    <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                      <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
-                      <span v-else>{{ $t('Show More') }}</span>
-                      <ShowMoreIcon />
-                    </p>
-
-                    <div v-if="ShowDetails[index]" class="card-description">
-                      <p class="title">{{ $t('description') }} :</p>
-                      <p class="description">
-                        {{ item.description }}
-                      </p>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
