@@ -3588,7 +3588,7 @@ ul {
 .show-observation-container .observation-card .header-container .card-content .card-header {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   gap: var(--xl-size-3);

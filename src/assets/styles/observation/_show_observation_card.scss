@@ -64,7 +64,7 @@
         }
 
         .card-header {
-          @include flex-row(nowrap, flex-start, center);
+          @include flex-row(wrap, flex-start, center);
           gap: $XlSize4;
           margin-top: $XsSize;
           .label-item-secondary,
