@@ -7,55 +7,56 @@ import ObservationCapaDestails from '@/features/Organization/ObservationFactory/
 import ShowHazardController from '@/features/Organization/ObservationFactory/Presentation/controllers/showHazardController'
 import ShowHazardParams from '@/features/Organization/ObservationFactory/Core/params/showHazardParams'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
+import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 
 const props = defineProps<{
-  observationId?: number
+  capa?: CapaModel
 }>()
 
 const visible = ref(false)
 
-const showHazardController = ShowHazardController.getInstance()
-const state = ref(showHazardController.state.value)
+// const showHazardController = ShowHazardController.getInstance()
+// const state = ref(showHazardController.state.value)
 
-const ShowData = async () => {
-  const showHazardParams = new ShowHazardParams(props.observationId, true)
-  await showHazardController.showHazard(showHazardParams)
-}
+// const ShowData = async () => {
+//   const showHazardParams = new ShowHazardParams(props.capa?.observationId, true)
+//   await showHazardController.showHazard(showHazardParams)
+// }
 
-watch(
-  () => showHazardController.state.value,
-  (newVal) => {
-    state.value = newVal
-  },
-)
+// watch(
+//   () => showHazardController.state.value,
+//   (newVal) => {
+//     state.value = newVal
+//   },
+// )
 
-const GetCapaDetails = () => {
-  visible.value = true
-  ShowData()
-}
+// const GetCapaDetails = () => {
+//   visible.value = true
+//   ShowData()
+// }
 </script>
 <template>
-  <button class="observation-details" @click="GetCapaDetails">
+  <button class="observation-details" @click="visible = true">
     <p>{{ $t('show_capa') }}</p>
   </button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection title="CAPA" subtitle="If you want to Show the CAPA" />
     </template>
-    <DataStatus :controller="state">
-      <template #success>
+    <!-- <DataStatus :controller="state"> -->
+      <!-- <template #success> -->
         <div class="show-observation-container">
           <ObservationCapaDestails
             class="show-observation-container"
-            v-if="state?.data?.capa && state?.data?.type == Observation.HazardType"
-            :data="state.data?.capa"
+            v-if="props.capa"
+            :data="props.capa"
             @close="visible = false"
           />
         </div>
-      </template>
-      <template #loader> </template>
-      <template #failed> </template>
-    </DataStatus>
+      <!-- </template> -->
+      <!-- <template #loader> </template>
+      <template #failed> </template> -->
+    <!-- </DataStatus> -->
   </Dialog>
 </template>
 <style scoped>

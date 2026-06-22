@@ -327,14 +327,14 @@ const GetCapaStataus = (capa: CapaModel) => {
                             <p class="label-item-secondary">
                               {{ $t('capa date') }} :
                               <span
-                                >{{ formatJoinDate(item.createdAt) }} &
-                                {{ formatTime(item.createdAt) }}
+                                >{{ item.capa?.date }} &
+                                {{ item.capa?.time }}
                               </span>
                             </p>
                           </div>
                           <div class="sup-title">
-                            <p class="subtitle">{{ item.title }}</p>
-                            <p class="description">{{ item.description }}</p>
+                            <!-- <p class="subtitle">{{ item.title }}</p> -->
+                            <!-- <p class="description">{{ item.description }}</p> -->
                           </div>
 
                           <div class="card-details">
@@ -372,7 +372,7 @@ const GetCapaStataus = (capa: CapaModel) => {
                               </div>
                             </div>
                             <div class="btn-investegation-observation">
-                              <CapaDialog :observationId="item?.id" />
+                              <CapaDialog :capa="item?.capa"  />
                               <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
                                 <div class="observation-details">
                                   <p>
