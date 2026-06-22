@@ -216,10 +216,12 @@ const IncidantDescription = ref<string>()
           </div> -->
         </div>
 
-        <div class="input-wrapper w-full">
-          <label for="incidant_description">{{ $t('incidant_description') }}</label>
+        <ViewersResults @update:data="setViewersResults" />
+
+        <div class="input-wrapper w-full mt-12">
+          <label for="event_time_line">{{ $t('event_time_line') }}</label>
           <Editor
-            id="incidant_description"
+            id="event_time_line"
             v-model="IncidantDescription"
             editorStyle="height: 320px"
             :placeholder="'What happened? (in detail)'"
@@ -234,9 +236,9 @@ const IncidantDescription = ref<string>()
             class="input"
             :controller="indexRootCaueseController"
             :params="indexRootCaueseParams"
-            :label="$t('Immediate Apparent Cause')"
+            :label="$t('root_cause')"
             id="rootCause"
-            :placeholder="$t('select your Immediate Apparent Cause')"
+            :placeholder="$t('select your root_cause')"
             @update:modelValue="setRootCause"
             :type="2"
             @close="RootCausesDialog = false"
@@ -266,9 +268,9 @@ const IncidantDescription = ref<string>()
             </div>
           </div>
         </div>
-        <ViewersResults @update:data="setViewersResults" />
-        <CauseOfAccidant @update:data="setCauseOfAction" />
-        <InvestigationTasks @update:data="setInvestigationTasks" />
+
+        <!-- <CauseOfAccidant @update:data="setCauseOfAction" /> -->
+        <!-- <InvestigationTasks @update:data="setInvestigationTasks" /> -->
         <div class="input-wrapper w-full reccomendation">
           <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
           <textarea
@@ -333,6 +335,9 @@ const IncidantDescription = ref<string>()
 }
 .btn-cancel {
   width: 20%;
+}
+.mt-12 {
+  margin-top: 3rem !important;
 }
 
 .reccomendation {
