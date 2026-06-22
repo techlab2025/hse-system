@@ -225,9 +225,9 @@ const IncidantDescription = ref<string>()
             :placeholder="'What happened? (in detail)'"
           />
         </div>
-        <RateActions @update:data="setRateAction" />
 
         <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
+        <!-- root causes -->
         <div class="input-wrapper w-full">
           <UpdatedCustomInputSelect
             :modelValue="RootCauses"
@@ -251,18 +251,8 @@ const IncidantDescription = ref<string>()
             </template>
           </UpdatedCustomInputSelect>
         </div>
-        <CauseOfAccidant @update:data="setCauseOfAction" />
-        <InvestigationTasks @update:data="setInvestigationTasks" />
-        <div class="input-wrapper w-full reccomendation">
-          <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
-          <textarea
-            id="recommendation"
-            class="input"
-            placeholder="add your recommendation for capa"
-            v-model="recommendation"
-            @input="updateRecommendation"
-          ></textarea>
-        </div>
+        <RateActions @update:data="setRateAction" />
+
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
@@ -276,8 +266,20 @@ const IncidantDescription = ref<string>()
             </div>
           </div>
         </div>
-
         <ViewersResults @update:data="setViewersResults" />
+        <CauseOfAccidant @update:data="setCauseOfAction" />
+        <InvestigationTasks @update:data="setInvestigationTasks" />
+        <div class="input-wrapper w-full reccomendation">
+          <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
+          <textarea
+            id="recommendation"
+            class="input"
+            placeholder="add your recommendation for capa"
+            v-model="recommendation"
+            @input="updateRecommendation"
+          ></textarea>
+        </div>
+
         <AnotherMeeting @update:data="setAnotherMeeting" />
 
         <!-- <TimeLine :items="item" /> -->
