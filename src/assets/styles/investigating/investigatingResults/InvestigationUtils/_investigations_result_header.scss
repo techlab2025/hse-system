@@ -2,92 +2,147 @@
 @use '../../../mixins/flex' as *;
 @use '../../../mixins/grid' as *;
 
-.investigating-header-container {
+.investigation-result .investigating-header-container {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $MdSize2;
-  font-family: 'Regular';
-  background-color: #f7f9fc;
-  padding: $MdSize;
-  border-radius: calc($XlSize + 2px);
+  gap: 16px;
   width: 100%;
+  padding: 18px;
+  border: 1px solid #dfe9f6;
+  border-radius: 8px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.96) 0%,
+      rgba(29, 78, 216, 0.88) 58%,
+      rgba(20, 184, 166, 0.72) 100%
+    ),
+    #0f172a;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+  color: #ffffff;
+  font-family: 'Regular';
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: 14px;
+    inset-inline-end: 16px;
+    width: 5px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #14b8a6, #f59e0b, #ef4444);
+  }
 
   .investigating-header {
-    @include flex-row(nowrap, flex-start, center);
-    gap: $XsSize4;
+    @include flex-row(wrap, flex-start, center);
+    gap: 10px;
+    width: 100%;
+    padding-inline-end: 22px;
+
     .title {
-      font-size: $MdSize2;
-      font-weight: $BaseFontWeightBold;
+      color: #ffffff;
       font-family: 'Bold';
-      color: $PrimaryColor;
+      font-size: 24px;
+      font-weight: $BaseFontWeightBold;
+      line-height: 1.25;
+      letter-spacing: 0;
+      text-transform: none;
     }
+
     span {
-      color: #cacddb;
-      font-size: $XsSize;
-      font-weight: $XsSize;
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
     }
   }
 
-  .investigating-info {
-    @include flex-row(nowrap, flex-start, center);
-    gap: $XlSize4;
-    @media (max-width: 768px) {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+  .investigating-info,
+  .meeting-info {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 10px;
+    width: 100%;
+
     p {
-      color: #aeaeb2;
-      font-size: $SmSize;
+      min-height: 58px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
       font-weight: $BaseFontMediumWeight;
+      line-height: 1.45;
+      text-transform: none;
+
       span {
-        color: #202020;
-        font-weight: $BaseFontWeightBold;
+        display: block;
+        margin-top: 4px;
+        color: #ffffff;
         font-family: 'Bold';
+        font-size: 14px;
+        font-weight: $BaseFontWeightBold;
       }
     }
   }
+
   .meeting-info-container {
     @include flex-column(nowrap, flex-start, flex-start);
-    gap: $XsSize3;
-
+    gap: 12px;
     width: 100%;
+
     .metting-info-header-container {
       @include flex-row(nowrap, flex-start, center);
       width: 100%;
+      gap: 12px;
+
       .metting-info-header {
-        color: #202020;
-        font-size: $MdSize;
-        font-weight: $BaseFontSemiBoldWeight;
+        flex-shrink: 0;
+        color: #ffffff;
         font-family: 'Bold';
+        font-size: 15px;
+        font-weight: $BaseFontWeightBold;
+        letter-spacing: 0;
       }
+
       .meeting-hr {
-        // flex-grow: 1;
-        border: none;
-        height: 1px;
         width: 100%;
-        background-color: #1f41bb33;
-        margin-left: $XsSize4;
+        height: 1px;
+        border: 0;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.28), transparent);
       }
     }
+
+    .meeting-info p span.meet-date {
+      color: #a7f3d0;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .investigating-info,
     .meeting-info {
-      @include flex-row(nowrap, flex-start, center);
-      gap: $XlSize4;
-      @media (max-width: 768px) {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      p {
-        color: #aeaeb2;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-        span {
-          color: #202020;
-          font-weight: $BaseFontWeightBold;
-          font-family: 'Bold';
-          &.meet-date {
-            color: #1f41bb;
-          }
-        }
-      }
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    padding: 14px;
+
+    .investigating-header .title {
+      font-size: 20px;
+    }
+
+    .investigating-info,
+    .meeting-info {
+      grid-template-columns: 1fr;
     }
   }
 }

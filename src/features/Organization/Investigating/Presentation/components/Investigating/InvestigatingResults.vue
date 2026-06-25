@@ -196,6 +196,11 @@ const IncidantDescription = ref<string>()
           :meetingDate="state?.data?.date"
           :TeamLeader="state?.data?.TeamLeader.name"
           :TeamNumbers="state.data?.investigationEmployees?.length"
+          :incidantType="state?.data?.observation?.type_model"
+          :place="state?.data?.observation?.place"
+          :equipment="state?.data?.observation?.equipment"
+          :incidantDescription="state?.data?.observation?.description"
+          :team="state.data?.investigationEmployees"
         />
 
         <div class="investigation-title">
@@ -218,7 +223,7 @@ const IncidantDescription = ref<string>()
 
         <ViewersResults @update:data="setViewersResults" />
 
-        <div class="input-wrapper w-full mt-12">
+        <div class="input-wrapper w-full mt-12 narrative-panel">
           <label for="event_time_line">{{ $t('event_time_line') }}</label>
           <Editor
             id="event_time_line"
@@ -230,7 +235,7 @@ const IncidantDescription = ref<string>()
 
         <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
         <!-- root causes -->
-        <div class="input-wrapper w-full">
+        <div class="input-wrapper w-full root-cause-panel">
           <UpdatedCustomInputSelect
             :modelValue="RootCauses"
             class="input"
@@ -259,7 +264,11 @@ const IncidantDescription = ref<string>()
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
           <div class="image-container">
-            <div v-for="(image, index) in investigationAttachments?.files">
+            <div
+              class="attachment-preview"
+              v-for="(image, index) in investigationAttachments?.files"
+              :key="index"
+            >
               <DeleteIcon
                 class="cursor-pointer"
                 @click="investigationAttachments?.files.splice(index, 1)"
@@ -271,7 +280,7 @@ const IncidantDescription = ref<string>()
 
         <!-- <CauseOfAccidant @update:data="setCauseOfAction" /> -->
         <!-- <InvestigationTasks @update:data="setInvestigationTasks" /> -->
-        <div class="input-wrapper w-full reccomendation">
+        <div class="input-wrapper w-full reccomendation recommendation-panel">
           <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
           <textarea
             id="recommendation"
