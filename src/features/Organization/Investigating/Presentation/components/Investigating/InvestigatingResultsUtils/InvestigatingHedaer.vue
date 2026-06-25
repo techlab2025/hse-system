@@ -22,7 +22,7 @@ const props = defineProps<{
   <div class="investigating-header-container">
     <div class="investigating-header">
       <p class="title">{{ title }}</p>
-      <span>{{ serial }}</span>
+      <span class="serial-badge">{{ serial }}</span>
       <p class="small-title">
         Place : <span class="place">{{ place }}</span>
       </p>
@@ -89,96 +89,3 @@ const props = defineProps<{
     </div>
   </div>
 </template>
-<style scoped>
-.investigating-header {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-}
-.small-title {
-  color: #aeaeb2;
-  font-size: 11px;
-  font-weight: 500;
-  .place {
-    color: #202020;
-    font-weight: 700;
-    font-family: 'Bold';
-    font-size: 12px !important;
-  }
-}
-.equipment-card {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: start;
-  .equipemtn-card-image {
-    max-width: 80px;
-  }
-  .equipment-text {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    .name {
-      color: #202020;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: 'Bold';
-    }
-    .serial {
-      color: #aeaeb2;
-      font-size: 11px;
-      font-weight: 500;
-    }
-  }
-}
-.incidant-description {
-  .title {
-    color: #aeaeb2;
-    font-size: 11px;
-    font-weight: 500;
-  }
-  .description {
-    color: #202020;
-    font-weight: 700;
-    font-family: 'Bold';
-    font-size: 12px !important;
-  }
-}
-.team-container {
-  .title {
-    color: #aeaeb2;
-    font-size: 11px;
-    font-weight: 500;
-  }
-  .team {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-
-    .team-member {
-      background-color: white !important;
-      padding: 10px;
-      border-radius: 5px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      img {
-        width: 40px;
-        height: 40px;
-      }
-      .name {
-        color: #202020;
-        font-size: 12px;
-        font-weight: 700;
-        font-family: 'Bold';
-      }
-      .serial {
-        color: #aeaeb2;
-        font-size: 11px;
-        font-weight: 500;
-      }
-    }
-  }
-}
-</style>

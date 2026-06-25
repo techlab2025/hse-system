@@ -203,10 +203,10 @@ const IncidantDescription = ref<string>()
           :team="state.data?.investigationEmployees"
         />
 
-        <div class="investigation-title">
+        <!-- <div class="investigation-title">
           <img :src="investigationImg" alt="" />
           <p>Investigation Meeting result</p>
-        </div>
+        </div> -->
         <div class="flex w-full gap-2 investigation-result-inputs">
           <!-- <div class="input-wrapper w-50">
             <UpdatedCustomInputSelect
@@ -221,9 +221,11 @@ const IncidantDescription = ref<string>()
           </div> -->
         </div>
 
-        <ViewersResults @update:data="setViewersResults" />
-
-        <div class="input-wrapper w-full mt-12 narrative-panel">
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Events Timeline Builder</p>
+        </div>
+        <div class="input-wrapper w-full narrative-panel">
           <label for="event_time_line">{{ $t('event_time_line') }}</label>
           <Editor
             id="event_time_line"
@@ -233,6 +235,29 @@ const IncidantDescription = ref<string>()
           />
         </div>
 
+        <!-- <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Health Impact Integration</p>
+        </div> -->
+
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Witness Management</p>
+        </div>
+
+        <ViewersResults @update:data="setViewersResults" />
+
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Immediate Action Evaluation</p>
+        </div>
+
+        <RateActions @update:data="setRateAction" />
+
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Root Cause Analysis (5 Whys)</p>
+        </div>
         <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
         <!-- root causes -->
         <div class="input-wrapper w-full root-cause-panel">
@@ -258,7 +283,6 @@ const IncidantDescription = ref<string>()
             </template>
           </UpdatedCustomInputSelect>
         </div>
-        <RateActions @update:data="setRateAction" />
 
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
@@ -360,6 +384,15 @@ const IncidantDescription = ref<string>()
     .input-wrapper {
       width: 100%;
     }
+  }
+}
+.btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between !important;
+  button,
+  a {
+    width: 50% !important;
   }
 }
 </style>

@@ -69,16 +69,16 @@
     position: relative;
     overflow: hidden;
 
-    &::after {
-      content: '';
-      position: absolute;
-      inset-inline-end: 18px;
-      top: 18px;
-      width: 90px;
-      height: 4px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #1d4ed8, #14b8a6, #f59e0b);
-    }
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   inset-inline-end: 18px;
+    //   top: 18px;
+    //   width: 90px;
+    //   height: 4px;
+    //   border-radius: 999px;
+    //   background: linear-gradient(90deg, #1d4ed8, #14b8a6, #f59e0b);
+    // }
 
     p {
       color: #0f172a;
@@ -253,7 +253,7 @@
     .btn-primary {
       flex: 1;
       max-width: 360px;
-      background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+      // background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
       border: 0;
       box-shadow: 0 12px 26px rgba(29, 78, 216, 0.22);
     }
