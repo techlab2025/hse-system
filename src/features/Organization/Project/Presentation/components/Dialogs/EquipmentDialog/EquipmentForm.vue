@@ -6,7 +6,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 
 import IndexEquipmentParams from '@/features/_templateFeature/Core/params/indexEquipmentParams'
 import CreateProjectZoneEquipmentsController from '../../../controllers/Equipments/CreateProjectZoneEquipmentsController'
-import CreateProjectZoneEquipment from '@/features/Organization/Project/Core/params/Equipments/CreateProjectZoneEquipment'
+import CreateProjectZoneEquipment from '@/features/Organization/Project/Core/params/ProjectEquipments/CreateProjectZoneEquipment'
 import MultiSelect from '@/shared/HelpersComponents/MultiSelect.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 

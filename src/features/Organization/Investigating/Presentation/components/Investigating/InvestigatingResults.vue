@@ -63,9 +63,9 @@ const AddEnvestigatingResult = async () => {
       el?.witnessesStatements?.length > 1
     )
   })
-  const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value.filter((el) => {
-    return el?.tasks?.length > 0
-  })
+  // const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value?.filter((el) => {
+  //   return el?.tasks?.length > 0
+  // })
   // CheckWitnessIsFullyEmpty ? [] :
   const RootCausesIds = RootCauses.value.map(
     (el) => new RootCausesIdParams({ root_cause_id: el.id }),
@@ -86,9 +86,9 @@ const AddEnvestigatingResult = async () => {
     tasks: investigationTasks.value,
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: new InvestegationAnotherMeetingParams(
-      anotherMeeting?.value?.date,
-      anotherMeeting?.value?.time,
-      anotherMeeting?.value?.type,
+      anotherMeeting?.value?.meetings?.date,
+      anotherMeeting?.value?.meetings?.time,
+      anotherMeeting?.value?.meetings?.type,
     ),
     isAnotherMeeting: anotherMeeting?.value?.isAnother,
     corrective: CauseOfAction.value?.description,
@@ -98,7 +98,7 @@ const AddEnvestigatingResult = async () => {
     IncidantDescription: IncidantDescription.value,
     recommendation: recommendation.value,
   })
-  console.log(addInvestigationResultParams, 'addInvestigationResultParams')
+  console.log(anotherMeeting.value, 'anotherMeeting')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(
     addInvestigationResultParams,
@@ -155,6 +155,7 @@ const setFiveWhyQuestions = (data) => {
 
 const anotherMeeting = ref()
 const setAnotherMeeting = (data) => {
+  console.log(data , "data");
   anotherMeeting.value = data
 }
 const indexRootCaueseController = IndexRootCausesController.getInstance()
