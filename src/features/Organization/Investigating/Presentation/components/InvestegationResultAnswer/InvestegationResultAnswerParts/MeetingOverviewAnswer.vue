@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
+import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import investigationImg from '@/assets/images/investigationImg.png'
-import InvestegaionMeetingResultAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionMeetingResultAnswerCard.vue';
-import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue';
-import { ref } from 'vue';
-import type InvestigationMeetingsModel from '@/features/Organization/Investigating/Data/models/InvestigationMeetingsModel';
-import { useRoute } from 'vue-router';
+import InvestegaionMeetingResultAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionMeetingResultAnswerCard.vue'
+import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue'
+import { ref } from 'vue'
+import type InvestigationMeetingsModel from '@/features/Organization/Investigating/Data/models/InvestigationMeetingsModel'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const props = defineProps<{
@@ -49,23 +49,30 @@ const props = defineProps<{
 //     corrective: "asdasdasda"
 //   },
 // ])
-
-
-
 </script>
 
 <template>
   <div class="meeting-overview-answer">
     <div class="header">
-      <HeaderPage :title="`Meetings Overview`" :subtitle="`A complete list of your past and upcoming meetings.`"
-        :img="investigationImg" class="title-header answer-header border-top" />
-      <router-link :to="`/organization/investegation-meetings/${route?.params?.id}`" class="show-all-btn">{{
-        $t('show_all_meetings')
-        }}</router-link>
+      <HeaderPage
+        :title="`Meetings Overview`"
+        :subtitle="`A complete list of your past and upcoming meetings.`"
+        :img="investigationImg"
+        class="title-header answer-header border-top"
+      />
+      <router-link
+        :to="`/organization/investegation-meetings/${route?.params?.id}`"
+        class="show-all-btn"
+        >{{ $t('show_all_meetings') }}</router-link
+      >
     </div>
 
     <div class="content">
-      <InvestegaionMeetingResultAnswerCard v-for="(meeting, index) in meetings" :key="index" :meeting="meeting" />
+      <InvestegaionMeetingResultAnswerCard
+        v-for="(meeting, index) in meetings"
+        :key="index"
+        :meeting="meeting"
+      />
     </div>
   </div>
 </template>

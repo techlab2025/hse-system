@@ -1,266 +1,291 @@
 @use '../../variables' as *;
 @use '../../mixins/flex' as *;
 
-.observation-genral-info-conatiner {
-  background-color: white;
+.show-observation-container .observation-genral-info-conatiner {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 14px;
+  width: 100%;
+  font-family: 'Regular';
 
-  border-radius: 12px;
   .genral-info-content {
     @include flex-column(nowrap, flex-start, flex-start);
-    gap: $XsSize;
+    gap: 12px;
     width: 100%;
-    // border-bottom: 1px dashed #efefef;
-    // padding: $XsSize;
-    .observation-genral-info {
-      background-color: white;
+  }
 
-      width: 100%;
-      @include flex-row(nowrap, space-between, center);
-      .image-container {
-        .grid {
-          display: flex;
-          width: 100%;
-        }
-      }
-      .like_lihood-container {
-        color: #b3b4b7;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-        .like_lihood-title {
-        }
-        .like_lihood {
-          color: #32353d;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $MdSize;
-          position: relative;
-          padding-left: $SmSize;
-          &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 0px;
-            width: 5px;
-            height: 5px;
-            background-color: #32353d;
-            border-radius: 50%;
-          }
-        }
-      }
-      .severity-container {
-        color: #b3b4b7;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-        .severity {
-          color: #32353d;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $MdSize;
-          position: relative;
-          padding-left: $SmSize;
-          &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 0px;
-            width: 5px;
-            height: 5px;
-            background-color: #32353d;
-            border-radius: 50%;
-          }
-        }
-      }
-      .observation-type {
-        color: #b3b4b7;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
+  .observation-genral-info,
+  .hazard-info,
+  .take-action-container {
+    width: 100%;
+    border: 1px solid #e6edf7;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  }
 
-        span {
-          color: #32353d;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $MdSize;
-          position: relative;
-        }
-      }
+  .observation-genral-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    align-items: stretch;
+    padding: 14px;
 
-      .root-causes {
-        @include flex-column(nowrap, flex-start, flex-start);
-        gap: $XsSize;
-        .icon_title {
-          @include flex(row, nowrap, space-between, flex-start);
-          gap: $XsSize2;
-        }
-        .root-causes-title {
-          @include flex-column(nowrap, flex-start, flex-start);
-          // gap: $XsSize4;
-          margin-bottom: $MdSize;
-          color: #202020;
-          font-weight: $BaseFontWeightBold;
-          font-size: $MdSize2;
-          position: relative;
-          span {
-            color: var(--subtitle-color);
-            font-size: $SmSize;
-            font-weight: $BaseFontMediumWeight;
-          }
-        }
-        .root-causes-content {
-          @include flex-column(nowrap, flex-start, flex-start);
-          gap: $XsSize3;
-          .root-title {
-            color: #5e5e5e;
-            font-weight: $BaseFontMediumWeight;
-            font-size: $SmSize;
-            position: relative;
-            padding-left: $SmSize;
-            &::before {
-              content: '';
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              left: 0px;
-              width: 5px;
-              height: 5px;
-              background-color: #5e5e5e;
-              border-radius: 50%;
-            }
-          }
-        }
-      }
+    .like_lihood-container,
+    .severity-container,
+    .observation-type,
+    .observation-risk-level {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid #e6edf7;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
 
-      .observation-risk-level {
-        font-weight: 700;
-        font-size: 16px;
+    .like_lihood-title,
+    .severity-title {
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-        &.Low {
-          color: $PrimaryColor;
-        }
-        &.Medium {
-          color: #ffbf52;
-        }
-        &.High {
-          color: #e23535;
-        }
-      }
-      img {
-        width: 50px;
-        height: 50px;
+    .like_lihood,
+    .severity,
+    .observation-type span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      color: #0f172a;
+      font-family: 'Bold';
+      font-size: 15px;
+      font-weight: 700;
+
+      &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        flex: 0 0 8px;
+        border-radius: 50%;
+        background: #14b8a6;
+        box-shadow: 0 0 0 5px rgba(20, 184, 166, 0.12);
       }
     }
-    .hazard-info {
-      padding: $XsSize;
 
-      .severity-container {
-        color: #b3b4b7;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-        .severity {
-          color: #32353d;
-          font-weight: $BaseFontSemiBoldWeight;
-          font-size: $MdSize;
-          position: relative;
-          padding-left: $SmSize;
-          &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 0px;
-            width: 5px;
-            height: 5px;
-            background-color: #32353d;
-            border-radius: 50%;
-          }
+    .observation-risk-level {
+      @include flex-row(nowrap, flex-start, center);
+      gap: 8px;
+      font-family: 'Bold';
+      font-size: 15px;
+      font-weight: 700;
+
+      &.Low {
+        color: #1d4ed8;
+        background: rgba(239, 246, 255, 0.88);
+      }
+
+      &.Medium {
+        color: #d97706;
+        background: rgba(255, 251, 235, 0.9);
+      }
+
+      &.High {
+        color: #dc2626;
+        background: rgba(254, 242, 242, 0.9);
+      }
+    }
+
+    .root-causes {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 10px;
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid #e6edf7;
+      border-radius: 8px;
+      background: #f8fafc;
+
+      .icon_title {
+        @include flex-row(nowrap, flex-start, flex-start);
+        gap: 10px;
+      }
+
+      .root-causes-title {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: 3px;
+        color: #0f172a;
+        font-family: 'Bold';
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.3;
+
+        span {
+          color: #64748b;
+          font-family: 'Regular';
+          font-size: 12px;
+          font-weight: 600;
         }
+      }
+
+      .root-causes-content {
+        @include flex-row(wrap, flex-start, center);
+        gap: 8px;
+
+        .root-title {
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: #ffffff;
+          color: #1d4ed8;
+          font-family: 'Bold';
+          font-size: 12px;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .image-container {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px dashed #b9c9df;
+      border-radius: 8px;
+      background: #f8fbff;
+
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+      }
+
+      img {
+        width: 76px;
+        height: 76px;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
       }
     }
   }
+
+  .hazard-info {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    padding: 14px;
+
+    .severity-container {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid #e6edf7;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 600;
+
+      .severity {
+        margin-top: 4px;
+        color: #0f172a;
+        font-family: 'Bold';
+        font-size: 15px;
+        font-weight: 700;
+      }
+    }
+  }
+
   .take-action-container {
-    width: 100%;
-    padding: $XsSize;
-    padding-bottom: $MdSize;
-    // border-top: 1px dashed #efefef;
-    .card_status {
-      background-color: #1d4ed808;
-      padding: $XlSize $XlSize4 $XlSize $SmSize;
-      border-radius: $SmSize;
-      position: relative;
-      span {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        width: 15px;
-        height: 15px;
-        background-color: #4070f334;
-        border-radius: 50%;
+    @include flex-row(nowrap, space-between, center);
+    gap: 14px;
+    padding: 14px;
+    border-color: rgba(22, 163, 74, 0.18);
+    background: linear-gradient(180deg, rgba(240, 253, 244, 0.88), #ffffff);
+
+    .action-container {
+      @include flex-row(nowrap, flex-start, center);
+      gap: 10px;
+      min-width: 0;
+
+      svg {
+        flex: 0 0 auto;
       }
-      &::after {
-        position: absolute;
-        content: '';
-        width: 20px;
-        height: 20px;
-        border-bottom-left-radius: 50px;
-        top: 0;
-        right: 0;
-        background-color: #4070f334;
+
+      .emp-text {
+        color: #0f172a;
+        font-family: 'Bold';
+        font-size: 15px;
+        font-weight: 700;
       }
-      &::before {
-        position: absolute;
-        content: '';
-        width: 20px;
-        height: 20px;
-        border-top-left-radius: 50px;
-        bottom: 0;
-        right: 0;
-        background-color: #4070f334;
-      }
-      p {
-        color: #bec3cf;
-        font-size: $SmSize;
-        font-weight: $BaseFontSemiBoldWeight;
-        position: relative;
-      }
-      h6 {
-        color: var(--PrimaryColor);
-        font-size: $MdSize2;
-        font-weight: $BaseFontWeightBold;
+
+      .action-text {
+        margin-top: 3px;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+        text-transform: none;
       }
     }
 
-    @include flex-row(nowrap, space-between, center);
-    .action-container {
-      margin-top: $XsSize2;
-      @include flex-row(nowrap, flex-start, center);
-      gap: $XsSize;
-      .emp-text {
-        color: #32353d;
-        font-size: $MdSize2;
-        font-weight: $BaseFontSemiBoldWeight;
+    .card_status {
+      position: relative;
+      flex: 0 0 auto;
+      min-width: 140px;
+      padding: 12px;
+      border: 1px solid #e6edf7;
+      border-radius: 8px;
+      background: #ffffff;
+
+      p {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
       }
-      .action-text {
-        color: #8b8d91;
-        font-size: $SmSize;
-        font-weight: $BaseFontSemiBoldWeight;
+
+      h6 {
+        margin-top: 4px;
+        color: #1d4ed8;
+        font-family: 'Bold';
+        font-size: 18px;
+        font-weight: 700;
       }
     }
-    .status-container {
-      .status {
-        @include flex-row(nowrap, center, center);
-        gap: $SmSize;
-        background-color: #fcfcfc;
-        padding: calc($XsSize4 + 1px) $SmSize;
-        border-radius: calc($SmSize + 1px);
-        span {
-          color: #000000;
-          font-size: $MdSize2;
-          font-weight: $BaseFontSemiBoldWeight;
-        }
-        .icon {
-          width: 32px;
-          height: 32px;
-        }
+
+    .status-container .status {
+      @include flex-row(nowrap, center, center);
+      gap: 10px;
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1px solid #e6edf7;
+      border-radius: 8px;
+      background: #ffffff;
+
+      span {
+        color: #0f172a;
+        font-family: 'Bold';
+        font-size: 14px;
+        font-weight: 700;
       }
+
+      .icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  @media (max-width: 720px) {
+    .observation-genral-info,
+    .hazard-info {
+      grid-template-columns: 1fr;
+      padding: 12px;
+    }
+
+    .take-action-container {
+      align-items: stretch;
+      flex-direction: column;
     }
   }
 }

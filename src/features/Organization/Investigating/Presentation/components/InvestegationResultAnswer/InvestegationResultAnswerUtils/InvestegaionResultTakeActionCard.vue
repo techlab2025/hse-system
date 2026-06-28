@@ -2,7 +2,6 @@
 const props = defineProps<{
   action: any
 }>()
-
 </script>
 <template>
   <div class="investegaion-take-action-card">

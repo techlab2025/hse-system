@@ -1,6 +1,96 @@
 @use '../../variables' as *;
 @use '../../mixins/flex' as *;
+
 .investegation-result-answer-container {
-  width: 100%;
   @include flex-column(nowrap, flex-start, flex-start);
+  gap: 22px;
+  width: 100%;
+  padding: 18px;
+  border: 1px solid #e7edf7;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(246, 249, 255, 0.94) 0%, rgba(255, 255, 255, 0.98) 34%), #ffffff;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+
+  .section-header-page-container {
+    border: 1px solid #e8eef8;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 8px;
+    box-shadow: 0 8px 24px rgba(29, 78, 216, 0.05);
+  }
+
+  .section-header-page {
+    gap: 12px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%) !important;
+    padding: 12px !important;
+
+    .section-img-page {
+      width: 46px;
+      height: 46px;
+      padding: 8px;
+      border: 1px solid #e6edf8;
+      border-radius: 8px;
+      background: #f7fbff;
+      object-fit: contain;
+    }
+
+    .title-page {
+      color: #0f172a !important;
+      font-size: 18px !important;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .subtitle-page {
+      margin-top: 2px;
+      color: #64748b !important;
+      font-size: 13px !important;
+      line-height: 1.5;
+      text-transform: none;
+    }
+  }
+
+  .header {
+    gap: 12px;
+  }
+
+  .show-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 1px solid rgba(29, 78, 216, 0.16);
+    border-radius: 8px;
+    background: rgba(29, 78, 216, 0.06);
+    color: #1d4ed8 !important;
+    font-family: 'Bold';
+    font-size: 13px !important;
+    font-weight: 700;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      background: rgba(29, 78, 216, 0.1);
+      box-shadow: 0 10px 22px rgba(29, 78, 216, 0.12);
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 16px;
+    padding: 12px;
+
+    .header {
+      align-items: stretch !important;
+    }
+
+    .show-all-btn {
+      width: 100%;
+    }
+  }
 }

@@ -45,7 +45,7 @@ const props = defineProps({
             <div class="info-row">
               <div class="info-item">
                 <h5>due date :</h5>
-                <span> {{ item?.due_date || item?.date  }}</span>
+                <span> {{ item?.due_date || item?.date }}</span>
               </div>
               <div class="info-item">
                 <h5>Responsible :</h5>

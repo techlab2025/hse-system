@@ -1,29 +1,43 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
 
-.investegaion-attachment-card {
+.investegation-result-answer-container .investegaion-attachment-card {
+  @include flex-column(nowrap, flex-start, stretch);
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1px dashed #b9c9df;
+  border-radius: 8px;
+  background: #f8fbff;
   font-family: 'Regular';
-  @include flex-column(nowrap, flex-start, center);
-  gap: $SmSize;
-  background-color: #fbfbfb;
-  padding: $XsSize2;
-  border-radius: $XsSize;
-  border: 1px solid #edeff5;
 
   .title {
-    color: #121212;
-    font-size: $MdSize;
-    font-weight: $BaseFontSemiBoldWeight;
+    width: fit-content;
+    max-width: 100%;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #1d4ed8;
+    font-family: 'Bold';
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(29, 78, 216, 0.08);
   }
 
   .investegaion-attachment-card-media {
-    @include flex-row(wrap, flex-start, center);
-    gap: $XsSize2;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+    gap: 10px;
+    width: 100%;
+
     img {
-      width: 80px;
-      height: 80px;
-      border: 1px solid #f4f4f4;
-      border-radius: $XsSize;
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid #e3ebf6;
+      border-radius: 8px;
+      background: #ffffff;
+      object-fit: cover;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
     }
   }
 }

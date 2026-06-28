@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import EmployeeBg from '@/assets/images/EmployeeBg.png'
 import Yellowback from '@/assets/images/Yellowback.png'
-import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum';
+import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum'
 const props = defineProps<{
   title?: string
   meetingsNumber?: number
@@ -19,17 +19,18 @@ const props = defineProps<{
 const GetInvestigationType = (type: number) => {
   return Observation[type]
 }
-
 </script>
 <template>
   <div class="investigating-answer-header-container">
     <div class="investigating-answer-data">
       <div class="left-header-background">
-        <img class="left-blue-background" :src="EmployeeBg" alt="bg">
-        <img class="left-yellow-background" :src="Yellowback" alt="bg">
+        <img class="left-blue-background" :src="EmployeeBg" alt="bg" />
+        <img class="left-yellow-background" :src="Yellowback" alt="bg" />
       </div>
       <div class="investigating-header">
-        <p class="title">{{ `investigation / ${GetInvestigationType(props?.investegationType)}` }}</p>
+        <p class="title">
+          {{ `investigation / ${GetInvestigationType(props?.investegationType)}` }}
+        </p>
       </div>
       <div class="investigating-info">
         <p>
@@ -43,9 +44,7 @@ const GetInvestigationType = (type: number) => {
         </p>
       </div>
       <div class="meeting-info-container">
-
         <div class="meeting-info">
-
           <p>
             Investigation team leader : <span class="team-leader">{{ TeamLeader?.name }}</span>
           </p>
@@ -57,7 +56,9 @@ const GetInvestigationType = (type: number) => {
     </div>
     <div class="investigating-answer-complete-task">
       <span>completed tasks</span>
-      <span>{{ `${solvedTasks} ` }} / <span class="total">{{ `${ToltalTasks}` }}</span></span>
+      <span
+        >{{ `${solvedTasks} ` }} / <span class="total">{{ `${ToltalTasks}` }}</span></span
+      >
     </div>
   </div>
 </template>

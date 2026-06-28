@@ -1,45 +1,33 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
-@use '../../../mixins/grid' as *;
 
-.take-action-answer {
+.investegation-result-answer-container .take-action-answer {
+  @include flex-column(nowrap, flex-start, flex-start);
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #e6edf7;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
   font-family: 'Regular';
-  padding-top: 25px;
+
   .header {
     @include flex-row(nowrap, space-between, center);
     width: 100%;
-    // padding-top: 20px;
-    border-top: 5px solid #f8f9fb;
+
     .answer-header {
       padding: 0;
-      background-color: white !important;
-      .section-header-page {
-        background-color: white !important;
-      }
-      &.border-top {
-        // margin-top: 12px;
-        border-radius: 0;
-      }
-    }
-
-    .show-all-btn {
-      padding-top: $SmSize;
-      color: #9d9d9d;
-      font-weight: $BaseFontWeightBold;
-      font-size: $MdSize;
+      background-color: transparent !important;
     }
   }
+
   .content {
     width: 100%;
-    @include grid(
-      1,
-      10px,
-      (
-        1400px: 3,
-        1024px: 2,
-        768px: 1,
-      )
-    );
-    padding-inline: 20px;
+    padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
   }
 }

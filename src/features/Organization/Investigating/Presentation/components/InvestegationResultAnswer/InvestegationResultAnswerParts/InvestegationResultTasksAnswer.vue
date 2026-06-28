@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
+import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import Task from '@/assets/images/Task.png'
-import { ref } from 'vue';
-import InvestegaionResultTasksAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue';
-import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue'
+import InvestegaionResultTasksAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue'
+import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const props = defineProps<{
@@ -12,18 +12,22 @@ const props = defineProps<{
 }>()
 
 //
-
-
 </script>
 
 <template>
   <div class="tasks-answer">
     <div class="header">
-      <HeaderPage :title="`tasks`" :subtitle="`change the task status here`" :img="Task"
-        class="title-header answer-header border-top" />
-      <router-link :to="`/organization/investegation-tasks/${route.params.id}`" class="show-all-btn">{{
-        $t('show_all_tasks')
-      }}</router-link>
+      <HeaderPage
+        :title="`tasks`"
+        :subtitle="`change the task status here`"
+        :img="Task"
+        class="title-header answer-header border-top"
+      />
+      <router-link
+        :to="`/organization/investegation-tasks/${route.params.id}`"
+        class="show-all-btn"
+        >{{ $t('show_all_tasks') }}</router-link
+      >
     </div>
     <div class="content">
       <InvestegaionResultTasksAnswerCard v-for="(task, index) in tasks" :key="index" :task="task" />

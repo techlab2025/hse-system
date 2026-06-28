@@ -1,41 +1,42 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
 
-.investegaion-task-card {
-  font-family: 'Regular';
+.investegation-result-answer-container .investegaion-task-card {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XsSize4;
-  background-color: #fdfdfd;
-  padding: $XsSize2;
-  border-radius: $XsSize;
-  border: 1px solid #f6f6f6;
+  gap: 12px;
   width: 100%;
+  min-height: 230px;
+  padding: 14px;
+  border: 1px solid #e1e9f5;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  font-family: 'Regular';
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(29, 78, 216, 0.22);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+  }
 
   &.OPEN {
-    background-color: #fcfcfc;
-    font-family: 'Regular';
+    background: linear-gradient(180deg, rgba(239, 246, 255, 0.84), #ffffff);
 
     .task-status-title {
-      color: #4f8cd3;
-      font-size: 14px;
-      font-weight: 700;
+      color: #1d4ed8;
     }
   }
 
-  // &.working {
-  //   background-color: #523cd905;
-  //   border: 1px solid #523cd933;
-  //   .task-status-title {
-  //     color: #523cd9;
-  //   }
-  // }
-
   &.CLOSED {
-    background-color: #25a42e05;
-    border: 1px solid #25a42e33;
+    border-color: rgba(22, 163, 74, 0.2);
+    background: linear-gradient(180deg, rgba(240, 253, 244, 0.9), #ffffff);
 
     .task-status-title {
-      color: #1ea127;
+      color: #16a34a;
     }
   }
 
@@ -45,98 +46,135 @@
 
     .task-status {
       @include flex-row(nowrap, flex-start, center);
-      gap: 4px;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid #dbe5f2;
+      border-radius: 999px;
+      background: #ffffff;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    .task-status-title {
+      font-family: 'Bold';
+      font-size: 13px;
+      font-weight: 700;
     }
   }
 
   .card-content {
     @include flex-column(nowrap, flex-start, flex-start);
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    .task-description {
-      color: #202020;
-      font-weight: $BaseFontWeightBold;
-      font-size: calc($MdSize + 1px);
-    }
-    .info {
-      @include flex-row(wrap, space-between, center);
-      width: 100%;
-      .date {
-        color: #989fab;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
-        span {
-          color: $PrimaryColor;
-          font-weight: $BaseFontSemiBoldWeight;
-        }
-      }
+    height: 100%;
 
+    .task-description {
+      color: #0f172a;
+      font-family: 'Bold';
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-transform: none;
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      width: 100%;
+
+      .date,
       .responsable {
-        color: #989fab;
-        font-size: $SmSize;
-        font-weight: $BaseFontMediumWeight;
+        padding: 10px;
+        border: 1px solid #e6edf7;
+        border-radius: 8px;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-transform: none;
+
         span {
-          color: $PrimaryColor;
-          font-weight: $BaseFontSemiBoldWeight;
+          display: block;
+          margin-top: 3px;
+          color: #1d4ed8;
+          font-family: 'Bold';
+          font-weight: 700;
         }
       }
     }
 
     .assigned-to-container {
-      width: 100%;
       @include flex-row(nowrap, space-between, center);
-      border-top: 1px solid #1f41bb1a;
-      padding-top: $XsSize2;
+      gap: 10px;
+      width: 100%;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px dashed #dbe5f2;
+
       .assigned-to {
         @include flex-row(nowrap, flex-start, center);
-        gap: 5px;
+        gap: 9px;
+        min-width: 0;
+
         .icon {
-          width: 25px;
-          height: 25px;
+          width: 30px;
+          height: 30px;
+          flex-shrink: 0;
+          padding: 6px;
+          border-radius: 8px;
+          background: rgba(29, 78, 216, 0.08);
         }
+
         .assigned-to-info {
           @include flex-column(nowrap, flex-start, flex-start);
+          min-width: 0;
+
           .assign {
-            color: #acaeb4;
-            font-size: $XsSize;
-            font-weight: $BaseFontMediumWeight;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
           }
+
           .person {
-            color: $PrimaryColor;
-            font-size: $MdSize;
-            font-weight: $BaseFontWeightBold;
+            max-width: 150px;
+            overflow: hidden;
+            color: #0f172a;
+            font-family: 'Bold';
+            font-size: 14px;
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
 
       button {
-        font-size: $SmSize;
-        // font-size: $BaseFontWeightBold;
-        padding: $XsSize3 $SmSize;
-        border-radius: $MdSize;
+        flex-shrink: 0;
+        min-height: 36px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: rgba(29, 78, 216, 0.08);
+        color: #1d4ed8;
+        font-family: 'Bold';
+        font-size: 13px;
+        font-weight: 700;
       }
-      // .working,
-      // .new {
-      //   color: white;
-      //   background-color: #4caf50;
-      // }
-      // .completed {
-      //   color: #1f41bbcc;
-      //   background-color: #1f41bb12;
-      //   border: 1px solid #1f41bb99;
-      // }
+    }
+  }
 
-      .p-dialog-header {
-        @include flex-row(nowrap, flex-start, center);
-        gap: $XsSize2;
-        img {
-          width: 25px;
-          height: 25px;
-        }
-        h3 {
-          font-size: $MdSize;
-          font-weight: $BaseFontWeightBold;
-        }
+  @media (max-width: 520px) {
+    .card-content {
+      .info {
+        grid-template-columns: 1fr;
+      }
+
+      .assigned-to-container {
+        flex-wrap: wrap;
       }
     }
   }

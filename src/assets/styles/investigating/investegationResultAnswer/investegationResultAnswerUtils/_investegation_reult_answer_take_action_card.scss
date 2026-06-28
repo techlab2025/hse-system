@@ -1,23 +1,40 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
 
-.investegaion-take-action-card {
-  font-family: 'Regular';
+.investegation-result-answer-container .investegaion-take-action-card {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XsSize4;
-  background-color: #ffffffcc;
-  padding: $XsSize2;
-  border-radius: $XsSize;
-  border: 1px solid #edeff5;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid rgba(22, 163, 74, 0.16);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(240, 253, 244, 0.94), #ffffff);
+  font-family: 'Regular';
 
   .corrective-action {
-    color: #00ac47;
-    font-size: $MdSize;
-    font-weight: $BaseFontWeightBold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #16a34a;
+    font-family: 'Bold';
+    font-size: 15px;
+    font-weight: 700;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #16a34a;
+      box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.12);
+    }
   }
+
   .description {
-    color: #9299a5;
-    font-size: $SmSize;
-    font-size: $BaseFontMediumWeight;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.7;
+    text-transform: none;
   }
 }
