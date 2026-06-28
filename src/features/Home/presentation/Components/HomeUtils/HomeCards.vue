@@ -118,7 +118,7 @@ const {ProgressValue} = defineProps<{
       </router-link>
     </PermissionBuilder>
 
-    <PermissionBuilder
+    <!-- <PermissionBuilder
       :code="[
         PermissionsEnum.ORG_EMPLOYEE_ALL,
         PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -135,9 +135,9 @@ const {ProgressValue} = defineProps<{
           :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `"
         />
       </router-link>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
 
-    <PermissionBuilder
+    <!-- <PermissionBuilder
       :code="[
         PermissionsEnum.ORG_EMPLOYEE_ALL,
         PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -154,6 +154,6 @@ const {ProgressValue} = defineProps<{
           :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `"
         />
       </router-link>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
   </div>
 </template>

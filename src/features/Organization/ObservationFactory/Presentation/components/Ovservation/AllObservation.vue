@@ -7,6 +7,8 @@ import ToDoLogo from '@/assets/images/ToDoLogo.png'
 import { InspectionPageType } from '../../../Core/Enums/InspectionTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import CapaIcon from '@/assets/images/Capa.png'
+import Investigation from '@/assets/images/Investigation.png'
 
 const items = [
   {
@@ -81,6 +83,34 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_FETCH,
       PermissionsEnum.ORG_INCEDANT_ALL,
+    ],
+  },
+  {
+    title: 'investigation',
+    image: Investigation,
+    indexRoute: '/organization/Investigating',
+    description: 'show',
+    indexPermissions: [
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ],
+  },
+  {
+    title: 'capa',
+    image: CapaIcon,
+    indexRoute: '/organization/capa',
+    description: 'show',
+    indexPermissions: [
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ],
   },
   // {

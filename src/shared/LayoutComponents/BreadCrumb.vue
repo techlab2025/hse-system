@@ -163,6 +163,6 @@ const ShowBackBtn = computed(() => {
     </div>
 
     <!-- v-if="!IsHomeSetting" -->
-    <FastRoutes />
+    <!-- <FastRoutes /> -->
   </div>
 </template>

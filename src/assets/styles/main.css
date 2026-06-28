@@ -10599,7 +10599,8 @@ ul {
 }
 @media (max-width: 768px) {
   .header {
-    display: none;
+    padding: var(--sm-size) var(--md-size);
+    border-radius: 0 0 var(--md-size) var(--md-size);
   }
 }
 .header .nav {
@@ -10622,6 +10623,11 @@ ul {
   justify-content: center;
   align-items: center;
   gap: var(--xl-size-base);
+}
+@media (max-width: 768px) {
+  .header .setting {
+    display: none;
+  }
 }
 .header .setting .countery-icon {
   width: 60px;
@@ -10808,7 +10814,11 @@ body {
 
 @media (max-width: 768px) {
   .sidebar-container {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height: 100vh;
   }
 }
 .sidebar-container .sidebar {
@@ -10819,6 +10829,23 @@ body {
   border-radius: 0 var(--xl-size-base) var(--xl-size-base) 0;
   position: sticky;
   top: 0;
+}
+@media (max-width: 768px) {
+  .sidebar-container .sidebar {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    z-index: 9999;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+  }
+  .sidebar-container .sidebar.open {
+    left: 0 !important;
+    width: 280px !important;
+  }
+  .sidebar-container .sidebar.close {
+    left: -320px !important;
+    width: 280px !important;
+  }
 }
 .sidebar-container .sidebar .sidebar-wrapper {
   display: flex;

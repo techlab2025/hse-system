@@ -2,7 +2,7 @@
 import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
-// import IconMenu from '@/shared/icons/IconMenu.vue'
+import IconMenu from '@/shared/icons/IconMenu.vue'
 import IconLogout from '@/shared/icons/IconLogout.vue'
 import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
@@ -161,14 +161,13 @@ const toggle = (event: Event) => {
 <template>
   <header class="header minmize">
     <nav class="nav">
-      <div class="menu">
-        <!-- Add the new icon to open the sidebar -->
-        <!-- <span v-if="!props.open" class="cursor-pointer" @click="toggleSidebar">
+      <div class="menu flex items-center gap-3">
+        <span
+          class="drawer cursor-pointer flex items-center justify-center p-1"
+          @click="emit('open')"
+        >
           <IconMenu />
-        </span> -->
-        <!-- <span  class="cursor-pointer" @click="toggleSidebar">
-          <IconMenu />
-        </span> -->
+        </span>
         <!-- <div class="header-link flex gap-sm items-center">
           <h1>
             <router-link to="/">{{ $t('home') }} </router-link>
@@ -290,6 +289,11 @@ const toggle = (event: Event) => {
 
   @media (max-width: 1000px) {
     width: 200px;
+  }
+}
+.drawer {
+  @media (min-width: 768px) {
+    display: none;
   }
 }
 </style>

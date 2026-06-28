@@ -15,8 +15,8 @@
   //   margin: 0 auto;
   // }
   @media (max-width: 768px) {
-    // @include flex-row(wrap, space-between, center);
-    display: none;
+    padding: $SmSize $MdSize;
+    border-radius: 0 0 $MdSize $MdSize;
   }
   .nav {
     @include flex-row(nowrap, space-between, center);
@@ -33,6 +33,9 @@
     @include flex-row(nowrap, center, center);
     gap: $XlSize;
 
+    @media (max-width: 768px) {
+      display: none;
+    }
     .countery-icon {
       width: 60px;
       height: 60px;
