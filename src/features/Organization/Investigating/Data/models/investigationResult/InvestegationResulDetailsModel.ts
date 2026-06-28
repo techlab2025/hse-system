@@ -2,11 +2,14 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 import MeetingModel from '../Meetings/MeetingModel'
+import type InjuryModel from '@/features/Organization/Injury/Data/models/InjuryModel'
+import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 
 export default class InvestegationResultDetailsModel {
   public id: number
   public date: string
-  public observation: HazardModel
+  // public observation: HazardModel
+  public observation: HazardDetailsModel
   public status: number
   public type: number
   public title: string
@@ -27,7 +30,7 @@ export default class InvestegationResultDetailsModel {
     title: string,
     serialNumber: string,
     date: string,
-    observation: HazardModel,
+    observation: HazardDetailsModel,
     status: number,
     type: number,
     investigationTeamLeader: TitleInterface,
@@ -78,8 +81,7 @@ export default class InvestegationResultDetailsModel {
       data.investigation_meetings?.map((i: any) => MeetingModel.fromMap(i)),
       data.investigation_team_leader,
       data.created_at,
-      data.investigation_meeting_date
-
+      data.investigation_meeting_date,
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

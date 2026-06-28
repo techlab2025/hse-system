@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import isBase64 from '@/base/Presentation/utils/isBase64'
 
 export default class InjuryParams implements Params {
   public organizationEmployeeId: number
@@ -31,7 +32,7 @@ export default class InjuryParams implements Params {
     data['note'] = this.note
     data['injury_type_id'] = this.injuryTypeId
     data['is_work_stopped'] = this.isWorkStopped
-    data['files'] = this.images
+    if (!this.images.some((el) => !isBase64(el))) data['files'] = this.images
     return data
   }
 }

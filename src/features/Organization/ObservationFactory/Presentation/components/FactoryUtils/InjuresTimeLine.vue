@@ -5,7 +5,7 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
@@ -14,30 +14,38 @@ import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import Checkbox from 'primevue/checkbox'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import AddInjury from '@/views/Organization/Injury/AddInjury.vue'
+import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
 
 const emit = defineEmits(['update:data'])
-
+const props = defineProps<{
+  isOpen?: boolean
+  injuries?: InjuryDetailsModel[]
+}>()
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
-const Answers = ref([
-  {
-    text: ' ',
-    employee: new TitleInterface({ id: 0, title: '' }),
-    infectionTypeId: new TitleInterface({ id: 0, title: '' }),
-    employeeName: '',
-    isWorkStopped: false,
-    images: [],
-  },
-])
+type AnswerModel = {
+  text: string
+  employee: TitleInterface
+  employeeName: string
+  isWorkStopped: boolean
+  images: any[]
+  infectionTypeId: TitleInterface
+}
+const createEmptyAnswer = (): AnswerModel => ({
+  text: ' ',
+  employee: new TitleInterface({ id: 0, title: '' }),
+  infectionTypeId: new TitleInterface({ id: 0, title: '' }),
+  employeeName: '',
+  isWorkStopped: false,
+  images: [],
+})
+
+const Answers = ref<AnswerModel[]>([createEmptyAnswer()])
 
 const addNewAnswer = () => {
   Answers.value.push({
+    ...createEmptyAnswer(),
     text: '',
-    employee: new TitleInterface({ id: 0, title: '' }),
-    infectionTypeId: new TitleInterface({ id: 0, title: '' }),
-    employeeName: '',
-    isWorkStopped: false,
-    images: [],
   })
   UpdateData()
 }
@@ -52,24 +60,20 @@ const UpdateData = () => {
 
   emit('update:data', Answers.value)
 }
-onMounted(() => {
-  emit('update:data', Answers.value)
-})
 
 const UpdateInjury = (item: TitleInterface, index: number) => {
-  console.log(item);
+  console.log(item)
   Answers.value[index].infectionTypeId = new TitleInterface({ id: item.id, title: item.title })
 }
 
-const isSelectHasContent = ref([])
+const isSelectHasContent = ref<boolean[]>([])
 
 const indexInjuryController = IndexInjuryController.getInstance()
 const indexInjuryParams = new IndexInjuryParams('', 1, 10, 0)
 
-
-
-const setImages = async (data: string[], index: number) => {
-  Answers.value[index].images = typeof data === 'string' ? data : await filesToBase64(data)
+const setImages = async (data: File[] | string, index: number) => {
+  Answers.value[index].images =
+    typeof data === 'string' ? [data] : ((await filesToBase64(data)) as any[])
   UpdateData()
 }
 const ensureEmployee = (item: any) => {
@@ -81,15 +85,51 @@ const InjuryVisable = ref(false)
 
 const toggleMode = (index: number, isManual: boolean) => {
   // 1. Update the toggle state
-  isSelectHasContent.value[index] = isManual;
+  isSelectHasContent.value[index] = isManual
 
   // 2. Reset the employee object to a clean slate
   // This prevents the "Select" mode from holding onto old data
-  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' });
+  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' })
 
   // 3. Notify parent
-  UpdateData();
+  UpdateData()
 }
+
+const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
+  const employeeId =
+    item?.organization_employee?.organization_employee_id || item?.organization_employee?.id || 0
+  const employeeTitle = item?.organization_employee?.name || item?.employee_name || ''
+
+  return {
+    employee: new TitleInterface({ id: employeeId, title: employeeTitle }),
+    employeeName: item?.employee_name || employeeTitle,
+    images: item?.media?.map((file: any) => file?.url || file).filter(Boolean) || [],
+    infectionTypeId:
+      new TitleInterface({ id: item?.injury_type?.id, title: item?.injury_type?.title }) ||
+      new TitleInterface({ id: 0, title: '' }),
+    isWorkStopped: !!item?.is_work_stopped,
+    text: item?.note || '',
+  }
+}
+
+watch(
+  () => props.injuries,
+  (newInjuries) => {
+    if (props.isOpen && newInjuries?.length) {
+      Answers.value = newInjuries.map(mapInjuryToAnswer)
+      isSelectHasContent.value = Answers.value.map(
+        (item) => !item.employee?.id && !!item.employee?.title,
+      )
+      UpdateData()
+      return
+    }
+
+    if (!props.isOpen) {
+      emit('update:data', Answers.value)
+    }
+  },
+  { immediate: true, deep: true },
+)
 </script>
 <template>
   <div class="template-container col-span-6">
@@ -98,8 +138,13 @@ const toggleMode = (index: number, isManual: boolean) => {
         <div class="timeline-wrapper">
           <div class="timeline-line"></div>
 
-          <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
-            :style="{ animationDelay: `${index * 0.15}s` }">
+          <div
+            class="timeline-item"
+            v-for="(item, index) in Answers"
+            :key="index"
+            :class="{ active: index === 0 }"
+            :style="{ animationDelay: `${index * 0.15}s` }"
+          >
             <div class="timeline-marker">
               <div class="timeline-dot">
                 <div class="timeline-dot-inner"></div>
@@ -107,25 +152,38 @@ const toggleMode = (index: number, isManual: boolean) => {
               </div>
 
               <div class="timeline-icon">
-                <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
-                  @click="DeleteItem(index)" />
+                <DeleteItemAction
+                  class="cursor-pointer"
+                  v-if="index >= 0 && index !== Answers.length - 1"
+                  @click="DeleteItem(index)"
+                />
                 <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
               </div>
             </div>
 
             <!-- timeline-content -->
-            <div class=" grid grid-cols-12 gap-2">
+            <div class="grid grid-cols-12 gap-2">
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <label for="">{{ $t('Nature of injury & body part') }}</label>
-                <input type="text" class="input " :placeholder="$t('add your title')" v-model="item.text"
-                  @input="UpdateData">
+                <input
+                  type="text"
+                  class="input"
+                  :placeholder="$t('add your title')"
+                  v-model="item.text"
+                  @input="UpdateData"
+                />
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-
-                <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
-                  :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                  class="mt-4 mr-2 input" :label="$t('Employee')" @update:model-value="UpdateData"
-                  :hascontent="isSelectHasContent[index]">
+                <UpdatedCustomInputSelect
+                  :controller="fetchOriganizatioEmployeeController"
+                  :params="fetchOrganizationEmployeeParams"
+                  v-model="item.employee"
+                  placeholder="Select Employee"
+                  class="mt-4 mr-2 input"
+                  :label="$t('Employee')"
+                  @update:model-value="UpdateData"
+                  :hascontent="isSelectHasContent[index]"
+                >
                   <!-- <template #reloadHeader>
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
@@ -139,50 +197,87 @@ const toggleMode = (index: number, isManual: boolean) => {
                   </template> -->
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
-                      <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="toggleMode(index, true)">
+                      <button
+                        :class="isSelectHasContent[index] ? 'active' : ''"
+                        class="emp-name"
+                        @click.prevent="toggleMode(index, true)"
+                      >
                         {{ $t('injured person name /id') }}
                       </button>
 
-                      <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="toggleMode(index, false)">
+                      <button
+                        :class="isSelectHasContent[index] ? '' : 'active'"
+                        class="emp-select"
+                        @click.prevent="toggleMode(index, false)"
+                      >
                         {{ $t('select') }}
                       </button>
                     </div>
                   </template>
                   <template #content>
-                    <input type="text" v-model="item.employee.title" class="input" placeholder="Select Employee">
+                    <input
+                      type="text"
+                      v-model="item.employee.title"
+                      class="input"
+                      placeholder="Select Employee"
+                    />
                   </template>
                 </UpdatedCustomInputSelect>
-
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
 
-                <UpdatedCustomInputSelect :modelValue="item.infectionTypeId" class="input"
-                  :controller="indexInjuryController" :params="indexInjuryParams" :label="$t('injury Classification')" id="injury"
-                  :placeholder="$t('select your injury Classification')" @update:modelValue="UpdateInjury($event, index)"
-                  @close="InjuryVisable = false" :isDialog="true" v-model:dialogVisible="InjuryVisable">
+                <UpdatedCustomInputSelect
+                  :modelValue="item.infectionTypeId"
+                  class="input"
+                  :controller="indexInjuryController"
+                  :params="indexInjuryParams"
+                  :label="$t('injury Classification')"
+                  id="injury"
+                  :placeholder="$t('select your injury Classification')"
+                  @update:modelValue="UpdateInjury($event, index)"
+                  @close="InjuryVisable = false"
+                  :isDialog="true"
+                  v-model:dialogVisible="InjuryVisable"
+                >
                   <template #LabelHeader>
                     <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>
                   </template>
                   <template #Dialog>
-                    <AddInjury @close:dialog="InjuryVisable = false" @update:data="InjuryVisable = false" />
+                    <AddInjury
+                      @close:dialog="InjuryVisable = false"
+                      @update:data="InjuryVisable = false"
+                    />
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('upload image') }}</label>
-                <MultiImagesInput :initialImages="item.images" @update:images="setImages($event, index)"
-                  :index="index + 2000" />
+                <MultiImagesInput
+                  :initialImages="item.images"
+                  @update:images="setImages($event, index)"
+                  :index="index + 2000"
+                />
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
-                @click="item.isWorkStopped = !item.isWorkStopped; UpdateData()">
+              <div
+                v-if="!props.isOpen"
+                class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
+                @click="
+                  item.isWorkStopped = !item.isWorkStopped;
+                  UpdateData()
+                "
+              >
                 <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
-                <Checkbox binary disabled :modelValue="item.isWorkStopped" @change="UpdateData" inputId="is_sstoped"
-                  :name="`is_sstoped`" />
+                <Checkbox
+                  binary
+                  disabled
+                  :modelValue="item.isWorkStopped"
+                  @change="UpdateData"
+                  inputId="is_sstoped"
+                  :name="`is_sstoped`"
+                />
               </div>
             </div>
           </div>

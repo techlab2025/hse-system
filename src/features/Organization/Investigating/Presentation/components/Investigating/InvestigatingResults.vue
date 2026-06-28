@@ -33,6 +33,8 @@ import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
 import Editor from 'primevue/editor'
 import InvestegationAnotherMeetingParams from '../../../Core/params/investegationResult/InvestegationAnotherMeetingParams.ts'
+import FactoryAccidents from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue'
+import InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams.ts'
 
 const route = useRoute()
 const id = route.params.id
@@ -97,6 +99,16 @@ const AddEnvestigatingResult = async () => {
     FiveWhyQuestionsData: FiveWhyQuestionsData.value,
     IncidantDescription: IncidantDescription.value,
     recommendation: recommendation.value,
+    Injury: Accidents.value?.accidentsData?.map((item: any) => {
+      return new InjuryParams(
+        item?.employee?.id || 0,
+        item?.employee?.title || '',
+        item?.text || null,
+        item?.infectionTypeId?.id || 0,
+        item?.isWorkStopped ? 1 : 0,
+        item?.images.map((el: any) => el.file) || [],
+      )
+    }),
   })
   console.log(anotherMeeting.value, 'anotherMeeting')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
@@ -155,7 +167,7 @@ const setFiveWhyQuestions = (data) => {
 
 const anotherMeeting = ref()
 const setAnotherMeeting = (data) => {
-  console.log(data , "data");
+  console.log(data, 'data')
   anotherMeeting.value = data
 }
 const indexRootCaueseController = IndexRootCausesController.getInstance()
@@ -184,6 +196,12 @@ const CloseCapa = async () => {
   router.push('/organization/investigating')
 }
 const IncidantDescription = ref<string>()
+
+const Accidents = ref()
+const UpdateAccidents = (data: any) => {
+  Accidents.value = data
+  console.log(Accidents.value, 'Accidents.value')
+}
 </script>
 <template>
   <DataStatus :controller="state">
@@ -236,6 +254,19 @@ const IncidantDescription = ref<string>()
           />
         </div>
 
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Injuries</p>
+        </div>
+        <div class="investigation-injury">
+          <FactoryAccidents
+            :injuries="state.data?.observation?.injuries"
+            class="not-colored"
+            @update:data="UpdateAccidents"
+            :isOpen="true"
+          />
+        </div>
+
         <!-- <div class="investigation-title">
           <img :src="investigationImg" alt="" />
           <p>Health Impact Integration</p>
@@ -246,7 +277,10 @@ const IncidantDescription = ref<string>()
           <p>Witness Management</p>
         </div>
 
-        <ViewersResults @update:data="setViewersResults" />
+        <ViewersResults
+          :viwers="state.data?.observation?.witness_statements"
+          @update:data="setViewersResults"
+        />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />

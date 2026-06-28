@@ -15,6 +15,7 @@ import IndexInjuryController from '@/features/Organization/Injury/Presentation/c
 import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
 import Checkbox from 'primevue/checkbox'
 import InjuresTimeLine from './InjuresTimeLine.vue'
+import type InjuryDetailsModel from '../../../Data/models/InjuryModel.ts'
 
 // const emit = defineEmits(['update:data'])
 // const time = ref()
@@ -104,7 +105,11 @@ import InjuresTimeLine from './InjuresTimeLine.vue'
 // }
 
 const emit = defineEmits(['update:data'])
-const isAnotherMeeting = ref(0)
+const { isOpen, injuries } = defineProps<{
+  isOpen?: boolean
+  injuries?: InjuryDetailsModel[]
+}>()
+const isAnotherMeeting = ref(isOpen ? isOpen : 0)
 const updateData = () => {
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,
@@ -135,7 +140,7 @@ watch(
 </script>
 <template>
   <div class="another-meeting">
-    <div class="another-meeting-header">
+    <div class="another-meeting-header" v-if="!isOpen">
       <HeaderPage
         :title="`Are there Injuries?`"
         :subtitle="`Did this incident result in any physical injuries`"
@@ -161,7 +166,7 @@ watch(
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
-      <InjuresTimeLine @update:data="UpdateAccidentsData" />
+      <InjuresTimeLine :injuries="injuries" :isOpen="isOpen" @update:data="UpdateAccidentsData" />
     </div>
   </div>
 </template>

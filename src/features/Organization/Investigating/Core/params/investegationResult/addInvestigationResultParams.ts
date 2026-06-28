@@ -7,6 +7,7 @@ import type InvestegationWitnessesParams from './InvestegationWitnessesParams'
 import type InvestegationAnotherMeetingParams from './InvestegationAnotherMeetingParams'
 import type InvestigationFiveQuestionParams from './InvestegationFiveQuestoinsParams'
 import type RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
+import type InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams'
 
 export default class AddInvestigationResultParams implements Params {
   public investigationMeetingId: number
@@ -29,6 +30,7 @@ export default class AddInvestigationResultParams implements Params {
   public IncidantDescription?: string
   public isAnotherMeeting?: number
   public recommendation?: string
+  public Injury?: InjuryParams[]
 
   constructor(data: {
     investigationMeetingId: number
@@ -51,6 +53,7 @@ export default class AddInvestigationResultParams implements Params {
     IncidantDescription?: string
     recommendation?: string
     isAnotherMeeting?: number
+    Injury?: InjuryParams[]
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -72,6 +75,7 @@ export default class AddInvestigationResultParams implements Params {
     this.IncidantDescription = data.IncidantDescription
     this.recommendation = data.recommendation
     this.isAnotherMeeting = data.isAnotherMeeting
+    this.Injury = data.Injury
   }
 
   toMap(): Record<string, number | string | any> {
@@ -97,6 +101,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.IncidantDescription) data['incidant_description'] = this.IncidantDescription
     if (this.recommendation) data['recommendation'] = this.recommendation
     if (this.isAnotherMeeting) data['is_another_meeting'] = this.isAnotherMeeting
+    data['injuries'] = this.Injury?.map((item) => item.toMap())
     return data
   }
 }
