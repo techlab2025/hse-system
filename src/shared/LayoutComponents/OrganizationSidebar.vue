@@ -286,6 +286,18 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
     ],
   },
+  {
+    link: '/organization/document-refrence',
+    name: 'Document Refrence',
+    icon: InjuredIcon,
+    permissions: [
+      PermissionsEnum.DOCUMENT_REFRENCE_ALL,
+      PermissionsEnum.DOCUMENT_REFRENCE_CREATE,
+      PermissionsEnum.DOCUMENT_REFRENCE_DELETE,
+      PermissionsEnum.DOCUMENT_REFRENCE_FETCH,
+      PermissionsEnum.DOCUMENT_REFRENCE_UPDATE,
+    ],
+  },
 ])
 const TicketRoutes = ref<Routes[]>([
   {

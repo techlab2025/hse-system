@@ -1385,5 +1385,6 @@
   "show_capa": "Show CAPA",
   "incidant_description": "Incidant Description",
   "event_time_line": "Event Time Line",
-  "root_cause": "Root Cause"
+  "root_cause": "Root Cause",
+  "add_document_refrence": "Add Document Refrence"
 }

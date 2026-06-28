@@ -28,6 +28,7 @@ import { ticketRoutes } from '../shared/ticket'
 import { CapaRoutes } from './Capa'
 import { ForgetPasswordRoutes } from './ForgetPassword'
 import { CheckListRoutes } from './CheckList'
+import { DocumentRefrenceRoutes } from './document-refrence'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -64,6 +65,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...CapaRoutes,
   ...ForgetPasswordRoutes,
   ...CheckListRoutes,
+  ...DocumentRefrenceRoutes,
 
   {
     path: 'permission/:id',

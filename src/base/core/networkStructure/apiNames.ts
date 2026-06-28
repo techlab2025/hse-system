@@ -1621,6 +1621,23 @@ class ApiNames {
   public get deleteCertificateToHierarchy() {
     return this.prefix + 'delete_hierarchy_certificate'
   }
+
+  // document refrence
+  public get CreateDocumentRefrence() {
+    return this.prefix + 'create_document_refrence'
+  }
+  public get IndexDocumentRefrence() {
+    return this.prefix + 'fetch_document_refrences'
+  }
+  public get ShowDocumentRefrence() {
+    return this.prefix + 'fetch_document_refrence_details'
+  }
+  public get EditDocumentRefrence() {
+    return this.prefix + 'update_document_refrence'
+  }
+  public get DeleteDocumentRefrence() {
+    return this.prefix + 'delete_document_refrence'
+  }
 }
 
 export { ApiNames }
