@@ -32,7 +32,6 @@ const previewImages = computed(() => images.value.slice(0, 3))
 const extraCount = computed(() => images.value.length - 3)
 </script>
 
-
 <template>
   <div>
     <!-- && isUpload -->
@@ -42,22 +41,30 @@ const extraCount = computed(() => images.value.length - 3)
     </label>
 
     <MultiImagesDialog :images="images">
-      <div v-if="images.length > 1" class="grid grid-cols-2 gap-1 w-15">
-        <div v-for="(img, i) in previewImages" :key="i" class="w-full h-full rounded-md overflow-hidden">
+      <div v-if="images.length > 1" class="flex grid grid-cols-2 gap-1 w-15">
+        <div
+          v-for="(img, i) in previewImages"
+          :key="i"
+          class="w-full h-full rounded-md overflow-hidden"
+        >
           <img :src="img" class="w-15 h-full object-cover" />
         </div>
 
-        <div v-if="images.length >= 4" class="w-full h-full rounded-md overflow-hidden relative cursor-pointer">
+        <div
+          v-if="images.length >= 4"
+          class="w-full h-full rounded-md overflow-hidden relative cursor-pointer"
+        >
           <img :src="images[3]" class="w-15 h-full object-cover" />
 
-          <div class="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl font-semibold">
+          <div
+            class="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-xl font-semibold"
+          >
             +{{ extraCount }}
           </div>
         </div>
       </div>
 
       <div v-else class="grid grid-cols-1 w-15">
-
         <div v-for="(img, i) in images" :key="i" class="w-full h-full rounded-md overflow-hidden">
           <img :src="img" class="w-15 h-full object-cover" />
         </div>
@@ -65,3 +72,9 @@ const extraCount = computed(() => images.value.length - 3)
     </MultiImagesDialog>
   </div>
 </template>
+
+<style scoped>
+.flex {
+  display: flex !important;
+}
+</style>

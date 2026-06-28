@@ -85,13 +85,10 @@ const fetchHazard = async (
     null,
     route.query.hazard ? route.query.hazard : null,
     route.query.risk_level ? [route.query.risk_level] : null,
-
-
   )
   console.log(params, 'Params')
   await indexHazardController.getData(params)
 }
-
 
 onMounted(() => {
   // if (selectedProjctesFilters.value) {
@@ -216,7 +213,6 @@ const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
       return 'Open'
     case ActionStatusEnum.CLOSED:
       return 'Closed'
-
   }
 }
 
@@ -226,16 +222,25 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
       return 'Positive'
     case SaveStatusEnum.NotSaved:
       return 'Negative'
-
   }
 }
 
-
-
 const toggleObservationWorkStopped = async (id: number) => {
   const toggleObservationWorkStoppedParams = new ToggleObservationWorkStoppedParams(id)
-  await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(toggleObservationWorkStoppedParams, router)
-  await fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+  await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(
+    toggleObservationWorkStoppedParams,
+    router,
+  )
+  await fetchHazard(
+    '',
+    1,
+    10,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
 }
 
 const GetObservationType = (type: number) => {
@@ -252,35 +257,48 @@ const GetObservationType = (type: number) => {
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_OBSERVATION_ALL,
-        PermissionsEnum.ORG_OBSERVATION_DELETE,
-        PermissionsEnum.ORG_OBSERVATION_FETCH,
-        PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        PermissionsEnum.ORG_OBSERVATION_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="`observation`" :length="state?.data?.length || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
-
+          <IndexHazardHeader
+            :title="`observation`"
+            :length="state?.data?.length || 0"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
 
           <div class="flex items-center justify-between">
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <IndexFilter
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/observation/add'"
+                :linkText="'Create Observation'"
+              />
             </PermissionBuilder>
 
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <PermissionBuilder :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]">
+              <PermissionBuilder
+                :code="[
+                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                  PermissionsEnum?.ORG_OBSERVATION_CREATE,
+                ]"
+              >
                 <router-link :to="`/organization/equipment-mangement/observation/add`">
                   <button class="btn btn-primary">{{ $t('create_observation') }}</button>
                 </router-link>
@@ -292,9 +310,7 @@ const GetObservationType = (type: number) => {
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container">
-                <div class="index-table-card" style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);"
-                  v-for="(item, index) in state.data" :key="index">
-
+                <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
                   <!-- :to="`observation/show/${item?.id}`" -->
                   <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
@@ -312,7 +328,6 @@ const GetObservationType = (type: number) => {
                               {{ $t('observation_type') }} :
                               <!-- <span>{{ GetObservationType(item.type) }}</span> -->
                               {{ GetSaveStatus(item.saveStatus) || 'N/A' }}
-
                             </p>
                             <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
                               {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
@@ -324,14 +339,19 @@ const GetObservationType = (type: number) => {
                               {{ GetSaveStatus(item.saveStatus) }}
 
                             </p> -->
-                            <p class="label-item-secondary Negative flex items-center gap-1"
-                              v-if="item.isWorkStopped == 1">
+                            <p
+                              class="label-item-secondary Negative flex items-center gap-1"
+                              v-if="item.isWorkStopped == 1"
+                            >
                               {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle class="text-black" :index="item.id + 100" title=""
+                              <CustomCheckboxToggle
+                                class="text-black"
+                                :index="item.id + 100"
+                                title=""
                                 :checked="item.isWorkStopped == 1"
-                                @update:checked="toggleObservationWorkStopped(item?.id)" />
+                                @update:checked="toggleObservationWorkStopped(item?.id)"
+                              />
                             </p>
-
                           </div>
                           <router-link :to="`observation/show/${item?.id}`" class="card-details">
                             <p class="title">
@@ -340,7 +360,10 @@ const GetObservationType = (type: number) => {
                             <p class="subtitle">{{ item.title }}</p>
                             <!-- <p class="subtitle">{{ item.description }}</p> -->
                             <div class="project-details">
-                              <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
+                              <p
+                                class="label-item-primary flex items-center gap-1"
+                                v-if="item.zoon?.title"
+                              >
                                 <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
                               </p>
                               <p class="label-item-primary" v-if="item.equipment?.title">
@@ -354,14 +377,21 @@ const GetObservationType = (type: number) => {
                         </div>
 
                         <div class="card-info">
-                          <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
+                          <span
+                            v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
                             class="observation-risk-level flex items-center gap-1"
-                            :class="GetRiskLevel(item.riskLevel)">
+                            :class="GetRiskLevel(item.riskLevel)"
+                          >
                             {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
                             <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
                           </span>
                           <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                          <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
+                          <Image
+                            v-if="item.media[0]?.url"
+                            :src="item.media[0]?.url"
+                            alt="Image"
+                            preview
+                          >
                             <template #previewicon>
                               <div class="perview">
                                 <span>{{ $t('View') }}</span>
@@ -392,8 +422,11 @@ const GetObservationType = (type: number) => {
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -404,48 +437,45 @@ const GetObservationType = (type: number) => {
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <DataEmpty :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <DataEmpty
+                :link="`/organization/equipment-mangement/observation/add`"
+                addText="Add Observation"
                 description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+                title="..ops! You have No Observation"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <DataFailed :link="`/organization/equipment-mangement/observation/add`" addText="Add Observation"
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/observation/add`"
+                addText="Add Observation"
                 description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation" />
+                title="..ops! You have No Observation"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-.card-header-container {
-  .Negative {
-    background-color: #AAADB41A;
-    padding: 10px;
-    border-radius: 10px;
-    color: #737787 !important;
-
-    .text-black {
-      .switch-track {
-        background-color: #737787 !important;
-      }
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

@@ -1,160 +1,150 @@
 @use '../variables' as *;
 @use '../mixins/flex' as *;
-@use '../mixins/grid' as *;
 
 .idnex-header {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XsSize;
-  font-family: 'Regular';
-  // border: 3px solid #5571b927;
-  border-radius: calc($XlSize + 2px);
-  padding: $MdSize;
-  background-color: #fcfcfc;
+  gap: 14px;
   width: 100%;
+  padding: 18px;
+  border: 1px solid #dfe9f6;
+  border-radius: 8px;
+  // background: rgba(173, 169, 169, 0.532);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+  color: #ffffff;
+  font-family: 'Regular';
+  overflow: hidden;
+  position: relative;
 
-  // @include flex-column(nowrap, flex-start, center);
-  gap: $XsSize3;
-
-  overflow-x: scroll;
-  // overflow-y: hidden;
-  scroll-behavior: smooth;
-  // -webkit-overflow-scrolling: touch;
-
-  padding-bottom: 6px;
-
-  /* snap scrolling */
-  scroll-snap-type: x mandatory;
-
-  /* scrollbar */
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-
-  &.colored {
-    background-color: #f7f9fc;
-    border: none;
-    border-radius: 0;
-    transform: translateY(-10px);
-  }
-  &.noborder {
-    width: 100%;
-    border: none;
-    background-color: #fcfcfc;
-  }
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset-block: 14px;
+  //   inset-inline-end: 16px;
+  //   width: 5px;
+  //   border-radius: 999px;
+  //   background: linear-gradient(180deg, #14b8a6, #f59e0b, #ef4444);
+  // }
 
   .title {
-    color: #170f49;
-    font-size: calc($XlSize + 2px);
+    max-width: calc(100% - 28px);
+    color: black;
+    font-family: 'Bold';
+    font-size: 26px;
     font-weight: $BaseFontWeightBold;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: capitalize;
   }
+
   .index-length {
-    color: #c0c0c5;
-    font-size: $SmSize;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 5px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: black;
+    font-size: 12px;
     font-weight: $BaseFontMediumWeight;
+
     span {
-      color: $PrimaryColor;
+      color: black;
+      font-family: 'Bold';
+      font-size: 14px;
+      font-weight: $BaseFontWeightBold;
     }
   }
-  // .categories-container {
-  //   @include flex-row(nowrap, flex-start, center);
-  //   gap: $XsSize3;
-  //   overflow-x: auto;
-  //   &::-webkit-scrollbar {
-  //     height: 4px;
-  //   }
-  //   &::-webkit-scrollbar-thumb {
-  //     background-color: rgba(0, 0, 0, 0.2);
-  //     border-radius: 4px;
-  //   }
-  //   &::-webkit-scrollbar-track {
-  //     background-color: transparent;
-  //   }
-  //   .category {
-  //     color: #b7beca;
-  //     border: 1px solid #f3f3f3;
-  //     border-radius: $MdSize2;
-  //     padding: $XsSize2 calc($XlSize3 + 4px);
-  //     font-size: $MdSize;
-  //     font-weight: $BaseFontWeightBold;
-  //     transition: 0.3s all linear;
-  //     cursor: pointer;
-  //     &.active {
-  //       color: white;
-  //       background-color: $PrimaryColor;
-  //     }
-  //   }
-  // }
+
+  &.colored,
+  &.noborder {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &.noborder {
+    width: 100%;
+    padding: 0;
+  }
+
   .categories-container {
     @include flex-row(nowrap, flex-start, center);
-    gap: $XsSize3;
-
-    overflow-x: scroll;
-    // overflow-y: hidden;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    padding: 2px 2px 8px;
+    overflow-x: auto;
     scroll-behavior: smooth;
-    // -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
 
-    padding-bottom: 6px;
-
-    /* snap scrolling */
-    scroll-snap-type: x mandatory;
-
-    /* scrollbar */
     &::-webkit-scrollbar {
-      height: 4px;
+      height: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.55);
     }
 
     &::-webkit-scrollbar-track {
-      background-color: transparent;
+      background: transparent;
     }
 
-    /* Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-
     .category {
-      flex: 0 0 auto; // مهم جدًا عشان مايكسرش
-      scroll-snap-align: start;
-
-      color: #b7beca;
-      border: 1px solid #f3f3f3;
-      border-radius: $MdSize2;
-      padding: $XsSize2 calc($XlSize3 + 4px);
-      font-size: $MdSize;
+      flex: 0 0 auto;
+      min-height: 36px;
+      padding: 8px 14px;
+      border: 1px solid #dbe7f5;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      color: #475569;
+      font-family: 'Bold';
+      font-size: 12px;
       font-weight: $BaseFontWeightBold;
+      letter-spacing: 0;
       white-space: nowrap;
-
-      transition: 0.3s all ease;
       cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease;
 
       &:hover {
-        // color: white;
-        background-color: rgba($PrimaryColor, 0.8);
+        transform: translateY(-1px);
+        border-color: #93c5fd;
+        background: #eff6ff;
+        color: #1d4ed8;
       }
 
       &.active {
-        color: white;
-        background-color: $PrimaryColor;
-        border: 1px solid $PrimaryColor;
-         border-radius: 40px;
+        border-color: rgba(20, 184, 166, 0.5);
+        background: linear-gradient(135deg, #1d4ed8, #14b8a6);
+        box-shadow: 0 10px 22px rgba(29, 78, 216, 0.2);
+        color: #ffffff;
       }
+    }
+  }
+
+  > .idnex-header.noborder {
+    padding-top: 4px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 14px;
+
+    .title {
+      font-size: 21px;
     }
   }
 }
