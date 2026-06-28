@@ -9,7 +9,7 @@ export default class ShowDocumentRefrenceParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['document_refrence_id'] = this.id
+    data['document_reference_id'] = this.id
     return data
   }
 }

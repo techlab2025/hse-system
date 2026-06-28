@@ -6,7 +6,7 @@ export default class AddDocumentRefrenceParams implements Params {
   translation: TranslationsParams
 
   public static readonly validation = new ClassValidation().setRules({
-    translation: { required: true, minLength: 2, maxLength: 100 },
+    translation: { required: true },
   })
 
   constructor(translation: TranslationsParams) {

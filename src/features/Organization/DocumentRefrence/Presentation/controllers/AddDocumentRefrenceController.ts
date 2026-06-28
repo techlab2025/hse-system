@@ -24,11 +24,6 @@ export default class AddDocumentRefrenceController extends ControllerInterface<D
 
   async addDocumentRefrence(params: AddDocumentRefrenceParams, router?: Router) {
     try {
-      params.validate()
-      if (!params.validate().isValid) {
-        params.validateOrThrow()
-        return
-      }
       const dataState: DataState<DocumentRefrenceModel> =
         await this.AddDocumentRefrenceUseCase.call(params)
       this.setState(dataState)

@@ -1,14 +1,13 @@
-import type Params from "@/base/core/params/params";
+import type Params from '@/base/core/params/params'
 
 export default class DeleteDocumentRefrenceParams implements Params {
-
   constructor(public id: number) {
-    this.id = id;
+    this.id = id
   }
 
   toMap(): Record<string, number> {
-    const data: Record<string, number> = {};
-    data["document_refrence_id"] = this.id;
-    return data;
+    const data: Record<string, number> = {}
+    data['document_reference_id'] = this.id
+    return data
   }
 }

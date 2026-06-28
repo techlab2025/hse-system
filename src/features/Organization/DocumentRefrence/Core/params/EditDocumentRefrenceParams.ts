@@ -5,10 +5,7 @@ export default class EditDocumentRefrenceParams implements Params {
   id: number
   translation: TranslationsParams
 
-  constructor(
-    id: number,
-    translation: TranslationsParams,
-  ) {
+  constructor(id: number, translation: TranslationsParams) {
     this.id = id
     this.translation = translation
   }
@@ -25,7 +22,7 @@ export default class EditDocumentRefrenceParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['document_refrence_id'] = this.id
+    data['document_reference_id'] = this.id
     data['translations'] = this.translation.toMap()
 
     return data

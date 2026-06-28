@@ -1,7 +1,6 @@
 import DialogSelector from '../Dialogs/dialog_selector'
 import warning from '@/assets/images/warning.png'
 
-// class_validation.ts
 export interface ValidationRule {
   required?: boolean
   minLength?: number
@@ -9,12 +8,17 @@ export interface ValidationRule {
   min?: number
   max?: number
   pattern?: RegExp
-  custom?: (value: any) => boolean | string
+  custom?: (value: unknown) => boolean | string
 }
 
-export interface ValidationError {
+export interface ValidationFieldError {
   field: string
   message: string
+}
+
+export interface ValidationResult {
+  isValid: boolean
+  errors: ValidationFieldError[]
 }
 
 export class ClassValidation {
@@ -32,12 +36,10 @@ export class ClassValidation {
    * Set multiple rules at once
    */
   setRules(rules: Record<string, ValidationRule>): this {
-    // console.log(rules);
     Object.entries(rules).forEach(([field, rule]) => {
       this.rules.set(field, rule)
     })
 
-    // console.log(this.rules);
     return this
   }
 
@@ -62,25 +64,21 @@ export class ClassValidation {
   /**
    * Validate an object against the defined rules
    */
-  validate(obj: any): { isValid: boolean; errors: ValidationError[] } {
-    const errors: ValidationError[] = []
+  validate(obj: object | null | undefined): ValidationResult {
+    const errors: ValidationFieldError[] = []
 
-    // console.log(this.rules);
     this.rules.forEach((rule, field) => {
-      const value = obj[field]
+      const value = obj ? (obj as Record<string, unknown>)[field] : undefined
 
-      // Check required
       if (rule.required && this.isEmpty(value)) {
         errors.push({ field, message: `${field} is required` })
         return
       }
 
-      // Skip other validations if field is empty and not required
       if (!rule.required && this.isEmpty(value)) {
         return
       }
 
-      // Check minLength
       if (
         rule.minLength !== undefined &&
         typeof value === 'string' &&
@@ -89,7 +87,6 @@ export class ClassValidation {
         errors.push({ field, message: `${field} must be at least ${rule.minLength} characters` })
       }
 
-      // Check maxLength
       if (
         rule.maxLength !== undefined &&
         typeof value === 'string' &&
@@ -98,25 +95,25 @@ export class ClassValidation {
         errors.push({ field, message: `${field} must be at most ${rule.maxLength} characters` })
       }
 
-      // Check min
       if (rule.min !== undefined && typeof value === 'number' && value < rule.min) {
         errors.push({ field, message: `${field} must be at least ${rule.min}` })
       }
 
-      // Check max
       if (rule.max !== undefined && typeof value === 'number' && value > rule.max) {
         errors.push({ field, message: `${field} must be at most ${rule.max}` })
       }
 
-      // Check pattern
-      if (rule.pattern && typeof value === 'string' && !rule.pattern.test(value)) {
-        errors.push({ field, message: `${field} format is invalid` })
+      if (rule.pattern && typeof value === 'string') {
+        rule.pattern.lastIndex = 0
+
+        if (!rule.pattern.test(value)) {
+          errors.push({ field, message: `${field} format is invalid` })
+        }
       }
 
-      // Check custom validation
       if (rule.custom) {
         const result = rule.custom(value)
-        console.log(result, 'result')
+
         if (result !== true) {
           errors.push({
             field,
@@ -125,8 +122,6 @@ export class ClassValidation {
         }
       }
     })
-
-    // console.log(errors);
 
     return {
       isValid: errors.length === 0,
@@ -137,12 +132,10 @@ export class ClassValidation {
   /**
    * Validate and throw error if validation fails
    */
-  validateOrThrow(obj: any): void {
-    console.log(obj, 'obj')
+  validateOrThrow(obj: object | null | undefined): void {
     const { isValid, errors } = this.validate(obj)
-    console.log({ isValid, errors }, '{ isValid, errors }')
+
     if (!isValid) {
-      // throw new ValidationError(errors)
       const validationError = new ValidationError(errors)
       validationError.openDialog()
     }
@@ -151,7 +144,7 @@ export class ClassValidation {
   /**
    * Check if a value is empty
    */
-  private isEmpty(value: any): boolean {
+  private isEmpty(value: unknown): boolean {
     if (value === null || value === undefined) return true
     if (typeof value === 'string' && value.trim() === '') return true
     if (Array.isArray(value) && value.length === 0) return true
@@ -160,7 +153,7 @@ export class ClassValidation {
 }
 
 export class ValidationError extends Error {
-  constructor(public errors: ValidationError[]) {
+  constructor(public errors: ValidationFieldError[]) {
     super(`Validation failed: ${errors.map((e) => `${e.field}: ${e.message}`).join(', ')}`)
     this.name = 'ValidationError'
   }

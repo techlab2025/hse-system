@@ -20,12 +20,11 @@ class EditDocumentRefrenceApiService extends ServicesInterface {
 
   async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.EditInjury,
+      url: ApiNames.instance.EditDocumentRefrence,
       type: CrudType.POST,
       auth: true,
       params: params,
       showLoadingDialog: true,
-
     })
   }
 }

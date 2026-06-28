@@ -291,11 +291,11 @@ const OrganizationRoutes = ref<Routes[]>([
     name: 'Document Refrence',
     icon: InjuredIcon,
     permissions: [
-      PermissionsEnum.DOCUMENT_REFRENCE_ALL,
-      PermissionsEnum.DOCUMENT_REFRENCE_CREATE,
-      PermissionsEnum.DOCUMENT_REFRENCE_DELETE,
-      PermissionsEnum.DOCUMENT_REFRENCE_FETCH,
-      PermissionsEnum.DOCUMENT_REFRENCE_UPDATE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_FETCH,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
     ],
   },
 ])

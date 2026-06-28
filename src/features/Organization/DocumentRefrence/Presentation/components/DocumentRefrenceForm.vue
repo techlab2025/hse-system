@@ -17,13 +17,12 @@ const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: DocumentRefrenceDetailsModel
 }>()
+type InpuLangModel = {
+  locale: string
+  title?: string
+}
 
-const langs = ref<
-  {
-    locale: string
-    title?: string
-  }[]
->([])
+const langs = ref<InpuLangModel[]>([])
 
 const SystemLanguages = ref<
   {
@@ -109,12 +108,7 @@ watch(
   { deep: true },
 )
 
-const GetTitle = (
-  title: {
-    locale: string
-    title?: string
-  }[],
-) => {
+const GetTitle = (title: InpuLangModel[]) => {
   console.log(title, 'title')
   langs.value = title
 }
@@ -122,6 +116,11 @@ const GetTitle = (
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="SystemLanguages" :modelValue="langs" @update:modelValue="GetTitle" />
+    <LangTitleInput
+      :langs="SystemLanguages"
+      :modelValue="langs"
+      @update:modelValue="GetTitle"
+      :required="true"
+    />
   </div>
 </template>

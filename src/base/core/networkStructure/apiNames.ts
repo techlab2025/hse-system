@@ -1572,7 +1572,6 @@ class ApiNames {
   public get IndexCapa() {
     // return this.prefix + 'fetch_capa_observations'
     return this.prefix + 'fetch_capas'
-
   }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
@@ -1624,19 +1623,19 @@ class ApiNames {
 
   // document refrence
   public get CreateDocumentRefrence() {
-    return this.prefix + 'create_document_refrence'
+    return this.prefix + 'create_document_reference'
   }
   public get IndexDocumentRefrence() {
-    return this.prefix + 'fetch_document_refrences'
+    return this.prefix + 'fetch_document_references'
   }
   public get ShowDocumentRefrence() {
-    return this.prefix + 'fetch_document_refrence_details'
+    return this.prefix + 'fetch_document_reference_details'
   }
   public get EditDocumentRefrence() {
-    return this.prefix + 'update_document_refrence'
+    return this.prefix + 'update_document_reference'
   }
   public get DeleteDocumentRefrence() {
-    return this.prefix + 'delete_document_refrence'
+    return this.prefix + 'delete_document_reference'
   }
 }
 

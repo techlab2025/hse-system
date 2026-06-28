@@ -71,9 +71,9 @@ const actionList = (id: number, deleteDocumentRefrence: (id: number) => void) =>
     icon: ActionsTableEdit,
     link: `/organization/document-refrence/${id}`,
     permission: [
-      PermissionsEnum.DOCUMENT_REFRENCE_UPDATE,
-      PermissionsEnum.DOCUMENT_REFRENCE_DETAILS,
-      PermissionsEnum.DOCUMENT_REFRENCE_ALL,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DETAILS,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
     ],
   },
 
@@ -81,7 +81,10 @@ const actionList = (id: number, deleteDocumentRefrence: (id: number) => void) =>
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteDocumentRefrence(id),
-    permission: [PermissionsEnum.DOCUMENT_REFRENCE_DELETE, PermissionsEnum.DOCUMENT_REFRENCE_ALL],
+    permission: [
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
+    ],
   },
 ]
 
@@ -116,11 +119,11 @@ watch(
 
   <PermissionBuilder
     :code="[
-      PermissionsEnum.DOCUMENT_REFRENCE_ALL,
-      PermissionsEnum.DOCUMENT_REFRENCE_DELETE,
-      PermissionsEnum.DOCUMENT_REFRENCE_FETCH,
-      PermissionsEnum.DOCUMENT_REFRENCE_UPDATE,
-      PermissionsEnum.DOCUMENT_REFRENCE_CREATE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_FETCH,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
+      PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -165,7 +168,7 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.DOCUMENT_REFRENCE_CREATE]">
+        <PermissionBuilder :code="[PermissionsEnum?.ORG_DOCUMENTATION_REFERENCE_CREATE]">
           <DataEmpty
             :link="`/organization/document-refrence/add`"
             addText="Add Document Refrence"
@@ -175,7 +178,7 @@ watch(
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.DOCUMENT_REFRENCE_CREATE]">
+        <PermissionBuilder :code="[PermissionsEnum?.ORG_DOCUMENTATION_REFERENCE_CREATE]">
           <DataFailed
             :link="`/organization/document-refrence/add`"
             addText="Add Document Refrence"
