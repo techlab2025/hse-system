@@ -4,6 +4,7 @@ import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 import MeetingModel from '../Meetings/MeetingModel'
 import type InjuryModel from '@/features/Organization/Injury/Data/models/InjuryModel'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
+import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 
 export default class InvestegationResultDetailsModel {
   public id: number
@@ -24,6 +25,7 @@ export default class InvestegationResultDetailsModel {
   public TeamLeader: { id: number; name: string }
   public CreatedAt: string
   public investigationMeetingDate: string
+  public witness_statements: InjuryDetailsModel[]
 
   constructor(
     id: number,
@@ -43,6 +45,7 @@ export default class InvestegationResultDetailsModel {
     TeamLeader: { id: number; name: string },
     CreatedAt: string,
     investigationMeetingDate: string,
+    witness_statements: InjuryDetailsModel[],
   ) {
     this.id = id
     this.title = title
@@ -61,6 +64,7 @@ export default class InvestegationResultDetailsModel {
     this.TeamLeader = TeamLeader
     this.CreatedAt = CreatedAt
     this.investigationMeetingDate = investigationMeetingDate
+    this.witness_statements = witness_statements
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -82,6 +86,7 @@ export default class InvestegationResultDetailsModel {
       data.investigation_team_leader,
       data.created_at,
       data.investigation_meeting_date,
+      data.witness_statements,
     )
   }
   static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

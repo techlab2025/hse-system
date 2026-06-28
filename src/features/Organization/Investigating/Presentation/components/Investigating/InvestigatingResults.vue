@@ -278,7 +278,10 @@ const UpdateAccidents = (data: any) => {
         </div>
 
         <ViewersResults
-          :viwers="state.data?.observation?.witness_statements"
+          :viwers="[
+            ...(state.data?.observation?.witness_statements ?? []),
+            ...state.data?.witness_statements,
+          ]"
           @update:data="setViewersResults"
         />
 
