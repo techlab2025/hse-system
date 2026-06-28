@@ -10,19 +10,22 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 
 const emit = defineEmits(['update:data'])
+const MeetingType = ref<string>('')
+
 const time = ref(new Date())
 const date = ref(new Date())
-const SelectedPlatform = ref<TitleInterface>()
+const SelectedPlatform = ref<TitleInterface>(new TitleInterface({ id: 1, title: 'zoom' }))
 const Platforms = ref([
   new TitleInterface({ id: 1, title: 'zoom' }),
   new TitleInterface({ id: 2, title: 'teams' }),
-  new TitleInterface({ id: 2, title: 'other' }),
+  new TitleInterface({ id: 3, title: 'other' }),
 ])
 const UpdateData = () => {
   const Meeting = new InvestegationAnotherMeetingParams(
     formatJoinDate(date?.value),
     formatTime(time?.value),
     SelectedPlatform?.value?.id,
+    MeetingType.value,
   )
 
   emit('update:data', {
@@ -105,6 +108,11 @@ watch(
           label="meeting platform"
           @update:model-value="setPlatform"
         />
+      </div>
+
+      <div class="input-wrapper col-span-3" v-if="SelectedPlatform!.id == 3">
+        <label for="place">Meeting Place</label>
+        <input id="place" placeholder="Enter meeting place" type="text" v-model="MeetingType" />
       </div>
     </div>
   </div>

@@ -59,14 +59,15 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
   }
 }
 
+const isInitialized = ref(false)
+
 watch(
   () => viwers,
   (newInjuries) => {
-    console.log(viwers , "newInjuries");
-    if (newInjuries?.length) {
+    if (!isInitialized.value && newInjuries?.length) {
       Answers.value = newInjuries.map(mapInjuryToAnswer)
+      isInitialized.value = true
       UpdateData()
-      return
     }
   },
   { immediate: true, deep: true },

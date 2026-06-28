@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 import investigationImg from '@/assets/images/investigationImg.png'
@@ -91,6 +91,7 @@ const AddEnvestigatingResult = async () => {
       anotherMeeting?.value?.meetings?.date,
       anotherMeeting?.value?.meetings?.time,
       anotherMeeting?.value?.meetings?.type,
+      anotherMeeting?.value?.meetings?.place,
     ),
     isAnotherMeeting: anotherMeeting?.value?.isAnother,
     corrective: CauseOfAction.value?.description,
@@ -160,6 +161,10 @@ const viewersResults = ref()
 const setViewersResults = (data) => {
   viewersResults.value = data
 }
+const initialViewers = computed(() => [
+  ...(state.value?.data?.observation?.witness_statements ?? []),
+  ...(state.value?.data?.witness_statements ?? []),
+])
 const FiveWhyQuestionsData = ref()
 const setFiveWhyQuestions = (data) => {
   FiveWhyQuestionsData.value = data
@@ -277,13 +282,7 @@ const UpdateAccidents = (data: any) => {
           <p>Witness Management</p>
         </div>
 
-        <ViewersResults
-          :viwers="[
-            ...(state.data?.observation?.witness_statements ?? []),
-            ...state.data?.witness_statements,
-          ]"
-          @update:data="setViewersResults"
-        />
+        <ViewersResults :viwers="initialViewers" @update:data="setViewersResults" />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
