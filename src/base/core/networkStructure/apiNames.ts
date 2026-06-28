@@ -1637,6 +1637,23 @@ class ApiNames {
   public get DeleteDocumentRefrence() {
     return this.prefix + 'delete_document_reference'
   }
+
+  // shifts
+  public get CreateShift() {
+    return this.prefix + 'create_shift'
+  }
+  public get IndexShift() {
+    return this.prefix + 'fetch_shifts'
+  }
+  public get ShowShift() {
+    return this.prefix + 'fetch_shift_details'
+  }
+  public get EditShift() {
+    return this.prefix + 'update_shift'
+  }
+  public get DeleteShift() {
+    return this.prefix + 'delete_shift'
+  }
 }
 
 export { ApiNames }

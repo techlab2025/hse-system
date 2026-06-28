@@ -298,6 +298,18 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
     ],
   },
+  {
+    link: '/organization/shifts',
+    name: t('shifts'),
+    icon: ProjectProgressIcon,
+    permissions: [
+      PermissionsEnum.ORG_SHIFT_ALL,
+      PermissionsEnum.ORG_SHIFT_CREATE,
+      PermissionsEnum.ORG_SHIFT_DELETE,
+      PermissionsEnum.ORG_SHIFT_FETCH,
+      PermissionsEnum.ORG_SHIFT_UPDATE,
+    ],
+  },
 ])
 const TicketRoutes = ref<Routes[]>([
   {

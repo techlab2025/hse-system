@@ -1386,5 +1386,7 @@
   "incidant_description": "Incidant Description",
   "event_time_line": "Event Time Line",
   "root_cause": "Root Cause",
-  "add_document_refrence": "Add Document Refrence"
+  "add_document_refrence": "Add Document Refrence",
+  "shifts": "Shifts",
+  "add_shift": "Add Shift"
 }

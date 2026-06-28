@@ -882,5 +882,7 @@
   "root_causes": "الأسباب الجذرية",
   "injury": "الإصابات",
   "import_equipment": "استيراد المعدات",
-  "import_equipment_type": "استيراد أنواع المعدات"
+  "import_equipment_type": "استيراد أنواع المعدات",
+  "shifts": "الورديات",
+  "add_shift": "إضافة وردية"
 }
