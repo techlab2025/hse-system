@@ -112,7 +112,13 @@ watch(
 
       <div class="input-wrapper col-span-3" v-if="SelectedPlatform!.id == 3">
         <label for="place">Meeting Place</label>
-        <input id="place" placeholder="Enter meeting place" type="text" v-model="MeetingType" />
+        <input
+          id="place"
+          placeholder="Enter meeting place"
+          type="text"
+          v-model="MeetingType"
+          @input="UpdateData"
+        />
       </div>
     </div>
   </div>

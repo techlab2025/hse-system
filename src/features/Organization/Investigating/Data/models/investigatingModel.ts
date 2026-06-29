@@ -9,6 +9,7 @@ import acc from '@/assets/images/acc.png'
 import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnum'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import TeamLeaderModel from './TeamLeaderModel'
+import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string
@@ -42,6 +43,9 @@ export default class InvestigatingModel {
   public teamNumebr: number
   public investigation_meeting_date?: string
   public investigation_meeting_time?: string
+  public lessonLearnt?: string
+  public correctiveTask?: CapaTaskDetailsModel[]
+  public preventiveTask?: CapaTaskDetailsModel[]
 
   constructor(
     Investegationid: number,
@@ -76,6 +80,9 @@ export default class InvestigatingModel {
     teamNumebr: number,
     investigation_meeting_date?: string,
     investigation_meeting_time?: string,
+    lessonLearnt?: string,
+    correctiveTask?: CapaTaskDetailsModel[],
+    preventiveTask?: CapaTaskDetailsModel[],
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -109,9 +116,16 @@ export default class InvestigatingModel {
     this.teamNumebr = teamNumebr
     this.investigation_meeting_date = investigation_meeting_date
     this.investigation_meeting_time = investigation_meeting_time
+    this.lessonLearnt = lessonLearnt
+    this.correctiveTask = correctiveTask
+    this.preventiveTask = preventiveTask
   }
 
   static fromMap(data: any): InvestigatingModel {
+    const correctiveTask =
+      data.corrective_tasks ?? data.correctiveTasks ?? data.coorevtive_tasks ?? []
+    const preventiveTask =
+      data.preventive_tasks ?? data.preventiveTasks ?? data.previtive_tasks ?? []
     return new InvestigatingModel(
       data.id || data.investigation_id,
       data.title,
@@ -149,6 +163,9 @@ export default class InvestigatingModel {
       data.investigation_team_members_count,
       data.investigation_meeting_date,
       data.investigation_meeting_time,
+      data.lesson_learnt ?? data.lessonLearnt ?? '',
+      correctiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      preventiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
     )
   }
 

@@ -54,10 +54,10 @@ const GetMeetingStatus = (status) => {
       }}</span>
     </div>
     <p class="meeting-date">
-      Date & Time : <span>{{ meeting?.date }}</span>
+      Date & Time : <span>{{ meeting?.date }} & {{ meeting?.time }}</span>
     </p>
-    <p class="meeting-time">
+    <!-- <p class="meeting-time">
       duration : <span>{{ meeting?.time }}</span>
-    </p>
+    </p> -->
   </div>
 </template>

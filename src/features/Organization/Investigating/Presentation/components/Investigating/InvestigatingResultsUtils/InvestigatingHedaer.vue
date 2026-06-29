@@ -16,6 +16,7 @@ const props = defineProps<{
   equipment?: EquipmentDetailsModel
   incidantDescription?: string
   team?: InvestegationEmployeeModel[]
+  time?: string
 }>()
 </script>
 <template>
@@ -31,9 +32,9 @@ const props = defineProps<{
       <p>
         the victim : <span>{{ victim }}</span>
       </p>
-      <p>
+      <!-- <p>
         Date & Time : <span>{{ date }}</span>
-      </p>
+      </p> -->
     </div>
     <div class="meeting-info-container">
       <div class="metting-info-header-container">
@@ -42,7 +43,7 @@ const props = defineProps<{
       </div>
       <div class="meeting-info">
         <p>
-          Date & Time : <span class="meet-date">{{ date }}</span>
+          Date & Time : <span class="meet-date">{{ date }} &{{ time }}</span>
         </p>
         <p>
           Investigation team leader : <span class="team-leader">{{ TeamLeader }}</span>

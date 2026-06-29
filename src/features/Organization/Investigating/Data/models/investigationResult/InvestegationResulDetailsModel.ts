@@ -25,6 +25,7 @@ export default class InvestegationResultDetailsModel {
   public TeamLeader: { id: number; name: string }
   public CreatedAt: string
   public investigationMeetingDate: string
+  public investigationMeetingTime: string
   public witness_statements: InjuryDetailsModel[]
 
   constructor(
@@ -45,6 +46,7 @@ export default class InvestegationResultDetailsModel {
     TeamLeader: { id: number; name: string },
     CreatedAt: string,
     investigationMeetingDate: string,
+    investigationMeetingTime: string,
     witness_statements: InjuryDetailsModel[],
   ) {
     this.id = id
@@ -64,6 +66,7 @@ export default class InvestegationResultDetailsModel {
     this.TeamLeader = TeamLeader
     this.CreatedAt = CreatedAt
     this.investigationMeetingDate = investigationMeetingDate
+    this.investigationMeetingTime = investigationMeetingTime
     this.witness_statements = witness_statements
   }
 
@@ -86,22 +89,41 @@ export default class InvestegationResultDetailsModel {
       data.investigation_team_leader,
       data.created_at,
       data.investigation_meeting_date,
+      data.investigation_meeting_time,
       data.witness_statements,
     )
   }
-  static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
-    3,
-    'Title',
-    '_0b5512547_5432',
-    '2025-03-15 09:45 AM',
-    HazardModel.example,
-    1,
-    2,
-    new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
-    [
-      InvestegationEmployeeModel.example,
-      InvestegationEmployeeModel.example,
-      InvestegationEmployeeModel.example,
-    ],
-  )
+  // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
+  //   3,
+  //   'Title',
+  //   '_0b5512547_5432',
+  //   '2025-03-15 09:45 AM',
+  //   HazardModel.example,
+  //   1,
+  //   2,
+  //   new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
+  //   [
+  //     InvestegationEmployeeModel.example,
+  //     InvestegationEmployeeModel.example,
+  //     InvestegationEmployeeModel.example,
+  //   ],
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   [
+  //     MeetingModel.example,
+  //     MeetingModel.example,
+  //     MeetingModel.example,
+  //   ],
+  //   new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   [
+  //     InjuryDetailsModel.example,
+  //     InjuryDetailsModel.example,
+  //     InjuryDetailsModel.example,
+  //   ],
+  // )
 }

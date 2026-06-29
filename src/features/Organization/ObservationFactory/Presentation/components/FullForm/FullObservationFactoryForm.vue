@@ -64,6 +64,9 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddHazard.vue'
+import IndexShiftController from '@/features/Organization/Shifts/Presentation/controllers/IndexShiftController.ts'
+import IndexShiftParams from '@/features/Organization/Shifts/Core/params/IndexAShiftParams.ts'
+import AddShift from '@/features/Organization/Shifts/Presentation/components/AddShift.vue'
 
 const emit = defineEmits(['update:data'])
 //
@@ -216,6 +219,7 @@ const updateData = () => {
         OpenNote: preventive_action_open.value,
         OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
         OragnizationemployeeId: !isSelectHasContent.value ? Oragnizationemployee.value?.id : null,
+        workShiftId: Shifts.value?.id ?? null,
       })
   emit('update:data', params)
 }
@@ -498,6 +502,16 @@ const setOragnizationemployeeName = (data: Event) => {
 
 const HazardTypeDialog = ref(false)
 const HazardDialog = ref(false)
+
+const shiftsContrller = IndexShiftController.getInstance()
+const shiftsParams = new IndexShiftParams('', 1, 10, 0)
+const Shifts = ref<TitleInterface | null>(null)
+const setShifts = (data: TitleInterface) => {
+  Shifts.value = data
+  console.log(Shifts.value, 'Shifts')
+  updateData()
+}
+const ShiftsDialog = ref(false)
 </script>
 
 <template>
@@ -664,7 +678,7 @@ const HazardDialog = ref(false)
         @update:modelValue="setAccidentsType"
         @close="acedentDialogRef = false"
         :isDialog="true"
-       v-model:dialogVisible="acedentDialogRef"
+        v-model:dialogVisible="acedentDialogRef"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="acedentDialogRef = true">{{ $t('New') }}</span>
@@ -769,6 +783,32 @@ const HazardDialog = ref(false)
             placeholder="Select Employee"
             @input="setOragnizationemployeeName"
           />
+        </template>
+      </UpdatedCustomInputSelect>
+    </div>
+
+    <!-- Shifts -->
+    <div class="col-span-3 md:col-span-3 input-wrapper">
+      <UpdatedCustomInputSelect
+        :controller="shiftsContrller"
+        :params="shiftsParams"
+        v-model="Shifts"
+        placeholder="Select Shift"
+        class="mt-4 mr-2 input"
+        :label="$t('shift')"
+        @update:model-value="setShifts"
+        :hascontent="isSelectHasContent"
+        :reload="true"
+        @close="ShiftsDialog = false"
+        :isDialog="true"
+        :type="1"
+        v-model:dialogVisible="ShiftsDialog"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="ShiftsDialog = true">{{ $t('New') }}</span>
+        </template>
+        <template #Dialog>
+          <AddShift @close:dialog="ShiftsDialog = false" />
         </template>
       </UpdatedCustomInputSelect>
     </div>
@@ -977,8 +1017,6 @@ const HazardDialog = ref(false)
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
 
@@ -1003,7 +1041,7 @@ const HazardDialog = ref(false)
       class="hazard-type-container incedant col-span-6 md:col-span-6"
     >
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
-  <div
+        <div
           class="col-span-12 md:col-span-12"
           v-if="ObservationFactoryType != Observation.AccidentsType"
         >
@@ -1032,8 +1070,6 @@ const HazardDialog = ref(false)
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
 

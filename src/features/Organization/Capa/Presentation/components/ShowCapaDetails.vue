@@ -7,8 +7,8 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import Editor from 'primevue/editor'
-import CapaActionPlan from './CapaActionPlan.vue'
+// import Editor from 'primevue/editor'
+// import CapaActionPlan from './CapaActionPlan.vue'
 import CapaActionPlanDetails from './CapaActionPlanDetails.vue'
 import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
 
@@ -108,10 +108,9 @@ onMounted(() => {
 
         <!-- <CapaActionPlan @update:data="setCapaActionPlan" /> -->
         <CapaActionPlanDetails
-          :correctiveTasks="state.data?.correctiveTasks ?? []"
-          :preventiveTasks="state.data?.preventiveTasks ?? []"
+          :correctiveTasks="state.data?.investigation?.correctiveTask ?? []"
+          :preventiveTasks="state.data?.investigation?.preventiveTask ?? []"
         />
-
 
         <section class="lesson-section">
           <!-- <div class="section-heading">
@@ -128,9 +127,9 @@ onMounted(() => {
           <div class="saved-lesson">
             <span>Saved lesson learnt</span>
             <div
-            v-if="state.data?.lessonLearnt"
-            class="saved-lesson-content"
-            v-html="state.data.lessonLearnt"
+              v-if="state.data?.investigation?.lessonLearnt"
+              class="saved-lesson-content"
+              v-html="state.data.investigation?.lessonLearnt"
             ></div>
             <p v-else>No lesson learnt has been added yet.</p>
           </div>

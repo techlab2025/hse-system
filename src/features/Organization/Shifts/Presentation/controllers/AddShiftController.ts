@@ -33,7 +33,9 @@ export default class AddShiftController extends ControllerInterface<ShiftModel> 
           imageElement: successImage,
           messageContent: null,
         })
-        router?.push({ name: 'Shifts' })
+        if (router?.currentRoute.value.fullPath.includes('shifts')) {
+          router?.push({ name: 'Shifts' })
+        }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

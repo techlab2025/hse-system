@@ -135,7 +135,7 @@ const AddEnvestigatingResult = async () => {
   )
   if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 0) {
     openDialog.value = true
-  } else if (addInvestigationResultParams.isAnotherMeeting == 1) {
+  } else if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 1) {
     router.push('/organization/investigating')
   }
   // else {
@@ -255,6 +255,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           :equipment="state?.data?.observation?.equipment"
           :incidantDescription="state?.data?.observation?.description"
           :team="state.data?.investigationEmployees"
+          :time="state.data?.investigationMeetingTime"
         />
 
         <!-- <div class="investigation-title">

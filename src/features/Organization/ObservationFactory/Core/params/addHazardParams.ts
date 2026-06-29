@@ -49,6 +49,7 @@ export default class AddHazardParams implements Params {
   public code: string
   public OragnizationemployeeName: string
   public OragnizationemployeeId: number
+  public workShiftId: number
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -92,6 +93,7 @@ export default class AddHazardParams implements Params {
     OpenNote: string
     OragnizationemployeeName: string
     OragnizationemployeeId: number
+    workShiftId: number
   }) {
     this.title = data.title
     this.description = data.description
@@ -129,6 +131,7 @@ export default class AddHazardParams implements Params {
     this.OpenNote = data.OpenNote
     this.OragnizationemployeeName = data.OragnizationemployeeName
     this.OragnizationemployeeId = data.OragnizationemployeeId
+    this.workShiftId = data.workShiftId
   }
 
   toMap(): Record<
@@ -197,6 +200,7 @@ export default class AddHazardParams implements Params {
     if (this.OragnizationemployeeName != null) data['employee_name'] = this.OragnizationemployeeName
     if (this.OragnizationemployeeId != null)
       data['organization_employee_id'] = this.OragnizationemployeeId
+    if (this.workShiftId != null) data['work_shift_id'] = this.workShiftId
     return data
   }
 
