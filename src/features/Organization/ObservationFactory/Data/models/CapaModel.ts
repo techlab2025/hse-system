@@ -36,7 +36,7 @@ export default class CapaModel {
       data.date,
       data.time,
       data.capa_status,
-      data.capa_id,
+      data.observation_capa_id,
       data.observation_id,
     )
   }

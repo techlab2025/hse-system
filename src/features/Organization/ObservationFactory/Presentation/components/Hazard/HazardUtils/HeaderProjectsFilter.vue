@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel';
 import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import { onMounted, watch } from 'vue';
 import { ref } from 'vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
-  projects: MyProjectsModel[]
+  projects: ProjectModel[]
   isForm?: boolean
 }>()
 const ActiveTap = ref(props.projects?.[0]?.id)

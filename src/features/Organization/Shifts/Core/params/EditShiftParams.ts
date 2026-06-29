@@ -26,10 +26,10 @@ export default class EditShiftParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['shift_id'] = this.id
+    data['work_shift_id'] = this.id
     data['translations'] = this.translation.toMap()
-    data['start_time'] = this.startTime
-    data['end_time'] = this.endTime
+    data['from_time'] = this.startTime.slice(0, 5)
+    data['to_time'] = this.endTime.slice(0, 5)
 
     return data
   }

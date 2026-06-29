@@ -9,4 +9,13 @@ export const CapaRoutes: RouteRecordRaw[] = [
       breadcrumb: 'Capa',
     },
   },
+  {
+    path: 'capa/:id',
+    name: 'Capa Details',
+    component: () => import('@/views/Organization/Capa/CapaDetails.vue'),
+    meta: {
+      breadcrumb: 'CapaDetails',
+      parent: 'Capa',
+    },
+  },
 ]

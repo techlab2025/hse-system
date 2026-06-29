@@ -1,19 +1,17 @@
   <script setup lang="ts">
   import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-  // import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
   const emit = defineEmits(['update:data'])
 
   const props = defineProps<{
     filters: MyZonesModel[]
-    link: string
-    linkTitle: string
+    link?: string
+    linkTitle?: string
   }>()
 
   const SelectedFilter = ref<number[]>([])
 
   const UpdateData = (data: number) => {
-    // console.log(data, 'zonw dta')
     if (SelectedFilter.value.includes(data)) {
       SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
       emit('update:data', SelectedFilter.value)
@@ -39,10 +37,3 @@
     </div>
   </template>
 
-<!-- <style scoped>
-.idnex-filter{
-  background-color: white;
-  padding: 10px;
-  border-radius: 10px;
-}
-</style> -->

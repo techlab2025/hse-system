@@ -18,3 +18,4 @@ export default class CapaModel extends TitleInterface {
     return data.map((row, index) => new CapaModel(index + 1, row[0] || ''))
   }
 }
+  

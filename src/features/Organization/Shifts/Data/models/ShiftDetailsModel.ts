@@ -18,8 +18,8 @@ export default class ShiftDetailsModel {
     return new ShiftDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
-      data.start_time,
-      data.end_time,
+      data.from_time,
+      data.to_time,
     )
   }
 

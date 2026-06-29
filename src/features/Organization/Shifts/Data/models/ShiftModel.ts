@@ -15,6 +15,6 @@ export default class ShiftModel extends TitleInterface {
   }
 
   static fromMap(data: any): ShiftModel {
-    return new ShiftModel(data.id, data.title, data.start_time, data.end_time)
+    return new ShiftModel(data.id, data.title, data.from_time, data.to_time)
   }
 }

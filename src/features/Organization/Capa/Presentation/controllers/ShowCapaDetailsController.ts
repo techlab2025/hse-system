@@ -2,26 +2,27 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import IndexCapaUseCase from '../../Domain/useCase/indexCapaUseCase'
-import type IndexCapaModel from '../../Data/models/IndexCapaModel'
+import ShowCapaDetailsUseCase from '../../Domain/useCase/ShowCapaDetailsUseCase'
+import type ShowCapaDetailsModel from '../../Data/models/ShowCapaDetailsModel'
 
-export default class IndexCapaController extends SelectControllerInterface<IndexCapaModel[]> {
-  private static instance: IndexCapaController
+export default class ShowCapaDetailsController extends SelectControllerInterface<ShowCapaDetailsModel> {
+  private static instance: ShowCapaDetailsController
   private constructor() {
     super()
   }
-  private indexCapaUseCase = new IndexCapaUseCase()
+  private showCapaDetailsUseCase = new ShowCapaDetailsUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexCapaController()
+      this.instance = new ShowCapaDetailsController()
     }
     return this.instance
   }
 
   async getData(params: Params) {
     this.setLoading()
-    const dataState: DataState<IndexCapaModel[]> = await this.indexCapaUseCase.call(params)
+    const dataState: DataState<ShowCapaDetailsModel> =
+      await this.showCapaDetailsUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

@@ -1,13 +1,13 @@
   <script setup lang="ts">
-  import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
   import { ref } from 'vue'
   import HeaderProjectsFilter from './HeaderProjectsFilter.vue';
   import { useProjectSelectStore } from '@/stores/ProjectSelect';
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts';
   const emit = defineEmits(['update:data'])
   const props = defineProps<{
     title: string
     length: number
-    projects: MyProjectsModel[]
+    projects: ProjectModel[]
   }>()
   const projectSelectStore = useProjectSelectStore()
   const ActiveTap = ref(projectSelectStore?.project?.id == -1 || !(projectSelectStore?.project?.id) ? projectSelectStore?.project?.id : props.projects?.[0]?.id)

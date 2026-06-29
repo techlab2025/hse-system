@@ -7,7 +7,7 @@ export default class DeleteShiftParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['shift_id'] = this.id
+    data['work_shift_id'] = this.id
     return data
   }
 }

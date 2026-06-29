@@ -1573,6 +1573,9 @@ class ApiNames {
     // return this.prefix + 'fetch_capa_observations'
     return this.prefix + 'fetch_capas'
   }
+  public get ShowCapaDetails() {
+    return this.prefix + 'fetch_capa_details'
+  }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
   }
@@ -1640,19 +1643,19 @@ class ApiNames {
 
   // shifts
   public get CreateShift() {
-    return this.prefix + 'create_shift'
+    return this.prefix + 'create_work_shift'
   }
   public get IndexShift() {
-    return this.prefix + 'fetch_shifts'
+    return this.prefix + 'fetch_work_shifts'
   }
   public get ShowShift() {
-    return this.prefix + 'fetch_shift_details'
+    return this.prefix + 'fetch_work_shift_details'
   }
   public get EditShift() {
-    return this.prefix + 'update_shift'
+    return this.prefix + 'update_work_shift'
   }
   public get DeleteShift() {
-    return this.prefix + 'delete_shift'
+    return this.prefix + 'delete_work_shift'
   }
 }
 

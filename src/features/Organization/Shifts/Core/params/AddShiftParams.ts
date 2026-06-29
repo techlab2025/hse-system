@@ -32,8 +32,8 @@ export default class AddShiftParams implements Params {
     > = {}
 
     data['translations'] = this.translation.toMap()
-    data['start_time'] = this.startTime
-    data['end_time'] = this.endTime
+    data['from_time'] = this.startTime.slice(0, 5)
+    data['to_time'] = this.endTime.slice(0, 5)
 
     return data
   }

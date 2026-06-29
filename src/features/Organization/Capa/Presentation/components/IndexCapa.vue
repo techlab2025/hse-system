@@ -1,65 +1,40 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
-import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import Image from 'primevue/image'
-// import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
-import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 import IndexCapaParams from '../../Core/params/indexCapaParams'
 import IndexCapaController from '../controllers/indexCapaController'
-import DeleteCapaParams from '../../Core/params/deleteCapaParams'
-import DeleteCapaController from '../controllers/deleteCapaController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
-import { RiskLevelEnum } from '@/features/Organization/Investigating/Core/Enums/risk_level_enum'
-import { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
-import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
-import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
 import PinIcons from '@/shared/icons/PinIcons.vue'
-// import HighLevel from '@/shared/icons/HighLevel.vue'
-import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
-import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { formatTime } from '@/base/Presentation/utils/time_format'
 import Observdetails from '@/shared/icons/observdetails.vue'
-import Capa from '@/views/Organization/Capa/Capa.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 import CapaDialog from '../supcomponents/CapaDialog.vue'
-// import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
-const { t } = useI18n()
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
 
-// import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
-// const route = useRoute()
-// ActionStatusEnum
-const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexCapaController = IndexCapaController.getInstance()
 const state = ref(indexCapaController.state.value)
 const route = useRoute()
-const id = route.params.parent_id
-// const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
+const router = useRouter()
+const Projects = ref<ProjectModel[]>([])
+const selectedProjctesFilters = ref<number>()
+const Filters = ref<MyZonesModel[]>()
+const SelectedZonesFilter = ref<number[]>([])
+const fetchMyZonesController = FetchMyZonesController.getInstance()
 
 const fetchCapa = async (
   query = '',
@@ -71,104 +46,53 @@ const fetchCapa = async (
   zoonIds?: number[],
   projectIds?: number,
 ) => {
-  const params = new IndexCapaParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    [Observation.ObservationType, Observation.HazardType],
-    route.query.hazard || route.query.risk_level ? null : projectIds ? [projectIds] : [],
-    zoonIds,
-    projectLocationIds || null,
-    projectZoneLozationId,
-    null,
-    route.query.hazard ? route.query.hazard : null,
-    route.query.risk_level ? [route.query.risk_level] : null,
-    2,
-  )
+  const params = new IndexCapaParams({
+    word: query,
+    pageNumber: pageNumber,
+    perPage: perPage,
+    withPage: withPage,
+    type: [Observation.ObservationType, Observation.HazardType],
+    projectId:
+      route.query.hazard || route.query.risk_level
+        ? undefined
+        : projectIds !== undefined
+          ? [projectIds!]
+          : [],
+    zoonIds: zoonIds,
+    projectLocationIds: projectLocationIds?.length ? projectLocationIds : undefined,
+    projectZoonIds: projectZoneLozationId,
+    rootCauseId: undefined,
+    hazardTypeId: route.query.hazard ? Number(route.query.hazard) : undefined,
+    riskLevel: route.query.risk_level ? [Number(route.query.risk_level)] : undefined,
+    capaStatus: 2,
+  })
   await indexCapaController.getData(params)
 }
 
 onMounted(() => {
-  // if (selectedProjctesFilters.value) {
   fetchCapa()
-  // }
   FetchMyProjects()
 })
-
-const searchHazard = debounce(() => {
-  fetchCapa(word.value)
-})
-
-// const deleteHazard = async (id: number) => {
-//   const deleteCapaParams = new DeleteCapaParams(id)
-//   await DeleteCapaController.getInstance().deleteCapa(deleteCapaParams)
-//   await fetchCapa()
-// }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
   fetchCapa('', currentPage.value, countPerPage.value)
 }
 
-// Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
   fetchCapa('', currentPage.value, countPerPage.value)
 }
 
-watch(
-  () => indexCapaController.state.value,
-  (newState) => {
-    if (newState) {
-      console.log(newState)
-      state.value = newState
-    }
-  },
-  {
-    deep: true,
-  },
-)
-
-const { user } = useUserStore()
-
-// const actionList = (id: number, deleteHazard: (id: number) => void) => [
-//   {
-//     text: t('edit'),
-//     icon: IconEdit,
-//     link: `/organization/equipment-mangement/observation/${id}`,
-//     permission: [
-//       PermissionsEnum.ORG_OBSERVATION_UPDATE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.ORG_OBSERVATION_ALL,
-//       PermissionsEnum.ORG_OBSERVATION_DETAILS,
-//     ],
-//   },
-//   {
-//     text: t('delete'),
-//     icon: IconDelete,
-//     action: () => deleteHazard(id),
-//     permission: [
-//       PermissionsEnum.ORG_OBSERVATION_DELETE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.ORG_OBSERVATION_ALL,
-//     ],
-//   },
-// ]
-const router = useRouter()
-const Projects = ref<MyProjectsModel[]>([])
 const FetchMyProjects = async () => {
-  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsParams = new FetchMyProjectsParams(true)
   const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
   if (res.value.data) {
     Projects.value = res.value.data
   }
 }
-const selectedProjctesFilters = ref<number>()
 
-const Filters = ref<MyZonesModel[]>()
-const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
   const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
@@ -177,40 +101,20 @@ const FetchMyZones = async () => {
   }
 }
 
-const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+  fetchCapa('', 1, 10, 1, [], [], SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
-const setSelectedProjectFilter = (data) => {
+const setSelectedProjectFilter = (data: any) => {
   selectedProjctesFilters.value = data
   if (data) {
-    fetchCapa('', 1, 10, 1, null, null, null, data)
+    fetchCapa('', 1, 10, 1, [], [], [], data)
     FetchMyZones()
   }
 }
 
 const ShowDetails = ref<number[]>([])
-
-// capa status filter
-const capaStatus = ref<TitleInterface | null>(null)
-const setCapaStatus = (data: TitleInterface | null) => {
-  capaStatus.value = data
-  fetchCapa('', 1, 10, 1, null, null, null, selectedProjctesFilters.value)
-}
-const ActionStatusList = ref<TitleInterface[]>([
-  new TitleInterface({
-    id: ActionStatusEnum.OPEN,
-    title: 'Open',
-    subtitle: '',
-  }),
-  new TitleInterface({
-    id: ActionStatusEnum.CLOSED,
-    title: 'Closed',
-    subtitle: '',
-  }),
-])
 
 const GetObservationType = (type: number) => {
   switch (type) {
@@ -232,11 +136,22 @@ const GetCapaStataus = (capa: CapaModel) => {
     return 'Preventive'
   }
 }
+watch(
+  () => indexCapaController.state.value,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+      state.value = newState
+    }
+  },
+  {
+    deep: true,
+  },
+)
 </script>
 
 <template>
   <div class="grid grid-cols-12 gap-4">
-    <!-- <IndexEquipmentMangement class="col-span-2" /> -->
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder
         :code="[
@@ -256,52 +171,15 @@ const GetCapaStataus = (capa: CapaModel) => {
             @update:data="setSelectedProjectFilter"
           />
 
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between" v-if="Filters && Filters?.length > 0">
             <PermissionBuilder
               :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]"
             >
-              <IndexFilter
-                :filters="Filters"
-                @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'"
-                :linkText="'Create Observation'"
-              />
+              <IndexFilter :filters="Filters!" @update:data="ApplayFilter" />
             </PermissionBuilder>
-
-            <!-- <div class="btns-filter"> -->
-            <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
-
-            <!-- <PermissionBuilder :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]">
-                <router-link :to="`/organization/equipment-mangement/observation/add`">
-                  <button class="btn btn-primary">{{ $t('Create observation') }}</button>
-                </router-link>
-              </PermissionBuilder> -->
-            <!-- </div> -->
-            <!-- capaStatus -->
-            <!-- <div class="export-fillter">
-              <div class="fillter-radio-btn">
-                <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
-                  <input type="radio" name="capaStatus" :id="`status-${status.id}`" :value="status" v-model="capaStatus"
-                    @change="setCapaStatus(status)" />
-                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{
-                    status.title }}</label>
-                </div>
-                <div class="radio-btn">
-                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus"
-                    @change="setCapaStatus(null)" />
-                  <label for="status-all" :class="capaStatus == null ? 'active' : ''">All</label>
-                </div>
-              </div>
-              <div class="">
-                <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
-              </div>
-            </div> -->
           </div>
         </div>
         <DataStatus :controller="state">
@@ -314,7 +192,6 @@ const GetCapaStataus = (capa: CapaModel) => {
                   v-for="(item, index) in state.data"
                   :key="index"
                 >
-                  <!-- :to="`observation/show/${item?.id}`" -->
                   <div class="w-full">
                     <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                       <div class="header-container">
@@ -332,15 +209,12 @@ const GetCapaStataus = (capa: CapaModel) => {
                               </span>
                             </p>
                           </div>
-                          <div class="sup-title">
-                            <!-- <p class="subtitle">{{ item.title }}</p> -->
-                            <!-- <p class="description">{{ item.description }}</p> -->
-                          </div>
+                          <div class="sup-title"></div>
 
                           <div class="card-details">
                             <div class="name">
                               <p class="title">
-                                {{ item.observer.name }} <span>{{ '(observer)' }}</span>
+                                {{ item?.observer?.name }} <span>{{ '(observer)' }}</span>
                               </p>
                             </div>
 
@@ -366,14 +240,15 @@ const GetCapaStataus = (capa: CapaModel) => {
                                 </p>
                                 <div class="label-item-secondary">
                                   <p>
-                                    capa status <span>{{ GetCapaStataus(item.capa) }}</span>
+                                    capa status
+                                    <span>{{ GetCapaStataus(item.capa!) }}</span>
                                   </p>
                                 </div>
                               </div>
                             </div>
                             <div class="btn-investegation-observation">
-                              <CapaDialog :capa="item?.capa"  />
-                              <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
+                              <CapaDialog :capa="item?.capa" />
+                              <router-link :to="`/organization/capa/${item?.capa?.capaId}`">
                                 <div class="observation-details">
                                   <p>
                                     {{ GetObservationType(item.type) }} details
@@ -398,11 +273,9 @@ const GetCapaStataus = (capa: CapaModel) => {
           </template>
           <template #loader>
             <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #initial>
             <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
             <PermissionBuilder

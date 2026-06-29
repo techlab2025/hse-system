@@ -10,8 +10,7 @@ export default class IndexCapaParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public type: Observation[]
-  public projectId: number | null = null
-  // public code?: LangEnum
+  public projectId?: number[] = []
   public projectZoonIds?: number[]
   public projectLocationIds?: number[]
   public zoonIds?: number[] = []
@@ -25,44 +24,44 @@ export default class IndexCapaParams implements Params {
   public equipmentTypeIds?: number[] = []
   public equipmentSubTypeIds?: number[] = []
 
-  constructor(
-    word: string,
-    pageNumber: number = 1,
-    perPage: number = 10,
-    withPage: number = 1,
-    type: Observation[],
-    projectId: number | null = null,
-    projectZoonIds?: number[],
-    projectLocationIds?: number[],
-    zoonIds?: number[],
-    rootCauseId?: number,
-    hazardTypeId?: number,
-    riskLevel?: number[],
-    capaStatus?: ActionStatusEnum,
-    equipmentIds?: number[],
-    saveStatus?: number[],
-    date?: string,
-    equipmentTypeIds?: number[],
-    equipmentSubTypeIds?: number[],
-  ) {
-    this.word = word
-    this.withPage = withPage
-    this.pageNumber = pageNumber
-    this.perPage = perPage
-    this.type = type
-    this.projectId = projectId
-    this.projectZoonIds = projectZoonIds
-    this.projectLocationIds = projectLocationIds
-    this.zoonIds = zoonIds
-    this.rootCauseId = rootCauseId
-    this.hazardTypeId = hazardTypeId
-    this.riskLevel = riskLevel
-    this.capaStatus = capaStatus
-    this.equipmentIds = equipmentIds
-    this.saveStatus = saveStatus
-    this.date = date
-    this.equipmentTypeIds = equipmentTypeIds
-    this.equipmentSubTypeIds = equipmentSubTypeIds
+  constructor(data: {
+    word: string
+    pageNumber: number
+    perPage: number
+    withPage: number
+    type: Observation[]
+    projectId?: number[]
+    projectZoonIds?: number[]
+    projectLocationIds?: number[]
+    zoonIds?: number[]
+    rootCauseId?: number
+    hazardTypeId?: number
+    riskLevel?: number[]
+    capaStatus?: ActionStatusEnum
+    equipmentIds?: number[]
+    saveStatus?: number[]
+    date?: string
+    equipmentTypeIds?: number[]
+    equipmentSubTypeIds?: number[]
+  }) {
+    this.word = data.word
+    this.withPage = data.withPage
+    this.pageNumber = data.pageNumber
+    this.perPage = data.perPage
+    this.type = data.type
+    this.projectId = data.projectId
+    this.projectZoonIds = data.projectZoonIds
+    this.projectLocationIds = data.projectLocationIds
+    this.zoonIds = data.zoonIds
+    this.rootCauseId = data.rootCauseId
+    this.hazardTypeId = data.hazardTypeId
+    this.riskLevel = data.riskLevel
+    this.capaStatus = data.capaStatus
+    this.equipmentIds = data.equipmentIds
+    this.saveStatus = data.saveStatus
+    this.date = data.date
+    this.equipmentTypeIds = data.equipmentTypeIds
+    this.equipmentSubTypeIds = data.equipmentSubTypeIds
   }
 
   toMap(): Record<string, string | number | number[] | null> {
@@ -73,7 +72,7 @@ export default class IndexCapaParams implements Params {
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
     if (this.projectId || useProjectSelectStore().getProjectId())
-      data['project_ids'] = useProjectSelectStore().SelectedProjectId(this.projectId)
+      data['project_ids'] = useProjectSelectStore().SelectedProjectId(this.projectId!)
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
@@ -86,7 +85,6 @@ export default class IndexCapaParams implements Params {
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.equipmentTypeIds) data['equipment_type_ids'] = this.equipmentTypeIds
     if (this.equipmentSubTypeIds) data['equipment_sub_type_ids'] = this.equipmentSubTypeIds
-    // if (this.code) data['code'] = this.code
     return data
   }
 }

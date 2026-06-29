@@ -1,15 +1,13 @@
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import OvservationEquipmentModel from './OvservationEquipmentModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
-import OvserverModel from './OvserverModel'
-import type CapaModel from './CapaModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
-import acc from '@/assets/images/acc.png'
-import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
+import OvserverModel from '@/features/Organization/ObservationFactory/Data/models/OvserverModel'
+import type { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
+import type OvservationEquipmentModel from '@/features/Organization/ObservationFactory/Data/models/OvservationEquipmentModel'
+import CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 
-export default class HazardModel {
+export default class IndexCapaModel {
   public id: number
   public title: string
   public description: string
@@ -33,7 +31,7 @@ export default class HazardModel {
   public serial: number
   public observer: OvserverModel | undefined
   public creator: OvserverModel | undefined
-  public capa: CapaModel
+  public capa: CapaModel | undefined
   public media: FilesModel[]
   public serialName: string
   public time: string
@@ -66,7 +64,7 @@ export default class HazardModel {
     serial: number,
     observer: OvserverModel | undefined,
     creator: OvserverModel | undefined,
-    capa: CapaModel,
+    capa: CapaModel | undefined,
     media: FilesModel[],
     serialName: string,
     time: string,
@@ -108,8 +106,8 @@ export default class HazardModel {
     this.updatedAt = updatedAt
   }
 
-  static fromMap(data: any): HazardModel {
-    return new HazardModel(
+  static fromMap(data: any): IndexCapaModel {
+    return new IndexCapaModel(
       data.id,
       data.title,
       data.description,
@@ -133,7 +131,7 @@ export default class HazardModel {
       data.serial,
       data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
       data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
-      data.capa,
+      data.capa ? CapaModel.fromMap(data.capa) : undefined,
       data.media.map((item: any) => FilesModel.fromMap(item)),
       data.serial_name,
       data.time,
@@ -143,32 +141,4 @@ export default class HazardModel {
       data?.updated_at,
     )
   }
-
-  // static example: HazardModel = new HazardModel(
-  //   1,
-  //   'New Observation',
-  //   'New Observation Details Description',
-  //   acc,
-  //   1,
-  //   1,
-  //   1,
-  //   1,
-  //   1,
-  //   OvservationEquipmentModel.example,
-  //   LocationModel.example,
-  //   SohwProjectZoonModel.example,
-  //   ShowProjectDetailsModel.example,
-  //   1,
-  //   1,
-  //   1,
-  //   'New Action',
-  //   'yes',
-  //   'capa',
-  //   '10-12-2000',
-  //   '_0b5512547_5432',
-  //   OvserverModel.example,
-  //   OvserverModel.example,
-  //   null,
-  //   [],
-  // )
 }
