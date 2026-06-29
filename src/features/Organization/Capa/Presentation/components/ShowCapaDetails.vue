@@ -110,6 +110,7 @@ onMounted(() => {
         <CapaActionPlanDetails
           :correctiveTasks="state.data?.investigation?.correctiveTask ?? []"
           :preventiveTasks="state.data?.investigation?.preventiveTask ?? []"
+          @answered="ShowCapaDetails"
         />
 
         <section class="lesson-section">

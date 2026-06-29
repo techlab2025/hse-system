@@ -26,6 +26,10 @@ const Actions = ref([
 
 const props = defineProps({
   actions: String,
+  isCorrect: {
+    type: Number,
+    required: true,
+  },
 })
 </script>
 
@@ -42,7 +46,7 @@ const props = defineProps({
 
     <div class="content">
       <!-- v-for="(action, index) in Actions" :key="index" -->
-      <InvestegaionResultTakeActionCard :action="actions" />
+      <InvestegaionResultTakeActionCard :action="actions" :isCorrect="isCorrect"/>
     </div>
   </div>
 </template>

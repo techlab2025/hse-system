@@ -234,16 +234,16 @@ watch(
                                   {{ $t('observation Date & Time') }} :
                                   <span>{{ item.date }} & {{ item.time }}</span>
                                 </p>
-                                <p class="label-item-secondary flex items-center gap-1">
+                                <!-- <p class="label-item-secondary flex items-center gap-1">
                                   {{ $t('operation type') }} :
                                   <span>{{ GetObservationType(item.type) }}</span>
-                                </p>
-                                <div class="label-item-secondary">
-                                  <p>
+                                </p> -->
+                                <!-- <div class="label-item-secondary"> -->
+                                  <!-- <p>
                                     capa status
                                     <span>{{ GetCapaStataus(item.capa!) }}</span>
-                                  </p>
-                                </div>
+                                  </p> -->
+                                <!-- </div> -->
                               </div>
                             </div>
                             <div class="btn-investegation-observation">

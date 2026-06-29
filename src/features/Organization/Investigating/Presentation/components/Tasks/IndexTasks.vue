@@ -69,6 +69,11 @@ const searchEquipmentType = debounce(() => {
   fetchTasks(word.value)
 })
 
+const clearSearch = () => {
+  word.value = ''
+  fetchTasks()
+}
+
 // const deleteEquipment = async (id: number) => {
 //   const deleteEquipmentParams = new DeleteEquipmentParams(id)
 //   await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
@@ -169,93 +174,260 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click=";((word = ''), searchEquipmentType())">
-        <Search />
-      </span>
-      <input
-        v-model="word"
-        :placeholder="'search'"
-        class="input"
-        type="text"
-        @input="searchEquipmentType"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!--  <ExportExcel :data="state.data" /> -->
-      <!-- <ExportPdf /> -->
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_CREATE,
-        ]"
-      >
-        <!-- <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/equipment/add`" class="btn btn-primary">
-          {{ $t('Add_Equipment') }}
-        </router-link> -->
-      </PermissionBuilder>
-    </div>
-  </div>
+  <main class="tasks-index-page investegation-result-answer-container">
+    <section class="tasks-index-toolbar">
+      <div class="toolbar-copy">
+        <span>Investigation tasks</span>
+        <h1>All corrective and preventive tasks</h1>
+      </div>
 
-  <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mt-2">
-          <InvestegaionResultTasksAnswerCard
-            v-for="(task, index) in state.data"
-            :key="index"
-            :task="task"
+      <div class="input-search tasks-search">
+        <span class="icon-remove" @click="clearSearch">
+          <Search />
+        </span>
+        <input
+          v-model="word"
+          :placeholder="'Search tasks'"
+          class="input"
+          type="text"
+          @input="searchEquipmentType"
+        />
+      </div>
+    </section>
+
+    <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
+      <DataStatus :controller="state">
+        <template #success>
+          <section class="tasks-board">
+            <div class="tasks-board-header">
+              <div>
+                <span>Task board</span>
+                <h2>{{ state.data?.length || 0 }} tasks</h2>
+              </div>
+              <p>Review assignments, due dates, status, and task answers.</p>
+            </div>
+
+            <div class="tasks-index-grid">
+              <InvestegaionResultTasksAnswerCard
+                v-for="(task, index) in state.data"
+                :key="task?.id || index"
+                :task="task"
+                @answered="fetchTasks(word, currentPage, countPerPage)"
+              />
+            </div>
+          </section>
+
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
           />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/EquipmentType`"
+            addText="Add EquipmentType"
+            description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No EquipmentTypes"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/EquipmentType`"
+            addText="Add EquipmentType"
+            description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No EquipmentTypes"
+          />
+        </template>
+      </DataStatus>
 
-          <!-- <InvestegaionMeetingResultAnswerCard class="meetings-page" v-for="(meeting, index) in state.data" :key="index"
-            :meeting="meeting" /> -->
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
-        />
-      </template>
-      <template #failed>
+      <template #notPermitted>
         <DataFailed
-          :link="`/${
-            user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-          }/add/EquipmentType`"
-          addText="Add EquipmentType"
+          addText="Have not  Permission"
           description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.tasks-index-toolbar + div{
+  width: 100%;
+}
+.tasks-index-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px;
+}
+.tasks-index-toolbar,
+.tasks-index-toolbar div,
+.tasks-index-toolbardiv div
+{
+  width: 100%;
+}
+.tasks-index-toolbar,
+.tasks-board {
+  border: 1px solid #e6edf7;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.96)), #ffffff;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
+}
+
+.tasks-index-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+}
+
+.toolbar-copy,
+.tasks-board-header {
+  span {
+    color: var(--PrimaryColor);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2 {
+    margin: 4px 0 0;
+    color: #0f172a;
+    font-family: 'Bold';
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  h1 {
+    font-size: clamp(20px, 2vw, 28px);
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
+
+.tasks-search {
+  position: relative;
+  width: 100%;
+  margin: 0;
+
+  .icon-remove {
+    position: absolute;
+    inset-inline-start: 12px;
+    top: 50%;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(29, 78, 216, 0.08);
+    color: var(--PrimaryColor);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .input {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #dbe5f2;
+    border-radius: 8px;
+    background: #ffffff;
+    padding-inline-start: 52px;
+    font-weight: 700;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: rgba(29, 78, 216, 0.34);
+      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.08);
+      outline: none;
+    }
+  }
+}
+
+.tasks-board {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  width: 100%;
+}
+
+.tasks-board-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #dbe5f2;
+
+  p {
+    max-width: 420px;
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: end;
+  }
+}
+
+.tasks-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(310px, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 820px) {
+  .tasks-index-toolbar,
+  .tasks-board-header {
+    grid-template-columns: 1fr;
+  }
+
+  .tasks-index-toolbar,
+  .tasks-board-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tasks-board-header p {
+    max-width: none;
+    text-align: start;
+  }
+}
+
+@media (max-width: 520px) {
+  .tasks-index-page {
+    padding: 10px;
+  }
+
+  .tasks-index-toolbar,
+  .tasks-board {
+    padding: 12px;
+  }
+
+  .tasks-index-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

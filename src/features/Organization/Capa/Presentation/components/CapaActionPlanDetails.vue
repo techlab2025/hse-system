@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import type { CapaTaskDetailsModel } from '../../Data/models/ShowCapaDetailsModel'
+import type { CapaTaskDetailsModel } from '../../Data/models/CapaTasksModel'
+import { computed, ref } from 'vue'
+import Dialog from 'primevue/dialog'
+import AddInvestegationTaskAnswerDialog from '@/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue'
 
 defineProps<{
   correctiveTasks: CapaTaskDetailsModel[]
   preventiveTasks: CapaTaskDetailsModel[]
 }>()
+const emit = defineEmits(['answered'])
+const answerDialogVisible = ref(false)
+const selectedAnswerTask = ref<CapaTaskDetailsModel | null>(null)
+const localAnswers = ref<Record<number, string>>({})
 
 const statusLabel = (status?: number) => {
   switch (status) {
@@ -16,6 +23,26 @@ const statusLabel = (status?: number) => {
       return 'Open'
   }
 }
+
+const taskAnswer = (task: CapaTaskDetailsModel) =>
+  localAnswers.value[task.id] || task.answerNotes || ''
+
+const hasAnswer = (task: CapaTaskDetailsModel) => !!taskAnswer(task).trim()
+const canAddAnswer = (task: CapaTaskDetailsModel) => task.status === 0 && !hasAnswer(task)
+
+const showAnswer = (task: CapaTaskDetailsModel) => {
+  selectedAnswerTask.value = task
+  answerDialogVisible.value = true
+}
+
+const onAnswerSubmitted = (task: CapaTaskDetailsModel, answer: string) => {
+  localAnswers.value[task.id] = answer
+  emit('answered')
+}
+
+const selectedAnswer = computed(() =>
+  selectedAnswerTask.value ? taskAnswer(selectedAnswerTask.value) : '',
+)
 </script>
 
 <template>
@@ -55,6 +82,17 @@ const statusLabel = (status?: number) => {
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
+            <div class="task-actions">
+              <AddInvestegationTaskAnswerDialog
+                v-if="canAddAnswer(task)"
+                :taskId="task.id"
+                :task="task.title"
+                @submitted="onAnswerSubmitted(task, $event)"
+              />
+              <button v-if="hasAnswer(task)" class="view-answer-btn" @click="showAnswer(task)">
+                View answer
+              </button>
+            </div>
           </div>
         </div>
 
@@ -90,12 +128,41 @@ const statusLabel = (status?: number) => {
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
+            <div class="task-actions">
+              <AddInvestegationTaskAnswerDialog
+                v-if="canAddAnswer(task)"
+                :taskId="task.id"
+                :task="task.title"
+                @submitted="onAnswerSubmitted(task, $event)"
+              />
+              <button v-if="hasAnswer(task)" class="view-answer-btn" @click="showAnswer(task)">
+                View answer
+              </button>
+            </div>
           </div>
         </div>
 
         <p v-else class="empty-lane">No preventive tasks yet.</p>
       </article>
     </div>
+
+    <Dialog
+      v-model:visible="answerDialogVisible"
+      modal
+      :dismissableMask="true"
+      :style="{ width: '40rem', maxWidth: '92vw' }"
+    >
+      <template #header>
+        <div class="answer-dialog-header">
+          <span>Task answer</span>
+          <h3>{{ selectedAnswerTask?.title || 'Task answer' }}</h3>
+        </div>
+      </template>
+
+      <div class="answer-dialog-body">
+        <p>{{ selectedAnswer }}</p>
+      </div>
+    </Dialog>
   </section>
 </template>
 
@@ -199,6 +266,16 @@ const statusLabel = (status?: number) => {
   border-radius: 14px;
   background: var(--BgWhite);
   padding: 1rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--PrimaryColor) 22%, var(--main-border));
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--Black) 8%, transparent);
+  }
 }
 
 .task-card h4 {
@@ -247,6 +324,79 @@ const statusLabel = (status?: number) => {
     font-size: 0.88rem;
     line-height: 1.4;
     word-break: break-word;
+  }
+}
+
+.task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--main-border);
+}
+
+.view-answer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: var(--BgWhite);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 0.55rem 0.9rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+    box-shadow: 0 10px 18px color-mix(in srgb, var(--green) 18%, transparent);
+  }
+}
+
+.answer-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  span {
+    color: var(--PrimaryColor);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--header-page-color);
+    font-size: 1.15rem;
+    font-weight: 900;
+    line-height: 1.35;
+  }
+}
+
+.answer-dialog-body {
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+  background: var(--Gray-1);
+  padding: 1rem;
+
+  p {
+    margin: 0;
+    color: var(--header-page-color);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.7;
+    white-space: pre-wrap;
   }
 }
 

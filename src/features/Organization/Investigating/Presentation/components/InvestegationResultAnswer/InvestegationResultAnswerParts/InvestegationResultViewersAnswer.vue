@@ -1,53 +1,12 @@
 <script setup lang="ts">
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import AnswersViewers from '@/assets/images/AnswersViewers.png'
-import { ref } from 'vue'
 import InvestegaionMeetingViewersCard from '../InvestegationResultAnswerUtils/InvestegaionMeetingViewersCard.vue'
 import type witnessStatementsModel from '@/features/Organization/Investigating/Data/models/InvestegationwitnessStatementsModel'
 
-const props = defineProps<{
+defineProps<{
   viewers: witnessStatementsModel[]
 }>()
-
-// const Viewers = ref([
-//   {
-//     id: 1,
-//     ResponsablePerson: {
-//       name: "moahb",
-//       img: AnswersViewers,
-//       heirarchy: "manger"
-//     },
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 2,
-//     ResponsablePerson: {
-//       name: "moahb",
-//       img: AnswersViewers,
-//       heirarchy: "manger"
-//     },
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 3,
-//     ResponsablePerson: {
-//       name: "moahb",
-//       img: AnswersViewers,
-//       heirarchy: "manger"
-//     },
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-//   {
-//     id: 4,
-//     ResponsablePerson: {
-//       name: "moahb",
-//       img: AnswersViewers,
-//       heirarchy: "manger"
-//     },
-//     description: "Thickening the electrical wires and reinforcing them with an insulating material"
-//   },
-
-// ])
 </script>
 
 <template>

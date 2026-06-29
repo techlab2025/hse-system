@@ -211,11 +211,11 @@ h4 {
 }
 
 .task-lane.corrective {
-  border-top: 4px solid var(--danger-color);
+  border-top: 4px solid var(--green);
 }
 
 .task-lane.preventive {
-  border-top: 4px solid var(--green);
+  border-top: 4px solid var(--danger-color);
 }
 
 .lane-copy {

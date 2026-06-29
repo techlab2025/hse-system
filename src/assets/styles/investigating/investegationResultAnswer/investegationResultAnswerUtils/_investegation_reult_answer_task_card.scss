@@ -98,6 +98,7 @@
         font-weight: 600;
         line-height: 1.4;
         text-transform: none;
+        text-align: start;
 
         span {
           display: block;
@@ -181,55 +182,6 @@
           box-shadow: 0 10px 18px rgba(29, 78, 216, 0.1);
         }
       }
-
-      .show-answer-btn {
-        background: #16a34a;
-        color: #ffffff;
-
-        &:hover {
-          background: #15803d;
-          box-shadow: 0 10px 18px rgba(22, 163, 74, 0.16);
-        }
-      }
-    }
-  }
-
-  .answer-dialog-header {
-    @include flex-column(nowrap, flex-start, flex-start);
-    gap: 4px;
-    width: 100%;
-
-    span {
-      color: #1d4ed8;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    h3 {
-      margin: 0;
-      color: #0f172a;
-      font-family: 'Bold';
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.35;
-    }
-  }
-
-  .answer-dialog-body {
-    padding: 16px;
-    border: 1px solid #e6edf7;
-    border-radius: 8px;
-    background: #f8fafc;
-
-    p {
-      margin: 0;
-      color: #334155;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.7;
-      white-space: pre-wrap;
     }
   }
 

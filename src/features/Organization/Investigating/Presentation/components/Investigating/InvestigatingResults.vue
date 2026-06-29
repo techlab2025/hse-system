@@ -167,6 +167,7 @@ const setInvestigationTasks = (data) => {
 const rateActions = ref()
 const setRateAction = (data) => {
   rateActions.value = data
+  console.log(data, 'data')
 }
 
 const investigationAttachments = ref()

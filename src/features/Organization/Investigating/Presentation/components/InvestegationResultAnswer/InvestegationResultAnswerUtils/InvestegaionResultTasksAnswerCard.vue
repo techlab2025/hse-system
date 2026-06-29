@@ -4,7 +4,6 @@ import NewTaskIcon from '@/shared/icons/NewTaskIcon.vue'
 import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
 import TasksWorking from '@/shared/icons/TasksWorking.vue'
 import { computed, ref, watch } from 'vue'
-import Dialog from 'primevue/dialog'
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
 import InvestigationResultDialoge from './InvestigationResultDialoge.vue'
 import AddInvestegationTaskAnswerDialog from '../../Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue'
@@ -16,7 +15,6 @@ const props = defineProps<{
 const emit = defineEmits(['answered'])
 const taskValue = computed(() => props.task as any)
 const localAnswer = ref('')
-const answerDialogVisible = ref(false)
 
 const TasksStatus = ref([
   {
@@ -70,6 +68,8 @@ const taskAnswer = computed(
     taskValue.value?.notes ||
     taskValue.value?.task_result?.notes ||
     taskValue.value?.taskResult?.notes ||
+    taskValue.value?.investigation_task_results?.[0]?.notes ||
+    taskValue.value?.investigationTaskResults?.[0]?.notes ||
     taskValue.value?.investigation_task_result?.notes ||
     taskValue.value?.investigationTaskResult?.notes ||
     taskValue.value?.task_results?.[0]?.notes ||
@@ -77,6 +77,10 @@ const taskAnswer = computed(
     '',
 )
 const hasAnswer = computed(() => !!String(taskAnswer.value || '').trim())
+const detailsTask = computed(() => ({
+  ...taskValue.value,
+  notes: taskAnswer.value,
+}))
 const onAnswerSubmitted = (answer: string) => {
   localAnswer.value = answer
   emit('answered')
@@ -140,33 +144,11 @@ watch(
             :task="taskTitle"
             @submitted="onAnswerSubmitted"
           />
-          <button v-if="hasAnswer" class="show-answer-btn" @click="answerDialogVisible = true">
-            View answer
-          </button>
+          <InvestigationResultDialoge v-if="hasAnswer" :item="detailsTask" />
         </div>
         <!-- class="btn btn-secondary" -->
-        <button v-if="!isOpenTask && !hasAnswer">
-          <InvestigationResultDialoge :item="task" />
-        </button>
+        <InvestigationResultDialoge v-if="!isOpenTask && !hasAnswer" :item="task" />
       </div>
     </div>
-
-    <Dialog
-      v-model:visible="answerDialogVisible"
-      modal
-      :dismissableMask="true"
-      :style="{ width: '38rem', maxWidth: '92vw' }"
-    >
-      <template #header>
-        <div class="answer-dialog-header">
-          <span>Task answer</span>
-          <h3>{{ taskTitle }}</h3>
-        </div>
-      </template>
-
-      <div class="answer-dialog-body">
-        <p>{{ taskAnswer }}</p>
-      </div>
-    </Dialog>
   </div>
 </template>

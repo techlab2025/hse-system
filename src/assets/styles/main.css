@@ -9025,24 +9025,6 @@ ul {
   padding: 18px;
   text-align: center;
 }
-.investegation-result-answer-container .investigating-answer-header-container .investigating-answer-complete-task::before {
-  content: "";
-  position: absolute;
-  inset: 14px;
-  border: 1px dashed rgba(29, 78, 216, 0.18);
-  border-radius: 8px;
-  pointer-events: none;
-}
-.investegation-result-answer-container .investigating-answer-header-container .investigating-answer-complete-task::after {
-  content: "";
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
-  background: conic-gradient(#16a34a 0 64%, #e2e8f0 64% 100%);
-  box-shadow: inset 0 0 0 16px #ffffff;
-  opacity: 0.9;
-  order: -1;
-}
 .investegation-result-answer-container .investigating-answer-header-container .investigating-answer-complete-task > span:first-child {
   color: #64748b;
   font-size: 13px;
@@ -9187,6 +9169,7 @@ ul {
   font-weight: 600;
   line-height: 1.4;
   text-transform: none;
+  text-align: start;
 }
 .investegation-result-answer-container .investegaion-task-card .card-content .info .date span,
 .investegation-result-answer-container .investegaion-task-card .card-content .info .responsable span {
@@ -9273,52 +9256,6 @@ ul {
   transform: translateY(-1px);
   background: rgba(29, 78, 216, 0.12);
   box-shadow: 0 10px 18px rgba(29, 78, 216, 0.1);
-}
-.investegation-result-answer-container .investegaion-task-card .card-content .assigned-to-container .show-answer-btn {
-  background: #16a34a;
-  color: #ffffff;
-}
-.investegation-result-answer-container .investegaion-task-card .card-content .assigned-to-container .show-answer-btn:hover {
-  background: #15803d;
-  box-shadow: 0 10px 18px rgba(22, 163, 74, 0.16);
-}
-.investegation-result-answer-container .investegaion-task-card .answer-dialog-header {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 4px;
-  width: 100%;
-}
-.investegation-result-answer-container .investegaion-task-card .answer-dialog-header span {
-  color: #1d4ed8;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.investegation-result-answer-container .investegaion-task-card .answer-dialog-header h3 {
-  margin: 0;
-  color: #0f172a;
-  font-family: "Bold";
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.35;
-}
-.investegation-result-answer-container .investegaion-task-card .answer-dialog-body {
-  padding: 16px;
-  border: 1px solid #e6edf7;
-  border-radius: 8px;
-  background: #f8fafc;
-}
-.investegation-result-answer-container .investegaion-task-card .answer-dialog-body p {
-  margin: 0;
-  color: #334155;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.7;
-  white-space: pre-wrap;
 }
 @media (max-width: 520px) {
   .investegation-result-answer-container .investegaion-task-card .card-content .info {

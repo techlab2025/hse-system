@@ -5,6 +5,7 @@ export class CapaTaskDetailsModel {
   public dueDate: string
   public assignedToName: string
   public responsiblePersonName: string
+  public answerNotes: string
 
   constructor(data: {
     id: number
@@ -13,6 +14,7 @@ export class CapaTaskDetailsModel {
     dueDate: string
     assignedToName: string
     responsiblePersonName: string
+    answerNotes?: string
   }) {
     this.id = data.id
     this.title = data.title
@@ -20,6 +22,7 @@ export class CapaTaskDetailsModel {
     this.dueDate = data.dueDate
     this.assignedToName = data.assignedToName
     this.responsiblePersonName = data.responsiblePersonName
+    this.answerNotes = data.answerNotes ?? ''
   }
 
   static fromMap(data: any): CapaTaskDetailsModel {
@@ -41,6 +44,15 @@ export class CapaTaskDetailsModel {
         data?.responsible_person?.name ||
         taskEmployees?.follow_up_employee?.name ||
         data?.ResponablePerson?.name ||
+        '',
+      answerNotes:
+        data?.investigation_task_results?.[0]?.notes ||
+        data?.investigationTaskResults?.[0]?.notes ||
+        data?.task_results?.[0]?.notes ||
+        data?.taskResults?.[0]?.notes ||
+        data?.task_result?.notes ||
+        data?.taskResult?.notes ||
+        data?.notes ||
         '',
     })
   }

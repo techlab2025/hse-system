@@ -37,6 +37,21 @@ const allTasks = computed(() => {
   return groupedTasks.length ? groupedTasks : legacyTasks.value
 })
 const solvedTasks = computed(() => allTasks.value.filter((task: any) => task?.status === 1).length)
+const viewerResults = computed(() => {
+  const investigationWitnesses = investigationData.value?.witnessStatements ?? []
+  const observationWitnesses =
+    investigationData.value?.observation?.witnessStatements ??
+    investigationData.value?.observation?.witness_statements ??
+    []
+  const accidentWitnesses =
+    investigationData.value?.observation?.accident_witness ??
+    investigationData.value?.observation?.accidentWitness ??
+    []
+
+  return investigationWitnesses.length
+    ? investigationWitnesses
+    : [...observationWitnesses, ...accidentWitnesses]
+})
 
 const GetInvestegationDetails = async () => {
   const showInvestigatingParams = new ShowInvestigatingParams(Number(id))
@@ -89,17 +104,19 @@ watch(
           :tasks="legacyTasks"
           @answered="GetInvestegationDetails"
         />
+
         <InvestegationResultTakeActionAnswer
           v-if="state.data?.explainWhyText?.length > 0"
           :actions="state.data?.explainWhyText"
+          :isCorrect="state.data?.isActionCorrect"
         />
         <InvestegationResultAttachmentAnswer
           v-if="state.data?.investigationDocumentations?.length > 0"
           :attachments="state.data?.investigationDocumentations"
         />
         <InvestegationResultViewersAnswer
-          v-if="state.data?.witnessStatements?.length > 0"
-          :viewers="state.data?.witnessStatements"
+          v-if="viewerResults.length > 0"
+          :viewers="viewerResults"
         />
       </div>
     </template>

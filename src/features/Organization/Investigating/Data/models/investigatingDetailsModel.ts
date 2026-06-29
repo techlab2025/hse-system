@@ -28,6 +28,7 @@ export default class InvestigatingDetailsModel {
   public witnessStatements: witnessStatementsModel[]
   public preventiveTasks: InvestegationTasksModel[]
   public correctiveTasks: InvestegationTasksModel[]
+  public isActionCorrect: boolean
 
   constructor(
     id: number,
@@ -47,6 +48,7 @@ export default class InvestigatingDetailsModel {
     witnessStatements: witnessStatementsModel[],
     preventiveTasks: InvestegationTasksModel[],
     correctiveTasks: InvestegationTasksModel[],
+    isActionCorrect: boolean,
   ) {
     this.id = id
     this.investigationId = investigationId
@@ -65,6 +67,7 @@ export default class InvestigatingDetailsModel {
     this.witnessStatements = witnessStatements
     this.preventiveTasks = preventiveTasks
     this.correctiveTasks = correctiveTasks
+    this.isActionCorrect = isActionCorrect
   }
 
   static fromMap(data: any): InvestigatingDetailsModel {
@@ -86,6 +89,7 @@ export default class InvestigatingDetailsModel {
       data.witness_statements,
       data.preventive_tasks,
       data.corrective_tasks,
+      data.is_action_correct,
     )
   }
 
