@@ -1,6 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCapaModel from './IndexCapaModel'
 import InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
+import type { CapaTaskDetailsModel } from './CapaTasksModel'
 
 export default class ShowCapaDetailsModel extends TitleInterface {
   public id: number
@@ -13,6 +14,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
   public time: string
   public observation: IndexCapaModel
   public investigation: InvestigatingModel
+  public correctiveTasks: CapaTaskDetailsModel[]
+  public preventiveTasks: CapaTaskDetailsModel[]
+  public lessonLearnt: string
 
   constructor(data: {
     id: number
@@ -25,6 +29,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     time: string
     observation: IndexCapaModel
     investigation: InvestigatingModel
+    correctiveTasks: CapaTaskDetailsModel[]
+    preventiveTasks: CapaTaskDetailsModel[]
+    lessonLearnt: string
   }) {
     super({ id: data.id, title: '' })
     this.id = data.id
@@ -37,9 +44,17 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     this.time = data.time
     this.observation = data.observation
     this.investigation = data.investigation
+    this.correctiveTasks = data.correctiveTasks
+    this.preventiveTasks = data.preventiveTasks
+    this.lessonLearnt = data.lessonLearnt
   }
 
   static fromMap(data: any): ShowCapaDetailsModel {
+    const correctiveTasks =
+      data.corrective_tasks ?? data.correctiveTasks ?? data.coorevtive_tasks ?? []
+    const preventiveTasks =
+      data.preventive_tasks ?? data.preventiveTasks ?? data.previtive_tasks ?? []
+
     return new ShowCapaDetailsModel({
       id: data.id,
       corrective: data.corrective,
@@ -51,6 +66,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       time: data.time,
       observation: IndexCapaModel.fromMap(data.observation),
       investigation: InvestigatingModel.fromMap(data.investigation),
+      correctiveTasks: correctiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      preventiveTasks: preventiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      lessonLearnt: data.lesson_learnt ?? data.lessonLearnt ?? '',
     })
   }
 }

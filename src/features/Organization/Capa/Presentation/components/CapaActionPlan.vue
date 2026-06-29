@@ -239,8 +239,6 @@ h4 {
 }
 
 :deep(.timeline-contect-select) {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.7rem;
 }
 
@@ -258,10 +256,6 @@ h4 {
   .action-plan-header {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  :deep(.timeline-contect-select) {
-    grid-template-columns: 1fr;
   }
 }
 </style>

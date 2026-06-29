@@ -34,7 +34,9 @@ export default class AddDocumentRefrenceController extends ControllerInterface<D
           imageElement: successImage,
           messageContent: null,
         })
-        router?.push({ name: 'DocumentRefrence' })
+        if (router?.currentRoute.value.fullPath.includes('document')) {
+          router?.push({ name: 'DocumentRefrence' })
+        }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

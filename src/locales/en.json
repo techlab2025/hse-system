@@ -1388,5 +1388,6 @@
   "root_cause": "Root Cause",
   "add_document_refrence": "Add Document Refrence",
   "shifts": "Shifts",
-  "add_shift": "Add Shift"
+  "add_shift": "Add Shift",
+  "Document_refrence": "Document refrence"
 }

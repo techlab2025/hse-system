@@ -26,7 +26,6 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import AddRootCauses from '@/views/Organization/RootCaueses/AddRootCauses.vue'
 import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
 import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
@@ -36,6 +35,10 @@ import InvestegationAnotherMeetingParams from '../../../Core/params/investegatio
 import FactoryAccidents from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue'
 import InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams.ts'
 import CapaActionPlan from '@/features/Organization/Capa/Presentation/components/CapaActionPlan.vue'
+import IndexDocumentRefrenceController from '@/features/Organization/DocumentRefrence/Presentation/controllers/IndexDocumentRefrenceController.ts'
+import IndexDocumentRefrenceParams from '@/features/Organization/DocumentRefrence/Core/params/IndexADocumentRefrenceParams.ts'
+import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
+import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -77,6 +80,7 @@ const AddEnvestigatingResult = async () => {
   const RootCausesIds = RootCauses.value.map(
     (el) => new RootCausesIdParams({ root_cause_id: el.id }),
   )
+  const DocumentReferenceIds = DocumentRefrences.value.map((el) => el.id)
 
   // if (anotherMeeting?.value?.isAnother == 0) {
   //   openDialog.value = true
@@ -121,6 +125,7 @@ const AddEnvestigatingResult = async () => {
     correctiveTasks: actionPlan.corrective,
     preventiveTasks: actionPlan.preventive,
     lessonLearnt: lessonLearnt.value,
+    documentReferenceIds: DocumentReferenceIds,
   })
   console.log(anotherMeeting.value, 'anotherMeeting')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
@@ -173,9 +178,7 @@ const setViewersResults = (data) => {
   viewersResults.value = data
 }
 const initialViewers = computed(() => [
-  ...(state.value?.data?.observation?.witness_statements ?? []),
-  ...(state.value?.data?.witness_statements ?? []),
-])
+  ...(state.value?.data?.observation?.witness_statements ?? [])])
 const FiveWhyQuestionsData = ref()
 const setFiveWhyQuestions = (data) => {
   FiveWhyQuestionsData.value = data
@@ -227,6 +230,13 @@ const setCapaActionPlan = (data: any) => {
   }
 }
 const lessonLearnt = ref('')
+const DocumentRefrenceDialog = ref<boolean>(false)
+const DocumentRefrences = ref<TitleInterface[]>([])
+const setDocumentRefrences = (data: TitleInterface[]) => {
+  DocumentRefrences.value = data
+}
+const indexDocumentRefrencesController = IndexDocumentRefrenceController.getInstance()
+const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 0)
 </script>
 <template>
   <DataStatus :controller="state">
@@ -337,6 +347,31 @@ const lessonLearnt = ref('')
             </template>
             <template #Dialog>
               <AddRootCauses @close:data="RootCausesDialog = false" />
+            </template>
+          </UpdatedCustomInputSelect>
+        </div>
+        <!-- Regulatory/Legal Compliance Reference -->
+
+        <div class="input-wrapper w-full root-cause-panel">
+          <UpdatedCustomInputSelect
+            :modelValue="DocumentRefrences"
+            class="input"
+            :controller="indexDocumentRefrencesController"
+            :params="indexDocumentRefrencesParams"
+            :label="$t('Document_refrence')"
+            id="DocumentRefrence"
+            :placeholder="$t('select your Document_refrence')"
+            @update:modelValue="setDocumentRefrences"
+            :type="2"
+            @close="DocumentRefrenceDialog = false"
+            :isDialog="true"
+            v-model:dialogVisible="DocumentRefrenceDialog"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="DocumentRefrenceDialog = true">{{ $t('New') }}</span>
+            </template>
+            <template #Dialog>
+              <AddDocumentRefrence @close:data="DocumentRefrenceDialog = false" />
             </template>
           </UpdatedCustomInputSelect>
         </div>

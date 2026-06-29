@@ -2,25 +2,30 @@
 import { ref, watch } from 'vue'
 import Editor from 'primevue/editor'
 import RadioButton from 'primevue/radiobutton'
+import UpdateCapaController from '../controllers/UpdateCapaController'
+import updateCapaParms from '../../Core/params/updateCapaParms'
 
 const emit = defineEmits(['update:data'])
+const { obsrvationId } = defineProps<{
+  obsrvationId: number
+}>()
 
 const verificationMethodology = ref('')
 const resultFindings = ref('')
-const verificationStatus = ref<'effective' | 'ineffective' | 'pending'>('pending')
+const verificationStatus = ref<1 | 2 | 3>(1)
 
 const statusOptions = [
   {
     label: 'Effective',
-    value: 'effective',
+    value: 1,
   },
   {
     label: 'Ineffective',
-    value: 'ineffective',
+    value: 2,
   },
   {
     label: 'Pending',
-    value: 'pending',
+    value: 3,
   },
 ] as const
 
@@ -35,6 +40,17 @@ const emitData = () => {
 watch([verificationMethodology, resultFindings, verificationStatus], emitData, {
   immediate: true,
 })
+
+const updateCapaController = UpdateCapaController.getInstance()
+const submitVerification = async () => {
+  const updateCapaParams = new updateCapaParms({
+    observationcapaId: obsrvationId,
+    result_findings: resultFindings.value,
+    verification_methodology: verificationMethodology.value,
+    verification_status: verificationStatus.value,
+  })
+  await updateCapaController.getData(updateCapaParams)
+}
 </script>
 
 <template>
@@ -86,6 +102,8 @@ watch([verificationMethodology, resultFindings, verificationStatus], emitData, {
         </div>
       </div>
     </div>
+
+    <button class="btn btn-primary w-full mt-2" @click="submitVerification">Save</button>
   </section>
 </template>
 

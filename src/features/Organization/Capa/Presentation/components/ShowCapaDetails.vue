@@ -9,6 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import Editor from 'primevue/editor'
 import CapaActionPlan from './CapaActionPlan.vue'
+import CapaActionPlanDetails from './CapaActionPlanDetails.vue'
 import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
 
 const showCapaDetailsController = ShowCapaDetailsController.getInstance()
@@ -105,12 +106,15 @@ onMounted(() => {
           </article>
         </section>
 
-        <CapaActionPlan @update:data="setCapaActionPlan" />
+        <!-- <CapaActionPlan @update:data="setCapaActionPlan" /> -->
+        <CapaActionPlanDetails
+          :correctiveTasks="state.data?.correctiveTasks ?? []"
+          :preventiveTasks="state.data?.preventiveTasks ?? []"
+        />
 
-        <VerificationOfEffectiveness @update:data="setVerificationOfEffectiveness" />
 
         <section class="lesson-section">
-          <div class="section-heading">
+          <!-- <div class="section-heading">
             <span>Lesson learnt</span>
             <h2>Capture the learning before it fades</h2>
           </div>
@@ -119,9 +123,20 @@ onMounted(() => {
             v-model="lessonLearnt"
             editorStyle="height: 280px"
             placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
-          />
+          /> -->
+
+          <div class="saved-lesson">
+            <span>Saved lesson learnt</span>
+            <div
+            v-if="state.data?.lessonLearnt"
+            class="saved-lesson-content"
+            v-html="state.data.lessonLearnt"
+            ></div>
+            <p v-else>No lesson learnt has been added yet.</p>
+          </div>
         </section>
       </main>
+      <VerificationOfEffectiveness :obsrvationId="Number(state.data?.observationCapaId)" />
     </template>
 
     <template #loader>
@@ -309,6 +324,44 @@ onMounted(() => {
 
 .lesson-section {
   padding: 1.25rem;
+}
+
+.saved-lesson {
+  margin-top: 1rem;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--Gray-1);
+  padding: 1rem;
+
+  > span {
+    display: block;
+    color: var(--PrimaryColor);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0.75rem 0 0;
+    color: var(--GrayText-1);
+    font-weight: 700;
+  }
+}
+
+.saved-lesson-content {
+  margin-top: 0.75rem;
+  color: var(--header-page-color);
+  line-height: 1.7;
+
+  :deep(p) {
+    margin: 0 0 0.75rem;
+  }
+
+  :deep(ul),
+  :deep(ol) {
+    padding-inline-start: 1.25rem;
+  }
 }
 
 .section-heading {

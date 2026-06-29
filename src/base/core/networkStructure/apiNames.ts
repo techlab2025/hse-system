@@ -1576,6 +1576,9 @@ class ApiNames {
   public get ShowCapaDetails() {
     return this.prefix + 'fetch_capa_details'
   }
+  public get UpdateCapa() {
+    return this.prefix + 'update_capa'
+  }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
   }

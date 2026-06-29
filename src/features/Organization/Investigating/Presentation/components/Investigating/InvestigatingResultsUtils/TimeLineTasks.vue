@@ -92,11 +92,8 @@ onMounted(async () => {
               </div>
             </div>
 
-            <div class="timeline-content">
-              <div
-                class="timeline-content-text input-wrapper"
-                :class="capaStyles ? 'col-span-12' : ''"
-              >
+            <div class="timeline-content" :class="{ 'capa-timeline-content': capaStyles }">
+              <div class="timeline-content-text input-wrapper">
                 <label for="text">Text</label>
                 <input
                   type="text"
@@ -107,23 +104,19 @@ onMounted(async () => {
                   @input="UpdateData"
                 />
               </div>
-              <div class="timeline-contect-select">
-                <div class="input-wrapper" :class="capaStyles ? 'col-span-12' : ''">
+              <div class="timeline-contect-select" :class="{ 'capa-timeline-select': capaStyles }">
+                <div class="input-wrapper">
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.employee"
                     placeholder="Select Employee"
                     class="mt-4 mr-2 input"
-                    :class="capaStyles ? 'col-span-12' : ''"
                     label="Employee"
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
                 </div>
-                <div
-                  class="flex flex-col gap-2 input-wrapper"
-                  :class="capaStyles ? 'col-span-12' : ''"
-                >
+                <div class="flex flex-col gap-2 input-wrapper">
                   <label for="date">Due date</label>
                   <DatePicker
                     v-model="item.date"
@@ -133,7 +126,7 @@ onMounted(async () => {
                     input-id="date"
                   />
                 </div>
-                <div class="input-wrapper" :class="capaStyles ? 'col-span-12' : ''">
+                <div class="input-wrapper">
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.ResponablePerson"
@@ -155,7 +148,19 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.input-wrapper {
-  grid-column: span 12 !important;
+.capa-timeline-content {
+  gap: 12px;
+}
+
+.capa-timeline-content .timeline-content-text,
+.capa-timeline-select .input-wrapper {
+  width: 100%;
+}
+
+.capa-timeline-select {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  width: 100%;
 }
 </style>

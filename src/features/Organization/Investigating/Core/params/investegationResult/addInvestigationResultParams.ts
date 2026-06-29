@@ -34,6 +34,7 @@ export default class AddInvestigationResultParams implements Params {
   public correctiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
   public preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
   public lessonLearnt?: string
+  public documentReferenceIds?: number[]
 
   constructor(data: {
     investigationMeetingId: number
@@ -60,6 +61,7 @@ export default class AddInvestigationResultParams implements Params {
     correctiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
     preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
     lessonLearnt?: string
+    documentReferenceIds?: number[]
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -85,6 +87,7 @@ export default class AddInvestigationResultParams implements Params {
     this.correctiveTasks = data.correctiveTasks
     this.preventiveTasks = data.preventiveTasks
     this.lessonLearnt = data.lessonLearnt
+    this.documentReferenceIds = data.documentReferenceIds
   }
 
   toMap(): Record<string, number | string | any> {
@@ -113,6 +116,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.correctiveTasks) data['corrective_tasks'] = this.correctiveTasks
     if (this.preventiveTasks) data['preventive_tasks'] = this.preventiveTasks
     if (this.lessonLearnt) data['lesson_learnt'] = this.lessonLearnt
+    if (this.documentReferenceIds) data['document_reference_ids'] = this.documentReferenceIds
 
     data['injuries'] = this.Injury?.map((item) => item.toMap())
     return data
