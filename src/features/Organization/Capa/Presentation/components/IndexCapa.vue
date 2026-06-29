@@ -209,7 +209,7 @@ watch(
                               </span>
                             </p>
                           </div>
-                          <div class="sup-title"></div>
+                          <div class="sup-title">{{ item.description || 'N/A' }}</div>
 
                           <div class="card-details">
                             <div class="name">

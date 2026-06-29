@@ -388,4 +388,398 @@ const GetMediumObservationCount = (data: any): number => {
   </DataStatus>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.index-investigating {
+  align-items: flex-start;
+
+  > .col-span-9 {
+    min-width: 0;
+  }
+}
+
+.table-responsive {
+  overflow: visible;
+}
+
+.index-table-card-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.index-table-card {
+  position: relative;
+  overflow: hidden;
+  width: 100% !important;
+  border: 1px solid var(--main-border);
+  border-radius: 18px;
+  background: var(--BgWhite);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--Black) 8%, transparent);
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+// .index-table-card::before {
+//   content: '';
+//   position: absolute;
+//   inset: 0 auto 0 0;
+//   width: 5px;
+//   background: var(--PrimaryColor);
+// }
+
+.index-table-card:hover {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--Black) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+.card-header-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.5fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.first-container,
+.header-container {
+  min-width: 0;
+}
+
+.first-card,
+.card-content,
+.show-investigation-meeting-details {
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--Gray-1);
+}
+
+.first-card {
+  height: 100%;
+  padding: 1rem;
+}
+
+.first-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.first-label-item-primary {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--primary-dark);
+  color: var(--PrimaryColor);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  padding: 0.45rem 0.75rem;
+  text-transform: uppercase;
+}
+
+.first-label-item-primary.high {
+  background: var(--Red-opacity);
+  color: var(--danger-color);
+}
+
+.first-label-item-primary.medium {
+  background: var(--delay-color);
+  color: var(--medium-color);
+}
+
+.first-label-item-primary.low {
+  background: var(--green-done);
+  color: var(--green);
+}
+
+.first-label-item-primary span {
+  color: inherit;
+  font-weight: 800;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  margin: 0;
+  border: 1px solid var(--main-border);
+  border-radius: 999px;
+  background: var(--BgWhite);
+  color: var(--GrayText-1);
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.42rem 0.75rem;
+}
+
+.status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.status.New,
+.status.Open {
+  color: var(--PrimaryColor);
+}
+
+.status.InProgress,
+.status.Hold {
+  color: var(--medium-color);
+}
+
+.status.Closed,
+.status.Completed {
+  color: var(--green);
+}
+
+.first-card-details {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.label-item-primary,
+.label-item-secondary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--GrayText-1);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.label-item-primary span,
+.label-item-secondary span {
+  color: var(--header-page-color);
+  font-weight: 900;
+}
+
+.label-item-primary img,
+.label-item-secondary img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-header {
+  border-bottom: 1px solid var(--main-border);
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+}
+
+.card-header .label-item-secondary {
+  color: var(--header-page-color);
+  font-weight: 700;
+}
+
+.card-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  gap: 1rem;
+}
+
+.project-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.project-details .label-item-primary {
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--BgWhite);
+  padding: 0.75rem;
+}
+
+.show-investigation-meeting-details {
+  padding: 1rem;
+}
+
+.show-investigation-meeting-details .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--main-border);
+  padding-bottom: 0.85rem;
+}
+
+.show-investigation-meeting-details .title h6,
+.show-investigation-meeting-details .dome-info h6,
+.show-investigation-meeting-details .dome-info p {
+  margin: 0;
+}
+
+.show-investigation-meeting-details .title h6 {
+  color: var(--header-page-color);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.show-investigation-meeting-details .title .imge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  background: var(--BgWhite);
+  color: var(--PrimaryColor);
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.45rem 0.7rem;
+}
+
+.show-investigation-meeting-details .title .imge p {
+  margin: 0;
+}
+
+.show-investigation-meeting-details .dome-info {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.show-investigation-meeting-details .dome-info p,
+.show-investigation-meeting-details .dome-info h6 {
+  color: var(--GrayText-1);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.show-investigation-meeting-details .dome-info span {
+  color: var(--header-page-color);
+  font-weight: 900;
+}
+
+.btns-container {
+  margin-top: 1rem !important;
+}
+
+.unsolved-btns,
+.solved-btn {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.unsolved-btns a,
+.solved-btn a,
+.btn-inprogress a {
+  min-width: 0;
+}
+
+.btns-container .btn {
+  min-height: 44px;
+  border-radius: 12px;
+  font-weight: 900;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.btns-container .btn:hover {
+  transform: translateY(-1px);
+}
+
+.second-btn,
+.view-btn {
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border));
+  background: var(--BgWhite);
+  color: var(--PrimaryColor);
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.view-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.view-btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.live-link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.join {
+  white-space: nowrap;
+}
+
+@media (max-width: 1180px) {
+  .card-header-container,
+  .card-details {
+    grid-template-columns: 1fr;
+  }
+
+  .project-details {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .index-investigating {
+    grid-template-columns: 1fr;
+  }
+
+  .index-investigating > :deep(.col-span-3),
+  .index-investigating > .col-span-9 {
+    grid-column: auto / span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-header-container {
+    padding: 0.75rem;
+  }
+
+  .header,
+  .show-investigation-meeting-details .title,
+  .unsolved-btns,
+  .solved-btn {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .unsolved-btns a,
+  .solved-btn a,
+  .solved-btn :deep(a) {
+    width: 100% !important;
+  }
+}
+</style>
