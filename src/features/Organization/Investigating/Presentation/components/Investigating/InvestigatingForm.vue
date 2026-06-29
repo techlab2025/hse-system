@@ -51,6 +51,8 @@ const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 
 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
+const MeetingPlace = ref<string>('')
+const isOtherMeetingPlatform = () => SelectedPlatform.value?.id === 5
 const updateData = () => {
   const meeting =
     date?.value != undefined && time?.value != undefined
@@ -58,6 +60,9 @@ const updateData = () => {
           formatJoinDate(date?.value),
           formatTime(time?.value) || null,
           SelectedPlatform?.value?.id,
+          undefined,
+          undefined,
+          isOtherMeetingPlatform() ? MeetingPlace.value : undefined,
         )
       : null
   console.log(meeting, 'meeting')
@@ -162,6 +167,11 @@ const MeetingPlatforms = ref<TitleInterface[]>([
 const SelectedPlatform = ref<TitleInterface>(null)
 const setSelectedPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
+  if (!isOtherMeetingPlatform()) MeetingPlace.value = ''
+  updateData()
+}
+
+const setMeetingPlace = () => {
   updateData()
 }
 
@@ -181,19 +191,16 @@ watch(
   () => showInvestigationResultController.state.value,
   (newState) => {
     if (newState) {
+      const latestMeeting =
+        newState?.data?.investigationMeetings?.[newState.data.investigationMeetings.length - 1]
       state.value = newState
-      date.value =
-        newState?.data?.investigationMeetings?.[
-          newState.data.investigationMeetings.length - 1
-        ]?.date
-      time.value =
-        newState?.data?.investigationMeetings?.[
-          newState.data.investigationMeetings.length - 1
-        ]?.time
+      date.value = latestMeeting?.date
+      time.value = latestMeeting?.time
       SelectedPlatform.value = new TitleInterface({
-        id: newState.data?.type,
-        title: MeetingPlatforms.value.find((el) => el.id === newState.data?.type)?.title,
+        id: latestMeeting?.type,
+        title: MeetingPlatforms.value.find((el) => el.id === latestMeeting?.type)?.title,
       })
+      MeetingPlace.value = latestMeeting?.place ?? ''
       // Employees.value = newState?.data?.employees?.map(el => new InvestigatingEmployeeParams(el.id!, el.is_leader))
       // SelectedTeam.value = newState?.data?.employees?.map(el => new TitleInterface({ id: el.id!, title: el.name }))
       // SelectedTeamLeader.value = newState?.data?.employees?.find(el => el.is_leader)?.id
@@ -275,6 +282,17 @@ watch(
       id="machine"
       placeholder="select meeting platform"
       @update:modelValue="setSelectedPlatform"
+    />
+  </div>
+  <div v-if="isOtherMeetingPlatform()" class="col-span-6 md:col-span-6 input-wrapper">
+    <label for="meeting-place">Meeting place</label>
+    <input
+      id="meeting-place"
+      v-model="MeetingPlace"
+      class="input"
+      type="text"
+      placeholder="Enter meeting place"
+      @input="setMeetingPlace"
     />
   </div>
 </template>
