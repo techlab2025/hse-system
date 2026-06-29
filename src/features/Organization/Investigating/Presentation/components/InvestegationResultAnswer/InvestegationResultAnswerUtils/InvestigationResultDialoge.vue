@@ -15,6 +15,7 @@ const props = defineProps<{
 const taskAnswer = computed(
   () =>
     props.item?.answer ||
+    props.item?.answerNotes ||
     props.item?.notes ||
     props.item?.investigation_task_results?.[0]?.notes ||
     props.item?.investigationTaskResults?.[0]?.notes ||

@@ -65,6 +65,7 @@ const taskAnswer = computed(
   () =>
     localAnswer.value ||
     taskValue.value?.answer ||
+    taskValue.value?.answerNotes ||
     taskValue.value?.notes ||
     taskValue.value?.task_result?.notes ||
     taskValue.value?.taskResult?.notes ||
@@ -117,7 +118,7 @@ watch(
 
       <div class="info">
         <span class="date"
-          >due date :<span>{{ dueDate }}</span></span
+          >due date :<span>{{ task?.date || dueDate }}</span></span
         >
         <span class="responsable"
           >Responsible:
@@ -147,7 +148,8 @@ watch(
           <InvestigationResultDialoge v-if="hasAnswer" :item="detailsTask" />
         </div>
         <!-- class="btn btn-secondary" -->
-        <InvestigationResultDialoge v-if="!isOpenTask && !hasAnswer" :item="task" />
+
+        <InvestigationResultDialoge v-if="!isOpenTask && !hasAnswer" :item="detailsTask" />
       </div>
     </div>
   </div>

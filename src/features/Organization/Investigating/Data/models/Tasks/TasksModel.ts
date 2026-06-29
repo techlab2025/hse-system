@@ -10,6 +10,7 @@ export default class TasksModel {
   public description: string
   public assignedTo: OrganizatoinEmployeeModel
   public responablePerson: OrganizatoinEmployeeModel
+  public answerNotes: string
 
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export default class TasksModel {
     description: string,
     assignedTo: OrganizatoinEmployeeModel,
     responablePerson: OrganizatoinEmployeeModel,
+    answerNotes: string = '',
   ) {
     this.id = id
     this.investigation = investigation
@@ -31,6 +33,7 @@ export default class TasksModel {
     this.description = description
     this.assignedTo = assignedTo
     this.responablePerson = responablePerson
+    this.answerNotes = answerNotes
   }
 
   static fromMap(data: any): TasksModel {
@@ -44,6 +47,14 @@ export default class TasksModel {
       data.description,
       OrganizatoinEmployeeModel.fromMap(data.assigned_to),
       OrganizatoinEmployeeModel.fromMap(data.responable_person),
+      data?.investigation_task_results?.[0]?.notes ||
+        data?.investigationTaskResults?.[0]?.notes ||
+        data?.task_results?.[0]?.notes ||
+        data?.taskResults?.[0]?.notes ||
+        data?.task_result?.notes ||
+        data?.taskResult?.notes ||
+        data?.notes ||
+        '',
     )
   }
 

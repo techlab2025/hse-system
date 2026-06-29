@@ -207,6 +207,8 @@ watch(
               <p>Review assignments, due dates, status, and task answers.</p>
             </div>
 
+
+          
             <div class="tasks-index-grid">
               <InvestegaionResultTasksAnswerCard
                 v-for="(task, index) in state.data"
