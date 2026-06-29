@@ -14,10 +14,10 @@ export default class DocumentRefrenceModel extends TitleInterface {
     return new DocumentRefrenceModel(data.id, data.title)
   }
 
-  static transformData(data: string[][]): InjuryModel[] {
+  static transformData(data: string[][]): DocumentRefrenceModel[] {
     return data.map(
       (row, index) =>
-        new InjuryModel(
+        new DocumentRefrenceModel(
           index + 1,
           row[0] || '',
 
