@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { MeetingStatus } from '@/features/Organization/Investigating/Core/Enums/MeetingStatusEnum'
 import { TasksStatusEnum } from '@/features/Organization/Investigating/Core/Enums/TasksStatusEnum'
-import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue'
 import NewTaskIcon from '@/shared/icons/NewTaskIcon.vue'
-import TasksComplated from '@/shared/icons/TasksComplated.vue'
 import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
 import TasksWorking from '@/shared/icons/TasksWorking.vue'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import Dialog from 'primevue/dialog'
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
-import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
 import InvestigationResultDialoge from './InvestigationResultDialoge.vue'
 import AddInvestegationTaskAnswerDialog from '../../Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue'
+import type { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
 
 const props = defineProps<{
-  task: InvestegationTasksModel
+  task: InvestegationTasksModel | CapaTaskDetailsModel
 }>()
+const emit = defineEmits(['answered'])
+const taskValue = computed(() => props.task as any)
+const localAnswer = ref('')
+const answerDialogVisible = ref(false)
 
 const TasksStatus = ref([
   {
@@ -35,7 +37,49 @@ const TasksStatus = ref([
 ])
 
 const GetTaskStatus = (status) => {
-  return TasksStatusEnum[status]
+  return status === TasksStatusEnum.COLSED ? 'CLOSED' : 'OPEN'
+}
+
+const isOpenTask = computed(() => props.task?.status === TasksStatusEnum.OPEN)
+const taskStatusLabel = computed(() => (isOpenTask.value ? 'Open' : 'Closed'))
+const taskTitle = computed(
+  () => taskValue.value?.description || taskValue.value?.title || 'Untitled task',
+)
+const dueDate = computed(() => taskValue.value?.due_date || taskValue.value?.dueDate || 'N/A')
+const responsiblePerson = computed(
+  () =>
+    taskValue.value?.investigation_task_employees?.[0]?.follow_up_employee?.name ||
+    taskValue.value?.investigationTaskEmployees?.[0]?.follow_up_employee?.name ||
+    taskValue.value?.responablePerson?.title ||
+    taskValue.value?.ResponsablePerson?.name ||
+    taskValue.value?.responsiblePersonName ||
+    'N/A',
+)
+const assignedTo = computed(
+  () =>
+    taskValue.value?.investigation_task_employees?.[0]?.employee?.name ||
+    taskValue.value?.investigationTaskEmployees?.[0]?.employee?.name ||
+    taskValue.value?.assignedTo?.name ||
+    taskValue.value?.assignedToName ||
+    'N/A',
+)
+const taskAnswer = computed(
+  () =>
+    localAnswer.value ||
+    taskValue.value?.answer ||
+    taskValue.value?.notes ||
+    taskValue.value?.task_result?.notes ||
+    taskValue.value?.taskResult?.notes ||
+    taskValue.value?.investigation_task_result?.notes ||
+    taskValue.value?.investigationTaskResult?.notes ||
+    taskValue.value?.task_results?.[0]?.notes ||
+    taskValue.value?.taskResults?.[0]?.notes ||
+    '',
+)
+const hasAnswer = computed(() => !!String(taskAnswer.value || '').trim())
+const onAnswerSubmitted = (answer: string) => {
+  localAnswer.value = answer
+  emit('answered')
 }
 
 // const SelectedTaskStatus = ref(
@@ -58,25 +102,22 @@ watch(
     <div class="card-header">
       <div class="task-status">
         <component :is="SelectedTaskStatus?.icon"></component>
-        <p class="task-status-title">{{ GetTaskStatus(task.status) }}</p>
+        <p class="task-status-title">{{ taskStatusLabel }}</p>
       </div>
     </div>
 
     <div class="card-content">
       <p class="task-description">
-        {{ task?.description || task?.title }}
+        {{ taskTitle }}
       </p>
 
       <div class="info">
         <span class="date"
-          >due date :<span>{{ task?.due_date || task?.date }}</span></span
+          >due date :<span>{{ dueDate }}</span></span
         >
         <span class="responsable"
           >Responsible:
-          <span>{{
-            task?.investigation_task_employees?.[0]?.follow_up_employee?.name ||
-            task?.responablePerson?.title
-          }}</span>
+          <span>{{ responsiblePerson }}</span>
         </span>
       </div>
 
@@ -87,24 +128,45 @@ watch(
             <p class="assign">assigned to :</p>
 
             <p class="person">
-              {{
-                task?.investigation_task_employees?.[0]?.employee?.name || task?.assignedTo?.name
-              }}
+              {{ assignedTo }}
             </p>
           </div>
         </div>
 
-        <button v-if="task?.status === TasksStatusEnum.OPEN || task?.status === 0">
+        <div class="task-actions">
           <AddInvestegationTaskAnswerDialog
+            v-if="isOpenTask && !hasAnswer"
             :taskId="task?.id"
-            :task="task?.description || task?.title"
+            :task="taskTitle"
+            @submitted="onAnswerSubmitted"
           />
-        </button>
+          <button v-if="hasAnswer" class="show-answer-btn" @click="answerDialogVisible = true">
+            View answer
+          </button>
+        </div>
         <!-- class="btn btn-secondary" -->
-        <button v-else>
+        <button v-if="!isOpenTask && !hasAnswer">
           <InvestigationResultDialoge :item="task" />
         </button>
       </div>
     </div>
+
+    <Dialog
+      v-model:visible="answerDialogVisible"
+      modal
+      :dismissableMask="true"
+      :style="{ width: '38rem', maxWidth: '92vw' }"
+    >
+      <template #header>
+        <div class="answer-dialog-header">
+          <span>Task answer</span>
+          <h3>{{ taskTitle }}</h3>
+        </div>
+      </template>
+
+      <div class="answer-dialog-body">
+        <p>{{ taskAnswer }}</p>
+      </div>
+    </Dialog>
   </div>
 </template>

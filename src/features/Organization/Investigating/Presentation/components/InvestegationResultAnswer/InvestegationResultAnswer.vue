@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import InvestigatingResultAnswerHedaer from './InvestegationResultAnswerParts/InvestigatingResultAnswerHedaer.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -19,6 +19,24 @@ const route = useRoute()
 const id = route.params.id
 const showInvestigatingController = ShowInvestigatingController.getInstance()
 const state = ref(showInvestigatingController.state.value)
+const investigationData = computed(() => state.value?.data as any)
+
+const correctiveTasks = computed(() =>
+  investigationData.value?.correctiveTask?.length
+    ? investigationData.value.correctiveTask
+    : (investigationData.value?.correctiveTasks ?? []),
+)
+const preventiveTasks = computed(() =>
+  investigationData.value?.preventiveTask?.length
+    ? investigationData.value.preventiveTask
+    : (investigationData.value?.preventiveTasks ?? []),
+)
+const legacyTasks = computed(() => investigationData.value?.investigationTasks ?? [])
+const allTasks = computed(() => {
+  const groupedTasks = [...correctiveTasks.value, ...preventiveTasks.value]
+  return groupedTasks.length ? groupedTasks : legacyTasks.value
+})
+const solvedTasks = computed(() => allTasks.value.filter((task: any) => task?.status === 1).length)
 
 const GetInvestegationDetails = async () => {
   const showInvestigatingParams = new ShowInvestigatingParams(Number(id))
@@ -50,10 +68,8 @@ watch(
           :TeamLeader="state.data?.investigationTeamLeader"
           :createdAt="state.data?.date"
           :TeamNumbers="state.data?.investigationEmployees?.length"
-          :solvedTasks="
-            state.data?.investigationTasks?.filter((task: any) => task.status === 1)?.length
-          "
-          :ToltalTasks="state.data?.investigationTasks?.length"
+          :solvedTasks="solvedTasks"
+          :ToltalTasks="allTasks.length"
           :investegationType="state.data?.observation?.type"
         />
 
@@ -67,8 +83,11 @@ watch(
           :meetings="state.data?.investigationMeetings"
         />
         <InvestegationResultTasksAnswer
-          v-if="state?.data?.investigationTasks?.length > 0"
-          :tasks="state.data?.investigationTasks"
+          v-if="allTasks.length > 0"
+          :correctiveTasks="correctiveTasks"
+          :preventiveTasks="preventiveTasks"
+          :tasks="legacyTasks"
+          @answered="GetInvestegationDetails"
         />
         <InvestegationResultTakeActionAnswer
           v-if="state.data?.explainWhyText?.length > 0"

@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
-import Button from 'primevue/button'
 
-import mark from '@/assets/images/mark.png'
-import TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
 const visible = ref(false)
 
 const staticData = {
@@ -12,9 +9,9 @@ const staticData = {
   description: 'Thickening the electrical wires and reinforcing them with an insulating material',
 }
 
-const props = defineProps({
-  item: TasksModel,
-})
+defineProps<{
+  item: any
+}>()
 </script>
 
 <template>
@@ -45,11 +42,17 @@ const props = defineProps({
             <div class="info-row">
               <div class="info-item">
                 <h5>due date :</h5>
-                <span> {{ item?.due_date || item?.date }}</span>
+                <span> {{ item?.due_date || item?.dueDate || item?.date }}</span>
               </div>
               <div class="info-item">
                 <h5>Responsible :</h5>
-                <span> {{ item?.responable_person?.name || item?.responablePerson?.name }}</span>
+                <span>
+                  {{
+                    item?.responable_person?.name ||
+                    item?.responablePerson?.name ||
+                    item?.responsiblePersonName
+                  }}
+                </span>
               </div>
             </div>
           </div>
@@ -66,7 +69,7 @@ const props = defineProps({
           <img src="@/assets/images/user-assign.png" alt="" />
           <div class="name">
             <span>assigned to :</span>
-            <p>{{ item?.assigned_to?.name || item?.assignedTo?.name }}</p>
+            <p>{{ item?.assigned_to?.name || item?.assignedTo?.name || item?.assignedToName }}</p>
           </div>
         </div>
       </div>

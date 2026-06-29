@@ -26,6 +26,8 @@ export default class InvestigatingDetailsModel {
   public investigationDocumentations: InvestigatingDocumentModel[]
   public explainWhyText: string
   public witnessStatements: witnessStatementsModel[]
+  public preventiveTasks: InvestegationTasksModel[]
+  public correctiveTasks: InvestegationTasksModel[]
 
   constructor(
     id: number,
@@ -43,6 +45,8 @@ export default class InvestigatingDetailsModel {
     investigationDocumentations: InvestigatingDocumentModel[],
     explainWhyText: string,
     witnessStatements: witnessStatementsModel[],
+    preventiveTasks: InvestegationTasksModel[],
+    correctiveTasks: InvestegationTasksModel[],
   ) {
     this.id = id
     this.investigationId = investigationId
@@ -59,6 +63,8 @@ export default class InvestigatingDetailsModel {
     this.investigationDocumentations = investigationDocumentations
     this.explainWhyText = explainWhyText
     this.witnessStatements = witnessStatements
+    this.preventiveTasks = preventiveTasks
+    this.correctiveTasks = correctiveTasks
   }
 
   static fromMap(data: any): InvestigatingDetailsModel {
@@ -78,6 +84,8 @@ export default class InvestigatingDetailsModel {
       data.investigation_documentations,
       data.explain_why_text,
       data.witness_statements,
+      data.preventive_tasks,
+      data.corrective_tasks,
     )
   }
 
