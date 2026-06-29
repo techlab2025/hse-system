@@ -10,8 +10,14 @@ import DatePicker from 'primevue/datepicker'
 
 const emit = defineEmits(['update:data'])
 
+const { capaStyles, staticEmployeeOptions, useStaticEmployeeOptions } = defineProps<{
+  capaStyles?: boolean
+  staticEmployeeOptions?: TitleInterface[]
+  useStaticEmployeeOptions?: boolean
+}>()
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const employeeOptions = ref<TitleInterface[]>([])
 const Answers = ref([
   {
     text: ' ',
@@ -39,10 +45,22 @@ const DeleteItem = (index: number) => {
 const UpdateData = () => {
   emit('update:data', Answers.value)
 }
-onMounted(() => {
+
+const fetchEmployees = async () => {
+  if (useStaticEmployeeOptions) {
+    employeeOptions.value = staticEmployeeOptions ?? []
+    return
+  }
+
+  employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
+    fetchOrganizationEmployeeParams,
+  )
+}
+
+onMounted(async () => {
+  await fetchEmployees()
   emit('update:data', Answers.value)
 })
-
 </script>
 <template>
   <div class="template-container">
@@ -51,8 +69,13 @@ onMounted(() => {
         <div class="timeline-wrapper">
           <div class="timeline-line"></div>
 
-          <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
-            :style="{ animationDelay: `${index * 0.15}s` }">
+          <div
+            class="timeline-item"
+            v-for="(item, index) in Answers"
+            :key="index"
+            :class="{ active: index === 0 }"
+            :style="{ animationDelay: `${index * 0.15}s` }"
+          >
             <div class="timeline-marker">
               <div class="timeline-dot">
                 <div class="timeline-dot-inner"></div>
@@ -60,34 +83,66 @@ onMounted(() => {
               </div>
 
               <div class="timeline-icon">
-                <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
-                  @click="DeleteItem(index)" />
+                <DeleteItemAction
+                  class="cursor-pointer"
+                  v-if="index >= 0 && index !== Answers.length - 1"
+                  @click="DeleteItem(index)"
+                />
                 <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
               </div>
             </div>
 
             <div class="timeline-content">
-              <div class="timeline-content-text input-wrapper">
+              <div
+                class="timeline-content-text input-wrapper"
+                :class="capaStyles ? 'col-span-12' : ''"
+              >
                 <label for="text">Text</label>
-                <input type="text" id="text" v-model="item.text" class="input" placeholder="add your title"
-                  @input="UpdateData" />
+                <input
+                  type="text"
+                  id="text"
+                  v-model="item.text"
+                  class="input"
+                  placeholder="add your title"
+                  @input="UpdateData"
+                />
               </div>
               <div class="timeline-contect-select">
-                <div class="input-wrapper">
-                  <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
-                    :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Employee"
-                    class="mt-4 mr-2 input" label="Employee" @update:model-value="UpdateData" />
+                <div class="input-wrapper" :class="capaStyles ? 'col-span-12' : ''">
+                  <CustomSelectInput
+                    :staticOptions="employeeOptions"
+                    v-model="item.employee"
+                    placeholder="Select Employee"
+                    class="mt-4 mr-2 input"
+                    :class="capaStyles ? 'col-span-12' : ''"
+                    label="Employee"
+                    :reload="false"
+                    @update:model-value="UpdateData"
+                  />
                 </div>
-                <div class="flex flex-col gap-2 input-wrapper">
+                <div
+                  class="flex flex-col gap-2 input-wrapper"
+                  :class="capaStyles ? 'col-span-12' : ''"
+                >
                   <label for="date">Due date</label>
-                  <DatePicker v-model="item.date" class="mt-4 mr-2 input date-picker" placeholder="Select Date"
-                    @update:model-value="UpdateData" input-id="date" />
+                  <DatePicker
+                    v-model="item.date"
+                    class="mt-4 mr-2 input date-picker"
+                    placeholder="Select Date"
+                    @update:model-value="UpdateData"
+                    input-id="date"
+                  />
                 </div>
-                <div class="input-wrapper">
-                  <CustomSelectInput :controller="fetchOriganizatioEmployeeController"
-                    :params="fetchOrganizationEmployeeParams" v-model="item.ResponablePerson"
-                    placeholder="Select Responable Person" class="mt-4 mr-2 input" label="Responsible person"
-                    @update:model-value="UpdateData" />
+                <div class="input-wrapper" :class="capaStyles ? 'col-span-12' : ''">
+                  <CustomSelectInput
+                    :staticOptions="employeeOptions"
+                    v-model="item.ResponablePerson"
+                    placeholder="Select Responable Person"
+                    class="mt-4 mr-2 input"
+                    label="Responsible person"
+                    :reload="false"
+                    @update:model-value="UpdateData"
+                  />
                 </div>
               </div>
               <!-- </div> -->
@@ -98,3 +153,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.input-wrapper {
+  grid-column: span 12 !important;
+}
+</style>

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import TimeLineTasks from '@/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResultsUtils/TimeLineTasks.vue'
 import InvestegationTasksParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationTasksParams'
 import InvestigationTaskEmployees from '@/features/Organization/Investigating/Core/params/investegationResult/InvestigationTaskEmployeesParams'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 
 type ActionType = 'corrective' | 'preventive'
 
@@ -12,6 +15,10 @@ const selectedTasks = ref<Record<ActionType, Record<string, any>[]>>({
   corrective: [],
   preventive: [],
 })
+const employeeOptions = ref<TitleInterface[]>([])
+const isEmployeeOptionsLoaded = ref(false)
+const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 
 const totals = computed(() => ({
   corrective: selectedTasks.value.corrective.length,
@@ -23,7 +30,7 @@ const mapTasks = (data: any[]) => {
   return data.map((item) => {
     const itemEmployees = new InvestigationTaskEmployees(
       item.employee?.id || null,
-      null,
+      '',
       item?.ResponablePerson?.id,
     )
 
@@ -38,6 +45,16 @@ const updateTasks = (type: ActionType, data: any[]) => {
     preventive: selectedTasks.value.preventive,
   })
 }
+
+onMounted(async () => {
+  try {
+    employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
+      fetchOrganizationEmployeeParams,
+    )
+  } finally {
+    isEmployeeOptionsLoaded.value = true
+  }
+})
 </script>
 
 <template>
@@ -65,7 +82,13 @@ const updateTasks = (type: ActionType, data: any[]) => {
         <p class="lane-copy">
           Actions that remove the current nonconformity and bring the case back under control.
         </p>
-        <TimeLineTasks @update:data="(data) => updateTasks('corrective', data)" />
+        <TimeLineTasks
+          v-if="isEmployeeOptionsLoaded"
+          :capaStyles="true"
+          :staticEmployeeOptions="employeeOptions"
+          :useStaticEmployeeOptions="true"
+          @update:data="(data) => updateTasks('corrective', data)"
+        />
       </article>
 
       <article class="task-lane preventive">
@@ -79,7 +102,13 @@ const updateTasks = (type: ActionType, data: any[]) => {
         <p class="lane-copy">
           Actions that strengthen the process so the same issue does not return.
         </p>
-        <TimeLineTasks @update:data="(data) => updateTasks('preventive', data)" />
+        <TimeLineTasks
+          v-if="isEmployeeOptionsLoaded"
+          :capaStyles="true"
+          :staticEmployeeOptions="employeeOptions"
+          :useStaticEmployeeOptions="true"
+          @update:data="(data) => updateTasks('preventive', data)"
+        />
       </article>
     </div>
   </section>
@@ -87,12 +116,12 @@ const updateTasks = (type: ActionType, data: any[]) => {
 
 <style scoped lang="scss">
 .capa-action-plan {
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--main-border);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92)),
-    radial-gradient(circle at top left, rgba(20, 184, 166, 0.12), transparent 34%);
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    linear-gradient(135deg, var(--BgWhite), var(--Gray-1)),
+    radial-gradient(circle at top left, var(--primary-dark), transparent 34%);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 10%, transparent);
   padding: 1.25rem;
 }
 
@@ -106,7 +135,7 @@ const updateTasks = (type: ActionType, data: any[]) => {
 
 .eyebrow,
 .lane-kicker {
-  color: #64748b;
+  color: var(--GrayText-1);
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -116,7 +145,7 @@ const updateTasks = (type: ActionType, data: any[]) => {
 h3,
 h4 {
   margin: 0.25rem 0 0;
-  color: #0f172a;
+  color: var(--header-page-color);
   font-weight: 800;
 }
 
@@ -134,10 +163,10 @@ h4 {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--main-border);
+  background: var(--BgWhite);
+  color: var(--header-page-color);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--Black) 10%, transparent);
 }
 
 .task-total {
@@ -153,7 +182,7 @@ h4 {
   }
 
   small {
-    color: #64748b;
+    color: var(--GrayText-1);
     font-size: 0.72rem;
     font-weight: 700;
   }
@@ -175,23 +204,23 @@ h4 {
 
 .task-lane {
   overflow: hidden;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--main-border);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--BgWhite);
   padding: 1rem;
 }
 
 .task-lane.corrective {
-  border-top: 4px solid #ef4444;
+  border-top: 4px solid var(--danger-color);
 }
 
 .task-lane.preventive {
-  border-top: 4px solid #14b8a6;
+  border-top: 4px solid var(--green);
 }
 
 .lane-copy {
   margin: 0.7rem 0 1rem;
-  color: #64748b;
+  color: var(--GrayText-1);
   font-size: 0.9rem;
   line-height: 1.6;
 }
@@ -206,7 +235,7 @@ h4 {
 
 :deep(.timeline-content) {
   border-radius: 14px;
-  background: #f8fafc;
+  background: var(--Gray-1);
 }
 
 :deep(.timeline-contect-select) {

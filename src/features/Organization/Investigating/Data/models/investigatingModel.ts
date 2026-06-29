@@ -113,7 +113,7 @@ export default class InvestigatingModel {
 
   static fromMap(data: any): InvestigatingModel {
     return new InvestigatingModel(
-      data.id,
+      data.id || data.investigation_id,
       data.title,
       data.description,
       data.image,

@@ -9,6 +9,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import Editor from 'primevue/editor'
 import CapaActionPlan from './CapaActionPlan.vue'
+import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
 
 const showCapaDetailsController = ShowCapaDetailsController.getInstance()
 const state = computed(() => showCapaDetailsController.state.value)
@@ -16,6 +17,7 @@ const route = useRoute()
 
 const lessonLearnt = ref('')
 const capaActionPlan = ref()
+const verificationOfEffectiveness = ref()
 
 const ShowCapaDetails = () => {
   const showCapaSetailsParams = new ShowCapaDetailsParams({
@@ -28,6 +30,10 @@ const setCapaActionPlan = (data: any) => {
   capaActionPlan.value = data
 }
 
+const setVerificationOfEffectiveness = (data: any) => {
+  verificationOfEffectiveness.value = data
+}
+
 const summaryCards = computed(() => [
   {
     label: 'CAPA serial',
@@ -36,6 +42,7 @@ const summaryCards = computed(() => [
   {
     label: 'Observation ID',
     value: state.value.data?.observationId || 'N/A',
+    path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
   },
   {
     label: 'CAPA ID',
@@ -44,6 +51,7 @@ const summaryCards = computed(() => [
   {
     label: 'Investigation ID',
     value: state.value.data?.investigation?.Investegationid || 'N/A',
+    path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
   },
 ])
 
@@ -74,10 +82,15 @@ onMounted(() => {
         </section>
 
         <section class="summary-grid">
-          <article v-for="card in summaryCards" :key="card.label" class="summary-card">
+          <router-link
+            :to="card.path ? card.path : '#'"
+            v-for="card in summaryCards"
+            :key="card.label"
+            class="summary-card"
+          >
             <span>{{ card.label }}</span>
             <strong>{{ card.value }}</strong>
-          </article>
+          </router-link>
         </section>
 
         <section class="details-grid">
@@ -94,32 +107,7 @@ onMounted(() => {
 
         <CapaActionPlan @update:data="setCapaActionPlan" />
 
-        <section class="verification-section">
-          <div class="section-heading">
-            <span>Verification of effectiveness</span>
-            <h2>Make sure actions actually changed the risk</h2>
-          </div>
-          <div class="verification-grid">
-            <article>
-              <span class="step-number">01</span>
-              <h3>Evidence review</h3>
-              <p>
-                Check closure evidence, assigned owners, due dates, and any supporting
-                documentation.
-              </p>
-            </article>
-            <article>
-              <span class="step-number">02</span>
-              <h3>Field validation</h3>
-              <p>Confirm the corrective and preventive controls are visible in the workplace.</p>
-            </article>
-            <article>
-              <span class="step-number">03</span>
-              <h3>Follow-up result</h3>
-              <p>Record whether the issue stayed closed or needs another action cycle.</p>
-            </article>
-          </div>
-        </section>
+        <VerificationOfEffectiveness @update:data="setVerificationOfEffectiveness" />
 
         <section class="lesson-section">
           <div class="section-heading">
@@ -176,22 +164,13 @@ onMounted(() => {
   justify-content: space-between;
   gap: 2rem;
   border-radius: 20px;
-  background: white;
-  color: #ffffff;
+  background:
+    linear-gradient(135deg, var(--BgWhite), var(--Gray-1)),
+    linear-gradient(135deg, var(--primary-dark), transparent);
+  color: var(--header-page-color);
   padding: clamp(1.4rem, 3vw, 2.4rem);
-  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 16px 32px color-mix(in srgb, var(--Black) 10%, transparent);
 }
-
-// .capa-hero::after {
-//   content: '';
-//   position: absolute;
-//   inset: auto -12% -35% auto;
-//   width: 360px;
-//   height: 360px;
-//   border-radius: 999px;
-//   background: rgba(20, 184, 166, 0.28);
-//   filter: blur(8px);
-// }
 
 .hero-content,
 .hero-meta {
@@ -207,14 +186,13 @@ onMounted(() => {
     font-size: 22px;
     font-weight: 900;
     line-height: 1.05;
-    color: black;
+    color: var(--header-page-color);
   }
 
   p {
     max-width: 720px;
     margin: 0;
-    color: black;
-    // color: rgba(255, 255, 255, 0.78);
+    color: var(--GrayText-1);
     font-size: 12px;
     line-height: 1.7;
   }
@@ -231,7 +209,7 @@ onMounted(() => {
 }
 
 .hero-eyebrow {
-  color: #1d4ed8;
+  color: var(--PrimaryColor);
 }
 
 .hero-meta {
@@ -239,27 +217,26 @@ onMounted(() => {
   align-self: flex-start;
   flex-direction: column;
   min-width: 150px;
-  border: 1px solid black;
+  border: 1px solid var(--main-border);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
+  // background: var(--primary-dark);
   backdrop-filter: blur(10px);
   padding: 1rem;
 
   span {
-    color: black;
+    color: var(--GrayText-1);
     font-size: 0.82rem;
   }
 
   strong {
     margin-top: 0.25rem;
-    color: black;
+    color: var(--PrimaryColor);
     font-size: 1.3rem;
   }
 }
 
 .summary-grid,
-.details-grid,
-.verification-grid {
+.details-grid {
   display: grid;
   gap: 1rem;
 }
@@ -270,25 +247,24 @@ onMounted(() => {
 
 .summary-card,
 .insight-card,
-.verification-section,
 .lesson-section {
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--main-border);
   border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+  background: var(--BgWhite);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
 }
 
 .summary-card {
   padding: 1rem;
 
   span {
-    color: #64748b;
+    color: var(--GrayText-1);
   }
 
   strong {
     display: block;
     margin-top: 0.45rem;
-    color: #0f172a;
+    color: var(--header-page-color);
     font-size: 1.15rem;
     word-break: break-word;
   }
@@ -305,12 +281,12 @@ onMounted(() => {
   padding: 1.2rem;
 
   span {
-    color: #475569;
+    color: var(--GrayText-1);
   }
 
   p {
     margin: 0.8rem 0 0;
-    color: #0f172a;
+    color: var(--header-page-color);
     font-size: 1rem;
     line-height: 1.7;
   }
@@ -324,14 +300,13 @@ onMounted(() => {
 }
 
 .insight-card.corrective::before {
-  background: #ef4444;
+  background: var(--danger-color);
 }
 
 .insight-card.preventive::before {
-  background: #14b8a6;
+  background: var(--green);
 }
 
-.verification-section,
 .lesson-section {
   padding: 1.25rem;
 }
@@ -340,50 +315,15 @@ onMounted(() => {
   margin-bottom: 1rem;
 
   span {
-    color: #0f766e;
+    color: var(--PrimaryColor);
   }
 
   h2 {
     margin: 0.25rem 0 0;
-    color: #0f172a;
+    color: var(--header-page-color);
     font-size: 1.35rem;
     font-weight: 900;
   }
-}
-
-.verification-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
-  article {
-    border-radius: 16px;
-    background: #f8fafc;
-    padding: 1rem;
-  }
-
-  h3 {
-    margin: 0.75rem 0 0.4rem;
-    color: #0f172a;
-    font-size: 1rem;
-    font-weight: 800;
-  }
-
-  p {
-    margin: 0;
-    color: #64748b;
-    line-height: 1.6;
-  }
-}
-
-.step-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  background: #ccfbf1;
-  color: #0f766e;
-  font-weight: 900;
 }
 
 :deep(.p-editor-container) {
@@ -392,17 +332,16 @@ onMounted(() => {
 }
 
 :deep(.p-editor-toolbar) {
-  border-color: rgba(15, 23, 42, 0.08);
-  background: #f8fafc;
+  border-color: var(--main-border);
+  background: var(--Gray-1);
 }
 
 :deep(.p-editor-content) {
-  border-color: rgba(15, 23, 42, 0.08);
+  border-color: var(--main-border);
 }
 
 @media (max-width: 1100px) {
-  .summary-grid,
-  .verification-grid {
+  .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -414,8 +353,7 @@ onMounted(() => {
 
   .capa-hero,
   .details-grid,
-  .summary-grid,
-  .verification-grid {
+  .summary-grid {
     grid-template-columns: 1fr;
   }
 

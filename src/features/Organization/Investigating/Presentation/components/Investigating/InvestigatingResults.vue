@@ -35,6 +35,7 @@ import Editor from 'primevue/editor'
 import InvestegationAnotherMeetingParams from '../../../Core/params/investegationResult/InvestegationAnotherMeetingParams.ts'
 import FactoryAccidents from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue'
 import InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams.ts'
+import CapaActionPlan from '@/features/Organization/Capa/Presentation/components/CapaActionPlan.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -58,6 +59,10 @@ const ShoeInvestegationResultDetails = () => {
   showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, router)
 }
 const openDialog = ref(false)
+const emptyCapaActionPlan = {
+  corrective: [],
+  preventive: [],
+}
 const AddEnvestigatingResult = async () => {
   const CheckWitnessIsFullyEmpty = viewersResults.value.map((el) => {
     return (
@@ -78,14 +83,17 @@ const AddEnvestigatingResult = async () => {
   //   return;
   // }
 
+  const actionPlan = capaActionPlan.value ?? emptyCapaActionPlan
+
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
     factors: CauseOfAction.value?.factors,
-    investigationMeetingId: id,
+    investigationMeetingId: Number(id),
     isActionCorrect: rateActions.value?.actionRate,
     isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
-    tasks: investigationTasks.value,
+    observationId: Number(state.value?.data?.observation?.id),
+    tasks: [...actionPlan.corrective, ...actionPlan.preventive],
     witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
     meeting: new InvestegationAnotherMeetingParams(
       anotherMeeting?.value?.meetings?.date,
@@ -110,6 +118,9 @@ const AddEnvestigatingResult = async () => {
         item?.images.map((el: any) => el.file) || [],
       )
     }),
+    correctiveTasks: actionPlan.corrective,
+    preventiveTasks: actionPlan.preventive,
+    lessonLearnt: lessonLearnt.value,
   })
   console.log(anotherMeeting.value, 'anotherMeeting')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
@@ -207,6 +218,15 @@ const UpdateAccidents = (data: any) => {
   Accidents.value = data
   console.log(Accidents.value, 'Accidents.value')
 }
+
+const capaActionPlan = ref()
+const setCapaActionPlan = (data: any) => {
+  capaActionPlan.value = {
+    corrective: data?.corrective ?? [],
+    preventive: data?.preventive ?? [],
+  }
+}
+const lessonLearnt = ref('')
 </script>
 <template>
   <DataStatus :controller="state">
@@ -321,6 +341,25 @@ const UpdateAccidents = (data: any) => {
           </UpdatedCustomInputSelect>
         </div>
 
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Action Plan</p>
+        </div>
+        <CapaActionPlan @update:data="setCapaActionPlan" />
+
+        <section class="lesson-section">
+          <div class="section-heading">
+            <span>Lesson learnt</span>
+            <h2>Capture the learning before it fades</h2>
+          </div>
+          <Editor
+            id="lesson_learnt"
+            v-model="lessonLearnt"
+            editorStyle="height: 280px"
+            placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
+          />
+        </section>
+
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
           <p class="title">{{ investigationAttachments?.title }}</p>
@@ -400,6 +439,9 @@ const UpdateAccidents = (data: any) => {
 </template>
 
 <style scoped lang="scss">
+.lesson-section {
+  width: 100%;
+}
 .w-50 {
   width: 50%;
 }
@@ -412,6 +454,47 @@ const UpdateAccidents = (data: any) => {
 
 .reccomendation {
   /* padding-inline: 10px; */
+}
+
+.lesson-section {
+  border: 1px solid var(--main-border);
+  border-radius: 18px;
+  background: var(--BgWhite);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  padding: 1.25rem;
+}
+
+.section-heading {
+  margin-bottom: 1rem;
+
+  span {
+    color: var(--PrimaryColor);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0.25rem 0 0;
+    color: var(--header-page-color);
+    font-size: 1.35rem;
+    font-weight: 900;
+  }
+}
+
+:deep(.p-editor-container) {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+:deep(.p-editor-toolbar) {
+  border-color: var(--main-border);
+  background: var(--Gray-1);
+}
+
+:deep(.p-editor-content) {
+  border-color: var(--main-border);
 }
 
 .investigation-result-inputs {

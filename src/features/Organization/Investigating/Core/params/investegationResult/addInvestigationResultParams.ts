@@ -15,7 +15,7 @@ export default class AddInvestigationResultParams implements Params {
   public observationId: number
   // public date: string
   // public hasEmployee: boolean
-  public tasks?: InvestegationTasksParams[]
+  public tasks?: InvestegationTasksParams[] | Record<string, any>[]
   public factors?: InvestigationFactorParams
   public documentation?: InvestigationAttachmentsParams[]
   public witnesses?: InvestegationWitnessesParams[]
@@ -31,6 +31,9 @@ export default class AddInvestigationResultParams implements Params {
   public isAnotherMeeting?: number
   public recommendation?: string
   public Injury?: InjuryParams[]
+  public correctiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
+  public preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
+  public lessonLearnt?: string
 
   constructor(data: {
     investigationMeetingId: number
@@ -38,7 +41,7 @@ export default class AddInvestigationResultParams implements Params {
     observationId: number
     // date: string,
     // hasEmployee: boolean,
-    tasks?: InvestegationTasksParams[]
+    tasks?: InvestegationTasksParams[] | Record<string, any>[]
     factors?: InvestigationFactorParams
     documentation?: InvestigationAttachmentsParams[]
     witnesses?: InvestegationWitnessesParams[]
@@ -54,6 +57,9 @@ export default class AddInvestigationResultParams implements Params {
     recommendation?: string
     isAnotherMeeting?: number
     Injury?: InjuryParams[]
+    correctiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
+    preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
+    lessonLearnt?: string
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -76,6 +82,9 @@ export default class AddInvestigationResultParams implements Params {
     this.recommendation = data.recommendation
     this.isAnotherMeeting = data.isAnotherMeeting
     this.Injury = data.Injury
+    this.correctiveTasks = data.correctiveTasks
+    this.preventiveTasks = data.preventiveTasks
+    this.lessonLearnt = data.lessonLearnt
   }
 
   toMap(): Record<string, number | string | any> {
@@ -101,6 +110,10 @@ export default class AddInvestigationResultParams implements Params {
     if (this.IncidantDescription) data['incidant_description'] = this.IncidantDescription
     if (this.recommendation) data['recommendation'] = this.recommendation
     if (this.isAnotherMeeting) data['is_another_meeting'] = this.isAnotherMeeting
+    if (this.correctiveTasks) data['corrective_tasks'] = this.correctiveTasks
+    if (this.preventiveTasks) data['preventive_tasks'] = this.preventiveTasks
+    if (this.lessonLearnt) data['lesson_learnt'] = this.lessonLearnt
+
     data['injuries'] = this.Injury?.map((item) => item.toMap())
     return data
   }
