@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCapaModel from './IndexCapaModel'
 import InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
-import type { CapaTaskDetailsModel } from './CapaTasksModel'
+import { CapaTaskDetailsModel } from './CapaTasksModel'
 
 export default class ShowCapaDetailsModel extends TitleInterface {
   public id: number
