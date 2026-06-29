@@ -80,7 +80,7 @@ const OperationsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/equipments',
-    name: t('equipments'),
+    name: t('equipment'),
     icon: ProjectProgressIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },

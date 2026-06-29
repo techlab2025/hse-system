@@ -117,7 +117,7 @@ const { locale } = useI18n()
           <span class="info-count warn">{{ data?.investigation_count }}</span>
         </div>
         <div class="data-info">
-          <span class="info-title">{{ $t('Equibments') }} :</span>
+          <span class="info-title">{{ $t('Equipment') }} :</span>
           <span class="info-count warn">{{ data?.equipment_count }}</span>
         </div>
       </div>
