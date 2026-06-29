@@ -38,6 +38,7 @@ const addNewAnswer = () => {
 }
 
 const DeleteItem = (index: number) => {
+  if (Answers.value.length <= 1) return
   Answers.value.splice(index, 1)
   UpdateData()
 }
@@ -85,10 +86,14 @@ onMounted(async () => {
               <div class="timeline-icon">
                 <DeleteItemAction
                   class="cursor-pointer"
-                  v-if="index >= 0 && index !== Answers.length - 1"
+                  v-if="Answers.length > 1"
                   @click="DeleteItem(index)"
                 />
-                <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
+                <AddAnswer
+                  v-if="index === Answers.length - 1"
+                  @click="addNewAnswer"
+                  class="cursor-pointer"
+                />
               </div>
             </div>
 

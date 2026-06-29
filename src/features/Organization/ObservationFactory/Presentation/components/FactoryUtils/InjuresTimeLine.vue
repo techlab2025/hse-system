@@ -2,10 +2,9 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
@@ -23,6 +22,7 @@ const props = defineProps<{
 }>()
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
+const employeeOptions = ref<TitleInterface[]>([])
 type AnswerModel = {
   text: string
   employee: TitleInterface
@@ -42,16 +42,24 @@ const createEmptyAnswer = (): AnswerModel => ({
 
 const Answers = ref<AnswerModel[]>([createEmptyAnswer()])
 
+const fetchEmployees = async () => {
+  employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
+    fetchOrganizationEmployeeParams,
+  )
+}
+
 const addNewAnswer = () => {
   Answers.value.push({
     ...createEmptyAnswer(),
     text: '',
   })
+  isSelectHasContent.value.push(false)
   UpdateData()
 }
 
 const DeleteItem = (index: number) => {
   Answers.value.splice(index, 1)
+  isSelectHasContent.value.splice(index, 1)
   UpdateData()
 }
 
@@ -95,6 +103,11 @@ const toggleMode = (index: number, isManual: boolean) => {
   UpdateData()
 }
 
+const toggleWorkStopped = (index: number) => {
+  Answers.value[index].isWorkStopped = !Answers.value[index].isWorkStopped
+  UpdateData()
+}
+
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
   const employeeId =
     item?.organization_employee?.organization_employee_id || item?.organization_employee?.id || 0
@@ -130,6 +143,8 @@ watch(
   },
   { immediate: true, deep: true },
 )
+
+onMounted(fetchEmployees)
 </script>
 <template>
   <div class="template-container col-span-6">
@@ -175,12 +190,12 @@ watch(
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <UpdatedCustomInputSelect
-                  :controller="fetchOriganizatioEmployeeController"
-                  :params="fetchOrganizationEmployeeParams"
+                  :staticOptions="employeeOptions"
                   v-model="item.employee"
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
                   :label="$t('Employee')"
+                  :reload="false"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
                 >
@@ -220,6 +235,7 @@ watch(
                       v-model="item.employee.title"
                       class="input"
                       placeholder="Select Employee"
+                      @input="UpdateData"
                     />
                   </template>
                 </UpdatedCustomInputSelect>
@@ -264,10 +280,7 @@ watch(
               <div
                 v-if="!props.isOpen"
                 class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
-                @click="
-                  item.isWorkStopped = !item.isWorkStopped;
-                  UpdateData()
-                "
+                @click="toggleWorkStopped(index)"
               >
                 <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
                 <Checkbox

@@ -67,7 +67,7 @@ const emptyCapaActionPlan = {
   preventive: [],
 }
 const AddEnvestigatingResult = async () => {
-  const CheckWitnessIsFullyEmpty = viewersResults.value.map((el) => {
+  const CheckWitnessIsFullyEmpty = (viewersResults.value ?? []).map((el) => {
     return (
       (el.organizationEmployeeId != null || el.employeeName != undefined) &&
       el?.witnessesStatements?.length > 1
@@ -113,13 +113,14 @@ const AddEnvestigatingResult = async () => {
     IncidantDescription: IncidantDescription.value,
     recommendation: recommendation.value,
     Injury: Accidents.value?.accidentsData?.map((item: any) => {
+      const employeeId = item?.employee?.id || 0
       return new InjuryParams(
-        item?.employee?.id || 0,
-        item?.employee?.title || '',
+        employeeId,
+        employeeId ? '' : item?.employee?.title || '',
         item?.text || null,
         item?.infectionTypeId?.id || 0,
         item?.isWorkStopped ? 1 : 0,
-        item?.images.map((el: any) => el.file) || [],
+        item?.images?.map((el: any) => el.file) || [],
       )
     }),
     correctiveTasks: actionPlan.corrective,
@@ -177,8 +178,38 @@ const viewersResults = ref()
 const setViewersResults = (data) => {
   viewersResults.value = data
 }
-const initialViewers = computed(() => [
-  ...(state.value?.data?.observation?.witness_statements ?? [])])
+const uniqueByIdOrName = (items: any[]) => {
+  const seen = new Set<string>()
+
+  return items.filter((item) => {
+    const key = String(
+      item?.id ||
+        item?.organization_employee?.organization_employee_id ||
+        item?.organization_employee?.id ||
+        item?.employee_name ||
+        JSON.stringify(item),
+    )
+
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+const initialViewers = computed(() =>
+  uniqueByIdOrName([
+    ...(state.value?.data?.observation?.witness_statements ?? []),
+    ...(state.value?.data?.observation?.accident_witness ?? []),
+    ...(state.value?.data?.witness_statements ?? []),
+  ]),
+)
+const initialInjuries = computed(() =>
+  uniqueByIdOrName([
+    ...(state.value?.data?.observation?.injuries ?? []),
+    ...(state.value?.data?.observation?.accident_victim ?? []),
+    ...(state.value?.data?.injuries ?? []),
+  ]),
+)
 const FiveWhyQuestionsData = ref()
 const setFiveWhyQuestions = (data) => {
   FiveWhyQuestionsData.value = data
@@ -296,7 +327,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
         </div>
         <div class="investigation-injury">
           <FactoryAccidents
-            :injuries="state.data?.observation?.injuries"
+            :injuries="initialInjuries"
             class="not-colored"
             @update:data="UpdateAccidents"
             :isOpen="true"

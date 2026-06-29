@@ -4,28 +4,35 @@ import Editor from 'primevue/editor'
 import RadioButton from 'primevue/radiobutton'
 import UpdateCapaController from '../controllers/UpdateCapaController'
 import updateCapaParms from '../../Core/params/updateCapaParms'
+import { VerificationEnum } from '../../Core/Core/VerificationEnum'
 
 const emit = defineEmits(['update:data'])
-const { obsrvationId } = defineProps<{
-  obsrvationId: number
-}>()
+const { obsrvationId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings } =
+  defineProps<{
+    obsrvationId: number
+    propsVerificationMethodology?: string
+    propsVerificationStatus?: number
+    propsResultFindings?: string
+  }>()
 
-const verificationMethodology = ref('')
-const resultFindings = ref('')
-const verificationStatus = ref<1 | 2 | 3>(1)
+const verificationMethodology = ref(propsVerificationMethodology || '')
+const resultFindings = ref(propsResultFindings || '')
+const verificationStatus = ref<VerificationEnum>(
+  propsVerificationStatus || VerificationEnum.Pending,
+)
 
 const statusOptions = [
   {
     label: 'Effective',
-    value: 1,
+    value: VerificationEnum.Effective,
   },
   {
     label: 'Ineffective',
-    value: 2,
+    value: VerificationEnum.NotEffective,
   },
   {
     label: 'Pending',
-    value: 3,
+    value: VerificationEnum.Pending,
   },
 ] as const
 

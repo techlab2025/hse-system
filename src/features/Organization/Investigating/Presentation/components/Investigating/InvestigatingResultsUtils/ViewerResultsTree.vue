@@ -2,7 +2,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
@@ -21,6 +21,8 @@ type AnswerModel = {
 }
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const employeeOptions = ref<TitleInterface[]>([])
+const isSelectHasContent = ref<boolean[]>([])
 const Answers = ref<AnswerModel[]>([
   {
     result: ' ',
@@ -33,18 +35,33 @@ const addNewAnswer = () => {
     result: '',
     employee: new TitleInterface({ id: 0, title: '' }),
   })
+  isSelectHasContent.value.push(false)
   UpdateData()
 }
 
 const DeleteItem = (index: number) => {
   Answers.value.splice(index, 1)
+  isSelectHasContent.value.splice(index, 1)
   UpdateData()
 }
 
 const UpdateData = () => {
   emit('update:data', Answers.value)
 }
-onMounted(() => {
+const fetchEmployees = async () => {
+  employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
+    fetchOrganizationEmployeeParams,
+  )
+}
+
+const toggleMode = (index: number, isManual: boolean) => {
+  isSelectHasContent.value[index] = isManual
+  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' })
+  UpdateData()
+}
+
+onMounted(async () => {
+  await fetchEmployees()
   emit('update:data', Answers.value)
 })
 
@@ -66,6 +83,9 @@ watch(
   (newInjuries) => {
     if (!isInitialized.value && newInjuries?.length) {
       Answers.value = newInjuries.map(mapInjuryToAnswer)
+      isSelectHasContent.value = Answers.value.map(
+        (item) => !item.employee?.id && !!item.employee?.title,
+      )
       isInitialized.value = true
       UpdateData()
     }
@@ -85,15 +105,45 @@ watch(
       <div class="timeline-content">
         <div class="timeline-contect-select">
           <div class="input-wrapper">
-            <CustomSelectInput
-              :controller="fetchOriganizatioEmployeeController"
-              :params="fetchOrganizationEmployeeParams"
+            <UpdatedCustomInputSelect
+              :staticOptions="employeeOptions"
               v-model="item.employee"
               placeholder="Select Employee"
               class="mt-4 mr-2 input"
               label="Employee"
+              :reload="false"
+              :hascontent="isSelectHasContent[index]"
               @update:model-value="UpdateData"
-            />
+            >
+              <template #reloadHeader>
+                <div class="flex gap-2 items-center">
+                  <button
+                    :class="isSelectHasContent[index] ? 'active' : ''"
+                    class="emp-name"
+                    @click.prevent="toggleMode(index, true)"
+                  >
+                    {{ $t('employee_name') }}
+                  </button>
+
+                  <button
+                    :class="isSelectHasContent[index] ? '' : 'active'"
+                    class="emp-select"
+                    @click.prevent="toggleMode(index, false)"
+                  >
+                    {{ $t('select') }}
+                  </button>
+                </div>
+              </template>
+              <template #content>
+                <input
+                  type="text"
+                  v-model="item.employee.title"
+                  class="input"
+                  :placeholder="$t('employee_name')"
+                  @input="UpdateData"
+                />
+              </template>
+            </UpdatedCustomInputSelect>
           </div>
           <div class="timeline-content-text input-wrapper">
             <label for="result">result</label>

@@ -2,6 +2,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCapaModel from './IndexCapaModel'
 import InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
 import { CapaTaskDetailsModel } from './CapaTasksModel'
+import type { VerificationEnum } from '../../Core/Core/VerificationEnum'
 
 export default class ShowCapaDetailsModel extends TitleInterface {
   public id: number
@@ -17,6 +18,10 @@ export default class ShowCapaDetailsModel extends TitleInterface {
   public correctiveTasks: CapaTaskDetailsModel[]
   public preventiveTasks: CapaTaskDetailsModel[]
   public lessonLearnt: string
+  public resultFindings: string
+  public verificationMethodology: string
+  public verificationStatus: VerificationEnum
+
 
   constructor(data: {
     id: number
@@ -32,6 +37,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     correctiveTasks: CapaTaskDetailsModel[]
     preventiveTasks: CapaTaskDetailsModel[]
     lessonLearnt: string
+    resultFindings: string
+    verificationMethodology: string
+    verificationStatus: VerificationEnum
   }) {
     super({ id: data.id, title: '' })
     this.id = data.id
@@ -47,6 +55,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     this.correctiveTasks = data.correctiveTasks
     this.preventiveTasks = data.preventiveTasks
     this.lessonLearnt = data.lessonLearnt
+    this.resultFindings = data.resultFindings
+    this.verificationMethodology = data.verificationMethodology
+    this.verificationStatus = data.verificationStatus
   }
 
   static fromMap(data: any): ShowCapaDetailsModel {
@@ -69,6 +80,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       correctiveTasks: correctiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
       preventiveTasks: preventiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
       lessonLearnt: data.lesson_learnt ?? data.lessonLearnt ?? '',
+      resultFindings: data.result_findings ?? data.resultFindings ?? '',
+      verificationMethodology: data.verification_methodology ?? data.verificationMethodology ?? '',
+      verificationStatus: data.verification_status ?? data.verificationStatus ?? '',
     })
   }
 }

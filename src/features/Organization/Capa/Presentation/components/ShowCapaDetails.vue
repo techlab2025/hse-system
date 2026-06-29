@@ -11,6 +11,7 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 // import CapaActionPlan from './CapaActionPlan.vue'
 import CapaActionPlanDetails from './CapaActionPlanDetails.vue'
 import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
+import { watch } from 'vue'
 
 const showCapaDetailsController = ShowCapaDetailsController.getInstance()
 const state = computed(() => showCapaDetailsController.state.value)
@@ -106,24 +107,12 @@ onMounted(() => {
           </article>
         </section>
 
-        <!-- <CapaActionPlan @update:data="setCapaActionPlan" /> -->
         <CapaActionPlanDetails
           :correctiveTasks="state.data?.investigation?.correctiveTask ?? []"
           :preventiveTasks="state.data?.investigation?.preventiveTask ?? []"
         />
 
         <section class="lesson-section">
-          <!-- <div class="section-heading">
-            <span>Lesson learnt</span>
-            <h2>Capture the learning before it fades</h2>
-          </div>
-          <Editor
-            id="lesson_learnt"
-            v-model="lessonLearnt"
-            editorStyle="height: 280px"
-            placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
-          /> -->
-
           <div class="saved-lesson">
             <span>Saved lesson learnt</span>
             <div
@@ -135,7 +124,12 @@ onMounted(() => {
           </div>
         </section>
       </main>
-      <VerificationOfEffectiveness :obsrvationId="Number(state.data?.observationCapaId)" />
+      <VerificationOfEffectiveness
+        :propsVerificationMethodology="state.data?.verificationMethodology"
+        :obsrvationId="Number(state.data?.observationCapaId)"
+        :propsVerificationStatus="state.data?.verificationStatus"
+        :propsResultFindings="state.data?.resultFindings"
+      />
     </template>
 
     <template #loader>
