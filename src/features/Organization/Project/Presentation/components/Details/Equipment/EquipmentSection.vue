@@ -93,3 +93,8 @@ watch(
     </Accordion>
   </div>
 </template>
+<style scoped>
+.show-all {
+  min-width: 100px;
+}
+</style>

@@ -3,19 +3,68 @@
 @use '../../mixins/grid' as *;
 
 .objectives {
-  @include grid(
-    3,
-    $XlSize,
-    (
-      1440px: 3,
-      1000px: 3,
-      768px: 2,
-    )
-  );
   width: 100%;
   font-family: 'Regular';
-  padding-inline: calc($XlSize3 + 2px);
-  // column-gap: $XlSize;
+  color: #334155;
+  font-size: $MdSize;
+  line-height: 1.8;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  p {
+    margin: 0;
+    color: #334155;
+  }
+
+  p + p {
+    margin-top: $XsSize;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0 0 $XsSize3;
+    color: #111827;
+    font-family: 'bold';
+    line-height: 1.35;
+  }
+
+  ul,
+  ol {
+    display: grid;
+    gap: $XsSize3;
+    margin: $XsSize 0 0;
+    padding-inline-start: $XlSize;
+  }
+
+  li {
+    padding-inline-start: $XsSize4;
+  }
+
+  a {
+    color: $PrimaryColor;
+    font-family: 'bold';
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  strong,
+  b {
+    color: #111827;
+    font-family: 'bold';
+  }
+
+  blockquote {
+    margin: $XsSize 0 0;
+    padding: $XsSize $SmSize;
+    border-inline-start: 3px solid $PrimaryColor;
+    border-radius: $BorderRadiusSm;
+    background-color: rgba(29, 78, 216, 0.05);
+    color: #475569;
+  }
 
   .object {
     width: 100%;
@@ -33,6 +82,32 @@
       height: 5px;
       border-radius: 50%;
       background-color: $PrimaryColor;
+    }
+  }
+
+  &.is-empty {
+    @include flex-row(nowrap, center, center);
+    min-height: 110px;
+    border: 1px dashed #dbe3ef;
+    border-radius: $BorderRadiusSm;
+    background-color: #f8fafc;
+    color: #7c8798;
+    text-align: center;
+
+    p {
+      color: #7c8798;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+
+  @media (max-width: 640px) {
+    font-size: $SmSize;
+    line-height: 1.7;
+
+    ul,
+    ol {
+      padding-inline-start: $MdSize;
     }
   }
 }

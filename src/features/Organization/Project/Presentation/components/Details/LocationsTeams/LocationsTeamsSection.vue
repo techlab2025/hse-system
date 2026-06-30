@@ -66,4 +66,8 @@ const CheckProjectLocationEmployeeEmpty = computed(
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.show-all {
+  min-width: 100px;
+}
+</style>

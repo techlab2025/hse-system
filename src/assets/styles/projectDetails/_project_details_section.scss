@@ -2,10 +2,174 @@
 @use '../mixins/flex' as *;
 
 .project-details-section {
-  @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XlSize3;
+  @include flex-column(nowrap, flex-start, stretch);
+  gap: $XlSize;
   width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: $XsSize3;
+
+  .project-details-page-header {
+    @include flex-row(wrap, space-between, flex-end);
+    gap: $SmSize;
+    width: 100%;
+    padding: $MdSize;
+    border: 1px solid #e8edf5;
+    border-radius: $BorderRadiusSm;
+    background:
+      linear-gradient(180deg, rgba(248, 250, 252, 0.78) 0%, rgba(255, 255, 255, 0) 56%), #fff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+
+    .page-title-content {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize4;
+      min-width: 220px;
+
+      .page-eyebrow {
+        min-height: 26px;
+        @include flex-row(nowrap, center, center);
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(29, 78, 216, 0.16);
+        background-color: rgba(29, 78, 216, 0.07);
+        color: $PrimaryColor;
+        font-size: $XsSize;
+        font-family: 'bold';
+        line-height: 1;
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      .page-title {
+        margin: 0;
+        color: #111827;
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        font-family: 'bold';
+        line-height: 1.25;
+      }
+    }
+
+    .project-overview-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: $XsSize3;
+      width: min(100%, 620px);
+
+      .project-overview-card {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+        min-height: 76px;
+        padding: $XsSize;
+        border: 1px solid #edf2f7;
+        border-radius: $BorderRadiusSm;
+        background-color: #fbfcfe;
+
+        .overview-label {
+          color: #7c8798;
+          font-size: $XsSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          line-height: 1.2;
+        }
+
+        .overview-value {
+          color: $PrimaryColor;
+          font-size: $XlSize;
+          font-family: 'bold';
+          font-weight: 800;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  > .project-header-container,
+  > .main-objective,
+  > .project-location,
+  > .locations-teams,
+  > .equipment-section,
+  > .inspections-sections {
+    border: 1px solid #e8edf5;
+    border-radius: $BorderRadiusSm;
+    background:
+      linear-gradient(180deg, rgba(248, 250, 252, 0.68) 0%, rgba(255, 255, 255, 0) 52%), #fff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  }
+
+  > .project-header-container {
+    padding: $MdSize;
+  }
+
+  > .main-objective,
+  > .project-location,
+  > .locations-teams,
+  > .equipment-section,
+  > .inspections-sections {
+    padding: $MdSize;
+  }
+
   .p-accordion {
     width: 100%;
+  }
+
+  .p-accordion,
+  .p-accordionpanel,
+  .p-accordionheader,
+  .p-accordioncontent-content {
+    border-color: #edf2f7 !important;
+  }
+
+  .section-header {
+    width: 100%;
+
+    .section-img {
+      border-radius: $BorderRadiusSm;
+      background-color: rgba(29, 78, 216, 0.06);
+      padding: $XsSize3;
+      object-fit: contain;
+    }
+  }
+
+  .inspections-sections {
+    margin-block: 0;
+
+    .inspections-cards {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .project-details-page-header {
+      align-items: flex-start;
+
+      .project-overview-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 0;
+    gap: $SmSize;
+
+    .project-details-page-header {
+      padding: $SmSize;
+
+      .project-overview-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    > .project-header-container,
+    > .main-objective,
+    > .project-location,
+    > .locations-teams,
+    > .equipment-section,
+    > .inspections-sections {
+      padding: $SmSize;
+    }
   }
 }

@@ -3,31 +3,50 @@ import { useRoute } from 'vue-router'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import EquipmentSection from './Equipment/EquipmentSection.vue'
+import InspectionsSections from './Inspection/InspectionsSections.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { onMounted, ref, watch } from 'vue'
-import type ShowProjectDetailsModel from '../../../Data/models/ShowProjectDeatilsModel'
+import { computed, onMounted, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
-// import InspectionsSections from './Inspection/InspectionsSections.vue'
+import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
+import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = ref(showProjectDetailsController.state.value)
 
 const route = useRoute()
 const id = route.params.id
-const ProjectDetails = ref<ShowProjectDetailsModel | null>(null)
 const GetProjectDetails = async () => {
   const showProjectDetailsParams = new ShowProjectDetailsParams(Number(id))
-  const state = await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
-  if (state.value.data) {
-    ProjectDetails.value = state.value.data
-  }
+  await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
 }
+
+const projectOverview = computed(() => [
+  {
+    label: 'locations',
+    value: state.value.data?.locations?.length || 0,
+  },
+  {
+    label: 'zones',
+    value: state.value.data?.projectZoons?.length || 0,
+  },
+  {
+    label: 'teams',
+    value: state.value.data?.TeamLocations?.length || 0,
+  },
+  {
+    label: 'Equipment',
+    value:
+      state.value.data?.projectZoons?.reduce((total, zone) => {
+        return total + (zone?.projectZoonEquipments?.length || 0)
+      }, 0) || 0,
+  },
+])
 
 onMounted(() => {
   GetProjectDetails()
@@ -44,7 +63,20 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <div class="project-details-section">
-        <p class="text-xl font-bold mb-4">{{ $t('projectDetails') }}</p>
+        <!-- <div class="project-details-page-header">
+          <div class="page-title-content">
+            <span class="page-eyebrow">{{ state.data?.serialName }}</span>
+            <h1 class="page-title">{{ $t('projectDetails') }}</h1>
+          </div>
+
+          <div class="project-overview-cards">
+            <div class="project-overview-card" v-for="item in projectOverview" :key="item.label">
+              <span class="overview-label">{{ $t(item.label) }}</span>
+              <span class="overview-value">{{ item.value }}</span>
+            </div>
+          </div>
+        </div> -->
+
         <ProjectHeader
           :projectName="state.data?.title"
           :SerialNumber="state.data?.SerialNumber"
@@ -57,14 +89,23 @@ watch(
         <MainObjectivesSection :description="state.data?.description" />
 
         <!-- <div class="inspections-sections">
-          <InspectionsSections :inspectionsImage="zoneInspectionTasks" :inspectionHeaderTitle="'zone Inspection Tasks'"
-            :inspectionHeaderSubtitle="'Track and manage all inspection assignments by zone.'" :showHeader="true"
-            :showArrowLink="true" :isAssign="false" />
+          <InspectionsSections
+            :inspectionsImage="zoneInspectionTasks"
+            :inspectionHeaderTitle="'zone Inspection Tasks'"
+            :inspectionHeaderSubtitle="'Track and manage all inspection assignments by zone.'"
+            :showHeader="true"
+            :showArrowLink="true"
+            :isAssign="false"
+          />
           <hr class="divider" />
-          <InspectionsSections :inspectionsImage="EmployeeInspectionTasks"
+          <InspectionsSections
+            :inspectionsImage="EmployeeInspectionTasks"
             :inspectionHeaderTitle="'employee Inspection Tasks'"
-            :inspectionHeaderSubtitle="'Track and manage all inspection assignments for employee'" :showHeader="false"
-            :showArrowLink="false" :isAssign="false" />
+            :inspectionHeaderSubtitle="'Track and manage all inspection assignments for employee'"
+            :showHeader="false"
+            :showArrowLink="false"
+            :isAssign="false"
+          />
         </div> -->
 
         <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />

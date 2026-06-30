@@ -2,15 +2,76 @@
 @use '../../mixins/flex' as *;
 
 .main-objective {
-  @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XlSize;
+  @include flex-column(nowrap, flex-start, stretch);
+  gap: $SmSize;
   padding: $MdSize;
   font-family: 'Regular';
-  background-color: #fafafacc;
-  border-radius: $XlSize;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.78) 0%, rgba(255, 255, 255, 0) 56%), #fff;
+  border: 1px solid #e8edf5;
+  border-radius: $BorderRadiusSm;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset-inline-start: 0;
+  //   top: 0;
+  //   width: 4px;
+  //   height: 100%;
+  //   background-color: $PrimaryColor;
+  //   opacity: 0.85;
+  // }
+
+  .section-header {
+    position: relative;
+    z-index: 1;
+    padding-bottom: $SmSize;
+    border-bottom: 1px solid #edf2f7;
+
+    .section-img {
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(29, 78, 216, 0.12);
+    }
+
+    .header-text {
+      gap: 2px;
+
+      .title {
+        color: #111827;
+        font-size: $XlSize;
+        line-height: 1.25;
+      }
+
+      .subtitle {
+        color: #7c8798;
+        line-height: 1.35;
+      }
+    }
+  }
 
   .objective-details {
+    position: relative;
+    z-index: 1;
     width: 100%;
+    padding: $MdSize;
+    border: 1px solid #edf2f7;
+    border-radius: $BorderRadiusSm;
+    background-color: #fbfcfe;
+  }
+
+  @media (max-width: 640px) {
+    padding: $SmSize;
+
+    .section-header {
+      align-items: flex-start;
+    }
+
+    .objective-details {
+      padding: $SmSize;
+    }
   }
 }

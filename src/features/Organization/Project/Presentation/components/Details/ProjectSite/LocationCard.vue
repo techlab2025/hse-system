@@ -41,3 +41,10 @@ const { title, zoneLength, zoons, LocationId, projectId } = defineProps<{
     </div>
   </div>
 </template>
+<style scoped>
+.location-card {
+  border: 1px solid rgb(233, 232, 232);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+</style>
