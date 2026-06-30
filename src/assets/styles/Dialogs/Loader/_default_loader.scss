@@ -33,7 +33,7 @@
   height: 22px;
   border-radius: 20px;
   color: $PrimaryColor;
-  // border: 2px solid;
+  background-color: rgba(29, 78, 216, 0.14);
   position: relative;
 }
 .loader::before {
@@ -42,7 +42,7 @@
   margin: 2px;
   inset: 0 100% 0 0;
   border-radius: inherit;
-  // background: currentColor;
+  background: currentColor;
   animation: l6 2s infinite;
 }
 @keyframes l6 {

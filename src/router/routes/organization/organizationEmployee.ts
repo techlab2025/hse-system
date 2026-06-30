@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from '@/router/types'
-import IconAdd from '@/shared/icons/IconAdd.vue'
 
 export const organizationEmployeeRoutes: RouteRecordRaw[] = [
   {

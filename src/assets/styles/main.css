@@ -11739,6 +11739,7 @@ body {
   height: 22px;
   border-radius: 20px;
   color: var(--PrimaryColor);
+  background-color: rgba(29, 78, 216, 0.14);
   position: relative;
 }
 
@@ -11748,6 +11749,7 @@ body {
   margin: 2px;
   inset: 0 100% 0 0;
   border-radius: inherit;
+  background: currentColor;
   animation: l6 2s infinite;
 }
 
