@@ -194,7 +194,7 @@ watch(
   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="mt-2 meetings-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           <InvestegaionMeetingResultAnswerCard
             class="meetings-page"
             v-for="(meeting, index) in state.data"

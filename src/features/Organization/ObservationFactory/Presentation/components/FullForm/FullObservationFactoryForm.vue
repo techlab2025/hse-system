@@ -493,6 +493,12 @@ const isSelectHasContent = ref<boolean>(false)
 
 const toggleMode = (isManual: boolean) => {
   isSelectHasContent.value = isManual
+  if (isManual) {
+    Oragnizationemployee.value = null
+  } else {
+    OragnizationemployeeName.value = ''
+  }
+  updateData()
 }
 const OragnizationemployeeName = ref<string>('')
 const setOragnizationemployeeName = (data: Event) => {
@@ -544,7 +550,7 @@ const ShiftsDialog = ref(false)
 
     <div class="Hazard-form col-span-6 md:col-span-6">
       <div class="Hazard-form-header">
-        <HazardIcon class="icon" />
+        <!-- <HazardIcon class="icon" /> -->
         <p class="title">
           {{ GetHeader(ObservationFactoryType) }} {{ $t('Report') }}
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
@@ -795,9 +801,8 @@ const ShiftsDialog = ref(false)
         v-model="Shifts"
         placeholder="Select Shift"
         class="mt-4 mr-2 input"
-        :label="$t('shift')"
+        :label="$t('work shift')"
         @update:model-value="setShifts"
-        :hascontent="isSelectHasContent"
         :reload="true"
         @close="ShiftsDialog = false"
         :isDialog="true"
@@ -1132,7 +1137,7 @@ const ShiftsDialog = ref(false)
 </template>
 
 <style scoped>
-.add-dialog {
+/* .add-dialog {
   width: 20px;
   height: 20px;
   margin-right: 6px;
@@ -1140,7 +1145,7 @@ const ShiftsDialog = ref(false)
   color: #1d4ed8;
   text-decoration: underline;
   font-family: 'Regular';
-}
+} */
 
 .add-dialog svg {
   width: 18px;
