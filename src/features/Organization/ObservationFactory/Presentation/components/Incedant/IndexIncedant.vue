@@ -190,12 +190,18 @@ const actionList = (id: number, deleteHazard: (id: number) => void) => [
 
 const router = useRouter()
 const Projects = ref<MyProjectsModel[]>([])
+const isProjectsLoading = ref(true)
 const FetchMyProjects = async () => {
-  const fetchMyProjectsParams = new FetchMyProjectsParams()
-  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
-  if (res.value.data) {
-    Projects.value = res.value.data
+  isProjectsLoading.value = true
+  try {
+    const fetchMyProjectsParams = new FetchMyProjectsParams()
+    const fetchMyProjectsController = FetchMyProjectsController.getInstance()
+    const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
+    if (res.value.data) {
+      Projects.value = res.value.data
+    }
+  } finally {
+    isProjectsLoading.value = false
   }
 }
 const selectedProjctesFilters = ref<number>()
@@ -253,6 +259,7 @@ const ShowDetails = ref<number[]>([])
             :title="'incedant'"
             :length="state?.data?.length"
             :projects="Projects"
+            :isProjectsLoading="isProjectsLoading"
             @update:data="setSelectedProjectFilter"
           />
           <div class="flex items-center justify-between">
