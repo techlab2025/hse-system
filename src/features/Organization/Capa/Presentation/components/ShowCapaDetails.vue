@@ -42,8 +42,8 @@ const summaryCards = computed(() => [
     value: state.value.data?.serialName || 'N/A',
   },
   {
-    label: 'Observation ID',
-    value: state.value.data?.observationId || 'N/A',
+    label: 'Incidant ID',
+    value: state.value.data?.observation?.serialName || 'N/A',
     path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
   },
   {
@@ -52,7 +52,10 @@ const summaryCards = computed(() => [
   },
   {
     label: 'Investigation ID',
-    value: state.value.data?.investigation?.Investegationid || 'N/A',
+    value:
+      state.value.data?.investigation?.SerialName ||
+      state.value.data?.investigation?.Investegationid ||
+      'N/A',
     path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
   },
 ])

@@ -33,6 +33,10 @@ const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
 
+const GetEquipmentStatus = (status: EquipmentStatus) => {
+  return status === EquipmentStatus.RENT ? 'Rent' : 'Own'
+}
+
 const { user } = useUserStore()
 
 const actionList = (id: number, deleteEquipment: (id: number) => void) => [
@@ -138,13 +142,24 @@ watch(
 <template>
   <!-- <pre>{{ tool }}</pre> -->
 
-  <div class="tool-card equipment-card w-full" :class="isSelect ? 'is-select' : ''">
+  <div
+    class="tool-card equipment-card w-full"
+    :class="[
+      isSelect ? 'is-select' : '',
+      tool?.status == EquipmentStatus.RENT ? 'is-rent' : 'is-own',
+    ]"
+  >
     <div class="tool-card-header w-full">
-      <img
-        :src="tool?.image || '/src/assets/images/EmptyEquipment.png'"
-        alt="tool"
-        @error="setEquipmentDefaultImage"
-      />
+      <div class="tool-card-media">
+        <img
+          :src="tool?.image || '/src/assets/images/EmptyEquipment.png'"
+          alt="tool"
+          @error="setEquipmentDefaultImage"
+        />
+        <span class="equipment-status">
+          {{ $t(GetEquipmentStatus(tool?.status)) }}
+        </span>
+      </div>
 
       <div class="tool-card-header-text w-full">
         <div class="flex gap-2 w-full items-center justify-between card-type">
@@ -176,6 +191,30 @@ watch(
           <RentIcon v-if="tool?.status == EquipmentStatus.RENT" class="icon" />
         </p>
 
+        <div class="equipment-meta">
+          <div class="meta-item" v-if="tool?.license_plate_number">
+            <span class="meta-label">{{ $t('LicenceNumber') }}</span>
+            <strong>{{ tool?.license_plate_number }}</strong>
+          </div>
+          <div class="meta-item" v-if="tool?.date">
+            <span class="meta-label">{{ $t('CertificateExpireDate') }}</span>
+            <strong>{{ tool?.date }}</strong>
+          </div>
+          <div class="meta-item" v-if="tool?.status == EquipmentStatus.RENT && tool?.period">
+            <span class="meta-label">{{ $t('RentPeriod') }}</span>
+            <strong>{{ tool?.period }}</strong>
+          </div>
+        </div>
+
+        <div
+          class="equipment-rent-window"
+          v-if="tool?.status == EquipmentStatus.RENT && (tool?.checkin_date || tool?.checkout_date)"
+        >
+          <span>{{ tool?.checkin_date || '--' }}</span>
+          <i></i>
+          <span>{{ tool?.checkout_date || '--' }}</span>
+        </div>
+
         <div class="equipment-project-info" v-if="tool?.project?.title">
           <img :src="Helmet" alt="helmet" />
           <div class="project-data">
@@ -204,4 +243,3 @@ watch(
     </div>
   </div>
 </template>
-

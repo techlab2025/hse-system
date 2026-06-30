@@ -46,6 +46,8 @@ export default class InvestigatingModel {
   public lessonLearnt?: string
   public correctiveTask?: CapaTaskDetailsModel[]
   public preventiveTask?: CapaTaskDetailsModel[]
+  public SerialName?: string
+
 
   constructor(
     Investegationid: number,
@@ -83,6 +85,7 @@ export default class InvestigatingModel {
     lessonLearnt?: string,
     correctiveTask?: CapaTaskDetailsModel[],
     preventiveTask?: CapaTaskDetailsModel[],
+    SerialName?: string
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -119,6 +122,7 @@ export default class InvestigatingModel {
     this.lessonLearnt = lessonLearnt
     this.correctiveTask = correctiveTask
     this.preventiveTask = preventiveTask
+    this.SerialName = SerialName
   }
 
   static fromMap(data: any): InvestigatingModel {
@@ -166,6 +170,7 @@ export default class InvestigatingModel {
       data.lesson_learnt ?? data.lessonLearnt ?? '',
       correctiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
       preventiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      data.serial_name,
     )
   }
 

@@ -338,7 +338,7 @@ const IndexEquipmentactionList = () => [
   ]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="equipment-cards-grid grid grid-cols-1 xl:grid-cols-2 gap-4">
           <EquipmentCard @delete:data="deleteEquipment" v-for="(tool, index) in state.data" :key="index" :tool="tool" />
         </div>
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
