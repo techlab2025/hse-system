@@ -3,80 +3,142 @@
 @use '../mixins/grid' as *;
 .project-statistics {
   grid-column: span 12;
-  @include flex-column(nowrap, flex-start, center);
+  @include flex-column(nowrap, flex-start, stretch);
   width: 100%;
-  border: 1px solid #5571b948;
-  border-radius: $XlSize2;
+  border: 1px solid #e8edf5;
+  border-radius: $BorderRadiusSm;
   padding: $SmSize;
   margin-bottom: $XlSize2;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.72) 0%, rgba(255, 255, 255, 0) 48%), #fff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+
   .header {
     width: 100%;
-    @include flex-row(nowrap, space-between, center);
-    gap: $XsSize;
+    @include flex-row(wrap, space-between, center);
+    gap: $SmSize;
+    padding-bottom: $SmSize;
+    border-bottom: 1px solid #edf2f7;
+
     .header-container {
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize;
+      min-width: 0;
 
       .header-img {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: $BorderRadiusSm;
+        object-fit: contain;
+        background-color: rgba(29, 78, 216, 0.06);
+        padding: $XsSize3;
       }
 
       .title-content {
+        min-width: 0;
         @include flex-column(nowrap, flex-start, flex-start);
+        gap: 2px;
+
         .content-info {
-          @include flex-row(nowrap, flex-start, center);
+          @include flex-row(wrap, flex-start, center);
           gap: $XsSize3;
 
           .title {
-            color: #170f49;
-            font-size: $XlSize2;
+            color: #111827;
+            font-size: $XlSize;
             font-weight: $BaseFontWeightBold;
+            font-family: 'bold';
+            line-height: 1.25;
           }
 
           .count {
-            color: #c0c0c5;
+            color: #64748b;
+            background-color: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 999px;
+            padding: 4px 10px;
             font-size: $SmSize;
-            font-weight: $BaseFontMediumWeight;
+            font-weight: $BaseFontSemiBoldWeight;
+            line-height: 1;
+
             .counter {
               color: $PrimaryColor;
-              font-weight: $BaseFontSemiBoldWeight;
+              font-family: 'bold';
             }
           }
         }
+
         .description {
-          color: #c0c0c5;
+          color: #7c8798;
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
+          line-height: 1.35;
         }
       }
     }
   }
 
   .statistics-content {
+    --project-stat-card-width: calc((100% - #{$SmSize}) / 2);
+
     width: 100%;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap; /* Prevents cards from dropping to the next line */
+    flex-wrap: nowrap;
     justify-content: flex-start;
-    gap: 15px;
-    overflow-x: auto; /* Enables horizontal scrolling */
-    padding-bottom: 10px; /* Optional: adds space for the scrollbar */
+    align-items: stretch;
+    gap: $SmSize;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+    scroll-padding-inline: $XsSize3;
+    scroll-snap-type: x mandatory;
+    padding: $XsSize3 $XsSize3 $SmSize;
+    scrollbar-color: rgba(29, 78, 216, 0.38) #eef2f7;
+    scrollbar-width: thin;
 
-    // Webkit scrollbar styling (optional, to make it look cleaner)
     &::-webkit-scrollbar {
-      height: 6px;
+      height: 8px;
     }
 
-    // Target the ProjectCard component
-    // Using :deep() if this is scoped CSS to ensure it hits the child component
-    :deep(.project-card),
-    > * {
-      flex: 0 0 calc(50% - 7.5px); /* Forces exactly 2 cards per view */
-      min-width: calc(50% - 7.5px);
+    &::-webkit-scrollbar-track {
+      background-color: #eef2f7;
+      border-radius: 999px;
     }
-    .project-card-data {
-      gap: 50px;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(29, 78, 216, 0.38);
+      border-radius: 999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(29, 78, 216, 0.58);
+    }
+
+    > a,
+    > .project-card-link {
+      flex: 0 0 var(--project-stat-card-width);
+      min-width: var(--project-stat-card-width);
+      scroll-snap-align: start;
+    }
+
+    .project-card-container {
+      min-height: 238px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header {
+      align-items: flex-start;
+    }
+
+    .statistics-content {
+      --project-stat-card-width: 100%;
+
+      padding-inline: 0;
+      scroll-padding-inline: 0;
     }
   }
 }

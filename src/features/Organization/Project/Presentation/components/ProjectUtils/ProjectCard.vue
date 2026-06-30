@@ -3,14 +3,13 @@ import { ProjectStatusEnum } from '../../../Core/Enums/ProjectStatusEnum'
 import type ProjectModel from '../../../Data/models/ProjectModel'
 import Stopcard from '@/shared/icons/stopcard.vue'
 import CustomPopover from '../../supcomponents/CustomPopover.vue'
-import { useI18n } from 'vue-i18n'
 import PinIcons from '@/shared/icons/PinIcons.vue'
 
-const props = defineProps<{
+defineProps<{
   data: ProjectModel
 }>()
 
-const GetProjectStatus = (status: ProjectStatusEnum) => {
+const GetProjectStatus = (status?: ProjectStatusEnum) => {
   switch (status) {
     case ProjectStatusEnum.active:
       return 'active'
@@ -25,15 +24,28 @@ const GetProjectStatus = (status: ProjectStatusEnum) => {
   }
 }
 
-const { locale } = useI18n()
+const getProjectStatusClass = (status?: ProjectStatusEnum) => {
+  switch (status) {
+    case ProjectStatusEnum.active:
+      return 'active'
+    case ProjectStatusEnum.completed:
+      return 'completed'
+    case ProjectStatusEnum.onHold:
+      return 'on-hold'
+    case ProjectStatusEnum.cancelled:
+      return 'cancelled'
+    default:
+      return ''
+  }
+}
 </script>
 <template>
-  <router-link :to="`/organization/project-details/${data?.id}?type=1`">
-    <div class="project-card-container">
+  <router-link class="project-card-link" :to="`/organization/project-details/${data?.id}?type=1`">
+    <div class="project-card-container" :class="getProjectStatusClass(data?.status)">
       <div class="project-card-header-container">
         <div class="project-card-header">
           <div class="project-header flex items-center">
-            <span class="status" :class="String(data?.status).toLowerCase()" v-if="data?.status">{{
+            <span class="status" :class="getProjectStatusClass(data?.status)" v-if="data?.status">{{
               GetProjectStatus(data?.status)
             }}</span>
             <span class="serial" :class="data?.status ? 'serial-border' : ''">
@@ -51,7 +63,7 @@ const { locale } = useI18n()
         <custom-popover>
           <template #btn>
             <p class="locations update-locations">
-              {{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard />
+              {{ $t('locations') }} : <span>{{ data?.locations?.length || 0 }} </span> <stopcard />
             </p>
           </template>
           <template #content>
@@ -72,7 +84,7 @@ const { locale } = useI18n()
               {{ $t('locations') }} : <span>{{ data?.locations?.length }} </span> <stopcard />
             </p> -->
             <p class="locations update-locations">
-              {{ $t('zones') }} :<span>{{ data?.zoons?.length }} </span><stopcard />
+              {{ $t('zones') }} :<span>{{ data?.zoons?.length || 0 }} </span><stopcard />
             </p>
           </template>
           <template #content>
@@ -84,21 +96,12 @@ const { locale } = useI18n()
               >
                 <pin-icons />
                 <span>{{ zoon?.title }}</span>
-                <!-- {{ zoon.titles.find((el) => el.locale === locale)?.title }} -->
               </p>
             </div>
           </template>
         </custom-popover>
       </div>
-      <hr
-        style="
-          height: 1px;
-          width: 100%;
-          border-width: 1px;
-          color: #b7beca2c;
-          background-color: #f5f6f7;
-        "
-      />
+      <hr class="project-card-divider" />
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">{{ $t('observation') }} :</span>
