@@ -3,7 +3,9 @@
   import HeaderProjectsFilter from './HeaderProjectsFilter.vue';
   import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts';
-  const emit = defineEmits(['update:data'])
+  const emit = defineEmits<{
+    (e: 'update:data', value?: number): void
+  }>()
   const props = defineProps<{
     title: string
     length: number
@@ -11,7 +13,7 @@ import type ProjectModel from '@/features/Organization/Project/Data/models/Proje
   }>()
   const projectSelectStore = useProjectSelectStore()
   const ActiveTap = ref(projectSelectStore?.project?.id == -1 || !(projectSelectStore?.project?.id) ? projectSelectStore?.project?.id : props.projects?.[0]?.id)
-  const UpdateData = (Id: number) => {
+  const UpdateData = (Id?: number) => {
     ActiveTap.value = projectSelectStore?.project?.id == -1 || !(projectSelectStore?.project?.id) ? Id : projectSelectStore?.project?.id
     emit('update:data', ActiveTap.value)
   }

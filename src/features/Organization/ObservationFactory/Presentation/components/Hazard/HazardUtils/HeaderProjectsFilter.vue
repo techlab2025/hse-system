@@ -3,7 +3,9 @@ import type ProjectModel from '@/features/Organization/Project/Data/models/Proje
 import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import { onMounted, watch } from 'vue';
 import { ref } from 'vue'
-const emit = defineEmits(['update:data'])
+const emit = defineEmits<{
+  (e: 'update:data', value?: number): void
+}>()
 const props = defineProps<{
   projects: ProjectModel[]
   isForm?: boolean
@@ -12,6 +14,12 @@ const ActiveTap = ref(props.projects?.[0]?.id)
 const AllProjects = ref(props.projects)
 
 const UpdateData = (Id: number) => {
+  if (!props.isForm && ActiveTap.value === Id) {
+    ActiveTap.value = undefined
+    emit('update:data', undefined)
+    return
+  }
+
   ActiveTap.value = Id
   emit('update:data', ActiveTap.value)
 }

@@ -216,12 +216,18 @@ const ApplayFilter = (data: number[]) => {
   fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
-const setSelectedProjectFilter = (data) => {
+const setSelectedProjectFilter = (data?: number) => {
   selectedProjctesFilters.value = data
-  if (data) {
-    fetchHazard('', 1, 10, 1, null, null, null, data)
-    FetchMyZones()
+  SelectedZonesFilter.value = []
+
+  if (!data) {
+    Filters.value = []
+    fetchHazard('', 1, 10, 1)
+    return
   }
+
+  fetchHazard('', 1, 10, 1, null, null, null, data)
+  FetchMyZones()
 }
 
 const ShowDetails = ref<number[]>([])
