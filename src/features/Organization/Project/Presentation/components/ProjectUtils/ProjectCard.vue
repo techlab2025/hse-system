@@ -55,9 +55,14 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           <p class="project-title">{{ data?.title }}</p>
         </div>
 
-        <p class="project-employees">
-          {{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span>
-        </p>
+        <div class="header-stats gap-2">
+          <p class="project-employees">
+            {{ $t('employees') }} :<span>{{ data?.assigned_employees_count || 0 }}</span>
+          </p>
+          <p class="project-employees">
+            {{ $t('Equipment') }} :<span>{{ data?.equipment_count || 0 }}</span>
+          </p>
+        </div>
       </div>
       <div class="project-card-info">
         <custom-popover>
@@ -107,10 +112,10 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           <span class="info-title">{{ $t('observation') }} :</span>
           <span class="info-count">{{ data?.observations_count }}</span>
         </div>
-        <div class="data-info">
+        <!-- <div class="data-info">
           <span class="info-title">{{ $t('hazerd') }} :</span>
           <span class="info-count">{{ data?.observation_hazards_count }}</span>
-        </div>
+        </div> -->
         <div class="data-info">
           <span class="info-title">{{ $t('incident') }} :</span>
           <span class="info-count">{{ data?.observation_accidents_count }}</span>
@@ -119,16 +124,19 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           <span class="info-title">{{ $t('Investigation') }} :</span>
           <span class="info-count warn">{{ data?.investigation_count }}</span>
         </div>
-        <div class="data-info">
+        <!-- <div class="data-info">
           <span class="info-title">{{ $t('Equipment') }} :</span>
           <span class="info-count warn">{{ data?.equipment_count }}</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </router-link>
 </template>
 
 <style scoped>
+.header-stats {
+  display: flex;
+}
 .location-data {
   position: relative;
   padding: 6px;

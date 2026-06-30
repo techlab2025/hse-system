@@ -134,11 +134,11 @@ const AddEnvestigatingResult = async () => {
     addInvestigationResultParams,
     router,
   )
-  if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 0) {
-    openDialog.value = true
-  } else if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 1) {
-    router.push('/organization/investigating')
-  }
+  // if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 0) {
+  //   openDialog.value = true
+  // } else if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 1) {
+  router.push('/organization/investigating')
+  // }
   // else {
   //   router.push('/organization/investigating')
   // }
@@ -262,18 +262,19 @@ const setCapaActionPlan = (data: any) => {
   }
 }
 const lessonLearnt = ref('')
-const DocumentRefrenceDialog = ref<boolean>(false)
 const DocumentRefrences = ref<TitleInterface[]>([])
 const setDocumentRefrences = (data: TitleInterface[]) => {
   DocumentRefrences.value = data
 }
-const indexDocumentRefrencesController = IndexDocumentRefrenceController.getInstance()
-const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 0)
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>General Identification</p>
+        </div>
         <InvestigatingHedaer
           :title="state?.data?.observation?.title"
           :serial="state?.data?.observation?.serial_name"
@@ -288,7 +289,61 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           :incidantDescription="state?.data?.observation?.description"
           :team="state.data?.investigationEmployees"
           :time="state.data?.investigationMeetingTime"
+          :shift="state.data?.observation.work_shift"
+          @update:documentRefrences="setDocumentRefrences"
         />
+
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Investigation Team Setup</p>
+        </div>
+        <div class="investigating-header-container">
+          <div class="meeting-info-container">
+            <!-- <div class="metting-info-header-container">
+        <p class="metting-info-header">{{ $t('investigation_meeting') }}</p>
+        <hr class="meeting-hr" />
+      </div> -->
+            <div class="meeting-info">
+              <p>
+                Investigation team leader :
+                <span class="team-leader">{{ state?.data?.TeamLeader?.name }}</span>
+              </p>
+              <p>
+                Num of team :
+                <span class="team-number">{{ state?.data?.investigationEmployees?.length }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="team-container">
+            <p class="title">{{ $t('team') }}</p>
+            <div class="team">
+              <div
+                class="team-member"
+                v-for="member in state.data?.investigationEmployees"
+                :key="member.id"
+              >
+                <img
+                  :src="
+                    member?.organizationEmployee?.image ||
+                    'https://cyber.comolho.com/static/img/avatar.png'
+                  "
+                  alt=""
+                  class="equipemtn-card-image"
+                />
+                <div class="employee-text">
+                  <p class="name">{{ member.organizationEmployee?.name }}</p>
+                  <p class="serial">{{ member.organizationEmployee?.serialName }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="investigating-header-container">
+          <div class="incidant-description">
+            <p class="title">{{ $t('incidant_description') }}</p>
+            <p class="description">{{ state?.data?.observation?.description }}</p>
+          </div>
+        </div> -->
 
         <!-- <div class="investigation-title">
           <img :src="investigationImg" alt="" />
@@ -312,19 +367,28 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           <img :src="investigationImg" alt="" />
           <p>Events Timeline Builder</p>
         </div>
-        <div class="input-wrapper w-full narrative-panel">
-          <label for="event_time_line">{{ $t('event_time_line') }}</label>
-          <Editor
-            id="event_time_line"
-            v-model="IncidantDescription"
-            editorStyle="height: 320px"
-            :placeholder="'What happened? (in detail)'"
-          />
+
+        <div class="input-wrapper w-full">
+          <div class="investigating-header-container">
+            <div class="incidant-description col-span-2">
+              <p class="title">{{ $t('incidant_description') }}</p>
+              <p class="description">{{ state?.data?.observation?.description }}</p>
+            </div>
+            <div class="incidant-description col-span-2">
+              <label for="event_time_line">{{ $t('event_time_line') }}</label>
+
+              <textarea
+                id="event_time_line"
+                v-model="IncidantDescription"
+                :placeholder="'What happened? (in detail)'"
+              ></textarea>
+            </div>
+          </div>
         </div>
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
-          <p>Injuries</p>
+          <p>Health Impact Integration</p>
         </div>
         <div class="investigation-injury">
           <FactoryAccidents
@@ -345,13 +409,23 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           <p>Witness Management</p>
         </div>
 
-        <ViewersResults :viwers="initialViewers" @update:data="setViewersResults" />
+        <ViewersResults
+          :isInvestigation="true"
+          :viwers="initialViewers"
+          @update:data="setViewersResults"
+        />
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
           <p>Immediate Action Evaluation</p>
         </div>
 
+        <div class="investigating-header-container">
+          <div class="incidant-description col-span-2">
+            <p class="title">{{ $t('immediate action') }}</p>
+            <p class="description">{{ state?.data?.observation?.action }}</p>
+          </div>
+        </div>
         <RateActions @update:data="setRateAction" />
 
         <div class="investigation-title">
@@ -383,9 +457,10 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
             </template>
           </UpdatedCustomInputSelect>
         </div>
+        <CauseOfAccidant @update:data="setCauseOfAction" />
         <!-- Regulatory/Legal Compliance Reference -->
 
-        <div class="input-wrapper w-full root-cause-panel">
+        <!-- <div class="input-wrapper w-full root-cause-panel">
           <UpdatedCustomInputSelect
             :modelValue="DocumentRefrences"
             class="input"
@@ -407,11 +482,11 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
               <AddDocumentRefrence @close:data="DocumentRefrenceDialog = false" />
             </template>
           </UpdatedCustomInputSelect>
-        </div>
+        </div> -->
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
-          <p>Action Plan</p>
+          <p>Corrective and Preventive Actions</p>
         </div>
         <CapaActionPlan @update:data="setCapaActionPlan" />
 
@@ -420,12 +495,13 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
             <span>Lesson learnt</span>
             <h2>Capture the learning before it fades</h2>
           </div>
-          <Editor
-            id="lesson_learnt"
-            v-model="lessonLearnt"
-            editorStyle="height: 280px"
-            placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
-          />
+          <div class="input-wrapper">
+            <textarea
+              id="lesson_learnt"
+              v-model="lessonLearnt"
+              placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
+            ></textarea>
+          </div>
         </section>
 
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
@@ -448,7 +524,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
 
         <!-- <CauseOfAccidant @update:data="setCauseOfAction" /> -->
         <!-- <InvestigationTasks @update:data="setInvestigationTasks" /> -->
-        <div class="input-wrapper w-full reccomendation recommendation-panel">
+        <!-- <div class="input-wrapper w-full reccomendation recommendation-panel">
           <label for="recommendation">{{ $t('recommendation action for capa') }}</label>
           <textarea
             id="recommendation"
@@ -457,7 +533,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
             v-model="recommendation"
             @input="updateRecommendation"
           ></textarea>
-        </div>
+        </div> -->
 
         <AnotherMeeting @update:data="setAnotherMeeting" />
 

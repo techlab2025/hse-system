@@ -11,8 +11,9 @@ import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/
 import { watch } from 'vue'
 
 const emit = defineEmits(['update:data'])
-const { viwers } = defineProps<{
+const { viwers, isInvestigation } = defineProps<{
   viwers?: InjuryDetailsModel[]
+  isInvestigation?: boolean
 }>()
 
 type AnswerModel = {
@@ -103,14 +104,14 @@ watch(
       :style="{ animationDelay: `${index * 0.15}s` }"
     >
       <div class="timeline-content">
-        <div class="timeline-contect-select">
-          <div class="input-wrapper">
+        <div class="timeline-contect-select" :class="isInvestigation ? `investigation` : ``">
+          <div class="input-wrapper" :class="isInvestigation ? `w-full` : ``">
             <UpdatedCustomInputSelect
               :staticOptions="employeeOptions"
               v-model="item.employee"
               placeholder="Select Employee"
               class="mt-4 mr-2 input"
-              label="Employee"
+              label="Witness"
               :reload="false"
               :hascontent="isSelectHasContent[index]"
               @update:model-value="UpdateData"
@@ -122,7 +123,7 @@ watch(
                     class="emp-name"
                     @click.prevent="toggleMode(index, true)"
                   >
-                    {{ $t('employee_name') }}
+                    {{ $t('Witness name') }}
                   </button>
 
                   <button
@@ -145,7 +146,7 @@ watch(
               </template>
             </UpdatedCustomInputSelect>
           </div>
-          <div class="timeline-content-text input-wrapper">
+          <div class="timeline-content-text input-wrapper" :class="isInvestigation ? `w-full` : ``">
             <label for="result">Witness statement</label>
             <textarea
               type="result"
@@ -187,3 +188,13 @@ watch(
     </div>
   </div>
 </template>
+
+<style scoped>
+.investigation {
+  display: flex;
+  flex-direction: column !important;
+}
+.w-full {
+  width: 100% !important;
+}
+</style>

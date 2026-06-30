@@ -15,6 +15,8 @@ import InvestegationResultDetailsModel from '@/features/Organization/Investigati
 import acc from '@/assets/images/acc.png'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
+import type ShiftModel from '@/features/Organization/Shifts/Data/models/ShiftModel'
+
 
 export default class HazardDetailsModel {
   public id: number
@@ -57,6 +59,7 @@ export default class HazardDetailsModel {
   public time: string
   public lastest_inspection_result: InspectionObservatioModel
   public task: any
+  public work_shift: ShiftModel
   constructor(
     id: number,
     title: string,
@@ -97,7 +100,8 @@ export default class HazardDetailsModel {
     serialName: string,
     time: string,
     lastest_inspection_result: InspectionObservatioModel,
-    task:any,
+    task: any,
+    work_shift: ShiftModel,
   ) {
     this.id = id
     this.title = title
@@ -139,6 +143,7 @@ export default class HazardDetailsModel {
     this.time = time
     this.lastest_inspection_result = lastest_inspection_result
     this.task = task
+    this.work_shift = work_shift
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -181,8 +186,11 @@ export default class HazardDetailsModel {
       data?.action_status,
       data?.serial_name,
       data?.time,
-      data?.lastest_inspection_result?InspectionObservatioModel.fromMap(data?.lastest_inspection_result):null,
-    data?.task
+      data?.lastest_inspection_result
+        ? InspectionObservatioModel.fromMap(data?.lastest_inspection_result)
+        : null,
+      data?.task,
+      data?.work_shift,
     )
   }
 
@@ -221,6 +229,5 @@ export default class HazardDetailsModel {
     InspectionObservatioModel.example,
     [{ id: 1, title: 'title' }],
     InvestegationResultDetailsModel.example,
-
   )
 }

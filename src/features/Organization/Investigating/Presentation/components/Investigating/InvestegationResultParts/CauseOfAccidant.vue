@@ -80,12 +80,7 @@ const GetSelectedFactors = (data: any[]) => {
 
 <template>
   <div class="cause-of-accidant">
-    <HeaderPage
-      :title="`investigation findings and contributing factors`"
-      :subtitle="`Choose the reasons for the incident and write how to prevent it from happening again`"
-      :img="factor"
-      class="title-header"
-    />
+    <HeaderPage :title="`Root Cause Factors`" :subtitle="``" :img="factor" class="title-header" />
 
     <div class="cause-of-accidant-content">
       <FactorInvestigating

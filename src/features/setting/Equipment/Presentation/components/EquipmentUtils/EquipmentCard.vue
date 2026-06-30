@@ -34,7 +34,7 @@ const GetEquipmentType = (type: number) => {
 }
 
 const GetEquipmentStatus = (status: EquipmentStatus) => {
-  return status === EquipmentStatus.RENT ? 'Rent' : 'Own'
+  return status === EquipmentStatus.RENT ? 'Rent' : 'Owned'
 }
 
 const { user } = useUserStore()
@@ -206,14 +206,12 @@ watch(
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="equipment-rent-window"
-          v-if="tool?.status == EquipmentStatus.RENT && (tool?.checkin_date || tool?.checkout_date)"
+          v-if="tool?.status == EquipmentStatus.RENT"
         >
-          <span>{{ tool?.checkin_date || '--' }}</span>
-          <i></i>
-          <span>{{ tool?.checkout_date || '--' }}</span>
-        </div>
+          <span>{{ tool.inService ? t('In_service') : t('Out_of_service') }}</span>
+        </div> -->
 
         <div class="equipment-project-info" v-if="tool?.project?.title">
           <img :src="Helmet" alt="helmet" />

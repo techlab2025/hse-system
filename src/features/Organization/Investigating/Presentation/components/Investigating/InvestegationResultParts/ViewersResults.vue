@@ -6,8 +6,9 @@ import InvestegationWitnessesParams from '@/features/Organization/Investigating/
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel.ts'
 
 const emit = defineEmits(['update:data'])
-const { viwers } = defineProps<{
+const { viwers,isInvestigation } = defineProps<{
   viwers?: InjuryDetailsModel[]
+  isInvestigation?: boolean
 }>()
 
 const UpdateData = (data) => {
@@ -31,6 +32,6 @@ const UpdateData = (data) => {
       :img="ViewrResults"
       class="title-header"
     />
-    <ViewerResultsTree :viwers="viwers" @update:data="UpdateData" />
+    <ViewerResultsTree :isInvestigation="isInvestigation" :viwers="viwers" @update:data="UpdateData" />
   </div>
 </template>

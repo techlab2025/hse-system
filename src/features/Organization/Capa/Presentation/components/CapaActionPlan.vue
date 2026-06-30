@@ -62,11 +62,11 @@ onMounted(async () => {
     <div class="action-plan-header">
       <div>
         <span class="eyebrow">Action plan</span>
-        <h3>Corrective and preventive task timeline</h3>
+        <h3>Corrective and preventive Actions timeline</h3>
       </div>
       <div class="task-total">
         <span>{{ totals.all }}</span>
-        <small>Total tasks</small>
+        <small>Total Actions</small>
       </div>
     </div>
 
@@ -75,7 +75,7 @@ onMounted(async () => {
         <div class="lane-header">
           <div>
             <span class="lane-kicker">Fix now</span>
-            <h4>Corrective tasks</h4>
+            <h4>Corrective Actions</h4>
           </div>
           <span class="task-count">{{ totals.corrective }}</span>
         </div>
@@ -95,7 +95,7 @@ onMounted(async () => {
         <div class="lane-header">
           <div>
             <span class="lane-kicker">Stop repeat</span>
-            <h4>Preventive tasks</h4>
+            <h4>Preventive Actions</h4>
           </div>
           <span class="task-count">{{ totals.preventive }}</span>
         </div>

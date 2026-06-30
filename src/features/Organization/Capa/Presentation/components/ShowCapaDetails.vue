@@ -38,7 +38,7 @@ const setVerificationOfEffectiveness = (data: any) => {
 
 const summaryCards = computed(() => [
   {
-    label: 'CAPA serial',
+    label: 'CAPA Id',
     value: state.value.data?.serialName || 'N/A',
   },
   {
@@ -46,10 +46,10 @@ const summaryCards = computed(() => [
     value: state.value.data?.observation?.serialName || 'N/A',
     path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
   },
-  {
-    label: 'CAPA ID',
-    value: state.value.data?.observationCapaId || 'N/A',
-  },
+  // {
+  //   label: 'CAPA ID',
+  //   value: state.value.data?.observationCapaId || 'N/A',
+  // },
   {
     label: 'Investigation ID',
     value:
@@ -98,7 +98,7 @@ onMounted(() => {
           </router-link>
         </section>
 
-        <section class="details-grid">
+        <!-- <section class="details-grid">
           <article class="insight-card corrective">
             <span>Corrective action</span>
             <p v-html="state.data?.corrective || 'No corrective action has been added yet.'"></p>
@@ -108,14 +108,19 @@ onMounted(() => {
             <span>Preventive action</span>
             <p v-html="state.data?.preventive || 'No preventive action has been added yet.'"></p>
           </article>
-        </section>
+        </section> -->
 
         <CapaActionPlanDetails
           :correctiveTasks="state.data?.investigation?.correctiveTask ?? []"
           :preventiveTasks="state.data?.investigation?.preventiveTask ?? []"
           @answered="ShowCapaDetails"
         />
-
+        <VerificationOfEffectiveness
+          :propsVerificationMethodology="state.data?.verificationMethodology"
+          :obsrvationId="Number(state.data?.observationCapaId)"
+          :propsVerificationStatus="state.data?.verificationStatus"
+          :propsResultFindings="state.data?.resultFindings"
+        />
         <section class="lesson-section">
           <div class="saved-lesson">
             <span>Saved lesson learnt</span>
@@ -128,12 +133,6 @@ onMounted(() => {
           </div>
         </section>
       </main>
-      <VerificationOfEffectiveness
-        :propsVerificationMethodology="state.data?.verificationMethodology"
-        :obsrvationId="Number(state.data?.observationCapaId)"
-        :propsVerificationStatus="state.data?.verificationStatus"
-        :propsResultFindings="state.data?.resultFindings"
-      />
     </template>
 
     <template #loader>

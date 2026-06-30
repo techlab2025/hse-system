@@ -1389,5 +1389,7 @@
   "add_document_refrence": "Add Document Refrence",
   "shifts": "Shifts",
   "add_shift": "Add Shift",
-  "Document_refrence": "Document refrence"
+  "Document_refrence": "Document refrence",
+  "Out_of_service": "Out of Service",
+  "In_service": "In Service"
 }

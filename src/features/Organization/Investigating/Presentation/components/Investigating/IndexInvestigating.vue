@@ -195,7 +195,7 @@ const GetMediumObservationCount = (data: any): number => {
                             }} -->
                             incident Report
                             <span v-if="item?.observation?.serial">{{
-                              `_` + item?.observation?.serial || '_OBS-2025-0112'
+                              `_` + item?.observation?.serialName || '_OBS-2025-0112'
                             }}</span>
                           </p>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
@@ -231,30 +231,30 @@ const GetMediumObservationCount = (data: any): number => {
                             {{ $t('Zone') }}:
                             <span>{{ item?.observation?.zoon?.title || 'N/A' }}</span>
                           </p>
-                          <p class="label-item-primary" v-if="item?.observation?.equipment">
+                          <!-- <p class="label-item-primary" v-if="item?.observation?.equipment">
                             {{ $t('Machine') }}:
                             <span>{{ item?.observation?.equipment?.title || 'N/A' }}</span>
-                          </p>
-                          <p class="label-item-primary">
+                          </p> -->
+                          <!-- <p class="label-item-primary">
                             {{ $t('Status') }}:
                             <span>{{
                               item?.observation?.saveStatus == 1 ? 'Solved' : 'Unsolved'
                             }}</span>
-                          </p>
-                          <p class="label-item-primary" v-if="item?.observation?.isAction">
+                          </p> -->
+                          <!-- <p class="label-item-primary" v-if="item?.observation?.isAction">
                             {{ $t('take action') }}:
                             <span>{{ item?.observation?.isAction == 1 ? 'true' : 'false' }}</span>
-                          </p>
+                          </p> -->
                         </div>
                         <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS">
                           <div class="show-investigation-meeting-details">
                             <div class="title">
                               <h6>{{ $t('Investigation Meeting') }}</h6>
-                              <div class="imge">
-                                <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
-                                <Meeting />
-                                <p>{{ $t('Meeting Overview') }}</p>
-                              </div>
+                              <!-- <div class="imge"> -->
+                              <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
+                              <!-- <Meeting /> -->
+                              <!-- <p>{{ $t('Meeting Overview') }}</p> -->
+                              <!-- </div> -->
                             </div>
 
                             <div class="dome-info">
@@ -679,6 +679,12 @@ const GetMediumObservationCount = (data: any): number => {
   margin-top: 1rem !important;
 }
 
+.solved-btn {
+  width: 100% !important;
+  a {
+    width: 50%;
+  }
+}
 .unsolved-btns,
 .solved-btn {
   display: flex;

@@ -208,10 +208,17 @@ watch(
                                 {{ item.capa?.time }}
                               </span>
                             </p>
+                            <router-link
+                              :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
+                              class="label-item-secondary"
+                            >
+                              {{ $t('incidant Id') }} :
+                              <span>{{ item.capa?.observationId }} </span>
+                            </router-link>
                           </div>
                           <div class="sup-title">{{ item.description || 'N/A' }}</div>
 
-                          <div class="card-details">
+                          <!-- <div class="card-details">
                             <div class="name">
                               <p class="title">
                                 {{ item?.observer?.name }} <span>{{ '(observer)' }}</span>
@@ -234,30 +241,22 @@ watch(
                                   {{ $t('observation Date & Time') }} :
                                   <span>{{ item.date }} & {{ item.time }}</span>
                                 </p>
-                                <!-- <p class="label-item-secondary flex items-center gap-1">
-                                  {{ $t('operation type') }} :
-                                  <span>{{ GetObservationType(item.type) }}</span>
-                                </p> -->
-                                <!-- <div class="label-item-secondary"> -->
-                                  <!-- <p>
-                                    capa status
-                                    <span>{{ GetCapaStataus(item.capa!) }}</span>
-                                  </p> -->
-                                <!-- </div> -->
                               </div>
                             </div>
                             <div class="btn-investegation-observation">
-                              <CapaDialog :capa="item?.capa" />
-                              <router-link :to="`/organization/capa/${item?.capa?.capaId}`">
-                                <div class="observation-details">
-                                  <p>
-                                    {{ GetObservationType(item.type) }} details
-                                    <Observdetails />
-                                  </p>
-                                </div>
-                              </router-link>
                             </div>
-                          </div>
+                          </div> -->
+                          <!-- <CapaDialog :capa="item?.capa" /> -->
+                        </div>
+                        <div class="card-content new-btn">
+                          <router-link :to="`/organization/capa/${item?.capa?.capaId}`">
+                            <div class="observation-details">
+                              <p>
+                                {{ GetObservationType(item.type) }} details
+                                <Observdetails />
+                              </p>
+                            </div>
+                          </router-link>
                         </div>
                       </div>
                     </div>
@@ -327,6 +326,11 @@ watch(
 }
 
 .card-content {
+  &.new-btn {
+    margin-left: auto !important;
+    justify-content: start !important;
+    align-items: end !important;
+  }
   .sup-title {
     margin-bottom: 1rem;
 

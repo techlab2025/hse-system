@@ -99,7 +99,7 @@ onMounted(async () => {
 
             <div class="timeline-content" :class="{ 'capa-timeline-content': capaStyles }">
               <div class="timeline-content-text input-wrapper">
-                <label for="text">Text</label>
+                <label for="text">Action</label>
                 <input
                   type="text"
                   id="text"
@@ -116,13 +116,13 @@ onMounted(async () => {
                     v-model="item.employee"
                     placeholder="Select Employee"
                     class="mt-4 mr-2 input"
-                    label="Employee"
+                    label="Implementation Responsibility "
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
                 </div>
                 <div class="flex flex-col gap-2 input-wrapper">
-                  <label for="date">Due date</label>
+                  <label for="date">Expected Time for Implementation </label>
                   <DatePicker
                     v-model="item.date"
                     class="mt-4 mr-2 input date-picker"
@@ -137,7 +137,7 @@ onMounted(async () => {
                     v-model="item.ResponablePerson"
                     placeholder="Select Responable Person"
                     class="mt-4 mr-2 input"
-                    label="Responsible person"
+                    label="Monitoring Responsibility "
                     :reload="false"
                     @update:model-value="UpdateData"
                   />

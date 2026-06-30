@@ -16,7 +16,7 @@ const localAnswers = ref<Record<number, string>>({})
 const statusLabel = (status?: number) => {
   switch (status) {
     case 1:
-      return 'Closed'
+      return 'Done'
     case 2:
       return 'In progress'
     default:
