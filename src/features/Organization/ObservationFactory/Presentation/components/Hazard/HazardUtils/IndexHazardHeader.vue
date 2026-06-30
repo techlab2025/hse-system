@@ -21,7 +21,7 @@ import type ProjectModel from '@/features/Organization/Project/Data/models/Proje
     <div class="idnex-header">
       <p class="title">{{ title }}</p>
       <p class="index-length">
-        Total: <span>{{ length }}</span>
+        Total: <span>{{ length || 0 }}</span>
       </p>
       <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="UpdateData" />
     </div>

@@ -314,6 +314,8 @@
       gap: 4px;
       cursor: pointer;
 
+      display: flex;
+      flex-direction: row !important;
       span {
         color: #64748b;
         font-size: 13px;

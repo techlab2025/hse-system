@@ -3723,6 +3723,8 @@ ul {
   align-items: center;
   gap: 4px;
   cursor: pointer;
+  display: flex;
+  flex-direction: row !important;
 }
 .show-observation-container .observation-dwspcription-more .show-more span {
   color: #64748b;

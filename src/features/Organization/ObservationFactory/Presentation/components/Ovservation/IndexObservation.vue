@@ -281,6 +281,7 @@ const GetObservationType = (type: number) => {
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]"
+              v-if="Filters?.length != null && Filters?.length > 0"
             >
               <IndexFilter
                 :filters="Filters"
@@ -478,4 +479,15 @@ const GetObservationType = (type: number) => {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.btns-filter {
+  margin-left: auto;
+  margin-block: 20px;
+}
+.show-more {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+</style>

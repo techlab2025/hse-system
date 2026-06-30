@@ -68,7 +68,7 @@ const fetchHazard = async (
   date?: string,
   equipmentTypeIds?: number[],
   equipmentSubTypeIds?: number[],
-  rootCauseId?: number
+  rootCauseId?: number,
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -80,7 +80,7 @@ const fetchHazard = async (
     zoonIds,
     projectLocationIds || null,
     projectZoneLozationId,
-    route.query.rootCause ? route.query.rootCause : null
+    route.query.rootCause ? route.query.rootCause : null,
 
     // equipmentIds,
     // riskLevel,
@@ -88,7 +88,6 @@ const fetchHazard = async (
     // date,
     // equipmentTypeIds,
     // equipmentSubTypeIds,
-
   )
   await indexHazardController.getData(params)
 }
@@ -123,7 +122,7 @@ const fetchHazard = async (
 onMounted(async () => {
   // if (selectedProjctesFilters.value) {
 
-  fetchHazard("", 1, 12, 1)
+  fetchHazard('', 1, 12, 1)
   // }
   FetchMyProjects()
 })
@@ -159,7 +158,7 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
 
 const { user } = useUserStore()
@@ -220,7 +219,7 @@ const ApplayFilter = (data: number[]) => {
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
   if (data) {
-    fetchHazard("", 1, 10, 1, null, null, null, data)
+    fetchHazard('', 1, 10, 1, null, null, null, data)
     FetchMyZones()
   }
 }
@@ -232,26 +231,42 @@ const ShowDetails = ref<number[]>([])
   <div class="grid grid-cols-12 gap-4">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
 
-        PermissionsEnum.ORG_INCEDANT_ALL,
-        PermissionsEnum.ORG_INCEDANT_DELETE,
-        PermissionsEnum.ORG_INCEDANT_FETCH,
-        PermissionsEnum.ORG_INCEDANT_UPDATE,
-        PermissionsEnum.ORG_INCEDANT_CREATE,
-      ]">
+          PermissionsEnum.ORG_INCEDANT_ALL,
+          PermissionsEnum.ORG_INCEDANT_DELETE,
+          PermissionsEnum.ORG_INCEDANT_FETCH,
+          PermissionsEnum.ORG_INCEDANT_UPDATE,
+          PermissionsEnum.ORG_INCEDANT_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="'incedant'" :length="state?.data?.length" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
+          <IndexHazardHeader
+            :title="'incedant'"
+            :length="state?.data?.length"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          />
           <div class="flex items-center justify-between">
-            <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/incedant/add'" :linkText="'Create incedant'" />
+            <IndexFilter
+              v-if="Filters?.length != null && Filters?.length > 0"
+              :filters="Filters"
+              @update:data="ApplayFilter"
+              :link="'/organization/equipment-mangement/incedant/add'"
+              :linkText="'Create incedant'"
+            />
 
             <div class="btns-filter">
               <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
 
-              <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
+              <PermissionBuilder
+                :code="[
+                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                  PermissionsEnum?.ORG_INCEDANT_CREATE,
+                ]"
+              >
                 <router-link :to="`/organization/equipment-mangement/incedant/add`">
                   <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
                 </router-link>
@@ -264,22 +279,29 @@ const ShowDetails = ref<number[]>([])
             <div class="table-responsive">
               <div class="index-table-card-container">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-
                   <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                     <div class="header-container">
-
-                      <router-link class="w-full" :to="`/organization/equipment-mangement/incedant/show/${item?.id}`">
+                      <router-link
+                        class="w-full"
+                        :to="`/organization/equipment-mangement/incedant/show/${item?.id}`"
+                      >
                         <div class="card-content">
                           <div class="card-header">
                             <p class="label-item-primary">
                               {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              {{ $t('Date & Time') }} : <span>{{item.updatedAt  ? formatJoinDate(item.updatedAt) : '--' }} & {{   item.updatedAt ? formatTime(item.updatedAt)  : '--' }}</span>
+                              {{ $t('Date & Time') }} :
+                              <span
+                                >{{ item.updatedAt ? formatJoinDate(item.updatedAt) : '--' }} &
+                                {{ item.updatedAt ? formatTime(item.updatedAt) : '--' }}</span
+                              >
                             </p>
                           </div>
                           <div class="card-details">
-                            <p class="title">{{ item.observer.name }} <span>{{ $t('(observer)') }}</span></p>
+                            <p class="title">
+                              {{ item.observer.name }} <span>{{ $t('(observer)') }}</span>
+                            </p>
                             <p class="subtitle">{{ item.title }}</p>
                             <p class="subtitle">{{ item.description }}</p>
                             <div class="project-details">
@@ -295,7 +317,12 @@ const ShowDetails = ref<number[]>([])
                       </router-link>
                       <div class="card-info">
                         <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                        <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
+                        <Image
+                          v-if="item.media[0]?.url"
+                          :src="item.media[0]?.url"
+                          alt="Image"
+                          preview
+                        >
                           <template #previewicon>
                             <div class="perview">
                               <span>{{ $t('view') }}</span>
@@ -303,9 +330,8 @@ const ShowDetails = ref<number[]>([])
                             </div>
                           </template>
                         </Image>
-                        <img v-else src="@/assets/images/logo.svg" alt="">
+                        <img v-else src="@/assets/images/logo.svg" alt="" />
                       </div>
-
                     </div>
                     <!-- <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
                         <span v-if="ShowDetails[index]">Show Less</span>
@@ -323,8 +349,11 @@ const ShowDetails = ref<number[]>([])
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
@@ -335,27 +364,43 @@ const ShowDetails = ref<number[]>([])
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
-              <DataEmpty :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
+            <PermissionBuilder
+              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
+            >
+              <DataEmpty
+                :link="`/organization/equipment-mangement/incedant/add`"
+                addText="Add incedant"
                 description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No incedant" />
+                title="..ops! You have No incedant"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]">
-              <DataFailed :link="`/organization/equipment-mangement/incedant/add`" addText="Add incedant"
+            <PermissionBuilder
+              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
+            >
+              <DataFailed
+                :link="`/organization/equipment-mangement/incedant/add`"
+                addText="Add incedant"
                 description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No incedant" />
+                title="..ops! You have No incedant"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>
   </div>
 </template>
-
-<style scoped></style>
+<style scoped lang="scss">
+.btns-filter {
+  margin-left: auto;
+  margin-block: 20px;
+}
+</style>

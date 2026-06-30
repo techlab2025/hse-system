@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed, onBeforeUnmount } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import IndexProjectProgressController from '../controllers/indexProjectProgressController'
@@ -11,59 +11,102 @@ import ProjectProgressSidebar from '../supcomponents/ProjectProgressSidebar.vue'
 import ProjectProgressLoader from '../supcomponents/ProjectProgressLoader.vue'
 
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-
-import AddHerikaly from '@/views/Organization/Herikaly/AddHerikaly.vue'
-import AddOrganization from '@/views/Organization/OrganizationEmployee/AddOrganization.vue'
-import AddCertificate from '@/views/Admin/Certificate/AddCertificate.vue'
-import AddTemplate from '@/views/Admin/Template/AddTemplate.vue'
-import AddCountry from '@/views/Admin/Location/Country/AddCountry.vue'
-import AddState from '@/views/Admin/Location/State/AddState.vue'
-import AddCity from '@/views/Admin/Location/City/AddCity.vue'
-import AddArea from '@/views/Admin/Location/Area/AddArea.vue'
-import AddProjectZone from '@/features/Organization/ProjectZone/Presentation/components/AddProjectZone.vue'
-import AddObserverationType from '@/views/Admin/ObserverationType/AddObserverationType.vue'
-import AddAccidentsType from '@/views/Admin/Accidents/AddAccidentsType.vue'
-import AddHazardType from '@/views/Admin/HazardType/AddHazardType.vue'
-import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddHazard.vue'
-import AddEquipmentType from '@/views/Admin/EquipmentType/AddEquipmentType.vue'
-import AddSerial from '@/views/Organization/SerialNumber/AddSerial.vue'
-
 import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue'
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue'
-import TemplateItemAdd from '../supcomponents/TemplateItemAdd.vue'
-import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
-import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue'
-import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
-
-import CertificateActionsButtons from '@/features/setting/Certificate/Presentation/components/CertificateActionsButtons.vue'
-import HerikalyActionsButtons from '@/features/Organization/Herikaly/Presentation/components/HerikalyActionsButtons.vue'
-import OrganizationEmployeeActionsButtons from '@/features/Organization/OrganizationEmployee/Presentation/components/OrganizationEmployeeActionsButtons.vue'
-import ObserverationTypeActionsButtons from '@/features/setting/ObserverationType/Presentation/components/ObserverationTypeActionsButtons.vue'
-import AccidentsTypeActionsButtons from '@/features/setting/AccidentsTypes/Presentation/components/AccidentsTypeActionsButtons.vue'
-import EquipmentTypeActionsButtons from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeActionsButtons.vue'
-import EquipmentActionsButtons from '@/features/setting/Equipment/Presentation/components/EquipmentActionsButtons.vue'
-import HazardTypeActionsButtons from '@/features/setting/HazardType/Presentation/components/HazardTypeActionsButtons.vue'
-import RootCausesActionsButtons from '@/features/setting/RootCauses/Presentation/components/RootCausesActionsButtons.vue'
-
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue'
-import IndexSerial from '@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import ComplateData from '@/assets/lotties/Correct Checkmark on Document Checklist.json'
-import ComplateData2 from '@/assets/lotties/completed.json'
-import lottie from 'lottie-web'
 
 /* ---------------- Controller & State ---------------- */
 
-// Lottie Start
-
-const lottieComplatedDataContainer = ref<HTMLDivElement | null>(null)
-const lottieComplatedDataContainer2 = ref<HTMLDivElement | null>(null)
-let animationComplatedData: any
-let animationComplatedData2: any
-// onMounted(() => {
-
-// })
-// Lottie End
+const IndexSerial = defineAsyncComponent(
+  () => import('@/features/Organization/SerialNumber/Presentation/components/indexSerial.vue'),
+)
+const AddCertificate = defineAsyncComponent(
+  () => import('@/views/Admin/Certificate/AddCertificate.vue'),
+)
+const TemplateItemAdd = defineAsyncComponent(() => import('../supcomponents/TemplateItemAdd.vue'))
+const AddOrganization = defineAsyncComponent(
+  () => import('@/views/Organization/OrganizationEmployee/AddOrganization.vue'),
+)
+const AddHerikaly = defineAsyncComponent(
+  () => import('@/views/Organization/Herikaly/AddHerikaly.vue'),
+)
+const AddCountry = defineAsyncComponent(
+  () => import('@/views/Admin/Location/Country/AddCountry.vue'),
+)
+const AddState = defineAsyncComponent(() => import('@/views/Admin/Location/State/AddState.vue'))
+const AddCity = defineAsyncComponent(() => import('@/views/Admin/Location/City/AddCity.vue'))
+const AddArea = defineAsyncComponent(() => import('@/views/Admin/Location/Area/AddArea.vue'))
+const AddProjectZone = defineAsyncComponent(
+  () => import('@/features/Organization/ProjectZone/Presentation/components/AddProjectZone.vue'),
+)
+const AddObserverationType = defineAsyncComponent(
+  () => import('@/views/Admin/ObserverationType/AddObserverationType.vue'),
+)
+const AddAccidentsType = defineAsyncComponent(
+  () => import('@/views/Admin/Accidents/AddAccidentsType.vue'),
+)
+const AddHazardType = defineAsyncComponent(
+  () => import('@/views/Admin/HazardType/AddHazardType.vue'),
+)
+const AddHazard = defineAsyncComponent(
+  () => import('@/features/setting/SubHazard/Presentation/components/AddHazard.vue'),
+)
+const AddEquipmentType = defineAsyncComponent(
+  () => import('@/views/Admin/EquipmentType/AddEquipmentType.vue'),
+)
+const AddFullEquipment = defineAsyncComponent(
+  () => import('@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'),
+)
+const AddTeam = defineAsyncComponent(
+  () => import('@/features/setting/Teams/Presentation/components/AddTeam.vue'),
+)
+const AddRootCauses = defineAsyncComponent(
+  () => import('@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'),
+)
+const CertificateActionsButtons = defineAsyncComponent(
+  () =>
+    import('@/features/setting/Certificate/Presentation/components/CertificateActionsButtons.vue'),
+)
+const HerikalyActionsButtons = defineAsyncComponent(
+  () =>
+    import('@/features/Organization/Herikaly/Presentation/components/HerikalyActionsButtons.vue'),
+)
+const OrganizationEmployeeActionsButtons = defineAsyncComponent(
+  () =>
+    import(
+      '@/features/Organization/OrganizationEmployee/Presentation/components/OrganizationEmployeeActionsButtons.vue'
+    ),
+)
+const ObserverationTypeActionsButtons = defineAsyncComponent(
+  () =>
+    import(
+      '@/features/setting/ObserverationType/Presentation/components/ObserverationTypeActionsButtons.vue'
+    ),
+)
+const AccidentsTypeActionsButtons = defineAsyncComponent(
+  () =>
+    import(
+      '@/features/setting/AccidentsTypes/Presentation/components/AccidentsTypeActionsButtons.vue'
+    ),
+)
+const EquipmentTypeActionsButtons = defineAsyncComponent(
+  () =>
+    import(
+      '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeActionsButtons.vue'
+    ),
+)
+const EquipmentActionsButtons = defineAsyncComponent(
+  () => import('@/features/setting/Equipment/Presentation/components/EquipmentActionsButtons.vue'),
+)
+const HazardTypeActionsButtons = defineAsyncComponent(
+  () =>
+    import('@/features/setting/HazardType/Presentation/components/HazardTypeActionsButtons.vue'),
+)
+const RootCausesActionsButtons = defineAsyncComponent(
+  () =>
+    import('@/features/setting/RootCauses/Presentation/components/RootCausesActionsButtons.vue'),
+)
 
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
@@ -75,24 +118,7 @@ const getProjectProgress = async () => {
 
 onMounted(async () => {
   await getProjectProgress()
-  if (lottieComplatedDataContainer.value) {
-    animationComplatedData = lottie.loadAnimation({
-      container: lottieComplatedDataContainer.value,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: ComplateData,
-    })
-  }
-  if (lottieComplatedDataContainer2.value) {
-    animationComplatedData2 = lottie.loadAnimation({
-      container: lottieComplatedDataContainer2.value,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: ComplateData2,
-    })
-  }
+  visited.value = localStorage.getItem('ProjectProgressVisited')
 })
 
 const progectStatus = useProjectAppStatusStore()
@@ -112,7 +138,7 @@ watch(
 const ActiveItem = ref(0)
 const GetActiveItem = (value: number) => (ActiveItem.value = value)
 
-const AllPagesToView = ref([
+const AllPagesToView = [
   {
     id: ProjectProgressEnum.codingSystem,
     component: IndexSerial,
@@ -230,11 +256,9 @@ const AllPagesToView = ref([
     title: 'Functional Root Cause',
     description: 'Define root cause and assign roles for asset management',
   },
-])
+]
 
-const selectedPage = computed(() =>
-  AllPagesToView.value.find((item) => item.id === ActiveItem.value),
-)
+const selectedPage = computed(() => AllPagesToView.find((item) => item.id === ActiveItem.value))
 
 const router = useRouter()
 const routerBack = () => router.back()
@@ -260,19 +284,12 @@ const closeOnboarding = () => {
   localStorage.setItem('ProjectProgressVisited', 'true')
 }
 const visited = ref(localStorage.getItem('ProjectProgressVisited'))
-onMounted(() => {
-  visited.value = localStorage.getItem('ProjectProgressVisited')
-})
 watch(
   () => localStorage.getItem('ProjectProgressVisited'),
   () => {
     visited.value = localStorage.getItem('ProjectProgressVisited')
   },
 )
-onBeforeUnmount(() => {
-  animationComplatedData?.destroy()
-  animationComplatedData2?.destroy()
-})
 </script>
 
 <template>
@@ -317,7 +334,7 @@ onBeforeUnmount(() => {
               <p class="text">You can now start using the system</p>
               <!-- <router-link class="btn btn-primary" to="/organization">Home</router-link> -->
             </div>
-            <div ref="lottieComplatedDataContainer" class="lottie"></div>
+            <div class="completed-mark"></div>
           </div>
 
           <div
@@ -340,7 +357,10 @@ onBeforeUnmount(() => {
                   <h2 class="title">{{ selectedPage.title }}</h2>
                   <ProgressPageHeaderIcon />
                 </div>
-                <component :is="selectedPage.actionsComponent" v-if="selectedPage.actionsComponent" />
+                <component
+                  :is="selectedPage.actionsComponent"
+                  v-if="selectedPage.actionsComponent"
+                />
               </div>
               <p class="description">{{ selectedPage.description }}</p>
             </div>
@@ -399,12 +419,6 @@ onBeforeUnmount(() => {
     align-items: center;
     gap: 10px;
 
-    .lottie {
-      /* width: 100%; */
-      width: 600px;
-      height: 600px;
-    }
-
     .title {
       font-size: 24px;
       font-weight: 700;
@@ -420,6 +434,27 @@ onBeforeUnmount(() => {
 
     .btn-primary {
       width: 50%;
+    }
+  }
+
+  .completed-mark {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #16a34a;
+    position: relative;
+    box-shadow: 0 18px 36px rgba(22, 163, 74, 0.22);
+    margin-block: 30px;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 31px;
+      top: 24px;
+      width: 28px;
+      height: 44px;
+      border: solid #fff;
+      border-width: 0 8px 8px 0;
+      transform: rotate(45deg);
     }
   }
 }
