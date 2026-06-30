@@ -146,7 +146,7 @@ watch(
             </UpdatedCustomInputSelect>
           </div>
           <div class="timeline-content-text input-wrapper">
-            <label for="result">result</label>
+            <label for="result">Witness statement</label>
             <textarea
               type="result"
               id="result"

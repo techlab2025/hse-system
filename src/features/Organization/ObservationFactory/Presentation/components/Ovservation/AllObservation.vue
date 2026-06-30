@@ -130,7 +130,7 @@ const items = [
     <div class="cards">
       <permission-builder
         v-for="i in items"
-        :key="i"
+        :key="i.title"
         :code="i.indexPermissions || i.AddPermissions"
       >
         <ObservationCard :item="i" />

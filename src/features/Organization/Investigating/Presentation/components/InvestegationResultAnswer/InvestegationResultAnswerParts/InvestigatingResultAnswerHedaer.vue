@@ -17,7 +17,22 @@ const props = defineProps<{
 }>()
 
 const GetInvestigationType = (type: number) => {
-  return Observation[type]
+  // return Observation[type]
+  switch (type) {
+    case Observation.AccidentsType: {
+      return 'Incident'
+    }
+    case Observation.ObservationType: {
+      return 'Observation'
+    }
+    case Observation.HazardType: {
+      return 'Hazard'
+    }
+
+    default: {
+      return ''
+    }
+  }
 }
 </script>
 <template>

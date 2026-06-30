@@ -49,9 +49,9 @@ const GetMeetingStatus = (status) => {
         <component :is="SelectedPlatform?.icon"></component>
         <p>{{ SelectedPlatform?.name }}</p>
       </div>
-      <span :class="`status-${GetMeetingStatus(meeting?.status)}`">{{
+      <!-- <span :class="`status-${GetMeetingStatus(meeting?.status)}`">{{
         GetMeetingStatus(meeting?.status)
-      }}</span>
+      }}</span> -->
     </div>
     <p class="meeting-date">
       Date & Time : <span>{{ meeting?.date }} & {{ meeting?.time }}</span>
