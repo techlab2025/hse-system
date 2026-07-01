@@ -522,32 +522,6 @@ const ShiftsDialog = ref(false)
 
 <template>
   <div class="full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4">
-    <div class="col-span-6 md:col-span-6">
-      <HeaderPage
-        :title="`New ${GetHeader(ObservationFactoryType)} Report`"
-        :subtitle="
-          ObservationFactoryType == Observation.ObservationType
-            ? $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace')
-            : 'Accurately document the accident details and immediate response actions taken'
-        "
-        :img="ObservationImage"
-      />
-      <HeaderProjectsFilter
-        class="colored"
-        :projects="Projects"
-        :isForm="true"
-        @update:data="GetProjectId"
-      />
-    </div>
-
-    <div class="col-span-6 md:col-span-6">
-      <TabsSelection
-        v-if="SelectedProjectId"
-        :ProjectId="SelectedProjectId"
-        @update:data="GetZones"
-      />
-    </div>
-
     <div class="Hazard-form col-span-6 md:col-span-6">
       <div class="Hazard-form-header">
         <!-- <HazardIcon class="icon" /> -->
@@ -557,6 +531,41 @@ const ShiftsDialog = ref(false)
         </p>
       </div>
     </div>
+    <div class="form-filter-panel form-projects-panel col-span-6 md:col-span-6">
+      <div class="form-filter-panel-header">
+        <span class="filter-marker"></span>
+        <p>{{ $t('Projects') }}</p>
+      </div>
+      <!-- <HeaderPage
+        :title="`New ${GetHeader(ObservationFactoryType)} Report`"
+        :subtitle="
+          ObservationFactoryType == Observation.ObservationType
+            ? $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace')
+            : 'Accurately document the accident details and immediate response actions taken'
+        "
+        :img="ObservationImage"
+      /> -->
+      <HeaderProjectsFilter
+        class="colored"
+        :projects="Projects"
+        :isForm="true"
+        @update:data="GetProjectId"
+      />
+    </div>
+
+    <div class="form-filter-panel form-zones-panel col-span-6 md:col-span-6">
+      <div class="form-filter-panel-header">
+        <span class="filter-marker"></span>
+        <p>{{ $t('zones') }}</p>
+      </div>
+      <TabsSelection
+        v-if="SelectedProjectId"
+        :ProjectId="SelectedProjectId"
+        @update:data="GetZones"
+      />
+    </div>
+
+
 
     <!-- title -->
     <div class="input-wrapper col-span-6">

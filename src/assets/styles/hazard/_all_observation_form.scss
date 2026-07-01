@@ -34,6 +34,163 @@
     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
   }
 
+  .form-filter-panel {
+    position: relative;
+    overflow: hidden;
+    padding: $MdSize;
+    border: 1px solid rgba(226, 232, 240, 0.92);
+    border-radius: 22px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92)),
+      radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.1), transparent 34%);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 18px 42px rgba(15, 23, 42, 0.06);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline-end: -42px;
+      top: -52px;
+      width: 142px;
+      height: 142px;
+      border: 1px solid rgba(29, 78, 216, 0.12);
+      border-radius: 50%;
+      background: rgba(29, 78, 216, 0.05);
+      pointer-events: none;
+    }
+  }
+
+  .form-filter-panel-header {
+    @include flex(row, nowrap, flex-start, center);
+    position: relative;
+    z-index: 1;
+    gap: $XsSize3;
+    margin-bottom: $SmSize;
+
+    .filter-marker {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: $PrimaryColor;
+      box-shadow: 0 0 0 5px rgba(29, 78, 216, 0.11);
+    }
+
+    p {
+      margin: 0;
+      color: #0f172a;
+      font-size: $MdSize;
+      font-weight: $BaseFontWeightBold;
+      line-height: 1.2;
+    }
+  }
+
+  .form-projects-panel,
+  .form-zones-panel {
+    .idnex-header,
+    .tabs-selction-container,
+    .tabs-selction-content {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .categories-container,
+    .select-container {
+      display: flex;
+      align-items: center;
+      gap: $XsSize3;
+      width: 100%;
+      overflow-x: auto;
+      padding: 3px 3px 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(29, 78, 216, 0.32) transparent;
+
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(29, 78, 216, 0.28);
+      }
+    }
+
+    .category,
+    .select-item {
+      flex: 0 0 auto;
+      min-height: 44px;
+      border: 1px solid rgba(203, 213, 225, 0.95) !important;
+      border-radius: 999px !important;
+      background: rgba(255, 255, 255, 0.94) !important;
+      color: #475569 !important;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        border-color: rgba(29, 78, 216, 0.36) !important;
+        background: #ffffff !important;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+      }
+
+      &.active {
+        border-color: rgba(29, 78, 216, 0.82) !important;
+        background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+        color: #ffffff !important;
+        box-shadow: 0 16px 34px rgba(29, 78, 216, 0.24);
+      }
+    }
+
+    .category {
+      padding: 10px 18px;
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+      white-space: nowrap;
+    }
+
+    .select-item {
+      @include flex(row, nowrap, center, center);
+      position: relative;
+      min-width: 118px;
+      padding: 0;
+
+      input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .item {
+        position: relative;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        padding: 11px 18px;
+        color: inherit;
+        font-size: $SmSize;
+        font-weight: $BaseFontSemiBoldWeight;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .left-back-img,
+      .right-back-img {
+        display: none;
+      }
+    }
+  }
+
   .colored.idnex-header {
     margin-top: $MdSize;
     border: 0;
