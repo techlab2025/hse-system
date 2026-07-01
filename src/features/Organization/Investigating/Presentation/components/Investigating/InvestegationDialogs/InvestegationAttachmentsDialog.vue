@@ -20,20 +20,16 @@ const emit = defineEmits<{
 }>()
 
 const visible = ref(false)
-const title = ref("")
+const title = ref('')
 const Files = ref<any[]>(props.images)
 
-
 const user = useUserStore()
-
 
 const setFiles = async (files: File[]) => {
   Files.value = await filesToBase64(files)
 }
 
 const SendData = () => {
-
-
   emit('update:data', {
     title: title.value,
     files: Files.value,
@@ -52,8 +48,13 @@ const updateTilte = (data: string) => {
     <img :src="AddAttach" alt="attach" />
   </button>
 
-  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '50vw' }"
-    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissableMask="true"
+    :style="{ width: '50vw' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
     <template #header>
       <HeaderSection title="Upload files" subtitle="Every group of attachment needs a title" />
     </template>
@@ -66,12 +67,17 @@ const updateTilte = (data: string) => {
         <input type="text" id="title" v-model="title" class="input" @input="updateTilte" />
       </div>
 
-      <FileUpload class="file-upload" label="Image" id="image" placeholder="Select image" :multiable="true"
-        :initialFileData="images" @update:fileData="setFiles" />
+      <FileUpload
+        class="file-upload"
+        label="Image"
+        id="image"
+        placeholder="Select image"
+        :multiable="true"
+        :initialFileData="images"
+        @update:fileData="setFiles"
+      />
     </div>
 
-    <button class="btn btn-primary w-full" @click="SendData">
-      Confirm
-    </button>
+    <button class="btn btn-primary w-full" @click="SendData">Confirm</button>
   </Dialog>
 </template>

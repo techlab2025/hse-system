@@ -12,22 +12,19 @@ const UpdateData = (data) => {
   Image.value = data.files.file
   const attachment = new InvestigationAttachmentsParams(
     data.title,
-    // [data.files.file]
-    data.files.map((el) => el.file)
+    data.files.map((el) => el.file),
   )
-  // alt
-  // :
-  // "no-data.png"
-  // file
-  // :
-  // "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQ
   emit('update:data', attachment)
 }
 </script>
 <template>
   <div class="investegation-attachment">
-    <HeaderPage :title="`Investigation attachments`" :subtitle="`Add a description of each witness to the incident.`"
-      :img="Investegationattachment" class="title-header" />
+    <HeaderPage
+      :title="`Investigation attachments`"
+      :subtitle="`Add a description of each witness to the incident.`"
+      :img="Investegationattachment"
+      class="title-header"
+    />
     <InvestegationAttachmentsDialog @update:data="UpdateData" :images="Image" />
   </div>
 </template>
