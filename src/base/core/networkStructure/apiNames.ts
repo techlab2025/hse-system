@@ -1396,6 +1396,9 @@ class ApiNames {
   public get AddTasks() {
     return this.prefix + 'create_investigation_tasks'
   }
+  public get UpdateTasks() {
+    return this.prefix + 'update_investigation_tasks'
+  }
   public get IndexTasks() {
     return this.prefix + 'fetch_investigation_tasks'
   }
@@ -1659,6 +1662,10 @@ class ApiNames {
   }
   public get DeleteShift() {
     return this.prefix + 'delete_work_shift'
+  }
+
+  public get FetchSimilarObservation() {
+    return this.prefix + 'fetch_similar_observations'
   }
 }
 

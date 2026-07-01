@@ -1,4 +1,4 @@
-export class CapaTaskDetailsModel {
+export class  CapaTaskDetailsModel {
   public id: number
   public title: string
   public status: number

@@ -39,12 +39,15 @@ import IndexDocumentRefrenceController from '@/features/Organization/DocumentRef
 import IndexDocumentRefrenceParams from '@/features/Organization/DocumentRefrence/Core/params/IndexADocumentRefrenceParams.ts'
 import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
+import SimilarObservationController from '../../controllers/similarObservation/SimilarObservationController.ts'
+import SimilarObservatioParams from '../../../Core/params/SimilarObservation/SimilarObservatioParams.ts'
+import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
 
 const route = useRoute()
 const id = route.params.id
 const investigatingId = route.query.investigating_id
 const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
-const state = ref(showInvestigationResultController.state.value)
+const state = computed(() => showInvestigationResultController.state.value)
 const router = useRouter()
 interface items {
   title: string
@@ -144,8 +147,9 @@ const AddEnvestigatingResult = async () => {
   // }
   // console.log(res.value.error, 'error')
 }
-onMounted(() => {
-  ShoeInvestegationResultDetails()
+onMounted(async () => {
+  await ShoeInvestegationResultDetails()
+  fetchSimilarObservations()
 })
 watch(
   () => showInvestigationResultController.state.value,
@@ -265,6 +269,17 @@ const lessonLearnt = ref('')
 const DocumentRefrences = ref<TitleInterface[]>([])
 const setDocumentRefrences = (data: TitleInterface[]) => {
   DocumentRefrences.value = data
+}
+const SimilarObservations = ref<HazardDetailsModel[]>()
+const fetchSimilarObservations = async () => {
+  const similarObservationController = SimilarObservationController.getInstance()
+  console.log(state.value.data?.observation, 'obobobobob')
+  const similarObservationParams = new SimilarObservatioParams(state.value.data?.observation.id!)
+  const result = await similarObservationController.fetchSimilarObservations(
+    similarObservationParams,
+    router,
+  )
+  SimilarObservations.value = result.value?.data!
 }
 </script>
 <template>
@@ -490,6 +505,10 @@ const setDocumentRefrences = (data: TitleInterface[]) => {
         </div>
         <CapaActionPlan @update:data="setCapaActionPlan" />
 
+        <div class="investigation-title">
+          <img :src="investigationImg" alt="" />
+          <p>Lessons Learned</p>
+        </div>
         <section class="lesson-section">
           <div class="section-heading">
             <span>Lesson learnt</span>
@@ -503,6 +522,8 @@ const setDocumentRefrences = (data: TitleInterface[]) => {
             ></textarea>
           </div>
         </section>
+        <!-- Similat Observatio -->
+         <!-- title date serial only  -->
 
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">

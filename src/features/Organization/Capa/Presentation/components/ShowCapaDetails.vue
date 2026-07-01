@@ -42,6 +42,14 @@ const summaryCards = computed(() => [
     value: state.value.data?.serialName || 'N/A',
   },
   {
+    label: 'Investigation ID',
+    value:
+      state.value.data?.investigation?.SerialName ||
+      state.value.data?.investigation?.Investegationid ||
+      'N/A',
+    path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
+  },
+  {
     label: 'Incidant ID',
     value: state.value.data?.observation?.serialName || 'N/A',
     path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
@@ -50,14 +58,6 @@ const summaryCards = computed(() => [
   //   label: 'CAPA ID',
   //   value: state.value.data?.observationCapaId || 'N/A',
   // },
-  {
-    label: 'Investigation ID',
-    value:
-      state.value.data?.investigation?.SerialName ||
-      state.value.data?.investigation?.Investegationid ||
-      'N/A',
-    path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
-  },
 ])
 
 onMounted(() => {

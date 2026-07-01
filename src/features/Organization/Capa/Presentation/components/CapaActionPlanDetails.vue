@@ -1,48 +1,85 @@
 <script lang="ts" setup>
 import type { CapaTaskDetailsModel } from '../../Data/models/CapaTasksModel'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
-import AddInvestegationTaskAnswerDialog from '@/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue'
+import RadioButton from 'primevue/radiobutton'
+import { InvestegationTaskEnum } from '../../Core/Core/InvestegationTaskEnum'
+import UpdateInvestigationTaskController from '../controllers/investigationTask/UpdateInvestigationTaskController'
+import UpdateInvestigationTaskParams from '../../Core/params/InvestigationTask/UpdateInvestigationTaskParams'
 
 defineProps<{
   correctiveTasks: CapaTaskDetailsModel[]
   preventiveTasks: CapaTaskDetailsModel[]
 }>()
-const emit = defineEmits(['answered'])
-const answerDialogVisible = ref(false)
-const selectedAnswerTask = ref<CapaTaskDetailsModel | null>(null)
-const localAnswers = ref<Record<number, string>>({})
+const emit = defineEmits(['answered', 'statusChanged'])
+const statusDialogVisible = ref(false)
+const selectedStatusTask = ref<CapaTaskDetailsModel | null>(null)
+const selectedStatus = ref(0)
+const localStatuses = ref<Record<number, number>>({})
+
+const taskStatusOptions = [
+  {
+    value: InvestegationTaskEnum.NotStarted,
+    label: 'Not Started',
+    description: 'Work has not yet begun.',
+  },
+  {
+    value: InvestegationTaskEnum.InProgress,
+    label: 'In Progress',
+    description: 'Active work is underway.',
+  },
+  {
+    value: InvestegationTaskEnum.PendingOnHold,
+    label: 'Pending / On Hold',
+    description: 'Work is temporarily suspended, for example awaiting resources.',
+  },
+  {
+    value: InvestegationTaskEnum.Overdue,
+    label: 'Overdue',
+    description: 'Work is ongoing but past the target deadline.',
+  },
+  {
+    value: InvestegationTaskEnum.Completed,
+    label: 'Completed',
+    description: 'Implementation is finished and ready for verification.',
+  },
+  {
+    value: InvestegationTaskEnum.Cancelled,
+    label: 'Cancelled',
+    description: 'The action will not be implemented due to process changes or redundancy.',
+  },
+]
+
+const taskStatus = (task: CapaTaskDetailsModel) => localStatuses.value[task.id] ?? task.status ?? 0
 
 const statusLabel = (status?: number) => {
-  switch (status) {
-    case 1:
-      return 'Done'
-    case 2:
-      return 'In progress'
-    default:
-      return 'Open'
-  }
+  return taskStatusOptions.find((option) => option.value === status)?.label || 'Not Started'
 }
 
-const taskAnswer = (task: CapaTaskDetailsModel) =>
-  localAnswers.value[task.id] || task.answerNotes || ''
-
-const hasAnswer = (task: CapaTaskDetailsModel) => !!taskAnswer(task).trim()
-const canAddAnswer = (task: CapaTaskDetailsModel) => task.status === 0 && !hasAnswer(task)
-
-const showAnswer = (task: CapaTaskDetailsModel) => {
-  selectedAnswerTask.value = task
-  answerDialogVisible.value = true
+const openStatusDialog = (task: CapaTaskDetailsModel) => {
+  selectedStatusTask.value = task
+  selectedStatus.value = taskStatus(task)
+  statusDialogVisible.value = true
 }
 
-const onAnswerSubmitted = (task: CapaTaskDetailsModel, answer: string) => {
-  localAnswers.value[task.id] = answer
+const updateInvestigationTaskController = UpdateInvestigationTaskController.getInstance()
+
+const saveTaskStatus = async () => {
+  if (!selectedStatusTask.value) return
+  const updateInvestigationTaskParams = new UpdateInvestigationTaskParams({
+    id: selectedStatusTask.value.id,
+    status: selectedStatus.value,
+  })
+  const result = await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+
+  localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
+  emit('statusChanged', {
+    taskId: selectedStatusTask.value.id,
+    status: selectedStatus.value,
+  })
   emit('answered')
+  statusDialogVisible.value = false
 }
-
-const selectedAnswer = computed(() =>
-  selectedAnswerTask.value ? taskAnswer(selectedAnswerTask.value) : '',
-)
 </script>
 
 <template>
@@ -66,7 +103,9 @@ const selectedAnswer = computed(() =>
           <div v-for="task in correctiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
               <h4>{{ task.title || 'Untitled Actions' }}</h4>
-              <span>{{ statusLabel(task.status) }}</span>
+              <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
+                {{ statusLabel(taskStatus(task)) }}
+              </span>
             </div>
             <div class="task-meta">
               <p>
@@ -83,14 +122,8 @@ const selectedAnswer = computed(() =>
               </p>
             </div>
             <div class="task-actions">
-              <AddInvestegationTaskAnswerDialog
-                v-if="canAddAnswer(task)"
-                :taskId="task.id"
-                :task="task.title"
-                @submitted="onAnswerSubmitted(task, $event)"
-              />
-              <button v-if="hasAnswer(task)" class="view-answer-btn" @click="showAnswer(task)">
-                View answer
+              <button class="change-status-btn" @click="openStatusDialog(task)">
+                Change status
               </button>
             </div>
           </div>
@@ -112,7 +145,9 @@ const selectedAnswer = computed(() =>
           <div v-for="task in preventiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
               <h4>{{ task.title || 'Untitled task' }}</h4>
-              <span>{{ statusLabel(task.status) }}</span>
+              <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
+                {{ statusLabel(taskStatus(task)) }}
+              </span>
             </div>
             <div class="task-meta">
               <p>
@@ -129,14 +164,8 @@ const selectedAnswer = computed(() =>
               </p>
             </div>
             <div class="task-actions">
-              <AddInvestegationTaskAnswerDialog
-                v-if="canAddAnswer(task)"
-                :taskId="task.id"
-                :task="task.title"
-                @submitted="onAnswerSubmitted(task, $event)"
-              />
-              <button v-if="hasAnswer(task)" class="view-answer-btn" @click="showAnswer(task)">
-                View answer
+              <button class="change-status-btn" @click="openStatusDialog(task)">
+                Change status
               </button>
             </div>
           </div>
@@ -147,21 +176,42 @@ const selectedAnswer = computed(() =>
     </div>
 
     <Dialog
-      v-model:visible="answerDialogVisible"
+      v-model:visible="statusDialogVisible"
       modal
       :dismissableMask="true"
       :style="{ width: '40rem', maxWidth: '92vw' }"
     >
       <template #header>
-        <div class="answer-dialog-header">
-          <span>Task answer</span>
-          <h3>{{ selectedAnswerTask?.title || 'Task answer' }}</h3>
+        <div class="status-dialog-header">
+          <span>Task status</span>
+          <h3>{{ selectedStatusTask?.title || 'Change task status' }}</h3>
         </div>
       </template>
 
-      <div class="answer-dialog-body">
-        <p>{{ selectedAnswer }}</p>
+      <div class="status-dialog-body">
+        <label
+          v-for="option in taskStatusOptions"
+          :key="option.value"
+          class="status-radio-option"
+          :class="{ selected: selectedStatus === option.value }"
+          :for="`capa-task-status-${option.value}`"
+        >
+          <RadioButton
+            v-model="selectedStatus"
+            :inputId="`capa-task-status-${option.value}`"
+            name="capa-task-status"
+            :value="option.value"
+          />
+          <span>
+            <strong>{{ option.label }}</strong>
+            <small>{{ option.description }}</small>
+          </span>
+        </label>
       </div>
+
+      <template #footer>
+        <button class="status-save-btn" @click="saveTaskStatus">Save status</button>
+      </template>
     </Dialog>
   </section>
 </template>
@@ -283,14 +333,42 @@ const selectedAnswer = computed(() =>
   line-height: 1.5;
 }
 
-.task-card-header > span {
+.task-status-pill {
   flex-shrink: 0;
   border-radius: 999px;
-  background: var(--primary-dark);
-  color: var(--PrimaryColor);
   font-size: 0.75rem;
   font-weight: 800;
   padding: 0.35rem 0.7rem;
+
+  &.status-0 {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  &.status-1 {
+    background: color-mix(in srgb, var(--PrimaryColor) 12%, white);
+    color: var(--PrimaryColor);
+  }
+
+  &.status-2 {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  &.status-3 {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  &.status-4 {
+    background: color-mix(in srgb, var(--green) 14%, white);
+    color: var(--green);
+  }
+
+  &.status-5 {
+    background: #e2e8f0;
+    color: #334155;
+  }
 }
 
 .task-meta {
@@ -337,19 +415,21 @@ const selectedAnswer = computed(() =>
   border-top: 1px dashed var(--main-border);
 }
 
-.view-answer-btn {
+.change-status-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 38px;
   border: 0;
-  border-radius: 8px;
-  background: var(--green);
+  border-radius: 10px;
+  // background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
+  background: var(--PrimaryColor);
+
   color: var(--BgWhite);
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 900;
-  padding: 0.55rem 0.9rem;
+  padding: 0.55rem 1rem;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -358,11 +438,11 @@ const selectedAnswer = computed(() =>
   &:hover {
     transform: translateY(-1px);
     filter: brightness(0.95);
-    box-shadow: 0 10px 18px color-mix(in srgb, var(--green) 18%, transparent);
+    box-shadow: 0 12px 22px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
   }
 }
 
-.answer-dialog-header {
+.status-dialog-header {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -384,19 +464,93 @@ const selectedAnswer = computed(() =>
   }
 }
 
-.answer-dialog-body {
-  border: 1px solid var(--main-border);
-  border-radius: 12px;
-  background: var(--Gray-1);
-  padding: 1rem;
+.status-dialog-body {
+  display: grid;
+  gap: 0.75rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      transparent 32%
+    ),
+    var(--Gray-1);
+  padding: 0.85rem;
+}
 
-  p {
-    margin: 0;
+.status-radio-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--BgWhite);
+  cursor: pointer;
+  padding: 0.9rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover,
+  &.selected {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 7%, transparent);
+  }
+
+  &.selected {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 8%, white),
+      var(--BgWhite)
+    );
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  strong {
     color: var(--header-page-color);
     font-size: 0.95rem;
+    font-weight: 900;
+  }
+
+  small {
+    color: var(--GrayText-1);
+    font-size: 0.78rem;
     font-weight: 700;
-    line-height: 1.7;
-    white-space: pre-wrap;
+    line-height: 1.45;
+  }
+}
+
+.status-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--PrimaryColor);
+  color: var(--BgWhite);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 900;
+  padding: 0.65rem 1.2rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.96);
+    box-shadow: 0 14px 26px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
   }
 }
 
