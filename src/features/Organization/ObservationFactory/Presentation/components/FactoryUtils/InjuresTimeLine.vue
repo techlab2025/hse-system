@@ -147,9 +147,9 @@ watch(
 onMounted(fetchEmployees)
 </script>
 <template>
-  <div class="template-container col-span-6">
+  <div class="template-container col-span-6 injuries-timeline">
     <div class="heirarchy-info">
-      <div class="timeline-container">
+      <div class="timeline-container injury-timeline-container">
         <div class="timeline-wrapper">
           <div class="timeline-line"></div>
 
@@ -177,7 +177,14 @@ onMounted(fetchEmployees)
             </div>
 
             <!-- timeline-content -->
-            <div class="grid grid-cols-12 gap-2">
+            <div class="injury-timeline-card grid grid-cols-12 gap-3">
+              <div class="injury-card-header col-span-12">
+                <div>
+                  <span>{{ $t('injury record') }}</span>
+                  <strong>#{{ index + 1 }}</strong>
+                </div>
+                <p v-if="item.isWorkStopped">{{ $t('work stopped') }}</p>
+              </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <label for="">{{ $t('Nature of injury & body part') }}</label>
                 <input
@@ -299,3 +306,292 @@ onMounted(fetchEmployees)
     </div>
   </div>
 </template>
+
+<style scoped>
+.injuries-timeline {
+  position: relative;
+  width: 100%;
+}
+
+.injuries-timeline .heirarchy-info {
+  padding: 0;
+}
+
+.injury-timeline-container {
+  position: relative;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.injury-timeline-container .timeline-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-inline-start: 54px;
+}
+
+.injury-timeline-container .timeline-line {
+  position: absolute;
+  inset-block: 28px;
+  inset-inline-start: 22px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1d4ed8 0%, #14b8a6 48%, rgba(203, 213, 225, 0.35) 100%);
+}
+
+.injury-timeline-container .timeline-item {
+  position: relative;
+  animation: injuryFadeUp 0.35s ease both;
+}
+
+.injury-timeline-container .timeline-marker {
+  position: absolute;
+  inset-inline-start: -54px;
+  top: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  gap: 8px;
+}
+
+.injury-timeline-container .timeline-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(29, 78, 216, 0.22);
+  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.14);
+}
+
+.injury-timeline-container .timeline-dot-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d4ed8, #14b8a6);
+}
+
+.injury-timeline-container .timeline-pulse {
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(29, 78, 216, 0.18);
+  border-radius: inherit;
+  animation: injuryPulse 1.8s ease-out infinite;
+}
+
+.injury-timeline-container .timeline-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.injury-timeline-container .timeline-icon:hover {
+  /* transform: translateY(-1px); */
+  border-color: rgba(29, 78, 216, 0.24);
+  box-shadow: 0 16px 30px rgba(29, 78, 216, 0.14);
+}
+
+.injury-timeline-card {
+  position: relative;
+  overflow: visible;
+  padding: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94)),
+    radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.09), transparent 30%);
+  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.injury-timeline-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(29, 78, 216, 0.18);
+  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.1);
+}
+
+.injury-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.injury-card-header div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.injury-card-header span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.injury-card-header strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 28px;
+  padding-inline: 10px;
+  border-radius: 999px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-weight: 900;
+}
+
+.injury-card-header p {
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #b42318;
+  background: #fff1f2;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.injury-timeline-card .input-wrapper {
+  margin: 0;
+}
+
+.injury-timeline-card .input-wrapper label {
+  display: inline-flex;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.injury-timeline-card .input {
+  min-height: 46px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.injury-timeline-card .input:focus {
+  border-color: rgba(29, 78, 216, 0.42);
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.08);
+}
+
+.injury-timeline-card .add-dialog {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.injury-timeline-card .emp-name,
+.injury-timeline-card .emp-select {
+  min-height: 32px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: #64748b;
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 800;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.injury-timeline-card .emp-name.active,
+.injury-timeline-card .emp-select.active {
+  color: #ffffff;
+  background: #1d4ed8;
+  box-shadow: 0 10px 22px rgba(29, 78, 216, 0.18);
+}
+
+.injury-timeline-card .is-stopped {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 12px 14px;
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: 16px;
+  background: #fffbeb;
+  cursor: pointer;
+}
+
+.injury-timeline-card .is-stopped label {
+  margin: 0;
+  color: #92400e;
+}
+
+@media screen and (max-width: 720px) {
+  .injury-timeline-container .timeline-wrapper {
+    padding-inline-start: 0;
+  }
+
+  .injury-timeline-container .timeline-line,
+  .injury-timeline-container .timeline-marker {
+    display: none;
+  }
+
+  .injury-timeline-card {
+    padding: 14px;
+  }
+
+  .injury-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@keyframes injuryFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes injuryPulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.75);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+</style>

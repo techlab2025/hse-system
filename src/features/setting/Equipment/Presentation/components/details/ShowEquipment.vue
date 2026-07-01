@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CardEquipment from './CardEquipment.vue'
 import HistoryLog from './HistoryLog.vue'
-import QrCode from './QrCode.vue'
 
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
@@ -11,8 +10,6 @@ import { useRoute } from 'vue-router'
 import ShowEquipmentController from '../../controllers/showEquipmentController'
 import ShowEquipmentParams from '../../../Core/params/showEquipmentParams'
 
-import InspectioBtn from '@/assets/images/InspectioBtn.png'
-import InspectionTopBtn from '@/assets/images/InspectionTopBtn.png'
 import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum'
 import DemoCard from '../EquipmentUtils/DemoCard.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -52,13 +49,13 @@ const { printArea, print } = usePrint()
   <DataStatus :controller="state">
     <template #success>
       <!-- <pre>{{ state.data }}</pre> -->
-      <div class="show-equipment">
+      <div class="show-equipment show-equipment-page">
         <div class="show-equ-head">
-          <div class="w-full">
+          <div class="show-equipment-card-shell w-full">
             <CardEquipment :equipmentData="state.data!" />
           </div>
-          <div class="Qr_EQUIPMENt printable-area" ref="printArea">
-            <span class="print-icon" @click="print">{{ $t('Print') }}</span>
+          <div class="Qr_EQUIPMENt equipment-qr-panel printable-area" ref="printArea">
+            <button class="print-icon" type="button" @click="print">{{ $t('Print') }}</button>
             <DemoCard
               v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
               :equipmentName="state.data?.title"
@@ -78,42 +75,24 @@ const { printArea, print } = usePrint()
             <img :src="state.data?.qr_code_image" alt="qr" class="qr-scan" width="100" />
           </div>
         </div>
-        <div class="inspection-btn w-full flex">
+        <div class="inspection-btn inspection-switch w-full" role="tablist">
           <button
+            type="button"
+            role="tab"
             @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
             :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''"
           >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
-            <span>Insepection</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Inspection"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <span class="tab-dot"></span>
+            <span>{{ $t('Inspection') }}</span>
           </button>
           <button
+            type="button"
+            role="tab"
             @click="InspectionStatus = EquipmentInspectionEnum.Results"
             :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''"
           >
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectioBtn"
-              alt="bg"
-              class="down-bg"
-            />
-            <span>Results</span>
-            <img
-              v-if="InspectionStatus === EquipmentInspectionEnum.Results"
-              :src="InspectionTopBtn"
-              alt="bg"
-              class="top-bg"
-            />
+            <span class="tab-dot"></span>
+            <span>{{ $t('Results') }}</span>
           </button>
         </div>
         <div class="history-qr">
@@ -138,21 +117,33 @@ const { printArea, print } = usePrint()
 </template>
 
 <style scoped>
-.Qr_EQUIPMENt {
+.show-equ-head{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  position: relative;
+  flex-direction: column;
+  
 }
 .print-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 14px;
+  right: 14px;
   cursor: pointer;
-  color: #1d4ed8;
-  text-decoration: underline;
+  color: #1551d1;
+  background: #eef4ff;
+  border: 1px solid #d8e5ff;
+  border-radius: 999px;
+  padding: 7px 14px;
   font-family: 'Regular';
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.print-icon:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(29, 78, 216, 0.14);
 }
 
 .add-dialog {

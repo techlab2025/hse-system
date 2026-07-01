@@ -302,40 +302,40 @@ export default class EquipmentDetailsModel {
   //     ),
   //   ],
   // )
-  static example: EquipmentDetailsModel = new EquipmentDetailsModel(
-    1, // id
-    1, // allIndustries
-    acc, // certificateImage
-    '2026-03-10', // date
-    '30', // inspectionDuration
-    'LIC-77821', // licenseNumber
-    'PLATE-4455', // licensePlateNumber
-    EquipmentStatus.RENT, // status
-    [{ locale: 'en', title: 'CAT 320 Excavator' }], // titles
-    1, // hasCertificate
-    0, // parentId
-    acc, // image
-    [], // industries
-    5, // equipmentTypeId
-    EquipmentTypeDetailsModel.example,
-    '15000', // kilometer
-    '2026-03-01', // checkinDate
-    'daily', // RentType
-    '8', // RentTime
-    1, // wareHouse
-    ContractorDetailsModel.example,
-    new WhereHouseDetailsModel(1, 'Central Warehouse', 'WH-001', null),
-    '2026-03-15', // lastInspectoinDate
-    [InspectionModel.example, InspectionModel.example],
-    [InspectionModel.example, InspectionModel.example],
-    '2027-03-01', // certificateExppiredDate
-    'CAT 320 Excavator', // title
-    4, // inspections_count
-    2, // inspections_with_result_count
-    LastInspectionModel.example,
-    'CAT320-EX-2026', // serial_name
-    '2026-03-20', // checkout_date
-  )
+  // static example: EquipmentDetailsModel = new EquipmentDetailsModel(
+  //   1, // id
+  //   1, // allIndustries
+  //   acc, // certificateImage
+  //   '2026-03-10', // date
+  //   '30', // inspectionDuration
+  //   'LIC-77821', // licenseNumber
+  //   'PLATE-4455', // licensePlateNumber
+  //   EquipmentStatus.RENT, // status
+  //   [{ locale: 'en', title: 'CAT 320 Excavator' }], // titles
+  //   1, // hasCertificate
+  //   0, // parentId
+  //   acc, // image
+  //   [], // industries
+  //   5, // equipmentTypeId
+  //   EquipmentTypeDetailsModel.example,
+  //   '15000', // kilometer
+  //   '2026-03-01', // checkinDate
+  //   'daily', // RentType
+  //   '8', // RentTime
+  //   1, // wareHouse
+  //   ContractorDetailsModel.example,
+  //   new WhereHouseDetailsModel(1, 'Central Warehouse', 'WH-001', null),
+  //   '2026-03-15', // lastInspectoinDate
+  //   [InspectionModel.example, InspectionModel.example],
+  //   [InspectionModel.example, InspectionModel.example],
+  //   '2027-03-01', // certificateExppiredDate
+  //   'CAT 320 Excavator', // title
+  //   4, // inspections_count
+  //   2, // inspections_with_result_count
+  //   LastInspectionModel.example,
+  //   'CAT320-EX-2026', // serial_name
+  //   '2026-03-20', // checkout_date
+  // )
   static transformData(data: string[][]): EquipmentDetailsModel[] {
     return data.map(
       (row, index) =>

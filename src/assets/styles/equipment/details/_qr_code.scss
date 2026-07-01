@@ -3,13 +3,61 @@
 @use '../../mixins/grid' as *;
 
 .show-equipment {
-  .history-qr {
-    @include flex(row, nowrap, flex-start, flex-start);
-    gap: $MdSize;
-    width: 100%;
-    @media screen and (max-width: 900px) {
-      @include flex(row, wrap, flex-start, flex-start);
+  .equipment-qr-panel {
+    position: relative;
+    @include flex(row, nowrap, space-between, center);
+    gap: 18px;
+    min-height: 292px;
+    padding: 18px 18px 18px 22px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 24px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(248, 251, 255, 0.93)),
+      radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.12), transparent 34%);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.08);
+
+    @media screen and (max-width: 700px) {
+      @include flex(column, nowrap, center, stretch);
+      padding: 18px;
     }
+
+    .demo-card {
+      flex: 1 1 auto;
+      min-width: 0;
+      border: 1px dashed rgba(148, 163, 184, 0.36);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+
+      .sub-card {
+        align-items: center;
+      }
+    }
+
+    .qr-scan {
+      flex: 0 0 136px;
+      width: 136px;
+      height: 136px;
+      align-self: center;
+      padding: 10px;
+      border: 1px solid rgba(29, 78, 216, 0.14);
+      border-radius: 20px;
+      background: #ffffff;
+      object-fit: contain;
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.1);
+
+      @media screen and (max-width: 700px) {
+        flex-basis: auto;
+        width: 150px;
+        height: 150px;
+      }
+    }
+  }
+
+  .history-qr {
+    @include flex(column, nowrap, flex-start, stretch);
+    gap: 18px;
+    width: 100%;
+
     .qr-code-card {
       @include flex(column, nowrap, center, center);
       width: 30%;

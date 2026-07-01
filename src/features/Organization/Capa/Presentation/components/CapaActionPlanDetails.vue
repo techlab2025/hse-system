@@ -49,7 +49,7 @@ const selectedAnswer = computed(() =>
   <section class="saved-action-plan">
     <div class="section-heading">
       <span>Saved action plan</span>
-      <h2>Current corrective and preventive tasks</h2>
+      <h2>Current corrective and preventive Actions</h2>
     </div>
 
     <div class="saved-action-grid">
@@ -57,7 +57,7 @@ const selectedAnswer = computed(() =>
         <div class="lane-header">
           <div>
             <span class="lane-kicker">Corrective</span>
-            <h3>Corrective tasks</h3>
+            <h3>Corrective Actions</h3>
           </div>
           <strong>{{ correctiveTasks.length }}</strong>
         </div>
@@ -65,7 +65,7 @@ const selectedAnswer = computed(() =>
         <div v-if="correctiveTasks.length" class="task-list">
           <div v-for="task in correctiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
-              <h4>{{ task.title || 'Untitled task' }}</h4>
+              <h4>{{ task.title || 'Untitled Actions' }}</h4>
               <span>{{ statusLabel(task.status) }}</span>
             </div>
             <div class="task-meta">
@@ -96,14 +96,14 @@ const selectedAnswer = computed(() =>
           </div>
         </div>
 
-        <p v-else class="empty-lane">No corrective tasks yet.</p>
+        <p v-else class="empty-lane">No corrective Actions yet.</p>
       </article>
 
       <article class="saved-task-lane preventive">
         <div class="lane-header">
           <div>
             <span class="lane-kicker">Preventive</span>
-            <h3>Preventive tasks</h3>
+            <h3>Preventive Actions</h3>
           </div>
           <strong>{{ preventiveTasks.length }}</strong>
         </div>
@@ -142,7 +142,7 @@ const selectedAnswer = computed(() =>
           </div>
         </div>
 
-        <p v-else class="empty-lane">No preventive tasks yet.</p>
+        <p v-else class="empty-lane">No preventive Actions yet.</p>
       </article>
     </div>
 
