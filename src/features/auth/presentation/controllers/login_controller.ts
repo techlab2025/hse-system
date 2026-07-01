@@ -28,7 +28,12 @@ export default class LoginController extends ControllerInterface<UserModel> {
     return this.instance
   }
 
-  async login(params: Params, router: any, activeType: number) {
+  async login(
+    params: Params,
+    router: any,
+    activeType: number,
+    options?: { onSuccessBeforeNavigate?: () => void },
+  ): Promise<boolean> {
     try {
       this.setLoading()
       let dataState: DataState<UserModel>
@@ -62,6 +67,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
           localStorage.setItem('user', JSON.stringify(this.state.value.data))
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
           ProjectSelector.setProjectId(this.state?.value?.data?.Defaultproject)
+          options?.onSuccessBeforeNavigate?.()
           if (!ConditionHandler.getInstance().isOrganizationEmployee()) {
             await router.push({
               path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
@@ -74,6 +80,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
               path: '/organization/employee-interface',
             })
           }
+          return true
         }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
@@ -93,5 +100,6 @@ export default class LoginController extends ControllerInterface<UserModel> {
         messageContent: null,
       })
     }
+    return false
   }
 }

@@ -36,10 +36,6 @@ export function authGuard(to, from, next) {
     return next({ path: '/login/organization' })
   }
 
-  if (Path?.value) {
-    next({ path: '/login/organization' })
-  }
-
   if (
     userData?.user?.employeeType === EmployeeStatusEnum.Employee &&
     to.path !== '/organization/employee-interface' &&
@@ -49,11 +45,15 @@ export function authGuard(to, from, next) {
   }
 
   // AUTHENTICATED
-  if (loginPages.includes(to.name) && Path?.value) {
+  if (loginPages.includes(to.name)) {
     const redirectPath =
       userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization'
 
     return next({ path: redirectPath })
+  }
+
+  if (Path?.value) {
+    return next({ path: '/organization' })
   }
 
   next()

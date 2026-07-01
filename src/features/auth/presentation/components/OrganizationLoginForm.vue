@@ -13,6 +13,8 @@ import EyeIcon from '@/shared/icons/EyeIcon.vue'
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const isSubmitting = ref(false)
+const isEnteringWorkspace = ref(false)
 
 // const activeTab = ref(OrganizationTypeEnum.ADMIN)
 
@@ -20,19 +22,42 @@ const password = ref('')
 //   activeTab.value = tab
 // }
 
-const login = () => {
-  LoginController.getInstance().login(
+const login = async () => {
+  if (isSubmitting.value || isEnteringWorkspace.value) return
+
+  isSubmitting.value = true
+  const isSuccess = await LoginController.getInstance().login(
     new LoginParams(email.value, password.value),
     router,
     OrganizationTypeEnum.ORGANIZATION,
+    {
+      onSuccessBeforeNavigate: () => {
+        isEnteringWorkspace.value = true
+      },
+    },
   )
+  if (!isSuccess) {
+    isSubmitting.value = false
+    isEnteringWorkspace.value = false
+  }
 }
 
 const isPasswordVisible = ref()
 </script>
 
 <template>
-  <section class="login">
+  <section class="login" :class="{ 'is-entering-workspace': isEnteringWorkspace }">
+    <div v-if="isEnteringWorkspace" class="login-route-loader" aria-live="polite">
+      <div class="loader-card">
+        <div class="loader-orbit">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p>{{ $t('Entering workspace') }}</p>
+        <small>{{ $t('Preparing your dashboard') }}</small>
+      </div>
+    </div>
     <div class="images">
       <div class="login-image">
         <div class="top-glass-card">
@@ -87,17 +112,19 @@ const isPasswordVisible = ref()
       <div class="inputs">
         <div class="input-wrapper">
           <Email class="icon" />
-          <input class="input py" :placeholder="$t('Enter Your Mail')" type="email" id="email" v-model="email" />
+          <input class="input py" :placeholder="$t('Enter Your Mail')" type="email" id="email" v-model="email" :disabled="isSubmitting" />
         </div>
         <div class="input-wrapper">
           <Loca class="icon " />
           <input :type="isPasswordVisible ? 'text' : 'password'" id="password" :placeholder="$t('Enter Password')"
-            class="input py" v-model="password" />
+            class="input py" v-model="password" :disabled="isSubmitting" />
           <CloseEye class="icon-eye" v-if="isPasswordVisible" @click="isPasswordVisible = !isPasswordVisible" />
           <EyeIcon class="icon-eye" v-else @click="isPasswordVisible = !isPasswordVisible" />
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">{{ $t('login') }}</button>
+      <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+        {{ isEnteringWorkspace ? $t('Entering workspace') : isSubmitting ? $t('loading') : $t('login') }}
+      </button>
     </form>
   </section>
 </template>
