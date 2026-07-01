@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
-import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 import investigationImg from '@/assets/images/investigationImg.png'
 import CauseOfAccidant from './InvestegationResultParts/CauseOfAccidant.vue'
-import InvestigationTasks from './InvestegationResultParts/InvestigationTasks.vue'
 import RateActions from './InvestegationResultParts/RateActions.vue'
 import InvestegationAttachment from './InvestegationResultParts/InvestegationAttachment.vue'
 import ViewersResults from './InvestegationResultParts/ViewersResults.vue'
 import AnotherMeeting from './InvestegationResultParts/AnotherMeeting.vue'
-import TimeLine from '@/shared/HelpersComponents/TimeLine.vue'
 import AddInvestigatingResultController from '../../controllers/investegationResult/addInvestigatingResultController'
 import AddInvestigationResultParams from '../../../Core/params/investegationResult/addInvestigationResultParams'
 import { useRoute, useRouter } from 'vue-router'
@@ -19,29 +16,27 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import type InvestegationTasksParams from '../../../Core/params/investegationResult/InvestegationTasksParams'
-import InvestigationAttachmentsParams from '../../../Core/params/investegationResult/InvestegationAttachmentParams'
-import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
-import CloseInvestegaionDialog from './InvestegationDialogs/CloseInvestegaionDialog.vue'
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
-import Editor from 'primevue/editor'
 import InvestegationAnotherMeetingParams from '../../../Core/params/investegationResult/InvestegationAnotherMeetingParams.ts'
 import FactoryAccidents from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue'
 import InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams.ts'
 import CapaActionPlan from '@/features/Organization/Capa/Presentation/components/CapaActionPlan.vue'
-import IndexDocumentRefrenceController from '@/features/Organization/DocumentRefrence/Presentation/controllers/IndexDocumentRefrenceController.ts'
-import IndexDocumentRefrenceParams from '@/features/Organization/DocumentRefrence/Core/params/IndexADocumentRefrenceParams.ts'
-import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
 import SimilarObservationController from '../../controllers/similarObservation/SimilarObservationController.ts'
 import SimilarObservatioParams from '../../../Core/params/SimilarObservation/SimilarObservatioParams.ts'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
+import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
+
+interface items {
+  title: string
+  isDanger: boolean
+}
 
 const route = useRoute()
 const id = route.params.id
@@ -49,10 +44,11 @@ const investigatingId = route.query.investigating_id
 const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
 const state = computed(() => showInvestigationResultController.state.value)
 const router = useRouter()
-interface items {
-  title: string
-  isDanger: boolean
+const emptyCapaActionPlan = {
+  corrective: [],
+  preventive: [],
 }
+
 const item = ref<items[]>([
   {
     title: 'High observation',
@@ -61,17 +57,14 @@ const item = ref<items[]>([
 ])
 
 const ShoeInvestegationResultDetails = async () => {
-  const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
+  const showInvestigationResultParams = new ShowInvestigationResultParams(Number(investigatingId))
   await showInvestigationResultController.ShowInvestigatingResult(
     showInvestigationResultParams,
     router,
   )
 }
 const openDialog = ref(false)
-const emptyCapaActionPlan = {
-  corrective: [],
-  preventive: [],
-}
+
 const AddEnvestigatingResult = async () => {
   const CheckWitnessIsFullyEmpty = (viewersResults.value ?? []).map((el) => {
     return (
@@ -79,22 +72,11 @@ const AddEnvestigatingResult = async () => {
       el?.witnessesStatements?.length > 1
     )
   })
-  // const CheckInvestigationTasksIsFullyEmpty = investigationTasks.value?.filter((el) => {
-  //   return el?.tasks?.length > 0
-  // })
-  // CheckWitnessIsFullyEmpty ? [] :
   const RootCausesIds = RootCauses.value.map(
     (el) => new RootCausesIdParams({ root_cause_id: el.id }),
   )
   const DocumentReferenceIds = DocumentRefrences.value.map((el) => el.id)
-
-  // if (anotherMeeting?.value?.isAnother == 0) {
-  //   openDialog.value = true
-  //   return;
-  // }
-
   const actionPlan = capaActionPlan.value ?? emptyCapaActionPlan
-
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
