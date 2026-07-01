@@ -182,7 +182,7 @@ watch(
           class="add-text cursor-pointer"
           @click="addNewAnswer"
           v-if="!(index >= 0 && index !== Answers.length - 1)"
-          >Add another result</span
+          >Add another witness </span
         >
       </div>
     </div>

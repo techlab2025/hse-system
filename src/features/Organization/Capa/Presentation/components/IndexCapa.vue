@@ -198,7 +198,7 @@ watch(
                         <div class="card-content" style="flex: 1">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              {{ $t('Serial') }} :
+                              {{ $t('Capa serial') }} :
                               <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
                             </p>
                             <p class="label-item-secondary">
@@ -212,7 +212,7 @@ watch(
                               :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
                               class="label-item-secondary incidant"
                             >
-                              {{ $t('incidant Id') }} :
+                              {{ $t('incidant serial') }} :
                               <span>{{ item?.serialName }} </span>
                             </router-link>
                           </div>

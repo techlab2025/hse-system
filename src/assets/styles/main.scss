@@ -480,3 +480,13 @@ html[dir='ltr'] .actions-container {
     padding: 10px !important;
   }
 }
+.input-label label {
+  margin-inline-end: auto;
+  width: fit-content;
+  text-align: start;
+  font-weight: 600;
+  font-size: var(--md-size);
+  color: #202020;
+  font-family: 'Light';
+  margin-inline-start: auto;
+}

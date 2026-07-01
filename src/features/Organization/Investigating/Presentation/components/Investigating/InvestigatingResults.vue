@@ -518,7 +518,7 @@ watch(
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
-          <p>Corrective and Preventive Actions</p>
+          <p>Action Plan : Corrective and Preventive Actions</p>
         </div>
         <CapaActionPlan @update:data="setCapaActionPlan" />
 
@@ -544,7 +544,7 @@ watch(
         <section class="similar-observations-section">
           <div class="section-heading">
             <!-- <span>Similar Incidents</span> -->
-            <h2>Similar Observations Retrieval</h2>
+            <h2>Similar incident Retrieval</h2>
           </div>
 
           <div v-if="similarObservationsLoading" class="similar-observations-grid">

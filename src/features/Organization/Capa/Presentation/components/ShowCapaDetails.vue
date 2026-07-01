@@ -38,11 +38,11 @@ const setVerificationOfEffectiveness = (data: any) => {
 
 const summaryCards = computed(() => [
   {
-    label: 'CAPA Id',
+    label: 'Capa serial',
     value: state.value.data?.serialName || 'N/A',
   },
   {
-    label: 'Investigation ID',
+    label: 'Investigation srial',
     value:
       state.value.data?.investigation?.SerialName ||
       state.value.data?.investigation?.Investegationid ||
@@ -50,7 +50,7 @@ const summaryCards = computed(() => [
     path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
   },
   {
-    label: 'Incidant ID',
+    label: 'Incidant serial',
     value: state.value.data?.observation?.serialName || 'N/A',
     path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
   },
@@ -68,7 +68,7 @@ onMounted(() => {
   <DataStatus :controller="state">
     <template #success>
       <main class="capa-details-page">
-        <section class="capa-hero">
+        <!-- <section class="capa-hero">
           <div class="hero-content">
             <span class="hero-eyebrow">CAPA details</span>
             <h1>{{ state.data?.observation?.title || 'Corrective and preventive action' }}</h1>
@@ -84,7 +84,7 @@ onMounted(() => {
             <span>{{ state.data?.date || 'N/A' }}</span>
             <strong>{{ state.data?.time || 'N/A' }}</strong>
           </div>
-        </section>
+        </section> -->
 
         <section class="summary-grid">
           <router-link

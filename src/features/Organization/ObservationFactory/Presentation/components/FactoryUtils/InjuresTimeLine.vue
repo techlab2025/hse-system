@@ -183,9 +183,9 @@ onMounted(fetchEmployees)
                   <span>{{ $t('injury record') }}</span>
                   <strong>#{{ index + 1 }}</strong>
                 </div>
-                <p v-if="item.isWorkStopped">{{ $t('work stopped') }}</p>
+                <p v-if="item.isWorkStopped">{{ $t('stopped work ') }}</p>
               </div>
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
@@ -237,7 +237,7 @@ onMounted(fetchEmployees)
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('Type and Nature of Injury') }}</label>
                 <input
                   type="text"
@@ -248,7 +248,7 @@ onMounted(fetchEmployees)
                 />
               </div>
 
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->

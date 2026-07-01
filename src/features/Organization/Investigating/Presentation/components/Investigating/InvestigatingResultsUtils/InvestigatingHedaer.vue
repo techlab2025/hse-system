@@ -56,10 +56,10 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
     <div class="meeting-info-container">
       <div class="meeting-info">
         <p>
-          serial : <span class="meet-date">{{ serial }} </span>
+          Incident serial : <span class="meet-date">{{ serial }} </span>
         </p>
         <p>
-          title : <span class="team-leader">{{ title }}</span>
+          Incident title : <span class="team-leader">{{ title }}</span>
         </p>
         <p>
           Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
