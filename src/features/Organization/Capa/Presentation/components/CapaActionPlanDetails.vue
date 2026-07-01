@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CapaTaskDetailsModel } from '../../Data/models/CapaTasksModel'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import RadioButton from 'primevue/radiobutton'
 import { InvestegationTaskEnum } from '../../Core/Core/InvestegationTaskEnum'
@@ -15,7 +15,9 @@ const emit = defineEmits(['answered', 'statusChanged'])
 const statusDialogVisible = ref(false)
 const selectedStatusTask = ref<CapaTaskDetailsModel | null>(null)
 const selectedStatus = ref(0)
+const selectedStatusReason = ref('')
 const localStatuses = ref<Record<number, number>>({})
+const isSavingStatus = ref(false)
 
 const taskStatusOptions = [
   {
@@ -51,6 +53,12 @@ const taskStatusOptions = [
 ]
 
 const taskStatus = (task: CapaTaskDetailsModel) => localStatuses.value[task.id] ?? task.status ?? 0
+const statusesThatNeedReason = [
+  InvestegationTaskEnum.PendingOnHold,
+  InvestegationTaskEnum.Overdue,
+  InvestegationTaskEnum.Cancelled,
+]
+const isReasonRequired = computed(() => statusesThatNeedReason.includes(selectedStatus.value))
 
 const statusLabel = (status?: number) => {
   return taskStatusOptions.find((option) => option.value === status)?.label || 'Not Started'
@@ -59,6 +67,7 @@ const statusLabel = (status?: number) => {
 const openStatusDialog = (task: CapaTaskDetailsModel) => {
   selectedStatusTask.value = task
   selectedStatus.value = taskStatus(task)
+  selectedStatusReason.value = (task as any)?.reason || (task as any)?.statusReason || ''
   statusDialogVisible.value = true
 }
 
@@ -66,19 +75,27 @@ const updateInvestigationTaskController = UpdateInvestigationTaskController.getI
 
 const saveTaskStatus = async () => {
   if (!selectedStatusTask.value) return
-  const updateInvestigationTaskParams = new UpdateInvestigationTaskParams({
-    id: selectedStatusTask.value.id,
-    status: selectedStatus.value,
-  })
-  const result = await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+  if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
-  localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
-  emit('statusChanged', {
-    taskId: selectedStatusTask.value.id,
-    status: selectedStatus.value,
-  })
-  emit('answered')
-  statusDialogVisible.value = false
+  isSavingStatus.value = true
+  try {
+    const updateInvestigationTaskParams = new UpdateInvestigationTaskParams({
+      id: selectedStatusTask.value.id,
+      status: selectedStatus.value,
+      reason: isReasonRequired.value ? selectedStatusReason.value.trim() : undefined,
+    })
+    // await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+
+    localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
+    emit('statusChanged', {
+      taskId: selectedStatusTask.value.id,
+      status: selectedStatus.value,
+    })
+    emit('answered')
+    statusDialogVisible.value = false
+  } finally {
+    isSavingStatus.value = false
+  }
 }
 </script>
 
@@ -207,10 +224,25 @@ const saveTaskStatus = async () => {
             <small>{{ option.description }}</small>
           </span>
         </label>
+
+        <label v-if="isReasonRequired" class="status-reason-field">
+          <span>Reason</span>
+          <textarea
+            v-model="selectedStatusReason"
+            rows="4"
+            placeholder="Add the reason for this status"
+          ></textarea>
+        </label>
       </div>
 
       <template #footer>
-        <button class="status-save-btn" @click="saveTaskStatus">Save status</button>
+        <button
+          class="status-save-btn"
+          :disabled="isSavingStatus || (isReasonRequired && !selectedStatusReason.trim())"
+          @click="saveTaskStatus"
+        >
+          {{ isSavingStatus ? 'Saving...' : 'Save status' }}
+        </button>
       </template>
     </Dialog>
   </section>
@@ -529,6 +561,40 @@ const saveTaskStatus = async () => {
   }
 }
 
+.status-reason-field {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--BgWhite);
+  padding: 0.9rem;
+
+  span {
+    color: var(--header-page-color);
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 96px;
+    resize: vertical;
+    border: 1px solid var(--main-border);
+    border-radius: 10px;
+    color: var(--header-page-color);
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 0.75rem;
+    outline: none;
+
+    &:focus {
+      border-color: var(--PrimaryColor);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+    }
+  }
+}
+
 .status-save-btn {
   display: inline-flex;
   align-items: center;
@@ -551,6 +617,11 @@ const saveTaskStatus = async () => {
     transform: translateY(-1px);
     filter: brightness(0.96);
     box-shadow: 0 14px 26px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
   }
 }
 

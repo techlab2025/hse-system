@@ -9,6 +9,11 @@ import type InvestigationFiveQuestionParams from './InvestegationFiveQuestoinsPa
 import type RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 import type InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams'
 
+export type InvestigationEventTimeLineParams = {
+  time: string
+  description: string
+}
+
 export default class AddInvestigationResultParams implements Params {
   public investigationMeetingId: number
   public isInvestigationClosed: number
@@ -35,6 +40,7 @@ export default class AddInvestigationResultParams implements Params {
   public preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
   public lessonLearnt?: string
   public documentReferenceIds?: number[]
+  public eventTimeLines?: InvestigationEventTimeLineParams[]
 
   constructor(data: {
     investigationMeetingId: number
@@ -62,6 +68,7 @@ export default class AddInvestigationResultParams implements Params {
     preventiveTasks?: InvestegationTasksParams[] | Record<string, any>[]
     lessonLearnt?: string
     documentReferenceIds?: number[]
+    eventTimeLines?: InvestigationEventTimeLineParams[]
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -88,6 +95,7 @@ export default class AddInvestigationResultParams implements Params {
     this.preventiveTasks = data.preventiveTasks
     this.lessonLearnt = data.lessonLearnt
     this.documentReferenceIds = data.documentReferenceIds
+    this.eventTimeLines = data.eventTimeLines
   }
 
   toMap(): Record<string, number | string | any> {
@@ -117,6 +125,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.preventiveTasks) data['preventive_tasks'] = this.preventiveTasks
     if (this.lessonLearnt) data['lesson_learnt'] = this.lessonLearnt
     if (this.documentReferenceIds) data['document_reference_ids'] = this.documentReferenceIds
+    if (this.eventTimeLines) data['event_timelines'] = this.eventTimeLines
 
     data['injuries'] = this.Injury?.map((item) => item.toMap())
     return data

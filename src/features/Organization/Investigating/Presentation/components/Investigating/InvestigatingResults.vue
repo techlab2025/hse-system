@@ -32,10 +32,21 @@ import SimilarObservationController from '../../controllers/similarObservation/S
 import SimilarObservatioParams from '../../../Core/params/SimilarObservation/SimilarObservatioParams.ts'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
 import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
+import DatePicker from 'primevue/datepicker'
 
 interface items {
   title: string
   isDanger: boolean
+}
+
+interface EventTimelineItem {
+  time: Date | null
+  description: string
+}
+
+type EventTimelinePayloadItem = {
+  time: string
+  description: string
 }
 
 const route = useRoute()
@@ -77,6 +88,10 @@ const AddEnvestigatingResult = async () => {
   )
   const DocumentReferenceIds = DocumentRefrences.value.map((el) => el.id)
   const actionPlan = capaActionPlan.value ?? emptyCapaActionPlan
+  const eventTimeLines: EventTimelinePayloadItem[] = eventTimelineItems.value.map((item) => ({
+    time: formatTimelineTime(item.time),
+    description: item.description.trim(),
+  }))
   const addInvestigationResultParams = new AddInvestigationResultParams({
     documentation: investigationAttachments.value,
     explainWhyText: rateActions.value?.notes,
@@ -99,6 +114,7 @@ const AddEnvestigatingResult = async () => {
     investegaionLevel: SelectedLevel.value?.id,
     FiveWhyQuestionsData: FiveWhyQuestionsData.value,
     IncidantDescription: IncidantDescription.value,
+    // eventTimeLines:eventTimeLines,
     recommendation: recommendation.value,
     Injury: Accidents.value?.accidentsData?.map((item: any) => {
       const employeeId = item?.employee?.id || 0
@@ -236,6 +252,46 @@ const CloseCapa = async () => {
   router.push('/organization/investigating')
 }
 const IncidantDescription = ref<string>()
+const eventTimelineItems = ref<EventTimelineItem[]>([
+  {
+    time: null,
+    description: '',
+  },
+])
+
+const formatTimelineTime = (time: Date | null) => {
+  if (!time) return ''
+  return time.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+const updateIncidentTimelineDescription = () => {
+  IncidantDescription.value = eventTimelineItems.value
+    .map((item, index) => {
+      const time = formatTimelineTime(item.time)
+      const description = item.description.trim()
+      if (!time && !description) return ''
+      return `${index + 1}. ${time ? `[${time}] ` : ''}${description}`
+    })
+    .filter(Boolean)
+    .join('\n')
+}
+
+const addEventTimelineItem = () => {
+  eventTimelineItems.value.push({
+    time: null,
+    description: '',
+  })
+  updateIncidentTimelineDescription()
+}
+
+const deleteEventTimelineItem = (index: number) => {
+  eventTimelineItems.value.splice(index, 1)
+  if (!eventTimelineItems.value.length) addEventTimelineItem()
+  updateIncidentTimelineDescription()
+}
 
 const Accidents = ref()
 const UpdateAccidents = (data: any) => {
@@ -362,6 +418,7 @@ watch(
                   alt=""
                   class="equipemtn-card-image"
                 />
+
                 <div class="employee-text">
                   <p class="name">{{ member.organizationEmployee?.name }}</p>
                   <p class="serial">{{ member.organizationEmployee?.serialName }}</p>
@@ -400,23 +457,70 @@ watch(
           <p>Events Timeline Builder</p>
         </div>
 
-        <div class="input-wrapper w-full">
-          <div class="investigating-header-container">
-            <div class="incidant-description col-span-2">
-              <p class="title">{{ $t('incidant_description') }}</p>
-              <p class="description">{{ state?.data?.observation?.description }}</p>
-            </div>
-            <div class="incidant-description col-span-2">
-              <label for="event_time_line">{{ $t('event_time_line') }}</label>
-
-              <textarea
-                id="event_time_line"
-                v-model="IncidantDescription"
-                :placeholder="'What happened? (in detail)'"
-              ></textarea>
-            </div>
+        <section class="event-timeline-builder">
+          <div class="event-timeline-summary">
+            <p class="title">{{ $t('incidant_description') }}</p>
+            <p class="description">{{ state?.data?.observation?.description }}</p>
           </div>
-        </div>
+
+          <div class="event-timeline-list">
+            <article
+              v-for="(item, index) in eventTimelineItems"
+              :key="index"
+              class="event-timeline-item"
+            >
+              <div class="event-timeline-marker">
+                <span>{{ index + 1 }}</span>
+              </div>
+
+              <div class="event-timeline-card">
+                <div class="event-timeline-card-header">
+                  <div>
+                    <span>Event {{ index + 1 }}</span>
+                    <h4>{{ $t('event_time_line') }}</h4>
+                  </div>
+                  <button
+                    v-if="eventTimelineItems.length > 1"
+                    class="event-timeline-delete"
+                    type="button"
+                    @click="deleteEventTimelineItem(index)"
+                  >
+                    {{ $t('delete') }}
+                  </button>
+                </div>
+
+                <div class="event-timeline-fields">
+                  <div class="input-wrapper">
+                    <label :for="`event_time_${index}`">{{ $t('time') }}</label>
+                    <DatePicker
+                      :id="`event_time_${index}`"
+                      v-model="item.time"
+                      timeOnly
+                      hourFormat="12"
+                      fluid
+                      @update:model-value="updateIncidentTimelineDescription"
+                    />
+                  </div>
+
+                  <div class="input-wrapper event-description-field">
+                    <label :for="`event_description_${index}`">{{ $t('description') }}</label>
+                    <textarea
+                      :id="`event_description_${index}`"
+                      v-model="item.description"
+                      class="input"
+                      :placeholder="'What happened? (in detail)'"
+                      @input="updateIncidentTimelineDescription"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <button class="btn btn-primary mt-2" type="button" @click="addEventTimelineItem">
+            + Add new timeline
+          </button>
+        </section>
 
         <div class="investigation-title">
           <img :src="investigationImg" alt="" />
@@ -672,6 +776,242 @@ watch(
   background: var(--BgWhite);
   box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
   padding: 1.25rem;
+}
+
+.event-timeline-builder {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--main-border);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(180deg, var(--BgWhite), #f8fbff);
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--Black) 8%, transparent);
+  padding: clamp(14px, 2vw, 22px);
+}
+
+.event-timeline-summary {
+  margin-bottom: 1rem;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, white);
+  padding: 1rem;
+
+  .title,
+  .description {
+    margin: 0;
+  }
+
+  .title {
+    color: var(--PrimaryColor);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .description {
+    margin-top: 0.45rem;
+    color: var(--header-page-color);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+}
+
+.event-timeline-list {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block: 16px;
+    inset-inline-start: 20px;
+    width: 2px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--PrimaryColor), #14b8a6);
+    opacity: 0.28;
+  }
+}
+
+.event-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.event-timeline-marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 900;
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  }
+}
+
+.event-timeline-card {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 6%, transparent);
+  padding: 1rem;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border));
+    box-shadow: 0 18px 34px color-mix(in srgb, var(--Black) 9%, transparent);
+  }
+}
+
+.event-timeline-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+
+  span {
+    color: var(--GrayText-1);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h4 {
+    margin: 0.2rem 0 0;
+    color: var(--header-page-color);
+    font-size: 1rem;
+    font-weight: 900;
+  }
+}
+
+.event-timeline-delete,
+.event-timeline-add {
+  border: 0;
+  cursor: pointer;
+  font-weight: 900;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.97);
+  }
+}
+
+.event-timeline-delete {
+  border-radius: 999px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 0.78rem;
+  padding: 0.45rem 0.75rem;
+}
+
+.event-timeline-fields {
+  display: flex;
+  flex-direction: column;
+  // grid-template-columns: minmax(190px, 0.34fr) minmax(0, 1fr);
+  gap: 0.9rem;
+
+  .input-wrapper {
+    margin: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  textarea {
+    min-height: 118px;
+    resize: vertical;
+  }
+}
+
+.event-timeline-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
+  color: #ffffff;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.1rem;
+  box-shadow: 0 14px 26px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+}
+
+:deep(.event-timeline-fields .p-datepicker) {
+  width: 100%;
+}
+
+:deep(.event-timeline-fields .p-inputtext) {
+  width: 100%;
+  border-color: rgba(226, 232, 240, 0.95);
+  border-radius: 14px !important;
+  background: #ffffff;
+  color: var(--header-page-color);
+  font-weight: 800;
+  padding: 0.78rem 0.9rem !important;
+}
+
+@media (max-width: 760px) {
+  .event-timeline-item {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+
+  .event-timeline-list::before {
+    inset-inline-start: 17px;
+  }
+
+  .event-timeline-marker span {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  .event-timeline-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .event-timeline-card-header {
+    flex-direction: column;
+  }
 }
 
 .similar-observations-section {

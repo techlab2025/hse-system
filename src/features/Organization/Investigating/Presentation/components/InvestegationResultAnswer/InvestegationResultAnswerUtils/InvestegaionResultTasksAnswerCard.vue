@@ -16,6 +16,7 @@ const emit = defineEmits(['answered'])
 const taskValue = computed(() => props.task as any)
 const statusDialogVisible = ref(false)
 const selectedStatus = ref<number>(InvestegationTaskEnum.NotStarted)
+const selectedStatusReason = ref('')
 const localStatus = ref<number | null>(null)
 const isSavingStatus = ref(false)
 
@@ -57,6 +58,12 @@ const normalizeTaskStatus = (status?: number) => {
   return hasStatus ? Number(status) : InvestegationTaskEnum.NotStarted
 }
 
+const statusesThatNeedReason = [
+  InvestegationTaskEnum.PendingOnHold,
+  InvestegationTaskEnum.Overdue,
+  InvestegationTaskEnum.Cancelled,
+]
+const isReasonRequired = computed(() => statusesThatNeedReason.includes(selectedStatus.value))
 const taskStatus = computed(() => localStatus.value ?? normalizeTaskStatus(props.task?.status))
 const taskStatusLabel = computed(
   () =>
@@ -86,6 +93,7 @@ const assignedTo = computed(
 
 const openStatusDialog = () => {
   selectedStatus.value = taskStatus.value
+  selectedStatusReason.value = taskValue.value?.reason || taskValue.value?.statusReason || ''
   statusDialogVisible.value = true
 }
 
@@ -93,14 +101,16 @@ const updateInvestigationTaskController = UpdateInvestigationTaskController.getI
 
 const saveTaskStatus = async () => {
   if (!props.task?.id) return
+  if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
   isSavingStatus.value = true
   try {
     const updateInvestigationTaskParams = new UpdateInvestigationTaskParams({
       id: props.task.id,
       status: selectedStatus.value,
+      reason: isReasonRequired.value ? selectedStatusReason.value.trim() : undefined,
     })
-    await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+    // await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
     localStatus.value = selectedStatus.value
     emit('answered')
     statusDialogVisible.value = false
@@ -183,10 +193,23 @@ const saveTaskStatus = async () => {
             <small>{{ option.description }}</small>
           </span>
         </label>
+
+        <label v-if="isReasonRequired" class="status-reason-field">
+          <span>Reason</span>
+          <textarea
+            v-model="selectedStatusReason"
+            rows="4"
+            placeholder="Add the reason for this status"
+          ></textarea>
+        </label>
       </div>
 
       <template #footer>
-        <button class="status-save-btn" :disabled="isSavingStatus" @click="saveTaskStatus">
+        <button
+          class="status-save-btn"
+          :disabled="isSavingStatus || (isReasonRequired && !selectedStatusReason.trim())"
+          @click="saveTaskStatus"
+        >
           {{ isSavingStatus ? 'Saving...' : 'Save status' }}
         </button>
       </template>
@@ -355,6 +378,40 @@ const saveTaskStatus = async () => {
     font-size: 0.78rem;
     font-weight: 700;
     line-height: 1.45;
+  }
+}
+
+.status-reason-field {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--BgWhite);
+  padding: 0.9rem;
+
+  span {
+    color: var(--header-page-color);
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 96px;
+    resize: vertical;
+    border: 1px solid var(--main-border);
+    border-radius: 10px;
+    color: var(--header-page-color);
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 0.75rem;
+    outline: none;
+
+    &:focus {
+      border-color: var(--PrimaryColor);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+    }
   }
 }
 </style>
