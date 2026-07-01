@@ -97,6 +97,7 @@ watch(
           v-if="state.data?.investigationMeetings?.length > 0"
           :meetings="state.data?.investigationMeetings"
         />
+
         <InvestegationResultTasksAnswer
           v-if="allTasks.length > 0"
           :correctiveTasks="correctiveTasks"

@@ -340,32 +340,32 @@ const saveTaskStatus = async () => {
   font-weight: 800;
   padding: 0.35rem 0.7rem;
 
-  &.status-0 {
+  &.status-1 {
     background: #f1f5f9;
     color: #475569;
   }
 
-  &.status-1 {
+  &.status-2 {
     background: color-mix(in srgb, var(--PrimaryColor) 12%, white);
     color: var(--PrimaryColor);
   }
 
-  &.status-2 {
+  &.status-3 {
     background: #fff7ed;
     color: #c2410c;
   }
 
-  &.status-3 {
+  &.status-4 {
     background: #fef2f2;
     color: #dc2626;
   }
 
-  &.status-4 {
+  &.status-5 {
     background: color-mix(in srgb, var(--green) 14%, white);
     color: var(--green);
   }
 
-  &.status-5 {
+  &.status-6 {
     background: #e2e8f0;
     color: #334155;
   }

@@ -16,12 +16,12 @@ class SimilarObservationRepo extends RepoInterface<HazardDetailsModel[]> {
     return this.instance
   }
 
-  override get responseType(): ResponseType {
-    return ResponseType.withoutData
-  }
+  // override get responseType(): ResponseType {
+  //   return ResponseType.withoutData
+  // }
 
   onParse(data: any): HazardDetailsModel[] {
-    return data.map((item: any) => HazardDetailsModel.fromMap(item))
+    return data.data.map((item: any) => HazardDetailsModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {

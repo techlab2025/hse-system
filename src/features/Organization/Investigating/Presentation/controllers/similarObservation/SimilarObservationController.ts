@@ -30,14 +30,14 @@ export default class SimilarObservationController extends ControllerInterface<
       const dataState: DataState<HazardDetailsModel[]> =
         await this.similarObservationUseCase.call(params)
       this.setState(dataState)
-      if (this.isDataSuccess()) {
+      if (this.isDataSuccess() && !draft) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
           titleContent: 'Added was successful',
           imageElement: successImage,
           messageContent: null,
         })
-      } else {
+      } else if (!draft) {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
@@ -46,12 +46,14 @@ export default class SimilarObservationController extends ControllerInterface<
         })
       }
     } catch (error: unknown) {
-      DialogSelector.instance.failedDialog.openDialog({
-        dialogName: 'dialog-error',
-        titleContent: this.state.value.error?.title ?? (error as string),
-        imageElement: errorImage,
-        messageContent: null,
-      })
+      if (!draft) {
+        DialogSelector.instance.failedDialog.openDialog({
+          dialogName: 'dialog-error',
+          titleContent: this.state.value.error?.title ?? (error as string),
+          imageElement: errorImage,
+          messageContent: null,
+        })
+      }
     }
 
     super.handleResponseDialogs()

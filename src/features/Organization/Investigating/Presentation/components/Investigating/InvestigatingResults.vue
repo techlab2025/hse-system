@@ -60,9 +60,12 @@ const item = ref<items[]>([
   },
 ])
 
-const ShoeInvestegationResultDetails = () => {
+const ShoeInvestegationResultDetails = async () => {
   const showInvestigationResultParams = new ShowInvestigationResultParams(investigatingId)
-  showInvestigationResultController.ShowInvestigatingResult(showInvestigationResultParams, router)
+  await showInvestigationResultController.ShowInvestigatingResult(
+    showInvestigationResultParams,
+    router,
+  )
 }
 const openDialog = ref(false)
 const emptyCapaActionPlan = {
@@ -271,16 +274,41 @@ const setDocumentRefrences = (data: TitleInterface[]) => {
   DocumentRefrences.value = data
 }
 const SimilarObservations = ref<HazardDetailsModel[]>()
+const similarObservationsLoading = ref(false)
+const fetchedSimilarObservationId = ref<number | null>(null)
 const fetchSimilarObservations = async () => {
-  const similarObservationController = SimilarObservationController.getInstance()
-  console.log(state.value.data?.observation, 'obobobobob')
-  const similarObservationParams = new SimilarObservatioParams(state.value.data?.observation.id!)
-  const result = await similarObservationController.fetchSimilarObservations(
-    similarObservationParams,
-    router,
-  )
-  SimilarObservations.value = result.value?.data!
+  const observationId = state.value.data?.observation?.id
+  if (!observationId || fetchedSimilarObservationId.value === observationId) return
+
+  similarObservationsLoading.value = true
+  try {
+    const similarObservationController = SimilarObservationController.getInstance()
+    const similarObservationParams = new SimilarObservatioParams({
+      observationId: observationId,
+      word: '',
+      withPage: 1,
+      perPage: 5,
+      pageNumber: 10,
+    })
+    const result = await similarObservationController.fetchSimilarObservations(
+      similarObservationParams,
+      router,
+      true,
+    )
+    console.log(result.value?.data, 'result.value?.data ')
+    SimilarObservations.value = result.value?.data ?? []
+    fetchedSimilarObservationId.value = observationId
+  } finally {
+    similarObservationsLoading.value = false
+  }
 }
+
+watch(
+  () => state.value.data?.observation?.id,
+  () => {
+    fetchSimilarObservations()
+  },
+)
 </script>
 <template>
   <DataStatus :controller="state">
@@ -523,7 +551,35 @@ const fetchSimilarObservations = async () => {
           </div>
         </section>
         <!-- Similat Observatio -->
-         <!-- title date serial only  -->
+        <!-- title date serial only  -->
+        <section class="similar-observations-section">
+          <div class="section-heading">
+            <span>Similar Incidents</span>
+            <h2>Related from the same pattern</h2>
+          </div>
+
+          <div v-if="similarObservationsLoading" class="similar-observations-grid">
+            <div v-for="item in 3" :key="item" class="similar-observation-card loading">
+              <span></span>
+              <strong></strong>
+              <small></small>
+            </div>
+          </div>
+
+          <div v-else-if="SimilarObservations?.length" class="similar-observations-grid">
+            <article
+              v-for="observation in SimilarObservations"
+              :key="observation.id"
+              class="similar-observation-card"
+            >
+              <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
+              <strong>{{ observation.title || 'Untitled observation' }}</strong>
+              <small>{{ observation.date || 'N/A' }}</small>
+            </article>
+          </div>
+
+          <p v-else class="similar-observations-empty">No similar observations found.</p>
+        </section>
 
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
         <div class="attachments-show" v-if="investigationAttachments?.files?.length">
@@ -627,6 +683,135 @@ const fetchSimilarObservations = async () => {
   background: var(--BgWhite);
   box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
   padding: 1.25rem;
+}
+
+.similar-observations-section {
+  width: 100%;
+  margin-top: 1rem;
+  border: 1px solid var(--main-border);
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 9%, transparent),
+      transparent 34%
+    ),
+    var(--BgWhite);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  padding: 1.25rem;
+}
+
+.similar-observations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.similar-observation-card {
+  display: flex;
+  min-height: 122px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    var(--BgWhite),
+    color-mix(in srgb, var(--PrimaryColor) 5%, white)
+  );
+  padding: 1rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border));
+    box-shadow: 0 16px 30px color-mix(in srgb, var(--Black) 8%, transparent);
+  }
+
+  span {
+    width: fit-content;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--PrimaryColor) 12%, white);
+    color: var(--PrimaryColor);
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 0.35rem 0.7rem;
+  }
+
+  strong {
+    color: var(--header-page-color);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.45;
+  }
+
+  small {
+    color: var(--GrayText-1);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  &.loading {
+    overflow: hidden;
+    pointer-events: none;
+
+    span,
+    strong,
+    small {
+      display: block;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eef2f7, #f8fafc, #eef2f7);
+      background-size: 220% 100%;
+      color: transparent;
+      animation: similarLoading 1.2s ease-in-out infinite;
+    }
+
+    span {
+      width: 72px;
+      height: 28px;
+    }
+
+    strong {
+      width: 80%;
+      height: 18px;
+    }
+
+    small {
+      width: 44%;
+      height: 14px;
+    }
+  }
+}
+
+.similar-observations-empty {
+  margin: 0;
+  border-radius: 14px;
+  background: var(--Gray-1);
+  color: var(--GrayText-1);
+  font-weight: 800;
+  padding: 1rem;
+}
+
+@keyframes similarLoading {
+  0% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: -120% 0;
+  }
 }
 
 .section-heading {
