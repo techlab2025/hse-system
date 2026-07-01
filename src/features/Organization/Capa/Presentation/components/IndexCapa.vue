@@ -210,10 +210,10 @@ watch(
                             </p>
                             <router-link
                               :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
-                              class="label-item-secondary"
+                              class="label-item-secondary incidant"
                             >
                               {{ $t('incidant Id') }} :
-                              <span>{{ item.capa?.observationId }} </span>
+                              <span>{{ item?.serialName }} </span>
                             </router-link>
                           </div>
                           <div class="sup-title">{{ item.description || 'N/A' }}</div>
@@ -427,6 +427,11 @@ watch(
 
 .label-item-secondary {
   font-family: 'regular';
+  &.incidant {
+    span {
+      font-size: 10px;
+    }
+  }
 
   span {
     font-family: 'bold';
