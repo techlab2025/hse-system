@@ -5,9 +5,9 @@ import IndexDocumentRefrenceController from '@/features/Organization/DocumentRef
 import type InvestegationEmployeeModel from '@/features/Organization/Investigating/Data/models/investigationResult/InvestegationEmployeeModel'
 import type EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import AddDocumentRefrence from '@/views/Organization/DocumentRefrence/AddDocumentRefrence.vue'
 import { ref } from 'vue'
 import ShiftModel from '../../../../../Shifts/Data/models/ShiftModel'
+import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
 
 const emit = defineEmits(['update:documentRefrences'])
 
@@ -62,7 +62,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           title : <span class="team-leader">{{ title }}</span>
         </p>
         <p>
-          incidant type : <span class="incidant-type">{{ incidantType?.title }}</span>
+          Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
         </p>
         <p>
           date & time & shift :
@@ -90,7 +90,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
               <span class="add-dialog" @click="DocumentRefrenceDialog = true">{{ $t('New') }}</span>
             </template>
             <template #Dialog>
-              <AddDocumentRefrence @close:data="DocumentRefrenceDialog = false" />
+              <AddDocumentRefrence @close:dialog="DocumentRefrenceDialog = false" />
             </template>
           </UpdatedCustomInputSelect>
         </div>

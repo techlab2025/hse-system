@@ -19,8 +19,8 @@ const UpdateData = (data) => {
 <template>
   <div class="rate-of-actions">
     <HeaderPage
-      :title="`rate the taken action`"
-      :subtitle="`add your rate and notes to the already taken action`"
+      :title="`Immediate Action Effectiveness`"
+      :subtitle="``"
       :img="checkActions"
       class="title-header"
     />

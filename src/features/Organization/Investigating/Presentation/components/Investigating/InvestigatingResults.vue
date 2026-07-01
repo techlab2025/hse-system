@@ -334,8 +334,15 @@ watch(
                 <span class="team-leader">{{ state?.data?.TeamLeader?.name }}</span>
               </p>
               <p>
-                Num of team :
+                Investigation Team Members :
                 <span class="team-number">{{ state?.data?.investigationEmployees?.length }}</span>
+              </p>
+              <p>
+                Date and Time of meeting :
+                <span class="team-number"
+                  >{{ state?.data?.investigationMeetingDate }} &
+                  {{ state?.data?.investigationMeetingTime }}</span
+                >
               </p>
             </div>
           </div>
@@ -447,7 +454,7 @@ watch(
 
         <div class="investigating-header-container">
           <div class="incidant-description col-span-2">
-            <p class="title">{{ $t('immediate action') }}</p>
+            <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
             <p class="description">{{ state?.data?.observation?.action }}</p>
           </div>
         </div>
@@ -465,7 +472,7 @@ watch(
             class="input"
             :controller="indexRootCaueseController"
             :params="indexRootCaueseParams"
-            :label="$t('root_cause')"
+            :label="$t('Identified Root Cause')"
             id="rootCause"
             :placeholder="$t('select your root_cause')"
             @update:modelValue="setRootCause"
@@ -521,8 +528,8 @@ watch(
         </div>
         <section class="lesson-section">
           <div class="section-heading">
-            <span>Lesson learnt</span>
-            <h2>Capture the learning before it fades</h2>
+            <!-- <span>Lesson learnt</span> -->
+            <h2>Lessons Learned Summary</h2>
           </div>
           <div class="input-wrapper">
             <textarea
@@ -536,8 +543,8 @@ watch(
         <!-- title date serial only  -->
         <section class="similar-observations-section">
           <div class="section-heading">
-            <span>Similar Incidents</span>
-            <h2>Related from the same pattern</h2>
+            <!-- <span>Similar Incidents</span> -->
+            <h2>Similar Observations Retrieval</h2>
           </div>
 
           <div v-if="similarObservationsLoading" class="similar-observations-grid">
@@ -842,6 +849,7 @@ watch(
   display: flex;
   gap: 1rem;
   justify-content: space-between !important;
+
   button,
   a {
     width: 50% !important;

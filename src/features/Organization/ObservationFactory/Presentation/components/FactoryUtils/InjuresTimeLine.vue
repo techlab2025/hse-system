@@ -186,22 +186,12 @@ onMounted(fetchEmployees)
                 <p v-if="item.isWorkStopped">{{ $t('work stopped') }}</p>
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
-                <label for="">{{ $t('Nature of injury & body part') }}</label>
-                <input
-                  type="text"
-                  class="input"
-                  :placeholder="$t('add your title')"
-                  v-model="item.text"
-                  @input="UpdateData"
-                />
-              </div>
-              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
-                  :label="$t('Employee')"
+                  :label="$t('Injured Person')"
                   :reload="false"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
@@ -248,6 +238,17 @@ onMounted(fetchEmployees)
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-12 md:col-span-4 input-wrapper w-full">
+                <label for="">{{ $t('Type and Nature of Injury') }}</label>
+                <input
+                  type="text"
+                  class="input"
+                  :placeholder="$t('add your title')"
+                  v-model="item.text"
+                  @input="UpdateData"
+                />
+              </div>
+
+              <div class="col-span-12 md:col-span-4 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
@@ -277,7 +278,7 @@ onMounted(fetchEmployees)
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('upload image') }}</label>
+                <label for="">{{ $t('Evidence Retrieval (Photos)') }}</label>
                 <MultiImagesInput
                   :initialImages="item.images"
                   @update:images="setImages($event, index)"
