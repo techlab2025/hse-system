@@ -84,7 +84,7 @@ const saveTaskStatus = async () => {
       status: selectedStatus.value,
       reason: isReasonRequired.value ? selectedStatusReason.value.trim() : undefined,
     })
-    // await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+    await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
 
     localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
     emit('statusChanged', {

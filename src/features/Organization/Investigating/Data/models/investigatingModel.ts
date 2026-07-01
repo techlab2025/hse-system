@@ -10,6 +10,7 @@ import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnu
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import TeamLeaderModel from './TeamLeaderModel'
 import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
+import type TitleInterface from '@/base/Data/Models/title_interface'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string
@@ -48,7 +49,6 @@ export default class InvestigatingModel {
   public preventiveTask?: CapaTaskDetailsModel[]
   public SerialName?: string
 
-
   constructor(
     Investegationid: number,
     title: string,
@@ -85,7 +85,7 @@ export default class InvestigatingModel {
     lessonLearnt?: string,
     correctiveTask?: CapaTaskDetailsModel[],
     preventiveTask?: CapaTaskDetailsModel[],
-    SerialName?: string
+    SerialName?: string,
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -123,6 +123,7 @@ export default class InvestigatingModel {
     this.correctiveTask = correctiveTask
     this.preventiveTask = preventiveTask
     this.SerialName = SerialName
+    this.location = location
   }
 
   static fromMap(data: any): InvestigatingModel {

@@ -27,6 +27,7 @@ export default class InvestegationResultDetailsModel {
   public investigationMeetingDate: string
   public investigationMeetingTime: string
   public witness_statements: InjuryDetailsModel[]
+  public serialName: string
 
   constructor(
     id: number,
@@ -48,6 +49,7 @@ export default class InvestegationResultDetailsModel {
     investigationMeetingDate: string,
     investigationMeetingTime: string,
     witness_statements: InjuryDetailsModel[],
+    serialName: string,
   ) {
     this.id = id
     this.title = title
@@ -68,6 +70,7 @@ export default class InvestegationResultDetailsModel {
     this.investigationMeetingDate = investigationMeetingDate
     this.investigationMeetingTime = investigationMeetingTime
     this.witness_statements = witness_statements
+    this.serialName = serialName
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -91,6 +94,7 @@ export default class InvestegationResultDetailsModel {
       data.investigation_meeting_date,
       data.investigation_meeting_time,
       data.witness_statements,
+      data.serial_name,
     )
   }
   // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

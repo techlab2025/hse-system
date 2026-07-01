@@ -110,7 +110,7 @@ const saveTaskStatus = async () => {
       status: selectedStatus.value,
       reason: isReasonRequired.value ? selectedStatusReason.value.trim() : undefined,
     })
-    // await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+    await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
     localStatus.value = selectedStatus.value
     emit('answered')
     statusDialogVisible.value = false
@@ -325,7 +325,11 @@ const saveTaskStatus = async () => {
   gap: 0.75rem;
   border-radius: 16px;
   background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--PrimaryColor) 10%, transparent), transparent 32%),
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      transparent 32%
+    ),
     var(--Gray-1);
   padding: 0.85rem;
 }

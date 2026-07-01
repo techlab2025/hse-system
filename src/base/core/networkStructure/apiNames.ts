@@ -1397,7 +1397,7 @@ class ApiNames {
     return this.prefix + 'create_investigation_tasks'
   }
   public get UpdateTasks() {
-    return this.prefix + 'update_investigation_tasks'
+    return this.prefix + 'update_investigation_task'
   }
   public get IndexTasks() {
     return this.prefix + 'fetch_investigation_tasks'

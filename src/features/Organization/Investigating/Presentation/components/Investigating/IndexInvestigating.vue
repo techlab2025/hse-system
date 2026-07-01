@@ -226,15 +226,15 @@ const GetMediumObservationCount = (data: any): number => {
                       <div class="card-details">
                         <div class="project-details">
                           <!-- <pre>{{ item?.observation }}</pre> -->
+                          <p class="label-item-primary" v-if="item?.location">
+                            {{ $t('Location') }}:
+                            <span>{{ item?.location?.title || 'N/A' }}</span>
+                          </p>
                           <p class="label-item-primary flex" v-if="item?.observation?.zoon">
                             <img :src="mark" alt="zone" />
                             {{ $t('Zone') }}:
                             <span>{{ item?.observation?.zoon?.title || 'N/A' }}</span>
                           </p>
-                          <!-- <p class="label-item-primary" v-if="item?.observation?.equipment">
-                            {{ $t('Machine') }}:
-                            <span>{{ item?.observation?.equipment?.title || 'N/A' }}</span>
-                          </p> -->
                           <!-- <p class="label-item-primary">
                             {{ $t('Status') }}:
                             <span>{{

@@ -371,6 +371,7 @@ watch(
           :team="state.data?.investigationEmployees"
           :time="state.data?.investigationMeetingTime"
           :shift="state.data?.observation.work_shift"
+          :serialName="state.data?.serialName"
           @update:documentRefrences="setDocumentRefrences"
         />
 

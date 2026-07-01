@@ -26,6 +26,7 @@ const props = defineProps<{
   team?: InvestegationEmployeeModel[]
   time?: string
   shift?: ShiftModel
+  serialName?: string
 }>()
 
 const DocumentRefrenceDialog = ref<boolean>(false)
@@ -57,6 +58,9 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
       <div class="meeting-info">
         <p>
           Incident serial : <span class="meet-date">{{ serial }} </span>
+        </p>
+        <p>
+          Investigation serial : <span class="meet-date">{{ serialName }} </span>
         </p>
         <p>
           Incident title : <span class="team-leader">{{ title }}</span>
