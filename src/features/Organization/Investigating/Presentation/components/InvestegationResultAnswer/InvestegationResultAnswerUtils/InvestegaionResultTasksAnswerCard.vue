@@ -11,6 +11,7 @@ import UpdateInvestigationTaskParams from '@/features/Organization/Capa/Core/par
 
 const props = defineProps<{
   task: InvestegationTasksModel | CapaTaskDetailsModel
+  isChangeStatus?: boolean
 }>()
 const emit = defineEmits(['answered'])
 const taskValue = computed(() => props.task as any)
@@ -155,7 +156,7 @@ const saveTaskStatus = async () => {
           </div>
         </div>
 
-        <div class="task-actions">
+      <div class="task-actions" v-if="!isChangeStatus">
           <button class="change-status-btn" @click="openStatusDialog">Change status</button>
         </div>
       </div>

@@ -81,6 +81,7 @@ const taskLanes = computed(() => {
             :key="task.id"
             :task="task"
             @answered="emit('answered')"
+            :isChangeStatus="true"
           />
         </div>
 

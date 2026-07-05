@@ -11,8 +11,8 @@ const props = defineProps<{
 <template>
   <div class="cause-of-accidant">
     <HeaderPage
-      :title="`Causes of the accident`"
-      :subtitle="`Choose the reasons for the incident and write how to prevent it from happening again`"
+      :title="`Root Cause Factors`"
+      :subtitle="``"
       :img="factor"
       class="title-header answer-header"
     />

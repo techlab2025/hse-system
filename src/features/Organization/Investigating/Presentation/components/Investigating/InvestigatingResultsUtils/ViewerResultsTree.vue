@@ -148,7 +148,7 @@ watch(
             </UpdatedCustomInputSelect>
           </div>
           <div class="timeline-content-text input-wrapper" :class="isInvestigation ? `w-full` : ``">
-            <label for="result">Existing Statements</label>
+            <label for="result"> Statements</label>
             <textarea
               type="result"
               id="result"
