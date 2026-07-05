@@ -177,22 +177,22 @@ watch(
   <main class="tasks-index-page investegation-result-answer-container">
     <section class="tasks-index-toolbar">
       <div class="toolbar-copy">
-        <span>Investigation tasks</span>
-        <h1>All corrective and preventive tasks</h1>
+        <span>Actions</span>
+        <h1>All corrective and preventive actions</h1>
       </div>
 
-      <div class="input-search tasks-search">
+      <!-- <div class="input-search tasks-search">
         <span class="icon-remove" @click="clearSearch">
           <Search />
         </span>
         <input
           v-model="word"
-          :placeholder="'Search tasks'"
+          :placeholder="'Search actions'"
           class="input"
           type="text"
           @input="searchEquipmentType"
         />
-      </div>
+      </div> -->
     </section>
 
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
@@ -201,14 +201,14 @@ watch(
           <section class="tasks-board">
             <div class="tasks-board-header">
               <div>
-                <span>Task board</span>
-                <h2>{{ state.data?.length || 0 }} tasks</h2>
+                <!-- <span>Action board</span> -->
+                <h2>{{ state.data?.length || 0 }} actions</h2>
               </div>
-              <p>Review assignments, due dates, status, and task answers.</p>
+              <!-- <p>Review assignments, due dates, status, and action answers.</p> -->
             </div>
 
 
-          
+
             <div class="tasks-index-grid">
               <InvestegaionResultTasksAnswerCard
                 v-for="(task, index) in state.data"
