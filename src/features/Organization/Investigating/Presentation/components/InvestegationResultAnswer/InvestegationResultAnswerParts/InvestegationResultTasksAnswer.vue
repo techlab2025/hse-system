@@ -23,16 +23,16 @@ const taskLanes = computed(() => {
     return [
       {
         key: 'corrective',
-        title: 'Corrective tasks',
+        title: 'Corrective Actions',
         kicker: 'Corrective',
-        empty: 'No corrective tasks yet.',
+        empty: 'No corrective actions yet.',
         tasks: correctiveTasks,
       },
       {
         key: 'preventive',
-        title: 'Preventive tasks',
+        title: 'Preventive Actions',
         kicker: 'Preventive',
-        empty: 'No preventive tasks yet.',
+        empty: 'No preventive actions yet.',
         tasks: preventiveTasks,
       },
     ]
@@ -54,15 +54,15 @@ const taskLanes = computed(() => {
   <div class="tasks-answer">
     <div class="header">
       <HeaderPage
-        :title="`tasks`"
-        :subtitle="`change the task status here`"
+        :title="`Actions`"
+        :subtitle="`change the Action status here`"
         :img="Task"
         class="title-header answer-header border-top"
       />
       <router-link
         :to="`/organization/investegation-tasks/${route.params.id}`"
         class="show-all-btn"
-        >{{ $t('show_all_tasks') }}</router-link
+        >{{ $t('show_all_actions') }}</router-link
       >
     </div>
     <div class="task-lanes">

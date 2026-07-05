@@ -41,6 +41,7 @@ const addNewAnswer = () => {
 }
 
 const DeleteItem = (index: number) => {
+  if (Answers.value.length <= 1) return
   Answers.value.splice(index, 1)
   isSelectHasContent.value.splice(index, 1)
   UpdateData()
@@ -111,7 +112,7 @@ watch(
               v-model="item.employee"
               placeholder="Select Employee"
               class="mt-4 mr-2 input"
-              label="Witness"
+              label="Witness Name"
               :reload="false"
               :hascontent="isSelectHasContent[index]"
               @update:model-value="UpdateData"
@@ -147,7 +148,7 @@ watch(
             </UpdatedCustomInputSelect>
           </div>
           <div class="timeline-content-text input-wrapper" :class="isInvestigation ? `w-full` : ``">
-            <label for="result">Witness statement</label>
+            <label for="result">Existing Statements</label>
             <textarea
               type="result"
               id="result"
@@ -171,19 +172,23 @@ watch(
           <div class="tree-icon">
             <DeleteItemAction
               class="cursor-pointer"
-              v-if="index >= 0 && index !== Answers.length - 1"
+              v-if="Answers.length > 1"
               @click="DeleteItem(index)"
             />
-            <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
+            <AddAnswer
+              v-if="index === Answers.length - 1"
+              @click="addNewAnswer"
+              class="cursor-pointer"
+            />
             <!-- <span>aaaa</span> -->
           </div>
         </div>
         <span
           class="add-text cursor-pointer"
           @click="addNewAnswer"
-          v-if="!(index >= 0 && index !== Answers.length - 1)"
-          >Add another witness </span
-        >
+          v-if="index === Answers.length - 1"
+          >Add another witness
+        </span>
       </div>
     </div>
   </div>

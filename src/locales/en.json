@@ -1391,5 +1391,6 @@
   "add_shift": "Add Shift",
   "Document_refrence": "Document refrence",
   "Out_of_service": "Out of Service",
-  "In_service": "In Service"
+  "In_service": "In Service",
+  "show_all_actions": "Show All Actions"
 }

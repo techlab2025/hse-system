@@ -5,7 +5,19 @@ import MeetingModel from '../Meetings/MeetingModel'
 import type InjuryModel from '@/features/Organization/Injury/Data/models/InjuryModel'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
+import type { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 
+type investigationMeeting = {
+  corrective: string
+  date: string
+  has_result: number
+  id: number
+  investigation_category: number
+  meeting_link: string
+  status: number
+  time: string
+  type: InvestigationMeetingEnum
+}
 export default class InvestegationResultDetailsModel {
   public id: number
   public date: string
@@ -28,6 +40,7 @@ export default class InvestegationResultDetailsModel {
   public investigationMeetingTime: string
   public witness_statements: InjuryDetailsModel[]
   public serialName: string
+  public meeting: investigationMeeting[]
 
   constructor(
     id: number,
@@ -50,6 +63,7 @@ export default class InvestegationResultDetailsModel {
     investigationMeetingTime: string,
     witness_statements: InjuryDetailsModel[],
     serialName: string,
+    meeting: investigationMeeting[],
   ) {
     this.id = id
     this.title = title
@@ -71,6 +85,7 @@ export default class InvestegationResultDetailsModel {
     this.investigationMeetingTime = investigationMeetingTime
     this.witness_statements = witness_statements
     this.serialName = serialName
+    this.meeting = meeting
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -95,6 +110,7 @@ export default class InvestegationResultDetailsModel {
       data.investigation_meeting_time,
       data.witness_statements,
       data.serial_name,
+      data.investigation_meetings,
     )
   }
   // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

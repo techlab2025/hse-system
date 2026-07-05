@@ -7,6 +7,7 @@ export default class MeetingModel {
   public type: number
   public meeting_link: string
   public corrective: string
+  public place: string
 
   constructor(
     id: number,
@@ -17,6 +18,7 @@ export default class MeetingModel {
     type: number,
     meeting_link: string,
     corrective: string,
+    place: string,
   ) {
     this.id = id
     this.investigation = investigation
@@ -26,6 +28,7 @@ export default class MeetingModel {
     this.type = type
     this.meeting_link = meeting_link
     this.corrective = corrective
+    this.place = place
   }
 
   static fromMap(data: any): MeetingModel {
@@ -38,6 +41,7 @@ export default class MeetingModel {
       data.type,
       data.meeting_link,
       data.corrective,
+      data.place,
     )
   }
 
@@ -51,6 +55,7 @@ export default class MeetingModel {
       1,
       'meeting_link',
       'corrective',
+      '',
     ),
     new MeetingModel(
       1,
@@ -61,6 +66,7 @@ export default class MeetingModel {
       2,
       'meeting_link',
       'corrective',
+      '',
     ),
     new MeetingModel(
       1,
@@ -71,6 +77,7 @@ export default class MeetingModel {
       3,
       'meeting_link',
       'corrective',
+      '',
     ),
     new MeetingModel(
       1,
@@ -81,6 +88,7 @@ export default class MeetingModel {
       4,
       'meeting_link',
       'corrective',
+      '',
     ),
   ]
 }

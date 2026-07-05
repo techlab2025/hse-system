@@ -34,6 +34,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
+import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -52,7 +53,8 @@ const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])
 const MeetingPlace = ref<string>('')
-const isOtherMeetingPlatform = () => SelectedPlatform.value?.id === 5
+const isOtherMeetingPlatform = () =>
+  Number(SelectedPlatform.value?.id) === InvestigationMeetingEnum.OTHER
 const updateData = () => {
   const meeting =
     date?.value != undefined && time?.value != undefined
@@ -158,11 +160,11 @@ const setTeamLeader = (data: TitleInterface) => {
 }
 
 const MeetingPlatforms = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'zoom' }),
-  new TitleInterface({ id: 2, title: 'teams' }),
-  new TitleInterface({ id: 3, title: 'skype' }),
-  new TitleInterface({ id: 4, title: 'google meet' }),
-  new TitleInterface({ id: 5, title: 'other' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.TEAM, title: 'Teams' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.SKYPE, title: 'Skype' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.GOOGLE_MEET, title: 'Google Meet' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.OTHER, title: 'Other' }),
 ])
 const SelectedPlatform = ref<TitleInterface>(null)
 const setSelectedPlatform = (data: TitleInterface) => {

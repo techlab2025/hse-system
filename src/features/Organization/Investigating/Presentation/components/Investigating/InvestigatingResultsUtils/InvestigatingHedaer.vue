@@ -75,6 +75,9 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
         <p>
           Work Area / Facility : <span class="team-number">{{ place }}</span>
         </p>
+             <p>
+          Equipment / Tag No : <span class="team-number">{{ equipment?.serial_name }}</span>
+        </p>
         <div class="input-wrapper col-span-2 w-full root-cause-panel">
           <UpdatedCustomInputSelect
             :modelValue="DocumentRefrences"
@@ -114,14 +117,14 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
         </p>
       </div>
     </div> -->
-    <div class="equipment-card" v-if="equipment">
+    <!-- <div class="equipment-card" v-if="equipment">
       <img :src="equipment?.image" alt="image" class="equipemtn-card-image" />
       <div class="equipment-text">
         <p class="name">{{ equipment?.title }}</p>
         <p class="serial">{{ equipment?.serial_name }}</p>
-      </div>
+      </div> -->
       <!-- <EquipmentCard :tool="equipment" /> -->
-    </div>
+    <!-- </div> -->
 
     <!-- <div class="team-container">
       <p class="title">{{ $t('team') }}</p>

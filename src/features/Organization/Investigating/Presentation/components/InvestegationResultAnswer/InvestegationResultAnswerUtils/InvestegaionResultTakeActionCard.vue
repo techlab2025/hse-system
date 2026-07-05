@@ -7,7 +7,7 @@ const props = defineProps<{
 <template>
   <div class="investegaion-take-action-card" :class="isCorrect == 1 ? '' : 'wrong-action'">
     <p class="corrective-action" :class="isCorrect == 1 ? '' : 'wrong-action'">
-      {{ isCorrect == 1 ? $t('correct_action') : $t('wrong_action') }}
+      {{ isCorrect == 1 ? $t('effective_action') : $t('ineffective_action') }}
     </p>
     <p class="description">{{ action }}</p>
   </div>

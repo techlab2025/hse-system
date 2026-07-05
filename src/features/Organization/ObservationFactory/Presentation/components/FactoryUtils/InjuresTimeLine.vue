@@ -58,6 +58,7 @@ const addNewAnswer = () => {
 }
 
 const DeleteItem = (index: number) => {
+  if (Answers.value.length <= 1) return
   Answers.value.splice(index, 1)
   isSelectHasContent.value.splice(index, 1)
   UpdateData()
@@ -169,10 +170,14 @@ onMounted(fetchEmployees)
               <div class="timeline-icon">
                 <DeleteItemAction
                   class="cursor-pointer"
-                  v-if="index >= 0 && index !== Answers.length - 1"
+                  v-if="Answers.length > 1"
                   @click="DeleteItem(index)"
                 />
-                <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
+                <AddAnswer
+                  v-if="index === Answers.length - 1"
+                  @click="addNewAnswer"
+                  class="cursor-pointer"
+                />
               </div>
             </div>
 
@@ -237,18 +242,7 @@ onMounted(fetchEmployees)
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('Type and Nature of Injury') }}</label>
-                <input
-                  type="text"
-                  class="input"
-                  :placeholder="$t('add your title')"
-                  v-model="item.text"
-                  @input="UpdateData"
-                />
-              </div>
-
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+                <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
@@ -258,7 +252,7 @@ onMounted(fetchEmployees)
                   class="input"
                   :controller="indexInjuryController"
                   :params="indexInjuryParams"
-                  :label="$t('injury Classification')"
+                  :label="$t('Type and Nature of Injury')"
                   id="injury"
                   :placeholder="$t('select your injury Classification')"
                   @update:modelValue="UpdateInjury($event, index)"
@@ -277,6 +271,19 @@ onMounted(fetchEmployees)
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+                <label for="">{{ $t('Description of Injury') }}</label>
+                <input
+                  type="text"
+                  class="input"
+                  :placeholder="$t('add your title')"
+                  v-model="item.text"
+                  @input="UpdateData"
+                />
+              </div>
+
+
+
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('Evidence Retrieval (Photos)') }}</label>
                 <MultiImagesInput

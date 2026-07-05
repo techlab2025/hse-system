@@ -33,6 +33,7 @@ import SimilarObservatioParams from '../../../Core/params/SimilarObservation/Sim
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
 import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
 import DatePicker from 'primevue/datepicker'
+import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 
 interface items {
   title: string
@@ -55,6 +56,33 @@ const investigatingId = route.query.investigating_id
 const showInvestigationResultController = ShowInvestigatingResultController.getInstance()
 const state = computed(() => showInvestigationResultController.state.value)
 const router = useRouter()
+const meetingPlatformLabels: Record<number, string> = {
+  [InvestigationMeetingEnum.GOOGLE_MEET]: 'Google Meet',
+  [InvestigationMeetingEnum.ZOOM]: 'Zoom',
+  [InvestigationMeetingEnum.SKYPE]: 'Skype',
+  [InvestigationMeetingEnum.TEAM]: 'Teams',
+  [InvestigationMeetingEnum.OTHER]: 'Other',
+}
+
+const latestMeeting = computed(() => {
+  const meetings = state.value?.data?.meeting ?? state.value?.data?.investigationMeetings ?? []
+  return meetings.length ? meetings[meetings.length - 1] : null
+})
+
+const isLatestMeetingOther = computed(
+  () => Number(latestMeeting.value?.type) === InvestigationMeetingEnum.OTHER,
+)
+
+const latestMeetingDisplayLabel = computed(() =>
+  isLatestMeetingOther.value ? 'meeting place:' : 'meeting platform:',
+)
+
+const latestMeetingDisplayValue = computed(() => {
+  if (!latestMeeting.value) return '-'
+  if (isLatestMeetingOther.value) return latestMeeting.value?.place || '-'
+
+  return meetingPlatformLabels[Number(latestMeeting.value?.type)] || latestMeeting.value?.type || '-'
+})
 const emptyCapaActionPlan = {
   corrective: [],
   preventive: [],
@@ -347,6 +375,7 @@ watch(
     fetchSimilarObservations()
   },
 )
+
 </script>
 <template>
   <DataStatus :controller="state">
@@ -400,6 +429,11 @@ watch(
                   >{{ state?.data?.investigationMeetingDate }} &
                   {{ state?.data?.investigationMeetingTime }}</span
                 >
+              </p>
+              <p>
+                {{ latestMeetingDisplayLabel }}
+
+                <span class="team-number">{{ latestMeetingDisplayValue }}</span>
               </p>
             </div>
           </div>

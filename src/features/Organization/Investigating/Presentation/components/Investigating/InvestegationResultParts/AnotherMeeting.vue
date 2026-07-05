@@ -8,18 +8,26 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestegationAnotherMeetingParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationAnotherMeetingParams'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import { InvestigationMeetingEnum } from '../../../../Core/Enums/investigation_meeting_enum'
 
 const emit = defineEmits(['update:data'])
 const MeetingType = ref<string>('')
 
 const time = ref(new Date())
 const date = ref(new Date())
-const SelectedPlatform = ref<TitleInterface>(new TitleInterface({ id: 1, title: 'zoom' }))
-const Platforms = ref([
-  new TitleInterface({ id: 1, title: 'zoom' }),
-  new TitleInterface({ id: 2, title: 'teams' }),
-  new TitleInterface({ id: 3, title: 'other' }),
+const SelectedPlatform = ref<TitleInterface>(new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'zoom' }))
+
+const Platforms = ref<TitleInterface[]>([
+  new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.TEAM, title: 'Teams' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.SKYPE, title: 'Skype' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.GOOGLE_MEET, title: 'Google Meet' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.OTHER, title: 'Other' }),
 ])
+
+const isOtherMeetingPlatform = () =>
+  Number(SelectedPlatform.value?.id) === InvestigationMeetingEnum.OTHER
+
 const UpdateData = () => {
   const Meeting = new InvestegationAnotherMeetingParams(
     formatJoinDate(date?.value),
@@ -36,6 +44,7 @@ const UpdateData = () => {
 
 const setPlatform = (data: TitleInterface) => {
   SelectedPlatform.value = data
+  if (!isOtherMeetingPlatform()) MeetingType.value = ''
   UpdateData()
 }
 
@@ -110,7 +119,7 @@ watch(
         />
       </div>
 
-      <div class="input-wrapper col-span-3" v-if="SelectedPlatform!.id == 3">
+      <div class="input-wrapper col-span-3" v-if="isOtherMeetingPlatform()">
         <label for="place">Meeting Place</label>
         <input
           id="place"

@@ -27,7 +27,7 @@ const RouterBack = () => router.back()
         :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
         class="sidebar-back"
       >
-        <BackIcon class="icon" />
+        <!-- <BackIcon class="icon" /> -->
         <span>Home</span>
       </router-link>
 
@@ -84,5 +84,14 @@ const RouterBack = () => router.back()
 
 .sidebar.close .sidebar-back {
   display: none;
+}
+.sidebar-back span {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
 }
 </style>
