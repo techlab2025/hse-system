@@ -93,7 +93,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                     <div class="flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="toggleMode(index, true)">
-                        {{ $t('name_of_witness') }}
+                        {{ $t('unemployed_witness') }}
                       </button>
 
                       <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"

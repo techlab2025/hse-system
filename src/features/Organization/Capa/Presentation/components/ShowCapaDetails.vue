@@ -123,7 +123,7 @@ onMounted(() => {
         />
         <section class="lesson-section">
           <div class="saved-lesson">
-            <span>Saved lesson learnt</span>
+            <span> lesson learnt</span>
             <div
               v-if="state.data?.investigation?.lessonLearnt"
               class="saved-lesson-content"

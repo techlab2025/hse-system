@@ -219,7 +219,7 @@ onMounted(fetchEmployees)
                         class="emp-name"
                         @click.prevent="toggleMode(index, true)"
                       >
-                        {{ $t('injured person name /id') }}
+                        {{ $t('unemployed_injured_name ') }}
                       </button>
 
                       <button

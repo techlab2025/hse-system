@@ -251,7 +251,7 @@ const PositionDialog = ref(false)
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"

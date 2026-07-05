@@ -81,7 +81,9 @@ const latestMeetingDisplayValue = computed(() => {
   if (!latestMeeting.value) return '-'
   if (isLatestMeetingOther.value) return latestMeeting.value?.place || '-'
 
-  return meetingPlatformLabels[Number(latestMeeting.value?.type)] || latestMeeting.value?.type || '-'
+  return (
+    meetingPlatformLabels[Number(latestMeeting.value?.type)] || latestMeeting.value?.type || '-'
+  )
 })
 const emptyCapaActionPlan = {
   corrective: [],
@@ -142,7 +144,7 @@ const AddEnvestigatingResult = async () => {
     investegaionLevel: SelectedLevel.value?.id,
     FiveWhyQuestionsData: FiveWhyQuestionsData.value,
     IncidantDescription: IncidantDescription.value,
-    eventTimeLines:eventTimeLines,
+    eventTimeLines: eventTimeLines,
     recommendation: recommendation.value,
     Injury: Accidents.value?.accidentsData?.map((item: any) => {
       const employeeId = item?.employee?.id || 0
@@ -168,8 +170,8 @@ const AddEnvestigatingResult = async () => {
   )
   // if (res.value.error == null && addInvestigationResultParams.isAnotherMeeting == 0) {
   //   openDialog.value = true
-  if (res.value.error == null ) {
-  router.push('/organization/investigating')
+  if (res.value.error == null) {
+    router.push('/organization/investigating')
   }
 
   // console.log(res.value.error, 'error')
@@ -373,7 +375,6 @@ watch(
     fetchSimilarObservations()
   },
 )
-
 </script>
 <template>
   <DataStatus :controller="state">
@@ -541,6 +542,7 @@ watch(
                       :id="`event_description_${index}`"
                       v-model="item.description"
                       class="input"
+                      style="min-height: 10px !important"
                       :placeholder="'What happened? (in detail)'"
                       @input="updateIncidentTimelineDescription"
                     ></textarea>
@@ -704,7 +706,7 @@ watch(
             </article>
           </div>
 
-          <p v-else class="similar-observations-empty">No similar observations found.</p>
+          <p v-else class="similar-observations-empty">No similar incidents found.</p>
         </section>
 
         <InvestegationAttachment @update:data="setInvestigationAttachments" />
@@ -972,12 +974,16 @@ watch(
 
 .event-timeline-fields {
   display: flex;
-  flex-direction: column;
-  // grid-template-columns: minmax(190px, 0.34fr) minmax(0, 1fr);
+  // flex-direction: column;
+  grid-template-columns: minmax(190px, 0.34fr) minmax(0, 1fr);
   gap: 0.9rem;
 
   .input-wrapper {
     margin: 0;
+    width: 50%;
+    textarea {
+      max-height: 100px;
+    }
   }
 
   label {

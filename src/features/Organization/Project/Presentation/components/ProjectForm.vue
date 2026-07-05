@@ -353,7 +353,7 @@ const UpdateSerial = (data) => {
       :switch_reverse="true"
       @update:value="UpdateSerial"
     />
-    <!-- <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <!-- <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"

@@ -600,7 +600,7 @@ const ShiftsDialog = ref(false)
 
     <!-- Serial -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
-      <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`Ref`) }}.</label>
+      <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label>
       <input
         type="text"
         v-model="SerialNumber"
