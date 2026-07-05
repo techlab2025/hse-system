@@ -242,7 +242,7 @@ onMounted(fetchEmployees)
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-                <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
@@ -282,8 +282,6 @@ onMounted(fetchEmployees)
                 />
               </div>
 
-
-
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <label for="">{{ $t('Evidence Retrieval (Photos)') }}</label>
                 <MultiImagesInput
@@ -297,7 +295,9 @@ onMounted(fetchEmployees)
                 class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
                 @click="toggleWorkStopped(index)"
               >
-                <label class="w-full" for="is_sstoped">{{ $t('is_work_stopped') }}</label>
+                <label class="w-full" for="is_sstoped">{{
+                  $t('Did the injury cause a work stoppage?')
+                }}</label>
                 <Checkbox
                   binary
                   disabled
