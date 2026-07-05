@@ -142,7 +142,7 @@ const AddEnvestigatingResult = async () => {
     investegaionLevel: SelectedLevel.value?.id,
     FiveWhyQuestionsData: FiveWhyQuestionsData.value,
     IncidantDescription: IncidantDescription.value,
-    // eventTimeLines:eventTimeLines,
+    eventTimeLines:eventTimeLines,
     recommendation: recommendation.value,
     Injury: Accidents.value?.accidentsData?.map((item: any) => {
       const employeeId = item?.employee?.id || 0
