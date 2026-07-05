@@ -34,6 +34,7 @@ import type HazardDetailsModel from '@/features/Organization/ObservationFactory/
 import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
 import DatePicker from 'primevue/datepicker'
 import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
+import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 
 interface items {
   title: string
@@ -289,22 +290,24 @@ const eventTimelineItems = ref<EventTimelineItem[]>([
 
 const formatTimelineTime = (time: Date | null) => {
   if (!time) return ''
-  return time.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  console.log(formatTime(time), 'timeee')
+  return formatTime(time)
+  // return time.toLocaleTimeString([], {
+  //   hour: '2-digit',
+  //   minute: '2-digit',
+  // })
 }
 
 const updateIncidentTimelineDescription = () => {
-  IncidantDescription.value = eventTimelineItems.value
-    .map((item, index) => {
-      const time = formatTimelineTime(item.time)
-      const description = item.description.trim()
-      if (!time && !description) return ''
-      return `${index + 1}. ${time ? `[${time}] ` : ''}${description}`
-    })
-    .filter(Boolean)
-    .join('\n')
+  // IncidantDescription.value = eventTimelineItems.value
+    // .map((item, index) => {
+    //   const time = formatTimelineTime(item.time)
+    //   const description = item.description.trim()
+    //   if (!time && !description) return ''
+    //   return `${index + 1}. ${time ? `[${time}] ` : ''}${description}`
+    // })
+    // .filter(Boolean)
+    // .join('\n')
 }
 
 const addEventTimelineItem = () => {
