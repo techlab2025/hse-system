@@ -164,10 +164,15 @@ watch(
         ]"
       >
         <div>
-          <IndexHazardHeader
+          <!-- <IndexHazardHeader
             :title="`CAPA`"
             :length="state?.data?.length || 0"
             :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          /> -->
+          <IndexHazardHeader
+            :title="`CAPA`"
+            :length="state?.pagination?.total || 0"
             @update:data="setSelectedProjectFilter"
           />
 
@@ -178,7 +183,7 @@ watch(
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
               ]"
             >
-              <IndexFilter :filters="Filters!" @update:data="ApplayFilter" />
+              <!-- <IndexFilter :filters="Filters!" @update:data="ApplayFilter" /> -->
             </PermissionBuilder>
           </div>
         </div>
