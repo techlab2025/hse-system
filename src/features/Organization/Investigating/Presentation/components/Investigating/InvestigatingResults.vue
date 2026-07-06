@@ -386,19 +386,20 @@ import AccordionContent from 'primevue/accordioncontent'
 import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
 import DownArrow from '@/shared/icons/DownArrow.vue'
 
-const ActivePanel = ref('1')
+const ActivePanel = ref<string | null>('1')
+const isPanelOpen = (panel: string) => ActivePanel.value === panel
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <Accordion :value="ActivePanel" lazy>
+        <Accordion v-model:value="ActivePanel" lazy>
           <AccordionPanel value="1">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>General Identification</p>
-                <span class="arrow"><DownArrow /></span>
+                <span class="arrow" :class="{ open: isPanelOpen('1') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -427,6 +428,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Investigation Team Setup</p>
+                <span class="arrow" :class="{ open: isPanelOpen('2') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -493,6 +495,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Events Timeline Builder</p>
+                <span class="arrow" :class="{ open: isPanelOpen('3') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -568,6 +571,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Health Impact Integration</p>
+                <span class="arrow" :class="{ open: isPanelOpen('4') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -586,6 +590,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Witness Management</p>
+                <span class="arrow" :class="{ open: isPanelOpen('5') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -601,6 +606,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Immediate Action Evaluation</p>
+                <span class="arrow" :class="{ open: isPanelOpen('6') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -618,6 +624,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Root Cause Analysis (5 Whys)</p>
+                <span class="arrow" :class="{ open: isPanelOpen('7') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -654,6 +661,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Action Plan : Corrective and Preventive Actions</p>
+                <span class="arrow" :class="{ open: isPanelOpen('8') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -665,6 +673,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Lessons Learned</p>
+                <span class="arrow" :class="{ open: isPanelOpen('9') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -688,6 +697,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Similar incident Retrieval</p>
+                <span class="arrow" :class="{ open: isPanelOpen('10') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -721,6 +731,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Attachments</p>
+                <span class="arrow" :class="{ open: isPanelOpen('11') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -748,6 +759,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>Another Meeting</p>
+                <span class="arrow" :class="{ open: isPanelOpen('12') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -851,6 +863,47 @@ const ActivePanel = ref('1')
   width: 100%;
 }
 
+.investigation-title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.65rem;
+
+  p {
+    flex: 1;
+  }
+
+  .arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-inline-start: auto;
+    color: #94a3b8;
+    transform: rotate(0deg);
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
+
+    &.open {
+      color: var(--PrimaryColor);
+      transform: rotate(180deg);
+    }
+
+    :deep(svg) {
+      width: 18px;
+      height: 18px;
+    }
+
+    :deep(path) {
+      fill: currentColor;
+      transition: fill 0.25s ease;
+    }
+  }
+}
+
+
 .investigation-result {
   :deep(.p-accordion div.input-select),
   :deep(.p-accordion div.p-select),
@@ -859,7 +912,8 @@ const ActivePanel = ref('1')
   :deep(.p-accordion div.p-inputwrapper),
   :deep(.p-accordion .input-wrapper input),
   :deep(.p-accordion .input-wrapper textarea),
-  :deep(.p-accordion .p-inputtext) {
+  :deep(.p-accordion .p-inputtext),
+  :deep(.multi-image-uploader) {
     border: 1px solid #cbd5e1 !important;
     border-radius: 14px !important;
     background-color: #ffffff !important;

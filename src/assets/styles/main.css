@@ -24248,4 +24248,11 @@ html[dir=ltr] .actions-container {
   color: #202020;
   font-family: "Light";
   margin-inline-start: auto;
+}
+
+label {
+  font-weight: 600 !important;
+  font-size: var(--md-size) !important;
+  color: #202020 !important;
+  font-family: "Light" !important;
 }/*# sourceMappingURL=main.css.map */
