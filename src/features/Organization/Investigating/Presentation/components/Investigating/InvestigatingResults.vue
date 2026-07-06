@@ -357,7 +357,7 @@ const fetchSimilarObservations = async () => {
       word: '',
       withPage: 1,
       perPage: 5,
-      pageNumber: 10,
+      pageNumber: 1,
     })
     const result = await similarObservationController.fetchSimilarObservations(
       similarObservationParams,
@@ -384,6 +384,7 @@ import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
+import DownArrow from '@/shared/icons/DownArrow.vue'
 
 const ActivePanel = ref('1')
 </script>
@@ -397,6 +398,7 @@ const ActivePanel = ref('1')
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
                 <p>General Identification</p>
+                <span class="arrow"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -842,9 +844,52 @@ const ActivePanel = ref('1')
 </template>
 
 <style scoped lang="scss">
+.arrow {
+  margin-left: auto;
+}
 .p-accordion {
   width: 100%;
 }
+
+.investigation-result {
+  :deep(.p-accordion div.input-select),
+  :deep(.p-accordion div.p-select),
+  :deep(.p-accordion div.p-multiselect),
+  :deep(.p-accordion div.p-datepicker),
+  :deep(.p-accordion div.p-inputwrapper),
+  :deep(.p-accordion .input-wrapper input),
+  :deep(.p-accordion .input-wrapper textarea),
+  :deep(.p-accordion .p-inputtext) {
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  :deep(.p-accordion div.input-select:hover),
+  :deep(.p-accordion div.p-select:hover),
+  :deep(.p-accordion div.p-multiselect:hover),
+  :deep(.p-accordion .input-wrapper input:hover),
+  :deep(.p-accordion .input-wrapper textarea:hover),
+  :deep(.p-accordion .p-inputtext:hover) {
+    border-color: #94a3b8 !important;
+  }
+
+  :deep(.p-accordion div.input-select:focus-within),
+  :deep(.p-accordion div.input-select.p-focus),
+  :deep(.p-accordion div.p-select:focus-within),
+  :deep(.p-accordion div.p-select.p-focus),
+  :deep(.p-accordion div.p-multiselect:focus-within),
+  :deep(.p-accordion div.p-multiselect.p-focus),
+  :deep(.p-accordion .input-wrapper input:focus),
+  :deep(.p-accordion .input-wrapper textarea:focus),
+  :deep(.p-accordion .p-inputtext:focus) {
+    border-color: #94a3b8 !important;
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.16) !important;
+    outline: none !important;
+  }
+}
+
 .lesson-section {
   width: 100%;
 }
@@ -1291,5 +1336,8 @@ const ActivePanel = ref('1')
   a {
     width: 50% !important;
   }
+}
+.investigation-result .btns .btn-primary {
+  max-width: 100% !important;
 }
 </style>

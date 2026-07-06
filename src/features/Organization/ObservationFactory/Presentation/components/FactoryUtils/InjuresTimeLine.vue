@@ -316,6 +316,9 @@ onMounted(fetchEmployees)
 </template>
 
 <style scoped>
+.input-wrapper:nth-child(2) {
+  grid-column: span 12 !important;
+}
 .injuries-timeline {
   position: relative;
   width: 100%;
