@@ -256,8 +256,9 @@ watch(
                         <div class="card-content new-btn">
                           <router-link :to="`/organization/capa/${item?.capa?.capaId}`">
                             <div class="observation-details">
+                              <!--  {{ GetObservationType(item.type) }}  -->
                               <p>
-                                {{ GetObservationType(item.type) }} details
+                                details
                                 <Observdetails />
                               </p>
                             </div>

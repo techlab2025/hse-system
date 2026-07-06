@@ -4,16 +4,12 @@ import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import Search from '@/shared/icons/Search.vue'
-
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
@@ -28,8 +24,6 @@ import NotRequired from '../supcomponents/NotRequired.vue'
 
 import IndexEmployeeCertificateController from '../controllers/indexEmployeeCertificateController'
 import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCertificateParams'
-
-import RenewCertificateNotRequiredDialog from '../supcomponents/RenewCertificateNotRequiredDialog.vue'
 
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 
@@ -53,7 +47,7 @@ const Certificatestate = ref<CertificateModel[]>(indexCertificateController.stat
 const fetchCertificates = async (
   query: string = '',
   pageNumber: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
 ) => {
   const params = new IndexCertificateParams(query, pageNumber, perPage, 0)
   await indexCertificateController.getData(params)
@@ -63,14 +57,14 @@ const fetchOrganizationEmployee = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1
+  withPage: number = 1,
 ) => {
   const params = new IndexEmployeeCertificateParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    route.params.id ? Number(route.params.id) : null
+    route.params.id ? Number(route.params.id) : null,
   )
 
   await indexEmployeeCertificateController.getData(params)
@@ -121,7 +115,7 @@ watch(
   (newState) => {
     if (newState) state.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 watch(
@@ -129,26 +123,21 @@ watch(
   (newState) => {
     if (newState) Certificatestate.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 /* --------------------------- CERTIFICATE STATUS ---------------------------- */
 
-const getCertificateStatus = (
-  employee: OrganizatoinEmployeeModel,
-  certificateId: number
-) => {
+const getCertificateStatus = (employee: OrganizatoinEmployeeModel, certificateId: number) => {
   const cert = employee.certificates?.find((c: any) => c.id === certificateId)
   return cert?.status
 }
 
 const getEmployeeCertificationStatus = (
   employee: OrganizatoinEmployeeModel,
-  certificateId: number
+  certificateId: number,
 ) => {
-  const cert = employee.employee_certificates?.find(
-    (c: any) => c.certificate_id === certificateId
-  )
+  const cert = employee.employee_certificates?.find((c: any) => c.certificate_id === certificateId)
 
   return cert?.status
 }
@@ -162,139 +151,467 @@ const AllCertificates = computed(() => {
 
   return Certificatestate.value?.data || []
 })
+
+const employeeCount = computed(() => state.value?.data?.length || 0)
+const certificateCount = computed(() => AllCertificates.value?.length || 0)
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
-        <Search />
-      </span>
+  <section class="employee-certificates-page">
+    <div class="certificate-matrix-toolbar">
+      <div>
+        <span class="matrix-kicker">Certificate matrix</span>
+        <h1>Employee certification board</h1>
+        <p>Track validity, expiry, renewals, and missing certificates across employees.</p>
+      </div>
 
-      <input v-model="word" placeholder="search" class="input" type="text" @input="searchEmployeeCertificate" />
+      <div class="matrix-stats">
+        <span>{{ employeeCount }} employees</span>
+        <span>{{ certificateCount }} certificates</span>
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-    PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE
-  ]">
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive employee-certificates-matrix">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th class="w-fit">{{ $t('emp') }}</th>
+    <div class="matrix-search-row">
+      <div class="input-search matrix-search">
+        <span class="icon-remove" @click="((word = ''), searchEmployeeCertificate())">
+          <Search />
+        </span>
 
-                <th v-for="cert in AllCertificates" :key="cert.id">
-                  {{ cert.title }}
-                </th>
-              </tr>
-            </thead>
+        <input
+          v-model="word"
+          placeholder="Search employee"
+          class="input"
+          type="text"
+          @input="searchEmployeeCertificate"
+        />
+      </div>
+    </div>
 
-            <tbody>
-              <tr v-for="employee in state.data" :key="employee.id">
-                <td class="employee-info-container">
-                  <div class="employee-info">
-                    <span class="name">
-                      {{ employee.name }}
-                    </span>
-                  </div>
-                </td>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive employee-certificates-matrix">
+            <table class="main-table">
+              <thead>
+                <tr>
+                  <th class="w-fit">{{ $t('emp') }}</th>
 
-                <td v-for="cert in AllCertificates" :key="cert.id">
-                  <!-- VALID -->
-                  <ValidCertificate v-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Valid
-                  " :expiry_date="employee?.certificates?.find(el => el.id == cert.id)?.expired_at
-                    " :status="getCertificateStatus(employee, cert.id)" />
+                  <th v-for="cert in AllCertificates" :key="cert.id">
+                    {{ cert.title }}
+                  </th>
+                </tr>
+              </thead>
 
-                  <!-- INVALID -->
-                  <NotValidCertificate v-else-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Invalid
-                  " @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :cert="cert" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
+              <tbody>
+                <tr v-for="employee in state.data" :key="employee.id">
+                  <td class="employee-info-container">
+                    <div class="employee-info">
+                      <!-- <span class="employee-avatar">{{ employee.name?.charAt(0) || '?' }}</span> -->
+                      <span class="name">
+                        {{ employee.name }}
+                      </span>
+                    </div>
+                  </td>
 
-                  <!-- EXPIRED -->
-                  <ExpiredCertificate v-else-if="
-                    getCertificateStatus(employee, cert.id) ==
-                    CertificateStatusEnum.Expired
-                  " @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :cert="cert" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
+                  <td v-for="cert in AllCertificates" :key="cert.id">
+                    <!-- VALID -->
+                    <ValidCertificate
+                      v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
+                      :expiry_date="
+                        employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
+                      "
+                      :status="getCertificateStatus(employee, cert.id)"
+                    />
 
-                  <!-- NOT REQUIRED -->
-                  <NotRequired v-else @update:data="fetchOrganizationEmployee" :certificateId="cert.id"
-                    :organizationEmployeeId="employee.id" :is_expire_date="cert.requireExpiredDate"
-                    :status="getCertificateStatus(employee, cert.id)" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                    <!-- INVALID -->
+                    <NotValidCertificate
+                      v-else-if="
+                        getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Invalid
+                      "
+                      @update:data="fetchOrganizationEmployee"
+                      :certificateId="cert.id"
+                      :organizationEmployeeId="employee.id"
+                      :cert="cert"
+                      :is_expire_date="cert.requireExpiredDate"
+                      :status="getCertificateStatus(employee, cert.id)"
+                    />
 
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+                    <!-- EXPIRED -->
+                    <ExpiredCertificate
+                      v-else-if="
+                        getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Expired
+                      "
+                      @update:data="fetchOrganizationEmployee"
+                      :certificateId="cert.id"
+                      :organizationEmployeeId="employee.id"
+                      :cert="cert"
+                      :is_expire_date="cert.requireExpiredDate"
+                      :status="getCertificateStatus(employee, cert.id)"
+                    />
+
+                    <!-- NOT REQUIRED -->
+                    <NotRequired
+                      v-else
+                      @update:data="fetchOrganizationEmployee"
+                      :certificateId="cert.id"
+                      :organizationEmployeeId="employee.id"
+                      :is_expire_date="cert.requireExpiredDate"
+                      :status="getCertificateStatus(employee, cert.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+
+        <template #empty>
+          <DataFailed
+            title="..ops! You have No Employee in this heirarchy"
+            link="/organization"
+            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+          />
+        </template>
+
+        <template #failed>
+          <DataFailed
+            title="..ops! You have No Employee in this heirarchy"
+            link="/organization"
+            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed addText="Have not Permission" />
       </template>
-
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-
-      <template #empty>
-        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
-      </template>
-
-      <template #failed>
-        <DataFailed title="..ops! You have No Employee in this heirarchy" link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data" />
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed addText="Have not Permission" />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </section>
 </template>
 
 <style scoped>
-.w-fit {
-  width: fit-content;
+.employee-certificates-page {
+  min-width: 0;
 }
 
-/* .text-center {
-  text-align: center !important;
-} */
+.certificate-matrix-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(221, 226, 237, 0.76);
+  border-radius: 24px;
+  background: radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.13), transparent 34%);
+  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.07);
+}
+
+.matrix-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border: 1px solid rgba(29, 78, 216, 0.18);
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.certificate-matrix-toolbar h1 {
+  margin: 8px 0 4px;
+  color: #041953;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+.certificate-matrix-toolbar p {
+  max-width: 620px;
+  margin: 0;
+  color: #607086;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.matrix-stats {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.matrix-stats span {
+  min-height: 32px;
+  padding: 8px 11px;
+  border: 1px solid rgba(74, 174, 58, 0.2);
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.matrix-search-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 420px);
+  margin-bottom: 14px;
+}
+
+.matrix-search {
+  position: relative;
+  width: 100%;
+}
+
+.matrix-search .input {
+  min-height: 46px;
+  padding-inline-start: 44px;
+  border: 1px solid rgba(221, 226, 237, 0.9) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 12px 26px rgba(15, 25, 39, 0.05);
+}
+
+.matrix-search .icon-remove {
+  position: absolute;
+  z-index: 2;
+  inset-inline-start: 14px;
+  top: 50%;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #1d4ed8;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.w-fit {
+  width: 220px;
+  min-width: 220px;
+}
+
+.employee-certificates-matrix {
+  max-width: 100%;
+  padding: 12px;
+  overflow-x: auto;
+  border: 1px solid rgba(221, 226, 237, 0.78);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.1), transparent 28%),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: 0 20px 48px rgba(15, 25, 39, 0.08);
+}
+
+.employee-certificates-matrix .main-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+}
 
 .table-responsive table.main-table thead tr th {
+  min-width: 168px;
+  max-width: 220px;
+  padding: 14px 16px !important;
+  border-block: 1px solid rgba(221, 226, 237, 0.92) !important;
+  color: #3d4c5e !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1.25;
   text-align: center !important;
+  text-transform: none !important;
+  white-space: normal !important;
+  background:
+    linear-gradient(135deg, rgba(29, 78, 216, 0.08), rgba(74, 174, 58, 0.06)), #f8fafc !important;
 }
 
 .table-responsive table.main-table thead tr th:first-child {
+  position: sticky !important;
+  z-index: 8 !important;
+  inset-inline-start: 0 !important;
+  min-width: 240px;
+  border-inline-start: 1px solid rgba(221, 226, 237, 0.92) !important;
+  border-start-start-radius: 16px;
+  border-end-start-radius: 16px;
   text-align: start !important;
+  background: linear-gradient(135deg, #041953, #1d4ed8) !important;
+  color: #fff !important;
 }
 
-.table-responsive table.main-table thead tr th:last-child {
-  justify-content: center !important;
+.table-responsive table.main-table thead tr th:last-child,
+.employee-certificates-matrix .main-table td:last-child {
+  position: static !important;
+  inset-inline-end: auto !important;
 }
 
 .employee-certificates-matrix .main-table td {
+  min-width: 168px;
+  padding: 12px !important;
+  border-block: 1px solid rgba(221, 226, 237, 0.78) !important;
+  background: #fff !important;
   text-align: center !important;
+  vertical-align: middle !important;
 }
 
 .employee-certificates-matrix .main-table td:first-child {
+  position: sticky !important;
+  z-index: 7 !important;
+  inset-inline-start: 0 !important;
+  min-width: 240px;
+  border-inline-start: 1px solid rgba(221, 226, 237, 0.78) !important;
+  border-start-start-radius: 16px;
+  border-end-start-radius: 16px;
   text-align: start !important;
+  background: linear-gradient(90deg, #fff 78%, rgba(255, 255, 255, 0)), #fff !important;
+  box-shadow: 16px 0 24px rgba(15, 25, 39, 0.07);
+}
+
+.employee-certificates-matrix .main-table tbody tr:hover td {
+  background:
+    linear-gradient(135deg, rgba(29, 78, 216, 0.045), rgba(74, 174, 58, 0.035)), #fff !important;
+}
+
+.employee-certificates-matrix .main-table tbody tr:hover td:first-child {
+  background: linear-gradient(90deg, #f8fbff 78%, rgba(248, 251, 255, 0)), #f8fbff !important;
+}
+
+.employee-info-container .employee-info {
+  display: flex !important;
+  width: 100%;
+  min-width: 0;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.employee-avatar {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 13px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1d4ed8, #041953);
+  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.18);
+}
+
+.employee-info-container .name {
+  min-width: 0;
+  overflow: hidden;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-certificates-matrix :deep(.valid-certificate),
+.employee-certificates-matrix :deep(.invalid-certificate),
+.employee-certificates-matrix :deep(.expired-certificate) {
+  min-width: 130px;
+  min-height: 58px;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px 10px;
+  border-radius: 15px;
+  box-shadow: none;
+}
+
+.employee-certificates-matrix :deep(.valid-certificate) {
+  border: 1px solid rgba(74, 174, 58, 0.18);
+  background: rgba(74, 174, 58, 0.08);
+}
+
+.employee-certificates-matrix :deep(.invalid-certificate) {
+  border: 1px solid rgba(226, 53, 53, 0.18);
+  background: rgba(226, 53, 53, 0.06);
+}
+
+.employee-certificates-matrix :deep(.expired-certificate) {
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.employee-certificates-matrix :deep(.not-required-container) {
+  min-width: 130px;
+  justify-content: center;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: #f8fafc;
+}
+
+.employee-certificates-matrix :deep(.valid-title),
+.employee-certificates-matrix :deep(.invalid-title),
+.employee-certificates-matrix :deep(.expired-title),
+.employee-certificates-matrix :deep(.not-req-span) {
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  text-transform: capitalize;
+}
+
+.employee-certificates-matrix :deep(.valid-date) {
+  color: #607086;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.employee-certificates-matrix :deep(button) {
+  min-height: 28px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .certificate-matrix-toolbar {
+    flex-direction: column;
+  }
+
+  .matrix-stats {
+    justify-content: flex-start;
+  }
+
+  .matrix-search-row {
+    grid-template-columns: 1fr;
+  }
+
+  .w-fit,
+  .table-responsive table.main-table thead tr th:first-child,
+  .employee-certificates-matrix .main-table td:first-child {
+    min-width: 190px;
+  }
 }
 </style>

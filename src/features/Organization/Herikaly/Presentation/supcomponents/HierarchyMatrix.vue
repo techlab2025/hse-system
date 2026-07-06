@@ -90,7 +90,6 @@ const handleCountPerPage = (count: number) => {
 watch(
   () => hierarchyCertyificateController.state.value,
   (newState) => {
-    console.log(newState, 'newState')
     if (newState) state.value = newState
   },
   { deep: true },
@@ -141,13 +140,18 @@ const AllCertificates = computed(() => {
   return Certificatestate.value?.data || []
 })
 
+const hierarchyCount = computed(() => state.value?.data?.length || 0)
+const certificateCount = computed(() => AllCertificates.value?.length || 0)
+
 // DeleteCErtificateToHierarachyController
 const ChangeCertificatioRequired = async (
-  event: any,
+  event: Event,
   CertificateId: number,
   HieararchyId: number,
 ) => {
-  if (event.target.checked) {
+  const isChecked = (event.target as HTMLInputElement).checked
+
+  if (isChecked) {
     const addCErtificateToHierarachyController = AddCErtificateToHierarachyController.getInstance()
     const addCertificateToHierarchyParams = new AddCertificateToHierarchyParams({
       certificateId: CertificateId,
@@ -178,147 +182,484 @@ const ChangeCertificatioRequired = async (
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchHierarchyCertificate())">
-        <Search />
-      </span>
+  <section class="hierarchy-matrix-page">
+    <div class="hierarchy-matrix-toolbar">
+      <div>
+        <span class="matrix-kicker">Requirement matrix</span>
+        <h1>Hierarchy certification board</h1>
+        <p>Choose which certificates are required for every organization position.</p>
+      </div>
 
-      <input
-        v-model="word"
-        placeholder="search"
-        class="input"
-        type="text"
-        @input="searchHierarchyCertificate"
-      />
+      <div class="matrix-stats">
+        <span>{{ hierarchyCount }} positions</span>
+        <span>{{ certificateCount }} certificates</span>
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-      PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-      PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-      PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-      PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <!-- {{ state.data }} -->
+    <div class="matrix-search-row">
+      <div class="input-search matrix-search">
+        <span class="icon-remove" @click="((word = ''), searchHierarchyCertificate())">
+          <Search />
+        </span>
 
-        <div class="table-responsive employee-certificates-matrix">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th class="w-fit">{{ $t('positions') }}</th>
-                <th v-for="cert in AllCertificates" :key="cert.id">
-                  <router-link
-                    :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`"
-                  >
-                    {{ cert.title }}
-                  </router-link>
-                </th>
-              </tr>
-            </thead>
+        <input
+          v-model="word"
+          placeholder="Search position"
+          class="input"
+          type="text"
+          @input="searchHierarchyCertificate"
+        />
+      </div>
+    </div>
 
-            <tbody>
-              <tr v-for="hierarchy in state.data" :key="hierarchy.id">
-                <td class="employee-info-container">
-                  <router-link
-                    :to="`/organization/employee-certificate/${hierarchy.id}`"
-                    class="employee-info"
-                  >
-                    <span class="name">
-                      {{ hierarchy.title }}
-                    </span>
-                  </router-link>
-                </td>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
+        PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <!-- {{ state.data }} -->
 
-                <td
-                  v-for="cert in AllCertificates"
-                  :key="cert.id"
-                  :class="getEmployeeCertificationclass(hierarchy, cert)"
-                >
-                  <p class="cert-status">
-                    <label :for="`cert-${cert.id}-hierarchy-${hierarchy.id}`">
-                      {{ getEmployeeCertificationStatus(hierarchy, cert) }}</label
+          <div class="table-responsive employee-certificates-matrix">
+            <table class="main-table">
+              <thead>
+                <tr>
+                  <th class="w-fit">{{ $t('positions') }}</th>
+                  <th v-for="cert in AllCertificates" :key="cert.id">
+                    <router-link
+                      :to="`/organization/organization-employee?type=3&certificate_id=${cert.id}`"
                     >
-                    <input
-                      :id="`cert-${cert.id}-hierarchy-${hierarchy.id}`"
-                      type="checkbox"
-                      :checked="hierarchy.certificates.find((el) => el.id == cert.id)"
-                      @change="ChangeCertificatioRequired($event, cert.id, hierarchy.id)"
-                    />
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                      {{ cert.title }}
+                    </router-link>
+                  </th>
+                </tr>
+              </thead>
 
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+              <tbody>
+                <tr v-for="hierarchy in state.data" :key="hierarchy.id">
+                  <td class="employee-info-container">
+                    <router-link
+                      :to="`/organization/employee-certificate/${hierarchy.id}`"
+                      class="employee-info"
+                    >
+                      <!-- <span class="position-avatar">{{ hierarchy.title?.charAt(0) || '?' }}</span> -->
+                      <span class="name"> {{ hierarchy.title }} </span>
+                    </router-link>
+                  </td>
+
+                  <td
+                    v-for="cert in AllCertificates"
+                    :key="cert.id"
+                    :class="getEmployeeCertificationclass(hierarchy, cert)"
+                  >
+                    <p class="cert-status">
+                      <label :for="`cert-${cert.id}-hierarchy-${hierarchy.id}`">
+                        {{ getEmployeeCertificationStatus(hierarchy, cert) }}</label
+                      >
+                      <span class="matrix-switch">
+                        <input
+                          :id="`cert-${cert.id}-hierarchy-${hierarchy.id}`"
+                          type="checkbox"
+                          :checked="Boolean(hierarchy.certificates.find((el) => el.id == cert.id))"
+                          @change="ChangeCertificatioRequired($event, cert.id, hierarchy.id)"
+                        />
+                        <span class="matrix-switch-track"></span>
+                      </span>
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+
+        <template #empty>
+          <DataEmpty
+            title="..ops! You have No Employee in this heirarchy"
+            link="/organization"
+            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+          />
+        </template>
+
+        <template #failed>
+          <DataFailed
+            title="..ops! You have No Employee in this heirarchy"
+            link="/organization"
+            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed addText="Have not Permission" />
       </template>
-
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-
-      <template #empty>
-        <DataEmpty
-          title="..ops! You have No Employee in this heirarchy"
-          link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
-        />
-      </template>
-
-      <template #failed>
-        <DataFailed
-          title="..ops! You have No Employee in this heirarchy"
-          link="/organization"
-          description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
-        />
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed addText="Have not Permission" />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </section>
 </template>
 
 <style scoped>
+.hierarchy-matrix-page {
+  min-width: 0;
+}
+
+.hierarchy-matrix-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(221, 226, 237, 0.76);
+  border-radius: 24px;
+  background: radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.13), transparent 34%);
+  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.07);
+}
+
+.matrix-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border: 1px solid rgba(29, 78, 216, 0.18);
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.hierarchy-matrix-toolbar h1 {
+  margin: 8px 0 4px;
+  color: #041953;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+.hierarchy-matrix-toolbar p {
+  max-width: 620px;
+  margin: 0;
+  color: #607086;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.matrix-stats {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.matrix-stats span {
+  min-height: 32px;
+  padding: 8px 11px;
+  border: 1px solid rgba(74, 174, 58, 0.2);
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.matrix-search-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 420px);
+  margin-bottom: 14px;
+}
+
+.matrix-search {
+  position: relative;
+  width: 100%;
+}
+
+.matrix-search .input {
+  min-height: 46px;
+  padding-inline-start: 44px;
+  border: 1px solid rgba(221, 226, 237, 0.9) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 12px 26px rgba(15, 25, 39, 0.05);
+}
+
+.matrix-search .icon-remove {
+  position: absolute;
+  z-index: 2;
+  inset-inline-start: 14px;
+  top: 50%;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #1d4ed8;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 .w-fit {
-  width: fit-content;
+  width: 220px;
+  min-width: 220px;
+}
+
+.employee-certificates-matrix {
+  max-width: 100%;
+  padding: 12px;
+  overflow-x: auto;
+  border: 1px solid rgba(221, 226, 237, 0.78);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.1), transparent 28%),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: 0 20px 48px rgba(15, 25, 39, 0.08);
+}
+
+.employee-certificates-matrix .main-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+}
+
+.employee-certificates-matrix .main-table th {
+  min-width: 168px;
+  max-width: 220px;
+  padding: 14px 16px !important;
+  border-block: 1px solid rgba(221, 226, 237, 0.92) !important;
+  color: #3d4c5e !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1.25;
+  text-align: center !important;
+  text-transform: none !important;
+  white-space: normal !important;
+  background:
+    linear-gradient(135deg, rgba(29, 78, 216, 0.08), rgba(74, 174, 58, 0.06)), #f8fafc !important;
+}
+
+.employee-certificates-matrix .main-table th:first-child {
+  position: sticky !important;
+  z-index: 8 !important;
+  inset-inline-start: 0 !important;
+  min-width: 240px;
+  border-inline-start: 1px solid rgba(221, 226, 237, 0.92) !important;
+  border-start-start-radius: 16px;
+  border-end-start-radius: 16px;
+  text-align: start !important;
+  background: linear-gradient(135deg, #041953, #1d4ed8) !important;
+  color: #fff !important;
+}
+
+.employee-certificates-matrix .main-table th:last-child,
+.employee-certificates-matrix .main-table td:last-child {
+  position: static !important;
+  inset-inline-end: auto !important;
+}
+
+.employee-certificates-matrix .main-table th a {
+  color: inherit;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.employee-certificates-matrix .main-table td {
+  min-width: 168px;
+  padding: 12px !important;
+  border-block: 1px solid rgba(221, 226, 237, 0.78) !important;
+  background: #fff !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.employee-certificates-matrix .main-table td:first-child {
+  position: sticky !important;
+  z-index: 7 !important;
+  inset-inline-start: 0 !important;
+  min-width: 240px;
+  border-inline-start: 1px solid rgba(221, 226, 237, 0.78) !important;
+  border-start-start-radius: 16px;
+  border-end-start-radius: 16px;
+  text-align: start !important;
+  background: linear-gradient(90deg, #fff 78%, rgba(255, 255, 255, 0)), #fff !important;
+  box-shadow: 16px 0 24px rgba(15, 25, 39, 0.07);
+}
+
+.employee-certificates-matrix .main-table tbody tr:hover td {
+  background:
+    linear-gradient(135deg, rgba(29, 78, 216, 0.045), rgba(74, 174, 58, 0.035)), #fff !important;
+}
+
+.employee-certificates-matrix .main-table tbody tr:hover td:first-child {
+  background: linear-gradient(90deg, #f8fbff 78%, rgba(248, 251, 255, 0)), #f8fbff !important;
 }
 
 .employee-info {
-  padding: 10px !important;
-  text-align: center;
-}
-.cert-status {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-th {
-  text-align: center !important;
-}
-th:last-of-type {
-  text-align: center !important;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px;
+  padding: 0 !important;
+  text-align: start;
+  text-decoration: none;
+  background: transparent !important;
 }
 
-.employee-certificates-matrix .employee-info-container .employee-info {
-  width: 100% !important;
-  justify-content: center !important;
+.position-avatar {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 13px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1d4ed8, #041953);
+  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.18);
+}
+
+.employee-info .name {
+  min-width: 0;
+  overflow: hidden;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cert-status {
+  display: flex;
+  min-width: 130px;
+  min-height: 68px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.cert-status label {
+  color: #111827;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cert_required .cert-status {
+  border: 1px solid rgba(74, 174, 58, 0.2);
+  background: rgba(74, 174, 58, 0.1);
+}
+
+.cert_required .cert-status label {
+  color: #287b22;
+}
+
+.cert_not_required .cert-status {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: #f8fafc;
+}
+
+.cert_not_required .cert-status label {
+  color: #64748b;
+}
+
+.matrix-switch {
+  position: relative;
+  display: inline-flex;
+  width: 46px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.matrix-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.matrix-switch-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #d7dee8;
+  pointer-events: none;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.matrix-switch input {
+  z-index: 2;
+}
+
+.matrix-switch-track::before {
+  position: absolute;
+  top: 4px;
+  inset-inline-start: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  content: '';
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(15, 25, 39, 0.18);
+  transition: transform 0.2s ease;
+}
+
+.matrix-switch input:checked + .matrix-switch-track {
+  background: linear-gradient(135deg, #1d4ed8, #4aae3a);
+  box-shadow: 0 8px 14px rgba(29, 78, 216, 0.18);
+}
+
+.matrix-switch input:checked + .matrix-switch-track::before {
+  transform: translateX(20px);
+}
+
+@media (max-width: 700px) {
+  .hierarchy-matrix-toolbar {
+    flex-direction: column;
+  }
+
+  .matrix-stats {
+    justify-content: flex-start;
+  }
+
+  .matrix-search-row {
+    grid-template-columns: 1fr;
+  }
+
+  .w-fit,
+  .employee-certificates-matrix .main-table th:first-child,
+  .employee-certificates-matrix .main-table td:first-child {
+    min-width: 190px;
+  }
 }
 </style>

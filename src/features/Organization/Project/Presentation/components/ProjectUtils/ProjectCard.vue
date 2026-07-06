@@ -110,7 +110,9 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
       <div class="project-card-data">
         <div class="data-info">
           <span class="info-title">{{ $t('observation') }} :</span>
-          <span class="info-count">{{ data?.observations_count }}</span>
+          <span class="info-count">{{
+            data?.observations_count + data?.observation_hazards_count
+          }}</span>
         </div>
         <!-- <div class="data-info">
           <span class="info-title">{{ $t('hazerd') }} :</span>
@@ -128,6 +130,10 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           <span class="info-title">{{ $t('Equipment') }} :</span>
           <span class="info-count warn">{{ data?.equipment_count }}</span>
         </div> -->
+        <div class="data-info">
+          <span class="info-title">{{ $t('Inspection') }} :</span>
+          <span class="info-count warn">{{ data?.inspections_count }}</span>
+        </div>
       </div>
     </div>
   </router-link>

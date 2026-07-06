@@ -43,9 +43,9 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
     <div class="employee-page-topbar">
       <div>
         <span class="page-kicker">Employee profile</span>
-        <h1>Organization employee details</h1>
+        <h1> employee details</h1>
       </div>
-      <button class="print-page-btn" type="button" @click="printPage">Print</button>
+      <!-- <button class="print-page-btn" type="button" @click="printPage">Print</button> -->
     </div>
 
     <div class="employee-layout">

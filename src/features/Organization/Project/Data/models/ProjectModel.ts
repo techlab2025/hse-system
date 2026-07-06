@@ -26,6 +26,7 @@ export default class ProjectModel extends TitleInterface {
   public assigned_employees_count: number
   public serialName: string
   public status: ProjectStatusEnum
+  public inspections_count:number
 
   constructor(
     id: number,
@@ -47,6 +48,7 @@ export default class ProjectModel extends TitleInterface {
     assigned_employees_count: number,
     serialName: string,
     status: ProjectStatusEnum,
+    inspections_count:number,
   ) {
     super({ id, title })
     this.id = id
@@ -68,6 +70,7 @@ export default class ProjectModel extends TitleInterface {
     this.assigned_employees_count = assigned_employees_count
     this.serialName = serialName
     this.status = status
+    this.inspections_count = inspections_count
   }
 
   static fromMap(data: any): ProjectModel {
@@ -91,6 +94,7 @@ export default class ProjectModel extends TitleInterface {
       data.assigned_employees_count,
       data.serial_name,
       data.status,
+      data.inspections_count,
     )
   }
 
@@ -113,6 +117,7 @@ export default class ProjectModel extends TitleInterface {
     15,
     20,
     '585145',
-    ProjectStatusEnum.active
+    ProjectStatusEnum.active,
+    10
   )
 }
