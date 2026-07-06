@@ -13,6 +13,7 @@
   .template-upload-header {
     @include flex-row(nowrap, flex-start, center);
     gap: $XsSize2;
+    width: 100%;
     .title {
       color: #6b7280;
       font-size: $MdSize;

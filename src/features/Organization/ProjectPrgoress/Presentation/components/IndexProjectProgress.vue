@@ -319,11 +319,17 @@ watch(
             />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
-              <h3>Step 2: The Roadmap</h3>
+              <span class="tip-kicker">Step 2 of 3</span>
+              <h3>The Roadmap</h3>
               <p>
                 This list contains all the forms you need to complete. Start from the top to set up
                 your system correctly.
               </p>
+              <div class="tip-progress" aria-hidden="true">
+                <span class="done"></span>
+                <span class="active"></span>
+                <span></span>
+              </div>
               <button @click="goToContentNote" class="ok-btn">Next Tip</button>
             </div>
           </div>
@@ -343,11 +349,17 @@ watch(
             :class="{ 'highlight-active': showOverlay && startNextNote }"
           >
             <div v-if="showOverlay && startNextNote" class="overlay-note content-tip">
-              <h3>Step 3: Configuration</h3>
+              <span class="tip-kicker">Step 3 of 3</span>
+              <h3>Configuration</h3>
               <p>
                 Fill in the details for each section here. Once saved, your progress will update
                 automatically.
               </p>
+              <div class="tip-progress" aria-hidden="true">
+                <span class="done"></span>
+                <span class="done"></span>
+                <span class="active"></span>
+              </div>
               <button @click="closeOnboarding" class="ok-btn">Let's Start!</button>
             </div>
 
@@ -470,8 +482,10 @@ watch(
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(6px);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(29, 78, 216, 0.22), transparent 32%),
+    rgba(4, 12, 28, 0.64);
+  backdrop-filter: blur(7px);
   z-index: 998;
   pointer-events: all;
 }
@@ -480,61 +494,151 @@ watch(
   position: relative !important;
   z-index: 99999 !important;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.11);
+  border-radius: 16px;
+  outline: 2px solid rgba(29, 78, 216, 0.42);
+  outline-offset: 6px;
+  box-shadow:
+    0 0 0 10px rgba(29, 78, 216, 0.08),
+    0 24px 70px rgba(0, 0, 0, 0.24);
   pointer-events: all;
 }
 
 .overlay-note {
   position: absolute;
-  width: 320px;
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  width: min(360px, calc(100vw - 32px));
+  overflow: visible;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 255, 0.98)),
+    #fff;
+  padding: 18px;
+  border: 1px solid rgba(214, 225, 246, 0.9);
+  border-radius: 18px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
   z-index: 99999 !important;
-  animation: fadeIn 0.4s ease-out;
+  animation: tipPop 0.32s ease-out;
+}
+
+.overlay-note::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-top: 1px solid rgba(214, 225, 246, 0.9);
+  border-left: 1px solid rgba(214, 225, 246, 0.9);
+  transform: rotate(45deg);
 }
 
 .sidebar-note {
-  top: 20px;
-  left: 105%;
+  top: calc(100% + 22px);
+  left: clamp(16px, 4vw, 56px);
   z-index: 99999 !important;
 }
 
+.sidebar-note::before {
+  top: -10px;
+  left: 56px;
+}
+
 .content-tip {
-  top: 0%;
-  left: 20%;
-  transform: translate(-50%, -50%);
+  top: 18px;
+  right: 18px;
+}
+
+.content-tip::before {
+  top: 42px;
+  right: -10px;
+  border-right: 1px solid rgba(214, 225, 246, 0.9);
+  border-bottom: 1px solid rgba(214, 225, 246, 0.9);
+  border-top: 0;
+  border-left: 0;
 }
 
 .overlay-note h3 {
-  color: #1d4ed8;
-  font-weight: 700;
+  color: #0f1927;
+  font-weight: 900;
   font-size: 20px;
-  margin-bottom: 8px;
+  margin: 8px 0 8px;
 }
 
 .overlay-note p {
-  color: #4b5563;
-  font-size: 15px;
+  color: #536173;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.5;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+}
+
+.tip-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 5px 10px;
+  border: 1px solid rgba(29, 78, 216, 0.16);
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.tip-kicker::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1d4ed8;
+  box-shadow: 0 0 0 5px rgba(29, 78, 216, 0.12);
+}
+
+.tip-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.tip-progress span {
+  width: 22px;
+  height: 5px;
+  border-radius: 999px;
+  background: #dbe4f3;
+}
+
+.tip-progress .done {
+  background: #9fb4e8;
+}
+
+.tip-progress .active {
+  width: 34px;
+  background: #1d4ed8;
 }
 
 .ok-btn {
-  background: #1d4ed8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  background: linear-gradient(135deg, #1d4ed8, #0f3bb2);
   color: white;
   border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 900;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.24);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .ok-btn:hover {
-  background: #1e40af;
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(29, 78, 216, 0.3);
 }
 
 .project-progress-body-content {
@@ -552,6 +656,11 @@ watch(
 .project-progress-body-sidebar,
 .project-progress-body-content {
   min-width: 0;
+}
+
+.project-progress-body-sidebar.highlight-active,
+.project-progress-body-content.highlight-active {
+  overflow: visible;
 }
 
 :deep(.timeline-content-header) {
@@ -578,19 +687,31 @@ watch(
   .content-tip {
     top: calc(100% + 12px);
     left: 50%;
+    right: auto;
     transform: translateX(-50%);
+  }
+
+  .sidebar-note::before,
+  .content-tip::before {
+    top: -10px;
+    left: 50%;
+    right: auto;
+    border-top: 1px solid rgba(214, 225, 246, 0.9);
+    border-left: 1px solid rgba(214, 225, 246, 0.9);
+    border-right: 0;
+    border-bottom: 0;
   }
 }
 
-@keyframes fadeIn {
+@keyframes tipPop {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(10px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 </style>

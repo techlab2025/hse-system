@@ -17909,6 +17909,7 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
   justify-content: flex-start;
   align-items: center;
   gap: var(--xs-size-2);
+  width: 100%;
 }
 .template-upload-img .template-upload-header .title {
   color: #6b7280;
