@@ -41,6 +41,20 @@ export default class InvestegationResultDetailsModel {
   public witness_statements: InjuryDetailsModel[]
   public serialName: string
   public meeting: investigationMeeting[]
+  public createdAt: string
+  public isActionCorrect: boolean | number
+  public explainWhyText: string
+  public incidentDescription: string
+  public recommendation: string
+  public lessonLearnt: string
+  public injuries: any[]
+  public deaths: any[]
+  public rootCauses: any[]
+  public questions: any[]
+  public eventTimelines: any[]
+  public correctiveTasks: any[]
+  public preventiveTasks: any[]
+  public investigationDocumentations: any[]
 
   constructor(
     id: number,
@@ -64,6 +78,20 @@ export default class InvestegationResultDetailsModel {
     witness_statements: InjuryDetailsModel[],
     serialName: string,
     meeting: investigationMeeting[],
+    createdAt: string = '',
+    isActionCorrect: boolean | number = false,
+    explainWhyText: string = '',
+    incidentDescription: string = '',
+    recommendation: string = '',
+    lessonLearnt: string = '',
+    injuries: any[] = [],
+    deaths: any[] = [],
+    rootCauses: any[] = [],
+    questions: any[] = [],
+    eventTimelines: any[] = [],
+    correctiveTasks: any[] = [],
+    preventiveTasks: any[] = [],
+    investigationDocumentations: any[] = [],
   ) {
     this.id = id
     this.title = title
@@ -86,6 +114,20 @@ export default class InvestegationResultDetailsModel {
     this.witness_statements = witness_statements
     this.serialName = serialName
     this.meeting = meeting
+    this.createdAt = createdAt
+    this.isActionCorrect = isActionCorrect
+    this.explainWhyText = explainWhyText
+    this.incidentDescription = incidentDescription
+    this.recommendation = recommendation
+    this.lessonLearnt = lessonLearnt
+    this.injuries = injuries
+    this.deaths = deaths
+    this.rootCauses = rootCauses
+    this.questions = questions
+    this.eventTimelines = eventTimelines
+    this.correctiveTasks = correctiveTasks
+    this.preventiveTasks = preventiveTasks
+    this.investigationDocumentations = investigationDocumentations
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -111,6 +153,20 @@ export default class InvestegationResultDetailsModel {
       data.witness_statements,
       data.serial_name,
       data.investigation_meetings,
+      data.created_at ?? data.createdAt ?? '',
+      data.is_action_correct ?? data.isActionCorrect ?? false,
+      data.explain_why_text ?? data.explainWhyText ?? '',
+      data.incidant_description ?? data.incident_description ?? data.incidentDescription ?? '',
+      data.recommendation ?? '',
+      data.lesson_learnt ?? data.lessonLearnt ?? '',
+      data.injuries ?? data.observation?.injuries ?? [],
+      data.deaths ?? data.observation?.deaths ?? [],
+      data.root_causes ?? data.rootCauses ?? data.observation?.root_causes ?? [],
+      data.questions ?? data.five_why_questions ?? data.fiveWhyQuestions ?? [],
+      data.event_timelines ?? data.eventTimelines ?? [],
+      data.corrective_tasks ?? data.correctiveTasks ?? [],
+      data.preventive_tasks ?? data.preventiveTasks ?? [],
+      data.investigation_documentations ?? data.investigationDocumentations ?? [],
     )
   }
   // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

@@ -2,6 +2,9 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import UpdateInvestigationTaskUseCase from '../../../Domain/useCase/InvestigationTask/UpdateInvestigationTaskUseCase'
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/error.png'
 
 export default class UpdateInvestigationTaskController extends SelectControllerInterface<void> {
   private static instance: UpdateInvestigationTaskController
@@ -23,8 +26,20 @@ export default class UpdateInvestigationTaskController extends SelectControllerI
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Added was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+      // await router.push('/organization/investigating')
     } else {
-      throw new Error('Error while updateInvestigationTask')
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        imageElement: errorImage,
+        messageContent: null,
+      })
     }
     super.handleResponseDialogs()
     return this.state

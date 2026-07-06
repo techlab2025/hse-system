@@ -29,6 +29,20 @@ export default class InvestigatingDetailsModel {
   public preventiveTasks: InvestegationTasksModel[]
   public correctiveTasks: InvestegationTasksModel[]
   public isActionCorrect: boolean
+  public createdAt: string
+  public investigationMeetingDate: string
+  public investigationMeetingTime: string
+  public investigationNextMeetingDate: string
+  public investigationNextMeetingTime: string
+  public incidentDescription: string
+  public recommendation: string
+  public lessonLearnt: string
+  public injuries: any[]
+  public deaths: any[]
+  public rootCauses: any[]
+  public questions: any[]
+  public eventTimelines: any[]
+  public serialName?: string
 
   constructor(
     id: number,
@@ -49,6 +63,20 @@ export default class InvestigatingDetailsModel {
     preventiveTasks: InvestegationTasksModel[],
     correctiveTasks: InvestegationTasksModel[],
     isActionCorrect: boolean,
+    createdAt: string = '',
+    investigationMeetingDate: string = '',
+    investigationMeetingTime: string = '',
+    investigationNextMeetingDate: string = '',
+    investigationNextMeetingTime: string = '',
+    incidentDescription: string = '',
+    recommendation: string = '',
+    lessonLearnt: string = '',
+    injuries: any[] = [],
+    deaths: any[] = [],
+    rootCauses: any[] = [],
+    questions: any[] = [],
+    eventTimelines: any[] = [],
+    serialName: string,
   ) {
     this.id = id
     this.investigationId = investigationId
@@ -68,6 +96,20 @@ export default class InvestigatingDetailsModel {
     this.preventiveTasks = preventiveTasks
     this.correctiveTasks = correctiveTasks
     this.isActionCorrect = isActionCorrect
+    this.createdAt = createdAt
+    this.investigationMeetingDate = investigationMeetingDate
+    this.investigationMeetingTime = investigationMeetingTime
+    this.investigationNextMeetingDate = investigationNextMeetingDate
+    this.investigationNextMeetingTime = investigationNextMeetingTime
+    this.incidentDescription = incidentDescription
+    this.recommendation = recommendation
+    this.lessonLearnt = lessonLearnt
+    this.injuries = injuries
+    this.deaths = deaths
+    this.rootCauses = rootCauses
+    this.questions = questions
+    this.eventTimelines = eventTimelines
+    this.serialName = serialName
   }
 
   static fromMap(data: any): InvestigatingDetailsModel {
@@ -80,16 +122,30 @@ export default class InvestigatingDetailsModel {
       data.latest_investigation_meeting_id,
       data.observation,
       data.investigation_team_leader,
-      data.investigation_tasks,
-      data.investigation_employees,
-      data.investigation_factors,
-      data.investigation_meetings,
-      data.investigation_documentations,
-      data.explain_why_text,
-      data.witness_statements,
-      data.preventive_tasks,
-      data.corrective_tasks,
-      data.is_action_correct,
+      data.investigation_tasks ?? data.investigationTasks ?? [],
+      data.investigation_employees ?? data.investigationEmployees ?? [],
+      data.investigation_factors ?? data.investigationFactors ?? [],
+      data.investigation_meetings ?? data.investigationMeetings ?? [],
+      data.investigation_documentations ?? data.investigationDocumentations ?? [],
+      data.explain_why_text ?? data.explainWhyText ?? '',
+      data.witness_statements ?? data.witnessStatements ?? [],
+      data.preventive_tasks ?? data.preventiveTasks ?? [],
+      data.corrective_tasks ?? data.correctiveTasks ?? [],
+      data.is_action_correct ?? data.isActionCorrect ?? false,
+      data.created_at ?? data.createdAt ?? '',
+      data.investigation_meeting_date ?? data.investigationMeetingDate ?? '',
+      data.investigation_meeting_time ?? data.investigationMeetingTime ?? '',
+      data.investigation_next_meeting_date ?? data.investigationNextMeetingDate ?? '',
+      data.investigation_next_meeting_time ?? data.investigationNextMeetingTime ?? '',
+      data.incidant_description ?? data.incident_description ?? data.incidentDescription ?? '',
+      data.recommendation ?? '',
+      data.lesson_learnt ?? data.lessonLearnt ?? '',
+      data.injuries ?? [],
+      data.deaths ?? [],
+      data.root_causes ?? data.rootCauses ?? data.observation?.root_causes ?? [],
+      data.questions ?? data.five_why_questions ?? data.fiveWhyQuestions ?? [],
+      data.event_timelines ?? data.eventTimelines ?? [],
+      data.serial_name,
     )
   }
 
