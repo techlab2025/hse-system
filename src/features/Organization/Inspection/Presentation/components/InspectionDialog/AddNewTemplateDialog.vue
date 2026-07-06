@@ -266,7 +266,7 @@ watch(
         <hr class="inspection-template-dialog-divider col-span-4" />
 
         <div class="template-field-panel col-span-4 md:col-span-2">
-          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" :label="`Template title`" />
         </div>
 
         <div class="template-field-panel col-span-4 md:col-span-2">

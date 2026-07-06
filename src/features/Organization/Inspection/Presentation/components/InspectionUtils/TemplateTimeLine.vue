@@ -37,6 +37,8 @@ const addNewAnswer = () => {
 const DeletedIndex = ref<number | null>(null)
 
 const DeleteItem = (index: number) => {
+  if (Answers.value.length <= 1) return
+
   // Removing from Answers array automatically removes the nested TemplateItems
   Answers.value.splice(index, 1)
   DeletedIndex.value = index
@@ -148,6 +150,15 @@ watch(
               <div class="template-section-topline col-span-4">
                 <span class="template-section-chip">{{ index + 1 }}</span>
                 <span class="template-section-rule"></span>
+                <button
+                  v-if="Answers.length > 1"
+                  class="timeline-remove-card"
+                  type="button"
+                  @click="DeleteItem(index)"
+                >
+                  <DeleteItemAction />
+                  <span>{{ $t('Remove') }}</span>
+                </button>
               </div>
               <div class="col-span-4 flex flex-col md:flex-row w-full items-center gap-3">
                 <div class="timeline-content-text input-wrapper w-full">
@@ -447,6 +458,44 @@ watch(
   background: linear-gradient(90deg, rgba(29, 78, 216, 0.24), rgba(221, 226, 237, 0));
 }
 
+.timeline-remove-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(226, 53, 53, 0.18);
+  border-radius: 999px;
+  color: #e23535;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+  background: rgba(226, 53, 53, 0.08);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.timeline-remove-card:hover {
+  transform: translateY(-1px);
+  color: #fff;
+  background: #e23535;
+  box-shadow: 0 10px 20px rgba(226, 53, 53, 0.16);
+}
+
+.timeline-remove-card :deep(svg) {
+  width: 16px;
+  height: 16px;
+}
+
+.timeline-remove-card:hover :deep(svg path) {
+  stroke: #fff;
+}
+
 .template-timeline-content .input-wrapper {
   padding: 2px;
 }
@@ -512,6 +561,14 @@ watch(
   .template-timeline-content {
     padding: 14px;
     border-radius: 18px;
+  }
+
+  .template-section-topline {
+    flex-wrap: wrap;
+  }
+
+  .timeline-remove-card {
+    width: 100%;
   }
 
   .type-select {
