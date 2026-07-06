@@ -13,12 +13,12 @@ const { viwers,isInvestigation } = defineProps<{
 
 const UpdateData = (data) => {
   const witnesses = data.map(
-    (item) =>
-      new InvestegationWitnessesParams(
-        item.result,
-        item.employee?.id || null,
-        item.employee?.id ? undefined : item.employee?.title,
-      ),
+    (item) => {
+      const employeeId = Number(item.employee?.id) || 0
+      const employeeName = employeeId ? undefined : item.employee?.title || ''
+
+      return new InvestegationWitnessesParams(item.result, employeeId || undefined, employeeName)
+    },
   )
 
   emit('update:data', witnesses)

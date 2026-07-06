@@ -19,9 +19,9 @@ export default class DethParams implements Params {
 
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
-    if (this.employeeName) data['employee_name'] = this.employeeName
     data['note'] = this.note
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
+    if (!this.organizationEmployeeId && this.employeeName) data['employee_name'] = this.employeeName
     if (this.img) data['files'] = this.img
 
     return data

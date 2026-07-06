@@ -110,13 +110,23 @@ const toggleWorkStopped = (index: number) => {
 }
 
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
+  const organizationEmployee = item?.organization_employee as any
   const employeeId =
-    item?.organization_employee?.organization_employee_id || item?.organization_employee?.id || 0
-  const employeeTitle = item?.organization_employee?.name || item?.employee_name || ''
+    organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
+  const employeeTitle =
+    organizationEmployee?.name ||
+    organizationEmployee?.title ||
+    (item as any)?.employee?.name ||
+    (item as any)?.employee?.title ||
+    item?.employee_name ||
+    (item as any)?.name ||
+    (item as any)?.title ||
+    ''
+  const manualEmployeeName = item?.employee_name || (!employeeId ? employeeTitle : '')
 
   return {
     employee: new TitleInterface({ id: employeeId, title: employeeTitle }),
-    employeeName: item?.employee_name || employeeTitle,
+    employeeName: manualEmployeeName,
     images: item?.media?.map((file: any) => file?.url || file).filter(Boolean) || [],
     infectionTypeId:
       new TitleInterface({ id: item?.injury_type?.id, title: item?.injury_type?.title }) ||

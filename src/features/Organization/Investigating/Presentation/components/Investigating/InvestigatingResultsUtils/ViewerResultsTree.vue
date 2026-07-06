@@ -11,7 +11,7 @@ import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/
 import { watch } from 'vue'
 
 const emit = defineEmits(['update:data'])
-const { viwers, isInvestigation } = defineProps<{
+const props = defineProps<{
   viwers?: InjuryDetailsModel[]
   isInvestigation?: boolean
 }>()
@@ -68,9 +68,18 @@ onMounted(async () => {
 })
 
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
+  const organizationEmployee = item?.organization_employee as any
   const employeeId =
-    item?.organization_employee?.organization_employee_id || item?.organization_employee?.id || 0
-  const employeeTitle = item?.organization_employee?.name || item?.employee_name || ''
+    organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
+  const employeeTitle =
+    organizationEmployee?.name ||
+    organizationEmployee?.title ||
+    (item as any)?.employee?.name ||
+    (item as any)?.employee?.title ||
+    item?.employee_name ||
+    (item as any)?.name ||
+    (item as any)?.title ||
+    ''
 
   return {
     employee: new TitleInterface({ id: employeeId, title: employeeTitle }),
@@ -81,7 +90,7 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
 const isInitialized = ref(false)
 
 watch(
-  () => viwers,
+  () => props.viwers,
   (newInjuries) => {
     if (!isInitialized.value && newInjuries?.length) {
       Answers.value = newInjuries.map(mapInjuryToAnswer)
@@ -105,8 +114,8 @@ watch(
       :style="{ animationDelay: `${index * 0.15}s` }"
     >
       <div class="timeline-content">
-        <div class="timeline-contect-select" :class="isInvestigation ? `investigation` : ``">
-          <div class="input-wrapper" :class="isInvestigation ? `w-full` : ``">
+        <div class="timeline-contect-select" :class="props.isInvestigation ? `investigation` : ``">
+          <div class="input-wrapper" :class="props.isInvestigation ? `w-full` : ``">
             <UpdatedCustomInputSelect
               :staticOptions="employeeOptions"
               v-model="item.employee"
@@ -147,7 +156,7 @@ watch(
               </template>
             </UpdatedCustomInputSelect>
           </div>
-          <div class="timeline-content-text input-wrapper" :class="isInvestigation ? `w-full` : ``">
+          <div class="timeline-content-text input-wrapper" :class="props.isInvestigation ? `w-full` : ``">
             <label for="result"> Statements</label>
             <textarea
               type="result"

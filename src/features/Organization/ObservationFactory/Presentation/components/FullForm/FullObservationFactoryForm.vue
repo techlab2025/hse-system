@@ -92,6 +92,16 @@ const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
 const updateData = () => {
+  const getEmployeePayload = (employee: any) => {
+    const id = Number(employee?.id) || 0
+    const name = String(employee?.title || employee?.name || '').trim()
+
+    return {
+      id,
+      name: id ? '' : name,
+    }
+  }
+
   const rootCausesIdParams = RootCauses.value?.map((item) => {
     return new RootCausesIdParams({ root_cause_id: item.id })
   })
@@ -165,24 +175,26 @@ const updateData = () => {
         Injury:
           Accidents?.value?.isAnotherMeeting === 1
             ? Accidents.value?.accidentsData?.map((item: any) => {
+                const employee = getEmployeePayload(item?.employee)
                 return new InjuryParams(
-                  item?.employee?.id || 0,
-                  item?.employee?.title || '',
+                  employee.id,
+                  employee.name,
                   item?.text || null,
                   item?.infectionTypeId?.id || 0,
                   item?.isWorkStopped ? 1 : 0,
-                  item?.images.map((el: any) => el.file) || [],
+                  item?.images?.map((el: any) => el.file) || [],
                 )
               })
             : [],
         deaths:
           Fatalities?.value?.isAnotherMeeting === 1
             ? Fatalities?.value.DethsData?.map((item: any) => {
+                const employee = getEmployeePayload(item?.employee)
                 return new DethParams(
-                  item?.employee?.title || '',
+                  employee.name,
                   item?.text || null,
-                  item?.employee?.id || 0,
-                  item?.images.map((el: any) => el.file) || [],
+                  employee.id,
+                  item?.images?.map((el: any) => el.file) || [],
                 )
               })
             : // ? [
@@ -196,13 +208,10 @@ const updateData = () => {
         witnesses:
           witnesses?.value?.isAnotherMeeting === 1
             ? witnesses?.value?.AllWitnessesData?.map(
-                (w: any) =>
-                  new WitnessParams(
-                    w?.employee?.title ? w?.employee?.title : '',
-                    w?.text || [],
-                    w?.employee?.id || '',
-                    null,
-                  ),
+                (w: any) => {
+                  const employee = getEmployeePayload(w?.employee)
+                  return new WitnessParams(employee.name, w?.text || '', employee.id)
+                },
               )
             : [],
 
