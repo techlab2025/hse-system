@@ -300,14 +300,14 @@ const formatTimelineTime = (time: Date | null) => {
 
 const updateIncidentTimelineDescription = () => {
   // IncidantDescription.value = eventTimelineItems.value
-    // .map((item, index) => {
-    //   const time = formatTimelineTime(item.time)
-    //   const description = item.description.trim()
-    //   if (!time && !description) return ''
-    //   return `${index + 1}. ${time ? `[${time}] ` : ''}${description}`
-    // })
-    // .filter(Boolean)
-    // .join('\n')
+  // .map((item, index) => {
+  //   const time = formatTimelineTime(item.time)
+  //   const description = item.description.trim()
+  //   if (!time && !description) return ''
+  //   return `${index + 1}. ${time ? `[${time}] ` : ''}${description}`
+  // })
+  // .filter(Boolean)
+  // .join('\n')
 }
 
 const addEventTimelineItem = () => {
@@ -985,7 +985,8 @@ watch(
     margin: 0;
     width: 50%;
     textarea {
-      max-height: 100px;
+      max-height: 50px;
+      border-radius: 15px;
     }
   }
 
