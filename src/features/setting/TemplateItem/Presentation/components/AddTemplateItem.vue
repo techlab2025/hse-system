@@ -29,7 +29,7 @@ const setParams = (data: Params) => {
     <div class="col-span-4 button-wrapper">
 
       <router-link to="/organization/template?type=1" class="btn btn-cancel w-full" @click.prevent="">cancel</router-link>
-      <router-link to="/organization/template" type="submit" class="btn btn-primary w-full">confirm</router-link>
+      <button type="submit" class="btn btn-primary w-full">confirm</button>
     </div>
   </form>
 </template>
