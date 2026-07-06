@@ -41,7 +41,7 @@ const extraCount = computed(() => images.value.length - 3)
     </label>
 
     <MultiImagesDialog :images="images">
-      <div v-if="images.length > 1" class="flex grid grid-cols-2 gap-1 w-15">
+      <div v-if="images.length > 1" class="flex grid grid-cols-3 gap-1 w-15">
         <div
           v-for="(img, i) in previewImages"
           :key="i"
@@ -76,5 +76,7 @@ const extraCount = computed(() => images.value.length - 3)
 <style scoped>
 .flex {
   display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
 }
 </style>
