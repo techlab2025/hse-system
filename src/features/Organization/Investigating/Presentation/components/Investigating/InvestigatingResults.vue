@@ -393,7 +393,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <Accordion v-model:value="ActivePanel" lazy>
+        <Accordion v-model:value="ActivePanel">
           <AccordionPanel value="1">
             <AccordionHeader>
               <div class="investigation-title">
@@ -902,7 +902,6 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
     }
   }
 }
-
 
 .investigation-result {
   :deep(.p-accordion div.input-select),
