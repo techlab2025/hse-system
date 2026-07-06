@@ -296,7 +296,7 @@ onMounted(fetchEmployees)
                 @click="toggleWorkStopped(index)"
               >
                 <label class="w-full" for="is_sstoped">{{
-                  $t('Did the injury cause a work stoppage?')
+                  $t('Did The Injury Cause He Stopped To Work?')
                 }}</label>
                 <Checkbox
                   binary

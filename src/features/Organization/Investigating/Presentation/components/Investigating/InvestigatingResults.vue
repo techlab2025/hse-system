@@ -378,260 +378,391 @@ watch(
     fetchSimilarObservations()
   },
 )
+
+import Accordion from 'primevue/accordion'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
+import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
+
+const ActivePanel = ref('1')
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>General Identification</p>
-        </div>
-        <InvestigatingHedaer
-          :title="state?.data?.observation?.title"
-          :serial="state?.data?.observation?.serial_name"
-          :victim="state?.data?.observation?.observer?.name"
-          :date="state?.data?.investigationMeetingDate"
-          :meetingDate="state?.data?.date"
-          :TeamLeader="state?.data?.TeamLeader.name"
-          :TeamNumbers="state.data?.investigationEmployees?.length"
-          :incidantType="state?.data?.observation?.type_model"
-          :place="state?.data?.observation?.place"
-          :equipment="state?.data?.observation?.equipment"
-          :incidantDescription="state?.data?.observation?.description"
-          :team="state.data?.investigationEmployees"
-          :time="state.data?.investigationMeetingTime"
-          :shift="state.data?.observation.work_shift"
-          :serialName="state.data?.serialName"
-          @update:documentRefrences="setDocumentRefrences"
-        />
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Investigation Team Setup</p>
-        </div>
-        <div class="investigating-header-container">
-          <div class="meeting-info-container">
-            <!-- <div class="metting-info-header-container">
+        <Accordion :value="ActivePanel" lazy>
+          <AccordionPanel value="1">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>General Identification</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <InvestigatingHedaer
+                :title="state?.data?.observation?.title"
+                :serial="state?.data?.observation?.serial_name"
+                :victim="state?.data?.observation?.observer?.name"
+                :date="state?.data?.investigationMeetingDate"
+                :meetingDate="state?.data?.date"
+                :TeamLeader="state?.data?.TeamLeader.name"
+                :TeamNumbers="state.data?.investigationEmployees?.length"
+                :incidantType="state?.data?.observation?.type_model"
+                :place="state?.data?.observation?.place"
+                :equipment="state?.data?.observation?.equipment"
+                :incidantDescription="state?.data?.observation?.description"
+                :team="state.data?.investigationEmployees"
+                :time="state.data?.investigationMeetingTime"
+                :shift="state.data?.observation.work_shift"
+                :serialName="state.data?.serialName"
+                @update:documentRefrences="setDocumentRefrences"
+              />
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="2">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Investigation Team Setup</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <div class="investigating-header-container">
+                <div class="meeting-info-container">
+                  <!-- <div class="metting-info-header-container">
         <p class="metting-info-header">{{ $t('investigation_meeting') }}</p>
         <hr class="meeting-hr" />
       </div> -->
-            <div class="meeting-info">
-              <p>
-                Investigation team leader :
-                <span class="team-leader">{{ state?.data?.TeamLeader?.name }}</span>
-              </p>
-              <p>
-                Investigation Team Members :
-                <span class="team-number">{{ state?.data?.investigationEmployees?.length }}</span>
-              </p>
-              <p>
-                Date and Time of meeting :
-                <span class="team-number"
-                  >{{ state?.data?.investigationMeetingDate }} &
-                  {{ state?.data?.investigationMeetingTime }}</span
-                >
-              </p>
-              <p>
-                {{ latestMeetingDisplayLabel }}
+                  <div class="meeting-info">
+                    <p>
+                      Investigation team leader :
+                      <span class="team-leader">{{ state?.data?.TeamLeader?.name }}</span>
+                    </p>
+                    <p>
+                      Investigation Team Members :
+                      <span class="team-number">{{
+                        state?.data?.investigationEmployees?.length
+                      }}</span>
+                    </p>
+                    <p>
+                      Date and Time of meeting :
+                      <span class="team-number"
+                        >{{ state?.data?.investigationMeetingDate }} &
+                        {{ state?.data?.investigationMeetingTime }}</span
+                      >
+                    </p>
+                    <p>
+                      {{ latestMeetingDisplayLabel }}
 
-                <span class="team-number">{{ latestMeetingDisplayValue }}</span>
-              </p>
-            </div>
-          </div>
-          <div class="team-container">
-            <p class="title">{{ $t('team') }}</p>
-            <div class="team">
-              <div
-                class="team-member"
-                v-for="member in state.data?.investigationEmployees"
-                :key="member.id"
-              >
-                <img
-                  :src="
-                    member?.organizationEmployee?.image ||
-                    'https://cyber.comolho.com/static/img/avatar.png'
-                  "
-                  alt=""
-                  class="equipemtn-card-image"
-                />
+                      <span class="team-number">{{ latestMeetingDisplayValue }}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="team-container">
+                  <p class="title">{{ $t('team') }}</p>
+                  <div class="team">
+                    <div
+                      class="team-member"
+                      v-for="member in state.data?.investigationEmployees"
+                      :key="member.id"
+                    >
+                      <img
+                        :src="
+                          member?.organizationEmployee?.image ||
+                          'https://cyber.comolho.com/static/img/avatar.png'
+                        "
+                        alt=""
+                        class="equipemtn-card-image"
+                      />
 
-                <div class="employee-text">
-                  <p class="name">{{ member.organizationEmployee?.name }}</p>
-                  <p class="serial">{{ member.organizationEmployee?.serialName }}</p>
+                      <div class="employee-text">
+                        <p class="name">{{ member.organizationEmployee?.name }}</p>
+                        <p class="serial">{{ member.organizationEmployee?.serialName }}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="investigating-header-container">
-          <div class="incidant-description">
-            <p class="title">{{ $t('incidant_description') }}</p>
-            <p class="description">{{ state?.data?.observation?.description }}</p>
-          </div>
-        </div> -->
-
-        <!-- <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Investigation Meeting result</p>
-        </div> -->
-        <div class="flex w-full gap-2 investigation-result-inputs">
-          <!-- <div class="input-wrapper w-50">
-            <UpdatedCustomInputSelect
-              :modelValue="SelectedLevel"
-              class="input"
-              :staticOptions="InvestigationLevel"
-              :label="$t('investigation_category')"
-              id="investegation-level"
-              :placeholder="$t('select your Level')"
-              @update:modelValue="setSelectedLevel"
-            />
-          </div> -->
-        </div>
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Events Timeline Builder</p>
-        </div>
-
-        <section class="event-timeline-builder">
-          <div class="event-timeline-summary">
-            <p class="title">{{ $t('incidant_description') }}</p>
-            <p class="description">{{ state?.data?.observation?.description }}</p>
-          </div>
-
-          <div class="event-timeline-list">
-            <article
-              v-for="(item, index) in eventTimelineItems"
-              :key="index"
-              class="event-timeline-item"
-            >
-              <div class="event-timeline-marker">
-                <span>{{ index + 1 }}</span>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="3">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Events Timeline Builder</p>
               </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <section class="event-timeline-builder">
+                <div class="event-timeline-summary">
+                  <p class="title">{{ $t('incidant_description') }}</p>
+                  <p class="description">{{ state?.data?.observation?.description }}</p>
+                </div>
 
-              <div class="event-timeline-card">
-                <div class="event-timeline-card-header">
-                  <div>
-                    <span>Event {{ index + 1 }}</span>
-                    <h4>{{ $t('event_time_line') }}</h4>
-                  </div>
-                  <button
-                    v-if="eventTimelineItems.length > 1"
-                    class="event-timeline-delete"
-                    type="button"
-                    @click="deleteEventTimelineItem(index)"
+                <div class="event-timeline-list">
+                  <article
+                    v-for="(item, index) in eventTimelineItems"
+                    :key="index"
+                    class="event-timeline-item"
                   >
-                    {{ $t('delete') }}
-                  </button>
+                    <div class="event-timeline-marker">
+                      <span>{{ index + 1 }}</span>
+                    </div>
+
+                    <div class="event-timeline-card">
+                      <div class="event-timeline-card-header">
+                        <div>
+                          <span>Event {{ index + 1 }}</span>
+                          <h4>{{ $t('event_time_line') }}</h4>
+                        </div>
+                        <button
+                          v-if="eventTimelineItems.length > 1"
+                          class="event-timeline-delete"
+                          type="button"
+                          @click="deleteEventTimelineItem(index)"
+                        >
+                          {{ $t('delete') }}
+                        </button>
+                      </div>
+
+                      <div class="event-timeline-fields">
+                        <div class="input-wrapper">
+                          <label :for="`event_time_${index}`">{{ $t('time') }}</label>
+                          <DatePicker
+                            :id="`event_time_${index}`"
+                            v-model="item.time"
+                            timeOnly
+                            hourFormat="12"
+                            fluid
+                            @update:model-value="updateIncidentTimelineDescription"
+                          />
+                        </div>
+
+                        <div class="input-wrapper event-description-field">
+                          <label :for="`event_description_${index}`">{{ $t('description') }}</label>
+                          <textarea
+                            :id="`event_description_${index}`"
+                            v-model="item.description"
+                            class="input"
+                            style="min-height: 10px !important"
+                            :placeholder="'What happened? (in detail)'"
+                            @input="updateIncidentTimelineDescription"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
                 </div>
 
-                <div class="event-timeline-fields">
-                  <div class="input-wrapper">
-                    <label :for="`event_time_${index}`">{{ $t('time') }}</label>
-                    <DatePicker
-                      :id="`event_time_${index}`"
-                      v-model="item.time"
-                      timeOnly
-                      hourFormat="12"
-                      fluid
-                      @update:model-value="updateIncidentTimelineDescription"
-                    />
+                <button class="btn btn-primary mt-2" type="button" @click="addEventTimelineItem">
+                  + Add new timeline
+                </button>
+              </section>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="4">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Health Impact Integration</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <div class="investigation-injury">
+                <FactoryAccidents
+                  :injuries="initialInjuries"
+                  class="not-colored"
+                  @update:data="UpdateAccidents"
+                  :isOpen="true"
+                />
+              </div>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="5">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Witness Management</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <ViewersResults
+                :isInvestigation="true"
+                :viwers="initialViewers"
+                @update:data="setViewersResults"
+              />
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="6">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Immediate Action Evaluation</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <div class="investigating-header-container">
+                <div class="incidant-description col-span-2">
+                  <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
+                  <p class="description">{{ state?.data?.observation?.action }}</p>
+                </div>
+              </div>
+              <RateActions @update:data="setRateAction" />
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="7">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Root Cause Analysis (5 Whys)</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
+              <!-- root causes -->
+              <div class="input-wrapper w-full root-cause-panel">
+                <UpdatedCustomInputSelect
+                  :modelValue="RootCauses"
+                  class="input"
+                  :controller="indexRootCaueseController"
+                  :params="indexRootCaueseParams"
+                  :label="$t('Identified Root Cause')"
+                  id="rootCause"
+                  :placeholder="$t('select your root_cause')"
+                  @update:modelValue="setRootCause"
+                  :type="2"
+                  @close="RootCausesDialog = false"
+                  :isDialog="true"
+                  v-model:dialogVisible="RootCausesDialog"
+                >
+                  <template #LabelHeader>
+                    <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
+                  </template>
+                  <template #Dialog>
+                    <AddRootCauses @close:data="RootCausesDialog = false" />
+                  </template>
+                </UpdatedCustomInputSelect>
+              </div>
+              <CauseOfAccidant @update:data="setCauseOfAction" />
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="8">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Action Plan : Corrective and Preventive Actions</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <CapaActionPlan @update:data="setCapaActionPlan" />
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="9">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Lessons Learned</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <section class="lesson-section">
+                <div class="section-heading">
+                  <!-- <span>Lesson learnt</span> -->
+                  <h2>Lessons Learned Summary</h2>
+                </div>
+                <div class="input-wrapper">
+                  <textarea
+                    id="lesson_learnt"
+                    v-model="lessonLearnt"
+                    placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
+                  ></textarea>
+                </div>
+              </section>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="10">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Similar incident Retrieval</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <section class="similar-observations-section">
+                <div v-if="similarObservationsLoading" class="similar-observations-grid">
+                  <div v-for="item in 3" :key="item" class="similar-observation-card loading">
+                    <span></span>
+                    <strong></strong>
+                    <small></small>
                   </div>
+                </div>
 
-                  <div class="input-wrapper event-description-field">
-                    <label :for="`event_description_${index}`">{{ $t('description') }}</label>
-                    <textarea
-                      :id="`event_description_${index}`"
-                      v-model="item.description"
-                      class="input"
-                      style="min-height: 10px !important"
-                      :placeholder="'What happened? (in detail)'"
-                      @input="updateIncidentTimelineDescription"
-                    ></textarea>
+                <div v-else-if="SimilarObservations?.length" class="similar-observations-grid">
+                  <article
+                    v-for="observation in SimilarObservations"
+                    :key="observation.id"
+                    class="similar-observation-card"
+                  >
+                    <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
+                    <strong>{{ observation.title || 'Untitled observation' }}</strong>
+                    <small>{{ observation.date || 'N/A' }}</small>
+                  </article>
+                </div>
+
+                <p v-else class="similar-observations-empty">No similar incidents found.</p>
+              </section>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="11">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Attachments</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <InvestegationAttachment @update:data="setInvestigationAttachments" />
+              <div class="attachments-show" v-if="investigationAttachments?.files?.length">
+                <p class="title">{{ investigationAttachments?.title }}</p>
+                <div class="image-container">
+                  <div
+                    class="attachment-preview"
+                    v-for="(image, index) in investigationAttachments?.files"
+                    :key="index"
+                  >
+                    <DeleteIcon
+                      class="cursor-pointer"
+                      @click="investigationAttachments?.files.splice(index, 1)"
+                    />
+                    <img :src="image" alt="attachment" width="150" />
                   </div>
                 </div>
               </div>
-            </article>
-          </div>
+            </AccordionContent>
+          </AccordionPanel>
+          <AccordionPanel value="12">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Another Meeting</p>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <AnotherMeeting @update:data="setAnotherMeeting" />
+              <div class="btns">
+                <!-- <CloseInvestegaionDialog :investegationId="state.data?.id" /> -->
+                <router-link to="/organization/investigating" class="btn btn-cancel">{{
+                  $t('cancel')
+                }}</router-link>
+                <button @click="AddEnvestigatingResult" class="btn btn-primary">
+                  {{ $t('confirm') }}
+                </button>
+              </div>
+            </AccordionContent>
+          </AccordionPanel>
+        </Accordion>
 
-          <button class="btn btn-primary mt-2" type="button" @click="addEventTimelineItem">
-            + Add new timeline
-          </button>
-        </section>
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Health Impact Integration</p>
-        </div>
-        <div class="investigation-injury">
-          <FactoryAccidents
-            :injuries="initialInjuries"
-            class="not-colored"
-            @update:data="UpdateAccidents"
-            :isOpen="true"
-          />
-        </div>
-
-        <!-- <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Health Impact Integration</p>
-        </div> -->
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Witness Management</p>
-        </div>
-
-        <ViewersResults
-          :isInvestigation="true"
-          :viwers="initialViewers"
-          @update:data="setViewersResults"
-        />
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Immediate Action Evaluation</p>
-        </div>
-
-        <div class="investigating-header-container">
-          <div class="incidant-description col-span-2">
-            <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
-            <p class="description">{{ state?.data?.observation?.action }}</p>
-          </div>
-        </div>
-        <RateActions @update:data="setRateAction" />
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Root Cause Analysis (5 Whys)</p>
-        </div>
-        <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
-        <!-- root causes -->
-        <div class="input-wrapper w-full root-cause-panel">
-          <UpdatedCustomInputSelect
-            :modelValue="RootCauses"
-            class="input"
-            :controller="indexRootCaueseController"
-            :params="indexRootCaueseParams"
-            :label="$t('Identified Root Cause')"
-            id="rootCause"
-            :placeholder="$t('select your root_cause')"
-            @update:modelValue="setRootCause"
-            :type="2"
-            @close="RootCausesDialog = false"
-            :isDialog="true"
-            v-model:dialogVisible="RootCausesDialog"
-          >
-            <template #LabelHeader>
-              <span class="add-dialog" @click="RootCausesDialog = true">{{ $t('New') }}</span>
-            </template>
-            <template #Dialog>
-              <AddRootCauses @close:data="RootCausesDialog = false" />
-            </template>
-          </UpdatedCustomInputSelect>
-        </div>
-        <CauseOfAccidant @update:data="setCauseOfAction" />
         <!-- Regulatory/Legal Compliance Reference -->
 
         <!-- <div class="input-wrapper w-full root-cause-panel">
@@ -658,77 +789,8 @@ watch(
           </UpdatedCustomInputSelect>
         </div> -->
 
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Action Plan : Corrective and Preventive Actions</p>
-        </div>
-        <CapaActionPlan @update:data="setCapaActionPlan" />
-
-        <div class="investigation-title">
-          <img :src="investigationImg" alt="" />
-          <p>Lessons Learned</p>
-        </div>
-        <section class="lesson-section">
-          <div class="section-heading">
-            <!-- <span>Lesson learnt</span> -->
-            <h2>Lessons Learned Summary</h2>
-          </div>
-          <div class="input-wrapper">
-            <textarea
-              id="lesson_learnt"
-              v-model="lessonLearnt"
-              placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
-            ></textarea>
-          </div>
-        </section>
         <!-- Similat Observatio -->
         <!-- title date serial only  -->
-        <section class="similar-observations-section">
-          <div class="section-heading">
-            <!-- <span>Similar Incidents</span> -->
-            <h2>Similar incident Retrieval</h2>
-          </div>
-
-          <div v-if="similarObservationsLoading" class="similar-observations-grid">
-            <div v-for="item in 3" :key="item" class="similar-observation-card loading">
-              <span></span>
-              <strong></strong>
-              <small></small>
-            </div>
-          </div>
-
-          <div v-else-if="SimilarObservations?.length" class="similar-observations-grid">
-            <article
-              v-for="observation in SimilarObservations"
-              :key="observation.id"
-              class="similar-observation-card"
-            >
-              <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
-              <strong>{{ observation.title || 'Untitled observation' }}</strong>
-              <small>{{ observation.date || 'N/A' }}</small>
-            </article>
-          </div>
-
-          <p v-else class="similar-observations-empty">No similar incidents found.</p>
-        </section>
-
-        <InvestegationAttachment @update:data="setInvestigationAttachments" />
-        <div class="attachments-show" v-if="investigationAttachments?.files?.length">
-          <p class="title">{{ investigationAttachments?.title }}</p>
-          <div class="image-container">
-            <div
-              class="attachment-preview"
-              v-for="(image, index) in investigationAttachments?.files"
-              :key="index"
-            >
-              <DeleteIcon
-                class="cursor-pointer"
-                @click="investigationAttachments?.files.splice(index, 1)"
-              />
-              <img :src="image" alt="attachment" width="150" />
-            </div>
-          </div>
-        </div>
 
         <!-- <CauseOfAccidant @update:data="setCauseOfAction" /> -->
         <!-- <InvestigationTasks @update:data="setInvestigationTasks" /> -->
@@ -743,18 +805,7 @@ watch(
           ></textarea>
         </div> -->
 
-        <AnotherMeeting @update:data="setAnotherMeeting" />
-
         <!-- <TimeLine :items="item" /> -->
-        <div class="btns">
-          <!-- <CloseInvestegaionDialog :investegationId="state.data?.id" /> -->
-          <router-link to="/organization/investigating" class="btn btn-cancel">{{
-            $t('cancel')
-          }}</router-link>
-          <button @click="AddEnvestigatingResult" class="btn btn-primary">
-            {{ $t('confirm') }}
-          </button>
-        </div>
       </div>
       <InvestigationCapaDialog
         v-model:visible="openDialog"
@@ -763,10 +814,10 @@ watch(
       />
     </template>
     <template #loader>
-      <TableLoader :cols="3" :rows="10" />
+      <InvestigationFormSkilaton :cols="3" :rows="10" />
     </template>
     <template #initial>
-      <TableLoader :cols="3" :rows="10" />
+      <InvestigationFormSkilaton :cols="3" :rows="10" />
     </template>
     <template #empty>
       <DataEmpty
@@ -791,6 +842,9 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.p-accordion {
+  width: 100%;
+}
 .lesson-section {
   width: 100%;
 }
