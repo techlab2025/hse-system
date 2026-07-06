@@ -238,10 +238,7 @@ watch(
             </article>
             <article>
               <span>Investigation Serial</span>
-              <strong>{{
-                state.data?.serialName ??
-                '-'
-              }}</strong>
+              <strong>{{ state.data?.serialName ?? '-' }}</strong>
             </article>
             <article>
               <span>Incident type</span>
@@ -276,7 +273,7 @@ watch(
               <span>Team members</span>
               <strong>{{ teamMembers.length }}</strong>
             </article>
-            <article>
+            <!-- <article>
               <span>Meeting date</span>
               <strong>{{
                 investigationData?.investigationMeetingDate || latestMeeting?.date || '-'
@@ -287,7 +284,7 @@ watch(
               <strong>{{
                 investigationData?.investigationMeetingTime || latestMeeting?.time || '-'
               }}</strong>
-            </article>
+            </article> -->
           </div>
           <div v-if="teamMembers.length" class="answer-person-grid">
             <article v-for="member in teamMembers" :key="member.id">
@@ -337,10 +334,10 @@ watch(
           </div>
           <div v-if="healthImpactItems.length" class="answer-card-grid">
             <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
-              <span>{{ item.impactType }}</span>
-              <strong>{{ getEmployeeName(item) }}</strong>
-              <p>{{ item.note || '-' }}</p>
-              <small>{{ getTitle(item.injury_type, '') }}</small>
+              <span> {{ item.impactType }}</span>
+              <strong>name : {{ getEmployeeName(item) }}</strong>
+              <p>description : {{ item.note || '-' }}</p>
+              <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
             </article>
           </div>
           <p v-else class="answer-empty">No health impact records were added.</p>
