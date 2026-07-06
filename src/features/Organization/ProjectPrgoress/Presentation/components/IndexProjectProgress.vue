@@ -538,10 +538,48 @@ watch(
 }
 
 .project-progress-body-content {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 50px;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: clamp(16px, 2vw, 28px);
   transition: all 0.3s ease;
+}
+
+.project-progress-body-container {
+  align-items: stretch;
+}
+
+.project-progress-body-sidebar,
+.project-progress-body-content {
+  min-width: 0;
+}
+
+:deep(.timeline-content-header) {
+  min-width: 0;
+}
+
+:deep(.timeline-content-header p) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .project-progress-body-content {
+    padding: 10px;
+  }
+
+  .overlay-note {
+    width: min(320px, calc(100vw - 32px));
+  }
+
+  .sidebar-note,
+  .content-tip {
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes fadeIn {

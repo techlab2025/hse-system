@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import LikeIcon from '@/shared/icons/LikeIcon.vue';
 import AvtiveTimeLineIcon from '@/shared/icons/AvtiveTimeLineIcon.vue';
-import { ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import type ProjectProgressItemModel from '../../Data/models/ProjectProgressItemModel';
 import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum';
 import LinkIcon from '@/shared/icons/LinkIcon.vue';
@@ -9,15 +9,55 @@ import LinkIcon from '@/shared/icons/LinkIcon.vue';
 const emit = defineEmits(['update:ActiveItem'])
 const props = defineProps<{
   sidebarItems: ProjectProgressItemModel[]
-  showblure: boolean
+  showblure?: boolean
   projectProgress: number
 }>()
 
 const ActiveItem = ref(props.sidebarItems.find((el) => !el.progress)?.id)
+const timelineItemRefs = ref<HTMLElement[]>([])
+
+const setTimelineItemRef = (el: Element | null, index: number) => {
+  if (el) {
+    timelineItemRefs.value[index] = el as HTMLElement
+  }
+}
+
+const scrollToActiveItem = async () => {
+  await nextTick()
+
+  const activeIndex = props.sidebarItems.findIndex((item) => item.id === ActiveItem.value)
+  const activeElement = timelineItemRefs.value[activeIndex]
+
+  activeElement?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest',
+    inline: 'center',
+  })
+}
 
 watch(() => ActiveItem.value, (newVal) => {
   emit("update:ActiveItem", newVal)
+  scrollToActiveItem()
 }, { immediate: true })
+
+watch(
+  () => props.sidebarItems,
+  (items) => {
+    const activeItem = items.find((item) => item.id === ActiveItem.value)
+    const nextIncompleteItem = items.find((item) => !item.progress)
+
+    if (!activeItem || activeItem.progress) {
+      ActiveItem.value = nextIncompleteItem?.id ?? items[0]?.id
+      return
+    }
+
+    scrollToActiveItem()
+  },
+  { deep: true },
+)
+
+onMounted(scrollToActiveItem)
+
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
@@ -147,6 +187,7 @@ const AllPagesToView = ref([
       <div class="timeline-line"></div>
 
       <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
+        :ref="(el) => setTimelineItemRef(el, index)"
         :class="{ active: ActiveItem == item?.id || item.progress }" :style="{ animationDelay: `${index * 0.15}s` }"
         @click="ActiveItem = item?.id">
         <!-- <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index" :class="{
@@ -188,7 +229,11 @@ const AllPagesToView = ref([
         <div class="timeline-content" v-if="!item.progress">
           <div class="timeline-content-header">
             <p class="time-line-title" @click="scrollToTop()"> {{ item.title }}</p>
-            <router-link :to="AllPagesToView.find((el) => el.id == item.id)?.link">
+            <router-link
+              class="timeline-link"
+              :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+              @click.stop
+            >
               <LinkIcon />
             </router-link>
           </div>
@@ -198,7 +243,11 @@ const AllPagesToView = ref([
         <div class="timeline-content" v-else>
           <div class="timeline-content-header">
             <p class="first-item-title" @click="scrollToTop()"> {{ item.title }}</p>
-            <router-link :to="AllPagesToView.find((el) => el.id == item.id)?.link">
+            <router-link
+              class="timeline-link"
+              :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+              @click.stop
+            >
               <LinkIcon />
             </router-link>
           </div>
@@ -224,8 +273,31 @@ const AllPagesToView = ref([
   width: 100%;
   z-index: 99999;
 }
-
 .opacity {
   opacity: 0.5;
+}
+
+.timeline-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: #f2f6ff;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.timeline-link:hover {
+  background-color: #e4ecff;
+  transform: translateY(-1px);
+}
+
+.timeline-link svg {
+  width: 16px;
+  height: 16px;
 }
 </style>

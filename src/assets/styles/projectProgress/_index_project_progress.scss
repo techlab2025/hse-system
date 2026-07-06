@@ -32,20 +32,23 @@
   .project-progress-body-container {
     margin-block: $XsSize;
     width: 100%;
-    @include grid(
-      12,
-      $XsSize2,
-      (
-        900px: 1,
-      )
-    );
+    display: flex;
+    flex-direction: column;
+    gap: $MdSize;
+    min-width: 0;
     .project-progress-body-sidebar {
-      grid-column: span 3;
-      background-color: #fdfdfd;
-      padding: $XsSize;
+      width: 100%;
+      min-width: 0;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e7edf8;
+      box-shadow: 0 12px 30px rgba(15, 25, 39, 0.06);
+      padding: $MdSize;
       border-radius: 12px;
+      overflow: hidden;
 
       .timeline-marker {
+        left: -9px !important;
+        top: -11px !important;
         &.not-active {
           .timeline-icon {
             background-color: white;
@@ -57,15 +60,61 @@
       }
       .timeline-container {
         cursor: pointer;
+        width: 100%;
+        overflow: hidden;
+
+        .timeline-wrapper {
+          display: flex;
+          align-items: stretch;
+          gap: $SmSize;
+          width: 100%;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: $XsSize3 $XsSize3 $SmSize;
+          scroll-snap-type: x proximity;
+          scrollbar-width: thin;
+
+          &::-webkit-scrollbar {
+            height: 6px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: #d7e1f2;
+            border-radius: 999px;
+          }
+        }
+
+        .timeline-line {
+          display: none;
+        }
+
         .timeline-icon {
           svg {
             width: 20px;
             height: 20px;
           }
         }
+        .timeline-marker {
+          position: relative;
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          margin-top: 0;
+        }
+        .timeline-marker > svg,
+        .timeline-dot {
+          width: 40px;
+          height: 40px;
+          flex: 0 0 auto;
+        }
         .timeline-content {
+          flex: 1;
+          min-width: 0;
           .timeline-content-header {
-            @include flex-row(nowrap, flex-start, center);
+            @include flex-row(nowrap, space-between, center);
             gap: 10px;
 
             .first-item-title {
@@ -78,10 +127,37 @@
             color: #96aac3;
             font-size: $SmSize;
             font-weight: $BaseFontMediumWeight;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
         }
         .timeline-item {
+          position: relative;
+          flex: 0 0 clamp(260px, 24vw, 340px);
+          display: flex;
+          align-items: flex-start;
+          gap: $XsSize;
+          min-height: 116px;
+          padding: $SmSize;
+          border: 1px solid #edf2f9;
+          border-radius: 12px;
+          background-color: #fff;
+          box-shadow: 0 8px 20px rgba(15, 25, 39, 0.04);
+          scroll-snap-align: start;
+          transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
           cursor: pointer;
+
+          &:hover {
+            transform: translateY(-2px);
+            border-color: rgba(29, 78, 216, 0.22);
+            box-shadow: 0 14px 28px rgba(15, 25, 39, 0.08);
+          }
+
           .time-line-title {
             transition: 0.3s all linear;
           }
@@ -94,7 +170,7 @@
           // }
           .timeline-content {
             .timeline-content-header {
-              @include flex-row(nowrap, flex-start, center);
+              @include flex-row(nowrap, space-between, center);
               gap: 10px;
               .time-line-title {
                 color: #9ca3af;
@@ -106,12 +182,18 @@
               color: #96aac3;
               font-size: $SmSize;
               font-weight: $BaseFontMediumWeight;
+              display: -webkit-box;
+              overflow: hidden;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
           }
           &.active {
+            border-color: rgba(29, 78, 216, 0.28);
+            background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
             .timeline-content {
               .timeline-content-header {
-                @include flex-row(nowrap, flex-start, center);
+                @include flex-row(nowrap, space-between, center);
                 gap: 10px;
                 .time-line-title {
                   color: $PrimaryColor;
@@ -131,13 +213,13 @@
     }
 
     .project-progress-body-content {
-      grid-column: span 9;
       width: 100%;
+      min-width: 0;
       .content-header {
         width: 100%;
-        @include flex-column(nowrap, center, center);
+        @include flex-column(nowrap, center, flex-start);
         gap: $XsSize3;
-        margin-block: $XlSize2;
+        margin-block: $MdSize;
         .title {
           color: #202020;
           font-size: calc($XlSize3 + 2px);
@@ -154,6 +236,8 @@
         border: 1px solid #e6e8ea4d;
         border-radius: $XlSize3;
         padding: $MdSize;
+        width: 100%;
+        min-width: 0;
       }
     }
   }
