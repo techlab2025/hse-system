@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
 import investigationImg from '@/assets/images/investigationImg.png'
 import CauseOfAccidant from './InvestegationResultParts/CauseOfAccidant.vue'
@@ -388,13 +388,40 @@ import DownArrow from '@/shared/icons/DownArrow.vue'
 
 const ActivePanel = ref<string | null>('1')
 const isPanelOpen = (panel: string) => ActivePanel.value === panel
+
+const scrollToActivePanel = async (panel: string | null) => {
+  if (!panel) return
+
+  await nextTick()
+
+  window.setTimeout(() => {
+    const activePanel = document.querySelector<HTMLElement>(`[data-investigation-panel="${panel}"]`)
+
+    if (!activePanel) return
+
+    const headerOffset = 96
+    const activePanelRect = activePanel.getBoundingClientRect()
+    const activePanelTop = activePanelRect.top + window.scrollY - headerOffset
+
+    window.scrollTo({
+      top: Math.max(activePanelTop, 0),
+      behavior: 'smooth',
+    })
+  }, 160)
+}
+
+watch(ActivePanel, (panel, previousPanel) => {
+  if (panel && panel !== previousPanel) {
+    scrollToActivePanel(panel)
+  }
+})
 </script>
 <template>
   <DataStatus :controller="state">
     <template #success>
       <div class="investigation-result">
         <Accordion v-model:value="ActivePanel">
-          <AccordionPanel value="1">
+          <AccordionPanel value="1" data-investigation-panel="1">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -423,7 +450,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               />
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="2">
+          <AccordionPanel value="2" data-investigation-panel="2">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -490,7 +517,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </div>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="3">
+          <AccordionPanel value="3" data-investigation-panel="3">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -566,7 +593,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </section>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="4">
+          <AccordionPanel value="4" data-investigation-panel="4">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -585,7 +612,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </div>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="5">
+          <AccordionPanel value="5" data-investigation-panel="5">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -601,7 +628,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               />
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="6">
+          <AccordionPanel value="6" data-investigation-panel="6">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -619,7 +646,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               <RateActions @update:data="setRateAction" />
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="7">
+          <AccordionPanel value="7" data-investigation-panel="7">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -656,7 +683,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               <CauseOfAccidant @update:data="setCauseOfAction" />
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="8">
+          <AccordionPanel value="8" data-investigation-panel="8">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -668,7 +695,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               <CapaActionPlan @update:data="setCapaActionPlan" />
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="9">
+          <AccordionPanel value="9" data-investigation-panel="9">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -692,7 +719,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </section>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="10">
+          <AccordionPanel value="10" data-investigation-panel="10">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -726,7 +753,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </section>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="11">
+          <AccordionPanel value="11" data-investigation-panel="11">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -754,7 +781,7 @@ const isPanelOpen = (panel: string) => ActivePanel.value === panel
               </div>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="12">
+          <AccordionPanel value="12" data-investigation-panel="12">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
