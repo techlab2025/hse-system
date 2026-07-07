@@ -116,12 +116,6 @@ const ShoeInvestegationResultDetails = async () => {
 const openDialog = ref(false)
 
 const AddEnvestigatingResult = async () => {
-  const CheckWitnessIsFullyEmpty = (viewersResults.value ?? []).map((el) => {
-    return (
-      (el.organizationEmployeeId != null || el.employeeName != undefined) &&
-      el?.witnessesStatements?.length > 1
-    )
-  })
   const RootCausesIds = RootCauses.value.map(
     (el) => new RootCausesIdParams({ root_cause_id: el.id }),
   )
@@ -140,7 +134,7 @@ const AddEnvestigatingResult = async () => {
     isInvestigationClosed: anotherMeeting?.value?.isAnother == 1 ? 0 : 1,
     observationId: Number(state.value?.data?.observation?.id),
     tasks: [...actionPlan.corrective, ...actionPlan.preventive],
-    witnesses: CheckWitnessIsFullyEmpty.find((el) => el) ? viewersResults.value : [],
+    witnesses: viewersResults.value ?? [],
     meeting: new InvestegationAnotherMeetingParams(
       anotherMeeting?.value?.meetings?.date,
       anotherMeeting?.value?.meetings?.time,
