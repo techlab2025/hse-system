@@ -92,7 +92,7 @@ const OperationsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/capa',
-    name: t('capa'),
+    name: t('CAPA'),
     icon: ProjectProgressIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },

@@ -27,6 +27,7 @@ const props = defineProps<{
   time?: string
   shift?: ShiftModel
   serialName?: string
+  observationCreator?: string
 }>()
 
 const DocumentRefrenceDialog = ref<boolean>(false)
@@ -54,6 +55,11 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
 
 
     </div> -->
+    <pre>
+
+
+</pre
+    >
     <div class="meeting-info-container">
       <div class="meeting-info">
         <p>
@@ -69,13 +75,16 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
         </p>
         <p>
+          Created By : <span class="incidant-type">{{ observationCreator   }}</span>
+        </p>
+        <p>
           date & time & shift :
           <span class="incidant-type">{{ date }} & {{ time }} & {{ shift?.title }}</span>
         </p>
         <p>
           Work Area / Facility : <span class="team-number">{{ place }}</span>
         </p>
-             <p>
+        <p>
           Equipment / Tag No : <span class="team-number">{{ equipment?.serial_name }}</span>
         </p>
         <div class="input-wrapper col-span-2 w-full root-cause-panel">
@@ -123,7 +132,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
         <p class="name">{{ equipment?.title }}</p>
         <p class="serial">{{ equipment?.serial_name }}</p>
       </div> -->
-      <!-- <EquipmentCard :tool="equipment" /> -->
+    <!-- <EquipmentCard :tool="equipment" /> -->
     <!-- </div> -->
 
     <!-- <div class="team-container">

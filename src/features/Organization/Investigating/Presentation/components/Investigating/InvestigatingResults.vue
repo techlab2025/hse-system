@@ -385,6 +385,7 @@ import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
 import DownArrow from '@/shared/icons/DownArrow.vue'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
 
 const ActivePanel = ref<string | null>('1')
 const isPanelOpen = (panel: string) => ActivePanel.value === panel
@@ -446,6 +447,7 @@ watch(ActivePanel, (panel, previousPanel) => {
                 :time="state.data?.investigationMeetingTime"
                 :shift="state.data?.observation.work_shift"
                 :serialName="state.data?.serialName"
+                :observationCreator="state?.data?.observation?.observer?.name"
                 @update:documentRefrences="setDocumentRefrences"
               />
             </AccordionContent>
@@ -454,7 +456,7 @@ watch(ActivePanel, (panel, previousPanel) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Investigation Team Setup</p>
+                <p>Investigation Team </p>
                 <span class="arrow" :class="{ open: isPanelOpen('2') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -567,6 +569,7 @@ watch(ActivePanel, (panel, previousPanel) => {
                             timeOnly
                             hourFormat="12"
                             fluid
+                            :placeholder="`Enter the time `"
                             @update:model-value="updateIncidentTimelineDescription"
                           />
                         </div>
@@ -593,7 +596,7 @@ watch(ActivePanel, (panel, previousPanel) => {
               </section>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="4" data-investigation-panel="4">
+          <AccordionPanel value="4" data-investigation-panel="4" v-if="state?.data?.observation?.type == Observation.AccidentsType">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -638,7 +641,7 @@ watch(ActivePanel, (panel, previousPanel) => {
             </AccordionHeader>
             <AccordionContent>
               <div class="investigating-header-container">
-                <div class="incidant-description col-span-2">
+                <div class="incidant-description col-span-2" v-if="state?.data?.observation?.action ">
                   <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
                   <p class="description">{{ state?.data?.observation?.action }}</p>
                 </div>
@@ -707,7 +710,7 @@ watch(ActivePanel, (panel, previousPanel) => {
               <section class="lesson-section">
                 <div class="section-heading">
                   <!-- <span>Lesson learnt</span> -->
-                  <h2>Lessons Learned Summary</h2>
+                  <h2>Lessons Learned </h2>
                 </div>
                 <div class="input-wrapper">
                   <textarea
@@ -1162,7 +1165,11 @@ watch(ActivePanel, (panel, previousPanel) => {
 
   .input-wrapper {
     margin: 0;
-    width: 50%;
+    width: 75% !important;
+    &:first-child{
+      width: 25% !important;
+
+    }
     textarea {
       max-height: 50px;
       border-radius: 15px;

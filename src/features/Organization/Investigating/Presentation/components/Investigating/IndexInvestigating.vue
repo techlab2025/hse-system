@@ -80,11 +80,11 @@ watch(
 const GetInvestigationType = (type: number) => {
   switch (type) {
     case Observation.AccidentsType:
-      return 'Accidents'
+      return 'Incident'
     case Observation.ObservationType:
       return 'Observation'
     case Observation.HazardType:
-      return 'Hazard'
+      return 'Observation'
     default:
       return ''
   }
@@ -188,12 +188,13 @@ const GetMediumObservationCount = (data: any): number => {
                             class="first-label-item-primary"
                             :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
                           >
+
                             <!-- {{
                               GetObservationRiskLevel(item?.observation?.riskLevel) +
                               ' ' +
                               GetInvestigationType(item?.observation?.type)
                             }} -->
-                            incident Report
+                            {{ GetInvestigationType(item?.observation?.type) }} Report
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serialName || '_OBS-2025-0112'
                             }}</span>
@@ -201,8 +202,13 @@ const GetMediumObservationCount = (data: any): number => {
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
+
                         </div>
                         <div class="first-card-details">
+                          <p class="label-item-secondary">
+                             {{ GetInvestigationType(item?.observation?.type) }}  {{ $t(` title`) }}:
+                            <span>{{ item?.observation?.title }}</span>
+                          </p>
                           <p class="label-item-secondary">
                             {{ $t('Date & Time') }}:
                             <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
