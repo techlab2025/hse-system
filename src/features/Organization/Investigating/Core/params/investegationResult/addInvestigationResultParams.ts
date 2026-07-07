@@ -97,37 +97,142 @@ export default class AddInvestigationResultParams implements Params {
     this.documentReferenceIds = data.documentReferenceIds
     this.eventTimeLines = data.eventTimeLines
   }
+  private filterTasks(tasks: any[] = []) {
+    return tasks
+      .filter((task) => task.title?.trim())
+      .map((task) => ({
+        ...task,
+        investigation_task_employees: (task.investigation_task_employees ?? []).filter(
+          (employee: any) => employee.organization_employee_id || employee.employee_name?.trim(),
+        ),
+      }))
+  }
 
-  toMap(): Record<string, number | string | any> {
-    const data: Record<string, number | string | any> = {}
+  private filterQuestions(questions: any[] = []) {
+    return questions.filter((question) => question.question?.trim() || question.answer?.trim())
+  }
+
+  private filterTimelines(timelines: any[] = []) {
+    return timelines.filter((timeline) => timeline.time?.trim() || timeline.description?.trim())
+  }
+
+  private filterWitnesses() {
+    return (
+      this.witnesses
+        ?.map((witness) => witness.toMap())
+        .filter((witness) =>
+          Object.values(witness).some((value) =>
+            typeof value === 'string' ? value.trim() : value !== null && value !== undefined,
+          ),
+        ) ?? []
+    )
+  }
+
+  private hasMeetingData() {
+    if (!this.meeting) return false
+
+    const meeting = this.meeting.toMap()
+
+    return !!meeting.place?.trim()
+  }
+
+  toMap(): Record<string, any> {
+    const data: Record<string, any> = {}
+
     data['investigation_meeting_id'] = this.investigationMeetingId
     data['is_investigation_closed'] = this.isInvestigationClosed
     data['observation_id'] = this.observationId
-    // data['date'] = this.date
-    // data['has_employee'] = this.hasEmployee
-    data['tasks'] = this.tasks
-    if (this.factors) data['factors'] = this.factors
-    if (this.documentation) data['documentation'] = [this.documentation]
 
-    data['witness_statements'] = this.witnesses?.map((item) => item.toMap())
-    if (this.isActionCorrect) data['is_action_correct'] = this.isActionCorrect == 1 ? false : true
-    if (this.explainWhyText) data['explain_why_text'] = this.explainWhyText
-    if (this.meeting) data['meeting'] = this.meeting.toMap()
-    if (this.corrective) data['corrective'] = this.corrective
-    if (this.preventive) data['preventive'] = this.preventive
-    if (this.RootCauses) data['root_causes'] = this.RootCauses
-    if (this.investegaionLevel) data['investigation_category'] = this.investegaionLevel
-    if (this.FiveWhyQuestionsData) data['questions'] = this.FiveWhyQuestionsData
-    if (this.IncidantDescription) data['incidant_description'] = this.IncidantDescription
-    if (this.recommendation) data['recommendation'] = this.recommendation
-    if (this.isAnotherMeeting) data['is_another_meeting'] = this.isAnotherMeeting
-    if (this.correctiveTasks) data['corrective_tasks'] = this.correctiveTasks
-    if (this.preventiveTasks) data['preventive_tasks'] = this.preventiveTasks
-    if (this.lessonLearnt) data['lesson_learnt'] = this.lessonLearnt
-    if (this.documentReferenceIds) data['document_reference_ids'] = this.documentReferenceIds
-    if (this.eventTimeLines) data['event_timelines'] = this.eventTimeLines
+    const tasks = this.filterTasks(this.tasks)
+    if (tasks.length) {
+      data['tasks'] = tasks
+    }
 
-    data['injuries'] = this.Injury?.map((item) => item.toMap())
+    if (this.factors) {
+      data['factors'] = this.factors
+    }
+
+    if (this.documentation) {
+      data['documentation'] = [this.documentation]
+    }
+
+    const witnesses = this.filterWitnesses()
+    if (witnesses.length) {
+      data['witness_statements'] = witnesses
+    }
+
+    if (this.isActionCorrect !== undefined && this.isActionCorrect !== null) {
+      data['is_action_correct'] = this.isActionCorrect === 1 ? false : true
+    }
+
+    if (this.explainWhyText?.trim()) {
+      data['explain_why_text'] = this.explainWhyText
+    }
+
+    // if (this.hasMeetingData()) {
+      data['meeting'] = this.meeting!.toMap()
+    // }
+
+    if (this.corrective) {
+      data['corrective'] = this.corrective
+    }
+
+    if (this.preventive) {
+      data['preventive'] = this.preventive
+    }
+
+    if (this.RootCauses?.length) {
+      data['root_causes'] = this.RootCauses
+    }
+
+    if (this.investegaionLevel) {
+      data['investigation_category'] = this.investegaionLevel
+    }
+
+    const questions = this.filterQuestions(this.FiveWhyQuestionsData)
+    if (questions.length) {
+      data['questions'] = questions
+    }
+
+    if (this.IncidantDescription?.trim()) {
+      data['incidant_description'] = this.IncidantDescription
+    }
+
+    if (this.recommendation?.trim()) {
+      data['recommendation'] = this.recommendation
+    }
+
+    if (this.isAnotherMeeting) {
+      data['is_another_meeting'] = this.isAnotherMeeting
+    }
+
+    const correctiveTasks = this.filterTasks(this.correctiveTasks)
+    if (correctiveTasks.length) {
+      data['corrective_tasks'] = correctiveTasks
+    }
+
+    const preventiveTasks = this.filterTasks(this.preventiveTasks)
+    if (preventiveTasks.length) {
+      data['preventive_tasks'] = preventiveTasks
+    }
+
+    if (this.lessonLearnt?.trim()) {
+      data['lesson_learnt'] = this.lessonLearnt
+    }
+
+    if (this.documentReferenceIds?.length) {
+      data['document_reference_ids'] = this.documentReferenceIds
+    }
+
+    const timelines = this.filterTimelines(this.eventTimeLines)
+    if (timelines.length) {
+      data['event_timelines'] = timelines
+    }
+
+    if (this.Injury?.length) {
+      data['injuries'] = this.Injury.map((item) => item.toMap())
+    }
+
     return data
   }
 }

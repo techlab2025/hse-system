@@ -8,6 +8,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddInvestigatingResultUseCase from '../../../Domain/useCase/investegationResult/addInvestigatingResultUseCase'
 import type InvestegationResultModel from '../../../Data/models/investigationResult/InvestegationResulModel'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import type AddInvestigationResultParams from '../../../Core/params/investegationResult/addInvestigationResultParams'
 
 export default class AddInvestigatingResultController extends ControllerInterface<InvestegationResultModel> {
   private static instance: AddInvestigatingResultController
@@ -23,10 +25,21 @@ export default class AddInvestigatingResultController extends ControllerInterfac
     return this.instance
   }
 
-  async addInvestigatingResult(params: Params, router: Router, draft: boolean = false) {
+  async addInvestigatingResult(
+    params: AddInvestigationResultParams,
+    router: Router,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      // console.log('Ssssssss')
+      // Validation Section Start
+      // if (params?.eventTimeLines?.some((timeline) => !timeline.description || !timeline.time)) {
+      //   new OpenWarningDilaog('Events Timeline: Please Fill All Event Time Lines').openDialog()
+      //   return
+      // }
+
+      // Validation Section End
+
       const dataState: DataState<InvestegationResultModel> =
         await this.addInvestigatingResultUseCase.call(params)
       this.setState(dataState)

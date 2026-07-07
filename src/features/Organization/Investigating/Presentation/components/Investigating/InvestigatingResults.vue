@@ -35,6 +35,14 @@ import DeleteIcon from '@/shared/icons/DeleteIcon.vue'
 import DatePicker from 'primevue/datepicker'
 import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
+import Accordion from 'primevue/accordion'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
+import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
+import DownArrow from '@/shared/icons/DownArrow.vue'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
+
 
 interface items {
   title: string
@@ -379,13 +387,7 @@ watch(
   },
 )
 
-import Accordion from 'primevue/accordion'
-import AccordionPanel from 'primevue/accordionpanel'
-import AccordionHeader from 'primevue/accordionheader'
-import AccordionContent from 'primevue/accordioncontent'
-import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
-import DownArrow from '@/shared/icons/DownArrow.vue'
-import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
+
 
 const ActivePanel = ref<string | null>('1')
 const isPanelOpen = (panel: string) => ActivePanel.value === panel

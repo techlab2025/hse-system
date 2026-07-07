@@ -26,7 +26,7 @@ const UpdateData = (data) => {
     <HeaderPage
       :Nobg="true"
       :title="`5 why questions`"
-      :subtitle="`Lorem Ipsum is simply dummy text of the printing and typesetting industry`"
+      :subtitle="``"
       :img="why"
       class="title-header"
     />
