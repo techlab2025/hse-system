@@ -350,7 +350,7 @@ const DocumentRefrences = ref<TitleInterface[]>([])
 const setDocumentRefrences = (data: TitleInterface[]) => {
   DocumentRefrences.value = data
 }
-const f = ref<HazardDetailsModel[]>()
+const SimilarObservations = ref<HazardDetailsModel[]>()
 const similarObservationsLoading = ref(false)
 const fetchedSimilarObservationId = ref<number | null>(null)
 const fetchSimilarObservations = async () => {
